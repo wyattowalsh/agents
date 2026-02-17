@@ -8,13 +8,12 @@ export default [
   { slug: '' },
   {
     label: 'Skills',
-    badge: { text: '27', variant: 'tip' },
+    badge: { text: '26', variant: 'tip' },
     items: [
       {
-        label: 'Custom (8)',
+        label: 'Custom (7)',
         items: [
           { slug: 'skills/add-badges' },
-          { slug: 'skills/docs-steward' },
           { slug: 'skills/honest-review' },
           { slug: 'skills/host-panel' },
           { slug: 'skills/mcp-creator' },
@@ -24,6 +23,13 @@ export default [
         ],
       },
       { label: 'Installed (19)', slug: 'skills/installed' },
+    ],
+  },
+  {
+    label: 'Guides',
+    badge: { text: '1', variant: 'note' },
+    items: [
+      { slug: 'guides/wargame' },
     ],
   },
   { slug: 'cli', label: 'CLI Reference' },

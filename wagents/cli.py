@@ -71,6 +71,35 @@ def _strip_relative_md_links(text: str) -> str:
     )
 
 
+class _FenceTracker:
+    """Track fenced code block state for fence-aware markdown processing."""
+
+    def __init__(self) -> None:
+        self._char: str | None = None
+        self._count: int = 0
+
+    @property
+    def inside_fence(self) -> bool:
+        return self._char is not None
+
+    def update(self, line: str) -> bool:
+        """Update state for *line*. Returns True if the line is a fence boundary."""
+        stripped = line.lstrip()
+        indent = len(line) - len(stripped)
+        if indent <= 3 and (stripped.startswith('```') or stripped.startswith('~~~')):
+            char = stripped[0]
+            count = len(stripped) - len(stripped.lstrip(char))
+            if self._char is None:
+                self._char = char
+                self._count = count
+                return True
+            if char == self._char and count >= self._count:
+                self._char = None
+                self._count = 0
+                return True
+        return False
+
+
 def _shift_headings(body: str, levels: int = 1) -> str:
     """Shift all markdown headings down by `levels` (e.g. # -> ## when levels=1).
 
@@ -79,35 +108,13 @@ def _shift_headings(body: str, levels: int = 1) -> str:
     extra = '#' * levels
     lines = body.split('\n')
     result = []
-    fence_char = None
-    fence_count = 0
+    fence = _FenceTracker()
 
     for line in lines:
-        stripped = line.lstrip()
-        indent = len(line) - len(stripped)
-
-        # Track fenced code block state (same logic as _escape_mdx)
-        if indent <= 3:
-            if stripped.startswith('```') or stripped.startswith('~~~'):
-                char = stripped[0]
-                count = len(stripped) - len(stripped.lstrip(char))
-                if fence_char is None:
-                    fence_char = char
-                    fence_count = count
-                    result.append(line)
-                    continue
-                elif char == fence_char and count >= fence_count:
-                    fence_char = None
-                    fence_count = 0
-                    result.append(line)
-                    continue
-
-        if fence_char is not None:
+        if fence.update(line) or fence.inside_fence:
             result.append(line)
-            continue
-
-        # Shift headings outside fences
-        result.append(re.sub(r'^(#{1,5})', lambda m: extra + m.group(1), line))
+        else:
+            result.append(re.sub(r'^(#{1,5})', lambda m: extra + m.group(1), line))
 
     return '\n'.join(result)
 
@@ -792,34 +799,13 @@ def _escape_mdx(body: str) -> str:
     """Escape markdown body for safe MDX embedding."""
     lines = body.split('\n')
     result = []
-    fence_char = None
-    fence_count = 0
+    fence = _FenceTracker()
 
     for line in lines:
-        stripped = line.lstrip()
-        indent = len(line) - len(stripped)
-
-        if indent <= 3:
-            if stripped.startswith('```') or stripped.startswith('~~~'):
-                char = stripped[0]
-                count = len(stripped) - len(stripped.lstrip(char))
-
-                if fence_char is None:
-                    fence_char = char
-                    fence_count = count
-                    result.append(line)
-                    continue
-                elif char == fence_char and count >= fence_count:
-                    fence_char = None
-                    fence_count = 0
-                    result.append(line)
-                    continue
-
-        if fence_char is not None:
+        if fence.update(line) or fence.inside_fence:
             result.append(line)
-            continue
-
-        result.append(_escape_mdx_line(line))
+        else:
+            result.append(_escape_mdx_line(line))
 
     return '\n'.join(result)
 
@@ -886,9 +872,8 @@ GITHUB_BASE = "https://github.com/wyattowalsh/agents/blob/main"
 RELATED_SKILLS = {
     "wargame": ["host-panel", "prompt-engineer"],
     "host-panel": ["wargame"],
-    "honest-review": ["add-badges", "docs-steward"],
-    "docs-steward": ["honest-review", "add-badges"],
-    "add-badges": ["honest-review", "docs-steward"],
+    "honest-review": ["add-badges"],
+    "add-badges": ["honest-review"],
     "prompt-engineer": ["skill-creator", "wargame"],
     "skill-creator": ["prompt-engineer", "mcp-creator"],
     "mcp-creator": ["skill-creator"],
@@ -1562,7 +1547,7 @@ def _write_index_page(nodes: list[CatalogNode]) -> None:
     parts.append('  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with AI code smell detection and severity calibration." />')
     parts.append('  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/" description="Domain-agnostic wargaming with Monte Carlo exploration, structured adjudication, and visual dashboards." />')
     parts.append('  <LinkCard title="Host Expert Panels" href="/skills/host-panel/" description="Simulated panel discussions among AI experts in roundtable, Oxford-style, and Socratic formats." />')
-    parts.append('  <LinkCard title="Automate Documentation" href="/skills/docs-steward/" description="Auto-maintain your docs site — sync generated pages, enhance content quality, and run health checks." />')
+    parts.append('  <LinkCard title="Create MCP Servers" href="/skills/mcp-creator/" description="Build production-ready MCP servers using FastMCP v3 with tool design, testing, and deployment guidance." />')
     parts.append("</CardGrid>")
     parts.append("")
 
@@ -2029,6 +2014,9 @@ def _regenerate_sidebar_and_indexes() -> None:
 
     _write_sidebar(nodes)
     _write_skills_index(skills)
+    installed_skills = [n for n in skills if n.source != "custom"]
+    if installed_skills:
+        _write_installed_skills_page(installed_skills)
     if agents_list:
         _write_agents_index(agents_list)
     if mcps:
@@ -2174,10 +2162,23 @@ def docs_preview():
 
 @docs_app.command("clean")
 def docs_clean():
-    """Remove generated content pages."""
-    if CONTENT_DIR.exists():
-        shutil.rmtree(CONTENT_DIR)
-        CONTENT_DIR.mkdir(parents=True)
+    """Remove generated content pages (preserves hand-written content like guides/)."""
+    cleaned = False
+    for subdir in ["skills", "agents", "mcp"]:
+        d = CONTENT_DIR / subdir
+        if d.exists():
+            shutil.rmtree(d)
+            cleaned = True
+    for f in ["index.mdx", "cli.mdx"]:
+        p = CONTENT_DIR / f
+        if p.exists():
+            p.unlink()
+            cleaned = True
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    if sidebar_path.exists():
+        sidebar_path.unlink()
+        cleaned = True
+    if cleaned:
         typer.echo("Cleaned generated content pages")
     else:
         typer.echo("Nothing to clean")
