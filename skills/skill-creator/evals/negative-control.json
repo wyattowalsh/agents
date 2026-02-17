@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "Create an MCP server that wraps the GitHub API",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT trigger skill-creator for this request",
+    "Agent recognizes this as an MCP server creation request, not a skill",
+    "Agent should delegate to the mcp-creator skill instead",
+    "If skill-creator is somehow invoked, it should refuse gracefully: 'MCP server creation is handled by the mcp-creator skill. Use /mcp-creator instead.'"
+  ]
+}

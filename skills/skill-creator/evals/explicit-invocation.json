@@ -1,0 +1,15 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator create my-analyzer",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Develop (new) mode based on 'create' keyword in arguments",
+    "Agent validates name 'my-analyzer' as kebab-case, ≤64 chars, no conflicts in skills/",
+    "Agent runs 'uv run wagents new skill my-analyzer' to scaffold",
+    "Agent loads references/frontmatter-spec.md for frontmatter configuration",
+    "Agent loads references/proven-patterns.md to classify applicable patterns",
+    "Agent follows 6-step Develop (new) workflow: Understand → Plan → Scaffold → Build → Validate → Iterate",
+    "Agent produces a complete SKILL.md with dispatch table and critical rules at minimum",
+    "Agent runs 'uv run wagents validate' before declaring completion"
+  ]
+}

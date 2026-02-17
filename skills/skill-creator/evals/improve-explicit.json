@@ -1,0 +1,12 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator improve add-badges",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Develop (existing) mode",
+    "Agent resolves 'add-badges' to skills/add-badges/SKILL.md",
+    "Agent loads references/workflow.md",
+    "Agent runs audit.py against add-badges first",
+    "Agent presents improvement plan with approval gate before implementing"
+  ]
+}
