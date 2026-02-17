@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skill Quality Dashboard</title>
+<title>Skill Dashboard</title>
 <style>
 /* ==========================================================================
    Design System — HSL Custom Properties
@@ -23,6 +23,11 @@
   --grade-c: 38 92% 50%;
   --grade-d: 25 95% 53%;
   --grade-f: 0 84% 60%;
+  --status-pending: 215 20% 40%;
+  --status-active: 238 80% 67%;
+  --status-completed: 160 60% 45%;
+  --status-failed: 0 84% 60%;
+  --status-skipped: 215 15% 55%;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
@@ -36,6 +41,11 @@
   --border: 215 15% 85%;
   --text: 222 47% 11%;
   --text-muted: 215 15% 45%;
+  --status-pending: 215 15% 55%;
+  --status-active: 238 75% 55%;
+  --status-completed: 160 55% 38%;
+  --status-failed: 0 78% 50%;
+  --status-skipped: 215 12% 60%;
 }
 
 /* Grade color mapping via data attributes */
@@ -429,6 +439,212 @@ h3 { font-size: 0.95rem; }
 .pattern-name.missing { color: hsl(var(--text-muted)); opacity: 0.5; }
 
 /* ==========================================================================
+   Process Monitor — Phase Pipeline
+   ========================================================================== */
+
+.phase-pipeline {
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem 0 0.25rem;
+}
+
+.phase-pipeline svg { overflow: visible; }
+
+/* ==========================================================================
+   Process Monitor — Layout
+   ========================================================================== */
+
+.process-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: hsl(var(--text-muted));
+  margin-top: 0.4rem;
+}
+
+.process-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Process Monitor — Wave Cards
+   ========================================================================== */
+
+.wave-card {
+  border: 1px solid hsl(var(--border) / 0.4);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 0.5rem;
+  background: hsl(var(--card) / 0.35);
+}
+
+.wave-card:last-child { margin-bottom: 0; }
+
+.wave-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.wave-card-header h3 { font-size: 0.82rem; font-weight: 600; }
+
+.agent-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-size: 0.78rem;
+}
+
+.agent-row + .agent-row {
+  border-top: 1px solid hsl(var(--border) / 0.15);
+}
+
+.agent-name {
+  flex: 0 0 110px;
+  color: hsl(var(--text-muted));
+  font-size: 0.76rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: hsl(var(--border) / 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.agent-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.agent-bar-fill.completed {
+  background: hsl(var(--status-completed));
+  width: 100%;
+}
+
+.agent-bar-fill.active {
+  background: hsl(var(--status-active));
+  width: 60%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.agent-bar-fill.pending {
+  background: hsl(var(--status-pending) / 0.2);
+  width: 0%;
+}
+
+.agent-bar-fill.failed {
+  background: hsl(var(--status-failed));
+  width: 100%;
+}
+
+.agent-status-icon {
+  flex-shrink: 0;
+  width: 14px;
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Process Monitor — Metrics Panel
+   ========================================================================== */
+
+.metrics-table {
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+.metrics-table tr {
+  border-bottom: 1px solid hsl(var(--border) / 0.2);
+}
+
+.metrics-table tr:last-child { border-bottom: none; }
+
+.metrics-table td {
+  padding: 0.35rem 0;
+}
+
+.metrics-table td:first-child {
+  color: hsl(var(--text-muted));
+  padding-right: 0.5rem;
+}
+
+.metrics-table td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Process Monitor — Completed Phases
+   ========================================================================== */
+
+.completed-phase-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.35rem 0;
+  font-size: 0.78rem;
+  border-bottom: 1px solid hsl(var(--border) / 0.15);
+}
+
+.completed-phase-row:last-child { border-bottom: none; }
+
+.cp-check {
+  color: hsl(var(--status-completed));
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cp-label { font-weight: 600; flex-shrink: 0; }
+
+.cp-dur {
+  color: hsl(var(--text-muted));
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+
+.cp-notes {
+  color: hsl(var(--text-muted));
+  font-size: 0.72rem;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   Process Monitor — Approval Gate
+   ========================================================================== */
+
+.approval-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  color: hsl(var(--grade-c));
+  font-weight: 600;
+  padding: 0.15em 0.5em;
+  border: 1px solid hsl(var(--grade-c) / 0.4);
+  border-radius: var(--radius-sm);
+  background: hsl(var(--grade-c) / 0.08);
+}
+
+/* ==========================================================================
    Animations
    ========================================================================== */
 
@@ -442,6 +658,17 @@ h3 { font-size: 0.95rem; }
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4); }
   50% { box-shadow: 0 0 0 8px hsl(var(--accent) / 0); }
+}
+
+@keyframes shimmer {
+  0%   { opacity: 0.65; width: 35%; }
+  50%  { opacity: 1;    width: 75%; }
+  100% { opacity: 0.65; width: 35%; }
+}
+
+@keyframes pulseDot {
+  0%, 100% { r: 10; opacity: 1; }
+  50%      { r: 12; opacity: 0.7; }
 }
 
 /* App-level crossfade */
@@ -467,6 +694,7 @@ h3 { font-size: 0.95rem; }
   .theme-toggle { display: none; }
   .back-btn { display: none; }
   .bar-fill { animation: none; }
+  .agent-bar-fill.active { animation: none; width: 60%; }
 }
 
 /* ==========================================================================
@@ -476,186 +704,175 @@ h3 { font-size: 0.95rem; }
 @media (max-width: 768px) {
   .skill-grid { grid-template-columns: 1fr; }
   .detail-layout { grid-template-columns: 1fr; }
+  .process-layout { grid-template-columns: 1fr; }
   .pattern-grid { grid-template-columns: repeat(2, 1fr); }
   .dim-label { flex: 0 0 130px; }
+  .agent-name { flex: 0 0 85px; }
 }
 
 @media (max-width: 480px) {
   body { padding: 0.75rem; }
   .pattern-grid { grid-template-columns: 1fr; }
+  .agent-name { flex: 0 0 65px; font-size: 0.7rem; }
 }
 </style>
 </head>
 <body>
-<main id="app" aria-label="Skill Quality Dashboard" role="main"></main>
+<main id="app" aria-label="Skill Dashboard" role="main"></main>
 
-<!-- Embedded audit data -->
+<!-- Embedded data — shape auto-detects view mode -->
 <script id="data" type="application/json">
 {
-  "view": "overview",
-  "generated": "2026-02-17T00:00:00Z",
-  "skills": [
+  "session_id": "sess-a1b2c3d4",
+  "skill_name": "example-skill",
+  "mode": "create",
+  "started_at": "2026-02-17T14:30:00Z",
+  "updated_at": "2026-02-17T14:33:22Z",
+  "status": "active",
+  "phases": [
     {
-      "skill": "skill-creator",
-      "path": "skills/skill-creator/",
-      "score": 95, "max": 105, "bonus": 5, "grade": "A",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": ["name field present", "name is valid kebab-case", "name matches directory name", "description field present", "license field present", "metadata.author present", "metadata.version present"]},
-        {"name": "Description Quality", "score": 16, "max": 20, "weight": 2.0, "findings": ["Description too long (569 chars, >300)", "Action verbs found: audit, create", "Contains 'Use when/for' trigger clause", "Contains exclusion clause (NOT for)", "Third-person voice check passed"]},
-        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 11 rows (>= 3)", "Empty-args handler row found"]},
-        {"name": "Body Structure", "score": 12, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (108 lines)", "Heading hierarchy valid", "Good section coverage (9 ## sections)", "Limited sub-section depth (1 ### sub-sections, need >= 2 for +3 points)"]},
-        {"name": "Pattern Coverage", "score": 15, "max": 15, "weight": 1.5, "findings": ["Patterns found: 11/13", "  [+] dispatch-table", "  [+] reference-file-index", "  [+] critical-rules", "  [+] canonical-vocabulary", "  [+] scope-boundaries", "  [+] classification-gating", "  [+] scaling-strategy", "  [+] scripts", "  [+] templates", "  [+] progressive-disclosure", "  [+] body-substitutions", "Suggested additions: state-management, hooks"]},
-        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "No missing reference files", "6 reference files with appropriate size"]},
-        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 16 numbered rules (>= 5)", "13 rules appear actionable"]},
-        {"name": "Scripts", "score": 4, "max": 5, "weight": 0.5, "findings": ["Found 1 Python script(s)", "Script(s) use argparse", "Script(s) produce JSON output", "Script(s) have docstrings"]},
-        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "scripts", "templates", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["state-management", "hooks"],
-      "meta": {"lines": 108, "refs": 6, "scripts": 1}
+      "id": "understand",
+      "label": "Understand",
+      "status": "completed",
+      "started_at": "2026-02-17T14:30:00Z",
+      "completed_at": "2026-02-17T14:30:12Z",
+      "notes": "defined scope, 3 patterns identified",
+      "artifacts": []
     },
     {
-      "skill": "prompt-engineer",
-      "path": "skills/prompt-engineer/",
-      "score": 90, "max": 100, "bonus": 0, "grade": "A",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": ["name field present", "name is valid kebab-case", "name matches directory name", "description field present", "license field present", "metadata.author present", "metadata.version present"]},
-        {"name": "Description Quality", "score": 16, "max": 20, "weight": 2.0, "findings": ["Description too long (620 chars, >300)", "Action verbs found: audit, convert, evaluate, optimize, test", "Contains 'Use when/for' trigger clause", "Contains exclusion clause (NOT for)", "Third-person voice check passed"]},
-        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 8 rows (>= 3)", "Empty-args handler row found"]},
-        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (350 lines)", "Heading hierarchy valid", "Good section coverage (10 ## sections)", "Good sub-section depth (11 ### sub-sections)"]},
-        {"name": "Pattern Coverage", "score": 14, "max": 15, "weight": 1.5, "findings": ["Patterns found: 7/13"]},
-        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "No missing reference files", "8 reference files with appropriate size"]},
-        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 13 numbered rules (>= 5)", "8 rules appear actionable"]},
-        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
-        {"name": "Conciseness", "score": 3, "max": 5, "weight": 0.5, "findings": ["Duplicate heading: 'steps' appears 5 times", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "classification-gating", "state-management", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["canonical-vocabulary", "scope-boundaries", "scaling-strategy", "scripts", "templates", "hooks"],
-      "meta": {"lines": 350, "refs": 8, "scripts": 0}
+      "id": "plan",
+      "label": "Plan",
+      "status": "completed",
+      "started_at": "2026-02-17T14:30:12Z",
+      "completed_at": "2026-02-17T14:30:20Z",
+      "notes": "validated name, classified patterns",
+      "artifacts": []
     },
     {
-      "skill": "wargame",
-      "path": "skills/wargame/",
-      "score": 85, "max": 105, "bonus": 5, "grade": "B",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": ["name field present", "name is valid kebab-case", "name matches directory name", "description field present", "license field present", "metadata.author present", "metadata.version present"]},
-        {"name": "Description Quality", "score": 9, "max": 20, "weight": 2.0, "findings": ["Description too long (559 chars, >300)", "No action verbs detected", "Contains 'Use when/for' trigger clause", "Missing exclusion clause (NOT for)", "Third-person voice check passed"]},
-        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 4 rows (>= 3)", "Empty-args handler row found"]},
-        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (450 lines)", "Heading hierarchy valid", "Good section coverage (12 ## sections)", "Good sub-section depth (14 ### sub-sections)"]},
-        {"name": "Pattern Coverage", "score": 15, "max": 15, "weight": 1.5, "findings": ["Patterns found: 9/13"]},
-        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "No missing reference files", "5 reference files with appropriate size"]},
-        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 15 numbered rules (>= 5)", "14 rules appear actionable"]},
-        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
-        {"name": "Conciseness", "score": 3, "max": 5, "weight": 0.5, "findings": ["Duplicate heading: 'steps' appears 2 times", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "classification-gating", "state-management", "templates", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["scope-boundaries", "scaling-strategy", "scripts", "hooks"],
-      "meta": {"lines": 450, "refs": 5, "scripts": 0}
+      "id": "scaffold",
+      "label": "Scaffold",
+      "status": "completed",
+      "started_at": "2026-02-17T14:30:20Z",
+      "completed_at": "2026-02-17T14:30:22Z",
+      "notes": "wagents new skill example-skill",
+      "artifacts": []
     },
     {
-      "skill": "honest-review",
-      "path": "skills/honest-review/",
-      "score": 83, "max": 100, "bonus": 0, "grade": "B",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": []},
-        {"name": "Description Quality", "score": 16, "max": 20, "weight": 2.0, "findings": ["Description too long (627 chars, >300)", "Action verbs found: audit, research, review, validate"]},
-        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 6 rows (>= 3)", "Empty-args handler row found"]},
-        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (240 lines)", "Good section coverage (9 ## sections)", "Good sub-section depth (11 ### sub-sections)"]},
-        {"name": "Pattern Coverage", "score": 12, "max": 15, "weight": 1.5, "findings": ["Patterns found: 6/13"]},
-        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "5 reference files with appropriate size"]},
-        {"name": "Critical Rules", "score": 3, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "No numbered rules found", "Rules lack imperative verbs"]},
-        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
-        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "scaling-strategy", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["canonical-vocabulary", "scope-boundaries", "classification-gating", "state-management", "scripts", "templates", "hooks"],
-      "meta": {"lines": 240, "refs": 5, "scripts": 0}
+      "id": "build",
+      "label": "Build",
+      "status": "active",
+      "started_at": "2026-02-17T14:30:22Z",
+      "completed_at": null,
+      "notes": null,
+      "artifacts": []
     },
     {
-      "skill": "docs-steward",
-      "path": "skills/docs-steward/",
-      "score": 67, "max": 100, "bonus": 0, "grade": "C",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": []},
-        {"name": "Description Quality", "score": 6, "max": 20, "weight": 2.0, "findings": ["Description too long (309 chars, >300)", "No action verbs detected", "Missing 'Use when/for' trigger clause", "Missing exclusion clause (NOT for)"]},
-        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 9 rows (>= 3)", "Empty-args handler row found"]},
-        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (343 lines)"]},
-        {"name": "Pattern Coverage", "score": 12, "max": 15, "weight": 1.5, "findings": ["Patterns found: 6/13"]},
-        {"name": "References", "score": 9, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body"]},
-        {"name": "Critical Rules", "score": 3, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "No numbered rules found"]},
-        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
-        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "classification-gating", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["canonical-vocabulary", "scope-boundaries", "scaling-strategy", "state-management", "scripts", "templates", "hooks"],
-      "meta": {"lines": 343, "refs": 2, "scripts": 0}
+      "id": "validate",
+      "label": "Validate",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "notes": null,
+      "artifacts": []
     },
     {
-      "skill": "mcp-creator",
-      "path": "skills/mcp-creator/",
-      "score": 66, "max": 100, "bonus": 0, "grade": "C",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": []},
-        {"name": "Description Quality", "score": 13, "max": 20, "weight": 2.0, "findings": ["Description too long (592 chars, >300)", "Action verbs found: build, research", "Missing exclusion clause (NOT for)"]},
-        {"name": "Dispatch Table", "score": 0, "max": 10, "weight": 1.0, "findings": ["No dispatch table with $ARGUMENTS found"]},
-        {"name": "Body Structure", "score": 12, "max": 15, "weight": 1.5, "findings": ["Body too long (553 lines, >500)"]},
-        {"name": "Pattern Coverage", "score": 8, "max": 15, "weight": 1.5, "findings": ["Patterns found: 4/13"]},
-        {"name": "References", "score": 7, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "Orphan reference files: resources-and-prompts.md"]},
-        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 10 numbered rules (>= 5)", "9 rules appear actionable"]},
-        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
-        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["reference-file-index", "critical-rules", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["dispatch-table", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks"],
-      "meta": {"lines": 553, "refs": 8, "scripts": 0}
-    },
-    {
-      "skill": "host-panel",
-      "path": "skills/host-panel/",
-      "score": 60, "max": 100, "bonus": 0, "grade": "C",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 6, "max": 9, "weight": 1.0, "findings": []},
-        {"name": "Description Quality", "score": 13, "max": 20, "weight": 2.0, "findings": ["Description too long (387 chars, >300)", "Action verbs found: host", "Missing exclusion clause (NOT for)"]},
-        {"name": "Dispatch Table", "score": 0, "max": 10, "weight": 1.0, "findings": ["No dispatch table with $ARGUMENTS found"]},
-        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (459 lines)"]},
-        {"name": "Pattern Coverage", "score": 10, "max": 15, "weight": 1.5, "findings": ["Patterns found: 5/13"]},
-        {"name": "References", "score": 6, "max": 10, "weight": 1.0, "findings": ["No reference index table in body"]},
-        {"name": "Critical Rules", "score": 0, "max": 10, "weight": 1.0, "findings": ["No 'Critical Rules' section found"]},
-        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
-        {"name": "Conciseness", "score": 3, "max": 5, "weight": 0.5, "findings": ["Duplicate heading: 'phase 0: framing' appears 2 times", "Duplicate heading: 'synthesis' appears 2 times"]}
-      ],
-      "patterns_found": ["canonical-vocabulary", "scaling-strategy", "state-management", "progressive-disclosure", "body-substitutions"],
-      "patterns_suggested": ["dispatch-table", "reference-file-index", "critical-rules", "scope-boundaries", "classification-gating", "scripts", "templates", "hooks"],
-      "meta": {"lines": 459, "refs": 2, "scripts": 0}
-    },
-    {
-      "skill": "add-badges",
-      "path": "skills/add-badges/",
-      "score": 57, "max": 100, "bonus": 0, "grade": "D",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 6, "max": 9, "weight": 1.0, "findings": []},
-        {"name": "Description Quality", "score": 13, "max": 20, "weight": 2.0, "findings": ["Description too long (567 chars, >300)", "Action verbs found: detect, generate, scan", "Missing exclusion clause (NOT for)"]},
-        {"name": "Dispatch Table", "score": 0, "max": 10, "weight": 1.0, "findings": ["No dispatch table with $ARGUMENTS found"]},
-        {"name": "Body Structure", "score": 12, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (127 lines)", "Limited sub-section depth (0 ### sub-sections, need >= 2 for +3 points)"]},
-        {"name": "Pattern Coverage", "score": 8, "max": 15, "weight": 1.5, "findings": ["Patterns found: 4/13"]},
-        {"name": "References", "score": 7, "max": 10, "weight": 1.0, "findings": ["No reference index table in body"]},
-        {"name": "Critical Rules", "score": 0, "max": 10, "weight": 1.0, "findings": ["No 'Critical Rules' section found"]},
-        {"name": "Scripts", "score": 5, "max": 5, "weight": 0.5, "findings": ["Found 2 Python script(s)", "Script(s) use argparse", "Script(s) produce JSON output", "Script(s) have docstrings", "Multiple scripts (2)"]},
-        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
-      ],
-      "patterns_found": ["classification-gating", "scripts", "hooks", "progressive-disclosure"],
-      "patterns_suggested": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "scaling-strategy", "state-management", "templates", "body-substitutions"],
-      "meta": {"lines": 127, "refs": 3, "scripts": 2}
+      "id": "iterate",
+      "label": "Iterate",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "notes": null,
+      "artifacts": []
     }
-  ]
+  ],
+  "waves": [
+    {
+      "id": "wave-1",
+      "label": "Wave 1: Body",
+      "phase": "build",
+      "status": "completed",
+      "agents": [
+        {
+          "id": "agent-body",
+          "task": "Write SKILL.md body",
+          "area": "body",
+          "status": "completed",
+          "started_at": "2026-02-17T14:30:22Z",
+          "completed_at": "2026-02-17T14:31:45Z",
+          "output_summary": "Wrote main skill body with 6 sections"
+        }
+      ]
+    },
+    {
+      "id": "wave-2",
+      "label": "Wave 2: Parallel",
+      "phase": "build",
+      "status": "active",
+      "agents": [
+        {
+          "id": "agent-refs",
+          "task": "Create reference files",
+          "area": "references",
+          "status": "active",
+          "started_at": "2026-02-17T14:31:46Z",
+          "completed_at": null,
+          "output_summary": null
+        },
+        {
+          "id": "agent-scripts",
+          "task": "Create scripts",
+          "area": "scripts",
+          "status": "active",
+          "started_at": "2026-02-17T14:31:46Z",
+          "completed_at": null,
+          "output_summary": null
+        },
+        {
+          "id": "agent-tmpl",
+          "task": "Create templates",
+          "area": "templates",
+          "status": "pending",
+          "started_at": null,
+          "completed_at": null,
+          "output_summary": null
+        },
+        {
+          "id": "agent-evals",
+          "task": "Create evaluation criteria",
+          "area": "evals",
+          "status": "pending",
+          "started_at": null,
+          "completed_at": null,
+          "output_summary": null
+        }
+      ]
+    }
+  ],
+  "plan_approval": {
+    "required": false,
+    "approved": null,
+    "approved_at": null
+  },
+  "metrics": {
+    "files_created": 8,
+    "lines_written": 640,
+    "patterns_applied": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "scripts", "templates"],
+    "baseline_score": null,
+    "current_score": null,
+    "current_grade": null,
+    "iteration_count": 0
+  },
+  "audit": null
 }
 </script>
 
 <script>
 /* ==========================================================================
-   Skill Quality Dashboard — Single-file Interactive Report
+   Skill Dashboard — Dual-Mode Interactive Report
    ==========================================================================
-   Self-contained HTML dashboard for skill audit results.
+   Auto-detects view mode from injected JSON shape:
+   - data.phases  -> Process Monitor (phase pipeline, waves, agents, metrics)
+   - data.skills  -> Audit Overview/Detail (skill cards with scores)
    No external dependencies. ES2020+ syntax. IIFE-encapsulated.
    ========================================================================== */
 
@@ -663,10 +880,9 @@ h3 { font-size: 0.95rem; }
   "use strict";
 
   /* ======================================================================
-     Utilities
+     Utilities — XSS Protection & Templating
      ====================================================================== */
 
-  /** XSS-safe HTML escaping */
   const escH = (str) => {
     if (str == null) return "";
     return String(str)
@@ -676,11 +892,6 @@ h3 { font-size: 0.95rem; }
       .replace(/"/g, "&quot;");
   };
 
-  /**
-   * Tagged template literal for XSS-safe HTML generation.
-   * String interpolations are auto-escaped; raw HTML must use html`` nesting.
-   * Returns a trusted HTML string (marked with a symbol).
-   */
   const HTML_SAFE = Symbol("html-safe");
 
   const html = (strings, ...values) => {
@@ -702,7 +913,6 @@ h3 { font-size: 0.95rem; }
     return obj;
   };
 
-  /** Create a trusted HTML string (bypass escaping for pre-built markup) */
   const trust = (rawHtml) => {
     const obj = Object.create(null);
     obj[HTML_SAFE] = true;
@@ -710,20 +920,21 @@ h3 { font-size: 0.95rem; }
     return obj;
   };
 
-  /** Grade color variable name for a given grade letter */
+  /* ======================================================================
+     Utilities — Color, Grade & Time Helpers
+     ====================================================================== */
+
   const gradeVar = (grade) => {
     const map = { A: "--grade-a", B: "--grade-b", C: "--grade-c", D: "--grade-d", F: "--grade-f" };
     return map[grade] ?? "--text-muted";
   };
 
-  /** Score percentage color: emerald >= 80%, amber >= 50%, red < 50% */
   const barColor = (pct) => {
     if (pct >= 80) return "hsl(var(--grade-a))";
     if (pct >= 50) return "hsl(var(--grade-c))";
     return "hsl(var(--grade-f))";
   };
 
-  /** Pattern list matching audit.py PATTERN_NAMES exactly */
   const ALL_PATTERNS = [
     "dispatch-table", "reference-file-index", "critical-rules",
     "canonical-vocabulary", "scope-boundaries", "classification-gating",
@@ -731,21 +942,42 @@ h3 { font-size: 0.95rem; }
     "hooks", "progressive-disclosure", "body-substitutions"
   ];
 
+  /** Format duration between two ISO timestamps (or from start to now) */
+  const fmtDur = (startIso, endIso) => {
+    if (!startIso) return "--";
+    const ms = Math.max(0, (endIso ? new Date(endIso) : new Date()) - new Date(startIso));
+    const s = Math.floor(ms / 1000);
+    if (s < 60) return s + "s";
+    const m = Math.floor(s / 60);
+    const rs = s % 60;
+    if (m < 60) return m + "m" + (rs ? " " + rs + "s" : "");
+    return Math.floor(m / 60) + "h " + (m % 60) + "m";
+  };
+
+  /** Relative time like "1m ago" */
+  const timeAgo = (iso) => {
+    if (!iso) return "--";
+    const s = Math.max(0, Math.floor((Date.now() - new Date(iso)) / 1000));
+    if (s < 60) return s + "s ago";
+    const m = Math.floor(s / 60);
+    if (m < 60) return m + "m ago";
+    return Math.floor(m / 60) + "h ago";
+  };
+
   /* ======================================================================
-     State Management
+     State
      ====================================================================== */
 
   let state = { view: "overview", detailSkill: null, theme: "dark" };
-
-  /** Set of expanded dimension indices in detail view, keyed as "skillName:dimIndex" */
   const expandedDims = new Set();
 
   /* ======================================================================
-     Data Loading
+     Data Loading & Auto-Detection
      ====================================================================== */
 
   const app = document.getElementById("app");
-  const raw = document.getElementById("data")?.textContent ?? "";
+  const dataEl = document.getElementById("data");
+  const raw = dataEl?.textContent ?? "";
   let data;
 
   try {
@@ -761,11 +993,46 @@ h3 { font-size: 0.95rem; }
     return;
   }
 
-  // Sort skills by score descending
-  const skills = (data.skills ?? []).slice().sort((a, b) => b.score - a.score);
+  const isProcessMode = !!data.phases;
+  const isAuditMode = Array.isArray(data.skills);
+
+  const skills = isAuditMode
+    ? (data.skills ?? []).slice().sort((a, b) => b.score - a.score)
+    : [];
+
+  if (isProcessMode) {
+    state.view = "process";
+  } else if (isAuditMode) {
+    state.view = "overview";
+  }
 
   /* ======================================================================
-     Navigation
+     Live Polling (Process Monitor)
+     ====================================================================== */
+
+  const pollUrl = dataEl?.getAttribute("data-poll-url");
+  let pollInterval = null;
+
+  const startPolling = () => {
+    if (pollUrl && data.status === "active" && !pollInterval) {
+      pollInterval = setInterval(async () => {
+        try {
+          const resp = await fetch(pollUrl);
+          if (resp.ok) {
+            data = await resp.json();
+            render();
+            if (data.status !== "active" && pollInterval) {
+              clearInterval(pollInterval);
+              pollInterval = null;
+            }
+          }
+        } catch { /* silent — static fallback for file:// */ }
+      }, 2000);
+    }
+  };
+
+  /* ======================================================================
+     Navigation & Theme
      ====================================================================== */
 
   const navigate = (view, skill = null) => {
@@ -787,16 +1054,13 @@ h3 { font-size: 0.95rem; }
   };
 
   const toggleDim = (key) => {
-    if (expandedDims.has(key)) {
-      expandedDims.delete(key);
-    } else {
-      expandedDims.add(key);
-    }
+    if (expandedDims.has(key)) expandedDims.delete(key);
+    else expandedDims.add(key);
     render();
   };
 
   /* ======================================================================
-     Event Delegation — single click handler on #app
+     Event Delegation
      ====================================================================== */
 
   app.addEventListener("click", (e) => {
@@ -826,29 +1090,28 @@ h3 { font-size: 0.95rem; }
     if (e.key === "Escape" && state.view === "detail") {
       navigate("overview");
     }
+    if ((e.key === "Enter" || e.key === " ") && document.activeElement?.dataset?.action) {
+      e.preventDefault();
+      document.activeElement.click();
+    }
   });
 
   /* ======================================================================
-     Render — Overview View
+     Render — Process Monitor: Header
      ====================================================================== */
 
-  const renderHeader = () => {
-    const skillCount = skills.length;
-    const avgScore = skillCount > 0
-      ? Math.round(skills.reduce((s, sk) => s + (sk.score / sk.max) * 100, 0) / skillCount)
-      : 0;
-    const generated = data.generated
-      ? data.generated.replace("T", " ").replace("Z", " UTC")
-      : "";
+  const renderProcessHeader = () => {
+    const elapsed = fmtDur(data.started_at, data.status !== "active" ? data.updated_at : null);
+    const statusVar = { active: "--status-active", completed: "--status-completed", failed: "--status-failed" }[data.status] ?? "--text-muted";
 
     return html`
       <header class="header">
         <div class="header-left">
-          <h1>Skill Quality Dashboard</h1>
-          <div class="header-stats">
-            ${trust(skillCount > 0 ? `<span class="pill">${skillCount} skill${skillCount !== 1 ? "s" : ""}</span>` : "")}
-            ${trust(avgScore > 0 ? `<span class="pill">avg ${avgScore}%</span>` : "")}
-            ${trust(generated ? `<span style="font-size:0.75rem;">${escH(generated)}</span>` : "")}
+          <h1>Creating: ${data.skill_name}</h1>
+          <div class="process-status-bar">
+            <span class="pill">Mode: ${data.mode}</span>
+            <span class="pill" style="border-color: hsl(var(${statusVar}) / 0.5); color: hsl(var(${statusVar}));">Status: ${data.status}</span>
+            <span class="pill">Elapsed: ${elapsed}</span>
           </div>
         </div>
         <div class="header-right">
@@ -860,9 +1123,255 @@ h3 { font-size: 0.95rem; }
     `;
   };
 
+  /* ======================================================================
+     Render — Audit: Header
+     ====================================================================== */
+
+  const renderAuditHeader = () => {
+    const n = skills.length;
+    const avg = n > 0 ? Math.round(skills.reduce((s, sk) => s + (sk.score / sk.max) * 100, 0) / n) : 0;
+    const gen = data.generated ? data.generated.replace("T", " ").replace("Z", " UTC") : "";
+
+    return html`
+      <header class="header">
+        <div class="header-left">
+          <h1>Skill Quality Dashboard</h1>
+          <div class="header-stats">
+            ${trust(n > 0 ? `<span class="pill">${n} skill${n !== 1 ? "s" : ""}</span>` : "")}
+            ${trust(avg > 0 ? `<span class="pill">avg ${avg}%</span>` : "")}
+            ${trust(gen ? `<span style="font-size:0.75rem;">${escH(gen)}</span>` : "")}
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" data-action="toggle-theme" aria-label="Toggle theme" title="Toggle light/dark theme">
+            ${state.theme === "dark" ? "\u2600" : "\u263D"}
+          </button>
+        </div>
+      </header>
+    `;
+  };
+
+  /* ======================================================================
+     Render — Process Monitor: Phase Pipeline SVG
+     ====================================================================== */
+
+  const renderPhasePipeline = () => {
+    const phases = data.phases ?? [];
+    const n = phases.length;
+    if (!n) return trust("");
+
+    const spacing = 64;
+    const w = (n - 1) * spacing + 40;
+    const h = 56;
+    const cy = 20;
+    const r = 10;
+    const x0 = 20;
+
+    const abbr = { understand: "U", plan: "P", scaffold: "S", build: "B", validate: "V", iterate: "I" };
+    let svg = "";
+
+    // Connecting lines
+    for (let i = 0; i < n - 1; i++) {
+      const lx1 = x0 + i * spacing + r;
+      const lx2 = x0 + (i + 1) * spacing - r;
+      const done = phases[i].status === "completed";
+      svg += `<line x1="${lx1}" y1="${cy}" x2="${lx2}" y2="${cy}" stroke="${done ? "hsl(var(--status-completed))" : "hsl(var(--border))"}" stroke-width="2"${done ? "" : ' stroke-dasharray="4 3"'}/>`;
+    }
+
+    // Nodes
+    for (let i = 0; i < n; i++) {
+      const p = phases[i];
+      const cx = x0 + i * spacing;
+      const letter = abbr[p.id] ?? p.label.charAt(0);
+      let fill, stroke, textFill, extra = "";
+
+      switch (p.status) {
+        case "completed":
+          fill = "hsl(var(--status-completed))";
+          stroke = fill;
+          textFill = "hsl(var(--bg))";
+          break;
+        case "active":
+          fill = "hsl(var(--status-active))";
+          stroke = fill;
+          textFill = "#fff";
+          extra = `><animate attributeName="r" values="${r};${r + 2};${r}" dur="2s" repeatCount="indefinite"/`;
+          break;
+        case "failed":
+          fill = "hsl(var(--status-failed))";
+          stroke = fill;
+          textFill = "#fff";
+          break;
+        case "skipped":
+          fill = "transparent";
+          stroke = "hsl(var(--status-skipped))";
+          textFill = stroke;
+          extra = ` stroke-dasharray="3 2"`;
+          break;
+        default:
+          fill = "transparent";
+          stroke = "hsl(var(--border))";
+          textFill = "hsl(var(--text-muted))";
+      }
+
+      if (p.status === "active") {
+        svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2"${extra}></circle>`;
+      } else {
+        svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2"${extra}/>`;
+      }
+
+      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${textFill}" font-size="8" font-weight="700">${escH(letter)}</text>`;
+      svg += `<text x="${cx}" y="${cy + r + 14}" text-anchor="middle" fill="hsl(var(--text-muted))" font-size="8.5">${escH(p.label)}</text>`;
+
+      // Lock icon for unapproved plan phase
+      if (p.id === "plan" && data.plan_approval?.required && !data.plan_approval?.approved && p.status !== "completed") {
+        svg += `<text x="${cx + r + 2}" y="${cy - r + 1}" font-size="8">&#x1F512;</text>`;
+      }
+    }
+
+    return trust(`<div class="phase-pipeline"><svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-label="Phase pipeline">${svg}</svg></div>`);
+  };
+
+  /* ======================================================================
+     Render — Process Monitor: Wave Panel
+     ====================================================================== */
+
+  const renderWavePanel = () => {
+    const waves = data.waves ?? [];
+    if (!waves.length) return trust('<p style="color: hsl(var(--text-muted)); font-size: 0.8rem;">No waves dispatched yet.</p>');
+
+    const activePhase = (data.phases ?? []).find(p => p.status === "active");
+    let out = "";
+
+    if (activePhase) {
+      out += `<div style="margin-bottom: 0.6rem;">` +
+        `<h3 style="font-size: 0.92rem; margin-bottom: 0.15rem;">Current Phase: ${escH(activePhase.label)}</h3>` +
+        `<span style="font-size: 0.73rem; color: hsl(var(--text-muted));">Started: ${escH(timeAgo(activePhase.started_at))}</span>` +
+        `</div>`;
+    }
+
+    for (const wave of waves) {
+      const wIcon = { completed: "\u2713", active: "\u25C9", failed: "\u2717", pending: "\u25CB" }[wave.status] ?? "\u25CB";
+      const wColor = { completed: "--status-completed", active: "--status-active", failed: "--status-failed", pending: "--text-muted" }[wave.status] ?? "--text-muted";
+
+      let rows = "";
+      for (const ag of wave.agents ?? []) {
+        const aIcon = { completed: "\u2713", active: "\uD83D\uDD35", failed: "\u2717", pending: "\u25CB" }[ag.status] ?? "\u25CB";
+        const aColor = { completed: "--status-completed", active: "--status-active", failed: "--status-failed", pending: "--text-muted" }[ag.status] ?? "--text-muted";
+
+        rows += `<div class="agent-row">` +
+          `<span class="agent-name" title="${escH(ag.task)}">${escH(ag.id)}</span>` +
+          `<div class="agent-bar-wrap"><div class="agent-bar-fill ${escH(ag.status)}"></div></div>` +
+          `<span class="agent-status-icon" style="color: hsl(var(${aColor}));">${aIcon}</span>` +
+          `</div>`;
+      }
+
+      out += `<div class="wave-card">` +
+        `<div class="wave-card-header"><h3>${escH(wave.label)}</h3><span style="color: hsl(var(${wColor}));">${wIcon}</span></div>` +
+        rows + `</div>`;
+    }
+
+    return trust(out);
+  };
+
+  /* ======================================================================
+     Render — Process Monitor: Metrics Panel
+     ====================================================================== */
+
+  const renderMetrics = () => {
+    const m = data.metrics ?? {};
+    const pa = (m.patterns_applied ?? []).length;
+    const pt = ALL_PATTERNS.length;
+    const bl = m.baseline_score != null ? String(m.baseline_score) : "--";
+    const cur = m.current_score != null ? String(m.current_score) : "--";
+    const gr = m.current_grade ?? "";
+    const it = m.iteration_count ?? 0;
+
+    let rows =
+      `<tr><td>Files created</td><td>${escH(String(m.files_created ?? 0))}</td></tr>` +
+      `<tr><td>Lines written</td><td>${escH(String(m.lines_written ?? 0))}</td></tr>` +
+      `<tr><td>Patterns</td><td>${pa}/${pt}</td></tr>` +
+      `<tr><td>Baseline</td><td>${escH(bl)}</td></tr>` +
+      `<tr><td>Current</td><td>${escH(cur)}${gr ? " (" + escH(gr) + ")" : ""}</td></tr>`;
+    if (it > 0) rows += `<tr><td>Iterations</td><td>${it}</td></tr>`;
+
+    return trust(
+      `<div class="card" style="height: fit-content;">` +
+      `<h3 style="margin-bottom: 0.6rem;">Metrics</h3>` +
+      `<table class="metrics-table"><tbody>${rows}</tbody></table>` +
+      `</div>`
+    );
+  };
+
+  /* ======================================================================
+     Render — Process Monitor: Completed Phases
+     ====================================================================== */
+
+  const renderCompletedPhases = () => {
+    const done = (data.phases ?? []).filter(p => p.status === "completed");
+    if (!done.length) return trust("");
+
+    let rows = "";
+    for (const p of done) {
+      const dur = fmtDur(p.started_at, p.completed_at);
+      const notes = p.notes ? " \u2014 " + escH(p.notes) : "";
+      rows += `<div class="completed-phase-row">` +
+        `<span class="cp-check">\u2713</span>` +
+        `<span class="cp-label">${escH(p.label)}</span>` +
+        `<span class="cp-dur">(${escH(dur)})</span>` +
+        `<span class="cp-notes">${notes}</span>` +
+        `</div>`;
+    }
+
+    return trust(
+      `<div class="card" style="margin-bottom: 1rem;">` +
+      `<h3 style="margin-bottom: 0.4rem;">Completed Phases</h3>` +
+      rows + `</div>`
+    );
+  };
+
+  /* ======================================================================
+     Render — Process Monitor: Approval Gate
+     ====================================================================== */
+
+  const renderApprovalGate = () => {
+    if (!data.plan_approval?.required || data.plan_approval?.approved) return trust("");
+    const planPhase = (data.phases ?? []).find(p => p.id === "plan");
+    if (!planPhase || planPhase.status === "completed") return trust("");
+    return trust(
+      `<div style="display: flex; justify-content: center; margin-bottom: 0.75rem;">` +
+      `<span class="approval-lock">\uD83D\uDD12 Plan approval required</span>` +
+      `</div>`
+    );
+  };
+
+  /* ======================================================================
+     Render — Process Monitor: Full View
+     ====================================================================== */
+
+  const renderProcess = () => {
+    return html`
+      <section aria-label="Process Monitor">
+        ${renderApprovalGate()}
+        ${trust(
+          `<div class="card" style="margin-bottom: 1rem;">${renderPhasePipeline().toString()}</div>` +
+          `<div class="process-layout">` +
+            `<div class="card">${renderWavePanel().toString()}</div>` +
+            renderMetrics().toString() +
+          `</div>` +
+          renderCompletedPhases().toString()
+        )}
+      </section>
+    `;
+  };
+
+  /* ======================================================================
+     Render — Audit: Overview
+     ====================================================================== */
+
   const renderScoreRing = (score, max, grade) => {
     const pct = max > 0 ? (score / max) * 100 : 0;
-    const circumference = 2 * Math.PI * 16; // r=16
+    const circumference = 2 * Math.PI * 16;
     const offset = circumference - (circumference * pct / 100);
     const gVar = gradeVar(grade);
 
@@ -928,10 +1437,9 @@ h3 { font-size: 0.95rem; }
   };
 
   /* ======================================================================
-     Render — Detail View
+     Render — Audit: Detail View
      ====================================================================== */
 
-  /** SVG Radar Chart — spider chart for all 9 dimensions */
   const renderRadarChart = (sk) => {
     const dims = sk.dimensions ?? [];
     if (!dims.length) return trust("");
@@ -943,7 +1451,6 @@ h3 { font-size: 0.95rem; }
     const angleStep = (2 * Math.PI) / n;
     const gVar = gradeVar(sk.grade);
 
-    // Grid rings at 25%, 50%, 75%, 100%
     let gridRings = "";
     for (const pct of [0.25, 0.5, 0.75, 1.0]) {
       const r = maxRadius * pct;
@@ -955,7 +1462,6 @@ h3 { font-size: 0.95rem; }
       gridRings += `<polygon class="radar-grid" points="${points.join(" ")}"/>`;
     }
 
-    // Axis lines
     let axisLines = "";
     for (let i = 0; i < n; i++) {
       const angle = -Math.PI / 2 + i * angleStep;
@@ -964,7 +1470,6 @@ h3 { font-size: 0.95rem; }
       axisLines += `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}"/>`;
     }
 
-    // Data polygon — score as percentage, scaled by weight
     const dataPoints = [];
     const maxWeight = Math.max(...dims.map(d => d.weight));
     for (let i = 0; i < n; i++) {
@@ -977,20 +1482,17 @@ h3 { font-size: 0.95rem; }
     }
     const polyPoints = dataPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
 
-    // Dots on data points
     let dots = "";
     for (const p of dataPoints) {
       dots += `<circle class="radar-dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2"/>`;
     }
 
-    // Axis labels — positioned outside chart
     let labels = "";
     const labelRadius = maxRadius + 14;
     for (let i = 0; i < n; i++) {
       const angle = -Math.PI / 2 + i * angleStep;
       const lx = cx + labelRadius * Math.cos(angle);
       const ly = cy + labelRadius * Math.sin(angle);
-      // Abbreviate long dimension names
       const name = dims[i].name.replace("Completeness", "Complete").replace("Coverage", "Cover.");
       let anchor = "middle";
       if (Math.cos(angle) < -0.1) anchor = "end";
@@ -1012,7 +1514,6 @@ h3 { font-size: 0.95rem; }
     `);
   };
 
-  /** Dimension bar row with collapsible findings */
   const renderDimRow = (dim, skillName, index) => {
     const pct = dim.max > 0 ? Math.round((dim.score / dim.max) * 100) : 0;
     const color = barColor(pct);
@@ -1055,7 +1556,6 @@ h3 { font-size: 0.95rem; }
     `);
   };
 
-  /** Pattern grid with three states: found, suggested, missing */
   const renderPatternGrid = (sk) => {
     const found = new Set(sk.patterns_found ?? []);
     const suggested = new Set(sk.patterns_suggested ?? []);
@@ -1092,17 +1592,14 @@ h3 { font-size: 0.95rem; }
       `;
     }
 
-    const pct = sk.max > 0 ? Math.round((sk.score / sk.max) * 100) : 0;
     const gVar = gradeVar(sk.grade);
     const dims = sk.dimensions ?? [];
 
     return html`
       <section aria-label="Skill Detail: ${sk.skill}">
         ${trust(`
-          <!-- Back navigation -->
           <button class="back-btn" data-action="back" style="margin-bottom: 1rem;">&larr; Back to overview</button>
 
-          <!-- Detail header card -->
           <div class="card" data-grade="${escH(sk.grade)}" style="margin-bottom: 1rem;">
             <div class="detail-header">
               <h2 style="margin: 0;">${escH(sk.skill)}</h2>
@@ -1113,9 +1610,7 @@ h3 { font-size: 0.95rem; }
             ${sk.path ? `<p style="font-size: 0.8rem; color: hsl(var(--text-muted)); margin-top: 0.3rem;">${escH(sk.path)}</p>` : ""}
           </div>
 
-          <!-- Two-column layout: radar + dimensions -->
           <div class="detail-layout">
-            <!-- Left: Radar chart -->
             <div class="card" data-grade="${escH(sk.grade)}">
               <h3 style="margin-bottom: 0.5rem;">Dimension Radar</h3>
               ${renderRadarChart(sk).toString()}
@@ -1128,14 +1623,12 @@ h3 { font-size: 0.95rem; }
               ` : ""}
             </div>
 
-            <!-- Right: Dimension bars -->
             <div class="card" data-grade="${escH(sk.grade)}">
               <h3 style="margin-bottom: 0.5rem;">Scoring Dimensions</h3>
               ${dims.map((dim, i) => renderDimRow(dim, sk.skill, i).toString()).join("")}
             </div>
           </div>
 
-          <!-- Pattern grid -->
           <div class="card" style="margin-bottom: 1rem;" data-grade="${escH(sk.grade)}">
             <h3 style="margin-bottom: 0.75rem;">Pattern Coverage <span style="font-weight: 400; color: hsl(var(--text-muted)); font-size: 0.8rem;">${(sk.patterns_found ?? []).length}/${ALL_PATTERNS.length}</span></h3>
             <div style="display: flex; gap: 1rem; margin-bottom: 0.75rem; font-size: 0.72rem; color: hsl(var(--text-muted));">
@@ -1158,27 +1651,23 @@ h3 { font-size: 0.95rem; }
 
   const render = () => {
     let content;
-    if (state.view === "detail" && state.detailSkill) {
-      content = html`
-        ${renderHeader()}
-        ${renderDetail(state.detailSkill)}
-      `;
+    if (state.view === "process") {
+      content = html`${renderProcessHeader()}${renderProcess()}`;
+    } else if (state.view === "detail" && state.detailSkill) {
+      content = html`${renderAuditHeader()}${renderDetail(state.detailSkill)}`;
     } else {
-      content = html`
-        ${renderHeader()}
-        ${renderOverview()}
-      `;
+      content = html`${renderAuditHeader()}${renderOverview()}`;
     }
     app.innerHTML = content.toString();
   };
 
   /* ======================================================================
-     Initial Render
+     Bootstrap
      ====================================================================== */
 
-  // Apply initial theme
   document.documentElement.setAttribute("data-theme", state.theme);
   render();
+  startPolling();
 
 })();
 </script>

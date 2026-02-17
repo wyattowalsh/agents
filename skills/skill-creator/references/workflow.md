@@ -30,6 +30,10 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 - Understand the user's specific intent: full improvement or targeted change
 - Note the baseline score and grade for comparison
 
+> **Progress tracking:**
+> Start: `progress.py phase --skill <name> --phase understand --status active`
+> End: `progress.py phase --skill <name> --phase understand --status completed --notes "<summary>"`
+
 ---
 
 ## Step 2: Plan
@@ -48,6 +52,10 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 3. **Present improvement plan** — each item includes: what to change, why, expected score impact, which file(s) to modify
 4. **Approval gate** — show projected before/after score. Wait for user approval. Do NOT implement until approved.
 
+> **Progress tracking:**
+> Start: `progress.py phase --skill <name> --phase plan --status active`
+> End: `progress.py phase --skill <name> --phase plan --status completed --notes "<summary>"`
+
 ---
 
 ## Step 3: Scaffold (new skills only)
@@ -55,14 +63,37 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 Skip this step for existing skills.
 
 1. Run `uv run wagents new skill <name>` to scaffold `skills/<name>/SKILL.md`
+   Update metrics: `progress.py metric --skill <name> --key files_created --value 1`
 2. Configure frontmatter — load `references/frontmatter-spec.md` for the full field catalog and decision tree. At minimum: `name`, `description`, `license: MIT`, `metadata.author`, `metadata.version`, `argument-hint`.
 3. If `--from <source>` was specified, read the source skill as a structural template. Copy applicable structure, replace all domain-specific content.
+
+> **Progress tracking:**
+> Start: `progress.py phase --skill <name> --phase scaffold --status active`
+> End: `progress.py phase --skill <name> --phase scaffold --status completed`
+> For existing skills: `progress.py phase --skill <name> --phase scaffold --status skipped`
 
 ---
 
 ## Step 4: Build
 
 Apply to both new and existing skills. Work through each applicable area.
+
+**Parallel execution strategy:**
+
+- **Wave 1 (sequential):** Complete 4a (Frontmatter) and 4b (Body) first — body establishes dispatch table and section structure that other areas depend on.
+- **Wave 2 (parallel):** Dispatch 4c-4f as parallel subagents:
+  - Subagent: References (4c)
+  - Subagent: Scripts (4d)
+  - Subagent: Templates (4e)
+  - Subagent: Evals (4f)
+
+Track wave/agent progress:
+> `progress.py agent --skill <name> --wave wave-1 --agent agent-body --status active`
+> On completion: `progress.py agent --skill <name> --wave wave-2 --agent agent-refs --status completed --summary "6 reference files"`
+
+> **Progress tracking:**
+> Start: `progress.py phase --skill <name> --phase build --status active`
+> End: `progress.py phase --skill <name> --phase build --status completed`
 
 ### 4a. Frontmatter
 
@@ -130,6 +161,11 @@ Load `references/proven-patterns.md`. Apply:
 3. Run `uv run wagents readme` — regenerate README
 4. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call `wagents docs generate` directly.
 
+> **Progress tracking:**
+> Start: `progress.py phase --skill <name> --phase validate --status active`
+> Inject audit: `progress.py audit --skill <name> --inject`
+> End: `progress.py phase --skill <name> --phase validate --status completed`
+
 ### Completion Criteria
 
 - `wagents validate` passes with zero errors
@@ -145,3 +181,8 @@ Load `references/proven-patterns.md`. Apply:
 3. Loop back to Step 4 with findings
 4. Re-validate after each iteration (Step 5)
 5. For existing skills: compare current score against baseline from Step 1
+
+> **Progress tracking:**
+> Start: `progress.py phase --skill <name> --phase iterate --status active`
+> After each iteration: `progress.py metric --skill <name> --key iteration_count --value +1`
+> End: `progress.py phase --skill <name> --phase iterate --status completed`

@@ -33,7 +33,7 @@ BADGE_HOSTS = (
     "img.shields.io",
     "badgen.net",
     "forthebadge.com",
-    "badge.svg",
+    "/badge.svg",
     "codecov.io",
     "coveralls.io",
     "sonarcloud.io",

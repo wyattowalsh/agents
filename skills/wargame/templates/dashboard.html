@@ -49,6 +49,10 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
     --border: oklch(0.35 0.02 260); --text-1: oklch(0.93 0.01 260); --text-2: oklch(0.65 0.02 260);
     --accent: oklch(0.65 0.20 270); --ok: oklch(0.70 0.18 155); --warn: oklch(0.75 0.18 85);
     --bad: oklch(0.65 0.22 25); --chaos: oklch(0.65 0.20 310);
+    --info: oklch(0.65 0.14 220); --muted: oklch(0.50 0.03 260); --surface: oklch(0.12 0.015 260);
+    --arch-hawk: var(--bad); --arch-dove: var(--ok); --arch-pragmatist: var(--accent);
+    --arch-ideologue: var(--warn); --arch-bureaucrat: var(--text-2);
+    --arch-opportunist: var(--warn); --arch-disruptor: var(--chaos);
     --gap: 0.75rem; --r0: 0px; --r1: 8px;
     color-scheme: dark;
   }
@@ -57,6 +61,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       --s1: oklch(0.96 0.01 260); --s2: oklch(0.99 0.005 260); --s3: oklch(1.0 0 260);
       --border: oklch(0.82 0.01 260); --text-1: oklch(0.20 0.02 260); --text-2: oklch(0.45 0.02 260);
       color-scheme: light;
+      --info: oklch(0.45 0.12 220); --muted: oklch(0.60 0.03 260); --surface: oklch(0.94 0.005 260);
     }
   }
 }
@@ -67,18 +72,19 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
     line-height: 1.5; padding: var(--gap); max-width: 1280px; margin: 0 auto; min-height: 100dvh;
   }
   @media (prefers-color-scheme: dark) {
-    body {
+    body { position: relative; }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
       background:
         radial-gradient(ellipse 80% 60% at 15% 20%, oklch(0.20 0.06 270 / 0.4), transparent),
         radial-gradient(ellipse 60% 50% at 85% 80%, oklch(0.18 0.05 310 / 0.3), transparent),
-        radial-gradient(ellipse 70% 40% at 50% 50%, oklch(0.17 0.04 155 / 0.15), transparent),
-        var(--s1);
+        radial-gradient(ellipse 70% 40% at 50% 50%, oklch(0.17 0.04 155 / 0.15), transparent);
     }
   }
   @media (prefers-reduced-motion: no-preference) and (prefers-color-scheme: dark) {
-    body { animation: aurora 30s ease-in-out infinite alternate; }
+    body::before { animation: aurora 30s ease-in-out infinite alternate; }
   }
-  @keyframes aurora { 0% { background-position: 0% 0%, 100% 100%, 50% 50%; } 100% { background-position: 10% 5%, 90% 90%, 55% 45%; } }
+  @keyframes aurora { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
   a { color: var(--accent); }
   .skip-nav { position: absolute; left: -9999px; top: auto;
     &:focus-visible { left: var(--gap); top: var(--gap); z-index: 100; background: var(--s3); padding: 0.5rem 1rem; border-radius: var(--r1); }
@@ -107,17 +113,17 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
   .badge {
-    display: inline-block; padding: 0.15em 0.55em; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 1.75rem; padding: 0.25em 0.6em; border-radius: 999px;
     font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    transition: transform 0.15s ease;
-    &:hover { transform: scale(1.05); }
+    @media (prefers-reduced-motion: no-preference) { & { transition: transform 0.15s ease; } &:hover { transform: scale(1.05); } }
     &:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   }
   .b-tier, .b-arch { color: oklch(0.15 0.02 260); }
   .b-dom { background: var(--accent); color: oklch(0.15 0.02 260); }
   .pill { display: inline-block; padding: 0.1em 0.45em; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--border); color: var(--text-2); margin: 0.1em; }
   .bar-t { height: 10px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 5px; overflow: hidden; }
-  .bar-f { height: 100%; border-radius: 5px; transition: width 0.6s ease-out; }
+  .bar-f { height: 100%; border-radius: 5px; }
   table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
   th { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-2); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
   td { padding: 0.4rem 0.5rem; border-bottom: 1px solid light-dark(oklch(0.92 0.005 260), oklch(0.25 0.015 260)); vertical-align: top; }
@@ -132,7 +138,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
   .hdr { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 0.5rem var(--gap); margin-bottom: var(--gap); }
   .tp { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--text-2); }
   .tb { width: 110px; height: 6px; background: light-dark(oklch(0.88 0.01 260), oklch(0.30 0.02 260)); border-radius: 3px; overflow: hidden; }
-  .tbf { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  .tbf { height: 100%; border-radius: 3px; }
   @media (prefers-reduced-motion: no-preference) { .tbf { animation: pulse 2s ease-in-out infinite; } }
   @keyframes pulse { 0%, 100% { box-shadow: none; } 50% { box-shadow: 4px 0 8px oklch(0.65 0.20 270 / 0.5); } }
 
@@ -148,7 +154,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
   .rr { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; }
   .rl { flex: 0 0 70px; font-size: 0.78rem; color: var(--text-2); }
   .rt { flex: 1; height: 8px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 4px; overflow: hidden; }
-  .rf { height: 100%; border-radius: 4px; transition: width 0.6s ease-out; }
+  .rf { height: 100%; border-radius: 4px; }
   .rv { flex: 0 0 2.5rem; text-align: right; font-size: 0.78rem; font-weight: 600; }
 
   .inj {
@@ -173,7 +179,13 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
   .mcr { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
   .mcl { flex: 0 0 150px; font-size: 0.78rem; }
   .mct { flex: 1; height: 14px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 7px; overflow: hidden; }
-  .mcf { height: 100%; background: var(--accent); border-radius: 7px; transition: width 0.5s ease; }
+  .mcf { height: 100%; background: var(--accent); border-radius: 7px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-f { transition: width 0.6s ease-out; }
+    .tbf { transition: width 0.5s ease; }
+    .rf { transition: width 0.6s ease-out; }
+    .mcf { transition: width 0.5s ease; }
+  }
   .mcv { flex: 0 0 3rem; text-align: right; font-size: 0.78rem; font-weight: 600; }
   .evpi { margin-top: 0.5rem; padding: 0.5rem; border-left: 3px solid var(--accent); font-size: 0.82rem; }
   .tr { display: grid; grid-template-columns: 140px 1fr 1fr 50px; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem; }
@@ -313,12 +325,21 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
   B(hdr, "title").textContent = D.scenario_title || "Wargame Dashboard";
   const bTier = B(hdr, "tier");
   if (D.tier) { bTier.textContent = D.tier; bTier.style.background = tc; bTier.setAttribute("aria-label", `Tier: ${D.tier}`); } else bTier.remove();
+  if (D.difficulty) {
+    const db = el("span", { class: "badge", style: "background:var(--muted);color:var(--text-1)", "aria-label": `Difficulty: ${D.difficulty}` }, D.difficulty);
+    bTier.after(db);
+  }
   const prog = $(".tp", hdr);
   if (D.turn != null && D.total_turns) {
     const pct = Math.round((D.turn / D.total_turns) * 100);
     B(hdr, "tt").textContent = `Turn ${D.turn}/${D.total_turns}`;
     const f = B(hdr, "tf"); f.style.width = `${pct}%`; f.style.background = tc;
-    prog.setAttribute("aria-label", `Turn ${D.turn} of ${D.total_turns}`);
+    const progBar = $(".tb", hdr);
+    progBar.setAttribute("role", "progressbar");
+    progBar.setAttribute("aria-valuenow", D.turn);
+    progBar.setAttribute("aria-valuemin", 0);
+    progBar.setAttribute("aria-valuemax", D.total_turns);
+    progBar.setAttribute("aria-label", `Turn ${D.turn} of ${D.total_turns}`);
   } else prog.remove();
   F.appendChild(hdr);
 
@@ -330,9 +351,10 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       const rad = a => a * Math.PI / 180, ex = 60 - 50 * Math.cos(rad(ang)), ey = 65 - 50 * Math.sin(rad(ang));
       const arc = B(g, "arc"); arc.setAttribute("d", `M10 65 A50 50 0 ${ang > 180 ? 1 : 0} 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`); arc.setAttribute("stroke", tc);
       B(g, "val").textContent = `${c.total}/10`; B(g, "lbl").textContent = D.tier?.toUpperCase() || "";
+      B(g, "gauge-title").textContent = `Complexity score ${c.total} out of 10, tier ${D.tier || "unclassified"}`;
       sec.appendChild(g);
     }
-    for (const d of (c.dimensions || [])) {
+    for (const d of safe(c.dimensions)) {
       const r = cl("t-dim"); B(r, "name").textContent = d.name;
       const f = B(r, "fill"), p = d.score === 0 ? 0 : d.score === 1 ? 50 : 100;
       f.style.width = `${p}%`; f.style.background = d.score === 0 ? "var(--ok)" : d.score === 1 ? "var(--warn)" : "var(--bad)";
@@ -355,12 +377,12 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       F.appendChild(t);
     }
     if (D.actors?.length) {
-      const sec = el("section", { class: "vs", "aria-label": "Actors" }); sec.appendChild(el("h2", {}, "Actors"));
+      const sec = el("section", { class: "vs", "aria-label": `Actors \u2014 ${D.actors.length} participants` }); sec.appendChild(el("h2", {}, "Actors"));
       const grid = el("div", { class: "ag" });
       for (const a of D.actors) {
         const c = cl("t-actor"), root = $(".ac", c), arch = a.archetype || "";
         root.dataset.archetype = arch; if (a.is_player) root.dataset.player = "true";
-        B(c, "name").textContent = a.name;
+        B(c, "name").textContent = a.name || "(unnamed actor)";
         const hdr = $(".ah", c);
         if (arch) { const b = el("span", { class: "badge b-arch" }, arch); b.style.background = AC[arch] || "var(--text-2)"; hdr.appendChild(b); }
         if (a.is_player) { const b = el("span", { class: "badge" }, "YOU"); b.style.background = "var(--accent)"; b.style.color = "oklch(0.15 0.02 260)"; hdr.appendChild(b); }
@@ -368,10 +390,12 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
         B(c, "meta").textContent = parts.join(" \u00b7 ");
         const la = B(c, "la"); if (a.last_action) la.textContent = a.last_action; else la.remove();
         const rb = B(c, "res");
-        for (const r of (a.resources || [])) {
+        for (const r of safe(a.resources)) {
           const rr = cl("t-res"); B(rr, "name").textContent = r.name;
           const f = B(rr, "fill"), clr = r.value > 60 ? "var(--ok)" : r.value > 30 ? "var(--warn)" : "var(--bad)";
           f.style.width = `${r.value}%`; f.style.background = clr; B(rr, "val").textContent = `${r.value}%`;
+          const track = $(".rt", rr);
+          track.title = `${r.name}: ${r.value}%`;
           const svg = $("svg", rr);
           if (r.trend?.length > 1) {
             const uid = `g-${Math.random().toString(36).slice(2, 8)}`, ge = B(rr, "grad"); ge.id = uid;
@@ -379,7 +403,15 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
             B(rr, "line").setAttribute("points", line);
             const poly = B(rr, "area"); poly.setAttribute("points", area); poly.setAttribute("fill", `url(#${uid})`);
             const dot = B(rr, "dot"); dot.setAttribute("cx", lx); dot.setAttribute("cy", ly);
+            B(rr, "trend-title").textContent = `${r.name} trending ${r.trend.at(-1) >= r.trend[0] ? "up" : "down"} from ${r.trend[0]}% to ${r.trend.at(-1)}%`;
           } else svg.remove();
+          if (r.trend?.length > 1) {
+            const delta = r.trend.at(-1) - r.trend.at(-2);
+            const arrow = delta > 2 ? "\u2191" : delta < -2 ? "\u2193" : "\u2192";
+            const cls = delta > 2 ? "tok" : delta < -2 ? "tbd" : "td";
+            const ind = el("span", { class: `mono fs ${cls}`, "aria-label": `${delta > 0 ? "+" : ""}${delta}% change` }, arrow);
+            $(".rv", rr).after(ind);
+          }
           rb.appendChild(rr);
         }
         const belBox = B(c, "bel");
@@ -399,16 +431,26 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       const rows = D.options.map(o => { const r = el("tr"); r.appendChild(el("td", { class: "ol mono" }, o.letter)); r.appendChild(el("td", {}, o.description));
         const dt = el("td"); dt.appendChild(el("span", { class: "badge b-dom" }, o.domain || "")); r.appendChild(dt);
         r.appendChild(el("td", { class: "mono" }, o.risk_pct || "")); r.appendChild(el("td", {}, o.impact || "")); r.appendChild(el("td", {}, o.criteria_alignment || "")); return r; });
-      tbl(["", "Description", "Domain", "Risk", "Impact", "Fit"], rows, sec); F.appendChild(sec);
+      tbl(["", "Description", "Domain", "Risk", "Impact", "Fit"], rows, sec, "Available strategic options"); F.appendChild(sec);
     }
+  }
+
+  if (has("turn") && (has("analysis") || has("sensitivity") || has("delphi") || has("forecast") || has("negotiate") || has("calibrate") || has("options") || has("cause") || has("morph"))) {
+    F.appendChild(el("hr", { class: "view-sep", "aria-hidden": "true" }));
   }
 
   if (has("analysis") && D.analysis) {
     const a = D.analysis, sec = el("section", { class: "dpanel vs", "aria-label": "Analysis" }); sec.appendChild(el("h2", {}, "Analysis"));
     if (a.type === "ach" && a.hypotheses && a.evidence) {
       const w = el("div", { class: "agr" }), rows = a.evidence.map(ev => { const r = el("tr"); r.appendChild(el("td", { style: "text-align:left" }, ev.name));
-        for (const sc of ev.scores) { const cls = sc > 0 ? "pos" : sc < 0 ? "neg" : ""; r.appendChild(el("td", { class: `agr ${cls}`.trim() }, `${sc > 0 ? "+" : ""}${sc}`)); } return r; });
-      tbl(["Evidence", ...a.hypotheses], rows, w); sec.appendChild(w);
+        for (const sc of ev.scores) {
+          const td = el("td", { class: "mono" });
+          const bar = el("span", { style: `display:inline-block;width:${Math.min(Math.abs(sc) * 20, 80)}px;height:4px;border-radius:2px;background:${sc > 0 ? "var(--ok)" : sc < 0 ? "var(--bad)" : "var(--border)"};vertical-align:middle;margin-right:0.3rem` });
+          td.appendChild(bar);
+          td.appendChild(document.createTextNode(`${sc > 0 ? "+" : ""}${sc}`));
+          r.appendChild(td);
+        } return r; });
+      tbl(["Evidence", ...a.hypotheses], rows, w, "Evidence ratings against hypotheses"); sec.appendChild(w);
     }
     if (a.options_table?.length) {
       sec.appendChild(el("h3", { class: "ss" }, "Options Comparison"));
@@ -433,7 +475,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       const c = el("div", { class: "dpanel", style: "margin-bottom:var(--gap)" }); c.appendChild(el("h3", {}, "Decision Timeline"));
       const rows = a.timeline.map(t => { const r = el("tr"); r.appendChild(el("td", { class: "mono" }, String(t.turn))); r.appendChild(el("td", {}, t.decision)); r.appendChild(el("td", {}, t.outcome));
         const s = el("td", {}, t.surprise ? "!" : ""); if (t.surprise) s.classList.add("sur"); r.appendChild(s); return r; });
-      tbl(["Turn", "Decision", "Outcome", ""], rows, c); sec.appendChild(c);
+      tbl(["Turn", "Decision", "Outcome", ""], rows, c, "Decisions by turn with outcomes"); sec.appendChild(c);
     }
     if (a.worked?.length || a.failed?.length) {
       const c = el("div", { class: "aar-c" });
@@ -444,7 +486,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
     if (a.biases) {
       const c = el("div", { class: "dpanel bg mt-m" });
       for (const [key, label] of [["human", "Human Biases"], ["llm", "LLM Biases"]]) {
-        if (a.biases[key]?.length) { const d = el("div"); d.appendChild(el("h3", {}, label)); const u = el("ul", { style: "list-style:disc;padding-left:1.2rem" }); for (const b of a.biases[key]) u.appendChild(el("li", { class: "fs" }, b)); d.appendChild(u); c.appendChild(d); } }
+        if (a.biases[key]?.length) { const d = el("div"); d.appendChild(el("h3", {}, label)); const u = el("ul", { class: "list-d" }); for (const b of a.biases[key]) u.appendChild(el("li", { class: "fs" }, b)); d.appendChild(u); c.appendChild(d); } }
       sec.appendChild(c);
     }
     if (a.paths_not_taken?.length) {
@@ -454,7 +496,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
     }
     if (a.insights?.length) {
       const c = el("div", { class: "glass mt-m" }); c.appendChild(el("h3", {}, "Transferable Insights"));
-      const u = el("ul", { style: "list-style:disc;padding-left:1.2rem" }); for (const i of a.insights) u.appendChild(el("li", { class: "fs" }, i)); c.appendChild(u); sec.appendChild(c);
+      const u = el("ul", { class: "list-d" }); for (const i of a.insights) u.appendChild(el("li", { class: "fs" }, i)); c.appendChild(u); sec.appendChild(c);
     }
     if (a.action_bridge) {
       const w = el("div", { class: "mt-m" }); w.appendChild(el("h3", {}, "Action Bridge")); const cs = el("div", { class: "bc" });
@@ -466,7 +508,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       const c = el("div", { class: "dpanel mt-m" }); c.appendChild(el("h3", {}, "Actor Performance"));
       const rows = a.actor_performance.map(p => { const r = el("tr"); r.appendChild(el("td", {}, p.name)); r.appendChild(el("td", { class: "mono" }, `${(p.accuracy * 100).toFixed(0)}%`));
         r.appendChild(el("td", { class: "mono" }, String(p.surprises))); r.appendChild(el("td", { class: "fs" }, p.notes || "")); return r; });
-      tbl(["Actor", "Accuracy", "Surprises", "Notes"], rows, c); sec.appendChild(c);
+      tbl(["Actor", "Accuracy", "Surprises", "Notes"], rows, c, "Actor prediction accuracy"); sec.appendChild(c);
     }
     F.appendChild(sec);
   }
@@ -475,11 +517,13 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
     const s = D.sensitivity, sec = el("section", { class: "dpanel vs", "aria-label": "Sensitivity Analysis" });
     sec.appendChild(el("h2", {}, "Sensitivity \u2014 Tornado Diagram"));
     if (s.baseline) sec.appendChild(el("p", { class: "fs td" }, `Baseline: ${s.baseline}`));
-    const mx = Math.max(...(s.variables || []).map(v => Math.max(Math.abs(v.low), Math.abs(v.high))), 1);
-    for (const v of (s.variables || [])) {
+    const mx = Math.max(...safe(s.variables).map(v => Math.max(Math.abs(v.low), Math.abs(v.high))), 1);
+    for (const v of safe(s.variables)) {
       const r = el("div", { class: "tr" }); r.appendChild(el("span", { class: "fs" }, v.name));
       const lo = el("div", { class: "trb trl" }); lo.style.width = `${(Math.abs(v.low) / mx) * 100}%`; r.appendChild(lo);
       const hi = el("div", { class: "trb trh" }); hi.style.width = `${(Math.abs(v.high) / mx) * 100}%`; r.appendChild(hi);
+      lo.title = `${v.name} low: ${v.low}${v.unit || ""}`;
+      hi.title = `${v.name} high: +${v.high}${v.unit || ""}`;
       r.appendChild(el("span", { class: "mono fs" }, `${v.low > 0 ? "+" : ""}${v.low} / +${v.high}${v.unit || ""}`)); sec.appendChild(r);
     }
     F.appendChild(sec);
@@ -489,7 +533,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
     const dp = D.delphi, sec = el("section", { class: "vs", "aria-label": "Delphi Expert Panel" }); sec.appendChild(el("h2", {}, "Delphi Expert Panel"));
     if (dp.question) sec.appendChild(el("p", { class: "fs td", style: "margin-bottom:0.5rem" }, dp.question));
     const g = el("div", { class: "eg" });
-    for (const e of (dp.experts || [])) { const c = el("div", { class: "glass ec" }); c.appendChild(el("div", { class: "role" }, e.role)); c.appendChild(el("div", {}, e.position));
+    for (const e of safe(dp.experts)) { const c = el("div", { class: "glass ec" }); c.appendChild(el("div", { class: "role" }, e.role)); c.appendChild(el("div", {}, e.position));
       const conf = el("div", { class: "rr mt-s" }); conf.appendChild(el("span", { class: "rl" }, "Confidence"));
       const tk = el("div", { class: "rt", style: "flex:1" }), fl = el("div", { class: "rf" }); fl.style.width = `${(e.confidence * 100).toFixed(0)}%`; fl.style.background = "var(--accent)"; tk.appendChild(fl); conf.appendChild(tk);
       conf.appendChild(el("span", { class: "rv mono" }, `${(e.confidence * 100).toFixed(0)}%`)); c.appendChild(conf);
@@ -519,13 +563,13 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
       tbl(["Party", "BATNA", "Reservation", "Target"], rows, sec);
     }
     if (n.zopa) sec.appendChild(el("p", { class: "mt-s" }, `ZOPA: ${n.zopa}`));
-    if (n.leverage_points?.length) { sec.appendChild(el("h3", { class: "ss" }, "Leverage Points")); const u = el("ul", { style: "list-style:disc;padding-left:1.2rem" }); for (const l of n.leverage_points) u.appendChild(el("li", { class: "fs" }, l)); sec.appendChild(u); }
+    if (n.leverage_points?.length) { sec.appendChild(el("h3", { class: "ss" }, "Leverage Points")); const u = el("ul", { class: "list-d" }); for (const l of n.leverage_points) u.appendChild(el("li", { class: "fs" }, l)); sec.appendChild(u); }
     F.appendChild(sec);
   }
 
   if (has("calibrate") && D.calibrate) {
     const sec = el("section", { class: "dpanel vs", "aria-label": "Probability Calibration" }); sec.appendChild(el("h2", {}, "Probability Calibration Audit"));
-    for (const c of (D.calibrate.claims || [])) {
+    for (const c of safe(D.calibrate.claims)) {
       const card = el("div", { class: "glass", style: "margin-bottom:0.5rem" }); card.appendChild(el("p", { class: "fs" }, c.statement));
       const r = el("div", { class: "rr mt-s" }); r.appendChild(el("span", { class: "mono fs" }, `${(c.initial * 100).toFixed(0)}%`)); r.appendChild(el("span", { class: "td" }, "\u2192")); r.appendChild(el("span", { class: "mono fs fw" }, `${(c.adjusted * 100).toFixed(0)}%`)); card.appendChild(r);
       if (c.reasoning) card.appendChild(el("p", { class: "fs td mt-s" }, c.reasoning)); sec.appendChild(card);
@@ -535,7 +579,7 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
 
   if (has("options") && D.real_options) {
     const sec = el("section", { class: "dpanel vs", "aria-label": "Real Options Analysis" }); sec.appendChild(el("h2", {}, "Real Options Analysis"));
-    const rows = (D.real_options.options || []).map(o => { const r = el("tr"); r.appendChild(el("td", {}, o.name)); r.appendChild(el("td", { class: "mono" }, o.type)); r.appendChild(el("td", { class: "mono" }, o.value)); r.appendChild(el("td", {}, o.expiry || "")); r.appendChild(el("td", { class: "fs" }, o.trigger || "")); return r; });
+    const rows = safe(D.real_options.options).map(o => { const r = el("tr"); r.appendChild(el("td", {}, o.name)); r.appendChild(el("td", { class: "mono" }, o.type)); r.appendChild(el("td", { class: "mono" }, o.value)); r.appendChild(el("td", {}, o.expiry || "")); r.appendChild(el("td", { class: "fs" }, o.trigger || "")); return r; });
     tbl(["Option", "Type", "Value", "Expiry", "Trigger"], rows, sec); F.appendChild(sec);
   }
 
@@ -552,13 +596,13 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
 
   if (has("morph") && D.morph) {
     const m = D.morph, sec = el("section", { class: "dpanel vs", "aria-label": "Morphological Analysis" }); sec.appendChild(el("h2", {}, "Morphological Analysis"));
-    for (const d of (m.dimensions || [])) { const r = el("div", { class: "mt-s" }); r.appendChild(el("span", { class: "fs fw" }, d.name + ": ")); for (const o of (d.options || [])) r.appendChild(el("span", { class: "pill" }, o)); sec.appendChild(r); }
+    for (const d of safe(m.dimensions)) { const r = el("div", { class: "mt-s" }); r.appendChild(el("span", { class: "fs fw" }, d.name + ": ")); for (const o of safe(d.options)) r.appendChild(el("span", { class: "pill" }, o)); sec.appendChild(r); }
     if (m.combinations?.length) {
       sec.appendChild(el("h3", { class: "ss" }, "Viable Combinations"));
-      for (const cb of m.combinations) {
+      for (const cb of safe(m.combinations)) {
         const card = el("div", { class: "glass", style: "margin-bottom:0.5rem" }), hr = el("div", { class: "rr" }); hr.appendChild(el("span", { class: "fw", style: "flex:1" }, cb.name));
         if (cb.score != null) { const dn = cl("t-donut"), ring = B(dn, "ring"), pct = cb.score * 100, dash = (pct / 100) * 87.96;
-          ring.setAttribute("stroke-dasharray", `${dash.toFixed(1)} ${(87.96 - dash).toFixed(1)}`); ring.setAttribute("stroke", "var(--accent)"); B(dn, "txt").textContent = `${pct.toFixed(0)}`; hr.appendChild(dn); }
+          ring.setAttribute("stroke-dasharray", `${dash.toFixed(1)} ${(87.96 - dash).toFixed(1)}`); ring.setAttribute("stroke", "var(--accent)"); B(dn, "txt").textContent = `${pct.toFixed(0)}`; B(dn, "donut-title").textContent = `${cb.name}: ${pct.toFixed(0)}%`; hr.appendChild(dn); }
         card.appendChild(hr);
         if (cb.selections) { const p = el("div", { class: "mt-s" }); for (const [k, v] of Object.entries(cb.selections)) p.appendChild(el("span", { class: "pill" }, `${k}: ${v}`)); card.appendChild(p); }
         sec.appendChild(card);
@@ -569,10 +613,11 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
 
   if (D.monte_carlo) {
     const mc = D.monte_carlo, sec = el("section", { class: "glass vs", "aria-label": "Monte Carlo Outcomes" }); sec.appendChild(el("h2", {}, "Monte Carlo Outcomes"));
-    const mx = Math.max(...(mc.clusters || []).map(c => c.frequency), 1);
-    for (const c of (mc.clusters || [])) {
+    const mx = Math.max(...safe(mc.clusters).map(c => c.frequency), 1);
+    for (const c of safe(mc.clusters)) {
       const pct = Math.round((c.frequency / mx) * 100), r = el("div", { class: "mcr" }); r.appendChild(el("span", { class: "mcl" }, c.name));
       const tk = el("div", { class: "mct" }), fl = el("div", { class: "mcf" }); fl.style.width = `${pct}%`; tk.appendChild(fl); r.appendChild(tk);
+      tk.title = `${c.name}: ${c.frequency}`;
       r.appendChild(el("span", { class: "mcv mono" }, String(c.frequency))); sec.appendChild(r);
       if (c.narrative) sec.appendChild(el("p", { class: "fs td", style: "margin:0 0 0.4rem 150px" }, c.narrative));
     }
@@ -588,6 +633,9 @@ CROSS-VIEW: criteria: [{rank, name, weight}]
   }
 
   app.appendChild(F);
+
+  const sections = app.querySelectorAll("section[aria-label], .glass, .dpanel");
+  sections.forEach((s, i) => s.style.animationDelay = `${i * 0.05}s`);
 })();
 </script>
 </body>

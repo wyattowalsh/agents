@@ -65,7 +65,7 @@ def _truncate_sentence(text: str, max_len: int) -> str:
 def _strip_relative_md_links(text: str) -> str:
     """Convert relative .md links [text](file.md) to just `text` (no link)."""
     return re.sub(
-        r'\[([^\]]+)\]\((?!https?://|/)[^)]*\.md\)',
+        r'\[([^\]]+)\]\((?!https?://|/)[^)]*\.md(?:[#?][^)]*)?\)',
         r'`\1`',
         text,
     )
@@ -459,6 +459,41 @@ def validate():
             except Exception as e:
                 errors.append(f"{agent_file}: {e}")
 
+    # Validate MCP servers
+    mcp_dir = ROOT / "mcp"
+    if mcp_dir.exists():
+        for mcp_subdir in mcp_dir.iterdir():
+            if not mcp_subdir.is_dir():
+                continue
+            dir_name = mcp_subdir.name
+            if not KEBAB_CASE_PATTERN.match(dir_name):
+                errors.append(f"mcp/{dir_name}: directory name must be kebab-case")
+            server_py = mcp_subdir / "server.py"
+            if not server_py.exists():
+                errors.append(f"mcp/{dir_name}: missing server.py")
+            else:
+                server_text = server_py.read_text()
+                if "FastMCP" not in server_text:
+                    errors.append(f"mcp/{dir_name}: server.py does not reference FastMCP")
+            pyproject = mcp_subdir / "pyproject.toml"
+            if not pyproject.exists():
+                errors.append(f"mcp/{dir_name}: missing pyproject.toml")
+            else:
+                pyproject_text = pyproject.read_text()
+                if "fastmcp" not in pyproject_text:
+                    errors.append(f"mcp/{dir_name}: pyproject.toml missing fastmcp dependency")
+            fastmcp_json = mcp_subdir / "fastmcp.json"
+            if not fastmcp_json.exists():
+                errors.append(f"mcp/{dir_name}: missing fastmcp.json")
+
+    # Validate RELATED_SKILLS references
+    for key, values in RELATED_SKILLS.items():
+        if not (ROOT / "skills" / key).is_dir():
+            errors.append(f"RELATED_SKILLS: key '{key}' does not match a skill directory")
+        for val in values:
+            if not (ROOT / "skills" / val).is_dir():
+                errors.append(f"RELATED_SKILLS: value '{val}' (in '{key}') does not match a skill directory")
+
     if errors:
         for error in errors:
             typer.echo(error, err=True)
@@ -570,6 +605,12 @@ def readme(check: bool = typer.Option(False, "--check", help="Check if README is
         "| `wagents new mcp <name>` | Create a new MCP server |",
         "| `wagents validate` | Validate all skills and agents |",
         "| `wagents readme` | Regenerate this README |",
+        "| `wagents docs init` | One-time setup: install docs dependencies |",
+        "| `wagents docs generate` | Generate MDX content pages from assets |",
+        "| `wagents docs dev` | Generate + launch dev server |",
+        "| `wagents docs build` | Generate + production build |",
+        "| `wagents docs preview` | Generate + build + preview server |",
+        "| `wagents docs clean` | Remove generated content pages |",
         ""
     ])
 
@@ -728,6 +769,7 @@ def _collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
     if not skills_dir.exists():
         return nodes
 
+    seen_ids: set[str] = set()
     for skill_dir in sorted(skills_dir.iterdir()):
         if not skill_dir.is_dir() and not skill_dir.is_symlink():
             continue
@@ -747,9 +789,14 @@ def _collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
             fm, body = parse_frontmatter(content)
             # Graceful fallback: use directory name if 'name' field missing
             skill_name = fm.get("name", dir_name)
+            resolved_id = skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name
+            # Skip if resolved ID collides with existing or already-seen installed skill
+            if resolved_id in existing_ids or resolved_id in seen_ids:
+                continue
+            seen_ids.add(resolved_id)
             nodes.append(CatalogNode(
                 kind="skill",
-                id=skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name,
+                id=resolved_id,
                 title=to_title(skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name),
                 description=str(fm.get("description", f"Installed skill: {dir_name}")),
                 metadata=fm,
@@ -867,8 +914,10 @@ def _escape_mdx_line(line: str) -> str:
 # Page renderers
 # ---------------------------------------------------------------------------
 
+# Base URL for raw GitHub content used in docs generation
 GITHUB_BASE = "https://github.com/wyattowalsh/agents/blob/main"
 
+# Manually curated — update when skills are added, removed, or renamed
 RELATED_SKILLS = {
     "wargame": ["host-panel", "prompt-engineer"],
     "host-panel": ["wargame"],
@@ -878,6 +927,28 @@ RELATED_SKILLS = {
     "skill-creator": ["prompt-engineer", "mcp-creator"],
     "mcp-creator": ["skill-creator"],
 }
+
+
+def _render_tabs(tab_items: list[tuple[str, str]]) -> list[str]:
+    """Render a list of (label, content) pairs as MDX Tabs or a single heading."""
+    parts: list[str] = []
+    if not tab_items:
+        return parts
+    if len(tab_items) == 1:
+        label, content = tab_items[0]
+        parts.append(f"### {label}")
+        parts.append("")
+        parts.append(content)
+        parts.append("")
+    else:
+        parts.append("<Tabs>")
+        for label, content in tab_items:
+            parts.append(f'  <TabItem label="{label}">')
+            parts.append(content)
+            parts.append("  </TabItem>")
+        parts.append("</Tabs>")
+        parts.append("")
+    return parts
 
 
 def _render_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
@@ -1099,22 +1170,7 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     if compat_rows:
         tab_items.append(("Compatibility", "| Field | Value |\n| ----- | ----- |\n" + "\n".join(compat_rows)))
 
-    if tab_items:
-        if len(tab_items) == 1:
-            # Single tab — render content directly without Tabs wrapper
-            label, content = tab_items[0]
-            parts.append(f"### {label}")
-            parts.append("")
-            parts.append(content)
-            parts.append("")
-        else:
-            parts.append("<Tabs>")
-            for label, content in tab_items:
-                parts.append(f'  <TabItem label="{label}">')
-                parts.append(content)
-                parts.append("  </TabItem>")
-            parts.append("</Tabs>")
-            parts.append("")
+    parts.extend(_render_tabs(tab_items))
 
     # Cross-links (Used By)
     related_edges = [e for e in edges if e.to_id == f"skill:{node.id}"]
@@ -1257,22 +1313,7 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     if int_rows:
         tab_items.append(("Integrations", "| Field | Value |\n| ----- | ----- |\n" + "\n".join(int_rows)))
 
-    if tab_items:
-        if len(tab_items) == 1:
-            # Single tab — render content directly without Tabs wrapper
-            label, content = tab_items[0]
-            parts.append(f"### {label}")
-            parts.append("")
-            parts.append(content)
-            parts.append("")
-        else:
-            parts.append("<Tabs>")
-            for label, content in tab_items:
-                parts.append(f'  <TabItem label="{label}">')
-                parts.append(content)
-                parts.append("  </TabItem>")
-            parts.append("</Tabs>")
-            parts.append("")
+    parts.extend(_render_tabs(tab_items))
 
     # Cross-links
     outgoing = [e for e in edges if e.from_id == f"agent:{node.id}"]
@@ -1415,22 +1456,7 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
     if fastmcp_config:
         tab_items.append(("FastMCP Config", "```json\n" + json.dumps(fastmcp_config, indent=2) + "\n```"))
 
-    if tab_items:
-        if len(tab_items) == 1:
-            # Single tab — render content directly without Tabs wrapper
-            label, content = tab_items[0]
-            parts.append(f"### {label}")
-            parts.append("")
-            parts.append(content)
-            parts.append("")
-        else:
-            parts.append("<Tabs>")
-            for label, content in tab_items:
-                parts.append(f'  <TabItem label="{label}">')
-                parts.append(content)
-                parts.append("  </TabItem>")
-            parts.append("</Tabs>")
-            parts.append("")
+    parts.extend(_render_tabs(tab_items))
 
     # Server source
     if node.body:
@@ -1540,7 +1566,7 @@ def _write_index_page(nodes: list[CatalogNode]) -> None:
         parts.append('</div>')
         parts.append("")
 
-    # What Can You Do section — use-case framing
+    # Manually curated showcase — update when key skills change
     parts.append("## What Can You Do?")
     parts.append("")
     parts.append("<CardGrid>")
@@ -1948,6 +1974,7 @@ def _write_sidebar(nodes: list[CatalogNode]) -> None:
     lines.append("    label: 'Skills',")
     lines.append(f"    badge: {{ text: '{total_skills}', variant: 'tip' }},")
     lines.append("    items: [")
+    lines.append("      { slug: 'skills', label: 'Overview' },")
 
     if custom_skills:
         lines.append("      {")
@@ -1982,7 +2009,7 @@ def _write_sidebar(nodes: list[CatalogNode]) -> None:
         guide_files = sorted(guides_dir.glob("*.mdx"))
         if guide_files:
             lines.append("  {")
-            lines.append(f"    label: 'Guides',")
+            lines.append("    label: 'Guides',")
             lines.append(f"    badge: {{ text: '{len(guide_files)}', variant: 'note' }},")
             lines.append("    items: [")
             for gf in guide_files:

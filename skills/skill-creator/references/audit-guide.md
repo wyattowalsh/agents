@@ -78,26 +78,26 @@ Score every skill in the repository and produce a comparative ranking.
 
 ## Dashboard
 
-Render a visual quality dashboard for all skills.
+Render a visual creation process monitor or audit quality dashboard.
 
-### Steps
+### Process Monitor (active session)
 
-1. Run audit against all skills:
-   ```bash
-   uv run python skills/skill-creator/scripts/audit.py --all
-   ```
+When a creation session is active (`/tmp/skill-progress-<name>.json` exists):
 
-2. Copy the dashboard template:
-   ```bash
-   cp skills/skill-creator/templates/dashboard.html /tmp/skill-dashboard.html
-   ```
+1. Read progress: `uv run python skills/skill-creator/scripts/progress.py read --skill <name>`
+2. Copy template: `cp skills/skill-creator/templates/dashboard.html /tmp/skill-dashboard.html`
+3. Inject progress JSON into `<script id="data">` block. Dashboard auto-detects process mode from `phases` field.
+4. For live polling, set `data-poll-url` attribute on the script tag.
+5. Render via Playwright screenshot or browser open.
 
-3. Inject the audit JSON into the `<script id="data">` block in the copied file. Set `"view": "overview"` for the all-skills view.
+### Audit Dashboard (no active session)
 
-4. Open or screenshot the dashboard using the cross-platform rendering flow:
-   - Playwright screenshot (preferred)
-   - Browser open fallback
-   - Report JSON data as text last resort
+When no creation session exists, fall back to the audit quality overview:
+
+1. Run: `uv run python skills/skill-creator/scripts/audit.py --all`
+2. Copy template, inject audit JSON with `"skills": [...]` array.
+3. Dashboard auto-detects audit overview mode.
+4. Render via Playwright screenshot or browser open.
 
 ---
 

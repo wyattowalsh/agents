@@ -40,7 +40,7 @@ if (category && sidebar) {
 }
 
 // Get skill name for install footer
-const skillName = category === 'skills' ? path.replace('skills/', '') : null;
+const skillName = category === 'skills' && !path.startsWith('skills/installed') ? path.replace('skills/', '') : null;
 ---
 
 {category && (prevPage || nextPage) && (
@@ -72,7 +72,7 @@ const skillName = category === 'skills' ? path.replace('skills/', '') : null;
 
 <style>
   .category-nav {
-    border-top: 1px solid oklch(0.25 0 0);
+    border-top: 1px solid var(--sl-color-gray-5);
     padding: 1.5rem 0;
     margin-top: 2rem;
   }
@@ -86,7 +86,7 @@ const skillName = category === 'skills' ? path.replace('skills/', '') : null;
     flex-direction: column;
     gap: 0.25rem;
     padding: 0.75rem 1rem;
-    border: 1px solid oklch(0.25 0 0);
+    border: 1px solid var(--sl-color-gray-5);
     border-radius: 8px;
     text-decoration: none;
     transition: border-color 0.2s, background 0.2s;
@@ -99,13 +99,13 @@ const skillName = category === 'skills' ? path.replace('skills/', '') : null;
   .category-nav-next { grid-column: 2; text-align: right; }
   .category-nav-dir {
     font-size: 0.75rem;
-    color: oklch(0.6 0 0);
+    color: var(--sl-color-gray-3);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
   .category-nav-title {
     font-weight: 500;
-    color: oklch(0.85 0.1 285);
+    color: var(--sl-color-text-accent);
   }
   .skill-install-footer {
     text-align: center;
@@ -113,10 +113,16 @@ const skillName = category === 'skills' ? path.replace('skills/', '') : null;
     margin-top: 1rem;
     border-radius: 8px;
     background: oklch(0.13 0.02 285 / 0.15);
-    border: 1px solid oklch(0.25 0.05 285 / 0.3);
+    border: 1px solid var(--sl-color-gray-5);
   }
   .skill-install-footer code {
     font-size: 0.85rem;
-    color: oklch(0.8 0.1 285);
+    color: var(--sl-color-text-accent);
+  }
+  :global([data-theme='light']) .category-nav-link:hover {
+    background: oklch(0.95 0.02 285 / 0.3);
+  }
+  :global([data-theme='light']) .skill-install-footer {
+    background: oklch(0.97 0.01 285 / 0.15);
   }
 </style>
