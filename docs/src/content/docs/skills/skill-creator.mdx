@@ -5,7 +5,7 @@ description: "Create, improve, and audit AI agent skills for this repository."
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="skill-creator" variant="note" /> <Badge text="948 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
+<Badge text="skill-creator" variant="note" /> <Badge text="967 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
 
 > Create, improve, and audit AI agent skills for this repository. Scaffolds via wagents CLI, applies 13 proven structural patterns from the repo's best skills, scores quality with a deterministic audit script, and manages the full lifecycle through validation and documentation. Modes: create new skills, improve existing skills, audit quality scores, render comparative dashboards. Use when building new skills, refactoring skill instructions, reviewing skill quality, or learning skill-writing patterns. NOT for running skills, creating agents, or building MCP servers.
 
@@ -145,7 +145,9 @@ Comparative ranking of all repository skills. Load `references/audit-guide.md` �
 
 ## Dashboard
 
-Render visual quality dashboard. Load `references/audit-guide.md` § Dashboard.
+Render visual creation process monitor or audit quality dashboard. Load `references/audit-guide.md` § Dashboard.
+
+Auto-detects mode from data: `phases` field → process monitor; `skills` array → audit overview.
 
 ## Gallery (Empty Arguments)
 
@@ -263,7 +265,9 @@ Comparative ranking of all repository skills. Load `references/audit-guide.md` �
 
 ### Dashboard
 
-Render visual quality dashboard. Load `references/audit-guide.md` § Dashboard.
+Render visual creation process monitor or audit quality dashboard. Load `references/audit-guide.md` § Dashboard.
+
+Auto-detects mode from data: `phases` field → process monitor; `skills` array → audit overview.
 
 ### Gallery (Empty Arguments)
 

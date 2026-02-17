@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator dashboard my-skill",
+  "files": [],
+  "expected_behavior": [
+    "Agent reads progress session for 'my-skill' from /tmp/skill-progress-my-skill.json",
+    "Agent injects progress JSON into dashboard template",
+    "Dashboard renders in process monitor mode showing phase pipeline and wave execution",
+    "If audit data is present in the session, dashboard also shows quality scores"
+  ]
+}

@@ -32,8 +32,7 @@ Invoke this skill after any of these events:
 - Running `wagents new skill`, `wagents new agent`, or `wagents new mcp`
 - Installing new skills via `npx skills add`
 
-Setting `disable-model-invocation: false` in this skill's frontmatter enables
-opportunistic auto-invocation when the model detects asset changes.
+Auto-invocation is enabled by default (the `disable-model-invocation` field is absent, which defaults to `false`).
 
 When invoked after asset changes, run in **auto mode** (default). No approval
 gates, no user prompts. Detect what changed, regenerate, enhance, verify.

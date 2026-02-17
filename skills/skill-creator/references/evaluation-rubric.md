@@ -29,7 +29,7 @@ Always run both. A skill that passes validation but scores D or F needs signific
 
 | # | Dimension | Weight | Max | What `audit.py` Checks | What AI Reviews |
 |---|-----------|--------|-----|------------------------|-----------------|
-| 1 | Frontmatter Completeness | 1x | 10 | Required fields present, cross-platform fields, name/dir match, agentskills.io name rules (no `--`, no leading/trailing hyphens, no reserved words), no XML tags in description | -- |
+| 1 | Frontmatter Completeness | 1x | 9 | Required fields present, cross-platform fields, name/dir match, agentskills.io name rules (no `--`, no leading/trailing hyphens, no reserved words), no XML tags in description | -- |
 | 2 | Description Quality | 2x | 20 | Length (50--200 chars optimal), action verbs, "Use when" trigger words, "NOT for" exclusion, third-person voice | CSO optimization, keyword coverage, specificity vs vagueness |
 | 3 | Dispatch Table | 1x | 10 | `$ARGUMENTS` table present, empty-args handler row, >=3 rows | Route clarity, coverage of common inputs, auto-detect logic |
 | 4 | Body Structure | 1.5x | 15 | Line count <=500 (below frontmatter), heading hierarchy valid, >=3 `##` sections | Imperative voice, logical flow, information density |
@@ -40,13 +40,13 @@ Always run both. A skill that passes validation but scores D or F needs signific
 | 9 | Conciseness | 0.5x | 5 | No duplicate headings, no repeated content blocks | Token efficiency, information density, dead text |
 | 10 | Canonical Vocabulary | -- | +5 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
 
-**Total: 100 points possible + 5 bonus.**
+**Total: 99 points possible + 5 bonus.**
 
 ### Dimension Details
 
-**1. Frontmatter Completeness (10 pts, 1x weight)**
+**1. Frontmatter Completeness (9 pts, 1x weight)**
 
-- **Full marks (10):** `name` present, valid kebab-case, <=64 chars, matches directory. `description` present and non-empty. `license`, `metadata.author`, and `metadata.version` all populated. No XML tags in description.
+- **Full marks (9):** `name` present, valid kebab-case, <=64 chars, matches directory. `description` present and non-empty. `license`, `metadata.author`, and `metadata.version` all populated. No XML tags in description.
 - **Common deductions:** Missing `license` (-1), missing `metadata.author` (-1), missing `metadata.version` (-1), name/directory mismatch (-1), consecutive hyphens in name (-1).
 - **Zero:** Missing `name` field entirely, or name and description both absent.
 

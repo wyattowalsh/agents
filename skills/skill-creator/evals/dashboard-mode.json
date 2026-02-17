@@ -3,10 +3,12 @@
   "query": "/skill-creator dashboard",
   "files": [],
   "expected_behavior": [
-    "Agent dispatches to Dashboard mode based on 'dashboard' keyword in arguments",
-    "Agent runs 'uv run python skills/skill-creator/scripts/audit.py --all' to collect JSON audit data",
-    "Agent copies templates/dashboard.html to /tmp/skill-dashboard.html and injects audit JSON into the data script block",
-    "Agent renders or screenshots the dashboard using Playwright or browser open",
-    "Agent presents the visual dashboard to the user"
+    "Agent dispatches to Dashboard mode based on 'dashboard' keyword",
+    "Agent checks for active progress session at /tmp/skill-progress-*.json",
+    "If active session: injects progress JSON for process monitor view",
+    "If no active session: runs audit.py --all for audit overview",
+    "Agent copies templates/dashboard.html and injects appropriate JSON",
+    "Dashboard auto-detects view from data shape (phases vs skills array)",
+    "Agent renders via Playwright or browser open"
   ]
 }

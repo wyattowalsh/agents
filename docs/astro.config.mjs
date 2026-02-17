@@ -13,6 +13,7 @@ export default defineConfig({
     starlight({
       title: 'wyattowalsh/agents | AI Agent Configs',
       description: 'AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more',
+      editLink: { baseUrl: 'https://github.com/wyattowalsh/agents/edit/main/docs/' },
       lastUpdated: true,
       plugins: [
         starlightThemeBlack({

@@ -30,7 +30,7 @@ and genuine disagreements, not producing consensus or truth.
 **Expert range:** 2-6. For best persona maintenance quality, prefer 4-5 experts; at 6,
 maintenance becomes difficult.
 
-To add a format: add its phase guide to `./references/formats.md` and update the format
+To add a format: add its phase guide to `references/formats.md` and update the format
 table and auto-selection logic above.
 
 ---
@@ -185,7 +185,7 @@ If two panelists share the same intellectual tradition, methodology, AND likely
 conclusions on the core tensions — replace one. Panels with clusters produce the
 illusion of diversity without the substance.
 
-Consult `./references/archetypes.md` if the panel requires personas from 2+ distinct
+Consult `references/archetypes.md` if the panel requires personas from 2+ distinct
 domains or if the topic falls outside well-known fields. Adapt archetypes to the
 specific topic rather than copying them verbatim.
 
@@ -241,7 +241,7 @@ not display any of these steps):
    and reasoning patterns.
 
 Each panelist's vocabulary, reasoning structure, and evidence standards must
-match their intellectual tradition. See `./references/archetypes.md` for
+match their intellectual tradition. See `references/archetypes.md` for
 domain-specific patterns. A pragmatist and a theorist must sound different
 because they think differently.
 
@@ -303,7 +303,7 @@ point of divergence]. Dr. Z has introduced a third axis — [brief description].
 
 ## 5. Discussion Phases
 
-Load the chosen format's specific phase guide from `./references/formats.md`. The
+Load the chosen format's specific phase guide from `references/formats.md`. The
 format guide's phase structure governs all phases between Framing and Synthesis.
 Phase 0 (Framing) and Synthesis are universal bookends. Adapt all output template
 headings to match the chosen format's phase names.
@@ -323,7 +323,7 @@ Keep framing concise. The value is in the discussion, not the introduction.
 
 ### Format-Specific Phases
 
-See `./references/formats.md` for phase names, structure, and word counts specific
+See `references/formats.md` for phase names, structure, and word counts specific
 to each format. Use those phase names in the output — not generic Phase 1/2/3.
 
 ### Synthesis

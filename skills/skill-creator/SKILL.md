@@ -73,7 +73,9 @@ Comparative ranking of all repository skills. Load `references/audit-guide.md` �
 
 ## Dashboard
 
-Render visual quality dashboard. Load `references/audit-guide.md` § Dashboard.
+Render visual creation process monitor or audit quality dashboard. Load `references/audit-guide.md` § Dashboard.
+
+Auto-detects mode from data: `phases` field → process monitor; `skills` array → audit overview.
 
 ## Gallery (Empty Arguments)
 

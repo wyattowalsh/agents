@@ -4,6 +4,6 @@
     "entrypoint": "mcp"
   },
   "environment": {
-    "dependencies": []
+    "dependencies": ["fastmcp>=3.0.0rc2"]
   }
 }

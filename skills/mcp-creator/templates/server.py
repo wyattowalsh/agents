@@ -11,7 +11,7 @@ from fastmcp.exceptions import ToolError
 
 mcp = FastMCP(
     "service-name",
-    instructions="TODO: describe what this server provides and when to use it.",
+    instructions="[REQUIRED] Describe what this server provides and when to use it.",
 )
 
 

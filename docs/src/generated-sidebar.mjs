@@ -10,6 +10,7 @@ export default [
     label: 'Skills',
     badge: { text: '26', variant: 'tip' },
     items: [
+      { slug: 'skills', label: 'Overview' },
       {
         label: 'Custom (7)',
         items: [
