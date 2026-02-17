@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Quality Dashboard</title>
+<style>
+/* --- Design System --- */
+:root {
+  --bg: #0f172a; --card: #1e293b; --border: #475569;
+  --text: #f1f5f9; --dim: #94a3b8; --accent: #6366f1;
+  --grade-a: #22c55e; --grade-b: #6366f1; --grade-c: #f59e0b;
+  --grade-d: #f97316; --grade-f: #ef4444;
+  --grade: var(--dim);
+  --radius: 8px; --gap: 1rem;
+}
+[data-grade="A"] { --grade: var(--grade-a); }
+[data-grade="B"] { --grade: var(--grade-b); }
+[data-grade="C"] { --grade: var(--grade-c); }
+[data-grade="D"] { --grade: var(--grade-d); }
+[data-grade="F"] { --grade: var(--grade-f); }
+
+/* --- Base --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: var(--gap); max-width: 1200px; margin: 0 auto; }
+h1, h2, h3 { font-weight: 600; }
+h1 { font-size: 1.5rem; } h2 { font-size: 1.15rem; margin-bottom: 0.5rem; } h3 { font-size: 1rem; }
+a { color: var(--accent); }
+section { margin-bottom: var(--gap); }
+
+/* --- Components --- */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--gap); }
+.badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.badge-grade { background: var(--grade); color: var(--bg); }
+.pill { display: inline-block; padding: 0.1em 0.5em; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--border); color: var(--dim); margin: 0.1em; }
+
+/* --- Header --- */
+.header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: var(--gap); }
+.header h1 { flex: 1 1 auto; }
+.header-stats { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--dim); }
+
+/* --- Score Bar --- */
+.score-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 0.3rem 0; }
+.score-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+
+/* --- Dimension Rows --- */
+.dim-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.dim-label { flex: 0 0 220px; font-size: 0.85rem; color: var(--dim); }
+.dim-score { flex: 0 0 3rem; text-align: right; font-size: 0.85rem; font-weight: 700; }
+
+/* --- Skill Grid --- */
+.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--gap); }
+.skill-card { position: relative; }
+.skill-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.skill-card-header h3 { flex: 1; }
+.skill-meta { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+
+/* --- Pattern Checklist --- */
+.pattern-check { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.25rem; }
+.pattern-check .icon { flex: 0 0 1.2rem; text-align: center; font-weight: 700; }
+.pattern-check .icon.found { color: var(--grade-a); }
+.pattern-check .icon.missing { color: var(--grade-f); }
+.pattern-list { columns: 2; column-gap: var(--gap); }
+
+/* --- Findings --- */
+.finding { font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+.finding:last-child { border-bottom: none; }
+.finding-dim { font-weight: 600; color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.6rem; margin-bottom: 0.2rem; }
+
+/* --- Phase Pipeline --- */
+.phase-pipeline { display: flex; align-items: center; justify-content: center; gap: 0; padding: 2rem 1rem; }
+.phase-step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; position: relative; z-index: 1; }
+.phase-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--border); background: var(--card); color: var(--dim); transition: all 0.3s ease; }
+.phase-step.completed .phase-circle { background: var(--grade-a); border-color: var(--grade-a); color: var(--bg); }
+.phase-step.active .phase-circle { background: var(--accent); border-color: var(--accent); color: #fff; animation: pulse 2s infinite; }
+.phase-step.pending .phase-circle { background: var(--card); border-color: var(--border); color: var(--dim); }
+.phase-label { font-size: 0.7rem; color: var(--dim); text-align: center; max-width: 72px; }
+.phase-step.active .phase-label { color: var(--accent); font-weight: 600; }
+.phase-step.completed .phase-label { color: var(--grade-a); }
+.phase-connector { width: 40px; height: 2px; background: var(--border); margin-bottom: 1.2rem; }
+.phase-connector.completed { background: var(--grade-a); }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); }
+}
+
+/* --- Error Fallback --- */
+.error-fallback { background: var(--card); border: 2px solid var(--grade-f); border-radius: var(--radius); padding: var(--gap); }
+.error-fallback h2 { color: var(--grade-f); margin-bottom: 0.5rem; }
+.error-fallback pre { white-space: pre-wrap; word-break: break-all; font-size: 0.8rem; color: var(--dim); }
+
+/* --- Print & Light Mode --- */
+@media print {
+  :root { --bg: #fff; --card: #fff; --border: #ccc; --text: #111; --dim: #555; }
+  body { padding: 0; }
+  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .phase-step.active .phase-circle { animation: none; }
+}
+@media (prefers-color-scheme: light) {
+  :root { --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; --text: #0f172a; --dim: #64748b; }
+  .score-bar, .phase-connector { background: #e2e8f0; }
+}
+
+/* --- Responsive --- */
+@media (max-width: 640px) {
+  .dim-label { flex: 0 0 140px; }
+  .skill-grid { grid-template-columns: 1fr; }
+  .pattern-list { columns: 1; }
+  .phase-pipeline { flex-wrap: wrap; }
+  .phase-connector { width: 20px; }
+}
+</style>
+</head>
+<body>
+<main id="app" aria-label="Skill Quality Dashboard"></main>
+
+<script id="data" type="application/json">
+{
+  "view": "overview",
+  "generated": "2025-01-15T10:30:00Z",
+  "skills": [
+    {
+      "skill": "wargame",
+      "path": "skills/wargame/",
+      "score": 92,
+      "max": 100,
+      "bonus": 5,
+      "grade": "A",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 9, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Body Structure", "score": 10, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Instruction Clarity", "score": 9, "max": 10, "weight": 1.0, "findings": ["Minor ambiguity in phase transition rules"]},
+        {"name": "Canonical Vocabulary", "score": 10, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Edge Case Coverage", "score": 8, "max": 10, "weight": 1.0, "findings": ["Missing handling for zero-actor scenarios"]},
+        {"name": "Output Format Spec", "score": 10, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Reference Quality", "score": 9, "max": 10, "weight": 1.0, "findings": ["One reference lacks examples"]},
+        {"name": "Script Automation", "score": 8, "max": 10, "weight": 1.0, "findings": ["No validation script"]},
+        {"name": "Template Completeness", "score": 10, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Cross-Platform Compat", "score": 9, "max": 10, "weight": 1.0, "findings": ["Missing license field"]}
+      ],
+      "patterns_found": ["dispatch-table", "critical-rules", "canonical-vocabulary", "phase-gates", "output-format", "error-recovery", "reference-docs", "templates"],
+      "patterns_suggested": ["hooks", "scripts", "eval-suite", "mcp-integration", "argument-handling"],
+      "meta": {"lines": 468, "refs": 5, "scripts": 0}
+    },
+    {
+      "skill": "add-badges",
+      "path": "skills/add-badges/",
+      "score": 78,
+      "max": 100,
+      "bonus": 2,
+      "grade": "B",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 8, "max": 10, "weight": 1.0, "findings": ["Missing license field"]},
+        {"name": "Body Structure", "score": 9, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Instruction Clarity", "score": 8, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Canonical Vocabulary", "score": 7, "max": 10, "weight": 1.0, "findings": ["Inconsistent term usage"]},
+        {"name": "Edge Case Coverage", "score": 7, "max": 10, "weight": 1.0, "findings": ["No fallback for unknown frameworks"]},
+        {"name": "Output Format Spec", "score": 8, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Reference Quality", "score": 8, "max": 10, "weight": 1.0, "findings": []},
+        {"name": "Script Automation", "score": 7, "max": 10, "weight": 1.0, "findings": ["detect.py needs error handling"]},
+        {"name": "Template Completeness", "score": 6, "max": 10, "weight": 1.0, "findings": ["No templates directory"]},
+        {"name": "Cross-Platform Compat", "score": 8, "max": 10, "weight": 1.0, "findings": []}
+      ],
+      "patterns_found": ["dispatch-table", "critical-rules", "canonical-vocabulary", "output-format", "reference-docs", "scripts"],
+      "patterns_suggested": ["phase-gates", "error-recovery", "templates", "hooks", "eval-suite", "mcp-integration", "argument-handling"],
+      "meta": {"lines": 210, "refs": 1, "scripts": 2}
+    },
+    {
+      "skill": "prompt-engineer",
+      "path": "skills/prompt-engineer/",
+      "score": 55,
+      "max": 100,
+      "bonus": 0,
+      "grade": "C",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 7, "max": 10, "weight": 1.0, "findings": ["Missing license and version"]},
+        {"name": "Body Structure", "score": 6, "max": 10, "weight": 1.0, "findings": ["Flat structure, needs sections"]},
+        {"name": "Instruction Clarity", "score": 6, "max": 10, "weight": 1.0, "findings": ["Vague action verbs"]},
+        {"name": "Canonical Vocabulary", "score": 5, "max": 10, "weight": 1.0, "findings": ["No vocabulary defined"]},
+        {"name": "Edge Case Coverage", "score": 4, "max": 10, "weight": 1.0, "findings": ["No edge cases addressed"]},
+        {"name": "Output Format Spec", "score": 6, "max": 10, "weight": 1.0, "findings": ["Output format underspecified"]},
+        {"name": "Reference Quality", "score": 5, "max": 10, "weight": 1.0, "findings": ["No references"]},
+        {"name": "Script Automation", "score": 4, "max": 10, "weight": 1.0, "findings": ["No scripts"]},
+        {"name": "Template Completeness", "score": 5, "max": 10, "weight": 1.0, "findings": ["No templates"]},
+        {"name": "Cross-Platform Compat", "score": 7, "max": 10, "weight": 1.0, "findings": []}
+      ],
+      "patterns_found": ["critical-rules", "output-format", "canonical-vocabulary"],
+      "patterns_suggested": ["dispatch-table", "phase-gates", "error-recovery", "reference-docs", "templates", "hooks", "scripts", "eval-suite", "mcp-integration", "argument-handling"],
+      "meta": {"lines": 95, "refs": 0, "scripts": 0}
+    },
+    {
+      "skill": "docs-steward",
+      "path": "skills/docs-steward/",
+      "score": 38,
+      "max": 100,
+      "bonus": 0,
+      "grade": "F",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 6, "max": 10, "weight": 1.0, "findings": ["Missing most optional fields"]},
+        {"name": "Body Structure", "score": 4, "max": 10, "weight": 1.0, "findings": ["No clear sections"]},
+        {"name": "Instruction Clarity", "score": 4, "max": 10, "weight": 1.0, "findings": ["Instructions too vague"]},
+        {"name": "Canonical Vocabulary", "score": 3, "max": 10, "weight": 1.0, "findings": ["No vocabulary defined"]},
+        {"name": "Edge Case Coverage", "score": 2, "max": 10, "weight": 1.0, "findings": ["No edge cases"]},
+        {"name": "Output Format Spec", "score": 4, "max": 10, "weight": 1.0, "findings": ["No output spec"]},
+        {"name": "Reference Quality", "score": 3, "max": 10, "weight": 1.0, "findings": ["No references"]},
+        {"name": "Script Automation", "score": 3, "max": 10, "weight": 1.0, "findings": ["No scripts"]},
+        {"name": "Template Completeness", "score": 3, "max": 10, "weight": 1.0, "findings": ["No templates"]},
+        {"name": "Cross-Platform Compat", "score": 6, "max": 10, "weight": 1.0, "findings": ["Missing compatibility field"]}
+      ],
+      "patterns_found": ["critical-rules"],
+      "patterns_suggested": ["dispatch-table", "canonical-vocabulary", "phase-gates", "output-format", "error-recovery", "reference-docs", "templates", "hooks", "scripts", "eval-suite", "mcp-integration", "argument-handling"],
+      "meta": {"lines": 42, "refs": 0, "scripts": 0}
+    }
+  ],
+  "detail_skill": "wargame",
+  "progress": {
+    "skill": "my-new-skill",
+    "phases": [
+      {"name": "Ideation", "status": "completed"},
+      {"name": "Scaffold", "status": "completed"},
+      {"name": "Body", "status": "active"},
+      {"name": "References", "status": "pending"},
+      {"name": "Scripts", "status": "pending"},
+      {"name": "Templates", "status": "pending"}
+    ]
+  }
+}
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var app = document.getElementById("app");
+  var raw = document.getElementById("data").textContent;
+  var data;
+
+  try {
+    data = JSON.parse(raw);
+  } catch (err) {
+    app.innerHTML = '<div class="error-fallback" role="alert">' +
+      "<h2>JSON Parse Error</h2>" +
+      "<p>" + escH(err.message) + "</p>" +
+      "<pre>" + escH(raw) + "</pre></div>";
+    return;
+  }
+
+  var views = (data.view || "").split(/\s+/).filter(Boolean);
+  function hasView(v) { return views.indexOf(v) !== -1; }
+
+  var ALL_PATTERNS = [
+    "dispatch-table", "critical-rules", "canonical-vocabulary",
+    "phase-gates", "output-format", "error-recovery", "reference-docs",
+    "templates", "hooks", "scripts", "eval-suite", "mcp-integration",
+    "argument-handling"
+  ];
+
+  var html = renderHeader(data);
+
+  if (hasView("overview"))  html += renderOverview(data);
+  if (hasView("detail"))    html += renderDetail(data);
+  if (hasView("progress"))  html += renderProgress(data);
+
+  app.innerHTML = html;
+
+  /* ---- Render Functions ---- */
+
+  function renderHeader(d) {
+    var h = '<header class="header">';
+    h += "<h1>Skill Quality Dashboard</h1>";
+    h += '<div class="header-stats">';
+    if (d.generated) {
+      h += '<span>Generated: ' + escH(d.generated.replace("T", " ").replace("Z", " UTC")) + "</span>";
+    }
+    if (d.skills && d.skills.length) {
+      h += '<span class="pill">' + d.skills.length + " skill" + (d.skills.length !== 1 ? "s" : "") + "</span>";
+    }
+    h += "</div></header>";
+    return h;
+  }
+
+  function renderOverview(d) {
+    if (!d.skills || !d.skills.length) return "";
+    var sorted = d.skills.slice().sort(function (a, b) { return b.score - a.score; });
+    var s = '<section aria-label="Skills Overview"><h2>Skills Overview</h2>';
+    s += '<div class="skill-grid">';
+    sorted.forEach(function (sk) {
+      var pct = Math.round((sk.score / sk.max) * 100);
+      var pFound = (sk.patterns_found || []).length;
+      var pTotal = pFound + (sk.patterns_suggested || []).length;
+      s += '<div class="card skill-card" data-grade="' + escH(sk.grade) + '">';
+      s += '<div class="skill-card-header">';
+      s += "<h3>" + escH(sk.skill) + "</h3>";
+      s += '<span class="badge badge-grade">' + escH(sk.grade) + "</span>";
+      s += "</div>";
+      s += '<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;">';
+      s += "<strong>" + sk.score + "</strong><span style='color:var(--dim);font-size:0.8rem;'>/ " + sk.max + "</span>";
+      if (sk.bonus > 0) s += '<span style="color:var(--grade-a);font-size:0.75rem;">+' + sk.bonus + " bonus</span>";
+      s += "</div>";
+      s += '<div class="score-bar"><div class="score-bar-fill" style="width:' + pct + "%;background:var(--grade);\"></div></div>";
+      s += '<div class="skill-meta">';
+      s += '<span class="pill">' + pFound + "/" + pTotal + " patterns</span>";
+      if (sk.meta) {
+        s += '<span class="pill">' + sk.meta.lines + " lines</span>";
+        s += '<span class="pill">' + sk.meta.refs + " refs</span>";
+        s += '<span class="pill">' + sk.meta.scripts + " scripts</span>";
+      }
+      s += "</div>";
+      s += "</div>";
+    });
+    s += "</div></section>";
+    return s;
+  }
+
+  function renderDetail(d) {
+    var sk = findSkill(d, d.detail_skill);
+    if (!sk) return '<section class="card"><h2>Detail View</h2><p>Skill "' + escH(d.detail_skill) + '" not found.</p></section>';
+
+    var pct = Math.round((sk.score / sk.max) * 100);
+    var s = '<section aria-label="Skill Detail">';
+
+    /* Header card */
+    s += '<div class="card" data-grade="' + escH(sk.grade) + '" style="margin-bottom:var(--gap);">';
+    s += '<div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">';
+    s += "<h2 style='margin:0;'>" + escH(sk.skill) + "</h2>";
+    s += '<span class="badge badge-grade" style="font-size:1rem;">' + escH(sk.grade) + "</span>";
+    s += '<span style="font-size:1.1rem;font-weight:700;">' + sk.score + "/" + sk.max + "</span>";
+    if (sk.bonus > 0) s += '<span style="color:var(--grade-a);font-size:0.85rem;">+' + sk.bonus + " bonus</span>";
+    s += "</div>";
+    s += '<div class="score-bar" style="margin-top:0.5rem;height:10px;"><div class="score-bar-fill" style="width:' + pct + '%;background:var(--grade);"></div></div>';
+    if (sk.path) s += '<p style="font-size:0.8rem;color:var(--dim);margin-top:0.3rem;">' + escH(sk.path) + "</p>";
+    s += "</div>";
+
+    /* Dimension bars */
+    s += '<div class="card" style="margin-bottom:var(--gap);"><h3>Scoring Dimensions</h3>';
+    (sk.dimensions || []).forEach(function (dim) {
+      s += renderDimBar(dim);
+    });
+    s += "</div>";
+
+    /* Findings grouped by dimension */
+    var hasFindings = (sk.dimensions || []).some(function (dim) {
+      return dim.findings && dim.findings.length > 0;
+    });
+    if (hasFindings) {
+      s += '<div class="card" style="margin-bottom:var(--gap);"><h3>Findings</h3>';
+      (sk.dimensions || []).forEach(function (dim) {
+        if (!dim.findings || !dim.findings.length) return;
+        s += '<div class="finding-dim">' + escH(dim.name) + " (" + dim.score + "/" + dim.max + ")</div>";
+        dim.findings.forEach(function (f) {
+          s += '<div class="finding">' + escH(f) + "</div>";
+        });
+      });
+      s += "</div>";
+    }
+
+    /* Pattern checklist */
+    s += '<div class="card" style="margin-bottom:var(--gap);"><h3>Pattern Checklist</h3>';
+    s += '<div class="pattern-list">';
+    var found = sk.patterns_found || [];
+    ALL_PATTERNS.forEach(function (p) {
+      var isFound = found.indexOf(p) !== -1;
+      s += '<div class="pattern-check">';
+      s += '<span class="icon ' + (isFound ? "found" : "missing") + '">' + (isFound ? "\u2713" : "\u2717") + "</span>";
+      s += "<span>" + escH(p) + "</span>";
+      s += "</div>";
+    });
+    s += "</div></div>";
+
+    /* Metadata summary */
+    if (sk.meta) {
+      s += '<div class="card"><h3>Metadata</h3>';
+      s += '<div style="display:flex;gap:var(--gap);flex-wrap:wrap;">';
+      s += '<span class="pill" style="font-size:0.85rem;">' + sk.meta.lines + " lines</span>";
+      s += '<span class="pill" style="font-size:0.85rem;">' + sk.meta.refs + " references</span>";
+      s += '<span class="pill" style="font-size:0.85rem;">' + sk.meta.scripts + " scripts</span>";
+      s += "</div></div>";
+    }
+
+    s += "</section>";
+    return s;
+  }
+
+  function renderDimBar(dim) {
+    var pct = Math.round((dim.score / dim.max) * 100);
+    var color = pct >= 80 ? "var(--grade-a)" : pct >= 50 ? "var(--grade-c)" : "var(--grade-f)";
+    return '<div class="dim-row">' +
+      '<span class="dim-label">' + escH(dim.name) + "</span>" +
+      '<svg width="200" height="16" role="img" aria-label="' + escH(dim.name) + ": " + dim.score + "/" + dim.max + '">' +
+      '<rect x="0" y="3" width="200" height="10" rx="5" fill="var(--border)"/>' +
+      '<rect x="0" y="3" width="' + (pct * 2) + '" height="10" rx="5" fill="' + color + '"/>' +
+      "</svg>" +
+      '<span class="dim-score">' + dim.score + "/" + dim.max + "</span>" +
+      "</div>";
+  }
+
+  function renderProgress(d) {
+    var prog = d.progress;
+    if (!prog || !prog.phases || !prog.phases.length) return "";
+
+    var s = '<section aria-label="Creation Progress">';
+    s += '<div class="card">';
+    s += "<h2>Creation Progress: " + escH(prog.skill) + "</h2>";
+    s += '<div class="phase-pipeline">';
+
+    var activeIdx = -1;
+    prog.phases.forEach(function (p, i) {
+      if (p.status === "active") activeIdx = i;
+    });
+
+    prog.phases.forEach(function (phase, i) {
+      if (i > 0) {
+        var connClass = "phase-connector";
+        if (phase.status === "completed" || phase.status === "active") connClass += " completed";
+        s += '<div class="' + connClass + '"></div>';
+      }
+      s += '<div class="phase-step ' + escH(phase.status) + '">';
+      s += '<div class="phase-circle">';
+      if (phase.status === "completed") {
+        s += "\u2713";
+      } else if (phase.status === "active") {
+        s += "\u25C9";
+      } else {
+        s += "\u25CB";
+      }
+      s += "</div>";
+      s += '<span class="phase-label">' + escH(phase.name) + "</span>";
+      s += "</div>";
+    });
+
+    s += "</div>";
+
+    if (activeIdx >= 0) {
+      s += '<p style="text-align:center;font-size:0.9rem;color:var(--accent);margin-top:0.5rem;">Current phase: <strong>' + escH(prog.phases[activeIdx].name) + "</strong></p>";
+    }
+
+    s += "</div></section>";
+    return s;
+  }
+
+  /* ---- Utilities ---- */
+
+  function findSkill(d, name) {
+    if (!d.skills || !name) return null;
+    for (var i = 0; i < d.skills.length; i++) {
+      if (d.skills[i].skill === name) return d.skills[i];
+    }
+    return null;
+  }
+
+  function escH(str) {
+    if (str == null) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+})();
+</script>
+</body>
+</html>

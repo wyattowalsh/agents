@@ -1,0 +1,129 @@
+# Audit Guide
+
+Procedures for auditing individual skills, comparative rankings, dashboards, and the gallery view.
+
+## Contents
+
+1. [Audit (Single Skill)](#audit-single-skill)
+2. [Grade Thresholds](#grade-thresholds)
+3. [Audit All](#audit-all)
+4. [Dashboard](#dashboard)
+5. [Gallery](#gallery)
+
+---
+
+## Audit (Single Skill)
+
+Score a single skill using deterministic analysis + AI review.
+
+### Steps
+
+1. **Run audit script:**
+   ```bash
+   uv run python skills/skill-creator/scripts/audit.py skills/<name>/
+   ```
+   Produces a JSON report with 10 scored dimensions, detected patterns, and suggested patterns.
+
+2. **AI review** — supplement the script's findings with judgment-based assessment:
+   - Description quality: Is the CSO optimization effective? Does it enable discovery?
+   - Route clarity: Can an agent unambiguously route to the right mode?
+   - Imperative voice: Does the body use imperative voice consistently?
+   - Pattern fitness: Are detected patterns appropriate? Are suggested patterns genuinely needed?
+   - Content relevance: Do references contain actionable, domain-specific guidance?
+   - Token efficiency: Is every line earning its keep?
+
+3. **Pressure testing** — load `references/evaluation-rubric.md` Pressure Testing Protocol. Apply:
+   - **Ambiguity pressure:** Find 3 inputs that could misroute. Do the dispatch rules handle them?
+   - **Scale pressure:** What happens with 0, 1, 10, 100 items? Does the skill degrade gracefully?
+   - **Adversarial pressure:** What if the user provides contradictory instructions? Malformed input?
+
+4. **Report** — present the graded report:
+   - Letter grade (A-F) with numeric score
+   - Dimension breakdown (10 dimensions with scores and findings)
+   - Pattern checklist (13 patterns: present/absent/suggested)
+   - Top 3 improvement opportunities (highest impact)
+   - Pressure test results
+
+---
+
+## Grade Thresholds
+
+| Grade | Score | Meaning |
+|-------|-------|---------|
+| A | 90-100 | Exemplary — ready for production |
+| B | 75-89 | Good — minor improvements possible |
+| C | 60-74 | Adequate — notable gaps |
+| D | 40-59 | Needs work — significant gaps |
+| F | 0-39 | Incomplete — major rework needed |
+
+---
+
+## Audit All
+
+Score every skill in the repository and produce a comparative ranking.
+
+### Steps
+
+1. **Run audit script:**
+   ```bash
+   uv run python skills/skill-creator/scripts/audit.py --all --format table
+   ```
+
+2. **Present comparative table** — sorted by score descending:
+
+   | Skill | Score | Grade | Lines | Refs | Scripts | Patterns |
+   |-------|-------|-------|-------|------|---------|----------|
+
+3. **Summary statistics** — mean score, median, range. Identify the strongest and weakest skill.
+
+4. **Improvement roadmap** — for skills scoring below B, list the single highest-impact improvement for each.
+
+---
+
+## Dashboard
+
+Render a visual quality dashboard for all skills.
+
+### Steps
+
+1. Run audit against all skills:
+   ```bash
+   uv run python skills/skill-creator/scripts/audit.py --all
+   ```
+
+2. Copy the dashboard template:
+   ```bash
+   cp skills/skill-creator/templates/dashboard.html /tmp/skill-dashboard.html
+   ```
+
+3. Inject the audit JSON into the `<script id="data">` block in the copied file. Set `"view": "overview"` for the all-skills view.
+
+4. Open or screenshot the dashboard using the cross-platform rendering flow:
+   - Playwright screenshot (preferred)
+   - Browser open fallback
+   - Report JSON data as text last resort
+
+---
+
+## Gallery
+
+When `$ARGUMENTS` is empty, present a skill inventory with quality scores.
+
+### Steps
+
+1. Run `uv run python skills/skill-creator/scripts/audit.py --all --format table` to get current scores.
+
+2. Present the table with available actions:
+
+   > **Available skills:**
+   >
+   > | Skill | Score | Grade | Patterns |
+   > |-------|-------|-------|----------|
+   > | ... | ... | ... | .../13 |
+   >
+   > **What would you like to do?**
+   > - `create <name>` — build a new skill
+   > - `improve <name>` — improve an existing skill
+   > - `audit <name>` — audit a specific skill
+   > - `audit --all` — comparative audit of all skills
+   > - `dashboard` — visual quality dashboard

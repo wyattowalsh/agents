@@ -1,0 +1,112 @@
+---
+title: "skill-creator"
+description: "Create, improve, and audit AI agent skills for this repository"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+> Create, improve, and audit AI agent skills. Scaffolds via wagents CLI, applies 13 proven structural patterns, scores quality with a deterministic audit script, and manages the full lifecycle through validation and documentation.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/skill-creator -g
+```
+
+**Use:** `/skill-creator <mode> [name]`
+
+</div>
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `skill-creator` |
+| License | MIT |
+| Model | opus |
+| Author | wyattowalsh |
+| Version | 1.0 |
+  </TabItem>
+  <TabItem label="Modes">
+| Mode | Command | Purpose |
+| ---- | ------- | ------- |
+| Develop (new) | `create <name>` | Build a new skill from scratch (6-step workflow) |
+| Develop (existing) | `improve <name>` | Audit-first gap analysis, approval gate, targeted improvements |
+| Audit | `audit <name>` | Score a skill with deterministic + AI review (A-F) |
+| Audit All | `audit --all` | Comparative ranking of all repository skills |
+| Dashboard | `dashboard` | Visual HTML quality dashboard for all skills |
+| Gallery | *(empty)* | List all skills with scores and available modes |
+  </TabItem>
+  <TabItem label="References">
+| File | Content |
+| ---- | ------- |
+| `workflow.md` | Unified 6-step development process for new and existing skills |
+| `audit-guide.md` | Audit procedure, Audit All, Dashboard, Gallery, grade thresholds |
+| `proven-patterns.md` | 13 structural patterns with repo examples |
+| `best-practices.md` | Anthropic + superpowers methodology + cross-agent awareness |
+| `frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree |
+| `evaluation-rubric.md` | 10 scoring dimensions, grade thresholds, pressure testing |
+  </TabItem>
+</Tabs>
+
+## Skill Creator
+
+Create, improve, and audit AI agent skills for this repository. Uses a unified 6-step development workflow that handles both new and existing skills, with mode-specific branching for the first three steps and identical build/validate/iterate phases for both.
+
+### When to Use
+
+- Building a new skill from scratch
+- Refactoring or improving an existing skill's instructions
+- Reviewing skill quality with a graded audit report
+- Learning skill-writing patterns from concrete examples
+- Comparing skill quality across the repository
+
+<Aside type="caution">
+NOT for running existing skills, creating agents (`wagents new agent`), or building MCP servers (`/mcp-creator`).
+</Aside>
+
+### Unified Development Workflow
+
+| Step | New Skill | Existing Skill |
+|------|-----------|----------------|
+| 1. Understand | Define use cases, scope, patterns | Audit + understand user's intent |
+| 2. Plan | Structure, description, frontmatter | Gap analysis + improvement plan (approval gate) |
+| 3. Scaffold | `wagents new skill <name>` | Skip |
+| 4. Build | Write/edit body, references, scripts, templates, evals | Same |
+| 5. Validate | `wagents validate` + `audit.py` | Same |
+| 6. Iterate | Test, identify issues, loop to Step 4 | Same |
+
+### 13 Proven Patterns
+
+The skill teaches and enforces structural patterns extracted from the repository's best skills:
+
+<CardGrid>
+  <Card title="Dispatch Table" icon="list-format">Routes `$ARGUMENTS` to modes with example invocations</Card>
+  <Card title="Reference File Index" icon="document">Links reference files with "Read When" guidance</Card>
+  <Card title="Critical Rules" icon="warning">Numbered, testable rules (5+ minimum)</Card>
+  <Card title="Canonical Vocabulary" icon="translate">Exact terms for modes, grades, patterns</Card>
+  <Card title="Scope Boundaries" icon="close">IS for / NOT for prevents misrouting</Card>
+  <Card title="Progressive Disclosure" icon="layers">Frontmatter, body, references, scripts</Card>
+</CardGrid>
+
+Plus: classification-gating, scaling-strategy, state-management, scripts, templates, hooks, body-substitutions.
+
+### Audit Script
+
+The deterministic audit script scores skills across 10 weighted dimensions:
+
+```bash
+# Audit a single skill
+uv run python skills/skill-creator/scripts/audit.py skills/<name>/
+
+# Audit all skills with comparative table
+uv run python skills/skill-creator/scripts/audit.py --all --format table
+```
+
+**Grade scale:** A (90+), B (75-89), C (60-74), D (40-59), F (<40)
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/skill-creator/SKILL.md)

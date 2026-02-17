@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "refactor the wargame skill to improve its description and add a scaling strategy",
+  "files": [],
+  "expected_behavior": [
+    "Agent auto-detects 'refactor' + 'wargame' as Develop (existing)",
+    "Agent runs full audit but focuses plan on description + scaling strategy",
+    "Agent presents targeted improvement plan with approval gate",
+    "Agent does NOT confuse this with a Create request"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "skills": ["skill-creator"],
+  "query": "I want to build a skill that audits Python type safety across a codebase",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes this as a skill creation request from natural language",
+    "Agent auto-detects Develop (new) mode (no explicit keyword, but describes a new skill idea)",
+    "Agent derives a name suggestion from the description (e.g., 'type-safety-auditor')",
+    "Agent asks user to confirm the name before scaffolding",
+    "Agent follows the same 6-step unified workflow as explicit invocation",
+    "Agent does NOT confuse this with an MCP server request or agent creation"
+  ]
+}
