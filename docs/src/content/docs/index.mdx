@@ -1,12 +1,34 @@
 ---
-title: agents
-description: AI agent artifacts, configs, skills, tools, and more
+title: Agents
+description: AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more
 template: splash
 hero:
-  tagline: Browse, discover, and install AI agent skills, agents, and MCP servers
+  tagline: Open-source skills, agents, and MCP servers — install in one command
+  image:
+    html: |
+      <div class="hero-terminal">
+        <div class="hero-terminal-header">
+          <span class="hero-terminal-dot red"></span>
+          <span class="hero-terminal-dot yellow"></span>
+          <span class="hero-terminal-dot green"></span>
+          <span class="hero-terminal-title">terminal</span>
+        </div>
+        <div class="hero-terminal-body">
+          <span class="hero-terminal-prompt">$</span>
+          <span class="hero-terminal-cmd">npx skills add wyattowalsh/agents --all -g</span>
+          <span class="hero-terminal-cursor">▋</span>
+        </div>
+        <div class="hero-agents-row">
+          <span class="hero-agent-badge">Claude</span>
+          <span class="hero-agent-badge">Gemini</span>
+          <span class="hero-agent-badge">Codex</span>
+          <span class="hero-agent-badge">Cursor</span>
+          <span class="hero-agent-badge">Copilot</span>
+        </div>
+      </div>
   actions:
-    - text: Browse Skills
-      link: /skills/add-badges/
+    - text: Get Started
+      link: /skills/
       icon: right-arrow
     - text: GitHub
       link: https://github.com/wyattowalsh/agents
@@ -16,19 +38,38 @@ hero:
 
 import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## Install
+<div class="stats-bar">
+  <span class="stat stat-skill">8 Custom Skills</span>
+  <span class="stat stat-installed">19 Installed Skills</span>
+</div>
+
+## What Can You Do?
+
+<CardGrid>
+  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with AI code smell detection and severity calibration." />
+  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/" description="Domain-agnostic wargaming with Monte Carlo exploration, structured adjudication, and visual dashboards." />
+  <LinkCard title="Host Expert Panels" href="/skills/host-panel/" description="Simulated panel discussions among AI experts in roundtable, Oxford-style, and Socratic formats." />
+  <LinkCard title="Automate Documentation" href="/skills/docs-steward/" description="Auto-maintain your docs site — sync generated pages, enhance content quality, and run health checks." />
+</CardGrid>
+
+<div class="install-section">
+
+### Quick Install
 
 ```bash
 npx skills add wyattowalsh/agents --all -g
 ```
 
-## Skills
+</div>
+
+## Featured Skills
 
 <div class="catalog-skill">
 <CardGrid>
-  <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert " />
-  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI cod" />
-  <LinkCard title="host-panel" href="/skills/host-panel/" description="Host simulated panel discussions and debates among AI-simulated domain experts. Supports roundtable, Oxford-style, and S" />
-  <LinkCard title="wargame" href="/skills/wargame/" description="Domain-agnostic strategic decision analysis and wargaming. Auto-classifies scenario complexity: simple decisions get str" />
+  <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields." />
+  <LinkCard title="docs-steward" href="/skills/docs-steward/" description="Automatically maintain, enhance, and improve the repository documentation site. Auto-triggers when skills, agents, or MCP servers change." />
+  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity…" />
 </CardGrid>
 </div>
+
+[View all 27 skills →](/skills/)

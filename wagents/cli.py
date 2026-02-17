@@ -62,10 +62,54 @@ def _truncate_sentence(text: str, max_len: int) -> str:
     return chunk[:max_len - 1] + '\u2026'
 
 
+def _strip_relative_md_links(text: str) -> str:
+    """Convert relative .md links [text](file.md) to just `text` (no link)."""
+    return re.sub(
+        r'\[([^\]]+)\]\((?!https?://|/)[^)]*\.md\)',
+        r'`\1`',
+        text,
+    )
+
+
 def _shift_headings(body: str, levels: int = 1) -> str:
-    """Shift all markdown headings down by `levels` (e.g. # -> ## when levels=1)."""
+    """Shift all markdown headings down by `levels` (e.g. # -> ## when levels=1).
+
+    Fence-aware: skips headings inside fenced code blocks.
+    """
     extra = '#' * levels
-    return re.sub(r'^(#{1,5})', lambda m: extra + m.group(1), body, flags=re.MULTILINE)
+    lines = body.split('\n')
+    result = []
+    fence_char = None
+    fence_count = 0
+
+    for line in lines:
+        stripped = line.lstrip()
+        indent = len(line) - len(stripped)
+
+        # Track fenced code block state (same logic as _escape_mdx)
+        if indent <= 3:
+            if stripped.startswith('```') or stripped.startswith('~~~'):
+                char = stripped[0]
+                count = len(stripped) - len(stripped.lstrip(char))
+                if fence_char is None:
+                    fence_char = char
+                    fence_count = count
+                    result.append(line)
+                    continue
+                elif char == fence_char and count >= fence_count:
+                    fence_char = None
+                    fence_count = 0
+                    result.append(line)
+                    continue
+
+        if fence_char is not None:
+            result.append(line)
+            continue
+
+        # Shift headings outside fences
+        result.append(re.sub(r'^(#{1,5})', lambda m: extra + m.group(1), line))
+
+    return '\n'.join(result)
 
 
 def _escape_attr(text: str) -> str:
@@ -156,6 +200,8 @@ Step-by-step instructions for the agent.
             source_path=f"skills/{name}/SKILL.md",
         )
         _scaffold_doc_page(node)
+        _regenerate_sidebar_and_indexes()
+        typer.echo("Regenerated sidebar and index pages")
 
 
 @new_app.command("agent")
@@ -221,6 +267,8 @@ Rules and constraints for this agent's behavior.
             source_path=f"agents/{name}.md",
         )
         _scaffold_doc_page(node)
+        _regenerate_sidebar_and_indexes()
+        typer.echo("Regenerated sidebar and index pages")
 
 
 @new_app.command("mcp")
@@ -309,6 +357,8 @@ build-backend = "hatchling.build"
             source_path=f"mcp/{name}/server.py",
         )
         _scaffold_doc_page(node)
+        _regenerate_sidebar_and_indexes()
+        typer.echo("Regenerated sidebar and index pages")
 
 
 def parse_frontmatter(content: str) -> tuple[dict, str]:
@@ -562,7 +612,8 @@ class CatalogNode:
     description: str
     metadata: dict     # frontmatter (skill/agent) or pyproject data (mcp)
     body: str          # markdown body content
-    source_path: str   # relative path from repo root
+    source_path: str   # relative path from repo root (custom) or absolute path (installed)
+    source: str = "custom"  # "custom" or "installed"
 
 
 @dataclass
@@ -659,6 +710,48 @@ def _collect_nodes() -> list[CatalogNode]:
                 ))
             except Exception as e:
                 typer.echo(f"Warning: skipping {mcp_subdir}: {e}", err=True)
+
+    return nodes
+
+
+def _collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
+    """Scan ~/.claude/skills/ for installed skills not in the repo."""
+    nodes = []
+    skills_dir = Path.home() / ".claude" / "skills"
+    if not skills_dir.exists():
+        return nodes
+
+    for skill_dir in sorted(skills_dir.iterdir()):
+        if not skill_dir.is_dir() and not skill_dir.is_symlink():
+            continue
+        # Resolve symlinks
+        resolved = skill_dir.resolve() if skill_dir.is_symlink() else skill_dir
+        skill_file = resolved / "SKILL.md"
+        if not skill_file.exists():
+            continue
+
+        dir_name = skill_dir.name
+        # Skip if already in custom skills
+        if dir_name in existing_ids:
+            continue
+
+        try:
+            content = skill_file.read_text()
+            fm, body = parse_frontmatter(content)
+            # Graceful fallback: use directory name if 'name' field missing
+            skill_name = fm.get("name", dir_name)
+            nodes.append(CatalogNode(
+                kind="skill",
+                id=skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name,
+                title=to_title(skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name),
+                description=str(fm.get("description", f"Installed skill: {dir_name}")),
+                metadata=fm,
+                body=body,
+                source_path=str(skill_file),
+                source="installed",
+            ))
+        except Exception as e:
+            typer.echo(f"Warning: skipping installed skill {skill_dir.name}: {e}", err=True)
 
     return nodes
 
@@ -790,6 +883,17 @@ def _escape_mdx_line(line: str) -> str:
 
 GITHUB_BASE = "https://github.com/wyattowalsh/agents/blob/main"
 
+RELATED_SKILLS = {
+    "wargame": ["host-panel", "prompt-engineer"],
+    "host-panel": ["wargame"],
+    "honest-review": ["add-badges", "docs-steward"],
+    "docs-steward": ["honest-review", "add-badges"],
+    "add-badges": ["honest-review", "docs-steward"],
+    "prompt-engineer": ["skill-creator", "wargame"],
+    "skill-creator": ["prompt-engineer", "mcp-creator"],
+    "mcp-creator": ["skill-creator"],
+}
+
 
 def _render_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     """Render a CatalogNode to MDX string."""
@@ -814,9 +918,32 @@ def _scaffold_doc_page(node: CatalogNode) -> None:
     typer.echo(f"Created {rel}")
 
 
+def _read_raw_content(node: CatalogNode) -> str:
+    """Read the raw file content for a CatalogNode from disk."""
+    if node.source == "custom":
+        raw_path = ROOT / node.source_path
+    else:
+        raw_path = Path(node.source_path)
+    try:
+        return raw_path.read_text()
+    except Exception:
+        # Fallback: reconstruct from parsed data
+        raw_lines = ["---"]
+        for key, value in node.metadata.items():
+            raw_lines.append(yaml.dump({key: value}, default_flow_style=False).strip())
+        raw_lines.append("---")
+        if node.body:
+            raw_lines.append("")
+            raw_lines.append(node.body)
+        return "\n".join(raw_lines)
+
+
 def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     fm = node.metadata
     parts = []
+
+    # Read raw content from disk for the copyable code block
+    raw_content = _read_raw_content(node)
 
     # Frontmatter
     parts.append("---")
@@ -829,10 +956,15 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     parts.append("import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';")
     parts.append("")
 
-    # Badge row — only fields that have values
+    # === TIER 1: Human summary ===
+
+    # Badge row — standardized: always show name + word count
     badges = []
+    badges.append(f'<Badge text="{_escape_attr(node.id)}" variant="note" />')
+    word_count = len(node.body.split()) if node.body else 0
+    badges.append(f'<Badge text="{word_count} words" variant="default" />')
     if fm.get("license"):
-        badges.append(f'<Badge text="{_escape_attr(fm["license"])}" variant="note" />')
+        badges.append(f'<Badge text="{_escape_attr(fm["license"])}" variant="success" />')
     meta = fm.get("metadata", {})
     if isinstance(meta, dict):
         if meta.get("version"):
@@ -841,13 +973,10 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
             badges.append(f'<Badge text="{_escape_attr(meta["author"])}" variant="caution" />')
     if fm.get("model"):
         badges.append(f'<Badge text="{_escape_attr(fm["model"])}" variant="tip" />')
-    # Word count badge
-    word_count = len(node.body.split())
-    if word_count > 1000:
-        badges.append(f'<Badge text="{word_count} words" variant="default" />')
-    if badges:
-        parts.append(" ".join(badges))
-        parts.append("")
+    if node.source != "custom":
+        badges.append(f'<Badge text="Installed" variant="caution" />')
+    parts.append(" ".join(badges))
+    parts.append("")
 
     # Description
     parts.append(f"> {node.description}")
@@ -860,7 +989,10 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     parts.append("")
     parts.append("**Install:**")
     parts.append("```bash")
-    parts.append(f"npx skills add wyattowalsh/agents/skills/{node.id} -g")
+    if node.source == "custom":
+        parts.append(f"npx skills add wyattowalsh/agents/skills/{node.id} -g")
+    else:
+        parts.append(f"npx skills add {node.id} -g")
     parts.append("```")
     parts.append("")
     use_line = f"**Use:** `/{node.id}`"
@@ -871,7 +1003,76 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     parts.append("</div>")
     parts.append("")
 
-    # Tabbed metadata
+    # Guide cross-link — check if a hand-maintained guide page exists
+    guide_path = CONTENT_DIR / "guides" / f"{node.id}.mdx"
+    if guide_path.exists():
+        parts.append(f'<LinkCard title="Full Guide: {node.id}" href="/guides/{node.id}/" description="Architecture, research sources, framework catalog, design decisions, and roadmap." />')
+        parts.append("")
+
+    # "What it does" section — first paragraph after first heading
+    what_it_does = ""
+    if node.body:
+        body_lines = node.body.split('\n')
+        found_heading = False
+        para_lines = []
+        for bl in body_lines:
+            if not found_heading:
+                if bl.strip().startswith('#'):
+                    found_heading = True
+                continue
+            if bl.strip() == '':
+                if para_lines:
+                    break
+                continue
+            para_lines.append(bl.strip())
+        if para_lines:
+            what_it_does = ' '.join(para_lines)
+
+    if what_it_does:
+        parts.append("## What It Does")
+        parts.append("")
+        parts.append(_strip_relative_md_links(_escape_mdx(what_it_does)))
+        parts.append("")
+
+    # Extract dispatch table if present
+    dispatch_table = ""
+    if node.body:
+        body_lines = node.body.split('\n')
+        table_lines = []
+        in_table = False
+        for bl in body_lines:
+            if '|' in bl and ('$ARGUMENTS' in bl or '\\$ARGUMENTS' in bl):
+                in_table = True
+            if in_table:
+                if bl.strip().startswith('|'):
+                    table_lines.append(bl)
+                elif bl.strip() == '':
+                    if table_lines:
+                        break
+                else:
+                    if table_lines:
+                        break
+        # Include the header row before the $ARGUMENTS row
+        if table_lines:
+            for i, bl in enumerate(body_lines):
+                if bl == table_lines[0]:
+                    header_idx = i - 2 if i >= 2 and body_lines[i-1].strip().startswith('|') else i - 1
+                    if header_idx >= 0 and body_lines[header_idx].strip().startswith('|'):
+                        prefix = []
+                        for j in range(header_idx, i):
+                            if body_lines[j].strip().startswith('|'):
+                                prefix.append(body_lines[j])
+                        table_lines = prefix + table_lines
+                    break
+            dispatch_table = '\n'.join(table_lines)
+
+    if dispatch_table:
+        parts.append("## Modes")
+        parts.append("")
+        parts.append(_strip_relative_md_links(_escape_mdx(dispatch_table)))
+        parts.append("")
+
+    # Tabbed metadata (with single-tab fix)
     tab_items = []
 
     # General tab
@@ -914,15 +1115,23 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
         tab_items.append(("Compatibility", "| Field | Value |\n| ----- | ----- |\n" + "\n".join(compat_rows)))
 
     if tab_items:
-        parts.append("<Tabs>")
-        for label, content in tab_items:
-            parts.append(f'  <TabItem label="{label}">')
+        if len(tab_items) == 1:
+            # Single tab — render content directly without Tabs wrapper
+            label, content = tab_items[0]
+            parts.append(f"### {label}")
+            parts.append("")
             parts.append(content)
-            parts.append("  </TabItem>")
-        parts.append("</Tabs>")
-        parts.append("")
+            parts.append("")
+        else:
+            parts.append("<Tabs>")
+            for label, content in tab_items:
+                parts.append(f'  <TabItem label="{label}">')
+                parts.append(content)
+                parts.append("  </TabItem>")
+            parts.append("</Tabs>")
+            parts.append("")
 
-    # Cross-links
+    # Cross-links (Used By)
     related_edges = [e for e in edges if e.to_id == f"skill:{node.id}"]
     if related_edges:
         parts.append("## Used By")
@@ -936,15 +1145,57 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
         parts.append("</CardGrid>")
         parts.append("")
 
-    # Body (shift headings down one level, no wrapper heading)
-    if node.body:
-        parts.append(_escape_mdx(_shift_headings(node.body, 1)))
+    # Related Skills
+    related = RELATED_SKILLS.get(node.id, [])
+    if related:
+        parts.append("## Related Skills")
+        parts.append("")
+        parts.append("<CardGrid>")
+        for rel_id in related:
+            rel_node = next((n for n in all_nodes if n.kind == "skill" and n.id == rel_id), None)
+            if rel_node:
+                desc = _escape_attr(_truncate_sentence(rel_node.description, 160))
+                parts.append(f'  <LinkCard title="{_escape_attr(rel_id)}" href="/skills/{rel_id}/" description="{desc}" />')
+        parts.append("</CardGrid>")
         parts.append("")
 
-    # Source link
-    parts.append("---")
-    parts.append(f"[View source on GitHub]({GITHUB_BASE}/{node.source_path})")
+    # === TIER 2: Copyable asset preview ===
+    # Use wider fence than any fence inside the raw content
+    max_fence = 3
+    for line in raw_content.split('\n'):
+        stripped = line.lstrip()
+        if stripped.startswith('```') or stripped.startswith('~~~'):
+            fence_len = len(stripped) - len(stripped.lstrip(stripped[0]))
+            max_fence = max(max_fence, fence_len)
+    outer_fence = '`' * (max_fence + 1)
+    parts.append("<details>")
+    parts.append("<summary>View Full SKILL.md</summary>")
     parts.append("")
+    parts.append(f'{outer_fence}yaml title="SKILL.md"')
+    parts.append(raw_content)
+    parts.append(outer_fence)
+    parts.append("")
+    if node.source == "custom":
+        parts.append(f"[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/{node.source_path})")
+        parts.append("")
+    parts.append("</details>")
+    parts.append("")
+
+    # === TIER 3: Rendered specification ===
+    if node.body:
+        parts.append("<details>")
+        parts.append("<summary>Rendered Specification</summary>")
+        parts.append("")
+        parts.append(_strip_relative_md_links(_escape_mdx(_shift_headings(node.body, 1))))
+        parts.append("")
+        parts.append("</details>")
+        parts.append("")
+
+    # Source link (only for custom skills)
+    if node.source == "custom":
+        parts.append("---")
+        parts.append(f"[View source on GitHub]({GITHUB_BASE}/{node.source_path})")
+        parts.append("")
 
     return "\n".join(parts)
 
@@ -986,7 +1237,7 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
         parts.append('</div>')
         parts.append("")
 
-    # Tabbed config
+    # Tabbed config (with single-tab fix)
     tab_items = []
 
     # Identity tab
@@ -1022,13 +1273,21 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
         tab_items.append(("Integrations", "| Field | Value |\n| ----- | ----- |\n" + "\n".join(int_rows)))
 
     if tab_items:
-        parts.append("<Tabs>")
-        for label, content in tab_items:
-            parts.append(f'  <TabItem label="{label}">')
+        if len(tab_items) == 1:
+            # Single tab — render content directly without Tabs wrapper
+            label, content = tab_items[0]
+            parts.append(f"### {label}")
+            parts.append("")
             parts.append(content)
-            parts.append("  </TabItem>")
-        parts.append("</Tabs>")
-        parts.append("")
+            parts.append("")
+        else:
+            parts.append("<Tabs>")
+            for label, content in tab_items:
+                parts.append(f'  <TabItem label="{label}">')
+                parts.append(content)
+                parts.append("  </TabItem>")
+            parts.append("</Tabs>")
+            parts.append("")
 
     # Cross-links
     outgoing = [e for e in edges if e.from_id == f"agent:{node.id}"]
@@ -1092,7 +1351,7 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     if node.body:
         parts.append("## System Prompt")
         parts.append("")
-        parts.append(_escape_mdx(_shift_headings(node.body, 1)))
+        parts.append(_strip_relative_md_links(_escape_mdx(_shift_headings(node.body, 1))))
         parts.append("")
 
     # Source link
@@ -1146,7 +1405,7 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
     parts.append("</Aside>")
     parts.append("")
 
-    # Tabbed config
+    # Tabbed config (with single-tab fix)
     tab_items = []
 
     # Package info tab
@@ -1172,13 +1431,21 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
         tab_items.append(("FastMCP Config", "```json\n" + json.dumps(fastmcp_config, indent=2) + "\n```"))
 
     if tab_items:
-        parts.append("<Tabs>")
-        for label, content in tab_items:
-            parts.append(f'  <TabItem label="{label}">')
+        if len(tab_items) == 1:
+            # Single tab — render content directly without Tabs wrapper
+            label, content = tab_items[0]
+            parts.append(f"### {label}")
+            parts.append("")
             parts.append(content)
-            parts.append("  </TabItem>")
-        parts.append("</Tabs>")
-        parts.append("")
+            parts.append("")
+        else:
+            parts.append("<Tabs>")
+            for label, content in tab_items:
+                parts.append(f'  <TabItem label="{label}">')
+                parts.append(content)
+                parts.append("  </TabItem>")
+            parts.append("</Tabs>")
+            parts.append("")
 
     # Server source
     if node.body:
@@ -1268,34 +1535,36 @@ def _write_index_page(nodes: list[CatalogNode]) -> None:
     parts.append("import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';")
     parts.append("")
 
-    # Stats bar
-    parts.append('<div class="stats-bar">')
-    parts.append(f'  <span class="stat stat-skill">{len(skills)} Skills</span>')
-    parts.append(f'  <span class="stat stat-agent">{len(agents)} Agents</span>')
-    parts.append(f'  <span class="stat stat-mcp">{len(mcps)} MCP Servers</span>')
-    parts.append('</div>')
-    parts.append("")
+    # Stats bar — only show non-zero counts
+    custom_skills = [n for n in skills if n.source == "custom"]
+    installed_skills = [n for n in skills if n.source != "custom"]
 
-    # What's inside section
-    has_any = skills or agents or mcps
-    if has_any:
-        parts.append("## What's Inside")
+    stat_items = []
+    if custom_skills:
+        stat_items.append(f'  <span class="stat stat-skill">{len(custom_skills)} Custom Skills</span>')
+    if installed_skills:
+        stat_items.append(f'  <span class="stat stat-installed">{len(installed_skills)} Installed Skills</span>')
+    if agents:
+        stat_items.append(f'  <span class="stat stat-agent">{len(agents)} Agents</span>')
+    if mcps:
+        stat_items.append(f'  <span class="stat stat-mcp">{len(mcps)} MCP Servers</span>')
+
+    if stat_items:
+        parts.append('<div class="stats-bar">')
+        parts.extend(stat_items)
+        parts.append('</div>')
         parts.append("")
-        parts.append("<CardGrid>")
-        if skills:
-            parts.append('  <Card title="Skills" icon="sparkles">')
-            parts.append("    Reusable knowledge and workflows that extend AI agent capabilities. Install with a single command.")
-            parts.append("  </Card>")
-        if agents:
-            parts.append('  <Card title="Agents" icon="rocket">')
-            parts.append("    Specialized agent configurations with tools, permissions, and system prompts.")
-            parts.append("  </Card>")
-        if mcps:
-            parts.append('  <Card title="MCP Servers" icon="setting">')
-            parts.append("    Model Context Protocol servers providing tools and data to AI agents.")
-            parts.append("  </Card>")
-        parts.append("</CardGrid>")
-        parts.append("")
+
+    # What Can You Do section — use-case framing
+    parts.append("## What Can You Do?")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with AI code smell detection and severity calibration." />')
+    parts.append('  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/" description="Domain-agnostic wargaming with Monte Carlo exploration, structured adjudication, and visual dashboards." />')
+    parts.append('  <LinkCard title="Host Expert Panels" href="/skills/host-panel/" description="Simulated panel discussions among AI experts in roundtable, Oxford-style, and Socratic formats." />')
+    parts.append('  <LinkCard title="Automate Documentation" href="/skills/docs-steward/" description="Auto-maintain your docs site — sync generated pages, enhance content quality, and run health checks." />')
+    parts.append("</CardGrid>")
+    parts.append("")
 
     # Install section
     parts.append('<div class="install-section">')
@@ -1309,18 +1578,21 @@ def _write_index_page(nodes: list[CatalogNode]) -> None:
     parts.append("</div>")
     parts.append("")
 
-    # Skills section
+    # Skills section — show top 3 + link to full index
     if skills:
-        parts.append("## Skills")
+        parts.append("## Featured Skills")
         parts.append("")
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
-        for n in skills:
+        for n in skills[:3]:
             desc = _escape_attr(_truncate_sentence(n.description, 160))
             parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
+        if len(skills) > 3:
+            parts.append(f"[View all {len(skills)} skills →](/skills/)")
+            parts.append("")
 
     # Agents section
     if agents:
@@ -1468,6 +1740,9 @@ def _write_cli_page() -> None:
 
 def _write_skills_index(nodes: list[CatalogNode]) -> None:
     """Write skills/index.mdx category page."""
+    custom = [n for n in nodes if n.source == "custom"]
+    installed = [n for n in nodes if n.source != "custom"]
+
     parts = []
     parts.append("---")
     parts.append("title: Skills")
@@ -1478,24 +1753,122 @@ def _write_skills_index(nodes: list[CatalogNode]) -> None:
     parts.append("")
     parts.append("> Reusable knowledge and workflows that extend AI agent capabilities across Claude Code, Gemini CLI, Codex, Cursor, and more.")
     parts.append("")
-    parts.append('<div class="stats-bar">')
-    parts.append(f'  <span class="stat stat-skill">{len(nodes)} skills available</span>')
-    parts.append('</div>')
+
+    # Install section
+    parts.append('<div class="install-section">')
     parts.append("")
-    parts.append("## All Skills")
+    parts.append("### Quick Install All")
     parts.append("")
-    parts.append('<div class="catalog-skill">')
-    parts.append("<CardGrid>")
-    for n in nodes:
-        desc = _escape_attr(_truncate_sentence(n.description, 160))
-        parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
-    parts.append("</CardGrid>")
+    parts.append("```bash")
+    parts.append("npx skills add wyattowalsh/agents --all -g")
+    parts.append("```")
+    parts.append("")
     parts.append("</div>")
     parts.append("")
+
+    # Custom skills
+    if custom:
+        parts.append(f"## Custom Skills ({len(custom)})")
+        parts.append("")
+        parts.append('<div class="catalog-skill">')
+        parts.append("<CardGrid>")
+        for n in custom:
+            desc = _escape_attr(_truncate_sentence(n.description, 160))
+            parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
+        parts.append("</CardGrid>")
+        parts.append("</div>")
+        parts.append("")
+
+    # Installed skills — link to anchors on aggregated page
+    if installed:
+        parts.append(f"## Installed Skills ({len(installed)})")
+        parts.append("")
+        parts.append('<div class="catalog-installed">')
+        parts.append("<CardGrid>")
+        for n in installed:
+            desc = _escape_attr(_truncate_sentence(n.description, 160))
+            parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/skills/installed/#{n.id}" description="{desc}" />')
+        parts.append("</CardGrid>")
+        parts.append("</div>")
+        parts.append("")
 
     out_dir = CONTENT_DIR / "skills"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "index.mdx").write_text("\n".join(parts))
+
+
+def _write_installed_skills_page(nodes: list[CatalogNode]) -> None:
+    """Write skills/installed.mdx — aggregated page for all installed skills."""
+    parts = []
+    parts.append("---")
+    parts.append(f"title: Installed Skills ({len(nodes)})")
+    parts.append("description: Skills installed from external sources")
+    parts.append("---")
+    parts.append("")
+    parts.append("import { Badge, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';")
+    parts.append("")
+    parts.append(f"> {len(nodes)} skills installed from external sources via `~/.claude/skills/`.")
+    parts.append("")
+
+    for n in nodes:
+        fm = n.metadata
+        meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
+
+        # Anchor heading for each skill
+        parts.append(f"## {n.id}")
+        parts.append("")
+
+        # Badge row
+        badges = [f'<Badge text="{_escape_attr(n.id)}" variant="note" />']
+        word_count = len(n.body.split()) if n.body else 0
+        badges.append(f'<Badge text="{word_count} words" variant="default" />')
+        if fm.get("license"):
+            badges.append(f'<Badge text="{_escape_attr(fm["license"])}" variant="success" />')
+        if meta.get("version"):
+            badges.append(f'<Badge text="v{_escape_attr(str(meta["version"]))}" variant="success" />')
+        if meta.get("author"):
+            badges.append(f'<Badge text="{_escape_attr(meta["author"])}" variant="caution" />')
+        if fm.get("model"):
+            badges.append(f'<Badge text="{_escape_attr(fm["model"])}" variant="tip" />')
+        parts.append(" ".join(badges))
+        parts.append("")
+
+        # Description
+        parts.append(f"> {n.description}")
+        parts.append("")
+
+        # Install + use
+        parts.append(f"**Install:** `npx skills add {n.id} -g`")
+        use_line = f"**Use:** `/{n.id}`"
+        if fm.get("argument-hint"):
+            use_line += f" `{fm['argument-hint']}`"
+        parts.append(use_line)
+        parts.append("")
+
+        # Collapsible raw SKILL.md
+        raw_content = _read_raw_content(n)
+        max_fence = 3
+        for line in raw_content.split('\n'):
+            stripped = line.lstrip()
+            if stripped.startswith('```') or stripped.startswith('~~~'):
+                fence_len = len(stripped) - len(stripped.lstrip(stripped[0]))
+                max_fence = max(max_fence, fence_len)
+        outer_fence = '`' * (max_fence + 1)
+        parts.append("<details>")
+        parts.append("<summary>View SKILL.md</summary>")
+        parts.append("")
+        parts.append(f'{outer_fence}yaml title="SKILL.md"')
+        parts.append(raw_content)
+        parts.append(outer_fence)
+        parts.append("")
+        parts.append("</details>")
+        parts.append("")
+        parts.append("---")
+        parts.append("")
+
+    out_dir = CONTENT_DIR / "skills"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "installed.mdx").write_text("\n".join(parts))
 
 
 def _write_agents_index(nodes: list[CatalogNode]) -> None:
@@ -1564,19 +1937,46 @@ def _write_mcp_index(nodes: list[CatalogNode]) -> None:
 
 def _write_sidebar(nodes: list[CatalogNode]) -> None:
     """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
-    skills = [n for n in nodes if n.kind == "skill"]
+    custom_skills = [n for n in nodes if n.kind == "skill" and n.source == "custom"]
+    installed_skills = [n for n in nodes if n.kind == "skill" and n.source != "custom"]
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
 
     lines = []
     lines.append("// Auto-generated by wagents docs generate — do not edit")
+    lines.append("export const navLinks = [")
+    nav_items = ["  { label: 'Skills', link: '/skills/' }"]
+    if agents:
+        nav_items.append("  { label: 'Agents', link: '/agents/' }")
+    if mcps:
+        nav_items.append("  { label: 'MCP', link: '/mcp/' }")
+    nav_items.append("  { label: 'CLI', link: '/cli/' }")
+    lines.append(",\n".join(nav_items))
+    lines.append("];")
+    lines.append("")
     lines.append("export default [")
     lines.append("  { slug: '' },")
 
+    # Skills group with subgroups
+    total_skills = len(custom_skills) + len(installed_skills)
     lines.append("  {")
     lines.append("    label: 'Skills',")
-    lines.append("    autogenerate: { directory: 'skills' },")
-    lines.append(f"    badge: {{ text: '{len(skills)}', variant: 'tip' }},")
+    lines.append(f"    badge: {{ text: '{total_skills}', variant: 'tip' }},")
+    lines.append("    items: [")
+
+    if custom_skills:
+        lines.append("      {")
+        lines.append(f"        label: 'Custom ({len(custom_skills)})',")
+        lines.append("        items: [")
+        for n in custom_skills:
+            lines.append(f"          {{ slug: 'skills/{n.id}' }},")
+        lines.append("        ],")
+        lines.append("      },")
+
+    if installed_skills:
+        lines.append(f"      {{ label: 'Installed ({len(installed_skills)})', slug: 'skills/installed' }},")
+
+    lines.append("    ],")
     lines.append("  },")
 
     if agents:
@@ -1591,6 +1991,20 @@ def _write_sidebar(nodes: list[CatalogNode]) -> None:
         lines.append("    autogenerate: { directory: 'mcp' },")
         lines.append("  },")
 
+    # Guides group — auto-discover hand-maintained guide pages
+    guides_dir = CONTENT_DIR / "guides"
+    if guides_dir.exists():
+        guide_files = sorted(guides_dir.glob("*.mdx"))
+        if guide_files:
+            lines.append("  {")
+            lines.append(f"    label: 'Guides',")
+            lines.append(f"    badge: {{ text: '{len(guide_files)}', variant: 'note' }},")
+            lines.append("    items: [")
+            for gf in guide_files:
+                lines.append(f"      {{ slug: 'guides/{gf.stem}' }},")
+            lines.append("    ],")
+            lines.append("  },")
+
     lines.append("  { slug: 'cli', label: 'CLI Reference' },")
     lines.append("];")
     lines.append("")
@@ -1598,6 +2012,28 @@ def _write_sidebar(nodes: list[CatalogNode]) -> None:
     sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     sidebar_path.parent.mkdir(parents=True, exist_ok=True)
     sidebar_path.write_text("\n".join(lines))
+
+
+def _regenerate_sidebar_and_indexes() -> None:
+    """Regenerate sidebar and index pages from current nodes."""
+    nodes = _collect_nodes()
+    # Also collect installed if content dir exists
+    if CONTENT_DIR.exists():
+        existing_ids = {n.id for n in nodes if n.kind == "skill"}
+        installed = _collect_installed_skills(existing_ids)
+        nodes.extend(installed)
+
+    skills = [n for n in nodes if n.kind == "skill"]
+    agents_list = [n for n in nodes if n.kind == "agent"]
+    mcps = [n for n in nodes if n.kind == "mcp"]
+
+    _write_sidebar(nodes)
+    _write_skills_index(skills)
+    if agents_list:
+        _write_agents_index(agents_list)
+    if mcps:
+        _write_mcp_index(mcps)
+    _write_index_page(nodes)
 
 
 # ---------------------------------------------------------------------------
@@ -1628,6 +2064,7 @@ def docs_init():
 @docs_app.command("generate")
 def docs_generate(
     include_drafts: bool = typer.Option(False, "--include-drafts", help="Include draft skills"),
+    include_installed: bool = typer.Option(True, "--include-installed/--no-installed", help="Include installed skills from ~/.claude/skills/"),
 ):
     """Generate MDX content pages from repo assets."""
     # Clean existing generated content
@@ -1647,14 +2084,24 @@ def docs_generate(
 
     nodes = _collect_nodes()
 
+    # Collect installed skills
+    if include_installed:
+        existing_ids = {n.id for n in nodes if n.kind == "skill"}
+        installed = _collect_installed_skills(existing_ids)
+        nodes.extend(installed)
+        if installed:
+            typer.echo(f"  Found {len(installed)} installed skills")
+
     # Filter drafts
     if not include_drafts:
         nodes = [n for n in nodes if not (n.kind == "skill" and n.description.strip().upper().startswith("TODO"))]
 
     edges = _collect_edges(nodes)
 
-    # Write individual pages
+    # Write individual pages (skip installed skills — they go on a single aggregated page)
     for node in nodes:
+        if node.kind == "skill" and node.source != "custom":
+            continue  # installed skills aggregated on skills/installed.mdx
         page_content = _render_page(node, edges, nodes)
         page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
         page_dir.mkdir(parents=True, exist_ok=True)
@@ -1668,6 +2115,10 @@ def docs_generate(
 
     _write_skills_index(skills)
     typer.echo("  Generated skills/index.mdx")
+    installed_skills = [n for n in skills if n.source != "custom"]
+    if installed_skills:
+        _write_installed_skills_page(installed_skills)
+        typer.echo("  Generated skills/installed.mdx")
     if agents:
         _write_agents_index(agents)
         typer.echo("  Generated agents/index.mdx")

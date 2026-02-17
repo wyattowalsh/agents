@@ -88,7 +88,6 @@ BADGE_SERVICES = [
 
 DEAD_SERVICES: dict[str, str] = {
     "david-dm.org": "Use Dependabot or Renovate instead",
-    "travis-ci.org": "Migrate to travis-ci.com or GitHub Actions",
     "godoc.org": "Use pkg.go.dev instead",
 }
 

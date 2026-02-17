@@ -122,7 +122,7 @@ def score_frontmatter(fm: dict, dir_name: str) -> dict:
             s += 1; f.append("metadata.author present")
         if meta.get("version"):
             s += 1; f.append("metadata.version present")
-    return {"name": "Frontmatter Completeness", "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f}
+    return {"name": "Frontmatter Completeness", "score": min(s, 9), "max": 9, "weight": 1.0, "findings": f}
 
 
 def score_description(fm: dict) -> dict:
@@ -178,7 +178,7 @@ def score_dispatch_table(body: str) -> dict:
     in_t, rows = False, 0
     for line in body.splitlines():
         if "$ARGUMENTS" in line and "|" in line:
-            in_t = True; rows += 1; continue
+            in_t = True; continue
         if in_t and "|" in line:
             stripped = line.strip().strip("|").strip()
             if stripped and not re.match(r"^[-:\s|]+$", stripped):
@@ -191,7 +191,8 @@ def score_dispatch_table(body: str) -> dict:
         s += 3; f.append(f"Dispatch table has {rows} rows (>= 3)")
     else:
         s += 1; f.append(f"Dispatch table has only {rows} rows (< 3)")
-    if any("empty" in ln.lower() and "|" in ln for ln in body.splitlines()):
+    empty_synonyms = {"empty", "no arg", "no args", "none", "blank", "default"}
+    if any(any(syn in ln.lower() for syn in empty_synonyms) and "|" in ln for ln in body.splitlines()):
         s += 3; f.append("Empty-args handler row found")
     else:
         f.append("No empty-args handler row in dispatch table")
@@ -210,9 +211,12 @@ def score_body_structure(body: str) -> dict:
                 for line in lines if (m := re.match(r"^(#{1,6})\s+", line))]
     h2 = sum(1 for lv, _ in headings if lv == 2)
     h3 = sum(1 for lv, _ in headings if lv == 3)
+    first_h3 = next((i for i, (lv, _) in enumerate(headings) if lv == 3), None)
     first_h4 = next((i for i, (lv, _) in enumerate(headings) if lv == 4), None)
     first_h2 = next((i for i, (lv, _) in enumerate(headings) if lv == 2), None)
-    if first_h4 is not None and (first_h2 is None or first_h4 < first_h2):
+    if first_h3 is not None and (first_h2 is None or first_h3 < first_h2):
+        f.append("Invalid heading hierarchy: ### appears before any ##")
+    elif first_h4 is not None and (first_h2 is None or first_h4 < first_h2):
         f.append("Invalid heading hierarchy: #### appears before any ##")
     elif headings:
         s += 3; f.append("Heading hierarchy valid")
@@ -226,10 +230,12 @@ def score_body_structure(body: str) -> dict:
         f.append("No ## sections found")
     if h2 >= 3 and h3 >= 2:
         s += 3; f.append(f"Good sub-section depth ({h3} ### sub-sections)")
+    elif h2 >= 3:
+        f.append(f"Limited sub-section depth ({h3} ### sub-sections, need >= 2 for +3 points)")
     return {"name": "Body Structure", "score": min(s, 15), "max": 15, "weight": 1.5, "findings": f}
 
 
-def score_pattern_coverage(body: str, dir_path: Path) -> dict:
+def score_pattern_coverage(body: str, dir_path: Path, fm: dict) -> dict:
     """Coverage of 13 skill patterns (0-15, weight 1.5)."""
     f, found = [], []
     bl = body.lower()
@@ -267,11 +273,7 @@ def score_pattern_coverage(body: str, dir_path: Path) -> dict:
     if td.is_dir() and list(td.glob("*.html")):
         found.append("templates")
     # 11. Hooks — check body and frontmatter
-    full = _read(dir_path / "SKILL.md") or ""
-    fm_block = ""
-    if full.startswith("---") and full.count("---") >= 2:
-        fm_block = full.split("---")[1]
-    if "hooks:" in body or "hooks:" in fm_block:
+    if "hooks:" in body or fm.get("hooks"):
         found.append("hooks")
     # 12. Progressive Disclosure
     rd = dir_path / "references"
@@ -460,7 +462,7 @@ def audit_skill(path: str) -> dict:
         score_description(fm),
         score_dispatch_table(body),
         score_body_structure(body),
-        score_pattern_coverage(body, dp),
+        score_pattern_coverage(body, dp, fm),
         score_references(dp, body),
         score_critical_rules(body),
         score_scripts(dp),
@@ -476,12 +478,12 @@ def audit_skill(path: str) -> dict:
     rd = dp / "references"
     sd = dp / "scripts"
     return {
-        "skill": dp.name, "path": str(dp) + "/", "score": final, "max": 100,
+        "skill": dp.name, "path": str(dp) + "/", "score": final, "max": 100 + bonus,
         "grade": _grade(final), "dimensions": dims, "bonus": bonus,
         "patterns_found": pf, "patterns_suggested": ps,
         "meta": {
             "lines": len(body.splitlines()),
-            "refs": len(list(rd.glob("*"))) if rd.is_dir() else 0,
+            "refs": len([p for p in rd.iterdir() if p.is_file() and not p.name.startswith(".")]) if rd.is_dir() else 0,
             "scripts": len(list(sd.glob("*.py"))) if sd.is_dir() else 0,
         },
     }

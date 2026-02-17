@@ -48,13 +48,9 @@ Score a single skill using deterministic analysis + AI review.
 
 ## Grade Thresholds
 
-| Grade | Score | Meaning |
-|-------|-------|---------|
-| A | 90-100 | Exemplary — ready for production |
-| B | 75-89 | Good — minor improvements possible |
-| C | 60-74 | Adequate — notable gaps |
-| D | 40-59 | Needs work — significant gaps |
-| F | 0-39 | Incomplete — major rework needed |
+See `references/evaluation-rubric.md` § 3 for the full grading scale with interpretation guidance.
+
+**Quick reference:** A (90+), B (75-89), C (60-74), D (40-59), F (<40).
 
 ---
 

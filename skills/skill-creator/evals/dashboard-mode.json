@@ -1,0 +1,12 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator dashboard",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Dashboard mode based on 'dashboard' keyword in arguments",
+    "Agent runs 'uv run python skills/skill-creator/scripts/audit.py --all' to collect JSON audit data",
+    "Agent copies templates/dashboard.html to /tmp/skill-dashboard.html and injects audit JSON into the data script block",
+    "Agent renders or screenshots the dashboard using Playwright or browser open",
+    "Agent presents the visual dashboard to the user"
+  ]
+}

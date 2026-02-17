@@ -1,7 +1,13 @@
 ---
 import StarlightHead from '@astrojs/starlight/components/Head.astro';
 import VtbotStarlight from 'astro-vtbot/components/starlight/Base.astro';
+
+const { slug } = Astro.locals.starlightRoute;
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
+const ogImageUrl = Astro.site ? new URL(`/og/${slug || ''}.png`, Astro.site).href : '';
 ---
 <VtbotStarlight>
   <StarlightHead><slot /></StarlightHead>
 </VtbotStarlight>
+{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+<meta property="og:type" content="website" />

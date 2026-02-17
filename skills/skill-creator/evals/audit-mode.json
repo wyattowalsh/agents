@@ -1,0 +1,12 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator audit wargame",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Audit mode based on 'audit' keyword in arguments",
+    "Agent loads references/audit-guide.md for the audit procedure",
+    "Agent runs 'uv run python skills/skill-creator/scripts/audit.py skills/wargame/' to produce deterministic scores",
+    "Agent supplements script output with AI review using references/evaluation-rubric.md pressure testing protocol",
+    "Agent presents a graded report with dimension breakdown, pattern checklist, and top 3 improvement opportunities"
+  ]
+}

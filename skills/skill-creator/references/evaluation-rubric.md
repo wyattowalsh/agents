@@ -7,10 +7,9 @@ Audit scoring system for skill quality. Defines what `audit.py` measures determi
 1. [Overview](#1-overview)
 2. [Scoring Dimensions](#2-scoring-dimensions)
 3. [Grade Thresholds](#3-grade-thresholds)
-4. [Calibration Benchmarks](#4-calibration-benchmarks)
-5. [Pressure Testing Protocol](#5-pressure-testing-protocol)
-6. [Rationalization Audit](#6-rationalization-audit)
-7. [AI Review Checklist](#7-ai-review-checklist)
+4. [Pressure Testing Protocol](#4-pressure-testing-protocol)
+5. [Rationalization Audit](#5-rationalization-audit)
+6. [AI Review Checklist](#6-ai-review-checklist)
 
 ---
 
@@ -120,28 +119,7 @@ A skill should target B or above before merging. A grade is expected for skills 
 
 ---
 
-## 4. Calibration Benchmarks
-
-Scores below were computed by running `audit.py --all` against all existing
-skills in the repository. They serve as reference points for interpreting
-scores -- a skill scoring 85 is "wargame-level quality."
-
-| Skill | Score | Grade | Notable Strengths | Notable Gaps |
-|-------|-------|-------|-------------------|--------------|
-| skill-creator | 97/100+5 | A | 12/13 patterns, 15 critical rules, 4 refs, 1 script | hooks pattern not used |
-| prompt-engineer | 88/100 | B | 7/13 patterns, 350 lines, 5 refs | No scripts, no templates, no hooks |
-| wargame | 85/100+5 | B | 9/13 patterns, canonical vocab bonus, 5 refs | No scripts, no templates |
-| honest-review | 82/100 | B | 6/13 patterns, 240 lines (concise), 5 refs | No scripts, no templates, no hooks |
-| mcp-creator | 71/100 | C | 8 refs (most of any skill), 480 lines | 4/13 patterns, no canonical vocab |
-| docs-steward | 66/100 | C | 6/13 patterns, 304 lines, 2 refs | No scripts, no templates, few refs |
-| host-panel | 59/100 | D | 5/13 patterns, 459 lines, 2 refs | Missing dispatch table, no scripts |
-| add-badges | 57/100 | D | 2 scripts, hooks pattern | 4/13 patterns, only 127 lines, thin body |
-
-**Interpretation guide:** A score of 85+ indicates a well-structured skill ready for distribution. Scores between 60-84 are functional but have pattern gaps. Below 60 indicates significant structural work is needed. The average repo score is 75.6. Re-run calibration whenever a new skill is added or an existing skill is significantly revised.
-
----
-
-## 5. Pressure Testing Protocol
+## 4. Pressure Testing Protocol
 
 Three types of pressure testing that AI review adds on top of deterministic scoring. Run these manually after `audit.py` produces its score.
 
@@ -182,7 +160,7 @@ Layer multiple pressures simultaneously:
 
 ---
 
-## 6. Rationalization Audit
+## 5. Rationalization Audit
 
 For each critical rule, ask: "How would a smart model rationalize NOT following this rule?"
 
@@ -211,7 +189,7 @@ For each critical rule, ask: "How would a smart model rationalize NOT following 
 
 ---
 
-## 7. AI Review Checklist
+## 6. AI Review Checklist
 
 What the AI reviewer checks beyond what `audit.py` can measure. Run this checklist after deterministic scoring is complete.
 

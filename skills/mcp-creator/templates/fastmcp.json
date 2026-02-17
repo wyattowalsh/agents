@@ -1,0 +1,9 @@
+{
+  "source": {
+    "path": "server.py",
+    "entrypoint": "mcp"
+  },
+  "environment": {
+    "dependencies": []
+  }
+}

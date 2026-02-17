@@ -13,3 +13,6 @@ wagents = "wagents.cli:app"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.workspace]
+members = ["mcp/*"]

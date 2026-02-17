@@ -1,0 +1,122 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+
+const { slug, sidebar } = Astro.locals.starlightRoute;
+const path = typeof slug === 'string' ? slug : '';
+
+// Determine category
+let category = '';
+if (path.startsWith('skills/') && path !== 'skills') category = 'skills';
+else if (path.startsWith('agents/') && path !== 'agents') category = 'agents';
+else if (path.startsWith('mcp/') && path !== 'mcp') category = 'mcp';
+
+// Find siblings in same category from sidebar
+let prevPage: { href: string; label: string } | null = null;
+let nextPage: { href: string; label: string } | null = null;
+
+if (category && sidebar) {
+  type FlatEntry = { href: string; label: string; isCurrent: boolean };
+  const flatEntries: FlatEntry[] = [];
+  const flatten = (items: typeof sidebar) => {
+    for (const item of items) {
+      if (item.type === 'link' && item.href) {
+        flatEntries.push({ href: item.href, label: item.label, isCurrent: item.isCurrent });
+      }
+      if (item.type === 'group' && item.entries) {
+        flatten(item.entries);
+      }
+    }
+  };
+  flatten(sidebar);
+
+  const categoryEntries = flatEntries.filter(e => {
+    const href = e.href.replace(/^\/|\/$/g, '');
+    return href.startsWith(category + '/') && href !== category;
+  });
+
+  const currentIndex = categoryEntries.findIndex(e => e.isCurrent);
+  if (currentIndex > 0) prevPage = categoryEntries[currentIndex - 1];
+  if (currentIndex >= 0 && currentIndex < categoryEntries.length - 1) nextPage = categoryEntries[currentIndex + 1];
+}
+
+// Get skill name for install footer
+const skillName = category === 'skills' ? path.replace('skills/', '') : null;
+---
+
+{category && (prevPage || nextPage) && (
+  <nav class="category-nav" aria-label="In-category navigation">
+    <div class="category-nav-inner">
+      {prevPage && (
+        <a href={prevPage.href} class="category-nav-link category-nav-prev">
+          <span class="category-nav-dir">&larr; Previous</span>
+          <span class="category-nav-title">{prevPage.label}</span>
+        </a>
+      )}
+      {nextPage && (
+        <a href={nextPage.href} class="category-nav-link category-nav-next">
+          <span class="category-nav-dir">Next &rarr;</span>
+          <span class="category-nav-title">{nextPage.label}</span>
+        </a>
+      )}
+    </div>
+  </nav>
+)}
+
+{skillName && (
+  <div class="skill-install-footer">
+    <code>npx skills add wyattowalsh/agents/skills/{skillName} -g</code>
+  </div>
+)}
+
+<Default><slot /></Default>
+
+<style>
+  .category-nav {
+    border-top: 1px solid oklch(0.25 0 0);
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+  }
+  .category-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .category-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid oklch(0.25 0 0);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .category-nav-link:hover {
+    border-color: var(--primary);
+    background: oklch(0.15 0.02 285 / 0.2);
+  }
+  .category-nav-prev { grid-column: 1; text-align: left; }
+  .category-nav-next { grid-column: 2; text-align: right; }
+  .category-nav-dir {
+    font-size: 0.75rem;
+    color: oklch(0.6 0 0);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .category-nav-title {
+    font-weight: 500;
+    color: oklch(0.85 0.1 285);
+  }
+  .skill-install-footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+    background: oklch(0.13 0.02 285 / 0.15);
+    border: 1px solid oklch(0.25 0.05 285 / 0.3);
+  }
+  .skill-install-footer code {
+    font-size: 0.85rem;
+    color: oklch(0.8 0.1 285);
+  }
+</style>

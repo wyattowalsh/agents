@@ -14,7 +14,7 @@ argument-hint: "<scenario description>"
 model: opus
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "2.1"
 ---
 
 # Wargame
@@ -25,18 +25,94 @@ Domain-agnostic strategic decision analysis. Every output labeled exploratory.
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| Scenario text provided | Go to Scenario Classification |
-| `resume <path>` | Read the journal file at path, restore state, continue wargame from last turn |
-| Empty | Prompt user to describe their decision scenario |
+| Scenario text (specific) | → Classification → Criteria → Analysis |
+| Vague/general input | → Research → Interview → Confirmation → Classification |
+| `resume [# | keyword]` | Resume journal (numbered, keyword match, or auto-detect) |
+| `list [filter]` | Show journal metadata table (optional filter: `active`, domain, tier) |
+| `archive` | Archive journals older than 90 days (when count > 20) |
+| `delete N` | Delete journal N with confirmation |
+| Empty | Show scenario gallery + "guide me" |
 
-If `$ARGUMENTS` begins with "resume", extract the file path, read the journal,
-reconstruct actor state and turn history, and continue the wargame from the
-last recorded turn. If the file does not exist or is malformed, report the
-error and prompt the user for a new scenario.
+**Dispatch guard:** If args match an in-session command name (e.g., `red team`, `sensitivity`) but no session is active, treat as scenario text or ask for clarification: "Did you mean to start a new scenario about '{input}', or resume an existing session?"
 
-If `$ARGUMENTS` is empty, ask:
-> Describe the decision or scenario you want to analyze. Include context,
-> constraints, and what outcome you are trying to achieve.
+### Scenario Gallery (empty args)
+
+When `$ARGUMENTS` is empty, present using the Gallery Display from `references/output-formats.md`:
+
+| # | Domain | Scenario | Likely Tier |
+|---|--------|----------|-------------|
+| 1 | Business | "Main competitor just acquired our key supplier" | Complex |
+| 2 | Career | "Two job offers with very different trade-offs" | Complicated |
+| 3 | Crisis | "Product recall with regulatory scrutiny and media attention" | Chaotic |
+| 4 | Geopolitical | "Allied nation shifting alignment toward rival bloc" | Complex |
+| 5 | Personal | "Relocate for a dream job or stay near aging parents" | Complicated |
+| 6 | Startup | "Lead investor wants to pivot; co-founder disagrees" | Complex |
+| 7 | Negotiation | "Union contract expires in 30 days, no deal in sight" | Complicated |
+| 8 | Technology | "Open-source alternative threatens our core product" | Complex |
+
+> Pick a number, paste your own scenario, or type "guide me".
+
+### Guided Intake
+
+If the user types "guide me", ask three questions sequentially:
+
+1. **Situation + trigger:** "What is happening, and what forced this to your attention now?"
+2. **Stakes + players:** "Who is involved, what do they want, and what is at stake?"
+3. **Constraints + unknowns:** "What limits your options, and what do you wish you knew?"
+
+After all three answers, synthesize into a scenario description and proceed to Scenario Classification.
+
+### Intelligent Intake (vague inputs)
+
+If the user's input is vague or general (fewer than 10 words AND lacks a specific event or action verb, OR is a general topic/domain without an embedded decision), run the Intelligent Intake Protocol:
+
+**Phase 1: Contextual Research** — Use `WebSearch` and `WebFetch` to gather context (max 2-3 searches). Present a brief research summary using the Context Research Display from `references/output-formats.md`.
+
+**Phase 2: Narrowing Interview** — Ask 3-5 targeted questions informed by the research:
+1. **Anchor:** "What specifically prompted you to think about this now?"
+2. **Decision:** "What is the actual choice you're facing?" (offer concrete options from research)
+3. **Stakes:** "What happens if you get this wrong? Who else is affected?"
+4. **Constraints** (if needed): "What options are off the table?"
+5. **Timeline** (if needed): "When do you need to act by?"
+
+Skip questions the user already answered. Questions adapt to the domain.
+
+**Phase 3: Alignment Confirmation** — Synthesize research + interview into a concrete scenario using the Scenario Understanding Display from `references/output-formats.md`. If the user confirms, proceed to Classification. If "adjust", let user modify. If "start over", return to gallery.
+
+If web search is unavailable, skip Phase 1 and proceed directly to Phase 2. The "guide me" option from the gallery remains for users who explicitly want the generic intake without research.
+
+When uncertain whether input is vague, default to asking one clarifying question rather than classifying prematurely.
+
+### Journal Resume
+
+**`resume` (no args):** Read `~/.claude/wargames/`, find journals with `status: In Progress` in YAML frontmatter (or `**Status:** In Progress` for v1 journals). If exactly one, auto-resume. If multiple, show numbered list.
+
+**`resume N` (number):** Resume the Nth journal from `list` output. Sort is reverse chronological (newest first) — this ordering is canonical for both `list` and `resume N`.
+
+**`resume keyword` (text):** Search journal YAML frontmatter (`scenario`, `tags` fields) for case-insensitive substring match. If exactly one match, auto-resume. If multiple, show filtered list.
+
+**Resume flow:** Read YAML frontmatter (metadata) + last `<!-- STATE ... -->` block (game state) for fast resume. Fall back to full-journal reconstruction if no state snapshot found.
+
+### Journal List
+
+If `$ARGUMENTS` starts with `list`: read `~/.claude/wargames/`, extract metadata from YAML frontmatter. For v1 journals without frontmatter, fall back to parsing `**Scenario:**`, `**Tier:**`, `**Status:**`, `**Turns:**` lines.
+
+**Filters** (optional, AND-combined):
+- `list active` — filter to `status: In Progress` only
+- `list biz` — filter by domain tag
+- `list complex` — filter by tier
+
+Present using the list display from `references/output-formats.md`. Sort reverse chronological (newest first).
+
+> resume [# | keyword], list [active | domain | tier]
+
+### Journal Lifecycle
+
+**`archive`:** Move journals older than 90 days from `~/.claude/wargames/` to `~/.claude/wargames/archive/`. Only runs when journal count > 20.
+
+**`delete N`:** Delete journal N from `list`. Confirm before deleting: "Delete '{scenario}'? [yes/no]"
+
+**Abandon protocol:** If the user types `end` or `abandon` during an active wargame before the AAR, update journal status to `Abandoned` and save. Abandoned journals appear in `list` but are excluded from `resume` (no arg) auto-detection.
 
 Otherwise, proceed to Scenario Classification with the provided text.
 
@@ -95,15 +171,52 @@ Score the scenario on five dimensions. Show all scores to the user.
 | 7-8 | Complex | Interactive Wargame | 3-5 turns |
 | 9-10 | Chaotic | Interactive Wargame (TTX) | 3-8 turns |
 
-Score each dimension independently. Present a filled-in rubric table with
-the user's scenario mapped to each row. Sum the scores, announce the tier
-and mode, and ask:
+Score each dimension independently. Present a filled-in rubric table with the
+user's scenario mapped to each row. **Include a Reasoning column** explaining
+each score in one line (see `references/output-formats.md` Transparent
+Classification Display).
 
-> Your scenario scores **N/10** — tier **X**, mode **Y**. Override? [yes/no]
+After scoring, present:
+- **Why This Tier:** 2-3 sentences explaining which dimensions drove the score
+- **What Would Change:** 1-2 sentences describing what shift would change the tier
+
+Present difficulty level (auto-mapped from tier):
+
+| Tier | Default Difficulty |
+|------|-------------------|
+| Clear | `optimistic` |
+| Complicated | `realistic` |
+| Complex | `adversarial` |
+| Chaotic | `worst-case` |
+
+> Your scenario scores **N/10** — tier **X**, mode **Y**, difficulty **Z**.
+> Override tier or difficulty? [yes/no]
 
 If the user overrides, acknowledge and switch without argument. If the user
 provides additional context that changes scores, rescore and re-announce
-before proceeding. Proceed to the assigned mode.
+before proceeding. Proceed to Decision Criteria Elicitation.
+
+## Decision Criteria Elicitation
+
+After classification, before entering any analysis mode. All modes.
+
+Present 6 criteria relevant to THIS scenario's domain. May include standard criteria (Speed, Cost, Risk, Relationships, Reversibility, Learning) or domain-specific ones the LLM proposes based on the scenario context.
+
+```
+Quick-rank for THIS decision (e.g., "3 1 5 2 4 6") or "skip":
+  1. {criterion_1}  2. {criterion_2}  3. {criterion_3}  4. {criterion_4}  5. {criterion_5}  6. {criterion_6}
+```
+
+If the user provides a ranking, record it as ranked criteria. If the user skips,
+proceed without criteria weighting. The user can re-rank anytime with the
+`criteria` command.
+
+**Criteria propagation by mode:**
+- **Quick Analysis:** Annotate decision tree branches with alignment to top 2 criteria
+- **Structured Analysis:** Use criteria as ranking dimensions in option analysis; criteria become quadrant chart axes
+- **Interactive Wargame:** Annotate decision menu options with criteria alignment (High/Medium/Low per top criteria)
+
+Criteria appear in the Decision Criteria Lens display (see `references/output-formats.md`).
 
 ## Mode A: Quick Analysis
 
@@ -124,7 +237,14 @@ Clear tier (score 0-3). Single output, minimal ceremony.
    - Confidence level: high, medium, or low
    - Key assumption that could change this recommendation
    - Watch signal: what to monitor that would trigger reconsideration
-6. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
+5b. **Bias sweep** — Run bias sweep checkpoint 1 from
+    `references/cognitive-biases.md`. Flag any detected biases briefly.
+6. **Action Bridge** — Generate three graduated next moves (Probe, Position,
+   Commit) per `references/output-formats.md` Action Bridge template. Each
+   move must reference a specific analysis output.
+7. **Monte Carlo option** — If the analysis reveals more uncertainty than
+   expected, offer: "Want to explore N variations? Type `explore [N]`."
+8. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
 
 Keep the total output concise. This mode exists for decisions that do not
 warrant deep analysis. Resist scope creep. If the analysis reveals the
@@ -150,8 +270,10 @@ Complicated tier (score 4-6). Single output, thorough examination.
    Hypotheses) if the scenario involves competing explanations or theories.
 4. **Option analysis** — For each viable option, present explicit trade-offs.
    Every option must have at least one significant downside. No free lunches.
-5. **Ranking with rationale** — Rank options. State the criteria used and
-   how each option scored against them.
+5. **Ranking with rationale** — Rank options. If criteria were set, use them as
+   the primary ranking dimensions. State how each option scored against each
+   criterion. Use granular probability estimates (percentages, not "low/medium/high")
+   per superforecasting methodology (see `references/frameworks.md`).
 6. **Decision triggers** — Define conditions that would change the
    recommendation. Be specific: thresholds, events, new information.
 7. **Pre-mortem** — For each top-ranked option, imagine it has failed
@@ -160,7 +282,11 @@ Complicated tier (score 4-6). Single output, thorough examination.
 8. **Quadrant chart** — Generate a Mermaid quadrant chart plotting options
    on risk (x-axis) vs. reward (y-axis). Label each quadrant and place
    options with brief annotations.
-9. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
+9. **Action Bridge** — Generate three graduated next moves (Probe, Position,
+   Commit) per `references/output-formats.md` Action Bridge template.
+10. **Monte Carlo option** — Offer: "Want to explore N variations? Type
+    `explore [N]`."
+11. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
 
 ## Mode C: Interactive Wargame
 
@@ -194,37 +320,9 @@ one structural tension between actor objectives.
 
 ### Turn Loop
 
-Each turn follows this sequence:
+Execute turns per `references/wargame-engine.md` Turn Structure (13 steps). Each turn: situation brief → AI actors act → present decision menu → user decides → adjudicate → unexpected consequences → update states → save. The engine handles choice architecture, belief updating, signal classification, consider-the-opposite, and in-session command dispatch.
 
-1. **Situation brief** — Render using Roguelike Layout from
-   `references/output-formats.md`. Show current state, resources, tensions,
-   and recent changes at a glance.
-2. **AI actor actions** — Each AI-controlled actor takes an action optimizing
-   for THEIR goals, not the user's. Actors may cooperate, compete, or act
-   unpredictably based on their archetype and the current situation.
-3. **Present actor actions** — Show what each actor did with visible effects
-   on the game state. Hide actor reasoning that the user's character would
-   not plausibly know.
-4. **User decision menu** — Present 3+ options with: domain of action, risk
-   level (low/medium/high), and expected impact. Include a "custom action"
-   slot for user-defined moves.
-5. **User chooses** — Accept selection or custom action description.
-6. **Adjudicate** — Resolve the turn using the Matrix Game protocol from
-   `references/wargame-engine.md`. Evaluate argument strength, apply
-   modifiers, determine outcomes.
-7. **Unexpected consequences** — Generate at least 1 emergent event: a
-   second-order effect, an unintended outcome, or a delayed consequence of
-   a prior action.
-8. **Bias check** — Run the bias sweep protocol from
-   `references/cognitive-biases.md`. Flag any detected biases (human or LLM)
-   in a brief callout.
-9. **Save turn** — Append the turn record to the journal immediately.
-10. **Monte Carlo** — If the user requests "explore N variations", run the
-    Monte Carlo protocol from `references/wargame-engine.md`. Present
-    outcome distributions.
-11. **Visualizations** — Render per `references/visualizations.md` as
-    appropriate for the current state. At minimum, update the actor status
-    display and resource tracker each turn.
+Use display templates from `references/output-formats.md`: Turn Header Display for status bar, Intelligence Brief Display for situation, Actor Card Display for each actor, Decision Card Display for options, Inject Alert Display for injects. Target 40-80 lines per turn.
 
 ### Inject Deployment
 
@@ -259,35 +357,120 @@ Never skip the AAR. This is where learning happens.
 7. **Visualizations** — Generate a Mermaid timeline and decision tree in
    the journal showing the full arc of the wargame.
 8. **Final journal save** — Write the complete AAR to the journal file.
+9. **Action Bridge** — Generate three graduated next moves (Probe, Position,
+   Commit) per `references/output-formats.md` Action Bridge template. The
+   Probe should target the most uncertain insight from the AAR.
 
 ## State Management
 
-- Journal directory: `~/.claude/wargames/`
-- Create the directory on first use with `mkdir -p`
-- Filename: `{YYYY-MM-DD}-{scenario-slug}.md` where slug is the first 5
-  words of the scenario description in kebab-case
-- Quick Analysis and Structured Analysis: save journal once at end
-- Interactive Wargame: save after EVERY turn (append turn record) and
-  after AAR (append final section)
-- Journal header must include: scenario description, classification scores,
-  tier, mode, date, and actor roster (Interactive Wargame only)
-- Each turn record must include: turn number, situation summary, actor
-  actions, user decision, adjudication result, emergent events
-- Resume protocol: if `$ARGUMENTS` starts with "resume", read the journal
-  file at the given path, reconstruct all actor states and turn history,
-  and continue from the last recorded turn
-- If the journal file already exists for today's scenario, append a
-  version suffix: `{date}-{slug}-v2.md`
+### Journal Directory
+- Path: `~/.claude/wargames/`
+- Create on first use with `mkdir -p`
+- Archive path: `~/.claude/wargames/archive/`
+
+### Journal Format
+Journals use YAML frontmatter for machine-parseable metadata:
+
+```yaml
+---
+scenario: "{title}"
+tier: {Clear | Complicated | Complex | Chaotic}
+mode: {Quick Analysis | Structured Analysis | Interactive Wargame}
+difficulty: {optimistic | realistic | adversarial | worst-case}
+status: {In Progress | Complete | Abandoned}
+created: {YYYY-MM-DDTHH:MM:SS}
+updated: {YYYY-MM-DDTHH:MM:SS}
+turns: {completed}/{total}
+criteria: [{ranked criteria list}]
+actors: [{actor names}]
+tags: [{domain tags}]
+---
+```
+
+**Migration:** If `list`/`resume` encounters a journal without `---` frontmatter, fall back to v1 markdown header parsing. New journals always use frontmatter.
+
+### Filename Convention
+Pattern: `{YYYY-MM-DD}-{domain}-{slug}.md`
+- `{domain}`: one of `biz`, `career`, `crisis`, `geo`, `personal`, `startup`, `negotiation`, `tech`, `custom`
+- `{slug}`: 3-5 word semantic summary (e.g., `supplier-acquisition-crisis`)
+- Collision handling: append `-v2`, `-v3`, etc.
+
+### Save Protocol
+- **Quick Analysis / Structured Analysis:** Save once at end with `status: Complete`
+- **Interactive Wargame:** Save after EVERY turn with `status: In Progress`. After AAR, update to `status: Complete`
+
+### State Snapshot
+Append a YAML state snapshot as an HTML comment at the end of the journal after each turn save:
+
+```
+<!-- STATE
+actors:
+  - name: {actor}
+    resources: {resource_map}
+    stance: {stance}
+active_injects: [{inject_ids}]
+-->
+```
+
+**Resume flow:** Read frontmatter + last `<!-- STATE ... -->` block for fast resume. Fall back to full-journal reconstruction if no snapshot found.
+
+### Sort Order
+Journals sorted by filename (reverse chronological — newest first). This ordering is canonical for both `list` and `resume N`.
+
+### Corruption Resilience
+1. Before writing: validate target file exists and frontmatter is parseable
+2. After writing: verify write completed
+3. On resume: if frontmatter missing or malformed, attempt v1 header parsing. If that fails, inform user: "Journal appears corrupted. Start a new analysis of the same scenario?"
+
+## In-Session Commands
+
+Available during any active analysis or wargame. Type `?` at any decision
+point to see the full menu.
+
+| Command | Modes | Effect |
+|---------|-------|--------|
+| `red team` / `challenge` | All | Strongest case against preferred option |
+| `what if <condition>` | All | Focused counterfactual, max 3 per decision |
+| `criteria` | All | Set or re-rank decision criteria |
+| `explore [N]` | All | Monte Carlo with multi-axis diversity, default N=10 |
+| `sensitivity` | All | Parameter sensitivity tornado diagram |
+| `delphi` / `experts` | All | Synthetic expert panel with structured disagreement |
+| `forecast` / `base rate` | All | Reference class forecasting with Fermi decomposition |
+| `negotiate` / `batna` | All | BATNA/ZOPA negotiation mapping |
+| `calibrate` | All | Probability calibration audit |
+| `options` / `optionality` | All | Real options framing |
+| `cause` / `causal` | All | Causal diagram with feedback loops |
+| `morph` / `scenarios` | All | Morphological scenario generator |
+| `export` / `dashboard` | All | Render HTML dashboard |
+| `?` | All | Show command menu (Command Menu Display) |
+
+All commands handled per protocols in `references/wargame-engine.md`. Display templates in `references/output-formats.md`.
+
+### Export Protocol
+
+When the user types `export` or `dashboard`:
+1. Copy `templates/dashboard.html` to `/tmp/wargame-dashboard-{turn}.html`
+2. Generate the JSON data block matching the current state and view
+3. Insert JSON into the `<script id="data">` block
+4. Render using the cross-platform flow from `references/visualizations.md`:
+   Playwright screenshot → browser open → Unicode fallback
+
+## Difficulty Levels
+
+Auto-mapped from tier (Clear→optimistic, Complicated→realistic, Complex→adversarial, Chaotic→worst-case). User can override during classification. Difficulty affects actor behavior, inject frequency, adjudication thresholds, and analysis tone in all modes.
+
+See `references/wargame-engine.md` Difficulty Levels for full specification.
 
 ## Reference File Index
 
 | File | Content | Read When |
 |------|---------|-----------|
-| `references/frameworks.md` | 12 decision analysis frameworks with selection heuristics | Selecting frameworks for any mode |
-| `references/wargame-engine.md` | Persona templates, adjudication rules, Monte Carlo protocol, inject design | Setting up or running Interactive Wargame |
-| `references/cognitive-biases.md` | 10 human + 4 LLM biases, sweep protocol | Bias checks in any mode |
-| `references/output-formats.md` | All output templates, Roguelike Layout, decision trees | Rendering any output |
-| `references/visualizations.md` | Unicode charts, Mermaid diagrams, HTML dashboard patterns | Generating visual outputs |
+| `references/frameworks.md` | 13 decision analysis frameworks with selection heuristics | Selecting frameworks for any mode |
+| `references/wargame-engine.md` | Actor definitions (9-field), turn structure (13 steps), adjudication, Monte Carlo, counterfactual/red-team protocols, 8 analytical command protocols, inject design, difficulty levels | Setting up or running any analysis mode |
+| `references/cognitive-biases.md` | 10 human + 4 LLM biases, bias sweep protocol, analytical constitution | Bias checks in any mode |
+| `references/output-formats.md` | All display templates (20+), UX box-drawing system, journal format, accessibility rules | Rendering any output |
+| `references/visualizations.md` | Unicode charts, Mermaid diagrams, HTML dashboard patterns, JSON data contract | Generating visual outputs |
+| `templates/dashboard.html` | Composable HTML dashboard with JSON-in-script rendering (12+ views) | `export` or `dashboard` command |
 
 Read reference files as indicated by the "Read When" column above. Do not
 rely on memory or prior knowledge of their contents. Reference files are
@@ -298,18 +481,19 @@ it but note the gap in the journal.
 
 1. Label ALL outputs as exploratory, not predictive (RAND guardrail)
 2. Always allow the user to override the classification tier
-3. Never skip AAR in Interactive Wargame mode — it is where learning happens
+3. Never skip AAR in Interactive Wargame mode
 4. Force trade-offs — every option must have explicit downsides
 5. Name biases explicitly when detected — both human and LLM
-6. Maximum 8 turns per wargame — cognitive fatigue degrades quality beyond this
+6. Maximum 8 turns per wargame
 7. Save journal after every turn in Interactive Wargame mode
-8. Require at least one actor to genuinely disagree per turn (anti-farcical-harmony)
-9. Flag escalation when detected — LLMs tend toward dramatic outcomes
-10. Read reference files as indicated by the reference index — do not rely on memory
-11. Acknowledge information asymmetry limitations — LLM cannot truly hide information from itself
-12. Injects must create dilemmas (trade-offs), not just complications
+8. Criteria and Action Bridge are mandatory — when criteria are set they must visibly influence rankings; every recommendation, ranking, or AAR must end with Probe/Position/Commit
 
 **Canonical terms** (use these exactly throughout):
 - Tiers: "Clear", "Complicated", "Complex", "Chaotic"
 - Modes: "Quick Analysis", "Structured Analysis", "Interactive Wargame"
 - Persona archetypes: "hawk", "dove", "pragmatist", "ideologue", "bureaucrat", "opportunist", "disruptor", "custom"
+- Difficulty levels: "optimistic", "realistic", "adversarial", "worst-case"
+- In-session commands: "red team", "what if", "criteria", "explore", "sensitivity", "delphi", "forecast", "negotiate", "calibrate", "options", "cause", "morph", "export", "?"
+- Action Bridge levels: "Probe", "Position", "Commit"
+- Journal statuses: "In Progress", "Complete", "Abandoned"
+- Domain tags: "biz", "career", "crisis", "geo", "personal", "startup", "negotiation", "tech", "custom"
