@@ -14,8 +14,6 @@ Condensed from Anthropic's official skill-writing guidance and superpowers metho
 8. [Context Budget Awareness](#8-context-budget-awareness)
 9. [Common Anti-Patterns](#9-common-anti-patterns)
 10. [Cross-Agent Awareness](#10-cross-agent-awareness)
-11. [Degrees of Freedom as a Core Principle](#11-degrees-of-freedom-as-a-core-principle)
-12. [Evaluation-Driven Development as a Core Principle](#12-evaluation-driven-development-as-a-core-principle)
 
 ---
 
@@ -250,18 +248,10 @@ Understanding the token economy across a full session.
 
 Skills in this repo are Claude Code-primary (dispatch tables, `$ARGUMENTS` routing, tool references). Distribution paths:
 
-1. **Filesystem agents (27+):** `npx skills add wyattowalsh/agents --skill <name> -y -g -a <agents>` for Claude Code, Cursor, Gemini CLI, Codex, and other compatible agents.
-2. **Claude API:** `/v1/skills` endpoints for programmatic upload/versioning (beta `skills-2025-10-02`).
+1. **Filesystem agents:** `npx skills add wyattowalsh/agents --skill <name> -y -g -a <agents>` for Claude Code, Cursor, Gemini CLI, Codex, and other compatible agents.
+2. **Claude API:** `/v1/skills` endpoints for programmatic upload/versioning.
 3. **Project-local:** Direct commit to `.claude/skills/` for single-project use.
 
 Always populate cross-platform frontmatter fields (`license`, `metadata.author`, `metadata.version`) to enable multi-agent installability. Note which Claude Code-specific features are used (dispatch tables, body substitutions, hooks) so other agents can degrade gracefully.
 
 ---
-
-## 11. Degrees of Freedom as a Core Principle
-
-Match the specificity of instructions to the fragility of the task. Narrow bridge (exact command syntax, file paths) → be precise. Open field (creative writing, analysis approach) → set guardrails and let the agent navigate. Over-specifying open fields wastes tokens and constrains quality. See [Section 2](#2-degrees-of-freedom) for the full framework.
-
-## 12. Evaluation-Driven Development as a Core Principle
-
-Skills are hypotheses about what makes an agent effective. The audit script provides falsifiable quality metrics. Write skills that can be measured, then measure them. See [Section 5](#5-evaluation-driven-development) for the full framework.

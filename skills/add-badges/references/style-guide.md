@@ -73,6 +73,23 @@ Using markdown table (rare, for READMEs with many badges).
 | [![CI](url)](link) | [![Version](url)](link) | [![Python](url)](link) |
 ```
 
+### Collapsible
+
+Wraps secondary badge groups in `<details><summary>` elements. Ideal for 15+ badges -- keeps Status/Quality/Package visible, collapses Tech Stack and Social. Produces HTML.
+
+```html
+<!-- Primary badges visible -->
+[![CI](url)](link) [![Coverage](url)](link) [![PyPI](url)](link)
+
+<details>
+<summary>More badges</summary>
+
+[![Python](url)](link) [![FastAPI](url)](link) [![Docker](url)](link)
+
+[![Stars](url)](link) [![Contributors](url)](link)
+</details>
+```
+
 ---
 
 ## 4. URL Encoding Rules
@@ -196,9 +213,10 @@ Notes:
 | Dead Service | Replacement | Notes |
 |-------------|-------------|-------|
 | `david-dm.org` | shields.io `/librariesio/...` or Snyk | David-DM shut down ~2021 |
-| `travis-ci.org` | `travis-ci.com` or GitHub Actions | .org domain discontinued |
 | `godoc.org` | `pkg.go.dev` | Redirects to pkg.go.dev |
 | `goreportcard.com` (sometimes) | Still works, but check | Intermittent availability |
+
+Note: `travis-ci.org` is NOT dead -- both `.org` and `.com` remain operational as of 2026. Do not flag travis-ci.org badges as dead.
 
 ---
 

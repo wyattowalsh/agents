@@ -70,6 +70,14 @@ Sequential choices under uncertainty with expected values.
 4. Fold back: compute expected values at chance nodes, select max-EV at decision nodes.
 5. **Produce:** tree structure, expected values per path, recommended path, sensitivity analysis.
 
+### Option Value Extension
+
+When decision paths include the ability to wait, learn, or stage commitments:
+- Identify options with embedded real options (the right but not obligation to take future action)
+- Assign optionality premium: paths that preserve future flexibility are worth more than their static expected value
+- Flag irreversible commitments that eliminate future options — these carry an implicit cost equal to the option value destroyed
+- **Produce:** in addition to standard output, flag which paths preserve vs destroy optionality, and estimate the premium for waiting/staging.
+
 ## Stakeholder Power/Interest Mapping
 
 Map actors by influence and alignment.
@@ -80,6 +88,14 @@ Map actors by influence and alignment.
 3. Quadrant: High/High → manage closely. High/Low → keep satisfied. Low/High → keep informed. Low/Low → monitor.
 4. For High-Power stakeholders, identify preferred outcomes and objections.
 5. **Produce:** power/interest grid, engagement strategy per quadrant, coalition opportunities.
+
+### Coalition Analysis Extension
+
+When 3+ stakeholders could form alliances:
+- Identify natural coalitions (shared interests or complementary power)
+- Assess coalition stability: what would cause each coalition to fracture?
+- Map blocking coalitions: which stakeholder combinations can veto the preferred option?
+- **Produce:** in addition to standard output, coalition map with stability ratings and blocking thresholds.
 
 ## Second-Order Effects Chain
 
@@ -139,6 +155,19 @@ Surface unstated assumptions before analysis, challenge each: "what if this assu
 5. Flag assumptions that are both key and uncertain — highest-priority risks.
 6. **Produce:** assumption table (assumption, classification, if-wrong impact), priority verification actions.
 
+## Multi-Criteria Decision Analysis (MCDA)
+
+Systematic evaluation of options against weighted criteria.
+**Use when:** Multiple options exist with trade-offs across different value dimensions; stakeholders disagree on priorities.
+
+1. Identify all options under consideration.
+2. Define evaluation criteria (from user's criteria ranking if available, otherwise elicit).
+3. Weight criteria by relative importance (sum to 100%).
+4. Score each option against each criterion (1-5 scale).
+5. Compute weighted scores: Σ(weight × score) per option.
+6. Sensitivity test: which criterion weight change would flip the top-ranked option?
+7. **Produce:** weighted scoring matrix, ranked options, sensitivity to weight changes, recommended option with confidence level.
+
 ## Selection Heuristic
 
 Match scenario characteristics to recommended frameworks.
@@ -157,5 +186,9 @@ Match scenario characteristics to recommended frameworks.
 | Strong consensus, possible groupthink | Devil's Advocacy | Key Assumptions Check |
 | Ambiguous evidence, multiple explanations | Analysis of Competing Hypotheses | Key Assumptions Check |
 | High confidence but thin evidence | Key Assumptions Check | Analysis of Competing Hypotheses |
+| Probability estimation needed | Payoff Matrix / Decision Trees | Key Assumptions Check |
+| Multi-criteria trade-offs, stakeholder disagreement on priorities | MCDA | Stakeholder Power/Interest Mapping |
+
+**Superforecasting integration:** When any framework requires probability estimates (Payoff Matrix, Decision Trees, ACH), apply Fermi decomposition: break complex probabilities into estimable sub-questions. Anchor every estimate to an outside-view base rate before adjusting for scenario-specific factors. Use granular percentages (e.g., "35%") not vague labels ("medium likelihood").
 
 **Mode mapping:** Quick Analysis uses 2-3 frameworks. Structured Analysis chains 3-5. Interactive Wargame runs full multi-framework analysis with adversarial red-teaming.

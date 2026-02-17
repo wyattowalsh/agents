@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Gallery mode due to empty arguments",
+    "Agent runs 'uv run python skills/skill-creator/scripts/audit.py --all --format table' to get current scores",
+    "Agent presents a skill inventory table with scores, grades, and pattern counts",
+    "Agent offers a mode menu: create, improve, audit, audit --all, dashboard"
+  ]
+}

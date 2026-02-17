@@ -1,0 +1,594 @@
+<!--
+JSON DATA CONTRACT — <script id="data" type="application/json"> schema.
+Required: view (space-separated), tier (clear|complicated|complex|chaotic), scenario_title.
+Optional top-level: turn, total_turns, difficulty (optimistic|realistic|adversarial|worst-case).
+
+VIEW: classification → classification: { dimensions: [{name, score:0-2, reasoning}], total:0-10, tier_sensitivity }
+VIEW: turn → situation_brief, inject: {active, title, dilemma, deadline_turn},
+  actors: [{name, archetype (hawk|dove|pragmatist|ideologue|bureaucrat|opportunist|disruptor),
+    is_player, stance, loss_aversion:0-1, last_action,
+    resources: [{name, value:0-100, trend:[]}],
+    beliefs: {Target: {key: 0-1}} }],
+  options: [{letter, description, domain, risk_pct, impact, criteria_alignment}]
+VIEW: analysis → analysis: { type:"ach", hypotheses:[], evidence:[{name, scores:[]}],
+  options_table:[{name, upside, downside, feasibility}],
+  stakeholders:[{name, interest, power, position}] }
+VIEW: aar → aar: { timeline:[{turn, decision, outcome, surprise}], worked:[], failed:[],
+  biases:{human:[], llm:[]}, paths_not_taken:[{turn, option, likely_outcome}], insights:[],
+  action_bridge:{probe:{action,tests,watch_for}, position:{action,advances,preserves},
+    commit:{action,captures,trigger}}, actor_performance:[{name, accuracy:0-1, surprises, notes}] }
+VIEW: sensitivity → sensitivity: { baseline, variables:[{name, low, high, unit}] }
+VIEW: delphi → delphi: { question, experts:[{role, position, confidence:0-1, reasoning}], consensus }
+VIEW: forecast → forecast: { reference_class, base_rate, adjustments:[{factor, direction:up|down, magnitude}], final_estimate }
+VIEW: negotiate → negotiate: { parties:[{name, batna, reservation, target}], zopa, leverage_points:[] }
+VIEW: calibrate → calibrate: { claims:[{statement, initial:0-1, adjusted:0-1, reasoning}] }
+VIEW: options → real_options: { options:[{name, type:call|put|wait, value, expiry, trigger}] }
+VIEW: cause → cause: { title, nodes:[], edges:[{from, to, sign:+|-, label}], diagram_text }
+VIEW: morph → morph: { dimensions:[{name, options:[]}], combinations:[{name, selections:{dim:opt}, score:0-1}] }
+CROSS-VIEW: monte_carlo: { clusters:[{name, frequency, narrative}], evpi:{variable, current_range, resolved_range} }
+CROSS-VIEW: criteria: [{rank, name, weight}]
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Wargame Dashboard</title>
+<style>
+@layer reset, tokens, base, components, views, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :where(ul, ol) { list-style: none; }
+}
+
+@layer tokens {
+  :root {
+    --s1: oklch(0.15 0.02 260); --s2: oklch(0.20 0.02 260); --s3: oklch(0.25 0.02 260);
+    --border: oklch(0.35 0.02 260); --text-1: oklch(0.93 0.01 260); --text-2: oklch(0.65 0.02 260);
+    --accent: oklch(0.65 0.20 270); --ok: oklch(0.70 0.18 155); --warn: oklch(0.75 0.18 85);
+    --bad: oklch(0.65 0.22 25); --chaos: oklch(0.65 0.20 310);
+    --gap: 0.75rem; --r0: 0px; --r1: 8px;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --s1: oklch(0.96 0.01 260); --s2: oklch(0.99 0.005 260); --s3: oklch(1.0 0 260);
+      --border: oklch(0.82 0.01 260); --text-1: oklch(0.20 0.02 260); --text-2: oklch(0.45 0.02 260);
+      color-scheme: light;
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: system-ui, -apple-system, sans-serif; background: var(--s1); color: var(--text-1);
+    line-height: 1.5; padding: var(--gap); max-width: 1280px; margin: 0 auto; min-height: 100dvh;
+  }
+  @media (prefers-color-scheme: dark) {
+    body {
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 20%, oklch(0.20 0.06 270 / 0.4), transparent),
+        radial-gradient(ellipse 60% 50% at 85% 80%, oklch(0.18 0.05 310 / 0.3), transparent),
+        radial-gradient(ellipse 70% 40% at 50% 50%, oklch(0.17 0.04 155 / 0.15), transparent),
+        var(--s1);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (prefers-color-scheme: dark) {
+    body { animation: aurora 30s ease-in-out infinite alternate; }
+  }
+  @keyframes aurora { 0% { background-position: 0% 0%, 100% 100%, 50% 50%; } 100% { background-position: 10% 5%, 90% 90%, 55% 45%; } }
+  a { color: var(--accent); }
+  .skip-nav { position: absolute; left: -9999px; top: auto;
+    &:focus-visible { left: var(--gap); top: var(--gap); z-index: 100; background: var(--s3); padding: 0.5rem 1rem; border-radius: var(--r1); }
+  }
+  .mono { font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; }
+  h1, h2, h3 { font-weight: 700; }
+  h1 { font-size: 1.4rem; } h2 { font-size: 1.05rem; margin-bottom: 0.4rem; } h3 { font-size: 0.9rem; }
+}
+
+@layer components {
+  .glass {
+    background: light-dark(oklch(1 0 0 / 0.7), oklch(0.20 0.02 260 / 0.5));
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid light-dark(oklch(0.85 0.01 260), oklch(0.30 0.02 260));
+    border-radius: var(--r1); padding: var(--gap); container-type: inline-size;
+    &:hover { border-color: light-dark(oklch(0.70 0.10 270 / 0.4), oklch(0.50 0.12 270 / 0.4)); box-shadow: 0 0 12px oklch(0.65 0.20 270 / 0.08); }
+  }
+  .dpanel {
+    background: light-dark(oklch(0.98 0.005 260), oklch(0.18 0.015 260));
+    border: 1px solid var(--border); border-radius: var(--r0); padding: var(--gap); container-type: inline-size;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glass, .dpanel, section[aria-label] { animation: fadeIn 0.4s ease-out both; }
+    @starting-style { .glass, .dpanel, section[aria-label] { opacity: 0; transform: translateY(8px); } }
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .badge {
+    display: inline-block; padding: 0.15em 0.55em; border-radius: 999px;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    transition: transform 0.15s ease;
+    &:hover { transform: scale(1.05); }
+    &:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  }
+  .b-tier, .b-arch { color: oklch(0.15 0.02 260); }
+  .b-dom { background: var(--accent); color: oklch(0.15 0.02 260); }
+  .pill { display: inline-block; padding: 0.1em 0.45em; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--border); color: var(--text-2); margin: 0.1em; }
+  .bar-t { height: 10px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 5px; overflow: hidden; }
+  .bar-f { height: 100%; border-radius: 5px; transition: width 0.6s ease-out; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-2); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  td { padding: 0.4rem 0.5rem; border-bottom: 1px solid light-dark(oklch(0.92 0.005 260), oklch(0.25 0.015 260)); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .err { background: var(--s2); border: 2px solid var(--bad); border-radius: var(--r1); padding: var(--gap);
+    & h2 { color: var(--bad); margin-bottom: 0.4rem; }
+    & pre { white-space: pre-wrap; word-break: break-all; font-size: 0.8rem; color: var(--text-2); }
+  }
+}
+
+@layer views {
+  .hdr { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 0.5rem var(--gap); margin-bottom: var(--gap); }
+  .tp { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--text-2); }
+  .tb { width: 110px; height: 6px; background: light-dark(oklch(0.88 0.01 260), oklch(0.30 0.02 260)); border-radius: 3px; overflow: hidden; }
+  .tbf { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+  @media (prefers-reduced-motion: no-preference) { .tbf { animation: pulse 2s ease-in-out infinite; } }
+  @keyframes pulse { 0%, 100% { box-shadow: none; } 50% { box-shadow: 4px 0 8px oklch(0.65 0.20 270 / 0.5); } }
+
+  .dim-r { display: grid; grid-template-columns: 200px 1fr 2rem; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
+  .dim-q { font-size: 0.78rem; color: var(--text-2); margin-bottom: 0.5rem; padding-left: 0.5rem; border-left: 2px solid var(--border); margin-left: 200px; }
+  @container (max-width: 500px) { .dim-r { grid-template-columns: 120px 1fr 2rem; } .dim-q { margin-left: 0; } }
+
+  .ag { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--gap); }
+  .ac { &[data-player="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 10px oklch(0.65 0.20 270 / 0.12); } }
+  .ah { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+  .ah h3 { flex: 1 1 auto; min-width: 0; }
+  .am { font-size: 0.78rem; color: var(--text-2); margin-bottom: 0.4rem; }
+  .rr { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.3rem; }
+  .rl { flex: 0 0 70px; font-size: 0.78rem; color: var(--text-2); }
+  .rt { flex: 1; height: 8px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 4px; overflow: hidden; }
+  .rf { height: 100%; border-radius: 4px; transition: width 0.6s ease-out; }
+  .rv { flex: 0 0 2.5rem; text-align: right; font-size: 0.78rem; font-weight: 600; }
+
+  .inj {
+    background: light-dark(oklch(0.95 0.05 85 / 0.3), oklch(0.20 0.04 85 / 0.2));
+    border: 1px solid var(--warn); border-radius: var(--r1); padding: var(--gap);
+    & h3 { color: var(--warn); }
+  }
+  @media (prefers-reduced-motion: no-preference) { .inj { animation: injP 3s ease-in-out infinite; } }
+  @keyframes injP { 0%, 100% { border-color: var(--warn); } 50% { border-color: oklch(0.75 0.18 85 / 0.5); } }
+
+  .ol { font-weight: 700; font-size: 1rem; color: var(--accent); }
+  .agr { overflow-x: auto; }
+  .agr td.pos { color: var(--ok); } .agr td.neg { color: var(--bad); }
+  .sm { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.5rem; }
+  .aar-c { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+  .aar-c ul { padding-left: 1.2rem; list-style: disc; font-size: 0.82rem; }
+  .bc { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--gap); }
+  .bc-i { & h3 { text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.3rem; }
+    & dt { font-weight: 600; font-size: 0.78rem; color: var(--text-2); } & dd { font-size: 0.82rem; margin: 0 0 0.3rem; } }
+  .bg { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
+  .sur { color: var(--warn); font-weight: 700; }
+  .mcr { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+  .mcl { flex: 0 0 150px; font-size: 0.78rem; }
+  .mct { flex: 1; height: 14px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 7px; overflow: hidden; }
+  .mcf { height: 100%; background: var(--accent); border-radius: 7px; transition: width 0.5s ease; }
+  .mcv { flex: 0 0 3rem; text-align: right; font-size: 0.78rem; font-weight: 600; }
+  .evpi { margin-top: 0.5rem; padding: 0.5rem; border-left: 3px solid var(--accent); font-size: 0.82rem; }
+  .tr { display: grid; grid-template-columns: 140px 1fr 1fr 50px; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem; }
+  .trb { height: 14px; border-radius: 3px; }
+  .trl { background: var(--bad); justify-self: end; } .trh { background: var(--ok); justify-self: start; }
+  .eg { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--gap); }
+  .ec { font-size: 0.82rem; & .role { font-weight: 700; color: var(--accent); } }
+  svg.gauge { display: block; margin: 0 auto 0.5rem; }
+  svg.donut { width: 40px; height: 40px; flex: 0 0 40px; }
+  .cl { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.3rem; }
+  .vs { margin-bottom: var(--gap); } .ss { margin-top: 0.6rem; }
+}
+
+@layer utilities {
+  .mt-s { margin-top: 0.4rem; } .mt-m { margin-top: var(--gap); }
+  .tok { color: var(--ok); } .tbd { color: var(--bad); } .twn { color: var(--warn); }
+  .td { color: var(--text-2); } .ta { color: var(--accent); }
+  .fw { font-weight: 700; } .fs { font-size: 0.78rem; }
+  [popover] { background: var(--s3); border: 1px solid var(--border); border-radius: var(--r1); padding: var(--gap); color: var(--text-1); max-width: 400px; }
+  [popover]::backdrop { background: oklch(0 0 0 / 0.4); }
+  details > summary { cursor: pointer; color: var(--text-2); font-size: 0.82rem; &:hover { color: var(--text-1); } }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+}
+
+@media print {
+  body { background: #fff !important; color: #111; padding: 0; animation: none !important; }
+  .glass { background: #fff; backdrop-filter: none; border: 1px solid #ccc; box-shadow: none; }
+  .dpanel { background: #fff; border: 1px solid #ccc; }
+  .inj, .tbf { animation: none !important; }
+}
+@media (max-width: 640px) {
+  .dim-r { grid-template-columns: 1fr 1fr 2rem; } .dim-q { margin-left: 0; }
+  .aar-c, .bg { grid-template-columns: 1fr; } .ag { grid-template-columns: 1fr; }
+  .hdr { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<a href="#app" class="skip-nav">Skip to content</a>
+
+<template id="t-hdr">
+  <header class="hdr"><h1 data-b="title"></h1>
+    <span class="badge b-tier" data-b="tier" aria-label="tier"></span>
+    <div class="tp" aria-label="turn progress"><span class="mono" data-b="tt"></span>
+      <div class="tb"><div class="tbf" data-b="tf"></div></div></div>
+  </header>
+</template>
+<template id="t-dim">
+  <div class="dim-r"><span class="fs td" data-b="name"></span>
+    <div class="bar-t"><div class="bar-f" data-b="fill"></div></div>
+    <span class="mono fw fs" data-b="score" style="text-align:center"></span></div>
+  <div class="dim-q" data-b="reason"></div>
+</template>
+<template id="t-actor">
+  <article class="glass ac"><div class="ah"><h3 data-b="name"></h3></div>
+    <div class="am" data-b="meta"></div><p class="fs" data-b="la"></p>
+    <div data-b="res"></div>
+    <details><summary>Beliefs &amp; detail</summary><div data-b="bel" class="fs mt-s"></div></details>
+  </article>
+</template>
+<template id="t-res">
+  <div class="rr"><span class="rl" data-b="name"></span>
+    <div class="rt"><div class="rf" data-b="fill"></div></div>
+    <svg class="sparkline" viewBox="0 0 48 16" role="img" aria-label="trend" style="width:50px;height:16px;flex:0 0 50px">
+      <defs><linearGradient id="" x1="0" y1="0" x2="0" y2="1" data-b="grad"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.4"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+      <polygon data-b="area" fill="url(#)"/><polyline data-b="line" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle data-b="dot" r="2" fill="var(--accent)"/></svg>
+    <span class="rv mono" data-b="val"></span></div>
+</template>
+<template id="t-inj">
+  <section class="inj vs" role="alert" aria-label="Active Inject">
+    <h3 data-b="title"></h3><p data-b="dilemma"></p><p class="fs twn" data-b="dl"></p></section>
+</template>
+<template id="t-bc">
+  <div class="glass bc-i"><h3 data-b="phase"></h3><dl data-b="items"></dl></div>
+</template>
+<template id="t-gauge">
+  <svg class="gauge" viewBox="0 0 120 70" role="img" aria-label="tier score gauge">
+    <path d="M10 65 A50 50 0 0 1 110 65" fill="none" stroke="var(--border)" stroke-width="8" stroke-linecap="round"/>
+    <path data-b="arc" fill="none" stroke-width="8" stroke-linecap="round"/>
+    <text x="60" y="58" text-anchor="middle" fill="var(--text-1)" font-size="18" font-weight="700" font-family="ui-monospace,monospace" data-b="val"></text>
+    <text x="60" y="68" text-anchor="middle" fill="var(--text-2)" font-size="8" data-b="lbl"></text></svg>
+</template>
+<template id="t-donut">
+  <svg class="donut" viewBox="0 0 36 36" role="img" aria-label="score">
+    <circle cx="18" cy="18" r="14" fill="none" stroke="var(--border)" stroke-width="4"/>
+    <circle data-b="ring" cx="18" cy="18" r="14" fill="none" stroke-width="4" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+    <text x="18" y="21" text-anchor="middle" fill="var(--text-1)" font-size="10" font-weight="700" font-family="ui-monospace,monospace" data-b="txt"></text></svg>
+</template>
+
+<main id="app" aria-label="Wargame Dashboard"></main>
+
+<script id="data" type="application/json">
+{
+  "view": "turn",
+  "tier": "complex",
+  "scenario_title": "Sample Scenario",
+  "turn": 1,
+  "total_turns": 5
+}
+</script>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s, p) => (p || document).querySelector(s), $$ = (s, p) => (p || document).querySelectorAll(s);
+  const app = $("#app"), raw = $("#data").textContent;
+  let D; try { D = JSON.parse(raw); } catch (e) {
+    app.innerHTML = `<div class="err" role="alert"><h2>JSON Parse Error</h2><p>${esc(e.message)}</p><pre>${esc(raw)}</pre></div>`; return;
+  }
+  const V = new Set((D.view || "").split(/\s+/).filter(Boolean)), has = v => V.has(v);
+  const TC = { clear: "var(--ok)", complicated: "var(--warn)", complex: "var(--bad)", chaotic: "var(--chaos)" };
+  const AC = { hawk: "var(--bad)", dove: "var(--ok)", pragmatist: "var(--accent)", ideologue: "var(--warn)", bureaucrat: "var(--text-2)", opportunist: "var(--warn)", disruptor: "var(--chaos)" };
+  const tc = TC[D.tier] || "var(--text-2)", F = document.createDocumentFragment();
+
+  // Helpers
+  function esc(s) { if (s == null) return ""; const d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
+  function el(tag, attrs = {}, txt) { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v); if (txt != null) e.textContent = txt; return e; }
+  function cl(id) { return document.getElementById(id).content.cloneNode(true); }
+  function B(tpl, key) { return tpl.querySelector(`[data-b="${key}"]`); }
+  function tbl(hdrs, rows, parent) {
+    const t = el("table"), th = el("thead"), tr = el("tr");
+    for (const h of hdrs) tr.appendChild(el("th", {}, h));
+    th.appendChild(tr); t.appendChild(th);
+    const tb = el("tbody"); for (const r of rows) tb.appendChild(r);
+    t.appendChild(tb); parent.appendChild(t);
+  }
+  function sparkPts(vals) {
+    const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn || 1, h = 14, w = 48, st = w / (vals.length - 1);
+    const pts = vals.map((v, i) => [+(i * st).toFixed(1), +(h - ((v - mn) / rng) * h + 1).toFixed(1)]);
+    const line = pts.map(p => p.join(",")).join(" ");
+    return { line, area: `0,${h + 1} ${line} ${w},${h + 1}`, lx: pts.at(-1)[0], ly: pts.at(-1)[1] };
+  }
+
+  // ---- BUILD ----
+  const hdr = cl("t-hdr");
+  B(hdr, "title").textContent = D.scenario_title || "Wargame Dashboard";
+  const bTier = B(hdr, "tier");
+  if (D.tier) { bTier.textContent = D.tier; bTier.style.background = tc; bTier.setAttribute("aria-label", `Tier: ${D.tier}`); } else bTier.remove();
+  const prog = $(".tp", hdr);
+  if (D.turn != null && D.total_turns) {
+    const pct = Math.round((D.turn / D.total_turns) * 100);
+    B(hdr, "tt").textContent = `Turn ${D.turn}/${D.total_turns}`;
+    const f = B(hdr, "tf"); f.style.width = `${pct}%`; f.style.background = tc;
+    prog.setAttribute("aria-label", `Turn ${D.turn} of ${D.total_turns}`);
+  } else prog.remove();
+  F.appendChild(hdr);
+
+  if (has("classification") && D.classification) {
+    const c = D.classification, sec = el("section", { class: "glass vs", "aria-label": "Classification" });
+    sec.appendChild(el("h2", {}, "Scenario Classification"));
+    if (c.total != null) {
+      const g = cl("t-gauge"), pct = Math.min(c.total / 10, 1), ang = pct * 180;
+      const rad = a => a * Math.PI / 180, ex = 60 - 50 * Math.cos(rad(ang)), ey = 65 - 50 * Math.sin(rad(ang));
+      const arc = B(g, "arc"); arc.setAttribute("d", `M10 65 A50 50 0 ${ang > 180 ? 1 : 0} 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`); arc.setAttribute("stroke", tc);
+      B(g, "val").textContent = `${c.total}/10`; B(g, "lbl").textContent = D.tier?.toUpperCase() || "";
+      sec.appendChild(g);
+    }
+    for (const d of (c.dimensions || [])) {
+      const r = cl("t-dim"); B(r, "name").textContent = d.name;
+      const f = B(r, "fill"), p = d.score === 0 ? 0 : d.score === 1 ? 50 : 100;
+      f.style.width = `${p}%`; f.style.background = d.score === 0 ? "var(--ok)" : d.score === 1 ? "var(--warn)" : "var(--bad)";
+      B(r, "score").textContent = d.score;
+      const q = B(r, "reason"); if (d.reasoning) q.textContent = d.reasoning; else q.remove();
+      sec.appendChild(r);
+    }
+    if (c.tier_sensitivity) sec.appendChild(el("p", { class: "fs td mt-s" }, c.tier_sensitivity));
+    F.appendChild(sec);
+  }
+
+  if (has("turn")) {
+    if (D.situation_brief) {
+      const s = el("section", { class: "dpanel vs", "aria-label": "Situation Brief" });
+      s.appendChild(el("h2", {}, "Situation Brief")); s.appendChild(el("p", { class: "fs" }, D.situation_brief)); F.appendChild(s);
+    }
+    if (D.inject?.active) {
+      const t = cl("t-inj"); B(t, "title").textContent = `INJECT: ${D.inject.title}`; B(t, "dilemma").textContent = D.inject.dilemma;
+      const dl = B(t, "dl"); if (D.inject.deadline_turn) dl.textContent = `Deadline: Turn ${D.inject.deadline_turn}`; else dl.remove();
+      F.appendChild(t);
+    }
+    if (D.actors?.length) {
+      const sec = el("section", { class: "vs", "aria-label": "Actors" }); sec.appendChild(el("h2", {}, "Actors"));
+      const grid = el("div", { class: "ag" });
+      for (const a of D.actors) {
+        const c = cl("t-actor"), root = $(".ac", c), arch = a.archetype || "";
+        root.dataset.archetype = arch; if (a.is_player) root.dataset.player = "true";
+        B(c, "name").textContent = a.name;
+        const hdr = $(".ah", c);
+        if (arch) { const b = el("span", { class: "badge b-arch" }, arch); b.style.background = AC[arch] || "var(--text-2)"; hdr.appendChild(b); }
+        if (a.is_player) { const b = el("span", { class: "badge" }, "YOU"); b.style.background = "var(--accent)"; b.style.color = "oklch(0.15 0.02 260)"; hdr.appendChild(b); }
+        const parts = []; if (a.stance) parts.push(`Stance: ${a.stance}`); if (a.loss_aversion != null) parts.push(`Loss aversion: ${a.loss_aversion}`);
+        B(c, "meta").textContent = parts.join(" \u00b7 ");
+        const la = B(c, "la"); if (a.last_action) la.textContent = a.last_action; else la.remove();
+        const rb = B(c, "res");
+        for (const r of (a.resources || [])) {
+          const rr = cl("t-res"); B(rr, "name").textContent = r.name;
+          const f = B(rr, "fill"), clr = r.value > 60 ? "var(--ok)" : r.value > 30 ? "var(--warn)" : "var(--bad)";
+          f.style.width = `${r.value}%`; f.style.background = clr; B(rr, "val").textContent = `${r.value}%`;
+          const svg = $("svg", rr);
+          if (r.trend?.length > 1) {
+            const uid = `g-${Math.random().toString(36).slice(2, 8)}`, ge = B(rr, "grad"); ge.id = uid;
+            const { line, area, lx, ly } = sparkPts(r.trend);
+            B(rr, "line").setAttribute("points", line);
+            const poly = B(rr, "area"); poly.setAttribute("points", area); poly.setAttribute("fill", `url(#${uid})`);
+            const dot = B(rr, "dot"); dot.setAttribute("cx", lx); dot.setAttribute("cy", ly);
+          } else svg.remove();
+          rb.appendChild(rr);
+        }
+        const belBox = B(c, "bel");
+        if (a.beliefs && Object.keys(a.beliefs).length) {
+          const pid = `p-${Math.random().toString(36).slice(2, 8)}`;
+          const btn = el("button", { popovertarget: pid, class: "badge", style: "background:var(--s3);color:var(--text-2);cursor:pointer", "aria-label": `Beliefs of ${a.name}` }, "beliefs");
+          const pop = el("div", { popover: "", id: pid }), dl = el("dl");
+          for (const [t, b] of Object.entries(a.beliefs)) { dl.appendChild(el("dt", { class: "fw" }, t)); for (const [k, v] of Object.entries(b)) dl.appendChild(el("dd", { style: "margin-left:0.5rem" }, `${k}: ${(v * 100).toFixed(0)}%`)); }
+          pop.appendChild(dl); belBox.replaceChildren(btn, pop);
+        } else $("details", c).remove();
+        grid.appendChild(c);
+      }
+      sec.appendChild(grid); F.appendChild(sec);
+    }
+    if (D.options?.length) {
+      const sec = el("section", { class: "dpanel vs", "aria-label": "Decision Menu" }); sec.appendChild(el("h2", {}, "Decision Menu"));
+      const rows = D.options.map(o => { const r = el("tr"); r.appendChild(el("td", { class: "ol mono" }, o.letter)); r.appendChild(el("td", {}, o.description));
+        const dt = el("td"); dt.appendChild(el("span", { class: "badge b-dom" }, o.domain || "")); r.appendChild(dt);
+        r.appendChild(el("td", { class: "mono" }, o.risk_pct || "")); r.appendChild(el("td", {}, o.impact || "")); r.appendChild(el("td", {}, o.criteria_alignment || "")); return r; });
+      tbl(["", "Description", "Domain", "Risk", "Impact", "Fit"], rows, sec); F.appendChild(sec);
+    }
+  }
+
+  if (has("analysis") && D.analysis) {
+    const a = D.analysis, sec = el("section", { class: "dpanel vs", "aria-label": "Analysis" }); sec.appendChild(el("h2", {}, "Analysis"));
+    if (a.type === "ach" && a.hypotheses && a.evidence) {
+      const w = el("div", { class: "agr" }), rows = a.evidence.map(ev => { const r = el("tr"); r.appendChild(el("td", { style: "text-align:left" }, ev.name));
+        for (const sc of ev.scores) { const cls = sc > 0 ? "pos" : sc < 0 ? "neg" : ""; r.appendChild(el("td", { class: `agr ${cls}`.trim() }, `${sc > 0 ? "+" : ""}${sc}`)); } return r; });
+      tbl(["Evidence", ...a.hypotheses], rows, w); sec.appendChild(w);
+    }
+    if (a.options_table?.length) {
+      sec.appendChild(el("h3", { class: "ss" }, "Options Comparison"));
+      const w = el("div", { class: "agr" }), rows = a.options_table.map(o => { const r = el("tr"); r.appendChild(el("td", { style: "text-align:left" }, o.name));
+        r.appendChild(el("td", {}, o.upside)); r.appendChild(el("td", {}, o.downside)); r.appendChild(el("td", {}, o.feasibility)); return r; });
+      tbl(["Option", "Upside", "Downside", "Feasibility"], rows, w); sec.appendChild(w);
+    }
+    if (a.stakeholders?.length) {
+      sec.appendChild(el("h3", { class: "ss" }, "Stakeholder Map"));
+      const g = el("div", { class: "sm" });
+      for (const s of a.stakeholders) { const c = el("div", { class: "glass fs", style: "padding:0.5rem" }); c.appendChild(el("strong", {}, s.name));
+        c.appendChild(el("div", {}, `Interest: ${s.interest}`)); const pw = el("div"); pw.textContent = "Power: "; pw.appendChild(el("span", { class: "fw" }, s.power)); c.appendChild(pw);
+        c.appendChild(el("div", {}, `Position: ${s.position}`)); g.appendChild(c); }
+      sec.appendChild(g);
+    }
+    F.appendChild(sec);
+  }
+
+  if (has("aar") && D.aar) {
+    const a = D.aar, sec = el("section", { class: "vs", "aria-label": "After Action Review" }); sec.appendChild(el("h2", {}, "After Action Review"));
+    if (a.timeline?.length) {
+      const c = el("div", { class: "dpanel", style: "margin-bottom:var(--gap)" }); c.appendChild(el("h3", {}, "Decision Timeline"));
+      const rows = a.timeline.map(t => { const r = el("tr"); r.appendChild(el("td", { class: "mono" }, String(t.turn))); r.appendChild(el("td", {}, t.decision)); r.appendChild(el("td", {}, t.outcome));
+        const s = el("td", {}, t.surprise ? "!" : ""); if (t.surprise) s.classList.add("sur"); r.appendChild(s); return r; });
+      tbl(["Turn", "Decision", "Outcome", ""], rows, c); sec.appendChild(c);
+    }
+    if (a.worked?.length || a.failed?.length) {
+      const c = el("div", { class: "aar-c" });
+      if (a.worked?.length) { const d = el("div"); d.appendChild(el("h3", { class: "tok" }, "What Worked")); const u = el("ul"); for (const w of a.worked) u.appendChild(el("li", {}, w)); d.appendChild(u); c.appendChild(d); }
+      if (a.failed?.length) { const d = el("div"); d.appendChild(el("h3", { class: "tbd" }, "What Failed")); const u = el("ul"); for (const f of a.failed) u.appendChild(el("li", {}, f)); d.appendChild(u); c.appendChild(d); }
+      sec.appendChild(c);
+    }
+    if (a.biases) {
+      const c = el("div", { class: "dpanel bg mt-m" });
+      for (const [key, label] of [["human", "Human Biases"], ["llm", "LLM Biases"]]) {
+        if (a.biases[key]?.length) { const d = el("div"); d.appendChild(el("h3", {}, label)); const u = el("ul", { style: "list-style:disc;padding-left:1.2rem" }); for (const b of a.biases[key]) u.appendChild(el("li", { class: "fs" }, b)); d.appendChild(u); c.appendChild(d); } }
+      sec.appendChild(c);
+    }
+    if (a.paths_not_taken?.length) {
+      const c = el("div", { class: "dpanel mt-m" }); c.appendChild(el("h3", {}, "Paths Not Taken"));
+      const rows = a.paths_not_taken.map(p => { const r = el("tr"); r.appendChild(el("td", { class: "mono" }, String(p.turn))); r.appendChild(el("td", {}, p.option)); r.appendChild(el("td", {}, p.likely_outcome)); return r; });
+      tbl(["Turn", "Option", "Likely Outcome"], rows, c); sec.appendChild(c);
+    }
+    if (a.insights?.length) {
+      const c = el("div", { class: "glass mt-m" }); c.appendChild(el("h3", {}, "Transferable Insights"));
+      const u = el("ul", { style: "list-style:disc;padding-left:1.2rem" }); for (const i of a.insights) u.appendChild(el("li", { class: "fs" }, i)); c.appendChild(u); sec.appendChild(c);
+    }
+    if (a.action_bridge) {
+      const w = el("div", { class: "mt-m" }); w.appendChild(el("h3", {}, "Action Bridge")); const cs = el("div", { class: "bc" });
+      for (const k of ["probe", "position", "commit"]) { const item = a.action_bridge[k]; if (!item) continue; const c = cl("t-bc"); B(c, "phase").textContent = k;
+        const dl = B(c, "items"); for (const [kk, vv] of Object.entries(item)) { dl.appendChild(el("dt", {}, kk)); dl.appendChild(el("dd", {}, vv)); } cs.appendChild(c); }
+      w.appendChild(cs); sec.appendChild(w);
+    }
+    if (a.actor_performance?.length) {
+      const c = el("div", { class: "dpanel mt-m" }); c.appendChild(el("h3", {}, "Actor Performance"));
+      const rows = a.actor_performance.map(p => { const r = el("tr"); r.appendChild(el("td", {}, p.name)); r.appendChild(el("td", { class: "mono" }, `${(p.accuracy * 100).toFixed(0)}%`));
+        r.appendChild(el("td", { class: "mono" }, String(p.surprises))); r.appendChild(el("td", { class: "fs" }, p.notes || "")); return r; });
+      tbl(["Actor", "Accuracy", "Surprises", "Notes"], rows, c); sec.appendChild(c);
+    }
+    F.appendChild(sec);
+  }
+
+  if (has("sensitivity") && D.sensitivity) {
+    const s = D.sensitivity, sec = el("section", { class: "dpanel vs", "aria-label": "Sensitivity Analysis" });
+    sec.appendChild(el("h2", {}, "Sensitivity \u2014 Tornado Diagram"));
+    if (s.baseline) sec.appendChild(el("p", { class: "fs td" }, `Baseline: ${s.baseline}`));
+    const mx = Math.max(...(s.variables || []).map(v => Math.max(Math.abs(v.low), Math.abs(v.high))), 1);
+    for (const v of (s.variables || [])) {
+      const r = el("div", { class: "tr" }); r.appendChild(el("span", { class: "fs" }, v.name));
+      const lo = el("div", { class: "trb trl" }); lo.style.width = `${(Math.abs(v.low) / mx) * 100}%`; r.appendChild(lo);
+      const hi = el("div", { class: "trb trh" }); hi.style.width = `${(Math.abs(v.high) / mx) * 100}%`; r.appendChild(hi);
+      r.appendChild(el("span", { class: "mono fs" }, `${v.low > 0 ? "+" : ""}${v.low} / +${v.high}${v.unit || ""}`)); sec.appendChild(r);
+    }
+    F.appendChild(sec);
+  }
+
+  if (has("delphi") && D.delphi) {
+    const dp = D.delphi, sec = el("section", { class: "vs", "aria-label": "Delphi Expert Panel" }); sec.appendChild(el("h2", {}, "Delphi Expert Panel"));
+    if (dp.question) sec.appendChild(el("p", { class: "fs td", style: "margin-bottom:0.5rem" }, dp.question));
+    const g = el("div", { class: "eg" });
+    for (const e of (dp.experts || [])) { const c = el("div", { class: "glass ec" }); c.appendChild(el("div", { class: "role" }, e.role)); c.appendChild(el("div", {}, e.position));
+      const conf = el("div", { class: "rr mt-s" }); conf.appendChild(el("span", { class: "rl" }, "Confidence"));
+      const tk = el("div", { class: "rt", style: "flex:1" }), fl = el("div", { class: "rf" }); fl.style.width = `${(e.confidence * 100).toFixed(0)}%`; fl.style.background = "var(--accent)"; tk.appendChild(fl); conf.appendChild(tk);
+      conf.appendChild(el("span", { class: "rv mono" }, `${(e.confidence * 100).toFixed(0)}%`)); c.appendChild(conf);
+      if (e.reasoning) c.appendChild(el("p", { class: "fs td mt-s" }, e.reasoning)); g.appendChild(c); }
+    sec.appendChild(g);
+    if (dp.consensus) sec.appendChild(el("div", { class: "glass mt-m" }, `Consensus: ${dp.consensus}`));
+    F.appendChild(sec);
+  }
+
+  if (has("forecast") && D.forecast) {
+    const f = D.forecast, sec = el("section", { class: "glass vs", "aria-label": "Reference Class Forecast" }); sec.appendChild(el("h2", {}, "Reference Class Forecast"));
+    if (f.reference_class) sec.appendChild(el("p", { class: "fs" }, `Class: ${f.reference_class}`));
+    if (f.base_rate) sec.appendChild(el("p", { class: "fs" }, `Base rate: ${f.base_rate}`));
+    if (f.adjustments?.length) {
+      const rows = f.adjustments.map(a => { const r = el("tr"); r.appendChild(el("td", {}, a.factor)); r.appendChild(el("td", { class: a.direction === "up" ? "tok" : "tbd" }, a.direction === "up" ? "\u2191" : "\u2193"));
+        r.appendChild(el("td", {}, a.magnitude)); return r; });
+      tbl(["Factor", "Direction", "Magnitude"], rows, sec);
+    }
+    if (f.final_estimate) sec.appendChild(el("p", { class: "fw mt-s" }, `Estimate: ${f.final_estimate}`));
+    F.appendChild(sec);
+  }
+
+  if (has("negotiate") && D.negotiate) {
+    const n = D.negotiate, sec = el("section", { class: "dpanel vs", "aria-label": "Negotiation Analysis" }); sec.appendChild(el("h2", {}, "Negotiation \u2014 BATNA / ZOPA"));
+    if (n.parties?.length) {
+      const rows = n.parties.map(p => { const r = el("tr"); r.appendChild(el("td", { class: "fw" }, p.name)); r.appendChild(el("td", {}, p.batna)); r.appendChild(el("td", { class: "mono" }, p.reservation)); r.appendChild(el("td", { class: "mono" }, p.target)); return r; });
+      tbl(["Party", "BATNA", "Reservation", "Target"], rows, sec);
+    }
+    if (n.zopa) sec.appendChild(el("p", { class: "mt-s" }, `ZOPA: ${n.zopa}`));
+    if (n.leverage_points?.length) { sec.appendChild(el("h3", { class: "ss" }, "Leverage Points")); const u = el("ul", { style: "list-style:disc;padding-left:1.2rem" }); for (const l of n.leverage_points) u.appendChild(el("li", { class: "fs" }, l)); sec.appendChild(u); }
+    F.appendChild(sec);
+  }
+
+  if (has("calibrate") && D.calibrate) {
+    const sec = el("section", { class: "dpanel vs", "aria-label": "Probability Calibration" }); sec.appendChild(el("h2", {}, "Probability Calibration Audit"));
+    for (const c of (D.calibrate.claims || [])) {
+      const card = el("div", { class: "glass", style: "margin-bottom:0.5rem" }); card.appendChild(el("p", { class: "fs" }, c.statement));
+      const r = el("div", { class: "rr mt-s" }); r.appendChild(el("span", { class: "mono fs" }, `${(c.initial * 100).toFixed(0)}%`)); r.appendChild(el("span", { class: "td" }, "\u2192")); r.appendChild(el("span", { class: "mono fs fw" }, `${(c.adjusted * 100).toFixed(0)}%`)); card.appendChild(r);
+      if (c.reasoning) card.appendChild(el("p", { class: "fs td mt-s" }, c.reasoning)); sec.appendChild(card);
+    }
+    F.appendChild(sec);
+  }
+
+  if (has("options") && D.real_options) {
+    const sec = el("section", { class: "dpanel vs", "aria-label": "Real Options Analysis" }); sec.appendChild(el("h2", {}, "Real Options Analysis"));
+    const rows = (D.real_options.options || []).map(o => { const r = el("tr"); r.appendChild(el("td", {}, o.name)); r.appendChild(el("td", { class: "mono" }, o.type)); r.appendChild(el("td", { class: "mono" }, o.value)); r.appendChild(el("td", {}, o.expiry || "")); r.appendChild(el("td", { class: "fs" }, o.trigger || "")); return r; });
+    tbl(["Option", "Type", "Value", "Expiry", "Trigger"], rows, sec); F.appendChild(sec);
+  }
+
+  if (has("cause") && D.cause) {
+    const c = D.cause, sec = el("section", { class: "dpanel vs", "aria-label": "Causal Diagram" }); sec.appendChild(el("h2", {}, c.title || "Causal Diagram"));
+    if (c.diagram_text) sec.appendChild(el("pre", { class: "mono fs", style: "white-space:pre-wrap;color:var(--text-2);overflow-x:auto" }, c.diagram_text));
+    if (c.edges?.length) {
+      sec.appendChild(el("h3", { class: "ss" }, "Relationships"));
+      const rows = c.edges.map(e => { const r = el("tr"); r.appendChild(el("td", {}, e.from)); r.appendChild(el("td", { class: e.sign === "+" ? "tok fw" : "tbd fw" }, e.sign)); r.appendChild(el("td", {}, e.to)); r.appendChild(el("td", { class: "fs td" }, e.label || "")); return r; });
+      tbl(["From", "", "To", "Label"], rows, sec);
+    }
+    F.appendChild(sec);
+  }
+
+  if (has("morph") && D.morph) {
+    const m = D.morph, sec = el("section", { class: "dpanel vs", "aria-label": "Morphological Analysis" }); sec.appendChild(el("h2", {}, "Morphological Analysis"));
+    for (const d of (m.dimensions || [])) { const r = el("div", { class: "mt-s" }); r.appendChild(el("span", { class: "fs fw" }, d.name + ": ")); for (const o of (d.options || [])) r.appendChild(el("span", { class: "pill" }, o)); sec.appendChild(r); }
+    if (m.combinations?.length) {
+      sec.appendChild(el("h3", { class: "ss" }, "Viable Combinations"));
+      for (const cb of m.combinations) {
+        const card = el("div", { class: "glass", style: "margin-bottom:0.5rem" }), hr = el("div", { class: "rr" }); hr.appendChild(el("span", { class: "fw", style: "flex:1" }, cb.name));
+        if (cb.score != null) { const dn = cl("t-donut"), ring = B(dn, "ring"), pct = cb.score * 100, dash = (pct / 100) * 87.96;
+          ring.setAttribute("stroke-dasharray", `${dash.toFixed(1)} ${(87.96 - dash).toFixed(1)}`); ring.setAttribute("stroke", "var(--accent)"); B(dn, "txt").textContent = `${pct.toFixed(0)}`; hr.appendChild(dn); }
+        card.appendChild(hr);
+        if (cb.selections) { const p = el("div", { class: "mt-s" }); for (const [k, v] of Object.entries(cb.selections)) p.appendChild(el("span", { class: "pill" }, `${k}: ${v}`)); card.appendChild(p); }
+        sec.appendChild(card);
+      }
+    }
+    F.appendChild(sec);
+  }
+
+  if (D.monte_carlo) {
+    const mc = D.monte_carlo, sec = el("section", { class: "glass vs", "aria-label": "Monte Carlo Outcomes" }); sec.appendChild(el("h2", {}, "Monte Carlo Outcomes"));
+    const mx = Math.max(...(mc.clusters || []).map(c => c.frequency), 1);
+    for (const c of (mc.clusters || [])) {
+      const pct = Math.round((c.frequency / mx) * 100), r = el("div", { class: "mcr" }); r.appendChild(el("span", { class: "mcl" }, c.name));
+      const tk = el("div", { class: "mct" }), fl = el("div", { class: "mcf" }); fl.style.width = `${pct}%`; tk.appendChild(fl); r.appendChild(tk);
+      r.appendChild(el("span", { class: "mcv mono" }, String(c.frequency))); sec.appendChild(r);
+      if (c.narrative) sec.appendChild(el("p", { class: "fs td", style: "margin:0 0 0.4rem 150px" }, c.narrative));
+    }
+    if (mc.evpi) { const p = el("div", { class: "evpi" }); p.innerHTML = `<strong>EVPI:</strong> ${esc(mc.evpi.variable)} \u2014 ${esc(mc.evpi.current_range)} \u2192 ${esc(mc.evpi.resolved_range)}`; sec.appendChild(p); }
+    F.appendChild(sec);
+  }
+
+  if (D.criteria) {
+    const sorted = [...D.criteria].sort((a, b) => a.rank - b.rank);
+    const sec = el("section", { class: "glass vs", "aria-label": "Decision Criteria" }); sec.appendChild(el("h2", {}, "Decision Criteria"));
+    const list = el("div", { class: "cl" }); for (const c of sorted) list.appendChild(el("span", { class: "pill" }, `#${c.rank} ${c.name}`)); sec.appendChild(list);
+    F.appendChild(sec);
+  }
+
+  app.appendChild(F);
+})();
+</script>
+</body>
+</html>

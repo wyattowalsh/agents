@@ -1,0 +1,37 @@
+---
+import Default from '@astrojs/starlight/components/PageTitle.astro';
+
+const { slug } = Astro.locals.starlightRoute;
+const path = typeof slug === 'string' ? slug : '';
+
+let iconClass = '';
+let iconSymbol = '';
+
+if (path.startsWith('skills')) {
+  iconClass = 'page-title-icon page-title-icon--skill';
+  iconSymbol = '\u2726';
+} else if (path.startsWith('agents')) {
+  iconClass = 'page-title-icon page-title-icon--agent';
+  iconSymbol = '\u2B21';
+} else if (path.startsWith('mcp')) {
+  iconClass = 'page-title-icon page-title-icon--mcp';
+  iconSymbol = '\u25C8';
+}
+---
+
+{iconSymbol ? (
+  <div class="page-title-wrapper">
+    <span class={iconClass}>{iconSymbol}</span>
+    <Default><slot /></Default>
+  </div>
+) : (
+  <Default><slot /></Default>
+)}
+
+<style>
+  .page-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.3em;
+  }
+</style>

@@ -1,457 +1,1185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skill Quality Dashboard</title>
 <style>
-/* --- Design System --- */
+/* ==========================================================================
+   Design System — HSL Custom Properties
+   ========================================================================== */
+
 :root {
-  --bg: #0f172a; --card: #1e293b; --border: #475569;
-  --text: #f1f5f9; --dim: #94a3b8; --accent: #6366f1;
-  --grade-a: #22c55e; --grade-b: #6366f1; --grade-c: #f59e0b;
-  --grade-d: #f97316; --grade-f: #ef4444;
-  --grade: var(--dim);
-  --radius: 8px; --gap: 1rem;
+  --bg: 222 47% 6%;
+  --card: 222 30% 10%;
+  --card-hover: 222 30% 13%;
+  --border: 215 20% 20%;
+  --text: 210 40% 96%;
+  --text-muted: 215 20% 55%;
+  --accent: 238 80% 67%;
+  --accent-glow: 238 80% 67% / 0.15;
+  --grade-a: 160 60% 45%;
+  --grade-b: 238 80% 67%;
+  --grade-c: 38 92% 50%;
+  --grade-d: 25 95% 53%;
+  --grade-f: 0 84% 60%;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
 }
+
+[data-theme="light"] {
+  --bg: 210 20% 98%;
+  --card: 0 0% 100%;
+  --card-hover: 210 15% 96%;
+  --border: 215 15% 85%;
+  --text: 222 47% 11%;
+  --text-muted: 215 15% 45%;
+}
+
+/* Grade color mapping via data attributes */
 [data-grade="A"] { --grade: var(--grade-a); }
 [data-grade="B"] { --grade: var(--grade-b); }
 [data-grade="C"] { --grade: var(--grade-c); }
 [data-grade="D"] { --grade: var(--grade-d); }
 [data-grade="F"] { --grade: var(--grade-f); }
 
-/* --- Base --- */
+/* ==========================================================================
+   Reset & Base
+   ========================================================================== */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: var(--gap); max-width: 1200px; margin: 0 auto; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: hsl(var(--bg));
+  color: hsl(var(--text));
+  line-height: 1.5;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* Ambient mesh gradient background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 20% 50%, hsl(var(--accent) / 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, hsl(160 60% 50% / 0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+
 h1, h2, h3 { font-weight: 600; }
-h1 { font-size: 1.5rem; } h2 { font-size: 1.15rem; margin-bottom: 0.5rem; } h3 { font-size: 1rem; }
-a { color: var(--accent); }
-section { margin-bottom: var(--gap); }
+h1 { font-size: 1.5rem; letter-spacing: -0.02em; }
+h2 { font-size: 1.15rem; }
+h3 { font-size: 0.95rem; }
 
-/* --- Components --- */
-.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--gap); }
-.badge { display: inline-block; padding: 0.15em 0.6em; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-.badge-grade { background: var(--grade); color: var(--bg); }
-.pill { display: inline-block; padding: 0.1em 0.5em; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--border); color: var(--dim); margin: 0.1em; }
+/* ==========================================================================
+   Components — Cards
+   ========================================================================== */
 
-/* --- Header --- */
-.header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: var(--gap); }
-.header h1 { flex: 1 1 auto; }
-.header-stats { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--dim); }
+.card {
+  background: hsl(var(--card) / 0.7);
+  backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid hsl(var(--border) / 0.5);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow:
+    0 1px 2px hsl(0 0% 0% / 0.05),
+    0 4px 16px hsl(0 0% 0% / 0.08);
+}
 
-/* --- Score Bar --- */
-.score-bar { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin: 0.3rem 0; }
-.score-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.skill-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  animation: fadeSlideUp 0.4s ease both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
 
-/* --- Dimension Rows --- */
-.dim-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
-.dim-label { flex: 0 0 220px; font-size: 0.85rem; color: var(--dim); }
-.dim-score { flex: 0 0 3rem; text-align: right; font-size: 0.85rem; font-weight: 700; }
+.skill-card:hover {
+  box-shadow:
+    0 0 0 1px hsl(var(--grade) / 0.3),
+    0 8px 32px hsl(var(--grade) / 0.12);
+  transform: translateY(-2px);
+}
 
-/* --- Skill Grid --- */
-.skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--gap); }
-.skill-card { position: relative; }
-.skill-card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-.skill-card-header h3 { flex: 1; }
-.skill-meta { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+.skill-card:focus-visible {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 2px;
+}
 
-/* --- Pattern Checklist --- */
-.pattern-check { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; margin-bottom: 0.25rem; }
-.pattern-check .icon { flex: 0 0 1.2rem; text-align: center; font-weight: 700; }
-.pattern-check .icon.found { color: var(--grade-a); }
-.pattern-check .icon.missing { color: var(--grade-f); }
-.pattern-list { columns: 2; column-gap: var(--gap); }
+/* ==========================================================================
+   Components — Badges & Pills
+   ========================================================================== */
 
-/* --- Findings --- */
-.finding { font-size: 0.85rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
-.finding:last-child { border-bottom: none; }
-.finding-dim { font-weight: 600; color: var(--dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.6rem; margin-bottom: 0.2rem; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0.15em 0.6em;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
-/* --- Phase Pipeline --- */
-.phase-pipeline { display: flex; align-items: center; justify-content: center; gap: 0; padding: 2rem 1rem; }
-.phase-step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; position: relative; z-index: 1; }
-.phase-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; border: 2px solid var(--border); background: var(--card); color: var(--dim); transition: all 0.3s ease; }
-.phase-step.completed .phase-circle { background: var(--grade-a); border-color: var(--grade-a); color: var(--bg); }
-.phase-step.active .phase-circle { background: var(--accent); border-color: var(--accent); color: #fff; animation: pulse 2s infinite; }
-.phase-step.pending .phase-circle { background: var(--card); border-color: var(--border); color: var(--dim); }
-.phase-label { font-size: 0.7rem; color: var(--dim); text-align: center; max-width: 72px; }
-.phase-step.active .phase-label { color: var(--accent); font-weight: 600; }
-.phase-step.completed .phase-label { color: var(--grade-a); }
-.phase-connector { width: 40px; height: 2px; background: var(--border); margin-bottom: 1.2rem; }
-.phase-connector.completed { background: var(--grade-a); }
+.badge-grade {
+  background: hsl(var(--grade));
+  color: hsl(var(--bg));
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.15em 0.55em;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--text-muted));
+}
+
+.weight-badge {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-sm);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: hsl(var(--text-muted));
+  background: hsl(var(--border) / 0.3);
+}
+
+/* ==========================================================================
+   Layout — Header
+   ========================================================================== */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.header-left { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.header-right { display: flex; align-items: center; gap: 0.75rem; }
+
+.header-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: hsl(var(--text-muted));
+}
+
+.theme-toggle {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--text-muted));
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  color: hsl(var(--text));
+  border-color: hsl(var(--text-muted));
+}
+
+/* ==========================================================================
+   Layout — Skill Grid (Overview)
+   ========================================================================== */
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.skill-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.skill-card-header h3 { flex: 1; font-size: 1rem; }
+
+.skill-card-score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.skill-card-score .score-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: hsl(var(--grade));
+}
+
+.skill-card-score .score-max {
+  font-size: 0.85rem;
+  color: hsl(var(--text-muted));
+}
+
+.skill-card-score .score-bonus {
+  font-size: 0.7rem;
+  color: hsl(var(--grade-a));
+  font-weight: 600;
+}
+
+.skill-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.75rem;
+}
+
+/* Score ring SVG */
+.score-ring { width: 56px; height: 56px; flex-shrink: 0; }
+.score-ring-bg { fill: none; stroke: hsl(var(--border)); stroke-width: 2; }
+.score-ring-fill { fill: none; stroke: hsl(var(--grade)); stroke-width: 2.5; transition: stroke-dashoffset 1s cubic-bezier(0.16, 1, 0.3, 1); }
+.score-ring-text { fill: hsl(var(--text)); font-size: 8px; font-weight: 700; }
+
+/* ==========================================================================
+   Layout — Detail View
+   ========================================================================== */
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.detail-header h2 { margin: 0; font-size: 1.3rem; }
+
+.detail-score-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: hsl(var(--grade));
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.back-btn {
+  background: none;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius-sm);
+  color: hsl(var(--text-muted));
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.back-btn:hover { color: hsl(var(--text)); border-color: hsl(var(--text-muted)); }
+.back-btn:focus-visible { outline: 2px solid hsl(var(--accent)); outline-offset: 2px; }
+
+/* ==========================================================================
+   Dimension Bars (Detail View)
+   ========================================================================== */
+
+.dim-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid hsl(var(--border) / 0.3);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: var(--radius-sm);
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+}
+
+.dim-row:last-child { border-bottom: none; }
+.dim-row:hover { background: hsl(var(--card-hover) / 0.5); }
+
+.dim-label {
+  flex: 0 0 180px;
+  font-size: 0.82rem;
+  color: hsl(var(--text-muted));
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dim-label .chevron {
+  display: inline-block;
+  font-size: 0.65rem;
+  transition: transform 0.2s;
+  color: hsl(var(--text-muted));
+}
+
+.dim-label .chevron.open { transform: rotate(90deg); }
+
+.dim-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: hsl(var(--border) / 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  animation: growBar 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dim-score-label {
+  flex: 0 0 auto;
+  min-width: 3.5rem;
+  text-align: right;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Collapsible findings */
+.dim-findings {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 0.3rem;
+}
+
+.dim-findings.open {
+  max-height: 500px;
+  padding: 0.3rem 0.3rem 0.5rem;
+}
+
+.dim-findings ul {
+  list-style: none;
+  padding-left: 0.5rem;
+  border-left: 2px solid hsl(var(--border) / 0.4);
+}
+
+.dim-findings li {
+  font-size: 0.78rem;
+  color: hsl(var(--text-muted));
+  padding: 0.15rem 0;
+  padding-left: 0.5rem;
+}
+
+/* ==========================================================================
+   Radar Chart (Detail View)
+   ========================================================================== */
+
+.radar-container { display: flex; justify-content: center; padding: 1rem 0; }
+.radar-label { font-size: 6.5px; fill: hsl(var(--text-muted)); }
+.radar-grid { stroke: hsl(var(--border) / 0.4); fill: none; stroke-width: 0.5; }
+.radar-axis { stroke: hsl(var(--border) / 0.3); stroke-width: 0.3; }
+.radar-polygon-fill { fill: hsl(var(--grade) / 0.15); }
+.radar-polygon-stroke { fill: none; stroke: hsl(var(--grade)); stroke-width: 1; }
+.radar-dot { fill: hsl(var(--grade)); }
+
+/* ==========================================================================
+   Pattern Grid (Detail View)
+   ========================================================================== */
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem 0.75rem;
+}
+
+.pattern-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  padding: 0.2rem 0;
+}
+
+.pattern-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pattern-dot.found { background: hsl(var(--grade-a)); }
+.pattern-dot.suggested { background: transparent; border: 1.5px solid hsl(var(--grade-c)); }
+.pattern-dot.missing { background: hsl(var(--border)); opacity: 0.5; }
+
+.pattern-name.found { color: hsl(var(--text)); }
+.pattern-name.suggested { color: hsl(var(--grade-c)); }
+.pattern-name.missing { color: hsl(var(--text-muted)); opacity: 0.5; }
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes growBar { from { width: 0; } }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4); }
+  50% { box-shadow: 0 0 0 8px hsl(var(--accent) / 0); }
 }
 
-/* --- Error Fallback --- */
-.error-fallback { background: var(--card); border: 2px solid var(--grade-f); border-radius: var(--radius); padding: var(--gap); }
-.error-fallback h2 { color: var(--grade-f); margin-bottom: 0.5rem; }
-.error-fallback pre { white-space: pre-wrap; word-break: break-all; font-size: 0.8rem; color: var(--dim); }
+/* App-level crossfade */
+#app {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
 
-/* --- Print & Light Mode --- */
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
 @media print {
-  :root { --bg: #fff; --card: #fff; --border: #ccc; --text: #111; --dim: #555; }
-  body { padding: 0; }
-  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
-  .phase-step.active .phase-circle { animation: none; }
-}
-@media (prefers-color-scheme: light) {
-  :root { --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; --text: #0f172a; --dim: #64748b; }
-  .score-bar, .phase-connector { background: #e2e8f0; }
+  body::before { display: none; }
+  body { padding: 0; background: #fff; color: #111; }
+  .card {
+    background: #fff;
+    backdrop-filter: none;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+  .skill-card { animation: none; }
+  .theme-toggle { display: none; }
+  .back-btn { display: none; }
+  .bar-fill { animation: none; }
 }
 
-/* --- Responsive --- */
-@media (max-width: 640px) {
-  .dim-label { flex: 0 0 140px; }
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
   .skill-grid { grid-template-columns: 1fr; }
-  .pattern-list { columns: 1; }
-  .phase-pipeline { flex-wrap: wrap; }
-  .phase-connector { width: 20px; }
+  .detail-layout { grid-template-columns: 1fr; }
+  .pattern-grid { grid-template-columns: repeat(2, 1fr); }
+  .dim-label { flex: 0 0 130px; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 0.75rem; }
+  .pattern-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-<main id="app" aria-label="Skill Quality Dashboard"></main>
+<main id="app" aria-label="Skill Quality Dashboard" role="main"></main>
 
+<!-- Embedded audit data -->
 <script id="data" type="application/json">
 {
   "view": "overview",
-  "generated": "2025-01-15T10:30:00Z",
+  "generated": "2026-02-17T00:00:00Z",
   "skills": [
     {
-      "skill": "wargame",
-      "path": "skills/wargame/",
-      "score": 92,
-      "max": 100,
-      "bonus": 5,
-      "grade": "A",
+      "skill": "skill-creator",
+      "path": "skills/skill-creator/",
+      "score": 95, "max": 105, "bonus": 5, "grade": "A",
       "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 9, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Body Structure", "score": 10, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Instruction Clarity", "score": 9, "max": 10, "weight": 1.0, "findings": ["Minor ambiguity in phase transition rules"]},
-        {"name": "Canonical Vocabulary", "score": 10, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Edge Case Coverage", "score": 8, "max": 10, "weight": 1.0, "findings": ["Missing handling for zero-actor scenarios"]},
-        {"name": "Output Format Spec", "score": 10, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Reference Quality", "score": 9, "max": 10, "weight": 1.0, "findings": ["One reference lacks examples"]},
-        {"name": "Script Automation", "score": 8, "max": 10, "weight": 1.0, "findings": ["No validation script"]},
-        {"name": "Template Completeness", "score": 10, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Cross-Platform Compat", "score": 9, "max": 10, "weight": 1.0, "findings": ["Missing license field"]}
+        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": ["name field present", "name is valid kebab-case", "name matches directory name", "description field present", "license field present", "metadata.author present", "metadata.version present"]},
+        {"name": "Description Quality", "score": 16, "max": 20, "weight": 2.0, "findings": ["Description too long (569 chars, >300)", "Action verbs found: audit, create", "Contains 'Use when/for' trigger clause", "Contains exclusion clause (NOT for)", "Third-person voice check passed"]},
+        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 11 rows (>= 3)", "Empty-args handler row found"]},
+        {"name": "Body Structure", "score": 12, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (108 lines)", "Heading hierarchy valid", "Good section coverage (9 ## sections)", "Limited sub-section depth (1 ### sub-sections, need >= 2 for +3 points)"]},
+        {"name": "Pattern Coverage", "score": 15, "max": 15, "weight": 1.5, "findings": ["Patterns found: 11/13", "  [+] dispatch-table", "  [+] reference-file-index", "  [+] critical-rules", "  [+] canonical-vocabulary", "  [+] scope-boundaries", "  [+] classification-gating", "  [+] scaling-strategy", "  [+] scripts", "  [+] templates", "  [+] progressive-disclosure", "  [+] body-substitutions", "Suggested additions: state-management, hooks"]},
+        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "No missing reference files", "6 reference files with appropriate size"]},
+        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 16 numbered rules (>= 5)", "13 rules appear actionable"]},
+        {"name": "Scripts", "score": 4, "max": 5, "weight": 0.5, "findings": ["Found 1 Python script(s)", "Script(s) use argparse", "Script(s) produce JSON output", "Script(s) have docstrings"]},
+        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
       ],
-      "patterns_found": ["dispatch-table", "critical-rules", "canonical-vocabulary", "phase-gates", "output-format", "error-recovery", "reference-docs", "templates"],
-      "patterns_suggested": ["hooks", "scripts", "eval-suite", "mcp-integration", "argument-handling"],
-      "meta": {"lines": 468, "refs": 5, "scripts": 0}
-    },
-    {
-      "skill": "add-badges",
-      "path": "skills/add-badges/",
-      "score": 78,
-      "max": 100,
-      "bonus": 2,
-      "grade": "B",
-      "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 8, "max": 10, "weight": 1.0, "findings": ["Missing license field"]},
-        {"name": "Body Structure", "score": 9, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Instruction Clarity", "score": 8, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Canonical Vocabulary", "score": 7, "max": 10, "weight": 1.0, "findings": ["Inconsistent term usage"]},
-        {"name": "Edge Case Coverage", "score": 7, "max": 10, "weight": 1.0, "findings": ["No fallback for unknown frameworks"]},
-        {"name": "Output Format Spec", "score": 8, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Reference Quality", "score": 8, "max": 10, "weight": 1.0, "findings": []},
-        {"name": "Script Automation", "score": 7, "max": 10, "weight": 1.0, "findings": ["detect.py needs error handling"]},
-        {"name": "Template Completeness", "score": 6, "max": 10, "weight": 1.0, "findings": ["No templates directory"]},
-        {"name": "Cross-Platform Compat", "score": 8, "max": 10, "weight": 1.0, "findings": []}
-      ],
-      "patterns_found": ["dispatch-table", "critical-rules", "canonical-vocabulary", "output-format", "reference-docs", "scripts"],
-      "patterns_suggested": ["phase-gates", "error-recovery", "templates", "hooks", "eval-suite", "mcp-integration", "argument-handling"],
-      "meta": {"lines": 210, "refs": 1, "scripts": 2}
+      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "scripts", "templates", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["state-management", "hooks"],
+      "meta": {"lines": 108, "refs": 6, "scripts": 1}
     },
     {
       "skill": "prompt-engineer",
       "path": "skills/prompt-engineer/",
-      "score": 55,
-      "max": 100,
-      "bonus": 0,
-      "grade": "C",
+      "score": 90, "max": 100, "bonus": 0, "grade": "A",
       "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 7, "max": 10, "weight": 1.0, "findings": ["Missing license and version"]},
-        {"name": "Body Structure", "score": 6, "max": 10, "weight": 1.0, "findings": ["Flat structure, needs sections"]},
-        {"name": "Instruction Clarity", "score": 6, "max": 10, "weight": 1.0, "findings": ["Vague action verbs"]},
-        {"name": "Canonical Vocabulary", "score": 5, "max": 10, "weight": 1.0, "findings": ["No vocabulary defined"]},
-        {"name": "Edge Case Coverage", "score": 4, "max": 10, "weight": 1.0, "findings": ["No edge cases addressed"]},
-        {"name": "Output Format Spec", "score": 6, "max": 10, "weight": 1.0, "findings": ["Output format underspecified"]},
-        {"name": "Reference Quality", "score": 5, "max": 10, "weight": 1.0, "findings": ["No references"]},
-        {"name": "Script Automation", "score": 4, "max": 10, "weight": 1.0, "findings": ["No scripts"]},
-        {"name": "Template Completeness", "score": 5, "max": 10, "weight": 1.0, "findings": ["No templates"]},
-        {"name": "Cross-Platform Compat", "score": 7, "max": 10, "weight": 1.0, "findings": []}
+        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": ["name field present", "name is valid kebab-case", "name matches directory name", "description field present", "license field present", "metadata.author present", "metadata.version present"]},
+        {"name": "Description Quality", "score": 16, "max": 20, "weight": 2.0, "findings": ["Description too long (620 chars, >300)", "Action verbs found: audit, convert, evaluate, optimize, test", "Contains 'Use when/for' trigger clause", "Contains exclusion clause (NOT for)", "Third-person voice check passed"]},
+        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 8 rows (>= 3)", "Empty-args handler row found"]},
+        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (350 lines)", "Heading hierarchy valid", "Good section coverage (10 ## sections)", "Good sub-section depth (11 ### sub-sections)"]},
+        {"name": "Pattern Coverage", "score": 14, "max": 15, "weight": 1.5, "findings": ["Patterns found: 7/13"]},
+        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "No missing reference files", "8 reference files with appropriate size"]},
+        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 13 numbered rules (>= 5)", "8 rules appear actionable"]},
+        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
+        {"name": "Conciseness", "score": 3, "max": 5, "weight": 0.5, "findings": ["Duplicate heading: 'steps' appears 5 times", "No repeated paragraphs"]}
       ],
-      "patterns_found": ["critical-rules", "output-format", "canonical-vocabulary"],
-      "patterns_suggested": ["dispatch-table", "phase-gates", "error-recovery", "reference-docs", "templates", "hooks", "scripts", "eval-suite", "mcp-integration", "argument-handling"],
-      "meta": {"lines": 95, "refs": 0, "scripts": 0}
+      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "classification-gating", "state-management", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["canonical-vocabulary", "scope-boundaries", "scaling-strategy", "scripts", "templates", "hooks"],
+      "meta": {"lines": 350, "refs": 8, "scripts": 0}
+    },
+    {
+      "skill": "wargame",
+      "path": "skills/wargame/",
+      "score": 85, "max": 105, "bonus": 5, "grade": "B",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": ["name field present", "name is valid kebab-case", "name matches directory name", "description field present", "license field present", "metadata.author present", "metadata.version present"]},
+        {"name": "Description Quality", "score": 9, "max": 20, "weight": 2.0, "findings": ["Description too long (559 chars, >300)", "No action verbs detected", "Contains 'Use when/for' trigger clause", "Missing exclusion clause (NOT for)", "Third-person voice check passed"]},
+        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 4 rows (>= 3)", "Empty-args handler row found"]},
+        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (450 lines)", "Heading hierarchy valid", "Good section coverage (12 ## sections)", "Good sub-section depth (14 ### sub-sections)"]},
+        {"name": "Pattern Coverage", "score": 15, "max": 15, "weight": 1.5, "findings": ["Patterns found: 9/13"]},
+        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "No missing reference files", "5 reference files with appropriate size"]},
+        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 15 numbered rules (>= 5)", "14 rules appear actionable"]},
+        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
+        {"name": "Conciseness", "score": 3, "max": 5, "weight": 0.5, "findings": ["Duplicate heading: 'steps' appears 2 times", "No repeated paragraphs"]}
+      ],
+      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "classification-gating", "state-management", "templates", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["scope-boundaries", "scaling-strategy", "scripts", "hooks"],
+      "meta": {"lines": 450, "refs": 5, "scripts": 0}
+    },
+    {
+      "skill": "honest-review",
+      "path": "skills/honest-review/",
+      "score": 83, "max": 100, "bonus": 0, "grade": "B",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": []},
+        {"name": "Description Quality", "score": 16, "max": 20, "weight": 2.0, "findings": ["Description too long (627 chars, >300)", "Action verbs found: audit, research, review, validate"]},
+        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 6 rows (>= 3)", "Empty-args handler row found"]},
+        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (240 lines)", "Good section coverage (9 ## sections)", "Good sub-section depth (11 ### sub-sections)"]},
+        {"name": "Pattern Coverage", "score": 12, "max": 15, "weight": 1.5, "findings": ["Patterns found: 6/13"]},
+        {"name": "References", "score": 10, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "No orphan reference files", "5 reference files with appropriate size"]},
+        {"name": "Critical Rules", "score": 3, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "No numbered rules found", "Rules lack imperative verbs"]},
+        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
+        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
+      ],
+      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "scaling-strategy", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["canonical-vocabulary", "scope-boundaries", "classification-gating", "state-management", "scripts", "templates", "hooks"],
+      "meta": {"lines": 240, "refs": 5, "scripts": 0}
     },
     {
       "skill": "docs-steward",
       "path": "skills/docs-steward/",
-      "score": 38,
-      "max": 100,
-      "bonus": 0,
-      "grade": "F",
+      "score": 67, "max": 100, "bonus": 0, "grade": "C",
       "dimensions": [
-        {"name": "Frontmatter Completeness", "score": 6, "max": 10, "weight": 1.0, "findings": ["Missing most optional fields"]},
-        {"name": "Body Structure", "score": 4, "max": 10, "weight": 1.0, "findings": ["No clear sections"]},
-        {"name": "Instruction Clarity", "score": 4, "max": 10, "weight": 1.0, "findings": ["Instructions too vague"]},
-        {"name": "Canonical Vocabulary", "score": 3, "max": 10, "weight": 1.0, "findings": ["No vocabulary defined"]},
-        {"name": "Edge Case Coverage", "score": 2, "max": 10, "weight": 1.0, "findings": ["No edge cases"]},
-        {"name": "Output Format Spec", "score": 4, "max": 10, "weight": 1.0, "findings": ["No output spec"]},
-        {"name": "Reference Quality", "score": 3, "max": 10, "weight": 1.0, "findings": ["No references"]},
-        {"name": "Script Automation", "score": 3, "max": 10, "weight": 1.0, "findings": ["No scripts"]},
-        {"name": "Template Completeness", "score": 3, "max": 10, "weight": 1.0, "findings": ["No templates"]},
-        {"name": "Cross-Platform Compat", "score": 6, "max": 10, "weight": 1.0, "findings": ["Missing compatibility field"]}
+        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": []},
+        {"name": "Description Quality", "score": 6, "max": 20, "weight": 2.0, "findings": ["Description too long (309 chars, >300)", "No action verbs detected", "Missing 'Use when/for' trigger clause", "Missing exclusion clause (NOT for)"]},
+        {"name": "Dispatch Table", "score": 10, "max": 10, "weight": 1.0, "findings": ["Dispatch table with $ARGUMENTS found", "Dispatch table has 9 rows (>= 3)", "Empty-args handler row found"]},
+        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (343 lines)"]},
+        {"name": "Pattern Coverage", "score": 12, "max": 15, "weight": 1.5, "findings": ["Patterns found: 6/13"]},
+        {"name": "References", "score": 9, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body"]},
+        {"name": "Critical Rules", "score": 3, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "No numbered rules found"]},
+        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
+        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
       ],
-      "patterns_found": ["critical-rules"],
-      "patterns_suggested": ["dispatch-table", "canonical-vocabulary", "phase-gates", "output-format", "error-recovery", "reference-docs", "templates", "hooks", "scripts", "eval-suite", "mcp-integration", "argument-handling"],
-      "meta": {"lines": 42, "refs": 0, "scripts": 0}
+      "patterns_found": ["dispatch-table", "reference-file-index", "critical-rules", "classification-gating", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["canonical-vocabulary", "scope-boundaries", "scaling-strategy", "state-management", "scripts", "templates", "hooks"],
+      "meta": {"lines": 343, "refs": 2, "scripts": 0}
+    },
+    {
+      "skill": "mcp-creator",
+      "path": "skills/mcp-creator/",
+      "score": 66, "max": 100, "bonus": 0, "grade": "C",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 9, "max": 9, "weight": 1.0, "findings": []},
+        {"name": "Description Quality", "score": 13, "max": 20, "weight": 2.0, "findings": ["Description too long (592 chars, >300)", "Action verbs found: build, research", "Missing exclusion clause (NOT for)"]},
+        {"name": "Dispatch Table", "score": 0, "max": 10, "weight": 1.0, "findings": ["No dispatch table with $ARGUMENTS found"]},
+        {"name": "Body Structure", "score": 12, "max": 15, "weight": 1.5, "findings": ["Body too long (553 lines, >500)"]},
+        {"name": "Pattern Coverage", "score": 8, "max": 15, "weight": 1.5, "findings": ["Patterns found: 4/13"]},
+        {"name": "References", "score": 7, "max": 10, "weight": 1.0, "findings": ["Reference index table found in body", "Orphan reference files: resources-and-prompts.md"]},
+        {"name": "Critical Rules", "score": 10, "max": 10, "weight": 1.0, "findings": ["Critical Rules section found", "Has 10 numbered rules (>= 5)", "9 rules appear actionable"]},
+        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
+        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
+      ],
+      "patterns_found": ["reference-file-index", "critical-rules", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["dispatch-table", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks"],
+      "meta": {"lines": 553, "refs": 8, "scripts": 0}
+    },
+    {
+      "skill": "host-panel",
+      "path": "skills/host-panel/",
+      "score": 60, "max": 100, "bonus": 0, "grade": "C",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 6, "max": 9, "weight": 1.0, "findings": []},
+        {"name": "Description Quality", "score": 13, "max": 20, "weight": 2.0, "findings": ["Description too long (387 chars, >300)", "Action verbs found: host", "Missing exclusion clause (NOT for)"]},
+        {"name": "Dispatch Table", "score": 0, "max": 10, "weight": 1.0, "findings": ["No dispatch table with $ARGUMENTS found"]},
+        {"name": "Body Structure", "score": 15, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (459 lines)"]},
+        {"name": "Pattern Coverage", "score": 10, "max": 15, "weight": 1.5, "findings": ["Patterns found: 5/13"]},
+        {"name": "References", "score": 6, "max": 10, "weight": 1.0, "findings": ["No reference index table in body"]},
+        {"name": "Critical Rules", "score": 0, "max": 10, "weight": 1.0, "findings": ["No 'Critical Rules' section found"]},
+        {"name": "Scripts", "score": 0, "max": 5, "weight": 0.5, "findings": ["No scripts/ directory (optional)"]},
+        {"name": "Conciseness", "score": 3, "max": 5, "weight": 0.5, "findings": ["Duplicate heading: 'phase 0: framing' appears 2 times", "Duplicate heading: 'synthesis' appears 2 times"]}
+      ],
+      "patterns_found": ["canonical-vocabulary", "scaling-strategy", "state-management", "progressive-disclosure", "body-substitutions"],
+      "patterns_suggested": ["dispatch-table", "reference-file-index", "critical-rules", "scope-boundaries", "classification-gating", "scripts", "templates", "hooks"],
+      "meta": {"lines": 459, "refs": 2, "scripts": 0}
+    },
+    {
+      "skill": "add-badges",
+      "path": "skills/add-badges/",
+      "score": 57, "max": 100, "bonus": 0, "grade": "D",
+      "dimensions": [
+        {"name": "Frontmatter Completeness", "score": 6, "max": 9, "weight": 1.0, "findings": []},
+        {"name": "Description Quality", "score": 13, "max": 20, "weight": 2.0, "findings": ["Description too long (567 chars, >300)", "Action verbs found: detect, generate, scan", "Missing exclusion clause (NOT for)"]},
+        {"name": "Dispatch Table", "score": 0, "max": 10, "weight": 1.0, "findings": ["No dispatch table with $ARGUMENTS found"]},
+        {"name": "Body Structure", "score": 12, "max": 15, "weight": 1.5, "findings": ["Body length acceptable (127 lines)", "Limited sub-section depth (0 ### sub-sections, need >= 2 for +3 points)"]},
+        {"name": "Pattern Coverage", "score": 8, "max": 15, "weight": 1.5, "findings": ["Patterns found: 4/13"]},
+        {"name": "References", "score": 7, "max": 10, "weight": 1.0, "findings": ["No reference index table in body"]},
+        {"name": "Critical Rules", "score": 0, "max": 10, "weight": 1.0, "findings": ["No 'Critical Rules' section found"]},
+        {"name": "Scripts", "score": 5, "max": 5, "weight": 0.5, "findings": ["Found 2 Python script(s)", "Script(s) use argparse", "Script(s) produce JSON output", "Script(s) have docstrings", "Multiple scripts (2)"]},
+        {"name": "Conciseness", "score": 5, "max": 5, "weight": 0.5, "findings": ["No duplicate headings", "No repeated paragraphs"]}
+      ],
+      "patterns_found": ["classification-gating", "scripts", "hooks", "progressive-disclosure"],
+      "patterns_suggested": ["dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "scaling-strategy", "state-management", "templates", "body-substitutions"],
+      "meta": {"lines": 127, "refs": 3, "scripts": 2}
     }
-  ],
-  "detail_skill": "wargame",
-  "progress": {
-    "skill": "my-new-skill",
-    "phases": [
-      {"name": "Ideation", "status": "completed"},
-      {"name": "Scaffold", "status": "completed"},
-      {"name": "Body", "status": "active"},
-      {"name": "References", "status": "pending"},
-      {"name": "Scripts", "status": "pending"},
-      {"name": "Templates", "status": "pending"}
-    ]
-  }
+  ]
 }
 </script>
 
 <script>
+/* ==========================================================================
+   Skill Quality Dashboard — Single-file Interactive Report
+   ==========================================================================
+   Self-contained HTML dashboard for skill audit results.
+   No external dependencies. ES2020+ syntax. IIFE-encapsulated.
+   ========================================================================== */
+
 (function () {
   "use strict";
-  var app = document.getElementById("app");
-  var raw = document.getElementById("data").textContent;
-  var data;
+
+  /* ======================================================================
+     Utilities
+     ====================================================================== */
+
+  /** XSS-safe HTML escaping */
+  const escH = (str) => {
+    if (str == null) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  };
+
+  /**
+   * Tagged template literal for XSS-safe HTML generation.
+   * String interpolations are auto-escaped; raw HTML must use html`` nesting.
+   * Returns a trusted HTML string (marked with a symbol).
+   */
+  const HTML_SAFE = Symbol("html-safe");
+
+  const html = (strings, ...values) => {
+    let result = strings[0];
+    for (let i = 0; i < values.length; i++) {
+      const val = values[i];
+      if (val && val[HTML_SAFE]) {
+        result += val.toString();
+      } else if (Array.isArray(val)) {
+        result += val.map(v => (v && v[HTML_SAFE]) ? v.toString() : escH(v)).join("");
+      } else {
+        result += escH(val);
+      }
+      result += strings[i + 1];
+    }
+    const obj = Object.create(null);
+    obj[HTML_SAFE] = true;
+    obj.toString = () => result;
+    return obj;
+  };
+
+  /** Create a trusted HTML string (bypass escaping for pre-built markup) */
+  const trust = (rawHtml) => {
+    const obj = Object.create(null);
+    obj[HTML_SAFE] = true;
+    obj.toString = () => rawHtml;
+    return obj;
+  };
+
+  /** Grade color variable name for a given grade letter */
+  const gradeVar = (grade) => {
+    const map = { A: "--grade-a", B: "--grade-b", C: "--grade-c", D: "--grade-d", F: "--grade-f" };
+    return map[grade] ?? "--text-muted";
+  };
+
+  /** Score percentage color: emerald >= 80%, amber >= 50%, red < 50% */
+  const barColor = (pct) => {
+    if (pct >= 80) return "hsl(var(--grade-a))";
+    if (pct >= 50) return "hsl(var(--grade-c))";
+    return "hsl(var(--grade-f))";
+  };
+
+  /** Pattern list matching audit.py PATTERN_NAMES exactly */
+  const ALL_PATTERNS = [
+    "dispatch-table", "reference-file-index", "critical-rules",
+    "canonical-vocabulary", "scope-boundaries", "classification-gating",
+    "scaling-strategy", "state-management", "scripts", "templates",
+    "hooks", "progressive-disclosure", "body-substitutions"
+  ];
+
+  /* ======================================================================
+     State Management
+     ====================================================================== */
+
+  let state = { view: "overview", detailSkill: null, theme: "dark" };
+
+  /** Set of expanded dimension indices in detail view, keyed as "skillName:dimIndex" */
+  const expandedDims = new Set();
+
+  /* ======================================================================
+     Data Loading
+     ====================================================================== */
+
+  const app = document.getElementById("app");
+  const raw = document.getElementById("data")?.textContent ?? "";
+  let data;
 
   try {
     data = JSON.parse(raw);
   } catch (err) {
-    app.innerHTML = '<div class="error-fallback" role="alert">' +
-      "<h2>JSON Parse Error</h2>" +
-      "<p>" + escH(err.message) + "</p>" +
-      "<pre>" + escH(raw) + "</pre></div>";
+    app.innerHTML = html`
+      <div class="card" role="alert" style="border: 2px solid hsl(var(--grade-f));">
+        <h2 style="color: hsl(var(--grade-f)); margin-bottom: 0.5rem;">JSON Parse Error</h2>
+        <p style="margin-bottom: 0.5rem;">${err.message}</p>
+        <pre style="white-space: pre-wrap; word-break: break-all; font-size: 0.8rem; color: hsl(var(--text-muted));">${raw}</pre>
+      </div>
+    `.toString();
     return;
   }
 
-  var views = (data.view || "").split(/\s+/).filter(Boolean);
-  function hasView(v) { return views.indexOf(v) !== -1; }
+  // Sort skills by score descending
+  const skills = (data.skills ?? []).slice().sort((a, b) => b.score - a.score);
 
-  var ALL_PATTERNS = [
-    "dispatch-table", "critical-rules", "canonical-vocabulary",
-    "phase-gates", "output-format", "error-recovery", "reference-docs",
-    "templates", "hooks", "scripts", "eval-suite", "mcp-integration",
-    "argument-handling"
-  ];
+  /* ======================================================================
+     Navigation
+     ====================================================================== */
 
-  var html = renderHeader(data);
+  const navigate = (view, skill = null) => {
+    app.style.opacity = "0";
+    app.style.transform = "translateY(4px)";
+    setTimeout(() => {
+      state = { ...state, view, detailSkill: skill };
+      expandedDims.clear();
+      render();
+      app.style.opacity = "1";
+      app.style.transform = "translateY(0)";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 200);
+  };
 
-  if (hasView("overview"))  html += renderOverview(data);
-  if (hasView("detail"))    html += renderDetail(data);
-  if (hasView("progress"))  html += renderProgress(data);
+  const toggleTheme = () => {
+    state = { ...state, theme: state.theme === "dark" ? "light" : "dark" };
+    document.documentElement.setAttribute("data-theme", state.theme);
+  };
 
-  app.innerHTML = html;
-
-  /* ---- Render Functions ---- */
-
-  function renderHeader(d) {
-    var h = '<header class="header">';
-    h += "<h1>Skill Quality Dashboard</h1>";
-    h += '<div class="header-stats">';
-    if (d.generated) {
-      h += '<span>Generated: ' + escH(d.generated.replace("T", " ").replace("Z", " UTC")) + "</span>";
+  const toggleDim = (key) => {
+    if (expandedDims.has(key)) {
+      expandedDims.delete(key);
+    } else {
+      expandedDims.add(key);
     }
-    if (d.skills && d.skills.length) {
-      h += '<span class="pill">' + d.skills.length + " skill" + (d.skills.length !== 1 ? "s" : "") + "</span>";
-    }
-    h += "</div></header>";
-    return h;
-  }
+    render();
+  };
 
-  function renderOverview(d) {
-    if (!d.skills || !d.skills.length) return "";
-    var sorted = d.skills.slice().sort(function (a, b) { return b.score - a.score; });
-    var s = '<section aria-label="Skills Overview"><h2>Skills Overview</h2>';
-    s += '<div class="skill-grid">';
-    sorted.forEach(function (sk) {
-      var pct = Math.round((sk.score / sk.max) * 100);
-      var pFound = (sk.patterns_found || []).length;
-      var pTotal = pFound + (sk.patterns_suggested || []).length;
-      s += '<div class="card skill-card" data-grade="' + escH(sk.grade) + '">';
-      s += '<div class="skill-card-header">';
-      s += "<h3>" + escH(sk.skill) + "</h3>";
-      s += '<span class="badge badge-grade">' + escH(sk.grade) + "</span>";
-      s += "</div>";
-      s += '<div style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;">';
-      s += "<strong>" + sk.score + "</strong><span style='color:var(--dim);font-size:0.8rem;'>/ " + sk.max + "</span>";
-      if (sk.bonus > 0) s += '<span style="color:var(--grade-a);font-size:0.75rem;">+' + sk.bonus + " bonus</span>";
-      s += "</div>";
-      s += '<div class="score-bar"><div class="score-bar-fill" style="width:' + pct + "%;background:var(--grade);\"></div></div>";
-      s += '<div class="skill-meta">';
-      s += '<span class="pill">' + pFound + "/" + pTotal + " patterns</span>";
-      if (sk.meta) {
-        s += '<span class="pill">' + sk.meta.lines + " lines</span>";
-        s += '<span class="pill">' + sk.meta.refs + " refs</span>";
-        s += '<span class="pill">' + sk.meta.scripts + " scripts</span>";
+  /* ======================================================================
+     Event Delegation — single click handler on #app
+     ====================================================================== */
+
+  app.addEventListener("click", (e) => {
+    const target = e.target.closest("[data-action]");
+    if (!target) return;
+
+    const action = target.dataset.action;
+
+    if (action === "detail") {
+      const skillName = target.dataset.skill;
+      if (skillName) navigate("detail", skillName);
+    } else if (action === "back") {
+      navigate("overview");
+    } else if (action === "toggle-theme") {
+      toggleTheme();
+    } else if (action === "toggle-dim") {
+      const dimKey = target.dataset.dimKey;
+      if (dimKey) toggleDim(dimKey);
+    }
+  });
+
+  /* ======================================================================
+     Keyboard Navigation
+     ====================================================================== */
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && state.view === "detail") {
+      navigate("overview");
+    }
+  });
+
+  /* ======================================================================
+     Render — Overview View
+     ====================================================================== */
+
+  const renderHeader = () => {
+    const skillCount = skills.length;
+    const avgScore = skillCount > 0
+      ? Math.round(skills.reduce((s, sk) => s + (sk.score / sk.max) * 100, 0) / skillCount)
+      : 0;
+    const generated = data.generated
+      ? data.generated.replace("T", " ").replace("Z", " UTC")
+      : "";
+
+    return html`
+      <header class="header">
+        <div class="header-left">
+          <h1>Skill Quality Dashboard</h1>
+          <div class="header-stats">
+            ${trust(skillCount > 0 ? `<span class="pill">${skillCount} skill${skillCount !== 1 ? "s" : ""}</span>` : "")}
+            ${trust(avgScore > 0 ? `<span class="pill">avg ${avgScore}%</span>` : "")}
+            ${trust(generated ? `<span style="font-size:0.75rem;">${escH(generated)}</span>` : "")}
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" data-action="toggle-theme" aria-label="Toggle theme" title="Toggle light/dark theme">
+            ${state.theme === "dark" ? "\u2600" : "\u263D"}
+          </button>
+        </div>
+      </header>
+    `;
+  };
+
+  const renderScoreRing = (score, max, grade) => {
+    const pct = max > 0 ? (score / max) * 100 : 0;
+    const circumference = 2 * Math.PI * 16; // r=16
+    const offset = circumference - (circumference * pct / 100);
+    const gVar = gradeVar(grade);
+
+    return trust(`
+      <svg class="score-ring" viewBox="0 0 36 36" aria-label="Score: ${score}/${max}">
+        <circle class="score-ring-bg" cx="18" cy="18" r="16"/>
+        <circle class="score-ring-fill" cx="18" cy="18" r="16"
+          stroke-dasharray="${circumference.toFixed(2)}"
+          stroke-dashoffset="${offset.toFixed(2)}"
+          transform="rotate(-90 18 18)"
+          style="stroke: hsl(var(${gVar}));"/>
+        <text x="18" y="18" text-anchor="middle" dominant-baseline="central"
+          class="score-ring-text" style="fill: hsl(var(${gVar}));">${Math.round(pct)}</text>
+      </svg>
+    `);
+  };
+
+  const renderSkillCard = (sk, index) => {
+    const pFound = (sk.patterns_found ?? []).length;
+    const pTotal = ALL_PATTERNS.length;
+
+    return html`
+      <div class="card skill-card" data-grade="${sk.grade}" data-action="detail" data-skill="${sk.skill}"
+           style="--i: ${String(index)};" tabindex="0" role="button"
+           aria-label="${sk.skill}: grade ${sk.grade}, score ${String(sk.score)} of ${String(sk.max)}">
+        <div class="skill-card-header">
+          <h3>${sk.skill}</h3>
+          <span class="badge badge-grade">${sk.grade}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          ${renderScoreRing(sk.score, sk.max, sk.grade)}
+          <div>
+            <div class="skill-card-score">
+              <span class="score-value">${String(sk.score)}</span>
+              <span class="score-max">/ ${String(sk.max)}</span>
+              ${trust(sk.bonus > 0 ? `<span class="score-bonus">+${sk.bonus}</span>` : "")}
+            </div>
+            <div style="font-size: 0.75rem; color: hsl(var(--text-muted));">${sk.path ?? ""}</div>
+          </div>
+        </div>
+        <div class="skill-meta">
+          <span class="pill">${String(pFound)}/${String(pTotal)} patterns</span>
+          ${trust(sk.meta ? `
+            <span class="pill">${sk.meta.lines} lines</span>
+            <span class="pill">${sk.meta.refs} refs</span>
+            <span class="pill">${sk.meta.scripts} scripts</span>
+          ` : "")}
+        </div>
+      </div>
+    `;
+  };
+
+  const renderOverview = () => {
+    if (!skills.length) return html`<p style="color: hsl(var(--text-muted));">No skills data.</p>`;
+
+    return html`
+      <section aria-label="Skills Overview">
+        <div class="skill-grid">
+          ${trust(skills.map((sk, i) => renderSkillCard(sk, i).toString()).join(""))}
+        </div>
+      </section>
+    `;
+  };
+
+  /* ======================================================================
+     Render — Detail View
+     ====================================================================== */
+
+  /** SVG Radar Chart — spider chart for all 9 dimensions */
+  const renderRadarChart = (sk) => {
+    const dims = sk.dimensions ?? [];
+    if (!dims.length) return trust("");
+
+    const cx = 100;
+    const cy = 100;
+    const maxRadius = 75;
+    const n = dims.length;
+    const angleStep = (2 * Math.PI) / n;
+    const gVar = gradeVar(sk.grade);
+
+    // Grid rings at 25%, 50%, 75%, 100%
+    let gridRings = "";
+    for (const pct of [0.25, 0.5, 0.75, 1.0]) {
+      const r = maxRadius * pct;
+      const points = [];
+      for (let i = 0; i < n; i++) {
+        const angle = -Math.PI / 2 + i * angleStep;
+        points.push(`${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`);
       }
-      s += "</div>";
-      s += "</div>";
-    });
-    s += "</div></section>";
-    return s;
-  }
+      gridRings += `<polygon class="radar-grid" points="${points.join(" ")}"/>`;
+    }
 
-  function renderDetail(d) {
-    var sk = findSkill(d, d.detail_skill);
-    if (!sk) return '<section class="card"><h2>Detail View</h2><p>Skill "' + escH(d.detail_skill) + '" not found.</p></section>';
+    // Axis lines
+    let axisLines = "";
+    for (let i = 0; i < n; i++) {
+      const angle = -Math.PI / 2 + i * angleStep;
+      const x2 = cx + maxRadius * Math.cos(angle);
+      const y2 = cy + maxRadius * Math.sin(angle);
+      axisLines += `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}"/>`;
+    }
 
-    var pct = Math.round((sk.score / sk.max) * 100);
-    var s = '<section aria-label="Skill Detail">';
+    // Data polygon — score as percentage, scaled by weight
+    const dataPoints = [];
+    const maxWeight = Math.max(...dims.map(d => d.weight));
+    for (let i = 0; i < n; i++) {
+      const dim = dims[i];
+      const scorePct = dim.max > 0 ? dim.score / dim.max : 0;
+      const weightScale = dim.weight / maxWeight;
+      const r = maxRadius * scorePct * weightScale;
+      const angle = -Math.PI / 2 + i * angleStep;
+      dataPoints.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
+    }
+    const polyPoints = dataPoints.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
 
-    /* Header card */
-    s += '<div class="card" data-grade="' + escH(sk.grade) + '" style="margin-bottom:var(--gap);">';
-    s += '<div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">';
-    s += "<h2 style='margin:0;'>" + escH(sk.skill) + "</h2>";
-    s += '<span class="badge badge-grade" style="font-size:1rem;">' + escH(sk.grade) + "</span>";
-    s += '<span style="font-size:1.1rem;font-weight:700;">' + sk.score + "/" + sk.max + "</span>";
-    if (sk.bonus > 0) s += '<span style="color:var(--grade-a);font-size:0.85rem;">+' + sk.bonus + " bonus</span>";
-    s += "</div>";
-    s += '<div class="score-bar" style="margin-top:0.5rem;height:10px;"><div class="score-bar-fill" style="width:' + pct + '%;background:var(--grade);"></div></div>';
-    if (sk.path) s += '<p style="font-size:0.8rem;color:var(--dim);margin-top:0.3rem;">' + escH(sk.path) + "</p>";
-    s += "</div>";
+    // Dots on data points
+    let dots = "";
+    for (const p of dataPoints) {
+      dots += `<circle class="radar-dot" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="2"/>`;
+    }
 
-    /* Dimension bars */
-    s += '<div class="card" style="margin-bottom:var(--gap);"><h3>Scoring Dimensions</h3>';
-    (sk.dimensions || []).forEach(function (dim) {
-      s += renderDimBar(dim);
-    });
-    s += "</div>";
+    // Axis labels — positioned outside chart
+    let labels = "";
+    const labelRadius = maxRadius + 14;
+    for (let i = 0; i < n; i++) {
+      const angle = -Math.PI / 2 + i * angleStep;
+      const lx = cx + labelRadius * Math.cos(angle);
+      const ly = cy + labelRadius * Math.sin(angle);
+      // Abbreviate long dimension names
+      const name = dims[i].name.replace("Completeness", "Complete").replace("Coverage", "Cover.");
+      let anchor = "middle";
+      if (Math.cos(angle) < -0.1) anchor = "end";
+      else if (Math.cos(angle) > 0.1) anchor = "start";
+      labels += `<text class="radar-label" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="central">${escH(name)}</text>`;
+    }
 
-    /* Findings grouped by dimension */
-    var hasFindings = (sk.dimensions || []).some(function (dim) {
-      return dim.findings && dim.findings.length > 0;
-    });
+    return trust(`
+      <div class="radar-container" data-grade="${escH(sk.grade)}">
+        <svg viewBox="0 0 200 200" width="280" height="280" aria-label="Radar chart for ${escH(sk.skill)}">
+          ${gridRings}
+          ${axisLines}
+          <polygon class="radar-polygon-fill" points="${polyPoints}" style="fill: hsl(var(${gVar}) / 0.15);"/>
+          <polygon class="radar-polygon-stroke" points="${polyPoints}" style="stroke: hsl(var(${gVar}));"/>
+          ${dots}
+          ${labels}
+        </svg>
+      </div>
+    `);
+  };
+
+  /** Dimension bar row with collapsible findings */
+  const renderDimRow = (dim, skillName, index) => {
+    const pct = dim.max > 0 ? Math.round((dim.score / dim.max) * 100) : 0;
+    const color = barColor(pct);
+    const hasFindings = dim.findings?.length > 0;
+    const dimKey = `${skillName}:${index}`;
+    const isOpen = expandedDims.has(dimKey);
+
+    let findingsHtml = "";
     if (hasFindings) {
-      s += '<div class="card" style="margin-bottom:var(--gap);"><h3>Findings</h3>';
-      (sk.dimensions || []).forEach(function (dim) {
-        if (!dim.findings || !dim.findings.length) return;
-        s += '<div class="finding-dim">' + escH(dim.name) + " (" + dim.score + "/" + dim.max + ")</div>";
-        dim.findings.forEach(function (f) {
-          s += '<div class="finding">' + escH(f) + "</div>";
-        });
-      });
-      s += "</div>";
+      const items = dim.findings.map(f => `<li>${escH(f)}</li>`).join("");
+      findingsHtml = `
+        <div class="dim-findings ${isOpen ? "open" : ""}">
+          <ul>${items}</ul>
+        </div>
+      `;
     }
 
-    /* Pattern checklist */
-    s += '<div class="card" style="margin-bottom:var(--gap);"><h3>Pattern Checklist</h3>';
-    s += '<div class="pattern-list">';
-    var found = sk.patterns_found || [];
-    ALL_PATTERNS.forEach(function (p) {
-      var isFound = found.indexOf(p) !== -1;
-      s += '<div class="pattern-check">';
-      s += '<span class="icon ' + (isFound ? "found" : "missing") + '">' + (isFound ? "\u2713" : "\u2717") + "</span>";
-      s += "<span>" + escH(p) + "</span>";
-      s += "</div>";
-    });
-    s += "</div></div>";
+    const weightLabel = dim.weight !== 1.0
+      ? `<span class="weight-badge">x${dim.weight.toFixed(1)}</span>`
+      : "";
 
-    /* Metadata summary */
-    if (sk.meta) {
-      s += '<div class="card"><h3>Metadata</h3>';
-      s += '<div style="display:flex;gap:var(--gap);flex-wrap:wrap;">';
-      s += '<span class="pill" style="font-size:0.85rem;">' + sk.meta.lines + " lines</span>";
-      s += '<span class="pill" style="font-size:0.85rem;">' + sk.meta.refs + " references</span>";
-      s += '<span class="pill" style="font-size:0.85rem;">' + sk.meta.scripts + " scripts</span>";
-      s += "</div></div>";
-    }
+    return trust(`
+      <div>
+        <div class="dim-row" ${hasFindings ? `data-action="toggle-dim" data-dim-key="${escH(dimKey)}"` : ""}
+             role="${hasFindings ? "button" : "presentation"}" ${hasFindings ? 'tabindex="0"' : ""}
+             aria-expanded="${hasFindings ? isOpen : ""}"
+             aria-label="${escH(dim.name)}: ${dim.score}/${dim.max}">
+          <span class="dim-label">
+            ${hasFindings ? `<span class="chevron ${isOpen ? "open" : ""}">&#9656;</span>` : "<span style='width:0.65rem;display:inline-block;'></span>"}
+            ${escH(dim.name)}
+            ${weightLabel}
+          </span>
+          <div class="dim-bar-wrap">
+            <div class="bar-fill" style="width: ${pct}%; background: ${color};"></div>
+          </div>
+          <span class="dim-score-label">${dim.score}/${dim.max}</span>
+        </div>
+        ${findingsHtml}
+      </div>
+    `);
+  };
 
-    s += "</section>";
-    return s;
-  }
+  /** Pattern grid with three states: found, suggested, missing */
+  const renderPatternGrid = (sk) => {
+    const found = new Set(sk.patterns_found ?? []);
+    const suggested = new Set(sk.patterns_suggested ?? []);
 
-  function renderDimBar(dim) {
-    var pct = Math.round((dim.score / dim.max) * 100);
-    var color = pct >= 80 ? "var(--grade-a)" : pct >= 50 ? "var(--grade-c)" : "var(--grade-f)";
-    return '<div class="dim-row">' +
-      '<span class="dim-label">' + escH(dim.name) + "</span>" +
-      '<svg width="200" height="16" role="img" aria-label="' + escH(dim.name) + ": " + dim.score + "/" + dim.max + '">' +
-      '<rect x="0" y="3" width="200" height="10" rx="5" fill="var(--border)"/>' +
-      '<rect x="0" y="3" width="' + (pct * 2) + '" height="10" rx="5" fill="' + color + '"/>' +
-      "</svg>" +
-      '<span class="dim-score">' + dim.score + "/" + dim.max + "</span>" +
-      "</div>";
-  }
-
-  function renderProgress(d) {
-    var prog = d.progress;
-    if (!prog || !prog.phases || !prog.phases.length) return "";
-
-    var s = '<section aria-label="Creation Progress">';
-    s += '<div class="card">';
-    s += "<h2>Creation Progress: " + escH(prog.skill) + "</h2>";
-    s += '<div class="phase-pipeline">';
-
-    var activeIdx = -1;
-    prog.phases.forEach(function (p, i) {
-      if (p.status === "active") activeIdx = i;
-    });
-
-    prog.phases.forEach(function (phase, i) {
-      if (i > 0) {
-        var connClass = "phase-connector";
-        if (phase.status === "completed" || phase.status === "active") connClass += " completed";
-        s += '<div class="' + connClass + '"></div>';
-      }
-      s += '<div class="phase-step ' + escH(phase.status) + '">';
-      s += '<div class="phase-circle">';
-      if (phase.status === "completed") {
-        s += "\u2713";
-      } else if (phase.status === "active") {
-        s += "\u25C9";
+    return trust(ALL_PATTERNS.map(p => {
+      let dotClass, nameClass;
+      if (found.has(p)) {
+        dotClass = "found";
+        nameClass = "found";
+      } else if (suggested.has(p)) {
+        dotClass = "suggested";
+        nameClass = "suggested";
       } else {
-        s += "\u25CB";
+        dotClass = "missing";
+        nameClass = "missing";
       }
-      s += "</div>";
-      s += '<span class="phase-label">' + escH(phase.name) + "</span>";
-      s += "</div>";
-    });
+      return `
+        <div class="pattern-item">
+          <span class="pattern-dot ${dotClass}"></span>
+          <span class="pattern-name ${nameClass}">${escH(p)}</span>
+        </div>
+      `;
+    }).join(""));
+  };
 
-    s += "</div>";
-
-    if (activeIdx >= 0) {
-      s += '<p style="text-align:center;font-size:0.9rem;color:var(--accent);margin-top:0.5rem;">Current phase: <strong>' + escH(prog.phases[activeIdx].name) + "</strong></p>";
+  const renderDetail = (skillName) => {
+    const sk = skills.find(s => s.skill === skillName);
+    if (!sk) {
+      return html`
+        <div class="card">
+          <button class="back-btn" data-action="back">&larr; Back</button>
+          <p style="margin-top: 0.5rem; color: hsl(var(--text-muted));">Skill "${skillName}" not found.</p>
+        </div>
+      `;
     }
 
-    s += "</div></section>";
-    return s;
-  }
+    const pct = sk.max > 0 ? Math.round((sk.score / sk.max) * 100) : 0;
+    const gVar = gradeVar(sk.grade);
+    const dims = sk.dimensions ?? [];
 
-  /* ---- Utilities ---- */
+    return html`
+      <section aria-label="Skill Detail: ${sk.skill}">
+        ${trust(`
+          <!-- Back navigation -->
+          <button class="back-btn" data-action="back" style="margin-bottom: 1rem;">&larr; Back to overview</button>
 
-  function findSkill(d, name) {
-    if (!d.skills || !name) return null;
-    for (var i = 0; i < d.skills.length; i++) {
-      if (d.skills[i].skill === name) return d.skills[i];
+          <!-- Detail header card -->
+          <div class="card" data-grade="${escH(sk.grade)}" style="margin-bottom: 1rem;">
+            <div class="detail-header">
+              <h2 style="margin: 0;">${escH(sk.skill)}</h2>
+              <span class="badge badge-grade" style="font-size: 1rem;">${escH(sk.grade)}</span>
+              <span class="detail-score-display" style="color: hsl(var(${gVar}));">${sk.score}<span style="font-size: 1rem; font-weight: 400; color: hsl(var(--text-muted));">/${sk.max}</span></span>
+              ${sk.bonus > 0 ? `<span style="color: hsl(var(--grade-a)); font-size: 0.85rem; font-weight: 600;">+${sk.bonus} bonus</span>` : ""}
+            </div>
+            ${sk.path ? `<p style="font-size: 0.8rem; color: hsl(var(--text-muted)); margin-top: 0.3rem;">${escH(sk.path)}</p>` : ""}
+          </div>
+
+          <!-- Two-column layout: radar + dimensions -->
+          <div class="detail-layout">
+            <!-- Left: Radar chart -->
+            <div class="card" data-grade="${escH(sk.grade)}">
+              <h3 style="margin-bottom: 0.5rem;">Dimension Radar</h3>
+              ${renderRadarChart(sk).toString()}
+              ${sk.meta ? `
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;">
+                  <span class="pill">${sk.meta.lines} lines</span>
+                  <span class="pill">${sk.meta.refs} refs</span>
+                  <span class="pill">${sk.meta.scripts} scripts</span>
+                </div>
+              ` : ""}
+            </div>
+
+            <!-- Right: Dimension bars -->
+            <div class="card" data-grade="${escH(sk.grade)}">
+              <h3 style="margin-bottom: 0.5rem;">Scoring Dimensions</h3>
+              ${dims.map((dim, i) => renderDimRow(dim, sk.skill, i).toString()).join("")}
+            </div>
+          </div>
+
+          <!-- Pattern grid -->
+          <div class="card" style="margin-bottom: 1rem;" data-grade="${escH(sk.grade)}">
+            <h3 style="margin-bottom: 0.75rem;">Pattern Coverage <span style="font-weight: 400; color: hsl(var(--text-muted)); font-size: 0.8rem;">${(sk.patterns_found ?? []).length}/${ALL_PATTERNS.length}</span></h3>
+            <div style="display: flex; gap: 1rem; margin-bottom: 0.75rem; font-size: 0.72rem; color: hsl(var(--text-muted));">
+              <span><span class="pattern-dot found" style="display: inline-block; vertical-align: middle;"></span> Found</span>
+              <span><span class="pattern-dot suggested" style="display: inline-block; vertical-align: middle;"></span> Suggested</span>
+              <span><span class="pattern-dot missing" style="display: inline-block; vertical-align: middle;"></span> Missing</span>
+            </div>
+            <div class="pattern-grid">
+              ${renderPatternGrid(sk).toString()}
+            </div>
+          </div>
+        `)}
+      </section>
+    `;
+  };
+
+  /* ======================================================================
+     Render — Main Dispatcher
+     ====================================================================== */
+
+  const render = () => {
+    let content;
+    if (state.view === "detail" && state.detailSkill) {
+      content = html`
+        ${renderHeader()}
+        ${renderDetail(state.detailSkill)}
+      `;
+    } else {
+      content = html`
+        ${renderHeader()}
+        ${renderOverview()}
+      `;
     }
-    return null;
-  }
+    app.innerHTML = content.toString();
+  };
 
-  function escH(str) {
-    if (str == null) return "";
-    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
+  /* ======================================================================
+     Initial Render
+     ====================================================================== */
+
+  // Apply initial theme
+  document.documentElement.setAttribute("data-theme", state.theme);
+  render();
+
 })();
 </script>
 </body>
