@@ -1,0 +1,273 @@
+---
+title: "honest-review"
+description: "Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity calibration by project type. Two modes: (1) Sess"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="MIT" variant="note" /> <Badge text="v2.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
+
+> Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity calibration by project type. Two modes: (1) Session review — review and verify changes using parallel reviewers that research-validate every assumption; (2) Full codebase audit — deep end-to-end evaluation using parallel teams of subagent-spawning reviewers. Use when reviewing changes, verifying work quality, auditing a codebase, validating correctness, checking assumptions, finding defects, reducing complexity. NOT for writing new code, explaining code, or benchmarking.
+
+<Aside type="tip" title="Install">
+```bash
+npx skills add wyattowalsh/agents/skills/honest-review -g
+```
+</Aside>
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `honest-review` |
+| License | MIT |
+| Version | 2.0 |
+| Author | wyattowalsh |
+  </TabItem>
+</Tabs>
+
+## Details
+
+# Honest Review
+
+Research-driven code review. Every finding validated with evidence.
+
+## Dispatch
+
+| $ARGUMENTS | Mode |
+|------------|------|
+| Empty + changes in session (git diff) | Session review of changed files |
+| Empty + no changes (first message) | Full codebase audit |
+| File or directory path | Scoped review of that path |
+| "audit" | Force full codebase audit |
+| PR number/URL | Review PR changes (gh pr diff) |
+| Git range (HEAD~3..HEAD) | Review changes in that range |
+
+## Review Posture
+
+**Severity calibration by project type**:
+- Prototype: report P0/S0 only. Skip style, structure, and optimization concerns.
+- Production: full review at all levels and severities.
+- Library: full review plus backward compatibility focus on public API surfaces.
+
+**Strengths acknowledgment**:
+Call out well-engineered patterns, clean abstractions, and thoughtful design.
+Minimum one strength per review scope. Strengths are findings too.
+
+**Positive-to-constructive ratio**:
+Target 3:1 positive-to-constructive. Avoid purely negative reports.
+If the ratio skews negative, re-examine whether low-severity findings
+are worth reporting.
+
+**Convention-respecting stance**:
+Review against the codebase's own standards, not an ideal standard.
+Flag deviations from the project's conventions, not from yours.
+
+**Healthy codebase acknowledgment**:
+If no P0/P1 or S0 findings: state this explicitly. Acknowledge health.
+Do not inflate minor issues. A short report is a good report.
+
+## Review Levels (Both Modes)
+
+Every review covers three abstraction levels, each examining both
+defects and unnecessary complexity:
+
+**Correctness** (does it work? is it robust?):
+Error handling, boundary conditions, security, API misuse, concurrency, resource leaks.
+Simplify: phantom error handling, defensive checks for impossible states, dead error paths.
+
+**Design** (is it well-built? elegant? flexible?):
+Abstraction quality, coupling, cohesion, generalizability, flexibility, cognitive complexity, test quality.
+Simplify: dead code, stale imports, duplication, 1:1 wrappers, single-use abstractions, over-engineering.
+
+**Efficiency** (is it economical? performant?):
+Algorithmic complexity, N+1, data structure choice, resource usage, backpressure, caching.
+Simplify: unnecessary serialization, redundant computation, over-caching, premature optimization.
+
+Context-dependent triggers (apply when relevant):
+- Security: auth, payments, user data, file I/O, network
+- Observability: services, APIs, long-running processes
+- AI code smells: LLM-generated code, unfamiliar dependencies
+- Config and secrets: environment config, credentials, .env files
+- Resilience: distributed systems, external dependencies, queues
+- i18n and accessibility: user-facing UI, localized content
+- Data migration: schema changes, data transformations
+- Backward compatibility: public APIs, libraries, shared contracts
+Full checklists: read references/checklists.md
+
+## Creative Lenses
+
+Apply at least 2 lenses per review scope. Pick based on code characteristics.
+
+- **Inversion**: assume the code is wrong — what would break first?
+- **Deletion**: remove each unit — does anything else notice?
+- **Newcomer**: read as a first-time contributor — where do you get lost?
+- **Incident**: imagine a 3 AM page — what path led here?
+- **Evolution**: fast-forward 6 months of feature growth — what becomes brittle?
+
+Reference: read references/review-lenses.md
+
+## Research Validation
+
+THIS IS THE CORE DIFFERENTIATOR. Do not report findings based solely
+on LLM knowledge. For every non-trivial finding, validate with research:
+
+**Two-phase review per scope**:
+1. **Flag phase**: Analyze code, generate hypotheses ("this API may be
+   deprecated", "this SQL pattern may be injectable", "this dependency
+   has a known CVE")
+2. **Validate phase**: For each flag, spawn research subagent(s) to confirm:
+   - Context7: look up current library docs for API correctness
+   - WebSearch: check current best practices, security advisories
+   - WebFetch: query package registries (npm, PyPI, crates.io)
+   - gh: check open issues, security advisories for dependencies
+3. Only report findings with evidence. Cite sources.
+
+Research playbook: read references/research-playbook.md
+
+## Mode 1: Session Review
+
+### Step 1: Identify Changes
+
+Run `git diff --name-only HEAD` to capture both staged and unstaged changes.
+Collect `git diff HEAD` for full context.
+Identify original task intent from session history.
+
+### Step 2: Scale and Launch
+
+| Scope | Strategy |
+|-------|----------|
+| 1-2 files | Inline review at all 3 levels. Spawn research subagents for flagged findings. |
+| 3-5 files | Spawn 3 parallel reviewer subagents (Correctness/Design/Efficiency). Each flags then researches within their level. |
+| 6+ files or 3+ modules | Spawn a team. See below. |
+
+**Team structure for large session reviews (6+ files)**:
+
+```
+[Lead: reconcile findings, produce final report]
+  |-- Correctness Reviewer
+  |     Wave 1: subagents analyzing files (1 per file)
+  |     Wave 2: subagents researching flagged findings
+  |-- Design Reviewer
+  |     Wave 1: subagents analyzing module boundaries
+  |     Wave 2: subagents researching flagged findings
+  |-- Efficiency Reviewer
+  |     Wave 1: subagents analyzing performance/complexity
+  |     Wave 2: subagents researching flagged findings
+  |-- Verification Runner
+        Wave 1: subagents running build, lint, tests
+        Wave 2: subagents spot-checking behavior
+```
+
+Each teammate operates independently. Each runs internal waves of
+massively parallelized subagents. No overlapping file ownership.
+
+### Step 3: Reconcile (8 Steps)
+
+1. **Question**: For each finding, ask: (a) Is this actually broken or
+   just unfamiliar? (b) Is there research evidence? (c) Would fixing
+   this genuinely improve the code? Discard unvalidated findings.
+2. **Deduplicate**: Same issue at different levels — keep deepest root cause
+3. **Resolve conflicts**: When levels disagree, choose most net simplification
+4. **Elevate**: Local patterns across files to design/efficiency root causes
+5. **Prioritize**: P0/S0 (must fix), P1/S1 (should fix), P2/S2 (report but do not implement)
+6. **Estimate impact**: Rank findings by blast radius (users affected, data at risk, downtime), not just category
+7. **Filter false positives**: Verify each finding is reproducible. Ask: does the fix introduce new risk?
+8. **Check interactions**: Determine whether fixing one finding worsens another. Resolve conflicts before presenting.
+
+Severity calibration: P0 = will cause production incident. Not "ugly code."
+
+### Step 4: Present and Execute
+
+Present all P0/P1/S0/S1 findings with evidence and citations.
+Ask: "Implement fixes? [all / select / skip]"
+If approved: parallel subagents by file (no overlapping ownership).
+Then verify: build/lint, tests, behavior spot-check.
+Output format: read references/output-formats.md
+
+## Mode 2: Full Codebase Audit
+
+### Step 1: Discover
+
+Explore: language(s), framework(s), build system, directory structure,
+entry points, dependency manifest, approximate size.
+For 500+ files: prioritize recently modified, entry points, public API,
+high-complexity areas. State scope in report.
+
+### Step 2: Design and Launch Team
+
+Spawn a team with domain-based ownership. Each teammate runs all 3
+review levels + research validation on their owned files.
+
+```
+[Lead: cross-domain analysis, reconciliation, final report]
+  |-- Domain A Reviewer — e.g., Backend
+  |     Wave 1: parallel subagents scanning all owned files
+  |     Wave 2: parallel subagents deep-diving flagged files
+  |     Wave 3: parallel subagents researching flagged assumptions
+  |-- Domain B Reviewer — e.g., Frontend
+  |     [same wave pattern]
+  |-- Domain C Reviewer — e.g., Tests/Infra
+  |     [same wave pattern]
+  |-- Dependency and Security Researcher
+        Wave 1: subagents auditing each dependency (version, CVEs, license)
+        Wave 2: subagents checking security patterns against current docs
+        Wave 3: subagents verifying API usage against library docs (Context7)
+```
+
+Adapt team composition to project type.
+Team archetypes + scaling: read references/team-templates.md
+
+### Step 3: Teammate Instructions
+
+Each teammate receives: role, owned files, project context, all 3 review
+levels, instruction to run two-phase (flag then research-validate), and
+findings format. Full template: read references/team-templates.md
+
+### Step 4: Cross-Domain Analysis (Lead)
+
+While teammates review, lead spawns parallel subagents for:
+- Architecture: module boundaries, dependency graph
+- Data flow: trace key paths end-to-end
+- Error propagation: consistency across system
+- Shared patterns: duplication vs. necessary abstraction
+
+### Step 5: Reconcile Across Domains
+
+Same 8-step reconciliation as Mode 1 Step 3. Cross-domain deduplication and elevation.
+
+### Step 6: Report
+
+Output format: read references/output-formats.md
+Required sections: Critical, Significant, Cross-Domain, Health Summary,
+Top 3 Recommendations. All findings include evidence + citations.
+
+### Step 7: Execute (If Approved)
+
+Ask: "Implement fixes? [all / select / skip]"
+If approved: parallel subagents by file (no overlapping ownership).
+Then verify: build/lint, tests, behavior spot-check.
+
+## Reference Files
+
+| File | When to Read |
+|------|--------------|
+| references/checklists.md | During analysis or building teammate prompts |
+| references/research-playbook.md | When setting up research validation subagents |
+| references/output-formats.md | When producing final output |
+| references/team-templates.md | When designing teams (Mode 2 or large Mode 1) |
+| references/review-lenses.md | When applying creative review lenses |
+
+## Critical Rules
+
+- Every non-trivial finding must have research evidence or be discarded
+- Do not police style — follow the codebase's conventions
+- Do not report phantom bugs requiring impossible conditions
+- More than 15 findings means re-prioritize — 5 validated findings beat 50 speculative
+- Never skip reconciliation
+- Always present before implementing (approval gate)
+- Always verify after implementing (build, tests, behavior)
+- Never assign overlapping file ownership
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/honest-review/SKILL.md)

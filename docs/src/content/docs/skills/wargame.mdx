@@ -1,0 +1,335 @@
+---
+title: "wargame"
+description: "Domain-agnostic strategic decision analysis and wargaming. Auto-classifies scenario complexity: simple decisions get structured analysis (pre-mortem, ACH, decision trees); complex or adversarial scena"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="MIT" variant="note" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
+
+> Domain-agnostic strategic decision analysis and wargaming. Auto-classifies scenario complexity: simple decisions get structured analysis (pre-mortem, ACH, decision trees); complex or adversarial scenarios get full multi-turn interactive wargames with AI-controlled actors, Monte Carlo outcome exploration, and structured adjudication. Generates visual dashboards and saves markdown decision journals. Use for business strategy, crisis management, competitive analysis, geopolitical scenarios, personal decisions, or any consequential choice under uncertainty.
+
+<Aside type="tip" title="Install">
+```bash
+npx skills add wyattowalsh/agents/skills/wargame -g
+```
+</Aside>
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `wargame` |
+| License | MIT |
+| Version | 1.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `opus` |
+| Argument Hint | `<scenario description>` |
+  </TabItem>
+</Tabs>
+
+## Details
+
+# Wargame
+
+Domain-agnostic strategic decision analysis. Every output labeled exploratory.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Scenario text provided | Go to Scenario Classification |
+| `resume <path>` | Read the journal file at path, restore state, continue wargame from last turn |
+| Empty | Prompt user to describe their decision scenario |
+
+If `$ARGUMENTS` begins with "resume", extract the file path, read the journal,
+reconstruct actor state and turn history, and continue the wargame from the
+last recorded turn. If the file does not exist or is malformed, report the
+error and prompt the user for a new scenario.
+
+If `$ARGUMENTS` is empty, ask:
+> Describe the decision or scenario you want to analyze. Include context,
+> constraints, and what outcome you are trying to achieve.
+
+Otherwise, proceed to Scenario Classification with the provided text.
+
+## Wargame Principles
+
+Core principles governing all modes. Violations are bugs.
+
+**Exploratory, not predictive** — RAND guardrail: all outputs are thought
+experiments, never forecasts. Label every output accordingly. Do not imply
+certainty where none exists.
+
+**Sensitive scenario handling** — Treat all scenarios with analytical rigor
+regardless of domain. Real-world violence, harm, and crisis scenarios are
+analyzed dispassionately as strategic problems. Analytical distance is a
+feature, not a defect.
+
+**Depth calibration** — Match analysis depth to scenario complexity. The
+classification rubric determines this. Do not over-analyze trivial decisions
+or under-analyze consequential ones.
+
+**User override rights** — The user can always override the classification
+tier, end early, skip sections, or redirect analysis. Acknowledge overrides
+and proceed without resistance.
+
+**Adversary simulation is best-effort** — LLMs cannot truly model adversary
+cognition or maintain hidden information. Acknowledge this limitation
+explicitly at the start of every Interactive Wargame.
+
+**Force trade-offs** — Never present costless options. Every choice has
+downsides. If an option appears to dominate, search harder for its weaknesses.
+
+**LLM bias awareness** — Actively mitigate known LLM biases: sycophancy,
+anchoring on user framing, status quo bias, and dramatic escalation. Run
+bias sweeps per `references/cognitive-biases.md`.
+
+## Scenario Classification
+
+Score the scenario on five dimensions. Show all scores to the user.
+
+### Scoring Rubric
+
+| Dimension | 0 | 1 | 2 |
+|-----------|---|---|---|
+| Adversary / competing interests | None | Passive / indirect | Active adversary optimizing against you |
+| Reversibility | Easily reversible | Partially reversible / costly to undo | Irreversible or extremely costly |
+| Time pressure | Months+ to decide | Weeks | Days or hours |
+| Stakeholder count | 1-2 | 3-5 | 6+ with conflicting interests |
+| Information completeness | Full information available | Partial / uncertain | Asymmetric or actively obscured |
+
+### Tier Assignment
+
+| Total Score | Tier | Mode | Depth |
+|-------------|------|------|-------|
+| 0-3 | Clear | Quick Analysis | Single output |
+| 4-6 | Complicated | Structured Analysis | Single output |
+| 7-8 | Complex | Interactive Wargame | 3-5 turns |
+| 9-10 | Chaotic | Interactive Wargame (TTX) | 3-8 turns |
+
+Score each dimension independently. Present a filled-in rubric table with
+the user's scenario mapped to each row. Sum the scores, announce the tier
+and mode, and ask:
+
+> Your scenario scores **N/10** — tier **X**, mode **Y**. Override? [yes/no]
+
+If the user overrides, acknowledge and switch without argument. If the user
+provides additional context that changes scores, rescore and re-announce
+before proceeding. Proceed to the assigned mode.
+
+## Mode A: Quick Analysis
+
+Clear tier (score 0-3). Single output, minimal ceremony.
+
+### Steps
+
+1. **Restate decision** in the user's own terms. Confirm framing.
+2. **Key Assumptions Check** — Surface 2-3 unstated assumptions baked into
+   the scenario framing. Challenge each briefly.
+3. **Framework application** — Select 2-3 frameworks from
+   `references/frameworks.md` using the heuristic table. Apply each to the
+   scenario. Show reasoning, not just labels.
+4. **Analysis** — Present findings using a Unicode decision tree (see
+   `references/output-formats.md`). Map options to outcomes with
+   probabilities where estimable.
+5. **Recommendation** — State clearly with:
+   - Confidence level: high, medium, or low
+   - Key assumption that could change this recommendation
+   - Watch signal: what to monitor that would trigger reconsideration
+6. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
+
+Keep the total output concise. This mode exists for decisions that do not
+warrant deep analysis. Resist scope creep. If the analysis reveals the
+scenario is more complex than initially scored, note this and offer to
+re-classify upward.
+
+## Mode B: Structured Analysis
+
+Complicated tier (score 4-6). Single output, thorough examination.
+
+### Steps
+
+1. **Key Assumptions Check** — Surface and challenge all major assumptions.
+   For each assumption, state what changes if it is wrong.
+2. **Stakeholder mapping** — Table format:
+
+   | Stakeholder | Interest | Power | Position |
+   |-------------|----------|-------|----------|
+
+   Power: high, medium, low. Position: supportive, neutral, opposed.
+3. **Framework application** — Select 3-5 frameworks from
+   `references/frameworks.md`. Include ACH (Analysis of Competing
+   Hypotheses) if the scenario involves competing explanations or theories.
+4. **Option analysis** — For each viable option, present explicit trade-offs.
+   Every option must have at least one significant downside. No free lunches.
+5. **Ranking with rationale** — Rank options. State the criteria used and
+   how each option scored against them.
+6. **Decision triggers** — Define conditions that would change the
+   recommendation. Be specific: thresholds, events, new information.
+7. **Pre-mortem** — For each top-ranked option, imagine it has failed
+   catastrophically. Identify the most likely cause of failure. State what
+   early warning signs would precede that failure.
+8. **Quadrant chart** — Generate a Mermaid quadrant chart plotting options
+   on risk (x-axis) vs. reward (y-axis). Label each quadrant and place
+   options with brief annotations.
+9. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
+
+## Mode C: Interactive Wargame
+
+Complex/Chaotic tier (score 7-10). Multi-turn interactive protocol.
+
+### Setup Phase
+
+1. **Define actors** — Create 3-6 actors using structured persona templates
+   from `references/wargame-engine.md`. Each actor has: name, role, goals,
+   resources, constraints, personality archetype (hawk, dove, pragmatist,
+   ideologue, bureaucrat, opportunist, disruptor, or custom).
+2. **User role selection** — User selects which actor they control. If none
+   fit, create a custom actor for them.
+3. **Initial conditions** — Define the starting state: resources, positions,
+   alliances, constraints, information each actor has access to.
+4. **Pre-seed injects** — Create 3-5 injects (unexpected events). At least
+   one must be a positive opportunity, not just a crisis. Injects remain
+   hidden from the user until deployed.
+5. **Set turn count** — Complex: 3-5 turns. Chaotic: 3-8 turns. Maximum 8
+   turns per wargame regardless of tier.
+6. **Present setup summary** — Show all actors, initial conditions, and turn
+   count. Confirm with user before proceeding.
+
+State the adversary simulation limitation explicitly during setup: "AI-
+controlled actors optimize for their stated goals, but this is best-effort
+simulation, not genuine adversarial cognition."
+
+Ensure actor goals genuinely conflict. If all actors want the same thing,
+the wargame degenerates into a coordination exercise. Introduce at least
+one structural tension between actor objectives.
+
+### Turn Loop
+
+Each turn follows this sequence:
+
+1. **Situation brief** — Render using Roguelike Layout from
+   `references/output-formats.md`. Show current state, resources, tensions,
+   and recent changes at a glance.
+2. **AI actor actions** — Each AI-controlled actor takes an action optimizing
+   for THEIR goals, not the user's. Actors may cooperate, compete, or act
+   unpredictably based on their archetype and the current situation.
+3. **Present actor actions** — Show what each actor did with visible effects
+   on the game state. Hide actor reasoning that the user's character would
+   not plausibly know.
+4. **User decision menu** — Present 3+ options with: domain of action, risk
+   level (low/medium/high), and expected impact. Include a "custom action"
+   slot for user-defined moves.
+5. **User chooses** — Accept selection or custom action description.
+6. **Adjudicate** — Resolve the turn using the Matrix Game protocol from
+   `references/wargame-engine.md`. Evaluate argument strength, apply
+   modifiers, determine outcomes.
+7. **Unexpected consequences** — Generate at least 1 emergent event: a
+   second-order effect, an unintended outcome, or a delayed consequence of
+   a prior action.
+8. **Bias check** — Run the bias sweep protocol from
+   `references/cognitive-biases.md`. Flag any detected biases (human or LLM)
+   in a brief callout.
+9. **Save turn** — Append the turn record to the journal immediately.
+10. **Monte Carlo** — If the user requests "explore N variations", run the
+    Monte Carlo protocol from `references/wargame-engine.md`. Present
+    outcome distributions.
+11. **Visualizations** — Render per `references/visualizations.md` as
+    appropriate for the current state. At minimum, update the actor status
+    display and resource tracker each turn.
+
+### Inject Deployment
+
+Fire pre-seeded injects at dramatically appropriate moments, not on a fixed
+schedule. Injects must create dilemmas — force the user to trade off between
+competing objectives. An inject that is merely a complication without a
+trade-off is a failed inject. Rewrite it.
+
+### End Conditions
+
+The wargame ends when: max turns reached, user explicitly ends early, or a
+decisive outcome renders continued play moot. If the user says "end",
+"stop", "done", or "AAR", proceed to AAR immediately. Proceed to AAR
+regardless of end condition — never end without it.
+
+### Mandatory AAR (After Action Review)
+
+Never skip the AAR. This is where learning happens.
+
+1. **Timeline** — Key decisions and their outcomes in chronological order.
+2. **What worked and what failed** — With evidence from turn records.
+3. **Biases detected** — Both human decision biases and LLM simulation
+   biases observed during play. Name each bias explicitly.
+4. **Transferable insights** — Decision principles extracted from this
+   scenario that apply to the user's real context.
+5. **Paths not taken** — Briefly explore 2-3 alternative decision paths
+   and their likely consequences. For each, identify the turn where the
+   divergence would have occurred and the likely cascade.
+6. **Actor performance** — Evaluate each AI-controlled actor: did they
+   behave consistently with their archetype and goals? Flag any actors
+   that drifted from their persona (LLM consistency check).
+7. **Visualizations** — Generate a Mermaid timeline and decision tree in
+   the journal showing the full arc of the wargame.
+8. **Final journal save** — Write the complete AAR to the journal file.
+
+## State Management
+
+- Journal directory: `~/.claude/wargames/`
+- Create the directory on first use with `mkdir -p`
+- Filename: `{YYYY-MM-DD}-{scenario-slug}.md` where slug is the first 5
+  words of the scenario description in kebab-case
+- Quick Analysis and Structured Analysis: save journal once at end
+- Interactive Wargame: save after EVERY turn (append turn record) and
+  after AAR (append final section)
+- Journal header must include: scenario description, classification scores,
+  tier, mode, date, and actor roster (Interactive Wargame only)
+- Each turn record must include: turn number, situation summary, actor
+  actions, user decision, adjudication result, emergent events
+- Resume protocol: if `$ARGUMENTS` starts with "resume", read the journal
+  file at the given path, reconstruct all actor states and turn history,
+  and continue from the last recorded turn
+- If the journal file already exists for today's scenario, append a
+  version suffix: `{date}-{slug}-v2.md`
+
+## Reference File Index
+
+| File | Content | Read When |
+|------|---------|-----------|
+| `references/frameworks.md` | 12 decision analysis frameworks with selection heuristics | Selecting frameworks for any mode |
+| `references/wargame-engine.md` | Persona templates, adjudication rules, Monte Carlo protocol, inject design | Setting up or running Interactive Wargame |
+| `references/cognitive-biases.md` | 10 human + 4 LLM biases, sweep protocol | Bias checks in any mode |
+| `references/output-formats.md` | All output templates, Roguelike Layout, decision trees | Rendering any output |
+| `references/visualizations.md` | Unicode charts, Mermaid diagrams, HTML dashboard patterns | Generating visual outputs |
+
+Read reference files as indicated by the "Read When" column above. Do not
+rely on memory or prior knowledge of their contents. Reference files are
+the source of truth. If a reference file does not exist, proceed without
+it but note the gap in the journal.
+
+## Critical Rules
+
+1. Label ALL outputs as exploratory, not predictive (RAND guardrail)
+2. Always allow the user to override the classification tier
+3. Never skip AAR in Interactive Wargame mode — it is where learning happens
+4. Force trade-offs — every option must have explicit downsides
+5. Name biases explicitly when detected — both human and LLM
+6. Maximum 8 turns per wargame — cognitive fatigue degrades quality beyond this
+7. Save journal after every turn in Interactive Wargame mode
+8. Require at least one actor to genuinely disagree per turn (anti-farcical-harmony)
+9. Flag escalation when detected — LLMs tend toward dramatic outcomes
+10. Read reference files as indicated by the reference index — do not rely on memory
+11. Acknowledge information asymmetry limitations — LLM cannot truly hide information from itself
+12. Injects must create dilemmas (trade-offs), not just complications
+
+**Canonical terms** (use these exactly throughout):
+- Tiers: "Clear", "Complicated", "Complex", "Chaotic"
+- Modes: "Quick Analysis", "Structured Analysis", "Interactive Wargame"
+- Persona archetypes: "hawk", "dove", "pragmatist", "ideologue", "bureaucrat", "opportunist", "disruptor", "custom"
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/wargame/SKILL.md)

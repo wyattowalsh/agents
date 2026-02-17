@@ -1,0 +1,34 @@
+---
+title: agents
+description: AI agent artifacts, configs, skills, tools, and more
+template: splash
+hero:
+  tagline: Browse, discover, and install AI agent skills, agents, and MCP servers
+  actions:
+    - text: Browse Skills
+      link: /skills/add-badges/
+      icon: right-arrow
+    - text: GitHub
+      link: https://github.com/wyattowalsh/agents
+      variant: minimal
+      icon: external
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Install
+
+```bash
+npx skills add wyattowalsh/agents --all -g
+```
+
+## Skills
+
+<div class="catalog-skill">
+<CardGrid>
+  <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert " />
+  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI cod" />
+  <LinkCard title="host-panel" href="/skills/host-panel/" description="Host simulated panel discussions and debates among AI-simulated domain experts. Supports roundtable, Oxford-style, and S" />
+  <LinkCard title="wargame" href="/skills/wargame/" description="Domain-agnostic strategic decision analysis and wargaming. Auto-classifies scenario complexity: simple decisions get str" />
+</CardGrid>
+</div>
