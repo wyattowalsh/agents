@@ -3,13 +3,21 @@
 Team archetypes, scaling guidance, and prompt templates.
 Read when designing review teams (Mode 2 or large Mode 1).
 
+## Contents
+
+- [Session Review Team](#session-review-team-6-files)
+- [Full Audit Team Archetypes](#full-audit-team-archetypes)
+- [Scaling Matrix](#scaling-matrix)
+- [Teammate Prompt Template (Full Audit)](#teammate-prompt-template-full-audit)
+- [Mode 1 Reviewer Prompt Template](#mode-1-reviewer-prompt-template)
+
 ## Session Review Team (6+ Files)
 
 ```
 [Lead: reconcile, final report]
-  |-- Surface Reviewer (owns: all changed files, surface-level analysis)
-  |-- Structural Reviewer (owns: module boundaries, cross-file patterns)
-  |-- Algorithmic Reviewer (owns: performance, complexity, system design)
+  |-- Correctness Reviewer (owns: all changed files, correctness-level analysis)
+  |-- Design Reviewer (owns: module boundaries, cross-file patterns)
+  |-- Efficiency Reviewer (owns: performance, complexity, system design)
   |-- Verification Runner (owns: build, tests, behavior checks)
 ```
 
@@ -88,9 +96,9 @@ Use this template when spawning domain reviewers:
 > Conduct a deep review of every file in your ownership. Spawn parallel subagents to cover files concurrently.
 >
 > For each file, run all three analysis levels:
-> - **Surface**: correctness, error handling, security, readability, simplification
-> - **Structural**: test coverage, coupling, interface contracts, simplification
-> - **Algorithmic**: performance, resource usage, concurrency, simplification
+> - **Correctness**: correctness, error handling, security, readability, simplification
+> - **Design**: test coverage, coupling, interface contracts, simplification
+> - **Efficiency**: performance, resource usage, concurrency, simplification
 >
 > Use two-phase review:
 > 1. Flag: analyze code, generate hypotheses about defects and complexity
@@ -98,7 +106,15 @@ Use this template when spawning domain reviewers:
 >
 > Also check: technical debt (TODOs, deprecated usage), dependency health, consistency (naming, error handling, logging patterns).
 >
-> Return findings grouped by file with priority (P0-P2 defects, S0-S2 simplifications). Each finding must include evidence and citation. Discard findings with no research evidence.
+> Apply at least 2 creative review lenses from references/review-lenses.md (pick based on code characteristics: Inversion for assumption-heavy code, Deletion for mature codebases, Newcomer for complex modules, Incident for production services, Evolution for growing systems).
+>
+> Check for AI code smells: slopsquatting (verify every import exists in the package registry), hallucinated APIs, sycophantic comments, phantom error handling, over-engineering disproportionate to problem size.
+>
+> For each finding, include effort estimation: S (< 1 hour, single file), M (1-4 hours, few files), L (4+ hours, cross-cutting).
+>
+> Include a STRENGTHS section: identify at least one well-engineered pattern or positive design choice per owned domain.
+>
+> Return findings grouped by file with priority (P0-P2 defects, S0-S2 simplifications). Each finding must include evidence, citation, and effort estimate. Discard findings with no research evidence.
 
 ## Mode 1 Reviewer Prompt Template
 
@@ -115,4 +131,10 @@ Use this template when spawning level-specific reviewers for session review:
 > 1. Flag: analyze code for defects and unnecessary complexity
 > 2. Validate: spawn parallel research subagents for non-obvious findings
 >
-> Return findings with priority, evidence, and citation. Discard findings with no research evidence.
+> Apply at least 2 creative review lenses (pick from: Inversion, Deletion, Newcomer, Incident, Evolution — see references/review-lenses.md).
+>
+> Check for AI code smells if code appears LLM-generated: slopsquatting, hallucinated APIs, sycophantic comments, phantom error handling.
+>
+> Include a STRENGTHS section with at least one positive finding. Include effort estimation (S/M/L) per finding.
+>
+> Return findings with priority, evidence, citation, and effort estimate. Discard findings with no research evidence.

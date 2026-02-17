@@ -1,6 +1,14 @@
 # Research Validation Playbook
 
-How to validate review findings with live research. This is what separates honest-review from static checklist review.
+Validate review findings with live research instead of relying on static checklist review.
+
+## Contents
+
+- [Two-Phase Review Pattern](#two-phase-review-pattern)
+- [Research Tools and When to Use](#research-tools-and-when-to-use)
+- [Research Subagent Templates](#research-subagent-templates)
+- [Parallelism Strategy](#parallelism-strategy)
+- [Evidence Quality](#evidence-quality)
 
 ## Two-Phase Review Pattern
 
@@ -58,6 +66,29 @@ Prompt template:
 - Output: validated (bool), actual characteristics, evidence
 - Model: haiku
 
+### Slopsquatting Detector
+
+Spawn when: unfamiliar dependency names appear in imports or package manifest, or when code appears LLM-generated.
+
+Prompt template:
+- Input: list of package names from imports and dependency manifest, ecosystem (npm/PyPI/crates.io/Go)
+- Steps: For each package name, WebFetch the package registry endpoint (npm: registry.npmjs.org/PKG, PyPI: pypi.org/pypi/PKG/json, crates.io: crates.io/api/v1/crates/PKG). If the package does not exist (404), flag as potential slopsquatting. If it exists but has very low download counts or was recently created, flag as suspicious.
+- Output: list of {package, status (verified/not-found/suspicious), evidence}
+- Model: haiku (structured registry lookups)
+
+IMPORTANT: Prioritize this check — slopsquatting is a supply chain attack vector.
+Non-existent packages in import statements indicate hallucinated dependencies.
+
+### Test Quality Validator
+
+Spawn when: a finding questions test coverage or test quality.
+
+Prompt template:
+- Input: test file paths, corresponding source file paths
+- Steps: Read test files. List all public methods/functions in source files. Compare: which public APIs have no corresponding test? Check assertion density: flag test functions with zero assertions or only mock verifications. Check for common anti-patterns: tests that test implementation details, tests that never fail.
+- Output: coverage gaps (list of untested public APIs), quality issues (list of anti-patterns found), assertion density score
+- Model: sonnet (needs judgment to evaluate test quality)
+
 ## Parallelism Strategy
 
 - Spawn ALL research subagents for a review pass in a single message
@@ -65,6 +96,9 @@ Prompt template:
 - Use sonnet for nuanced validation (security, architecture decisions)
 - If more than 10 findings to validate, batch into groups of 5-6 parallel subagents
 - Set reasonable scope: do not research-validate obvious issues (null deref, syntax error). Only validate assumptions and non-obvious concerns.
+- Spawn lens subagents (Inversion, Deletion, Newcomer, Incident, Evolution) in parallel with checklist reviewers when applying creative lenses
+- Prioritize slopsquatting detection — spawn slopsquatting detector subagents before other research, as non-existent packages are security-critical
+- Use opus for lens-based analysis (requires creative reasoning); use haiku for slopsquatting detection (structured lookups)
 
 ## Evidence Quality
 
