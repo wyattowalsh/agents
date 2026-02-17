@@ -1,0 +1,98 @@
+---
+title: CLI Reference
+description: wagents CLI commands and usage
+---
+
+import { Tabs, TabItem, Steps, FileTree } from '@astrojs/starlight/components';
+
+The `wagents` CLI manages AI agent assets in this repository.
+
+## Installation
+
+<Steps>
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/wyattowalsh/agents.git
+   cd agents
+   ```
+
+2. Install with uv:
+   ```bash
+   uv sync
+   ```
+
+3. Verify installation:
+   ```bash
+   uv run wagents --version
+   ```
+
+</Steps>
+
+## Commands
+
+<Tabs>
+  <TabItem label="new">
+
+Create new assets from reference templates.
+
+```bash
+wagents new skill <name>    # Create a new skill
+wagents new agent <name>    # Create a new agent
+wagents new mcp <name>      # Create a new MCP server
+```
+
+  </TabItem>
+  <TabItem label="docs">
+
+Manage the documentation site.
+
+```bash
+wagents docs init        # One-time: pnpm install in docs/
+wagents docs generate    # Generate MDX content pages
+wagents docs dev         # Generate + launch dev server
+wagents docs build       # Generate + static build
+wagents docs preview     # Generate + build + preview server
+wagents docs clean       # Remove generated content pages
+```
+
+  </TabItem>
+  <TabItem label="validate">
+
+Validate all skills and agents frontmatter.
+
+```bash
+wagents validate
+```
+
+  </TabItem>
+  <TabItem label="readme">
+
+Generate or check the README.
+
+```bash
+wagents readme           # Regenerate README.md
+wagents readme --check   # Check if README is up to date
+```
+
+  </TabItem>
+</Tabs>
+
+## Repository Structure
+
+<FileTree>
+- skills/
+  - \<name>/
+    - SKILL.md
+    - references/ (optional)
+- agents/
+  - \<name>.md
+- mcp/
+  - \<name>/
+    - server.py
+    - pyproject.toml
+    - fastmcp.json
+- docs/ (this site)
+- wagents/ (CLI source)
+  - cli.py
+</FileTree>
