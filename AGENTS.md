@@ -104,6 +104,14 @@ wagents validate             # Checks frontmatter of all skills and agents
 # Regenerate README
 wagents readme               # Fully regenerates README.md from repo contents
 wagents readme --check       # Exits 1 if README is stale
+
+# Documentation site
+wagents docs init        # One-time: pnpm install in docs/
+wagents docs generate    # Generate MDX content pages from repo assets
+wagents docs dev         # Generate + launch dev server
+wagents docs build       # Generate + static build
+wagents docs preview     # Generate + build + preview server
+wagents docs clean       # Remove generated content pages
 ```
 
 ---

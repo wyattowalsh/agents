@@ -1,0 +1,29 @@
+{
+  "name": "agents-docs",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.5",
+    "@astrojs/starlight": "^0.37",
+    "starlight-theme-black": "latest",
+    "starlight-site-graph": "latest",
+    "starlight-links-validator": "latest",
+    "starlight-llms-txt": "latest",
+    "starlight-plugin-icons": "latest",
+    "astro-vtbot": "latest",
+    "astro-og-canvas": "latest",
+    "@fontsource/geist-sans": "^5",
+    "@fontsource/geist-mono": "^5",
+    "sharp": "^0.33"
+  },
+  "overrides": {
+    "picomatch": "^4.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
+  }
+}
