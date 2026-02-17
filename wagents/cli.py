@@ -46,6 +46,38 @@ def to_title(name: str) -> str:
     return name.replace("-", " ").title()
 
 
+def _truncate_sentence(text: str, max_len: int) -> str:
+    """Truncate at sentence boundary before max_len; fall back to word boundary with ellipsis."""
+    if len(text) <= max_len:
+        return text
+    chunk = text[:max_len]
+    # Find last sentence boundary
+    for i in range(len(chunk) - 1, -1, -1):
+        if chunk[i] in '.!?':
+            return chunk[: i + 1]
+    # Fall back to word boundary
+    last_space = chunk.rfind(' ')
+    if last_space > 0:
+        return chunk[:last_space] + '\u2026'
+    return chunk[:max_len - 1] + '\u2026'
+
+
+def _shift_headings(body: str, levels: int = 1) -> str:
+    """Shift all markdown headings down by `levels` (e.g. # -> ## when levels=1)."""
+    extra = '#' * levels
+    return re.sub(r'^(#{1,5})', lambda m: extra + m.group(1), body, flags=re.MULTILINE)
+
+
+def _escape_attr(text: str) -> str:
+    """Escape text for use in HTML/MDX attribute values."""
+    return (
+        text.replace('&', '&amp;')
+        .replace('"', '&quot;')
+        .replace('<', '&lt;')
+        .replace('>', '&gt;')
+    )
+
+
 def _validate_name(name: str) -> None:
     """Validate asset name is kebab-case and within length limit."""
     if not KEBAB_CASE_PATTERN.match(name):
@@ -57,7 +89,10 @@ def _validate_name(name: str) -> None:
 
 
 @new_app.command("skill")
-def new_skill(name: str):
+def new_skill(
+    name: str,
+    no_docs: bool = typer.Option(False, "--no-docs", help="Skip docs page scaffold"),
+):
     """Create a new skill from template."""
     _validate_name(name)
     skill_dir = ROOT / "skills" / name
@@ -112,9 +147,22 @@ Step-by-step instructions for the agent.
     skill_file.write_text(content)
     typer.echo(f"Created skills/{name}/SKILL.md")
 
+    if not no_docs:
+        fm, body = parse_frontmatter(content)
+        node = CatalogNode(
+            kind="skill", id=name, title=to_title(name),
+            description=str(fm.get("description", "")),
+            metadata=fm, body=body,
+            source_path=f"skills/{name}/SKILL.md",
+        )
+        _scaffold_doc_page(node)
+
 
 @new_app.command("agent")
-def new_agent(name: str):
+def new_agent(
+    name: str,
+    no_docs: bool = typer.Option(False, "--no-docs", help="Skip docs page scaffold"),
+):
     """Create a new agent from template."""
     _validate_name(name)
     agents_dir = ROOT / "agents"
@@ -164,9 +212,22 @@ Rules and constraints for this agent's behavior.
     agent_file.write_text(content)
     typer.echo(f"Created agents/{name}.md")
 
+    if not no_docs:
+        fm, body = parse_frontmatter(content)
+        node = CatalogNode(
+            kind="agent", id=name, title=to_title(name),
+            description=str(fm.get("description", "")),
+            metadata=fm, body=body,
+            source_path=f"agents/{name}.md",
+        )
+        _scaffold_doc_page(node)
+
 
 @new_app.command("mcp")
-def new_mcp(name: str):
+def new_mcp(
+    name: str,
+    no_docs: bool = typer.Option(False, "--no-docs", help="Skip docs page scaffold"),
+):
     """Create a new MCP server from template."""
     _validate_name(name)
     mcp_dir = ROOT / "mcp" / name
@@ -232,6 +293,22 @@ build-backend = "hatchling.build"
         root_pyproject.write_text(content)
 
     typer.echo(f"Created mcp/{name}/ with server.py, pyproject.toml, and fastmcp.json")
+
+    if not no_docs:
+        metadata = {
+            "project": {"name": f"mcp-{name}", "version": "0.1.0",
+                        "description": "TODO — What this MCP server does",
+                        "requires-python": ">=3.13",
+                        "dependencies": ["fastmcp>=2"]},
+            "fastmcp_config": fastmcp_config,
+        }
+        node = CatalogNode(
+            kind="mcp", id=name, title=to_title(name),
+            description="TODO — What this MCP server does",
+            metadata=metadata, body=server_content,
+            source_path=f"mcp/{name}/server.py",
+        )
+        _scaffold_doc_page(node)
 
 
 def parse_frontmatter(content: str) -> tuple[dict, str]:
@@ -725,6 +802,18 @@ def _render_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[Ca
     return ""
 
 
+def _scaffold_doc_page(node: CatalogNode) -> None:
+    """Create a single docs page for a newly scaffolded asset."""
+    if not CONTENT_DIR.exists():
+        return
+    page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
+    page_dir.mkdir(parents=True, exist_ok=True)
+    content = _render_page(node, [], [node])
+    (page_dir / f"{node.id}.mdx").write_text(content)
+    rel = page_dir.relative_to(ROOT) / f"{node.id}.mdx"
+    typer.echo(f"Created {rel}")
+
+
 def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     fm = node.metadata
     parts = []
@@ -732,7 +821,7 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     # Frontmatter
     parts.append("---")
     parts.append(f"title: \"{node.id}\"")
-    parts.append(f"description: \"{node.description[:200].replace(chr(34), chr(39))}\"")
+    parts.append(f"description: \"{_escape_attr(_truncate_sentence(node.description, 200))}\"")
     parts.append("---")
     parts.append("")
 
@@ -743,15 +832,19 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     # Badge row — only fields that have values
     badges = []
     if fm.get("license"):
-        badges.append(f'<Badge text="{fm["license"]}" variant="note" />')
+        badges.append(f'<Badge text="{_escape_attr(fm["license"])}" variant="note" />')
     meta = fm.get("metadata", {})
     if isinstance(meta, dict):
         if meta.get("version"):
-            badges.append(f'<Badge text="v{meta["version"]}" variant="success" />')
+            badges.append(f'<Badge text="v{_escape_attr(str(meta["version"]))}" variant="success" />')
         if meta.get("author"):
-            badges.append(f'<Badge text="{meta["author"]}" variant="caution" />')
+            badges.append(f'<Badge text="{_escape_attr(meta["author"])}" variant="caution" />')
     if fm.get("model"):
-        badges.append(f'<Badge text="{fm["model"]}" variant="tip" />')
+        badges.append(f'<Badge text="{_escape_attr(fm["model"])}" variant="tip" />')
+    # Word count badge
+    word_count = len(node.body.split())
+    if word_count > 1000:
+        badges.append(f'<Badge text="{word_count} words" variant="default" />')
     if badges:
         parts.append(" ".join(badges))
         parts.append("")
@@ -760,12 +853,22 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     parts.append(f"> {node.description}")
     parts.append("")
 
-    # Install
-    parts.append("<Aside type=\"tip\" title=\"Install\">")
+    # Quick Start box
+    parts.append('<div class="quick-start">')
+    parts.append("")
+    parts.append("### Quick Start")
+    parts.append("")
+    parts.append("**Install:**")
     parts.append("```bash")
     parts.append(f"npx skills add wyattowalsh/agents/skills/{node.id} -g")
     parts.append("```")
-    parts.append("</Aside>")
+    parts.append("")
+    use_line = f"**Use:** `/{node.id}`"
+    if fm.get("argument-hint"):
+        use_line += f" `{fm['argument-hint']}`"
+    parts.append(use_line)
+    parts.append("")
+    parts.append("</div>")
     parts.append("")
 
     # Tabbed metadata
@@ -829,15 +932,13 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
             agent_id = edge.from_id.split(":")[1]
             agent_node = next((n for n in all_nodes if n.kind == "agent" and n.id == agent_id), None)
             if agent_node:
-                parts.append(f'  <LinkCard title="{agent_id}" href="/agents/{agent_id}/" description="{agent_node.description[:100]}" />')
+                parts.append(f'  <LinkCard title="{_escape_attr(agent_id)}" href="/agents/{agent_id}/" description="{_escape_attr(_truncate_sentence(agent_node.description, 160))}" />')
         parts.append("</CardGrid>")
         parts.append("")
 
-    # Body
+    # Body (shift headings down one level, no wrapper heading)
     if node.body:
-        parts.append("## Details")
-        parts.append("")
-        parts.append(_escape_mdx(node.body))
+        parts.append(_escape_mdx(_shift_headings(node.body, 1)))
         parts.append("")
 
     # Source link
@@ -855,7 +956,7 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     # Frontmatter
     parts.append("---")
     parts.append(f"title: \"{node.id}\"")
-    parts.append(f"description: \"{node.description[:200].replace(chr(34), chr(39))}\"")
+    parts.append(f"description: \"{_escape_attr(_truncate_sentence(node.description, 200))}\"")
     parts.append("---")
     parts.append("")
 
@@ -866,9 +967,9 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     # Badge row
     badges = []
     if fm.get("model") and fm["model"] != "inherit":
-        badges.append(f'<Badge text="{fm["model"]}" variant="tip" />')
+        badges.append(f'<Badge text="{_escape_attr(fm["model"])}" variant="tip" />')
     if fm.get("permissionMode") and fm["permissionMode"] != "default":
-        badges.append(f'<Badge text="{fm["permissionMode"]}" variant="caution" />')
+        badges.append(f'<Badge text="{_escape_attr(fm["permissionMode"])}" variant="caution" />')
     if badges:
         parts.append(" ".join(badges))
         parts.append("")
@@ -876,6 +977,14 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
     # Description
     parts.append(f"> {node.description}")
     parts.append("")
+
+    # Tools as pill badges
+    if fm.get("tools"):
+        parts.append('<div class="tool-pills">')
+        pills = ' '.join(f'<Badge text="{_escape_attr(t.strip())}" variant="note" />' for t in fm["tools"].split(','))
+        parts.append(pills)
+        parts.append('</div>')
+        parts.append("")
 
     # Tabbed config
     tab_items = []
@@ -934,8 +1043,8 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
             for edge in skill_edges:
                 skill_id = edge.to_id.split(":")[1]
                 skill_node = next((n for n in all_nodes if n.kind == "skill" and n.id == skill_id), None)
-                desc = skill_node.description[:100] if skill_node else ""
-                parts.append(f'  <LinkCard title="{skill_id}" href="/skills/{skill_id}/" description="{desc}" />')
+                if skill_node:
+                    parts.append(f'  <LinkCard title="{_escape_attr(skill_id)}" href="/skills/{skill_id}/" description="{_escape_attr(_truncate_sentence(skill_node.description, 160))}" />')
             parts.append("</CardGrid>")
             parts.append("")
 
@@ -946,16 +1055,44 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
             for edge in mcp_edges:
                 mcp_id = edge.to_id.split(":")[1]
                 mcp_node = next((n for n in all_nodes if n.kind == "mcp" and n.id == mcp_id), None)
-                desc = mcp_node.description[:100] if mcp_node else ""
-                parts.append(f'  <LinkCard title="{mcp_id}" href="/mcp/{mcp_id}/" description="{desc}" />')
+                if mcp_node:
+                    parts.append(f'  <LinkCard title="{_escape_attr(mcp_id)}" href="/mcp/{mcp_id}/" description="{_escape_attr(_truncate_sentence(mcp_node.description, 160))}" />')
             parts.append("</CardGrid>")
             parts.append("")
 
-    # System prompt body
+    # Skills as LinkCard grid
+    if fm.get("skills") and isinstance(fm["skills"], list):
+        parts.append("## Skills")
+        parts.append("")
+        parts.append("<CardGrid>")
+        for skill_name in fm["skills"]:
+            skill_node = next((n for n in all_nodes if n.kind == "skill" and n.id == skill_name), None)
+            if skill_node:
+                parts.append(f'  <LinkCard title="{_escape_attr(skill_name)}" href="/skills/{skill_name}/" description="{_escape_attr(_truncate_sentence(skill_node.description, 160))}" />')
+            else:
+                parts.append(f'  <LinkCard title="{_escape_attr(skill_name)}" href="/skills/{skill_name}/" />')
+        parts.append("</CardGrid>")
+        parts.append("")
+
+    # MCP Servers as LinkCard grid
+    if fm.get("mcpServers") and isinstance(fm["mcpServers"], list):
+        parts.append("## MCP Servers")
+        parts.append("")
+        parts.append("<CardGrid>")
+        for mcp_name in fm["mcpServers"]:
+            mcp_node = next((n for n in all_nodes if n.kind == "mcp" and n.id == mcp_name), None)
+            if mcp_node:
+                parts.append(f'  <LinkCard title="{_escape_attr(mcp_name)}" href="/mcp/{mcp_name}/" description="{_escape_attr(_truncate_sentence(mcp_node.description, 160))}" />')
+            else:
+                parts.append(f'  <LinkCard title="{_escape_attr(mcp_name)}" href="/mcp/{mcp_name}/" />')
+        parts.append("</CardGrid>")
+        parts.append("")
+
+    # System prompt body (shift headings)
     if node.body:
         parts.append("## System Prompt")
         parts.append("")
-        parts.append(_escape_mdx(node.body))
+        parts.append(_escape_mdx(_shift_headings(node.body, 1)))
         parts.append("")
 
     # Source link
@@ -975,12 +1112,12 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
     parts.append("---")
     parts.append(f"title: \"{node.id}\"")
     desc = node.description or f"MCP server: {node.id}"
-    parts.append(f"description: \"{desc[:200].replace(chr(34), chr(39))}\"")
+    parts.append(f"description: \"{_escape_attr(_truncate_sentence(desc, 200))}\"")
     parts.append("---")
     parts.append("")
 
     # Imports
-    parts.append("import { Badge, Tabs, TabItem, Aside, Code } from '@astrojs/starlight/components';")
+    parts.append("import { Badge, Tabs, TabItem, Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';")
     parts.append("")
 
     # Badges
@@ -1023,11 +1160,11 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
     if pkg_rows:
         tab_items.append(("Package", "| Field | Value |\n| ----- | ----- |\n" + "\n".join(pkg_rows)))
 
-    # Dependencies tab
+    # Dependencies as badges
     deps = proj.get("dependencies", [])
     if deps:
-        dep_lines = "\n".join(f"- `{d}`" for d in deps)
-        tab_items.append(("Dependencies", dep_lines))
+        dep_badges = ' '.join(f'<Badge text="{_escape_attr(d)}" variant="note" />' for d in deps)
+        tab_items.append(("Dependencies", dep_badges))
 
     # FastMCP config tab
     fastmcp_config = fm.get("fastmcp_config", {})
@@ -1047,9 +1184,13 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
     if node.body:
         parts.append("## Server Source")
         parts.append("")
+        parts.append('<div class="server-source">')
+        parts.append("")
         parts.append(f"```python title=\"mcp/{node.id}/server.py\"")
         parts.append(node.body)
         parts.append("```")
+        parts.append("")
+        parts.append("</div>")
         parts.append("")
 
     # Cross-links (agents that use this MCP)
@@ -1062,7 +1203,7 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
             agent_id = edge.from_id.split(":")[1]
             agent_node = next((n for n in all_nodes if n.kind == "agent" and n.id == agent_id), None)
             if agent_node:
-                parts.append(f'  <LinkCard title="{agent_id}" href="/agents/{agent_id}/" description="{agent_node.description[:100]}" />')
+                parts.append(f'  <LinkCard title="{_escape_attr(agent_id)}" href="/agents/{agent_id}/" description="{_escape_attr(_truncate_sentence(agent_node.description, 160))}" />')
         parts.append("</CardGrid>")
         parts.append("")
 
@@ -1081,22 +1222,43 @@ def _render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: lis
 
 def _write_index_page(nodes: list[CatalogNode]) -> None:
     """Write the index.mdx splash page."""
+    skills = [n for n in nodes if n.kind == "skill"]
+    agents = [n for n in nodes if n.kind == "agent"]
+    mcps = [n for n in nodes if n.kind == "mcp"]
+
     parts = []
     parts.append("---")
-    parts.append("title: agents")
-    parts.append("description: AI agent artifacts, configs, skills, tools, and more")
+    parts.append("title: Agents")
+    parts.append("description: AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more")
     parts.append("template: splash")
     parts.append("hero:")
-    parts.append("  tagline: Browse, discover, and install AI agent skills, agents, and MCP servers")
+    parts.append("  tagline: Open-source skills, agents, and MCP servers — install in one command")
+    parts.append("  image:")
+    parts.append("    html: |")
+    parts.append('      <div class="hero-terminal">')
+    parts.append('        <div class="hero-terminal-header">')
+    parts.append('          <span class="hero-terminal-dot red"></span>')
+    parts.append('          <span class="hero-terminal-dot yellow"></span>')
+    parts.append('          <span class="hero-terminal-dot green"></span>')
+    parts.append('          <span class="hero-terminal-title">terminal</span>')
+    parts.append('        </div>')
+    parts.append('        <div class="hero-terminal-body">')
+    parts.append('          <span class="hero-terminal-prompt">$</span>')
+    parts.append('          <span class="hero-terminal-cmd">npx skills add wyattowalsh/agents --all -g</span>')
+    parts.append('          <span class="hero-terminal-cursor">▋</span>')
+    parts.append('        </div>')
+    parts.append('        <div class="hero-agents-row">')
+    parts.append('          <span class="hero-agent-badge">Claude</span>')
+    parts.append('          <span class="hero-agent-badge">Gemini</span>')
+    parts.append('          <span class="hero-agent-badge">Codex</span>')
+    parts.append('          <span class="hero-agent-badge">Cursor</span>')
+    parts.append('          <span class="hero-agent-badge">Copilot</span>')
+    parts.append('        </div>')
+    parts.append('      </div>')
     parts.append("  actions:")
-
-    # Link to first skill if one exists
-    skills = [n for n in nodes if n.kind == "skill"]
-    if skills:
-        parts.append("    - text: Browse Skills")
-        parts.append(f"      link: /skills/{skills[0].id}/")
-        parts.append("      icon: right-arrow")
-
+    parts.append("    - text: Get Started")
+    parts.append("      link: /skills/")
+    parts.append("      icon: right-arrow")
     parts.append("    - text: GitHub")
     parts.append("      link: https://github.com/wyattowalsh/agents")
     parts.append("      variant: minimal")
@@ -1105,11 +1267,46 @@ def _write_index_page(nodes: list[CatalogNode]) -> None:
     parts.append("")
     parts.append("import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';")
     parts.append("")
-    parts.append("## Install")
+
+    # Stats bar
+    parts.append('<div class="stats-bar">')
+    parts.append(f'  <span class="stat stat-skill">{len(skills)} Skills</span>')
+    parts.append(f'  <span class="stat stat-agent">{len(agents)} Agents</span>')
+    parts.append(f'  <span class="stat stat-mcp">{len(mcps)} MCP Servers</span>')
+    parts.append('</div>')
+    parts.append("")
+
+    # What's inside section
+    has_any = skills or agents or mcps
+    if has_any:
+        parts.append("## What's Inside")
+        parts.append("")
+        parts.append("<CardGrid>")
+        if skills:
+            parts.append('  <Card title="Skills" icon="sparkles">')
+            parts.append("    Reusable knowledge and workflows that extend AI agent capabilities. Install with a single command.")
+            parts.append("  </Card>")
+        if agents:
+            parts.append('  <Card title="Agents" icon="rocket">')
+            parts.append("    Specialized agent configurations with tools, permissions, and system prompts.")
+            parts.append("  </Card>")
+        if mcps:
+            parts.append('  <Card title="MCP Servers" icon="setting">')
+            parts.append("    Model Context Protocol servers providing tools and data to AI agents.")
+            parts.append("  </Card>")
+        parts.append("</CardGrid>")
+        parts.append("")
+
+    # Install section
+    parts.append('<div class="install-section">')
+    parts.append("")
+    parts.append("### Quick Install")
     parts.append("")
     parts.append("```bash")
     parts.append("npx skills add wyattowalsh/agents --all -g")
     parts.append("```")
+    parts.append("")
+    parts.append("</div>")
     parts.append("")
 
     # Skills section
@@ -1119,36 +1316,34 @@ def _write_index_page(nodes: list[CatalogNode]) -> None:
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
         for n in skills:
-            desc = n.description[:120].replace('"', "'")
-            parts.append(f'  <LinkCard title="{n.id}" href="/skills/{n.id}/" description="{desc}" />')
+            desc = _escape_attr(_truncate_sentence(n.description, 160))
+            parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
 
     # Agents section
-    agents = [n for n in nodes if n.kind == "agent"]
     if agents:
         parts.append("## Agents")
         parts.append("")
         parts.append('<div class="catalog-agent">')
         parts.append("<CardGrid>")
         for n in agents:
-            desc = n.description[:120].replace('"', "'")
-            parts.append(f'  <LinkCard title="{n.id}" href="/agents/{n.id}/" description="{desc}" />')
+            desc = _escape_attr(_truncate_sentence(n.description, 160))
+            parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/agents/{n.id}/" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
 
     # MCP section
-    mcps = [n for n in nodes if n.kind == "mcp"]
     if mcps:
         parts.append("## MCP Servers")
         parts.append("")
         parts.append('<div class="catalog-mcp">')
         parts.append("<CardGrid>")
         for n in mcps:
-            desc = n.description[:120].replace('"', "'")
-            parts.append(f'  <LinkCard title="{n.id}" href="/mcp/{n.id}/" description="{desc}" />')
+            desc = _escape_attr(_truncate_sentence(n.description, 160))
+            parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/mcp/{n.id}/" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
@@ -1267,6 +1462,145 @@ def _write_cli_page() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Category index pages
+# ---------------------------------------------------------------------------
+
+
+def _write_skills_index(nodes: list[CatalogNode]) -> None:
+    """Write skills/index.mdx category page."""
+    parts = []
+    parts.append("---")
+    parts.append("title: Skills")
+    parts.append("description: Browse all available AI agent skills")
+    parts.append("---")
+    parts.append("")
+    parts.append("import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';")
+    parts.append("")
+    parts.append("> Reusable knowledge and workflows that extend AI agent capabilities across Claude Code, Gemini CLI, Codex, Cursor, and more.")
+    parts.append("")
+    parts.append('<div class="stats-bar">')
+    parts.append(f'  <span class="stat stat-skill">{len(nodes)} skills available</span>')
+    parts.append('</div>')
+    parts.append("")
+    parts.append("## All Skills")
+    parts.append("")
+    parts.append('<div class="catalog-skill">')
+    parts.append("<CardGrid>")
+    for n in nodes:
+        desc = _escape_attr(_truncate_sentence(n.description, 160))
+        parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
+    parts.append("</CardGrid>")
+    parts.append("</div>")
+    parts.append("")
+
+    out_dir = CONTENT_DIR / "skills"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "index.mdx").write_text("\n".join(parts))
+
+
+def _write_agents_index(nodes: list[CatalogNode]) -> None:
+    """Write agents/index.mdx category page."""
+    parts = []
+    parts.append("---")
+    parts.append("title: Agents")
+    parts.append("description: Browse all available AI agent configurations")
+    parts.append("---")
+    parts.append("")
+    parts.append("import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';")
+    parts.append("")
+    parts.append("> Specialized agent configurations with tools, permissions, and system prompts for various AI coding assistants.")
+    parts.append("")
+    parts.append('<div class="stats-bar">')
+    parts.append(f'  <span class="stat stat-agent">{len(nodes)} agents available</span>')
+    parts.append('</div>')
+    parts.append("")
+    parts.append("## All Agents")
+    parts.append("")
+    parts.append('<div class="catalog-agent">')
+    parts.append("<CardGrid>")
+    for n in nodes:
+        desc = _escape_attr(_truncate_sentence(n.description, 160))
+        parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/agents/{n.id}/" description="{desc}" />')
+    parts.append("</CardGrid>")
+    parts.append("</div>")
+    parts.append("")
+
+    out_dir = CONTENT_DIR / "agents"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "index.mdx").write_text("\n".join(parts))
+
+
+def _write_mcp_index(nodes: list[CatalogNode]) -> None:
+    """Write mcp/index.mdx category page."""
+    parts = []
+    parts.append("---")
+    parts.append("title: MCP Servers")
+    parts.append("description: Browse all available MCP servers")
+    parts.append("---")
+    parts.append("")
+    parts.append("import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';")
+    parts.append("")
+    parts.append("> Model Context Protocol servers providing tools and data to AI agents.")
+    parts.append("")
+    parts.append('<div class="stats-bar">')
+    parts.append(f'  <span class="stat stat-mcp">{len(nodes)} MCP servers available</span>')
+    parts.append('</div>')
+    parts.append("")
+    parts.append("## All MCP Servers")
+    parts.append("")
+    parts.append('<div class="catalog-mcp">')
+    parts.append("<CardGrid>")
+    for n in nodes:
+        desc = _escape_attr(_truncate_sentence(n.description, 160))
+        parts.append(f'  <LinkCard title="{_escape_attr(n.id)}" href="/mcp/{n.id}/" description="{desc}" />')
+    parts.append("</CardGrid>")
+    parts.append("</div>")
+    parts.append("")
+
+    out_dir = CONTENT_DIR / "mcp"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "index.mdx").write_text("\n".join(parts))
+
+
+def _write_sidebar(nodes: list[CatalogNode]) -> None:
+    """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
+    skills = [n for n in nodes if n.kind == "skill"]
+    agents = [n for n in nodes if n.kind == "agent"]
+    mcps = [n for n in nodes if n.kind == "mcp"]
+
+    lines = []
+    lines.append("// Auto-generated by wagents docs generate — do not edit")
+    lines.append("export default [")
+    lines.append("  { slug: '' },")
+
+    lines.append("  {")
+    lines.append("    label: 'Skills',")
+    lines.append("    autogenerate: { directory: 'skills' },")
+    lines.append(f"    badge: {{ text: '{len(skills)}', variant: 'tip' }},")
+    lines.append("  },")
+
+    if agents:
+        lines.append("  {")
+        lines.append("    label: 'Agents',")
+        lines.append("    autogenerate: { directory: 'agents' },")
+        lines.append("  },")
+
+    if mcps:
+        lines.append("  {")
+        lines.append("    label: 'MCP Servers',")
+        lines.append("    autogenerate: { directory: 'mcp' },")
+        lines.append("  },")
+
+    lines.append("  { slug: 'cli', label: 'CLI Reference' },")
+    lines.append("];")
+    lines.append("")
+
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    sidebar_path.parent.mkdir(parents=True, exist_ok=True)
+    sidebar_path.write_text("\n".join(lines))
+
+
+# ---------------------------------------------------------------------------
 # docs subcommand group
 # ---------------------------------------------------------------------------
 
@@ -1292,7 +1626,9 @@ def docs_init():
 
 
 @docs_app.command("generate")
-def docs_generate():
+def docs_generate(
+    include_drafts: bool = typer.Option(False, "--include-drafts", help="Include draft skills"),
+):
     """Generate MDX content pages from repo assets."""
     # Clean existing generated content
     for subdir in ["skills", "agents", "mcp"]:
@@ -1304,8 +1640,17 @@ def docs_generate():
         p = CONTENT_DIR / f
         if p.exists():
             p.unlink()
+    # Remove generated sidebar
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    if sidebar_path.exists():
+        sidebar_path.unlink()
 
     nodes = _collect_nodes()
+
+    # Filter drafts
+    if not include_drafts:
+        nodes = [n for n in nodes if not (n.kind == "skill" and n.description.strip().upper().startswith("TODO"))]
+
     edges = _collect_edges(nodes)
 
     # Write individual pages
@@ -1316,13 +1661,31 @@ def docs_generate():
         (page_dir / f"{node.id}.mdx").write_text(page_content)
         typer.echo(f"  Generated {node.kind}s/{node.id}.mdx" if node.kind != "mcp" else f"  Generated mcp/{node.id}.mdx")
 
-    # Write index and CLI pages
+    # Write category index pages
+    skills = [n for n in nodes if n.kind == "skill"]
+    agents = [n for n in nodes if n.kind == "agent"]
+    mcps = [n for n in nodes if n.kind == "mcp"]
+
+    _write_skills_index(skills)
+    typer.echo("  Generated skills/index.mdx")
+    if agents:
+        _write_agents_index(agents)
+        typer.echo("  Generated agents/index.mdx")
+    if mcps:
+        _write_mcp_index(mcps)
+        typer.echo("  Generated mcp/index.mdx")
+
+    # Write main index and CLI pages
     _write_index_page(nodes)
     typer.echo("  Generated index.mdx")
     _write_cli_page()
     typer.echo("  Generated cli.mdx")
 
-    typer.echo(f"Generated {len(nodes)} pages + index + cli")
+    # Generate sidebar
+    _write_sidebar(nodes)
+    typer.echo("  Generated generated-sidebar.mjs")
+
+    typer.echo(f"Generated {len(nodes)} pages + indexes + sidebar")
 
 
 @docs_app.command("dev")
