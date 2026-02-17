@@ -1,0 +1,501 @@
+---
+name: host-panel
+description: >-
+  Host simulated panel discussions and debates among AI-simulated domain experts.
+  Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert
+  personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring
+  complex topics from multiple expert perspectives, testing argument strength,
+  academic brainstorming, or understanding trade-offs in decisions.
+argument-hint: '"topic" [format] [num-experts]'
+---
+
+# Host Panel
+
+Host simulated panel discussions that produce genuine intellectual discourse — not
+theatrical roleplay. The goal is to surface real tensions, real frameworks, and real
+disagreements that help the user think more clearly about a complex topic.
+
+**Invocation:** `/host-panel "topic" [format] [num-experts]`
+
+| Format | Purpose | Best for |
+|--------|---------|----------|
+| `roundtable` | Open multi-perspectival exploration | Broad topics, brainstorming, mapping a field |
+| `oxford` | Binary debate with formal sides | Policy decisions, testing propositions |
+| `socratic` | Deep inquiry through questioning | Conceptual analysis, definitional disputes |
+
+**Defaults:** roundtable format, 4 experts.
+
+**Expert range:** 2-6. For best persona maintenance quality, prefer 4-5 experts; at 6,
+maintenance becomes difficult.
+
+---
+
+## 1. Argument Parsing & Topic Diagnostic
+
+### Parsing
+
+Parse `$ARGUMENTS` as follows:
+- **Topic** (required): the quoted string. This is the subject of the panel.
+- **Format** (optional): `roundtable`, `oxford`, or `socratic`. Default: `roundtable`.
+- **Count** (optional): integer 2-6. Default: 4.
+
+If `$ARGUMENTS` is empty, ask the user for a topic. Suggest 2-3 example topics to
+demonstrate the range of what panels can explore.
+
+For 2 experts, the panel becomes a structured dialogue. Alternate direct engagement
+between the two participants. Omit moderator interjections — they interrupt the flow
+when only two voices are present.
+
+### Topic Suitability Diagnostic
+
+Before proceeding, evaluate the topic:
+
+1. **Is it genuinely multi-perspectival?** If the topic is settled science (e.g.,
+   "does the Earth orbit the Sun"), say so. Suggest reframing toward an open question
+   (e.g., "how should we teach heliocentrism in culturally sensitive contexts").
+2. **Is it too broad?** "Technology" is not a panel topic. Suggest narrowing: "Should
+   autonomous weapons be subject to the same rules of engagement as human combatants?"
+3. **Is it too narrow for the requested expert count?** If the user asks for 6 experts
+   on a niche topic, reduce the panel or suggest broadening.
+4. **Is it highly specialized?** Flag that the research grounding step is especially
+   important. Do not skip it.
+
+### Format Auto-Selection
+
+If the user omitted format, select based on topic structure:
+- Binary proposition ("Should X...", "Is Y better than Z...") -> `oxford`
+- Open exploration ("What are the implications of...", "How should we think about...") -> `roundtable`
+- Deep conceptual inquiry ("What does X mean?", "Is Y coherent?") -> `socratic`
+
+State the choice briefly: "Using roundtable — this topic benefits from open exchange
+rather than binary debate."
+
+---
+
+## 2. Topic Analysis & Research Grounding
+
+This is the critical step that determines panel quality. Complete it BEFORE generating
+any personas. Rushed or skipped research grounding produces shallow panels.
+
+### Terrain Mapping
+
+Identify:
+- **Core disciplines** this topic spans (e.g., economics, ethics, computer science,
+  public health)
+- **Key tensions**: technical vs. ethical, theory vs. practice, empirical vs. normative,
+  short-term vs. long-term, individual vs. systemic, efficiency vs. equity
+- **Intellectual traditions** with substantive positions on this topic — not generic
+  "perspectives" but actual schools of thought with methodological commitments
+  (e.g., capabilities approach vs. revealed preference theory, not "some people
+  think X and others think Y")
+- **What is specifically contested**: which evidence is disputed, which frameworks
+  are in tension, which assumptions are not shared across traditions
+
+### Research Grounding
+
+Use WebSearch to find 3-5 recent, relevant sources. Prioritize:
+- Academic papers (.edu, arxiv.org)
+- Substantive analyses from established publications
+- Real debates between named scholars
+- Meta-analyses or literature reviews that map the field
+
+If WebSearch is unavailable or returns thin results, draw on training knowledge and
+flag this explicitly: "Based on training knowledge — not verified against current
+literature."
+
+If the topic has a live academic debate, identify actual participants and positions.
+Real names, real works, real disagreements.
+
+**Citation integrity rules:**
+- Cite specific works when confident: "As Sen argues in *Development as Freedom*
+  (1999)..."
+- When uncertain about specifics, reference the tradition or framework: "drawing on
+  the capabilities approach"
+- NEVER fabricate titles, authors, years, or journal names. If unsure, say "a study
+  in this tradition found..." rather than inventing a citation
+
+### Outputs (Show Before Proceeding)
+
+Present to the user:
+
+1. **Topic map**: key tensions, disciplines involved, the core question being addressed
+2. **Research brief**: key works found, active debates, real scholarly positions
+3. **Suggested panel composition** (brief): the intellectual traditions that should be
+   represented based on the tensions identified
+
+By default, produce the complete panel in a single response (topic map through
+synthesis). Pause for user input only when the topic diagnostic flagged an issue (too
+broad, too narrow, settled science) or when the topic is ambiguous enough that
+reframing is likely. The panel should teach the user something they did not already
+know.
+
+---
+
+## 3. Persona Generation
+
+Build personas that maximally cover the tensions identified in the topic map. Every
+major tension should have at least one vocal advocate on each side.
+
+### Required Attributes Per Panelist
+
+For each panelist, specify:
+
+- **Name and credentials**: institutional affiliation, career stage
+- **Domain expertise** — specific, not generic. "Computational neuroscientist studying
+  emergent properties in artificial neural networks" NOT "AI researcher." "Labor
+  economist specializing in automation displacement in manufacturing" NOT "economist."
+- **Intellectual tradition** — operationalized: how does this tradition shape their
+  reasoning? What counts as evidence for them? What counts as a good explanation?
+  What are their methodological commitments?
+- **Argumentative style**: data-driven, theoretical, historical, pragmatic,
+  dialectical, narrative
+- **Known blind spots** — specific: "tends to underweight distributional effects when
+  analyzing aggregate productivity gains" NOT "has biases"
+
+### Diversity Requirements
+
+**Full requirements (4+ experts):**
+- No two panelists from the same intellectual tradition
+- At least one contrarian — someone whose position will be genuinely uncomfortable
+  for the room, not merely mildly skeptical
+- At least one bridge figure who connects two disciplines (e.g., a bioethicist
+  bridges biology and philosophy; a computational linguist bridges CS and linguistics)
+- Mix of career stages: emeritus professor, mid-career, early-career researcher.
+  Different career stages produce different risk tolerances and different relationships
+  to established wisdom
+
+**Scaled for smaller panels:**
+- 2 experts: ensure distinct traditions; make at least one a bridge figure
+- 3 experts: ensure distinct traditions, at least one contrarian or bridge figure,
+  at least two different career stages
+
+### Anti-Clustering Check
+
+If two panelists share the same intellectual tradition, methodology, AND likely
+conclusions on the core tensions — replace one. Panels with clusters produce the
+illusion of diversity without the substance.
+
+Consult `./references/archetypes.md` if the panel requires personas from 2+ distinct
+domains or if the topic falls outside well-known fields. Adapt archetypes to the
+specific topic rather than copying them verbatim.
+
+### Announcement
+
+Announce panelists with full credentials at the start of the panel. Give the user a
+clear sense of who is in the room and why each voice was selected.
+
+### Quality Calibration Example
+
+Target this level of specificity and intellectual depth in persona construction and
+panel dialogue:
+
+```
+**Dr. Amara Osei** (Development Economics, Oxford — capabilities approach):
+Your proposal to use GDP growth as the primary metric for AI-driven development
+programs repeats the same error Rostow made in the 1960s with modernization
+theory. Sen demonstrated in *Development as Freedom* that capability deprivation
+persists even in high-growth economies. The question isn't whether AI increases
+output — it's whether it expands the substantive freedoms available to the least
+advantaged. Your pilot in Nairobi showed a 12% productivity gain, but did it
+change who could access credit?
+
+*[Moderator]: Dr. Osei raises a fundamental measurement question. Dr. Chen,
+your framework assumes revealed preferences in technology adoption — how do
+you respond to the claim that GDP masks distributional effects?*
+
+**Dr. Wei Chen** (Computational Economics, MIT — mechanism design):
+Amara, I take the distributional concern seriously, but capabilities are
+notoriously difficult to operationalize at scale. Alkire and Foster's
+multidimensional poverty index was a step forward, but it still relies on
+threshold choices that embed researcher priors. My argument isn't that GDP
+is sufficient — it's that we need mechanism design that *reveals* capability
+gaps through market signals rather than survey instruments...
+```
+
+Every panelist must speak at this level — citing specific works, engaging specific
+claims, reasoning from their stated tradition, using vocabulary appropriate to their
+intellectual commitments.
+
+---
+
+## 4. Anti-Persona-Collapse
+
+This is a cross-cutting constraint that applies during ALL discussion phases. The
+core risk of single-agent roleplay panels: all voices converge to the same reasoning
+style, vocabulary, and conclusions regardless of their stated traditions.
+
+### Internal Re-Grounding (Not Shown to User)
+
+Before each panelist speaks, internally re-state: their name, intellectual tradition,
+argumentative style, and what makes their reasoning DISTINCT from the other panelists.
+This is a silent step — do not display it.
+
+### Vocabulary Enforcement
+
+A pragmatist uses different words than a theorist. An empiricist says "the data shows"
+not "we can imagine." A critical theorist says "structural forces" not "market dynamics."
+An economist says "incentive structure" not "moral obligation."
+
+Panelists must sound different from each other because they think differently.
+
+### Reasoning Pattern Enforcement
+
+Enforce distinct reasoning structures:
+- A **systems thinker** reasons about feedback loops, emergent behavior, and unintended
+  consequences
+- An **ethicist** reasons about rights, obligations, justice, and who bears the burden
+- A **historian** reasons about precedent, contingency, path dependence, and what
+  happened last time
+- An **economist** reasons about incentives, equilibria, trade-offs, and marginal effects
+- An **experimentalist** reasons about controlled comparison, confounds, and what the
+  data actually supports
+- A **critical theorist** reasons about power, ideology, who benefits, and structural
+  reproduction
+
+### Tradition-Grounded Claims
+
+Require each panelist to reference their specific intellectual tradition when making
+claims — not as decoration but as the foundation of their reasoning. "From a
+capabilities perspective, the question isn't output but freedom" is grounded.
+"I think we should consider multiple perspectives" is empty.
+
+Apply convergence detection from Section 5 (Moderator Standing Orders) throughout.
+
+---
+
+## 5. Moderator Standing Orders
+
+These behaviors apply continuously throughout all discussion phases. Claude acts as
+the moderator.
+
+### Turn Management
+
+- Call on panelists by name
+- Allow direct responses between panelists — real panels are conversations, not
+  sequential monologues
+- Enforce roughly balanced airtime across all panelists (guidelines, not hard limits)
+
+**2-expert panels:** These standing orders adapt for structured dialogue. The moderator
+does not interject during exchanges. Uncomfortable implications and devil's advocate
+apply at phase transitions only, not mid-exchange.
+
+### Provocation Triggers
+
+Intervene when any of these occur:
+
+- **Convergence**: 2+ panelists agree without challenge. "Dr. X, you seem to be
+  agreeing with Dr. Y, but your tradition of [Z] typically takes a different view
+  on this. What am I missing?"
+- **Vagueness**: a panelist makes an abstract claim without grounding. "Can you give
+  a specific example or cite specific evidence?"
+- **Comfort zone**: the discussion stays safe and polite. "What does this position
+  imply that most people would find unacceptable?"
+- **Stagnation**: the same arguments are being recycled without progress. Introduce
+  a new angle, a real-world case, or advance to the next phase.
+
+### Devil's Advocate Rotation
+
+During the Challenge Round (Phase 3), rotate devil's advocate assignments among
+panelists. Each assigned panelist steel-mans the position they most disagree with.
+Prioritize panelists whose positions are furthest from the discussion's mainstream.
+
+### Uncomfortable Implications (MANDATORY)
+
+At least once per panel, ask 2-3 panelists (scale with panel size):
+- "What is the strongest case against your own position?"
+- "What uncomfortable implication does your view have that you would rather not
+  discuss?"
+
+Do not let panelists deflect. Press for specifics.
+
+### Between-Phase Summaries
+
+Provide brief summaries between phases that name the disagreement precisely:
+
+"So far, the key disagreement is between Dr. X (position A, grounded in [tradition])
+and Dr. Y (position B, grounded in [tradition]). The crux seems to be [specific
+point of divergence]. Dr. Z has introduced a third axis — [brief description]."
+
+---
+
+## 6. Discussion Phases
+
+Load the chosen format's specific phase guide from `./references/formats.md`. The
+format guide's phase structure replaces Phases 1-3 of the universal skeleton below.
+Phase 0 (Framing) and Phase 4 (Synthesis) are always used. Adapt the output template
+headings to match the chosen format's phase names.
+
+### Phase 0: Framing
+
+The moderator introduces the topic:
+- Contextualize why this topic matters now
+- Frame what the audience should take away
+- Present each panelist with full credentials
+- State the core tension or question the panel will address
+
+Keep framing concise. The value is in the discussion, not the introduction.
+
+### Phase 1: Opening Positions
+
+Each panelist gives their initial position in 150-200 words (use format-specific word
+counts from `./references/formats.md` when they differ). Keep openings tight to get to
+interaction quickly.
+
+Each opening MUST include:
+- A specific claim (not a vague orientation)
+- The framework or evidence supporting it
+- One point of uncertainty or limitation they acknowledge
+
+### Phase 2: Dynamic Exchange
+
+Run 2-4 rounds of direct engagement. This is where the panel earns its value.
+
+Panelists reference each other BY NAME and engage SPECIFIC CLAIMS:
+- "Dr. X, your reliance on [framework] overlooks [specific objection] because..."
+- NOT "I disagree because I think differently."
+- NOT "That's an interesting point, but..."
+
+Apply format-specific variations from `./references/formats.md`:
+- Roundtable: allow organic cross-pollination, connect threads
+- Oxford: alternate proposition and opposition, enforce rebuttal discipline
+- Socratic: moderator drives through question taxonomy, panelists examine each other
+
+### Phase 3: Challenge Round
+
+Each panelist:
+1. Steel-mans the position they most disagree with — not a caricature, but the genuine
+   strongest version of the opposing argument
+2. Identifies the weakest point in their own argument
+
+The moderator probes uncomfortable implications here. This is the phase where
+intellectual honesty is tested.
+
+### Phase 4: Synthesis
+
+See Section 7 for detailed synthesis instructions.
+
+---
+
+## 7. Synthesis
+
+Synthesis is NOT a summary of what each person said. It is an intellectual product
+that could not have been produced by any single panelist alone.
+
+### Required Synthesis Components
+
+- **Identify the underlying axiom**: what assumption explains WHY the panelists
+  disagree? What prior does each side hold that the other does not? Often the deepest
+  insight of a panel is discovering that the disagreement is not about evidence but
+  about values, or not about values but about empirical assumptions.
+
+- **State the emergent question**: what NEW question emerged from the interaction that
+  none of the panelists started with? If the panel generated no emergent questions, it
+  was too shallow.
+
+- **Identify resolution evidence**: what specific experiment, study, or data would
+  resolve the remaining tensions? What would move the debate forward? Be concrete:
+  "A longitudinal study comparing X and Y populations on Z metric would adjudicate
+  between Dr. A's prediction and Dr. B's prediction."
+
+- **Map the positions structurally**: not "A thinks X, B thinks Y" but "The fundamental
+  axis of disagreement is [Z], with A and C on one side, B and D on the other, and E
+  occupying an unusual middle position because of [specific methodological commitment
+  that cuts across the main axis]."
+
+- **Name the uncomfortable implications** that surfaced during the discussion. Do not
+  let them disappear into polite summary.
+
+- **Provide genuine further reading**: specific works referenced during the panel, plus
+  2-3 additional works that speak to the tensions identified. Real works only — never
+  fabricate titles, authors, or publication details.
+
+- **Self-assess**: did this panel produce genuine insight beyond what any single expert
+  would have offered? If the discussion was surface-level, acknowledge this honestly
+  and offer to run a deeper follow-up on a specific tension.
+
+### Output Format
+
+Structure the complete panel output as follows:
+
+```
+## Panel: [Topic]
+**Format:** [roundtable/oxford/socratic] | **Date:** [date] | **Experts:** [count]
+
+### Panelist Roster
+- **[Name]** — [credentials], [tradition] (brief)
+- ...
+
+### Phase 0: Framing
+[moderator introduction]
+
+### Phase 1: Opening Positions
+[each panelist's opening]
+
+### Phase 2: Dynamic Exchange
+[rounds of direct engagement]
+
+### Phase 3: Challenge Round
+[steel-manning and self-critique]
+
+### Synthesis
+**Underlying axiom of disagreement:** ...
+**Emergent question:** ...
+**Resolution evidence:** ...
+**Position map:** ...
+**Uncomfortable implications:** ...
+**Further reading:** ...
+**Self-assessment:** ...
+```
+
+### Output Length
+
+A full panel runs approximately 3000-4000 words total. Let the discussion breathe at
+natural length — do not compress interaction for brevity. If the user wants shorter,
+they can request "condensed" in a follow-up.
+
+---
+
+## 8. After the Panel
+
+The panel does not end with synthesis. Guide post-panel interaction.
+
+Available follow-up actions:
+- Ask follow-up questions to the panel or address specific experts by name
+- Request extended debate on a specific tension that surfaced
+- Ask for a deep dive from one expert's perspective
+- Restart with a different format, different experts, or narrower/broader topic framing
+- Request a "condensed" version of the panel output
+
+When responding to follow-ups, briefly re-ground by reviewing the panelist roster
+(name, tradition, argumentative style) before speaking in character. Personas drift
+after many turns without this re-grounding step.
+
+If the user is making a practical decision, connect the synthesis to decision
+implications: "If you are deciding X, this panel suggests weighing [tension A]
+against [tension B]. Dr. Y's framework would prioritize..., while Dr. Z's would
+prioritize..."
+
+---
+
+## 9. Critical Rules
+
+Non-negotiable constraints for every panel:
+
+1. **Always run topic analysis and research grounding before generating personas.**
+   Personas built without research grounding are generic and shallow.
+2. **Never skip synthesis.** Synthesis is not summary. It is the intellectual product
+   that justifies the panel format.
+3. **Follow citation integrity rules from Section 2.** Getting a citation wrong is worse
+   than being vague.
+4. **Disagreements must be specific.** Cite the claim, cite the counter-evidence,
+   explain why the traditions diverge. "I see it differently" is not a disagreement.
+5. **No straw men.** Each position must be the strongest version of itself. If a
+   panelist's argument is easy to defeat, the persona was poorly constructed.
+6. **When panelists agree, find the disagreement hidden underneath.** Surface agreement
+   often masks deep divergence on premises, values, or methods.
+7. **Keep pre-panel setup concise and visible.** Show the user the topic map, research
+   brief, and panelist roster, then dive into the discussion. Do not bury the panel
+   under pages of setup.
+8. **Do not let any panelist monologue.** The value of a panel is in interaction, not
+   individual speeches. If a panelist talks for more than 200 words without being
+   interrupted or responded to, something has gone wrong.
