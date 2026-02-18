@@ -1,0 +1,126 @@
+---
+title: "python-conventions"
+description: "Python tooling conventions. Use uv for all operations (uv run, uv add — not pip). Use pyproject.toml with uv add (not uv pip). Use ty for type checking (not mypy)."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="python-conventions" variant="note" /> <Badge text="123 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
+
+> Python tooling conventions. Use uv for all operations (uv run, uv add — not pip). Use pyproject.toml with uv add (not uv pip). Use ty for type checking (not mypy). Preferred libraries: loguru, tenacity, tqdm, fastapi, typer, alembic, sqlmodel, gradio, numpy.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/python-conventions -g
+```
+
+**Use:** `/python-conventions`
+
+</div>
+
+## What It Does
+
+Apply these conventions when working on Python files or projects.
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `python-conventions` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| User Invocable | No |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: python-conventions
+description: >-
+  Python tooling conventions. Use uv for all operations (uv run, uv add — not pip).
+  Use pyproject.toml with uv add (not uv pip). Use ty for type checking (not mypy).
+  Preferred libraries: loguru, tenacity, tqdm, fastapi, typer, alembic, sqlmodel, gradio, numpy.
+user-invocable: false
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Python Conventions
+
+Apply these conventions when working on Python files or projects.
+
+## Tooling
+
+- **Package manager**: `uv` for all Python operations (`uv run python ...` instead of `python`, `uv add` instead of `pip install`)
+- **Project config**: `pyproject.toml` with `uv add <pkg>` (never `uv pip install` or `pip install`)
+- **Type checking**: `ty` (not mypy)
+
+## Preferred Libraries
+
+When applicable, prefer these libraries over alternatives:
+
+| Purpose | Library |
+|---------|---------|
+| Logging | `loguru` |
+| Retries | `tenacity` |
+| Progress bars | `tqdm` |
+| Web APIs | `fastapi` |
+| CLI tools | `typer` |
+| DB migrations | `alembic` |
+| DB ORM | `sqlmodel` |
+| UI/demos | `gradio` |
+| Numerics | `numpy` |
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/python-conventions/SKILL.md)
+
+</details>
+
+<details>
+<summary>Rendered Specification</summary>
+
+## Python Conventions
+
+Apply these conventions when working on Python files or projects.
+
+### Tooling
+
+- **Package manager**: `uv` for all Python operations (`uv run python ...` instead of `python`, `uv add` instead of `pip install`)
+- **Project config**: `pyproject.toml` with `uv add <pkg>` (never `uv pip install` or `pip install`)
+- **Type checking**: `ty` (not mypy)
+
+### Preferred Libraries
+
+When applicable, prefer these libraries over alternatives:
+
+| Purpose | Library |
+|---------|---------|
+| Logging | `loguru` |
+| Retries | `tenacity` |
+| Progress bars | `tqdm` |
+| Web APIs | `fastapi` |
+| CLI tools | `typer` |
+| DB migrations | `alembic` |
+| DB ORM | `sqlmodel` |
+| UI/demos | `gradio` |
+| Numerics | `numpy` |
+
+</details>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/python-conventions/SKILL.md)
