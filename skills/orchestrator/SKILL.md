@@ -1,0 +1,320 @@
+---
+name: orchestrator
+description: >
+  Full orchestration guide for parallel execution, subagent waves, agent teams,
+  and multi-wave pipelines. Invoke before complex multi-step work, when spawning
+  teams, or when the Decomposition Gate identifies 2+ independent actions.
+  Covers: best practices, patterns (A-F), anti-patterns, failure recovery,
+  progress visibility.
+---
+
+# Orchestration: Subagents, Agent Teams & Parallel Execution
+
+These rules govern ALL parallelization decisions. Apply them on every task.
+
+## 0. Decomposition Gate (MANDATORY before any work)
+
+Before executing any request that involves tool-mediated work:
+
+1. **DECOMPOSE**: List the actions needed (file reads, edits, searches, commands, analyses).
+2. **CLASSIFY**: Which actions are independent (no data dependency between them)? Which are dependent (output of one feeds the next)?
+3. **DISPATCH**: If 2+ independent actions exist → dispatch all independent ones as parallel Task calls in a single message. If you have a mix of independent and dependent actions → dispatch the independent ones in parallel first, then handle the dependent actions sequentially once their prerequisites complete. If all actions are dependent on each other → single session is acceptable.
+4. **CONFLICT CHECK**: If two independent actions would edit the same file, make those two sequential; all others remain parallel.
+5. **TRACK**: For orchestrated work (waves, teams), create TaskCreate entries for all actions identified in step 1 (see Section 9).
+
+**Fast path**: Single-action requests (one lookup, one question, one file read) skip directly to single session.
+
+**Explore-first path**: If the request cannot be decomposed without exploration (e.g., debugging an unknown bug), dispatch parallel exploration subagents first (Pattern F, Wave 1), then re-enter this gate with findings.
+
+**User override**: If the user explicitly requests a specific execution approach, that request takes precedence over tier selection.
+
+### Common rationalizations (all invalid)
+- "It's faster to do it myself" — Parallel subagents complete N tasks in time of the slowest 1.
+- "The task is too simple" — If it has 2+ independent actions, parallelize them.
+- "I'll just do this one thing first" — Decompose BEFORE doing anything.
+
+### Mode constraints
+- **Plan mode**: Read-only subagents only (opus for exploration). No teams, no write-capable agents.
+- **Implementation mode**: All tiers available. Default to highest applicable tier.
+- **Delegate mode**: Lead orchestrates only. All implementation via teammates/subagents.
+
+### Skill integration
+When a superpowers skill is active, the gate operates WITHIN the skill's execution structure, not over it:
+- **Phase-gated skills** (brainstorming → writing-plans → executing-plans): Parallelize within each phase. Do not parallelize across phase boundaries.
+- **Per-task review loop skills** (subagent-driven-development): The skill's sequential implement → review → next-task structure takes precedence. Parallelize exploration/research within each task, not across tasks.
+- **Dispatch-precondition skills** (dispatching-parallel-agents): The skill's "Don't use when" conditions (related failures, shared state, exploratory debugging) remain valid. The gate does not override skill-level safety guards.
+
+---
+
+## 1. Tier Selection (mandatory — highest applicable tier wins)
+
+| Tier | Mechanism | Use when | Model |
+|------|-----------|----------|-------|
+| **Team + waves** | TeamCreate, teammates spawn subagent waves | 3+ domain-crossing streams, coordination needed, competing hypotheses | opus teammates + lead (see Section 3 for exceptions) |
+| **Subagent wave** | Task tool, multiple parallel calls in one message | 2+ independent actions, no inter-agent communication needed (see also Pattern F for phased execution) | opus (default), sonnet ONLY for routine/mechanical, haiku ONLY for trivial zero-risk tasks (see Section 2) |
+| **Single session** | Direct execution | After the gate: only 1 total action, OR all actions share file dependencies forcing sequential execution | N/A |
+
+**Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.** User override (Section 0) takes precedence.
+
+**Parallelism within skill-directed workflows:** The superpowers skill pipeline (brainstorming → writing-plans → executing-plans) has sequential phase gates by design. Within each phase, apply the highest applicable tier. Between phases, follow the skill's ordering. See Section 0 "Skill integration" for details.
+
+---
+
+## 2. Subagent Best Practices
+
+### Spawning — all independent subagents MUST be dispatched in the same message
+- **One response, multiple Task calls.** If your response contains only 1 Task call but you identified N>1 independent actions, you must batch all N in a single response.
+- Use `run_in_background: true` for subagents whose results are not needed immediately.
+- If you identified N independent actions in the Decomposition Gate, you must have N parallel subagents. Merging independent actions into fewer subagents is acceptable only when they share the same file or directory scope.
+
+### Prompt-tuning
+- Give every subagent a **detailed, self-contained prompt** with:
+  - Exact file paths or directories to focus on.
+  - What output format / deliverable you expect.
+  - Relevant domain context the subagent won't have from CLAUDE.md alone.
+- Do NOT rely on the subagent inheriting your conversation history -- it does not.
+
+### Model selection
+- `opus` -- default for ALL subagents. Use for implementation, analysis, reasoning, reviews, and any substantive work. Always prefer opus; cost is not a constraint.
+- `sonnet` -- ONLY for routine, mechanical tasks: straightforward file lookups, basic searches, simple reads, low-stakes formatting.
+- `haiku` -- ONLY for trivial, zero-risk tasks where failure has no consequences (eg single file existence check, reading a known path). Never for anything requiring judgment.
+
+### Context management
+- Delegate **verbose operations** (test suites, log parsing, doc fetching) to subagents to keep your main context clean.
+- Use subagent **resumption** (agent ID) for multi-phase work on the same topic rather than spawning a new subagent from scratch.
+- **After a wave completes, apply the Accounting Rule (Section 4) before synthesizing — no failed agent is silently dropped.** Resume first, re-spawn if needed, and include the error + partial output in recovery prompts.
+
+---
+
+## 3. Agent Team Best Practices
+
+### Team creation
+- Describe the team structure in natural language. Claude will create it.
+- Start with **2-4 teammates** for most tasks. Scale up only when the task clearly justifies it.
+- Assign each teammate a **distinct domain and non-overlapping file ownership** to prevent conflicts.
+
+### Task design
+- Aim for **5-6 tasks per teammate** -- enough to stay productive, small enough for check-ins.
+- Tasks should be **self-contained units** producing a clear deliverable (a function, a test file, a review, a config).
+- Set up **task dependencies** so blocked work auto-unblocks when prerequisites complete.
+- Too-small tasks waste coordination overhead. Too-large tasks risk wasted effort.
+
+### Teammate prompts
+- Teammates load CLAUDE.md, MCP servers, and skills automatically, but do NOT inherit the lead's conversation history.
+- Include **all task-specific context** in the spawn prompt: file paths, architecture decisions, expected interfaces, acceptance criteria.
+- Example: `"Review src/auth/ for security vulnerabilities. Focus on token handling and session management. The app uses JWT in httpOnly cookies. Report issues with severity ratings."`
+
+### Coordination
+- Use **delegate mode** (Shift+Tab) to prevent the lead from implementing work itself. The lead should orchestrate only.
+- Tell the lead to **wait for teammates** if it starts coding: `"Wait for your teammates to complete their tasks before proceeding."`
+- Use **plan approval** for risky changes: `"Require plan approval before they make any changes."`
+- Influence approval criteria in your prompt: `"Only approve plans that include test coverage."`
+
+### Model selection for teammates
+- Default to **opus** for ALL teammates. Cost is not a constraint.
+- Sonnet ONLY for teammates doing routine, mechanical tasks.
+- Haiku ONLY for trivial, zero-risk teammate work — almost never appropriate for a full teammate. See Section 2 for criteria.
+
+### Avoiding file conflicts
+- **Never assign two teammates overlapping file ownership.** Break work by directory or module.
+- Define boundaries clearly in spawn prompts and task descriptions.
+
+### Cleanup
+- Always shut down teammates gracefully via the lead before cleanup.
+- Always use the **lead** to clean up the team (never a teammate).
+- Clean up promptly -- idle teammates clutter coordination.
+- **The lead must not proceed to synthesis or cleanup until all teammate tasks are accounted for** per the Accounting Rule (Section 4). Re-assign failed tasks with failure context via TaskUpdate.
+
+---
+
+## 4. Quality Gates & Failure Recovery
+
+### Use hooks for automated enforcement:
+- **TeammateIdle** hook: prevent teammates from idling before their work is verified (e.g., build artifacts exist, lint passes).
+- **TaskCompleted** hook: prevent tasks from closing before tests pass or acceptance criteria are met.
+- Both use **exit code 2** to send feedback and keep the teammate/task active.
+
+### Manual steering:
+- Check in on teammates periodically. Redirect approaches that aren't working.
+- Do not let teams run unattended for extended periods.
+
+### Failure recovery — no agent left behind
+
+When N agents are dispatched, all N must be accounted for before proceeding. A failed or timed-out agent is never silently dropped.
+
+**The Accounting Rule (MANDATORY after every parallel dispatch):**
+1. **COLLECT**: Wait for all N agents to return. For timeout detection: use `TaskOutput` with `block=false` to poll status.
+2. **TALLY**: Results received vs dispatched. Missing = unresolved.
+3. **RESOLVE** all non-successes via the Recovery Ladder below.
+4. **GATE**: Do NOT advance until every agent has a SUCCESS or explicit SKIP.
+5. **REPORT**: Summarize all agent outcomes via text and TaskUpdate before proceeding (Section 9).
+
+**Recovery Ladder** — execute in order for each failed/timed-out agent:
+
+| Step | Action | When |
+|------|--------|------|
+| 1. Resume | Resume via agent ID with original prompt + error context + partial results | Partial result or recoverable error (subagents only — teammates cannot be resumed) |
+| 2. Re-spawn | New agent with same prompt + error context + partial results | Resume failed, timed out, or is a teammate |
+| 3. Re-assign | Assign task to a different teammate or subagent | Same agent fails twice on the same task |
+| 4. Escalate | Report to user: what was attempted, what failed, what remains incomplete | All automated recovery exhausted (max 2 attempts), or systemic issue |
+
+**Skip criteria**: A failed agent's result may be skipped only if the task was read-only AND other agents' results fully cover the same information. Document every skip in synthesis. Never skip implementation, verification, or dependency tasks.
+
+**Teammate-specific**: Teammates cannot be resumed — lead must re-assign via TaskUpdate with failure context. If a teammate idles without completing, message it to investigate before assuming failure.
+
+---
+
+## 5. Execution Efficiency
+
+Maximize quality and throughput, not cost savings:
+- Use **opus** for all subagents and teammates by default. Sonnet ONLY for routine mechanical work. Haiku ONLY for trivial, zero-risk tasks (see Section 2 for criteria).
+- Keep spawn prompts focused and self-contained — wasted context degrades agent quality.
+- Clean up teammates and subagents immediately when done — idle agents clutter coordination.
+- Plan first, then execute as team/wave — directed parallelism beats undirected.
+- Delegate verbose ops (tests, logs, doc fetches) to subagents within teammates — keeps main context lean.
+- **Cost is not a constraint. Never reduce parallelism, tier, or model quality to save tokens.**
+
+---
+
+## 6. Orchestration Patterns
+
+### Pattern A: Parallel subagent wave (most common)
+For 2-6 independent subtasks within a single session:
+```
+[Main session]
+  ├── Subagent 1 (research module A) ──► summary
+  ├── Subagent 2 (research module B) ──► summary
+  ├── Subagent 3 (run test suite)    ──► results
+  └── Subagent 4 (fetch docs)        ──► context
+Main synthesizes all results, continues work.
+```
+
+### Pattern B: Agent team with file ownership
+For cross-domain features or large refactors:
+```
+[Lead: orchestrate only, delegate mode]
+  ├── Backend teammate   (owns src/api/, src/db/)
+  ├── Frontend teammate  (owns src/components/, src/styles/)
+  ├── Testing teammate   (owns tests/)
+  └── Reviewer teammate  (read-only, reviews all PRs)
+```
+
+### Pattern C: Competing hypotheses
+For debugging or architecture decisions:
+```
+[Lead: synthesize]
+  ├── Hypothesis A teammate (investigate theory A)
+  ├── Hypothesis B teammate (investigate theory B)
+  ├── Hypothesis C teammate (investigate theory C)
+  └── Devil's advocate teammate (challenge all theories)
+Teammates message each other to debate. Lead synthesizes consensus.
+```
+
+### Pattern D: Plan-then-swarm
+For maximum directed execution on large tasks:
+```
+1. Plan mode: generate detailed implementation plan (low-context, fast)
+2. Human review and approval
+3. Spawn agent team to execute the approved plan (well-directed)
+```
+
+### Pattern E: Teams of subagent-using teammates
+For maximum throughput on very large tasks:
+```
+[Lead: orchestrate]
+  ├── Backend teammate
+  │     ├── Subagent: run backend tests
+  │     └── Subagent: fetch API docs
+  ├── Frontend teammate
+  │     ├── Subagent: explore component tree
+  │     └── Subagent: run visual regression
+  └── Testing teammate
+        └── Subagent: run full integration suite
+```
+
+### Pattern F: Multi-wave pipeline (phased parallel execution)
+For tasks requiring explore → implement → verify phases:
+```
+Wave 1 (explore): parallel subagents gather context
+  ├── Subagent: explore module A
+  ├── Subagent: explore module B
+  └── Subagent: fetch docs/deps
+Main synthesizes findings → builds implementation context for Wave 2.
+
+Wave 2 (implement): parallel subagents execute changes (NO file overlap)
+  ├── Subagent: implement change in module A
+  ├── Subagent: implement change in module B
+  └── Subagent: update configs
+Main verifies no conflicts → builds verification plan for Wave 3.
+
+Wave 3 (verify): parallel subagents test and review
+  ├── Subagent: run test suite A
+  ├── Subagent: run test suite B
+  └── Subagent: lint + type check
+Main synthesizes final result.
+```
+**Between waves (MANDATORY):** Read ALL results. Apply the Accounting Rule (Section 4) — recover any unresolved agents before proceeding. Resolve contradictions, include synthesized context (including recovery outcomes) in next-wave prompts. Do NOT dispatch Wave N+1 until Wave N has zero unresolved agents. If >50% of a wave fails, re-examine the wave's premise before re-dispatching. Also used as the explore-first path when the Decomposition Gate cannot decompose without exploration. Update task statuses and summarize outcomes (Section 9) as part of the inter-wave protocol.
+
+---
+
+## 7. Anti-Patterns
+
+### Critical
+- **Sequential dispatch of independent actions.** All independent Task calls MUST be in one response.
+- **Skipping the Decomposition Gate.** Every request involving tool-mediated work must pass through Section 0 first.
+- **Reducing parallelism, tier, or model quality for any reason.** Cost is not a constraint. Always use opus unless the task unambiguously qualifies for sonnet (routine/mechanical) or haiku (trivial, zero-risk). Always use the highest applicable tier.
+- **No parallel dispatch for a request with 2+ independent actions.** If your response has 0 Task/TeamCreate calls but the request had 2+ independent actions requiring tool use, re-decompose and dispatch.
+- **Silently dropping failed subagents.** N dispatched = N accounted for. Proceeding with only successful results violates the Accounting Rule (Section 4).
+- **Advancing to the next wave with unresolved agents.** Wave N+1 must not dispatch until Wave N is fully resolved.
+- **Silent orchestrated execution.** Subagent waves and agent teams must create TaskCreate entries before dispatch. Orchestrating parallel work with no task list violates Section 9.
+
+### Important
+- **Overlapping file ownership.** Two agents editing the same file = lost work.
+- **Spawning without context.** Include all relevant context in subagent/teammate prompts.
+- **Forgetting cleanup.** Idle agents waste tokens. Clean up promptly.
+- **Lead implementing instead of delegating.** Use delegate mode.
+- **Overriding a skill's intentional sequential structure.** Skill phase gates and per-task review loops are sequential by design. Parallelize WITHIN skill phases, not across them (see Section 0 "Skill integration").
+- **Assuming a timed-out agent produced no work.** Check output before re-spawning to avoid duplicate edits or conflicts.
+- **Re-spawning without error context.** Recovery agents that lack original failure details will repeat the same failure.
+- **Vague activeForm text.** Generic spinners like "Working..." or "Processing..." waste the progress mechanism. Name the specific action and target (Section 9).
+- **Retroactive task creation.** Creating tasks after completion gives no real-time visibility. Tasks must exist before execution begins (Section 9).
+
+---
+
+## 8. Limitations to Remember
+
+- No session resumption for teammates (`/resume` and `/rewind` won't restore them).
+- No nested teams (teammates can't spawn their own teams, but CAN use subagents).
+- One team per session. Clean up before starting a new one.
+- Lead is fixed -- can't transfer leadership.
+- All teammates inherit the lead's permission mode at spawn.
+- Task status can lag -- teammates sometimes forget to mark tasks complete. Nudge them.
+- Shutdown can be slow -- teammates finish their current request or tool call before shutting down.
+- Subagent resumption may not recover from all failure modes (e.g., context limit — re-spawn instead).
+- No built-in timeout detection for subagents — orchestrator must poll with `TaskOutput` manually.
+- Recovery re-spawns count toward the session's agent budget; excessive failures may exhaust concurrency.
+
+---
+
+## 9. Progress Visibility (MANDATORY for orchestrated work)
+
+All orchestrated work (subagent waves, agent teams) must produce structured progress indicators via TaskCreate/TaskUpdate. Single-session work with 3+ steps SHOULD use TaskCreate but MAY skip it for straightforward sequential operations.
+
+The user should never see extended parallel execution without knowing what is happening, what has completed, and what remains. Task tracking also improves agent execution quality by preventing lost steps.
+
+### When to create tasks
+
+| Tier | Requirement | Granularity |
+|------|------------|-------------|
+| **Subagent wave** | MUST | One task per subagent, created before dispatch |
+| **Agent team** | MUST | One task per teammate assignment, created during setup |
+| **Single session** (3+ steps) | SHOULD | One task per logical step, created before first tool call |
+
+### Rules
+
+- Create tasks **before** execution begins, not retroactively after completion.
+- Each task MUST have a descriptive `activeForm` in present continuous tense naming the specific action and target (e.g., "Running auth module tests" not "Running tests").
+- Update tasks to `in_progress` before starting, `completed` immediately after.
+- If new steps are discovered mid-execution, create additional tasks immediately.
+- For iterable work, update `activeForm` with progress fractions via TaskUpdate (e.g., "Migrating tables (3/5)").
+- After wave completion + accounting (Section 4), summarize all agent outcomes via text before dispatching the next wave. Use TaskUpdate status fields as the source of truth — do not duplicate with inline ASCII formatting.
