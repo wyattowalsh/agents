@@ -225,8 +225,7 @@ Score the scenario on five dimensions. Show all scores to the user.
 
 Score each dimension independently. Present a filled-in rubric table with the
 user's scenario mapped to each row. **Include a Reasoning column** explaining
-each score in one line (see `references/output-formats-core.md` Transparent
-Classification Display).
+each score in one line (see `references/output-formats-core.md` Classification Display).
 
 After scoring, present:
 - **Why This Tier:** 2-3 sentences explaining which dimensions drove the score
@@ -452,7 +451,9 @@ Append a YAML state snapshot as an HTML comment at the end of the journal after 
 <!-- STATE
 turn_number: {current_turn}
 difficulty: {difficulty_level}
+verbosity: {brief | standard | detailed}
 criteria: [{ranked criteria list}]
+branches: [{branch_id, fork_turn, current_turn}]
 actors:
   - name: {actor}
     resources: {resource_map}
@@ -461,6 +462,7 @@ actors:
     information_state: {knows | thinks-they-know | doesn't-know}
     relationships: {relationship status with other actors}
     risk_posture: {current risk tolerance}
+    attention_style: {reactive | adaptive | agile}
 active_injects: [{inject_ids}]
 inject_history: [{previously deployed inject_ids}]
 -->
@@ -527,13 +529,13 @@ point to see the full menu.
 | `verbose [level]` | All | Change output verbosity: `brief`, `standard`, `detailed` |
 | `?` | All | Show command menu (Command Menu Display) |
 
-All commands handled per protocols in `references/wargame-engine.md` (except `criteria`, `export`, and `?` which are defined in this file). Display templates in `references/output-formats-core.md` and `references/output-formats-commands.md`.
+All commands handled per protocols in `references/wargame-engine.md` (except `criteria`, `export`, `verbose`, `research`, `rewind`, `branches`, `status`, `meta`, `compare`, `summary`, and `?` which are defined in this file). Display templates in `references/output-formats-core.md` and `references/output-formats-commands.md`.
 
 ### Export Protocol
 
 When the user types `export` or `dashboard`:
-1. Copy `templates/dashboard.html` to `/tmp/wargame-dashboard-{turn}.html`
-2. Generate the JSON data block matching the current state and view
+1. Copy `templates/dashboard.html` to `/tmp/wargame-dashboard-{turn}.html` using bash `cp` (do NOT read the HTML template into context — it is 676 lines of static HTML/CSS/JS)
+2. Generate the JSON data block matching the current state and view. For field reference, use `references/dashboard-schema.md`.
 3. Insert JSON into the `<script id="data">` block
 4. Render using the cross-platform flow from `references/visualizations.md`:
    Playwright screenshot → browser open → Unicode fallback
@@ -625,26 +627,7 @@ When the user types `research` during an active session:
 
 1. Identify the most relevant research question for the current decision point
 2. Run 1-2 targeted `WebSearch` queries focused on the specific domain and decision context
-3. Present findings as an intelligence briefing:
-
-```
-╭── INTELLIGENCE RESEARCH ──────────────────────────────────────╮
-│                                                                │
-│  QUERY: {what was searched}                                    │
-│                                                                │
-│  KEY FINDINGS                                                  │
-│  • {finding 1 — with source attribution}                       │
-│  • {finding 2}                                                 │
-│  • {finding 3}                                                 │
-│                                                                │
-│  RELEVANCE TO CURRENT DECISION                                 │
-│  {how these findings affect the options on the table}          │
-│                                                                │
-│  CAVEAT: Web research is supplementary. Continue with          │
-│  your decision or type ? for commands.                         │
-╰────────────────────────────────────────────────────────────────╯
-```
-
+3. Present findings using the Intelligence Research Display from `references/output-formats-commands.md`
 4. Return to the current decision point — does not advance the turn
 
 If `WebSearch` is unavailable, inform user: "Web research requires search access. Not available in this session."
