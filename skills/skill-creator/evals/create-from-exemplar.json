@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator create my-tool --from wargame",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Develop (new, from exemplar) mode",
+    "Agent reads skills/wargame/SKILL.md as structural template",
+    "Agent scaffolds skills/my-tool/SKILL.md via wagents new skill",
+    "Agent copies applicable structure from wargame, replaces domain content"
+  ]
+}

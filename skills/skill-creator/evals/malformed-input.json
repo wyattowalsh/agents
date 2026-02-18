@@ -1,0 +1,10 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator create My Bad Name!",
+  "files": [],
+  "expected_behavior": [
+    "Agent detects invalid skill name (not kebab-case)",
+    "Agent reports name validation failure with specific reason",
+    "Agent suggests a corrected kebab-case name"
+  ]
+}

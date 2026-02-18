@@ -1,21 +1,16 @@
 ---
 name: skill-creator
 description: >-
-  Create, improve, and audit AI agent skills for this repository.
-  Scaffolds via wagents CLI, applies 13 proven structural patterns
-  from the repo's best skills, scores quality with a deterministic
-  audit script, and manages the full lifecycle through validation
-  and documentation. Modes: create new skills, improve existing
-  skills, audit quality scores, render comparative dashboards.
-  Use when building new skills, refactoring skill instructions,
-  reviewing skill quality, or learning skill-writing patterns.
-  NOT for running skills, creating agents, or building MCP servers.
+  Create, improve, and audit AI agent skills. Applies 13 proven structural
+  patterns, scores quality with deterministic audit, manages full lifecycle.
+  Use when building, refactoring, or reviewing skills.
+  NOT for agents, MCP servers, or running existing skills.
 argument-hint: "<mode> [name]"
 model: opus
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "1.0.0"
 ---
 
 # Skill Creator
@@ -46,9 +41,10 @@ If no explicit mode keyword is provided:
 
 1. Path ending in `SKILL.md` or directory under `skills/` → **Develop (existing)**
 2. Existing skill name + modification verb (improve, refactor, enhance, update, fix, rewrite, optimize, polish, revise, change) → **Develop (existing)**
-3. New capability description ("I want to build...", "tool that...", "skill for...") → **Develop (new)** — derive name, confirm before scaffolding
-4. "MCP server", "agent", "run" → refuse gracefully and redirect
-5. Ambiguous → ask the user which mode they want
+3. `--from <source>` in arguments → **Develop (new, from exemplar)**
+4. New capability description ("I want to build...", "tool that...", "skill for...") → **Develop (new)** — derive name, confirm before scaffolding
+5. "MCP server", "agent", "run" → refuse gracefully and redirect
+6. Ambiguous → ask the user which mode they want
 
 ## Skill Development
 

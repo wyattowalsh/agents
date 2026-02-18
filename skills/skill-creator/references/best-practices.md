@@ -118,6 +118,10 @@ Four layers of information, each loaded only when needed.
 | 3. References | `references/*.md` | On-demand per reference index | 500-3,000 tokens each |
 | 4. Artifacts | `scripts/`, `templates/` | Invoked via Bash (never loaded into context) | 0 tokens (executed, not read) |
 
+> This applies Anthropic's "context engineering" principle: structure information
+> so the right context appears at the right time, minimizing irrelevant tokens
+> in the agent's working memory.
+
 **Key principles:**
 
 - Never put reference-level detail in the body (wastes tokens on every invocation)
@@ -186,11 +190,11 @@ This technique is borrowed from the superpowers methodology. Place rationalizati
 
 Different models need different levels of structure in skill instructions.
 
-| Model | Characteristics | Skill Implications |
-|-------|----------------|-------------------|
-| Opus | Handles ambiguity well, follows complex multi-step workflows, strong judgment | Use open-field instructions, principles over rules, complex dispatch tables |
-| Sonnet | Good at focused tasks, needs more explicit structure, may shortcut multi-step processes | Prefer numbered steps, explicit phase gates, less room for interpretation |
-| Haiku | Fast but needs tight constraints, may miss nuance, best for mechanical tasks | Very explicit instructions, simple dispatch, minimal branching logic |
+| Capability Tier | Characteristics | Skill Implications |
+|----------------|----------------|-------------------|
+| Strong reasoning model (e.g., Opus, o3) | Handles ambiguity well, follows complex multi-step workflows, strong judgment | Use open-field instructions, principles over rules, complex dispatch tables |
+| Fast model (e.g., Sonnet, GPT-4o) | Good at focused tasks, needs more explicit structure, may shortcut multi-step processes | Prefer numbered steps, explicit phase gates, less room for interpretation |
+| Lightweight model (e.g., Haiku, GPT-4o mini) | Fast but needs tight constraints, may miss nuance, best for mechanical tasks | Very explicit instructions, simple dispatch, minimal branching logic |
 
 **Setting the `model` frontmatter field:**
 
@@ -198,22 +202,13 @@ Different models need different levels of structure in skill instructions.
 - `model: sonnet` -- focused single-task skills, automation wrappers, formatting tasks
 - Omit `model` -- inherits from session default (correct for most skills)
 
-**Practical implication:** If your skill targets Sonnet, replace open-field instructions with guided-path or narrow-bridge equivalents. If targeting Opus, you can trust principles and let the model figure out the implementation.
+**Practical implication:** If your skill targets a fast-tier model, replace open-field instructions with guided-path or narrow-bridge equivalents. If targeting a strong reasoning model, you can trust principles and let the model figure out the implementation.
 
 ---
 
 ## 8. Context Budget Awareness
 
-Understanding the token economy across a full session.
-
-| Component | Token Cost | Frequency |
-|-----------|-----------|-----------|
-| Each skill description (all loaded) | ~100 tokens | Always |
-| 20 installed skill descriptions | ~2,000 tokens | Always |
-| Activated skill body | 2,000-5,000 tokens | Per invocation |
-| Each reference file load | 500-3,000 tokens | On demand |
-| Conversation history | Grows over session | Cumulative |
-| Tool results (file reads, searches) | Variable | Per tool call |
+Managing total context pressure across a full session. For token budgets per layer (metadata, body, references, artifacts), see [Section 3: Description Engineering](#3-description-engineering--cso) and [Section 4: Progressive Disclosure](#4-progressive-disclosure).
 
 **Implications:**
 
@@ -249,7 +244,7 @@ Understanding the token economy across a full session.
 Skills in this repo are Claude Code-primary (dispatch tables, `$ARGUMENTS` routing, tool references). Distribution paths:
 
 1. **Filesystem agents:** `npx skills add wyattowalsh/agents --skill <name> -y -g -a <agents>` for Claude Code, Cursor, Gemini CLI, Codex, and other compatible agents.
-2. **Claude API:** `/v1/skills` endpoints for programmatic upload/versioning.
+2. **Claude.ai:** Import via project settings for web-based skill management.
 3. **Project-local:** Direct commit to `.claude/skills/` for single-project use.
 
 Always populate cross-platform frontmatter fields (`license`, `metadata.author`, `metadata.version`) to enable multi-agent installability. Note which Claude Code-specific features are used (dispatch tables, body substitutions, hooks) so other agents can degrade gracefully.

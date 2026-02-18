@@ -12,18 +12,19 @@ export default [
     items: [
       { slug: 'skills', label: 'Overview' },
       {
-        label: 'Custom (7)',
+        label: 'Custom (8)',
         items: [
           { slug: 'skills/add-badges' },
           { slug: 'skills/honest-review' },
           { slug: 'skills/host-panel' },
           { slug: 'skills/mcp-creator' },
+          { slug: 'skills/orchestrator' },
           { slug: 'skills/prompt-engineer' },
           { slug: 'skills/skill-creator' },
           { slug: 'skills/wargame' },
         ],
       },
-      { label: 'Installed (19)', slug: 'skills/installed' },
+      { label: 'Installed (18)', slug: 'skills/installed' },
     ],
   },
   {

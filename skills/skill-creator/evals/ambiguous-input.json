@@ -1,0 +1,10 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator something about badges",
+  "files": [],
+  "expected_behavior": [
+    "Agent detects ambiguous input that could be create or improve",
+    "Agent asks user to clarify which mode they want",
+    "Agent does not proceed without clarification"
+  ]
+}

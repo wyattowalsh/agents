@@ -2,7 +2,7 @@
 """Progress tracking for skill creation/improvement sessions.
 
 Manages session state at /tmp/skill-progress-{name}.json.
-Subcommands: init, phase, agent, metric, audit, read.
+Subcommands: init, phase, agent, metric, status, audit, read.
 JSON to stdout, warnings to stderr. Atomic writes via temp+rename.
 """
 from __future__ import annotations
@@ -231,7 +231,9 @@ def cmd_agent(args: argparse.Namespace) -> None:
                     break
             # Auto-derive wave status from agents
             statuses = {a["status"] for a in wave["agents"]}
-            if "active" in statuses:
+            if not statuses:
+                wave["status"] = "pending"
+            elif "active" in statuses:
                 wave["status"] = "active"
             elif statuses == {"completed"}:
                 wave["status"] = "completed"
@@ -263,7 +265,13 @@ def cmd_metric(args: argparse.Namespace) -> None:
         sys.exit(1)
 
     # Handle incremental values (e.g., "+1")
-    if isinstance(metrics[key], (int, float)) and value.startswith("+"):
+    if metrics[key] is None and value.startswith("+"):
+        try:
+            metrics[key] = int(value[1:]) if "." not in value else float(value[1:])
+        except ValueError:
+            _warn(f"Invalid incremental value: {value}")
+            sys.exit(1)
+    elif isinstance(metrics[key], (int, float)) and value.startswith("+"):
         try:
             delta = int(value[1:]) if "." not in value else float(value[1:])
             metrics[key] = metrics[key] + delta
@@ -285,8 +293,14 @@ def cmd_metric(args: argparse.Namespace) -> None:
         except ValueError:
             _warn(f"Expected number for {key}, got: {value}")
             sys.exit(1)
+    elif metrics[key] is None:
+        # None — try parsing as number, fall back to string
+        try:
+            metrics[key] = int(value) if "." not in value else float(value)
+        except ValueError:
+            metrics[key] = value
     else:
-        # String or None — direct assignment
+        # String — direct assignment
         metrics[key] = value
 
     _save_state(args.skill, state)
@@ -323,6 +337,19 @@ def cmd_audit(args: argparse.Namespace) -> None:
     state["metrics"]["current_score"] = result.get("score")
     state["metrics"]["current_grade"] = result.get("grade")
 
+    _save_state(args.skill, state)
+    json.dump(state, sys.stdout, indent=2)
+    sys.stdout.write("\n")
+
+
+def cmd_status(args: argparse.Namespace) -> None:
+    """Update session-level status."""
+    if args.status not in VALID_SESSION_STATUSES:
+        _warn(f"Invalid status: {args.status}. Valid: {', '.join(sorted(VALID_SESSION_STATUSES))}")
+        sys.exit(1)
+
+    state = _read_state(args.skill)
+    state["status"] = args.status
     _save_state(args.skill, state)
     json.dump(state, sys.stdout, indent=2)
     sys.stdout.write("\n")
@@ -370,6 +397,11 @@ def main() -> None:
     p_metric.add_argument("--key", required=True, help="Metric key")
     p_metric.add_argument("--value", required=True, help="Metric value (prefix with + for increment)")
 
+    # status
+    p_status = sub.add_parser("status", help="Update session-level status")
+    p_status.add_argument("--skill", required=True, help="Skill name")
+    p_status.add_argument("--status", required=True, help="New session status")
+
     # audit
     p_audit = sub.add_parser("audit", help="Inject audit results into session")
     p_audit.add_argument("--skill", required=True, help="Skill name")
@@ -385,6 +417,7 @@ def main() -> None:
         "phase": cmd_phase,
         "agent": cmd_agent,
         "metric": cmd_metric,
+        "status": cmd_status,
         "audit": cmd_audit,
         "read": cmd_read,
     }

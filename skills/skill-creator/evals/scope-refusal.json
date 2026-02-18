@@ -1,0 +1,10 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator create an MCP server for my API",
+  "files": [],
+  "expected_behavior": [
+    "Agent detects out-of-scope request (MCP server)",
+    "Agent refuses gracefully with redirect to /mcp-creator or wagents new mcp",
+    "Agent does not attempt to create a skill"
+  ]
+}

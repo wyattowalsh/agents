@@ -376,7 +376,7 @@ h3 { font-size: 0.95rem; }
 }
 
 .dim-findings.open {
-  max-height: 500px;
+  max-height: 80vh;
   padding: 0.3rem 0.3rem 0.5rem;
 }
 
@@ -889,7 +889,8 @@ h3 { font-size: 0.95rem; }
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   };
 
   const HTML_SAFE = Symbol("html-safe");
@@ -933,6 +934,18 @@ h3 { font-size: 0.95rem; }
     if (pct >= 80) return "hsl(var(--grade-a))";
     if (pct >= 50) return "hsl(var(--grade-c))";
     return "hsl(var(--grade-f))";
+  };
+
+  const LABEL_SHORT = {
+    "frontmatter": "FM",
+    "description": "Desc",
+    "dispatch-table": "Disp",
+    "body-structure": "Body",
+    "pattern-coverage": "Patt",
+    "references": "Refs",
+    "critical-rules": "Rules",
+    "scripts": "Scripts",
+    "conciseness": "Conc"
   };
 
   const ALL_PATTERNS = [
@@ -993,6 +1006,10 @@ h3 { font-size: 0.95rem; }
     return;
   }
 
+  if (typeof data !== "object" || data === null || Array.isArray(data)) {
+    throw new Error("Invalid dashboard data: expected a JSON object");
+  }
+
   const isProcessMode = !!data.phases;
   const isAuditMode = Array.isArray(data.skills);
 
@@ -1035,10 +1052,13 @@ h3 { font-size: 0.95rem; }
      Navigation & Theme
      ====================================================================== */
 
+  let navTimer = null;
+
   const navigate = (view, skill = null) => {
     app.style.opacity = "0";
     app.style.transform = "translateY(4px)";
-    setTimeout(() => {
+    clearTimeout(navTimer);
+    navTimer = setTimeout(() => {
       state = { ...state, view, detailSkill: skill };
       expandedDims.clear();
       render();
@@ -1238,40 +1258,43 @@ h3 { font-size: 0.95rem; }
 
   const renderWavePanel = () => {
     const waves = data.waves ?? [];
-    if (!waves.length) return trust('<p style="color: hsl(var(--text-muted)); font-size: 0.8rem;">No waves dispatched yet.</p>');
+    if (!waves.length) return html`<p style="color: hsl(var(--text-muted)); font-size: 0.8rem;">No waves dispatched yet.</p>`;
 
     const activePhase = (data.phases ?? []).find(p => p.status === "active");
-    let out = "";
 
-    if (activePhase) {
-      out += `<div style="margin-bottom: 0.6rem;">` +
-        `<h3 style="font-size: 0.92rem; margin-bottom: 0.15rem;">Current Phase: ${escH(activePhase.label)}</h3>` +
-        `<span style="font-size: 0.73rem; color: hsl(var(--text-muted));">Started: ${escH(timeAgo(activePhase.started_at))}</span>` +
-        `</div>`;
-    }
+    return html`
+      ${trust(activePhase ? `
+        <div style="margin-bottom: 0.6rem;">
+          <h3 style="font-size: 0.92rem; margin-bottom: 0.15rem;">Current Phase: ${escH(activePhase.label)}</h3>
+          <span style="font-size: 0.73rem; color: hsl(var(--text-muted));">Started: ${escH(timeAgo(activePhase.started_at))}</span>
+        </div>
+      ` : "")}
+      ${waves.map(wave => {
+        const wIcon = { completed: "\u2713", active: "\u25C9", failed: "\u2717", pending: "\u25CB" }[wave.status] ?? "\u25CB";
+        const wColor = { completed: "--status-completed", active: "--status-active", failed: "--status-failed", pending: "--text-muted" }[wave.status] ?? "--text-muted";
 
-    for (const wave of waves) {
-      const wIcon = { completed: "\u2713", active: "\u25C9", failed: "\u2717", pending: "\u25CB" }[wave.status] ?? "\u25CB";
-      const wColor = { completed: "--status-completed", active: "--status-active", failed: "--status-failed", pending: "--text-muted" }[wave.status] ?? "--text-muted";
+        return html`
+          <div class="wave-card">
+            <div class="wave-card-header">
+              <h3>${wave.label}</h3>
+              ${trust(`<span style="color: hsl(var(${wColor}));">${wIcon}</span>`)}
+            </div>
+            ${(wave.agents ?? []).map(ag => {
+              const aIcon = { completed: "\u2713", active: "\uD83D\uDD35", failed: "\u2717", pending: "\u25CB" }[ag.status] ?? "\u25CB";
+              const aColor = { completed: "--status-completed", active: "--status-active", failed: "--status-failed", pending: "--text-muted" }[ag.status] ?? "--text-muted";
 
-      let rows = "";
-      for (const ag of wave.agents ?? []) {
-        const aIcon = { completed: "\u2713", active: "\uD83D\uDD35", failed: "\u2717", pending: "\u25CB" }[ag.status] ?? "\u25CB";
-        const aColor = { completed: "--status-completed", active: "--status-active", failed: "--status-failed", pending: "--text-muted" }[ag.status] ?? "--text-muted";
-
-        rows += `<div class="agent-row">` +
-          `<span class="agent-name" title="${escH(ag.task)}">${escH(ag.id)}</span>` +
-          `<div class="agent-bar-wrap"><div class="agent-bar-fill ${escH(ag.status)}"></div></div>` +
-          `<span class="agent-status-icon" style="color: hsl(var(${aColor}));">${aIcon}</span>` +
-          `</div>`;
-      }
-
-      out += `<div class="wave-card">` +
-        `<div class="wave-card-header"><h3>${escH(wave.label)}</h3><span style="color: hsl(var(${wColor}));">${wIcon}</span></div>` +
-        rows + `</div>`;
-    }
-
-    return trust(out);
+              return html`
+                <div class="agent-row">
+                  <span class="agent-name" title="${ag.task}">${ag.id}</span>
+                  <div class="agent-bar-wrap"><div class="agent-bar-fill ${ag.status}"></div></div>
+                  ${trust(`<span class="agent-status-icon" style="color: hsl(var(${aColor}));">${aIcon}</span>`)}
+                </div>
+              `;
+            })}
+          </div>
+        `;
+      })}
+    `;
   };
 
   /* ======================================================================
@@ -1287,20 +1310,19 @@ h3 { font-size: 0.95rem; }
     const gr = m.current_grade ?? "";
     const it = m.iteration_count ?? 0;
 
-    let rows =
-      `<tr><td>Files created</td><td>${escH(String(m.files_created ?? 0))}</td></tr>` +
-      `<tr><td>Lines written</td><td>${escH(String(m.lines_written ?? 0))}</td></tr>` +
-      `<tr><td>Patterns</td><td>${pa}/${pt}</td></tr>` +
-      `<tr><td>Baseline</td><td>${escH(bl)}</td></tr>` +
-      `<tr><td>Current</td><td>${escH(cur)}${gr ? " (" + escH(gr) + ")" : ""}</td></tr>`;
-    if (it > 0) rows += `<tr><td>Iterations</td><td>${it}</td></tr>`;
-
-    return trust(
-      `<div class="card" style="height: fit-content;">` +
-      `<h3 style="margin-bottom: 0.6rem;">Metrics</h3>` +
-      `<table class="metrics-table"><tbody>${rows}</tbody></table>` +
-      `</div>`
-    );
+    return html`
+      <div class="card" style="height: fit-content;">
+        <h3 style="margin-bottom: 0.6rem;">Metrics</h3>
+        <table class="metrics-table"><tbody>
+          <tr><td>Files created</td><td>${String(m.files_created ?? 0)}</td></tr>
+          <tr><td>Lines written</td><td>${String(m.lines_written ?? 0)}</td></tr>
+          <tr><td>Patterns</td><td>${trust(`${pa}/${pt}`)}</td></tr>
+          <tr><td>Baseline</td><td>${bl}</td></tr>
+          <tr><td>Current</td><td>${trust(`${escH(cur)}${gr ? " (" + escH(gr) + ")" : ""}`)}</td></tr>
+          ${trust(it > 0 ? `<tr><td>Iterations</td><td>${it}</td></tr>` : "")}
+        </tbody></table>
+      </div>
+    `;
   };
 
   /* ======================================================================
@@ -1311,23 +1333,22 @@ h3 { font-size: 0.95rem; }
     const done = (data.phases ?? []).filter(p => p.status === "completed");
     if (!done.length) return trust("");
 
-    let rows = "";
-    for (const p of done) {
-      const dur = fmtDur(p.started_at, p.completed_at);
-      const notes = p.notes ? " \u2014 " + escH(p.notes) : "";
-      rows += `<div class="completed-phase-row">` +
-        `<span class="cp-check">\u2713</span>` +
-        `<span class="cp-label">${escH(p.label)}</span>` +
-        `<span class="cp-dur">(${escH(dur)})</span>` +
-        `<span class="cp-notes">${notes}</span>` +
-        `</div>`;
-    }
-
-    return trust(
-      `<div class="card" style="margin-bottom: 1rem;">` +
-      `<h3 style="margin-bottom: 0.4rem;">Completed Phases</h3>` +
-      rows + `</div>`
-    );
+    return html`
+      <div class="card" style="margin-bottom: 1rem;">
+        <h3 style="margin-bottom: 0.4rem;">Completed Phases</h3>
+        ${done.map(p => {
+          const dur = fmtDur(p.started_at, p.completed_at);
+          return html`
+            <div class="completed-phase-row">
+              ${trust('<span class="cp-check">\u2713</span>')}
+              <span class="cp-label">${p.label}</span>
+              <span class="cp-dur">(${dur})</span>
+              <span class="cp-notes">${trust(p.notes ? " \u2014 " + escH(p.notes) : "")}</span>
+            </div>
+          `;
+        })}
+      </div>
+    `;
   };
 
   /* ======================================================================
@@ -1376,7 +1397,7 @@ h3 { font-size: 0.95rem; }
     const gVar = gradeVar(grade);
 
     return trust(`
-      <svg class="score-ring" viewBox="0 0 36 36" aria-label="Score: ${score}/${max}">
+      <svg class="score-ring" viewBox="-1 -1 38 38" aria-label="Score: ${score}/${max}">
         <circle class="score-ring-bg" cx="18" cy="18" r="16"/>
         <circle class="score-ring-fill" cx="18" cy="18" r="16"
           stroke-dasharray="${circumference.toFixed(2)}"
@@ -1471,12 +1492,10 @@ h3 { font-size: 0.95rem; }
     }
 
     const dataPoints = [];
-    const maxWeight = Math.max(...dims.map(d => d.weight));
     for (let i = 0; i < n; i++) {
       const dim = dims[i];
       const scorePct = dim.max > 0 ? dim.score / dim.max : 0;
-      const weightScale = dim.weight / maxWeight;
-      const r = maxRadius * scorePct * weightScale;
+      const r = maxRadius * scorePct;
       const angle = -Math.PI / 2 + i * angleStep;
       dataPoints.push({ x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) });
     }
@@ -1493,7 +1512,7 @@ h3 { font-size: 0.95rem; }
       const angle = -Math.PI / 2 + i * angleStep;
       const lx = cx + labelRadius * Math.cos(angle);
       const ly = cy + labelRadius * Math.sin(angle);
-      const name = dims[i].name.replace("Completeness", "Complete").replace("Coverage", "Cover.");
+      const name = LABEL_SHORT[dims[i].id] || dims[i].id;
       let anchor = "middle";
       if (Math.cos(angle) < -0.1) anchor = "end";
       else if (Math.cos(angle) > 0.1) anchor = "start";

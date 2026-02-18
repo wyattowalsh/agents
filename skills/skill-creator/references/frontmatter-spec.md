@@ -22,27 +22,29 @@ Complete field reference for SKILL.md YAML frontmatter in this repository.
 
 **`name`:** Lowercase alphanumeric and hyphens only. No consecutive hyphens (`--`), no leading/trailing hyphens. Must exactly match the enclosing directory name under `skills/`. Reserved words prohibited: `anthropic`, `claude`.
 
+> **Note:** In Claude Code, the `name` field is technically optional -- Claude Code derives the skill name from the directory name. However, it should always be populated for cross-agent compatibility.
+
 **`description`:** No XML tags. CSO-optimized for discovery: write in third person, cover what the skill does, when to use it, and when NOT to use it. Include keyword variations for agent/search matching. Use YAML block scalar (`>-`) for multi-line descriptions.
 
 ---
 
 ## 2. Cross-Platform Fields (agentskills.io spec)
 
-Always populate for multi-agent installability across 27+ compatible agents via `npx skills add`.
+Always populate for multi-agent installability via `npx skills add`.
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `license` | string | -- | SPDX identifier (e.g., `MIT`, `Apache-2.0`) |
+| `license` | string | -- | SPDX identifier (e.g., `MIT`, `Apache-2.0`) or `SEE LICENSE IN <filename>` |
 | `compatibility` | string | -- | Environment requirements, max 500 chars |
 | `allowed-tools` | string | -- | Space-delimited tool allowlist; experimental |
 | `metadata.author` | string | -- | Skill author name or handle |
-| `metadata.version` | string | -- | Semantic version string (e.g., `"1.0"`) |
+| `metadata.version` | string | -- | Semantic version string (e.g., `"1.0.0"`) |
 | `metadata.internal` | boolean | `false` | If true, hidden unless `INSTALL_INTERNAL_SKILLS=1` |
 
 ```yaml
 metadata:
   author: username
-  version: "1.0"
+  version: "1.0.0"
 ```
 
 ---
@@ -98,7 +100,10 @@ Background knowledge only?      YES --> user-invocable: false
 Manual-only invocation?         YES --> disable-model-invocation: true
 Accepts arguments?              YES --> Add argument-hint
 Distributed to other agents?    YES --> Populate cross-platform fields
+Restrict available tools?       YES --> Set allowed-tools (space-delimited list)
 ```
+
+- **`allowed-tools`:** Set to a space-delimited list of tool names the agent is permitted to use while the skill is active (e.g., `Read Grep Glob Bash`). Omit to allow all tools.
 
 All NO answers mean omit that field (use defaults).
 
@@ -122,12 +127,12 @@ compatibility: "Requires git. Python 3.10+ for optional scripts."
 allowed-tools: Read Grep Glob Bash
 metadata:
   author: username
-  version: "1.0"
+  version: "1.0.0"
 hooks:
   PreToolUse:
     - matcher: Bash
       hooks:
-        - command: "echo 'Analyzing...'"
+        - command: "test -d .git || (echo 'ERROR: Not in a git repository' && exit 2)"
 ---
 ```
 
