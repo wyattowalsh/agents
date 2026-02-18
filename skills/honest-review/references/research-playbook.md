@@ -9,6 +9,9 @@ Validate review findings with live research instead of relying on static checkli
 - [Research Subagent Templates](#research-subagent-templates)
 - [Parallelism Strategy](#parallelism-strategy)
 - [Evidence Quality](#evidence-quality)
+- [Confidence Scoring Rubric](#confidence-scoring-rubric)
+- [Triage-Aware Batch Routing](#triage-aware-batch-routing)
+- [Batch Optimization](#batch-optimization)
 
 ## Two-Phase Review Pattern
 
@@ -102,9 +105,62 @@ Prompt template:
 
 ## Evidence Quality
 
-| Level | Criteria | Action |
-|-------|----------|--------|
-| Strong | Current official docs confirm the issue (Context7 citation) | Report with high confidence |
-| Medium | Multiple web sources agree (WebSearch results) | Report with citation |
-| Weak | Single blog post or outdated source | Flag as "unconfirmed" |
-| None | No evidence found after research | Discard the finding |
+| Level | Confidence | Criteria | Action |
+|-------|------------|----------|--------|
+| Strong | 0.8-1.0 | Current official docs confirm the issue (Context7 citation) or reproduction confirmed | Report with high confidence |
+| Medium | 0.6-0.7 | Multiple web sources agree (WebSearch results) | Report with citation |
+| Weak | 0.2-0.5 | Single blog post, outdated source, or heuristic match only | Flag as "unconfirmed" |
+| None | 0.0-0.1 | No evidence found after research | Discard the finding |
+
+## Confidence Scoring Rubric
+
+Assign a confidence score to every finding after the research validation phase. Use the highest applicable level.
+
+| Score | Basis | Example |
+|-------|-------|---------|
+| 1.0 | Reproduction confirmed — test failing, build error visible, runtime crash observed | Unit test fails on the exact code path; CI log shows the error |
+| 0.8-0.9 | Official docs directly confirm — Context7 with exact API match | Context7 query returns deprecation notice for the method in question |
+| 0.6-0.7 | Multiple web sources agree — WebSearch consensus across 2+ independent sources | Three Stack Overflow answers and an OWASP page all flag the same pattern |
+| 0.4-0.5 | Single authoritative source — one OWASP reference, one official blog post | One OWASP cheat sheet mentions the risk, no other corroboration |
+| 0.2-0.3 | Heuristic match only — LLM reasoning without external confirmation | Pattern looks problematic based on training knowledge, but no live source found |
+| 0.0-0.1 | Speculative — no evidence found after research | WebSearch and Context7 both return nothing relevant |
+
+When reporting findings, include the confidence score in the output. Findings below 0.4 should carry an explicit "unconfirmed" label. Findings below 0.2 should be discarded unless the reviewer judges the risk warrants mention.
+
+## Triage-Aware Batch Routing
+
+Route findings to research validation based on their risk classification. This avoids wasting research cycles on low-risk obvious issues while ensuring high-risk findings get thorough validation.
+
+| Risk Level | Validation Requirement | Research Depth |
+|------------|----------------------|----------------|
+| HIGH | Validate with 2+ independent sources | Context7 + WebSearch (both required). If sources disagree, escalate to opus-level analysis. |
+| MEDIUM | Validate with 1 source | Context7 OR WebSearch (whichever is most relevant to the finding type). |
+| LOW | Skip research validation | Obvious issues (syntax errors, null derefs, typos) do not need external confirmation. |
+
+Cross-reference: See [references/triage-protocol.md](references/triage-protocol.md) for the full risk classification criteria used to assign HIGH/MEDIUM/LOW levels to findings.
+
+## Batch Optimization
+
+Group findings by validation type before dispatching research subagents. This reduces subagent count and avoids redundant tool calls.
+
+**Grouping rules:**
+
+- Combine related API checks into a single Context7 subagent when they target the same library (e.g., three React API concerns become one Context7 subagent with three queries against the React docs).
+- Combine related security checks into a single WebSearch subagent when they fall under the same OWASP category (e.g., two XSS findings and one CSRF finding in the injection category become one subagent).
+- Keep different validation types separate — do not mix Context7 and WebSearch work in the same subagent.
+
+**Batch sizing:**
+
+| Findings per Subagent | Expected Quality | Recommendation |
+|-----------------------|-----------------|----------------|
+| 1-4 | High | Acceptable but may under-utilize the subagent |
+| 5-8 | High | Optimal — best throughput-to-quality ratio |
+| 9-10 | Acceptable | Upper bound; quality starts to degrade |
+| 11+ | Degraded | Diminishing returns — split into multiple subagents |
+
+**Dispatch order:**
+
+1. Slopsquatting detection (security-critical, fast, haiku)
+2. HIGH-risk findings (require 2+ sources, sonnet)
+3. MEDIUM-risk findings (require 1 source, sonnet or haiku)
+4. LOW-risk findings (skip research, no subagent needed)

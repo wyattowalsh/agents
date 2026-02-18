@@ -9,6 +9,7 @@ Report templates for final output. Read when producing the final report.
 - [Full Codebase Audit Format](#full-codebase-audit-format)
 - [Individual Finding Format](#individual-finding-format)
 - [Verification Summary](#verification-summary)
+- [Report Statistics](#report-statistics)
 
 ## Compact Format (5 or fewer findings, small reviews)
 
@@ -47,15 +48,17 @@ STRENGTHS:
 DEFECTS:
 
 P0 - MUST FIX:
-1. [file:line] Missing null check
+1. HR-S-001 [file:line] Missing null check
    Level: Correctness
+   Confidence: 0.95
    Evidence: [research result — doc citation, advisory URL, etc.]
    Impact: Can crash when user not found
    Fix: Add guard clause
 
 P1 - SHOULD FIX:
-2. [file:line] Query in loop
+2. HR-S-002 [file:line] Query in loop
    Level: Efficiency
+   Confidence: 0.85
    Evidence: [research result]
    Impact: N+1 pattern, O(n) queries where 1 suffices
    Fix: Batch fetch
@@ -63,8 +66,9 @@ P1 - SHOULD FIX:
 SIMPLIFICATIONS:
 
 S0 - SHOULD SIMPLIFY:
-3. [module] Service layer wraps repository 1:1
+3. HR-S-003 [module] Service layer wraps repository 1:1
    Level: Design
+   Confidence: 0.90
    Evidence: [codebase analysis — N files, M lines of pure delegation]
    Impact: Removes 2 files, 1 layer of indirection, ~80 lines
    Fix: Inline repository calls
@@ -73,13 +77,18 @@ CROSS-LEVEL NOTES:
 - [conflicts resolved, symptoms elevated to root causes]
 
 IMPROVEMENTS MADE:
-- #1: Added null check [x]
-- #2: Refactored to batch [x]
+- #1 (HR-S-001): Added null check [x]
+- #2 (HR-S-002): Refactored to batch [x]
 
 VERIFIED:
 - Build: clean [x]
 - Tests: all passing [x]
 - Behavior: [how confirmed] [x]
+
+STATISTICS:
+- Findings: N total (X high-confidence, Y unconfirmed, Z discarded)
+- Coverage: N files reviewed of M total (P% by risk-weighted LOC)
+- Research: N validations performed, X confirmed, Y refuted
 ======================================
 ```
 
@@ -103,17 +112,18 @@ STRENGTHS:
 + [pattern] [additional strength]
 
 CRITICAL (P0/S0):
-1. [file:line or module] [category] description
+1. HR-A-001 [file:line or module] [category] description
    Level: [Correctness/Design/Efficiency]
+   Confidence: [0.0-1.0]
    Evidence: [research citation]
    Impact: [what breaks or what complexity it removes]
    Fix: [recommended approach]
 
 SIGNIFICANT (P1/S1):
-2. ...
+2. HR-A-002 ...
 
 MINOR (P2/S2):
-3. ...
+3. HR-A-003 ...
 
 CROSS-DOMAIN FINDINGS:
 - [architectural or systemic observations with evidence]
@@ -133,6 +143,11 @@ TOP RECOMMENDATIONS:
 1. [highest-impact improvement]
 2. [second highest]
 3. [third highest]
+
+STATISTICS:
+- Findings: N total (X high-confidence, Y unconfirmed, Z discarded)
+- Coverage: N files reviewed of M total (P% by risk-weighted LOC)
+- Research: N validations performed, X confirmed, Y refuted
 ======================================
 ```
 
@@ -141,14 +156,19 @@ TOP RECOMMENDATIONS:
 Use this structure for each finding in any report format:
 
 ```
-[priority] — [file:line or module] [category]
+[priority] — [finding-id] [file:line or module] [category]
   Level: [Correctness/Design/Efficiency]
+  Confidence: [0.0-1.0]
   Description: [what is wrong or unnecessarily complex]
   Evidence: [research validation result — doc citation, advisory URL, etc.]
   Impact: [consequence or complexity cost]
   Fix: [recommended approach]
   Effort: [S (< 1 hour, single file) | M (1-4 hours, few files) | L (4+ hours, cross-cutting)]
 ```
+
+**Finding ID format:** `HR-{mode}-{seq}` where mode is `S` (session) or `A` (audit),
+seq is zero-padded 3-digit (e.g., `HR-S-001`, `HR-A-015`).
+See `scripts/finding-formatter.py` for programmatic ID generation.
 
 ## Verification Summary
 
@@ -160,3 +180,19 @@ VERIFIED:
 - Tests: [status]
 - Behavior: [what was checked]
 ```
+
+## Report Statistics
+
+Append to every report as the final section (after Verification Summary when present):
+
+```
+STATISTICS:
+- Findings: N total (X high-confidence, Y unconfirmed, Z discarded)
+- Coverage: N files reviewed of M total (P% by risk-weighted LOC)
+- Research: N validations performed, X confirmed, Y refuted
+```
+
+- **high-confidence**: findings with Confidence >= 0.8
+- **unconfirmed**: findings with Confidence < 0.8 that lack corroborating evidence
+- **discarded**: findings investigated but dropped (false positives, duplicates)
+- **risk-weighted LOC**: lines of code weighted by file risk (entry points, auth, data handling score higher)
