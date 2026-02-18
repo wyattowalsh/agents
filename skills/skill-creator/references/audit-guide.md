@@ -74,6 +74,8 @@ Score every skill in the repository and produce a comparative ranking.
 
 4. **Improvement roadmap** — for skills scoring below B, list the single highest-impact improvement for each.
 
+> **Note:** Audit All mode runs deterministic scoring only (via `audit.py`). It does not include the qualitative AI review component that single-skill Audit mode provides.
+
 ---
 
 ## Dashboard
@@ -101,25 +103,8 @@ When no creation session exists, fall back to the audit quality overview:
 
 ---
 
-## Gallery
+### Gallery
 
-When `$ARGUMENTS` is empty, present a skill inventory with quality scores.
+When arguments are empty, present the skill inventory with scores and available actions.
 
-### Steps
-
-1. Run `uv run python skills/skill-creator/scripts/audit.py --all --format table` to get current scores.
-
-2. Present the table with available actions:
-
-   > **Available skills:**
-   >
-   > | Skill | Score | Grade | Patterns |
-   > |-------|-------|-------|----------|
-   > | ... | ... | ... | .../13 |
-   >
-   > **What would you like to do?**
-   > - `create <name>` — build a new skill
-   > - `improve <name>` — improve an existing skill
-   > - `audit <name>` — audit a specific skill
-   > - `audit --all` — comparative audit of all skills
-   > - `dashboard` — visual quality dashboard
+See SKILL.md § Gallery for the full procedure (runs `audit.py --all --format table`, displays results, offers mode menu).

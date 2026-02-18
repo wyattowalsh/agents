@@ -2,6 +2,17 @@
 
 Three-tier system. Select the highest available tier.
 
+## Design Principles
+
+Anti-slop stance. Dashboards and visualizations must be functional, not decorative.
+
+- **No purple gradients** — Use the token palette (`--ok`, `--warn`, `--bad`, `--accent`). Never add gradients for aesthetics alone.
+- **system-ui fonts only** — `system-ui, -apple-system, sans-serif` for body, `ui-monospace` for data. No custom font loads.
+- **Functional color** — Every color encodes meaning (tier, severity, trend direction). Decorative color is removed.
+- **Information density** — Maximize data-to-ink ratio. Prefer tables and bars over charts that waste space. One number with context beats a fancy visualization.
+- **Progressive disclosure** — Show summary by default, detail on interaction (`<details>`, popovers). Never dump all data at once.
+- **Accessibility first** — Text labels accompany all color coding. Resource bars show both `▓▓▓░░` AND `60%`. Semantic HTML (`role`, `aria-label`).
+
 ## Tier 1 — Unicode (Zero Dependencies)
 
 Render directly in code blocks. No tools required.
@@ -45,7 +56,7 @@ Only generate when user explicitly requests a dashboard.
 
 ## Tier 3b — Composable HTML Template
 
-Single-file template at `templates/dashboard.html` supporting multiple views via `data-view` attribute.
+Single-file template at `templates/dashboard.html` supporting multiple views via the `view` property in the JSON data block.
 
 | View | Sections Rendered | When to Generate |
 |------|-------------------|------------------|
@@ -72,7 +83,7 @@ See `templates/dashboard.html` for the full data contract and supported view con
 
 ### JSON Data Contract
 
-When generating dashboard JSON, reference the schema comment at the top of `templates/dashboard.html`. Do not read the full HTML/CSS/JS — only the schema block. The schema documents every field per view type.
+When generating dashboard JSON, reference `references/dashboard-schema.md` for the full data contract. Do not read the HTML/CSS/JS in the template — the schema file documents every field per view type.
 
 ### Cross-Platform Rendering Flow
 

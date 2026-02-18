@@ -1,35 +1,23 @@
 # Cognitive Biases
 
-Bias catalog for wargame adjudication. Human biases are checked during participant
-analysis. LLM-specific biases are mitigated continuously during adjudication and
-outcome generation. Read during adjudication or when calibrating actor decision-making.
-
-## Contents
-
-- [Human Biases](#human-biases)
-- [LLM-Specific Biases](#llm-specific-biases)
-- [Bias Sweep Protocol](#bias-sweep-protocol)
-
----
+Bias catalog for wargame adjudication. Human biases checked during participant analysis. LLM biases mitigated continuously during adjudication. Read during adjudication or when calibrating actor decision-making.
 
 ## Human Biases
 
-Detect these in user-provided strategies, actor reasoning, and scenario framing.
-When a bias is detected, inject the corresponding challenge prompt into the actor's
-next deliberation cycle.
+Detect in user strategies, actor reasoning, and scenario framing. Inject the challenge prompt into the actor's next deliberation cycle when detected.
 
-| # | Bias Name | Detection Signal | Challenge Prompt |
-|---|-----------|-----------------|------------------|
-| 1 | **Anchoring** | First option presented dominates discussion; alternatives dismissed without comparative evaluation. | "Remove the first option entirely. What would you choose if it never existed?" |
-| 2 | **Confirmation** | Evidence cited only supports the preferred outcome; contradicting data ignored, minimized, or explained away. | "List three pieces of evidence that contradict your current position." |
-| 3 | **Sunk Cost** | Justification references past investment ("we've already spent...") rather than future expected value. | "If you were starting fresh today with zero prior investment, would you still choose this path?" |
-| 4 | **Availability** | Recent or vivid examples (last crisis, famous failure) drive risk assessment instead of statistical base rates. | "Set aside the example you just cited. What does the statistical base rate actually say?" |
-| 5 | **Planning Fallacy** | Timelines assume best-case execution; buffers absent; risks acknowledged verbally but not quantified in the plan. | "What happened the last three times a similar plan was attempted? Use those actuals, not your estimate." |
-| 6 | **Groupthink** | All actors converge quickly; no dissent voiced; objections framed as disloyal or naive. | "Appoint a designated dissenter. What is the strongest case against the consensus?" |
-| 7 | **Status Quo** | "No change needed" is the default position; burden of proof placed entirely on the change proposal. | "Assume the current state will degrade by 20% over the next cycle. Now re-evaluate doing nothing." |
-| 8 | **Overconfidence** | Probability estimates cluster near 0% or 100%; uncertainty ranges are suspiciously narrow; hedging language absent. | "Widen your confidence interval by 50%. What changes in your decision at the new bounds?" |
-| 9 | **Loss Aversion** | Symmetric gains and losses produce asymmetric reactions; small downside risk blocks proportionally larger upside moves. | "Reframe: instead of what you might lose, what is the cost of not capturing the potential gain?" |
-| 10 | **Framing Effect** | Conclusions shift when the same data is presented as "90% success rate" vs "10% failure rate." | "Restate this outcome using the opposite frame. Does your assessment change?" |
+| # | Bias | Signal | Challenge |
+|---|------|--------|-----------|
+| 1 | **Anchoring** | First option dominates; alternatives dismissed | "Remove first option. What would you choose?" |
+| 2 | **Confirmation** | Only supporting evidence cited; contradictions ignored | "List 3 pieces of evidence against your position." |
+| 3 | **Sunk Cost** | Past investment justifies continuation | "Starting fresh today, would you still choose this?" |
+| 4 | **Availability** | Recent/vivid examples override base rates | "What does the base rate say, ignoring that example?" |
+| 5 | **Planning Fallacy** | Best-case timelines; no buffers | "What happened the last 3 times? Use those actuals." |
+| 6 | **Groupthink** | Quick convergence; no dissent | "Appoint a dissenter. Strongest case against consensus?" |
+| 7 | **Status Quo** | "No change" as default; burden on change proposal | "Assume current state degrades 20%. Re-evaluate inaction." |
+| 8 | **Overconfidence** | Estimates cluster at extremes; narrow ranges | "Widen your interval 50%. What changes at new bounds?" |
+| 9 | **Loss Aversion** | Small downside blocks larger upside | "What's the cost of NOT capturing the potential gain?" |
+| 10 | **Framing** | Conclusions shift with frame (90% success vs 10% failure) | "Restate with opposite frame. Does assessment change?" |
 
 ### Prospect Theory Integration
 
@@ -40,11 +28,7 @@ Loss aversion (bias #9) connects directly to actor behavioral parameters. Each a
 
 ### Choice Architecture
 
-Option presentation itself is a bias vector. Mitigations integrated into the decision menu protocol (see `references/wargame-engine.md` step 4b):
-- **Order effects:** Randomize option order between turns to prevent primacy/recency bias
-- **Framing effects:** Present risk in both positive and negative frames simultaneously
-- **Default bias:** "Do nothing" must be presented as an active choice, not a default
-- **Precision effects:** Use percentage ranges instead of vague labels — "35-50% risk" instead of "medium risk"
+Option presentation mitigations — see `references/wargame-engine.md` step 4b.
 
 ### Enhanced Debiasing
 
@@ -55,111 +39,38 @@ Two techniques for more effective bias correction:
 
 Interactive feedback in this style reduces biases 30%+ with lasting effects (vs. simple warnings which fade quickly).
 
-**Consider-the-opposite** (single most effective verbal debiasing technique): After user decisions that conflict with a specific actor's stated objective, briefly show that actor's opposing perspective:
-> "{Actor} would view your decision as {interpretation}."
-
-This is lighter than a full red team but provides consistent counter-framing at every decision point.
-
----
+**Consider-the-opposite** (single most effective verbal debiasing technique): show an opposing actor's perspective after decisions that conflict with their objective. Implementation: see `references/wargame-engine.md` step 11.
 
 ## LLM-Specific Biases
 
-Always-on mitigations applied during adjudication and multi-actor dialogue generation.
-These are structural failure modes of the simulation engine itself, not participant errors.
+Always-on mitigations. These are structural failure modes of the simulation engine itself.
 
-### Escalation Bias
-
-- **Description:** LLMs prefer dramatic, aggressive outcomes over measured responses.
-  Conflicts trend toward worst-case spirals; de-escalation options are generated but
-  dismissed as "unrealistic" or "naive."
-- **Detection signal:** Outcomes consistently escalate in severity across turns.
-  De-escalation paths appear but are rejected without rigorous justification.
-- **Mitigation protocol:**
-  - Flag any escalation that lacks explicit, scenario-grounded justification.
-  - Require a plausible de-escalation alternative for every aggressive action proposed.
-  - Suppress dramatic language ("catastrophic," "devastating") in adjudication summaries
-    unless supported by quantified impact assessment.
-
-### Sycophancy
-
-- **Description:** LLMs agree with user framing and reinforce the user's preferred
-  outcome rather than stress-testing it. The user-aligned actor wins too cleanly.
-- **Detection signal:** Adjudication consistently favors the user-aligned actor.
-  Adversary arguments are presented weakly or concede too readily.
-- **Mitigation protocol:**
-  - Apply adversarial prompting to every user-framed position.
-  - Require at least one actor to explicitly disagree with the user's thesis per turn.
-  - Score adversary arguments independently before evaluating them against user positions.
-  - The `red team` command (see `references/wargame-engine.md`) serves as an on-demand anti-sycophancy mechanism — user-triggered adversarial analysis of the preferred option.
-
-### Farcical Harmony
-
-- **Description:** Multi-actor dialogues converge to agreement too quickly. Actors
-  nominally represent opposing interests but fail to sustain genuine disagreement.
-- **Detection signal:** All actors reach consensus within one exchange. "Disagreements"
-  are cosmetic and resolve immediately without concessions or tradeoffs.
-- **Mitigation protocol:**
-  - Require structured pro/con arguments from each actor before any consensus is permitted.
-  - Inject mandatory dissent: at least one actor must maintain opposition through the
-    first full round of deliberation.
-  - Any consensus must document what each side conceded and why.
-
-### Blue Bias
-
-- **Description:** LLMs systematically underestimate adversary capabilities and
-  overestimate friendly-force competence. Red team plans are simplistic; blue team
-  plans succeed without realistic friction.
-- **Detection signal:** Adversary plans are one-dimensional. Adversary resources are
-  underutilized. Friendly-force plans encounter no logistics failures, communication
-  breakdowns, or execution friction.
-- **Mitigation protocol:**
-  - Calibrate adversary capabilities explicitly at scenario start using real-world
-    benchmarks and historical precedent.
-  - Require red-team validation: a dedicated adversary advocate must review every
-    adjudication for capability underestimation.
-  - Inject friction into friendly-force execution: at least one plan element must
-    encounter a realistic complication per turn.
-
----
+- **Escalation bias** — LLMs prefer dramatic outcomes. _Mitigation:_ Flag unjustified escalation. Require plausible de-escalation for every aggressive action. Suppress dramatic language without quantified impact.
+- **Sycophancy** — LLMs agree with user framing. _Mitigation:_ Adversarial prompting on user positions. At least one actor must disagree per turn. Score adversary arguments independently. `red team` command as on-demand anti-sycophancy.
+- **Farcical harmony** — Multi-actor dialogues converge too fast. _Mitigation:_ Structured pro/con before consensus. Mandatory dissent through first deliberation round. Document concessions.
+- **Blue bias** — Underestimate adversary, overestimate friendly force. _Mitigation:_ Calibrate adversary capabilities to real-world benchmarks. Red-team validation on every adjudication. Inject friction into friendly execution.
 
 ## Bias Sweep Protocol
 
-Run a bias sweep at two checkpoints during each wargame turn.
-
 ### Checkpoint 1: Pre-adjudication
-
 After collecting actor decisions, before resolving outcomes:
-
-1. Scan actor reasoning against the Human Biases table above.
-2. If a bias is detected, inject the corresponding challenge prompt into the actor's
-   next deliberation before proceeding.
-3. **Rate limit:** Flag at most **one human bias per two turns** per actor.
-   Over-flagging degrades signal quality and causes actors to over-correct.
+1. Scan actor reasoning against Human Biases table
+2. If detected, inject challenge prompt. **Rate limit:** max 1 human bias per 2 turns per actor.
 
 ### Checkpoint 2: Post-adjudication
+After generating outcomes, before presenting:
+1. Run all four LLM mitigations (always-on, not rate-limited)
+2. Verify each criterion satisfied before finalizing
 
-After generating outcomes, before presenting results to the user:
+**Checklist:**
+- [ ] Escalation justified with scenario-grounded reasoning?
+- [ ] At least one actor dissents?
+- [ ] Pro/con before any consensus?
+- [ ] Adversary capabilities calibrated?
+- [ ] Human bias callouts within rate limit?
 
-1. Run all four LLM-specific mitigations. These are **always-on** and not rate-limited.
-2. Verify each mitigation criterion is satisfied before finalizing the turn output.
-
-### Quick-reference checklist
-
-- [ ] Escalation justified with scenario-grounded reasoning? (not just dramatic)
-- [ ] At least one actor dissents from the majority position? (not sycophantic consensus)
-- [ ] Pro/con structure present before any consensus is declared? (not farcical harmony)
-- [ ] Adversary capabilities calibrated to real-world benchmarks? (not blue bias)
-- [ ] Human bias callouts within rate limit? (max 1 per 2 turns per actor)
-- [ ] LLM mitigations applied to every adjudication? (always-on, no exceptions)
-
-### Single-Output Mode Sweep (Quick/Structured Analysis)
-
-After generating the analysis, before presenting:
-1. Scan for human biases in the table above (anchoring, confirmation, framing most common in single-output modes)
-2. Verify the 4 LLM-specific mitigations hold (escalation, sycophancy, farcical harmony, blue bias)
-3. Flag at most 1 bias with the gamified framing from Enhanced Debiasing
-
----
+### Single-Output Mode Sweep
+For Quick/Structured Analysis: scan for anchoring, confirmation, framing. Verify 4 LLM mitigations hold. Flag at most 1 bias with gamified framing.
 
 ## Analytical Constitution
 

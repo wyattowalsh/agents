@@ -1,0 +1,10 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator skills/wargame/SKILL.md",
+  "files": [],
+  "expected_behavior": [
+    "Agent auto-detects Develop (existing) mode from SKILL.md path",
+    "Agent reads current skill content and runs audit",
+    "Agent follows improvement workflow (Step 1: Understand for existing)"
+  ]
+}

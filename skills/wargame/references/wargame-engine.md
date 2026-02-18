@@ -16,6 +16,8 @@ Read during Interactive Wargame setup and turn execution.
 - [Red Team Protocol](#red-team-protocol)
 - [Analytical Command Protocols](#analytical-command-protocols)
 - [Inject Design](#inject-design)
+- [Difficulty Levels](#difficulty-levels)
+- [Facilitated Mode](#facilitated-mode)
 - [AAR Protocol](#aar-protocol)
 
 ---
@@ -35,6 +37,7 @@ Labels alone are insufficient (Schneider et al. 2024). Every actor requires all 
 | 7 | **Relationship dynamics** | Stance toward each other actor: allied / neutral / hostile / dependent |
 | 8 | **Risk posture** | Risk-seeking / risk-neutral / risk-averse. One sentence explaining how this manifests for this actor, measured against their status quo (reference point). Hawks: risk-seeking. Doves: risk-averse. Pragmatists: risk-neutral. Actions risking significant losses require proportionally larger potential gains for risk-averse actors. |
 | 9 | **Attention style** | Reactive (responds to 1 development at a time, satisfices under pressure) / adaptive (handles 2-3 simultaneous developments) / agile (processes many signals in parallel). Bureaucrats: reactive. Disruptors: agile. Pragmatists: adaptive. Actors with reactive attention miss signals when multiple events occur; they accept "good enough" rather than optimize. |
+| 10 | **Behavioral rules** *(optional)* | 2-3 conditional if-then rules constraining actor behavior under specific conditions. Hard guardrails that prevent persona drift during complex multi-turn scenarios. Examples: "If resources drop below 50%, prioritize objective #1 over all others" / "If trust with [Actor X] drops below neutral, refuse all cooperation proposals" / "If information reveals [condition], immediately shift to defensive posture." Most valuable for Complex/Chaotic scenarios with 4+ actors where persona drift risk is highest. For Clear/Complicated scenarios, the existing 9 fields are sufficient. |
 
 ### Example Actor
 
@@ -69,18 +72,37 @@ Eight starting templates. Expand each into a full nine-field definition before p
 | 8 | **Custom** | User-defined | User-defined |
 
 **Domain mapping guidance:**
-- **Business:** pragmatist as incumbent, disruptor as startup, bureaucrat as regulator.
-- **Personal:** ideologue as values-driven self, pragmatist as practical self, opportunist as short-term-gain self.
-- **Geopolitical:** hawk and dove as competing policy factions, bureaucrat as institutional inertia.
+- **Business:** pragmatist as incumbent, disruptor as startup, bureaucrat as regulator, hawk as aggressive competitor.
+- **Career:** ideologue as values-driven self, pragmatist as practical self, opportunist as short-term optimizer, bureaucrat as risk-averse advisor.
+- **Crisis:** hawk as aggressive responder, dove as de-escalation advocate, bureaucrat as process enforcer, pragmatist as triage coordinator.
+- **Geopolitical:** hawk and dove as competing policy factions, bureaucrat as institutional inertia, ideologue as ideological bloc.
+- **Personal:** ideologue as values-driven self, pragmatist as practical self, opportunist as short-term-gain self, dove as risk-averse inner voice.
+- **Startup:** disruptor as founder/visionary, pragmatist as operations lead, hawk as aggressive growth advocate, bureaucrat as investor/board (process and governance).
+- **Negotiation:** hawk as hardliner, dove as relationship-preserver, opportunist as deal-maker, pragmatist as mediator.
+- **Technology:** disruptor as innovator ("move fast"), bureaucrat as legacy defender ("stability first"), pragmatist as architect, hawk as competitive threat.
+- **Custom domains:** Select archetypes that map naturally to the domain's power dynamics. At minimum: one status-quo defender (bureaucrat/dove), one change agent (disruptor/hawk), one pragmatic middle (pragmatist).
+
+**Domain-specific archetype aliases** (use in actor names for flavor):
+| Domain | Alias | Maps To |
+|--------|-------|---------|
+| Tech | "legacy defender" | bureaucrat |
+| Tech | "move-fast advocate" | disruptor |
+| Startup | "board voice" | bureaucrat |
+| Startup | "growth hacker" | hawk |
+| Crisis | "by-the-book responder" | bureaucrat |
+| Negotiation | "hardliner" | hawk |
+| Negotiation | "bridge-builder" | dove |
+| Career | "safe-path advisor" | bureaucrat |
+| Career | "leap-of-faith voice" | disruptor |
 
 ---
 
 ## Turn Structure
 
-Each turn follows this sequence. Reference the Roguelike Layout from `references/output-formats.md` for rendering.
+Each turn follows this sequence. Reference the display templates from `references/output-formats-core.md` for rendering.
 
 1. **Generate AI actor actions** before presenting to user (information asymmetry mitigation)
-2. **Render situation brief** using the Roguelike Layout
+2. **Render situation brief** using the display templates
 3. **Present actor actions** with visible effects on game state
 4. **Present decision menu** (3+ options plus custom action slot)
 4b. **Apply choice architecture** — Before presenting the decision menu to the user:
@@ -114,7 +136,7 @@ Each turn follows this sequence. Reference the Roguelike Layout from `references
 9. **Save turn** to journal file immediately
 10. **Render visualizations** per `references/visualizations.md` (at minimum: actor status table and resource bars)
 11. **Consider-the-opposite** — After adjudicating the user's choice, briefly show one AI actor's opposing perspective: "{Actor} would view your decision as {interpretation}." Fire only when the user's choice conflicts with a specific actor's stated objective — not every turn.
-12. **Monte Carlo availability** — If the user types `explore [N]`, run the Monte Carlo Iteration Protocol below. Default N=10. Available every turn.
+12. **Monte Carlo availability** — If the user types `explore [N]`, run the Monte Carlo Iteration Protocol below. Default N=15. Available every turn.
 13. **In-session commands** — The user may type any in-session command at decision points: `red team`, `what if <condition>`, `criteria`, `explore [N]`, `sensitivity`, `delphi`, `forecast`, `negotiate`, `calibrate`, `options`, `cause`, `morph`, `export`, `?`. Handle per the corresponding protocol.
 
 ---
@@ -167,7 +189,7 @@ Matrix Game style with emergence. Apply to every action — user and AI actors a
 **Anti-blue-bias check (integrated):** When adjudicating adversary actions, ask: "Am I underestimating this adversary's capability or resolve?" Calibrate upward if necessary.
 
 5. **Second-order cascade** — trace at least one consequence that ripples beyond the immediate action into the broader game state.
-6. **Unexpected consequences** — MANDATORY. Generate at least one emergent event that no player ordered but logically follows from the situation. This is the Snow Globe architecture's key innovation.
+6. **Unexpected consequences** — MANDATORY. Generate at least one emergent event that no player ordered but logically follows from the situation. This is the Snow Globe architecture's key innovation — Snow Globe architecture (Hogan & Brennen, 2024, IQTLabs) describes open-ended wargames with LLMs, emphasizing mandatory unexpected consequences and information asymmetry.
 
 Examples: a third party reacts, public opinion shifts, a resource becomes scarce, an alliance fractures, a previously uninvolved stakeholder enters the game.
 
@@ -179,7 +201,9 @@ Examples: a third party reacts, public opinion shifts, a resource becomes scarce
 
 ## Monte Carlo Iteration Protocol
 
-When the user requests "explore N variations" (default N=10). This is the single highest-value AI-unique feature (CGSC research: 9 wargame turns amplified to 900 via Monte Carlo exploration).
+When the user requests "explore N variations" (default N=15). This is the single highest-value AI-unique feature (CGSC research: 9 wargame turns amplified to 900 via Monte Carlo exploration). For Complex/Chaotic scenarios with 4+ actors, consider N=20-25 for improved outcome diversity.
+
+**Hard cap:** N ≤ 25. If user requests N > 25, cap at 25 and inform: "Capping at 25 iterations to preserve context for remaining turns." For most scenarios, N=15-20 provides sufficient outcome diversity.
 
 1. Take the current decision point and the user's proposed action.
 2. Run N iterations using **multi-axis diversity**. Vary at least 3 axes per iteration batch:
@@ -246,7 +270,7 @@ Triggered by the user command `what if <condition>`. Available in all modes. Max
 
 ### Output Format
 
-Use the Counterfactual Display template from `references/output-formats.md`.
+Use the Counterfactual Display template from `references/output-formats-commands.md`.
 
 ---
 
@@ -265,7 +289,7 @@ Triggered by the user command `red team` or `challenge`. Available in all modes.
 
 ### Output Format
 
-Use the Red Team Display template from `references/output-formats.md`.
+Use the Red Team Display template from `references/output-formats-commands.md`.
 
 Note: Red team extends the Devil's Advocacy framework (see `references/frameworks.md`) with structured attack vectors and historical analogs. It also serves as an anti-sycophancy mechanism (see `references/cognitive-biases.md`).
 
@@ -273,11 +297,11 @@ Note: Red team extends the Devil's Advocacy framework (see `references/framework
 
 ## Analytical Command Protocols
 
-In-session commands available in all modes. Each produces a structured display template (see `references/output-formats.md`) and can reference the current analysis state. All are user-triggered on demand.
+In-session commands available in all modes. Each produces a structured display template (see `references/output-formats-commands.md`) and can reference the current analysis state. All are user-triggered on demand.
 
 ### `sensitivity` — Parameter Sensitivity Analysis
 
-Trigger: `sensitivity` or `sensitive`. Identify 4-6 key variables from the current analysis. For each, estimate outcome under optimistic, baseline, and pessimistic values. Rank by outcome swing magnitude. Present as tornado diagram (see output-formats.md Sensitivity Analysis Display). If Monte Carlo has been run, use the same variables.
+Trigger: `sensitivity` or `sensitive`. Identify 4-6 key variables from the current analysis. For each, estimate outcome under optimistic, baseline, and pessimistic values. Rank by outcome swing magnitude. Present as tornado diagram (see `references/output-formats-commands.md` Sensitivity Analysis Display). If Monte Carlo has been run, use the same variables.
 
 ### `delphi` — Synthetic Expert Panel
 
@@ -305,13 +329,19 @@ Trigger: `cause` or `causal`. Identify 5-8 key variables. Map directional causal
 
 ### `morph` — Morphological Scenario Generator
 
-Trigger: `morph` or `scenarios`. Identify 3-4 key dimensions with 2-3 values each. Build morphological box (cross-product matrix). Filter inconsistent combinations. Generate one-sentence scenarios per viable combination. Cluster and identify wild cards. Highlight robust moves that perform well across 3+ clusters.
+Trigger: `morph` or `scenarios`. Identify 3-4 key dimensions with 2-3 values each. Build morphological box (cross-product matrix). Filter inconsistent combinations using the Cross-Impact method below. Generate one-sentence scenarios per viable combination. Cluster and identify wild cards. Highlight robust moves that perform well across 3+ clusters.
+
+**Consistency filtering (Cross-Impact method):**
+1. For each pair of dimensions, create a compatibility matrix rating each value combination as: **Compatible** (natural fit), **Tension** (possible but strained), or **Incompatible** (mutually exclusive or contradictory).
+2. Score each full scenario combination: Compatible = 0, Tension = 1, Incompatible = 3.
+3. Eliminate combinations with total score ≥ 6 or with 2+ Incompatible pairs.
+4. Rank remaining combinations by total tension score (lower = more internally consistent).
 
 ---
 
 ## Inject Design
 
-Pre-seed 3-5 injects during the setup phase. Deploy at dramatically appropriate moments, not on a fixed schedule.
+Pre-seed injects during the setup phase, scaled to turn count: ~1 inject per 1.5-2 turns (e.g., 3 injects for 5 turns, 5 injects for 8 turns, 7 injects for 12 turns). Deploy at dramatically appropriate moments, not on a fixed schedule.
 
 ### Requirements
 - At least 1 inject must be POSITIVE (unexpected opportunity, not just crisis).
@@ -325,23 +355,42 @@ Pre-seed 3-5 injects during the setup phase. Deploy at dramatically appropriate 
 > **Dilemma:** Divert engineering resources to rush a retention package (risking the breakthrough timeline) OR stay the course on next-gen (risking the customer).
 > **Deadline:** Respond by Turn N+2 or the customer begins formal evaluation.
 
-### Difficulty Levels
+## Difficulty Levels
 
-Replace game terminology with decision framing. Auto-maps from tier but user can override.
+Framed around friction and surprise rather than adversary hostility. Generalizes across all domains — cooperative, competitive, and personal scenarios alike. Auto-maps from tier but user can override.
 
-| Level | Auto-Map | Actor Behavior | Inject Frequency | Adjudication Friction |
-|-------|----------|----------------|------------------|-----------------------|
-| `optimistic` | Clear | Actors mostly cooperative, pursue stated goals without aggression | 1 inject max, positive-leaning | "Strong" threshold lowered — plans tend to succeed |
-| `realistic` | Complicated | Balanced — actors pursue goals with moderate competition | Standard (3-5 injects) | Standard adjudication |
-| `adversarial` | Complex | Actors aggressively optimize, exploit weaknesses, form opposing coalitions | Standard + 1 crisis inject | "Strong" threshold raised — friction applied to every action |
-| `worst-case` | Chaotic | Maximum adversity — actors hostile, cascading failures, worst assumptions realized | Maximum injects, crisis-heavy | "Moderate" results skew toward "Weak"; compounding failures |
+| Level | Auto-Map | Friction | Surprise Frequency | Adjudication Stance |
+|-------|----------|---------|-------------------|---------------------|
+| `optimistic` | Clear | Low — plans mostly work, actors align readily | 1 surprise max, opportunity-leaning | "Strong" threshold lowered — execution friction minimal |
+| `realistic` | Complicated | Moderate — reasonable obstacles, competing priorities | Standard inject schedule | Standard adjudication — balanced friction |
+| `adversarial` | Complex | High — actors optimize against each other, coalitions shift, execution friction on every action | Standard + 1 crisis event | "Strong" threshold raised — nothing comes easy |
+| `worst-case` | Chaotic | Maximum — cascading complications, worst assumptions realized, Murphy's Law in effect | Maximum events, crisis-heavy | "Moderate" results skew toward "Weak"; compounding friction |
 
 The user can override the auto-mapped difficulty during classification: "Your scenario maps to `adversarial`. Adjust? [optimistic / realistic / adversarial / worst-case]"
 
 ---
 
+## Facilitated Mode
+
+When running in facilitated mode (all actors human-controlled), the engine adjusts:
+
+### Adjudication Adjustments
+- **No AI actor generation** — Step 1 of Turn Structure is skipped. All actions come from human players.
+- **Neutral adjudication** — The LLM applies the Adjudication Protocol identically to all player actions. No blue bias possible since there is no "friendly" side.
+- **Conflict resolution** — If two players' actions directly conflict, adjudicate based on actor resources, position, and the plausibility assessment. The LLM does not take sides.
+
+### Inject Deployment
+- Same pre-seeded inject system, but injects may target specific players
+- The LLM announces injects to all players simultaneously
+- Players have the standard response deadline (in turns)
+
+### Turn Pacing
+- Wait for all players before adjudicating — do not proceed with partial input
+- Offer "time-out" for group discussion before high-stakes decisions
+- Track which players have submitted actions: "Waiting for: {player_names}"
+
+---
+
 ## AAR Protocol
 
-Never skip the After Action Review — this is where learning happens. Generate Mermaid timeline (campaign phases) and decision tree (key branch points) in the journal per `references/visualizations.md`.
-
-For AAR display templates, see `references/output-formats.md` (AAR Display section). SKILL.md is authoritative for AAR content requirements; output-formats.md provides rendering templates.
+Never skip the After Action Review. Content requirements: see SKILL.md Mandatory AAR section. Display templates: see `references/output-formats-core.md` AAR Display.

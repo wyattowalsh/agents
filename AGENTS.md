@@ -116,7 +116,34 @@ wagents docs clean       # Remove generated content pages
 
 ---
 
-## 5. Supported Agents
+## 5. Instructions Directory (`instructions/`)
+
+The `instructions/` directory contains global AI agent instruction files. These are **not skills** — they are always-loaded configuration that gets imported via `@` chains into every session.
+
+### Progressive Disclosure Model
+
+| File | Loaded | Tokens | Purpose |
+|------|--------|--------|---------|
+| `global.md` | Always (via `~/.claude/CLAUDE.md` → `@` import) | ~700 | Router: general rules, CI summary, `@` imports for sub-files |
+| `python.md` | Always (via global.md) | ~85 | Python tooling preferences (uv, ty, preferred libraries) |
+| `javascript.md` | Always (via global.md) | ~40 | JavaScript/Node.js tooling preferences (pnpm) |
+| `orchestration-core.md` | Always (via global.md) | ~400 | Decomposition Gate, Tier Selection, Progress Visibility |
+
+The full orchestration guide (~5,300 tokens) lives as a skill at `skills/orchestrator/SKILL.md` and loads on-demand via `/orchestrator`.
+
+### Import Chain
+
+```
+~/.claude/CLAUDE.md
+  → @~/dev/projects/agents/instructions/global.md (hop 1)
+      → @~/dev/projects/agents/instructions/python.md (hop 2)
+      → @~/dev/projects/agents/instructions/javascript.md (hop 2)
+      → @~/dev/projects/agents/instructions/orchestration-core.md (hop 2)
+```
+
+---
+
+## 6. Supported Agents
 
 | Agent | Reads | Bridge File |
 |-------|-------|-------------|

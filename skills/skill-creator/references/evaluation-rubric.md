@@ -23,6 +23,10 @@ Skill quality is assessed through two complementary checks run in sequence:
 
 Always run both. A skill that passes validation but scores D or F needs significant rework. A skill that scores B but fails validation has a naming or metadata bug that must be fixed before distribution.
 
+### Weighted Normalization + Bonus
+
+Raw scores are not summed directly. Each dimension's raw score is multiplied by its weight, producing a weighted total. The weighted total is then normalized to a 0--100 scale: `(total_weighted / max_weighted) * 100`. Up to +3 bonus points from the Canonical Vocabulary dimension are added after normalization, so the theoretical maximum is 103. This means a skill can exceed 100 if it earns bonus points, even if its weighted raw scores are not perfect.
+
 ---
 
 ## 2. Scoring Dimensions
@@ -38,9 +42,10 @@ Always run both. A skill that passes validation but scores D or F needs signific
 | 7 | Critical Rules | 1x | 10 | Section present with heading, >=5 numbered items | Testability (each rule can be verified), completeness, no overlap |
 | 8 | Script Quality | 0.5x | 5 | If `scripts/` exists: argparse present, JSON output pattern, dependency check | Error handling, edge cases, documentation |
 | 9 | Conciseness | 0.5x | 5 | No duplicate headings, no repeated content blocks | Token efficiency, information density, dead text |
-| 10 | Canonical Vocabulary | -- | +5 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
+| 10 | Canonical Vocabulary | -- | +3 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
 
-**Total: 99 points possible + 5 bonus.**
+**Total: 99 raw points + 3 bonus. Final score is normalized:
+`(total_weighted / max_weighted * 100) + bonus`, producing a 0-103 scale.**
 
 ### Dimension Details
 
@@ -117,9 +122,13 @@ Always run both. A skill that passes validation but scores D or F needs signific
 
 A skill should target B or above before merging. A grade is expected for skills intended for public distribution.
 
+> **Bonus interaction:** The +3 bonus from Canonical Vocabulary is added after normalization, so scores above 100 are possible. A skill with a weighted normalized score of 88 and full bonus would reach 91, placing it in the A tier even though its raw weighted score alone falls in the B range.
+
 ---
 
 ## 4. Pressure Testing Protocol
+
+> **Scope note:** Pressure testing is qualitative only and does not affect the `audit.py` score. It is a manual review complement to the deterministic scoring, intended to surface weaknesses that static analysis cannot detect.
 
 Three types of pressure testing that AI review adds on top of deterministic scoring. Run these manually after `audit.py` produces its score.
 

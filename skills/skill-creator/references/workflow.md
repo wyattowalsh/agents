@@ -14,6 +14,9 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 
 ---
 
+> **Progress tracking (initialization):**
+> `uv run python skills/skill-creator/scripts/progress.py init --skill <name>`
+
 ## Step 1: Understand
 
 ### New Skill
@@ -31,8 +34,8 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 - Note the baseline score and grade for comparison
 
 > **Progress tracking:**
-> Start: `progress.py phase --skill <name> --phase understand --status active`
-> End: `progress.py phase --skill <name> --phase understand --status completed --notes "<summary>"`
+> Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase understand --status active`
+> End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase understand --status completed --notes "<summary>"`
 
 ---
 
@@ -53,8 +56,8 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 4. **Approval gate** — show projected before/after score. Wait for user approval. Do NOT implement until approved.
 
 > **Progress tracking:**
-> Start: `progress.py phase --skill <name> --phase plan --status active`
-> End: `progress.py phase --skill <name> --phase plan --status completed --notes "<summary>"`
+> Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase plan --status active`
+> End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase plan --status completed --notes "<summary>"`
 
 ---
 
@@ -63,14 +66,14 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 Skip this step for existing skills.
 
 1. Run `uv run wagents new skill <name>` to scaffold `skills/<name>/SKILL.md`
-   Update metrics: `progress.py metric --skill <name> --key files_created --value 1`
+   Update metrics: `uv run python skills/skill-creator/scripts/progress.py metric --skill <name> --key files_created --value 1`
 2. Configure frontmatter — load `references/frontmatter-spec.md` for the full field catalog and decision tree. At minimum: `name`, `description`, `license: MIT`, `metadata.author`, `metadata.version`, `argument-hint`.
 3. If `--from <source>` was specified, read the source skill as a structural template. Copy applicable structure, replace all domain-specific content.
 
 > **Progress tracking:**
-> Start: `progress.py phase --skill <name> --phase scaffold --status active`
-> End: `progress.py phase --skill <name> --phase scaffold --status completed`
-> For existing skills: `progress.py phase --skill <name> --phase scaffold --status skipped`
+> Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase scaffold --status active`
+> End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase scaffold --status completed`
+> For existing skills: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase scaffold --status skipped`
 
 ---
 
@@ -88,12 +91,12 @@ Apply to both new and existing skills. Work through each applicable area.
   - Subagent: Evals (4f)
 
 Track wave/agent progress:
-> `progress.py agent --skill <name> --wave wave-1 --agent agent-body --status active`
-> On completion: `progress.py agent --skill <name> --wave wave-2 --agent agent-refs --status completed --summary "6 reference files"`
+> `uv run python skills/skill-creator/scripts/progress.py agent --skill <name> --wave wave-1 --agent agent-body --status active`
+> On completion: `uv run python skills/skill-creator/scripts/progress.py agent --skill <name> --wave wave-2 --agent agent-refs --status completed --summary "6 reference files"`
 
 > **Progress tracking:**
-> Start: `progress.py phase --skill <name> --phase build --status active`
-> End: `progress.py phase --skill <name> --phase build --status completed`
+> Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase build --status active`
+> End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase build --status completed`
 
 ### 4a. Frontmatter
 
@@ -162,9 +165,9 @@ Load `references/proven-patterns.md`. Apply:
 4. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call `wagents docs generate` directly.
 
 > **Progress tracking:**
-> Start: `progress.py phase --skill <name> --phase validate --status active`
-> Inject audit: `progress.py audit --skill <name> --inject`
-> End: `progress.py phase --skill <name> --phase validate --status completed`
+> Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase validate --status active`
+> Inject audit: `uv run python skills/skill-creator/scripts/progress.py audit --skill <name> --inject`
+> End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase validate --status completed`
 
 ### Completion Criteria
 
@@ -183,6 +186,6 @@ Load `references/proven-patterns.md`. Apply:
 5. For existing skills: compare current score against baseline from Step 1
 
 > **Progress tracking:**
-> Start: `progress.py phase --skill <name> --phase iterate --status active`
-> After each iteration: `progress.py metric --skill <name> --key iteration_count --value +1`
-> End: `progress.py phase --skill <name> --phase iterate --status completed`
+> Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase iterate --status active`
+> After each iteration: `uv run python skills/skill-creator/scripts/progress.py metric --skill <name> --key iteration_count --value +1`
+> End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase iterate --status completed`

@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator audit --all",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Audit All mode",
+    "Agent runs audit.py --all --format table",
+    "Agent presents comparative table sorted by score descending",
+    "Agent provides summary statistics and improvement roadmap"
+  ]
+}

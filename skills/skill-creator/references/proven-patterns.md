@@ -130,7 +130,26 @@ A scoring system that determines which workflow path to follow. Prevents one-siz
 
 **When to use:** Skills with 3+ modes where input complexity should determine the mode. Not needed for simple 2-mode skills.
 
-**Snippet (wargame):** Scores 5 dimensions (adversary, reversibility, time pressure, stakeholders, information) 0-2 each, maps total to tiers: 0-3 Clear, 4-6 Complicated, 7-8 Complex, 9-10 Chaotic. Each tier triggers a different analysis mode and depth.
+**Snippet (wargame complexity classifier):**
+
+```markdown
+Score each dimension 0-2, sum for tier:
+
+| Dimension       | 0 (Low)          | 1 (Medium)          | 2 (High)              |
+|-----------------|-------------------|---------------------|-----------------------|
+| Adversary       | None/passive      | Reactive            | Adaptive/intelligent  |
+| Reversibility   | Fully reversible  | Partially           | Irreversible          |
+| Time pressure   | None              | Days/weeks          | Hours or less         |
+| Stakeholders    | Single            | 2-3 groups          | 4+ with conflicts     |
+| Information     | Complete          | Partial gaps        | Fog / deception       |
+
+| Total Score | Tier          | Mode                  |
+|-------------|---------------|-----------------------|
+| 0-3         | Clear         | Quick Analysis        |
+| 4-6         | Complicated   | Structured Analysis   |
+| 7-8         | Complex       | Interactive Wargame   |
+| 9-10        | Chaotic       | Interactive Wargame   |
+```
 
 **Guidance:** Show the rubric to the user for verification. Always allow user override. Include "Why This Tier" after scoring. Dimensions should be orthogonal.
 
@@ -225,7 +244,7 @@ Lifecycle hooks in frontmatter guarding against dangerous operations.
 
 **When to use:** Skills modifying important files (README, configs). Guards against overwriting uncommitted changes.
 
-**Snippet (add-badges):**
+**Snippet -- PreToolUse (add-badges):**
 
 ```yaml
 hooks:
@@ -235,7 +254,25 @@ hooks:
         - command: "git diff --quiet HEAD -- README.md 2>/dev/null || echo 'WARNING: README.md has uncommitted changes'"
 ```
 
-**Guidance:** Use `PreToolUse` with a `matcher` for the guarded tool (Edit, Write, Bash). Hooks should warn, not block. Keep commands fast (<1s) since they run on every matched invocation.
+**Snippet -- PostToolUse (validation after write):**
+
+```yaml
+hooks:
+  PostToolUse:
+    - matcher: Write
+      hooks:
+        - command: "uv run wagents validate 2>&1 | tail -5"
+```
+
+**Exit codes:**
+
+| Code | Meaning |
+|------|---------|
+| 0 | Allow -- tool use proceeds (PreToolUse) or result accepted (PostToolUse) |
+| 1 | Block -- tool use prevented (PreToolUse) or result suppressed (PostToolUse) |
+| 2 | Block with feedback -- same as 1, but stderr is shown to the agent as guidance |
+
+**Guidance:** Use `PreToolUse` with a `matcher` for the guarded tool (Edit, Write, Bash). Use `PostToolUse` for validation or cleanup after tool execution. Hooks should warn, not block, unless safety-critical. Keep commands fast (<1s) since they run on every matched invocation.
 
 ---
 
@@ -279,10 +316,10 @@ Variable substitutions in SKILL.md resolved at invocation time.
 
 | Skill Type | Must Have | Should Have | Optional |
 |------------|-----------|-------------|----------|
-| Simple (single mode) | 3, 5, 12, 13 | 1, 2 | 4, 9, 10 |
-| Multi-mode | 1, 2, 3, 5, 12, 13 | 4, 6, 7 | 8, 9, 10, 11 |
-| Interactive/stateful | 1, 2, 3, 5, 8, 12, 13 | 4, 6, 7, 10 | 9, 11 |
-| Automation | 1, 3, 5, 9, 12, 13 | 2, 11 | 4, 6, 7, 10 |
+| Simple (single mode) | Critical Rules, Scope Boundaries, Progressive Disclosure, Body Substitutions | Dispatch Table, Reference File Index | Canonical Vocabulary, Scripts, Templates |
+| Multi-mode | Dispatch Table, Reference File Index, Critical Rules, Scope Boundaries, Progressive Disclosure, Body Substitutions | Canonical Vocabulary, Classification/Gating, Scaling Strategy | State Management, Scripts, Templates, Hooks |
+| Interactive/stateful | Dispatch Table, Reference File Index, Critical Rules, Scope Boundaries, State Management, Progressive Disclosure, Body Substitutions | Canonical Vocabulary, Classification/Gating, Scaling Strategy, Templates | Scripts, Hooks |
+| Automation | Dispatch Table, Critical Rules, Scope Boundaries, Scripts, Progressive Disclosure, Body Substitutions | Reference File Index, Hooks | Canonical Vocabulary, Classification/Gating, Scaling Strategy, Templates |
 
 - **Must Have** -- omitting these is a defect in the skill design.
 - **Should Have** -- include unless there is a clear reason not to.
