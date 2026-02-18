@@ -201,7 +201,7 @@ Notes:
 | SonarCloud | `https://sonarcloud.io/api/project_badges/measure?project={key}&metric={metric}` | Metrics: alert_status, coverage, bugs, code_smells, etc. |
 | CircleCI | `https://dl.circleci.com/status-badge/img/gh/{owner}/{repo}/tree/{branch}.svg` | |
 | GitLab CI | `https://gitlab.com/{owner}/{repo}/badges/{branch}/pipeline.svg` | |
-| OpenSSF Scorecard | `https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge` | No shields.io equivalent |
+| OpenSSF Scorecard | `https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge` | 302-redirects to shields.io; still works for `<img>` tags |
 | OpenSSF Best Practices | `https://bestpractices.dev/projects/{id}/badge` | Requires enrollment |
 | pkg.go.dev | `https://pkg.go.dev/badge/{module}.svg` | |
 | Read the Docs | `https://readthedocs.org/projects/{project}/badge/?version=latest` | |
@@ -216,7 +216,7 @@ Notes:
 | `godoc.org` | `pkg.go.dev` | Redirects to pkg.go.dev |
 | `goreportcard.com` (sometimes) | Still works, but check | Intermittent availability |
 
-Note: `travis-ci.org` is NOT dead -- both `.org` and `.com` remain operational as of 2026. Do not flag travis-ci.org badges as dead.
+Note: `travis-ci.org` redirects (301) to `travis-ci.com`. The `.org` domain shut down for builds in late 2020. Badges using `.org` URLs still render via redirect but should be updated to `.com`. Do not flag as fully dead (redirect preserves functionality) but recommend migration.
 
 ---
 

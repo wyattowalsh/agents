@@ -974,6 +974,17 @@ def _scaffold_doc_page(node: CatalogNode) -> None:
     typer.echo(f"Created {rel}")
 
 
+def _safe_outer_fence(content: str) -> str:
+    """Return a backtick fence longer than any fence inside *content*."""
+    max_fence = 3
+    for line in content.split('\n'):
+        stripped = line.lstrip()
+        if stripped.startswith('```') or stripped.startswith('~~~'):
+            fence_len = len(stripped) - len(stripped.lstrip(stripped[0]))
+            max_fence = max(max_fence, fence_len)
+    return '`' * (max_fence + 1)
+
+
 def _read_raw_content(node: CatalogNode) -> str:
     """Read the raw file content for a CatalogNode from disk."""
     if node.source == "custom":
@@ -1201,14 +1212,9 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
         parts.append("")
 
     # === TIER 2: Copyable asset preview ===
-    # Use wider fence than any fence inside the raw content
-    max_fence = 3
-    for line in raw_content.split('\n'):
-        stripped = line.lstrip()
-        if stripped.startswith('```') or stripped.startswith('~~~'):
-            fence_len = len(stripped) - len(stripped.lstrip(stripped[0]))
-            max_fence = max(max_fence, fence_len)
-    outer_fence = '`' * (max_fence + 1)
+    # Skills show raw SKILL.md behind a disclosure widget (install-and-use artifacts).
+    # Agents show system prompts inline (read-to-understand artifacts). This is intentional.
+    outer_fence = _safe_outer_fence(raw_content)
     parts.append("<details>")
     parts.append("<summary>View Full SKILL.md</summary>")
     parts.append("")
@@ -1221,16 +1227,6 @@ def _render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
         parts.append("")
     parts.append("</details>")
     parts.append("")
-
-    # === TIER 3: Rendered specification ===
-    if node.body:
-        parts.append("<details>")
-        parts.append("<summary>Rendered Specification</summary>")
-        parts.append("")
-        parts.append(_strip_relative_md_links(_escape_mdx(_shift_headings(node.body, 1))))
-        parts.append("")
-        parts.append("</details>")
-        parts.append("")
 
     # Source link (only for custom skills)
     if node.source == "custom":
@@ -1315,37 +1311,7 @@ def _render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: l
 
     parts.extend(_render_tabs(tab_items))
 
-    # Cross-links
-    outgoing = [e for e in edges if e.from_id == f"agent:{node.id}"]
-    if outgoing:
-        skill_edges = [e for e in outgoing if e.relation == "uses-skill"]
-        mcp_edges = [e for e in outgoing if e.relation == "uses-mcp"]
-
-        if skill_edges:
-            parts.append("## Uses Skills")
-            parts.append("")
-            parts.append("<CardGrid>")
-            for edge in skill_edges:
-                skill_id = edge.to_id.split(":")[1]
-                skill_node = next((n for n in all_nodes if n.kind == "skill" and n.id == skill_id), None)
-                if skill_node:
-                    parts.append(f'  <LinkCard title="{_escape_attr(skill_id)}" href="/skills/{skill_id}/" description="{_escape_attr(_truncate_sentence(skill_node.description, 160))}" />')
-            parts.append("</CardGrid>")
-            parts.append("")
-
-        if mcp_edges:
-            parts.append("## Uses MCP Servers")
-            parts.append("")
-            parts.append("<CardGrid>")
-            for edge in mcp_edges:
-                mcp_id = edge.to_id.split(":")[1]
-                mcp_node = next((n for n in all_nodes if n.kind == "mcp" and n.id == mcp_id), None)
-                if mcp_node:
-                    parts.append(f'  <LinkCard title="{_escape_attr(mcp_id)}" href="/mcp/{mcp_id}/" description="{_escape_attr(_truncate_sentence(mcp_node.description, 160))}" />')
-            parts.append("</CardGrid>")
-            parts.append("")
-
-    # Skills as LinkCard grid
+    # Skills as LinkCard grid (from frontmatter; includes missing-node fallback)
     if fm.get("skills") and isinstance(fm["skills"], list):
         parts.append("## Skills")
         parts.append("")
@@ -1858,13 +1824,7 @@ def _write_installed_skills_page(nodes: list[CatalogNode]) -> None:
 
         # Collapsible raw SKILL.md
         raw_content = _read_raw_content(n)
-        max_fence = 3
-        for line in raw_content.split('\n'):
-            stripped = line.lstrip()
-            if stripped.startswith('```') or stripped.startswith('~~~'):
-                fence_len = len(stripped) - len(stripped.lstrip(stripped[0]))
-                max_fence = max(max_fence, fence_len)
-        outer_fence = '`' * (max_fence + 1)
+        outer_fence = _safe_outer_fence(raw_content)
         parts.append("<details>")
         parts.append("<summary>View SKILL.md</summary>")
         parts.append("")
