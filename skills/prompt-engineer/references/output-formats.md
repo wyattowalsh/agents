@@ -5,7 +5,7 @@ skill deliverable.
 
 ## Diagnostic Scorecard
 
-Used by Optimize (Mode B) step 3.
+Used by Analyze (Mode B) step 4.
 
 ```
 DIAGNOSTIC SCORECARD
@@ -31,7 +31,7 @@ Priority improvements: {Top 2-3 dimensions to address}
 
 ## Audit Report
 
-Used by Audit (Mode C) step 5.
+Used by Analyze (Mode B), report-only.
 
 ```
 AUDIT REPORT: {Prompt Name or Description}
@@ -67,12 +67,12 @@ MODEL-FIT ASSESSMENT
 {Is the prompt well-suited to its target model class? Key observations.}
 
 OVERALL RISK: {Critical | High | Medium | Low}
-RECOMMENDED NEXT: {Mode B (Optimize) | Mode E (Evaluate) | Deploy with monitoring}
+RECOMMENDED NEXT: {Mode B (Analyze) | Mode D (Evaluate) | Deploy with monitoring}
 ```
 
 ## Conversion Diff
 
-Used by Convert (Mode D) step 6.
+Used by Convert (Mode C) step 7.
 
 ```
 CONVERSION: {Source Model} → {Target Model}
@@ -110,12 +110,12 @@ BEHAVIORAL DIFFERENCES TO EXPECT
 FEATURES GAINED: {List of target model features now leveraged}
 FEATURES LOST: {List of source model features with no equivalent}
 
-RECOMMENDED: Test with Mode E (Evaluate) using the same test cases on both models
+RECOMMENDED: Test with Mode D (Evaluate) using the same test cases on both models
 ```
 
 ## Evaluation Framework
 
-Used by Evaluate (Mode E) step 6.
+Used by Evaluate (Mode D) step 8.
 
 ```
 EVALUATION FRAMEWORK: {Prompt Name}
@@ -160,7 +160,7 @@ BASELINE EXPECTATIONS: {Expected scores from current prompt version}
 
 ## Annotated Prompt
 
-Used by Craft (Mode A) step 7.
+Used by Craft (Mode A) step 6.
 
 ```
 ANNOTATED PROMPT: {Description}
@@ -198,12 +198,12 @@ You are a {role}...
 ---
 MODEL-CLASS ASSUMPTIONS: {What model class this prompt targets and why}
 EVAL CRITERIA: {What "working correctly" means for this prompt}
-NEXT STEPS: Run Mode E (Evaluate) to build a test suite
+NEXT STEPS: Run Mode D (Evaluate) to build a test suite
 ```
 
 ## Changelog
 
-Used by Optimize (Mode B) step 6.
+Used by Analyze (Mode B) step 9.
 
 ```
 CHANGELOG: {Prompt Name}
@@ -226,5 +226,5 @@ SCORE CHANGE
 | **Total**    | **{N}**| **{N}**| **{+/-}** |
 
 REMAINING RISKS: {Issues not addressed in this optimization}
-RECOMMENDED NEXT: {Mode E (Evaluate) | Mode C (Audit) | Deploy}
+RECOMMENDED NEXT: {Mode D (Evaluate) | Mode B audit | Deploy}
 ```

@@ -28,7 +28,6 @@ Comprehensive prompt and context engineering. Every recommendation grounded in r
 |------------|--------|
 | `craft <description>` | → Mode A: Craft a new prompt from scratch |
 | `analyze <prompt or path>` | → Mode B: Analyze and improve an existing prompt |
-| `optimize <prompt or path>` | → Mode B: Analyze and improve (alias) |
 | `audit <prompt or path>` | → Mode B: Analyze, report only (no changes) |
 | `convert <source-model> <target-model> <prompt or path>` | → Mode C: Convert between model families |
 | `evaluate <prompt or path>` | → Mode D: Build evaluation framework |
@@ -124,18 +123,6 @@ usage, and output structure recommendations.
 | Prompt length | Longer prompts with details generally help | Concise prompts with clear objectives outperform verbose ones |
 | Temperature | Task-dependent (0.0-1.0) | Often fixed internally; external temp has less effect |
 
-## Shared Setup
-
-For modes working with an existing prompt (Analyze, Convert, Evaluate), run
-these steps before entering mode-specific work. Mode A (Craft) uses requirements
-gathering instead — see Mode A step 1.
-
-1. **Ingest** — Read the prompt from `$ARGUMENTS` text or file path. If a file path is provided, read the file.
-2. **Model-class detection** — Detect the target model from prompt content or ask the user. Run Model-Class Detection above. Flag any model-class mismatches (e.g., CoT scaffolding sent to a reasoning model).
-3. **Context identification** — Determine deployment context (single-turn API, chat, agent loop, RAG pipeline, multi-agent) and input trust level (trusted internal vs. untrusted external).
-
-After Shared Setup, proceed with the dispatched mode.
-
 ## Mode A: Craft
 
 Build a new prompt from scratch. For when the user has no existing prompt.
@@ -145,7 +132,7 @@ Build a new prompt from scratch. For when the user has no existing prompt.
 1. **Requirements gathering** — Ask targeted questions:
    - What is the task? (Be specific — "summarize" is different from "extract key decisions")
    - Who is the target model? (Detect model class)
-   - What is the deployment context? (Single-turn API call, chat, agent loop, RAG pipeline)
+   - What is the deployment context? (Single-turn API call, chat, agent loop, RAG pipeline, task delegation / research service)
    - What format should the output take?
    - What are the failure modes to prevent?
    - Who provides the input? (Trusted internal vs. untrusted external — determines security needs)
@@ -156,8 +143,9 @@ Build a new prompt from scratch. For when the user has no existing prompt.
    - Agent: ReAct with 3-instruction pattern (persistence + tool-calling + planning)
    - RAG: Grounding instructions with citation patterns
    - Multi-agent: Orchestration with role isolation
+   - Task delegation: 4-block pattern with emphasis on scope definition and output structure
 
-3. **Draft prompt** — Write the prompt using the selected architecture. Apply model-class-specific guidance from `references/model-playbooks.md`. Use XML tags as the default structuring format (cross-model compatible). For the 4-block pattern specifically: this is a community synthesis of effective prompt structure, not official OpenAI terminology.
+3. **Draft prompt** — Write the prompt using the selected architecture. Apply model-class-specific guidance from `references/model-playbooks.md`. Use XML tags as the default structuring format (cross-model compatible). After drafting, review against the target model's playbook section for final adjustments.
 
 4. **Structure for cacheability** — Arrange content for prompt caching efficiency:
    - Static content (system instructions, role definitions, tool descriptions) → early in the prompt
@@ -170,24 +158,19 @@ Build a new prompt from scratch. For when the user has no existing prompt.
    - If tool-calling → apply permission minimization
    - Add edge case handling for expected failure modes
 
-6. **Model-specific adaptation** — Apply final adjustments from `references/model-playbooks.md`:
-   - Claude: XML sections, scope discipline blocks, adaptive thinking guidance
-   - GPT: 4-block pattern refinement, compaction endpoint awareness
-   - Gemini: Constraints placement (end of prompt), temperature defaults
-   - Llama: System prompt brevity, structured output patterns
-
-7. **Present** — Format per `references/output-formats.md` Craft template. Recommend Mode D (Evaluate) to build a test suite.
+6. **Present** — Format per `references/output-formats.md` Craft template. Recommend Mode D (Evaluate) to build a test suite.
 
 ## Mode B: Analyze
 
 Diagnose an existing prompt and optionally improve it. Dispatched as `analyze`
-or `optimize` (with fixes) or `audit` (report only, no changes).
-
-After Shared Setup, proceed with:
+(with fixes) or `audit` (report only, no changes).
 
 ### Steps
 
-1. **Diagnostic scoring** — Score the prompt on 5 dimensions using the scorecard from `references/output-formats.md`:
+1. **Ingest** — Read the prompt from `$ARGUMENTS` text or file path. If a file path is provided, read the file.
+2. **Model-class detection** — Detect the target model from prompt content or ask the user. Run Model-Class Detection above. Flag any model-class mismatches (e.g., CoT scaffolding sent to a reasoning model).
+3. **Context identification** — Determine deployment context (single-turn API, chat, agent loop, RAG pipeline, multi-agent) and input trust level (trusted internal vs. untrusted external).
+4. **Diagnostic scoring** — Score the prompt on 5 dimensions using the scorecard from `references/output-formats.md`:
 
    | Dimension | Score (1-5) | Assessment |
    |-----------|-------------|------------|
@@ -199,107 +182,106 @@ After Shared Setup, proceed with:
 
    Produce a total score out of 25 with a brief justification for each dimension.
 
-2. **Four-lens analysis** — Examine the prompt through each lens:
+5. **Four-lens analysis** — Examine the prompt through each lens:
 
    - **Ambiguity lens:** Identify instructions that could be interpreted multiple ways. Flag missing context that the model would need to guess. Check for conflicting instructions.
    - **Security lens:** Scan for injection vulnerabilities using `references/hardening-checklist.md`. Assess input trust boundaries. Check for information leakage risks.
    - **Robustness lens:** Identify edge cases not covered. Check for brittle patterns that break with unexpected input. Assess graceful degradation.
    - **Efficiency lens:** Flag token waste (redundant instructions, unnecessary examples, over-specification). Assess cacheability. Check for the Over-Specification Paradox.
 
-3. **Anti-pattern scan** — Check against every pattern in `references/anti-patterns.md`. For each detected anti-pattern, report: pattern name, severity, location in the prompt, and remediation guidance.
+6. **Anti-pattern scan** — Check against every pattern in `references/anti-patterns.md`. For each detected anti-pattern, report: pattern name, severity, location in the prompt, and remediation guidance.
 
-4. **Model-fit assessment** — Assess whether the prompt is well-suited to its target model:
+7. **Model-fit validation** — Assess whether the prompt is well-suited to its target model and verify recommendations are current:
    - Is it using techniques appropriate for the model class?
    - Are there model-specific features it should leverage but does not?
    - Are there anti-patterns specific to this model? (e.g., prefilled responses on Claude 4.x)
+   - Read `references/model-playbooks.md` for the target model and note the "last verified" date
+   - If any recommendation is older than 3 months, flag it: "Verify this against current [model] documentation before deploying"
 
 **Report-only mode** (`audit`): Present findings per `references/output-formats.md` audit template. Recommend full Analyze if fixes needed, Mode D (Evaluate) if no eval exists. Stop here.
 
-**Full mode** (`analyze`, `optimize`): Continue with steps 5-7.
+**Full mode** (`analyze`): Continue with steps 8-9.
 
-5. **Apply improvements** — For each dimension scoring below 4:
+8. **Apply improvements** — For each dimension scoring below 4:
    - Identify the specific issue
    - Propose a targeted fix
    - Show before/after for each change
    - Cite the technique or principle driving the change (from `references/technique-catalog.md` or `references/anti-patterns.md`)
 
-6. **Research validation** — For any model-specific recommendations:
-   - Read `references/model-playbooks.md` for the target model
-   - Note the "last verified" date
-   - If the recommendation is older than 3 months, flag it: "Verify this against current [model] documentation before deploying"
-
-7. **Present** — Format per `references/output-formats.md` Analyze template. Recommend Mode D (Evaluate) if no eval exists.
+9. **Present** — Format per `references/output-formats.md` Analyze template. Recommend Mode D (Evaluate) if no eval exists.
 
 ## Mode C: Convert
 
 Port a prompt between model families while preserving intent and quality.
 
-After Shared Setup, proceed with:
-
 ### Steps
 
-1. **Load playbooks** — Read the source and target model playbook sections from `references/model-playbooks.md`. Note key differences:
+1. **Ingest** — Read the prompt from `$ARGUMENTS` text or file path. If a file path is provided, read the file.
+2. **Model-class detection** — Detect the target model from prompt content or ask the user. Run Model-Class Detection above. Flag any model-class mismatches (e.g., CoT scaffolding sent to a reasoning model).
+3. **Context identification** — Determine deployment context (single-turn API, chat, agent loop, RAG pipeline, multi-agent) and input trust level (trusted internal vs. untrusted external).
+4. **Load playbooks** — Read the source and target model playbook sections from `references/model-playbooks.md`. Note key differences:
    - Structural format preferences (XML vs. markdown vs. JSON)
    - System prompt conventions
    - Feature availability (prefill, caching, thinking modes)
    - Known behavioral differences
 
-2. **Build conversion plan** — Create a conversion checklist:
+5. **Build conversion plan** — Create a conversion checklist:
    - Features that map directly (rename/restructure)
    - Features that require adaptation (different mechanism, same intent)
    - Features that have no equivalent (must be removed or simulated)
    - New features to leverage (target model has capabilities source lacks)
 
-3. **Execute conversion** — Apply the plan. For each change:
+6. **Execute conversion** — Apply the plan. For each change:
    - Show the source pattern
    - Show the target pattern
    - Explain why the change is needed
 
-4. **Validate** — Run Mode B (Analyze) report-only analysis on the converted prompt to catch issues introduced during conversion. Present per `references/output-formats.md` Convert template. Recommend Mode D (Evaluate) using same test cases on both models.
+7. **Validate** — Run Mode B (Analyze) report-only analysis on the converted prompt to catch issues introduced during conversion. Present per `references/output-formats.md` Convert template. Recommend Mode D (Evaluate) using same test cases on both models.
 
 ## Mode D: Evaluate
 
 Build an evaluation framework for a prompt. Does not run the evaluations — produces the eval design.
 
-After Shared Setup, proceed with:
-
 ### Steps
 
-1. **Define success criteria** — Work with the user to define what "working correctly" means:
+1. **Ingest** — Read the prompt from `$ARGUMENTS` text or file path. If a file path is provided, read the file.
+2. **Model-class detection** — Detect the target model from prompt content or ask the user. Run Model-Class Detection above. Flag any model-class mismatches (e.g., CoT scaffolding sent to a reasoning model).
+3. **Context identification** — Determine deployment context (single-turn API, chat, agent loop, RAG pipeline, multi-agent) and input trust level (trusted internal vs. untrusted external).
+4. **Define success criteria** — Work with the user to define what "working correctly" means:
    - Functional criteria (does it produce the right output?)
    - Quality criteria (is the output good enough?)
    - Safety criteria (does it avoid harmful outputs?)
    - Edge case criteria (does it handle unusual inputs?)
 
-2. **Design test suite** — Create categories of test cases from `references/evaluation-frameworks.md`:
+5. **Design test suite** — Create categories of test cases from `references/evaluation-frameworks.md`:
    - **Golden set:** 5-10 representative inputs with expected outputs
    - **Edge cases:** Boundary conditions, empty inputs, extremely long inputs
    - **Adversarial:** Injection attempts, out-of-scope requests, ambiguous inputs
    - **Regression:** Cases that previously failed (if optimizing an existing prompt)
 
-3. **Generate test cases** — For each category, produce concrete test cases:
+6. **Generate test cases** — For each category, produce concrete test cases:
    - Input (the exact text to send)
    - Expected behavior (what the model should do)
    - Failure indicators (what would indicate the prompt is broken)
 
-4. **Build rubric** — Create a scoring rubric per `references/output-formats.md`:
+7. **Build rubric** — Create a scoring rubric per `references/output-formats.md`:
    - Dimensions with clear definitions
    - Score levels (1-5) with concrete examples for each level
    - LLM-as-judge prompt for automated evaluation (if applicable)
    - Human evaluation protocol for subjective dimensions
 
-5. **Present** — Format per `references/output-formats.md` Evaluate template. Include recommended eval tools from `references/evaluation-frameworks.md` and CI/CD integration pattern.
+8. **Present** — Format per `references/output-formats.md` Evaluate template. Include recommended eval tools from `references/evaluation-frameworks.md` and CI/CD integration pattern.
 
 ## Reference File Index
 
 | File | Content | Read When |
 |------|---------|-----------|
-| `references/technique-catalog.md` | 30+ techniques across 7 categories with model-class compatibility | Selecting techniques for any mode |
+| `references/technique-catalog.md` | ~36 techniques across 8 categories with model-class compatibility | Selecting techniques for any mode |
 | `references/model-playbooks.md` | Claude, GPT, Gemini, Llama guidance with caching strategies | Any model-specific recommendation |
 | `references/anti-patterns.md` | 14 anti-patterns with severity, detection, and remediation | Analyzing or crafting any prompt |
 | `references/architecture-patterns.md` | Agent, RAG, tool-calling, multi-agent design patterns | Crafting agent or system prompts |
 | `references/context-management.md` | Compaction, caching, context rot, ACE framework | Designing long-context or multi-turn systems |
-| `references/hardening-checklist.md` | Security and robustness checklist (15 items) | Hardening any prompt handling untrusted input |
+| `references/hardening-checklist.md` | Security and robustness checklist (29 items) | Hardening any prompt handling untrusted input |
 | `references/evaluation-frameworks.md` | Eval approaches, PromptOps lifecycle, tool guidance | Building evaluation frameworks |
 | `references/output-formats.md` | Templates for all skill outputs (scorecards, reports, diffs) | Formatting any skill output |
 
@@ -310,13 +292,10 @@ it but note the gap.
 
 ## Critical Rules
 
-1. Always detect model class first — it determines everything else
-2. Never recommend chain-of-thought prompting for reasoning models (Prompting Inversion)
-3. Validate model-specific claims against `references/model-playbooks.md` — check "last verified" dates
-4. Use XML tags as default structuring format (cross-model compatible, all 4 labs endorse)
-5. Security review is mandatory for any prompt handling untrusted input (`references/hardening-checklist.md`)
-6. Present the Over-Specification Paradox as a single-study finding (S*≈0.5), not established consensus — apply as useful heuristic, not hard threshold
-7. Recommend evaluation (Mode D) for any non-trivial prompt — prompts are hypotheses
-8. Read reference files as indicated by the reference index — do not rely on memory
-9. Report-only mode (`audit`) in Analyze is read-only — never modify the prompt being audited
-10. The 3-instruction pattern (persistence + tool-calling + planning) is the highest-impact single change for agent prompts — recommend it by default for agent architectures
+1. Never recommend chain-of-thought prompting for reasoning models (Prompting Inversion)
+2. Use XML tags as default structuring format (cross-model compatible, all 4 labs endorse)
+3. Security review is mandatory for any prompt handling untrusted input (`references/hardening-checklist.md`)
+4. Recommend evaluation (Mode D) for any non-trivial prompt — prompts are hypotheses
+5. Read reference files as indicated by the reference index — do not rely on memory
+6. Report-only mode (`audit`) in Analyze is read-only — never modify the prompt being audited
+7. The 3-instruction pattern (persistence + tool-calling + planning) is the highest-impact single change for agent prompts — recommend it by default for agent architectures

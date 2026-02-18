@@ -1,8 +1,7 @@
 # Anti-Patterns
 
 Detection and remediation catalog for common prompting mistakes. Each pattern
-includes severity, detection heuristic, and fix. Used by Audit (Mode C) and
-Optimize (Mode B).
+includes severity, detection heuristic, and fix. Used by Analyze (Mode B).
 
 **Severity levels:**
 - **Critical** — Can cause security issues or major failures.
@@ -87,7 +86,7 @@ Optimize (Mode B).
 **Severity:** Medium
 **Detection:** Works perfectly on 3-5 showcase examples but fails on edge cases. No error handling. Assumes ideal input format.
 **Impact:** Production failures on real-world input variability. False confidence from demo success.
-**Remediation:** Test with adversarial inputs, empty inputs, malformed inputs, and edge cases. Add error handling instructions. Build an eval suite (Mode E).
+**Remediation:** Test with adversarial inputs, empty inputs, malformed inputs, and edge cases. Add error handling instructions. Build an eval suite (Mode D).
 **Example:**
 - Before: `Extract the name and email from the contact info below.` (tested only with clean "Name: X, Email: Y" format)
 - After: `Extract name and email from the text below. If either field is missing or ambiguous, return null for that field. If the text contains no contact information, return {"name": null, "email": null}.`
@@ -117,7 +116,7 @@ Optimize (Mode B).
 **Severity:** High
 **Detection:** CoT scaffolding sent to reasoning models. Prefill patterns sent to models that do not support prefill. Model-specific features (e.g., Anthropic cache breakpoints) in prompts for other providers.
 **Impact:** Performance degradation, errors, or silent failures.
-**Remediation:** Run Model-Class Detection. Check model-playbooks.md for the target model. Use Mode D (Convert) for cross-model porting.
+**Remediation:** Run Model-Class Detection. Check model-playbooks.md for the target model. Use Mode C (Convert) for cross-model porting.
 **Example:**
 - Before: `{"role": "assistant", "content": "{"` (prefill trick sent to a model without prefill support)
 - After: `Respond with a JSON object. Start your response with the opening brace.`
@@ -137,7 +136,7 @@ Optimize (Mode B).
 **Severity:** Medium
 **Detection:** No test cases, no success criteria, no monitoring. Changes made based on anecdotal feedback rather than systematic evaluation.
 **Impact:** Silent regression. No way to compare prompt versions. No evidence that the prompt works as intended.
-**Remediation:** Build an eval framework (Mode E). Start with 5-10 golden test cases. Establish baseline metrics before making changes.
+**Remediation:** Build an eval framework (Mode D). Start with 5-10 golden test cases. Establish baseline metrics before making changes.
 **Example:**
 - Before: Deploy prompt to production. "It seemed to work when I tried it."
 - After: Define 10 test cases with expected outputs. Run eval before and after each prompt change. Track pass rate, latency, and cost per run.

@@ -92,7 +92,7 @@ cost reduction on cached tokens.
 - Place breakpoints after: system prompt, tool definitions, few-shot examples
 - Dynamic content (user query, retrieved docs) after the last breakpoint
 - 5-minute TTL — design interactions to hit cache within this window
-- Minimum 1024 tokens (Sonnet/Haiku) or 2048 tokens (Opus) for caching
+- Minimum cacheable tokens: 4,096 (Opus 4.5+, Haiku 4.5), 1,024 (Sonnet, Opus 4/4.1), 2,048 (Haiku 3/3.5)
 
 ### OpenAI (GPT)
 
