@@ -1,7 +1,7 @@
 # Creative Review Lenses
 
-Five techniques for finding issues that standard checklist review misses.
-Apply at least 2 lenses per review scope. Pick based on code characteristics.
+Six techniques for finding issues that standard checklist review misses.
+Apply at least 2 lenses per review scope. Pick based on code characteristics. For security-sensitive code, Adversary lens is mandatory.
 
 ## Contents
 
@@ -10,6 +10,7 @@ Apply at least 2 lenses per review scope. Pick based on code characteristics.
 - [Newcomer Lens](#newcomer-lens)
 - [Incident Lens](#incident-lens)
 - [Evolution Lens](#evolution-lens)
+- [Adversary Lens](#adversary-lens)
 
 ## Inversion Lens
 
@@ -90,3 +91,19 @@ Apply at least 2 lenses per review scope. Pick based on code characteristics.
 **Expected output:** Change amplification scores per scenario and a list of coupling hotspots with remediation suggestions.
 
 **Cross-reference:** Design items in checklists.md (coupling, cohesion), backward compatibility items.
+
+## Adversary Lens
+
+"What would an attacker do with this code?"
+
+**When to apply:** Any code handling auth, user input, external data, file I/O, network requests, or cryptographic operations. For security-sensitive code, this lens is mandatory.
+
+**Method:**
+1. Enumerate attacker goals: data exfiltration, privilege escalation, denial of service, lateral movement.
+2. Map attack surfaces: every input path, every trust boundary crossing, every external interaction.
+3. For each attack surface, trace: can an attacker reach this code? What can they control? What is the worst outcome?
+4. Check for OWASP Top 10 patterns: injection, broken auth, sensitive data exposure, XXE, broken access control, security misconfiguration, XSS, insecure deserialization, known vulnerable components, insufficient logging.
+
+**Expected output:** Attack scenarios ranked by feasibility and impact, with specific code paths identified.
+
+**Cross-reference:** Security items in checklists.md.
