@@ -44,6 +44,9 @@ guidance, not official OpenAI terminology. Widely adopted across model families.
 - Often sufficient for reasoning models on well-defined problems
 - Start here; escalate to 4-Block only when output quality is insufficient
 
+**Task Delegation Pattern** (for deep research, autonomous agents, batch processing):
+A 4-block variant where the user sends a single prompt to guide an extended autonomous process. Key differences from standard single-turn: (1) scope boundaries are critical — explicitly state what is in/out of scope, (2) output structure must be specified upfront since there are no mid-task corrections, (3) include citation/source requirements if applicable, (4) specify depth vs. breadth trade-off.
+
 ---
 
 ## Multi-Turn Patterns
@@ -57,16 +60,11 @@ Patterns for chat applications, multi-step workflows, and persistent sessions.
   `<relevant_history>`
 - Implement conversation compaction for long sessions (GPT-5 compaction
   endpoint, or manual summarization)
-- Design for context rot: performance degrades non-linearly as context grows
-  (Chroma research, 18 LLMs)
+- Design for context rot: see context-management.md for context rot mitigation
+  strategies
 
 **State Management:**
-- Maintain a structured state object that gets injected each turn
-- Summarize prior turns rather than including full history
-- Clear stale tool results and intermediate reasoning
-- Use reversible compaction: keep full history available for expansion if needed
-- Separate ephemeral state (current turn context) from persistent state (user
-  preferences, accumulated facts)
+See context-management.md for state management and compaction patterns.
 
 ---
 
@@ -281,3 +279,4 @@ the simplest pattern that fits; escalate when requirements demand it.
 | Multi-agent system | Orchestrator-Worker | Security architecture selection |
 | Production agent (complex) | Modular conditional architecture | Maintainability and token efficiency |
 | Tool-heavy agent | ReAct + tool selection guidance | Error handling and retry limits |
+| Task delegation / research | 4-Block with scope + output emphasis | One-shot; scope precision critical; include citation and length guidance |

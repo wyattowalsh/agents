@@ -116,30 +116,32 @@ wagents docs clean       # Remove generated content pages
 
 ---
 
-## 5. Instructions Directory (`instructions/`)
+## 5. Instructions & Progressive Disclosure
 
-The `instructions/` directory contains global AI agent instruction files. These are **not skills** — they are always-loaded configuration that gets imported via `@` chains into every session.
+### Architecture
 
-### Progressive Disclosure Model
+`~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + orchestration core (~500 tokens) — this is the only always-loaded instruction content.
 
-| File | Loaded | Tokens | Purpose |
-|------|--------|--------|---------|
-| `global.md` | Always (via `~/.claude/CLAUDE.md` → `@` import) | ~700 | Router: general rules, CI summary, `@` imports for sub-files |
-| `python.md` | Always (via global.md) | ~85 | Python tooling preferences (uv, ty, preferred libraries) |
-| `javascript.md` | Always (via global.md) | ~40 | JavaScript/Node.js tooling preferences (pnpm) |
-| `orchestration-core.md` | Always (via global.md) | ~400 | Decomposition Gate, Tier Selection, Progress Visibility |
+Everything situational uses **skills as context loaders** — Claude sees skill descriptions at startup and auto-invokes relevant ones on demand:
 
-The full orchestration guide (~5,300 tokens) lives as a skill at `skills/orchestrator/SKILL.md` and loads on-demand via `/orchestrator`.
+| Skill | Type | Description in context | Body loads when |
+|-------|------|----------------------|-----------------|
+| `orchestrator` | User-invocable (`/orchestrator`) | ~40 tokens | Complex parallel work, teams |
+| `python-conventions` | Auto-invoke only | ~45 tokens | Working on Python files |
+| `javascript-conventions` | Auto-invoke only | ~25 tokens | Working on JS/TS files |
+| `agent-conventions` | Auto-invoke only | ~30 tokens | Creating/modifying agents |
+| `continuous-improvement` | Auto-invoke only | ~40 tokens | Proposing instruction changes |
 
-### Import Chain
+Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
-```
-~/.claude/CLAUDE.md
-  → @~/dev/projects/agents/instructions/global.md (hop 1)
-      → @~/dev/projects/agents/instructions/python.md (hop 2)
-      → @~/dev/projects/agents/instructions/javascript.md (hop 2)
-      → @~/dev/projects/agents/instructions/orchestration-core.md (hop 2)
-```
+### Token Budget
+
+| Component | Tokens | Loading |
+|-----------|--------|---------|
+| `global.md` (general + orchestration core) | ~500 | Always |
+| Skill descriptions (5 skills) | ~180 | Always |
+| **Total always-loaded** | **~680** | |
+| Skill bodies (when invoked) | ~5,500 | On-demand |
 
 ---
 

@@ -2,7 +2,7 @@
 
 Security and robustness checklist for prompts handling untrusted input or
 operating in production environments. Used by Craft (Mode A) step 5 and
-Audit (Mode C) security lens.
+Analyze (Mode B) security lens.
 
 ## Input Handling
 

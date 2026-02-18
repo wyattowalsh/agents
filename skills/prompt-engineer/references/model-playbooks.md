@@ -59,8 +59,7 @@ applying recommendations older than 3 months.
 - **Model class**: GPT-5 has reasoning mode (reasoning class) and standard mode
   (instruction-following). GPT-4.1 is instruction-following only.
 - **4-block pattern**: Effective prompt structure: Context, Task, Constraints,
-  Output format. This is a community synthesis of OpenAI's prompting guidance,
-  not official OpenAI terminology. Widely adopted and effective.
+  Output format.
 - **3-instruction pattern**: For agent prompts, the most impactful single change
   (~20% SWE-bench improvement per OpenAI GPT-4.1 guide, continued in GPT-5
   guide):
@@ -202,50 +201,24 @@ hosted API models:
 
 ## Cross-Model Compatibility
 
-### Universal Patterns (work across all families)
-
-- XML tags for structure (all 4 labs endorse).
-- Clear, explicit task descriptions.
-- Examples for format demonstration.
-- Role/persona assignment (varying effectiveness by family).
-- Constraints and output format specifications.
-- Separation of static and dynamic content for caching.
-
 ### Conversion Matrix
 
-| Feature | Claude | GPT | Gemini | Llama |
-|---------|--------|-----|--------|-------|
-| System prompt | Native | Native | Native | Native |
-| XML tags | Strongest support | Good support | Good support | Good support |
-| Prefilled response | Removed (4.x) | Not supported | Not supported | Supported |
-| Prompt caching | Explicit breakpoints | Automatic prefix | Explicit API | N/A (self-hosted) |
-| Structured output | XML patterns | JSON schema mode | JSON mode | Constrained decoding |
-| Thinking/reasoning | Adaptive thinking | reasoning_effort | Thinking levels | Variant-dependent |
-| Tool calling | Native | Native (parallel) | Native | Native (4.x) |
-| Multi-modal | Vision + docs | Vision + audio | Vision + audio + video | Vision (variant) |
-| Cache min tokens | None specified | 1,024 | 32,768 | N/A |
-| Cache TTL | 5 min | ~5-10 min | User-specified | N/A |
+| Feature | Claude | GPT | Gemini | Llama | Notes |
+|---------|--------|-----|--------|-------|-------|
+| System prompt | Native | Native | Native | Native | |
+| XML tags | Strongest support | Good support | Good support | Good support | |
+| Prefilled response | Removed (4.x) | Not supported | Not supported | Supported | Claude 3.x prefill prompts must be rewritten for 4.x — move format-steering to system prompt or XML output tags |
+| Prompt caching | Explicit breakpoints | Automatic prefix | Explicit API | N/A (self-hosted) | Fundamentally different mechanisms — must redesign per provider |
+| Structured output | XML patterns | JSON schema mode | JSON mode | Constrained decoding | Prompts relying on one mechanism must be restructured for another |
+| Thinking/reasoning | Adaptive thinking | reasoning_effort | Thinking levels | Variant-dependent | Reasoning variants of ALL families: no external CoT scaffolding — verify model class before converting |
+| Tool calling | Native | Native (parallel) | Native | Native (4.x) | |
+| Multi-modal | Vision + docs | Vision + audio | Vision + audio + video | Vision (variant) | |
+| Cache min tokens | 4,096 (Opus 4.5+, Haiku 4.5) / 1,024 (Sonnet, Opus 4/4.1) / 2,048 (Haiku 3/3.5) | 1,024 | 32,768 | N/A | |
+| Cache TTL | 5 min | ~5-10 min | User-specified | N/A | |
+| Prompt length sensitivity | Low | Low | Medium | High | Llama degrades fastest with verbose prompts; trim aggressively (aim for <500 system tokens) |
+| Constraint placement | Inline/early | Inline/early | End of prompt | Inline/early | Gemini attends most to late-positioned constraints |
 
-### Key Differences to Watch During Conversion
-
-- **Prompt length sensitivity**: Llama > Gemini > Claude ~ GPT (most to least
-  sensitive). Llama degrades fastest with verbose prompts.
-- **Constraint placement**: Gemini prefers end of prompt; Claude, GPT, and Llama
-  prefer inline or early placement.
-- **CoT handling**: Reasoning variants of ALL families should not receive
-  external CoT scaffolding. Verify model class before converting CoT patterns.
-- **Caching strategy**: Must be redesigned per provider. Breakpoints (Claude) vs.
-  prefix stability (GPT) vs. explicit API (Gemini) vs. application-layer
-  (Llama) — these are fundamentally different mechanisms.
-- **Structured output**: Claude uses XML patterns; GPT uses JSON schema mode;
-  Gemini uses JSON mode; Llama uses constrained decoding. A prompt relying on
-  one mechanism must be restructured for another.
-- **Prefill removal**: Any Claude 3.x prompt using assistant prefill must be
-  rewritten for Claude 4.x. Move the format-steering into the system prompt or
-  use XML output tags instead.
-- **System prompt length**: Prompts converting TO Llama must be aggressively
-  trimmed. A 2000-token system prompt that works on Claude may need to be cut
-  to 500 tokens for Llama.
+The 3-instruction minimal pattern (persistence + tool-calling + planning) works across all model families — see `architecture-patterns.md` § Agent Patterns for details.
 
 ### Conversion Checklist
 

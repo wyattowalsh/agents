@@ -1,7 +1,7 @@
 # Evaluation Frameworks
 
 Evaluation approaches, PromptOps lifecycle, and tool guidance. Used by
-Evaluate (Mode E) and recommended after Craft (Mode A) and Optimize (Mode B).
+Evaluate (Mode D) and recommended after Craft (Mode A) and Analyze (Mode B).
 
 ## Evaluation Approaches
 
@@ -101,21 +101,7 @@ Customize dimensions for the specific task. A code review prompt needs
 "correctness" and "actionability". A summarization prompt needs "faithfulness"
 and "conciseness".
 
-## PromptOps Lifecycle
-
-Treat prompts as software artifacts with version control, testing, and
-deployment pipelines. This is the PromptOps discipline.
-
-### Prompt Versioning
-
-- Store prompts in version control (git) alongside application code
-- Use branching for experimental prompt changes (feature branches)
-- Require eval results in PR descriptions for prompt changes
-- Tag releases with semantic versioning: major (behavioral change), minor
-  (improvement), patch (typo/formatting)
-- Maintain a changelog: what changed, why, eval results before/after
-
-### CI/CD Integration
+## CI/CD Integration
 
 **Promptfoo GitHub Actions:**
 ```yaml
@@ -132,103 +118,20 @@ deployment pipelines. This is the PromptOps discipline.
 - Show score diffs in PR comments
 - Block merge if regression exceeds threshold
 
-### Regression Testing
-
-- Run the full golden set on every prompt change
-- Track metrics over time (dashboard, not just pass/fail)
-- Alert on score degradation (even if still above threshold)
-- Maintain a "regression set" of previously-failed cases that must continue passing
-
-### Prompt Registries
-
-- Central storage for production prompts with metadata (version, owner, model,
-  last eval date, performance metrics)
-- Enable rollback: if a new version degrades, revert to previous
-- Track which prompt version is deployed in each environment
-
-### Environment-Based Deployment
-
-- **Dev**: Latest prompt, permissive eval thresholds, fast iteration
-- **Staging**: Release candidate, full eval suite, human review sample
-- **Production**: Promoted from staging, monitoring active, rollback ready
-
-### Red-Teaming as Lifecycle Step
-
-- Schedule regular red-team sessions (monthly for high-risk prompts)
-- Use adversarial test cases from `hardening-checklist.md`
-- Rotate red-team members to avoid blind spots
-- Document findings and add new test cases to the regression set
-
-## DSPy Optimizers
-
-Automated prompt optimization using DSPy (dspy.ai). These optimizers
-algorithmically search for better prompts.
-
-**MIPROv2**: Multi-prompt Instruction Proposal Optimizer. Generates candidate
-instructions and few-shot examples, evaluates them, and selects the best
-combination. Most mature DSPy optimizer. Use for: optimizing few-shot
-selection, instruction wording, and prompt structure.
-
-**SIMBA**: Optimization for complex multi-step pipelines. Newer than MIPROv2.
-Use for: multi-hop reasoning, agent tool-calling sequences, and pipeline
-optimization.
-
-**GEPA**: Genetic Evolution of Prompt Architectures. Newest DSPy optimizer.
-Uses evolutionary algorithms to explore prompt design space. Use for:
-discovering non-obvious prompt structures when manual optimization plateaus.
-
-**When to use DSPy vs. manual optimization:**
-- Manual: Small number of prompts, clear hypothesis for improvement, need for
-  interpretable changes
-- DSPy: Large prompt search space, many interacting prompt components,
-  performance plateau from manual tuning, sufficient eval data (50+ examples)
+DSPy optimizers (BootstrapFewShot, MIPRO, etc.) can automate prompt optimization but are outside the scope of this skill's workflows.
 
 ## Tool Guidance
 
-### Promptfoo
-
-Open-source prompt evaluation framework. Best for: CI/CD integration,
-regression testing, multi-model comparison.
-
-- Config-driven evaluation (YAML)
-- Supports custom metrics and LLM-as-judge
-- GitHub Actions integration
-- Side-by-side comparison UI
-- Free and self-hosted
-
-### Braintrust
-
-Prompt evaluation and monitoring platform. Best for: team collaboration,
-production monitoring, PR-based comparisons.
-
-- Automatic PR comparisons with score diffs
-- Production logging and monitoring
-- Dataset management for golden sets
-- LLM-as-judge with calibration tools
-
-### Langfuse
-
-Open-source LLM observability platform. Best for: production tracing,
-cost tracking, debugging multi-step chains.
-
-- Request tracing with latency and cost breakdown
-- Prompt versioning and management
-- Score tracking over time
-- Self-hosted or cloud options
-
-### Maxim AI
-
-Enterprise prompt testing platform. Best for: large-scale eval, automated
-regression, compliance-focused testing.
-
-- Automated test generation from prompt analysis
-- Multi-model parallel evaluation
-- Compliance and safety testing suites
-- Enterprise security and access controls
+| Tool | Best For | Notes |
+|------|----------|-------|
+| promptfoo | CI/CD, regression testing | Open-source, YAML config, GitHub Actions |
+| Braintrust | Team collab, PR comparisons | Production monitoring, golden set management |
+| Langfuse | Tracing, cost tracking | Open-source, self-hosted or cloud |
+| LMQL/guidance | Constrained generation | Structured output, grammar enforcement |
 
 ## Eval Design Checklist
 
-Use when building an evaluation framework (Mode E):
+Use when building an evaluation framework (Mode D):
 
 - [ ] Golden set defined (5-10 representative inputs with expected outputs)
 - [ ] Edge cases identified (boundary inputs, empty inputs, long inputs)

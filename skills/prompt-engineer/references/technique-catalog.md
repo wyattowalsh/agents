@@ -20,10 +20,7 @@ reasoning frames. `"You are a senior security engineer reviewing this code for
 vulnerabilities."` Higher impact on instruction-following models. Minimal effect on
 reasoning models — their internal reasoning already adopts relevant expertise.
 
-**Emotion Prompting**: Add stakes or importance framing to increase model effort.
-`"This is very important to my career."` Marginal gains on instruction-following models
-(Li et al., 2023 — arXiv:2307.11760). No measurable effect on reasoning models. Use
-sparingly; better to improve the instruction itself.
+**Emotion Prompting**: Adding emotional stakes/framing (e.g., `"This is very important to my career"`) can marginally improve instruction-following models; no effect on reasoning models — improve the instruction itself instead.
 
 **Style Transfer**: Specify output style, register, or audience level. Combine with
 Direct Instruction for precise tone control. `"Explain like I'm five"` or
@@ -240,34 +237,13 @@ benchmarks (toonformat.dev). Uses `type: object` notation with clear field defin
 Best for smaller models needing strict output format adherence. Note: benchmark is from
 the format creator; independent verification is limited to small models.
 
-**Delimiter Patterns**: Use triple backticks, triple quotes, or XML tags to separate
-user input from instructions. Essential for injection resistance — without delimiters,
-user input can be interpreted as instructions.
-```
-Translate the text between the XML tags to French.
-<user_input>{{untrusted_text}}</user_input>
-```
+**Delimiter Patterns**: Use consistent delimiters (XML tags, markdown headers, triple backticks) to separate prompt sections. See hardening-checklist.md for delimiter security patterns.
 
 ---
 
 ## Over-Specification Guidance
 
-The Over-Specification Paradox (UCL, Jan 2026 — arXiv:2601.00880): beyond a
-specificity threshold S*≈0.509, additional specification degrades performance
-quadratically. This achieved 29.8% token reduction with maintained or improved
-performance.
-
-**This is a single-study finding, not established consensus.** Apply as a
-useful heuristic: if a prompt is >50% constraint language vs. task language,
-consider whether the constraints are earning their keep. Measure by asking:
-"If I removed this sentence, would the output meaningfully change?" If no,
-remove it.
-
-Signs of over-specification:
-- Instructions restating what the model would do by default
-- Constraints for scenarios that cannot occur in the deployment context
-- Detailed format specifications when a single example would suffice
-- Negative instructions ("do not...") for behaviors the model does not exhibit
+See anti-patterns.md #5 and SKILL.md "Avoid over-specification" principle.
 
 ---
 

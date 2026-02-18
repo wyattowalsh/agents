@@ -8,18 +8,22 @@ export default [
   { slug: '' },
   {
     label: 'Skills',
-    badge: { text: '26', variant: 'tip' },
+    badge: { text: '30', variant: 'tip' },
     items: [
       { slug: 'skills', label: 'Overview' },
       {
-        label: 'Custom (8)',
+        label: 'Custom (12)',
         items: [
           { slug: 'skills/add-badges' },
+          { slug: 'skills/agent-conventions' },
+          { slug: 'skills/continuous-improvement' },
           { slug: 'skills/honest-review' },
           { slug: 'skills/host-panel' },
+          { slug: 'skills/javascript-conventions' },
           { slug: 'skills/mcp-creator' },
           { slug: 'skills/orchestrator' },
           { slug: 'skills/prompt-engineer' },
+          { slug: 'skills/python-conventions' },
           { slug: 'skills/skill-creator' },
           { slug: 'skills/wargame' },
         ],
