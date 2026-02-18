@@ -216,8 +216,8 @@ Additional badges for quality, code style, frameworks, infrastructure, documenta
 - **Alt**: `Terraform`
 
 ### AWS
-- **URL**: `https://img.shields.io/badge/AWS-232F3E?style=flat-square&logo=amazonwebservices&logoColor=white`
-- **Icon**: `amazonwebservices` (`232F3E`) — logoColor: white
+- **URL**: `https://img.shields.io/badge/AWS-232F3E?style=flat-square`
+- **Icon**: (no Simple Icons slug — Amazon removed brand icons in SI v15)
 - **Link**: `https://aws.amazon.com/`
 - **Alt**: `AWS`
 
@@ -405,7 +405,7 @@ Additional badges for quality, code style, frameworks, infrastructure, documenta
 
 ### OpenSSF Scorecard
 - **URL**: `https://img.shields.io/ossf-scorecard/github.com/{owner}/{repo}?style=flat-square`
-- **Native**: `https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge`
+- **Native**: `https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge` (302-redirects to shields.io; still works for `<img>` tags)
 - **Icon**: (no Simple Icons slug available)
 - **Link**: `https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo}`
 - **Alt**: `OpenSSF Scorecard`
@@ -443,6 +443,6 @@ Additional badges for quality, code style, frameworks, infrastructure, documenta
 
 ### Just
 - **URL**: `https://img.shields.io/badge/Just-E8B339?style=flat-square&logo=gnubash&logoColor=black`
-- **Icon**: `gnubash` (`4EAA25`) — logoColor: white
+- **Icon**: `gnubash` (`4EAA25`) — logoColor: black
 - **Link**: `https://just.systems/`
 - **Alt**: `Just`

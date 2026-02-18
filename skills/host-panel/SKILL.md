@@ -30,7 +30,7 @@ and genuine disagreements, not producing consensus or truth.
 **Expert range:** 2-6. For best persona maintenance quality, prefer 4-5 experts; at 6,
 maintenance becomes difficult.
 
-To add a format: add its phase guide to `references/formats.md` and update the format
+To add a format: add its phase guide to `./references/formats.md` and update the format
 table and auto-selection logic above.
 
 ---
@@ -42,6 +42,11 @@ table and auto-selection logic above.
 Parse `$ARGUMENTS`: a quoted string is the topic (required), an integer 2-6 is expert
 count, a keyword (`roundtable`/`oxford`/`socratic`) is format. Order of count and
 format does not matter. Defaults: roundtable, 4 experts.
+
+**Format-count notes:** Oxford with 2 experts runs as direct proposition-vs-opposition
+without swing or floor questions. Oxford with 3 designates one swing per formats.md.
+Socratic with 2 runs as paired inquiry — both panelists question each other under
+moderator guidance.
 
 If `$ARGUMENTS` is empty, present this example gallery and ask the user to choose or
 provide their own:
@@ -61,14 +66,14 @@ when only two voices are present.
 
 Before proceeding, evaluate the topic:
 
-| Signal | Action |
-|--------|--------|
-| Settled science | Reframe toward open question |
-| Too broad | Suggest narrowing with specific example |
-| Too narrow for expert count | Reduce panel or suggest broadening |
-| Highly specialized | Flag research grounding as critical |
-| Asymmetric evidence | Reframe around genuine tensions within consensus |
-| Casual / experiential | Use practitioners and cultural commentators — same rigor, matched register |
+| Signal | Action | Pause? |
+|--------|--------|--------|
+| Settled science | Reframe toward open question | Yes |
+| Too broad | Suggest narrowing with specific example | Yes |
+| Too narrow for expert count | Reduce panel or suggest broadening | Yes |
+| Highly specialized | Flag research grounding as critical | No — extra rigor |
+| Asymmetric evidence | Reframe around genuine tensions within consensus | No — reframe |
+| Casual / experiential | Use practitioners and cultural commentators — same rigor, matched register | No — match register |
 
 ### Format Auto-Selection
 
@@ -175,7 +180,8 @@ For each panelist, specify:
   to established wisdom
 
 **Scaled for smaller panels:**
-- 2 experts: ensure distinct traditions; make at least one a bridge figure
+- 2 experts: ensure distinct traditions; prefer at least one bridge figure when the
+  topic spans multiple disciplines (not required for single-discipline topics)
 - 3 experts: ensure distinct traditions, at least one contrarian or bridge figure,
   at least two different career stages
 
@@ -185,7 +191,7 @@ If two panelists share the same intellectual tradition, methodology, AND likely
 conclusions on the core tensions — replace one. Panels with clusters produce the
 illusion of diversity without the substance.
 
-Consult `references/archetypes.md` if the panel requires personas from 2+ distinct
+Consult `./references/archetypes.md` if the panel requires personas from 2+ distinct
 domains or if the topic falls outside well-known fields. Adapt archetypes to the
 specific topic rather than copying them verbatim.
 
@@ -225,7 +231,7 @@ claims, reasoning from their stated tradition.
 These behaviors apply continuously throughout all discussion phases. Claude acts as
 the moderator.
 
-### Persona Integrity (Cross-Cutting)
+### Persona Integrity *(before each panelist speaks)*
 
 Before each panelist speaks, execute this internal reasoning pipeline (silent — do
 not display any of these steps):
@@ -238,25 +244,32 @@ not display any of these steps):
 3. **Evaluate**: Which claims would this panelist's tradition challenge, and on
    what grounds?
 4. **Respond**: Formulate a response grounded in this tradition's vocabulary
-   and reasoning patterns.
+   and reasoning patterns. When citing specific works, only cite works mentioned
+   in the research grounding (Section 2) or well-known foundational texts. For
+   less certain references, use tradition-level attribution.
 
 Each panelist's vocabulary, reasoning structure, and evidence standards must
-match their intellectual tradition. See `references/archetypes.md` for
+match their intellectual tradition. See `./references/archetypes.md` for
 domain-specific patterns. A pragmatist and a theorist must sound different
 because they think differently.
 
-### Turn Management
+### Turn Management *(continuous)*
 
 - Call on panelists by name
 - Allow direct responses between panelists — real panels are conversations, not
   sequential monologues
 - Enforce roughly balanced airtime across all panelists (guidelines, not hard limits)
 
-**2-expert panels:** These standing orders adapt for structured dialogue. The moderator
-does not interject during exchanges. Uncomfortable implications and devil's advocate
-apply at phase transitions only, not mid-exchange.
+**2-expert panels:** Standing orders adapt for structured dialogue:
+- Moderator intervenes at **phase transitions only**, not mid-exchange.
+- Convergence detection deferred to synthesis.
+- Devil's Advocate uses format-specific phase names, not "Challenge Round."
+- Output: omit `> **Moderator:**` within phases; moderator voice in Phase 0,
+  between-phase summaries, and Synthesis only.
 
-### Provocation Triggers
+### Provocation Triggers *(reactive, during any phase)*
+
+*(For 2-expert panels, these fire at phase transitions only — see Turn Management.)*
 
 Intervene when any of these occur:
 
@@ -276,13 +289,16 @@ As moderator, do not favor the emerging consensus. If 3+ panelists converge on a
 conclusion, explicitly steelman the strongest absent counterposition from a real
 intellectual tradition before allowing synthesis.
 
-### Devil's Advocate Rotation
+### Devil's Advocate Rotation *(during challenge-focused phases)*
 
-During the Challenge Round, rotate devil's advocate assignments among panelists. Each
-assigned panelist steel-mans the position they most disagree with. Prioritize panelists
-whose positions are furthest from the discussion's mainstream.
+During the format's challenge phase (Deep Dive for roundtable, Direct Rebuttal for
+Oxford, Deconstruct for Socratic), rotate devil's advocate assignments among panelists.
+Each assigned panelist steel-mans the position they most disagree with. Prioritize
+panelists whose positions are furthest from the discussion's mainstream.
 
-### Uncomfortable Implications (MANDATORY)
+### Uncomfortable Implications *(at least once per panel, MANDATORY)*
+
+*(For 2-expert panels, ask at a phase transition — see Turn Management.)*
 
 At least once per panel, ask 2-3 panelists (scale with panel size):
 - "What is the strongest case against your own position?"
@@ -291,7 +307,7 @@ At least once per panel, ask 2-3 panelists (scale with panel size):
 
 Do not let panelists deflect. Press for specifics.
 
-### Between-Phase Summaries
+### Between-Phase Summaries *(between phases)*
 
 Provide brief summaries between phases that name the disagreement precisely:
 
@@ -303,13 +319,16 @@ point of divergence]. Dr. Z has introduced a third axis — [brief description].
 
 ## 5. Discussion Phases
 
-Load the chosen format's specific phase guide from `references/formats.md`. The
+Load the chosen format's specific phase guide from `./references/formats.md`. The
 format guide's phase structure governs all phases between Framing and Synthesis.
 Phase 0 (Framing) and Synthesis are universal bookends. Adapt all output template
 headings to match the chosen format's phase names.
 
-If `formats.md` cannot be loaded, use: Phase 1 = opening positions (150-200 words
-each), Phase 2 = 2-4 rounds of direct engagement, Phase 3 = steel-man + self-critique.
+If `formats.md` cannot be loaded, inform the user: "The format reference file is
+missing — panel quality will be degraded. Reinstall the skill or provide the file at
+`./references/formats.md`." Proceed only if the user confirms, using roundtable
+defaults: opening positions (150-200 words each), 2-4 rounds of direct engagement,
+steel-man + self-critique.
 
 ### Phase 0: Framing
 
@@ -323,8 +342,12 @@ Keep framing concise. The value is in the discussion, not the introduction.
 
 ### Format-Specific Phases
 
-See `references/formats.md` for phase names, structure, and word counts specific
+See `./references/formats.md` for phase names, structure, and word counts specific
 to each format. Use those phase names in the output — not generic Phase 1/2/3.
+
+**2-expert phase overrides:** Oxford with 2 omits Floor Questions (Phase 4) — the
+moderator's probing role is unnecessary when both sides engage directly. See
+format-count notes in Section 1.
 
 ### Synthesis
 
@@ -342,12 +365,16 @@ that could not have been produced by any single panelist alone.
 - **Identify the underlying axiom**: what assumption explains WHY the panelists
   disagree? What prior does each side hold that the other does not? Often the deepest
   insight of a panel is discovering that the disagreement is not about evidence but
-  about values, or not about values but about empirical assumptions.
+  about values, or not about values but about empirical assumptions. For 2-expert
+  panels where convergence was deferred from discussion: is apparent agreement genuine
+  (different traditions reaching the same conclusion) or model-prior-driven collapse?
 
 - **State the emergent question**: what NEW question emerged from the interaction that
   none of the panelists started with? If the panel generated no emergent questions, it
-  was too shallow. The emergent question must concern a dimension or stakeholder NOT
-  in the original framing. "How should we do X?" is reformulation, not emergence.
+  was too shallow. Prefer questions that introduce dimensions or stakeholders absent
+  from the original framing. If the panel's deepest insight is a refined version of the
+  original question, state why the refinement matters — what new understanding does it
+  encode? "How should we do X?" with no new understanding is reformulation, not emergence.
 
 - **Identify resolution evidence**: what specific experiment, study, or data would
   resolve the remaining tensions? What would move the debate forward? Be concrete:
@@ -391,29 +418,18 @@ Structure the complete panel output as follows:
 
 ### Panelist Roster
 - **[Name]** — [credentials] *(tradition)*
-- ...
 
 ### Phase 0: Framing
-[moderator introduction]
-
-### [Format-specific phase name from formats.md]
-[phase content]
-
-### [Next format-specific phase name]
-[phase content]
-
-...
-
+### [Each format-specific phase as its own H3]
 ### Synthesis
-**Underlying axiom of disagreement:** ...
-**Emergent question:** ...
-**Resolution evidence:** ...
-**Position map:** ...
-**Uncomfortable implications:** ...
-**Key takeaways:**
-- ...
-**Further reading:** ...
-**Self-assessment:** ...
+- **Axiom of disagreement:** ...
+- **Emergent question:** ...
+- **Resolution evidence:** ...
+- **Position map:** ...
+- **Uncomfortable implications:** ...
+- **Key takeaways:** [3-5 bullets]
+- **Further reading:** ...
+- **Self-assessment:** ...
 ```
 
 ### Output Length

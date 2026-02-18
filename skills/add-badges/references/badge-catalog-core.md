@@ -138,7 +138,8 @@ Standard badges for most repositories. ~30 badges covering CI status, package re
 ## license
 
 ### GitHub License
-- **URL**: `https://img.shields.io/github/license/{owner}/{repo}?style=flat-square`
+- **URL**: `https://img.shields.io/github/license/{owner}/{repo}?style=flat-square&logo=github&logoColor=white`
+- **Icon**: `github` (`181717`) — logoColor: white
 - **Link**: `https://github.com/{owner}/{repo}/blob/main/LICENSE`
 - **Alt**: `License`
 - **Badgen**: `https://badgen.net/github/license/{owner}/{repo}`

@@ -149,8 +149,8 @@ def _run(cmd: list[str], cwd: Path | None = None) -> str | None:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=10, cwd=cwd)
         if r.returncode == 0:
             return r.stdout.strip()
-    except Exception:
-        pass
+    except Exception as e:
+        _warn(f"Command failed: {' '.join(cmd)}: {e}")
     return None
 
 
@@ -206,7 +206,7 @@ def detect_repo(root: Path) -> dict:
             # Parse owner/repo/platform
             # SSH: git@github.com:owner/repo.git
             # HTTPS: https://github.com/owner/repo.git
-            m = re.match(r"(?:https?://|git@)([^/:]+)[:/]([^/]+)/([^/\s]+?)(?:\.git)?$", url)
+            m = re.match(r"(?:https?://|ssh://[^@]*@|git@)([^/:]+)(?::\d+)?[:/](.+?)/([^/\s]+?)(?:\.git)?/?$", url)
             if m:
                 host = m.group(1).lower()
                 result["owner"] = m.group(2)
@@ -858,7 +858,7 @@ def detect_monorepo(root: Path) -> dict:
             data = _load_toml_cached(pyp)
             if data:
                 uv_ws = data.get("tool", {}).get("uv", {}).get("workspace")
-                if uv_ws:
+                if isinstance(uv_ws, dict):
                     if not result["tool"]:
                         result["tool"] = "uv"
                     members = uv_ws.get("members", [])

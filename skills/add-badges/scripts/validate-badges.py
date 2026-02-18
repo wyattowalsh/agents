@@ -33,7 +33,7 @@ BADGE_HOSTS = (
     "img.shields.io",
     "badgen.net",
     "forthebadge.com",
-    "/badge.svg",
+    "badge.svg",
     "codecov.io",
     "coveralls.io",
     "sonarcloud.io",
@@ -62,8 +62,12 @@ def _extract_badge_urls(content: str) -> list[str]:
     return urls
 
 
+_RETRYABLE_CODES = {429, 500, 502, 503}
+
+
 def _check_url(url: str) -> dict:
-    """HEAD-request a URL with retry + exponential backoff on 429."""
+    """HEAD-request a URL with retry + exponential backoff on retryable errors."""
+    last_status = 0
     for attempt in range(MAX_RETRIES + 1):
         start = time.monotonic()
         try:
@@ -73,17 +77,21 @@ def _check_url(url: str) -> dict:
                 elapsed_ms = int((time.monotonic() - start) * 1000)
                 return {"url": url, "status": resp.status, "ms": elapsed_ms}
         except HTTPError as e:
-            if e.code == 429 and attempt < MAX_RETRIES:
+            elapsed_ms = int((time.monotonic() - start) * 1000)
+            last_status = e.code
+            if e.code in _RETRYABLE_CODES and attempt < MAX_RETRIES:
                 wait = 2 ** attempt
-                _warn(f"Rate limited on {url}, retrying in {wait}s")
+                _warn(f"Retryable {e.code} on {url}, retrying in {wait}s")
                 time.sleep(wait)
                 continue
-            elapsed_ms = int((time.monotonic() - start) * 1000)
             return {"url": url, "status": e.code, "ms": elapsed_ms}
         except (URLError, TimeoutError, OSError) as e:
             elapsed_ms = int((time.monotonic() - start) * 1000)
+            if attempt < MAX_RETRIES:
+                time.sleep(2 ** attempt)
+                continue
             return {"url": url, "status": 0, "ms": elapsed_ms, "error": str(e)}
-    return {"url": url, "status": 0, "ms": 0, "error": "max retries exceeded"}
+    return {"url": url, "status": last_status, "ms": 0, "error": "max retries exceeded"}
 
 
 def main() -> None:
