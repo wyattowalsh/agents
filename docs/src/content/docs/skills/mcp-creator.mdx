@@ -1,13 +1,13 @@
 ---
-title: "mcp-creator"
-description: "Build production-ready MCP servers using FastMCP v3. Guides the full lifecycle: research, scaffolding, tool/resource/prompt implementation, testing, and deployment. Targets FastMCP 3.0."
+title: "MCP Creator"
+description: "Build production-ready MCP servers with FastMCP v3. Full lifecycle: research, scaffold, implement, test, deploy. Prevents 34 common errors."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="mcp-creator" variant="note" /> <Badge text="2522 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
+<Badge text="mcp-creator" variant="note" /> <Badge text="MIT" variant="success" /> <Badge text="v2.0" variant="success" /> <Badge text="opus" variant="tip" />
 
-> Build production-ready MCP servers using FastMCP v3. Guides the full lifecycle: research, scaffolding, tool/resource/prompt implementation, testing, and deployment. Targets FastMCP 3.0.0rc2 with Providers, Transforms, middleware, OAuth, composition, component versioning, background tasks, elicitation, sampling, and structured output. Prevents 34 common errors. Use when creating MCP servers, adding tools/resources/prompts, integrating APIs via MCP, converting OpenAPI specs or FastAPI apps, troubleshooting FastMCP issues, or learning FastMCP v3 patterns. Python-focused with uv toolchain.
+> Build production-ready MCP servers using FastMCP v3 (3.0.0rc2). Guides the full lifecycle from research through deployment, with built-in error prevention for 34 common mistakes. Python-focused with uv toolchain.
 
 <div class="quick-start">
 
@@ -24,7 +24,48 @@ npx skills add wyattowalsh/agents/skills/mcp-creator -g
 
 ## What It Does
 
-Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides through research, scaffolding, implementation, testing, and deployment. All output follows this repo's conventions: `mcp/<name>/` directory, `fastmcp.json` config, `uv` workspace member, imperative voice, kebab-case naming.
+This skill guides you through building MCP servers with FastMCP v3 in five phases: **research**, **scaffold**, **implement**, **test**, and **deploy**. It targets FastMCP 3.0.0rc2 with the full Provider/Transform architecture, 14 built-in middleware, OAuth 2.1, server composition, and structured output.
+
+All generated output follows repo conventions: `mcp/<name>/` directory structure, `fastmcp.json` config, `uv` workspace membership, imperative voice, kebab-case naming.
+
+<Aside type="tip">
+  The skill consults live FastMCP docs via Context7 before implementation. When live docs contradict bundled references, **live docs win**.
+</Aside>
+
+## Usage Modes
+
+The skill dispatches based on your input:
+
+<Tabs>
+  <TabItem label="New Server">
+    Build a new MCP server from scratch for a service or API:
+    ```
+    /mcp-creator GitHub
+    /mcp-creator Stripe
+    ```
+    Starts at Phase 1 (Research & Plan).
+  </TabItem>
+  <TabItem label="Extend">
+    Add tools/resources to an existing server:
+    ```
+    /mcp-creator mcp/myserver/
+    ```
+    Jumps to Phase 3 (Implement).
+  </TabItem>
+  <TabItem label="Convert">
+    Convert an OpenAPI spec or FastAPI app to MCP:
+    ```
+    /mcp-creator https://api.example.com/openapi.json
+    /mcp-creator path/to/fastapi_app.py
+    ```
+  </TabItem>
+  <TabItem label="Debug">
+    Troubleshoot an existing server using the 34-error catalog:
+    ```
+    /mcp-creator debug "Connection refused on stdio transport"
+    ```
+  </TabItem>
+</Tabs>
 
 <Tabs>
   <TabItem label="General">
@@ -43,10 +84,30 @@ Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides
   </TabItem>
 </Tabs>
 
+## Bundled References
+
+The skill includes 8 reference files loaded on demand during the relevant phase:
+
+<CardGrid>
+  <Card title="FastMCP v3 API" icon="document">
+    Complete API surface: constructor, decorators, Context, providers, transforms, 14 middleware.
+  </Card>
+  <Card title="Tool Design" icon="pencil">
+    LLM-optimized naming, descriptions, parameters, annotations, 8 tool patterns.
+  </Card>
+  <Card title="Common Errors" icon="warning">
+    34 numbered errors with symptom, cause, and v3-updated fix.
+  </Card>
+  <Card title="Testing" icon="approve-check">
+    In-memory Client patterns, pytest setup, 18-item checklist.
+  </Card>
+</CardGrid>
+
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create, improve, and audit AI agent skills. Applies 13 proven structural patterns, scores quality with deterministic audit, manages full lifecycle." />
+  <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create, improve, and audit AI agent skills with 13 structural patterns and deterministic scoring." />
+  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions: uv, pyproject.toml, preferred libraries." />
 </CardGrid>
 
 <details>
