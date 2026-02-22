@@ -24,54 +24,7 @@ npx skills add wyattowalsh/agents/skills/host-panel -g
 
 ## What It Does
 
-Surface real tensions, frameworks, and disagreements through simulated expert discourse — not theatrical roleplay. Each panel follows a research-grounded pipeline: topic analysis, persona generation, multi-phase discussion, and structured synthesis.
-
-## Formats
-
-<CardGrid>
-  <Card title="Roundtable" icon="list-format">
-    Open multi-perspectival exploration. Best for broad topics, brainstorming, and mapping a field. 3-4 phases of progressively narrowing exchange.
-  </Card>
-  <Card title="Oxford-Style" icon="approve-check-circle">
-    Binary debate with formal proposition and opposition sides. Best for policy decisions and testing propositions. Includes floor questions and closing statements.
-  </Card>
-  <Card title="Socratic" icon="comment">
-    Deep inquiry through structured questioning. Best for conceptual analysis and definitional disputes. Progresses through Define, Examine, Deconstruct, and Reconstruct phases.
-  </Card>
-</CardGrid>
-
-## Usage Examples
-
-<Tabs>
-  <TabItem label="Basic">
-    ```
-    /host-panel "Should foundation model weights be open-sourced?"
-    ```
-    Uses defaults: roundtable format, 4 experts. The skill auto-selects oxford for this binary proposition.
-  </TabItem>
-  <TabItem label="With Format">
-    ```
-    /host-panel "What obligations do current generations owe the far future?" socratic
-    ```
-    Specifies Socratic format for deep conceptual inquiry with 4 experts.
-  </TabItem>
-  <TabItem label="With Count">
-    ```
-    /host-panel "Is the replication crisis a crisis of method or incentives?" roundtable 5
-    ```
-    Roundtable with 5 experts. Format and count can appear in any order.
-  </TabItem>
-  <TabItem label="Minimal">
-    ```
-    /host-panel "AI governance" oxford 2
-    ```
-    Oxford debate with 2 experts — runs as direct proposition-vs-opposition without swing or floor questions.
-  </TabItem>
-</Tabs>
-
-<Aside type="tip" title="Expert Count">
-  For best persona maintenance quality, use 4-5 experts. At 2, the panel becomes a structured dialogue. At 6, persona fidelity degrades.
-</Aside>
+Surface real tensions, frameworks, and disagreements through simulated expert discourse — not theatrical roleplay.
 
 <Tabs>
   <TabItem label="General">
@@ -85,18 +38,6 @@ Surface real tensions, frameworks, and disagreements through simulated expert di
 | Argument Hint | `"topic" [format] [num-experts]` |
   </TabItem>
 </Tabs>
-
-## Research Basis
-
-The skill's design draws on multi-agent debate and persona fidelity research:
-
-- **SimuPanel** (Chen et al., 2024) — evaluating LLM-simulated expert panels
-- **PersonaFlow** (Baek et al., 2024) — persona-driven generation with verification
-- **CONSENSAGENT** (Xiong et al., 2025) — multi-agent debate consensus mechanisms
-- **Du et al. (2023)** — multi-agent debate improves reasoning and factual accuracy
-- Anti-sycophancy mechanisms from Sharma et al. (2023) and Wei et al. (2023)
-
-The internal reasoning pipeline (Recall-Analyze-Evaluate-Respond), anti-clustering checks, and convergence testing all stem from these findings.
 
 ## Related Skills
 
