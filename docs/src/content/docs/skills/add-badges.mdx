@@ -1,164 +1,48 @@
 ---
 title: "add-badges"
-description: "Scan a codebase, detect technologies, and generate shields.io badges with correct icons, brand colors, and live data endpoints."
+description: "Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields."
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps, FileTree } from '@astrojs/starlight/components';
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="add-badges" variant="note" /> <Badge text="Skill" variant="default" />
+<Badge text="add-badges" variant="note" /> <Badge text="1128 words" variant="default" />
 
-> Scan a codebase to detect languages, frameworks, CI/CD pipelines, package
-> managers, and tools, then generate and insert shields.io badges into the
-> README with correct icons, brand colors, and live data endpoints.
+> Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields.io badges into the README with correct icons, brand colors, and live data endpoints. Use when adding badges, updating badges, removing badges, improving README appearance, adding shields, adding CI status badges, or making a README look more professional. Supports shields.io, badgen.net, and forthebadge.com with all styles including for-the-badge. Handles badge grouping, ordering, style matching, custom badges, and incremental updates.
 
-## Quick Start
+<div class="quick-start">
 
-<Steps>
+### Quick Start
 
-1. **Install the skill**
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/add-badges -g
+```
 
-   ```bash
-   npx skills add wyattowalsh/agents/skills/add-badges -g
-   ```
+**Use:** `/add-badges` `[--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]`
 
-2. **Run it in any project**
-
-   ```
-   /add-badges
-   ```
-
-   The skill scans your codebase, proposes a curated badge set, and asks for approval before modifying files.
-
-</Steps>
+</div>
 
 ## What It Does
 
-The skill operates in four phases:
-
-1. **Detect** — runs a Python scanner (`detect.py`) that inspects manifests, CI configs, git remote, license, infrastructure, and 18 other signal categories to build a project profile
-2. **Select** — reads from a curated badge catalog (60+ badges) and picks the right set based on detected technologies, applying style rules and user preferences
-3. **Present** — shows a grouped preview with diff indicators (`[+]` new, `[=]` kept, `[-]` removed) and lets you reorder, add, or remove badges before committing
-4. **Insert** — writes badges into your README between `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers with idempotent updates
-
-<Aside type="tip">
-  The skill includes a safety hook that warns you before editing a README with uncommitted changes, preventing accidental loss of in-progress work.
-</Aside>
-
-## Usage Examples
+Run the detection script via the Bash tool:
 
 <Tabs>
-  <TabItem label="Basic">
-    Scan the current project and suggest badges:
-    ```
-    /add-badges
-    ```
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `add-badges` |
   </TabItem>
-  <TabItem label="With Profile">
-    Use a maturity profile to control badge count:
-    ```
-    /add-badges --profile active
-    ```
-    Profiles: `new` (3-5), `active` (8-12), `mature` (12-18), `enterprise` (15-20).
-  </TabItem>
-  <TabItem label="Filtered">
-    Only generate status and package badges:
-    ```
-    /add-badges --include status,package
-    ```
-    Or exclude social badges:
-    ```
-    /add-badges --exclude social
-    ```
-  </TabItem>
-  <TabItem label="Dry Run">
-    Preview without modifying files:
-    ```
-    /add-badges --dry-run --style for-the-badge
-    ```
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]` |
   </TabItem>
 </Tabs>
-
-### All Flags
-
-| Flag | Description |
-|------|-------------|
-| `--profile <name>` | Badge count preset: `new`, `active`, `mature`, `enterprise` |
-| `--include <cats>` | Only named categories (mutually exclusive with `--exclude`) |
-| `--exclude <cats>` | Skip named categories |
-| `--style <style>` | `flat`, `flat-square`, `plastic`, `for-the-badge`, `social` |
-| `--layout <layout>` | `inline`, `centered`, `grouped`, `table`, `collapsible` |
-| `--readme <path>` | Target a specific file instead of auto-detected README |
-| `--dark-mode` | Generate theme-aware `<picture>` elements for GitHub |
-| `--dry-run` | Preview proposed badges without modifying files |
-| `--yes` | Skip approval prompt (never skips required info prompts) |
-| `--replace` | Replace marker content and consolidate scattered badges |
-
-### Badge Categories
-
-Badges are grouped into 5 display super-groups containing 16 granular categories:
-
-| Super-group | Categories |
-|-------------|------------|
-| **Status** | `status` |
-| **Quality** | `quality`, `code-style`, `security` |
-| **Package** | `package`, `license` |
-| **Tech Stack** | `language`, `frameworks`, `infrastructure`, `docs`, `release`, `databases`, `monorepo`, `developer-tooling` |
-| **Social** | `social`, `community` |
-
-## Supported Badge Services
-
-<CardGrid>
-  <Card title="shields.io" icon="rocket">
-    Primary service. Dynamic and static badges with full parameter support for style, logo, and logoColor.
-  </Card>
-  <Card title="badgen.net" icon="star">
-    Secondary service. Parallel URLs for top badges. Uses `icon` instead of `logo`.
-  </Card>
-  <Card title="forthebadge.com" icon="puzzle">
-    Decorative badges only. No dynamic data. Used when explicitly requested.
-  </Card>
-  <Card title="Native URLs" icon="approve-check">
-    GitHub Actions, Codecov, SonarCloud, and other services with their own badge endpoints.
-  </Card>
-</CardGrid>
-
-## Architecture
-
-<FileTree>
-
-- skills/add-badges/
-  - SKILL.md
-  - scripts/
-    - detect.py — codebase scanner (pure stdlib, Python 3.11+)
-    - validate-badges.py — badge URL health checker (parallel HTTP HEAD)
-  - references/
-    - badge-catalog-core.md — ~30 badges (status, package, license, language, social)
-    - badge-catalog-extended.md — ~30+ badges (quality, frameworks, infra, security, ...)
-    - style-guide.md — style comparison, layouts, URL encoding, dark mode
-
-</FileTree>
-
-<Aside type="note">
-  Both Python scripts use only the standard library — zero pip dependencies. The detection script requires Python 3.11+ for `tomllib`.
-</Aside>
-
-## Golden Example
-
-```markdown
-<!-- BADGES:START -->
-<!-- generated by add-badges 2025-01-15 -->
-[![CI](https://github.com/{owner}/{repo}/actions/workflows/ci.yml/badge.svg)](https://github.com/{owner}/{repo}/actions)
-[![PyPI](https://img.shields.io/pypi/v/{package}?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/{package}/)
-[![License](https://img.shields.io/github/license/{owner}/{repo}?style=flat-square&logo=github&logoColor=white)](https://github.com/{owner}/{repo}/blob/main/LICENSE)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge)](https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo})
-<!-- BADGES:END -->
-```
 
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review — useful for reviewing badge choices and README quality." />
-  <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create new skills from scratch — useful for building custom badge-related automation." />
+  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity…" />
 </CardGrid>
 
 <details>

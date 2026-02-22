@@ -8,7 +8,7 @@ export default [
   { slug: '' },
   {
     label: 'Skills',
-    badge: { text: '30', variant: 'tip' },
+    badge: { text: '12', variant: 'tip' },
     items: [
       { slug: 'skills', label: 'Overview' },
       {
@@ -28,7 +28,6 @@ export default [
           { slug: 'skills/wargame' },
         ],
       },
-      { label: 'Installed (18)', slug: 'skills/installed' },
     ],
   },
   {

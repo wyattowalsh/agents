@@ -94,9 +94,10 @@ MCP servers live in `mcp/<name>/` and follow FastMCP v3 conventions:
 
 ```bash
 # Create new assets from reference templates
-wagents new skill <name>    # → skills/<name>/SKILL.md
-wagents new agent <name>    # → agents/<name>.md
-wagents new mcp <name>      # → mcp/<name>/ (server.py + pyproject.toml + fastmcp.json)
+wagents new skill <name>            # → skills/<name>/SKILL.md
+wagents new skill <name> --no-docs  # Skip docs page scaffold
+wagents new agent <name>            # → agents/<name>.md
+wagents new mcp <name>              # → mcp/<name>/ (server.py + pyproject.toml + fastmcp.json)
 
 # Validate all assets
 wagents validate             # Checks frontmatter of all skills and agents
@@ -106,12 +107,14 @@ wagents readme               # Fully regenerates README.md from repo contents
 wagents readme --check       # Exits 1 if README is stale
 
 # Documentation site
-wagents docs init        # One-time: pnpm install in docs/
-wagents docs generate    # Generate MDX content pages from repo assets
-wagents docs dev         # Generate + launch dev server
-wagents docs build       # Generate + static build
-wagents docs preview     # Generate + build + preview server
-wagents docs clean       # Remove generated content pages
+wagents docs init                       # One-time: pnpm install in docs/
+wagents docs generate                   # Generate MDX content pages
+wagents docs generate --no-installed    # Skip installed skills from ~/.claude/skills/
+wagents docs generate --include-drafts  # Include skills with TODO descriptions
+wagents docs dev                        # Generate + launch dev server
+wagents docs build                      # Generate + static build
+wagents docs preview                    # Generate + build + preview server
+wagents docs clean                      # Remove generated content pages
 ```
 
 ---
@@ -134,13 +137,15 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
+> All 12 custom skill descriptions are loaded at startup. The table above highlights the auto-invoke convention skills. User-invocable skills (honest-review, add-badges, host-panel, mcp-creator, prompt-engineer, skill-creator, wargame) are also visible in context for on-demand invocation.
+
 ### Token Budget
 
 | Component | Tokens | Loading |
 |-----------|--------|---------|
 | `global.md` (general + orchestration core) | ~500 | Always |
-| Skill descriptions (5 skills) | ~180 | Always |
-| **Total always-loaded** | **~680** | |
+| Skill descriptions (12 custom + installed) | ~500 | Always |
+| **Total always-loaded** | **~1,000** | |
 | Skill bodies (when invoked) | ~5,500 | On-demand |
 
 ---
