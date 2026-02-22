@@ -149,16 +149,17 @@
 /* ===== STATS BAR ===== */
 .stats-bar {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   justify-content: center;
-  padding: 1rem 0 2rem;
+  padding: 1.5rem 0 2.5rem;
   flex-wrap: wrap;
 }
 .stat {
   font-family: var(--sl-font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.25rem;
+  letter-spacing: 0.01em;
   border-radius: 99px;
   border: 1px solid oklch(0.3 0 0);
   background: oklch(0.15 0 0 / 0.5);
@@ -497,4 +498,67 @@ h1, h2, h3, h4, h5, h6 {
 .catalog-installed .sl-link-card {
   border-left: 3px solid oklch(0.70 0.15 45);
   border-top: none;
+}
+
+/* ===== SPLASH PAGE SECTION DIVIDERS ===== */
+[data-has-hero] .sl-markdown-content h2 {
+  padding-top: 2.5rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid oklch(0.25 0.05 285 / 0.3);
+}
+[data-has-hero] .sl-markdown-content h2:first-of-type {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+[data-theme='light'] [data-has-hero] .sl-markdown-content h2 {
+  border-top-color: oklch(0.75 0.05 285 / 0.3);
+}
+
+/* ===== SPLASH PAGE STEPS ENHANCEMENT ===== */
+[data-has-hero] .sl-steps {
+  --sl-steps-accent: var(--primary);
+  margin: 1.5rem 0 2rem;
+}
+[data-has-hero] .sl-steps > li {
+  padding-bottom: 1.5rem;
+}
+[data-has-hero] .sl-steps strong {
+  color: var(--sl-color-text-accent);
+}
+
+/* ===== SPLASH PAGE ASIDE PROMINENCE ===== */
+[data-has-hero] .starlight-aside {
+  margin: 2rem 0;
+  font-size: 1.05rem;
+}
+[data-has-hero] .starlight-aside--tip {
+  border-left-color: var(--primary);
+  background: oklch(0.15 0.03 285 / 0.2);
+}
+[data-theme='light'] [data-has-hero] .starlight-aside--tip {
+  background: oklch(0.95 0.02 285 / 0.3);
+}
+
+/* ===== EXTERNAL LINK CARDS ===== */
+/* Cyan accent for ecosystem / external links */
+.sl-link-card[href^="http"] {
+  border-left: 2px solid oklch(0.5 0.1 200 / 0.3);
+}
+.sl-link-card[href^="http"]:hover {
+  border-left-color: var(--type-agent);
+}
+
+/* ===== CONVENTION SKILLS SECTION ===== */
+.catalog-skill + blockquote {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.8;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ===== SPLASH PAGE CARD GRID ===== */
+[data-has-hero] .card-grid {
+  gap: 1rem;
 }

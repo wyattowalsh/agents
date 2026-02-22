@@ -66,7 +66,7 @@ def write_index_page(nodes: list) -> None:
     parts.append("      icon: external")
     parts.append("---")
     parts.append("")
-    parts.append("import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';")
+    parts.append("import { Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';")
     parts.append("")
 
     # Stats bar — only show non-zero counts
@@ -88,6 +88,16 @@ def write_index_page(nodes: list) -> None:
         parts.extend(stat_items)
         parts.append("</div>")
         parts.append("")
+
+    # "What are Skills?" explainer
+    parts.append('<Aside type="tip" title="What are Skills?">')
+    parts.append(
+        "Skills are reusable knowledge and workflows that extend AI coding agents. "
+        "Install once, invoke with `/skill-name` in any supported agent. "
+        "[Learn more at agentskills.io \u2192](https://agentskills.io)"
+    )
+    parts.append("</Aside>")
+    parts.append("")
 
     # Manually curated showcase — update when key skills change
     parts.append("## What Can You Do?")
@@ -126,6 +136,29 @@ def write_index_page(nodes: list) -> None:
     parts.append("```")
     parts.append("")
     parts.append("</div>")
+    parts.append("")
+
+    # How it Works
+    parts.append("## How it Works")
+    parts.append("")
+    parts.append("<Steps>")
+    parts.append("")
+    parts.append("1. **Install** — `npx skills add wyattowalsh/agents --all -g` installs all skills globally.")
+    parts.append("")
+    parts.append(
+        "2. **Invoke** — Type `/skill-name` in "
+        "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
+        "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
+        "or any [agentskills.io](https://agentskills.io)-compatible agent."
+    )
+    parts.append("")
+    parts.append(
+        "3. **Enhance** — Each skill provides domain expertise, "
+        "structured workflows, and proven patterns that make your "
+        "agent dramatically more capable."
+    )
+    parts.append("")
+    parts.append("</Steps>")
     parts.append("")
 
     # Skills section — show top 3 + link to full index
@@ -170,6 +203,54 @@ def write_index_page(nodes: list) -> None:
         parts.append("</div>")
         parts.append("")
 
+    # Supported Agents
+    parts.append("## Supported Agents")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append(
+        '  <LinkCard title="Claude Code"'
+        ' href="https://docs.anthropic.com/en/docs/claude-code"'
+        ' description="Anthropic\'s official CLI for Claude." />'
+    )
+    parts.append(
+        '  <LinkCard title="Gemini CLI"'
+        ' href="https://github.com/google-gemini/gemini-cli"'
+        ' description="Google\'s command-line interface for Gemini." />'
+    )
+    parts.append(
+        '  <LinkCard title="Codex CLI"'
+        ' href="https://github.com/openai/codex"'
+        ' description="OpenAI\'s coding agent with skills support." />'
+    )
+    parts.append(
+        '  <LinkCard title="agentskills.io"'
+        ' href="https://agentskills.io"'
+        ' description="The open ecosystem for cross-agent skills." />'
+    )
+    parts.append("</CardGrid>")
+    parts.append("")
+
+    # Resources
+    parts.append("## Resources")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append(
+        '  <LinkCard title="GitHub"'
+        ' href="https://github.com/wyattowalsh/agents"'
+        ' description="Source code, issues, and contributions." />'
+    )
+    parts.append(
+        '  <LinkCard title="CLI Reference" href="/cli/" description="Full command reference for the wagents CLI." />'
+    )
+    parts.append(
+        '  <LinkCard title="Create Your Own"'
+        ' href="/skills/skill-creator/"'
+        ' description="Build, improve, and audit skills'
+        ' with the skill-creator." />'
+    )
+    parts.append("</CardGrid>")
+    parts.append("")
+
     content_dir = ROOT / "docs" / "src" / "content" / "docs"
     content_dir.mkdir(parents=True, exist_ok=True)
     (content_dir / "index.mdx").write_text("\n".join(parts))
@@ -183,7 +264,7 @@ def write_cli_page() -> None:
     parts.append("description: wagents CLI commands and usage")
     parts.append("---")
     parts.append("")
-    parts.append("import { Tabs, TabItem, Steps, FileTree } from '@astrojs/starlight/components';")
+    parts.append("import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append("The `wagents` CLI manages AI agent assets in this repository.")
     parts.append("")
@@ -217,9 +298,10 @@ def write_cli_page() -> None:
     parts.append("Create new assets from reference templates.")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents new skill <name>    # Create a new skill")
-    parts.append("wagents new agent <name>    # Create a new agent")
-    parts.append("wagents new mcp <name>      # Create a new MCP server")
+    parts.append("wagents new skill <name>              # Create a new skill")
+    parts.append("wagents new skill <name> --no-docs    # Skip docs page scaffold")
+    parts.append("wagents new agent <name>              # Create a new agent")
+    parts.append("wagents new mcp <name>                # Create a new MCP server")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
@@ -228,12 +310,14 @@ def write_cli_page() -> None:
     parts.append("Manage the documentation site.")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs init        # One-time: pnpm install in docs/")
-    parts.append("wagents docs generate    # Generate MDX content pages")
-    parts.append("wagents docs dev         # Generate + launch dev server")
-    parts.append("wagents docs build       # Generate + static build")
-    parts.append("wagents docs preview     # Generate + build + preview server")
-    parts.append("wagents docs clean       # Remove generated content pages")
+    parts.append("wagents docs init                       # One-time: pnpm install")
+    parts.append("wagents docs generate                   # Generate MDX content pages")
+    parts.append("wagents docs generate --no-installed    # Skip installed skills")
+    parts.append("wagents docs generate --include-drafts  # Include draft skills")
+    parts.append("wagents docs dev                        # Generate + launch dev server")
+    parts.append("wagents docs build                      # Generate + static build")
+    parts.append("wagents docs preview                    # Generate + build + preview")
+    parts.append("wagents docs clean                      # Remove generated content")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
@@ -273,9 +357,37 @@ def write_cli_page() -> None:
     parts.append("    - pyproject.toml")
     parts.append("    - fastmcp.json")
     parts.append("- docs/ (this site)")
-    parts.append("- wagents/ (CLI source)")
+    parts.append("- wagents/")
+    parts.append("  - \\_\\_init\\_\\_.py")
     parts.append("  - cli.py")
+    parts.append("  - parsing.py")
+    parts.append("  - catalog.py")
+    parts.append("  - rendering.py")
+    parts.append("  - docs.py")
     parts.append("</FileTree>")
+    parts.append("")
+
+    # Built With
+    parts.append("## Built With")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append(
+        '  <LinkCard title="uv" href="https://docs.astral.sh/uv/" description="Fast Python package manager." />'
+    )
+    parts.append(
+        '  <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />'
+    )
+    parts.append(
+        '  <LinkCard title="Starlight"'
+        ' href="https://starlight.astro.build/"'
+        ' description="Documentation framework for this site." />'
+    )
+    parts.append(
+        '  <LinkCard title="ruff"'
+        ' href="https://docs.astral.sh/ruff/"'
+        ' description="Fast Python linter and formatter." />'
+    )
+    parts.append("</CardGrid>")
     parts.append("")
 
     content_dir = ROOT / "docs" / "src" / "content" / "docs"
@@ -299,7 +411,7 @@ def write_skills_index(nodes: list) -> None:
     parts.append("description: Browse all available AI agent skills")
     parts.append("---")
     parts.append("")
-    parts.append("import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';")
+    parts.append("import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append(
         "> Reusable knowledge and workflows that extend AI agent capabilities"
@@ -319,13 +431,42 @@ def write_skills_index(nodes: list) -> None:
     parts.append("</div>")
     parts.append("")
 
-    # Custom skills
-    if custom:
-        parts.append(f"## Custom Skills ({len(custom)})")
+    # New-to-skills aside
+    parts.append('<Aside type="tip" title="New to skills?">')
+    parts.append(
+        "Skills extend your AI agent with domain expertise. "
+        "Install with `npx skills add` and invoke with "
+        "`/skill-name`. "
+        "See [How it Works](/) for a quick overview, or browse the "
+        "[agentskills.io](https://agentskills.io) ecosystem."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+
+    # Split custom skills into user-invocable and auto-invoke
+    user_invocable = [n for n in custom if n.metadata.get("user-invocable") is not False]
+    auto_invoke = [n for n in custom if n.metadata.get("user-invocable") is False]
+
+    if user_invocable:
+        parts.append(f"## User-Invocable ({len(user_invocable)})")
         parts.append("")
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
-        for n in custom:
+        for n in user_invocable:
+            desc = escape_attr(truncate_sentence(n.description, 160))
+            parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
+        parts.append("</CardGrid>")
+        parts.append("</div>")
+        parts.append("")
+
+    if auto_invoke:
+        parts.append(f"## Convention Skills ({len(auto_invoke)})")
+        parts.append("")
+        parts.append("> Auto-invoked by the agent when relevant context is detected.")
+        parts.append("")
+        parts.append('<div class="catalog-skill">')
+        parts.append("<CardGrid>")
+        for n in auto_invoke:
             desc = escape_attr(truncate_sentence(n.description, 160))
             parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
         parts.append("</CardGrid>")
@@ -502,6 +643,9 @@ def write_sidebar(nodes: list) -> None:
         nav_items.append("  { label: 'Agents', link: '/agents/' }")
     if mcps:
         nav_items.append("  { label: 'MCP', link: '/mcp/' }")
+    guides_dir_check = CONTENT_DIR / "guides"
+    if guides_dir_check.exists() and any(guides_dir_check.glob("*.mdx")):
+        nav_items.append("  { label: 'Guides', link: '/guides/wargame/' }")
     nav_items.append("  { label: 'CLI', link: '/cli/' }")
     lines.append(",\n".join(nav_items))
     lines.append("];")

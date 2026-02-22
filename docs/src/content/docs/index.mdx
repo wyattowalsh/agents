@@ -36,11 +36,15 @@ hero:
       icon: external
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
 <div class="stats-bar">
   <span class="stat stat-skill">12 Custom Skills</span>
 </div>
+
+<Aside type="tip" title="What are Skills?">
+Skills are reusable knowledge and workflows that extend AI coding agents. Install once, invoke with `/skill-name` in any supported agent. [Learn more at agentskills.io →](https://agentskills.io)
+</Aside>
 
 ## What Can You Do?
 
@@ -61,14 +65,43 @@ npx skills add wyattowalsh/agents --all -g
 
 </div>
 
+## How it Works
+
+<Steps>
+
+1. **Install** — `npx skills add wyattowalsh/agents --all -g` installs all skills globally.
+
+2. **Invoke** — Type `/skill-name` in [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), or any [agentskills.io](https://agentskills.io)-compatible agent.
+
+3. **Enhance** — Each skill provides domain expertise, structured workflows, and proven patterns that make your agent dramatically more capable.
+
+</Steps>
+
 ## Featured Skills
 
 <div class="catalog-skill">
 <CardGrid>
   <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields." />
-  <LinkCard title="agent-conventions" href="/skills/agent-conventions/" description="Agent definition conventions. When creating or modifying agents at any level (~/.claude/agents/, ." />
+  <LinkCard title="agent-conventions" href="/skills/agent-conventions/" description="Agent definition conventions. When creating or modifying agents at any level…" />
   <LinkCard title="continuous-improvement" href="/skills/continuous-improvement/" description="Instruction file maintenance protocol. Propose updates when a pattern is corrected 3+ times across 2+ sessions. Route: cross-project → global." />
 </CardGrid>
 </div>
 
 [View all 12 skills →](/skills/)
+
+## Supported Agents
+
+<CardGrid>
+  <LinkCard title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code" description="Anthropic's official CLI for Claude." />
+  <LinkCard title="Gemini CLI" href="https://github.com/google-gemini/gemini-cli" description="Google's command-line interface for Gemini." />
+  <LinkCard title="Codex CLI" href="https://github.com/openai/codex" description="OpenAI's coding agent with skills support." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="GitHub" href="https://github.com/wyattowalsh/agents" description="Source code, issues, and contributions." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Full command reference for the wagents CLI." />
+  <LinkCard title="Create Your Own" href="/skills/skill-creator/" description="Build, improve, and audit skills with the skill-creator." />
+</CardGrid>

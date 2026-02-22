@@ -3,7 +3,7 @@ title: Skills
 description: Browse all available AI agent skills
 ---
 
-import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';
 
 > Reusable knowledge and workflows that extend AI agent capabilities across Claude Code, Gemini CLI, Codex, Cursor, and more.
 
@@ -17,21 +17,34 @@ npx skills add wyattowalsh/agents --all -g
 
 </div>
 
-## Custom Skills (12)
+<Aside type="tip" title="New to skills?">
+Skills extend your AI agent with domain expertise. Install with `npx skills add` and invoke with `/skill-name`. See [How it Works](/) for a quick overview, or browse the [agentskills.io](https://agentskills.io) ecosystem.
+</Aside>
+
+## User-Invocable (8)
 
 <div class="catalog-skill">
 <CardGrid>
   <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields." />
-  <LinkCard title="agent-conventions" href="/skills/agent-conventions/" description="Agent definition conventions. When creating or modifying agents at any level (~/.claude/agents/, ." />
-  <LinkCard title="continuous-improvement" href="/skills/continuous-improvement/" description="Instruction file maintenance protocol. Propose updates when a pattern is corrected 3+ times across 2+ sessions. Route: cross-project → global." />
   <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity…" />
   <LinkCard title="host-panel" href="/skills/host-panel/" description="Host simulated panel discussions and debates among AI-simulated domain experts." />
-  <LinkCard title="javascript-conventions" href="/skills/javascript-conventions/" description="JavaScript/Node.js tooling conventions. Use pnpm for all package management (not npm or yarn, unless a project explicitly requires them)." />
   <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build production-ready MCP servers using FastMCP v3." />
   <LinkCard title="orchestrator" href="/skills/orchestrator/" description="Full orchestration guide for parallel execution, subagent waves, agent teams, and multi-wave pipelines." />
   <LinkCard title="prompt-engineer" href="/skills/prompt-engineer/" description="Comprehensive prompt and context engineering for any AI system." />
-  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions. Use uv for all operations (uv run, uv add — not pip). Use pyproject.toml with uv add (not uv pip)." />
   <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create, improve, and audit AI agent skills. Applies 13 proven structural patterns, scores quality with deterministic audit, manages full lifecycle." />
   <LinkCard title="wargame" href="/skills/wargame/" description="Domain-agnostic strategic decision analysis and wargaming." />
+</CardGrid>
+</div>
+
+## Convention Skills (4)
+
+> Auto-invoked by the agent when relevant context is detected.
+
+<div class="catalog-skill">
+<CardGrid>
+  <LinkCard title="agent-conventions" href="/skills/agent-conventions/" description="Agent definition conventions. When creating or modifying agents at any level…" />
+  <LinkCard title="continuous-improvement" href="/skills/continuous-improvement/" description="Instruction file maintenance protocol. Propose updates when a pattern is corrected 3+ times across 2+ sessions. Route: cross-project → global." />
+  <LinkCard title="javascript-conventions" href="/skills/javascript-conventions/" description="JavaScript/Node.js tooling conventions. Use pnpm for all package management (not npm or yarn, unless a project explicitly requires them)." />
+  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions. Use uv for all operations (uv run, uv add — not pip). Use pyproject.toml with uv add (not uv pip)." />
 </CardGrid>
 </div>

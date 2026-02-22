@@ -233,6 +233,14 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("")
     parts.append("</div>")
     parts.append("")
+    parts.append(
+        "Works with "
+        "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
+        "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
+        "and other "
+        "[agentskills.io](https://agentskills.io)-compatible agents."
+    )
+    parts.append("")
 
     # Guide cross-link — check if a hand-maintained guide page exists
     guide_path = CONTENT_DIR / "guides" / f"{node.id}.mdx"
@@ -413,6 +421,22 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         )
         parts.append("")
     parts.append("</details>")
+    parts.append("")
+
+    # Resources
+    parts.append("## Resources")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />')
+    parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />')
+    if node.source == "custom":
+        parts.append(
+            '  <LinkCard title="agentskills.io"'
+            ' href="https://agentskills.io"'
+            ' description="The open ecosystem for'
+            ' cross-agent skills." />'
+        )
+    parts.append("</CardGrid>")
     parts.append("")
 
     # Source link (only for custom skills)
