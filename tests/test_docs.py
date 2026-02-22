@@ -108,7 +108,7 @@ class TestWriteSkillsIndex:
         idx = content_dir / "skills" / "index.mdx"
         assert idx.exists()
         text = idx.read_text()
-        assert "Custom Skills (1)" in text
+        assert "User-Invocable (1)" in text
 
     def test_installed_skills_section(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"

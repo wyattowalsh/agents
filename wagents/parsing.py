@@ -11,19 +11,31 @@ def to_title(name: str) -> str:
 
 
 def truncate_sentence(text: str, max_len: int) -> str:
-    """Truncate at sentence boundary before max_len; fall back to word boundary with ellipsis."""
+    """Truncate at sentence boundary before max_len; fall back to word boundary with ellipsis.
+
+    If truncation leaves an unclosed parenthesis, backs up to before the
+    opening ``(`` so the result never ends mid-parenthetical.
+    """
     if len(text) <= max_len:
         return text
     chunk = text[:max_len]
     # Find last sentence boundary
+    result: str | None = None
     for i in range(len(chunk) - 1, -1, -1):
         if chunk[i] in ".!?":
-            return chunk[: i + 1]
+            result = chunk[: i + 1]
+            break
     # Fall back to word boundary
-    last_space = chunk.rfind(" ")
-    if last_space > 0:
-        return chunk[:last_space] + "\u2026"
-    return chunk[: max_len - 1] + "\u2026"
+    if result is None:
+        last_space = chunk.rfind(" ")
+        result = chunk[:last_space] + "\u2026" if last_space > 0 else chunk[: max_len - 1] + "\u2026"
+    # Fix unbalanced parentheses — back up to before the last unmatched '('
+    if result.count("(") > result.count(")"):
+        idx = result.rfind("(")
+        if idx > 0:
+            trimmed = result[:idx].rstrip()
+            result = trimmed + "\u2026" if trimmed else result
+    return result
 
 
 def strip_relative_md_links(text: str) -> str:

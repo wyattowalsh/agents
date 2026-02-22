@@ -3,7 +3,7 @@ title: CLI Reference
 description: wagents CLI commands and usage
 ---
 
-import { Tabs, TabItem, Steps, FileTree } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 The `wagents` CLI manages AI agent assets in this repository.
 
@@ -37,9 +37,10 @@ The `wagents` CLI manages AI agent assets in this repository.
 Create new assets from reference templates.
 
 ```bash
-wagents new skill <name>    # Create a new skill
-wagents new agent <name>    # Create a new agent
-wagents new mcp <name>      # Create a new MCP server
+wagents new skill <name>              # Create a new skill
+wagents new skill <name> --no-docs    # Skip docs page scaffold
+wagents new agent <name>              # Create a new agent
+wagents new mcp <name>                # Create a new MCP server
 ```
 
   </TabItem>
@@ -48,12 +49,14 @@ wagents new mcp <name>      # Create a new MCP server
 Manage the documentation site.
 
 ```bash
-wagents docs init        # One-time: pnpm install in docs/
-wagents docs generate    # Generate MDX content pages
-wagents docs dev         # Generate + launch dev server
-wagents docs build       # Generate + static build
-wagents docs preview     # Generate + build + preview server
-wagents docs clean       # Remove generated content pages
+wagents docs init                       # One-time: pnpm install
+wagents docs generate                   # Generate MDX content pages
+wagents docs generate --no-installed    # Skip installed skills
+wagents docs generate --include-drafts  # Include draft skills
+wagents docs dev                        # Generate + launch dev server
+wagents docs build                      # Generate + static build
+wagents docs preview                    # Generate + build + preview
+wagents docs clean                      # Remove generated content
 ```
 
   </TabItem>
@@ -93,6 +96,20 @@ wagents readme --check   # Check if README is up to date
     - pyproject.toml
     - fastmcp.json
 - docs/ (this site)
-- wagents/ (CLI source)
+- wagents/
+  - \_\_init\_\_.py
   - cli.py
+  - parsing.py
+  - catalog.py
+  - rendering.py
+  - docs.py
 </FileTree>
+
+## Built With
+
+<CardGrid>
+  <LinkCard title="uv" href="https://docs.astral.sh/uv/" description="Fast Python package manager." />
+  <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />
+  <LinkCard title="Starlight" href="https://starlight.astro.build/" description="Documentation framework for this site." />
+  <LinkCard title="ruff" href="https://docs.astral.sh/ruff/" description="Fast Python linter and formatter." />
+</CardGrid>
