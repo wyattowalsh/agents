@@ -1,0 +1,175 @@
+---
+title: "MCP Servers"
+description: "Model Context Protocol servers providing tools and data to AI agents"
+---
+{/* HAND-MAINTAINED */}
+
+import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
+
+> Hand-maintained catalog of MCP servers configured in this environment, organized by category.
+
+<Badge text="31 configured servers" variant="note" size="large" />
+
+<Aside type="tip" title="What is MCP?">
+The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
+</Aside>
+
+<Aside type="note" title="Source of truth for this page">
+This page is **hand-maintained** and currently summarizes the MCP server entries in the repository root `mcp.json`. That file includes a mix of local scripts, local packages, remote gateways, and third-party servers, so this list is broader than the repo-local `mcp/` directory.
+</Aside>
+
+## Thinking and Reasoning (10)
+
+> Structured reasoning frameworks that guide agents through multi-step analysis, creative problem-solving, and decision evaluation.
+
+<CardGrid>
+  <Card title="sequential-thinking">
+    Step-by-step reasoning with revision and branching. The reference implementation from Anthropic for dynamic, reflective thought processes.
+  </Card>
+  <Card title="atom-of-thoughts">
+    Decomposes complex problems into atomic, independent thought units that can be contracted and combined for robust answers.
+  </Card>
+  <Card title="shannon-thinking">
+    Information-theoretic reasoning inspired by Claude Shannon. Reduces noise and uncertainty through systematic problem decomposition.
+  </Card>
+  <Card title="structured-thinking">
+    Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions.
+  </Card>
+  <Card title="cascade-thinking">
+    Multi-stage reasoning cascade that escalates through progressively deeper analysis levels when simpler passes are insufficient.
+  </Card>
+  <Card title="crash">
+    Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions.
+  </Card>
+  <Card title="deep-lucid-3d">
+    Three-dimensional problem analysis exploring depth, breadth, and lateral connections. Includes creative exploration mode.
+  </Card>
+  <Card title="lotus-wisdom-mcp">
+    Eastern-philosophy-inspired reasoning combining multiple perspectives and reflective synthesis for balanced conclusions.
+  </Card>
+  <Card title="think-strategies">
+    Strategy-selection toolkit that matches reasoning patterns to problem types. Session management for ongoing analysis threads.
+  </Card>
+  <Card title="creative-thinking">
+    Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces.
+  </Card>
+</CardGrid>
+
+## Search and Discovery (5)
+
+> Web search engines and content discovery services for retrieving up-to-date information from the internet.
+
+<CardGrid>
+  <Card title="brave-search">
+    Brave Search API with web, news, image, video, and local search. Includes AI-powered summarization of search results.
+  </Card>
+  <Card title="exa">
+    Neural search engine that understands meaning, not just keywords. Optimized for finding technical content, papers, and documentation.
+  </Card>
+  <Card title="web-search">
+    General-purpose web search with result extraction and content parsing. Lightweight alternative for quick lookups.
+  </Card>
+  <Card title="g-search">
+    Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web.
+  </Card>
+  <Card title="duckduckgo">
+    Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
+  </Card>
+</CardGrid>
+
+## Web Fetching and Extraction (3)
+
+> Tools for retrieving, rendering, and extracting structured content from web pages and URLs.
+
+<CardGrid>
+  <Card title="fetch">
+    Core URL fetcher from the MCP reference servers. Retrieves web pages and returns content in multiple formats.
+  </Card>
+  <Card title="fetcher">
+    Browser-based URL fetcher with JavaScript rendering. Handles SPAs and dynamic content that simple HTTP fetches miss.
+  </Card>
+  <Card title="trafilatura">
+    High-quality web content extraction using the Trafilatura library. Strips boilerplate to return clean article text and metadata.
+  </Card>
+</CardGrid>
+
+## Knowledge and Documentation (3)
+
+> Access library documentation, open-source wiki knowledge, and codebase analysis tools.
+
+<CardGrid>
+  <Card title="context7">
+    Retrieves up-to-date documentation for libraries and frameworks directly from source. Eliminates hallucinated APIs and outdated references.
+  </Card>
+  <Card title="deepwiki">
+    Queries the DeepWiki knowledge base of open-source project documentation. Ask questions about repos and read generated wiki pages.
+  </Card>
+  <Card title="repomix">
+    Packs entire codebases into AI-friendly context. Supports local directories and remote repositories with grep and directory browsing.
+  </Card>
+</CardGrid>
+
+## Development Tools (3)
+
+> Browser automation, package management, and document processing for development workflows.
+
+<CardGrid>
+  <Card title="playwright">
+    Full browser automation via Playwright. Navigate pages, fill forms, click elements, take screenshots, and run end-to-end test flows.
+  </Card>
+  <Card title="package-version">
+    Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.
+  </Card>
+  <Card title="docling">
+    Converts documents (PDF, DOCX, PPTX, HTML) into structured Docling format. Create, edit, search, and export documents as Markdown.
+  </Card>
+</CardGrid>
+
+## Productivity (3)
+
+> Email, task management, and personal productivity integrations.
+
+<CardGrid>
+  <Card title="gmail">
+    Full Gmail access: search, read, send, draft, label, filter, and batch-manage emails. Supports attachment downloads.
+  </Card>
+  <Card title="apple-mail">
+    Native macOS Mail.app integration. Read, search, and manage emails through Apple's built-in mail client.
+  </Card>
+  <Card title="things">
+    Things 3 task manager integration. Create and manage todos, projects, areas, and tags. Query inbox, today, upcoming, and logbook.
+  </Card>
+</CardGrid>
+
+## Media (2)
+
+> Audio production and video processing tools.
+
+<CardGrid>
+  <Card title="ffmpeg">
+    Video and audio processing via FFmpeg. Get info, clip, scale, concatenate, overlay, extract frames, and play media files.
+  </Card>
+  <Card title="ableton">
+    Ableton Live integration for music production. Control sessions, tracks, and clips programmatically.
+  </Card>
+</CardGrid>
+
+## Social (1)
+
+> Social media and professional network integrations.
+
+<CardGrid>
+  <Card title="linkedin">
+    LinkedIn profile scraping for professional networking data. Extract public profile information and connections.
+  </Card>
+</CardGrid>
+
+## Remote Gateway (1)
+
+> Cloud-hosted MCP endpoints providing aggregated or custom tool access.
+
+<CardGrid>
+  <Card title="default">
+    Remote MCP gateway at `mcp.w4w.dev` providing a curated default toolset via `mcp-remote` proxy.
+  </Card>
+</CardGrid>

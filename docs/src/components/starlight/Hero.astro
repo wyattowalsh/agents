@@ -50,4 +50,27 @@ import Default from '@astrojs/starlight/components/Hero.astro';
     from { opacity: 0; transform: translateY(20px) scale(0.98); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    :global(.hero-terminal-cmd) {
+      animation-duration: 0.01s;
+      animation-delay: 0s;
+      width: 100%;
+    }
+    :global(.hero-terminal-cursor) {
+      animation: none;
+      opacity: 1;
+    }
+    :global(.hero-agents-row) {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    :global(.hero-terminal) {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
 </style>

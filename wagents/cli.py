@@ -2,6 +2,8 @@
 
 import json
 import tomllib
+from pathlib import Path
+from typing import Annotated
 
 import typer
 
@@ -396,6 +398,101 @@ def validate():
         typer.echo("All validations passed")
 
 
+SUPPORTED_AGENTS = [
+    "antigravity", "claude-code", "codex", "crush",
+    "cursor", "gemini-cli", "github-copilot", "opencode",
+]
+
+REPO_SOURCE = "wyattowalsh/agents"
+
+
+@app.command()
+def install(
+    skills: Annotated[list[str] | None, typer.Argument(help="Skill name(s) to install (omit for all)")] = None,
+    agent: Annotated[list[str] | None, typer.Option("-a", "--agent", help="Target agent(s), repeatable")] = None,
+    global_: bool = typer.Option(True, "-g", "--global/--local", help="Install globally vs project-local"),
+    list_: bool = typer.Option(False, "--list", help="List available skills without installing"),
+    copy: bool = typer.Option(False, "--copy", help="Copy files instead of symlinking"),
+    yes: bool = typer.Option(False, "-y", "--yes", help="Skip confirmation prompts"),
+):
+    """Install skills into agent platforms via npx skills."""
+    import shutil
+    import subprocess
+
+    if not shutil.which("npx"):
+        typer.echo("Error: npx not found. Install Node.js first.", err=True)
+        raise typer.Exit(code=1)
+
+    cmd = ["npx", "-y", "skills", "add", REPO_SOURCE]
+
+    if list_:
+        cmd.append("--list")
+    else:
+        # Skills
+        if skills:
+            for s in skills:
+                cmd.extend(["--skill", s])
+        else:
+            cmd.extend(["--skill", "*"])
+
+        # Agents
+        if agent:
+            for a in agent:
+                if a not in SUPPORTED_AGENTS:
+                    typer.echo(
+                        f"Error: unknown agent '{a}'. Supported: {', '.join(SUPPORTED_AGENTS)}",
+                        err=True,
+                    )
+                    raise typer.Exit(code=1)
+                cmd.extend(["-a", a])
+        else:
+            cmd.extend(["--agent", "*"])
+
+        # Flags
+        if global_:
+            cmd.append("-g")
+        if copy:
+            cmd.append("--copy")
+        if yes:
+            cmd.append("-y")
+
+    result = subprocess.run(cmd, capture_output=False)
+    raise typer.Exit(code=result.returncode)
+
+
+@app.command()
+def package(
+    name: str = typer.Argument("", help="Skill name (omit for --all)"),
+    output: Annotated[Path | None, typer.Option("--output", "-o", help="Output directory")] = None,
+    dry_run: bool = typer.Option(False, "--dry-run", help="Check portability without creating ZIPs"),
+    all_skills: bool = typer.Option(False, "--all", help="Package all skills"),
+    format_: str = typer.Option("table", "--format", help="Output format: json or table"),
+):
+    """Package skills into portable ZIP files."""
+    import subprocess
+
+    script = ROOT / "skills" / "skill-creator" / "scripts" / "package.py"
+    cmd = ["uv", "run", "python", str(script)]
+
+    if all_skills:
+        cmd.append("--all")
+    elif name:
+        skill_dir = ROOT / "skills" / name
+        cmd.append(str(skill_dir))
+    else:
+        typer.echo("Error: provide a skill name or use --all", err=True)
+        raise typer.Exit(code=1)
+
+    if output:
+        cmd.extend(["--output", str(output)])
+    if dry_run:
+        cmd.append("--dry-run")
+    cmd.extend(["--format", format_])
+
+    result = subprocess.run(cmd, capture_output=False)
+    raise typer.Exit(code=result.returncode)
+
+
 @app.command()
 def readme(
     check: bool = typer.Option(False, "--check", help="Check if README is up to date"),
@@ -494,6 +591,11 @@ def readme(
             "| `wagents new mcp <name>` | Create a new MCP server |",
             "| `wagents validate` | Validate all skills and agents |",
             "| `wagents readme` | Regenerate this README |",
+            "| `wagents package <name>` | Package a skill into portable ZIP |",
+            "| `wagents package --all` | Package all skills |",
+            "| `wagents install` | Install all skills to all agents |",
+            "| `wagents install -a <agent>` | Install all skills to specific agent |",
+            "| `wagents install <name>` | Install specific skill to all agents |",
             "| `wagents docs init` | One-time setup: install docs dependencies |",
             "| `wagents docs generate` | Generate MDX content pages from assets |",
             "| `wagents docs dev` | Generate + launch dev server |",

@@ -140,3 +140,121 @@ def test_validate_invalid_skill(patched_repo):
 
     result = runner.invoke(app, ["validate"])
     assert result.exit_code == 1, f"validate should have failed:\n{result.output}"
+
+
+# ---------------------------------------------------------------------------
+# 7. wagents package --dry-run — real repo
+# ---------------------------------------------------------------------------
+
+
+def test_package_dry_run_real_repo():
+    """Package --all --dry-run against the real repo should succeed."""
+    result = runner.invoke(app, ["package", "--all", "--dry-run"])
+    assert result.exit_code == 0, f"package --all --dry-run failed:\n{result.output}"
+
+
+# ---------------------------------------------------------------------------
+# 8. wagents install — command construction
+# ---------------------------------------------------------------------------
+
+
+class TestInstall:
+    def test_install_list_constructs_correct_command(self, monkeypatch):
+        """Install --list should pass --list to npx skills add."""
+        import subprocess
+
+        calls = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        result = runner.invoke(app, ["install", "--list"])
+        assert result.exit_code == 0
+        assert calls, "subprocess.run was not called"
+        assert "--list" in calls[0]
+        assert "wyattowalsh/agents" in calls[0]
+
+    def test_install_all_default(self, monkeypatch):
+        """Install with no args installs all skills to all agents globally."""
+        import subprocess
+
+        calls = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        result = runner.invoke(app, ["install", "-y"])
+        assert result.exit_code == 0
+        cmd = calls[0]
+        assert "--skill" in cmd and "*" in cmd
+        assert "--agent" in cmd
+        assert "-g" in cmd
+        assert "-y" in cmd
+
+    def test_install_specific_skills(self, monkeypatch):
+        """Install with skill names passes --skill for each."""
+        import subprocess
+
+        calls = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        result = runner.invoke(app, ["install", "honest-review", "wargame", "-y"])
+        assert result.exit_code == 0
+        cmd = calls[0]
+        # Should have --skill honest-review --skill wargame
+        skill_indices = [i for i, v in enumerate(cmd) if v == "--skill"]
+        assert len(skill_indices) == 2
+        skill_values = [cmd[i + 1] for i in skill_indices]
+        assert "honest-review" in skill_values
+        assert "wargame" in skill_values
+
+    def test_install_specific_agent(self, monkeypatch):
+        """Install -a claude-code targets only Claude."""
+        import subprocess
+
+        calls = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        result = runner.invoke(app, ["install", "-a", "claude-code", "-y"])
+        assert result.exit_code == 0
+        cmd = calls[0]
+        assert "-a" in cmd
+        assert "claude-code" in cmd
+        # Should NOT have --agent '*' since specific agent given
+        assert cmd.count("--agent") == 0
+
+    def test_install_local_flag(self, monkeypatch):
+        """Install --local should not pass -g."""
+        import subprocess
+
+        calls = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        result = runner.invoke(app, ["install", "--local", "-y"])
+        assert result.exit_code == 0
+        assert "-g" not in calls[0]
+
+    def test_install_requires_npx(self, monkeypatch):
+        """Install should fail gracefully when npx is not found."""
+        import shutil
+
+        monkeypatch.setattr("shutil.which", lambda x: None)
+        result = runner.invoke(app, ["install"])
+        assert result.exit_code == 1
+        assert "npx not found" in result.output

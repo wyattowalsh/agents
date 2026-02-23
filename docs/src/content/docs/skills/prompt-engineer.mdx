@@ -3,11 +3,13 @@ title: "prompt-engineer"
 description: "Comprehensive prompt and context engineering for any AI system."
 ---
 
+{/* HAND-MAINTAINED */}
+
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="prompt-engineer" variant="note" /> <Badge text="2416 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
+<Badge text="prompt-engineer" variant="note" /> <Badge text="2644 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
 
-> Comprehensive prompt and context engineering for any AI system. Four modes: (1) Craft new prompts from scratch, (2) Analyze existing prompts with diagnostic scoring and optional improvement, (3) Convert prompts between model families (Claude/GPT/Gemini/Llama), (4) Evaluate prompts with test suites and rubrics. Adapts all recommendations to model class (instruction-following vs reasoning). Validates findings against current documentation. Use for system prompts, agent prompts, RAG pipelines, tool definitions, or any LLM context design. NOT for running prompts or generating content.
+> Comprehensive prompt and context engineering for any AI system. Four modes: (1) Craft new prompts from scratch, (2) Analyze existing prompts with diagnostic scoring and optional improvement, (3) Convert prompts between model families (Claude/GPT/Gemini/Llama), (4) Evaluate prompts with test suites and rubrics. Adapts all recommendations to model class (instruction-following vs reasoning). Validates findings against current documentation. Use for system prompts, agent prompts, RAG pipelines, tool definitions, or any LLM context design. NOT for running prompts, generating content, or building agents.
 
 <div class="quick-start">
 
@@ -26,20 +28,100 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 
 ## What It Does
 
-Comprehensive prompt and context engineering. Every recommendation grounded in research.
+Comprehensive prompt and context engineering. Every recommendation is grounded in research. The skill distinguishes between context engineering (designing the full context window) and prompt engineering (writing the instruction text), and adapts all techniques to the target model class.
+
+<Aside type="caution" title="Model-class awareness">
+Instruction-following models and reasoning models respond differently to the same techniques. Techniques that help instruction-followers can actively hurt reasoning models (Prompting Inversion). Always detect model class first.
+</Aside>
 
 ## Modes
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| `craft <description>` | → Mode A: Craft a new prompt from scratch |
-| `analyze <prompt or path>` | → Mode B: Analyze and improve an existing prompt |
-| `audit <prompt or path>` | → Mode B: Analyze, report only (no changes) |
-| `convert <source-model> <target-model> <prompt or path>` | → Mode C: Convert between model families |
-| `evaluate <prompt or path>` | → Mode D: Build evaluation framework |
-| Raw prompt text (XML tags, role definitions, multi-section structure) | → Auto-detect: Mode B (Analyze, report only) |
-| Natural-language request describing desired behavior | → Auto-detect: Mode A (Craft) |
+| `craft <description>` | Mode A: Craft a new prompt from scratch |
+| `analyze <prompt or path>` | Mode B: Analyze and improve an existing prompt |
+| `audit <prompt or path>` | Mode B: Analyze, report only (no changes) |
+| `convert <source-model> <target-model> <prompt or path>` | Mode C: Convert between model families |
+| `evaluate <prompt or path>` | Mode D: Build evaluation framework |
+| Raw prompt text (XML tags, role definitions) | Auto-detect: Mode B (Analyze, report only) |
+| Natural-language request describing desired behavior | Auto-detect: Mode A (Craft) |
 | Empty | Show mode menu with examples |
+
+## Mode A: Craft
+
+Build a new prompt from scratch:
+
+<Steps>
+
+1. **Requirements gathering** -- Ask targeted questions: task specifics, target model (detect model class), deployment context (single-turn, chat, agent loop, RAG pipeline), output format, failure modes to prevent, and input trust level.
+
+2. **Architecture selection** -- Based on deployment context, select a pattern: single-turn (4-block: Context/Task/Constraints/Output), multi-turn (conversation-aware with state management), agent (ReAct with 3-instruction pattern), RAG (grounding with citation patterns), multi-agent (orchestration with role isolation).
+
+3. **Draft prompt** -- Write using the selected architecture with XML tags as default structuring format (cross-model compatible). Apply model-class-specific guidance from `references/model-playbooks.md`.
+
+4. **Structure for cacheability** -- Static content early (system instructions, role definitions, tool descriptions), dynamic content late (user input, retrieved documents). Enables 50-90% cost reduction via prefix caching.
+
+5. **Harden** -- Run through `references/hardening-checklist.md`: injection resistance for untrusted input, safety constraints for user-facing output, permission minimization for tool-calling.
+
+6. **Present** -- Format per output template. Recommend Mode D (Evaluate) to build a test suite.
+
+</Steps>
+
+## Mode B: Analyze
+
+Diagnose an existing prompt and optionally improve it. Dispatched as `analyze` (with fixes) or `audit` (report only, no changes).
+
+The diagnostic scores 5 dimensions:
+
+| Dimension | Assessment |
+|-----------|------------|
+| **Clarity** | How unambiguous are the instructions? |
+| **Completeness** | Are all necessary constraints and context provided? |
+| **Efficiency** | Is every token earning its keep? (Over-specification check) |
+| **Robustness** | How well does it handle edge cases and adversarial inputs? |
+| **Model Fit** | Is it optimized for the target model class? |
+
+Four-lens analysis examines: ambiguity, security, robustness, and efficiency. Anti-pattern scan checks against patterns in `references/anti-patterns.md`.
+
+## Mode C: Convert
+
+Port a prompt between model families (Claude, GPT, Gemini, Llama) while preserving intent and quality. Loads source and target playbooks, builds a conversion plan for features that map directly, require adaptation, have no equivalent, or are newly available, then validates the result with a Mode B report-only analysis.
+
+## Mode D: Evaluate
+
+Build an evaluation framework (does not run evaluations -- produces the eval design). Creates golden set test cases, edge cases, adversarial cases, and regression cases. Builds a scoring rubric with dimensions, levels (1-5), concrete examples, and an LLM-as-judge prompt.
+
+## Model-Class Detection
+
+Mandatory first step for all modes. Determines which techniques apply.
+
+| Model Class | Examples | Key Differences |
+|-------------|----------|----------------|
+| **Instruction-following** | Claude 3.5 Sonnet/Haiku, GPT-4o/4.1, Gemini 2 Flash, Llama 4 standard | Add explicit CoT scaffolding, 3-5 few-shot examples, more structure helps |
+| **Reasoning** | Claude 4.x (extended thinking), GPT-5.x, Gemini 3 (thinking), o3/o4-mini | Never add external CoT (Prompting Inversion), minimal examples, concise goals over verbose steps |
+
+<Aside type="danger" title="Prompting Inversion">
+Never recommend chain-of-thought prompting for reasoning models. External CoT degrades performance for models with internal reasoning capabilities.
+</Aside>
+
+## Core Principles
+
+- **Context engineering, not just prompting** -- Consider the full context window: system prompt, conversation history, tool results, retrieved documents. Four pillars: write, select, compress, isolate.
+- **Evidence-based recommendations** -- Cite specific sources. Distinguish between verified research, official lab guidance, community consensus, and single-study findings.
+- **Empirical iteration** -- Prompts are hypotheses, not solutions. Recommend eval frameworks for any non-trivial prompt.
+- **Avoid over-specification** -- Beyond specificity threshold S\*~0.5, additional detail degrades performance quadratically (UCL, Jan 2026; single-study heuristic, not hard threshold).
+
+## Critical Rules
+
+1. Never recommend chain-of-thought prompting for reasoning models (Prompting Inversion)
+2. Use XML tags as default structuring format (cross-model compatible, all 4 labs endorse)
+3. Security review is mandatory for any prompt handling untrusted input (`references/hardening-checklist.md`)
+4. Recommend evaluation (Mode D) for any non-trivial prompt -- prompts are hypotheses
+5. Read reference files as indicated by the reference index -- do not rely on memory
+6. Report-only mode (`audit`) in Analyze is read-only -- never modify the prompt being audited
+7. The 3-instruction pattern (persistence + tool-calling + planning) is the highest-impact single change for agent prompts -- recommend it by default for agent architectures
+
+---
 
 <Tabs>
   <TabItem label="General">
@@ -79,8 +161,8 @@ description: >-
   suites and rubrics. Adapts all recommendations to model class
   (instruction-following vs reasoning). Validates findings against current
   documentation. Use for system prompts, agent prompts, RAG pipelines, tool
-  definitions, or any LLM context design. NOT for running prompts or
-  generating content.
+  definitions, or any LLM context design. NOT for running prompts, generating
+  content, or building agents.
 license: MIT
 argument-hint: "<mode> [target]"
 model: opus
@@ -92,6 +174,27 @@ metadata:
 # Prompt Engineer
 
 Comprehensive prompt and context engineering. Every recommendation grounded in research.
+
+## Canonical Vocabulary
+
+Use these terms exactly throughout all modes:
+
+| Term | Definition |
+|------|-----------|
+| **system prompt** | The top-level instruction block sent before user messages; sets model behavior |
+| **context window** | The full token budget: system prompt + conversation history + tool results + retrieved docs |
+| **context engineering** | Designing the entire context window, not just the prompt text — write, select, compress, isolate |
+| **template** | A reusable prompt structure with variable slots (`{{input}}`, `$ARGUMENTS`) |
+| **rubric** | A scoring framework with dimensions, levels (1-5), and concrete examples per level |
+| **few-shot example** | An input/output pair included in the prompt to demonstrate desired behavior |
+| **chain-of-thought (CoT)** | Explicit step-by-step reasoning scaffolding; beneficial for instruction-following models, harmful for reasoning models |
+| **model class** | Either "instruction-following" or "reasoning" — determines which techniques apply |
+| **injection** | Untrusted input that manipulates model behavior outside intended boundaries |
+| **anti-pattern** | A prompt construction that reliably degrades output quality |
+| **over-specification** | Adding constraints beyond S*~0.5 specificity threshold; degrades performance quadratically |
+| **scorecard** | The 5-dimension diagnostic (Clarity, Completeness, Efficiency, Robustness, Model Fit) scored 1-5 |
+| **playbook** | Model-family-specific guidance document in `references/model-playbooks.md` |
+| **prefix caching** | Cost optimization by placing static content early so API providers cache the prefix |
 
 ## Dispatch
 

@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.2
+    hooks:
+      - id: ruff
+        args: [check, wagents/]
+      - id: ruff-format
+        args: [wagents/]
+
+  - repo: local
+    hooks:
+      - id: wagents-validate
+        name: Validate skills and agents
+        entry: uv run wagents validate
+        language: system
+        pass_filenames: false
+        files: ^(skills/|agents/)
+      - id: docs-build-check
+        name: "Verify docs build"
+        entry: pnpm --dir docs build
+        language: system
+        files: 'docs/.*\.(mdx|css|mjs|astro)$'
+        pass_filenames: false

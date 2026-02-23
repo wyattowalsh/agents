@@ -1,0 +1,12 @@
+[
+  {
+    "input": "package --all --dry-run",
+    "expected_mode": "Package",
+    "expected_output_contains": ["portability_checks", "files_included"]
+  },
+  {
+    "input": "package nonexistent-skill --dry-run",
+    "expected_mode": "Package",
+    "expected_output_contains": ["errors", "SKILL.md not found"]
+  }
+]

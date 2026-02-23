@@ -1,0 +1,57 @@
+name: Release Skills
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync
+      - name: Validate assets
+        run: uv run wagents validate
+      - name: Audit skills (strict)
+        run: uv run python skills/skill-creator/scripts/audit.py --all --strict
+      - name: Run tests
+        run: uv run pytest
+      - name: Lint
+        run: uv run ruff check wagents/
+
+  package-and-release:
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync
+      - name: Package all skills
+        run: uv run wagents package --all --output dist/
+      - name: Verify packaging artifacts
+        run: |
+          test -f dist/manifest.json || { echo "Missing dist/manifest.json"; exit 1; }
+          count=$(ls dist/*.zip 2>/dev/null | wc -l)
+          test "$count" -gt 0 || { echo "No .zip files in dist/"; exit 1; }
+          echo "Found $count skill ZIP(s) and manifest.json"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.zip
+            dist/manifest.json
+          generate_release_notes: true

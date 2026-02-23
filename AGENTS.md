@@ -115,7 +115,29 @@ wagents docs dev                        # Generate + launch dev server
 wagents docs build                      # Generate + static build
 wagents docs preview                    # Generate + build + preview server
 wagents docs clean                      # Remove generated content pages
+
+# Package skills
+wagents package <name>              # Package a skill into portable ZIP
+wagents package --all               # Package all skills into dist/
+wagents package --dry-run           # Check portability without creating ZIPs
+
+# Install skills into agent platforms (requires Node.js)
+wagents install                              # All skills → all agents (global)
+wagents install -y                           # All skills → all agents (no prompts)
+wagents install honest-review skill-creator  # Specific skills → all agents
+wagents install -a claude-code               # All skills → Claude only
+wagents install -a cursor -a github-copilot  # All skills → Cursor + Copilot
+wagents install --list                       # List available skills
+wagents install --local                      # Project-local install
+
+# Or use make targets (see Makefile)
+make install                                 # All skills → all agents
+make install-claude                          # All skills → Claude
+make install-skill SKILL=honest-review       # Specific skill → all agents
+make help                                    # Show all make targets
 ```
+
+> **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
 
 ---
 

@@ -40,10 +40,16 @@ import { Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/compo
 
 <div class="stats-bar">
   <span class="stat stat-skill">12 Custom Skills</span>
+  <span class="stat stat-installed">18 Installed Skills</span>
+  <span class="stat stat-mcp">31 MCP Tools Configured</span>
 </div>
 
 <Aside type="tip" title="What are Skills?">
 Skills are reusable knowledge and workflows that extend AI coding agents. Install once, invoke with `/skill-name` in any supported agent. [Learn more at agentskills.io →](https://agentskills.io)
+</Aside>
+
+<Aside type="note" title="How these docs are built">
+Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the 31 servers configured in `mcp.json` (including local and remote servers outside this repo).
 </Aside>
 
 ## What Can You Do?
@@ -77,17 +83,33 @@ npx skills add wyattowalsh/agents --all -g
 
 </Steps>
 
+## Explore the Catalog
+
+<CardGrid>
+  <LinkCard title="Skills Index" href="/skills/" description="Browse custom and installed skills grouped by invocation model, with install commands and docs pages." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 31 configured MCP servers from `mcp.json`." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
+</CardGrid>
+
 ## Featured Skills
 
 <div class="catalog-skill">
 <CardGrid>
-  <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields." />
-  <LinkCard title="agent-conventions" href="/skills/agent-conventions/" description="Agent definition conventions. When creating or modifying agents at any level…" />
-  <LinkCard title="continuous-improvement" href="/skills/continuous-improvement/" description="Instruction file maintenance protocol. Propose updates when a pattern is corrected 3+ times across 2+ sessions. Route: cross-project → global." />
+  <LinkCard title="wargame" href="/skills/wargame/" description="Domain-agnostic strategic decision analysis and wargaming." />
+  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity…" />
+  <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create, improve, and audit AI agent skills. Applies 13 proven structural patterns, scores quality with deterministic audit, manages full lifecycle." />
 </CardGrid>
 </div>
 
-[View all 12 skills →](/skills/)
+[View all 30 skills →](/skills/)
+
+## MCP Servers
+
+<div class="catalog-mcp">
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 31 configured MCP servers from mcp.json (local and remote)." />
+</CardGrid>
+</div>
 
 ## Supported Agents
 

@@ -21,6 +21,25 @@ metadata:
 Research-driven code review. Every finding validated with evidence.
 4-wave pipeline: Triage → Analysis → Research → Judge.
 
+## Canonical Vocabulary
+
+Use these terms exactly throughout both modes:
+
+| Term | Definition |
+|------|-----------|
+| **triage** | Wave 0: risk-stratify files (HIGH/MEDIUM/LOW) and determine specialist triggers before analysis |
+| **wave** | A pipeline stage: Wave 0 (Triage), Wave 1 (Analysis), Wave 2 (Research), Wave 3 (Judge) |
+| **finding** | A discrete code issue with severity, confidence score, evidence, and citation |
+| **confidence** | Score 0.0-1.0 per finding; >=0.7 report, 0.3-0.7 unconfirmed, <0.3 discard (except P0/S0) |
+| **severity** | Priority (P0-P3) and scope (S0-S3) classification of a finding's impact |
+| **judge** | Wave 3 reconciliation: normalize, cluster, deduplicate, filter, resolve conflicts, rank findings |
+| **lens** | A creative review perspective: Inversion, Deletion, Newcomer, Incident, Evolution, Adversary |
+| **blast radius** | How many files, users, or systems a finding's defect could affect |
+| **slopsquatting** | AI-hallucinated package names in dependencies — security-critical, checked first in Wave 2 |
+| **research validation** | Core differentiator: every non-trivial finding confirmed with external evidence (Context7, WebSearch, gh) |
+| **systemic finding** | A pattern appearing in 3+ files, elevated from individual findings during Judge reconciliation |
+| **approval gate** | Mandatory pause after presenting findings — never implement fixes without user consent |
+
 ## Dispatch
 
 | $ARGUMENTS | Mode |

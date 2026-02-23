@@ -12,6 +12,10 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 5. [Step 5: Validate](#step-5-validate)
 6. [Step 6: Iterate](#step-6-iterate)
 
+> **Quick Build fast-path:** For simple single-mode skills with no scripts/templates:
+> Skip Steps 2-3, go straight to Step 4 with `wagents new skill <name>`, build the body,
+> then validate (Step 5). The audit will flag any missing patterns.
+
 ---
 
 > **Progress tracking (initialization):**
@@ -54,6 +58,14 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 2. **Scope the work** — for targeted requests, focus plan on what the user asked. Note any P0 issues elsewhere but don't force them.
 3. **Present improvement plan** — each item includes: what to change, why, expected score impact, which file(s) to modify
 4. **Approval gate** — show projected before/after score. Wait for user approval. Do NOT implement until approved.
+
+Each improvement item must include:
+- **File(s):** Which files will be modified
+- **Finding:** What the audit or analysis identified
+- **Change:** What will be done
+- **Rationale:** Why this change improves the skill
+- **Score impact:** Expected point improvement
+- **Risk:** What could go wrong (low/medium/high)
 
 > **Progress tracking:**
 > Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase plan --status active`
@@ -164,6 +176,12 @@ Load `references/proven-patterns.md`. Apply:
 3. Run `uv run wagents readme` — regenerate README
 4. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call `wagents docs generate` directly.
 
+### Portability Check
+
+Run `wagents package <name> --dry-run` to verify the skill is distributable:
+- All 7 portability checks must pass (see `references/packaging-guide.md`)
+- Fix any warnings before declaring the skill complete
+
 > **Progress tracking:**
 > Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase validate --status active`
 > Inject audit: `uv run python skills/skill-creator/scripts/progress.py audit --skill <name> --inject`
@@ -189,3 +207,34 @@ Load `references/proven-patterns.md`. Apply:
 > Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase iterate --status active`
 > After each iteration: `uv run python skills/skill-creator/scripts/progress.py metric --skill <name> --key iteration_count --value +1`
 > End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase iterate --status completed`
+
+---
+
+## Error Recovery
+
+Common errors and their fixes during skill development.
+
+### Corrupted State File
+
+**Symptom:** `progress.py` commands fail with JSON decode errors.
+**Fix:** Delete `~/.claude/skill-progress/<name>.json` and reinitialize with `progress.py init --skill <name>`.
+
+### Broken Reference Links
+
+**Symptom:** `audit.py` reports missing reference files.
+**Fix:** Either create the missing file or remove the stale reference from the SKILL.md body and Reference File Index.
+
+### Validation Failures After Refactoring
+
+**Symptom:** `wagents validate` fails after renaming a skill.
+**Fix:** Ensure the directory name matches the `name:` field in frontmatter. Both must be kebab-case and identical.
+
+### Audit Score Drops After Adding Content
+
+**Symptom:** Score decreases after adding new sections.
+**Fix:** Check body length (must be under 500 lines). Move detail to reference files. Run `audit.py` to identify which dimension dropped.
+
+### Template Rendering Fails
+
+**Symptom:** Dashboard template shows blank or errors.
+**Fix:** Verify `templates/dashboard.html` exists. Check that `progress.py serve --skill <name>` can read the state file. Try `progress.py read --skill <name>` first.

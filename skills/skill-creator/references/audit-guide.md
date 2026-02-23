@@ -84,13 +84,23 @@ Render a visual creation process monitor or audit quality dashboard.
 
 ### Process Monitor (active session)
 
-When a creation session is active (`/tmp/skill-progress-<name>.json` exists):
+When a creation session is active (`~/.claude/skill-progress/<name>.json` exists):
 
-1. Read progress: `uv run python skills/skill-creator/scripts/progress.py read --skill <name>`
-2. Copy template: `cp skills/skill-creator/templates/dashboard.html /tmp/skill-dashboard.html`
-3. Inject progress JSON into `<script id="data">` block. Dashboard auto-detects process mode from `phases` field.
-4. For live polling, set `data-poll-url` attribute on the script tag.
-5. Render via Playwright screenshot or browser open.
+1. **Quick open (recommended):**
+   ```bash
+   uv run python skills/skill-creator/scripts/progress.py serve --skill <name>
+   ```
+   This reads current session state, injects it into the dashboard template, writes a
+   temporary HTML file, and opens it in the default browser. Use `--no-open` to suppress
+   the browser launch and just print the file URL. Use `--state-dir <path>` to read from
+   a custom state directory.
+
+2. **Manual setup** (alternative):
+   1. Read progress: `uv run python skills/skill-creator/scripts/progress.py read --skill <name>`
+   2. Copy template: `cp skills/skill-creator/templates/dashboard.html /tmp/skill-dashboard.html`
+   3. Inject progress JSON into `<script id="data">` block. Dashboard auto-detects process mode from `phases` field.
+   4. For live polling, set `data-poll-url` attribute on the script tag.
+   5. Render via Playwright screenshot or browser open.
 
 ### Audit Dashboard (no active session)
 

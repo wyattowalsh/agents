@@ -19,7 +19,7 @@ Skill quality is assessed through two complementary checks run in sequence:
 
 1. **`wagents validate`** -- structural correctness (pass/fail). Checks that `name` matches the directory, `description` is non-empty, and the body is non-empty. A skill that fails validation is broken and cannot be audited. Always run this first.
 
-2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 10 weighted dimensions. Produces a deterministic numeric score and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
+2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 11 weighted dimensions. Produces a deterministic numeric score and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
 
 Always run both. A skill that passes validation but scores D or F needs significant rework. A skill that scores B but fails validation has a naming or metadata bug that must be fixed before distribution.
 
@@ -41,10 +41,11 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 | 6 | Reference Quality | 1x | 10 | Index table present, no orphan files, no missing files, file sizes 50--500 lines | Content relevance, depth, self-containedness |
 | 7 | Critical Rules | 1x | 10 | Section present with heading, >=5 numbered items | Testability (each rule can be verified), completeness, no overlap |
 | 8 | Script Quality | 0.5x | 5 | If `scripts/` exists: argparse present, JSON output pattern, dependency check | Error handling, edge cases, documentation |
-| 9 | Conciseness | 0.5x | 5 | No duplicate headings, no repeated content blocks | Token efficiency, information density, dead text |
-| 10 | Canonical Vocabulary | -- | +3 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
+| 9 | Portability | 0.5x | 5 | License field, metadata.author, metadata.version, no absolute paths, no repo-specific `@` imports | Distribution readiness, environment assumptions |
+| 10 | Conciseness | 0.5x | 5 | No duplicate headings, no repeated content blocks | Token efficiency, information density, dead text |
+| 11 | Canonical Vocabulary | -- | +3 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
 
-**Total: 99 raw points + 3 bonus. Final score is normalized:
+**Total: 104 raw points + 3 bonus. Final score is normalized:
 `(total_weighted / max_weighted * 100) + bonus`, producing a 0-103 scale.**
 
 ### Dimension Details
@@ -97,13 +98,20 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 - **Common deductions:** No argparse (-1), no JSON output (-1), no docstrings (-1), single script only (-1).
 - **Zero:** No `scripts/` directory, or directory exists but contains no `.py` files.
 
-**9. Conciseness (5 pts, 0.5x weight)**
+**9. Portability (5 pts, 0.5x weight)**
+
+- **Full marks (5):** `license` field populated in frontmatter, `metadata.author` present, `metadata.version` present, no absolute filesystem paths (e.g., `/home/`, `/Users/`, `/tmp/`) in the body, and no repo-specific `@` import references in the body.
+- **Common deductions:** Missing `license` (-1), missing `metadata.author` (-1), missing `metadata.version` (-1), absolute paths found in body (-1), repo-specific `@` references found (-1).
+- **Zero:** All five portability checks fail. Indicates a skill that is tightly coupled to a specific environment and cannot be distributed cross-platform.
+- **Why it matters:** Skills distributed via `npx skills add` must work across different machines, OS environments, and repository structures. Absolute paths and `@` imports break when the skill is installed elsewhere. Missing license and metadata fields reduce discoverability on agentskills.io.
+
+**10. Conciseness (5 pts, 0.5x weight)**
 
 - **Full marks (5):** No duplicate headings, no repeated consecutive content blocks (3+ identical non-empty lines).
 - **Common deductions:** Duplicate heading text (-2), repeated paragraph blocks (-3).
 - **Zero:** Both duplicate headings and repeated content blocks detected.
 
-**10. Canonical Vocabulary (+5 bonus)**
+**11. Canonical Vocabulary (+5 bonus)**
 
 - **Full bonus (+5):** A dedicated "Canonical Terms," "Canonical Vocabulary," or "Vocabulary" section exists (heading or bold block).
 - **No bonus (0):** No vocabulary section found. This is not penalized -- it is purely additive.

@@ -1,17 +1,25 @@
 ---
 name: docs-steward
 description: >-
-  Automatically maintain, enhance, and improve the repository documentation
-  site. Auto-triggers when skills, agents, or MCP servers change. Syncs
-  generated pages, enhances content quality, performs health checks, and
-  suggests site improvements. Can modify the generation pipeline itself
-  when it identifies gaps.
-argument-hint: "[sync|sync installed|enhance|maintain|improve|full|auto]"
+  Maintain and enhance the Astro+Starlight docs site. Syncs generated pages,
+  scores content quality, performs health checks, and proposes site improvements.
+  Use when skills, agents, or MCP servers change. NOT for writing skills,
+  creating agents, or building MCP servers.
+argument-hint: "[sync|sync installed|enhance|maintain|improve|improve design|improve ux|full|auto]"
 license: MIT
 model: opus
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "2.0"
+hooks:
+  PostToolUse:
+    - matcher: Write
+      hooks:
+        - command: |
+            file="$TOOL_INPUT_file_path"
+            if echo "$file" | grep -q 'docs/src/content'; then
+              echo "MDX file modified — run pnpm build to verify" >&2
+            fi
 ---
 
 # Docs Steward
@@ -37,21 +45,11 @@ Auto-invocation is enabled by default (the `disable-model-invocation` field is a
 When invoked after asset changes, run in **auto mode** (default). No approval
 gates, no user prompts. Detect what changed, regenerate, enhance, verify.
 
-## Quick Reference
+## Scope
 
-```bash
-# After creating/modifying skills, agents, or MCP servers:
-uv run wagents docs generate && pnpm --dir docs build
+**In scope:** Documentation site generation, MDX page enhancement, build verification, health checks, site configuration improvements, generation pipeline improvements, Astro component creation, CSS design system updates.
 
-# After installing new skills:
-/docs-steward sync installed
-
-# Full sync (regenerate + build + validate):
-/docs-steward sync
-
-# Full pipeline (sync + maintain + enhance + improve):
-/docs-steward full
-```
+**NOT for:** Writing new skills (`/skill-creator`), creating agents (`wagents new agent`), building MCP servers (`/mcp-creator`), editing source SKILL.md or agent.md content, or managing the README (`wagents readme`).
 
 ## Dispatch
 
@@ -64,7 +62,9 @@ uv run wagents docs generate && pnpm --dir docs build
 | `enhance <path>` | Enhance one | Improve a specific page |
 | `maintain` | Health check | Validate links, detect stale/orphans, check build |
 | `improve` | Improve site | Research latest Starlight features, propose + implement improvements |
-| `improve cli` | Improve pipeline | Analyze and improve `wagents/cli.py` generation logic |
+| `improve design` | Improve design system | Audit CSS tokens, identify gaps, propose design system upgrades |
+| `improve ux` | Improve UX | Audit component slots, propose islands and interactive features |
+| `improve cli` | Improve pipeline | Analyze and improve docs generation modules |
 | `full` | Full run | Sync, then Maintain, then Enhance, then Improve (sequential) |
 
 ## Auto Mode (Default)
@@ -125,10 +125,16 @@ source asset side by side, then improve:
 Consult `references/quality-checklist.md` for scoring criteria and
 `references/starlight-patterns.md` for component usage patterns.
 
-When enhancing more than 3 pages, spawn parallel subagents (one per page
-or batch of 3-5 related pages). Each subagent receives: the current MDX
-content, the source SKILL.md or agent.md, the quality checklist, and the
-Starlight patterns reference.
+### Scaling Strategy
+
+| Pages to enhance | Strategy |
+|-----------------|----------|
+| 1-3 pages | Inline — enhance sequentially in current session |
+| 4-12 pages | Subagent wave — 1 subagent per page, parallel |
+| 13+ pages | Batched waves — 5 pages per subagent, 2-3 sequential waves |
+
+Each subagent receives: the current MDX content, the source SKILL.md or
+agent.md, the quality checklist, and the Starlight patterns reference.
 
 ### Step 4: Verify Build
 
@@ -185,7 +191,7 @@ Run this mode after installing new skills via `npx skills add`.
 When `$ARGUMENTS` is `enhance` with no path:
 
 1. List all generated MDX files under `docs/src/content/docs/`
-2. For each page, score it against `references/quality-checklist.md`
+2. For each page, score it against all 9 dimensions in `references/quality-checklist.md`
 3. Spawn parallel subagents (Pattern A from orchestration guide), one per
    page or batch of 3-5 related pages
 4. Each subagent receives:
@@ -203,7 +209,7 @@ When `$ARGUMENTS` is `enhance <path>`:
 
 1. Read the specified MDX file
 2. Locate its source asset
-3. Score against quality checklist
+3. Score against all 9 dimensions in quality checklist
 4. Enhance in-place
 5. Verify build and validate
 
@@ -281,22 +287,38 @@ When `$ARGUMENTS` is `improve`:
    estimates and let the user choose what to implement
 5. Implement approved improvements
 
-### Improve CLI Pipeline
+### Improve Design
+
+When `$ARGUMENTS` is `improve design`:
+
+1. Read `docs/src/styles/custom.css` and `references/site-architecture.md`
+2. Check design system maturity against the checklist in `references/advanced-patterns.md`
+3. Identify missing tokens (spacing, shadows, radius, motion, z-index)
+4. Propose additions with before/after visual impact
+5. **Ask the user before implementing**
+
+### Improve UX
+
+When `$ARGUMENTS` is `improve ux`:
+
+1. Read component overrides in `docs/src/components/starlight/`
+2. Check unused Starlight slots from `references/site-architecture.md`
+3. Evaluate which interactive islands would have highest impact
+4. Propose 3-5 improvements ranked by effort vs. impact
+5. **Ask the user before implementing**
+
+### Improve Pipeline
 
 When `$ARGUMENTS` is `improve cli`:
 
-1. Read `wagents/cli.py`, focusing on the `docs generate` command and its
-   helpers
-2. Identify gaps in the generation pipeline:
-   - Missing metadata in generated frontmatter
-   - Poor MDX formatting or escaping
-   - Missing cross-references between assets
-   - Incomplete extraction of skill/agent information
-3. **Ask the user before implementing** — present proposed changes to the
-   CLI with rationale
-4. Implement approved changes
-5. Re-run `uv run wagents docs generate` to verify
-6. Run `cd docs && pnpm build` to verify
+1. Read the documentation generation modules:
+   - `wagents/docs.py` — index pages, sidebar, CLI page, docs subcommands
+   - `wagents/rendering.py` — MDX page renderers (skill, agent, MCP)
+   - `wagents/parsing.py` — frontmatter parsing, text transforms, MDX escaping
+   - `wagents/catalog.py` — asset collection, node/edge data model
+2. Identify gaps in the generation pipeline
+3. **Ask the user before implementing**
+4. Implement, regenerate, verify build
 
 ## Full Mode
 
@@ -307,52 +329,37 @@ Execute all modes in sequence:
 3. **Enhance**: Score and improve all pages (parallel subagents)
 4. **Improve**: Research and propose site improvements (ask first)
 
-## Key Principles
-
-- **Wraps the CLI**: Always call `uv run wagents docs generate` as the
-  foundation. Never bypass or replace the CLI pipeline.
-- **Extends the pipeline**: Enhance on top of what the CLI generates.
-  The CLI produces the structural baseline; this skill adds polish.
-- **Can modify the pipeline**: In `improve cli` mode, edit
-  `wagents/cli.py` itself to improve the generation logic.
-- **Invoke after asset changes**: Run after creating or modifying skills,
-  agents, or MCP servers. With `disable-model-invocation: false`, the model
-  can auto-invoke this skill when it detects asset changes.
-- **Parallel enhancement**: Use subagent wave pattern for page-level
-  enhancement work.
-- **Non-destructive by default**: In auto, sync, and enhance modes,
-  preserve the CLI-generated structure. Add to it, do not replace it.
-- **No approval gates in auto mode**: When auto-triggered, sync and
-  enhance without prompting the user.
-- **Manual modes ask first**: `improve` and `improve cli` modes present
-  proposals and wait for approval before making changes.
-
 ## Reference Files
 
-| File | When to Read |
-|------|--------------|
-| references/quality-checklist.md | When scoring or enhancing pages |
-| references/starlight-patterns.md | When adding Starlight components to MDX |
+| File | Content | When to Read |
+|------|---------|--------------|
+| references/quality-checklist.md | 9-dimension page scoring rubric, enhancement patterns with before/after examples | Scoring or enhancing pages |
+| references/starlight-patterns.md | 10+ Starlight component patterns with import conventions and escape rules | Adding components to MDX |
+| references/site-architecture.md | Design system tokens, Astro component slots, plugin config, island patterns | Improve Site or Improve Design mode |
+| references/advanced-patterns.md | Interactive islands, marketplace UX, content collections, performance optimization | Improve Site or Improve UX mode |
 
 Read these before enhancement work. They define the quality bar and
 component patterns to follow.
 
 ## Critical Rules
 
-- NEVER delete pages that the CLI generates — only enhance them
-- ALWAYS run `uv run wagents validate` after any changes to asset files
-- ALWAYS run `cd docs && pnpm build` to verify the build after changes
-- When enhancing MDX, preserve the frontmatter generated by the CLI
-  (title, description, and any other fields the CLI sets)
-- When enhancing, import Starlight components at the top of MDX files
-  before using them in the body
-- Use `_escape_mdx` patterns — do not introduce raw JSX that breaks MDX
-  parsing (escape `{`, `<`, `>` in prose; use `{'{'}` or backtick-wrap)
-- Reference files in `references/` provide quality standards and component
-  patterns — always read them before enhancement work
-- When spawning parallel subagents for enhancement, ensure no two
-  subagents edit the same file (one subagent per page)
-- In auto mode, if the build fails after enhancement, revert the
-  enhancement changes for the failing page and re-run the build
-- Do not add content that is fabricated or speculative — enhance based
-  on what the source asset actually says
+1. Never delete pages generated by `wagents docs generate` — only enhance them
+2. Always run `uv run wagents validate` after any changes to asset files
+3. Always run `cd docs && pnpm build` to verify the build after changes
+4. Never modify CLI-generated frontmatter (title, description) during enhancement
+5. Always import Starlight components at top of MDX files before use
+6. Never introduce raw JSX that breaks MDX parsing — escape `{`, `<`, `>` in prose
+7. Always read references before enhancement work
+8. Never assign the same file to multiple parallel subagents
+9. Always revert enhancements that break the build, then rebuild
+10. Never add fabricated or speculative content — enhance from source asset only
+11. Always call `wagents docs generate` as foundation — never bypass the CLI
+12. Never implement `improve` or `improve cli` changes without user approval
+
+**Canonical terms** (use these exactly throughout):
+- Modes: "Auto", "Sync", "Sync Installed", "Enhance All", "Enhance One", "Maintain", "Improve Site", "Improve Design", "Improve UX", "Improve Pipeline", "Full"
+- Enhancement dimensions: "description", "usage examples", "visual elements", "cross-references", "structure", "interactivity", "external links", "agent compatibility"
+- Severity levels: "Critical", "Warning", "Info"
+- Page types: "skill page", "agent page", "MCP page", "index page", "landing page", "CLI page", "guide page"
+- Pipeline modules: `wagents/docs.py`, `wagents/rendering.py`, `wagents/parsing.py`, `wagents/catalog.py`
+- Site layers: "generated content" (MDX pages), "design system" (CSS), "components" (Astro overrides), "islands" (interactive client-side), "plugins" (Starlight ecosystem)

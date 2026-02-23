@@ -1,4 +1,116 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
-  <rect width="36" height="36" rx="8" fill="#7c3aed"/>
-  <text x="18" y="26" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="white" text-anchor="middle">A</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Body gradient: violet to deep violet -->
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <!-- Head gradient: lighter top -->
+    <linearGradient id="head" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <!-- Antenna glow gradient: warm cyan -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Eye shine gradient -->
+    <radialGradient id="eyeShine" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e8e0ff"/>
+    </radialGradient>
+  </defs>
+
+  <!-- === ANTENNA === -->
+  <!-- Antenna stick -->
+  <line x1="32" y1="12" x2="32" y2="4.5" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/>
+  <!-- Antenna glow (warm, layered) -->
+  <circle cx="32" cy="4" r="5" fill="url(#glow)" opacity="0.5"/>
+  <circle cx="32" cy="4" r="2.5" fill="#67e8f9"/>
+  <circle cx="32" cy="3.2" r="0.8" fill="white" opacity="0.9"/>
+
+  <!-- === SPARKLES near antenna === -->
+  <!-- Left sparkle (4-point star) -->
+  <path d="M23 5 L24 3.5 L25 5 L24 6.5 Z" fill="#67e8f9" opacity="0.7"/>
+  <!-- Right sparkle -->
+  <path d="M39 7 L40.2 5.2 L41.4 7 L40.2 8.8 Z" fill="#a78bfa" opacity="0.6"/>
+  <!-- Tiny dot sparkle -->
+  <circle cx="26" cy="8" r="0.6" fill="white" opacity="0.5"/>
+
+  <!-- === EARS (slightly behind head) === -->
+  <rect x="7" y="18" width="6" height="8" rx="3" fill="#6d28d9"/>
+  <rect x="51" y="18" width="6" height="8" rx="3" fill="#6d28d9"/>
+  <!-- Ear inner highlight -->
+  <rect x="8.5" y="19.5" width="3" height="5" rx="1.5" fill="#8b5cf6" opacity="0.5"/>
+  <rect x="52.5" y="19.5" width="3" height="5" rx="1.5" fill="#8b5cf6" opacity="0.5"/>
+
+  <!-- === HEAD (large, chibi-style) === -->
+  <rect x="11" y="11" width="42" height="32" rx="16" fill="url(#head)"/>
+  <!-- Head highlight (subtle top reflection) -->
+  <ellipse cx="32" cy="16" rx="14" ry="4" fill="white" opacity="0.08"/>
+
+  <!-- === EYES (big, round, anime sparkle) === -->
+  <!-- Left eye -->
+  <ellipse cx="23" cy="26" rx="6.5" ry="7" fill="url(#eyeShine)"/>
+  <ellipse cx="23" cy="26" rx="6.5" ry="7" fill="none" stroke="#6d28d9" stroke-width="0.5" opacity="0.3"/>
+  <!-- Left pupil -->
+  <circle cx="24" cy="26.5" r="3.8" fill="#1e1b4b"/>
+  <!-- Left iris ring -->
+  <circle cx="24" cy="26.5" r="3.8" fill="none" stroke="#4c1d95" stroke-width="0.5"/>
+  <!-- Left eye reflections (anime sparkle) -->
+  <circle cx="22" cy="24.5" r="1.6" fill="white"/>
+  <circle cx="26" cy="25" r="0.8" fill="white" opacity="0.9"/>
+  <circle cx="23" cy="28.5" r="0.6" fill="white" opacity="0.5"/>
+
+  <!-- Right eye -->
+  <ellipse cx="41" cy="26" rx="6.5" ry="7" fill="url(#eyeShine)"/>
+  <ellipse cx="41" cy="26" rx="6.5" ry="7" fill="none" stroke="#6d28d9" stroke-width="0.5" opacity="0.3"/>
+  <!-- Right pupil -->
+  <circle cx="42" cy="26.5" r="3.8" fill="#1e1b4b"/>
+  <!-- Right iris ring -->
+  <circle cx="42" cy="26.5" r="3.8" fill="none" stroke="#4c1d95" stroke-width="0.5"/>
+  <!-- Right eye reflections (anime sparkle) -->
+  <circle cx="40" cy="24.5" r="1.6" fill="white"/>
+  <circle cx="44" cy="25" r="0.8" fill="white" opacity="0.9"/>
+  <circle cx="41" cy="28.5" r="0.6" fill="white" opacity="0.5"/>
+
+  <!-- === BLUSH MARKS (soft pink cheeks) === -->
+  <ellipse cx="14.5" cy="30" rx="3" ry="2" fill="#f9a8d4" opacity="0.4"/>
+  <ellipse cx="49.5" cy="30" rx="3" ry="2" fill="#f9a8d4" opacity="0.4"/>
+
+  <!-- === SMILE (wider, friendlier) === -->
+  <path d="M25 33 Q32 39 39 33" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <!-- Tiny mouth highlight -->
+  <path d="M29 34.5 Q32 37 35 34.5" fill="white" opacity="0.15"/>
+
+  <!-- === BODY (smaller, chibi proportion) === -->
+  <rect x="19" y="42" width="26" height="14" rx="8" fill="url(#body)"/>
+  <!-- Body highlight -->
+  <ellipse cx="32" cy="45" rx="8" ry="2" fill="white" opacity="0.07"/>
+
+  <!-- === HEART on chest (emerald accent) === -->
+  <path d="M32 50 L29.5 47.2 C28.5 46 28.5 44.5 29.8 44.5 C30.8 44.5 31.5 45.2 32 45.8 C32.5 45.2 33.2 44.5 34.2 44.5 C35.5 44.5 35.5 46 34.5 47.2 Z" fill="#34d399"/>
+  <!-- Heart highlight -->
+  <circle cx="30.5" cy="45.5" r="0.5" fill="white" opacity="0.4"/>
+
+  <!-- === ARMS === -->
+  <!-- Left arm (relaxed) -->
+  <line x1="19" y1="47" x2="12" y2="52" stroke="#6d28d9" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="11" cy="53" r="2.5" fill="#8b5cf6"/>
+  <!-- Left hand highlight -->
+  <circle cx="10.5" cy="52.2" r="0.7" fill="white" opacity="0.3"/>
+
+  <!-- Right arm (waving up) -->
+  <line x1="45" y1="46" x2="53" y2="40" stroke="#6d28d9" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="54" cy="39" r="2.5" fill="#8b5cf6"/>
+  <!-- Right hand highlight -->
+  <circle cx="53.5" cy="38.2" r="0.7" fill="white" opacity="0.3"/>
+
+  <!-- === FEET === -->
+  <rect x="22" y="55" width="7" height="4.5" rx="2.2" fill="#5b21b6"/>
+  <rect x="35" y="55" width="7" height="4.5" rx="2.2" fill="#5b21b6"/>
+  <!-- Foot highlights -->
+  <ellipse cx="25.5" cy="56" rx="2" ry="0.8" fill="white" opacity="0.1"/>
+  <ellipse cx="38.5" cy="56" rx="2" ry="0.8" fill="white" opacity="0.1"/>
 </svg>

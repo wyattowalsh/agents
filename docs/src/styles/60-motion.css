@@ -1,0 +1,69 @@
+/* Auto-extracted from custom.css for modular maintenance: 60-motion.css */
+
+/* ===== VIEW TRANSITIONS ===== */
+::view-transition-new(root) {
+  animation: violet-flash 0.3s ease-out;
+}
+@keyframes violet-flash {
+  0% { opacity: 0; filter: brightness(1.5) saturate(1.5); }
+  100% { opacity: 1; filter: brightness(1) saturate(1); }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes color-shift {
+  0%, 100% { filter: hue-rotate(0deg) drop-shadow(0 0 30px oklch(0.62 0.1 205 / 0.22)); }
+  50% { filter: hue-rotate(8deg) drop-shadow(0 0 30px oklch(0.62 0.1 180 / 0.22)); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1.0; }
+}
+
+/* ===== HERO TYPEWRITER MOTION (migrated from Hero.astro override) ===== */
+.hero-terminal-cmd {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: none;
+  width: 0;
+  animation: typewriter 2s steps(42) 0.5s forwards;
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.hero-terminal-cursor {
+  opacity: 0;
+  animation: cursor-appear 0.01s 2.5s forwards, cursor-blink 1s step-end 2.5s infinite;
+}
+@keyframes cursor-appear {
+  to { opacity: 1; }
+}
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.hero-agents-row {
+  opacity: 0;
+  animation: fade-up 0.5s ease 2.8s forwards;
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-terminal {
+  opacity: 0;
+  animation: terminal-entrance 0.6s ease 0.2s forwards;
+}
+@keyframes terminal-entrance {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
