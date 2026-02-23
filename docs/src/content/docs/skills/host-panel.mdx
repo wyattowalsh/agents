@@ -3,11 +3,13 @@ title: "host-panel"
 description: "Host simulated panel discussions and debates among AI-simulated domain experts."
 ---
 
+{/* HAND-MAINTAINED */}
+
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="host-panel" variant="note" /> <Badge text="3079 words" variant="default" />
+<Badge text="host-panel" variant="note" /> <Badge text="3256 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
-> Host simulated panel discussions and debates among AI-simulated domain experts. Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring complex topics from multiple expert perspectives, testing argument strength, academic brainstorming, or understanding trade-offs in decisions.
+> Host simulated panel discussions and debates among AI-simulated domain experts. Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring complex topics from multiple expert perspectives, testing argument strength, academic brainstorming, or understanding trade-offs in decisions. NOT for one-on-one conversations, simple Q&A, or real-time debates.
 
 <div class="quick-start">
 
@@ -26,13 +28,94 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 
 ## What It Does
 
-Surface real tensions, frameworks, and disagreements through simulated expert discourse — not theatrical roleplay.
+Surface real tensions, frameworks, and disagreements through simulated expert discourse -- not theatrical roleplay. The panel explores a complex topic from multiple angles, surfacing frameworks and genuine disagreements rather than producing consensus or truth.
+
+## Discussion Formats
+
+| Format | Purpose | Best for |
+|--------|---------|----------|
+| `roundtable` | Open multi-perspectival exploration | Broad topics, brainstorming, mapping a field |
+| `oxford` | Binary debate with formal sides | Policy decisions, testing propositions |
+| `socratic` | Deep inquiry through questioning | Conceptual analysis, definitional disputes |
+
+**Defaults:** roundtable format, 4 experts. Expert range: 2-6 (prefer 4-5 for best persona maintenance).
+
+<Aside type="tip" title="Format auto-selection">
+If the user omits the format, the skill auto-selects: binary propositions ("Should X...") get oxford, open explorations ("What are the implications of...") get roundtable, and deep conceptual inquiries ("What does X mean?") get socratic.
+</Aside>
+
+## Panel Pipeline
+
+<Steps>
+
+1. **Argument Parsing and Topic Diagnostic** -- Parse the quoted topic, optional format keyword, and optional expert count (2-6). Evaluate topic suitability: settled science gets reframed, too-broad topics get narrowed, too-narrow topics get expanded.
+
+2. **Topic Analysis and Research Grounding** -- Map the terrain: identify core disciplines, key tensions, intellectual traditions with substantive positions, and what is specifically contested. Use WebSearch for 3-5 recent sources. Output: topic map, research brief, and suggested panel composition.
+
+3. **Persona Generation** -- Build personas that maximally cover identified tensions. Each panelist gets: name/credentials, specific domain expertise, intellectual tradition (operationalized), argumentative style, and known blind spots. Diversity requirements: no two from the same tradition, at least one contrarian, at least one bridge figure, mixed career stages.
+
+4. **Discussion Phases** -- Phase 0 (Framing) is universal. Format-specific phases are loaded from `references/formats.md`. Moderator standing orders apply continuously: persona integrity checks, turn management, provocation triggers (convergence, vagueness, comfort zone, stagnation), devil's advocate rotation, and mandatory uncomfortable implications.
+
+5. **Synthesis** -- The intellectual product that could not have been produced by any single panelist. Includes: underlying axiom of disagreement, emergent question, resolution evidence, structural position map, uncomfortable implications, 3-5 key takeaways, genuine further reading, and self-assessment.
+
+</Steps>
+
+## Moderator Mechanisms
+
+Claude acts as the moderator with these standing orders:
+
+- **Persona integrity** -- Before each panelist speaks, silently recall their commitments, analyze claims by substance, evaluate which claims their tradition would challenge, and formulate a grounded response
+- **Provocation triggers** -- Intervene on convergence (test for model-prior collapse), vagueness (demand specific examples), comfort zone (push for unacceptable implications), and stagnation (introduce new angles)
+- **Devil's advocate rotation** -- During challenge phases, assign panelists to steel-man the position they most disagree with
+- **Uncomfortable implications** -- At least once per panel, ask 2-3 panelists: "What is the strongest case against your own position?"
+
+## Synthesis Components
+
+The synthesis is NOT a summary. It must include:
+
+- **Underlying axiom** -- What assumption explains WHY the panelists disagree?
+- **Emergent question** -- What NEW question emerged that none started with?
+- **Resolution evidence** -- What specific experiment, study, or data would resolve remaining tensions?
+- **Position map** -- Structural mapping, not just "A thinks X, B thinks Y"
+- **Uncomfortable implications** -- Do not let them disappear into polite summary
+- **Key takeaways** -- 3-5 condensed bullets
+- **Further reading** -- Real works only, never fabricated
+
+## Output Length
+
+| Type | Word Count | Includes |
+|------|-----------|----------|
+| Full panel | 3000-4000 | All phases, full synthesis |
+| Condensed panel | 1000-1500 | Abbreviated framing, sharpest exchanges, challenge highlights, full synthesis |
+
+## Critical Rules
+
+Non-negotiable constraints for every panel:
+
+1. **Research before personas.** Always run topic analysis and research grounding first.
+2. **Never skip synthesis.** It is the intellectual product that justifies the panel.
+3. **Citation integrity.** Getting a citation wrong is worse than being vague (Section 2).
+4. **Disagreements must be specific.** Cite the claim, cite the counter-evidence,
+   explain why the traditions diverge. "I see it differently" is not a disagreement.
+5. **No straw men.** Each position must be the strongest version of itself. If a
+   panelist's argument is easy to defeat, the persona was poorly constructed.
+6. **Test convergence.** Convergence may reflect model priors, not genuine agreement.
+   Ask: would a real scholar from tradition X actually concede this point?
+7. **No monologues.** If a panelist talks for more than 200 words without engagement,
+   something has gone wrong.
+8. **Setup is not the product.** Show topic map, research brief, and roster, then dive
+   into the discussion.
+
+---
 
 <Tabs>
   <TabItem label="General">
 | Field | Value |
 | ----- | ----- |
 | Name | `host-panel` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
   </TabItem>
   <TabItem label="Claude Code">
 | Field | Value |
@@ -58,8 +141,13 @@ description: >-
   Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert
   personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring
   complex topics from multiple expert perspectives, testing argument strength,
-  academic brainstorming, or understanding trade-offs in decisions.
+  academic brainstorming, or understanding trade-offs in decisions. NOT for
+  one-on-one conversations, simple Q&A, or real-time debates.
 argument-hint: '"topic" [format] [num-experts]'
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
 ---
 
 # Host Panel
@@ -465,25 +553,23 @@ Maintain four visual voices throughout the panel output:
 
 Structure the complete panel output as follows:
 
-```
-## Panel: [Topic]
-**Format:** [format] | **Date:** [date] | **Experts:** [count]
+    ## Panel: [Topic]
+    **Format:** [format] | **Date:** [date] | **Experts:** [count]
 
-### Panelist Roster
-- **[Name]** — [credentials] *(tradition)*
+    ### Panelist Roster
+    - **[Name]** — [credentials] *(tradition)*
 
-### Phase 0: Framing
-### [Each format-specific phase as its own H3]
-### Synthesis
-- **Axiom of disagreement:** ...
-- **Emergent question:** ...
-- **Resolution evidence:** ...
-- **Position map:** ...
-- **Uncomfortable implications:** ...
-- **Key takeaways:** [3-5 bullets]
-- **Further reading:** ...
-- **Self-assessment:** ...
-```
+    ### Phase 0: Framing …
+    ### [Each format-specific phase as its own H3]
+    ### Synthesis …
+    - **Axiom of disagreement:** ...
+    - **Emergent question:** ...
+    - **Resolution evidence:** ...
+    - **Position map:** ...
+    - **Uncomfortable implications:** ...
+    - **Key takeaways:** [3-5 bullets]
+    - **Further reading:** ...
+    - **Self-assessment:** ...
 
 ### Output Length
 
@@ -520,7 +606,33 @@ specific to this panel.
 
 ---
 
-## 8. Critical Rules
+## Reference File Index
+
+| File | Read When |
+|------|-----------|
+| `references/formats.md` | Loading phase structure for the chosen discussion format |
+| `references/archetypes.md` | Building personas spanning 2+ distinct domains or unfamiliar fields |
+
+---
+
+## Canonical Vocabulary
+
+| Canonical Term | Meaning |
+|----------------|---------|
+| panel | A simulated multi-expert discussion on a topic |
+| expert / panelist | An AI-simulated domain specialist with defined tradition and credentials |
+| format | The discussion structure: roundtable, oxford, or socratic |
+| synthesis | The intellectual product produced after discussion phases |
+| tradition | An intellectual school of thought with specific methodological commitments |
+| moderator | Claude's role managing turn-taking, provocation, and phase transitions |
+| terrain mapping | The pre-discussion analysis identifying disciplines, tensions, and traditions |
+| convergence | When 2+ panelists agree — must be tested for model-prior collapse |
+| persona integrity | Maintaining each panelist's distinct voice, reasoning, and evidence standards |
+| phase | A discrete stage of the discussion governed by the chosen format |
+
+---
+
+## Critical Rules
 
 Non-negotiable constraints for every panel:
 

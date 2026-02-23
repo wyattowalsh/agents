@@ -1,0 +1,59 @@
+/* Auto-extracted from custom.css for modular maintenance: 50-layout-nav.css */
+
+/* ===== SIDEBAR ENHANCEMENTS ===== */
+/* Type-coded sidebar group labels (nth-child matches sidebar order: 1=home, 2=Skills, 3=Agents, 4=MCP) */
+.sidebar-content .top-level > li:nth-child(2) > details > summary .group-label {
+  color: var(--type-skill);
+}
+.sidebar-content .top-level > li:nth-child(3) > details > summary .group-label {
+  color: var(--type-agent);
+}
+.sidebar-content .top-level > li:nth-child(4) > details > summary .group-label {
+  color: var(--type-mcp);
+}
+
+/* Active item glow (sidebar only) */
+:root[data-theme='dark'] .sidebar-content a[aria-current='page'] {
+  background: oklch(0.19 0.03 210 / 0.36);
+  box-shadow: inset 3px 0 0 var(--primary), 0 0 12px oklch(0.58 0.09 210 / 0.14);
+  border-radius: 4px;
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* ===== PAGE TITLE TYPE ICONS ===== */
+/* These work with the PageTitle.astro component */
+.page-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  font-size: 0.55em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.page-title-icon--skill { background: oklch(0.25 0.1 285 / 0.5); color: var(--type-skill); }
+.page-title-icon--agent { background: oklch(0.25 0.07 200 / 0.5); color: var(--type-agent); }
+.page-title-icon--mcp   { background: oklch(0.25 0.09 155 / 0.5); color: var(--type-mcp); }
+
+/* ===== BACKGROUND DOT GRID (NON-HERO PAGES) ===== */
+body:not([data-has-hero])::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, oklch(0.42 0.03 210 / 0.055) 0.5px, transparent 0.5px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+[data-theme='light'] body:not([data-has-hero])::before {
+  background-image: radial-gradient(circle, oklch(0.55 0.03 210 / 0.05) 0.5px, transparent 0.5px);
+}
+@media (max-width: 640px) {
+  body:not([data-has-hero])::before {
+    display: none;
+  }
+}

@@ -35,8 +35,11 @@ class TestWriteIndexPage:
     def test_creates_index_file(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
         content_dir.mkdir(parents=True, exist_ok=True)
+        # Use featured skill IDs so the curated section renders
         nodes = [
-            _make_node("skill"),
+            _make_node("skill", id="wargame"),
+            _make_node("skill", id="honest-review"),
+            _make_node("skill", id="skill-creator"),
             _make_node("agent", source_path="agents/test-agent.md"),
             _make_node(
                 "mcp",
@@ -108,7 +111,7 @@ class TestWriteSkillsIndex:
         idx = content_dir / "skills" / "index.mdx"
         assert idx.exists()
         text = idx.read_text()
-        assert "User-Invocable (1)" in text
+        assert "User-Invocable Skills (1)" in text
 
     def test_installed_skills_section(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -195,12 +198,7 @@ class TestWriteSidebar:
         # No agents or mcp sections
         assert "Agents" not in text or "autogenerate" not in text
 
-    def test_sidebar_with_guides(self, tmp_repo):
-        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
-        guides_dir = content_dir / "guides"
-        guides_dir.mkdir(parents=True, exist_ok=True)
-        (guides_dir / "my-guide.mdx").write_text("---\ntitle: Guide\n---\n")
+    def test_sidebar_skills_collapsed(self, tmp_repo):
         write_sidebar([_make_node("skill")])
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
-        assert "Guides" in text
-        assert "my-guide" in text
+        assert "collapsed: true" in text

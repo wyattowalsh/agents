@@ -1,0 +1,254 @@
+/* Auto-extracted from custom.css for modular maintenance: 30-cards.css */
+
+/* ===== CARD EFFECTS ===== */
+
+/* Consistent card heights */
+.sl-link-card .description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Gradient border on hover */
+.sl-link-card {
+  position: relative;
+  transition: transform var(--duration-normal) var(--ease-snappy),
+              box-shadow var(--duration-normal) var(--ease-snappy),
+              border-color var(--duration-normal) ease;
+}
+.sl-link-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 0 40px -10px oklch(0.6 0.1 205 / 0.18);
+  border-color: var(--primary);
+}
+
+/* Type-coded glow on catalog card hover */
+.catalog-skill .sl-link-card:hover {
+  box-shadow: 0 8px 24px oklch(0.5 0.2 285 / 0.25), 0 0 48px oklch(0.5 0.2 285 / 0.1);
+}
+.catalog-agent .sl-link-card:hover {
+  box-shadow: 0 8px 24px oklch(0.5 0.15 200 / 0.25), 0 0 48px oklch(0.5 0.15 200 / 0.1);
+}
+.catalog-mcp .sl-link-card:hover {
+  box-shadow: 0 8px 24px oklch(0.5 0.2 155 / 0.25), 0 0 48px oklch(0.5 0.2 155 / 0.1);
+}
+
+/* Light mode: softer glow on catalog cards */
+[data-theme='light'] .catalog-skill .sl-link-card:hover {
+  box-shadow: 0 8px 24px oklch(0.5 0.15 285 / 0.15), 0 0 32px oklch(0.5 0.15 285 / 0.08);
+}
+[data-theme='light'] .catalog-agent .sl-link-card:hover {
+  box-shadow: 0 8px 24px oklch(0.5 0.1 200 / 0.15), 0 0 32px oklch(0.5 0.1 200 / 0.08);
+}
+[data-theme='light'] .catalog-mcp .sl-link-card:hover {
+  box-shadow: 0 8px 24px oklch(0.5 0.12 155 / 0.15), 0 0 32px oklch(0.5 0.12 155 / 0.08);
+}
+
+/* Type-coded LEFT border accent on catalog cards (applied via wrapper classes in MDX) */
+.catalog-skill .sl-link-card { border-left: 3px solid var(--type-skill); border-top: none; }
+.catalog-agent .sl-link-card { border-left: 3px solid var(--type-agent); border-top: none; }
+.catalog-mcp .sl-link-card   { border-left: 3px solid var(--type-mcp); border-top: none; }
+
+/* Glass morphism */
+[data-theme='dark'] .sl-link-card {
+  background: oklch(0.15 0 0 / 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ===== QUICK START BOX ===== */
+.quick-start {
+  border: 1px solid oklch(0.42 0.05 205 / 0.45);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  background: linear-gradient(135deg, oklch(0.14 0.02 210 / 0.34), oklch(0.13 0.02 170 / 0.2));
+  position: relative;
+  overflow: hidden;
+}
+.quick-start::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--type-skill), oklch(0.7 0.15 200), var(--type-mcp));
+}
+.quick-start h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+/* ===== INSTALL SECTION ===== */
+.install-section {
+  border: 1px solid oklch(0.32 0.03 210 / 0.28);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  background: linear-gradient(180deg, oklch(0.13 0.015 210 / 0.18), oklch(0.12 0.01 160 / 0.14));
+}
+
+/* ===== BADGE ENHANCEMENTS ===== */
+.sl-badge[data-variant='note'] {
+  background: oklch(0.24 0.05 210 / 0.45);
+}
+.sl-badge[data-variant='tip'] {
+  background: oklch(0.25 0.08 155 / 0.4);
+}
+.sl-badge[data-variant='caution'] {
+  background: oklch(0.25 0.08 65 / 0.4);
+}
+.sl-badge[data-variant='success'] {
+  background: oklch(0.25 0.08 145 / 0.4);
+}
+[data-theme='light'] .sl-badge[data-variant='note'] {
+  background: oklch(0.92 0.04 210 / 0.4);
+}
+[data-theme='light'] .sl-badge[data-variant='tip'] {
+  background: oklch(0.92 0.05 155 / 0.4);
+}
+[data-theme='light'] .sl-badge[data-variant='caution'] {
+  background: oklch(0.92 0.05 65 / 0.4);
+}
+[data-theme='light'] .sl-badge[data-variant='success'] {
+  background: oklch(0.92 0.05 145 / 0.4);
+}
+
+/* Installed skill indicator */
+.stat-installed {
+  border-color: oklch(0.5 0.1 45 / 0.5);
+  color: oklch(0.70 0.15 45);
+}
+[data-theme='light'] .stat-installed {
+  border-color: oklch(0.7 0.1 45 / 0.5);
+  color: oklch(0.55 0.15 45);
+}
+
+/* Installed catalog cards */
+.catalog-installed .sl-link-card {
+  border-left: 3px solid oklch(0.70 0.15 45);
+  border-top: none;
+}
+
+/* ===== SPLASH PAGE SECTION DIVIDERS ===== */
+[data-has-hero] .sl-markdown-content h2 {
+  padding-top: 2.5rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid oklch(0.25 0.05 285 / 0.3);
+  background: linear-gradient(135deg in oklch, oklch(0.65 0.25 285), oklch(0.70 0.15 200), oklch(0.70 0.20 155));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+}
+[data-has-hero] .sl-markdown-content h2:first-of-type {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+[data-theme='light'] [data-has-hero] .sl-markdown-content h2 {
+  border-top-color: oklch(0.75 0.05 285 / 0.3);
+  background: linear-gradient(135deg in oklch, oklch(0.4 0.25 285), oklch(0.45 0.15 200), oklch(0.45 0.20 155));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== SPLASH PAGE STEPS ENHANCEMENT ===== */
+[data-has-hero] .sl-steps {
+  --sl-steps-accent: var(--primary);
+  margin: 1.5rem 0 2rem;
+}
+[data-has-hero] .sl-steps > li {
+  padding-bottom: 1.5rem;
+}
+[data-has-hero] .sl-steps strong {
+  color: var(--sl-color-text-accent);
+}
+
+/* ===== SPLASH PAGE ASIDE PROMINENCE ===== */
+[data-has-hero] .starlight-aside {
+  margin: 2rem 0;
+  font-size: 1.05rem;
+}
+[data-has-hero] .starlight-aside--tip {
+  border-left-color: var(--primary);
+  background: oklch(0.15 0.03 285 / 0.2);
+}
+[data-theme='light'] [data-has-hero] .starlight-aside--tip {
+  background: oklch(0.95 0.02 285 / 0.3);
+}
+
+/* ===== EXTERNAL LINK CARDS ===== */
+/* Cyan accent for ecosystem / external links */
+.sl-link-card[href^="http"] {
+  border-left: 2px solid oklch(0.5 0.1 200 / 0.3);
+}
+.sl-link-card[href^="http"]:hover {
+  border-left-color: var(--type-agent);
+}
+
+/* ===== CONVENTION SKILLS SECTION ===== */
+.catalog-skill + blockquote {
+  font-size: 0.9rem;
+  font-style: italic;
+  opacity: 0.8;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ===== SPLASH PAGE CARD GRID ===== */
+[data-has-hero] .card-grid {
+  gap: 1rem;
+}
+
+/* ===== BADGE SUBTLE GLOW ===== */
+.sl-badge {
+  transition: box-shadow var(--duration-fast) ease;
+}
+[data-theme='dark'] .sl-badge[data-variant='note'] {
+  box-shadow: 0 0 8px oklch(0.55 0.09 210 / 0.14);
+}
+[data-theme='dark'] .sl-badge[data-variant='tip'] {
+  box-shadow: 0 0 8px oklch(0.5 0.15 155 / 0.12);
+}
+[data-theme='dark'] .sl-badge[data-variant='caution'] {
+  box-shadow: 0 0 8px oklch(0.55 0.12 65 / 0.12);
+}
+[data-theme='dark'] .sl-badge[data-variant='success'] {
+  box-shadow: 0 0 8px oklch(0.5 0.15 145 / 0.12);
+}
+[data-theme='light'] .sl-badge[data-variant='note'] {
+  box-shadow: 0 0 6px oklch(0.55 0.06 210 / 0.08);
+}
+[data-theme='light'] .sl-badge[data-variant='tip'] {
+  box-shadow: 0 0 6px oklch(0.5 0.1 155 / 0.08);
+}
+[data-theme='light'] .sl-badge[data-variant='caution'] {
+  box-shadow: 0 0 6px oklch(0.55 0.08 65 / 0.08);
+}
+[data-theme='light'] .sl-badge[data-variant='success'] {
+  box-shadow: 0 0 6px oklch(0.5 0.1 145 / 0.08);
+}
+
+/* ===== FEATURED CARD SHIMMER ===== */
+.sl-link-card[href*="skills/"] {
+  overflow: hidden;
+}
+.sl-link-card[href*="skills/"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 25%,
+    oklch(0.9 0.04 205 / 0.08) 50%,
+    transparent 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}

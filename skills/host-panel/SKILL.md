@@ -5,8 +5,13 @@ description: >-
   Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert
   personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring
   complex topics from multiple expert perspectives, testing argument strength,
-  academic brainstorming, or understanding trade-offs in decisions.
+  academic brainstorming, or understanding trade-offs in decisions. NOT for
+  one-on-one conversations, simple Q&A, or real-time debates.
 argument-hint: '"topic" [format] [num-experts]'
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
 ---
 
 # Host Panel
@@ -412,25 +417,23 @@ Maintain four visual voices throughout the panel output:
 
 Structure the complete panel output as follows:
 
-```
-## Panel: [Topic]
-**Format:** [format] | **Date:** [date] | **Experts:** [count]
+    ## Panel: [Topic]
+    **Format:** [format] | **Date:** [date] | **Experts:** [count]
 
-### Panelist Roster
-- **[Name]** — [credentials] *(tradition)*
+    ### Panelist Roster
+    - **[Name]** — [credentials] *(tradition)*
 
-### Phase 0: Framing
-### [Each format-specific phase as its own H3]
-### Synthesis
-- **Axiom of disagreement:** ...
-- **Emergent question:** ...
-- **Resolution evidence:** ...
-- **Position map:** ...
-- **Uncomfortable implications:** ...
-- **Key takeaways:** [3-5 bullets]
-- **Further reading:** ...
-- **Self-assessment:** ...
-```
+    ### Phase 0: Framing …
+    ### [Each format-specific phase as its own H3]
+    ### Synthesis …
+    - **Axiom of disagreement:** ...
+    - **Emergent question:** ...
+    - **Resolution evidence:** ...
+    - **Position map:** ...
+    - **Uncomfortable implications:** ...
+    - **Key takeaways:** [3-5 bullets]
+    - **Further reading:** ...
+    - **Self-assessment:** ...
 
 ### Output Length
 
@@ -467,7 +470,33 @@ specific to this panel.
 
 ---
 
-## 8. Critical Rules
+## Reference File Index
+
+| File | Read When |
+|------|-----------|
+| `references/formats.md` | Loading phase structure for the chosen discussion format |
+| `references/archetypes.md` | Building personas spanning 2+ distinct domains or unfamiliar fields |
+
+---
+
+## Canonical Vocabulary
+
+| Canonical Term | Meaning |
+|----------------|---------|
+| panel | A simulated multi-expert discussion on a topic |
+| expert / panelist | An AI-simulated domain specialist with defined tradition and credentials |
+| format | The discussion structure: roundtable, oxford, or socratic |
+| synthesis | The intellectual product produced after discussion phases |
+| tradition | An intellectual school of thought with specific methodological commitments |
+| moderator | Claude's role managing turn-taking, provocation, and phase transitions |
+| terrain mapping | The pre-discussion analysis identifying disciplines, tensions, and traditions |
+| convergence | When 2+ panelists agree — must be tested for model-prior collapse |
+| persona integrity | Maintaining each panelist's distinct voice, reasoning, and evidence standards |
+| phase | A discrete stage of the discussion governed by the chosen format |
+
+---
+
+## Critical Rules
 
 Non-negotiable constraints for every panel:
 

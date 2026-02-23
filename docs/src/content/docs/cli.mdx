@@ -3,9 +3,9 @@ title: CLI Reference
 description: wagents CLI commands and usage
 ---
 
-import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge } from '@astrojs/starlight/components';
 
-The `wagents` CLI manages AI agent assets in this repository.
+The `wagents` CLI manages AI agent assets in this repository -- creating skills, agents, and MCP servers from templates, validating frontmatter, generating documentation, and packaging skills for distribution.
 
 ## Installation
 
@@ -29,57 +29,322 @@ The `wagents` CLI manages AI agent assets in this repository.
 
 </Steps>
 
+<Aside type="tip" title="Running commands">
+All `wagents` commands should be run with `uv run wagents` from the repository root. The examples below omit the `uv run` prefix for brevity.
+</Aside>
+
 ## Commands
 
+### `wagents new` -- Create Assets
+
+Scaffold new skills, agents, or MCP servers from reference templates. Each template includes commented examples for all optional fields.
+
 <Tabs>
-  <TabItem label="new">
+  <TabItem label="skill">
 
-Create new assets from reference templates.
+Create a new skill with YAML frontmatter and markdown body:
 
 ```bash
-wagents new skill <name>              # Create a new skill
-wagents new skill <name> --no-docs    # Skip docs page scaffold
-wagents new agent <name>              # Create a new agent
-wagents new mcp <name>                # Create a new MCP server
+wagents new skill my-skill
+```
+
+This creates `skills/my-skill/SKILL.md` with a complete template including all optional frontmatter fields as comments, and scaffolds a documentation page.
+
+```bash
+# Skip the docs page scaffold
+wagents new skill my-skill --no-docs
+```
+
+**Output structure:**
+```
+skills/my-skill/
+  SKILL.md          # Frontmatter + instructions
 ```
 
   </TabItem>
-  <TabItem label="docs">
+  <TabItem label="agent">
 
-Manage the documentation site.
+Create a new agent configuration:
 
 ```bash
-wagents docs init                       # One-time: pnpm install
-wagents docs generate                   # Generate MDX content pages
-wagents docs generate --no-installed    # Skip installed skills
-wagents docs generate --include-drafts  # Include draft skills
-wagents docs dev                        # Generate + launch dev server
-wagents docs build                      # Generate + static build
-wagents docs preview                    # Generate + build + preview
-wagents docs clean                      # Remove generated content
+wagents new agent my-agent
+```
+
+This creates `agents/my-agent.md` with frontmatter for tools, permissions, model selection, and a system prompt body.
+
+```bash
+# Skip the docs page scaffold
+wagents new agent my-agent --no-docs
 ```
 
   </TabItem>
-  <TabItem label="validate">
+  <TabItem label="mcp">
 
-Validate all skills and agents frontmatter.
+Create a new MCP server with FastMCP v3:
+
+```bash
+wagents new mcp my-server
+```
+
+This creates a complete MCP server directory:
+
+```
+mcp/my-server/
+  server.py         # FastMCP entry point with example tool
+  pyproject.toml    # Package config with fastmcp>=2 dependency
+  fastmcp.json      # FastMCP configuration
+```
+
+The command also adds the `mcp/` directory to the uv workspace in `pyproject.toml` if not already present.
+
+```bash
+# Skip the docs page scaffold
+wagents new mcp my-server --no-docs
+```
+
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="Naming rules">
+All asset names must be kebab-case (`^[a-z0-9][a-z0-9-]*$`) and at most 64 characters. The name must match the directory name (for skills and MCP servers) or filename (for agents).
+</Aside>
+
+---
+
+### `wagents validate` -- Check All Assets
+
+Validate frontmatter and structure for every skill, agent, and MCP server in the repository:
 
 ```bash
 wagents validate
 ```
 
-  </TabItem>
-  <TabItem label="readme">
+**What it checks:**
 
-Generate or check the README.
+| Asset type | Validations |
+|-----------|-------------|
+| **Skills** | Required `name` and `description` fields, kebab-case naming, name matches directory, description within 1024 chars, body is non-empty |
+| **Agents** | Required `name` and `description` fields, kebab-case naming, name matches filename |
+| **MCP servers** | Directory is kebab-case, `server.py` exists and references FastMCP, `pyproject.toml` includes fastmcp dependency, `fastmcp.json` exists |
+
+The command exits with code 1 if any validation fails, printing each error to stderr.
+
+<Aside type="tip" title="CI integration">
+Run `wagents validate` in your CI pipeline to catch frontmatter issues before merge. It is included in the repository's pre-commit and CI checks.
+</Aside>
+
+---
+
+### `wagents readme` -- Generate README
+
+Regenerate `README.md` from the current repository contents, or check if the existing README is up to date:
 
 ```bash
-wagents readme           # Regenerate README.md
-wagents readme --check   # Check if README is up to date
+# Fully regenerate README.md
+wagents readme
+
+# Check if README is stale (exits 1 if out of date)
+wagents readme --check
+```
+
+The generated README includes tables for all skills, agents, and MCP servers, plus a development commands reference.
+
+---
+
+### `wagents install` -- Install Skills
+
+Install skills into agent platforms via `npx skills`:
+
+```bash
+# Install all skills to all supported agents globally
+wagents install
+
+# Install specific skill(s)
+wagents install my-skill
+
+# Install to a specific agent
+wagents install -a claude-code
+
+# List available skills without installing
+wagents install --list
+
+# Copy files instead of symlinking
+wagents install --copy
+
+# Skip confirmation prompts
+wagents install -y
+```
+
+**Supported agents:** `claude-code`, `gemini-cli`, `codex`, `crush`, `cursor`, `antigravity`, `github-copilot`, `opencode`
+
+---
+
+### `wagents package` -- Package Skills
+
+Package skills into portable ZIP files for distribution:
+
+```bash
+# Package a single skill
+wagents package my-skill
+
+# Package all skills
+wagents package --all
+
+# Check portability without creating ZIPs
+wagents package --dry-run
+
+# Specify output directory
+wagents package my-skill --output dist/
+
+# Output as JSON instead of table
+wagents package my-skill --format json
+```
+
+Packaged ZIPs are self-contained and can be distributed independently or attached to GitHub releases.
+
+<Aside type="note" title="Automated releases">
+The `release-skills.yml` CI workflow automatically packages and releases all skills when a version tag (`v*.*.*`) is pushed.
+</Aside>
+
+---
+
+### `wagents docs` -- Documentation Site
+
+Manage the [Starlight](https://starlight.astro.build/)-powered documentation site at [agents.w4w.dev](https://agents.w4w.dev).
+
+<Tabs>
+  <TabItem label="init">
+
+One-time setup to install documentation dependencies:
+
+```bash
+wagents docs init
+```
+
+This runs `pnpm install` in the `docs/` directory.
+
+  </TabItem>
+  <TabItem label="generate">
+
+Generate MDX content pages, sidebar, and index pages from repository assets:
+
+```bash
+wagents docs generate
+```
+
+**Options:**
+
+```bash
+# Skip installed skills from ~/.claude/skills/
+wagents docs generate --no-installed
+
+# Include skills with TODO descriptions
+wagents docs generate --include-drafts
+```
+
+The generator creates individual pages for each skill, agent, and MCP server, plus category index pages and the sidebar navigation.
+
+  </TabItem>
+  <TabItem label="dev">
+
+Generate content and start the development server with hot reload:
+
+```bash
+wagents docs dev
 ```
 
   </TabItem>
+  <TabItem label="build">
+
+Generate content and produce a static build:
+
+```bash
+wagents docs build
+```
+
+Output goes to `docs/dist/`.
+
+  </TabItem>
+  <TabItem label="preview">
+
+Generate, build, and start a preview server for the production build:
+
+```bash
+wagents docs preview
+```
+
+  </TabItem>
+  <TabItem label="clean">
+
+Remove generated content pages while preserving hand-maintained files:
+
+```bash
+wagents docs clean
+```
+
+Files containing `HAND-MAINTAINED` in their content are preserved during clean operations.
+
+  </TabItem>
 </Tabs>
+
+<Aside type="tip" title="Typical docs workflow">
+For day-to-day development, `wagents docs dev` is the most common command -- it regenerates all content and launches a hot-reloading dev server in one step.
+</Aside>
+
+---
+
+## Common Workflows
+
+### Adding a new skill end-to-end
+
+<Steps>
+
+1. Scaffold the skill:
+   ```bash
+   wagents new skill my-skill
+   ```
+
+2. Edit `skills/my-skill/SKILL.md` with your instructions.
+
+3. Validate the frontmatter:
+   ```bash
+   wagents validate
+   ```
+
+4. Preview the docs page:
+   ```bash
+   wagents docs dev
+   ```
+
+5. Package for distribution:
+   ```bash
+   wagents package my-skill
+   ```
+
+</Steps>
+
+### Updating documentation after changes
+
+<Steps>
+
+1. Regenerate all docs:
+   ```bash
+   wagents docs generate
+   ```
+
+2. Rebuild the README:
+   ```bash
+   wagents readme
+   ```
+
+3. Run validation:
+   ```bash
+   wagents validate
+   ```
+
+</Steps>
+
+---
 
 ## Repository Structure
 
@@ -88,6 +353,8 @@ wagents readme --check   # Check if README is up to date
   - \<name>/
     - SKILL.md
     - references/ (optional)
+    - scripts/ (optional)
+    - evals/ (optional)
 - agents/
   - \<name>.md
 - mcp/
@@ -96,6 +363,10 @@ wagents readme --check   # Check if README is up to date
     - pyproject.toml
     - fastmcp.json
 - docs/ (this site)
+  - src/
+    - content/
+      - docs/ (generated MDX pages)
+    - generated-sidebar.mjs
 - wagents/
   - \_\_init\_\_.py
   - cli.py
@@ -103,6 +374,7 @@ wagents readme --check   # Check if README is up to date
   - catalog.py
   - rendering.py
   - docs.py
+- tests/
 </FileTree>
 
 ## Built With

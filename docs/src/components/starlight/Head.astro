@@ -2,12 +2,19 @@
 import StarlightHead from '@astrojs/starlight/components/Head.astro';
 import VtbotStarlight from 'astro-vtbot/components/starlight/Base.astro';
 
-const { slug } = Astro.locals.starlightRoute;
+const { id } = Astro.locals.starlightRoute;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
-const ogImageUrl = Astro.site ? new URL(`/og/${slug || ''}.png`, Astro.site).href : '';
+const ogImageUrl = Astro.site ? new URL(`/og/${id || ''}.png`, Astro.site).href : '';
 ---
 <VtbotStarlight>
   <StarlightHead><slot /></StarlightHead>
 </VtbotStarlight>
+<link rel="canonical" href={canonicalUrl.href} />
 {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+{ogImageUrl && <meta property="twitter:image" content={ogImageUrl} />}
+{ogImageUrl && <meta property="og:image:alt" content="Open Graph preview for the Agents documentation site" />}
+{ogImageUrl && <meta property="twitter:image:alt" content="Open Graph preview for the Agents documentation site" />}
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Agents Docs" />
+<meta property="og:url" content={canonicalUrl.href} />
+<meta name="twitter:card" content="summary_large_image" />

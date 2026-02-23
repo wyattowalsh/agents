@@ -112,6 +112,7 @@ class TestRenderSkillPage:
         result = render_skill_page(node, [], [node])
         assert "## What It Does" in result
         assert "Quick Start" in result
+        assert "Source & provenance" in result
         assert "View Full SKILL.md" in result
         assert "View source on GitHub" in result
 
@@ -164,6 +165,9 @@ class TestRenderAgentPage:
         node = _make_node("agent", source_path="agents/test-agent.md")
         result = render_agent_page(node, [], [node])
         assert "## System Prompt" in result
+        assert "Source & provenance" in result
+        assert "View Full Agent File" in result
+        assert "## Resources" in result
         assert "View source on GitHub" in result
 
     def test_badges_for_model_and_permission(self, tmp_repo):
@@ -230,6 +234,8 @@ class TestRenderMcpPage:
         result = render_mcp_page(node, [], [node])
         assert "## Server Source" in result
         assert "claude_desktop_config.json" in result
+        assert "Source & provenance" in result
+        assert "## Resources" in result
         assert "View source on GitHub" in result
 
     def test_used_by_agents(self, tmp_repo):

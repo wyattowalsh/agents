@@ -1,8 +1,8 @@
 ---
 import Default from '@astrojs/starlight/components/PageTitle.astro';
 
-const { slug } = Astro.locals.starlightRoute;
-const path = typeof slug === 'string' ? slug : '';
+const { id } = Astro.locals.starlightRoute;
+const path = typeof id === 'string' ? id : '';
 
 let iconClass = '';
 let iconSymbol = '';
@@ -21,7 +21,7 @@ if (path.startsWith('skills')) {
 
 {iconSymbol ? (
   <div class="page-title-wrapper">
-    <span class={iconClass}>{iconSymbol}</span>
+    <span class={iconClass} aria-hidden="true">{iconSymbol}</span>
     <Default><slot /></Default>
   </div>
 ) : (
@@ -32,6 +32,14 @@ if (path.startsWith('skills')) {
   .page-title-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.3em;
+    gap: 0.1em;
+    font-size: inherit;
+  }
+  .page-title-wrapper :global(h1) {
+    min-width: 0;
+  }
+  .page-title-icon {
+    flex-shrink: 0;
+    font-size: inherit;
   }
 </style>

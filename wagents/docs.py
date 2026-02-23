@@ -1,7 +1,9 @@
 """Documentation site generation: indexes, sidebar, and docs subcommands."""
 
+import json
 import shutil
 import subprocess
+from pathlib import Path
 
 import typer
 
@@ -17,6 +19,24 @@ from wagents.rendering import (
 # ---------------------------------------------------------------------------
 # Index and CLI pages
 # ---------------------------------------------------------------------------
+
+
+def _count_mcp_servers_from_config() -> int | None:
+    """Return configured MCP server count from repo-level mcp.json, if present."""
+    mcp_config = ROOT / "mcp.json"
+    if not mcp_config.exists():
+        return None
+    try:
+        data = json.loads(mcp_config.read_text(encoding="utf-8"))
+        servers = data.get("mcpServers", {})
+        return len(servers) if isinstance(servers, dict) else None
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _has_mcp_overview_page() -> bool:
+    """Whether docs contains an MCP overview page (generated or hand-maintained)."""
+    return (CONTENT_DIR / "mcp" / "index.mdx").exists()
 
 
 def write_index_page(nodes: list) -> None:
@@ -72,6 +92,8 @@ def write_index_page(nodes: list) -> None:
     # Stats bar — only show non-zero counts
     custom_skills = [n for n in skills if n.source == "custom"]
     installed_skills = [n for n in skills if n.source != "custom"]
+    mcp_config_count = _count_mcp_servers_from_config()
+    has_mcp_overview = _has_mcp_overview_page()
 
     stat_items = []
     if custom_skills:
@@ -82,6 +104,10 @@ def write_index_page(nodes: list) -> None:
         stat_items.append(f'  <span class="stat stat-agent">{len(agents)} Agents</span>')
     if mcps:
         stat_items.append(f'  <span class="stat stat-mcp">{len(mcps)} MCP Servers</span>')
+    elif has_mcp_overview and mcp_config_count:
+        stat_items.append(f'  <span class="stat stat-mcp">{mcp_config_count} MCP Tools Configured</span>')
+    elif has_mcp_overview:
+        stat_items.append('  <span class="stat stat-mcp">MCP Overview Available</span>')
 
     if stat_items:
         parts.append('<div class="stats-bar">')
@@ -96,6 +122,21 @@ def write_index_page(nodes: list) -> None:
         "Install once, invoke with `/skill-name` in any supported agent. "
         "[Learn more at agentskills.io \u2192](https://agentskills.io)"
     )
+    parts.append("</Aside>")
+    parts.append("")
+
+    parts.append('<Aside type="note" title="How these docs are built">')
+    if has_mcp_overview and not mcps and mcp_config_count:
+        parts.append(
+            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via "
+            "`wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the "
+            f"{mcp_config_count} servers configured in `mcp.json` (including local and remote servers outside this repo)."
+        )
+    else:
+        parts.append(
+            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via "
+            "`wagents docs generate`. Hand-maintained pages are preserved when they include the `HAND-MAINTAINED` sentinel."
+        )
     parts.append("</Aside>")
     parts.append("")
 
@@ -161,19 +202,44 @@ def write_index_page(nodes: list) -> None:
     parts.append("</Steps>")
     parts.append("")
 
-    # Skills section — show top 3 + link to full index
-    if skills:
+    parts.append("## Explore the Catalog")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append(
+        '  <LinkCard title="Skills Index" href="/skills/"'
+        ' description="Browse custom and installed skills grouped by invocation model, with install commands and docs pages." />'
+    )
+    if has_mcp_overview:
+        if mcp_config_count:
+            mcp_desc = f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`."
+        else:
+            mcp_desc = "Hand-maintained overview of configured MCP servers."
+        parts.append(
+            f'  <LinkCard title="MCP Overview" href="/mcp/" description="{escape_attr(mcp_desc)}" />'
+        )
+    parts.append(
+        '  <LinkCard title="CLI Reference" href="/cli/"'
+        ' description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />'
+    )
+    parts.append("</CardGrid>")
+    parts.append("")
+
+    # Skills section — curated featured picks + link to full index
+    _featured_ids = ["wargame", "honest-review", "skill-creator"]
+    _skills_by_id = {n.id: n for n in skills}
+    featured = [_skills_by_id[fid] for fid in _featured_ids if fid in _skills_by_id]
+    if featured:
         parts.append("## Featured Skills")
         parts.append("")
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
-        for n in skills[:3]:
+        for n in featured:
             desc = escape_attr(truncate_sentence(n.description, 160))
             parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
-        if len(skills) > 3:
+        if len(skills) > len(featured):
             parts.append(f"[View all {len(skills)} skills →](/skills/)")
             parts.append("")
 
@@ -199,6 +265,21 @@ def write_index_page(nodes: list) -> None:
         for n in mcps:
             desc = escape_attr(truncate_sentence(n.description, 160))
             parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/mcp/{n.id}/" description="{desc}" />')
+        parts.append("</CardGrid>")
+        parts.append("</div>")
+        parts.append("")
+    elif has_mcp_overview:
+        parts.append("## MCP Servers")
+        parts.append("")
+        parts.append('<div class="catalog-mcp">')
+        parts.append("<CardGrid>")
+        if mcp_config_count:
+            desc = escape_attr(
+                f"Hand-maintained overview of {mcp_config_count} configured MCP servers from mcp.json (local and remote)."
+            )
+        else:
+            desc = "Hand-maintained overview of configured MCP servers."
+        parts.append(f'  <LinkCard title="MCP Overview" href="/mcp/" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
@@ -264,9 +345,16 @@ def write_cli_page() -> None:
     parts.append("description: wagents CLI commands and usage")
     parts.append("---")
     parts.append("")
-    parts.append("import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard } from '@astrojs/starlight/components';")
+    parts.append(
+        "import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge }"
+        " from '@astrojs/starlight/components';"
+    )
     parts.append("")
-    parts.append("The `wagents` CLI manages AI agent assets in this repository.")
+    parts.append(
+        "The `wagents` CLI manages AI agent assets in this repository"
+        " -- creating skills, agents, and MCP servers from templates,"
+        " validating frontmatter, generating documentation, and packaging skills for distribution."
+    )
     parts.append("")
     parts.append("## Installation")
     parts.append("")
@@ -290,58 +378,403 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append("</Steps>")
     parts.append("")
+    parts.append('<Aside type="tip" title="Running commands">')
+    parts.append(
+        "All `wagents` commands should be run with `uv run wagents` from the repository root. "
+        "The examples below omit the `uv run` prefix for brevity."
+    )
+    parts.append("</Aside>")
+    parts.append("")
     parts.append("## Commands")
     parts.append("")
+
+    # --- wagents new ---
+    parts.append("### `wagents new` -- Create Assets")
+    parts.append("")
+    parts.append(
+        "Scaffold new skills, agents, or MCP servers from reference templates. "
+        "Each template includes commented examples for all optional fields."
+    )
+    parts.append("")
     parts.append("<Tabs>")
-    parts.append('  <TabItem label="new">')
+    parts.append('  <TabItem label="skill">')
     parts.append("")
-    parts.append("Create new assets from reference templates.")
+    parts.append("Create a new skill with YAML frontmatter and markdown body:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents new skill <name>              # Create a new skill")
-    parts.append("wagents new skill <name> --no-docs    # Skip docs page scaffold")
-    parts.append("wagents new agent <name>              # Create a new agent")
-    parts.append("wagents new mcp <name>                # Create a new MCP server")
+    parts.append("wagents new skill my-skill")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "This creates `skills/my-skill/SKILL.md` with a complete template "
+        "including all optional frontmatter fields as comments, and scaffolds a documentation page."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Skip the docs page scaffold")
+    parts.append("wagents new skill my-skill --no-docs")
+    parts.append("```")
+    parts.append("")
+    parts.append("**Output structure:**")
+    parts.append("```")
+    parts.append("skills/my-skill/")
+    parts.append("  SKILL.md          # Frontmatter + instructions")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
-    parts.append('  <TabItem label="docs">')
+    parts.append('  <TabItem label="agent">')
     parts.append("")
-    parts.append("Manage the documentation site.")
+    parts.append("Create a new agent configuration:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents docs init                       # One-time: pnpm install")
-    parts.append("wagents docs generate                   # Generate MDX content pages")
-    parts.append("wagents docs generate --no-installed    # Skip installed skills")
-    parts.append("wagents docs generate --include-drafts  # Include draft skills")
-    parts.append("wagents docs dev                        # Generate + launch dev server")
-    parts.append("wagents docs build                      # Generate + static build")
-    parts.append("wagents docs preview                    # Generate + build + preview")
-    parts.append("wagents docs clean                      # Remove generated content")
+    parts.append("wagents new agent my-agent")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "This creates `agents/my-agent.md` with frontmatter for tools, permissions, "
+        "model selection, and a system prompt body."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Skip the docs page scaffold")
+    parts.append("wagents new agent my-agent --no-docs")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
-    parts.append('  <TabItem label="validate">')
+    parts.append('  <TabItem label="mcp">')
     parts.append("")
-    parts.append("Validate all skills and agents frontmatter.")
+    parts.append("Create a new MCP server with FastMCP v3:")
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents validate")
+    parts.append("wagents new mcp my-server")
     parts.append("```")
     parts.append("")
-    parts.append("  </TabItem>")
-    parts.append('  <TabItem label="readme">')
+    parts.append("This creates a complete MCP server directory:")
     parts.append("")
-    parts.append("Generate or check the README.")
+    parts.append("```")
+    parts.append("mcp/my-server/")
+    parts.append("  server.py         # FastMCP entry point with example tool")
+    parts.append("  pyproject.toml    # Package config with fastmcp>=2 dependency")
+    parts.append("  fastmcp.json      # FastMCP configuration")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "The command also adds the `mcp/` directory to the uv workspace "
+        "in `pyproject.toml` if not already present."
+    )
     parts.append("")
     parts.append("```bash")
-    parts.append("wagents readme           # Regenerate README.md")
-    parts.append("wagents readme --check   # Check if README is up to date")
+    parts.append("# Skip the docs page scaffold")
+    parts.append("wagents new mcp my-server --no-docs")
     parts.append("```")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append("</Tabs>")
     parts.append("")
+    parts.append('<Aside type="note" title="Naming rules">')
+    parts.append(
+        "All asset names must be kebab-case (`^[a-z0-9][a-z0-9-]*$`) "
+        "and at most 64 characters. The name must match the directory name "
+        "(for skills and MCP servers) or filename (for agents)."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents validate ---
+    parts.append("### `wagents validate` -- Check All Assets")
+    parts.append("")
+    parts.append(
+        "Validate frontmatter and structure for every skill, agent, "
+        "and MCP server in the repository:"
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents validate")
+    parts.append("```")
+    parts.append("")
+    parts.append("**What it checks:**")
+    parts.append("")
+    parts.append("| Asset type | Validations |")
+    parts.append("|-----------|-------------|")
+    parts.append(
+        "| **Skills** | Required `name` and `description` fields, kebab-case naming, "
+        "name matches directory, description within 1024 chars, body is non-empty |"
+    )
+    parts.append(
+        "| **Agents** | Required `name` and `description` fields, "
+        "kebab-case naming, name matches filename |"
+    )
+    parts.append(
+        "| **MCP servers** | Directory is kebab-case, `server.py` exists and references FastMCP, "
+        "`pyproject.toml` includes fastmcp dependency, `fastmcp.json` exists |"
+    )
+    parts.append("")
+    parts.append(
+        "The command exits with code 1 if any validation fails, printing each error to stderr."
+    )
+    parts.append("")
+    parts.append('<Aside type="tip" title="CI integration">')
+    parts.append(
+        "Run `wagents validate` in your CI pipeline to catch frontmatter issues before merge. "
+        "It is included in the repository's pre-commit and CI checks."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents readme ---
+    parts.append("### `wagents readme` -- Generate README")
+    parts.append("")
+    parts.append(
+        "Regenerate `README.md` from the current repository contents, "
+        "or check if the existing README is up to date:"
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Fully regenerate README.md")
+    parts.append("wagents readme")
+    parts.append("")
+    parts.append("# Check if README is stale (exits 1 if out of date)")
+    parts.append("wagents readme --check")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "The generated README includes tables for all skills, agents, and MCP servers, "
+        "plus a development commands reference."
+    )
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents install ---
+    parts.append("### `wagents install` -- Install Skills")
+    parts.append("")
+    parts.append("Install skills into agent platforms via `npx skills`:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Install all skills to all supported agents globally")
+    parts.append("wagents install")
+    parts.append("")
+    parts.append("# Install specific skill(s)")
+    parts.append("wagents install my-skill")
+    parts.append("")
+    parts.append("# Install to a specific agent")
+    parts.append("wagents install -a claude-code")
+    parts.append("")
+    parts.append("# List available skills without installing")
+    parts.append("wagents install --list")
+    parts.append("")
+    parts.append("# Copy files instead of symlinking")
+    parts.append("wagents install --copy")
+    parts.append("")
+    parts.append("# Skip confirmation prompts")
+    parts.append("wagents install -y")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "**Supported agents:** `claude-code`, `gemini-cli`, `codex`, `crush`, "
+        "`cursor`, `antigravity`, `github-copilot`, `opencode`"
+    )
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents package ---
+    parts.append("### `wagents package` -- Package Skills")
+    parts.append("")
+    parts.append("Package skills into portable ZIP files for distribution:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Package a single skill")
+    parts.append("wagents package my-skill")
+    parts.append("")
+    parts.append("# Package all skills")
+    parts.append("wagents package --all")
+    parts.append("")
+    parts.append("# Check portability without creating ZIPs")
+    parts.append("wagents package --dry-run")
+    parts.append("")
+    parts.append("# Specify output directory")
+    parts.append("wagents package my-skill --output dist/")
+    parts.append("")
+    parts.append("# Output as JSON instead of table")
+    parts.append("wagents package my-skill --format json")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Packaged ZIPs are self-contained and can be distributed "
+        "independently or attached to GitHub releases."
+    )
+    parts.append("")
+    parts.append('<Aside type="note" title="Automated releases">')
+    parts.append(
+        "The `release-skills.yml` CI workflow automatically packages and releases "
+        "all skills when a version tag (`v*.*.*`) is pushed."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents docs ---
+    parts.append("### `wagents docs` -- Documentation Site")
+    parts.append("")
+    parts.append(
+        "Manage the [Starlight](https://starlight.astro.build/)-powered documentation site "
+        "at [agents.w4w.dev](https://agents.w4w.dev)."
+    )
+    parts.append("")
+    parts.append("<Tabs>")
+    parts.append('  <TabItem label="init">')
+    parts.append("")
+    parts.append("One-time setup to install documentation dependencies:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents docs init")
+    parts.append("```")
+    parts.append("")
+    parts.append("This runs `pnpm install` in the `docs/` directory.")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="generate">')
+    parts.append("")
+    parts.append(
+        "Generate MDX content pages, sidebar, and index pages from repository assets:"
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents docs generate")
+    parts.append("```")
+    parts.append("")
+    parts.append("**Options:**")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Skip installed skills from ~/.claude/skills/")
+    parts.append("wagents docs generate --no-installed")
+    parts.append("")
+    parts.append("# Include skills with TODO descriptions")
+    parts.append("wagents docs generate --include-drafts")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "The generator creates individual pages for each skill, agent, and MCP server, "
+        "plus category index pages and the sidebar navigation."
+    )
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="dev">')
+    parts.append("")
+    parts.append("Generate content and start the development server with hot reload:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents docs dev")
+    parts.append("```")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="build">')
+    parts.append("")
+    parts.append("Generate content and produce a static build:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents docs build")
+    parts.append("```")
+    parts.append("")
+    parts.append("Output goes to `docs/dist/`.")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="preview">')
+    parts.append("")
+    parts.append("Generate, build, and start a preview server for the production build:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents docs preview")
+    parts.append("```")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="clean">')
+    parts.append("")
+    parts.append("Remove generated content pages while preserving hand-maintained files:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents docs clean")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Files containing `HAND-MAINTAINED` in their content are preserved during clean operations."
+    )
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append("</Tabs>")
+    parts.append("")
+    parts.append('<Aside type="tip" title="Typical docs workflow">')
+    parts.append(
+        "For day-to-day development, `wagents docs dev` is the most common command "
+        "-- it regenerates all content and launches a hot-reloading dev server in one step."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- Common Workflows ---
+    parts.append("## Common Workflows")
+    parts.append("")
+    parts.append("### Adding a new skill end-to-end")
+    parts.append("")
+    parts.append("<Steps>")
+    parts.append("")
+    parts.append("1. Scaffold the skill:")
+    parts.append("   ```bash")
+    parts.append("   wagents new skill my-skill")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("2. Edit `skills/my-skill/SKILL.md` with your instructions.")
+    parts.append("")
+    parts.append("3. Validate the frontmatter:")
+    parts.append("   ```bash")
+    parts.append("   wagents validate")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("4. Preview the docs page:")
+    parts.append("   ```bash")
+    parts.append("   wagents docs dev")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("5. Package for distribution:")
+    parts.append("   ```bash")
+    parts.append("   wagents package my-skill")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("</Steps>")
+    parts.append("")
+    parts.append("### Updating documentation after changes")
+    parts.append("")
+    parts.append("<Steps>")
+    parts.append("")
+    parts.append("1. Regenerate all docs:")
+    parts.append("   ```bash")
+    parts.append("   wagents docs generate")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("2. Rebuild the README:")
+    parts.append("   ```bash")
+    parts.append("   wagents readme")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("3. Run validation:")
+    parts.append("   ```bash")
+    parts.append("   wagents validate")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("</Steps>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- Repository Structure ---
     parts.append("## Repository Structure")
     parts.append("")
     parts.append("<FileTree>")
@@ -349,6 +782,8 @@ def write_cli_page() -> None:
     parts.append("  - \\<name>/")
     parts.append("    - SKILL.md")
     parts.append("    - references/ (optional)")
+    parts.append("    - scripts/ (optional)")
+    parts.append("    - evals/ (optional)")
     parts.append("- agents/")
     parts.append("  - \\<name>.md")
     parts.append("- mcp/")
@@ -357,6 +792,10 @@ def write_cli_page() -> None:
     parts.append("    - pyproject.toml")
     parts.append("    - fastmcp.json")
     parts.append("- docs/ (this site)")
+    parts.append("  - src/")
+    parts.append("    - content/")
+    parts.append("      - docs/ (generated MDX pages)")
+    parts.append("    - generated-sidebar.mjs")
     parts.append("- wagents/")
     parts.append("  - \\_\\_init\\_\\_.py")
     parts.append("  - cli.py")
@@ -364,6 +803,7 @@ def write_cli_page() -> None:
     parts.append("  - catalog.py")
     parts.append("  - rendering.py")
     parts.append("  - docs.py")
+    parts.append("- tests/")
     parts.append("</FileTree>")
     parts.append("")
 
@@ -411,11 +851,17 @@ def write_skills_index(nodes: list) -> None:
     parts.append("description: Browse all available AI agent skills")
     parts.append("---")
     parts.append("")
-    parts.append("import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';")
+    parts.append("import { Card, CardGrid, LinkCard, Badge, Aside, Steps } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append(
-        "> Reusable knowledge and workflows that extend AI agent capabilities"
-        " across Claude Code, Gemini CLI, Codex, Cursor, and more."
+        "Skills are reusable knowledge and workflows that make AI coding agents dramatically more capable. "
+        "They work across **Claude Code**, **Gemini CLI**, **Codex**, **Cursor**, **GitHub Copilot**, "
+        "and any [agentskills.io](https://agentskills.io)-compatible agent."
+    )
+    parts.append("")
+    parts.append(
+        "Each skill packages domain expertise into a portable format: "
+        "install once, invoke anywhere with `/skill-name`."
     )
     parts.append("")
 
@@ -434,10 +880,10 @@ def write_skills_index(nodes: list) -> None:
     # New-to-skills aside
     parts.append('<Aside type="tip" title="New to skills?">')
     parts.append(
-        "Skills extend your AI agent with domain expertise. "
+        "Skills extend your AI agent with domain expertise, structured workflows, and proven patterns. "
         "Install with `npx skills add` and invoke with "
-        "`/skill-name`. "
-        "See [How it Works](/) for a quick overview, or browse the "
+        "`/skill-name` in any supported agent. "
+        "See [How it Works](/) for a quick overview, or browse the full "
         "[agentskills.io](https://agentskills.io) ecosystem."
     )
     parts.append("</Aside>")
@@ -447,8 +893,53 @@ def write_skills_index(nodes: list) -> None:
     user_invocable = [n for n in custom if n.metadata.get("user-invocable") is not False]
     auto_invoke = [n for n in custom if n.metadata.get("user-invocable") is False]
 
+    parts.append('<div class="stats-bar">')
+    parts.append(f'  <span class="stat stat-skill">{len(user_invocable)} User-Invocable</span>')
+    parts.append(f'  <span class="stat stat-agent">{len(auto_invoke)} Convention Skills</span>')
+    if installed:
+        parts.append(f'  <span class="stat stat-installed">{len(installed)} Installed Skills</span>')
+    parts.append("</div>")
+    parts.append("")
+
+    # Category explanation table
+    parts.append("## Understanding Skill Categories")
+    parts.append("")
+    parts.append("This repository contains three categories of skills, each serving a different purpose:")
+    parts.append("")
+    parts.append("| Category | Count | How they work |")
+    parts.append("|----------|-------|---------------|")
+    parts.append(
+        f"| **User-Invocable** | {len(user_invocable)} "
+        "| You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |"
+    )
+    parts.append(
+        f"| **Convention** | {len(auto_invoke)} "
+        "| The agent auto-invokes these when it detects relevant context "
+        "(e.g., editing Python files). Hidden from the `/` menu. |"
+    )
+    parts.append(
+        f"| **Installed** | {len(installed)} "
+        "| Third-party skills installed from external sources via `~/.claude/skills/`. |"
+    )
+    parts.append("")
+    parts.append('<Aside type="note" title="Generated docs vs hand-maintained guides">')
+    parts.append(
+        "Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. "
+        "If a deeper curated guide exists (for example, architecture or roadmap notes), the generated skill page links to it."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
     if user_invocable:
-        parts.append(f"## User-Invocable ({len(user_invocable)})")
+        parts.append(f"## User-Invocable Skills ({len(user_invocable)})")
+        parts.append("")
+        parts.append(
+            '<Badge text="Manual invocation" variant="tip" /> '
+            "Trigger these with `/skill-name` during a conversation. "
+            "They appear in the autocomplete menu."
+        )
         parts.append("")
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
@@ -462,7 +953,11 @@ def write_skills_index(nodes: list) -> None:
     if auto_invoke:
         parts.append(f"## Convention Skills ({len(auto_invoke)})")
         parts.append("")
-        parts.append("> Auto-invoked by the agent when relevant context is detected.")
+        parts.append(
+            '<Badge text="Auto-invoked" variant="caution" /> '
+            "The agent loads these automatically when it detects relevant context "
+            "-- no manual invocation needed. They enforce consistency across the codebase."
+        )
         parts.append("")
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
@@ -472,10 +967,26 @@ def write_skills_index(nodes: list) -> None:
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
+        parts.append('<Aside type="note" title="How convention skills work">')
+        parts.append(
+            "Convention skills set `user-invocable: false` in their frontmatter. "
+            "This hides them from the `/` menu but keeps their descriptions in the agent's context, "
+            "allowing automatic discovery and invocation when the agent encounters matching "
+            "file types or patterns."
+        )
+        parts.append("</Aside>")
+        parts.append("")
 
     # Installed skills — link to anchors on aggregated page
     if installed:
         parts.append(f"## Installed Skills ({len(installed)})")
+        parts.append("")
+        parts.append(
+            '<Badge text="External" variant="default" /> '
+            "Third-party skills installed from the "
+            "[agentskills.io](https://agentskills.io) ecosystem via `npx skills add`. "
+            "These live in `~/.claude/skills/` and are available across all your projects."
+        )
         parts.append("")
         parts.append('<div class="catalog-installed">')
         parts.append("<CardGrid>")
@@ -487,6 +998,32 @@ def write_skills_index(nodes: list) -> None:
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
+
+    # Individual install instructions
+    parts.append("---")
+    parts.append("")
+    parts.append("## Installing Individual Skills")
+    parts.append("")
+    parts.append("You can also install specific skills rather than the full collection:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Install a single skill globally")
+    parts.append("npx skills add wyattowalsh/agents --skill honest-review -g")
+    parts.append("")
+    parts.append("# Install multiple specific skills")
+    parts.append("npx skills add wyattowalsh/agents --skill honest-review --skill wargame -g")
+    parts.append("")
+    parts.append("# Install to a specific agent only")
+    parts.append("npx skills add wyattowalsh/agents --skill orchestrator -g -a claude-code")
+    parts.append("```")
+    parts.append("")
+    parts.append('<Aside type="tip" title="Creating your own skills">')
+    parts.append(
+        "Want to build a custom skill? Use the [skill-creator](/skills/skill-creator/) "
+        "to scaffold, develop, audit, and package skills following proven structural patterns. "
+        "Or run `wagents new skill my-skill` from the [CLI](/cli/)."
+    )
+    parts.append("</Aside>")
 
     out_dir = CONTENT_DIR / "skills"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -598,6 +1135,16 @@ def write_agents_index(nodes: list) -> None:
 
 def write_mcp_index(nodes: list) -> None:
     """Write mcp/index.mdx category page."""
+    out_dir = CONTENT_DIR / "mcp"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    index_path = out_dir / "index.mdx"
+
+    # Preserve hand-maintained files
+    if index_path.exists():
+        existing = index_path.read_text(encoding="utf-8")
+        if "HAND-MAINTAINED" in existing:
+            return
+
     parts = []
     parts.append("---")
     parts.append("title: MCP Servers")
@@ -623,9 +1170,7 @@ def write_mcp_index(nodes: list) -> None:
     parts.append("</div>")
     parts.append("")
 
-    out_dir = CONTENT_DIR / "mcp"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "index.mdx").write_text("\n".join(parts))
+    (index_path).write_text("\n".join(parts))
 
 
 def write_sidebar(nodes: list) -> None:
@@ -634,18 +1179,27 @@ def write_sidebar(nodes: list) -> None:
     installed_skills = [n for n in nodes if n.kind == "skill" and n.source != "custom"]
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
+    mcp_config_count = _count_mcp_servers_from_config()
+    mcp_overview_path = CONTENT_DIR / "mcp" / "index.mdx"
 
     lines = []
     lines.append("// Auto-generated by wagents docs generate — do not edit")
     lines.append("export const navLinks = [")
-    nav_items = ["  { label: 'Skills', link: '/skills/' }"]
+    total_skills = len(custom_skills) + len(installed_skills)
+    skills_nav = "  { label: 'Skills', link: '/skills/'"
+    if total_skills:
+        skills_nav += f", badge: '{total_skills}'"
+    skills_nav += " }"
+    nav_items = [skills_nav]
     if agents:
         nav_items.append("  { label: 'Agents', link: '/agents/' }")
-    if mcps:
-        nav_items.append("  { label: 'MCP', link: '/mcp/' }")
-    guides_dir_check = CONTENT_DIR / "guides"
-    if guides_dir_check.exists() and any(guides_dir_check.glob("*.mdx")):
-        nav_items.append("  { label: 'Guides', link: '/guides/wargame/' }")
+    mcp_content_dir = CONTENT_DIR / "mcp"
+    if mcp_content_dir.exists():
+        mcp_nav = "  { label: 'MCP', link: '/mcp/'"
+        if mcp_config_count:
+            mcp_nav += f", badge: '{mcp_config_count}'"
+        mcp_nav += " }"
+        nav_items.append(mcp_nav)
     nav_items.append("  { label: 'CLI', link: '/cli/' }")
     lines.append(",\n".join(nav_items))
     lines.append("];")
@@ -654,16 +1208,17 @@ def write_sidebar(nodes: list) -> None:
     lines.append("  { slug: '' },")
 
     # Skills group with subgroups
-    total_skills = len(custom_skills) + len(installed_skills)
     lines.append("  {")
     lines.append("    label: 'Skills',")
     lines.append(f"    badge: {{ text: '{total_skills}', variant: 'tip' }},")
+    lines.append("    collapsed: true,")
     lines.append("    items: [")
     lines.append("      { slug: 'skills', label: 'Overview' },")
 
     if custom_skills:
         lines.append("      {")
         lines.append(f"        label: 'Custom ({len(custom_skills)})',")
+        lines.append("        collapsed: true,")
         lines.append("        items: [")
         for n in custom_skills:
             lines.append(f"          {{ slug: 'skills/{n.id}' }},")
@@ -685,22 +1240,19 @@ def write_sidebar(nodes: list) -> None:
     if mcps:
         lines.append("  {")
         lines.append("    label: 'MCP Servers',")
+        if mcp_config_count:
+            lines.append(f"    badge: {{ text: '{mcp_config_count}', variant: 'note' }},")
         lines.append("    autogenerate: { directory: 'mcp' },")
         lines.append("  },")
-
-    # Guides group — auto-discover hand-maintained guide pages
-    guides_dir = CONTENT_DIR / "guides"
-    if guides_dir.exists():
-        guide_files = sorted(guides_dir.glob("*.mdx"))
-        if guide_files:
-            lines.append("  {")
-            lines.append("    label: 'Guides',")
-            lines.append(f"    badge: {{ text: '{len(guide_files)}', variant: 'note' }},")
-            lines.append("    items: [")
-            for gf in guide_files:
-                lines.append(f"      {{ slug: 'guides/{gf.stem}' }},")
-            lines.append("    ],")
-            lines.append("  },")
+    elif mcp_overview_path.exists():
+        lines.append("  {")
+        lines.append("    label: 'MCP Servers',")
+        if mcp_config_count:
+            lines.append(f"    badge: {{ text: '{mcp_config_count}', variant: 'note' }},")
+        lines.append("    items: [")
+        lines.append("      { slug: 'mcp', label: 'Overview' },")
+        lines.append("    ],")
+        lines.append("  },")
 
     lines.append("  { slug: 'cli', label: 'CLI Reference' },")
     lines.append("];")
@@ -737,6 +1289,46 @@ def regenerate_sidebar_and_indexes() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Sentinel-aware clean helper
+# ---------------------------------------------------------------------------
+
+def _clean_content_subdir(d: Path) -> bool:
+    """Remove generated files from *d*, preserving hand-maintained ones.
+
+    Returns True if any items were removed.
+    """
+    if not d.exists():
+        return False
+
+    hand_maintained: set[str] = set()
+    for item in d.iterdir():
+        if item.is_file() and item.suffix == ".mdx":
+            try:
+                if "HAND-MAINTAINED" in item.read_text(encoding="utf-8"):
+                    hand_maintained.add(item.name)
+            except (UnicodeDecodeError, OSError):
+                pass
+
+    cleaned = False
+    for item in d.iterdir():
+        if item.name in hand_maintained:
+            typer.echo(f"  Preserved {d.name}/{item.name} (hand-maintained)")
+            continue
+        if item.is_file():
+            item.unlink()
+            cleaned = True
+        elif item.is_dir():
+            shutil.rmtree(item)
+            cleaned = True
+
+    if not hand_maintained and not any(d.iterdir()):
+        d.rmdir()
+        cleaned = True
+
+    return cleaned
+
+
+# ---------------------------------------------------------------------------
 # docs subcommand group
 # ---------------------------------------------------------------------------
 
@@ -767,11 +1359,9 @@ def docs_generate(
     ),
 ):
     """Generate MDX content pages from repo assets."""
-    # Clean existing generated content
+    # Clean existing generated content (preserves hand-maintained files)
     for subdir in ["skills", "agents", "mcp"]:
-        d = CONTENT_DIR / subdir
-        if d.exists():
-            shutil.rmtree(d)
+        _clean_content_subdir(CONTENT_DIR / subdir)
     # Remove generated index and cli pages
     for f in ["index.mdx", "cli.mdx"]:
         p = CONTENT_DIR / f
@@ -802,13 +1392,21 @@ def docs_generate(
     for node in nodes:
         if node.kind == "skill" and node.source != "custom":
             continue  # installed skills aggregated on skills/installed.mdx
-        page_content = render_page(node, edges, nodes)
-        page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
+        kind_dir = f"{node.kind}s" if node.kind != "mcp" else "mcp"
+        page_dir = CONTENT_DIR / kind_dir
         page_dir.mkdir(parents=True, exist_ok=True)
-        (page_dir / f"{node.id}.mdx").write_text(page_content)
-        typer.echo(
-            f"  Generated {node.kind}s/{node.id}.mdx" if node.kind != "mcp" else f"  Generated mcp/{node.id}.mdx"
-        )
+        out_file = page_dir / f"{node.id}.mdx"
+        # Preserve hand-maintained pages (e.g. merged guide content)
+        if out_file.exists() and out_file.suffix == ".mdx":
+            try:
+                if "HAND-MAINTAINED" in out_file.read_text(encoding="utf-8"):
+                    typer.echo(f"  Preserved {kind_dir}/{node.id}.mdx (hand-maintained)")
+                    continue
+            except (UnicodeDecodeError, OSError):
+                pass
+        page_content = render_page(node, edges, nodes)
+        out_file.write_text(page_content)
+        typer.echo(f"  Generated {kind_dir}/{node.id}.mdx")
 
     # Write category index pages
     skills = [n for n in nodes if n.kind == "skill"]
@@ -879,9 +1477,7 @@ def docs_clean():
     """Remove generated content pages (preserves hand-written content like guides/)."""
     cleaned = False
     for subdir in ["skills", "agents", "mcp"]:
-        d = CONTENT_DIR / subdir
-        if d.exists():
-            shutil.rmtree(d)
+        if _clean_content_subdir(CONTENT_DIR / subdir):
             cleaned = True
     for f in ["index.mdx", "cli.mdx"]:
         p = CONTENT_DIR / f

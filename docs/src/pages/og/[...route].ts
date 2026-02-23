@@ -13,9 +13,13 @@ export const { getStaticPaths, GET } = await OGImageRoute({
   getImageOptions: (_path, page) => ({
     title: page.title,
     description: page.description,
-    bgGradient: [[23, 13, 33]],
+    bgGradient: [
+      [10, 15, 24],
+      [11, 33, 43],
+      [36, 24, 12],
+    ],
     border: {
-      color: [139, 92, 246],
+      color: [71, 201, 204],
       width: 4,
       side: 'block-start',
     },
@@ -24,12 +28,12 @@ export const { getStaticPaths, GET } = await OGImageRoute({
         size: 64,
         families: ['Geist Sans', 'sans-serif'],
         weight: 'Bold',
-        color: [255, 255, 255],
+        color: [238, 248, 249],
       },
       description: {
         size: 28,
         families: ['Geist Sans', 'sans-serif'],
-        color: [180, 180, 200],
+        color: [176, 208, 214],
       },
     },
     padding: 60,

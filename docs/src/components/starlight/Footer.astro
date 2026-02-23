@@ -1,8 +1,8 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
 
-const { slug, sidebar } = Astro.locals.starlightRoute;
-const path = typeof slug === 'string' ? slug : '';
+const { id, sidebar } = Astro.locals.starlightRoute;
+const path = typeof id === 'string' ? id : '';
 
 // Determine category
 let category = '';
@@ -81,6 +81,14 @@ const skillName = category === 'skills' && !path.startsWith('skills/installed') 
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
+  @media (max-width: 480px) {
+    .category-nav-inner {
+      grid-template-columns: 1fr;
+    }
+    .category-nav-next {
+      grid-column: 1;
+    }
+  }
   .category-nav-link {
     display: flex;
     flex-direction: column;
@@ -89,11 +97,15 @@ const skillName = category === 'skills' && !path.startsWith('skills/installed') 
     border: 1px solid var(--sl-color-gray-5);
     border-radius: 8px;
     text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color 0.2s ease, background 0.2s ease;
   }
   .category-nav-link:hover {
     border-color: var(--primary);
     background: oklch(0.15 0.02 285 / 0.2);
+  }
+  .category-nav-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
   .category-nav-prev { grid-column: 1; text-align: left; }
   .category-nav-next { grid-column: 2; text-align: right; }
@@ -118,9 +130,13 @@ const skillName = category === 'skills' && !path.startsWith('skills/installed') 
   .skill-install-footer code {
     font-size: 0.85rem;
     color: var(--sl-color-text-accent);
+    user-select: all;
   }
   :global([data-theme='light']) .category-nav-link:hover {
     background: oklch(0.95 0.02 285 / 0.3);
+  }
+  :global([data-theme='light']) .category-nav-dir {
+    color: var(--sl-color-gray-3);
   }
   :global([data-theme='light']) .skill-install-footer {
     background: oklch(0.97 0.01 285 / 0.15);

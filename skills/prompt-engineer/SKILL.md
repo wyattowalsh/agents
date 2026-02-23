@@ -8,8 +8,8 @@ description: >-
   suites and rubrics. Adapts all recommendations to model class
   (instruction-following vs reasoning). Validates findings against current
   documentation. Use for system prompts, agent prompts, RAG pipelines, tool
-  definitions, or any LLM context design. NOT for running prompts or
-  generating content.
+  definitions, or any LLM context design. NOT for running prompts, generating
+  content, or building agents.
 license: MIT
 argument-hint: "<mode> [target]"
 model: opus
@@ -21,6 +21,27 @@ metadata:
 # Prompt Engineer
 
 Comprehensive prompt and context engineering. Every recommendation grounded in research.
+
+## Canonical Vocabulary
+
+Use these terms exactly throughout all modes:
+
+| Term | Definition |
+|------|-----------|
+| **system prompt** | The top-level instruction block sent before user messages; sets model behavior |
+| **context window** | The full token budget: system prompt + conversation history + tool results + retrieved docs |
+| **context engineering** | Designing the entire context window, not just the prompt text — write, select, compress, isolate |
+| **template** | A reusable prompt structure with variable slots (`{{input}}`, `$ARGUMENTS`) |
+| **rubric** | A scoring framework with dimensions, levels (1-5), and concrete examples per level |
+| **few-shot example** | An input/output pair included in the prompt to demonstrate desired behavior |
+| **chain-of-thought (CoT)** | Explicit step-by-step reasoning scaffolding; beneficial for instruction-following models, harmful for reasoning models |
+| **model class** | Either "instruction-following" or "reasoning" — determines which techniques apply |
+| **injection** | Untrusted input that manipulates model behavior outside intended boundaries |
+| **anti-pattern** | A prompt construction that reliably degrades output quality |
+| **over-specification** | Adding constraints beyond S*~0.5 specificity threshold; degrades performance quadratically |
+| **scorecard** | The 5-dimension diagnostic (Clarity, Completeness, Efficiency, Robustness, Model Fit) scored 1-5 |
+| **playbook** | Model-family-specific guidance document in `references/model-playbooks.md` |
+| **prefix caching** | Cost optimization by placing static content early so API providers cache the prefix |
 
 ## Dispatch
 

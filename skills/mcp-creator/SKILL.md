@@ -1,14 +1,12 @@
 ---
 name: mcp-creator
 description: >-
-  Build production-ready MCP servers using FastMCP v3. Guides the full lifecycle:
-  research, scaffolding, tool/resource/prompt implementation, testing, and
-  deployment. Targets FastMCP 3.0.0rc2 with Providers, Transforms, middleware,
-  OAuth, composition, component versioning, background tasks, elicitation,
-  sampling, and structured output. Prevents 34 common errors. Use when creating
-  MCP servers, adding tools/resources/prompts, integrating APIs via MCP,
-  converting OpenAPI specs or FastAPI apps, troubleshooting FastMCP issues, or
-  learning FastMCP v3 patterns. Python-focused with uv toolchain.
+  Build production-ready MCP servers using FastMCP v3. Guides research,
+  scaffolding, tool/resource/prompt implementation, testing, and deployment.
+  Targets FastMCP 3.0.0rc2 with Providers, Transforms, middleware, OAuth,
+  and composition. Use when creating MCP servers, integrating APIs via MCP,
+  converting OpenAPI specs or FastAPI apps, or troubleshooting FastMCP issues.
+  NOT for building REST APIs, CLI tools, or non-MCP integrations.
 license: MIT
 argument-hint: "<service or API to integrate>"
 model: opus
@@ -31,15 +29,15 @@ Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides
 
 Route `$ARGUMENTS` to the appropriate mode:
 
-| Input pattern | Mode | Start at |
-|---------------|------|----------|
+| $ARGUMENTS pattern | Mode | Start at |
+|---------------------|------|----------|
 | Service/API name (e.g., "GitHub", "Stripe") | **New server** | Phase 1 |
 | Path to existing server (e.g., `mcp/myserver/`) | **Extend** | Phase 3 |
 | OpenAPI spec URL or file path | **Convert OpenAPI** | Phase 2 (scaffold) then load `references/server-composition.md` §6 |
 | FastAPI app to convert | **Convert FastAPI** | Phase 2 (scaffold) then load `references/server-composition.md` §7 |
 | Error message or "debug" + description | **Debug** | Load `references/common-errors.md`, match symptom |
 | "learn" or conceptual question | **Learn** | Load relevant reference file, explain |
-| Empty or unclear | **Prompt** | Ask what service/API to integrate |
+| Empty | **Gallery / help overview** | Show available modes and example invocations |
 
 ---
 
@@ -450,6 +448,7 @@ Load these files on demand during the relevant phase. Do NOT load all at once.
 | `references/deployment.md` | Transports, FastMCP CLI, ASGI, custom routes, client configs, fastmcp.json schema, Docker, background task workers, production checklist | Phase 5 |
 | `references/resources-and-prompts.md` | Resources (static, dynamic, binary), prompts (single/multi-message), resource vs tool guidance, testing patterns | Phase 3 |
 | `references/common-errors.md` | 34 errors: symptom → cause → v3-updated fix, quick-fix lookup table | Debug mode |
+| `references/quick-reference.md` | Minimal examples: server, tool, resource, prompt, lifespan, test, run | Quick start |
 
 ---
 
@@ -479,95 +478,28 @@ These are non-negotiable. Violating any of these produces broken MCP servers.
 
 ---
 
-## Quick Reference: FastMCP v3 Essentials
+## Quick Reference
 
-Minimal examples to start without loading any reference file.
+Load `references/quick-reference.md` for the complete quick reference with minimal examples for server, tool, resource, prompt, lifespan, test, and run commands.
 
-**Server:**
-```python
-from fastmcp import FastMCP, Context
-mcp = FastMCP("my-server", instructions="Server description for clients.")
-```
+---
 
-**Tool:**
-```python
-from typing import Annotated
-from pydantic import Field
-from fastmcp.exceptions import ToolError
+## Canonical Vocabulary
 
-@mcp.tool(annotations={"readOnlyHint": True})
-async def get_item(
-    item_id: Annotated[str, Field(description="Unique item identifier.")],
-    ctx: Context | None = None,
-) -> dict:
-    """Retrieve an item by its ID.
+Use these terms consistently. Do not invent synonyms.
 
-    Use when you need to look up a specific item. Returns the item's
-    full details including name, status, and metadata. Does not return
-    archived items — use get_archived_item instead.
-    """
-    if ctx: await ctx.info(f"Fetching item {item_id}")
-    item = await fetch_item(item_id)
-    if not item: raise ToolError(f"Item {item_id} not found")
-    return item
-```
-
-**Resource:**
-```python
-@mcp.resource("config://version", mime_type="text/plain")
-def get_version() -> str:
-    """Current server version."""
-    return "1.0.0"
-```
-
-**Prompt:**
-```python
-from fastmcp.prompts import Message
-
-@mcp.prompt
-def analyze(topic: str) -> list[Message]:
-    """Generate an analysis prompt."""
-    return [Message(role="user", content=f"Analyze {topic} in detail.")]
-```
-
-**Context (lifespan):**
-```python
-from fastmcp.server.lifespan import lifespan
-
-@lifespan
-async def app_lifespan(server):
-    import httpx
-    async with httpx.AsyncClient() as client:
-        yield {"http": client}
-
-mcp = FastMCP("my-server", lifespan=app_lifespan)
-
-@mcp.tool(annotations={"readOnlyHint": True, "openWorldHint": True})
-async def fetch_data(
-    url: Annotated[str, Field(description="URL to fetch data from.")],
-    ctx: Context | None = None,
-) -> str:
-    """Fetch data from an external URL."""
-    http = ctx.lifespan_context["http"]
-    resp = await http.get(url)
-    return resp.text
-```
-
-**Test:**
-```python
-from fastmcp import Client
-from server import mcp
-
-async def test_get_item():
-    async with Client(mcp) as c:
-        result = await c.call_tool("get_item", {"item_id": "abc"})
-        assert result.data is not None
-        assert not result.is_error
-```
-
-**Run:**
-```bash
-fastmcp run server.py                               # stdio (default)
-fastmcp run server.py --transport http --port 8000   # HTTP
-fastmcp dev inspector server.py                      # Inspector UI
-```
+| Canonical term | Meaning | NOT |
+|----------------|---------|-----|
+| **tool** | A callable MCP function exposed to clients | "endpoint", "action", "command" |
+| **resource** | URI-addressed read-only data exposed to clients | "asset", "file", "data source" |
+| **prompt** | Reusable message template guiding LLM behavior | "instruction", "system message" |
+| **provider** | Dynamic component source (e.g., `FileSystemProvider`, `OpenAPIProvider`) | "plugin", "adapter" |
+| **transform** | Middleware that modifies components at mount time | "filter", "interceptor" |
+| **middleware** | Request/response processing hook in the server pipeline | "handler", "decorator" |
+| **lifespan** | Async context manager for shared server resources | "startup hook", "init" |
+| **mount** | Attach a child server with a namespace prefix | "register", "include" |
+| **namespace** | Prefix added to component names during mount | "scope", "prefix" |
+| **Context** | Runtime object passed to tools for logging, state, sampling | "request", "session" |
+| **ToolError** | Exception class for user-visible error messages | "raise Exception" |
+| **annotation** | Tool metadata hints (`readOnlyHint`, `destructiveHint`, etc.) | "tag", "label" |
+| **transport** | Communication layer: stdio or Streamable HTTP | "protocol", "channel" |

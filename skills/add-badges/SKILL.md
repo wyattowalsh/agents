@@ -6,10 +6,13 @@ description: >-
   README with correct icons, brand colors, and live data endpoints. Use when
   adding badges, updating badges, removing badges, improving README appearance,
   adding shields, adding CI status badges, or making a README look more
-  professional. Supports shields.io, badgen.net, and forthebadge.com with all
-  styles including for-the-badge. Handles badge grouping, ordering, style
-  matching, custom badges, and incremental updates.
+  professional. NOT for README content writing, documentation generation, or
+  CI/CD setup.
 argument-hint: "[--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
 hooks:
   PreToolUse:
     - matcher: Edit
@@ -144,3 +147,38 @@ Common Simple Icons gotchas: `gnubash` not `bash`, `nodedotjs` not `node`, `vued
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge)](https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo})
 <!-- BADGES:END -->
 ```
+
+## Reference File Index
+
+| File | Read When |
+|------|-----------|
+| `references/badge-catalog-core.md` | Always — provides base badge definitions for common categories |
+| `references/badge-catalog-extended.md` | Detection reports non-basic signals (frameworks, infrastructure, linters, docs, etc.) |
+| `references/style-guide.md` | Determining layout, ordering, URL conventions, and format-specific syntax |
+
+## Canonical Vocabulary
+
+| Canonical Term | Meaning |
+|----------------|---------|
+| badge | A shields.io (or similar) image element displaying project metadata |
+| shield | Synonym for badge; the rendered SVG from shields.io |
+| style | Visual variant: flat, flat-square, plastic, for-the-badge, social |
+| super-group | Display grouping: Status, Quality, Package, Tech Stack, Social |
+| category | Classification of a badge type (e.g., license, language, frameworks) |
+| marker | HTML comments (`<!-- BADGES:START/END -->`) delimiting the badge block |
+| slug | Simple Icons identifier used in `?logo=` parameter (e.g., `gnubash`) |
+| profile | Preset badge selection by project maturity: new, active, mature, enterprise |
+| dynamic badge | Badge that fetches live data from an endpoint (version, coverage, downloads) |
+| static badge | Badge with hardcoded text — avoid when a dynamic alternative exists |
+
+## Critical Rules
+
+Non-negotiable constraints for every badge operation:
+
+1. **Never hardcode dynamic values.** Always use shields.io dynamic endpoints for versions, coverage, and download counts.
+2. **Always include logo parameters.** Every badge with a Simple Icons slug must have `?logo={slug}&logoColor={white|black}`.
+3. **Respect existing style.** Match the style of badges already present in the README; default to `flat-square` only when no badges exist.
+4. **Never modify content outside markers.** Preserve all manual content outside `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers.
+5. **Always ask before writing.** Never modify the README without user approval unless `--yes` was explicitly passed.
+6. **Check icon slugs carefully.** Use the Tricky Icon Slugs list; verify against simpleicons.org when uncertain.
+7. **Skip private-incompatible badges.** When `repo.visibility` is `"private"`, never generate badges marked `requires: public-api`.

@@ -167,6 +167,93 @@ def read_raw_content(node: CatalogNode) -> str:
         return "\n".join(raw_lines)
 
 
+def _display_source_path(node: CatalogNode) -> str:
+    """Format a source path for display in docs pages."""
+    path = str(node.source_path)
+    home = str(Path.home())
+    if path.startswith(home):
+        return "~" + path[len(home) :]
+    return path
+
+
+def _extract_body_sections(body: str) -> dict[str, str]:
+    """Extract named sections from SKILL.md body.
+
+    Returns a dict mapping section heading (lowercase) to section content
+    (everything after the heading until the next ## heading or end of body).
+    Skips the first H1 heading and the Dispatch section (handled separately).
+    """
+    sections: dict[str, str] = {}
+    if not body:
+        return sections
+
+    lines = body.split("\n")
+    current_heading = ""
+    current_lines: list[str] = []
+    fence = FenceTracker()
+
+    for line in lines:
+        fence.update(line)
+        if fence.inside_fence:
+            current_lines.append(line)
+            continue
+        stripped = line.strip()
+        if stripped.startswith("## "):
+            # Save previous section
+            if current_heading:
+                sections[current_heading] = "\n".join(current_lines).strip()
+            current_heading = stripped[3:].strip().lower()
+            current_lines = []
+        elif stripped.startswith("# ") and not current_heading:
+            # Skip the first H1 heading
+            continue
+        else:
+            current_lines.append(line)
+
+    # Save last section
+    if current_heading:
+        sections[current_heading] = "\n".join(current_lines).strip()
+
+    return sections
+
+
+# Sections from SKILL.md body to render inline on docs pages.
+# Excludes dispatch (handled separately), references, canonical vocabulary, and
+# sections that are too implementation-specific for a docs audience.
+_RENDERABLE_SECTIONS = {
+    "tooling",
+    "preferred libraries",
+    "project structure",
+    "package management",
+    "tooling preferences",
+    "conventions",
+    "when to propose updates",
+    "routing",
+    "verification checklist",
+    "critical rules",
+    "skill development",
+    "audit",
+    "audit all",
+    "audit and quality",
+    "package",
+    "core principles",
+    "auto-detection heuristic",
+    "quick start",
+}
+
+# Sections to skip entirely — they are redundant with the docs structure
+_SKIP_SECTIONS = {
+    "dispatch",
+    "references",
+    "reference file index",
+    "canonical vocabulary",
+    "hooks",
+    "state management",
+    "gallery (empty arguments)",
+    "dashboard",
+}
+
+
 def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     fm = node.metadata
     parts = []
@@ -204,7 +291,9 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             badges.append(f'<Badge text="{escape_attr(meta["author"])}" variant="caution" />')
     if fm.get("model"):
         badges.append(f'<Badge text="{escape_attr(fm["model"])}" variant="tip" />')
-    if node.source != "custom":
+    if node.source == "custom":
+        badges.append('<Badge text="Custom" variant="tip" />')
+    else:
         badges.append('<Badge text="Installed" variant="caution" />')
     parts.append(" ".join(badges))
     parts.append("")
@@ -242,6 +331,20 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     )
     parts.append("")
 
+    parts.append('<Aside type="note" title="Source & provenance">')
+    if node.source == "custom":
+        parts.append(
+            "This page is generated from the repository file "
+            f"`{escape_mdx_line(_display_source_path(node))}` by `wagents docs generate`."
+        )
+    else:
+        parts.append(
+            "This page is generated from an installed skill on disk at "
+            f"`{escape_mdx_line(_display_source_path(node))}`."
+        )
+    parts.append("</Aside>")
+    parts.append("")
+
     # Guide cross-link — check if a hand-maintained guide page exists
     guide_path = CONTENT_DIR / "guides" / f"{node.id}.mdx"
     if guide_path.exists():
@@ -272,6 +375,18 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("## What It Does")
         parts.append("")
         parts.append(strip_relative_md_links(escape_mdx(what_it_does)))
+        parts.append("")
+
+    # Auto-invoke aside for convention skills
+    is_auto_invoke = fm.get("user-invocable") is False
+    if is_auto_invoke:
+        parts.append('<Aside type="note">')
+        parts.append(
+            "This is an **auto-invoke** skill -- it activates automatically "
+            "when the agent detects relevant context. "
+            "It is not visible in the `/` slash command menu."
+        )
+        parts.append("</Aside>")
         parts.append("")
 
     # Extract dispatch table if present
@@ -310,6 +425,22 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("## Modes")
         parts.append("")
         parts.append(strip_relative_md_links(escape_mdx(dispatch_table)))
+        parts.append("")
+
+    # Extract and render additional body sections for richer docs pages
+    body_sections = _extract_body_sections(node.body) if node.body else {}
+    for section_key, section_content in body_sections.items():
+        if section_key in _SKIP_SECTIONS:
+            continue
+        if section_key not in _RENDERABLE_SECTIONS:
+            continue
+        if not section_content.strip():
+            continue
+        # Use the original casing from the body for the heading
+        heading = section_key.title()
+        parts.append(f"## {heading}")
+        parts.append("")
+        parts.append(strip_relative_md_links(escape_mdx(section_content)))
         parts.append("")
 
     # Tabbed metadata (with single-tab fix)
@@ -451,6 +582,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
 def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     fm = node.metadata
     parts = []
+    raw_content = read_raw_content(node)
 
     # Frontmatter
     parts.append("---")
@@ -467,16 +599,29 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
 
     # Badge row
     badges = []
+    badges.append('<Badge text="Agent Config" variant="note" />')
     if fm.get("model") and fm["model"] != "inherit":
         badges.append(f'<Badge text="{escape_attr(fm["model"])}" variant="tip" />')
     if fm.get("permissionMode") and fm["permissionMode"] != "default":
         badges.append(f'<Badge text="{escape_attr(fm["permissionMode"])}" variant="caution" />')
+    if isinstance(fm.get("skills"), list):
+        badges.append(f'<Badge text="{len(fm.get("skills", []))} skills" variant="default" />')
+    if isinstance(fm.get("mcpServers"), list):
+        badges.append(f'<Badge text="{len(fm.get("mcpServers", []))} MCP servers" variant="default" />')
     if badges:
         parts.append(" ".join(badges))
         parts.append("")
 
     # Description
     parts.append(f"> {node.description}")
+    parts.append("")
+
+    parts.append('<Aside type="note" title="Source & provenance">')
+    parts.append(
+        "This page is generated from the repository agent file "
+        f"`{escape_mdx_line(_display_source_path(node))}` by `wagents docs generate`."
+    )
+    parts.append("</Aside>")
     parts.append("")
 
     # Tools as pill badges
@@ -571,6 +716,25 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append(strip_relative_md_links(escape_mdx(shift_headings(node.body, 1))))
         parts.append("")
 
+    outer_fence = safe_outer_fence(raw_content)
+    parts.append("<details>")
+    parts.append("<summary>View Full Agent File</summary>")
+    parts.append("")
+    parts.append(f'{outer_fence}yaml title="{node.id}.md"')
+    parts.append(raw_content)
+    parts.append(outer_fence)
+    parts.append("")
+    parts.append("</details>")
+    parts.append("")
+
+    parts.append("## Resources")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <LinkCard title="All Agents" href="/agents/" description="Browse agent configurations." />')
+    parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Create and manage agent files with wagents." />')
+    parts.append("</CardGrid>")
+    parts.append("")
+
     # Source link
     parts.append("---")
     parts.append(f"[View source on GitHub]({GITHUB_BASE}/{node.source_path})")
@@ -599,13 +763,25 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
     parts.append("")
 
     # Badges
-    parts.append('<Badge text="MCP" variant="note" /> <Badge text="FastMCP" variant="success" />')
+    deps = proj.get("dependencies", [])
+    badge_parts = ['<Badge text="MCP" variant="note" />', '<Badge text="FastMCP" variant="success" />']
+    if deps:
+        badge_parts.append(f'<Badge text="{len(deps)} deps" variant="default" />')
+    parts.append(" ".join(badge_parts))
     parts.append("")
 
     # Description
     if node.description:
         parts.append(f"> {node.description}")
         parts.append("")
+
+    parts.append('<Aside type="note" title="Source & provenance">')
+    parts.append(
+        "This page is generated from the repository MCP server directory "
+        f"`mcp/{node.id}/` (source file `{escape_mdx_line(_display_source_path(node))}`)."
+    )
+    parts.append("</Aside>")
+    parts.append("")
 
     # Usage aside
     parts.append('<Aside type="tip" title="Usage">')
@@ -639,7 +815,6 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
         tab_items.append(("Package", "| Field | Value |\n| ----- | ----- |\n" + "\n".join(pkg_rows)))
 
     # Dependencies as badges
-    deps = proj.get("dependencies", [])
     if deps:
         dep_badges = " ".join(f'<Badge text="{escape_attr(d)}" variant="note" />' for d in deps)
         tab_items.append(("Dependencies", dep_badges))
@@ -668,6 +843,14 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
         parts.append("")
         parts.append("</div>")
         parts.append("")
+
+    parts.append("## Resources")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP documentation in this site." />')
+    parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold new MCP servers with wagents." />')
+    parts.append("</CardGrid>")
+    parts.append("")
 
     # Cross-links (agents that use this MCP)
     related_edges = [e for e in edges if e.to_id == f"mcp:{node.id}"]

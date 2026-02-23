@@ -32,13 +32,16 @@ class CatalogEdge:
 
 # Manually curated — update when skills are added, removed, or renamed
 RELATED_SKILLS = {
-    "wargame": ["host-panel", "prompt-engineer"],
+    "wargame": ["host-panel", "prompt-engineer", "orchestrator"],
     "host-panel": ["wargame"],
-    "honest-review": ["add-badges"],
+    "honest-review": ["add-badges", "orchestrator"],
     "add-badges": ["honest-review"],
     "prompt-engineer": ["skill-creator", "wargame"],
     "skill-creator": ["prompt-engineer", "mcp-creator"],
     "mcp-creator": ["skill-creator"],
+    "orchestrator": ["honest-review", "wargame"],
+    "python-conventions": ["javascript-conventions"],
+    "javascript-conventions": ["python-conventions"],
 }
 
 

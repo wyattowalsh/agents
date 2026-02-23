@@ -241,8 +241,6 @@ Numbered step-by-step instructions.
 
 - Using Steps for unordered lists (use regular lists instead)
 - Steps without blank lines between them (required for MDX parsing)
-- Steps with only one item (use a regular paragraph)
-- Deeply nested content inside steps (keep each step focused)
 - Missing the blank line after the opening `<Steps>` tag
 
 ---
@@ -285,9 +283,7 @@ Tabbed content panels for switching between variants.
 
 - Tabs with only one TabItem (just use regular content)
 - Tab labels that are too long (keep under 20 characters)
-- Inconsistent content structure across tabs
 - Missing the `label` prop on TabItem
-- Content outside TabItem but inside Tabs (not rendered)
 
 ---
 
@@ -334,7 +330,6 @@ Visual directory structure representation.
 - Using numbered lists (FileTree expects unordered `-` lists)
 - Forgetting the trailing `/` on directories
 - No blank line after the opening tag
-- Mixing tabs and spaces for indentation
 
 ---
 
@@ -374,8 +369,96 @@ pnpm install
 ### Common Mistakes
 
 - Using `Code` component for simple snippets (use fenced blocks)
-- Forgetting to escape template literals inside the `code` prop
 - Missing the `lang` prop (no syntax highlighting without it)
+
+---
+
+## Patterns from Recent Enhancement Work
+
+### CardGrid with External Links (Supported Agents)
+
+```mdx
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+## Supported Agents
+
+<CardGrid>
+  <LinkCard
+    title="Claude Code"
+    href="https://docs.anthropic.com/en/docs/claude-code"
+    description="Full native support via CLAUDE.md"
+  />
+  <LinkCard
+    title="Gemini CLI"
+    href="https://github.com/google-gemini/gemini-cli"
+    description="Supported via GEMINI.md bridge file"
+  />
+</CardGrid>
+```
+
+### Aside with Ecosystem Link (Onboarding)
+
+```mdx
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="tip" title="Install from agentskills.io">
+  Browse and install skills from the [agentskills.io](https://agentskills.io) marketplace:
+  `npx skills add agentskills.io/skill-name -y`
+</Aside>
+```
+
+### Steps with External Links (How it Works)
+
+```mdx
+import { Steps } from '@astrojs/starlight/components';
+
+<Steps>
+
+1. **Create your asset**
+
+   Use the CLI to scaffold: `wagents new skill my-skill`
+   See the [AGENTS.md spec](/guides/agents-md/) for format details.
+
+2. **Generate docs**
+
+   Run `uv run wagents docs generate` to produce MDX pages.
+   The [wagents CLI reference](/cli/) documents all options.
+
+3. **Enhance and publish**
+
+   Run `/docs-steward enhance` to improve content quality.
+
+</Steps>
+```
+
+### Badge Row for Metadata
+
+```mdx
+import { Badge } from '@astrojs/starlight/components';
+
+<Badge text="v2.0" variant="note" />
+<Badge text="MIT" variant="default" />
+<Badge text="Stable" variant="success" />
+<Badge text="Claude Code" variant="tip" />
+```
+
+CSS in `custom.css` auto-layouts badge rows with flexbox when badges
+are direct children of a paragraph.
+
+### Convention Skills Blockquote
+
+For auto-invoke skills that are hidden from the `/` menu, add a
+blockquote after the catalog card wrapper:
+
+```mdx
+<div class="catalog-skill">
+  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions" />
+</div>
+
+> Auto-invoke only — loaded automatically when working on Python files.
+```
+
+CSS styles `catalog-skill + blockquote` with smaller italic text.
 
 ---
 
@@ -397,30 +480,9 @@ The `<Aside>` component renders a callout.
 
 ### Combining Components
 
-Components nest naturally:
-
-```mdx
-<Steps>
-
-1. Choose your mode
-
-   <Tabs>
-     <TabItem label="Auto">
-       Runs automatically on asset changes.
-     </TabItem>
-     <TabItem label="Manual">
-       Invoke with `/docs-steward sync`.
-     </TabItem>
-   </Tabs>
-
-2. Verify the build
-
-   <Aside type="tip">
-     Always check the build output for warnings.
-   </Aside>
-
-</Steps>
-```
+Components nest naturally. Put Tabs or Aside inside Steps, CardGrid
+inside TabItem, etc. Ensure blank lines around each nested component
+tag for correct MDX parsing.
 
 ### Component Spacing
 

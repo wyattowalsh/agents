@@ -1,0 +1,56 @@
+/* Auto-extracted from custom.css for modular maintenance: 70-a11y.css */
+
+/* ===== FOCUS ACCESSIBILITY ===== */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content {
+    animation: none;
+  }
+  .stat {
+    animation: none;
+  }
+  .sl-link-card {
+    transition: none;
+  }
+  .sl-link-card[href*="skills/"]::before {
+    animation: none;
+  }
+  .hero h1 {
+    animation: none;
+  }
+  :root[data-theme='dark'] .sidebar-content a[aria-current='page'] {
+    animation: none;
+  }
+  .expressive-code {
+    transition: none;
+  }
+  .sl-badge {
+    transition: none;
+  }
+  ::view-transition-new(root) {
+    animation: none;
+  }
+  .hero-terminal-cmd {
+    animation-duration: 0.01s !important;
+    animation-delay: 0s !important;
+    width: 100%;
+  }
+  .hero-terminal-cursor {
+    animation: none !important;
+    opacity: 1;
+  }
+  .hero-agents-row,
+  .hero-terminal {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+  body:not([data-has-hero])::before {
+    display: none;
+  }
+}

@@ -1,0 +1,43 @@
+---
+import TableOfContents from 'starlight-theme-black/overrides/TableOfContents.astro';
+import PageGraph from 'starlight-site-graph/internal/PageGraph.astro';
+import PageBacklinks from 'starlight-site-graph/internal/PageBacklinks.astro';
+---
+
+<PageGraph class="right-sidebar-panel slsg-graph-panel">
+  <h2 slot="title">{Astro.locals.t('starlight-site-graph.graph')}</h2>
+</PageGraph>
+
+{
+  Astro.locals.starlightRoute.toc && (
+    <div class="theme-black-sidebar-toc">
+      <TableOfContents />
+    </div>
+  )
+}
+
+<PageBacklinks class="right-sidebar-panel slsg-backlinks-panel">
+  <h2 slot="title">{Astro.locals.t('starlight-site-graph.backlinks')}</h2>
+</PageBacklinks>
+
+<style>
+  .theme-black-sidebar-toc {
+    padding-top: 1rem;
+    height: calc(100vh - 3.5rem);
+    margin-top: -1.5rem;
+    top: 5rem;
+    position: sticky;
+  }
+
+  /* Tighten spacing between graph / toc / backlinks blocks in the right sidebar */
+  :global(.right-sidebar-panel.slsg-graph-panel),
+  :global(.right-sidebar-panel.slsg-backlinks-panel) {
+    margin-block: 0.75rem;
+  }
+  :global(.right-sidebar-panel.slsg-graph-panel + .theme-black-sidebar-toc) {
+    margin-top: 0.5rem;
+  }
+  :global(.theme-black-sidebar-toc + .right-sidebar-panel.slsg-backlinks-panel) {
+    margin-top: 0.75rem;
+  }
+</style>

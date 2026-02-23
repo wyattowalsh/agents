@@ -1,0 +1,64 @@
+/* Auto-extracted from custom.css for modular maintenance: 00-tokens.css */
+
+/* ===== TOKENS ===== */
+
+/* Cyan accent — override theme-black's neutral primary */
+:root[data-theme='dark'] {
+  --primary: oklch(0.76 0.12 205);
+  --primary-foreground: oklch(0.98 0 0);
+  --ring: oklch(0.72 0.12 205);
+  --slsg-node-color: oklch(0.76 0.12 195);
+  --slsg-link-color: oklch(0.57 0.06 205);
+}
+:root[data-theme='light'] {
+  --primary: oklch(0.60 0.13 215);
+  --primary-foreground: oklch(0.98 0 0);
+}
+
+/* Type-coded asset colors */
+:root {
+  --type-skill:  oklch(0.69 0.20 295);   /* violet */
+  --type-agent:  oklch(0.73 0.12 210);   /* cyan */
+  --type-mcp:    oklch(0.74 0.16 155);   /* emerald */
+  --type-installed: oklch(0.70 0.15 45); /* orange */
+  --sl-content-width: 54rem;
+
+  /* Design tokens — timing */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
+  --ease-snappy: cubic-bezier(0.22, 0.98, 0.33, 1);
+
+  /* Design tokens — spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 40px;
+  --space-3xl: 48px;
+
+  /* Design tokens — z-index */
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-overlay: 100;
+
+  /* Design tokens — shadows */
+  --shadow-sm: 0 2px 4px oklch(0 0 0 / 0.1);
+  --shadow-md: 0 8px 16px oklch(0 0 0 / 0.15);
+  --shadow-lg: 0 16px 32px oklch(0 0 0 / 0.2);
+  --shadow-glow: 0 0 24px oklch(0.62 0.1 205 / 0.16);
+
+  /* Design tokens — radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 99px;
+}
+
+/* ===== FONTS ===== */
+:root {
+  --sl-font: 'Geist Sans', system-ui, sans-serif;
+  --sl-font-mono: 'Geist Mono', ui-monospace, monospace;
+}

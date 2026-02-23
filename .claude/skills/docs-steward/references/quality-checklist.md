@@ -134,19 +134,51 @@ acceptable. Target 4+ for high-traffic pages (index, popular skills).
 - Are code blocks labeled with language for screen readers?
 - Is the heading hierarchy navigable?
 
+### 8. External Links (1-5)
+
+| Score | Criteria |
+|-------|----------|
+| 1 | No external links |
+| 2 | One external link (e.g., to GitHub repo) |
+| 3 | Links to source repo and one external doc |
+| 4 | Links to official docs, ecosystem sites, and related tools |
+| 5 | Comprehensive external links: official docs, agentskills.io, community, related tools |
+
+**Check**:
+- Does the page link to relevant official documentation?
+- Are ecosystem links present (agentskills.io, GitHub)?
+- Are there links to related external tools or libraries?
+- Do external links open in a way that indicates they leave the site?
+
+### 9. Agent Compatibility (1-5)
+
+| Score | Criteria |
+|-------|----------|
+| 1 | No mention of supported agents |
+| 2 | Generic "works with multiple agents" statement |
+| 3 | Lists compatible agents by name |
+| 4 | Agent-specific install commands or configuration |
+| 5 | Full compatibility matrix: agents, install commands, compatibility notes, links to agent docs |
+
+**Check**:
+- Does the page mention which agents support this asset?
+- Are agent-specific install or invocation commands provided?
+- Are there compatibility notes or caveats per agent?
+- Are there links to agent documentation?
+
 ---
 
 ## Overall Score
 
-Sum all dimension scores. Maximum is 35.
+Sum all dimension scores. Maximum is 45.
 
 | Total | Rating | Action |
 |-------|--------|--------|
-| 28-35 | Excellent | No changes needed |
-| 21-27 | Good | Minor improvements optional |
-| 14-20 | Acceptable | Enhance weak dimensions |
-| 7-13 | Poor | Needs substantial enhancement |
-| < 7 | Critical | Page is essentially placeholder; full rewrite |
+| 36-45 | Excellent | No changes needed |
+| 27-35 | Good | Minor improvements optional |
+| 18-26 | Acceptable | Enhance weak dimensions |
+| 9-17 | Poor | Needs substantial enhancement |
+| < 9 | Critical | Page is essentially placeholder; full rewrite |
 
 ---
 
@@ -159,6 +191,29 @@ When enhancing multiple pages, prioritize:
 3. High-traffic pages (index, popular skills, getting started)
 4. Pages with low Description Quality (most visible to users)
 5. Pages with low Usage Examples (most impactful for users)
+
+## Quick Wins
+
+The most impactful single-change enhancements for common low-scoring pages:
+
+| Low Dimension | Quick Win | Effort |
+|---------------|-----------|--------|
+| Description (1-2) | Read source SKILL.md/agent.md and write 2-3 sentence summary | 2 min |
+| Usage Examples (1-2) | Add primary invocation command in a code block | 3 min |
+| Visual Elements (1-2) | Add one `Aside` callout for the most important tip/warning | 2 min |
+| Cross-References (1-2) | Add a "Related" section with 2-3 `LinkCard` components | 3 min |
+| External Links (1-2) | Add link to source repo and one official doc | 2 min |
+| Agent Compatibility (1-2) | Add a "Supported Agents" section listing compatible agents | 3 min |
+
+## Component Recommendations by Page Type
+
+| Page Type | Recommended Components | Rationale |
+|-----------|----------------------|-----------|
+| Skill page | Aside (tip), Tabs (modes), Steps (usage), Badge (status) | Skills have modes and sequential workflows |
+| Agent page | Badge (model), CardGrid (skills), Aside (permissions) | Agents reference skills and have config |
+| MCP page | Steps (setup), Code (config), Tabs (transports), Aside (requirements) | MCP servers need connection setup |
+| Index page | CardGrid, LinkCard, Badge (counts) | Index pages are navigation hubs |
+| Landing page | Card (features), Steps (quickstart), Aside (ecosystem) | Landing pages need visual hierarchy |
 
 ---
 

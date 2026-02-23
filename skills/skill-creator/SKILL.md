@@ -10,14 +10,19 @@ model: opus
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "2.0.0"
+hooks:
+  PreToolUse:
+    - matcher: Bash
+      hooks:
+        - command: "echo 'skill-creator: Bash access granted for script execution'"
 ---
 
 # Skill Creator
 
 Create, improve, and audit AI agent skills. Every skill follows 13 proven structural patterns.
 
-**Scope:** Skills only. NOT for creating agents (`wagents new agent`), building MCP servers (`/mcp-creator`), running existing skills, or packaging `.skill` ZIP files. This repo uses raw `SKILL.md` format committed directly to `skills/`.
+**Scope:** Skills only. NOT for creating agents (`wagents new agent`), building MCP servers (`/mcp-creator`), or running existing skills. This repo uses raw `SKILL.md` format committed directly to `skills/`.
 
 ## Dispatch
 
@@ -29,6 +34,7 @@ Create, improve, and audit AI agent skills. Every skill follows 13 proven struct
 | `audit <name>` | Audit | `/skill-creator audit honest-review` |
 | `audit --all` | Audit All | `/skill-creator audit --all` |
 | `dashboard` | Dashboard | `/skill-creator dashboard` |
+| `package <name>` / `package --all` | Package | `/skill-creator package wargame` |
 | Natural language skill idea | Auto: Develop (new) | `"tool that audits Python type safety"` |
 | Skill name + modification verb | Auto: Develop (existing) | `"refactor the wargame skill"` |
 | Path to SKILL.md | Auto: Develop (existing) | `skills/wargame/SKILL.md` |
@@ -45,6 +51,15 @@ If no explicit mode keyword is provided:
 4. New capability description ("I want to build...", "tool that...", "skill for...") → **Develop (new)** — derive name, confirm before scaffolding
 5. "MCP server", "agent", "run" → refuse gracefully and redirect
 6. Ambiguous → ask the user which mode they want
+
+## Quick Start
+
+```bash
+wagents new skill <name>           # Scaffold from template
+wagents validate                   # Check all skills
+uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
+wagents package <name>             # Package as portable ZIP
+```
 
 ## Skill Development
 
@@ -78,6 +93,24 @@ Auto-detects mode from data: `phases` field → process monitor; `skills` array 
 Present skill inventory with scores and available actions.
 Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, display results, offer mode menu.
 
+## Package
+
+Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
+
+```bash
+wagents package <name>            # Single skill → <name>-v<version>.skill.zip
+wagents package --all             # All skills → dist/ with manifest.json
+wagents package --all --dry-run   # Check portability without creating ZIPs
+```
+
+## Hooks
+
+PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
+
+## State Management
+
+Creation progress persists at `~/.claude/skill-progress/<name>.json`. Read/write via `scripts/progress.py`. Survives session restarts. Use `--state-dir` to override the default location.
+
 ## Reference File Index
 
 | File | Content | Read When |
@@ -87,7 +120,8 @@ Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, 
 | `references/proven-patterns.md` | 13 structural patterns with examples from repo skills | Step 4 (Build), gap analysis |
 | `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
 | `references/frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree | Step 3 (Scaffold), frontmatter configuration |
-| `references/evaluation-rubric.md` | 10 scoring dimensions, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
+| `references/packaging-guide.md` | ZIP structure, manifest schema, portability checks, import instructions | Package |
+| `references/evaluation-rubric.md` | 11 scoring dimensions, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
 
 Read reference files as indicated by the "Read When" column above. Do not rely on memory or prior knowledge of their contents.
 
@@ -119,8 +153,8 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 16. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
 
 **Canonical terms** (use these exactly throughout):
-- Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Gallery"
+- Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90+), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions"
-- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "conciseness", "canonical-vocabulary"
+- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary"

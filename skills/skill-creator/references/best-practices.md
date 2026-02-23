@@ -11,9 +11,9 @@ Condensed from Anthropic's official skill-writing guidance and superpowers metho
 5. [Evaluation-Driven Development](#5-evaluation-driven-development)
 6. [Rationalization Tables](#6-rationalization-tables)
 7. [Cross-Model Considerations](#7-cross-model-considerations)
-8. [Context Budget Awareness](#8-context-budget-awareness)
-9. [Common Anti-Patterns](#9-common-anti-patterns)
-10. [Cross-Agent Awareness](#10-cross-agent-awareness)
+8. [Common Anti-Patterns](#8-common-anti-patterns)
+9. [Cross-Agent Awareness](#9-cross-agent-awareness)
+10. [Context7 Integration](#10-context7-integration)
 
 ---
 
@@ -31,6 +31,14 @@ The context window is shared between ALL active skills, conversation history, to
 6. Delete anything the agent already knows (e.g., "markdown uses # for headings")
 7. Prefer tables over prose for structured information
 8. Use imperative voice ("Check the output" not "You should check the output")
+
+**Context budget implications:**
+
+- Descriptions are information-dense (every word matters for routing accuracy)
+- Body should be self-sufficient for common cases (avoid forcing reference loads for simple invocations)
+- Include quick-reference examples inline to reduce reference file loads
+- If a skill has 5+ reference files, the body's reference index becomes critical for selective loading
+- Total context pressure grows as conversations lengthen -- front-loaded skills (clear dispatch in body) perform better late in sessions
 
 **Conciseness checklist before finalizing any skill file:**
 
@@ -109,25 +117,7 @@ Why it's bad: no action verb, no trigger phrases, no exclusions, no modes. The a
 
 ## 4. Progressive Disclosure
 
-Four layers of information, each loaded only when needed.
-
-| Layer | File | Loaded When | Token Budget |
-|-------|------|-------------|--------------|
-| 1. Metadata | Frontmatter fields | All skills loaded simultaneously | ~100 tokens per skill |
-| 2. Body | SKILL.md content below `---` | Skill is activated (slash command or auto) | <5,000 tokens |
-| 3. References | `references/*.md` | On-demand per reference index | 500-3,000 tokens each |
-| 4. Artifacts | `scripts/`, `templates/` | Invoked via Bash (never loaded into context) | 0 tokens (executed, not read) |
-
-> This applies Anthropic's "context engineering" principle: structure information
-> so the right context appears at the right time, minimizing irrelevant tokens
-> in the agent's working memory.
-
-**Key principles:**
-
-- Never put reference-level detail in the body (wastes tokens on every invocation)
-- Never put body-level routing in references (forces unnecessary file loads)
-- Each layer has a specific purpose: metadata for discovery, body for dispatch, references for knowledge, artifacts for execution
-- Include a reference index table in the body so the agent knows what's available without reading every file
+See `proven-patterns.md` Pattern 12 for the progressive disclosure architecture.
 
 ---
 
@@ -206,21 +196,7 @@ Different models need different levels of structure in skill instructions.
 
 ---
 
-## 8. Context Budget Awareness
-
-Managing total context pressure across a full session. For token budgets per layer (metadata, body, references, artifacts), see [Section 3: Description Engineering](#3-description-engineering--cso) and [Section 4: Progressive Disclosure](#4-progressive-disclosure).
-
-**Implications:**
-
-- Keep descriptions information-dense (every word matters for routing accuracy)
-- Body should be self-sufficient for common cases (avoid forcing reference loads for simple invocations)
-- Include quick-reference examples inline to reduce reference file loads
-- If a skill has 5+ reference files, the body's reference index becomes critical for selective loading
-- Total context pressure grows as conversations lengthen -- front-loaded skills (clear dispatch in body) perform better late in sessions
-
----
-
-## 9. Common Anti-Patterns
+## 8. Common Anti-Patterns
 
 | Anti-Pattern | Problem | Fix |
 |---|---|---|
@@ -239,7 +215,7 @@ Managing total context pressure across a full session. For token budgets per lay
 
 ---
 
-## 10. Cross-Agent Awareness
+## 9. Cross-Agent Awareness
 
 Skills in this repo are Claude Code-primary (dispatch tables, `$ARGUMENTS` routing, tool references). Distribution paths:
 
@@ -248,5 +224,18 @@ Skills in this repo are Claude Code-primary (dispatch tables, `$ARGUMENTS` routi
 3. **Project-local:** Direct commit to `.claude/skills/` for single-project use.
 
 Always populate cross-platform frontmatter fields (`license`, `metadata.author`, `metadata.version`) to enable multi-agent installability. Note which Claude Code-specific features are used (dispatch tables, body substitutions, hooks) so other agents can degrade gracefully.
+
+---
+
+## 10. Context7 Integration
+
+Use Context7 to validate domain-specific assumptions during skill development:
+
+1. **API correctness** — resolve-library-id, then query-docs for the specific API
+2. **Framework conventions** — verify against current documentation, not training knowledge
+3. **Deprecation checks** — confirm methods/patterns are still current
+4. **Version compatibility** — check requirements against latest releases
+
+Always cite Context7 sources when the validation changes the skill's guidance.
 
 ---

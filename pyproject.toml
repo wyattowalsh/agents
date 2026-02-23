@@ -15,7 +15,12 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["pytest>=8", "pytest-cov>=6", "ruff>=0.9"]
+dev = [
+    "playwright>=1.58.0",
+    "pytest>=8",
+    "pytest-cov>=6",
+    "ruff>=0.9",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

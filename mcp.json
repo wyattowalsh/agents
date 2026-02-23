@@ -1,0 +1,138 @@
+{
+  "mcpServers": {
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "atom-of-thoughts": {
+      "command": "node",
+      "args": ["/Users/ww/dev/tools/mcp/MCP_Atom_of_Thoughts/build/index.js"]
+    },
+    "shannon-thinking": {
+      "command": "npx",
+      "args": ["-y", "server-shannon-thinking@latest"]
+    },
+    "structured-thinking": {
+      "command": "npx",
+      "args": ["-y", "structured-thinking"]
+    },
+    "cascade-thinking": {
+      "command": "npx",
+      "args": ["-y", "cascade-thinking-mcp"]
+    },
+    "crash": {
+      "command": "npx",
+      "args": ["-y", "crash-mcp"],
+      "env": {
+        "CRASH_STRICT_MODE": "false",
+        "MAX_HISTORY_SIZE": "100"
+      }
+    },
+    "deep-lucid-3d": {
+      "command": "node",
+      "args": ["/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"]
+    },
+    "lotus-wisdom-mcp": {
+      "command": "npx",
+      "args": ["-y", "lotus-wisdom-mcp"]
+    },
+    "think-strategies": {
+      "command": "npx",
+      "args": ["-y", "github:aaronsb/think-strategies"]
+    },
+    "creative-thinking": {
+      "command": "node",
+      "args": ["/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"]
+    },
+    "ableton": {
+      "command": "uvx",
+      "args": ["ableton-mcp"]
+    },
+    "apple-mail": {
+      "command": "/Users/ww/dev/tools/mcp/apple-mail-mcp/venv/bin/python3",
+      "args": ["/Users/ww/dev/tools/mcp/apple-mail-mcp/apple_mail_mcp.py"]
+    },
+    "default": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.w4w.dev/mcp/default"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+    "docling": {
+      "command": "uvx",
+      "args": ["--from=docling-mcp", "docling-mcp-server"]
+    },
+    "package-version": {
+      "command": "/Users/ww/go/bin/mcp-package-version",
+      "args": []
+    },
+    "things": {
+      "command": "uv",
+      "args": ["--directory", "/Users/ww/dev/tools/mcp/things-mcp", "run", "things_server.py"]
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["mcp-fetch-server"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp", "--api-key", "${CONTEXT7_API_KEY}"]
+    },
+    "ffmpeg": {
+      "command": "uv",
+      "args": ["--directory", "/Users/ww/dev/tools/mcp/ffmpeg-mcp", "run", "ffmpeg-mcp"]
+    },
+    "gmail": {
+      "command": "npx",
+      "args": ["-y", "@gongrzhe/server-gmail"]
+    },
+    "fetcher": {
+      "command": "npx",
+      "args": ["-y", "fetcher-mcp"]
+    },
+    "deepwiki": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.deepwiki.com/mcp"]
+    },
+    "repomix": {
+      "command": "npx",
+      "args": ["-y", "repomix", "--mcp"]
+    },
+    "trafilatura": {
+      "command": "uv",
+      "args": ["--directory", "/Users/ww/dev/tools/mcp/trafilatura_mcp", "run", "python3", "trafilatura_mcp.py"]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@anthropics/brave-search-mcp"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
+    "web-search": {
+      "command": "node",
+      "args": ["/Users/ww/dev/tools/mcp/web-search-mcp/dist/index.js"]
+    },
+    "linkedin": {
+      "command": "uvx",
+      "args": ["linkedin-scraper-mcp"]
+    },
+    "g-search": {
+      "command": "npx",
+      "args": ["-y", "g-search-mcp"]
+    },
+    "duckduckgo": {
+      "command": "uvx",
+      "args": ["duckduckgo-mcp-server"]
+    }
+  }
+}

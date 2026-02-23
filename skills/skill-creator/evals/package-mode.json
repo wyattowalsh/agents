@@ -1,0 +1,17 @@
+[
+  {
+    "input": "package add-badges",
+    "expected_mode": "Package",
+    "expected_action": "Run package.py for a single skill"
+  },
+  {
+    "input": "package --all",
+    "expected_mode": "Package",
+    "expected_action": "Run package.py for all skills"
+  },
+  {
+    "input": "package wargame --dry-run",
+    "expected_mode": "Package",
+    "expected_action": "Run portability checks without creating ZIP"
+  }
+]
