@@ -9,16 +9,17 @@ argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "3.0"
+  version: "4.0"
+model: sonnet
 hooks:
   PreToolUse:
     - matcher: Edit
       hooks:
-        - command: "bash -c 'if git diff --quiet \"$TOOL_INPUT_file_path\" 2>/dev/null; then exit 0; else echo \"WARNING: $(basename \"$TOOL_INPUT_file_path\") has uncommitted changes\" >&2; exit 0; fi'"
+        - command: 'bash -c ''if git diff --quiet "$TOOL_INPUT_file_path" 2>/dev/null; then exit 0; else echo "WARNING: $(basename "$TOOL_INPUT_file_path") has uncommitted changes" >&2; exit 0; fi'''
   PostToolUse:
     - matcher: Edit
       hooks:
-        - command: "bash -c 'git diff --stat \"$TOOL_INPUT_file_path\" 2>/dev/null || true'"
+        - command: 'bash -c ''git diff --stat "$TOOL_INPUT_file_path" 2>/dev/null || true'''
 ---
 
 # Honest Review
@@ -32,41 +33,45 @@ Research-driven code review. Every finding validated with evidence.
 
 Use these terms exactly throughout both modes:
 
-| Term | Definition |
-|------|-----------|
-| **triage** | Wave 0: risk-stratify files (HIGH/MEDIUM/LOW) and determine specialist triggers before analysis |
-| **wave** | A pipeline stage: Wave 0 (Triage), Wave 1 (Analysis), Wave 2 (Research), Wave 3 (Judge) |
-| **finding** | A discrete code issue with severity, confidence score, evidence, and citation |
-| **confidence** | Score 0.0-1.0 per finding; >=0.7 report, 0.3-0.7 unconfirmed, <0.3 discard (except P0/S0) |
-| **severity** | Priority (P0-P3) and scope (S0-S3) classification of a finding's impact |
-| **judge** | Wave 3 reconciliation: normalize, cluster, deduplicate, filter, resolve conflicts, rank findings |
-| **lens** | A creative review perspective: Inversion, Deletion, Newcomer, Incident, Evolution, Adversary, Compliance, Dependency |
-| **blast radius** | How many files, users, or systems a finding's defect could affect |
-| **slopsquatting** | AI-hallucinated package names in dependencies — security-critical, checked first in Wave 2 |
-| **research validation** | Core differentiator: every non-trivial finding confirmed with external evidence (Context7, WebSearch, gh) |
-| **systemic finding** | A pattern appearing in 3+ files, elevated from individual findings during Judge reconciliation |
-| **approval gate** | Mandatory pause after presenting findings — never implement fixes without user consent |
-| **pass** | Internal teammate stage (Pass A: scan, Pass B: deep dive, Pass C: research) — distinct from pipeline waves |
-| **degraded mode** | Operation when research tools are unavailable — confidence ceilings applied per tool |
-| **review depth** | Classification-gated review intensity: Light (0-3), Standard (4-6), Deep (7-10) |
+| Term                     | Definition                                                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **triage**               | Wave 0: risk-stratify files (HIGH/MEDIUM/LOW) and determine specialist triggers before analysis                                            |
+| **wave**                 | A pipeline stage: Wave 0 (Triage), Wave 1 (Analysis), Wave 2 (Research), Wave 3 (Judge)                                                    |
+| **finding**              | A discrete code issue with severity, confidence score, evidence, and citation                                                              |
+| **confidence**           | Score 0.0-1.0 per finding; >=0.7 report, 0.3-0.7 unconfirmed, <0.3 discard (except P0/S0)                                                  |
+| **severity**             | Priority (P0-P3) and scope (S0-S3) classification of a finding's impact                                                                    |
+| **judge**                | Wave 3 reconciliation: normalize, cluster, deduplicate, filter, resolve conflicts, rank findings                                           |
+| **lens**                 | A creative review perspective: Inversion, Deletion, Newcomer, Incident, Evolution, Adversary, Compliance, Dependency, Cost, Sustainability |
+| **blast radius**         | How many files, users, or systems a finding's defect could affect                                                                          |
+| **slopsquatting**        | AI-hallucinated package names in dependencies — security-critical, checked first in Wave 2                                                 |
+| **research validation**  | Core differentiator: every non-trivial finding confirmed with external evidence (Context7, WebSearch, DeepWiki, gh)                        |
+| **systemic finding**     | A pattern appearing in 3+ files, elevated from individual findings during Judge reconciliation                                             |
+| **approval gate**        | Mandatory pause after presenting findings — never implement fixes without user consent                                                     |
+| **pass**                 | Internal teammate stage (Pass A: scan, Pass B: deep dive, Pass C: research) — distinct from pipeline waves                                 |
+| **self-verification**    | Wave 3.5: adversarial pass on top findings to reduce false positives (references/self-verification.md)                                     |
+| **convention awareness** | Check for AGENTS.md/CLAUDE.md/.cursorrules — review against project's own agent instructions                                               |
+| **degraded mode**        | Operation when research tools are unavailable — confidence ceilings applied per tool                                                       |
+| **review depth**         | Classification-gated review intensity: Light (0-3), Standard (4-6), Deep (7-10)                                                            |
 
 ## Dispatch
 
-| $ARGUMENTS | Mode |
-|------------|------|
-| Empty + changes in session (git diff) | Session review of changed files |
-| Empty + no changes (first message) | Full codebase audit |
-| File or directory path | Scoped review of that path |
-| "audit" | Force full codebase audit |
-| PR number/URL | Review PR changes (gh pr diff) |
-| Git range (HEAD~3..HEAD) | Review changes in that range |
-| "history" [project] | Show review history for project |
-| "diff" or "delta" [project] | Compare current vs. previous review |
-| Unrecognized input | Ask for clarification |
+| $ARGUMENTS                            | Mode                                                       |
+| ------------------------------------- | ---------------------------------------------------------- |
+| Empty + changes in session (git diff) | Session review of changed files                            |
+| Empty + no changes (first message)    | Full codebase audit                                        |
+| File or directory path                | Scoped review of that path                                 |
+| "audit"                               | Force full codebase audit                                  |
+| PR number/URL                         | Review PR changes (gh pr diff)                             |
+| Git range (HEAD~3..HEAD)              | Review changes in that range                               |
+| "history" [project]                   | Show review history for project                            |
+| "diff" or "delta" [project]           | Compare current vs. previous review                        |
+| `--format sarif` (with any mode)      | Output findings in SARIF v2.1 (references/sarif-output.md) |
+| Unrecognized input                    | Ask for clarification                                      |
 
 ## Review Posture
 
 **Severity calibration by project type**:
+
 - Prototype: report P0/S0 only. Skip style, structure, and optimization concerns.
 - Production: full review at all levels and severities.
 - Library: full review plus backward compatibility focus on public API surfaces.
@@ -107,6 +112,7 @@ Algorithmic complexity, N+1, data structure choice, resource usage, caching.
 Simplify: unnecessary serialization, redundant computation, premature optimization.
 
 Context-dependent triggers (apply when relevant):
+
 - Security: auth, payments, user data, file I/O, network
 - Observability: services, APIs, long-running processes
 - AI code smells: LLM-generated code, unfamiliar dependencies
@@ -117,7 +123,7 @@ Context-dependent triggers (apply when relevant):
 - Backward compatibility: public APIs, libraries, shared contracts
 - Infrastructure as code: cloud resources, containers, CI/CD, deployment config
 - Requirements validation: changes against stated intent, PR description, ticket
-Full checklists: read references/checklists.md
+  Full checklists: read references/checklists.md
 
 ## Creative Lenses
 
@@ -131,6 +137,8 @@ Apply at least 2 lenses per review scope. For security-sensitive code, Adversary
 - **Adversary**: what would an attacker do with this code?
 - **Compliance**: does this code meet regulatory requirements?
 - **Dependency**: is the dependency graph healthy?
+- **Cost**: what does this cost to run?
+- **Sustainability**: will this scale without linear cost growth?
 
 Reference: read references/review-lenses.md
 
@@ -140,10 +148,12 @@ THIS IS THE CORE DIFFERENTIATOR. Do not report findings based solely
 on LLM knowledge. For every non-trivial finding, validate with research:
 
 **Two-phase review per scope**:
+
 1. **Flag phase**: Analyze code, generate hypotheses
 2. **Validate phase**: Spawn research subagents to confirm with evidence:
    - Context7: library docs for API correctness
-   - WebSearch: best practices, security advisories
+   - WebSearch (Brave, DuckDuckGo, Exa): best practices, security advisories
+   - DeepWiki: unfamiliar repo architecture and design patterns
    - WebFetch: package registries (npm, PyPI, crates.io)
    - gh: open issues, security advisories
 3. Assign confidence score (0.0-1.0) per Confidence Scoring Rubric
@@ -157,22 +167,25 @@ Research playbook: read references/research-playbook.md
 
 Run `git diff --name-only HEAD` to capture changes. Collect `git diff HEAD` for context.
 Identify task intent from session history.
+Detect convention files (AGENTS.md, CLAUDE.md, .cursorrules) — see references/triage-protocol.md.
 
 For 6+ files: run triage per references/triage-protocol.md:
+
 - `uv run scripts/project-scanner.py [path]` for project profile
 - Git history analysis (hot files, blame density, recent changes)
 - Risk-stratify all changed files (HIGH/MEDIUM/LOW)
 - Determine specialist triggers (security, observability, requirements)
+- Detect monorepo workspaces and scope reviewers per package
 
 For 1-5 files: lightweight triage — classify risk levels, skip full scanning.
 
 ### Session Step 2: Scale and Launch (Wave 1)
 
-| Scope | Strategy |
-|-------|----------|
-| 1-2 files | Inline review at all 3 levels. Spawn research subagents for flags. |
+| Scope     | Strategy                                                                                           |
+| --------- | -------------------------------------------------------------------------------------------------- |
+| 1-2 files | Inline review at all 3 levels. Spawn research subagents for flags.                                 |
 | 3-5 files | 3 parallel level-based reviewers (Correctness/Design/Efficiency). Each runs internal passes A→B→C. |
-| 6+ files | Team with lead. See below. |
+| 6+ files  | Team with lead. See below.                                                                         |
 
 **Team structure for 6+ files:**
 
@@ -187,6 +200,7 @@ For 1-5 files: lightweight triage — classify risk levels, skip full scanning.
 ```
 
 Each reviewer runs 3 internal passes (references/team-templates.md § Internal Wave Structure):
+
 - Pass A: quick scan all files (haiku, 3-5 files per subagent)
 - Pass B: deep dive HIGH-risk flagged files (opus, 1 per file)
 - Pass C: research validate findings (batched per research-playbook.md)
@@ -199,6 +213,7 @@ For inline/small reviews: lead collects all findings and dispatches validation w
 For team reviews: each teammate handles validation internally (Pass C).
 
 Batch findings by validation type. Dispatch order:
+
 1. Slopsquatting detection (security-critical, haiku)
 2. HIGH-risk findings (2+ sources, sonnet)
 3. MEDIUM-risk findings (1 source, haiku/sonnet)
@@ -209,6 +224,7 @@ Batch sizing: 5-8 findings per subagent (optimal). See references/research-playb
 ### Session Step 4: Judge Reconcile (Wave 3)
 
 Run the 8-step Judge protocol (references/judge-protocol.md):
+
 1. Normalize findings (scripts/finding-formatter.py assigns HR-S-{seq} IDs)
 2. Cluster by root cause
 3. Deduplicate within clusters
@@ -218,19 +234,22 @@ Run the 8-step Judge protocol (references/judge-protocol.md):
 7. Elevate patterns in 3+ files to systemic findings
 8. Rank by score = severity_weight × confidence × blast_radius
 
+If 3+ findings survive, run self-verification (Wave 3.5): references/self-verification.md
+
 ### Session Step 5: Present and Execute
 
 Present all findings with evidence, confidence scores, and citations.
 Ask: "Implement fixes? [all / select / skip]"
-If approved: parallel subagents by file (no overlapping ownership).
-Then verify: build/lint, tests, behavior spot-check.
+If approved: follow references/auto-fix-protocol.md (preview diffs, confirm, apply, verify).
 Output format: read references/output-formats.md
+For SARIF output: read references/sarif-output.md
 
 ## Mode 2: Full Codebase Audit
 
 ### Audit Step 1: Triage (Wave 0)
 
 Full triage per references/triage-protocol.md:
+
 - `uv run scripts/project-scanner.py [path]` for project profile
 - Git history analysis (4 parallel haiku subagents: hot files, blame density, recent changes, related issues)
 - Risk-stratify all files (HIGH/MEDIUM/LOW)
@@ -261,6 +280,7 @@ Scaling: references/team-templates.md § Scaling Matrix.
 ### Audit Step 3: Cross-Domain Analysis (Lead, parallel with Wave 1)
 
 While teammates review, lead spawns parallel subagents for:
+
 - Architecture: module boundaries, dependency graph
 - Data flow: trace key paths end-to-end
 - Error propagation: consistency across system
@@ -287,32 +307,36 @@ Top 3 Recommendations, Statistics. All findings include evidence + citations.
 ### Audit Step 7: Execute (If Approved)
 
 Ask: "Implement fixes? [all / select / skip]"
-If approved: parallel subagents by file (no overlapping ownership).
-Then verify: build/lint, tests, behavior spot-check.
+If approved: follow references/auto-fix-protocol.md (preview diffs, confirm, apply, verify).
 
 ## Reference Files
 
 Load ONE reference at a time. Do not preload all references into context.
 
-| File | When to Read | ~Tokens |
-|------|--------------|---------|
-| references/triage-protocol.md | During Wave 0 triage (both modes) | 1300 |
-| references/checklists.md | During analysis or building teammate prompts | 2500 |
-| references/research-playbook.md | When setting up research validation (Wave 2) | 2000 |
-| references/judge-protocol.md | During Judge reconciliation (Wave 3) | 1200 |
-| references/output-formats.md | When producing final output | 1100 |
-| references/team-templates.md | When designing teams (Mode 2 or large Mode 1) | 1900 |
-| references/review-lenses.md | When applying creative review lenses | 1300 |
-| references/ci-integration.md | When running in CI pipelines | 500 |
+| File                                | When to Read                                                  | ~Tokens |
+| ----------------------------------- | ------------------------------------------------------------- | ------- |
+| references/triage-protocol.md       | During Wave 0 triage (both modes)                             | 1500    |
+| references/checklists.md            | During analysis or building teammate prompts                  | 2800    |
+| references/research-playbook.md     | When setting up research validation (Wave 2)                  | 2200    |
+| references/judge-protocol.md        | During Judge reconciliation (Wave 3)                          | 1200    |
+| references/self-verification.md     | After Judge (Wave 3.5) — adversarial false-positive reduction | 900     |
+| references/auto-fix-protocol.md     | When implementing fixes after approval                        | 800     |
+| references/output-formats.md        | When producing final output                                   | 1100    |
+| references/sarif-output.md          | When outputting SARIF format for CI tooling                   | 700     |
+| references/supply-chain-security.md | When reviewing dependency security                            | 1000    |
+| references/team-templates.md        | When designing teams (Mode 2 or large Mode 1)                 | 2200    |
+| references/review-lenses.md         | When applying creative review lenses                          | 1600    |
+| references/ci-integration.md        | When running in CI pipelines                                  | 700     |
 
-| Script | When to Run |
-|--------|-------------|
-| scripts/project-scanner.py | Wave 0 triage — deterministic project profiling |
-| scripts/finding-formatter.py | Wave 3 Judge — normalize findings to structured JSON |
-| scripts/review-store.py | Save, load, list, diff review history |
+| Script                       | When to Run                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------ |
+| scripts/project-scanner.py   | Wave 0 triage — deterministic project profiling                                |
+| scripts/finding-formatter.py | Wave 3 Judge — normalize findings to structured JSON (supports --format sarif) |
+| scripts/review-store.py      | Save, load, list, diff review history                                          |
+| scripts/sarif-uploader.py    | Upload SARIF results to GitHub Code Scanning                                   |
 
-| Template | When to Render |
-|----------|----------------|
+| Template                 | When to Render                                                  |
+| ------------------------ | --------------------------------------------------------------- |
 | templates/dashboard.html | After Judge reconciliation — inject findings JSON into data tag |
 
 ## Critical Rules
@@ -332,3 +356,6 @@ Load ONE reference at a time. Do not preload all references into context.
 13. Apply at least 2 creative lenses per review scope — Adversary is mandatory for security-sensitive code
 14. Load ONE reference file at a time — do not preload all references into context
 15. Review against the codebase's own conventions, not an ideal standard
+16. Run self-verification (Wave 3.5) when 3+ findings survive Judge — skip for fewer findings or fully degraded mode
+17. Follow auto-fix protocol for implementing fixes — never apply without diff preview and user confirmation
+18. Check for convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage — validate code against project's declared rules
