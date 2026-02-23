@@ -1,0 +1,15 @@
+{
+  "skills": ["wargame"],
+  "query": "/wargame I have two job offers — one is a startup with equity, the other is a stable big tech role with higher base salary",
+  "files": [],
+  "expected_behavior": [
+    "Agent identifies this as specific scenario text and proceeds to Scenario Classification",
+    "Agent scores the scenario on 5 dimensions (adversary, reversibility, time pressure, stakeholder count, information completeness) with a reasoning column",
+    "Agent assigns a tier in the Complicated range (score 4-6) based on the scoring rubric",
+    "Agent routes to Mode B (Structured Analysis) for the Complicated tier",
+    "Agent elicits decision criteria (4-5 criteria for Complicated tier) and asks user to quick-rank",
+    "Agent applies 3-5 frameworks from references/frameworks.md including explicit trade-offs for each option",
+    "Agent includes a pre-mortem for the top-ranked option identifying the most likely cause of failure",
+    "Agent produces an Action Bridge with Probe, Position, and Commit levels"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "skills": ["python-conventions"],
+  "query": "Add a retry decorator to the fetch_data function in wagents/utils.py",
+  "files": ["wagents/utils.py"],
+  "expected_behavior": [
+    "Agent auto-invokes python-conventions skill when working on a .py file",
+    "Agent uses 'uv run' prefix for any Python command execution, never bare 'python'",
+    "Agent recommends 'tenacity' for retry logic (preferred library per conventions), not manual retry loops",
+    "Agent uses 'uv add tenacity' if the dependency needs to be added, never 'pip install'",
+    "Agent runs 'uv run ruff check' to lint before considering the change complete",
+    "Agent runs 'uv run pytest' before considering the change complete"
+  ]
+}

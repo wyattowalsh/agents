@@ -48,7 +48,8 @@ Within each cluster:
 
 1. Keep the finding with highest confidence and most specific evidence.
 2. Merge complementary evidence — append sources confirming the same issue.
-3. Update the surviving finding's description to incorporate merged context.
+3. Compute merged confidence: `c_merged = 1 - (1-c1)(1-c2)...(1-cN)` where c1..cN are individual confidence scores. Cap at 0.99.
+4. Update the surviving finding's description to incorporate merged context.
 
 Example: HR-S-003 (0.9, cites OWASP) and HR-S-007 (0.7, cites library docs) — keep
 HR-S-003, merge the library doc citation into its evidence field.

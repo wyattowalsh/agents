@@ -1,0 +1,15 @@
+{
+  "skills": ["host-panel"],
+  "query": "/host-panel \"How should cities redesign transit for remote-work patterns?\" roundtable 5",
+  "files": [],
+  "expected_behavior": [
+    "Agent parses arguments: topic is the quoted string, format is 'roundtable', expert count is 5",
+    "Agent runs Topic Suitability Diagnostic to evaluate breadth, specificity, and evidence asymmetry",
+    "Agent performs Topic Analysis and Research Grounding (Section 2) including terrain mapping and WebSearch for 3-5 relevant sources",
+    "Agent generates 5 personas with distinct intellectual traditions, no clustering, at least one contrarian and one bridge figure, and mixed career stages",
+    "Agent loads references/formats.md for roundtable-specific phase structure",
+    "Agent produces a complete panel output with Phase 0 (Framing), format-specific discussion phases, and Synthesis",
+    "Synthesis includes axiom of disagreement, emergent question, resolution evidence, position map, uncomfortable implications, key takeaways, and further reading",
+    "Agent generates 3-4 numbered follow-up options specific to this panel's tensions and experts"
+  ]
+}

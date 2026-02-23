@@ -1,0 +1,13 @@
+{
+  "skills": ["javascript-conventions"],
+  "query": "What package manager should I use for this Node.js monorepo?",
+  "files": ["package.json"],
+  "expected_behavior": [
+    "Agent auto-invokes javascript-conventions skill when discussing Node.js package management",
+    "Agent recommends 'pnpm' as the required package manager",
+    "Agent recommends pnpm workspaces for multi-package repositories with pnpm-workspace.yaml at the root",
+    "Agent recommends committing pnpm-lock.yaml to version control",
+    "Agent recommends 'pnpm install --frozen-lockfile' for CI environments",
+    "Agent mentions checking references/edge-cases.md for repo-specific exceptions"
+  ]
+}

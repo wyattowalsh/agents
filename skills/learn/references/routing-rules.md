@@ -20,9 +20,15 @@ Use this tree to determine where an instruction change should be routed.
 
 - Is it about parallel execution, teams, or task dispatch?
   - Yes -> `orchestrator` skill body
+  - No -> proceed to Step 4
+
+## Step 4: Enforcement Type
+
+- Is this a deterministic "run X after editing Y" trigger?
+  - Yes -> `.claude/rules/<topic>.md` (scoped rule)
   - No -> `instructions/global.md`
 
-## Step 4: Verify Placement
+## Step 5: Verify Placement
 
 Before finalizing the target:
 
@@ -38,10 +44,12 @@ Before finalizing the target:
 | Adding language rules to global.md | Route to the language convention skill |
 | Adding project rules to global.md | Route to the project's AGENTS.md |
 | Adding orchestration rules to a language skill | Route to orchestrator skill |
-| Adding a one-time fix as a permanent rule | Do not route -- it is not a pattern |
+| Adding a one-time fix as a permanent rule | Do not route — it is not a pattern |
+| Adding prose instructions for deterministic checks | Use a scoped rule or hook instead |
 
 ## Token Budget Awareness
 
-- `instructions/global.md` is always loaded -- keep it minimal
-- Skill bodies load on demand -- prefer routing to skills over global.md
+- `instructions/global.md` is always loaded — keep it minimal
+- Skill bodies load on demand — prefer routing to skills over global.md
+- Scoped rules cost zero tokens when inactive — prefer for path-conditional enforcement
 - If the change adds more than 50 tokens to global.md, consider a skill instead

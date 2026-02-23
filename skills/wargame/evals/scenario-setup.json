@@ -1,0 +1,15 @@
+{
+  "skills": ["wargame"],
+  "query": "/wargame Our main competitor just acquired our key supplier and is threatening to cut us off. We have 30 days of inventory left, three alternative suppliers (none qualified), and our board is split on whether to acquire a supplier ourselves or pivot the product line.",
+  "files": [],
+  "expected_behavior": [
+    "Agent identifies this as specific scenario text with embedded adversarial dynamics and proceeds to Scenario Classification",
+    "Agent scores high on adversary (active adversary, score 2), reversibility (costly/irreversible, score 2), and time pressure (days, score 2), resulting in Complex or Chaotic tier (score 7+)",
+    "Agent routes to Mode C (Interactive Wargame) for the Complex/Chaotic tier",
+    "Agent performs setup: defines 2-8 actors with structured persona templates (goals, resources, constraints, archetypes), ensures genuinely conflicting goals",
+    "Agent pre-seeds 3-5 injects (at least one positive opportunity) hidden from the user",
+    "Agent states the adversary simulation limitation explicitly during setup",
+    "Agent labels ALL outputs as exploratory, not predictive (RAND guardrail)",
+    "Agent saves journal to ~/.claude/wargames/ with YAML frontmatter after every turn"
+  ]
+}

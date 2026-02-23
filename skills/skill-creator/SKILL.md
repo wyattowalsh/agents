@@ -1,7 +1,7 @@
 ---
 name: skill-creator
 description: >-
-  Create, improve, and audit AI agent skills. Applies 13 proven structural
+  Create, improve, and audit AI agent skills. Applies 14 proven structural
   patterns, scores quality with deterministic audit, manages full lifecycle.
   Use when building, refactoring, or reviewing skills.
   NOT for agents, MCP servers, or running existing skills.
@@ -16,11 +16,16 @@ hooks:
     - matcher: Bash
       hooks:
         - command: "echo 'skill-creator: Bash access granted for script execution'"
+  PostToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "jq -r '.tool_input.file_path // empty' | grep -q 'skills/.*/SKILL.md' && wagents validate 2>/dev/null || true"
 ---
 
 # Skill Creator
 
-Create, improve, and audit AI agent skills. Every skill follows 13 proven structural patterns.
+Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
 
 **Scope:** Skills only. NOT for creating agents (`wagents new agent`), building MCP servers (`/mcp-creator`), or running existing skills. This repo uses raw `SKILL.md` format committed directly to `skills/`.
 
@@ -117,7 +122,7 @@ Creation progress persists at `~/.claude/skill-progress/<name>.json`. Read/write
 |------|---------|-----------|
 | `references/workflow.md` | Unified 6-step skill development process for new and existing skills | Develop (new), Develop (existing) |
 | `references/audit-guide.md` | Audit procedure, Audit All, Dashboard rendering, Gallery, grade thresholds | Audit, Audit All, Dashboard, Gallery |
-| `references/proven-patterns.md` | 13 structural patterns with examples from repo skills | Step 4 (Build), gap analysis |
+| `references/proven-patterns.md` | 14 structural patterns with examples from repo skills | Step 4 (Build), gap analysis |
 | `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
 | `references/frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree | Step 3 (Scaffold), frontmatter configuration |
 | `references/packaging-guide.md` | ZIP structure, manifest schema, portability checks, import instructions | Package |
@@ -156,5 +161,5 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90+), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)
-- Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions"
+- Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
 - Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary"

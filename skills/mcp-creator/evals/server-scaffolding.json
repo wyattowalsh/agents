@@ -1,0 +1,15 @@
+{
+  "skills": ["mcp-creator"],
+  "query": "/mcp-creator GitHub",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to 'New server' mode based on a service name argument",
+    "Agent consults live FastMCP v3 documentation via Context7 or WebFetch before implementation",
+    "Agent runs Phase 1 (Research & Plan): understands GitHub API, identifies core operations, notes auth requirements, checks for existing MCP servers",
+    "Agent completes the Architecture Checklist (auth needed, transport, background tasks, OpenAPI spec, composition)",
+    "Agent designs a tool inventory of 5-15 tools with names in snake_case verb_noun format",
+    "Agent runs Phase 2 (Scaffold) using 'wagents new mcp <name>' to create the project directory structure",
+    "Agent ensures root pyproject.toml includes the new server in [tool.uv.workspace] members",
+    "Agent produces a tool/resource/prompt inventory table before proceeding to implementation"
+  ]
+}

@@ -67,6 +67,27 @@ Agents use YAML frontmatter followed by a markdown system prompt.
 | `memory` | string | — | Persistent memory: `user` \| `project` \| `local` |
 | `hooks` | object | — | Lifecycle hooks scoped to this agent |
 
+### Memory System
+
+The `memory` field on agents enables persistent storage across sessions:
+
+| Scope | Location | Persists across | Git-tracked |
+|-------|----------|-----------------|-------------|
+| `user` | `~/.claude/agent-memory/<agent-name>/` | All projects | No |
+| `project` | `.claude/agent-memory/<agent-name>/` | Sessions in project | Yes |
+| `local` | `.claude/agent-memory/<agent-name>/` | Sessions in project | No (gitignored) |
+
+**When to use each scope:**
+- `user` — Cross-project preferences, global workflow patterns
+- `project` — Project-specific patterns, architecture decisions
+- `local` — Temporary session insights, debugging notes
+
+**Conventions:**
+- Choose the narrowest scope that fits the use case
+- Keep memory files under 200 lines (only the first 200 lines of the entrypoint are loaded)
+- Organize by topic, not chronologically
+- Use MEMORY.md as the entrypoint; create topic files for detailed notes
+
 ---
 
 ## 2. MCP Conventions
@@ -147,6 +168,8 @@ make help                                    # Show all make targets
 
 `~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + orchestration core (~500 tokens) — this is the only always-loaded instruction content.
 
+**Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
+
 Everything situational uses **skills as context loaders** — Claude sees skill descriptions at startup and auto-invokes relevant ones on demand:
 
 | Skill | Type | Description in context | Body loads when |
@@ -155,11 +178,11 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 | `python-conventions` | Auto-invoke only | ~45 tokens | Working on Python files |
 | `javascript-conventions` | Auto-invoke only | ~25 tokens | Working on JS/TS files |
 | `agent-conventions` | Auto-invoke only | ~30 tokens | Creating/modifying agents |
-| `continuous-improvement` | Auto-invoke only | ~40 tokens | Proposing instruction changes |
+| `learn` | User-invocable + auto-invoke | ~50 tokens | Proposing instruction changes, capturing patterns |
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
-> All 12 custom skill descriptions are loaded at startup. The table above highlights the auto-invoke convention skills. User-invocable skills (honest-review, add-badges, host-panel, mcp-creator, prompt-engineer, skill-creator, wargame) are also visible in context for on-demand invocation.
+> All 12 custom skill descriptions are loaded at startup. The table above highlights the auto-invoke convention skills. User-invocable skills (honest-review, add-badges, host-panel, learn, mcp-creator, prompt-engineer, skill-creator, wargame) are also visible in context for on-demand invocation.
 
 ### Token Budget
 
@@ -168,6 +191,7 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | `global.md` (general + orchestration core) | ~500 | Always |
 | Skill descriptions (12 custom + installed) | ~500 | Always |
 | **Total always-loaded** | **~1,000** | |
+| Scoped rules (`.claude/rules/`) | ~0 | Conditional (path match) |
 | Skill bodies (when invoked) | ~5,500 | On-demand |
 
 ---

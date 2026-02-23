@@ -59,6 +59,7 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     try:
+        from playwright.sync_api import Error as PlaywrightError
         from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
         from playwright.sync_api import sync_playwright
     except Exception as exc:  # pragma: no cover - helper script
@@ -72,6 +73,36 @@ def main() -> int:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
+            def _screenshot_with_retry(page, path: Path, *, full_page: bool) -> None:
+                """Take a screenshot with one retry on transient errors."""
+                try:
+                    page.screenshot(
+                        path=str(path),
+                        full_page=full_page,
+                        timeout=args.timeout_ms,
+                    )
+                except PlaywrightTimeoutError:
+                    print(f"[screenshot-timeout] {path.name} -> retrying viewport capture", flush=True)
+                    page.screenshot(
+                        path=str(path),
+                        full_page=False,
+                        timeout=args.timeout_ms,
+                    )
+                except Exception as exc:
+                    exc_info = f"{exc.__class__.__name__}: {exc}"
+                    print(
+                        f"[screenshot-error] {path.name} -> retrying viewport capture ({exc_info})",
+                        flush=True,
+                    )
+                    if not isinstance(exc, (PlaywrightError, OSError, RuntimeError)):
+                        raise
+                    page.wait_for_timeout(500)
+                    page.screenshot(
+                        path=str(path),
+                        full_page=False,
+                        timeout=args.timeout_ms,
+                    )
+
             def capture_screenshot(page, path: Path) -> None:
                 page_height = 0
                 try:
@@ -86,19 +117,7 @@ def main() -> int:
                         flush=True,
                     )
 
-                try:
-                    page.screenshot(
-                        path=str(path),
-                        full_page=full_page,
-                        timeout=args.timeout_ms,
-                    )
-                except PlaywrightTimeoutError:
-                    print(f"[screenshot-timeout] {path.name} -> retrying viewport capture", flush=True)
-                    page.screenshot(
-                        path=str(path),
-                        full_page=False,
-                        timeout=args.timeout_ms,
-                    )
+                _screenshot_with_retry(page, path, full_page=full_page)
 
             for viewport_name, viewport in VIEWPORTS.items():
                 context = browser.new_context(
@@ -112,33 +131,39 @@ def main() -> int:
                     color_scheme="dark",
                 )
                 try:
-                    page = context.new_page()
-                    reduced_page = reduced_context.new_page()
-
                     for route in ROUTES:
                         url = args.base_url.rstrip("/") + route
                         file_stem = _slug(route)
                         print(f"[{viewport_name}] {route}", flush=True)
+                        page = None
+                        reduced_page = None
+                        try:
+                            page = context.new_page()
+                            reduced_page = reduced_context.new_page()
+                            page.goto(url, wait_until="commit", timeout=args.timeout_ms)
+                            page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
+                            page.wait_for_timeout(250)
+                            capture_screenshot(page, out_dir / f"{viewport_name}--{file_stem}.png")
 
-                        page.goto(url, wait_until="commit", timeout=args.timeout_ms)
-                        page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
-                        page.wait_for_timeout(250)
-                        capture_screenshot(page, out_dir / f"{viewport_name}--{file_stem}.png")
+                            # Keyboard smoke: page should handle a few tab presses without throwing.
+                            page.keyboard.press("Tab")
+                            page.keyboard.press("Tab")
+                            page.keyboard.press("Tab")
+                            page.keyboard.press("Escape")
 
-                        # Keyboard smoke: page should handle a few tab presses without throwing.
-                        page.keyboard.press("Tab")
-                        page.keyboard.press("Tab")
-                        page.keyboard.press("Tab")
-                        page.keyboard.press("Escape")
-
-                        print(f"[{viewport_name}] {route} (reduced-motion)", flush=True)
-                        reduced_page.goto(url, wait_until="commit", timeout=args.timeout_ms)
-                        reduced_page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
-                        reduced_page.wait_for_timeout(250)
-                        capture_screenshot(
-                            reduced_page,
-                            out_dir / f"{viewport_name}--{file_stem}--reduced-motion.png",
-                        )
+                            print(f"[{viewport_name}] {route} (reduced-motion)", flush=True)
+                            reduced_page.goto(url, wait_until="commit", timeout=args.timeout_ms)
+                            reduced_page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
+                            reduced_page.wait_for_timeout(250)
+                            capture_screenshot(
+                                reduced_page,
+                                out_dir / f"{viewport_name}--{file_stem}--reduced-motion.png",
+                            )
+                        finally:
+                            if page:
+                                page.close()
+                            if reduced_page:
+                                reduced_page.close()
                 finally:
                     context.close()
                     reduced_context.close()

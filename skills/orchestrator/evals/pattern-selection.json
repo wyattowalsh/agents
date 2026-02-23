@@ -1,0 +1,12 @@
+{
+  "skills": ["orchestrator"],
+  "query": "/orchestrator pattern B",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to 'pattern <A-F>' mode based on 'pattern B' in arguments",
+    "Agent reads references/patterns.md to load pattern B details",
+    "Agent presents Pattern B (Agent team with file ownership) with ASCII diagrams and key rules",
+    "Agent explains when to use Pattern B: cross-domain features, large refactors requiring 3+ domain-crossing streams",
+    "Agent includes the recovery ladder and accounting rule specific to team-based execution"
+  ]
+}

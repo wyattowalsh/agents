@@ -1,0 +1,13 @@
+{
+  "skills": ["add-badges"],
+  "query": "/add-badges",
+  "files": [],
+  "expected_behavior": [
+    "Agent begins Phase 1 (Detect) by running 'uv run python skills/add-badges/scripts/detect.py <path>' via Bash",
+    "Agent parses the JSON output to identify languages, frameworks, CI/CD, package managers, and tools",
+    "Agent falls back to manual detection (globbing for manifests, reading .git/config, checking CI workflows) if the detection script fails",
+    "Agent reads references/badge-catalog-core.md for base badge definitions",
+    "Agent reads references/style-guide.md for layout, ordering, and URL conventions",
+    "Agent proceeds to Phase 2 (Select) to choose badges matching detected features with dynamic endpoints preferred over static"
+  ]
+}

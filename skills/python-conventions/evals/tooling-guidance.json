@@ -1,0 +1,13 @@
+{
+  "skills": ["python-conventions"],
+  "query": "How should I set up type checking and linting for this Python project?",
+  "files": ["pyproject.toml"],
+  "expected_behavior": [
+    "Agent auto-invokes python-conventions skill when discussing Python project tooling",
+    "Agent recommends 'ty' for type checking, never 'mypy'",
+    "Agent recommends 'ruff check' and 'ruff format' for linting and formatting",
+    "Agent recommends 'uv' for all package management, never 'pip' or 'pip install'",
+    "Agent recommends pyproject.toml as the single source of project configuration",
+    "Agent mentions checking references/exceptions.md before breaking any convention"
+  ]
+}

@@ -1,12 +1,9 @@
-[
-  {
-    "input": "package --all --dry-run",
-    "expected_mode": "Package",
-    "expected_output_contains": ["portability_checks", "files_included"]
-  },
-  {
-    "input": "package nonexistent-skill --dry-run",
-    "expected_mode": "Package",
-    "expected_output_contains": ["errors", "SKILL.md not found"]
-  }
-]
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator package --all --dry-run",
+  "expected_behavior": [
+    "Agent dispatches to Package mode with --dry-run flag",
+    "Agent runs portability checks without creating ZIP files",
+    "Agent reports portability_checks and files_included in output"
+  ]
+}

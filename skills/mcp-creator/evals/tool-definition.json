@@ -1,0 +1,15 @@
+{
+  "skills": ["mcp-creator"],
+  "query": "/mcp-creator mcp/github/",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to 'Extend' mode based on the path to an existing server directory",
+    "Agent starts at Phase 3 (Implement) since the server already exists",
+    "Agent loads references/fastmcp-v3-api.md and references/tool-design.md for implementation guidance",
+    "Agent implements tools using Annotated[type, Field(description=...)] on every parameter",
+    "Agent includes verbose 3-5 sentence docstrings (WHAT, WHEN, WHEN NOT, RETURNS) on every tool",
+    "Agent sets annotations dict with at minimum readOnlyHint on every tool",
+    "Agent uses ToolError for expected failures, never print() or stdout writes",
+    "Agent writes tests using in-memory Client(mcp) per Phase 4 patterns"
+  ]
+}

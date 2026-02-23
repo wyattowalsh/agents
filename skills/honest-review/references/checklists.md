@@ -16,6 +16,7 @@ Read during analysis (Step 3) or when building teammate prompts.
 - [i18n and Accessibility](#context-dependent-i18n-and-accessibility)
 - [Data Migration](#context-dependent-data-migration)
 - [Backward Compatibility](#context-dependent-backward-compatibility)
+- [Infrastructure as Code](#context-dependent-infrastructure-as-code)
 - [Requirements Validation](#context-dependent-requirements-validation)
 
 ## Correctness Level (Lines, Expressions, Robustness)
@@ -98,7 +99,7 @@ Apply when code touches auth, payments, user data, network I/O, or file operatio
 - Check security misconfiguration: debug mode in prod, permissive CORS, default credentials
 - Check injection vectors: SQL injection, command injection, XSS, template injection
 - Check cryptographic failures: weak algorithms, hardcoded keys, insufficient entropy
-- Check supply chain: unpinned dependency versions, missing lockfile integrity
+- Check supply chain: see references/supply-chain-security.md for full supply chain audit
 - Check auth boundaries: session management, token validation, CSRF protection
 - Check exception info leakage: stack traces, internal paths, or DB schemas in error responses
 - Check SSRF: unvalidated URLs in server-side requests
@@ -180,6 +181,19 @@ Apply when code changes public APIs, library interfaces, or shared contracts.
 - Check semver compliance: breaking changes require a major version bump. Flag breaking changes in minor or patch releases.
 - Check changelog: every breaking change must be documented with migration instructions. Flag undocumented breaking changes.
 
+## Context-Dependent: Infrastructure as Code
+
+Apply when code manages cloud resources, containers, CI/CD pipelines, or deployment configuration.
+
+- Check least privilege: IAM roles and service accounts must have minimum required permissions. Flag wildcard permissions (`*`) and overly broad resource scopes.
+- Check secrets management: no hardcoded credentials, tokens, or keys in IaC files. Use secret managers (Vault, AWS Secrets Manager, GCP Secret Manager) or environment injection.
+- Check resource limits: containers must have CPU/memory limits. Flag unbounded resources that risk noisy-neighbor or OOM issues.
+- Check network exposure: security groups and firewall rules must follow least-access. Flag `0.0.0.0/0` ingress on non-public ports.
+- Check state management: Terraform state must be remote with locking. Flag local state files or missing backend config.
+- Check drift detection: IaC should be the source of truth. Flag manual changes or resources not managed by IaC.
+- Check tagging/labeling: all resources must have cost allocation and ownership tags. Flag untagged resources.
+- Check idempotency: applying IaC twice must produce the same result. Flag operations that create duplicates on re-apply.
+
 ## Context-Dependent: Requirements Validation
 
 Apply when reviewing changes against stated intent (PR description, ticket, session goal).
@@ -189,3 +203,26 @@ Apply when reviewing changes against stated intent (PR description, ticket, sess
 - Check acceptance criteria are met: if criteria were specified, verify each one
 - Check nothing was silently dropped: compare requirements list against implementation, flag omissions
 - Check scope creep: flag code that goes beyond what was requested without justification
+
+## Context-Dependent: Async and Concurrency
+
+Apply when code uses async/await, threads, goroutines, actors, or parallel processing.
+
+- Check structured concurrency: tasks should be scoped to a parent lifetime. Flag fire-and-forget tasks that outlive their caller.
+- Check cancellation propagation: cancellation tokens or abort signals must propagate through the call chain. Flag async functions that ignore cancellation.
+- Check async resource cleanup: resources acquired in async context must be released on both success and cancellation paths. Flag missing finally/defer/cleanup handlers.
+- Check backpressure: unbounded channels, queues, or task spawning must have limits. Flag producers that can outpace consumers.
+- Check deadlock potential: lock ordering violations, nested locks, and async code holding locks across await points.
+- Check thread safety: shared mutable state without synchronization. Flag non-atomic read-modify-write sequences.
+- Check error propagation in concurrent contexts: errors in spawned tasks must surface to the caller. Flag silently dropped errors in background tasks.
+
+## Context-Dependent: Memory Safety
+
+Apply when code is in Rust, C, C++, or any language with manual memory management.
+
+- Check use-after-free: references used after the owning value is dropped or freed. In Rust, flag unsafe blocks that bypass borrow checker.
+- Check buffer overflows: array/slice access without bounds checking. Flag raw pointer arithmetic without length validation.
+- Check uninitialized memory: variables read before being written. Flag `MaybeUninit` or `malloc` without proper initialization.
+- Check double-free: resources freed more than once. Flag manual `Drop` implementations that may double-free.
+- Check lifetime correctness: in Rust, flag lifetime annotations that could lead to dangling references. In C/C++, flag returning pointers to stack variables.
+- Check unsafe FFI boundaries: foreign function calls must validate inputs and handle null pointers. Flag missing null checks at FFI boundaries.
