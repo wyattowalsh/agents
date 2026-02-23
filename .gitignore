@@ -13,6 +13,7 @@ docs/.astro/
 docs/node_modules/
 
 # Test artifacts
+artifacts/
 .coverage
 htmlcov/
 

@@ -85,8 +85,16 @@
       "args": ["--directory", "/Users/ww/dev/tools/mcp/ffmpeg-mcp", "run", "ffmpeg-mcp"]
     },
     "gmail": {
-      "command": "npx",
-      "args": ["-y", "@gongrzhe/server-gmail"]
+      "command": "uvx",
+      "args": [
+        "mcp-gsuite",
+        "--gauth-file",
+        "/Users/ww/.gmail-mcp/.gauth.json",
+        "--accounts-file",
+        "/Users/ww/.gmail-mcp/.accounts.json",
+        "--credentials-dir",
+        "/Users/ww/.gmail-mcp"
+      ]
     },
     "fetcher": {
       "command": "npx",

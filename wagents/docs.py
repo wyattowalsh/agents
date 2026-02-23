@@ -130,12 +130,14 @@ def write_index_page(nodes: list) -> None:
         parts.append(
             "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via "
             "`wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the "
-            f"{mcp_config_count} servers configured in `mcp.json` (including local and remote servers outside this repo)."
+            f"{mcp_config_count} servers configured in `mcp.json`"
+            " (including local and remote servers outside this repo)."
         )
     else:
         parts.append(
             "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via "
-            "`wagents docs generate`. Hand-maintained pages are preserved when they include the `HAND-MAINTAINED` sentinel."
+            "`wagents docs generate`. Hand-maintained pages are preserved"
+            " when they include the `HAND-MAINTAINED` sentinel."
         )
     parts.append("</Aside>")
     parts.append("")
@@ -207,7 +209,8 @@ def write_index_page(nodes: list) -> None:
     parts.append("<CardGrid>")
     parts.append(
         '  <LinkCard title="Skills Index" href="/skills/"'
-        ' description="Browse custom and installed skills grouped by invocation model, with install commands and docs pages." />'
+        " description=\"Browse custom and installed skills grouped by"
+        ' invocation model, with install commands and docs pages." />'
     )
     if has_mcp_overview:
         if mcp_config_count:
@@ -219,7 +222,8 @@ def write_index_page(nodes: list) -> None:
         )
     parts.append(
         '  <LinkCard title="CLI Reference" href="/cli/"'
-        ' description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />'
+        " description=\"Commands for scaffolding, validation, packaging,"
+        ' installation, and docs generation workflows." />'
     )
     parts.append("</CardGrid>")
     parts.append("")
@@ -275,7 +279,8 @@ def write_index_page(nodes: list) -> None:
         parts.append("<CardGrid>")
         if mcp_config_count:
             desc = escape_attr(
-                f"Hand-maintained overview of {mcp_config_count} configured MCP servers from mcp.json (local and remote)."
+                f"Hand-maintained overview of {mcp_config_count} configured"
+                " MCP servers from mcp.json (local and remote)."
             )
         else:
             desc = "Hand-maintained overview of configured MCP servers."
@@ -925,7 +930,8 @@ def write_skills_index(nodes: list) -> None:
     parts.append('<Aside type="note" title="Generated docs vs hand-maintained guides">')
     parts.append(
         "Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. "
-        "If a deeper curated guide exists (for example, architecture or roadmap notes), the generated skill page links to it."
+        "If a deeper curated guide exists (for example, architecture"
+        " or roadmap notes), the generated skill page links to it."
     )
     parts.append("</Aside>")
     parts.append("")
