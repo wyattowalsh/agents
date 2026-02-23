@@ -1,0 +1,15 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer tokens",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Theme mode (Mode C) via tokens sub-dispatch",
+    "Agent loads references/tailwind-v4.md and references/modern-css.md",
+    "Agent scans for hardcoded color values (hex, rgb, hsl) across .tsx, .jsx, .css files",
+    "Agent organizes found values into three token layers: primitive, semantic, component",
+    "Agent generates @theme {} block with organized CSS custom properties",
+    "Agent uses oklch color space for color manipulation",
+    "Agent flags contrast-color() as experimental with manual fallback",
+    "Agent audits directional properties and suggests logical property equivalents"
+  ]
+}
