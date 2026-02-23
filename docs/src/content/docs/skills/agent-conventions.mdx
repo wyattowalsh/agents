@@ -5,7 +5,7 @@ description: "Agent definition conventions. Use when creating or modifying agent
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="agent-conventions" variant="note" /> <Badge text="442 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
+<Badge text="agent-conventions" variant="note" /> <Badge text="504 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
 
 > Agent definition conventions. Use when creating or modifying agents at any level (~/.claude/agents/, .claude/agents/, or project-local). Validate frontmatter, update README.md index. NOT for creating skills, MCP servers, or modifying CLAUDE.md.
 
@@ -64,6 +64,12 @@ Every agent file must include these fields in YAML frontmatter:
 - `mcpServers` -- list of MCP servers available to this agent
 - `memory` -- `user` | `project` | `local`
 - `hooks` -- lifecycle hooks scoped to this agent
+
+**Memory field conventions:**
+- Choose the narrowest memory scope: `local` for temporary insights, `project` for shared patterns, `user` for cross-project preferences
+- Keep memory entrypoint files under 200 lines — content beyond this is truncated at load time
+- Organize memory by topic (e.g., `debugging.md`, `api-patterns.md`), not chronologically
+- Use MEMORY.md as the index file; create separate topic files for detailed notes
 
 ### Naming
 
@@ -181,6 +187,12 @@ Every agent file must include these fields in YAML frontmatter:
 - `mcpServers` -- list of MCP servers available to this agent
 - `memory` -- `user` | `project` | `local`
 - `hooks` -- lifecycle hooks scoped to this agent
+
+**Memory field conventions:**
+- Choose the narrowest memory scope: `local` for temporary insights, `project` for shared patterns, `user` for cross-project preferences
+- Keep memory entrypoint files under 200 lines — content beyond this is truncated at load time
+- Organize memory by topic (e.g., `debugging.md`, `api-patterns.md`), not chronologically
+- Use MEMORY.md as the index file; create separate topic files for detailed notes
 
 ### Naming
 

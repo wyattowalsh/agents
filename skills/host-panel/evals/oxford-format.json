@@ -1,0 +1,15 @@
+{
+  "skills": ["host-panel"],
+  "query": "/host-panel \"Should foundation model weights be open-sourced?\" oxford",
+  "files": [],
+  "expected_behavior": [
+    "Agent parses arguments: topic is the quoted string, format is 'oxford', expert count defaults to 4",
+    "Agent identifies this as a binary proposition suitable for Oxford-style debate",
+    "Agent performs Research Grounding with WebSearch for current literature on open vs closed model weights",
+    "Agent generates 4 personas with formal proposition and opposition sides, including at least one contrarian",
+    "Agent loads references/formats.md for Oxford-specific phase structure (opening arguments, cross-examination, rebuttals)",
+    "Agent runs Devil's Advocate Rotation during the Direct Rebuttal phase",
+    "Agent asks at least 2 panelists about the strongest case against their own position (Uncomfortable Implications)",
+    "Synthesis identifies the underlying axiom of disagreement between open and closed positions"
+  ]
+}

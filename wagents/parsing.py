@@ -1,6 +1,7 @@
 """Frontmatter parsing, fence tracking, and text transforms."""
 
 import re
+from dataclasses import dataclass
 
 import yaml
 
@@ -115,3 +116,108 @@ def parse_frontmatter(content: str) -> tuple[dict, str]:
     frontmatter = yaml.safe_load(rest[:end_idx])
     body = rest[end_idx + 5 :].strip() if end_idx + 5 <= len(rest) else ""
     return frontmatter, body
+
+
+# ---------------------------------------------------------------------------
+# Hook extraction
+# ---------------------------------------------------------------------------
+
+KNOWN_HOOK_EVENTS = {
+    "SessionStart",
+    "UserPromptSubmit",
+    "PreToolUse",
+    "PermissionRequest",
+    "PostToolUse",
+    "PostToolUseFailure",
+    "Notification",
+    "SubagentStart",
+    "SubagentStop",
+    "Stop",
+    "TeammateIdle",
+    "TaskCompleted",
+    "ConfigChange",
+    "WorktreeCreate",
+    "WorktreeRemove",
+    "PreCompact",
+    "SessionEnd",
+}
+
+
+@dataclass
+class Hook:
+    """Represents a single hook definition from any source."""
+
+    source: str  # skill/agent name or "settings.json"/"settings.local.json"
+    event: str  # e.g., "PreToolUse", "PostToolUse", "Stop"
+    matcher: str  # tool name pattern (empty string for "match all")
+    handler_type: str  # "command", "prompt", or "agent"
+    command: str  # shell command (for type=command)
+    prompt: str  # prompt text (for type=prompt or type=agent)
+
+
+def extract_hooks(source_name: str, hooks_dict: dict) -> list[Hook]:
+    """Extract Hook objects from a hooks dictionary.
+
+    Supports two formats per entry:
+
+    **Standard format** (nested ``hooks`` list)::
+
+        EventName:
+          - matcher: ToolPattern
+            hooks:
+              - type: command
+                command: "..."
+
+    **Shorthand format** (``command``/``prompt`` directly on entry)::
+
+        EventName:
+          - matcher: ToolPattern
+            command: "..."
+    """
+    results: list[Hook] = []
+    if not isinstance(hooks_dict, dict):
+        return results
+
+    for event, entries in hooks_dict.items():
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            matcher = str(entry.get("matcher", ""))
+
+            # Standard format: nested "hooks" list
+            hook_list = entry.get("hooks", [])
+            if isinstance(hook_list, list) and hook_list:
+                for hook_def in hook_list:
+                    if not isinstance(hook_def, dict):
+                        continue
+                    handler_type = str(hook_def.get("type", "command"))
+                    command = str(hook_def.get("command", ""))
+                    prompt = str(hook_def.get("prompt", ""))
+                    results.append(
+                        Hook(
+                            source=source_name,
+                            event=event,
+                            matcher=matcher,
+                            handler_type=handler_type,
+                            command=command,
+                            prompt=prompt,
+                        )
+                    )
+            # Shorthand format: command/prompt directly on the entry
+            elif "command" in entry or "prompt" in entry:
+                handler_type = str(entry.get("type", "command"))
+                command = str(entry.get("command", ""))
+                prompt = str(entry.get("prompt", ""))
+                results.append(
+                    Hook(
+                        source=source_name,
+                        event=event,
+                        matcher=matcher,
+                        handler_type=handler_type,
+                        command=command,
+                        prompt=prompt,
+                    )
+                )
+    return results

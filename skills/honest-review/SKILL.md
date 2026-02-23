@@ -1,25 +1,32 @@
 ---
 name: honest-review
 description: >-
-  Research-driven code review at multiple abstraction levels with strengths
-  acknowledgment, creative review lenses, AI code smell detection, and
-  severity calibration by project type. Two modes: (1) Session review —
-  review and verify changes using parallel reviewers that research-validate
-  every assumption; (2) Full codebase audit — deep end-to-end evaluation
-  using parallel teams of subagent-spawning reviewers. Use when reviewing
-  changes, verifying work quality, auditing a codebase, validating
-  correctness, checking assumptions, finding defects, reducing complexity.
-  NOT for writing new code, explaining code, or benchmarking.
+  Research-driven code review with confidence-scored, evidence-validated findings.
+  Session review or full codebase audit via parallel teams. Use when reviewing
+  changes, auditing codebases, verifying work quality. NOT for writing new code,
+  explaining code, or benchmarking.
+argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
   author: wyattowalsh
   version: "3.0"
+hooks:
+  PreToolUse:
+    - matcher: Edit
+      hooks:
+        - command: "bash -c 'if git diff --quiet \"$TOOL_INPUT_file_path\" 2>/dev/null; then exit 0; else echo \"WARNING: $(basename \"$TOOL_INPUT_file_path\") has uncommitted changes\" >&2; exit 0; fi'"
+  PostToolUse:
+    - matcher: Edit
+      hooks:
+        - command: "bash -c 'git diff --stat \"$TOOL_INPUT_file_path\" 2>/dev/null || true'"
 ---
 
 # Honest Review
 
 Research-driven code review. Every finding validated with evidence.
 4-wave pipeline: Triage → Analysis → Research → Judge.
+
+**Scope:** Code review and audit only. NOT for writing new code, explaining code, or benchmarking.
 
 ## Canonical Vocabulary
 
@@ -33,12 +40,15 @@ Use these terms exactly throughout both modes:
 | **confidence** | Score 0.0-1.0 per finding; >=0.7 report, 0.3-0.7 unconfirmed, <0.3 discard (except P0/S0) |
 | **severity** | Priority (P0-P3) and scope (S0-S3) classification of a finding's impact |
 | **judge** | Wave 3 reconciliation: normalize, cluster, deduplicate, filter, resolve conflicts, rank findings |
-| **lens** | A creative review perspective: Inversion, Deletion, Newcomer, Incident, Evolution, Adversary |
+| **lens** | A creative review perspective: Inversion, Deletion, Newcomer, Incident, Evolution, Adversary, Compliance, Dependency |
 | **blast radius** | How many files, users, or systems a finding's defect could affect |
 | **slopsquatting** | AI-hallucinated package names in dependencies — security-critical, checked first in Wave 2 |
 | **research validation** | Core differentiator: every non-trivial finding confirmed with external evidence (Context7, WebSearch, gh) |
 | **systemic finding** | A pattern appearing in 3+ files, elevated from individual findings during Judge reconciliation |
 | **approval gate** | Mandatory pause after presenting findings — never implement fixes without user consent |
+| **pass** | Internal teammate stage (Pass A: scan, Pass B: deep dive, Pass C: research) — distinct from pipeline waves |
+| **degraded mode** | Operation when research tools are unavailable — confidence ceilings applied per tool |
+| **review depth** | Classification-gated review intensity: Light (0-3), Standard (4-6), Deep (7-10) |
 
 ## Dispatch
 
@@ -50,6 +60,9 @@ Use these terms exactly throughout both modes:
 | "audit" | Force full codebase audit |
 | PR number/URL | Review PR changes (gh pr diff) |
 | Git range (HEAD~3..HEAD) | Review changes in that range |
+| "history" [project] | Show review history for project |
+| "diff" or "delta" [project] | Compare current vs. previous review |
+| Unrecognized input | Ask for clarification |
 
 ## Review Posture
 
@@ -102,6 +115,7 @@ Context-dependent triggers (apply when relevant):
 - i18n and accessibility: user-facing UI, localized content
 - Data migration: schema changes, data transformations
 - Backward compatibility: public APIs, libraries, shared contracts
+- Infrastructure as code: cloud resources, containers, CI/CD, deployment config
 - Requirements validation: changes against stated intent, PR description, ticket
 Full checklists: read references/checklists.md
 
@@ -115,6 +129,8 @@ Apply at least 2 lenses per review scope. For security-sensitive code, Adversary
 - **Incident**: imagine a 3 AM page — what path led here?
 - **Evolution**: fast-forward 6 months of feature growth — what becomes brittle?
 - **Adversary**: what would an attacker do with this code?
+- **Compliance**: does this code meet regulatory requirements?
+- **Dependency**: is the dependency graph healthy?
 
 Reference: read references/review-lenses.md
 
@@ -137,7 +153,7 @@ Research playbook: read references/research-playbook.md
 
 ## Mode 1: Session Review
 
-### Step 1: Triage (Wave 0)
+### Session Step 1: Triage (Wave 0)
 
 Run `git diff --name-only HEAD` to capture changes. Collect `git diff HEAD` for context.
 Identify task intent from session history.
@@ -150,37 +166,37 @@ For 6+ files: run triage per references/triage-protocol.md:
 
 For 1-5 files: lightweight triage — classify risk levels, skip full scanning.
 
-### Step 2: Scale and Launch (Wave 1)
+### Session Step 2: Scale and Launch (Wave 1)
 
 | Scope | Strategy |
 |-------|----------|
 | 1-2 files | Inline review at all 3 levels. Spawn research subagents for flags. |
-| 3-5 files | 3 parallel level-based reviewers (Correctness/Design/Efficiency). Each runs internal waves A→B→C. |
+| 3-5 files | 3 parallel level-based reviewers (Correctness/Design/Efficiency). Each runs internal passes A→B→C. |
 | 6+ files | Team with lead. See below. |
 
 **Team structure for 6+ files:**
 
 ```
 [Lead: triage (Wave 0), Judge reconciliation (Wave 3), final report]
-  |-- Correctness Reviewer → Waves A/B/C internally
-  |-- Design Reviewer → Waves A/B/C internally
-  |-- Efficiency Reviewer → Waves A/B/C internally
+  |-- Correctness Reviewer → Passes A/B/C internally
+  |-- Design Reviewer → Passes A/B/C internally
+  |-- Efficiency Reviewer → Passes A/B/C internally
   |-- [Security Specialist if triage triggers]
   |-- [Observability Specialist if triage triggers]
   |-- [Requirements Validator if intent available]
 ```
 
-Each reviewer runs 3 internal waves (references/team-templates.md § Internal Wave Structure):
-- Wave A: quick scan all files (haiku, 3-5 files per subagent)
-- Wave B: deep dive HIGH-risk flagged files (opus, 1 per file)
-- Wave C: research validate findings (batched per research-playbook.md)
+Each reviewer runs 3 internal passes (references/team-templates.md § Internal Wave Structure):
+- Pass A: quick scan all files (haiku, 3-5 files per subagent)
+- Pass B: deep dive HIGH-risk flagged files (opus, 1 per file)
+- Pass C: research validate findings (batched per research-playbook.md)
 
 Prompt templates: read references/team-templates.md
 
-### Step 3: Research Validate (Wave 2)
+### Session Step 3: Research Validate (Wave 2)
 
 For inline/small reviews: lead collects all findings and dispatches validation wave.
-For team reviews: each teammate handles validation internally (Wave C).
+For team reviews: each teammate handles validation internally (Pass C).
 
 Batch findings by validation type. Dispatch order:
 1. Slopsquatting detection (security-critical, haiku)
@@ -190,7 +206,7 @@ Batch findings by validation type. Dispatch order:
 
 Batch sizing: 5-8 findings per subagent (optimal). See references/research-playbook.md § Batch Optimization.
 
-### Step 4: Judge Reconcile (Wave 3)
+### Session Step 4: Judge Reconcile (Wave 3)
 
 Run the 8-step Judge protocol (references/judge-protocol.md):
 1. Normalize findings (scripts/finding-formatter.py assigns HR-S-{seq} IDs)
@@ -202,7 +218,7 @@ Run the 8-step Judge protocol (references/judge-protocol.md):
 7. Elevate patterns in 3+ files to systemic findings
 8. Rank by score = severity_weight × confidence × blast_radius
 
-### Step 5: Present and Execute
+### Session Step 5: Present and Execute
 
 Present all findings with evidence, confidence scores, and citations.
 Ask: "Implement fixes? [all / select / skip]"
@@ -212,7 +228,7 @@ Output format: read references/output-formats.md
 
 ## Mode 2: Full Codebase Audit
 
-### Step 1: Triage (Wave 0)
+### Audit Step 1: Triage (Wave 0)
 
 Full triage per references/triage-protocol.md:
 - `uv run scripts/project-scanner.py [path]` for project profile
@@ -224,25 +240,25 @@ Full triage per references/triage-protocol.md:
 For 500+ files: prioritize HIGH-risk, recently modified, entry points, public API.
 State scope limits in report.
 
-### Step 2: Design and Launch Team (Wave 1)
+### Audit Step 2: Design and Launch Team (Wave 1)
 
 Use triage results to select team archetype (references/team-templates.md § Full Audit Team Archetypes).
 Assign file ownership based on risk stratification — HIGH-risk files get domain reviewer + specialist coverage.
 
 ```
 [Lead: triage (Wave 0), cross-domain analysis, Judge reconciliation (Wave 3), report]
-  |-- Domain A Reviewer → Waves A/B/C internally
-  |-- Domain B Reviewer → Waves A/B/C internally
-  |-- Domain C Reviewer → Waves A/B/C internally
+  |-- Domain A Reviewer → Passes A/B/C internally
+  |-- Domain B Reviewer → Passes A/B/C internally
+  |-- Domain C Reviewer → Passes A/B/C internally
   |-- Security Specialist (cross-cutting, all HIGH-risk files)
   |-- [Observability Specialist for production services]
   |-- [Requirements Validator if spec/ticket available]
 ```
 
-Each teammate runs 3 internal waves (references/team-templates.md § Internal Wave Structure).
+Each teammate runs 3 internal passes (references/team-templates.md § Internal Pass Structure).
 Scaling: references/team-templates.md § Scaling Matrix.
 
-### Step 3: Cross-Domain Analysis (Lead, parallel with Wave 1)
+### Audit Step 3: Cross-Domain Analysis (Lead, parallel with Wave 1)
 
 While teammates review, lead spawns parallel subagents for:
 - Architecture: module boundaries, dependency graph
@@ -250,25 +266,25 @@ While teammates review, lead spawns parallel subagents for:
 - Error propagation: consistency across system
 - Shared patterns: duplication vs. necessary abstraction
 
-### Step 4: Research Validate (Wave 2)
+### Audit Step 4: Research Validate (Wave 2)
 
-Each teammate handles research validation internally (Wave C).
+Each teammate handles research validation internally (Pass C).
 Lead validates cross-domain findings separately.
 Batch optimization: references/research-playbook.md § Batch Optimization.
 
-### Step 5: Judge Reconcile (Wave 3)
+### Audit Step 5: Judge Reconcile (Wave 3)
 
 Collect all findings from all teammates + cross-domain analysis.
 Run the 8-step Judge protocol (references/judge-protocol.md).
 Cross-domain deduplication: findings spanning multiple domains → elevate to systemic.
 
-### Step 6: Report
+### Audit Step 6: Report
 
 Output format: read references/output-formats.md
 Required sections: Critical, Significant, Cross-Domain, Health Summary,
 Top 3 Recommendations, Statistics. All findings include evidence + citations.
 
-### Step 7: Execute (If Approved)
+### Audit Step 7: Execute (If Approved)
 
 Ask: "Implement fixes? [all / select / skip]"
 If approved: parallel subagents by file (no overlapping ownership).
@@ -276,30 +292,43 @@ Then verify: build/lint, tests, behavior spot-check.
 
 ## Reference Files
 
-| File | When to Read |
-|------|--------------|
-| references/triage-protocol.md | During Wave 0 triage (both modes) |
-| references/checklists.md | During analysis or building teammate prompts |
-| references/research-playbook.md | When setting up research validation (Wave 2) |
-| references/judge-protocol.md | During Judge reconciliation (Wave 3) |
-| references/output-formats.md | When producing final output |
-| references/team-templates.md | When designing teams (Mode 2 or large Mode 1) |
-| references/review-lenses.md | When applying creative review lenses |
+Load ONE reference at a time. Do not preload all references into context.
+
+| File | When to Read | ~Tokens |
+|------|--------------|---------|
+| references/triage-protocol.md | During Wave 0 triage (both modes) | 1300 |
+| references/checklists.md | During analysis or building teammate prompts | 2500 |
+| references/research-playbook.md | When setting up research validation (Wave 2) | 2000 |
+| references/judge-protocol.md | During Judge reconciliation (Wave 3) | 1200 |
+| references/output-formats.md | When producing final output | 1100 |
+| references/team-templates.md | When designing teams (Mode 2 or large Mode 1) | 1900 |
+| references/review-lenses.md | When applying creative review lenses | 1300 |
+| references/ci-integration.md | When running in CI pipelines | 500 |
 
 | Script | When to Run |
 |--------|-------------|
 | scripts/project-scanner.py | Wave 0 triage — deterministic project profiling |
 | scripts/finding-formatter.py | Wave 3 Judge — normalize findings to structured JSON |
+| scripts/review-store.py | Save, load, list, diff review history |
+
+| Template | When to Render |
+|----------|----------------|
+| templates/dashboard.html | After Judge reconciliation — inject findings JSON into data tag |
 
 ## Critical Rules
 
-- Never skip triage (Wave 0) — risk classification informs everything downstream
-- Every non-trivial finding must have research evidence or be discarded
-- Confidence < 0.3 = discard (except P0/S0 — report as unconfirmed)
-- Do not police style — follow the codebase's conventions
-- Do not report phantom bugs requiring impossible conditions
-- More than 15 findings means re-prioritize — 5 validated findings beat 50 speculative
-- Never skip Judge reconciliation (Wave 3)
-- Always present before implementing (approval gate)
-- Always verify after implementing (build, tests, behavior)
-- Never assign overlapping file ownership
+1. Never skip triage (Wave 0) — risk classification informs everything downstream
+2. Every non-trivial finding must have research evidence or be discarded
+3. Confidence < 0.3 = discard (except P0/S0 — report as unconfirmed)
+4. Do not police style — follow the codebase's conventions
+5. Do not report phantom bugs requiring impossible conditions
+6. More than 15 findings means re-prioritize — 5 validated findings beat 50 speculative
+7. Never skip Judge reconciliation (Wave 3)
+8. Always present before implementing (approval gate)
+9. Always verify after implementing (build, tests, behavior)
+10. Never assign overlapping file ownership
+11. Maintain positive-to-constructive ratio of 3:1 — re-examine low-severity findings if ratio skews negative
+12. Acknowledge healthy codebases — if no P0/P1 or S0 findings, state this explicitly
+13. Apply at least 2 creative lenses per review scope — Adversary is mandatory for security-sensitive code
+14. Load ONE reference file at a time — do not preload all references into context
+15. Review against the codebase's own conventions, not an ideal standard

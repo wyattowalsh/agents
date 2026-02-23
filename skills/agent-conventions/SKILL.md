@@ -52,6 +52,12 @@ Every agent file must include these fields in YAML frontmatter:
 - `memory` -- `user` | `project` | `local`
 - `hooks` -- lifecycle hooks scoped to this agent
 
+**Memory field conventions:**
+- Choose the narrowest memory scope: `local` for temporary insights, `project` for shared patterns, `user` for cross-project preferences
+- Keep memory entrypoint files under 200 lines — content beyond this is truncated at load time
+- Organize memory by topic (e.g., `debugging.md`, `api-patterns.md`), not chronologically
+- Use MEMORY.md as the index file; create separate topic files for detailed notes
+
 ### Naming
 
 - All agent names use kebab-case: `^[a-z0-9][a-z0-9-]*$`

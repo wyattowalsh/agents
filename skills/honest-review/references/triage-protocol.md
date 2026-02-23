@@ -29,6 +29,41 @@ find [path] -type f \( -name '*.py' -o -name '*.ts' -o -name '*.go' \) | xargs w
 ls [path]/package.json [path]/pyproject.toml [path]/Cargo.toml [path]/go.mod 2>/dev/null  # package managers
 ```
 
+### Convention File Detection
+
+Check for AI agent instruction files — review against project's own conventions:
+
+```bash
+ls [path]/AGENTS.md [path]/CLAUDE.md [path]/GEMINI.md [path]/.cursorrules [path]/.github/copilot-instructions.md 2>/dev/null
+```
+
+If found, include in triage context. Reviewers should validate:
+
+- Code follows conventions declared in these files
+- New code doesn't introduce patterns explicitly prohibited by project rules
+- Agent-specific configurations are consistent across files
+
+### Monorepo Workspace Detection
+
+Detect workspace structures for review scope management:
+
+```bash
+# Node workspaces
+cat [path]/package.json | jq '.workspaces // empty'
+# Python workspaces (uv)
+grep -A5 '\[tool.uv.workspace\]' [path]/pyproject.toml
+# Rust workspaces
+grep -A5 '\[workspace\]' [path]/Cargo.toml
+# Go workspaces
+cat [path]/go.work 2>/dev/null
+```
+
+For monorepo reviews:
+
+- Scope each reviewer to their workspace package boundaries
+- Flag cross-package imports that bypass workspace boundaries
+- Adjust review depth per package based on independent risk stratification
+
 ## Git History Analysis
 
 Spawn four parallel haiku subagents, one per dimension, in a single message. Collect all results before proceeding to risk stratification.
@@ -72,11 +107,38 @@ Route: standard review at all three levels. Research-validate non-obvious findin
 **LOW** -- all of: config/docs/static assets/simple utilities; LOC < 50; below-median churn; 1-2 authors; no open issues.
 Route: quick scan only. Flag obvious defects. Skip deep analysis and creative lenses.
 
+## Classification Gating — Review Depth
+
+After risk stratification, compute a review depth score (0-10) to determine how deep the review should go. This prevents over-reviewing simple changes and under-reviewing complex ones.
+
+| Factor                               | Points |
+| ------------------------------------ | ------ |
+| File count: 1-2                      | 0      |
+| File count: 3-5                      | 1      |
+| File count: 6-15                     | 2      |
+| File count: 16+                      | 3      |
+| Any HIGH-risk file                   | +2     |
+| Security trigger active              | +2     |
+| Project type: production or library  | +1     |
+| Change type: new feature or refactor | +1     |
+| Change type: config or docs only     | -1     |
+
+Clamp the final score to `max(0, score)` before depth lookup.
+
+| Score | Depth    | Behavior                                                                 |
+| ----- | -------- | ------------------------------------------------------------------------ |
+| 0-3   | Light    | Inline review, 1-2 lenses, skip team structure                           |
+| 4-6   | Standard | Parallel reviewers, 2+ lenses, full research validation                  |
+| 7-10  | Deep     | Full team with specialists, all applicable lenses, cross-domain analysis |
+
+Record the depth classification in the triage report. Reviewers use this to calibrate effort.
+
 ## Context Assembly
 
 Gather project-level context that calibrates severity and informs reviewer prompts.
 
 **Project type** -- classify to set severity bar (see SKILL.md, Review Posture):
+
 - Prototype (no CI, few tests, single contributor): P0/S0 only
 - Production (CI, test suite, multiple contributors, deploy config): full review
 - Library (published package, public API, semver, changelog): full review + backward compatibility

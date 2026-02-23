@@ -17,6 +17,7 @@ Structural patterns extracted from the best skills in this repository. Each patt
 11. [Hooks](#11-hooks)
 12. [Progressive Disclosure](#12-progressive-disclosure)
 13. [Body Substitutions](#13-body-substitutions)
+14. [Stop Hooks](#14-stop-hooks)
 
 ---
 
@@ -312,14 +313,57 @@ Variable substitutions in SKILL.md resolved at invocation time.
 
 ---
 
+## 14. Stop Hooks
+
+Session-end verification gates that run automatically when the agent is about to stop, ensuring deterministic quality checks pass before work is declared complete.
+
+**When to use:** Long-running implementation sessions where you want to guarantee validation and tests pass before the agent finishes. Prevents the agent from stopping with broken code.
+
+**Snippet -- Stop hook in `.claude/settings.json`:**
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); if [ \"$(echo \"$INPUT\" | jq -r '.stop_hook_active')\" = \"true\" ]; then exit 0; fi; wagents validate 2>/dev/null && uv run pytest -x --tb=short 2>/dev/null || { echo 'Verification failed' >&2; exit 2; }"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Exit codes:**
+
+| Code | Meaning |
+|------|---------|
+| 0 | Allow stop -- agent terminates normally |
+| 2 | Block stop with feedback -- stderr is shown to the agent, which continues working to fix the issue |
+
+**Key requirement:** The `stop_hook_active` guard is **mandatory**. When a Stop hook exits non-zero, the agent resumes and will eventually try to stop again, re-triggering the hook. Without the guard, a persistently failing check creates an infinite loop. The platform sets `stop_hook_active: true` on re-invocations so the guard can break the cycle.
+
+**Guidance:** Use Stop hooks for deterministic gates only (linting, tests, validation). Read stdin as JSON to access `stop_hook_active` and other context. Write failure reasons to stderr so the agent knows what to fix. Exit 2 (not 1) to provide feedback -- exit 1 blocks silently. Keep checks fast; the agent is waiting to finish.
+
+**Alternatives for complex verification:**
+
+- **Prompt-based Stop hook:** Instead of `"type": "command"`, use `"type": "prompt"` with a natural language instruction. The agent evaluates the prompt and decides whether to stop. Good for subjective quality checks ("Is the code well-documented?").
+- **Agent-based Stop hook:** Use `"type": "command"` to invoke a separate agent process that performs multi-step verification. Good for checks requiring tool use (e.g., running the app and testing endpoints).
+
+---
+
 ## Pattern Applicability Guide
 
 | Skill Type | Must Have | Should Have | Optional |
 |------------|-----------|-------------|----------|
-| Simple (single mode) | Critical Rules, Scope Boundaries, Progressive Disclosure, Body Substitutions | Dispatch Table, Reference File Index | Canonical Vocabulary, Scripts, Templates |
-| Multi-mode | Dispatch Table, Reference File Index, Critical Rules, Scope Boundaries, Progressive Disclosure, Body Substitutions | Canonical Vocabulary, Classification/Gating, Scaling Strategy | State Management, Scripts, Templates, Hooks |
-| Interactive/stateful | Dispatch Table, Reference File Index, Critical Rules, Scope Boundaries, State Management, Progressive Disclosure, Body Substitutions | Canonical Vocabulary, Classification/Gating, Scaling Strategy, Templates | Scripts, Hooks |
-| Automation | Dispatch Table, Critical Rules, Scope Boundaries, Scripts, Progressive Disclosure, Body Substitutions | Reference File Index, Hooks | Canonical Vocabulary, Classification/Gating, Scaling Strategy, Templates |
+| Simple (single mode) | Critical Rules, Scope Boundaries, Progressive Disclosure, Body Substitutions | Dispatch Table, Reference File Index | Canonical Vocabulary, Scripts, Templates, Stop Hooks |
+| Multi-mode | Dispatch Table, Reference File Index, Critical Rules, Scope Boundaries, Progressive Disclosure, Body Substitutions | Canonical Vocabulary, Classification/Gating, Scaling Strategy | State Management, Scripts, Templates, Hooks, Stop Hooks |
+| Interactive/stateful | Dispatch Table, Reference File Index, Critical Rules, Scope Boundaries, State Management, Progressive Disclosure, Body Substitutions | Canonical Vocabulary, Classification/Gating, Scaling Strategy, Templates | Scripts, Hooks, Stop Hooks |
+| Automation | Dispatch Table, Critical Rules, Scope Boundaries, Scripts, Progressive Disclosure, Body Substitutions | Reference File Index, Hooks, Stop Hooks | Canonical Vocabulary, Classification/Gating, Scaling Strategy, Templates |
 
 - **Must Have** -- omitting these is a defect in the skill design.
 - **Should Have** -- include unless there is a clear reason not to.

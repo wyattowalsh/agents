@@ -151,6 +151,33 @@ STATISTICS:
 ======================================
 ```
 
+## Differential Review Format
+
+Use when comparing against a previous review (via `scripts/review-store.py diff`).
+
+```
+======================================
+HONEST REVIEW — DIFFERENTIAL
+======================================
+BASELINE: [date] ([commit]) → CURRENT: [date] ([commit])
+
+PROGRESS SUMMARY:
+  +N new findings | -N resolved | ~N recurring
+
+NEW FINDINGS (not in baseline):
+1. HR-S-001 [file:line] [description]
+   Level: [level] | Confidence: [score] | Evidence: [citation]
+
+RESOLVED (in baseline, not in current):
+- HR-S-003 [was: file:line] [description] — resolved by [commit/change]
+
+RECURRING (present in both):
+- HR-S-002 [file:line] [description] — unchanged since [baseline date]
+
+TREND: [improving | stable | degrading] — [brief justification]
+======================================
+```
+
 ## Individual Finding Format
 
 Use this structure for each finding in any report format:

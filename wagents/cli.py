@@ -18,6 +18,10 @@ app = typer.Typer(help="CLI for managing centralized AI agent assets")
 new_app = typer.Typer(help="Create new assets from reference templates")
 app.add_typer(new_app, name="new")
 app.add_typer(docs_app, name="docs")
+hooks_app = typer.Typer(help="Manage hooks across skills and agents")
+app.add_typer(hooks_app, name="hooks")
+eval_app = typer.Typer(help="Manage and validate skill evals")
+app.add_typer(eval_app, name="eval")
 
 
 def version_callback(value: bool):
@@ -390,6 +394,56 @@ def validate():
             if not (ROOT / "skills" / val).is_dir():
                 errors.append(f"RELATED_SKILLS: value '{val}' (in '{key}') does not match a skill directory")
 
+    # Validate hooks
+    from wagents.parsing import KNOWN_HOOK_EVENTS
+
+    def _check_hooks(source: str, hooks_dict: dict) -> None:
+        if not isinstance(hooks_dict, dict):
+            errors.append(f"{source}: hooks must be a mapping")
+            return
+        for event in hooks_dict:
+            if event not in KNOWN_HOOK_EVENTS:
+                errors.append(f"{source}: unknown hook event '{event}'")
+
+    for settings_name in ["settings.json", "settings.local.json"]:
+        settings_file = ROOT / ".claude" / settings_name
+        if settings_file.exists():
+            try:
+                data = json.loads(settings_file.read_text())
+                hooks_dict = data.get("hooks", {})
+                if hooks_dict:
+                    _check_hooks(settings_name, hooks_dict)
+            except json.JSONDecodeError as e:
+                errors.append(f"{settings_name}: invalid JSON: {e}")
+
+    # Skills hooks — check events from already-parsed frontmatter
+    if skills_dir.exists():
+        for skill_dir in skills_dir.iterdir():
+            if not skill_dir.is_dir():
+                continue
+            skill_file = skill_dir / "SKILL.md"
+            if not skill_file.exists():
+                continue
+            try:
+                content = skill_file.read_text()
+                fm, _ = parse_frontmatter(content)
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    _check_hooks(f"skill:{skill_dir.name}", hooks_dict)
+            except Exception:
+                pass
+
+    if agents_dir.exists():
+        for agent_file in agents_dir.glob("*.md"):
+            try:
+                content = agent_file.read_text()
+                fm, _ = parse_frontmatter(content)
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    _check_hooks(f"agent:{agent_file.stem}", hooks_dict)
+            except Exception:
+                pass
+
     if errors:
         for error in errors:
             typer.echo(error, err=True)
@@ -634,6 +688,370 @@ def readme(
     else:
         readme_file.write_text(generated_content)
         typer.echo("Updated README.md")
+
+
+# ---------------------------------------------------------------------------
+# wagents hooks list / validate
+# ---------------------------------------------------------------------------
+
+
+@hooks_app.command("list")
+def hooks_list():
+    """List all hooks across skills, agents, and settings."""
+    from wagents.parsing import Hook, extract_hooks
+
+    all_hooks: list[Hook] = []
+
+    # 1. Scan .claude/settings.json and .claude/settings.local.json
+    for settings_name in ["settings.json", "settings.local.json"]:
+        settings_file = ROOT / ".claude" / settings_name
+        if settings_file.exists():
+            try:
+                data = json.loads(settings_file.read_text())
+                hooks_dict = data.get("hooks", {})
+                all_hooks.extend(extract_hooks(settings_name, hooks_dict))
+            except Exception as e:
+                typer.echo(
+                    f"Warning: could not parse {settings_name}: {e}",
+                    err=True,
+                )
+
+    # 2. Scan skills
+    skills_dir = ROOT / "skills"
+    if skills_dir.exists():
+        for skill_dir in sorted(skills_dir.iterdir()):
+            if not skill_dir.is_dir():
+                continue
+            skill_file = skill_dir / "SKILL.md"
+            if not skill_file.exists():
+                continue
+            try:
+                fm, _ = parse_frontmatter(skill_file.read_text())
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    all_hooks.extend(
+                        extract_hooks(f"skill:{skill_dir.name}", hooks_dict)
+                    )
+            except Exception:
+                pass
+
+    # 3. Scan agents
+    agents_dir = ROOT / "agents"
+    if agents_dir.exists():
+        for agent_file in sorted(agents_dir.glob("*.md")):
+            try:
+                fm, _ = parse_frontmatter(agent_file.read_text())
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    all_hooks.extend(
+                        extract_hooks(f"agent:{agent_file.stem}", hooks_dict)
+                    )
+            except Exception:
+                pass
+
+    if not all_hooks:
+        typer.echo("No hooks found.")
+        return
+
+    # Print table
+    typer.echo(
+        f"{'Source':<30} {'Event':<20} {'Matcher':<15} "
+        f"{'Type':<10} {'Command/Prompt'}"
+    )
+    typer.echo("-" * 100)
+    for h in all_hooks:
+        value = h.command if h.handler_type == "command" else h.prompt
+        # Truncate long values
+        if len(value) > 50:
+            value = value[:47] + "..."
+        typer.echo(
+            f"{h.source:<30} {h.event:<20} "
+            f"{h.matcher or '(all)':<15} {h.handler_type:<10} {value}"
+        )
+
+
+@hooks_app.command("validate")
+def hooks_validate():
+    """Validate all hooks across skills, agents, and settings."""
+    from wagents.parsing import KNOWN_HOOK_EVENTS
+
+    errors: list[str] = []
+
+    def _validate_hooks(source: str, hooks_dict: dict) -> None:
+        if not isinstance(hooks_dict, dict):
+            errors.append(f"{source}: hooks must be a mapping")
+            return
+        for event, entries in hooks_dict.items():
+            if event not in KNOWN_HOOK_EVENTS:
+                errors.append(f"{source}: unknown hook event '{event}'")
+            if not isinstance(entries, list):
+                errors.append(
+                    f"{source}: entries for '{event}' must be a list"
+                )
+                continue
+            for entry in entries:
+                if not isinstance(entry, dict):
+                    errors.append(
+                        f"{source}: each entry in '{event}' must be a mapping"
+                    )
+                    continue
+                hook_list = entry.get("hooks", [])
+                # Standard format: nested hooks list
+                if isinstance(hook_list, list) and hook_list:
+                    for hook_def in hook_list:
+                        if not isinstance(hook_def, dict):
+                            errors.append(
+                                f"{source}: each hook definition must "
+                                "be a mapping"
+                            )
+                            continue
+                        handler_type = hook_def.get("type", "command")
+                        if handler_type not in ("command", "prompt", "agent"):
+                            errors.append(
+                                f"{source}: unknown handler type "
+                                f"'{handler_type}' in '{event}'"
+                            )
+                        if handler_type == "command" and not hook_def.get(
+                            "command"
+                        ):
+                            errors.append(
+                                f"{source}: command handler in "
+                                f"'{event}' has empty command"
+                            )
+                        if handler_type in (
+                            "prompt",
+                            "agent",
+                        ) and not hook_def.get("prompt"):
+                            errors.append(
+                                f"{source}: {handler_type} handler in "
+                                f"'{event}' has empty prompt"
+                            )
+                elif not isinstance(hook_list, list):
+                    errors.append(
+                        f"{source}: 'hooks' in '{event}' entry must be a list"
+                    )
+                # Shorthand format: command/prompt directly on entry
+                elif "command" in entry or "prompt" in entry:
+                    handler_type = entry.get("type", "command")
+                    if handler_type not in ("command", "prompt", "agent"):
+                        errors.append(
+                            f"{source}: unknown handler type "
+                            f"'{handler_type}' in '{event}'"
+                        )
+                    if handler_type == "command" and not entry.get("command"):
+                        errors.append(
+                            f"{source}: command handler in "
+                            f"'{event}' has empty command"
+                        )
+                    if handler_type in (
+                        "prompt",
+                        "agent",
+                    ) and not entry.get("prompt"):
+                        errors.append(
+                            f"{source}: {handler_type} handler in "
+                            f"'{event}' has empty prompt"
+                        )
+
+    # 1. Settings files
+    for settings_name in ["settings.json", "settings.local.json"]:
+        settings_file = ROOT / ".claude" / settings_name
+        if settings_file.exists():
+            try:
+                data = json.loads(settings_file.read_text())
+                hooks_dict = data.get("hooks", {})
+                if hooks_dict:
+                    _validate_hooks(settings_name, hooks_dict)
+            except json.JSONDecodeError as e:
+                errors.append(f"{settings_name}: invalid JSON: {e}")
+
+    # 2. Skills
+    skills_dir = ROOT / "skills"
+    if skills_dir.exists():
+        for skill_dir in sorted(skills_dir.iterdir()):
+            if not skill_dir.is_dir():
+                continue
+            skill_file = skill_dir / "SKILL.md"
+            if not skill_file.exists():
+                continue
+            try:
+                fm, _ = parse_frontmatter(skill_file.read_text())
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    _validate_hooks(f"skill:{skill_dir.name}", hooks_dict)
+            except Exception:
+                pass
+
+    # 3. Agents
+    agents_dir = ROOT / "agents"
+    if agents_dir.exists():
+        for agent_file in sorted(agents_dir.glob("*.md")):
+            try:
+                fm, _ = parse_frontmatter(agent_file.read_text())
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    _validate_hooks(f"agent:{agent_file.stem}", hooks_dict)
+            except Exception:
+                pass
+
+    if errors:
+        for error in errors:
+            typer.echo(error, err=True)
+        raise typer.Exit(code=1)
+    else:
+        typer.echo("All hooks valid")
+
+
+# ---------------------------------------------------------------------------
+# wagents eval list / validate / coverage
+# ---------------------------------------------------------------------------
+
+
+def _collect_evals() -> list[tuple[Path, dict]]:
+    """Scan skills/*/evals/*.json and return (path, parsed_data) pairs."""
+    results: list[tuple[Path, dict]] = []
+    evals_root = ROOT / "skills"
+    if not evals_root.exists():
+        return results
+    for skill_dir in sorted(evals_root.iterdir()):
+        if not skill_dir.is_dir():
+            continue
+        evals_dir = skill_dir / "evals"
+        if not evals_dir.is_dir():
+            continue
+        for eval_file in sorted(evals_dir.glob("*.json")):
+            try:
+                data = json.loads(eval_file.read_text())
+                results.append((eval_file, data))
+            except json.JSONDecodeError:
+                results.append((eval_file, {}))
+    return results
+
+
+@eval_app.command("list")
+def eval_list():
+    """List all eval files grouped by skill."""
+    evals = _collect_evals()
+    if not evals:
+        typer.echo("No evals found.")
+        return
+
+    # Group by skill directory name
+    by_skill: dict[str, list[dict]] = {}
+    for path, data in evals:
+        skill_name = path.parent.parent.name
+        by_skill.setdefault(skill_name, []).append(data)
+
+    # Print table
+    typer.echo(f"{'Skill':<25} {'Evals':>5}  Sample Query")
+    typer.echo("-" * 70)
+    for skill_name in sorted(by_skill):
+        items = by_skill[skill_name]
+        count = len(items)
+        sample = ""
+        for item in items:
+            q = item.get("query", "")
+            if q:
+                sample = q
+                break
+        typer.echo(f"{skill_name:<25} {count:>5}  {sample}")
+
+
+@eval_app.command("validate")
+def eval_validate():
+    """Validate all eval JSON files."""
+    evals = _collect_evals()
+    if not evals:
+        typer.echo("No evals found. Nothing to validate.")
+        return
+
+    errors: list[str] = []
+    skills_dir = ROOT / "skills"
+
+    for path, data in evals:
+        rel = path.relative_to(ROOT)
+
+        # Check for parse failure (empty dict from JSONDecodeError)
+        if not data and path.stat().st_size > 2:
+            errors.append(f"{rel}: invalid JSON")
+            continue
+
+        # Required field: skills
+        if "skills" not in data:
+            errors.append(f"{rel}: missing required field 'skills'")
+        elif not isinstance(data["skills"], list) or len(data["skills"]) < 1:
+            errors.append(f"{rel}: 'skills' must be a non-empty list of strings")
+        else:
+            for s in data["skills"]:
+                if not isinstance(s, str):
+                    errors.append(f"{rel}: each entry in 'skills' must be a string")
+                elif not (skills_dir / s).is_dir():
+                    errors.append(
+                        f"{rel}: skill '{s}' does not match a skill directory"
+                    )
+
+        # Required field: query
+        if "query" not in data:
+            errors.append(f"{rel}: missing required field 'query'")
+        elif not isinstance(data["query"], str) or not data["query"].strip():
+            errors.append(f"{rel}: 'query' must be a non-empty string")
+
+        # Required field: expected_behavior
+        if "expected_behavior" not in data:
+            errors.append(f"{rel}: missing required field 'expected_behavior'")
+        elif (
+            not isinstance(data["expected_behavior"], list)
+            or len(data["expected_behavior"]) < 1
+        ):
+            errors.append(
+                f"{rel}: 'expected_behavior' must be a non-empty list of strings"
+            )
+        else:
+            for eb in data["expected_behavior"]:
+                if not isinstance(eb, str):
+                    errors.append(
+                        f"{rel}: each entry in 'expected_behavior' must be a string"
+                    )
+
+    if errors:
+        for error in errors:
+            typer.echo(error, err=True)
+        raise typer.Exit(code=1)
+    else:
+        typer.echo("All evals valid")
+
+
+@eval_app.command("coverage")
+def eval_coverage():
+    """Show eval coverage for all skills."""
+    skills_dir = ROOT / "skills"
+    if not skills_dir.exists():
+        typer.echo("No skills directory found.")
+        return
+
+    # Collect all skills
+    skill_names: list[str] = []
+    for skill_dir in sorted(skills_dir.iterdir()):
+        if skill_dir.is_dir() and (skill_dir / "SKILL.md").exists():
+            skill_names.append(skill_dir.name)
+
+    if not skill_names:
+        typer.echo("No skills found.")
+        return
+
+    # Count evals per skill
+    evals = _collect_evals()
+    counts: dict[str, int] = {}
+    for path, _data in evals:
+        skill_name = path.parent.parent.name
+        counts[skill_name] = counts.get(skill_name, 0) + 1
+
+    # Print table
+    typer.echo(f"{'Skill':<25} {'Has Evals':<12} {'Count':>5}")
+    typer.echo("-" * 45)
+    for name in skill_names:
+        count = counts.get(name, 0)
+        has = "Yes" if count > 0 else "No"
+        typer.echo(f"{name:<25} {has:<12} {count:>5}")
 
 
 if __name__ == "__main__":

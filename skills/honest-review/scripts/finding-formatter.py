@@ -2,11 +2,17 @@
 """Normalize honest-review findings into structured JSON for Judge reconciliation.
 
 Reads finding text from stdin, outputs a JSON array to stdout.
-Supports block format (Individual Finding Format) and compact format.
+Supports block format (Individual Finding Format), compact format, and JSON input.
 
-Usage: cat findings.txt | python finding-formatter.py [--mode session|audit]
+Usage:
+  cat findings.txt | python finding-formatter.py [--mode session|audit]
+  python finding-formatter.py --input findings.json [--mode audit]
+  cat findings.json | python finding-formatter.py --input - [--mode session]
 """
-import argparse, json, re, sys
+import argparse
+import json
+import re
+import sys
 from typing import Any
 
 # Block: "P0 — src/auth.py:45 Security"
@@ -75,8 +81,14 @@ def _is_float(s: str) -> bool:
         return False
 
 
+_KNOWN_KEYS = {
+    "id", "priority", "location", "category", "level", "confidence",
+    "description", "evidence", "impact", "fix", "effort",
+}
+
+
 def normalize(f: dict[str, Any], fid: str) -> dict[str, Any]:
-    return {
+    out: dict[str, Any] = {
         "id": fid,
         "priority": f.get("priority", ""),
         "location": f.get("location", "").strip("[] "),
@@ -89,6 +101,11 @@ def normalize(f: dict[str, Any], fid: str) -> dict[str, Any]:
         "fix": f.get("fix", ""),
         "effort": f.get("effort", ""),
     }
+    # Preserve unknown keys for forward compatibility.
+    for key, val in f.items():
+        if key not in _KNOWN_KEYS:
+            out[key] = val
+    return out
 
 
 def make_id(mode: str, seq: int) -> str:
@@ -96,11 +113,50 @@ def make_id(mode: str, seq: int) -> str:
     return f"HR-{prefix}-{seq:03d}"
 
 
+def load_json_input(source: str) -> list[dict[str, Any]]:
+    """Load findings from a JSON file path or stdin (when source is '-').
+
+    Expects either a JSON array of finding objects or a single finding object.
+    Returns an empty list for empty input.
+    """
+    if source == "-":
+        raw = sys.stdin.read()
+    else:
+        with open(source) as fh:
+            raw = fh.read()
+    if not raw or not raw.strip():
+        return []
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"Invalid JSON input: {exc}") from None
+    if isinstance(data, dict):
+        data = [data]
+    if not isinstance(data, list):
+        raise SystemExit("JSON input must be an array of finding objects or a single object.")
+    return data
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Normalize review findings to JSON.")
     ap.add_argument("--mode", choices=["session", "audit"], default="session")
+    ap.add_argument(
+        "--input",
+        metavar="PATH",
+        default=None,
+        help="Path to a JSON file of findings, or '-' for stdin JSON.",
+    )
     args = ap.parse_args()
 
+    # JSON input mode — bypass text parsing entirely.
+    if args.input is not None:
+        findings = load_json_input(args.input)
+        out = [normalize(f, make_id(args.mode, i + 1)) for i, f in enumerate(findings)]
+        json.dump(out, sys.stdout, indent=2)
+        print()
+        return
+
+    # Text input mode (original behavior).
     raw = sys.stdin.read()
     if not raw.strip():
         json.dump([], sys.stdout, indent=2)
@@ -112,9 +168,9 @@ def main() -> None:
     if not findings:
         findings = parse_compact(lines)
     # Mixed input: also capture compact lines interleaved with block findings
-    elif any(COMPACT.match(l.strip()) for l in lines if not BLOCK_HDR.match(l)):
+    elif any(COMPACT.match(ln.strip()) for ln in lines if not BLOCK_HDR.match(ln)):
         findings.extend(parse_compact(
-            [l for l in lines if not BLOCK_HDR.match(l) and not FIELD.match(l)]
+            [ln for ln in lines if not BLOCK_HDR.match(ln) and not FIELD.match(ln)]
         ))
 
     out = [normalize(f, make_id(args.mode, i + 1)) for i, f in enumerate(findings)]

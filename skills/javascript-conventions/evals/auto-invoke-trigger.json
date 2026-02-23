@@ -1,0 +1,12 @@
+{
+  "skills": ["javascript-conventions"],
+  "query": "Add a debounce utility function to src/utils/helpers.ts",
+  "files": ["src/utils/helpers.ts"],
+  "expected_behavior": [
+    "Agent auto-invokes javascript-conventions skill when working on a .ts file",
+    "Agent uses 'pnpm' for any package management operations, never 'npm' or 'yarn'",
+    "Agent uses 'pnpm add <pkg>' if a new dependency is needed, never 'npm install'",
+    "Agent uses 'pnpm exec' instead of 'npx' for running local binaries",
+    "Agent follows the tooling preferences: vite/esbuild for bundling, eslint for linting, prettier for formatting"
+  ]
+}

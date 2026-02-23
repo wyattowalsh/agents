@@ -1,0 +1,15 @@
+{
+  "skills": ["host-panel"],
+  "query": "/host-panel \"What does consciousness require?\" socratic 3",
+  "files": [],
+  "expected_behavior": [
+    "Agent parses arguments: topic is the quoted string, format is 'socratic', expert count is 3",
+    "Agent identifies this as a deep conceptual inquiry appropriate for Socratic dialogue",
+    "Agent performs Research Grounding identifying key philosophical traditions (functionalism, phenomenology, integrated information theory, etc.)",
+    "Agent generates 3 personas with distinct traditions, at least one contrarian or bridge figure, and at least two different career stages",
+    "Agent loads references/formats.md for Socratic-specific phase structure (Deconstruct phase for challenging definitions)",
+    "Agent applies anti-clustering check to ensure no two panelists share the same tradition, methodology, and likely conclusions",
+    "Synthesis produces an emergent question that none of the 3 panelists started with",
+    "Agent produces between-phase summaries naming disagreements precisely with tradition attribution"
+  ]
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Wave 0 deterministic pre-scan: detect project type, compute metrics, stratify risk."""
 from __future__ import annotations
-import json, os, re, subprocess, sys
+import argparse, json, os, re, subprocess, sys
 from collections import Counter
 from pathlib import Path
 
@@ -44,26 +44,73 @@ def _git(args: list[str], cwd: Path) -> str:
     except (FileNotFoundError, subprocess.TimeoutExpired):
         return ""
 
+def _detect_indent_unit(lines: list[str]) -> int:
+    """Detect the most common indentation delta in a file.
+
+    Examines transitions between consecutive non-empty lines to find the most
+    frequent positive indent increase. Works with spaces, tabs, and mixed
+    indentation. Returns the detected unit or 4 as a sensible default.
+    """
+    deltas: Counter[int] = Counter()
+    prev_indent = 0
+    for ln in lines:
+        stripped = ln.lstrip()
+        if not stripped:
+            continue
+        # Count raw leading whitespace chars (tabs count as 1 char each)
+        cur_indent = len(ln) - len(stripped)
+        diff = cur_indent - prev_indent
+        if diff > 0:
+            deltas[diff] += 1
+        prev_indent = cur_indent
+    if not deltas:
+        return 4
+    # Return the most common positive delta
+    return deltas.most_common(1)[0][0]
+
 def _metrics(p: Path) -> tuple[int, int]:
     try: lines = p.read_text(errors="replace").splitlines()
     except OSError: return 0, 0
     loc = sum(1 for ln in lines if ln.strip() and not ln.strip().startswith("#"))
+    indent_unit = _detect_indent_unit(lines)
     mx = 0
     for ln in lines:
         s = ln.lstrip()
         if s:
-            d = (len(ln) - len(s)) // 4 or (len(ln) - len(s)) // 2
+            raw_indent = len(ln) - len(s)
+            d = raw_indent // indent_unit if indent_unit else 0
             mx = max(mx, d)
     return loc, mx
 
 def _risk(path: str, loc: int, nest: int, hot: set[str]) -> tuple[str, list[str]]:
-    r: list[str] = []
-    if HIGH_RISK_RE.search(path): r.append("security/data-sensitive path")
-    if loc > 300: r.append(f"high LOC ({loc})")
-    if nest >= 5: r.append(f"high complexity (nesting {nest})")
-    if path in hot: r.append("frequently changed (hot file)")
-    if len(r) >= 2 or any("security" in x for x in r): return "HIGH", r
-    return ("MEDIUM", r) if r else ("LOW", r)
+    """Classify file risk using a weighted points system.
+
+    Security-sensitive triggers carry heavier weight (3 points) than code-quality
+    triggers (1 point each). HIGH requires >= 3 points, which means either one
+    security trigger alone or three non-security triggers combined.
+    MEDIUM requires >= 1 point.
+    """
+    reasons: list[str] = []
+    points = 0
+    # Security/data-sensitive triggers (weight: 3)
+    if HIGH_RISK_RE.search(path):
+        reasons.append("security/data-sensitive path")
+        points += 3
+    # Code-quality triggers (weight: 1 each)
+    if loc > 300:
+        reasons.append(f"high LOC ({loc})")
+        points += 1
+    if nest >= 5:
+        reasons.append(f"high complexity (nesting {nest})")
+        points += 1
+    if path in hot:
+        reasons.append("frequently changed (hot file)")
+        points += 1
+    if points >= 3:
+        return "HIGH", reasons
+    if points >= 1:
+        return "MEDIUM", reasons
+    return "LOW", reasons
 
 def _node_pm(root: Path) -> str:
     for lock, pm in [("pnpm-lock.yaml", "pnpm"), ("yarn.lock", "yarn"), ("bun.lockb", "bun"), ("bun.lock", "bun")]:
@@ -143,8 +190,24 @@ def scan(root: Path) -> dict:
             "file_count": len(files), "total_loc": tloc, "files": files, "dependencies": deps,
             "git_stats": {"hot_files": hot_files, "high_blame_density": high_blame}, "risk_summary": rs}
 
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Deterministic project pre-scan: detect type, compute metrics,"
+            " stratify risk. Outputs JSON to stdout."
+        ),
+    )
+    parser.add_argument(
+        "path",
+        nargs="?",
+        default=".",
+        help="Project root directory to scan (default: current directory)",
+    )
+    return parser.parse_args(argv)
+
 if __name__ == "__main__":
-    target = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.cwd()
+    args = _parse_args()
+    target = Path(args.path).resolve()
     if not target.is_dir():
         print(f"Error: {target} is not a directory", file=sys.stderr); sys.exit(1)
     json.dump(scan(target), sys.stdout, indent=2); print()

@@ -42,6 +42,7 @@ RELATED_SKILLS = {
     "orchestrator": ["honest-review", "wargame"],
     "python-conventions": ["javascript-conventions"],
     "javascript-conventions": ["python-conventions"],
+    "learn": ["python-conventions", "javascript-conventions", "agent-conventions"],
 }
 
 
