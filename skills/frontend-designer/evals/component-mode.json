@@ -1,0 +1,15 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer component data-table",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Component mode (Mode B) based on 'component' keyword",
+    "Agent classifies component type based on framework context (server vs client)",
+    "Agent loads references/react-19.md and references/shadcn-patterns.md",
+    "Agent does NOT load references/aesthetic-guide.md for a data table (utility component)",
+    "Agent checks if shadcn/ui provides a base component or Radix primitive",
+    "Agent gathers design intent (purpose, interactions, responsive behavior)",
+    "Agent implements with Tailwind v4 utilities and container queries for responsiveness",
+    "Agent ensures accessibility: keyboard navigation, ARIA attributes, focus management"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer audit",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Audit mode (Mode E) based on 'audit' keyword",
+    "Agent loads references/anti-patterns.md",
+    "Agent runs pre-scan checklist across the project",
+    "Agent scores across dimensions: stack currency, component patterns, design tokens, CSS modernness, typography, accessibility",
+    "Agent produces report grouped by severity: critical, warning, suggestion",
+    "Agent acknowledges strengths and well-implemented patterns",
+    "Agent recommends actions linked to other modes (refactor, theme)",
+    "Agent does NOT modify any code — audit mode is read-only"
+  ]
+}

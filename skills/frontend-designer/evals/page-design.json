@@ -1,0 +1,15 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer build a hero section landing page with animated gradient background",
+  "files": [],
+  "expected_behavior": [
+    "Agent auto-detects this as a Component request (Mode B) based on natural language UI description with 'build' + UI noun",
+    "Agent loads references/aesthetic-guide.md since this is a visual/landing/hero component",
+    "Agent runs the Aesthetic Direction design thinking exercise: Purpose, Tone, Constraints, Differentiation",
+    "Agent never defaults to Inter, Roboto, Arial, or system fonts (anti-slop rule) — selects distinctive fonts",
+    "Agent uses Tailwind v4 CSS-first configuration with @theme {} for design tokens, never tailwind.config.js",
+    "Agent implements the gradient with oklch color values from the @theme {} block",
+    "Agent adds @supports guards for progressive enhancement of modern CSS features (view transitions, scroll-driven animations)",
+    "Agent ensures WCAG AA contrast ratios (4.5:1 text, 3:1 large text) even with gradient backgrounds"
+  ]
+}

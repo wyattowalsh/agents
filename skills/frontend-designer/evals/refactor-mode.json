@@ -1,0 +1,14 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer refactor src/components/",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Refactor mode (Mode D) based on 'refactor' keyword with path",
+    "Agent loads references/tailwind-v4.md, references/react-19.md, references/modern-css.md, references/anti-patterns.md",
+    "Agent runs pre-scan checklist: grep for tailwind.config.js, 'use client' count, @media vs @container ratio, hardcoded colors, font-family declarations",
+    "Agent identifies applicable migration patterns based on scan results",
+    "Agent presents file-by-file migration plan and waits for user approval before proceeding",
+    "Agent executes changes one file at a time, verifying build passes after each",
+    "Agent re-runs pre-scan checklist to confirm improvement"
+  ]
+}

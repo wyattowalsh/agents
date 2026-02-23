@@ -1,0 +1,11 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer build a REST API for user authentication",
+  "files": [],
+  "expected_behavior": [
+    "Agent detects out-of-scope request (backend API)",
+    "Agent refuses gracefully, explaining this is outside frontend-designer's scope",
+    "Agent redirects to appropriate tools or skills for backend work",
+    "Agent does not attempt to build an API"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer scaffold my-app",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Scaffold mode (Mode A) based on 'scaffold' keyword",
+    "Agent asks or detects framework choice (Vite+React, Next.js, Remix)",
+    "Agent loads references/tailwind-v4.md, references/vite-config.md, references/shadcn-patterns.md, references/typography.md",
+    "Agent sets up Tailwind v4 CSS-first config with @import 'tailwindcss' and @theme {}",
+    "Agent runs shadcn/ui init and installs core components",
+    "Agent configures Monaspace font for code and selects distinctive display/body fonts",
+    "Agent establishes file structure conventions (components/ui/, lib/, hooks/, styles/)",
+    "Agent runs design thinking exercise for aesthetic direction"
+  ]
+}

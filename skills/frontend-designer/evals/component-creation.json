@@ -1,0 +1,15 @@
+{
+  "skills": ["frontend-designer"],
+  "query": "/frontend-designer component sidebar",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Mode B (Component) based on 'component' keyword in arguments",
+    "Agent loads references/react-19.md, references/shadcn-patterns.md, and references/modern-css.md",
+    "Agent classifies the component context (Server vs Client) based on the project framework",
+    "Agent gathers design intent: purpose, interactions, responsive behavior, accessibility requirements",
+    "Agent checks shadcn/ui for an existing sidebar primitive or close base before building from scratch",
+    "Agent styles with Tailwind v4 utility classes and CSS custom properties from @theme {}",
+    "Agent uses @container queries for component-level responsive adaptation instead of media queries",
+    "Agent ensures accessibility: keyboard navigation, ARIA attributes, focus management, WCAG AA contrast"
+  ]
+}

@@ -1,0 +1,257 @@
+---
+title: "frontend-designer"
+description: "Build production-grade frontend interfaces with modern React, Tailwind CSS, and shadcn/ui."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps, FileTree } from '@astrojs/starlight/components';
+
+<Badge text="frontend-designer" variant="note" /> <Badge text="v1.0.0" variant="success" /> <Badge text="MIT" variant="default" /> <Badge text="opus" variant="tip" /> <Badge text="wyattowalsh" variant="caution" />
+
+> Build production-grade frontend interfaces with modern React 19, TailwindCSS v4, shadcn/ui, and modern CSS. Five modes — **scaffold**, **component**, **theme**, **refactor**, and **audit** — covering the full lifecycle from project creation to codebase evaluation. Encodes distinctive design principles, Monaspace typography, and progressive enhancement patterns.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/frontend-designer -g
+```
+
+**Use:** `/frontend-designer` `<mode> [target]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Supersedes frontend-design">
+This skill replaces the older `frontend-design` aesthetic-only skill with comprehensive technical guidance, structured modes, and 8 deep-reference files.
+</Aside>
+
+## What It Does
+
+The frontend-designer skill encodes modern frontend best practices into a structured, multi-mode workflow. Instead of relying on general knowledge that may be outdated, it provides **research-backed references** for each technology in the stack and enforces **12 critical rules** that prevent common mistakes.
+
+<CardGrid>
+  <Card title="Scaffold" icon="rocket">
+    Create new projects with Vite + React, Next.js, or Remix — fully configured with Tailwind v4 CSS-first setup, shadcn/ui, and Monaspace typography.
+  </Card>
+  <Card title="Component" icon="puzzle">
+    Design and build individual components with Radix primitives, container queries, and framework-aware Server/Client Component classification.
+  </Card>
+  <Card title="Theme" icon="seti:css">
+    Configure design token systems using `@theme {}` directives, oklch color spaces, `color-mix()`, dark mode, and fluid typography with `clamp()`.
+  </Card>
+  <Card title="Refactor" icon="pencil">
+    Modernize existing codebases: migrate Tailwind v3 → v4, media → container queries, class components → hooks, and eliminate anti-patterns.
+  </Card>
+  <Card title="Audit" icon="magnifier">
+    Read-only analysis scoring stack currency, component patterns, token usage, CSS modernness, typography, and accessibility — with severity-ranked findings.
+  </Card>
+</CardGrid>
+
+## Usage Examples
+
+<Tabs>
+  <TabItem label="Scaffold">
+    ```
+    /frontend-designer scaffold my-dashboard
+    ```
+    Creates a new project with Tailwind v4 CSS-first config, shadcn/ui, distinctive typography, and the recommended file structure. Defaults to Vite + React unless you specify Next.js or Remix.
+  </TabItem>
+  <TabItem label="Component">
+    ```
+    /frontend-designer component pricing-card
+    ```
+    Designs and builds a single component. Classifies as server or client based on your framework, gathers design intent, selects Radix primitives, and implements with container queries and accessibility.
+
+    Also works with natural language:
+    ```
+    /frontend-designer build a responsive sidebar with collapsible navigation
+    ```
+  </TabItem>
+  <TabItem label="Theme">
+    ```
+    /frontend-designer theme
+    ```
+    Configures your project's design token system: primitive → semantic → component token layers in `@theme {}` with oklch colors and fluid type scale.
+
+    Extract tokens from existing hardcoded values:
+    ```
+    /frontend-designer tokens
+    ```
+  </TabItem>
+  <TabItem label="Refactor">
+    ```
+    /frontend-designer refactor src/components/
+    ```
+    Scans for legacy patterns (Tailwind v3 config, media queries, hardcoded colors, excessive `"use client"`), presents a migration plan, and executes after approval.
+  </TabItem>
+  <TabItem label="Audit">
+    ```
+    /frontend-designer audit
+    ```
+    Read-only analysis producing a severity-ranked report across 6 dimensions. Recommends actions linked to other modes (e.g., "run `/frontend-designer refactor`").
+  </TabItem>
+</Tabs>
+
+## Dispatch Table
+
+| Input pattern | Mode | Description |
+|---------------|------|-------------|
+| `scaffold <name>` / `init <name>` | Scaffold | New project setup |
+| `component <name>` / `create <name>` | Component | Build a component |
+| `theme` / `tokens` | Theme | Token system configuration |
+| `refactor <path>` / `style <path>` | Refactor | Modernize existing code |
+| `audit` / `audit <path>` | Audit | Read-only codebase analysis |
+| Natural language UI description | Auto → Component | "build a card", "design a nav" |
+| Path to `.tsx`/`.jsx`/`.css` | Auto → Refactor | Detects existing files |
+| Error / "not working" / "broken" | Auto → Audit | Detects debugging intent |
+| Empty | Gallery | Shows all modes |
+
+<Aside type="tip" title="Ambiguous inputs">
+If your request could match multiple modes (e.g., "fix my tailwind"), the skill uses signal words to disambiguate: error/broken → Audit, upgrade/migrate → Refactor, colors/tokens → Theme, build/create → Component, setup/init → Scaffold.
+</Aside>
+
+## Technology Stack
+
+| Technology | Version | Key Feature |
+|-----------|---------|-------------|
+| **React** | 19 | Server Components (framework-dependent), Actions, `use()` |
+| **Tailwind CSS** | v4 | CSS-first `@import "tailwindcss"` + `@theme {}` — no JS config |
+| **shadcn/ui** | Latest | Radix UI primitives, registry system, CLI management |
+| **Modern CSS** | 2024-2026 | Container queries, `:has()`, `@scope`, view transitions, scroll-driven animations |
+| **Monaspace** | All variants | Texture healing, variable font axes, code typography |
+| **Vite** | 6 | Fast builds, HMR, CSS handling, framework plugins |
+
+## Critical Rules
+
+12 rules enforced across all modes — violations are flagged automatically:
+
+1. **Never use `tailwind.config.js`** — Tailwind v4 is CSS-first with `@import "tailwindcss"` and `@theme {}`
+2. **Framework-aware components** — Next.js/Remix: minimize `"use client"`. Vite+React: `"use client"` is unnecessary
+3. **Radix primitives via shadcn/ui** — never build custom dialogs, popovers, or dropdowns from scratch
+4. **Design tokens in `@theme {}`** — never hardcode colors, spacing, or font values
+5. **Container queries for components** — media queries only for page layout and user preferences
+6. **`@supports` guards** — mandatory for `contrast-color()`, anchor positioning, scroll-driven animations, `@scope`
+7. **Logical properties** — `margin-inline-start` not `margin-left` for RTL readiness
+8. **Distinctive fonts** — never default to Inter, Roboto, Arial, or system-ui; Monaspace for code
+9. **Accessibility non-negotiable** — keyboard nav, ARIA, focus management, WCAG AA contrast
+10. **Live docs on demand** — consult Context7/WebSearch only when references may be outdated
+11. **Body under 500 lines** — deep details live in 8 reference files
+12. **Audit is read-only** — never modify code during audit mode
+
+## Skill Structure
+
+<FileTree>
+
+- skills/frontend-designer/
+  - SKILL.md
+  - references/
+    - tailwind-v4.md
+    - shadcn-patterns.md
+    - react-19.md
+    - modern-css.md
+    - typography.md
+    - aesthetic-guide.md
+    - vite-config.md
+    - anti-patterns.md
+  - evals/
+    - scaffold-mode.json
+    - component-mode.json
+    - theme-mode.json
+    - refactor-mode.json
+    - audit-mode.json
+    - scope-refusal.json
+
+</FileTree>
+
+## Reference Files
+
+References load on demand per mode — never all at once:
+
+| Reference | Content | Loaded by |
+|-----------|---------|-----------|
+| `tailwind-v4.md` | CSS-first config, `@theme`, Oxide engine, dark mode, v3→v4 migration | Scaffold, Theme, Refactor |
+| `shadcn-patterns.md` | CLI, registries, Radix primitives, compound components, forms | Scaffold, Component |
+| `react-19.md` | Server/Client decision tree, Actions, `useActionState`, `use()`, Suspense | Component, Refactor |
+| `modern-css.md` | Container queries, `:has()`, `@scope`, view transitions, scroll-driven animations, anchor positioning | Component, Theme, Refactor |
+| `typography.md` | Monaspace superfamily, variable fonts, `@font-face`, fluid type scale | Scaffold, Theme, Component |
+| `aesthetic-guide.md` | Design thinking, aesthetic catalog, color theory, anti-slop rules | Component (visual), Scaffold |
+| `vite-config.md` | Vite 6 setup, plugins, CSS handling, asset optimization | Scaffold |
+| `anti-patterns.md` | Detection criteria and fixes for common frontend anti-patterns | Audit, Refactor |
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `frontend-designer` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `opus` |
+| Argument Hint | `<mode> [target]` |
+  </TabItem>
+</Tabs>
+
+## Related Skills
+
+<CardGrid>
+  <LinkCard title="JavaScript Conventions" href="/skills/javascript-conventions/" description="JS/Node.js tooling conventions — pnpm, build tooling, and package management." />
+  <LinkCard title="Skill Creator" href="/skills/skill-creator/" description="Create and audit skills like this one." />
+  <LinkCard title="Honest Review" href="/skills/honest-review/" description="Research-driven code review — use after building frontend components." />
+</CardGrid>
+
+## External Resources
+
+<CardGrid>
+  <LinkCard title="Tailwind CSS v4" href="https://tailwindcss.com/docs" description="Official Tailwind CSS documentation — CSS-first configuration." />
+  <LinkCard title="shadcn/ui" href="https://ui.shadcn.com" description="Component library built on Radix UI primitives." />
+  <LinkCard title="React 19" href="https://react.dev" description="Official React documentation — Server Components, Actions, hooks." />
+  <LinkCard title="Monaspace" href="https://monaspace.githubnext.com" description="GitHub Next monospace type system with texture healing." />
+</CardGrid>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: frontend-designer
+description: >-
+  Build production-grade frontend interfaces with modern React, Tailwind CSS,
+  and shadcn/ui. Five modes: scaffold projects, create components, configure
+  themes and design tokens, refactor styles, and audit codebases. Encodes best
+  practices for React 19 Server Components (framework-dependent), TailwindCSS v4
+  CSS-first config, shadcn/ui with Radix primitives, modern CSS (container
+  queries, :has(), view transitions, scroll-driven animations), Monaspace
+  typography, and Vite 6. Supersedes the frontend-design skill. Use when
+  building, styling, theming, or improving any frontend project. NOT for backend
+  APIs, database design, DevOps, testing frameworks, state management libraries,
+  routing, or full SSR framework setup.
+argument-hint: "<mode> [target]"
+model: opus
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Frontend Designer
+
+Build production-grade frontend interfaces with modern React, TailwindCSS v4, and shadcn/ui. Five modes from project scaffolding to codebase audit.
+
+**Input:** `$ARGUMENTS` — mode keyword + target, natural language UI description, or file path.
+
+[... body continues for ~400 lines ...]
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/frontend-designer/SKILL.md)
+
+</details>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/frontend-designer/SKILL.md)
