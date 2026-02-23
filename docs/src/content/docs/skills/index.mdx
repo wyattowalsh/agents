@@ -26,7 +26,7 @@ Skills extend your AI agent with domain expertise, structured workflows, and pro
 <div class="stats-bar">
   <span class="stat stat-skill">10 User-Invocable</span>
   <span class="stat stat-agent">3 Convention Skills</span>
-  <span class="stat stat-installed">19 Installed Skills</span>
+  <span class="stat stat-installed">20 Installed Skills</span>
 </div>
 
 ## Understanding Skill Categories
@@ -37,7 +37,7 @@ This repository contains three categories of skills, each serving a different pu
 |----------|-------|---------------|
 | **User-Invocable** | 10 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
 | **Convention** | 3 | The agent auto-invokes these when it detects relevant context (e.g., editing Python files). Hidden from the `/` menu. |
-| **Installed** | 19 | Third-party skills installed from external sources via `~/.claude/skills/`. |
+| **Installed** | 20 | Third-party skills installed from external sources via `~/.claude/skills/`. |
 
 <Aside type="note" title="Generated docs vs hand-maintained guides">
 Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a deeper curated guide exists (for example, architecture or roadmap notes), the generated skill page links to it.
@@ -80,7 +80,7 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
 Convention skills set `user-invocable: false` in their frontmatter. This hides them from the `/` menu but keeps their descriptions in the agent's context, allowing automatic discovery and invocation when the agent encounters matching file types or patterns.
 </Aside>
 
-## Installed Skills (19)
+## Installed Skills (20)
 
 <Badge text="External" variant="default" /> Third-party skills installed from the [agentskills.io](https://agentskills.io) ecosystem via `npx skills add`. These live in `~/.claude/skills/` and are available across all your projects.
 
@@ -88,6 +88,7 @@ Convention skills set `user-invocable: false` in their frontmatter. This hides t
 <CardGrid>
   <LinkCard title="agents-md-updater" href="/skills/installed/#agents-md-updater" description="Validate AGENTS.md against actual codebase - checks commands, paths, test config, and links. Use after code changes or before commits." />
   <LinkCard title="continuous-improvement" href="/skills/installed/#continuous-improvement" description="Instruction file maintenance protocol. Propose updates when a pattern is corrected 3+ times across 2+ sessions. Route: cross-project → global." />
+  <LinkCard title="docs-steward" href="/skills/installed/#docs-steward" description="Maintain and enhance the Astro+Starlight docs site. Syncs generated pages, scores content quality, performs health checks, and proposes site improvements." />
   <LinkCard title="docx" href="/skills/installed/#docx" description="Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files)." />
   <LinkCard title="domain-name-brainstormer" href="/skills/installed/#domain-name-brainstormer" description="Generates creative domain name ideas for your project and checks availability across multiple TLDs (.com, .io, .dev, .ai, etc.)." />
   <LinkCard title="email-whiz" href="/skills/installed/#email-whiz" description="Gmail inbox management via MCP. Triage emails to inbox zero, generate filters from patterns, audit newsletters, optimize labels, build search queries." />

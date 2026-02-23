@@ -223,3 +223,11 @@ STATISTICS:
 - **unconfirmed**: findings with Confidence < 0.8 that lack corroborating evidence
 - **discarded**: findings investigated but dropped (false positives, duplicates)
 - **risk-weighted LOC**: lines of code weighted by file risk (entry points, auth, data handling score higher)
+
+## Machine-Readable Formats
+
+For CI integration and tooling interop, additional output formats are available:
+
+- **SARIF v2.1**: `scripts/finding-formatter.py --format sarif` — see references/sarif-output.md
+- **JSON Schema**: `scripts/finding-formatter.py --format json-schema` — structured finding objects
+- **Auto-fix diffs**: see references/auto-fix-protocol.md for diff preview format

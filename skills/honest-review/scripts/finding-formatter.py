@@ -146,36 +146,70 @@ def main() -> None:
         default=None,
         help="Path to a JSON file of findings, or '-' for stdin JSON.",
     )
+    ap.add_argument(
+        "--format",
+        choices=["json", "sarif", "json-schema"],
+        default="json",
+        dest="output_format",
+        help="Output format: json (default), sarif (SARIF v2.1), json-schema (verbose schema).",
+    )
     args = ap.parse_args()
 
     # JSON input mode — bypass text parsing entirely.
     if args.input is not None:
         findings = load_json_input(args.input)
         out = [normalize(f, make_id(args.mode, i + 1)) for i, f in enumerate(findings)]
+    else:
+        # Text input mode (original behavior).
+        raw = sys.stdin.read()
+        if not raw.strip():
+            json.dump([], sys.stdout, indent=2)
+            print()
+            return
+        lines = raw.splitlines()
+        findings = parse_blocks(lines)
+        if not findings:
+            findings = parse_compact(lines)
+        elif any(COMPACT.match(ln.strip()) for ln in lines if not BLOCK_HDR.match(ln)):
+            findings.extend(parse_compact(
+                [ln for ln in lines if not BLOCK_HDR.match(ln) and not FIELD.match(ln)]
+            ))
+        out = [normalize(f, make_id(args.mode, i + 1)) for i, f in enumerate(findings)]
+
+    if args.output_format == "sarif":
+        _LEVEL_MAP = {"P0": "error", "P1": "error", "S0": "error",
+                       "P2": "warning", "S1": "warning", "S2": "warning",
+                       "P3": "note", "S3": "note"}
+        sarif = {
+            "version": "2.1.0",
+            "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+            "runs": [{
+                "tool": {"driver": {
+                    "name": "honest-review",
+                    "version": "4.0",
+                    "informationUri": "https://github.com/wyattowalsh/agents",
+                    "rules": [{"id": f["id"], "shortDescription": {"text": f.get("description", "")[:200]}}
+                              for f in out]
+                }},
+                "results": [{
+                    "ruleId": f["id"],
+                    "level": _LEVEL_MAP.get(f.get("severity", "P2"), "warning"),
+                    "message": {"text": f.get("description", "")},
+                    "locations": [{
+                        "physicalLocation": {
+                            "artifactLocation": {"uri": f.get("location", "").split(":")[0]},
+                            "region": {"startLine": int(f["location"].split(":")[1]) if ":" in f.get("location", "") else 1}
+                        }
+                    }] if f.get("location") else [],
+                    "rank": int(float(f.get("confidence", 0.5)) * 100),
+                } for f in out]
+            }]
+        }
+        json.dump(sarif, sys.stdout, indent=2)
+    else:
         json.dump(out, sys.stdout, indent=2)
-        print()
-        return
-
-    # Text input mode (original behavior).
-    raw = sys.stdin.read()
-    if not raw.strip():
-        json.dump([], sys.stdout, indent=2)
-        print()
-        return
-
-    lines = raw.splitlines()
-    findings = parse_blocks(lines)
-    if not findings:
-        findings = parse_compact(lines)
-    # Mixed input: also capture compact lines interleaved with block findings
-    elif any(COMPACT.match(ln.strip()) for ln in lines if not BLOCK_HDR.match(ln)):
-        findings.extend(parse_compact(
-            [ln for ln in lines if not BLOCK_HDR.match(ln) and not FIELD.match(ln)]
-        ))
-
-    out = [normalize(f, make_id(args.mode, i + 1)) for i, f in enumerate(findings)]
-    json.dump(out, sys.stdout, indent=2)
     print()
+
 
 
 if __name__ == "__main__":
