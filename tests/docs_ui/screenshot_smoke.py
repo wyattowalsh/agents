@@ -4,7 +4,6 @@ import argparse
 import sys
 from pathlib import Path
 
-
 ROUTES = [
     "/",
     "/skills/",
@@ -113,7 +112,8 @@ def main() -> int:
                 full_page = page_height <= args.max_full_page_height if page_height > 0 else True
                 if not full_page:
                     print(
-                        f"[screenshot-mode] {path.name} -> viewport (height={page_height}px exceeds {args.max_full_page_height}px)",
+                        f"[screenshot-mode] {path.name} -> viewport"
+                        f" (height={page_height}px exceeds {args.max_full_page_height}px)",
                         flush=True,
                     )
 

@@ -252,7 +252,6 @@ class TestInstall:
 
     def test_install_requires_npx(self, monkeypatch):
         """Install should fail gracefully when npx is not found."""
-        import shutil
 
         monkeypatch.setattr("shutil.which", lambda x: None)
         result = runner.invoke(app, ["install"])
