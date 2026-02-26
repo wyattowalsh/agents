@@ -8,9 +8,7 @@ from unittest.mock import patch
 import pytest
 
 # Insert the script directory into sys.path so we can import directly.
-sys.path.insert(
-    0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts")
-)
+sys.path.insert(0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts"))
 
 from progress import cmd_init, cmd_metric, cmd_phase, cmd_read, cmd_status, main
 
@@ -75,9 +73,7 @@ class TestMetric:
         _run_init(tmp_path)
         import argparse
 
-        args = argparse.Namespace(
-            skill="test-skill", key="files_created", value="5", state_dir=tmp_path
-        )
+        args = argparse.Namespace(skill="test-skill", key="files_created", value="5", state_dir=tmp_path)
         with patch("sys.stdout"):
             cmd_metric(args)
         state = json.loads((tmp_path / "test-skill.json").read_text())
@@ -88,9 +84,7 @@ class TestMetric:
         import argparse
 
         # Set initial value
-        args = argparse.Namespace(
-            skill="test-skill", key="files_created", value="3", state_dir=tmp_path
-        )
+        args = argparse.Namespace(skill="test-skill", key="files_created", value="3", state_dir=tmp_path)
         with patch("sys.stdout"):
             cmd_metric(args)
 
@@ -247,9 +241,7 @@ class TestStatus:
         _run_init(tmp_path)
         import argparse
 
-        args = argparse.Namespace(
-            skill="test-skill", status="completed", state_dir=tmp_path
-        )
+        args = argparse.Namespace(skill="test-skill", status="completed", state_dir=tmp_path)
         with patch("sys.stdout"):
             cmd_status(args)
         state = json.loads((tmp_path / "test-skill.json").read_text())
@@ -259,9 +251,7 @@ class TestStatus:
         _run_init(tmp_path)
         import argparse
 
-        args = argparse.Namespace(
-            skill="test-skill", status="invalid", state_dir=tmp_path
-        )
+        args = argparse.Namespace(skill="test-skill", status="invalid", state_dir=tmp_path)
         with pytest.raises(SystemExit), patch("sys.stdout"):
             cmd_status(args)
 
@@ -276,9 +266,7 @@ class TestRead:
         _run_init(tmp_path)
         import argparse
 
-        args = argparse.Namespace(
-            skill="test-skill", format="json", state_dir=tmp_path
-        )
+        args = argparse.Namespace(skill="test-skill", format="json", state_dir=tmp_path)
         cmd_read(args)
         output = capsys.readouterr().out
         state = json.loads(output)
@@ -287,9 +275,7 @@ class TestRead:
     def test_read_missing_skill_exits(self, tmp_path: Path):
         import argparse
 
-        args = argparse.Namespace(
-            skill="nonexistent", format="json", state_dir=tmp_path
-        )
+        args = argparse.Namespace(skill="nonexistent", format="json", state_dir=tmp_path)
         with pytest.raises(SystemExit):
             cmd_read(args)
 

@@ -732,8 +732,7 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("<CardGrid>")
     parts.append('  <LinkCard title="All Agents" href="/agents/" description="Browse agent configurations." />')
     parts.append(
-        '  <LinkCard title="CLI Reference" href="/cli/"'
-        ' description="Create and manage agent files with wagents." />'
+        '  <LinkCard title="CLI Reference" href="/cli/" description="Create and manage agent files with wagents." />'
     )
     parts.append("</CardGrid>")
     parts.append("")
@@ -851,12 +850,10 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
     parts.append("")
     parts.append("<CardGrid>")
     parts.append(
-        '  <LinkCard title="MCP Overview" href="/mcp/"'
-        ' description="Browse all MCP documentation in this site." />'
+        '  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP documentation in this site." />'
     )
     parts.append(
-        '  <LinkCard title="CLI Reference" href="/cli/"'
-        ' description="Scaffold new MCP servers with wagents." />'
+        '  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold new MCP servers with wagents." />'
     )
     parts.append("</CardGrid>")
     parts.append("")

@@ -72,6 +72,7 @@ def main() -> int:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
+
             def _screenshot_with_retry(page, path: Path, *, full_page: bool) -> None:
                 """Take a screenshot with one retry on transient errors."""
                 try:

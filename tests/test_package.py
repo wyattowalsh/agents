@@ -6,9 +6,7 @@ import zipfile
 from pathlib import Path
 
 # Insert the package script directory into sys.path so we can import directly.
-sys.path.insert(
-    0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts")
-)
+sys.path.insert(0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts"))
 
 from package import (
     ABSOLUTE_PATH_RE,

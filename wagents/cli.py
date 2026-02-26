@@ -453,8 +453,14 @@ def validate():
 
 
 SUPPORTED_AGENTS = [
-    "antigravity", "claude-code", "codex", "crush",
-    "cursor", "gemini-cli", "github-copilot", "opencode",
+    "antigravity",
+    "claude-code",
+    "codex",
+    "crush",
+    "cursor",
+    "gemini-cli",
+    "github-copilot",
+    "opencode",
 ]
 
 REPO_SOURCE = "wyattowalsh/agents"
@@ -729,9 +735,7 @@ def hooks_list():
                 fm, _ = parse_frontmatter(skill_file.read_text())
                 hooks_dict = fm.get("hooks", {})
                 if hooks_dict:
-                    all_hooks.extend(
-                        extract_hooks(f"skill:{skill_dir.name}", hooks_dict)
-                    )
+                    all_hooks.extend(extract_hooks(f"skill:{skill_dir.name}", hooks_dict))
             except Exception:
                 pass
 
@@ -743,9 +747,7 @@ def hooks_list():
                 fm, _ = parse_frontmatter(agent_file.read_text())
                 hooks_dict = fm.get("hooks", {})
                 if hooks_dict:
-                    all_hooks.extend(
-                        extract_hooks(f"agent:{agent_file.stem}", hooks_dict)
-                    )
+                    all_hooks.extend(extract_hooks(f"agent:{agent_file.stem}", hooks_dict))
             except Exception:
                 pass
 
@@ -754,20 +756,14 @@ def hooks_list():
         return
 
     # Print table
-    typer.echo(
-        f"{'Source':<30} {'Event':<20} {'Matcher':<15} "
-        f"{'Type':<10} {'Command/Prompt'}"
-    )
+    typer.echo(f"{'Source':<30} {'Event':<20} {'Matcher':<15} {'Type':<10} {'Command/Prompt'}")
     typer.echo("-" * 100)
     for h in all_hooks:
         value = h.command if h.handler_type == "command" else h.prompt
         # Truncate long values
         if len(value) > 50:
             value = value[:47] + "..."
-        typer.echo(
-            f"{h.source:<30} {h.event:<20} "
-            f"{h.matcher or '(all)':<15} {h.handler_type:<10} {value}"
-        )
+        typer.echo(f"{h.source:<30} {h.event:<20} {h.matcher or '(all)':<15} {h.handler_type:<10} {value}")
 
 
 @hooks_app.command("validate")
@@ -785,72 +781,43 @@ def hooks_validate():
             if event not in KNOWN_HOOK_EVENTS:
                 errors.append(f"{source}: unknown hook event '{event}'")
             if not isinstance(entries, list):
-                errors.append(
-                    f"{source}: entries for '{event}' must be a list"
-                )
+                errors.append(f"{source}: entries for '{event}' must be a list")
                 continue
             for entry in entries:
                 if not isinstance(entry, dict):
-                    errors.append(
-                        f"{source}: each entry in '{event}' must be a mapping"
-                    )
+                    errors.append(f"{source}: each entry in '{event}' must be a mapping")
                     continue
                 hook_list = entry.get("hooks", [])
                 # Standard format: nested hooks list
                 if isinstance(hook_list, list) and hook_list:
                     for hook_def in hook_list:
                         if not isinstance(hook_def, dict):
-                            errors.append(
-                                f"{source}: each hook definition must "
-                                "be a mapping"
-                            )
+                            errors.append(f"{source}: each hook definition must be a mapping")
                             continue
                         handler_type = hook_def.get("type", "command")
                         if handler_type not in ("command", "prompt", "agent"):
-                            errors.append(
-                                f"{source}: unknown handler type "
-                                f"'{handler_type}' in '{event}'"
-                            )
-                        if handler_type == "command" and not hook_def.get(
-                            "command"
-                        ):
-                            errors.append(
-                                f"{source}: command handler in "
-                                f"'{event}' has empty command"
-                            )
+                            errors.append(f"{source}: unknown handler type '{handler_type}' in '{event}'")
+                        if handler_type == "command" and not hook_def.get("command"):
+                            errors.append(f"{source}: command handler in '{event}' has empty command")
                         if handler_type in (
                             "prompt",
                             "agent",
                         ) and not hook_def.get("prompt"):
-                            errors.append(
-                                f"{source}: {handler_type} handler in "
-                                f"'{event}' has empty prompt"
-                            )
+                            errors.append(f"{source}: {handler_type} handler in '{event}' has empty prompt")
                 elif not isinstance(hook_list, list):
-                    errors.append(
-                        f"{source}: 'hooks' in '{event}' entry must be a list"
-                    )
+                    errors.append(f"{source}: 'hooks' in '{event}' entry must be a list")
                 # Shorthand format: command/prompt directly on entry
                 elif "command" in entry or "prompt" in entry:
                     handler_type = entry.get("type", "command")
                     if handler_type not in ("command", "prompt", "agent"):
-                        errors.append(
-                            f"{source}: unknown handler type "
-                            f"'{handler_type}' in '{event}'"
-                        )
+                        errors.append(f"{source}: unknown handler type '{handler_type}' in '{event}'")
                     if handler_type == "command" and not entry.get("command"):
-                        errors.append(
-                            f"{source}: command handler in "
-                            f"'{event}' has empty command"
-                        )
+                        errors.append(f"{source}: command handler in '{event}' has empty command")
                     if handler_type in (
                         "prompt",
                         "agent",
                     ) and not entry.get("prompt"):
-                        errors.append(
-                            f"{source}: {handler_type} handler in "
-                            f"'{event}' has empty prompt"
-                        )
+                        errors.append(f"{source}: {handler_type} handler in '{event}' has empty prompt")
 
     # 1. Settings files
     for settings_name in ["settings.json", "settings.local.json"]:
@@ -985,9 +952,7 @@ def eval_validate():
                 if not isinstance(s, str):
                     errors.append(f"{rel}: each entry in 'skills' must be a string")
                 elif not (skills_dir / s).is_dir():
-                    errors.append(
-                        f"{rel}: skill '{s}' does not match a skill directory"
-                    )
+                    errors.append(f"{rel}: skill '{s}' does not match a skill directory")
 
         # Required field: query
         if "query" not in data:
@@ -998,19 +963,12 @@ def eval_validate():
         # Required field: expected_behavior
         if "expected_behavior" not in data:
             errors.append(f"{rel}: missing required field 'expected_behavior'")
-        elif (
-            not isinstance(data["expected_behavior"], list)
-            or len(data["expected_behavior"]) < 1
-        ):
-            errors.append(
-                f"{rel}: 'expected_behavior' must be a non-empty list of strings"
-            )
+        elif not isinstance(data["expected_behavior"], list) or len(data["expected_behavior"]) < 1:
+            errors.append(f"{rel}: 'expected_behavior' must be a non-empty list of strings")
         else:
             for eb in data["expected_behavior"]:
                 if not isinstance(eb, str):
-                    errors.append(
-                        f"{rel}: each entry in 'expected_behavior' must be a string"
-                    )
+                    errors.append(f"{rel}: each entry in 'expected_behavior' must be a string")
 
     if errors:
         for error in errors:
