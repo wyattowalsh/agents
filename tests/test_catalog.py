@@ -152,7 +152,7 @@ def test_collect_edges_from_agent_metadata():
 
 def test_related_skills_keys_are_valid_skill_dirs():
     """Every key and value in RELATED_SKILLS must be a real skill directory."""
-    repo_root = Path("/Users/ww/dev/projects/agents")
+    repo_root = Path(__file__).resolve().parent.parent
     skills_dir = repo_root / "skills"
 
     existing_skill_dirs = {d.name for d in skills_dir.iterdir() if d.is_dir()}

@@ -14,7 +14,6 @@ sys.path.insert(
 
 from progress import cmd_init, cmd_metric, cmd_phase, cmd_read, cmd_status, main
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -176,9 +175,8 @@ class TestMetric:
             value="42",
             state_dir=tmp_path,
         )
-        with pytest.raises(SystemExit):
-            with patch("sys.stdout"):
-                cmd_metric(args)
+        with pytest.raises(SystemExit), patch("sys.stdout"):
+            cmd_metric(args)
 
 
 # ---------------------------------------------------------------------------
@@ -235,9 +233,8 @@ class TestPhase:
             notes=None,
             state_dir=tmp_path,
         )
-        with pytest.raises(SystemExit):
-            with patch("sys.stdout"):
-                cmd_phase(args)
+        with pytest.raises(SystemExit), patch("sys.stdout"):
+            cmd_phase(args)
 
 
 # ---------------------------------------------------------------------------
@@ -265,9 +262,8 @@ class TestStatus:
         args = argparse.Namespace(
             skill="test-skill", status="invalid", state_dir=tmp_path
         )
-        with pytest.raises(SystemExit):
-            with patch("sys.stdout"):
-                cmd_status(args)
+        with pytest.raises(SystemExit), patch("sys.stdout"):
+            cmd_status(args)
 
 
 # ---------------------------------------------------------------------------

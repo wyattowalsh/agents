@@ -1,5 +1,6 @@
 {
   "name": "agents-docs",
+  "packageManager": "pnpm@10.11.1",
   "private": true,
   "scripts": {
     "dev": "astro dev",
