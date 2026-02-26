@@ -14,11 +14,12 @@ export default [
     items: [
       { slug: 'skills', label: 'Overview' },
       {
-        label: 'Custom (13)',
+        label: 'Custom (14)',
         collapsed: true,
         items: [
           { slug: 'skills/add-badges' },
           { slug: 'skills/agent-conventions' },
+          { slug: 'skills/email-whiz' },
           { slug: 'skills/frontend-designer' },
           { slug: 'skills/honest-review' },
           { slug: 'skills/host-panel' },
@@ -32,7 +33,7 @@ export default [
           { slug: 'skills/wargame' },
         ],
       },
-      { label: 'Installed (20)', slug: 'skills/installed' },
+      { label: 'Installed (19)', slug: 'skills/installed' },
     ],
   },
   {

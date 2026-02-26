@@ -24,9 +24,9 @@ Skills extend your AI agent with domain expertise, structured workflows, and pro
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">10 User-Invocable</span>
+  <span class="stat stat-skill">11 User-Invocable</span>
   <span class="stat stat-agent">3 Convention Skills</span>
-  <span class="stat stat-installed">20 Installed Skills</span>
+  <span class="stat stat-installed">19 Installed Skills</span>
 </div>
 
 ## Understanding Skill Categories
@@ -35,9 +35,9 @@ This repository contains three categories of skills, each serving a different pu
 
 | Category | Count | How they work |
 |----------|-------|---------------|
-| **User-Invocable** | 10 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
+| **User-Invocable** | 11 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
 | **Convention** | 3 | The agent auto-invokes these when it detects relevant context (e.g., editing Python files). Hidden from the `/` menu. |
-| **Installed** | 20 | Third-party skills installed from external sources via `~/.claude/skills/`. |
+| **Installed** | 19 | Third-party skills installed from external sources via `~/.claude/skills/`. |
 
 <Aside type="note" title="Generated docs vs hand-maintained guides">
 Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a deeper curated guide exists (for example, architecture or roadmap notes), the generated skill page links to it.
@@ -45,13 +45,14 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
 
 ---
 
-## User-Invocable Skills (10)
+## User-Invocable Skills (11)
 
 <Badge text="Manual invocation" variant="tip" /> Trigger these with `/skill-name` during a conversation. They appear in the autocomplete menu.
 
 <div class="catalog-skill">
 <CardGrid>
   <LinkCard title="add-badges" href="/skills/add-badges/" description="Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields." />
+  <LinkCard title="email-whiz" href="/skills/email-whiz/" description="Gmail inbox copilot via MCP." />
   <LinkCard title="frontend-designer" href="/skills/frontend-designer/" description="Build production-grade frontend interfaces with modern React, Tailwind CSS, and shadcn/ui." />
   <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review with confidence-scored, evidence-validated findings. Session review or full codebase audit via parallel teams." />
   <LinkCard title="host-panel" href="/skills/host-panel/" description="Host simulated panel discussions and debates among AI-simulated domain experts." />
@@ -80,7 +81,7 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
 Convention skills set `user-invocable: false` in their frontmatter. This hides them from the `/` menu but keeps their descriptions in the agent's context, allowing automatic discovery and invocation when the agent encounters matching file types or patterns.
 </Aside>
 
-## Installed Skills (20)
+## Installed Skills (19)
 
 <Badge text="External" variant="default" /> Third-party skills installed from the [agentskills.io](https://agentskills.io) ecosystem via `npx skills add`. These live in `~/.claude/skills/` and are available across all your projects.
 
@@ -91,7 +92,6 @@ Convention skills set `user-invocable: false` in their frontmatter. This hides t
   <LinkCard title="docs-steward" href="/skills/installed/#docs-steward" description="Maintain and enhance the Astro+Starlight docs site. Syncs generated pages, scores content quality, performs health checks, and proposes site improvements." />
   <LinkCard title="docx" href="/skills/installed/#docx" description="Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files)." />
   <LinkCard title="domain-name-brainstormer" href="/skills/installed/#domain-name-brainstormer" description="Generates creative domain name ideas for your project and checks availability across multiple TLDs (.com, .io, .dev, .ai, etc.)." />
-  <LinkCard title="email-whiz" href="/skills/installed/#email-whiz" description="Gmail inbox management via MCP. Triage emails to inbox zero, generate filters from patterns, audit newsletters, optimize labels, build search queries." />
   <LinkCard title="file-organizer" href="/skills/installed/#file-organizer" description="Intelligently organizes your files and folders across your computer by understanding context, finding duplicates, suggesting better structures, and automating…" />
   <LinkCard title="find-skills" href="/skills/installed/#find-skills" description="Helps users discover and install agent skills when they ask questions like &quot;how do I do X&quot;, &quot;find a skill for X&quot;, &quot;is there a skill that can..." />
   <LinkCard title="frontend-design" href="/skills/installed/#frontend-design" description="Create distinctive, production-grade frontend interfaces with high design quality." />
