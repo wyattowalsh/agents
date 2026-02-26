@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """Wave 0 deterministic pre-scan: detect project type, compute metrics, stratify risk."""
 from __future__ import annotations
-import argparse, json, os, re, subprocess, sys
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
 from collections import Counter
 from pathlib import Path
 
@@ -36,6 +42,13 @@ HIGH_RISK_RE = re.compile(
     r"admin|permission|rbac|acl|security|migration|schema)", re.I)
 SKIP = {".git", "node_modules", "__pycache__", ".venv", "venv", ".tox",
         "dist", "build", ".next", ".nuxt", "target", "vendor", ".mypy_cache"}
+IMPORT_RE: dict[str, re.Pattern[str]] = {
+    "python": re.compile(r"^(?:from\s+(\S+)\s+import|import\s+(\S+))", re.M),
+    "typescript": re.compile(r"""^import\s+.*from\s+['"](\S+)['"]|require\(['"](\S+)['"]\)""", re.M),
+    "javascript": re.compile(r"""^import\s+.*from\s+['"](\S+)['"]|require\(['"](\S+)['"]\)""", re.M),
+    "go": re.compile(r'"(\S+)"'),
+    "rust": re.compile(r"^(?:use\s+(\S+)|mod\s+(\S+))", re.M),
+}
 
 def _git(args: list[str], cwd: Path) -> str:
     try:
@@ -82,16 +95,27 @@ def _metrics(p: Path) -> tuple[int, int]:
             mx = max(mx, d)
     return loc, mx
 
-def _risk(path: str, loc: int, nest: int, hot: set[str]) -> tuple[str, list[str]]:
+def _risk(path: str, loc: int, nest: int, hot: set[str], fan_in: int = 0) -> tuple[str, list[str]]:
     """Classify file risk using a weighted points system.
 
     Security-sensitive triggers carry heavier weight (3 points) than code-quality
     triggers (1 point each). HIGH requires >= 3 points, which means either one
     security trigger alone or three non-security triggers combined.
     MEDIUM requires >= 1 point.
+
+    High fan-in files (imported by many others) are critical dependency hubs:
+    fan_in >= 10 is an automatic HIGH; fan_in >= 5 adds 2 points.
     """
     reasons: list[str] = []
+    # Fan-in >= 10 is an automatic HIGH — these are critical dependency hubs
+    if fan_in >= 10:
+        reasons.append(f"critical dependency hub (fan-in {fan_in})")
+        return "HIGH", reasons
     points = 0
+    # Fan-in >= 5 is a significant dependency indicator (weight: 2)
+    if fan_in >= 5:
+        reasons.append(f"high fan-in ({fan_in} importers)")
+        points += 2
     # Security/data-sensitive triggers (weight: 3)
     if HIGH_RISK_RE.search(path):
         reasons.append("security/data-sensitive path")
@@ -111,6 +135,76 @@ def _risk(path: str, loc: int, nest: int, hot: set[str]) -> tuple[str, list[str]
     if points >= 1:
         return "MEDIUM", reasons
     return "LOW", reasons
+
+def _build_dependency_graph(root: Path, files: list[dict]) -> dict[str, dict[str, list[str]]]:
+    """Build a cross-file dependency graph for the project.
+
+    For each source file, extract import statements using language-appropriate
+    regex and attempt to resolve them to project-local file paths. External
+    packages are silently skipped.
+
+    Returns a dict mapping filepaths to {"imports": [...], "imported_by": [...]}.
+    """
+    try:
+        # Build a lookup from possible module names to relative paths
+        path_lookup: dict[str, str] = {}
+        for f in files:
+            rel = f["path"]
+            p = Path(rel)
+            # Map stem, full relative path, and dotted module paths
+            path_lookup[p.stem] = rel
+            path_lookup[rel] = rel
+            path_lookup[str(p.with_suffix(""))] = rel
+            # Python dotted module name: a/b/c.py -> a.b.c
+            dotted = str(p.with_suffix("")).replace(os.sep, ".").replace("/", ".")
+            path_lookup[dotted] = rel
+
+        graph: dict[str, dict[str, list[str]]] = {}
+        for f in files:
+            rel = f["path"]
+            graph.setdefault(rel, {"imports": [], "imported_by": []})
+
+        for f in files:
+            rel = f["path"]
+            ext = Path(rel).suffix
+            lang = LANG_EXT.get(ext)
+            if not lang:
+                continue
+            pattern = IMPORT_RE.get(lang)
+            if not pattern:
+                continue
+            try:
+                text = (root / rel).read_text(errors="replace")
+            except OSError:
+                continue
+            for m in pattern.finditer(text):
+                # Each regex has up to 2 groups; take the first non-None match
+                raw = next((g for g in m.groups() if g is not None), None)
+                if raw is None:
+                    continue
+                # Normalize: strip leading dots (relative imports), trailing semicolons
+                cleaned = raw.lstrip(".").rstrip(";")
+                # Attempt resolution to a project-local file
+                resolved = path_lookup.get(cleaned)
+                if not resolved:
+                    # Try stripping the first component (e.g. package name)
+                    parts = cleaned.split(".")
+                    if len(parts) > 1:
+                        resolved = path_lookup.get(".".join(parts[1:]))
+                if not resolved:
+                    # Try as a relative path from the file's directory
+                    candidate = str(Path(rel).parent / cleaned.replace(".", os.sep))
+                    resolved = path_lookup.get(candidate)
+                if resolved and resolved != rel:
+                    if resolved not in graph[rel]["imports"]:
+                        graph[rel]["imports"].append(resolved)
+                    graph.setdefault(resolved, {"imports": [], "imported_by": []})
+                    if rel not in graph[resolved]["imported_by"]:
+                        graph[resolved]["imported_by"].append(rel)
+        return graph
+    except Exception:
+        return {}
+
 
 def _node_pm(root: Path) -> str:
     for lock, pm in [("pnpm-lock.yaml", "pnpm"), ("yarn.lock", "yarn"), ("bun.lockb", "bun"), ("bun.lock", "bun")]:
@@ -165,7 +259,7 @@ def scan(root: Path) -> dict:
         for hf in hot_files[:10]:
             fb = _git(["shortlog", "-sn", "--all", "--", hf], root)
             if len(fb.splitlines()) >= max(2, n_contrib // 2): high_blame.append(hf)
-    # Walk files
+    # Walk files — collect metrics first, then build dependency graph, then score risk
     deps = _deps(root); files: list[dict] = []; tloc = 0
     for dp, dns, fns in os.walk(root):
         dns[:] = [d for d in dns if d not in SKIP]
@@ -175,8 +269,13 @@ def scan(root: Path) -> dict:
             langs.add(LANG_EXT[ext])
             fp = Path(dp) / fn; rel = str(fp.relative_to(root))
             loc, nest = _metrics(fp); tloc += loc
-            risk, reasons = _risk(rel, loc, nest, hot_set)
-            files.append({"path": rel, "loc": loc, "max_nesting": nest, "risk": risk, "risk_reasons": reasons})
+            files.append({"path": rel, "loc": loc, "max_nesting": nest})
+    # Build dependency graph and compute fan-in before risk scoring
+    graph = _build_dependency_graph(root, files)
+    for f in files:
+        fan_in = len(graph.get(f["path"], {}).get("imported_by", []))
+        risk, reasons = _risk(f["path"], f["loc"], f["max_nesting"], hot_set, fan_in=fan_in)
+        f["risk"] = risk; f["risk_reasons"] = reasons
     files.sort(key=lambda f: ("HIGH", "MEDIUM", "LOW").index(f["risk"]))
     rs = {"HIGH": 0, "MEDIUM": 0, "LOW": 0}
     for f in files: rs[f["risk"]] += 1
@@ -185,9 +284,11 @@ def scan(root: Path) -> dict:
     tfw = next((fw for kw, fw in TEST_KW.items() if kw in dep_names), None)
     if not tfw and (root / "pyproject.toml").exists() and "pytest" in (root / "pyproject.toml").read_text(errors="replace"):
         tfw = "pytest"
+    high_fan_in = [f for f, data in graph.items() if len(data.get("imported_by", [])) >= 5]
     return {"project_root": str(root), "languages": sorted(langs), "frameworks": fws,
             "build_system": bs, "test_framework": tfw, "package_manager": pm,
             "file_count": len(files), "total_loc": tloc, "files": files, "dependencies": deps,
+            "dependency_graph": graph, "high_fan_in": high_fan_in,
             "git_stats": {"hot_files": hot_files, "high_blame_density": high_blame}, "risk_summary": rs}
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:

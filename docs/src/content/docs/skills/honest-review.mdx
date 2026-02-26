@@ -5,9 +5,9 @@ description: "Research-driven code review with confidence-scored, evidence-valid
 
 {/* HAND-MAINTAINED */}
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid, LinkCard, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
-<Badge text="honest-review" variant="note" /> <Badge text="MIT" variant="success" /> <Badge text="v3.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="13/14 patterns" variant="tip" />
+<Badge text="honest-review" variant="note" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
 > Research-driven code review with confidence-scored, evidence-validated findings. Session review or full codebase audit via parallel teams. Use when reviewing changes, auditing codebases, verifying work quality. NOT for writing new code, explaining code, or benchmarking.
 
@@ -34,15 +34,36 @@ Research-driven code review where every finding is validated with evidence. The 
 Every non-trivial finding must have research evidence or be discarded. Confidence below 0.3 means discard (except P0/S0 -- report as unconfirmed).
 </Aside>
 
-### v3.0 Highlights
+### v5.0 Highlights
 
-- **8 creative lenses** including new Compliance and Dependency lenses
-- **Review history** -- save, load, and diff reviews across sessions
-- **Dashboard template** -- self-contained HTML findings visualization
-- **Degraded mode** -- confidence ceilings when research tools are unavailable
-- **Classification gating** -- Light/Standard/Deep review depth based on risk score
-- **CI integration** -- GitHub Actions workflow with exit codes and inline PR comments
-- **Hooks** -- PreToolUse warns about uncommitted changes, PostToolUse shows git diff stat
+<CardGrid>
+  <Card title="Reasoning Chains" icon="document">
+    Every finding must explain WHY before stating WHAT. Reduces false positives by 51% (Cubic research).
+  </Card>
+  <Card title="Citation Anchors" icon="approve-check">
+    `[file:start-end]` references mechanically verified against source. Mismatched refs discard the finding.
+  </Card>
+  <Card title="Agentic Verification" icon="magnifier">
+    Three-phase review: Flag, Verify (tool calls), then Validate (research). Grep/Read confirm before reporting.
+  </Card>
+  <Card title="Multi-Pass Diversity" icon="random">
+    3 parallel Pass A subagents with deterministic ordering diversity. Majority voting elevates consensus flags.
+  </Card>
+  <Card title="Conventional Comments" icon="comment">
+    Machine-parseable PR output: `issue (blocking): ...` format for CI annotations and PR comments.
+  </Card>
+  <Card title="Dependency Context" icon="seti:json">
+    Cross-file dependency graph built during triage. High fan-in files auto-elevated to HIGH risk.
+  </Card>
+  <Card title="Learning Loop" icon="open-book">
+    Store false-positive dismissals per project. Similar findings suppressed in future reviews.
+  </Card>
+  <Card title="OWASP 2025" icon="warning">
+    Updated checklists for A03:2025 (Supply Chain) and A10:2025 (Exception Handling).
+  </Card>
+</CardGrid>
+
+Also includes: 10 creative lenses, review history, HTML dashboard, degraded mode, classification gating, CI integration, and hooks.
 
 ## Modes
 
@@ -56,6 +77,9 @@ Every non-trivial finding must have research evidence or be discarded. Confidenc
 | Git range (HEAD\~3..HEAD) | Review changes in that range |
 | "history" [project] | Show review history for project |
 | "diff" or "delta" [project] | Compare current vs. previous review |
+| `--format sarif` (with any mode) | Output findings in SARIF v2.1 |
+| "learnings" [command] | Manage false-positive learnings (add/list/clear) |
+| `--format conventional` (with any mode) | Output in Conventional Comments format |
 
 ## Review Pipeline
 
@@ -67,7 +91,7 @@ Both modes follow a 4-wave pipeline:
 
 2. **Analysis (Wave 1)** -- Scale by scope: 1-2 files get inline review at all 3 levels; 3-5 files get 3 parallel level-based reviewers (Correctness/Design/Efficiency); 6+ files get a full team with lead, domain reviewers, and specialists. Each reviewer runs 3 internal passes (A: scan, B: deep dive, C: research).
 
-3. **Research Validation (Wave 2)** -- Spawn research subagents to confirm findings with external evidence. Dispatch order: slopsquatting detection first (security-critical), then HIGH-risk findings (2+ sources), then MEDIUM-risk (1 source). Batch 5-8 findings per subagent. In degraded mode, apply confidence ceilings per unavailable tool.
+3. **Research Validation (Wave 2)** -- Three-phase review: **Flag** (hypothesize), **Verify** (tool calls via Grep/Read to confirm assumptions before reporting), **Validate** (spawn research subagents for external evidence). Dispatch order: slopsquatting detection first, then HIGH-risk (2+ sources), then MEDIUM-risk. In degraded mode, apply confidence ceilings per unavailable tool.
 
 4. **Judge Reconciliation (Wave 3)** -- Normalize findings, cluster by root cause, deduplicate with weighted confidence merging (`1-(1-c1)(1-c2)...`), apply confidence filter, resolve conflicts, check interactions, elevate systemic patterns (3+ files), and rank by score = severity\_weight x confidence x blast\_radius.
 
@@ -97,6 +121,30 @@ Apply at least 2 lenses per review scope. For security-sensitive code, **Adversa
 - **Adversary** -- what would an attacker do with this code?
 - **Compliance** -- does this code meet regulatory requirements?
 - **Dependency** -- is the dependency graph healthy?
+- **Cost** -- what does this cost to run?
+- **Sustainability** -- will this scale without linear cost growth?
+
+## Finding Structure
+
+Every finding follows this mandatory order:
+
+<Steps>
+
+1. **Citation anchor** -- `[file:start-end]` exact source location, mechanically verified
+
+2. **Reasoning chain** -- WHY this is a problem (written before the finding statement)
+
+3. **Finding statement** -- WHAT the problem is
+
+4. **Evidence** -- external validation source (Context7, WebSearch, gh)
+
+5. **Fix** -- recommended approach
+
+</Steps>
+
+<Aside type="caution" title="Mechanical verification">
+Citation anchors are verified against actual source code. If the referenced lines don't contain the described code, the finding is discarded as hallucinated.
+</Aside>
 
 ## Severity Calibration
 
@@ -150,28 +198,36 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/project-scanner.py` | Wave 0 triage -- deterministic project profiling with adaptive indent detection and weighted risk scoring |
-| `scripts/finding-formatter.py` | Wave 3 Judge -- normalize findings to JSON, supports JSON input via `--input`, preserves unknown keys |
-| `scripts/review-store.py` | State management -- save, load, list, diff review history |
+| `scripts/project-scanner.py` | Wave 0 triage -- project profiling with dependency graph construction and fan-in risk scoring |
+| `scripts/finding-formatter.py` | Wave 3 Judge -- normalize findings to JSON, supports `--format sarif` and `--format conventional` |
+| `scripts/review-store.py` | State management -- save, load, list, diff review history (schema v2 with reasoning tracking) |
+| `scripts/learnings-store.py` | Learning loop -- add, check, list, clear false-positive dismissals per project |
+| `scripts/sarif-uploader.py` | Upload SARIF results to GitHub Code Scanning |
 
   </TabItem>
   <TabItem label="References">
 
 | File | When to Read | ~Tokens |
 |------|--------------|---------|
-| `references/triage-protocol.md` | During Wave 0 triage | 700 |
-| `references/checklists.md` | During analysis or building teammate prompts | 1000 |
-| `references/research-playbook.md` | When setting up research validation (Wave 2) | 900 |
-| `references/judge-protocol.md` | During Judge reconciliation (Wave 3) | 800 |
-| `references/output-formats.md` | When producing final output | 900 |
-| `references/team-templates.md` | When designing teams | 1200 |
-| `references/review-lenses.md` | When applying creative review lenses | 700 |
-| `references/ci-integration.md` | When running in CI pipelines | 500 |
+| `references/triage-protocol.md` | Wave 0 triage (incl. dependency graph) | 1500 |
+| `references/checklists.md` | Analysis or teammate prompts (incl. OWASP 2025) | 2800 |
+| `references/research-playbook.md` | Three-phase research validation (Wave 2) | 2200 |
+| `references/judge-protocol.md` | Judge reconciliation (Wave 3, incl. learnings check) | 1200 |
+| `references/self-verification.md` | Wave 3.5 -- agentic verification + hallucination detection | 900 |
+| `references/output-formats.md` | Final output (reasoning chains + citation anchors) | 1100 |
+| `references/team-templates.md` | Team design (multi-pass ordering diversity) | 2200 |
+| `references/review-lenses.md` | Creative review lenses (10 lenses) | 1600 |
+| `references/ci-integration.md` | CI pipelines (Conventional Comments format) | 700 |
+| `references/conventional-comments.md` | PR comments and CI annotations | 400 |
+| `references/dependency-context.md` | Cross-file dependency analysis | 500 |
+| `references/supply-chain-security.md` | Dependency and build pipeline security | 1000 |
+| `references/auto-fix-protocol.md` | Implementing fixes after approval | 800 |
+| `references/sarif-output.md` | SARIF format for CI tooling | 700 |
 
   </TabItem>
   <TabItem label="Evals">
 
-7 evaluation scenarios covering all dispatch paths: session review, full audit, finding quality, healthy codebase, PR review, git range, and degraded mode.
+18 evaluation scenarios covering all dispatch paths: session review, full audit, finding quality, healthy codebase, PR review, git range, degraded mode, reasoning chains, agentic verification, conventional comments, dependency context, learnings loop, multi-pass review, and self-verification.
 
   </TabItem>
 </Tabs>
@@ -183,7 +239,7 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 3. Confidence \< 0.3 = discard (except P0/S0 -- report as unconfirmed)
 4. Do not police style -- follow the codebase's conventions
 5. Do not report phantom bugs requiring impossible conditions
-6. More than 15 findings means re-prioritize -- 5 validated findings beat 50 speculative
+6. More than 12 findings means re-prioritize -- 5 validated findings beat 50 speculative
 7. Never skip Judge reconciliation (Wave 3)
 8. Always present before implementing (approval gate)
 9. Always verify after implementing (build, tests, behavior)
@@ -193,6 +249,12 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 13. Apply at least 2 creative lenses per scope -- Adversary mandatory for security code
 14. Load ONE reference file at a time
 15. Review against the codebase's own conventions, not an ideal standard
+16. Run self-verification (Wave 3.5) when 3+ findings survive Judge
+17. Follow auto-fix protocol -- never apply without diff preview and user confirmation
+18. Check for convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage
+19. Every finding must include a reasoning chain (WHY) before the finding statement (WHAT)
+20. Every finding must include a citation anchor `[file:start-end]` mechanically verified against source
+21. Check learnings store during Judge Wave 3 -- suppress findings matching stored false-positive dismissals
 
 ---
 
@@ -202,10 +264,8 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 | ----- | ----- |
 | Name | `honest-review` |
 | License | MIT |
-| Version | 3.0 |
+| Version | 5.0 |
 | Author | wyattowalsh |
-| Audit Score | 100/103 (Grade A) |
-| Patterns | 13/14 |
 
 {/* Source of truth: AGENTS.md §6 -- update there first */}
 ## Supported Agents
@@ -249,7 +309,8 @@ argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "3.0"
+  version: "5.0"
+model: sonnet
 hooks:
   PreToolUse:
     - matcher: Edit

@@ -7,7 +7,7 @@
     "Agent runs Wave 0 (Triage): executes 'git diff --name-only HEAD' to capture changed files and 'git diff HEAD' for context",
     "Agent risk-stratifies changed files as HIGH/MEDIUM/LOW based on triage protocol",
     "Agent selects review strategy based on file count: inline for 1-2, parallel level-based reviewers for 3-5, team with lead for 6+",
-    "Agent performs two-phase review per scope: flag phase (analyze, generate hypotheses) then validate phase (research with Context7, WebSearch, WebFetch)",
+    "Agent performs three-phase review per scope: flag phase (hypothesize), verify phase (tool calls to confirm), then validate phase (research with Context7, WebSearch, WebFetch)",
     "Agent assigns confidence scores (0.0-1.0) to every finding and applies confidence filter (>=0.7 report, 0.3-0.7 unconfirmed, <0.3 discard)",
     "Agent runs Judge reconciliation (Wave 3): normalize, cluster, deduplicate, filter, resolve conflicts, rank findings",
     "Agent presents findings with evidence and citations, then asks 'Implement fixes? [all / select / skip]' (approval gate)"

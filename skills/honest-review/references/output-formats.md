@@ -183,10 +183,11 @@ TREND: [improving | stable | degrading] — [brief justification]
 Use this structure for each finding in any report format:
 
 ```
-[priority] — [finding-id] [file:line or module] [category]
+[priority] — [finding-id] [file:start-end] [category]
   Level: [Correctness/Design/Efficiency]
   Confidence: [0.0-1.0]
-  Description: [what is wrong or unnecessarily complex]
+  Reasoning: [WHY this is a problem — 2-3 sentences explaining the root cause and risk]
+  Description: [WHAT is wrong — 1 sentence]
   Evidence: [research validation result — doc citation, advisory URL, etc.]
   Impact: [consequence or complexity cost]
   Fix: [recommended approach]
@@ -196,6 +197,32 @@ Use this structure for each finding in any report format:
 **Finding ID format:** `HR-{mode}-{seq}` where mode is `S` (session) or `A` (audit),
 seq is zero-padded 3-digit (e.g., `HR-S-001`, `HR-A-015`).
 See `scripts/finding-formatter.py` for programmatic ID generation.
+
+**Citation anchor format:** `[file:start-end]` references the exact source lines. Anchors are mechanically verified — the referenced lines must exist and contain the described code. Findings with invalid anchors are discarded.
+
+## Conventional Comments Format
+
+Use when `--format conventional` flag is set or when output targets PR annotations.
+See references/conventional-comments.md for the full label taxonomy and severity mapping.
+
+**Format Selection Rule:**
+- **Traditional format** (default): session reviews, full audits, conversation output
+- **Conventional Comments**: `--format conventional` flag, PR reviews (`/honest-review <PR#>`), CI annotations
+
+**Compact example:**
+```
+issue (blocking): Race condition in concurrent session access
+
+**[HR-S-005]** [src/session.py:45-52] | Level: Correctness | Confidence: 0.85
+
+**Reasoning:** Multiple coroutines access session_store without synchronization.
+Under concurrent load, interleaved reads and writes produce stale session data.
+
+**Finding:** Missing lock on shared session store allows race condition.
+
+**Evidence:** Python asyncio docs confirm dict operations are not atomic across await points.
+**Fix:** Wrap session access in asyncio.Lock().
+```
 
 ## Verification Summary
 

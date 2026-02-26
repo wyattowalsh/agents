@@ -142,4 +142,39 @@ Mixed public/private package sources can lead to substitution attacks.
 - Unscoped private packages without registry pinning → P1
 - Mixed public/private sources without explicit ordering → P2
 
+## Build Pipeline Integrity
+
+Aligned with OWASP A03:2025 (Software Supply Chain Failures). Review CI/CD pipeline
+configuration for injection vectors and supply chain compromise risks.
+
+### Script Injection via Untrusted Input
+
+GitHub Actions workflows are vulnerable to script injection when using expressions
+like `${{ github.event.pull_request.title }}` directly in `run:` steps. Attackers
+craft PR titles or branch names containing shell commands.
+
+**Check for:**
+- `${{ github.event.* }}` used directly in `run:` blocks (use environment variables instead)
+- `${{ github.head_ref }}` in `run:` blocks (branch names are attacker-controlled)
+- Workflows triggered by `pull_request_target` with `actions/checkout` of the PR head
+
+### Pinned Dependencies in CI
+
+**Check for:**
+- GitHub Actions using `@main` or `@v1` tags instead of pinned SHA refs
+  - Bad: `uses: actions/checkout@v4`
+  - Good: `uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2`
+- Docker images using `:latest` instead of digest-pinned versions
+- Package managers installing without lockfiles in CI (e.g., `pip install` without `--require-hashes`)
+
+### Artifact Provenance
+
+**Check for:**
+- Published artifacts without SLSA provenance attestation
+- Missing or incomplete SBOM (Software Bill of Materials) for releases
+- Build environments that are not isolated (shared runners with no sandboxing)
+- Secrets exposed in build logs (check for `set -x` or debug flags in CI scripts)
+
+See references/ci-integration.md for CI pipeline integration patterns.
+
 Cross-references: references/checklists.md (AI Code Smells, Security), references/research-playbook.md (Slopsquatting Detector, Dependency Health Checker).

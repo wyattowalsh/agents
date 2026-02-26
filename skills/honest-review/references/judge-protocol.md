@@ -56,6 +56,19 @@ HR-S-003, merge the library doc citation into its evidence field.
 
 ## Step 4 — Confidence Filter
 
+**Step 4a — Learnings Check:**
+Before applying the confidence filter, check findings against stored learnings:
+
+```bash
+cat findings.json | python scripts/learnings-store.py check --project [project-slug]
+```
+
+Findings matching a stored false-positive learning have their confidence reduced by 0.3.
+Use `--dry-run` to preview suppressions before applying. Suppress findings only when
+the match is relevant to the current review context.
+
+See scripts/learnings-store.py for matching criteria (file path + category/keyword).
+
 | Confidence | Action |
 |------------|--------|
 | >= 0.7 | Report with full confidence |
@@ -165,3 +178,6 @@ CONFLICTS: HR-S-008 vs HR-S-011 (resolved: HR-S-008 wins)
 BATCHES: B-1 [HR-S-005, HR-S-009] — session locking (implement together)
 ======================================
 ```
+
+**Schema version:** Include `"schema": 2` in all JSON output. v4.0 reviews (schema 1 or missing)
+are loaded with `reasoning: null` for backward compatibility.

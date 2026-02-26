@@ -9,7 +9,7 @@ argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "4.0"
+  version: "5.0"
 model: sonnet
 hooks:
   PreToolUse:
@@ -52,6 +52,11 @@ Use these terms exactly throughout both modes:
 | **convention awareness** | Check for AGENTS.md/CLAUDE.md/.cursorrules — review against project's own agent instructions                                               |
 | **degraded mode**        | Operation when research tools are unavailable — confidence ceilings applied per tool                                                       |
 | **review depth**         | Classification-gated review intensity: Light (0-3), Standard (4-6), Deep (7-10)                                                            |
+| **reasoning chain**      | Mandatory explanation of WHY before the finding statement. Reduces false positives.                                                         |
+| **citation anchor**      | `[file:start-end]` reference linking a finding to specific source lines. Mechanically verified.                                             |
+| **conventional comment** | Structured PR output label: praise/nitpick/suggestion/issue/todo/question/thought with (blocking)/(non-blocking) decoration.                |
+| **dependency graph**     | Import/export map built during Wave 0 triage. Informs blast radius and cross-file impact.                                                   |
+| **learning**             | A stored false-positive dismissal that suppresses similar future findings. Scoped per project.                                              |
 
 ## Dispatch
 
@@ -66,6 +71,8 @@ Use these terms exactly throughout both modes:
 | "history" [project]                   | Show review history for project                            |
 | "diff" or "delta" [project]           | Compare current vs. previous review                        |
 | `--format sarif` (with any mode)      | Output findings in SARIF v2.1 (references/sarif-output.md) |
+| "learnings" [command]                 | Manage false-positive learnings (add/list/clear)           |
+| `--format conventional` (with any mode) | Output findings in Conventional Comments format          |
 | Unrecognized input                    | Ask for clarification                                      |
 
 ## Review Posture
@@ -142,22 +149,41 @@ Apply at least 2 lenses per review scope. For security-sensitive code, Adversary
 
 Reference: read references/review-lenses.md
 
+## Finding Structure
+
+Every finding must follow this order:
+
+1. **Citation anchor**: `[file:start-end]` — exact source location
+2. **Reasoning chain**: WHY this is a problem (2-3 sentences, written BEFORE the finding)
+3. **Finding statement**: WHAT the problem is (1 sentence)
+4. **Evidence**: External validation source (Context7, WebSearch, etc.)
+5. **Fix**: Recommended approach
+
+Never state a finding without first explaining the reasoning.
+Citation anchors are mechanically verified — the referenced lines must exist and contain
+the described code. If verification fails, discard the finding.
+
 ## Research Validation
 
 THIS IS THE CORE DIFFERENTIATOR. Do not report findings based solely
 on LLM knowledge. For every non-trivial finding, validate with research:
 
-**Two-phase review per scope**:
+**Three-phase review per scope**:
 
 1. **Flag phase**: Analyze code, generate hypotheses
-2. **Validate phase**: Spawn research subagents to confirm with evidence:
+2. **Verify phase**: Before reporting, use tool calls to confirm assumptions:
+   - Grep for actual usage patterns claimed in the finding
+   - Read the actual file to confirm cited lines and context
+   - Check test files for coverage of the flagged code path
+   - If code does not match the hypothesis, discard immediately
+3. **Validate phase**: Spawn research subagents to confirm with evidence:
    - Context7: library docs for API correctness
    - WebSearch (Brave, DuckDuckGo, Exa): best practices, security advisories
    - DeepWiki: unfamiliar repo architecture and design patterns
    - WebFetch: package registries (npm, PyPI, crates.io)
    - gh: open issues, security advisories
-3. Assign confidence score (0.0-1.0) per Confidence Scoring Rubric
-4. Only report findings with evidence. Cite sources.
+4. Assign confidence score (0.0-1.0) per Confidence Scoring Rubric
+5. Only report findings with evidence. Cite sources.
 
 Research playbook: read references/research-playbook.md
 
@@ -327,6 +353,8 @@ Load ONE reference at a time. Do not preload all references into context.
 | references/team-templates.md        | When designing teams (Mode 2 or large Mode 1)                 | 2200    |
 | references/review-lenses.md         | When applying creative review lenses                          | 1600    |
 | references/ci-integration.md        | When running in CI pipelines                                  | 700     |
+| references/conventional-comments.md | When producing PR comments or CI annotations              | 400     |
+| references/dependency-context.md    | During Wave 0 triage for cross-file dependency analysis   | 500     |
 
 | Script                       | When to Run                                                                    |
 | ---------------------------- | ------------------------------------------------------------------------------ |
@@ -334,6 +362,7 @@ Load ONE reference at a time. Do not preload all references into context.
 | scripts/finding-formatter.py | Wave 3 Judge — normalize findings to structured JSON (supports --format sarif) |
 | scripts/review-store.py      | Save, load, list, diff review history                                          |
 | scripts/sarif-uploader.py    | Upload SARIF results to GitHub Code Scanning                                   |
+| scripts/learnings-store.py   | Manage false-positive learnings (add, check, list, clear)              |
 
 | Template                 | When to Render                                                  |
 | ------------------------ | --------------------------------------------------------------- |
@@ -346,7 +375,7 @@ Load ONE reference at a time. Do not preload all references into context.
 3. Confidence < 0.3 = discard (except P0/S0 — report as unconfirmed)
 4. Do not police style — follow the codebase's conventions
 5. Do not report phantom bugs requiring impossible conditions
-6. More than 15 findings means re-prioritize — 5 validated findings beat 50 speculative
+6. More than 12 findings means re-prioritize — 5 validated findings beat 50 speculative
 7. Never skip Judge reconciliation (Wave 3)
 8. Always present before implementing (approval gate)
 9. Always verify after implementing (build, tests, behavior)
@@ -359,3 +388,6 @@ Load ONE reference at a time. Do not preload all references into context.
 16. Run self-verification (Wave 3.5) when 3+ findings survive Judge — skip for fewer findings or fully degraded mode
 17. Follow auto-fix protocol for implementing fixes — never apply without diff preview and user confirmation
 18. Check for convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage — validate code against project's declared rules
+19. Every finding must include a reasoning chain (WHY) before the finding statement (WHAT)
+20. Every finding must include a citation anchor `[file:start-end]` mechanically verified against source
+21. Check learnings store during Judge Wave 3 Step 4 — suppress findings matching stored false-positive dismissals

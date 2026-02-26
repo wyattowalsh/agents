@@ -140,10 +140,12 @@ Context-triggered agents that run cross-cutting analysis across all domains. Act
 
 | Files    | Teammates | Subagents per Teammate | Notes                                |
 | -------- | --------- | ---------------------- | ------------------------------------ |
-| Under 20 | 2-3       | 3-5 per wave           | Merge test into domain reviewer      |
-| 20-100   | 3-4       | 5-8 per wave           | Standard archetypes above            |
-| 100-500  | 4-5       | 5-8 per wave           | Split large domains into sub-domains |
-| 500+     | 5-6       | 5-8 per wave           | Multiple passes, state scope limits  |
+| Under 20 | 2-3       | 5-7 per wave           | Merge test into domain reviewer      |
+| 20-100   | 3-4       | 7-10 per wave          | Standard archetypes above            |
+| 100-500  | 4-5       | 7-10 per wave          | Split large domains into sub-domains |
+| 500+     | 5-6       | 7-10 per wave          | Multiple passes, state scope limits  |
+
+**Note:** Pass A now uses 3 parallel subagents with ordering diversity (up from 1), adding +2 subagents per teammate per wave compared to v4.0.
 
 **Diminishing returns:** More than 6 parallel reviewers per wave shows diminishing quality. Prefer deeper per-reviewer analysis over wider fan-out.
 
@@ -159,9 +161,10 @@ Context-triggered agents that run cross-cutting analysis across all domains. Act
 Each domain teammate runs 3 internal passes of parallel subagents:
 
 ```
-Pass A: Quick Scan (haiku subagents, 1 per chunk of 3-5 files)
-  → For each file: check all 3 levels, flag potential issues
-  → Output: list of flagged files with preliminary findings
+Pass A: Multi-Pass Scan with Ordering Diversity (3 parallel haiku subagents)
+  → Each subagent scans ALL files but in a different order
+  → Majority voting determines priority routing to Pass B
+  → Output: list of flagged files with preliminary findings and vote counts
 
 Pass B: Deep Dive (opus subagents, 1 per HIGH-risk flagged file)
   → Full analysis of flagged files with creative lenses
@@ -187,7 +190,25 @@ Use this template when spawning domain reviewers. Inject triage context from Wav
 >
 > Conduct a deep review of every file in your ownership using 3 internal passes:
 >
-> **Pass A — Quick Scan:** Spawn parallel haiku subagents (1 per chunk of 3-5 files). Each scans all three levels:
+> **Pass A — Multi-Pass Scan with Ordering Diversity (haiku subagents):**
+>
+> Dispatch 3 parallel haiku subagents, each scanning ALL files but in a different order:
+>
+> | Subagent | File Ordering | Rationale |
+> |----------|--------------|-----------|
+> | Pass A-1 | Discovery order (as listed by scanner) | Natural project structure |
+> | Pass A-2 | Reversed order | Reverses primacy bias — files seen last in A-1 are seen first |
+> | Pass A-3 | Sorted by LOC descending (largest first) | Prioritizes complex files that benefit from fresh attention |
+>
+> **Majority voting:** A file flagged by 2+ of the 3 subagents gets priority routing to Pass B.
+> Files flagged by only 1 subagent are included but at lower priority.
+> Files flagged by 0 subagents are skipped in Pass B (quick scan only).
+>
+> This deterministic diversity achieves the same perspective-diversity benefit as random ordering
+> (research: BugBot found 2x more bugs with ordering diversity) without requiring RNG.
+> Each subagent receives the same prompt and checklist — only the file order differs.
+>
+> Each subagent scans all three levels:
 >
 > - Correctness: error handling, security, boundary conditions, resource leaks
 > - Design: coupling, test coverage, interface contracts, cognitive complexity
@@ -220,7 +241,7 @@ Use this template when spawning level-specific reviewers for session review.
 >
 > Run 3 internal passes:
 >
-> - **Pass A:** Quick scan all files (haiku subagents, 1 per 3-5 file chunk)
+> - **Pass A:** Multi-pass scan with ordering diversity (3 parallel haiku subagents, each scans ALL files in different order, majority voting)
 > - **Pass B:** Deep dive HIGH-risk flagged files (opus subagents, 1 per file)
 > - **Pass C:** Research validate findings (batched per references/research-playbook.md)
 >
