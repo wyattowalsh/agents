@@ -36,10 +36,18 @@ Skip when ANY condition is true:
    - Is there a compensating control or design pattern that mitigates the risk?
    - Could the "defect" actually be intentional or documented behavior?
 
+2.5. **Agentic verification**: For each target finding, verify the citation anchor:
+   - Read the actual source file at the cited `[file:start-end]` location
+   - Confirm the code at those lines matches what the finding describes
+   - Grep for the claimed pattern across the codebase (is it systemic or isolated?)
+   - Check if existing tests exercise the flagged code path
+   If the cited code does not match the finding's description, classify as "Hallucinated."
+
 3. **Classify outcome** per finding:
    - **Survives**: counter-argument fails, finding stands
    - **Weakened**: counter-argument partially succeeds (e.g., edge case, low real-world probability)
    - **Disproven**: counter-argument fully succeeds with evidence
+   - **Hallucinated**: citation anchor does not match actual source code, or finding describes code that does not exist
 
 4. **Apply confidence adjustments** (see below).
 
@@ -54,6 +62,7 @@ Skip when ANY condition is true:
 | Survives  | +0.05 (cap at 0.99)  | Adversarial pass strengthens confidence    |
 | Weakened  | −0.10 (floor at 0.0) | Partial counter-argument reduces certainty |
 | Disproven | Set to 0.0 → discard | Full counter-argument invalidates finding  |
+| Hallucinated | Set to 0.0 → discard | Citation does not match source code — finding is fabricated |
 
 After adjustment, re-run the confidence filter:
 

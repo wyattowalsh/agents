@@ -7,6 +7,7 @@ Run honest-review in CI pipelines for automated code review on pull requests.
 - [GitHub Actions](#github-actions)
 - [Exit Codes](#exit-codes)
 - [Inline PR Comments](#inline-pr-comments)
+- [Conventional Comments in PR Annotations](#conventional-comments-in-pr-annotations)
 - [Configuration](#configuration)
 
 ## GitHub Actions
@@ -62,18 +63,44 @@ Configure blocking behavior in the workflow:
 
 ## Inline PR Comments
 
-Post findings as inline PR comments using the GitHub CLI:
+Post findings as inline PR comments using the GitHub CLI with Conventional Comments format.
+
+## Conventional Comments in PR Annotations
+
+When posting review findings as PR comments, use Conventional Comments format
+(references/conventional-comments.md) for machine-parseable, human-friendly output.
+
+**Posting a finding as a PR comment:**
 
 ```bash
-# Post a review comment on a specific file and line
 gh api repos/{owner}/{repo}/pulls/{pr}/comments \
   --method POST \
-  -f body="**HR-S-001** [P1, Confidence: 0.85] Missing input validation\n\nEvidence: OWASP A03:2021\nFix: Add validation middleware" \
-  -f commit_id="$(git rev-parse HEAD)" \
-  -f path="src/api/users.py" \
-  -F line=45 \
-  -f side="RIGHT"
+  -f body="$(cat <<'EOF'
+issue (non-blocking): Missing input validation on user-supplied path
+
+**[HR-S-003]** [src/api/files.py:45-52] | Level: Correctness | Confidence: 0.85
+
+**Reasoning:** The `file_path` parameter from the request body is passed directly
+to `open()` without sanitization. An attacker could use path traversal (../) to
+read arbitrary files on the server.
+
+**Finding:** Path traversal vulnerability in file upload endpoint.
+
+**Evidence:** OWASP A01:2021 Broken Access Control
+**Fix:** Use `pathlib.Path.resolve()` and verify the resolved path is within the allowed directory.
+EOF
+)" \
+  -f path="src/api/files.py" \
+  -f line=45 \
+  -f side="RIGHT" \
+  -f commit_id="$(gh pr view {pr} --json headRefOid -q .headRefOid)"
 ```
+
+**Label consistency:** All CI-posted comments MUST use Conventional Comments format.
+This enables automated parsing by downstream tools and provides consistent developer experience
+across manual reviews and CI annotations.
+
+See references/conventional-comments.md for the full label taxonomy and severity mapping.
 
 For batch posting, pipe findings through `scripts/finding-formatter.py` and iterate over the JSON output.
 

@@ -93,6 +93,8 @@ Read during analysis (Step 3) or when building teammate prompts.
 
 ## Context-Dependent: Security
 
+Updated for OWASP Top 10 2025 — includes A03:2025 (Supply Chain) and A10:2025 (Exception Handling).
+
 Apply when code touches auth, payments, user data, network I/O, or file operations.
 
 - Check broken access control: missing authorization checks, privilege escalation paths
@@ -103,6 +105,8 @@ Apply when code touches auth, payments, user data, network I/O, or file operatio
 - Check auth boundaries: session management, token validation, CSRF protection
 - Check exception info leakage: stack traces, internal paths, or DB schemas in error responses
 - Check SSRF: unvalidated URLs in server-side requests
+- **Software supply chain failures (OWASP A03:2025)**: Verify all dependencies exist in registries (slopsquatting detection). Check for unverified/unsigned artifacts, missing SBOM, dependency confusion between public/private scopes. See references/supply-chain-security.md for the full supply chain audit protocol.
+- **Mishandling of exceptional conditions (OWASP A10:2025)**: Check error paths that leak information (stack traces, internal paths, database errors in responses). Flag catch-all blocks that swallow critical errors without propagation. Verify async error chains propagate correctly (unhandled promise rejections, uncaught exceptions in goroutines). Check resource cleanup in error paths (file handles, database connections, locks).
 
 IMPORTANT: Research-validate security findings against current OWASP guidance
 and library-specific security docs via WebSearch and Context7.

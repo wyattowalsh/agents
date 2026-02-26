@@ -50,13 +50,14 @@ def review_filename(review_date: str, project: str, mode: str) -> str:
     return f"{review_date}-{slugify(project)}-{mode}.json"
 
 
-def compute_statistics(findings: list[dict[str, Any]]) -> dict[str, Any]:
+def compute_statistics(findings: list[dict[str, Any]], *, schema_version: int = 1) -> dict[str, Any]:
     """Derive statistics block from a findings array."""
     severity_counter: Counter[str] = Counter()
     level_counter: Counter[str] = Counter()
     discarded = 0
     reported = 0
     strengths = 0
+    with_reasoning = 0
 
     for f in findings:
         priority = f.get("priority", "")
@@ -66,6 +67,10 @@ def compute_statistics(findings: list[dict[str, Any]]) -> dict[str, Any]:
         # Strengths are findings whose priority starts with S
         if priority.startswith("S"):
             strengths += 1
+
+        # Track reasoning chain presence (v5.0 adoption metric)
+        if f.get("reasoning"):
+            with_reasoning += 1
 
         # Confidence-based classification
         # P0/S0 still reported as unconfirmed, but others below 0.3 are discarded
@@ -80,10 +85,13 @@ def compute_statistics(findings: list[dict[str, Any]]) -> dict[str, Any]:
             level_counter[level.lower()] += 1
 
     return {
+        "schema_version": schema_version,
         "total": len(findings),
         "reported": reported,
         "discarded": discarded,
         "strengths": strengths,
+        "with_reasoning": with_reasoning,
+        "total_findings": len(findings),
         "by_severity": {
             "P0": severity_counter.get("P0", 0),
             "P1": severity_counter.get("P1", 0),
@@ -279,13 +287,14 @@ def cmd_save(args: argparse.Namespace) -> None:
     project_slug = slugify(args.project)
 
     review = {
+        "schema": 2,
         "date": today,
         "project": project_slug,
         "mode": args.mode,
         "commit": args.commit or "",
         "scope": args.scope or "",
         "findings": findings,
-        "statistics": compute_statistics(findings),
+        "statistics": compute_statistics(findings, schema_version=2),
     }
 
     state = ensure_state_dir()
@@ -311,6 +320,12 @@ def cmd_load(args: argparse.Namespace) -> None:
         json.dump({"error": f"failed to read {path.name}: {e}"}, sys.stdout, indent=2)
         print()
         sys.exit(1)
+
+    # Backward compatibility: handle v4.0 reviews (no schema field or schema 1)
+    if data.get("schema") is None or data.get("schema") == 1:
+        data.setdefault("schema", 1)
+        for finding in data.get("findings", []):
+            finding.setdefault("reasoning", None)
 
     json.dump(data, sys.stdout, indent=2)
     print()

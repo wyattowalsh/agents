@@ -98,7 +98,7 @@ Cross-reference issue titles/bodies against hot file paths. Elevate matching fil
 
 Assign every in-scope file to a tier using scanning metrics and git signals.
 
-**HIGH** -- any trigger fires: touches auth/payments/crypto/user-data/external-I/O; max nesting >= 5; top 10% churn; LOC > 300; 5+ authors; open bugs referencing the file.
+**HIGH** -- any trigger fires: touches auth/payments/crypto/user-data/external-I/O; max nesting >= 5; top 10% churn; LOC > 300; 5+ authors; open bugs referencing the file; fan-in >= 5 (imported by 5+ files).
 Route: deep specialist review with research validation. Activate context-dependent checklists (security, resilience, data migration as applicable).
 
 **MEDIUM** -- no HIGH trigger, but any of: business logic, data models, or API handlers; moderate complexity (nesting 3-4, LOC 50-300); above-median churn; 2-4 authors.
@@ -106,6 +106,31 @@ Route: standard review at all three levels. Research-validate non-obvious findin
 
 **LOW** -- all of: config/docs/static assets/simple utilities; LOC < 50; below-median churn; 1-2 authors; no open issues.
 Route: quick scan only. Flag obvious defects. Skip deep analysis and creative lenses.
+
+## Dependency Graph Construction
+
+Build a cross-file dependency graph to inform blast radius and impact analysis.
+Run `scripts/project-scanner.py` which includes dependency graph output, or extract manually.
+
+**When to build:**
+- Full codebase audit (Mode 2): always
+- Session review with 6+ files: always
+- Session review with 3-5 files: build if any file is HIGH risk
+- Session review with 1-2 files: skip
+
+**Fan-in risk adjustment:**
+Files with high fan-in (many importers) carry elevated blast radius:
+
+| Fan-in | Risk Adjustment |
+|--------|----------------|
+| 5-9 importers | +2 risk points (elevates to HIGH or MEDIUM) |
+| 10+ importers | Automatic HIGH risk |
+
+**Changed files with external importers:**
+When a changed file has importers NOT in the change set, flag for cross-file impact review.
+These are the most likely sources of integration-related defects.
+
+See references/dependency-context.md for construction commands and graph structure.
 
 ## Classification Gating — Review Depth
 
@@ -192,6 +217,13 @@ SPECIALIST TRIGGERS:
   [ ] Data migration — schema changes or migration files detected
   [ ] Backward compat — public API surface changes detected
   [ ] i18n/a11y — user-facing UI components detected
+
+DEPENDENCY GRAPH:
+  Total cross-file dependencies: [N]
+  High fan-in files (5+ importers):
+    [path] — imported by [N] files
+  Changed files with external importers:
+    [path] — [N] importers not in change set
 
 CONTEXT FOR REVIEWERS:
   Entry points: [list]

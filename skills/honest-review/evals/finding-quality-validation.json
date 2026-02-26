@@ -10,6 +10,8 @@
     "Findings between 0.3-0.7 are marked as 'unconfirmed' in the report",
     "Every non-trivial finding includes research evidence with cited source (Context7, WebSearch, or gh)",
     "Agent acknowledges at least one strength in the reviewed code (minimum 1 per scope)",
-    "Agent maintains positive-to-constructive ratio targeting 3:1"
+    "Agent maintains positive-to-constructive ratio targeting 3:1",
+    "Every reported finding includes a reasoning chain (WHY) before the finding statement (WHAT)",
+    "Every finding includes a citation anchor [file:start-end] that has been mechanically verified against source"
   ]
 }

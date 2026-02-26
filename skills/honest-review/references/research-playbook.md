@@ -4,7 +4,7 @@ Validate review findings with live research instead of relying on static checkli
 
 ## Contents
 
-- [Two-Phase Review Pattern](#two-phase-review-pattern)
+- [Three-Phase Review Pattern](#three-phase-review-pattern)
 - [Research Tools and When to Use](#research-tools-and-when-to-use)
 - [Research Subagent Templates](#research-subagent-templates)
 - [Parallelism Strategy](#parallelism-strategy)
@@ -33,10 +33,15 @@ When operating in degraded mode:
 4. Reduce batch sizing — fewer findings per subagent when validation is limited
 5. Increase the "obvious issue" threshold — report only high-impact findings
 
-## Two-Phase Review Pattern
+## Three-Phase Review Pattern
 
 Phase 1 (Flag): Analyze code using LLM knowledge. Generate hypotheses.
-Phase 2 (Validate): For each hypothesis, spawn research subagent(s). Only report findings with evidence.
+Phase 2 (Verify): For each hypothesis, use tool calls to confirm before dispatching research:
+  - Grep the codebase for the pattern claimed in the finding
+  - Read the actual file at the cited lines to confirm the code exists as described
+  - Check if tests cover the flagged code path
+  - If the code does not match the hypothesis, discard immediately (no research needed)
+Phase 3 (Validate): For each verified hypothesis, spawn research subagent(s). Only report findings with evidence.
 
 ## Research Tools and When to Use
 
@@ -115,6 +120,21 @@ Prompt template:
 - Steps: Use DeepWiki (ask_question) to query AI-generated documentation about the repository. Cross-reference findings with Context7 for library-specific details.
 - Output: architectural summary, relevant design decisions, key patterns
 - Model: haiku (structured extraction from DeepWiki responses)
+
+### Agentic Verifier
+
+Spawn when: a finding makes a claim about code structure, behavior, or patterns.
+
+Prompt template:
+
+- Input: finding description, claimed file path and line range, claimed pattern
+- Steps: Grep for the claimed pattern in the codebase. Read the actual file at the cited lines. Compare the actual code against the finding's claim. Check if test files cover the flagged code path.
+- Output: verified (bool), actual_code_snippet (string), discrepancy (string if not verified)
+- Model: haiku (fast tool calls, structured verification)
+
+Agentic verification runs BEFORE research validation. Findings that fail verification
+(cited code does not match the claim) are discarded without consuming research cycles.
+This reduces both false positives and unnecessary research tool calls.
 
 IMPORTANT: Prioritize this check — slopsquatting is a supply chain attack vector.
 Non-existent packages in import statements indicate hallucinated dependencies.

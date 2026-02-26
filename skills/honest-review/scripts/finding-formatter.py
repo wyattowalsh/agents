@@ -15,12 +15,12 @@ import re
 import sys
 from typing import Any
 
-# Block: "P0 — src/auth.py:45 Security"
+# Block: "P0 — src/auth.py:45 Security" or "P0 — src/auth.py:45-52 Security"
 BLOCK_HDR = re.compile(
-    r"^([PS]\d)\s*[—\-]+\s*(\S+?)(?::(\d+))?\s+(.+?)\s*$"
+    r"^([PS]\d)\s*[—\-]+\s*(\S+?)(?::(\d+(?:-\d+)?))?\s+(.+?)\s*$"
 )
 FIELD = re.compile(
-    r"^\s+(Level|Confidence|Description|Evidence|Impact|Fix|Effort):\s*(.+)$",
+    r"^\s+(Level|Confidence|Description|Evidence|Impact|Fix|Effort|Reasoning):\s*(.+)$",
     re.IGNORECASE,
 )
 # Compact: "P1: [file:line] desc — evidence: cite. Fix: approach. (Level)"
@@ -81,17 +81,42 @@ def _is_float(s: str) -> bool:
         return False
 
 
+_CITE_RANGE = re.compile(r":(\d+)-(\d+)$")
+
+
+def _validate_citation_anchor(location: str) -> None:
+    """Warn to stderr if a file:start-end citation has invalid range values."""
+    m = _CITE_RANGE.search(location)
+    if not m:
+        return
+    start, end = int(m[1]), int(m[2])
+    if start <= 0 or end <= 0:
+        print(
+            f"Warning: non-positive line numbers in citation '{location}' "
+            f"(start={start}, end={end})",
+            file=sys.stderr,
+        )
+    elif start > end:
+        print(
+            f"Warning: start > end in citation '{location}' "
+            f"(start={start}, end={end})",
+            file=sys.stderr,
+        )
+
+
 _KNOWN_KEYS = {
     "id", "priority", "location", "category", "level", "confidence",
-    "description", "evidence", "impact", "fix", "effort",
+    "description", "evidence", "impact", "fix", "effort", "reasoning",
 }
 
 
 def normalize(f: dict[str, Any], fid: str) -> dict[str, Any]:
+    location = f.get("location", "").strip("[] ")
+    _validate_citation_anchor(location)
     out: dict[str, Any] = {
         "id": fid,
         "priority": f.get("priority", ""),
-        "location": f.get("location", "").strip("[] "),
+        "location": location,
         "category": f.get("category", ""),
         "level": f.get("level", ""),
         "confidence": f.get("confidence") if isinstance(f.get("confidence"), float) else None,
@@ -100,6 +125,7 @@ def normalize(f: dict[str, Any], fid: str) -> dict[str, Any]:
         "impact": f.get("impact", ""),
         "fix": f.get("fix", ""),
         "effort": f.get("effort", ""),
+        "reasoning": f.get("reasoning") or None,
     }
     # Preserve unknown keys for forward compatibility.
     for key, val in f.items():
@@ -148,10 +174,13 @@ def main() -> None:
     )
     ap.add_argument(
         "--format",
-        choices=["json", "sarif", "json-schema"],
+        choices=["json", "sarif", "json-schema", "conventional"],
         default="json",
         dest="output_format",
-        help="Output format: json (default), sarif (SARIF v2.1), json-schema (verbose schema).",
+        help=(
+            "Output format: json (default), sarif (SARIF v2.1), "
+            "json-schema (verbose schema), conventional (human-readable)."
+        ),
     )
     args = ap.parse_args()
 
@@ -176,6 +205,42 @@ def main() -> None:
             ))
         out = [normalize(f, make_id(args.mode, i + 1)) for i, f in enumerate(findings)]
 
+    if args.output_format == "conventional":
+        _LABEL_MAP = {
+            "P0": "issue (blocking)", "S0": "issue (blocking)",
+            "P1": "issue (non-blocking)", "S1": "issue (non-blocking)",
+            "P2": "suggestion (non-blocking)", "S2": "suggestion (non-blocking)",
+            "P3": "nitpick (if-minor)", "S3": "nitpick (if-minor)",
+        }
+        for f in out:
+            priority = f.get("priority", "")
+            label = _LABEL_MAP.get(priority, "finding")
+            decoration = f.get("category", "") or f.get("level", "") or priority
+            fid = f.get("id", "")
+            location = f.get("location", "")
+            level = f.get("level", "") or priority
+            confidence = f.get("confidence")
+            confidence_str = f"{confidence}" if confidence is not None else "N/A"
+            reasoning = f.get("reasoning") or "N/A"
+            description = f.get("description", "")
+            evidence = f.get("evidence", "") or "N/A"
+            fix = f.get("fix", "") or "N/A"
+            print(f"{label} ({decoration}): {description}")
+            print()
+            print(
+                f"**[{fid}]** [{location}] | Level: {level} | "
+                f"Confidence: {confidence_str}"
+            )
+            print()
+            print(f"**Reasoning:** {reasoning}")
+            print()
+            print(f"**Finding:** {description}")
+            print()
+            print(f"**Evidence:** {evidence}")
+            print(f"**Fix:** {fix}")
+            print()
+        return
+
     if args.output_format == "sarif":
         _LEVEL_MAP = {"P0": "error", "P1": "error", "S0": "error",
                        "P2": "warning", "S1": "warning", "S2": "warning",
@@ -186,7 +251,7 @@ def main() -> None:
             "runs": [{
                 "tool": {"driver": {
                     "name": "honest-review",
-                    "version": "4.0",
+                    "version": "5.0",
                     "informationUri": "https://github.com/wyattowalsh/agents",
                     "rules": [{"id": f["id"], "shortDescription": {"text": f.get("description", "")[:200]}}
                               for f in out]
@@ -198,7 +263,13 @@ def main() -> None:
                     "locations": [{
                         "physicalLocation": {
                             "artifactLocation": {"uri": f.get("location", "").split(":")[0]},
-                            "region": {"startLine": int(f["location"].split(":")[1]) if ":" in f.get("location", "") else 1}
+                            "region": {
+                                "startLine": (
+                                    int(f["location"].split(":")[1].split("-")[0])
+                                    if ":" in f.get("location", "")
+                                    else 1
+                                )
+                            }
                         }
                     }] if f.get("location") else [],
                     "rank": int(float(f.get("confidence", 0.5)) * 100),
