@@ -209,7 +209,7 @@ def write_index_page(nodes: list) -> None:
     parts.append("<CardGrid>")
     parts.append(
         '  <LinkCard title="Skills Index" href="/skills/"'
-        " description=\"Browse custom and installed skills grouped by"
+        ' description="Browse custom and installed skills grouped by'
         ' invocation model, with install commands and docs pages." />'
     )
     if has_mcp_overview:
@@ -217,12 +217,10 @@ def write_index_page(nodes: list) -> None:
             mcp_desc = f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`."
         else:
             mcp_desc = "Hand-maintained overview of configured MCP servers."
-        parts.append(
-            f'  <LinkCard title="MCP Overview" href="/mcp/" description="{escape_attr(mcp_desc)}" />'
-        )
+        parts.append(f'  <LinkCard title="MCP Overview" href="/mcp/" description="{escape_attr(mcp_desc)}" />')
     parts.append(
         '  <LinkCard title="CLI Reference" href="/cli/"'
-        " description=\"Commands for scaffolding, validation, packaging,"
+        ' description="Commands for scaffolding, validation, packaging,'
         ' installation, and docs generation workflows." />'
     )
     parts.append("</CardGrid>")
@@ -464,8 +462,7 @@ def write_cli_page() -> None:
     parts.append("```")
     parts.append("")
     parts.append(
-        "The command also adds the `mcp/` directory to the uv workspace "
-        "in `pyproject.toml` if not already present."
+        "The command also adds the `mcp/` directory to the uv workspace in `pyproject.toml` if not already present."
     )
     parts.append("")
     parts.append("```bash")
@@ -490,10 +487,7 @@ def write_cli_page() -> None:
     # --- wagents validate ---
     parts.append("### `wagents validate` -- Check All Assets")
     parts.append("")
-    parts.append(
-        "Validate frontmatter and structure for every skill, agent, "
-        "and MCP server in the repository:"
-    )
+    parts.append("Validate frontmatter and structure for every skill, agent, and MCP server in the repository:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents validate")
@@ -507,18 +501,13 @@ def write_cli_page() -> None:
         "| **Skills** | Required `name` and `description` fields, kebab-case naming, "
         "name matches directory, description within 1024 chars, body is non-empty |"
     )
-    parts.append(
-        "| **Agents** | Required `name` and `description` fields, "
-        "kebab-case naming, name matches filename |"
-    )
+    parts.append("| **Agents** | Required `name` and `description` fields, kebab-case naming, name matches filename |")
     parts.append(
         "| **MCP servers** | Directory is kebab-case, `server.py` exists and references FastMCP, "
         "`pyproject.toml` includes fastmcp dependency, `fastmcp.json` exists |"
     )
     parts.append("")
-    parts.append(
-        "The command exits with code 1 if any validation fails, printing each error to stderr."
-    )
+    parts.append("The command exits with code 1 if any validation fails, printing each error to stderr.")
     parts.append("")
     parts.append('<Aside type="tip" title="CI integration">')
     parts.append(
@@ -534,8 +523,7 @@ def write_cli_page() -> None:
     parts.append("### `wagents readme` -- Generate README")
     parts.append("")
     parts.append(
-        "Regenerate `README.md` from the current repository contents, "
-        "or check if the existing README is up to date:"
+        "Regenerate `README.md` from the current repository contents, or check if the existing README is up to date:"
     )
     parts.append("")
     parts.append("```bash")
@@ -610,8 +598,7 @@ def write_cli_page() -> None:
     parts.append("```")
     parts.append("")
     parts.append(
-        "Packaged ZIPs are self-contained and can be distributed "
-        "independently or attached to GitHub releases."
+        "Packaged ZIPs are self-contained and can be distributed independently or attached to GitHub releases."
     )
     parts.append("")
     parts.append('<Aside type="note" title="Automated releases">')
@@ -646,9 +633,7 @@ def write_cli_page() -> None:
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="generate">')
     parts.append("")
-    parts.append(
-        "Generate MDX content pages, sidebar, and index pages from repository assets:"
-    )
+    parts.append("Generate MDX content pages, sidebar, and index pages from repository assets:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents docs generate")
@@ -707,9 +692,7 @@ def write_cli_page() -> None:
     parts.append("wagents docs clean")
     parts.append("```")
     parts.append("")
-    parts.append(
-        "Files containing `HAND-MAINTAINED` in their content are preserved during clean operations."
-    )
+    parts.append("Files containing `HAND-MAINTAINED` in their content are preserved during clean operations.")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append("</Tabs>")
@@ -865,8 +848,7 @@ def write_skills_index(nodes: list) -> None:
     )
     parts.append("")
     parts.append(
-        "Each skill packages domain expertise into a portable format: "
-        "install once, invoke anywhere with `/skill-name`."
+        "Each skill packages domain expertise into a portable format: install once, invoke anywhere with `/skill-name`."
     )
     parts.append("")
 
@@ -1297,6 +1279,7 @@ def regenerate_sidebar_and_indexes() -> None:
 # ---------------------------------------------------------------------------
 # Sentinel-aware clean helper
 # ---------------------------------------------------------------------------
+
 
 def _clean_content_subdir(d: Path) -> bool:
     """Remove generated files from *d*, preserving hand-maintained ones.

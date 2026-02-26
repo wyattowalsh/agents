@@ -15,15 +15,11 @@ def patched_repo(tmp_path, monkeypatch):
     """Create a minimal repo skeleton in tmp_path and monkeypatch all ROOT refs."""
     for mod in ["wagents", "wagents.cli", "wagents.catalog", "wagents.rendering"]:
         monkeypatch.setattr(f"{mod}.ROOT", tmp_path)
-    monkeypatch.setattr(
-        "wagents.rendering.CONTENT_DIR", tmp_path / "docs/src/content/docs"
-    )
+    monkeypatch.setattr("wagents.rendering.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.DOCS_DIR", tmp_path / "docs")
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
-    monkeypatch.setattr(
-        "wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs"
-    )
+    monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
     monkeypatch.setattr("wagents.catalog.RELATED_SKILLS", {})
     monkeypatch.setattr("wagents.cli.RELATED_SKILLS", {})
@@ -38,9 +34,7 @@ def _make_skill_with_eval(repo, name, eval_data):
     """Helper: create a minimal skill with an eval file."""
     skill_dir = repo / "skills" / name
     skill_dir.mkdir(parents=True, exist_ok=True)
-    (skill_dir / "SKILL.md").write_text(
-        f"---\nname: {name}\ndescription: Test skill\n---\n\n# {name}\n\nBody.\n"
-    )
+    (skill_dir / "SKILL.md").write_text(f"---\nname: {name}\ndescription: Test skill\n---\n\n# {name}\n\nBody.\n")
     evals_dir = skill_dir / "evals"
     evals_dir.mkdir(exist_ok=True)
     (evals_dir / "test.json").write_text(json.dumps(eval_data, indent=2))
@@ -160,9 +154,7 @@ class TestEvalValidate:
     def test_invalid_json(self, patched_repo):
         skill_dir = patched_repo / "skills" / "test-skill"
         skill_dir.mkdir(parents=True)
-        (skill_dir / "SKILL.md").write_text(
-            "---\nname: test-skill\ndescription: Test\n---\n\n# Test\n\nBody.\n"
-        )
+        (skill_dir / "SKILL.md").write_text("---\nname: test-skill\ndescription: Test\n---\n\n# Test\n\nBody.\n")
         evals_dir = skill_dir / "evals"
         evals_dir.mkdir()
         (evals_dir / "bad.json").write_text("{invalid json")

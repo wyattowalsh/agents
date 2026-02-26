@@ -16,15 +16,11 @@ def patched_repo(tmp_path, monkeypatch):
     """Create a minimal repo skeleton in tmp_path and monkeypatch all ROOT refs."""
     for mod in ["wagents", "wagents.cli", "wagents.catalog", "wagents.rendering"]:
         monkeypatch.setattr(f"{mod}.ROOT", tmp_path)
-    monkeypatch.setattr(
-        "wagents.rendering.CONTENT_DIR", tmp_path / "docs/src/content/docs"
-    )
+    monkeypatch.setattr("wagents.rendering.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.DOCS_DIR", tmp_path / "docs")
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
-    monkeypatch.setattr(
-        "wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs"
-    )
+    monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
     monkeypatch.setattr("wagents.catalog.RELATED_SKILLS", {})
     monkeypatch.setattr("wagents.cli.RELATED_SKILLS", {})
@@ -61,9 +57,7 @@ class TestExtractHooks:
         hooks_dict = {
             "Stop": [
                 {
-                    "hooks": [
-                        {"type": "prompt", "prompt": "Verify all tests pass"}
-                    ],
+                    "hooks": [{"type": "prompt", "prompt": "Verify all tests pass"}],
                 }
             ]
         }
@@ -75,12 +69,8 @@ class TestExtractHooks:
 
     def test_multiple_events(self):
         hooks_dict = {
-            "PreToolUse": [
-                {"matcher": "Bash", "hooks": [{"command": "echo pre"}]}
-            ],
-            "PostToolUse": [
-                {"matcher": "Write", "hooks": [{"command": "echo post"}]}
-            ],
+            "PreToolUse": [{"matcher": "Bash", "hooks": [{"command": "echo pre"}]}],
+            "PostToolUse": [{"matcher": "Write", "hooks": [{"command": "echo post"}]}],
         }
         result = extract_hooks("test", hooks_dict)
         assert len(result) == 2
@@ -91,11 +81,7 @@ class TestExtractHooks:
 
     def test_shorthand_format(self):
         """Shorthand format with command directly on entry (no nested hooks)."""
-        hooks_dict = {
-            "PreToolUse": [
-                {"matcher": "Edit", "command": "echo shorthand"}
-            ]
-        }
+        hooks_dict = {"PreToolUse": [{"matcher": "Edit", "command": "echo shorthand"}]}
         result = extract_hooks("test", hooks_dict)
         assert len(result) == 1
         assert result[0].command == "echo shorthand"
@@ -105,12 +91,8 @@ class TestExtractHooks:
     def test_shorthand_multiple_events(self):
         """Shorthand format across multiple events."""
         hooks_dict = {
-            "PreToolUse": [
-                {"matcher": "Edit", "command": "echo pre"}
-            ],
-            "PostToolUse": [
-                {"matcher": "Edit", "command": "echo post"}
-            ],
+            "PreToolUse": [{"matcher": "Edit", "command": "echo pre"}],
+            "PostToolUse": [{"matcher": "Edit", "command": "echo post"}],
         }
         result = extract_hooks("test", hooks_dict)
         assert len(result) == 2
@@ -130,16 +112,12 @@ class TestHooksList:
                 "PostToolUse": [
                     {
                         "matcher": "Edit|Write",
-                        "hooks": [
-                            {"type": "command", "command": "echo format"}
-                        ],
+                        "hooks": [{"type": "command", "command": "echo format"}],
                     }
                 ]
             }
         }
-        (patched_repo / ".claude" / "settings.json").write_text(
-            json.dumps(settings)
-        )
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
         result = runner.invoke(app, ["hooks", "list"])
         assert result.exit_code == 0
         assert "settings.json" in result.output
@@ -208,60 +186,32 @@ class TestHooksValidate:
                 "PostToolUse": [
                     {
                         "matcher": "Edit",
-                        "hooks": [
-                            {"type": "command", "command": "echo ok"}
-                        ],
+                        "hooks": [{"type": "command", "command": "echo ok"}],
                     }
                 ]
             }
         }
-        (patched_repo / ".claude" / "settings.json").write_text(
-            json.dumps(settings)
-        )
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
         result = runner.invoke(app, ["hooks", "validate"])
         assert result.exit_code == 0
 
     def test_unknown_event(self, patched_repo):
-        settings = {
-            "hooks": {
-                "FakeEvent": [
-                    {"hooks": [{"type": "command", "command": "echo bad"}]}
-                ]
-            }
-        }
-        (patched_repo / ".claude" / "settings.json").write_text(
-            json.dumps(settings)
-        )
+        settings = {"hooks": {"FakeEvent": [{"hooks": [{"type": "command", "command": "echo bad"}]}]}}
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
         result = runner.invoke(app, ["hooks", "validate"])
         assert result.exit_code == 1
         assert "unknown hook event" in result.output
 
     def test_unknown_handler_type(self, patched_repo):
-        settings = {
-            "hooks": {
-                "PostToolUse": [
-                    {"hooks": [{"type": "invalid", "command": "echo bad"}]}
-                ]
-            }
-        }
-        (patched_repo / ".claude" / "settings.json").write_text(
-            json.dumps(settings)
-        )
+        settings = {"hooks": {"PostToolUse": [{"hooks": [{"type": "invalid", "command": "echo bad"}]}]}}
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
         result = runner.invoke(app, ["hooks", "validate"])
         assert result.exit_code == 1
         assert "unknown handler type" in result.output
 
     def test_empty_command(self, patched_repo):
-        settings = {
-            "hooks": {
-                "PostToolUse": [
-                    {"hooks": [{"type": "command", "command": ""}]}
-                ]
-            }
-        }
-        (patched_repo / ".claude" / "settings.json").write_text(
-            json.dumps(settings)
-        )
+        settings = {"hooks": {"PostToolUse": [{"hooks": [{"type": "command", "command": ""}]}]}}
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
         result = runner.invoke(app, ["hooks", "validate"])
         assert result.exit_code == 1
         assert "empty command" in result.output
@@ -307,16 +257,8 @@ class TestValidateIncludesHooks:
     """Verify wagents validate also checks hooks."""
 
     def test_validate_catches_bad_hook_event(self, patched_repo):
-        settings = {
-            "hooks": {
-                "BadEvent": [
-                    {"hooks": [{"type": "command", "command": "echo x"}]}
-                ]
-            }
-        }
-        (patched_repo / ".claude" / "settings.json").write_text(
-            json.dumps(settings)
-        )
+        settings = {"hooks": {"BadEvent": [{"hooks": [{"type": "command", "command": "echo x"}]}]}}
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
         result = runner.invoke(app, ["validate"])
         assert result.exit_code == 1
         assert "unknown hook event" in result.output
