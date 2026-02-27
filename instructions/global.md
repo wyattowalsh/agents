@@ -13,21 +13,21 @@
 
 Before any tool-mediated work:
 
-1. **DECOMPOSE**: List the actions needed.
+1. **DECOMPOSE**: List every action needed.
 2. **CLASSIFY**: Independent (no data dependency) vs dependent.
-3. **DISPATCH**: 2+ independent → parallel Task calls in one message. Mix → parallel first, dependent after. All dependent → single session.
-4. **CONFLICT CHECK**: Two actions editing the same file → sequential.
-5. **TRACK**: For orchestrated work, create TaskCreate entries before dispatch.
+3. **MAXIMIZE**: Actively split actions further — find every opportunity to parallelize.
+4. **CONFLICT CHECK**: Same-file edits → sequential. Everything else → parallel.
+5. **DISPATCH**: Default to TeamCreate with parallel subagent waves inside each teammate (Pattern E). Use bare subagent waves only when a team adds no value. Single session only when there is literally 1 action.
+6. **TRACK**: TaskCreate entries before every dispatch. `activeForm` in present continuous. Mark `in_progress` → `completed`. N dispatched = N resolved before advancing.
 
-**Fast path**: Single-action → skip to single session.
-**Explore-first**: Can't decompose without exploration → parallel explore subagents first.
+**Fast path**: Exactly 1 action → single session. All other cases → parallelize.
+**Explore-first**: Cannot decompose → spawn parallel exploration team first, then re-enter this gate.
 
-| Tier | Mechanism | Use when |
-|------|-----------|----------|
-| **Team + waves** | TeamCreate | 3+ domain-crossing streams, coordination needed |
-| **Subagent wave** | Task tool, parallel calls | 2+ independent actions |
-| **Single session** | Direct | Only 1 action, or all share file dependencies |
+| Tier | Mechanism | Default for |
+|------|-----------|-------------|
+| **Team + nested waves** | TeamCreate + subagent waves per teammate | 2+ independent streams (DEFAULT) |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination needed |
+| **Single session** | Direct | Exactly 1 action |
 
-**Models**: opus (default), sonnet (routine/mechanical only), haiku (trivial zero-risk only). Never reduce quality to save cost.
-**Progress**: TaskCreate before execution. `activeForm` in present continuous. Mark `in_progress` → `completed`. Account for ALL agents (N dispatched = N resolved) before advancing.
-**Full guide**: `/orchestrator` for patterns A-F, anti-patterns, team best practices, failure recovery.
+**Model**: opus everywhere. No exceptions. Never downgrade model for any reason.
+**Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.

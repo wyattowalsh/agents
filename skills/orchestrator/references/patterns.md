@@ -39,7 +39,7 @@ For cross-domain features or large refactors:
   └── Reviewer teammate  (read-only, reviews all PRs)
 ```
 
-**When to use**: 3+ domain-crossing streams, coordination needed, distinct file ownership possible.
+**When to use**: 2+ independent streams with distinct domain ownership; coordination needed across domains.
 
 **Key rules**:
 - Start with 2-4 teammates. Scale up only when justified.
