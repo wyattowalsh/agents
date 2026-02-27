@@ -1,0 +1,305 @@
+test_cases:
+  # --- Tier & Mode Classification ---
+
+  - id: eval-001
+    description: "Quick tier - simple factual lookup"
+    input: "/research What is the maximum context window for Claude Opus 4.6?"
+    expected_tier: quick
+    expected_mode: investigate
+    expected_output_contains:
+      - confidence score
+      - at least 1 source URL
+    expected_output_excludes:
+      - team creation
+      - subagent dispatch
+
+  - id: eval-002
+    description: "Standard tier - technology comparison"
+    input: "/research compare FastMCP v2 vs v3 for building MCP servers"
+    expected_tier: standard
+    expected_mode: compare
+    expected_output_contains:
+      - decision matrix
+      - at least 2 sources per criterion
+      - contradictions section if applicable
+
+  - id: eval-003
+    description: "Deep tier - architectural research"
+    input: "/research --depth deep What are the current best practices for LLM agent memory architectures?"
+    expected_tier: deep
+    expected_mode: investigate
+    expected_output_contains:
+      - team creation
+      - perspective expansion
+      - cross-validation wave
+      - synthesis (not summary)
+      - 5+ sources
+
+  - id: eval-004
+    description: "Exhaustive tier - cross-disciplinary investigation"
+    input: "/research --depth exhaustive What are the long-term societal implications of autonomous AI agents in healthcare, education, and governance?"
+    expected_tier: exhaustive
+    expected_mode: investigate
+    expected_output_contains:
+      - team creation with 4+ teammates
+      - nested subagent waves
+      - adversarial reviewer
+      - cross-validation wave
+      - bias audit
+      - 10+ sources
+
+  # --- Mode-Specific Dispatch ---
+
+  - id: eval-005
+    description: "Fact-check mode"
+    input: "/research check 90% of startups fail within the first year"
+    expected_tier: standard
+    expected_mode: factcheck
+    expected_output_contains:
+      - 3+ search engines used
+      - verdict with confidence
+      - original claim vs evidence
+
+  - id: eval-006
+    description: "Survey mode - academic"
+    input: "/research survey transformer attention mechanisms"
+    expected_tier: standard
+    expected_mode: survey
+    expected_output_contains:
+      - annotated bibliography
+      - thematic clusters
+      - landscape overview
+
+  - id: eval-007
+    description: "Compare mode - auto-detected via 'vs'"
+    input: "/research PostgreSQL vs SQLite vs DuckDB for analytical workloads"
+    expected_tier: standard
+    expected_mode: compare
+    expected_output_contains:
+      - decision matrix
+      - per-criterion comparison
+      - trade-off analysis
+
+  - id: eval-008
+    description: "Track mode - load prior journal"
+    input: "/research track quantum computing advances"
+    expected_tier: standard
+    expected_mode: track
+    expected_output_contains:
+      - journal lookup attempt
+      - search for updates since last session
+
+  # --- Edge Cases & Redirects ---
+
+  - id: eval-009
+    description: "Skill awareness redirect - code review"
+    input: "/research review the authentication module for security issues"
+    expected_mode: redirect
+    expected_output_contains:
+      - suggestion to use /honest-review
+
+  - id: eval-010
+    description: "Skill awareness redirect - strategic decision"
+    input: "/research What is the best market entry strategy against our two competitors?"
+    expected_mode: redirect
+    expected_output_contains:
+      - suggestion to use /wargame
+
+  - id: eval-011
+    description: "Empty arguments - gallery"
+    input: "/research"
+    expected_output_contains:
+      - topic examples table
+      - domain variety
+      - at least 4 example topics
+
+  - id: eval-012
+    description: "Vague input - intake interview"
+    input: "/research AI"
+    expected_output_contains:
+      - clarifying questions
+      - at least 2 questions asked
+
+  # --- Confidence & Verification ---
+
+  - id: eval-013
+    description: "Single-source confidence cap"
+    input: "/research What is the default port for Redis?"
+    expected_tier: quick
+    expected_mode: investigate
+    expected_output_contains:
+      - confidence score
+    validation_rules:
+      - "if only 1 source cited, confidence must be <= 0.6"
+
+  - id: eval-014
+    description: "Multi-source high confidence"
+    input: "/research Is Rust memory-safe without a garbage collector?"
+    expected_tier: quick
+    expected_mode: investigate
+    expected_output_contains:
+      - confidence score >= 0.7
+      - at least 2 independent sources
+
+  - id: eval-015
+    description: "Contradiction detection"
+    input: "/research compare performance benchmarks of Bun vs Node.js for HTTP servers"
+    expected_tier: standard
+    expected_mode: compare
+    expected_output_contains:
+      - contradictions section
+      - both sides presented with evidence
+
+  # --- Wave Pipeline Verification ---
+
+  - id: eval-016
+    description: "Standard tier runs all required waves"
+    input: "/research What are the security implications of WebAssembly in browser environments?"
+    expected_tier: standard
+    expected_mode: investigate
+    expected_output_contains:
+      - triage scoring presented to user
+      - broad sweep (Wave 1)
+      - cross-validation (Wave 3)
+      - synthesis (Wave 4)
+    expected_output_excludes:
+      - perspective expansion (Wave 1.5 is Deep+ only)
+
+  - id: eval-017
+    description: "Deep tier includes perspective expansion"
+    input: "/research --depth deep How should organizations approach AI governance frameworks?"
+    expected_tier: deep
+    expected_mode: investigate
+    expected_output_contains:
+      - triage scoring
+      - perspective expansion (Wave 1.5)
+      - skeptic or domain expert perspective
+      - cross-validation (Wave 3)
+      - bias audit
+
+  # --- Journal Operations ---
+
+  - id: eval-018
+    description: "Resume command - no args"
+    input: "/research resume"
+    expected_mode: resume
+    expected_output_contains:
+      - journal lookup
+      - in-progress journal list or auto-resume
+
+  - id: eval-019
+    description: "List command"
+    input: "/research list active"
+    expected_mode: list
+    expected_output_contains:
+      - journal metadata table
+
+  - id: eval-020
+    description: "Export command"
+    input: "/research export"
+    expected_mode: export
+    expected_output_contains:
+      - HTML dashboard rendering
+
+  # --- Domain Coverage (8 domains) ---
+
+  - id: eval-021
+    description: "Domain - cybersecurity"
+    input: "/research What are the most effective defenses against prompt injection attacks in LLM applications?"
+    expected_tier: standard
+    expected_mode: investigate
+    expected_output_contains:
+      - confidence scores on findings
+      - multiple source types
+      - evidence chains
+
+  - id: eval-022
+    description: "Domain - biomedical"
+    input: "/research survey recent advances in CRISPR gene editing for sickle cell disease treatment"
+    expected_tier: standard
+    expected_mode: survey
+    expected_output_contains:
+      - PubMed or academic sources
+      - annotated bibliography
+      - temporal coverage
+
+  - id: eval-023
+    description: "Domain - economics/market"
+    input: "/research How does the competitive landscape for cloud GPU providers compare in 2026?"
+    expected_tier: deep
+    expected_mode: investigate
+    expected_output_contains:
+      - market-related sources
+      - comparison elements
+      - recency-aware findings
+
+  - id: eval-024
+    description: "Domain - open source ecosystem"
+    input: "/research compare Astro vs Next.js vs Remix for content-heavy websites"
+    expected_tier: standard
+    expected_mode: compare
+    expected_output_contains:
+      - decision matrix
+      - GitHub/package data where relevant
+      - at least 3 comparison criteria
+
+  - id: eval-025
+    description: "Domain - policy/regulation"
+    input: "/research What is the current state of AI regulation in the EU, US, and China?"
+    expected_tier: deep
+    expected_mode: investigate
+    expected_output_contains:
+      - multiple geographic perspectives
+      - temporal sensitivity flagged
+      - source diversity across regions
+
+  - id: eval-026
+    description: "Domain - mathematics/theory"
+    input: "/research What is the current status of the P vs NP problem and recent progress?"
+    expected_tier: standard
+    expected_mode: investigate
+    expected_output_contains:
+      - academic sources
+      - careful confidence scoring (likely low for unresolved problem)
+      - distinction between proven results and conjectures
+
+  - id: eval-027
+    description: "Domain - developer tooling"
+    input: "/research check GitHub Copilot writes 40% of all code in repositories that use it"
+    expected_tier: standard
+    expected_mode: factcheck
+    expected_output_contains:
+      - original claim restated
+      - 3+ search engines
+      - verdict with nuance
+
+  - id: eval-028
+    description: "Domain - environmental science"
+    input: "/research survey the effectiveness of carbon capture technologies deployed at scale"
+    expected_tier: standard
+    expected_mode: survey
+    expected_output_contains:
+      - annotated bibliography
+      - landscape overview
+      - temporal coverage of deployments
+
+  # --- Anti-Hallucination & Bias ---
+
+  - id: eval-029
+    description: "LLM prior bias detection"
+    input: "/research Is Python the best language for machine learning?"
+    expected_tier: quick
+    expected_mode: investigate
+    expected_output_contains:
+      - bias markers if claim matches common training patterns
+    validation_rules:
+      - "findings matching common LLM training data must be flagged with LLM prior bias"
+
+  - id: eval-030
+    description: "Degraded mode - confidence ceiling"
+    input: "/research What percentage of enterprises use microservices architecture?"
+    expected_tier: standard
+    expected_mode: investigate
+    validation_rules:
+      - "if all research tools unavailable, max confidence must be 0.4"
+      - "all findings must be labeled 'unverified' in degraded mode"
