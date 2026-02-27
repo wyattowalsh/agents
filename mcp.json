@@ -58,7 +58,11 @@
     },
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@latest"]
+      "args": ["-y", "@playwright/mcp@latest", "--extension"],
+      "env": {
+        "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
+        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
+      }
     },
     "docling": {
       "command": "uvx",
@@ -74,7 +78,7 @@
     },
     "fetch": {
       "command": "npx",
-      "args": ["mcp-fetch-server"]
+      "args": ["-y", "mcp-fetch-server"]
     },
     "context7": {
       "command": "npx",
@@ -114,7 +118,7 @@
     },
     "brave-search": {
       "command": "npx",
-      "args": ["-y", "@anthropics/brave-search-mcp"],
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
       "env": {
         "BRAVE_API_KEY": "${BRAVE_API_KEY}"
       }
@@ -141,6 +145,18 @@
     "duckduckgo": {
       "command": "uvx",
       "args": ["duckduckgo-mcp-server"]
+    },
+    "arxiv": {
+      "command": "uvx",
+      "args": ["arxiv-mcp-server"]
+    },
+    "wikipedia": {
+      "command": "npx",
+      "args": ["-y", "wikipedia-mcp"]
+    },
+    "wayback": {
+      "command": "npx",
+      "args": ["-y", "mcp-wayback-machine"]
     }
   }
 }

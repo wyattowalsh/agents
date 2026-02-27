@@ -1,0 +1,685 @@
+<!--
+JSON DATA CONTRACT — <script id="data" type="application/json"> schema.
+Required: metadata (query, tier, mode, date, sources_count, findings_count, mean_confidence).
+Optional: metadata.waves_completed, metadata.tools_used.
+Sections: findings[], contradictions[], sources[], confidence_distribution{}, gaps[], sub_questions[].
+
+FINDING: { id, claim, confidence:0-1, evidence:[{tool, url, timestamp, excerpt}],
+  cross_validation: agrees|contradicts|partial, bias_markers:[], gaps:[] }
+CONTRADICTION: { id, topic, type: factual|methodological|temporal|scope,
+  side_a:{claim, source, confidence}, side_b:{claim, source, confidence}, assessment }
+SOURCE: { url, tool, timestamp, title, referenced_by:[] }
+SUB_QUESTION: { question, status: answered|partial|unanswered, answer_summary }
+CONFIDENCE_DISTRIBUTION: { high:N, medium:N, low:N, uncertain:N }
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Research Dashboard</title>
+<style>
+@layer reset, tokens, base, components, views, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :where(ul, ol) { list-style: none; }
+}
+
+@layer tokens {
+  :root {
+    --s1: oklch(0.15 0.02 260); --s2: oklch(0.20 0.02 260); --s3: oklch(0.25 0.02 260);
+    --border: oklch(0.35 0.02 260); --text-1: oklch(0.93 0.01 260); --text-2: oklch(0.65 0.02 260);
+    --accent: oklch(0.65 0.20 270); --ok: oklch(0.70 0.18 155); --warn: oklch(0.75 0.18 85);
+    --bad: oklch(0.65 0.22 25); --purple: oklch(0.65 0.20 310);
+    --info: oklch(0.65 0.14 220); --muted: oklch(0.50 0.03 260); --surface: oklch(0.12 0.015 260);
+    --gap: 0.75rem; --r0: 0px; --r1: 8px;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --s1: oklch(0.96 0.01 260); --s2: oklch(0.99 0.005 260); --s3: oklch(1.0 0 260);
+      --border: oklch(0.82 0.01 260); --text-1: oklch(0.20 0.02 260); --text-2: oklch(0.45 0.02 260);
+      color-scheme: light;
+      --info: oklch(0.45 0.12 220); --muted: oklch(0.60 0.03 260); --surface: oklch(0.94 0.005 260);
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: system-ui, -apple-system, sans-serif; background: var(--s1); color: var(--text-1);
+    line-height: 1.5; padding: var(--gap); max-width: 1280px; margin: 0 auto; min-height: 100dvh;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { position: relative; }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 20%, oklch(0.20 0.06 270 / 0.4), transparent),
+        radial-gradient(ellipse 60% 50% at 85% 80%, oklch(0.18 0.05 310 / 0.3), transparent),
+        radial-gradient(ellipse 70% 40% at 50% 50%, oklch(0.17 0.04 155 / 0.15), transparent);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (prefers-color-scheme: dark) {
+    body::before { animation: aurora 30s ease-in-out infinite alternate; }
+  }
+  @keyframes aurora { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .skip-nav { position: absolute; left: -9999px; top: auto;
+    &:focus-visible { left: var(--gap); top: var(--gap); z-index: 100; background: var(--s3); padding: 0.5rem 1rem; border-radius: var(--r1); }
+  }
+  .mono { font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; }
+  h1, h2, h3 { font-weight: 700; }
+  h1 { font-size: 1.4rem; } h2 { font-size: 1.05rem; margin-bottom: 0.4rem; } h3 { font-size: 0.9rem; }
+}
+
+@layer components {
+  .glass {
+    background: light-dark(oklch(1 0 0 / 0.7), oklch(0.20 0.02 260 / 0.5));
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid light-dark(oklch(0.85 0.01 260), oklch(0.30 0.02 260));
+    border-radius: var(--r1); padding: var(--gap); container-type: inline-size;
+    &:hover { border-color: light-dark(oklch(0.70 0.10 270 / 0.4), oklch(0.50 0.12 270 / 0.4)); box-shadow: 0 0 12px oklch(0.65 0.20 270 / 0.08); }
+  }
+  .dpanel {
+    background: light-dark(oklch(0.98 0.005 260), oklch(0.18 0.015 260));
+    border: 1px solid var(--border); border-radius: var(--r0); padding: var(--gap); container-type: inline-size;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glass, .dpanel, section[aria-label] { animation: fadeIn 0.4s ease-out both; }
+    @starting-style { .glass, .dpanel, section[aria-label] { opacity: 0; transform: translateY(8px); } }
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 1.75rem; padding: 0.25em 0.6em; border-radius: 999px;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    @media (prefers-reduced-motion: no-preference) { & { transition: transform 0.15s ease; } &:hover { transform: scale(1.05); } }
+    &:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  }
+  .pill { display: inline-block; padding: 0.1em 0.45em; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--border); color: var(--text-2); margin: 0.1em; }
+  .bar-t { height: 10px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); border-radius: 5px; overflow: hidden; }
+  .bar-f { height: 100%; border-radius: 5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { text-align: left; padding: 0.4rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--text-2); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  td { padding: 0.4rem 0.5rem; border-bottom: 1px solid light-dark(oklch(0.92 0.005 260), oklch(0.25 0.015 260)); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text-1); }
+  th.sortable::after { content: " \2195"; font-size: 0.65rem; opacity: 0.5; }
+  th.sortable.asc::after { content: " \2191"; opacity: 1; }
+  th.sortable.desc::after { content: " \2193"; opacity: 1; }
+  .err { background: var(--s2); border: 2px solid var(--bad); border-radius: var(--r1); padding: var(--gap);
+    & h2 { color: var(--bad); margin-bottom: 0.4rem; }
+    & pre { white-space: pre-wrap; word-break: break-all; font-size: 0.8rem; color: var(--text-2); }
+  }
+}
+
+@layer views {
+  /* Header */
+  .hdr { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem var(--gap); margin-bottom: var(--gap); }
+  .hdr h1 { flex: 1 1 100%; }
+  .hdr-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.8rem; font-size: 0.78rem; color: var(--text-2); align-items: center; width: 100%; }
+  .hdr-meta .sep { color: var(--border); }
+  .conf-bar { display: inline-flex; align-items: center; gap: 0.3rem; }
+  .conf-bar .track { width: 60px; height: 6px; background: light-dark(oklch(0.88 0.01 260), oklch(0.30 0.02 260)); border-radius: 3px; overflow: hidden; }
+  .conf-bar .fill { height: 100%; border-radius: 3px; }
+
+  /* Sub-questions */
+  .sq-list { display: flex; flex-direction: column; gap: 0.4rem; }
+  .sq-item { display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 0.6rem; align-items: start; padding: 0.4rem 0.5rem; border-radius: var(--r1); font-size: 0.82rem; }
+  .sq-item:nth-child(odd) { background: light-dark(oklch(0.97 0.005 260), oklch(0.17 0.015 260)); }
+  .sq-status { padding: 0.1em 0.4em; border-radius: 999px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  .sq-status.answered { background: var(--ok); color: oklch(0.15 0.02 260); }
+  .sq-status.partial { background: var(--warn); color: oklch(0.15 0.02 260); }
+  .sq-status.unanswered { background: var(--bad); color: oklch(0.15 0.02 260); }
+  .sq-answer { color: var(--text-2); font-size: 0.78rem; grid-column: 2; }
+
+  /* Findings table */
+  .findings-wrap { overflow-x: auto; }
+  .findings-wrap tr[data-expandable] { cursor: pointer; }
+  .findings-wrap tr[data-expandable]:hover td { background: light-dark(oklch(0.95 0.005 260 / 0.5), oklch(0.22 0.02 260 / 0.5)); }
+  .conf-cell { display: flex; align-items: center; gap: 0.3rem; }
+  .conf-cell .bar { width: 50px; height: 8px; border-radius: 4px; background: light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260)); overflow: hidden; }
+  .conf-cell .bar-inner { height: 100%; border-radius: 4px; }
+  .cv-agrees { color: var(--ok); } .cv-partial { color: var(--warn); } .cv-contradicts { color: var(--bad); } .cv-unverified { color: var(--text-2); }
+  .evidence-row { display: none; }
+  .evidence-row.open { display: table-row; }
+  .evidence-row td { padding: 0.5rem 0.5rem 0.5rem 2rem; background: light-dark(oklch(0.96 0.005 260), oklch(0.16 0.015 260)); }
+  .ev-chain { font-size: 0.78rem; }
+  .ev-item { margin-bottom: 0.4rem; padding: 0.4rem; border-left: 3px solid var(--accent); }
+  .ev-item .ev-tool { font-weight: 700; color: var(--accent); }
+  .ev-item .ev-url { color: var(--info); word-break: break-all; }
+  .ev-item .ev-ts { color: var(--muted); font-size: 0.7rem; }
+  .ev-item .ev-excerpt { color: var(--text-2); margin-top: 0.2rem; }
+
+  /* Contradictions */
+  .contra-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--gap); }
+  .contra-card { border-left: 4px solid var(--purple); }
+  .contra-card .contra-type { color: var(--purple); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+  .contra-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.5rem 0; font-size: 0.78rem; }
+  .contra-side { padding: 0.4rem; border-radius: var(--r1); background: light-dark(oklch(0.96 0.005 260), oklch(0.16 0.015 260)); }
+  .contra-side .side-label { font-weight: 700; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 0.2rem; }
+  .contra-side.side-a .side-label { color: var(--ok); }
+  .contra-side.side-b .side-label { color: var(--bad); }
+  .contra-assess { font-size: 0.78rem; color: var(--text-2); border-top: 1px solid var(--border); padding-top: 0.4rem; margin-top: 0.3rem; }
+
+  /* Confidence heatmap */
+  .heatmap { display: flex; flex-direction: column; gap: 0.4rem; }
+  .hm-row { display: grid; grid-template-columns: 100px 1fr 3rem; align-items: center; gap: 0.5rem; }
+  .hm-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; }
+  .hm-bar { height: 24px; border-radius: 4px; position: relative; overflow: hidden; }
+  .hm-bar-inner { height: 100%; border-radius: 4px; }
+  .hm-count { font-size: 0.82rem; font-weight: 700; text-align: right; }
+
+  /* Sources */
+  .src-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--gap); }
+  .src-card { font-size: 0.78rem; }
+  .src-card .src-title { font-weight: 700; margin-bottom: 0.2rem; }
+  .src-card .src-tool { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0.1em 0.35em; border-radius: 999px; background: var(--accent); color: oklch(0.15 0.02 260); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+  .src-card .src-url { color: var(--info); word-break: break-all; }
+  .src-card .src-ts { color: var(--muted); font-size: 0.7rem; }
+  .src-card .src-refs { color: var(--text-2); margin-top: 0.2rem; }
+
+  /* Gaps */
+  .gap-list { list-style: disc; padding-left: 1.2rem; }
+  .gap-list li { font-size: 0.82rem; color: var(--text-2); margin-bottom: 0.3rem; }
+
+  .vs { margin-bottom: var(--gap); }
+  .view-sep { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: calc(var(--gap) * 1.5) 0; }
+}
+
+@layer utilities {
+  .mt-s { margin-top: 0.4rem; } .mt-m { margin-top: var(--gap); }
+  .tok { color: var(--ok); } .tbd { color: var(--bad); } .twn { color: var(--warn); }
+  .td { color: var(--text-2); } .ta { color: var(--accent); }
+  .fw { font-weight: 700; } .fs { font-size: 0.78rem; }
+  .list-d { list-style: disc; padding-left: 1.2rem; }
+  details > summary { cursor: pointer; color: var(--text-2); font-size: 0.82rem; &:hover { color: var(--text-1); } }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar-f { transition: width 0.6s ease-out; }
+    .conf-bar .fill { transition: width 0.5s ease; }
+    .hm-bar-inner { transition: width 0.6s ease-out; }
+  }
+}
+
+@media print {
+  body { background: #fff !important; color: #111; padding: 0; animation: none !important; }
+  .glass { background: #fff; backdrop-filter: none; border: 1px solid #ccc; box-shadow: none; }
+  .dpanel { background: #fff; border: 1px solid #ccc; }
+  .badge { animation: none !important; transition: none !important; }
+  .evidence-row { display: table-row !important; }
+  table, tr, .glass, .dpanel { break-inside: avoid; }
+  section { break-before: auto; break-after: auto; }
+  .bar-f, .hm-bar-inner, .conf-bar .fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .skip-nav { display: none; }
+}
+@media (max-width: 640px) {
+  .hdr { flex-direction: column; }
+  .contra-grid { grid-template-columns: 1fr; }
+  .contra-sides { grid-template-columns: 1fr; }
+  .src-grid { grid-template-columns: 1fr; }
+  .hm-row { grid-template-columns: 80px 1fr 2.5rem; }
+}
+@media (max-width: 480px) {
+  body { padding: 0.4rem; }
+  h1 { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+<a href="#app" class="skip-nav">Skip to content</a>
+
+<main id="app" aria-label="Research Dashboard"></main>
+
+<script id="data" type="application/json">
+{
+  "metadata": {
+    "query": "What are the current best practices for LLM agent memory architectures?",
+    "tier": "deep",
+    "mode": "investigate",
+    "date": "2026-02-27",
+    "sources_count": 18,
+    "findings_count": 3,
+    "mean_confidence": 0.72,
+    "waves_completed": 4,
+    "tools_used": ["brave-search", "arxiv", "context7", "deepwiki", "semantic-scholar"]
+  },
+  "findings": [
+    {
+      "id": "RR-001",
+      "claim": "Retrieval-augmented generation (RAG) with vector stores is the most widely adopted memory pattern for LLM agents as of 2026",
+      "confidence": 0.88,
+      "evidence": [
+        {"tool": "brave-search", "url": "https://example.com/rag-survey", "timestamp": "2026-02-27T14:00:00", "excerpt": "RAG remains the dominant approach with 78% adoption in production systems..."},
+        {"tool": "arxiv", "url": "https://arxiv.org/abs/2601.00000", "timestamp": "2026-02-27T14:01:00", "excerpt": "Our survey of 200 agent deployments shows RAG-based memory in 156 systems..."}
+      ],
+      "cross_validation": "agrees",
+      "bias_markers": [],
+      "gaps": []
+    },
+    {
+      "id": "RR-002",
+      "claim": "Hybrid memory architectures combining episodic and semantic memory outperform pure RAG in multi-turn agent tasks",
+      "confidence": 0.65,
+      "evidence": [
+        {"tool": "semantic-scholar", "url": "https://example.com/hybrid-memory", "timestamp": "2026-02-27T14:02:00", "excerpt": "Hybrid approaches showed 23% improvement in task completion over baseline RAG..."}
+      ],
+      "cross_validation": "partial",
+      "bias_markers": ["recency"],
+      "gaps": ["Limited to benchmark tasks; real-world validation needed"]
+    },
+    {
+      "id": "RR-003",
+      "claim": "Hierarchical summarization is emerging as the preferred approach for long-term memory compression",
+      "confidence": 0.55,
+      "evidence": [
+        {"tool": "deepwiki", "url": "https://example.com/mem-compress", "timestamp": "2026-02-27T14:03:00", "excerpt": "Several major frameworks now implement hierarchical summarization for context management..."}
+      ],
+      "cross_validation": "partial",
+      "bias_markers": ["LLM prior"],
+      "gaps": ["No head-to-head comparison with sliding window approaches"]
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "C-01",
+      "topic": "Optimal vector store for agent memory",
+      "type": "methodological",
+      "side_a": {"claim": "Pinecone provides the best latency for agent memory retrieval", "source": "https://example.com/pinecone-bench", "confidence": 0.6},
+      "side_b": {"claim": "Qdrant outperforms Pinecone on filtered search which is critical for agent memory", "source": "https://example.com/qdrant-bench", "confidence": 0.55},
+      "assessment": "Different benchmarks test different operations. Pinecone optimizes for pure similarity search; Qdrant for filtered retrieval. Choice depends on agent architecture."
+    }
+  ],
+  "sources": [
+    {"url": "https://example.com/rag-survey", "tool": "brave-search", "timestamp": "2026-02-27T14:00:00", "title": "RAG Survey 2026", "referenced_by": ["RR-001"]},
+    {"url": "https://arxiv.org/abs/2601.00000", "tool": "arxiv", "timestamp": "2026-02-27T14:01:00", "title": "Agent Memory Patterns: A Survey", "referenced_by": ["RR-001"]},
+    {"url": "https://example.com/hybrid-memory", "tool": "semantic-scholar", "timestamp": "2026-02-27T14:02:00", "title": "Hybrid Memory for LLM Agents", "referenced_by": ["RR-002"]},
+    {"url": "https://example.com/mem-compress", "tool": "deepwiki", "timestamp": "2026-02-27T14:03:00", "title": "Memory Compression Approaches", "referenced_by": ["RR-003"]}
+  ],
+  "confidence_distribution": {"high": 1, "medium": 2, "low": 0, "uncertain": 0},
+  "gaps": ["No data on production-scale memory performance", "Limited evaluation of memory durability across sessions"],
+  "sub_questions": [
+    {"question": "What memory patterns are most commonly used?", "status": "answered", "answer_summary": "RAG with vector stores dominates at 78% adoption"},
+    {"question": "How do hybrid approaches compare to pure RAG?", "status": "partial", "answer_summary": "23% improvement in benchmarks but limited real-world data"},
+    {"question": "What compression strategies work best for long-term memory?", "status": "partial", "answer_summary": "Hierarchical summarization emerging but not yet benchmarked against alternatives"}
+  ]
+}
+</script>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s, p) => (p || document).querySelector(s);
+  const app = $("#app"), raw = $("#data").textContent;
+  let D;
+  try { D = JSON.parse(raw); } catch (e) {
+    app.innerHTML = `<div class="err" role="alert"><h2>JSON Parse Error</h2><p>${esc(e.message)}</p><pre>${esc(raw)}</pre></div>`;
+    return;
+  }
+
+  const missing = [];
+  if (!D.metadata) missing.push("metadata");
+  else {
+    if (!D.metadata.query) missing.push("metadata.query");
+    if (!D.metadata.tier) missing.push("metadata.tier");
+    if (!D.metadata.mode) missing.push("metadata.mode");
+  }
+  if (missing.length) {
+    app.innerHTML = `<div class="err" role="alert"><h2>Missing Required Fields</h2><p>Required: ${esc(missing.join(", "))}</p><pre>${esc(raw.slice(0, 500))}</pre></div>`;
+    return;
+  }
+
+  const M = D.metadata;
+  const F = document.createDocumentFragment();
+
+  // Helpers
+  function esc(s) { if (s == null) return ""; const d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
+  function safe(arr) { return (arr || []).filter(Boolean); }
+  function el(tag, attrs, txt) { const e = document.createElement(tag); if (attrs) for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v); if (txt != null) e.textContent = txt; return e; }
+
+  function confColor(c) {
+    if (c >= 0.8) return "var(--ok)";
+    if (c >= 0.5) return "var(--warn)";
+    return "var(--bad)";
+  }
+
+  function tierColor(t) {
+    const map = { quick: "var(--ok)", standard: "var(--warn)", deep: "var(--bad)", exhaustive: "var(--purple)" };
+    return map[t] || "var(--text-2)";
+  }
+
+  // ---- HEADER ----
+  const hdr = el("header", { class: "hdr vs" });
+  hdr.appendChild(el("h1", {}, M.query));
+  const meta = el("div", { class: "hdr-meta" });
+
+  const tierBadge = el("span", { class: "badge", "aria-label": `Tier: ${M.tier}` }, M.tier);
+  tierBadge.style.background = tierColor(M.tier);
+  tierBadge.style.color = "oklch(0.15 0.02 260)";
+  meta.appendChild(tierBadge);
+
+  const modeBadge = el("span", { class: "badge", "aria-label": `Mode: ${M.mode}` }, M.mode);
+  modeBadge.style.background = "var(--accent)";
+  modeBadge.style.color = "oklch(0.15 0.02 260)";
+  meta.appendChild(modeBadge);
+
+  if (M.date) { meta.appendChild(el("span", { class: "sep" }, "|")); meta.appendChild(el("span", {}, M.date)); }
+  if (M.sources_count != null) { meta.appendChild(el("span", { class: "sep" }, "|")); meta.appendChild(el("span", {}, `${M.sources_count} sources`)); }
+  if (M.findings_count != null) { meta.appendChild(el("span", { class: "sep" }, "|")); meta.appendChild(el("span", {}, `${M.findings_count} findings`)); }
+
+  if (M.mean_confidence != null) {
+    meta.appendChild(el("span", { class: "sep" }, "|"));
+    const cb = el("span", { class: "conf-bar" });
+    cb.appendChild(el("span", {}, "confidence:"));
+    const track = el("span", { class: "track" });
+    const fill = el("span", { class: "fill" });
+    fill.style.width = `${(M.mean_confidence * 100).toFixed(0)}%`;
+    fill.style.background = confColor(M.mean_confidence);
+    track.appendChild(fill);
+    cb.appendChild(track);
+    cb.appendChild(el("span", { class: "mono fw" }, `${(M.mean_confidence * 100).toFixed(0)}%`));
+    meta.appendChild(cb);
+  }
+
+  if (M.waves_completed != null) { meta.appendChild(el("span", { class: "sep" }, "|")); meta.appendChild(el("span", {}, `${M.waves_completed} waves`)); }
+
+  if (M.tools_used?.length) {
+    meta.appendChild(el("span", { class: "sep" }, "|"));
+    const tw = el("span", { style: "display:inline-flex;flex-wrap:wrap;gap:0.2rem" });
+    for (const t of M.tools_used) tw.appendChild(el("span", { class: "pill" }, t));
+    meta.appendChild(tw);
+  }
+
+  hdr.appendChild(meta);
+  F.appendChild(hdr);
+
+  // ---- SUB-QUESTIONS ----
+  if (D.sub_questions?.length) {
+    const sec = el("section", { class: "glass vs", "aria-label": "Sub-Questions" });
+    sec.appendChild(el("h2", {}, "Sub-Questions"));
+    const list = el("div", { class: "sq-list" });
+    for (const sq of D.sub_questions) {
+      const item = el("div", { class: "sq-item" });
+      const status = el("span", { class: `sq-status ${sq.status}` }, sq.status);
+      item.appendChild(status);
+      item.appendChild(el("span", {}, sq.question));
+      if (sq.answer_summary) item.appendChild(el("span", { class: "sq-answer" }, sq.answer_summary));
+      list.appendChild(item);
+    }
+    sec.appendChild(list);
+    F.appendChild(sec);
+  }
+
+  // ---- FINDINGS TABLE ----
+  if (D.findings?.length) {
+    const sec = el("section", { class: "dpanel vs", "aria-label": "Findings" });
+    sec.appendChild(el("h2", {}, "Findings"));
+    const wrap = el("div", { class: "findings-wrap" });
+    const table = el("table");
+    const thead = el("thead");
+    const tr = el("tr");
+    const headers = ["ID", "Claim", "Confidence", "Sources", "Cross-Validation", "Bias"];
+    const sortableIdx = 2; // Confidence column
+    headers.forEach((h, i) => {
+      const th = el("th", i === sortableIdx ? { class: "sortable", "data-col": String(i) } : {}, h);
+      tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+    table.appendChild(thead);
+
+    const tbody = el("tbody");
+    let sortDir = "desc";
+
+    for (const f of D.findings) {
+      // Main row
+      const row = el("tr", { "data-expandable": "true", "data-confidence": String(f.confidence), title: "Click to expand evidence chain" });
+      row.appendChild(el("td", { class: "mono fw" }, f.id));
+
+      const claimTd = el("td");
+      const claimText = f.claim.length > 80 ? f.claim.slice(0, 80) + "..." : f.claim;
+      claimTd.textContent = claimText;
+      claimTd.title = f.claim;
+      row.appendChild(claimTd);
+
+      const confTd = el("td");
+      const confCell = el("div", { class: "conf-cell" });
+      const bar = el("div", { class: "bar" });
+      const barInner = el("div", { class: "bar-inner" });
+      barInner.style.width = `${(f.confidence * 100).toFixed(0)}%`;
+      barInner.style.background = confColor(f.confidence);
+      bar.appendChild(barInner);
+      confCell.appendChild(bar);
+      confCell.appendChild(el("span", { class: "mono fw", title: `Confidence: ${f.confidence}` }, `${(f.confidence * 100).toFixed(0)}%`));
+      confTd.appendChild(confCell);
+      row.appendChild(confTd);
+
+      row.appendChild(el("td", { class: "mono" }, String(safe(f.evidence).length)));
+
+      const cvTd = el("td");
+      const cvClass = f.cross_validation === "agrees" ? "cv-agrees" : f.cross_validation === "partial" ? "cv-partial" : f.cross_validation === "unverified" ? "cv-unverified" : "cv-contradicts";
+      cvTd.appendChild(el("span", { class: cvClass }, f.cross_validation));
+      row.appendChild(cvTd);
+
+      const biasTd = el("td");
+      if (f.bias_markers?.length) {
+        for (const b of f.bias_markers) biasTd.appendChild(el("span", { class: "pill" }, b));
+      } else {
+        biasTd.appendChild(el("span", { class: "td fs" }, "none"));
+      }
+      row.appendChild(biasTd);
+      tbody.appendChild(row);
+
+      // Evidence expansion row
+      const evRow = el("tr", { class: "evidence-row" });
+      const evTd = el("td", { colspan: "6" });
+      const evChain = el("div", { class: "ev-chain" });
+
+      for (const ev of safe(f.evidence)) {
+        const item = el("div", { class: "ev-item" });
+        const header = el("div");
+        header.appendChild(el("span", { class: "ev-tool" }, ev.tool));
+        header.appendChild(document.createTextNode(" "));
+        const link = el("a", { href: ev.url, class: "ev-url", target: "_blank", rel: "noopener" }, ev.url);
+        header.appendChild(link);
+        header.appendChild(document.createTextNode(" "));
+        header.appendChild(el("span", { class: "ev-ts" }, ev.timestamp));
+        item.appendChild(header);
+        if (ev.excerpt) item.appendChild(el("p", { class: "ev-excerpt" }, ev.excerpt));
+        evChain.appendChild(item);
+      }
+
+      if (f.gaps?.length) {
+        const gapDiv = el("div", { class: "mt-s" });
+        gapDiv.appendChild(el("strong", { class: "fs twn" }, "Gaps: "));
+        gapDiv.appendChild(el("span", { class: "fs td" }, f.gaps.join("; ")));
+        evChain.appendChild(gapDiv);
+      }
+
+      evTd.appendChild(evChain);
+      evRow.appendChild(evTd);
+      tbody.appendChild(evRow);
+
+      // Click to expand
+      row.addEventListener("click", () => {
+        evRow.classList.toggle("open");
+      });
+    }
+
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    sec.appendChild(wrap);
+    F.appendChild(sec);
+
+    // Sort by confidence
+    const sortTh = thead.querySelector("th.sortable");
+    if (sortTh) {
+      sortTh.classList.add("desc");
+      sortTh.addEventListener("click", () => {
+        sortDir = sortDir === "desc" ? "asc" : "desc";
+        sortTh.classList.remove("asc", "desc");
+        sortTh.classList.add(sortDir);
+
+        const rows = [];
+        const children = Array.from(tbody.children);
+        for (let i = 0; i < children.length; i += 2) {
+          rows.push({ main: children[i], ev: children[i + 1] });
+        }
+        rows.sort((a, b) => {
+          const ca = parseFloat(a.main.dataset.confidence);
+          const cb = parseFloat(b.main.dataset.confidence);
+          return sortDir === "desc" ? cb - ca : ca - cb;
+        });
+        for (const r of rows) {
+          tbody.appendChild(r.main);
+          tbody.appendChild(r.ev);
+        }
+      });
+    }
+  }
+
+  // ---- CONTRADICTIONS ----
+  if (D.contradictions?.length) {
+    F.appendChild(el("hr", { class: "view-sep", "aria-hidden": "true" }));
+    const sec = el("section", { class: "vs", "aria-label": "Contradictions" });
+    sec.appendChild(el("h2", {}, "Contradictions"));
+    const grid = el("div", { class: "contra-grid" });
+
+    for (const c of D.contradictions) {
+      const card = el("div", { class: "glass contra-card" });
+      const header = el("div", { style: "display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem" });
+      header.appendChild(el("h3", {}, c.topic));
+      header.appendChild(el("span", { class: "contra-type" }, c.type));
+      card.appendChild(header);
+
+      const sides = el("div", { class: "contra-sides" });
+
+      const sideA = el("div", { class: "contra-side side-a" });
+      sideA.appendChild(el("div", { class: "side-label" }, "Side A"));
+      sideA.appendChild(el("p", {}, c.side_a.claim));
+      if (c.side_a.confidence != null) sideA.appendChild(el("span", { class: "mono fs td" }, `${(c.side_a.confidence * 100).toFixed(0)}%`));
+      sides.appendChild(sideA);
+
+      const sideB = el("div", { class: "contra-side side-b" });
+      sideB.appendChild(el("div", { class: "side-label" }, "Side B"));
+      sideB.appendChild(el("p", {}, c.side_b.claim));
+      if (c.side_b.confidence != null) sideB.appendChild(el("span", { class: "mono fs td" }, `${(c.side_b.confidence * 100).toFixed(0)}%`));
+      sides.appendChild(sideB);
+
+      card.appendChild(sides);
+
+      if (c.assessment) {
+        card.appendChild(el("div", { class: "contra-assess" }, c.assessment));
+      }
+
+      grid.appendChild(card);
+    }
+    sec.appendChild(grid);
+    F.appendChild(sec);
+  }
+
+  // ---- CONFIDENCE HEATMAP ----
+  if (D.confidence_distribution) {
+    const sec = el("section", { class: "glass vs", "aria-label": "Confidence Distribution" });
+    sec.appendChild(el("h2", {}, "Confidence Distribution"));
+    const hm = el("div", { class: "heatmap" });
+    const cd = D.confidence_distribution;
+    const total = (cd.high || 0) + (cd.medium || 0) + (cd.low || 0) + (cd.uncertain || 0);
+    const maxCount = Math.max(cd.high || 0, cd.medium || 0, cd.low || 0, cd.uncertain || 0, 1);
+
+    const bands = [
+      { label: "High", key: "high", range: "0.8-1.0", color: "var(--ok)" },
+      { label: "Medium", key: "medium", range: "0.5-0.7", color: "var(--warn)" },
+      { label: "Low", key: "low", range: "0.3-0.4", color: "var(--bad)" },
+      { label: "Uncertain", key: "uncertain", range: "0.0-0.2", color: "var(--muted)" }
+    ];
+
+    for (const band of bands) {
+      const count = cd[band.key] || 0;
+      const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
+      const row = el("div", { class: "hm-row" });
+      const label = el("span", { class: "hm-label" });
+      label.appendChild(el("span", {}, band.label));
+      label.appendChild(el("span", { class: "td fs" }, ` ${band.range}`));
+      row.appendChild(label);
+
+      const bar = el("div", { class: "hm-bar" });
+      bar.style.background = "light-dark(oklch(0.90 0.01 260), oklch(0.28 0.02 260))";
+      const inner = el("div", { class: "hm-bar-inner" });
+      inner.style.width = `${pct}%`;
+      inner.style.background = band.color;
+      bar.title = `${band.label}: ${count} finding${count !== 1 ? "s" : ""}`;
+      bar.appendChild(inner);
+      row.appendChild(bar);
+
+      row.appendChild(el("span", { class: "hm-count mono" }, String(count)));
+      hm.appendChild(row);
+    }
+
+    sec.appendChild(hm);
+    if (total > 0) {
+      sec.appendChild(el("p", { class: "fs td mt-s" }, `${total} total findings across ${Object.values(cd).filter(v => v > 0).length} confidence bands`));
+    }
+    F.appendChild(sec);
+  }
+
+  // ---- SOURCES ----
+  if (D.sources?.length) {
+    const sec = el("section", { class: "dpanel vs", "aria-label": "Sources" });
+    sec.appendChild(el("h2", {}, `Sources (${D.sources.length})`));
+    const grid = el("div", { class: "src-grid" });
+
+    for (const s of D.sources) {
+      const card = el("div", { class: "glass src-card" });
+      if (s.title) card.appendChild(el("div", { class: "src-title" }, s.title));
+
+      const toolRow = el("div", { style: "margin-bottom:0.2rem" });
+      toolRow.appendChild(el("span", { class: "src-tool" }, s.tool));
+      if (s.timestamp) {
+        toolRow.appendChild(document.createTextNode(" "));
+        toolRow.appendChild(el("span", { class: "src-ts" }, s.timestamp));
+      }
+      card.appendChild(toolRow);
+
+      if (s.url) {
+        const link = el("a", { href: s.url, class: "src-url", target: "_blank", rel: "noopener" }, s.url);
+        card.appendChild(link);
+      }
+
+      if (s.referenced_by?.length) {
+        const refs = el("div", { class: "src-refs" });
+        refs.appendChild(el("span", { class: "td" }, "Referenced by: "));
+        for (const ref of s.referenced_by) refs.appendChild(el("span", { class: "pill" }, ref));
+        card.appendChild(refs);
+      }
+
+      grid.appendChild(card);
+    }
+    sec.appendChild(grid);
+    F.appendChild(sec);
+  }
+
+  // ---- GAPS ----
+  if (D.gaps?.length) {
+    const sec = el("section", { class: "glass vs", "aria-label": "Knowledge Gaps" });
+    sec.appendChild(el("h2", {}, "Knowledge Gaps"));
+    const list = el("ul", { class: "gap-list" });
+    for (const g of D.gaps) list.appendChild(el("li", {}, g));
+    sec.appendChild(list);
+    F.appendChild(sec);
+  }
+
+  app.appendChild(F);
+
+  // Stagger section animations
+  const sections = app.querySelectorAll("section[aria-label], .glass, .dpanel");
+  sections.forEach((s, i) => { s.style.animationDelay = `${i * 0.05}s`; });
+})();
+</script>
+</body>
+</html>
