@@ -15,9 +15,9 @@ Before any tool-mediated work:
 
 1. **DECOMPOSE**: List every action needed.
 2. **CLASSIFY**: Independent (no data dependency) vs dependent.
-3. **MAXIMIZE**: Actively split actions further — find every opportunity to parallelize.
+3. **MAXIMIZE**: Actively split actions further — find every opportunity to parallelize. Each independent action = its own subagent.
 4. **CONFLICT CHECK**: Same-file edits → sequential. Everything else → parallel.
-5. **DISPATCH**: Default to TeamCreate with parallel subagent waves inside each teammate (Pattern E). Use bare subagent waves only when a team adds no value. Single session only when there is literally 1 action.
+5. **DISPATCH**: Default is Pattern E (TeamCreate + nested subagent waves per teammate). Pre-approve permissions before spawning. Use bare subagent waves only when single domain, no coordination, no context pressure. Single session only when there is literally 1 action.
 6. **TRACK**: TaskCreate entries before every dispatch. `activeForm` in present continuous. Mark `in_progress` → `completed`. N dispatched = N resolved before advancing.
 
 **Fast path**: Exactly 1 action → single session. All other cases → parallelize.
@@ -25,8 +25,8 @@ Before any tool-mediated work:
 
 | Tier | Mechanism | Default for |
 |------|-----------|-------------|
-| **Team + nested waves** | TeamCreate + subagent waves per teammate | 2+ independent streams (DEFAULT) |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination needed |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure |
 | **Single session** | Direct | Exactly 1 action |
 
 **Model**: opus everywhere. No exceptions. Never downgrade model for any reason.

@@ -44,13 +44,16 @@ Before executing any request that involves tool-mediated work:
 
 1. **DECOMPOSE**: List the actions needed (file reads, edits, searches, commands, analyses).
 2. **CLASSIFY**: Which actions are independent (no data dependency)? Which are dependent?
-3. **DISPATCH**: 2+ independent streams → default to TeamCreate with subagent waves per teammate (Pattern E). Single domain only, no coordination needed → parallel Task calls. Exactly 1 action → single session.
+3. **MAXIMIZE**: Actively split actions further — find every opportunity to parallelize. Each independent action = its own subagent. Challenge: can any action be split into two?
 4. **CONFLICT CHECK**: Two independent actions editing the same file → make those sequential; all others remain parallel.
-5. **TRACK**: For orchestrated work, create TaskCreate entries before dispatch (see Section 7).
+5. **DISPATCH**: Default is Pattern E — TeamCreate with nested subagent waves per teammate. Pre-approve permissions before spawning. Use bare subagent waves only when single domain, no coordination, no context pressure. Single session only when there is literally 1 action.
+6. **TRACK**: For orchestrated work, create TaskCreate entries before dispatch (see Section 7).
 
 **Fast path**: Single-action requests skip directly to single session.
 
 **Explore-first path**: Cannot decompose without exploration → spawn parallel exploration team first (Pattern F Wave 1), then re-enter this gate.
+
+**Transition heuristic**: Subagent waves hitting context limits or agents need to share findings → upgrade to Pattern E (teams + nested waves).
 
 **User override**: Explicit user requests for a specific execution approach take precedence.
 
@@ -76,8 +79,8 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + nested waves** | TeamCreate + subagent waves per teammate | 2+ independent streams (DEFAULT) | opus |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination needed | opus |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus |
 | **Single session** | Direct execution | Exactly 1 action | N/A |
 
 Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
@@ -96,7 +99,7 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 - Do NOT rely on the subagent inheriting conversation history — it does not.
 
 ### Model selection
-- `opus` — the ONLY model. Every subagent, every teammate, every wave. No exceptions. Never downgrade.
+- `opus` — the ONLY model. Every subagent, every teammate, every wave. No exceptions. Never downgrade for any reason.
 
 ### Context management
 - Delegate verbose operations (test suites, log parsing, doc fetching) to subagents.
@@ -107,11 +110,13 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 
 ## 3. Agent Team Best Practices
 
-- Start with 2-4 teammates. Scale up only when justified.
+- Scale teammates to match the work — no artificial cap. Use as many as needed for maximum parallelism (up to ~50 agents total including nested subagents). Token budget is not a constraint.
+- Pre-approve common permissions before spawning teammates to reduce friction.
 - Assign each teammate a distinct domain and non-overlapping file ownership.
-- Aim for 5-6 tasks per teammate — productive yet manageable for check-ins.
-- Include all task-specific context in spawn prompts: file paths, architecture decisions, acceptance criteria.
+- Assign as many tasks per teammate as the domain requires — no artificial limit.
+- Include all task-specific context in spawn prompts: file paths, architecture decisions, acceptance criteria. Teammates do not inherit conversation history.
 - Use delegate mode to prevent the lead from implementing work itself.
+- Task claiming uses file locking — no race conditions when multiple teammates claim simultaneously.
 - Never assign two teammates overlapping file ownership.
 - The lead must not proceed to synthesis until all teammate tasks are accounted for (Section 4).
 
@@ -134,17 +139,23 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 - **TaskCompleted** hook: prevent tasks from closing before tests pass.
 - Both use exit code 2 to send feedback and keep the teammate/task active.
 
+### Plan approval workflow
+- For risky changes, include "Require plan approval before making changes" in the spawn prompt.
+- Teammate enters read-only plan mode, sends plan_approval_request to lead when ready.
+- Lead approves or rejects with feedback. Teammate revises if rejected.
+- Influence approval criteria in spawn prompt: "only approve plans that include test coverage."
+
 ---
 
 ## 5. Orchestration Patterns
 
 | Pattern | Name | Use When | Details |
 |---------|------|----------|---------|
-| A | Parallel subagent wave | 2-6 independent subtasks in a session | see `references/patterns.md` |
+| A | Parallel subagent wave | 2+ independent subtasks in a session | see `references/patterns.md` |
 | B | Agent team with file ownership | Cross-domain features, large refactors | see `references/patterns.md` |
 | C | Competing hypotheses | Debugging, architecture decisions | see `references/patterns.md` |
 | D | Plan-then-swarm | Large tasks needing human approval | see `references/patterns.md` |
-| E | Teams of subagent-using teammates | Very large tasks, nested parallelism | see `references/patterns.md` |
+| **E** | **Teams of subagent-using teammates (DEFAULT)** | **2+ independent streams — use by default** | see `references/patterns.md` |
 | F | Multi-wave pipeline | Explore → implement → verify phases | see `references/patterns.md` |
 
 ---
@@ -159,6 +170,8 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 - Subagent resumption may not recover from all failure modes (re-spawn instead).
 - No built-in timeout detection — orchestrator must poll with `TaskOutput` manually.
 - Recovery re-spawns count toward the session's agent budget.
+- Display modes: in-process (Shift+Down to cycle) is default; split panes require tmux or iTerm2.
+- Teammate interaction: Enter to view session, Escape to interrupt, Ctrl+T for task list.
 
 ---
 
@@ -166,7 +179,7 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 
 1. Never dispatch independent actions sequentially — all independent Task calls MUST appear in one response.
 2. Always run the Decomposition Gate before any tool-mediated work; skipping it is never acceptable.
-3. Never reduce parallelism, tier, or model quality for any reason — always use opus, no exceptions.
+3. Never reduce parallelism, tier, or model quality for any reason — always use opus, no exceptions. Never downgrade.
 4. Never silently drop a failed subagent — N dispatched = N accounted for; apply the Accounting Rule after every wave.
 5. Never advance to Wave N+1 with unresolved agents — resolve all agents in Wave N first.
 6. Always create TaskCreate entries before dispatching subagent waves or agent teams — silent orchestration is forbidden.
