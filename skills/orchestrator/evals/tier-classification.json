@@ -5,8 +5,8 @@
   "expected_behavior": [
     "Agent dispatches to 'tier' mode based on the keyword in arguments",
     "Agent displays the Tier Selection table with three tiers: Team+waves, Subagent wave, Single session",
-    "Agent explains the criteria for each tier: 3+ domain-crossing streams for teams, 2+ independent actions for subagent waves, single action or shared file dependencies for single session",
-    "Agent includes model guidance: opus as default, sonnet only for routine/mechanical tasks, haiku only for trivial zero-risk tasks",
+    "Agent explains the criteria for each tier: 2+ independent streams (DEFAULT) for team+nested waves, 2+ actions single domain for subagent waves, exactly 1 action for single session",
+    "Agent includes model guidance: opus everywhere, no exceptions, never downgrade",
     "Agent emphasizes the mandatory rule: always select the highest tier whose criteria are met, never reduce tier to save cost"
   ]
 }

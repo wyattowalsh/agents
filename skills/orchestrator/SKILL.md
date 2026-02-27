@@ -44,13 +44,13 @@ Before executing any request that involves tool-mediated work:
 
 1. **DECOMPOSE**: List the actions needed (file reads, edits, searches, commands, analyses).
 2. **CLASSIFY**: Which actions are independent (no data dependency)? Which are dependent?
-3. **DISPATCH**: 2+ independent → parallel Task calls in one message. Mix → parallel first, dependent after. All dependent → single session.
+3. **DISPATCH**: 2+ independent streams → default to TeamCreate with subagent waves per teammate (Pattern E). Single domain only, no coordination needed → parallel Task calls. Exactly 1 action → single session.
 4. **CONFLICT CHECK**: Two independent actions editing the same file → make those sequential; all others remain parallel.
 5. **TRACK**: For orchestrated work, create TaskCreate entries before dispatch (see Section 7).
 
 **Fast path**: Single-action requests skip directly to single session.
 
-**Explore-first path**: Cannot decompose without exploration → dispatch parallel exploration subagents first (Pattern F Wave 1), then re-enter this gate.
+**Explore-first path**: Cannot decompose without exploration → spawn parallel exploration team first (Pattern F Wave 1), then re-enter this gate.
 
 **User override**: Explicit user requests for a specific execution approach take precedence.
 
@@ -76,9 +76,9 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + waves** | TeamCreate | 3+ domain-crossing streams, coordination needed | opus (default) |
-| **Subagent wave** | Task tool, parallel calls | 2+ independent actions, no inter-agent communication | opus (default), sonnet for routine/mechanical only |
-| **Single session** | Direct execution | Only 1 action, OR all actions share file dependencies | N/A |
+| **Team + nested waves** | TeamCreate + subagent waves per teammate | 2+ independent streams (DEFAULT) | opus |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination needed | opus |
+| **Single session** | Direct execution | Exactly 1 action | N/A |
 
 Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
 
@@ -96,9 +96,7 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 - Do NOT rely on the subagent inheriting conversation history — it does not.
 
 ### Model selection
-- `opus` — default for ALL subagents. Use for implementation, analysis, reasoning, reviews.
-- `sonnet` — ONLY for routine, mechanical tasks: straightforward file lookups, basic searches.
-- `haiku` — ONLY for trivial, zero-risk tasks. Never for anything requiring judgment.
+- `opus` — the ONLY model. Every subagent, every teammate, every wave. No exceptions. Never downgrade.
 
 ### Context management
 - Delegate verbose operations (test suites, log parsing, doc fetching) to subagents.
@@ -168,7 +166,7 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 
 1. Never dispatch independent actions sequentially — all independent Task calls MUST appear in one response.
 2. Always run the Decomposition Gate before any tool-mediated work; skipping it is never acceptable.
-3. Never reduce parallelism, tier, or model quality for any reason — cost is not a constraint; always use opus unless the task unambiguously qualifies for sonnet or haiku.
+3. Never reduce parallelism, tier, or model quality for any reason — always use opus, no exceptions.
 4. Never silently drop a failed subagent — N dispatched = N accounted for; apply the Accounting Rule after every wave.
 5. Never advance to Wave N+1 with unresolved agents — resolve all agents in Wave N first.
 6. Always create TaskCreate entries before dispatching subagent waves or agent teams — silent orchestration is forbidden.
