@@ -21,7 +21,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 >
 > **Sub-question:** [sub_question]
 > **Query context:** [parent query for framing]
-> **Tools to use:** brave-search, duckduckgo, exa, g-search
+> **Tools to use:** brave-search, duckduckgo-search, exa, g-search
 >
 > Execute at least 2 searches using different engines. For each result:
 > - Extract the specific claim relevant to the sub-question
@@ -88,7 +88,7 @@ Use TeamCreate with team name `research-{slug}` where slug is 2-4 words from the
 
 ```
 Lead: triage (Wave 0), orchestrate waves, judge reconcile (Wave 3), synthesize (Wave 4)
-  |-- web-researcher:       brave-search, duckduckgo, exa, g-search
+  |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
   |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version
   |-- content-extractor:    fetcher, trafilatura, docling, wikipedia, wayback
   |-- [academic-researcher: arxiv, semantic-scholar, openalex, crossref, PubMed]
@@ -132,8 +132,8 @@ Exhaustive builds on Deep with two additions:
 ```
 web-researcher (teammate)
   |-- Task: sub-question A via brave-search + exa
-  |-- Task: sub-question B via duckduckgo + g-search
-  |-- Task: sub-question C via brave-search + duckduckgo
+  |-- Task: sub-question B via duckduckgo-search + g-search
+  |-- Task: sub-question C via brave-search + duckduckgo-search
 ```
 
 Each teammate runs its own internal parallel wave, tripling throughput.

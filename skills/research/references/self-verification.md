@@ -65,7 +65,7 @@ For every finding that cites a specific URL:
 For each major claim in the target findings:
 
 1. Formulate the OPPOSITE of the claim as a search query. Example: if the finding says "Rust is memory-safe," search for "Rust memory safety limitations" or "Rust unsafe code vulnerabilities."
-2. Use a different search engine than the one that originally found the supporting evidence. If the original used brave-search, use duckduckgo or exa.
+2. Use a different search engine than the one that originally found the supporting evidence. If the original used brave-search, use duckduckgo-search or exa.
 3. Evaluate the counter-evidence:
 
 | Counter-Evidence Found | Action |
