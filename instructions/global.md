@@ -9,6 +9,18 @@
 - Install skills: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
 - Never sign or add self-attribution.
 
+## Clarification Gate
+
+Act on evidence, not belief. Every decision about intent, scope, constraints, approach, and success must trace to the codebase, user's words, or verified conventions. What traces only to inference or defaults is an assumption — and every assumption becomes a question.
+
+**Context-first**: Read code and conventions to ground assumptions in evidence before asking.
+
+**Questions**: Numbered multiple-choice, 2-4 options each with trade-offs and downstream consequences. Batch all at once.
+
+**"Probably" and "obviously" are not evidence.** Surface them as choices.
+
+**Fast path**: Fully grounded → act.
+
 ## Orchestration Core
 
 Before any tool-mediated work:
