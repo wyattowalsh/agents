@@ -30,6 +30,7 @@ Read during analysis (Step 3) or when building teammate prompts.
 - Check consistency: naming style, error patterns, logging patterns match rest of codebase
 - Check resource leaks: unclosed connections, file handles, streams, timers
 - Check concurrency: race conditions, missing locks, deadlock potential
+- **TOCTOU anti-pattern**: existence check (`os.path.exists`, `fs.existsSync`, try-stat) before an operation — operate directly, handle the error; existence checks introduce race conditions
 
 ### Simplification
 
@@ -57,6 +58,11 @@ Read during analysis (Step 3) or when building teammate prompts.
 - Check cognitive complexity: functions exceeding cyclomatic complexity of 15
 - Check generalizability: components tightly coupled to a single use case where a more general design costs nothing extra
 - Check flexibility gaps: rigid interfaces that force callers into workarounds or copy-paste
+- **Stringly-typed**: raw string literals where a constant, enum, or branded type already exists (Grep to confirm)
+- **Parameter sprawl**: new parameters added to a function instead of restructuring its callers
+- **Redundant state**: field that duplicates existing state; cached value that could be derived; observer that could be a direct call
+- **Copy-paste variation**: 2+ near-identical blocks differing only in 1-2 values — extract shared abstraction (note: "copy-paste artifacts" in AI Code Smells covers LLM-generated duplicates; this covers hand-written structural repetition)
+- **Leaky abstraction**: caller reaching past abstraction boundary; new cross-layer call breaking encapsulation
 
 ### Simplification
 
@@ -79,6 +85,11 @@ Read during analysis (Step 3) or when building teammate prompts.
 - Check N+1 patterns: queries/calls in loops, missing batching
 - Check backpressure: unbounded queues, missing rate limiting, memory growth
 - Check wrong data structure: using a data structure mismatched for the access pattern (map vs. list, set vs. array)
+- **Hot-path bloat**: blocking/synchronous work added to process startup, per-request middleware, or per-render functions
+- **Missed concurrency**: 2+ independent I/O or compute calls in sequence that could be parallelized (`Promise.all`, `asyncio.gather`)
+- **Overly broad operation**: reads entire file/table/collection to use only a portion — add offset/limit/projection
+- **Unbounded data structure**: map/list/set that grows without eviction, TTL, or size cap (distinct from unbounded queues covered under backpressure — targets general-purpose in-memory stores)
+- **Event listener leak**: `.on()` / `addEventListener` without corresponding remove in cleanup
 
 ### Simplification
 
@@ -230,3 +241,15 @@ Apply when code is in Rust, C, C++, or any language with manual memory managemen
 - Check double-free: resources freed more than once. Flag manual `Drop` implementations that may double-free.
 - Check lifetime correctness: in Rust, flag lifetime annotations that could lead to dangling references. In C/C++, flag returning pointers to stack variables.
 - Check unsafe FFI boundaries: foreign function calls must validate inputs and handle null pointers. Flag missing null checks at FFI boundaries.
+
+## Convention Violations
+
+Track explicit rule violations from project convention files (AGENTS.md, CLAUDE.md, .cursorrules).
+
+- **Rule break**: code violates an explicit directive in AGENTS.md or CLAUDE.md (cite the rule and line)
+- **Severity mapping**:
+  - Style-only rule (formatting, naming) → P3/S3
+  - Functional rule (toolchain, dependency management, required patterns) → P2/S2
+  - Security or integrity rule (auth handling, secret management, input validation) → P1/S1
+  - Safety-critical rule (data loss, destructive operations) → P0/S0
+- **Evidence**: citation anchor to the violated rule in the convention file + citation anchor to the offending code line

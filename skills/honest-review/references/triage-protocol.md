@@ -8,6 +8,8 @@ Run as the first action in every Mode 2 full codebase audit.
 - [Project Scanning](#project-scanning)
 - [Git History Analysis](#git-history-analysis)
 - [Risk Stratification](#risk-stratification)
+- [Dependency Graph Construction](#dependency-graph-construction)
+- [Content Type Detection](#content-type-detection)
 - [Context Assembly](#context-assembly)
 - [Triage Output Template](#triage-output-template)
 
@@ -43,6 +45,23 @@ If found, include in triage context. Reviewers should validate:
 - New code doesn't introduce patterns explicitly prohibited by project rules
 - Agent-specific configurations are consistent across files
 
+### Spec Auto-Detection
+
+Also search for spec context to activate the Requirements Validator in Wave 1:
+
+- **PR mode**: extract PR description and body text of linked GitHub issues:
+  ```bash
+  gh pr view --json title,body,closingIssuesReferences
+  gh issue view [number] --json title,body
+  ```
+- **Repo scan**: look for SPEC.md, `specs/`, `docs/`, or README.md sections containing acceptance criteria or requirements headings
+- **Commit messages**: recent commit bodies may reference tickets or acceptance criteria:
+  ```bash
+  git log --since="30 days ago" --format="%B" | grep -i -E "closes|fixes|resolves|AC:|acceptance|requirement"
+  ```
+
+Any detected spec context → store in TRIAGE REPORT and activate Requirements Validator in the Wave 1 team.
+
 ### Monorepo Workspace Detection
 
 Detect workspace structures for review scope management:
@@ -66,18 +85,12 @@ For monorepo reviews:
 
 ## Git History Analysis
 
-Spawn four parallel haiku subagents, one per dimension, in a single message. Collect all results before proceeding to risk stratification.
+Spawn three parallel opus subagents, one per dimension, in a single message. Collect all results before proceeding to risk stratification.
 
 **Hot files** -- 20 most frequently changed files in 90 days (top 10% = high-churn):
 
 ```bash
 git log --since="90 days ago" --name-only --pretty=format: | sort | uniq -c | sort -rn | head -20
-```
-
-**Blame density** -- for each hot file, count distinct authors (5+ authors = higher risk):
-
-```bash
-git shortlog -s -n -- [file]
 ```
 
 **Recent changes** -- files changed in last 2 weeks get priority boost (overrides historical churn):
@@ -98,13 +111,13 @@ Cross-reference issue titles/bodies against hot file paths. Elevate matching fil
 
 Assign every in-scope file to a tier using scanning metrics and git signals.
 
-**HIGH** -- any trigger fires: touches auth/payments/crypto/user-data/external-I/O; max nesting >= 5; top 10% churn; LOC > 300; 5+ authors; open bugs referencing the file; fan-in >= 5 (imported by 5+ files).
+**HIGH** -- any trigger fires: touches auth/payments/crypto/user-data/external-I/O; max nesting >= 5; top 10% churn; LOC > 300; open bugs referencing the file; fan-in >= 5 (imported by 5+ files).
 Route: deep specialist review with research validation. Activate context-dependent checklists (security, resilience, data migration as applicable).
 
-**MEDIUM** -- no HIGH trigger, but any of: business logic, data models, or API handlers; moderate complexity (nesting 3-4, LOC 50-300); above-median churn; 2-4 authors.
+**MEDIUM** -- no HIGH trigger, but any of: business logic, data models, or API handlers; moderate complexity (nesting 3-4, LOC 50-300); above-median churn.
 Route: standard review at all three levels. Research-validate non-obvious findings only.
 
-**LOW** -- all of: config/docs/static assets/simple utilities; LOC < 50; below-median churn; 1-2 authors; no open issues.
+**LOW** -- all of: config/docs/static assets/simple utilities; LOC < 50; below-median churn; no open issues.
 Route: quick scan only. Flag obvious defects. Skip deep analysis and creative lenses.
 
 ## Dependency Graph Construction
@@ -132,31 +145,40 @@ These are the most likely sources of integration-related defects.
 
 See references/dependency-context.md for construction commands and graph structure.
 
-## Classification Gating — Review Depth
+> Fan-in data continues to flow to blast radius calculation in findings. The fan-in risk points that previously fed the depth score are simply dropped — the dependency graph construction itself is unchanged.
 
-After risk stratification, compute a review depth score (0-10) to determine how deep the review should go. This prevents over-reviewing simple changes and under-reviewing complex ones.
+## Content Type Detection
 
-| Factor                               | Points |
-| ------------------------------------ | ------ |
-| File count: 1-2                      | 0      |
-| File count: 3-5                      | 1      |
-| File count: 6-15                     | 2      |
-| File count: 16+                      | 3      |
-| Any HIGH-risk file                   | +2     |
-| Security trigger active              | +2     |
-| Project type: production or library  | +1     |
-| Change type: new feature or refactor | +1     |
-| Change type: config or docs only     | -1     |
+Two-pass analysis of each changed/reviewed file to determine which specialists and reviewers to activate.
 
-Clamp the final score to `max(0, score)` before depth lookup.
+**Pass 1 — Path/extension heuristics** (no file reading, instant):
 
-| Score | Depth    | Behavior                                                                 |
-| ----- | -------- | ------------------------------------------------------------------------ |
-| 0-3   | Light    | Inline review, 1-2 lenses, skip team structure                           |
-| 4-6   | Standard | Parallel reviewers, 2+ lenses, full research validation                  |
-| 7-10  | Deep     | Full team with specialists, all applicable lenses, cross-domain analysis |
+- `*.test.*` / `*_test.*` / `*.spec.*` / `tests/` / `__tests__/` / `spec/` → test files present
+- `*.tsx` / `*.jsx` / `*.vue` / `*.svelte` / `*.css` / `*.scss` / `*.html` → UI/frontend
+- `migrations/` / `alembic/` / `flyway/` / `*.sql` / `*.migration.*` → data migration
+- `auth/` / `oauth/` / `jwt/` / `crypto/` / `session/` / `password/` / `login/` → auth/security
+- `routes/` / `api/` / `controllers/` / `handlers/` / `endpoints/` → API/observability
+- `SPEC.md` / `specs/` / `docs/` in scope; PR description exists; linked issues found → spec context
 
-Record the depth classification in the triage report. Reviewers use this to calibrate effort.
+**Pass 2 — Import/keyword scan** (read first 30-50 lines per ambiguous file):
+
+- Crypto/hash imports (`bcrypt`, `hashlib`, `crypto`, `jwt`, `hmac`) → Security Specialist
+- Payment SDK imports (`stripe`, `paypal`, `braintree`, `adyen`) → Security Specialist
+- ORM/DB schema imports (`sqlalchemy`, `prisma`, `sequelize`, `alembic`) → Data Migration Specialist
+- Framework request/response imports (`fastapi`, `flask`, `express`, `django.http`) → Observability Specialist
+- UI framework imports (`react`, `vue`, `angular`, `svelte`, `tailwind`) → Frontend Specialist
+
+**Trigger mapping**:
+
+- Any diff → Code Reuse Reviewer + Test Quality Reviewer (always)
+- Test files detected → Test Quality Reviewer in full 4-dimension mode
+- Auth/security signals → Security Specialist
+- API/service signals → Observability Specialist
+- Migration signals → Data Migration Specialist
+- UI signals → Frontend Specialist
+- Spec context found → Requirements Validator
+
+Emit the full trigger list and detection evidence in the TRIAGE REPORT. Team lead uses this to compose the Wave 1 team.
 
 ## Context Assembly
 
@@ -198,25 +220,37 @@ PROJECT PROFILE:
   Files: [N]  |  LOC: [N]  |  Type: [prototype | production | library]
 
 GIT SIGNALS:
-  Hot files (top 5): [path] — [N] commits (90d), [N] authors
+  Hot files (top 5): [path] — [N] commits (90d)
   Recently changed (14d): [N] files
   Open issues in touched areas: [N]
 
 RISK-SORTED FILE LIST:
   HIGH ([N] files):
-    [path] — triggers: [auth, LOC>300, 5+ authors] → deep specialist review
+    [path] — triggers: [auth, LOC>300, fan-in>=5] → specialist review
   MEDIUM ([N] files):
     [path] — triggers: [business logic, moderate churn] → standard review
   LOW ([N] files):
     [path] — triggers: [config, LOC<50] → quick scan
 
+CONTENT TYPE SIGNALS:
+  Test files present: [yes | no]
+  Auth/security code: [yes | no]
+  UI/frontend code: [yes | no]
+  Data migration files: [yes | no]
+  API/service handlers: [yes | no]
+  Spec context found: [yes | no — source: PR description | linked issues | SPEC.md | docs/]
+
 SPECIALIST TRIGGERS:
-  [ ] Security — auth/payments/crypto/user-data files detected
-  [ ] Resilience — external I/O or distributed patterns detected
-  [ ] Dependency auditor — [N]+ deps, [N] outdated
-  [ ] Data migration — schema changes or migration files detected
-  [ ] Backward compat — public API surface changes detected
-  [ ] i18n/a11y — user-facing UI components detected
+  [x] Code Reuse Reviewer — always active
+  [x] Test Quality Reviewer — always active ([full 4-dimension mode] if test files detected)
+  [ ] Security Specialist — auth/payments/crypto/user-data signals detected
+  [ ] Observability Specialist — API/service handler signals detected
+  [ ] Frontend Specialist — UI/frontend signals detected
+  [ ] Data Migration Specialist — migration signals detected
+  [ ] Requirements Validator — spec context found
+  [ ] Resilience Reviewer — external I/O or distributed patterns detected
+  [ ] Dependency Auditor — [N]+ deps, [N] outdated
+  [ ] Backward Compat Reviewer — public API surface changes detected
 
 DEPENDENCY GRAPH:
   Total cross-file dependencies: [N]

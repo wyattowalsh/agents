@@ -145,7 +145,12 @@ Context-triggered agents that run cross-cutting analysis across all domains. Act
 | 100-500  | 4-5       | 7-10 per wave          | Split large domains into sub-domains |
 | 500+     | 5-6       | 7-10 per wave          | Multiple passes, state scope limits  |
 
-**Note:** Pass A now uses 3 parallel subagents with ordering diversity (up from 1), adding +2 subagents per teammate per wave compared to v4.0.
+| Specialist              | Always Spawns | Condition                                      |
+| ----------------------- | ------------- | ---------------------------------------------- |
+| Code Reuse Reviewer     | Yes           | Always; scope bounded to changed/HIGH-risk files + top 50 by fan-in/LOC in 500+ file audits |
+| Test Quality Reviewer   | Yes           | Mode A if test files in scope; Mode B otherwise |
+
+**Note:** Pass A now uses 3 parallel subagents with ordering diversity (up from 1), adding +2 subagents per teammate per wave compared to single-pass scanning.
 
 **Diminishing returns:** More than 6 parallel reviewers per wave shows diminishing quality. Prefer deeper per-reviewer analysis over wider fan-out.
 
@@ -161,7 +166,7 @@ Context-triggered agents that run cross-cutting analysis across all domains. Act
 Each domain teammate runs 3 internal passes of parallel subagents:
 
 ```
-Pass A: Multi-Pass Scan with Ordering Diversity (3 parallel haiku subagents)
+Pass A: Multi-Pass Scan with Ordering Diversity (3 parallel opus subagents)
   → Each subagent scans ALL files but in a different order
   → Majority voting determines priority routing to Pass B
   → Output: list of flagged files with preliminary findings and vote counts
@@ -190,9 +195,9 @@ Use this template when spawning domain reviewers. Inject triage context from Wav
 >
 > Conduct a deep review of every file in your ownership using 3 internal passes:
 >
-> **Pass A — Multi-Pass Scan with Ordering Diversity (haiku subagents):**
+> **Pass A — Multi-Pass Scan with Ordering Diversity (opus subagents):**
 >
-> Dispatch 3 parallel haiku subagents, each scanning ALL files but in a different order:
+> Dispatch 3 parallel opus subagents, each scanning ALL files but in a different order:
 >
 > | Subagent | File Ordering | Rationale |
 > |----------|--------------|-----------|
@@ -241,7 +246,7 @@ Use this template when spawning level-specific reviewers for session review.
 >
 > Run 3 internal passes:
 >
-> - **Pass A:** Multi-pass scan with ordering diversity (3 parallel haiku subagents, each scans ALL files in different order, majority voting)
+> - **Pass A:** Multi-pass scan with ordering diversity (3 parallel opus subagents, each scans ALL files in different order, majority voting)
 > - **Pass B:** Deep dive HIGH-risk flagged files (opus subagents, 1 per file)
 > - **Pass C:** Research validate findings (batched per references/research-playbook.md)
 >
@@ -287,5 +292,61 @@ Use this template when spawning level-specific reviewers for session review.
 >
 > Research-validate observability patterns against framework-specific docs via Context7.
 > Assign confidence scores. Finding IDs: HR-{S|A}-{seq}.
+
+### Code Reuse Reviewer
+
+> **Note on Code Reuse and Design Reviewer overlap**: Both reviewers may flag the same duplication. The Judge should deduplicate Code Reuse findings that overlap with Design Reviewer findings on the same root cause — elevate to a single finding citing both sources.
+
+**Code Reuse Reviewer**
+
+Goal: Find newly written code duplicating existing functionality. Cite the existing implementation at file:line.
+
+Pass A (opus): For each changed/reviewed file, list newly added functions, classes, and logic blocks. Flag duplication candidates by name/behavior.
+
+Pass B (opus): For each Pass A candidate, Grep `utils/`, `lib/`, `common/`, `helpers/`, shared modules, adjacent files for matching behavior. Build citation table: new location → existing equivalent (file:line). Also Grep for stringly-typed patterns (raw strings vs existing constants/enums) and compare signatures for parameter sprawl.
+
+Pass C (opus): Read cited lines to verify behavioral equivalence. Confidence: 0.9 exact match, 0.7 near match, discard < 0.5. Evidence = Grep result. Format as `[new:file:line] → existing [file:line]`.
+
+### Test Quality Reviewer
+
+**Test Quality Reviewer**
+
+Always spawns — scope depends on what's present in the review:
+
+Goal (Mode A — test files in scope): Full 4-dimension review of existing tests: flakiness/isolation, mock overuse, coverage gaps, and test structure.
+
+Goal (Mode B — no test files in scope): Coverage gap search — determine whether the changed/reviewed source code is adequately tested anywhere in the codebase.
+
+Pass A (opus):
+- Mode A: Scan all test files. Flag candidates:
+  - Flakiness: global state, `time.now()` calls, real network/file I/O, non-deterministic ordering
+  - Mock overuse: mocks testing mock behavior not real behavior; tests tightly coupled to implementation
+  - Coverage gaps: error paths, boundary conditions, or new code paths with no corresponding test
+  - Structure: tests > 100 lines, no AAA pattern, multiple unrelated assertions, unclear names
+- Mode B: Run `git diff HEAD` (or read the diff already collected by triage) and extract added/modified function/class/method names using language-appropriate patterns:
+  - Python: `^+.*def `
+  - JS/TS: `^+.*function ` or `^+.*=>`
+  - Rust: `^+.*pub fn `
+  - Go: `^+.*func `
+  For each extracted name, Grep restricted to test files (`*.test.*`, `*_test.*`, `*.spec.*`, `tests/`, `__tests__/`) for any reference. Flag names with zero matches as untested coverage gaps.
+  "Public" is language-specific: exported (capitalized) in Go, `export` keyword in TS/JS, `pub` in Rust, no leading underscore in Python by convention. Only flag public/exported functions as P2 — internal/private functions are P3 if untested.
+
+Pass B (opus): Deep dive flagged items. Read source to confirm coverage gaps are real (not covered by integration/e2e tests). Verify mock usage against real interface signatures.
+
+Pass C (opus): Research validate flagged patterns (WebSearch for flakiness patterns, Context7 for test framework best practices). Assign confidence. Format findings with citation anchors. Untested public functions = P2 minimum.
+
+### Requirements Validator
+
+**Requirements Validator**
+
+Goal: Validate implementation against auto-detected spec context from triage.
+
+Pass A (opus): Read the auto-detected spec context passed from triage (PR description, linked issues, SPEC.md, docs/, commit bodies).
+
+Pass B (opus): Compare each stated requirement against the implementation. Note gaps where requirements are not implemented, and divergences where implementation differs from requirements.
+
+Pass C (opus): Research-validate disputed interpretations (WebSearch, Context7). Format divergences as P2 findings with dual citation anchors (spec text location + non-conforming code location).
+
+Precedence for conflicting spec sources: PR description > linked issues > SPEC.md > docs/ > commit bodies — note conflicts between sources in the finding.
 
 Cross-references: references/triage-protocol.md (risk classification, specialist triggers), references/judge-protocol.md (reconciliation of findings across reviewers), references/research-playbook.md (confidence scoring, batch routing), references/output-formats.md (finding format, report structure).

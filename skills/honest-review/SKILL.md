@@ -44,14 +44,17 @@ Use these terms exactly throughout both modes:
 | **lens**                 | A creative review perspective: Inversion, Deletion, Newcomer, Incident, Evolution, Adversary, Compliance, Dependency, Cost, Sustainability |
 | **blast radius**         | How many files, users, or systems a finding's defect could affect                                                                          |
 | **slopsquatting**        | AI-hallucinated package names in dependencies — security-critical, checked first in Wave 2                                                 |
-| **research validation**  | Core differentiator: every non-trivial finding confirmed with external evidence (Context7, WebSearch, DeepWiki, gh)                        |
+| **research validation**  | Core differentiator: every non-trivial finding confirmed with external evidence (Context7, WebSearch, DeepWiki, gh). Two evidence tiers: fact evidence (Grep) for reuse/simplification findings; assumption evidence (external research) for correctness, security, and non-obvious design. |
 | **systemic finding**     | A pattern appearing in 3+ files, elevated from individual findings during Judge reconciliation                                             |
 | **approval gate**        | Mandatory pause after presenting findings — never implement fixes without user consent                                                     |
 | **pass**                 | Internal teammate stage (Pass A: scan, Pass B: deep dive, Pass C: research) — distinct from pipeline waves                                 |
 | **self-verification**    | Wave 3.5: adversarial pass on top findings to reduce false positives (references/self-verification.md)                                     |
 | **convention awareness** | Check for AGENTS.md/CLAUDE.md/.cursorrules — review against project's own agent instructions                                               |
+| **code reuse finding**   | newly written code duplicating existing functionality; must cite existing implementation at file:line.                                      |
+| **fact evidence**        | Grep result confirming X exists/doesn't exist in the codebase. Sufficient for reuse/simplification findings — no external research required. |
+| **assumption evidence**  | external research (WebSearch, Context7) confirming a pattern is harmful. Required for correctness, security, and non-obvious design findings. |
 | **degraded mode**        | Operation when research tools are unavailable — confidence ceilings applied per tool                                                       |
-| **review depth**         | Classification-gated review intensity: Light (0-3), Standard (4-6), Deep (7-10)                                                            |
+| **review depth**         | honest-review always operates at maximum depth — all lenses, full research validation, full team; team composition is content-adaptive (file types determine specialist selection). |
 | **reasoning chain**      | Mandatory explanation of WHY before the finding statement. Reduces false positives.                                                         |
 | **citation anchor**      | `[file:start-end]` reference linking a finding to specific source lines. Mechanically verified.                                             |
 | **conventional comment** | Structured PR output label: praise/nitpick/suggestion/issue/todo/question/thought with (blocking)/(non-blocking) decoration.                |
@@ -95,6 +98,7 @@ Minimum one strength per review scope. Strengths are findings too.
 **Positive-to-constructive ratio**:
 Target 3:1. Avoid purely negative reports. If the ratio skews negative,
 re-examine whether low-severity findings are worth reporting.
+Exception: when 3+ P0/P1 findings are present, report all critical findings without reducing them to meet the ratio — critical issues are never suppressed for balance.
 
 **Convention-respecting stance**:
 Review against the codebase's own standards, not an ideal standard.
@@ -108,15 +112,15 @@ Three abstraction levels, each examining defects and unnecessary complexity:
 
 **Correctness** (does it work?):
 Error handling, boundary conditions, security, API misuse, concurrency, resource leaks.
-Simplify: phantom error handling, defensive checks for impossible states, dead error paths.
+Simplify: phantom error handling, defensive checks for impossible states, dead error paths. TOCTOU anti-pattern: existence checks before operations create race conditions — operate directly, handle the error.
 
 **Design** (is it well-built?):
 Abstraction quality, coupling, cohesion, test quality, cognitive complexity.
-Simplify: dead code, 1:1 wrappers, single-use abstractions, over-engineering.
+Simplify: dead code, 1:1 wrappers, single-use abstractions, over-engineering. Stringly-typed (raw strings where constants/enums already exist). Parameter sprawl (new params instead of restructuring). Redundant state (duplicates existing state or derivable). Copy-paste variation (near-identical blocks that should be unified).
 
 **Efficiency** (is it economical?):
 Algorithmic complexity, N+1, data structure choice, resource usage, caching.
-Simplify: unnecessary serialization, redundant computation, premature optimization.
+Simplify: unnecessary serialization, redundant computation, premature optimization. Hot-path bloat (blocking work on startup or per-request paths). Missed concurrency (independent ops run sequentially). Overly broad operations (reading entire file/collection when only a subset is needed). Unbounded structures / event-listener leaks.
 
 Context-dependent triggers (apply when relevant):
 
@@ -185,6 +189,8 @@ on LLM knowledge. For every non-trivial finding, validate with research:
 4. Assign confidence score (0.0-1.0) per Confidence Scoring Rubric
 5. Only report findings with evidence. Cite sources.
 
+> **Two evidence tiers:** *Fact evidence* — Grep confirms X exists/doesn't in the codebase; sufficient for reuse and simplification findings. *Assumption evidence* — external research confirming a pattern is harmful; required for correctness, security, and non-obvious design. When in doubt: if the finding can be fully proven or disproven by reading the codebase alone, fact evidence suffices.
+
 Research playbook: read references/research-playbook.md
 
 ## Mode 1: Session Review
@@ -198,36 +204,52 @@ Detect convention files (AGENTS.md, CLAUDE.md, .cursorrules) — see references/
 For 6+ files: run triage per references/triage-protocol.md:
 
 - `uv run scripts/project-scanner.py [path]` for project profile
-- Git history analysis (hot files, blame density, recent changes)
+- Git history analysis (hot files, recent changes, related issues)
 - Risk-stratify all changed files (HIGH/MEDIUM/LOW)
 - Determine specialist triggers (security, observability, requirements)
 - Detect monorepo workspaces and scope reviewers per package
 
-For 1-5 files: lightweight triage — classify risk levels, skip full scanning.
+For 1-5 files: lightweight triage — classify risk levels and run content type detection; do not skip full team composition. (Note: always-maximum-depth applies to team effort; triage for small reviews can still skip git history analysis steps to save time.)
 
 ### Session Step 2: Scale and Launch (Wave 1)
 
-| Scope     | Strategy                                                                                           |
-| --------- | -------------------------------------------------------------------------------------------------- |
-| 1-2 files | Inline review at all 3 levels. Spawn research subagents for flags.                                 |
-| 3-5 files | 3 parallel level-based reviewers (Correctness/Design/Efficiency). Each runs internal passes A→B→C. |
-| 6+ files  | Team with lead. See below.                                                                         |
+| Scope     | Strategy                                                                    |
+| --------- | --------------------------------------------------------------------------- |
+| Any scope | Content-adaptive team (see below). Always maximum depth. No inline-only mode. |
 
-**Team structure for 6+ files:**
+**Content-adaptive team composition:**
+
+Always spawn:
+- Correctness Reviewer → Passes A/B/C
+- Design Reviewer → Passes A/B/C
+- Efficiency Reviewer → Passes A/B/C
+- Code Reuse Reviewer → Passes A/B/C
+- Test Quality Reviewer → Passes A/B/C (always spawns — scope depends on what's present — see template)
+
+Spawn when triggered by triage content detection:
+- Security Specialist → when auth/payments/crypto/user-data/external-I/O code present
+- Observability Specialist → when service/API/long-running process code present
+- Requirements Validator → when spec auto-detected (PR description, linked issues, SPEC.md, docs/, commit messages)
+- Data Migration Specialist → when schema change files present
+- Frontend Specialist → when UI/component files (tsx, jsx, css, vue) present
 
 ```
 [Lead: triage (Wave 0), Judge reconciliation (Wave 3), final report]
-  |-- Correctness Reviewer → Passes A/B/C internally
-  |-- Design Reviewer → Passes A/B/C internally
-  |-- Efficiency Reviewer → Passes A/B/C internally
+  |-- Correctness Reviewer → Passes A/B/C
+  |-- Design Reviewer → Passes A/B/C
+  |-- Efficiency Reviewer → Passes A/B/C
+  |-- Code Reuse Reviewer → Passes A/B/C
+  |-- Test Quality Reviewer → Passes A/B/C
   |-- [Security Specialist if triage triggers]
   |-- [Observability Specialist if triage triggers]
-  |-- [Requirements Validator if intent available]
+  |-- [Requirements Validator if spec auto-detected]
+  |-- [Data Migration Specialist if schema changes present]
+  |-- [Frontend Specialist if UI/component files present]
 ```
 
-Each reviewer runs 3 internal passes (references/team-templates.md § Internal Wave Structure):
+Each reviewer runs 3 internal passes (references/team-templates.md § Internal Pass Structure):
 
-- Pass A: quick scan all files (haiku, 3-5 files per subagent)
+- Pass A: quick scan all files (opus, 3-5 files per subagent)
 - Pass B: deep dive HIGH-risk flagged files (opus, 1 per file)
 - Pass C: research validate findings (batched per research-playbook.md)
 
@@ -240,9 +262,9 @@ For team reviews: each teammate handles validation internally (Pass C).
 
 Batch findings by validation type. Dispatch order:
 
-1. Slopsquatting detection (security-critical, haiku)
+1. Slopsquatting detection (security-critical, opus)
 2. HIGH-risk findings (2+ sources, sonnet)
-3. MEDIUM-risk findings (1 source, haiku/sonnet)
+3. MEDIUM-risk findings (1 source, opus)
 4. Skip LOW-risk obvious issues
 
 Batch sizing: 5-8 findings per subagent (optimal). See references/research-playbook.md § Batch Optimization.
@@ -260,13 +282,13 @@ Run the 8-step Judge protocol (references/judge-protocol.md):
 7. Elevate patterns in 3+ files to systemic findings
 8. Rank by score = severity_weight × confidence × blast_radius
 
-If 3+ findings survive, run self-verification (Wave 3.5): references/self-verification.md
+If 2+ findings survive, run self-verification (Wave 3.5): references/self-verification.md
 
 ### Session Step 5: Present and Execute
 
 Present all findings with evidence, confidence scores, and citations.
-Ask: "Implement fixes? [all / select / skip]"
-If approved: follow references/auto-fix-protocol.md (preview diffs, confirm, apply, verify).
+After presenting findings, ask: "Which findings should I create a fix plan for? [all / select by ID / skip]"
+If approved: Generate an orchestration implementation plan for the selected findings using Pattern E (TeamCreate + nested subagent waves). No token budget caps. Create a TaskList entry per finding. Dispatch fixes in parallel where independent; sequential only when same-file edits conflict. Verify after all tasks complete (build, tests, behavior). See references/auto-fix-protocol.md for orchestration template.
 Output format: read references/output-formats.md
 For SARIF output: read references/sarif-output.md
 
@@ -277,7 +299,7 @@ For SARIF output: read references/sarif-output.md
 Full triage per references/triage-protocol.md:
 
 - `uv run scripts/project-scanner.py [path]` for project profile
-- Git history analysis (4 parallel haiku subagents: hot files, blame density, recent changes, related issues)
+- Git history analysis (3 parallel opus subagents: hot files, recent changes, related issues)
 - Risk-stratify all files (HIGH/MEDIUM/LOW)
 - Context assembly (project type, architecture, test coverage, PR history)
 - Determine specialist triggers for team composition
@@ -287,18 +309,44 @@ State scope limits in report.
 
 ### Audit Step 2: Design and Launch Team (Wave 1)
 
-Use triage results to select team archetype (references/team-templates.md § Full Audit Team Archetypes).
+Use triage results to select team composition. Apply the same content-adaptive team as Session Review.
 Assign file ownership based on risk stratification — HIGH-risk files get domain reviewer + specialist coverage.
+
+| Scope     | Strategy                                                                    |
+| --------- | --------------------------------------------------------------------------- |
+| Any scope | Content-adaptive team (see below). Always maximum depth. No inline-only mode. |
+
+**Content-adaptive team composition:**
+
+Always spawn:
+- Correctness Reviewer → Passes A/B/C
+- Design Reviewer → Passes A/B/C
+- Efficiency Reviewer → Passes A/B/C
+- Code Reuse Reviewer → Passes A/B/C
+- Test Quality Reviewer → Passes A/B/C (always spawns — scope depends on what's present — see template)
+
+Spawn when triggered by triage content detection:
+- Security Specialist → when auth/payments/crypto/user-data/external-I/O code present
+- Observability Specialist → when service/API/long-running process code present
+- Requirements Validator → when spec auto-detected (PR description, linked issues, SPEC.md, docs/, commit messages)
+- Data Migration Specialist → when schema change files present
+- Frontend Specialist → when UI/component files (tsx, jsx, css, vue) present
 
 ```
 [Lead: triage (Wave 0), cross-domain analysis, Judge reconciliation (Wave 3), report]
-  |-- Domain A Reviewer → Passes A/B/C internally
-  |-- Domain B Reviewer → Passes A/B/C internally
-  |-- Domain C Reviewer → Passes A/B/C internally
-  |-- Security Specialist (cross-cutting, all HIGH-risk files)
-  |-- [Observability Specialist for production services]
-  |-- [Requirements Validator if spec/ticket available]
+  |-- Correctness Reviewer → Passes A/B/C
+  |-- Design Reviewer → Passes A/B/C
+  |-- Efficiency Reviewer → Passes A/B/C
+  |-- Code Reuse Reviewer → Passes A/B/C
+  |-- Test Quality Reviewer → Passes A/B/C
+  |-- [Security Specialist if triage triggers]
+  |-- [Observability Specialist if triage triggers]
+  |-- [Requirements Validator if spec auto-detected]
+  |-- [Data Migration Specialist if schema changes present]
+  |-- [Frontend Specialist if UI/component files present]
 ```
+
+*Audit-only scoping for large codebases (500+ files):* the core reviewers (Correctness, Design, Efficiency) split file ownership by risk tier; Code Reuse Reviewer is scoped to changed/HIGH-risk files plus a sampled cross-section (top 50 files by fan-in and LOC) — not the entire codebase; Test Quality Reviewer focuses on test files that cover changed/HIGH-risk code. Lead continues to run cross-domain analysis in parallel (Audit Step 3 — unchanged). The 500+ file splitting rule does NOT apply in Session Review mode (which always operates on a bounded diff).
 
 Each teammate runs 3 internal passes (references/team-templates.md § Internal Pass Structure).
 Scaling: references/team-templates.md § Scaling Matrix.
@@ -332,8 +380,8 @@ Top 3 Recommendations, Statistics. All findings include evidence + citations.
 
 ### Audit Step 7: Execute (If Approved)
 
-Ask: "Implement fixes? [all / select / skip]"
-If approved: follow references/auto-fix-protocol.md (preview diffs, confirm, apply, verify).
+After presenting findings, ask: "Which findings should I create a fix plan for? [all / select by ID / skip]"
+If approved: Generate an orchestration implementation plan for the selected findings using Pattern E (TeamCreate + nested subagent waves). No token budget caps. Create a TaskList entry per finding. Dispatch fixes in parallel where independent; sequential only when same-file edits conflict. Verify after all tasks complete (build, tests, behavior). See references/auto-fix-protocol.md for orchestration template.
 
 ## Reference Files
 
@@ -373,21 +421,27 @@ Load ONE reference at a time. Do not preload all references into context.
 1. Never skip triage (Wave 0) — risk classification informs everything downstream
 2. Every non-trivial finding must have research evidence or be discarded
 3. Confidence < 0.3 = discard (except P0/S0 — report as unconfirmed)
-4. Do not police style — follow the codebase's conventions
+4. Do not police style preferences — follow the codebase's conventions. Exception: violations of agent behavior rules in AGENTS.md/CLAUDE.md (toolchain, auth, secrets, safety-critical directives) are findings at the Convention Violations tier severity. Pure style rules (formatting, naming) are never policed.
 5. Do not report phantom bugs requiring impossible conditions
 6. More than 12 findings means re-prioritize — 5 validated findings beat 50 speculative
 7. Never skip Judge reconciliation (Wave 3)
 8. Always present before implementing (approval gate)
 9. Always verify after implementing (build, tests, behavior)
 10. Never assign overlapping file ownership
-11. Maintain positive-to-constructive ratio of 3:1 — re-examine low-severity findings if ratio skews negative
+11. Maintain positive-to-constructive ratio of 3:1 — re-examine low-severity findings if ratio skews negative — except when 3+ P0/P1 findings are present, in which case report all critical findings without enforcing the ratio.
 12. Acknowledge healthy codebases — if no P0/P1 or S0 findings, state this explicitly
 13. Apply at least 2 creative lenses per review scope — Adversary is mandatory for security-sensitive code
 14. Load ONE reference file at a time — do not preload all references into context
 15. Review against the codebase's own conventions, not an ideal standard
-16. Run self-verification (Wave 3.5) when 3+ findings survive Judge — skip for fewer findings or fully degraded mode
+16. Run self-verification (Wave 3.5) when 2+ findings survive Judge — skip for fewer findings or fully degraded mode
 17. Follow auto-fix protocol for implementing fixes — never apply without diff preview and user confirmation
 18. Check for convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage — validate code against project's declared rules
 19. Every finding must include a reasoning chain (WHY) before the finding statement (WHAT)
 20. Every finding must include a citation anchor `[file:start-end]` mechanically verified against source
 21. Check learnings store during Judge Wave 3 Step 4 — suppress findings matching stored false-positive dismissals
+22. Code Reuse Reviewer runs on every review scope — always cite file:line for existing equivalents.
+23. Fact evidence (Grep) is sufficient for reuse and simplification findings; no WebSearch required unless confirming why the pattern is harmful.
+24. No inline-only review — always spawn the full content-adaptive team regardless of file count.
+25. Test Quality Reviewer always spawns — when test files are in scope: full 4-dimension review; when no test files in scope: coverage gap search (Grep for any tests covering changed functions; flag untested code as a finding).
+26. Violations of AGENTS.md/CLAUDE.md *agent behavior rules* (toolchain, auth, secrets, safety) are reported as findings — severity per the Convention Violations tier in checklists.md. Style-only preferences (formatting, naming) are still not policed per Rule 4.
+27. Post-approval execution generates an orchestration plan (Pattern E) — never apply fixes sequentially; parallelize all independent changes.
