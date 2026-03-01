@@ -166,7 +166,7 @@ make help                                    # Show all make targets
 
 ### Architecture
 
-`~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + orchestration core (~500 tokens) — this is the only always-loaded instruction content.
+`~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + Clarification Gate + orchestration core (~600 tokens) — this is the only always-loaded instruction content.
 
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
@@ -188,9 +188,9 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 
 | Component | Tokens | Loading |
 |-----------|--------|---------|
-| `global.md` (general + orchestration core) | ~500 | Always |
+| `global.md` (general + clarification gate + orchestration core) | ~600 | Always |
 | Skill descriptions (12 custom + installed) | ~500 | Always |
-| **Total always-loaded** | **~1,000** | |
+| **Total always-loaded** | **~1,100** | |
 | Scoped rules (`.claude/rules/`) | ~0 | Conditional (path match) |
 | Skill bodies (when invoked) | ~5,500 | On-demand |
 
