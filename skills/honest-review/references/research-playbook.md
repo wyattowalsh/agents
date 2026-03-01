@@ -24,6 +24,7 @@ When research tools are unavailable (CI environment, offline, rate-limited), app
 | WebFetch           | 0.5 max            | WebSearch for package health; skip registry lookups                               |
 | gh CLI             | 0.5 max            | WebSearch for known issues; skip issue cross-referencing                          |
 | All research tools | 0.4 max            | Report all findings as "unconfirmed"; only P0/S0 findings reliably survive filter |
+| Grep (fact evidence) | Not subject to ceiling | Grep-based fact evidence is NOT subject to the WebSearch confidence ceiling. Degraded mode ceilings apply only to assumption evidence (WebSearch, Context7, DeepWiki). In degraded mode, fact evidence findings report at their normal confidence. |
 
 When operating in degraded mode:
 
@@ -52,6 +53,8 @@ Phase 3 (Validate): For each verified hypothesis, spawn research subagent(s). On
 | WebFetch                                       | Querying package registries, reading changelogs, checking CVE databases         | "https://registry.npmjs.org/express/latest"          |
 | DeepWiki (ask_question)                        | Understanding unfamiliar repo architecture, design decisions, internal patterns | "How does owner/repo handle authentication?"         |
 | gh (GitHub CLI)                                | Checking open issues, security advisories, PR discussions                       | "gh api repos/expressjs/express/security-advisories" |
+
+**Evidence tiers**: *Fact evidence* (Grep confirms X exists/doesn't in the codebase) maps to confidence 0.85-0.95 in the Scoring Rubric, depending on exactness of match. *Assumption evidence* (WebSearch, Context7) follows the existing Rubric tiers (multiple sources = 0.85+, single = 0.65-0.75). Reuse and simplification findings use fact evidence; label findings accordingly.
 
 ## Research Subagent Templates
 
@@ -86,7 +89,7 @@ Prompt template:
 - Input: package name, installed version, language/ecosystem
 - Steps: WebFetch the package registry for latest version and advisories (npm: registry.npmjs.org, PyPI: pypi.org/pypi/PKG/json, crates.io: crates.io/api/v1/crates/PKG). WebSearch for known issues. Check for deprecation notices.
 - Output: status (healthy/outdated/vulnerable/deprecated), details, citation
-- Model: haiku (structured data extraction)
+- Model: opus (structured data extraction)
 
 ### Performance Assumption Validator
 
@@ -97,7 +100,7 @@ Prompt template:
 - Input: code snippet with performance assumption (from comments or patterns)
 - Steps: Context7 for library performance characteristics. WebSearch for benchmarks or known performance issues with this pattern.
 - Output: validated (bool), actual characteristics, evidence
-- Model: haiku
+- Model: opus
 
 ### Slopsquatting Detector
 
@@ -108,7 +111,7 @@ Prompt template:
 - Input: list of package names from imports and dependency manifest, ecosystem (npm/PyPI/crates.io/Go)
 - Steps: For each package name, WebFetch the package registry endpoint (npm: registry.npmjs.org/PKG, PyPI: pypi.org/pypi/PKG/json, crates.io: crates.io/api/v1/crates/PKG). If the package does not exist (404), flag as potential slopsquatting. If it exists but has very low download counts or was recently created, flag as suspicious.
 - Output: list of {package, status (verified/not-found/suspicious), evidence}
-- Model: haiku (structured registry lookups)
+- Model: opus (structured registry lookups)
 
 ### Repository Context Analyzer
 
@@ -119,7 +122,7 @@ Prompt template:
 - Input: GitHub repository owner/repo, specific question about architecture or design
 - Steps: Use DeepWiki (ask_question) to query AI-generated documentation about the repository. Cross-reference findings with Context7 for library-specific details.
 - Output: architectural summary, relevant design decisions, key patterns
-- Model: haiku (structured extraction from DeepWiki responses)
+- Model: opus (structured extraction from DeepWiki responses)
 
 ### Agentic Verifier
 
@@ -130,7 +133,7 @@ Prompt template:
 - Input: finding description, claimed file path and line range, claimed pattern
 - Steps: Grep for the claimed pattern in the codebase. Read the actual file at the cited lines. Compare the actual code against the finding's claim. Check if test files cover the flagged code path.
 - Output: verified (bool), actual_code_snippet (string), discrepancy (string if not verified)
-- Model: haiku (fast tool calls, structured verification)
+- Model: opus (fast tool calls, structured verification)
 
 Agentic verification runs BEFORE research validation. Findings that fail verification
 (cited code does not match the claim) are discarded without consuming research cycles.
@@ -153,13 +156,13 @@ Prompt template:
 ## Parallelism Strategy
 
 - Spawn ALL research subagents for a review pass in a single message
-- Use haiku for simple lookups (doc extraction, version checks)
+- Use opus for simple lookups (doc extraction, version checks)
 - Use sonnet for nuanced validation (security, architecture decisions)
 - If more than 10 findings to validate, batch into groups of 5-6 parallel subagents
 - Set reasonable scope: do not research-validate obvious issues (null deref, syntax error). Only validate assumptions and non-obvious concerns.
 - Spawn lens subagents (Inversion, Deletion, Newcomer, Incident, Evolution) in parallel with checklist reviewers when applying creative lenses
 - Prioritize slopsquatting detection — spawn slopsquatting detector subagents before other research, as non-existent packages are security-critical
-- Use opus for lens-based analysis (requires creative reasoning); use haiku for slopsquatting detection (structured lookups)
+- Use opus for lens-based analysis (requires creative reasoning); use opus for slopsquatting detection (structured lookups)
 
 ## Evidence Quality
 
@@ -182,6 +185,9 @@ Assign a confidence score to every finding after the research validation phase. 
 | 0.4-0.5 | Single authoritative source — one OWASP reference, one official blog post          | One OWASP cheat sheet mentions the risk, no other corroboration                 |
 | 0.2-0.3 | Heuristic match only — LLM reasoning without external confirmation                 | Pattern looks problematic based on training knowledge, but no live source found |
 | 0.0-0.1 | Speculative — no evidence found after research                                     | WebSearch and Context7 both return nothing relevant                             |
+| **0.90** | **Grep / Fact evidence: exact behavioral match found in codebase**                | Grep confirms the identical pattern or function signature exists elsewhere      |
+| **0.70** | **Grep / Fact evidence: near match found (similar signature or logic)**            | Grep finds a closely related pattern, not an exact match                        |
+| —       | **Grep / Fact evidence: no match found (confirms uniqueness of new code)**         | Discard reuse finding — absence of match means the code is not a duplicate      |
 
 When reporting findings, include the confidence score in the output. Findings below 0.4 should carry an explicit "unconfirmed" label. Findings below 0.2 should be discarded unless the reviewer judges the risk warrants mention.
 
@@ -218,7 +224,7 @@ Group findings by validation type before dispatching research subagents. This re
 
 **Dispatch order:**
 
-1. Slopsquatting detection (security-critical, fast, haiku)
+1. Slopsquatting detection (security-critical, fast, opus)
 2. HIGH-risk findings (require 2+ sources, sonnet)
-3. MEDIUM-risk findings (require 1 source, sonnet or haiku)
+3. MEDIUM-risk findings (require 1 source, sonnet or opus)
 4. LOW-risk findings (skip research, no subagent needed)

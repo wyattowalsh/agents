@@ -15,16 +15,15 @@ to disprove each top finding.
 
 Run self-verification when ALL conditions are met:
 
-- 3+ findings survived Judge reconciliation
+- 2+ findings survived Judge reconciliation
 - Not in fully degraded mode (all research tools unavailable)
 - At least one finding has confidence between 0.5 and 0.9
 
 Skip when ANY condition is true:
 
-- Fewer than 3 findings survived
+- Fewer than 2 findings survived
 - All surviving findings are P0/S0 (critical findings warrant immediate attention)
-- Fully degraded mode (self-verification without research adds noise)
-- Review depth is "Light" (score 0-3)
+- skip only in fully degraded mode (all research tools unavailable and no Grep-based evidence available)
 
 ## Procedure
 
