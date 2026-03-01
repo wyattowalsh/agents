@@ -57,7 +57,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 4. **Always present triage scoring before executing research** — user must see and can override complexity tier
 5. **Save journal after every wave in Deep/Exhaustive mode** — enables resume after interruption
 6. **Never skip Wave 3 (cross-validation) for Standard/Deep/Exhaustive tiers** — this is the anti-hallucination mechanism
-7. **Multi-engine search is mandatory for fact-checking** — use minimum 2 different search tools (e.g., brave-search + duckduckgo)
+7. **Multi-engine search is mandatory for fact-checking** — use minimum 2 different search tools (e.g., brave-search + duckduckgo-search)
 8. **Apply the Accounting Rule after every parallel dispatch** — N dispatched = N accounted for before proceeding to next wave
 9. **Distinguish facts from interpretations in all output** — factual claims carry evidence; interpretive claims are explicitly labeled as analysis
 10. **Flag all LLM-prior findings** — claims matching common training data but lacking fresh evidence must be flagged with bias marker
@@ -80,7 +80,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 | Field | Value |
 | ----- | ----- |
 | Model | `opus` |
-| Argument Hint | `&lt;question or topic&gt; [--depth quick\|standard\|deep\|exhaustive] [--format brief\|deep\|bib\|matrix]` |
+| Argument Hint | `<question or topic> [--depth quick|standard|deep|exhaustive] [--format brief|deep|bib|matrix]` |
   </TabItem>
 </Tabs>
 
@@ -240,7 +240,7 @@ Scale by tier:
 
 **Standard (subagent wave):** Dispatch 3-5 parallel subagents via Task tool:
 ```
-Subagent A → brave-search + duckduckgo for sub-question 1
+Subagent A → brave-search + duckduckgo-search for sub-question 1
 Subagent B → exa + g-search for sub-question 2
 Subagent C → context7 / deepwiki / arxiv / semantic-scholar for technical specifics
 Subagent D → wikipedia / wikidata for factual grounding
@@ -250,7 +250,7 @@ Subagent D → wikipedia / wikidata for factual grounding
 **Deep (agent team):** TeamCreate `"research-{slug}"`:
 ```
 Lead: triage (Wave 0), orchestrate, judge reconcile (Wave 3), synthesize (Wave 4)
-  |-- web-researcher:       brave-search, duckduckgo, exa, g-search
+  |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
   |-- tech-researcher:      context7, deepwiki, arxiv, semantic-scholar, package-version
   |-- content-extractor:    fetcher, trafilatura, docling, wikipedia, wayback
   |-- [academic-researcher: arxiv, semantic-scholar, openalex, crossref, PubMed]
@@ -380,7 +380,7 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 |--------------|---------------|-----------------|
 | Library/API docs | context7, deepwiki, package-version | brave-search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed, openalex | crossref, brave-search |
-| Current events/trends | brave-search, exa, duckduckgo, g-search | fetcher, trafilatura |
+| Current events/trends | brave-search, exa, duckduckgo-search, g-search | fetcher, trafilatura |
 | GitHub repos/OSS | deepwiki, repomix | brave-search |
 | General knowledge | wikipedia, wikidata, brave-search | fetcher |
 | Historical content | wayback, brave-search | fetcher |
@@ -479,7 +479,7 @@ Read `references/session-commands.md` for full protocols.
 4. **Always present triage scoring before executing research** — user must see and can override complexity tier
 5. **Save journal after every wave in Deep/Exhaustive mode** — enables resume after interruption
 6. **Never skip Wave 3 (cross-validation) for Standard/Deep/Exhaustive tiers** — this is the anti-hallucination mechanism
-7. **Multi-engine search is mandatory for fact-checking** — use minimum 2 different search tools (e.g., brave-search + duckduckgo)
+7. **Multi-engine search is mandatory for fact-checking** — use minimum 2 different search tools (e.g., brave-search + duckduckgo-search)
 8. **Apply the Accounting Rule after every parallel dispatch** — N dispatched = N accounted for before proceeding to next wave
 9. **Distinguish facts from interpretations in all output** — factual claims carry evidence; interpretive claims are explicitly labeled as analysis
 10. **Flag all LLM-prior findings** — claims matching common training data but lacking fresh evidence must be flagged with bias marker
