@@ -28,5 +28,9 @@ docs/src/generated-sidebar.mjs
 .agents/
 skills-lock.json
 
+# Prospector webapp frontend build artifacts
+skills/prospector/webapp/frontend/node_modules/
+skills/prospector/webapp/frontend/dist/
+
 # Local ideation / research scratchpad (intentionally untracked)
 /IDEAS/

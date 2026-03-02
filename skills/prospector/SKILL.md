@@ -279,7 +279,6 @@ discovered -> evaluated -> researching -> building -> launched
 - **Database:** `~/.claude/prospector/prospector.db` (created by `db-store.py init`)
 - **Schema version:** stored in `pragma user_version`. Migration: `db-store.py migrate`
 - **Server PID:** `~/.claude/prospector/server.pid`
-- **Webapp:** `~/.claude/prospector/webapp/` (copied on first `dashboard` invocation)
 - Create directory on first use: `mkdir -p ~/.claude/prospector/`
 
 **Persistence timing:** Save to SQLite after EACH wave completes (crash recovery). Sessions table tracks `wave_completed`.
@@ -295,12 +294,14 @@ Launch: `/prospector dashboard`
 Stop: `/prospector dashboard stop`
 
 **Protocol:**
-1. `mkdir -p ~/.claude/prospector/webapp/`
-2. Copy `skills/prospector/webapp/*` to `~/.claude/prospector/webapp/` if stale
-3. Check port 8765 (fallback: 8766, 8767)
-4. Run: `cd ~/.claude/prospector/webapp && uv run python app.py --port 8765 --db ~/.claude/prospector/prospector.db &`
-5. Write PID to `server.pid`
-6. Open browser: `open http://localhost:{port}` (macOS) or `xdg-open http://localhost:{port}` (Linux). Print URL if open fails.
+1. Build frontend if `skills/prospector/webapp/frontend/dist/` is missing: `cd skills/prospector/webapp/frontend && pnpm install && pnpm build`
+2. Check port 8765 (fallback: 8766, 8767)
+3. Run: `uv run python -m skills.prospector.webapp.cli serve --port 8765 --db ~/.claude/prospector/prospector.db`
+4. PID written automatically to `~/.claude/prospector/server.pid`
+5. Open browser: `open http://localhost:{port}` (macOS) or `xdg-open http://localhost:{port}` (Linux). Print URL if open fails.
+
+**Stop:** `uv run python -m skills.prospector.webapp.cli stop`
+**Status:** `uv run python -m skills.prospector.webapp.cli status`
 
 ## Gallery (Empty Arguments)
 
