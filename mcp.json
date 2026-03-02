@@ -10,19 +10,19 @@
     },
     "shannon-thinking": {
       "command": "npx",
-      "args": ["-y", "server-shannon-thinking@latest"]
+      "args": ["-y", "--prefer-offline", "server-shannon-thinking@latest"]
     },
     "structured-thinking": {
       "command": "npx",
-      "args": ["-y", "structured-thinking"]
+      "args": ["-y", "--prefer-offline", "structured-thinking"]
     },
     "cascade-thinking": {
       "command": "npx",
-      "args": ["-y", "cascade-thinking-mcp"]
+      "args": ["-y", "--prefer-offline", "cascade-thinking-mcp"]
     },
     "crash": {
       "command": "npx",
-      "args": ["-y", "crash-mcp"],
+      "args": ["-y", "--prefer-offline", "crash-mcp"],
       "env": {
         "CRASH_STRICT_MODE": "false",
         "MAX_HISTORY_SIZE": "100"
@@ -34,7 +34,7 @@
     },
     "lotus-wisdom-mcp": {
       "command": "npx",
-      "args": ["-y", "lotus-wisdom-mcp"]
+      "args": ["-y", "--prefer-offline", "lotus-wisdom-mcp"]
     },
     "think-strategies": {
       "command": "npx",
@@ -45,8 +45,8 @@
       "args": ["/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"]
     },
     "ableton": {
-      "command": "uvx",
-      "args": ["ableton-mcp"]
+      "command": "bash",
+      "args": ["-lc", "uvx --offline ableton-mcp || uvx ableton-mcp"]
     },
     "apple-mail": {
       "command": "/Users/ww/dev/tools/mcp/apple-mail-mcp/venv/bin/python3",
@@ -66,7 +66,7 @@
     },
     "docling": {
       "command": "uvx",
-      "args": ["--from=docling-mcp", "docling-mcp-server"]
+      "args": ["--offline", "--from=docling-mcp==1.3.4", "docling-mcp-server"]
     },
     "package-version": {
       "command": "/Users/ww/go/bin/mcp-package-version",
@@ -89,20 +89,15 @@
       "args": ["--directory", "/Users/ww/dev/tools/mcp/ffmpeg-mcp", "run", "ffmpeg-mcp"]
     },
     "gmail": {
-      "command": "uvx",
+      "command": "bash",
       "args": [
-        "mcp-gsuite",
-        "--gauth-file",
-        "/Users/ww/.gmail-mcp/.gauth.json",
-        "--accounts-file",
-        "/Users/ww/.gmail-mcp/.accounts.json",
-        "--credentials-dir",
-        "/Users/ww/.gmail-mcp"
+        "-lc",
+        "uvx --offline mcp-gsuite --gauth-file /Users/ww/.gmail-mcp/.gauth.json --accounts-file /Users/ww/.gmail-mcp/.accounts.json --credentials-dir /Users/ww/.gmail-mcp || uvx mcp-gsuite --gauth-file /Users/ww/.gmail-mcp/.gauth.json --accounts-file /Users/ww/.gmail-mcp/.accounts.json --credentials-dir /Users/ww/.gmail-mcp"
       ]
     },
     "fetcher": {
       "command": "npx",
-      "args": ["-y", "fetcher-mcp"]
+      "args": ["-y", "--prefer-offline", "fetcher-mcp"]
     },
     "deepwiki": {
       "command": "npx",
@@ -113,8 +108,11 @@
       "args": ["-y", "repomix", "--mcp"]
     },
     "trafilatura": {
-      "command": "uv",
-      "args": ["--directory", "/Users/ww/dev/tools/mcp/trafilatura_mcp", "run", "python3", "trafilatura_mcp.py"]
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uv --directory /Users/ww/dev/tools/mcp/trafilatura_mcp run --no-sync python3 trafilatura_mcp.py || uv --directory /Users/ww/dev/tools/mcp/trafilatura_mcp run python3 trafilatura_mcp.py"
+      ]
     },
     "brave-search": {
       "command": "npx",
@@ -152,7 +150,7 @@
     },
     "wikipedia": {
       "command": "npx",
-      "args": ["-y", "wikipedia-mcp"]
+      "args": ["-y", "--prefer-offline", "wikipedia-mcp"]
     },
     "wayback": {
       "command": "npx",

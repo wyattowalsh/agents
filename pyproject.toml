@@ -5,7 +5,12 @@ description = "CLI for managing centralized AI agent assets"
 requires-python = ">=3.13"
 license = "MIT"
 authors = [{ name = "Wyatt Walsh", email = "wyattowalsh@gmail.com" }]
-dependencies = ["typer>=0.15", "pyyaml>=6"]
+dependencies = [
+    "fastapi>=0.115",
+    "typer>=0.15",
+    "pyyaml>=6",
+    "uvicorn>=0.41.0",
+]
 
 [project.scripts]
 wagents = "wagents.cli:app"
