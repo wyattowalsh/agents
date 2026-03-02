@@ -1,0 +1,290 @@
+test_cases:
+  # --- Mine Mode (Seeded Discovery) ---
+
+  - id: mine-seeded
+    description: "Seeded discovery for a specific niche"
+    input: "/prospector developer tools for AI agents"
+    expected_mode: mine
+    expected_output_contains:
+      - signal-scanner
+      - source categories
+      - "OPP-"
+      - "Why This Might Be Wrong"
+    expected_output_excludes:
+      - scan mode
+      - meta-queries
+
+  - id: mine-with-source
+    description: "Seeded discovery filtered to a single source category"
+    input: "/prospector developer tools for AI agents --source community"
+    expected_mode: mine
+    expected_output_contains:
+      - signal-scanner
+      - community
+      - "OPP-"
+      - "Why This Might Be Wrong"
+    expected_output_excludes:
+      - technical source category
+      - seo source category
+
+  # --- Scan Mode (Free-Roam) ---
+
+  - id: scan-free-roam
+    description: "Autonomous free-roam discovery using meta-queries"
+    input: "/prospector scan"
+    expected_mode: scan
+    expected_output_contains:
+      - meta-queries
+      - "OPP-"
+      - cluster
+      - "Why This Might Be Wrong"
+    expected_output_excludes:
+      - seed query
+
+  - id: scan-with-filter
+    description: "Free-roam scan filtered to a specific source category"
+    input: "/prospector scan --source technical"
+    expected_mode: scan
+    expected_output_contains:
+      - meta-queries
+      - technical
+      - "OPP-"
+    expected_output_excludes:
+      - community source category
+      - seo source category
+
+  # --- Evaluate Mode (Expert Panel) ---
+
+  - id: evaluate-panel
+    description: "Expert panel deep assessment of a specific opportunity"
+    input: "/prospector evaluate OPP-0042"
+    expected_mode: evaluate
+    expected_output_contains:
+      - Bootstrap Founder
+      - Market Analyst
+      - Technical Architect
+      - "Devil's Advocate"
+      - "Round 1"
+      - "Round 2"
+      - "Round 3"
+      - go
+    expected_output_excludes:
+      - signal-scanner
+      - meta-queries
+
+  # --- List Mode ---
+
+  - id: list-all
+    description: "List all opportunities in the pipeline"
+    input: "/prospector list"
+    expected_mode: list
+    expected_output_contains:
+      - "OPP-"
+      - status
+      - tier
+    expected_output_excludes:
+      - signal-scanner
+      - meta-queries
+      - "Why This Might Be Wrong"
+
+  - id: list-filtered
+    description: "List opportunities filtered by status and tier"
+    input: "/prospector list --status discovered --tier strong"
+    expected_mode: list
+    expected_output_contains:
+      - "OPP-"
+      - discovered
+      - strong
+    expected_output_excludes:
+      - parked
+      - rejected
+      - weak
+
+  # --- Detail Mode ---
+
+  - id: detail-card
+    description: "Show full opportunity card with evidence and counter-evidence"
+    input: "/prospector detail OPP-0017"
+    expected_mode: detail
+    expected_output_contains:
+      - "OPP-0017"
+      - Triage
+      - Evidence
+      - "Why This Might Be Wrong"
+      - Bootstrappability
+      - PMF Signals
+      - Competition
+      - Revenue Potential
+      - Technical Feasibility
+      - Moat Potential
+    expected_output_excludes:
+      - meta-queries
+      - signal-scanner
+
+  # --- Update Mode (Lifecycle) ---
+
+  - id: update-lifecycle
+    description: "Valid lifecycle transition from discovered to evaluated"
+    input: "/prospector update OPP-0017 --status evaluated"
+    expected_mode: update
+    expected_output_contains:
+      - "OPP-0017"
+      - evaluated
+      - transition
+    expected_output_excludes:
+      - invalid
+      - rejected
+
+  - id: invalid-transition
+    description: "Invalid lifecycle transition is rejected with explanation"
+    input: "/prospector update OPP-0017 --status launched"
+    expected_mode: update
+    expected_output_contains:
+      - invalid
+      - transition
+      - valid transitions
+    expected_output_excludes:
+      - launched successfully
+    validation_rules:
+      - "discovered cannot jump directly to launched"
+      - "must show allowed next states"
+
+  # --- Dashboard Mode ---
+
+  - id: dashboard-launch
+    description: "Launch the web dashboard"
+    input: "/prospector dashboard"
+    expected_mode: dashboard
+    expected_output_contains:
+      - dashboard
+      - port
+      - server
+    expected_output_excludes:
+      - signal-scanner
+      - meta-queries
+      - "OPP-"
+
+  # --- Profile Mode ---
+
+  - id: profile-view
+    description: "View builder profile"
+    input: "/prospector profile"
+    expected_mode: profile
+    expected_output_contains:
+      - tech_stack
+      - time_budget
+      - revenue_goal
+    expected_output_excludes:
+      - "OPP-"
+      - meta-queries
+
+  - id: profile-set
+    description: "Set builder profile preferences"
+    input: '/prospector profile set {"tech_stack": ["Python", "FastAPI"], "time_budget": 15, "revenue_goal": 5000}'
+    expected_mode: profile
+    expected_output_contains:
+      - profile
+      - updated
+      - Python
+      - FastAPI
+    expected_output_excludes:
+      - "OPP-"
+      - triage
+
+  # --- Export Mode ---
+
+  - id: export-json
+    description: "Export all opportunities as JSON"
+    input: "/prospector export json"
+    expected_mode: export
+    expected_output_contains:
+      - export
+      - JSON
+      - opportunities
+    expected_output_excludes:
+      - HTML
+      - dashboard
+
+  - id: export-html
+    description: "Export as static HTML dashboard using template"
+    input: "/prospector export html"
+    expected_mode: export
+    expected_output_contains:
+      - export
+      - HTML
+      - dashboard
+      - template
+    expected_output_excludes:
+      - server
+      - port
+
+  # --- Gallery Mode (Empty Args) ---
+
+  - id: empty-args-gallery
+    description: "Empty arguments shows gallery with mode menu and pipeline summary"
+    input: "/prospector"
+    expected_mode: gallery
+    expected_output_contains:
+      - mine
+      - scan
+      - evaluate
+      - list
+      - dashboard
+      - pipeline
+    expected_output_excludes:
+      - signal-scanner
+      - meta-queries
+      - "Why This Might Be Wrong"
+
+  # --- Negative Cases (Should NOT Trigger Prospector) ---
+
+  - id: negative-research
+    description: "General research query should NOT trigger prospector"
+    input: "What are the best practices for LLM agent memory architectures?"
+    expected_mode: null
+    expected_output_excludes:
+      - "OPP-"
+      - triage
+      - signal-scanner
+      - opportunity
+
+  - id: negative-code-review
+    description: "Code review request should NOT trigger prospector"
+    input: "Review the authentication module in src/auth.py for security issues"
+    expected_mode: null
+    expected_output_excludes:
+      - "OPP-"
+      - triage
+      - signal-scanner
+      - opportunity
+      - microSaaS
+
+  # --- Edge Cases & Degraded Mode ---
+
+  - id: degraded-mode
+    description: "Degraded mode warning when no deep-read tools are available"
+    input: "/prospector developer tools for AI agents"
+    expected_mode: mine
+    preconditions:
+      - "no fetcher, trafilatura, fetch MCP, or WebFetch tools available"
+    expected_output_contains:
+      - degraded mode
+      - search snippets only
+      - triage based on search snippets
+    validation_rules:
+      - "all tiers must be capped at Moderate maximum"
+      - "every card must include degraded mode warning"
+
+  - id: duplicate-detection
+    description: "Dedup check identifies a similar opportunity already in the database"
+    input: "/prospector meeting transcription tools"
+    expected_mode: mine
+    preconditions:
+      - "database already contains OPP-0017: AI-Powered Meeting Notes with niche Productivity"
+    expected_output_contains:
+      - existing opportunity
+      - similarity
+      - "OPP-0017"
+    validation_rules:
+      - "Jaccard similarity > 0.7 triggers dedup match"
+      - "LLM decides whether to merge or create new opportunity"

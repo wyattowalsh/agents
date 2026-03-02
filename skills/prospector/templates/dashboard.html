@@ -1,0 +1,402 @@
+<!--
+JSON DATA CONTRACT — <script id="data" type="application/json"> schema.
+Required: metadata (date, total_opportunities).
+Optional: metadata.session_mode, metadata.seed_query, metadata.wave_completed.
+Sections: opportunities[] with nested evidence[], counter_evidence[].
+
+OPPORTUNITY: { id, title, one_liner, niche, status, primary_signal, triage_tier,
+  triage_bootstrappability, triage_pmf, triage_competition, triage_revenue,
+  triage_technical, triage_moat, triage_reasoning, counter_evidence:[string],
+  evidence:[{source_category, signal_type, source_url, source_tool, quote, intensity,
+  payment_signal, context}], mvp_days, mvp_tech_stack, created_at, notes,
+  panel_json?:{final_verdict, synthesis, conditions:[]}}
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Prospector — Opportunity Report</title>
+<style>
+@layer reset, tokens, base, components, views, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :where(ul, ol) { list-style: none; }
+}
+
+@layer tokens {
+  :root {
+    --s1: oklch(0.15 0.02 260); --s2: oklch(0.20 0.02 260); --s3: oklch(0.25 0.02 260);
+    --border: oklch(0.35 0.02 260); --text-1: oklch(0.93 0.01 260); --text-2: oklch(0.65 0.02 260);
+    --accent: oklch(0.65 0.20 270); --ok: oklch(0.70 0.18 155); --warn: oklch(0.75 0.18 85);
+    --bad: oklch(0.65 0.22 25); --purple: oklch(0.65 0.20 310);
+    --info: oklch(0.65 0.14 220); --muted: oklch(0.50 0.03 260); --surface: oklch(0.12 0.015 260);
+    --gap: 0.75rem; --r0: 0px; --r1: 8px;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --s1: oklch(0.96 0.01 260); --s2: oklch(0.99 0.005 260); --s3: oklch(1.0 0 260);
+      --border: oklch(0.82 0.01 260); --text-1: oklch(0.20 0.02 260); --text-2: oklch(0.45 0.02 260);
+      color-scheme: light;
+      --info: oklch(0.45 0.12 220); --muted: oklch(0.60 0.03 260); --surface: oklch(0.94 0.005 260);
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: system-ui, -apple-system, sans-serif; background: var(--s1); color: var(--text-1);
+    line-height: 1.5; padding: var(--gap); max-width: 1280px; margin: 0 auto; min-height: 100dvh;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { position: relative; }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 20%, oklch(0.20 0.06 270 / 0.4), transparent),
+        radial-gradient(ellipse 60% 50% at 85% 80%, oklch(0.18 0.05 310 / 0.3), transparent),
+        radial-gradient(ellipse 70% 40% at 50% 50%, oklch(0.17 0.04 155 / 0.15), transparent);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (prefers-color-scheme: dark) {
+    body::before { animation: aurora 30s ease-in-out infinite alternate; }
+  }
+  @keyframes aurora { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .mono { font-family: ui-monospace, 'Cascadia Code', 'Fira Code', monospace; }
+  h1, h2, h3 { font-weight: 700; }
+  h1 { font-size: 1.4rem; } h2 { font-size: 1.05rem; margin-bottom: 0.4rem; } h3 { font-size: 0.9rem; }
+}
+
+@layer components {
+  .glass {
+    background: light-dark(oklch(1 0 0 / 0.7), oklch(0.20 0.02 260 / 0.5));
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid light-dark(oklch(0.85 0.01 260), oklch(0.30 0.02 260));
+    border-radius: var(--r1); padding: var(--gap); container-type: inline-size;
+    &:hover { border-color: light-dark(oklch(0.70 0.10 270 / 0.4), oklch(0.50 0.12 270 / 0.4)); box-shadow: 0 0 12px oklch(0.65 0.20 270 / 0.08); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .glass { animation: fadeIn 0.4s ease-out both; }
+    @starting-style { .glass { opacity: 0; transform: translateY(8px); } }
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 1.6rem; padding: 0.2em 0.55em; border-radius: 999px;
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .tier-strong { background: var(--ok); color: oklch(0.15 0.02 260); }
+  .tier-moderate { background: var(--warn); color: oklch(0.15 0.02 260); }
+  .tier-weak { background: var(--bad); color: oklch(0.15 0.02 260); }
+  .pill { display: inline-block; padding: 0.1em 0.45em; border-radius: 999px; font-size: 0.7rem; border: 1px solid var(--border); color: var(--text-2); margin: 0.1em; }
+  .err { background: var(--s2); border: 2px solid var(--bad); border-radius: var(--r1); padding: var(--gap);
+    & h2 { color: var(--bad); margin-bottom: 0.4rem; }
+    & pre { white-space: pre-wrap; word-break: break-all; font-size: 0.8rem; color: var(--text-2); }
+  }
+}
+
+@layer views {
+  .hdr { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem var(--gap); margin-bottom: var(--gap); }
+  .hdr h1 { flex: 1 1 100%; }
+  .hdr-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 0.8rem; font-size: 0.78rem; color: var(--text-2); align-items: center; width: 100%; }
+  .hdr-meta .sep { color: var(--border); }
+
+  .opp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: var(--gap); }
+  .opp-card { display: flex; flex-direction: column; gap: 0.4rem; }
+  .opp-card .opp-title { font-size: 0.92rem; font-weight: 700; display: flex; align-items: start; gap: 0.4rem; }
+  .opp-card .opp-title .opp-id { font-size: 0.72rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .opp-card .opp-liner { font-size: 0.78rem; color: var(--text-2); }
+  .opp-card .opp-meta { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; }
+  .triage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; font-size: 0.7rem; }
+  .triage-grid .tg-item { display: flex; justify-content: space-between; padding: 0.15em 0.3em; border-radius: 4px; background: light-dark(oklch(0.95 0.005 260), oklch(0.22 0.015 260)); }
+  .triage-grid .tg-label { color: var(--text-2); text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.04em; }
+  .triage-grid .tg-val { font-weight: 700; }
+  .triage-grid .tg-val.strong { color: var(--ok); }
+  .triage-grid .tg-val.moderate { color: var(--warn); }
+  .triage-grid .tg-val.weak { color: var(--bad); }
+
+  .ev-list { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.3rem; }
+  .ev-item { padding: 0.4rem; border-left: 3px solid var(--accent); font-size: 0.78rem; background: light-dark(oklch(0.97 0.005 260), oklch(0.16 0.015 260)); border-radius: 0 4px 4px 0; }
+  .ev-item .ev-quote { font-style: italic; color: var(--text-1); margin-bottom: 0.2rem; }
+  .ev-item .ev-meta { font-size: 0.68rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .counter-list { margin-top: 0.3rem; }
+  .counter-item { padding: 0.3rem 0.4rem; font-size: 0.78rem; color: var(--text-2); border-left: 3px solid var(--bad); margin-bottom: 0.2rem; background: light-dark(oklch(0.97 0.005 260), oklch(0.16 0.015 260)); border-radius: 0 4px 4px 0; }
+
+  .summary-bar { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: var(--gap); }
+  .summary-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.82rem; }
+  .summary-item .sn { font-weight: 700; font-size: 1.1rem; }
+  .filter-wrap { margin-bottom: var(--gap); }
+  .filter-inp { width: 100%; max-width: 420px; padding: 0.4rem 0.75rem; border-radius: var(--r1); border: 1px solid var(--border); background: light-dark(oklch(0.98 0.005 260), oklch(0.18 0.02 260)); color: var(--text-1); font-size: 0.88rem; }
+  .filter-inp:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px oklch(0.65 0.20 270 / 0.25); }
+}
+
+@layer utilities {
+  .mt-s { margin-top: 0.4rem; } .mt-m { margin-top: var(--gap); }
+  .td { color: var(--text-2); } .fw { font-weight: 700; } .fs { font-size: 0.78rem; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  details > summary { cursor: pointer; color: var(--text-2); font-size: 0.82rem; &:hover { color: var(--text-1); } }
+}
+
+@media print {
+  body { background: #fff !important; color: #111; padding: 0; }
+  .glass { background: #fff; backdrop-filter: none; border: 1px solid #ccc; box-shadow: none; }
+  .badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .opp-grid { grid-template-columns: 1fr; }
+  .glass { break-inside: avoid; }
+}
+@media (max-width: 640px) {
+  .opp-grid { grid-template-columns: 1fr; }
+  .triage-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  body { padding: 0.4rem; }
+  h1 { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<main id="app" aria-label="Prospector Report"></main>
+
+<script id="data" type="application/json">
+{
+  "metadata": {
+    "date": "2026-03-01",
+    "total_opportunities": 0,
+    "session_mode": "mine",
+    "seed_query": "",
+    "wave_completed": 4
+  },
+  "opportunities": []
+}
+</script>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s, p) => (p || document).querySelector(s);
+  const app = $("#app"), raw = $("#data").textContent;
+  let D;
+  try { D = JSON.parse(raw); } catch (e) {
+    app.innerHTML = `<div class="err" role="alert"><h2>JSON Parse Error</h2><p>${esc(e.message)}</p><pre>${esc(raw.slice(0, 500))}</pre></div>`;
+    return;
+  }
+
+  if (!D.metadata) {
+    app.innerHTML = `<div class="err" role="alert"><h2>Missing Required Fields</h2><p>Required: metadata object</p><pre>${esc(raw.slice(0, 500))}</pre></div>`;
+    return;
+  }
+
+  const M = D.metadata;
+  const opps = D.opportunities || [];
+  const F = document.createDocumentFragment();
+
+  // Helpers
+  function esc(s) { if (s == null) return ""; const d = document.createElement("div"); d.textContent = String(s); return d.innerHTML; }
+  function el(tag, attrs, txt) { const e = document.createElement(tag); if (attrs) for (const [k, v] of Object.entries(attrs)) if (v != null) e.setAttribute(k, v); if (txt != null) e.textContent = txt; return e; }
+
+  function tierClass(t) { return t ? "tier-" + t.toLowerCase() : ""; }
+
+  const DIMENSION_LABELS = {
+    triage_bootstrappability: "Bootstrap", triage_pmf: "PMF", triage_competition: "Competition",
+    triage_revenue: "Revenue", triage_technical: "Technical", triage_moat: "Moat",
+  };
+  const SIGNAL_LABELS = {
+    pain_no_solution: "Pain + No Solution", dying_product: "Dying Product",
+    platform_expansion: "Platform Expansion", rising_trend: "Rising Trend",
+    terrible_ux: "Terrible UX", manual_workflow: "Manual Workflow",
+  };
+  const STATUS_LABELS = { discovered: "Discovered", evaluated: "Evaluated", researching: "Researching", building: "Building", launched: "Launched", parked: "Parked", rejected: "Rejected" };
+
+  // ---- Header ----
+  const hdr = el("header", { class: "hdr" });
+  hdr.appendChild(el("h1", {}, "Prospector — Opportunity Report"));
+  const meta = el("div", { class: "hdr-meta" });
+  if (M.date) meta.appendChild(el("span", {}, M.date));
+  if (M.session_mode) {
+    meta.appendChild(el("span", { class: "sep" }, "|"));
+    const modeBadge = el("span", { class: "badge", style: "background:var(--accent);color:oklch(0.15 0.02 260)" }, M.session_mode);
+    meta.appendChild(modeBadge);
+  }
+  if (M.seed_query) {
+    meta.appendChild(el("span", { class: "sep" }, "|"));
+    meta.appendChild(el("span", {}, `Seed: ${M.seed_query}`));
+  }
+  meta.appendChild(el("span", { class: "sep" }, "|"));
+  meta.appendChild(el("span", {}, `${opps.length} opportunities`));
+  if (M.wave_completed != null) {
+    meta.appendChild(el("span", { class: "sep" }, "|"));
+    meta.appendChild(el("span", {}, `${M.wave_completed} waves`));
+  }
+  hdr.appendChild(meta);
+  F.appendChild(hdr);
+
+  // ---- Summary bar ----
+  if (opps.length > 0) {
+    const bar = el("div", { class: "summary-bar" });
+    const tiers = { strong: 0, moderate: 0, weak: 0 };
+    for (const o of opps) { if (o.triage_tier && tiers[o.triage_tier] != null) tiers[o.triage_tier]++; }
+
+    const items = [
+      { label: "Total", value: opps.length, color: "var(--accent)" },
+      { label: "Strong", value: tiers.strong, color: "var(--ok)" },
+      { label: "Moderate", value: tiers.moderate, color: "var(--warn)" },
+      { label: "Weak", value: tiers.weak, color: "var(--bad)" },
+    ];
+    for (const item of items) {
+      const si = el("div", { class: "summary-item" });
+      const sn = el("span", { class: "sn" }, String(item.value));
+      sn.style.color = item.color;
+      si.appendChild(sn);
+      si.appendChild(el("span", { class: "td" }, item.label));
+      bar.appendChild(si);
+    }
+    F.appendChild(bar);
+  }
+
+  // ---- Opportunity Grid ----
+  if (opps.length === 0) {
+    const empty = el("div", { class: "glass", style: "text-align:center;padding:3rem var(--gap)" });
+    empty.appendChild(el("p", { class: "td" }, "No opportunities discovered yet. Run /prospector to start scanning."));
+    F.appendChild(empty);
+  } else {
+    const sorted = [...opps].sort((a, b) => {
+      const tierOrder = { strong: 0, moderate: 1, weak: 2 };
+      const ta = tierOrder[a.triage_tier] ?? 3;
+      const tb = tierOrder[b.triage_tier] ?? 3;
+      return ta - tb;
+    });
+
+    let filterInp = null;
+    if (sorted.length > 5) {
+      const filterWrap = el("div", { class: "filter-wrap" });
+      filterInp = el("input", { type: "search", class: "filter-inp", placeholder: "Filter opportunities\u2026", "aria-label": "Filter opportunities" });
+      filterWrap.appendChild(filterInp);
+      F.appendChild(filterWrap);
+    }
+    const grid = el("div", { class: "opp-grid" });
+    for (const opp of sorted) {
+      const card = el("div", { class: "glass opp-card" });
+
+      // Title
+      const title = el("div", { class: "opp-title" });
+      title.appendChild(el("span", { class: "opp-id mono" }, opp.id));
+      title.appendChild(el("span", {}, opp.title));
+      card.appendChild(title);
+
+      // One-liner
+      card.appendChild(el("div", { class: "opp-liner" }, opp.one_liner));
+
+      // Meta badges
+      const oppMeta = el("div", { class: "opp-meta" });
+      oppMeta.appendChild(el("span", { class: `badge ${tierClass(opp.triage_tier)}` }, opp.triage_tier || "?"));
+      oppMeta.appendChild(el("span", { class: "badge", style: "background:var(--s3);color:var(--text-2);border:1px solid var(--border)" }, STATUS_LABELS[opp.status] || opp.status));
+      oppMeta.appendChild(el("span", { class: "pill" }, opp.niche));
+      oppMeta.appendChild(el("span", { class: "pill" }, SIGNAL_LABELS[opp.primary_signal] || opp.primary_signal));
+      if (opp.mvp_days) oppMeta.appendChild(el("span", { class: "pill" }, `${opp.mvp_days}d MVP`));
+      if (opp.mvp_tech_stack) oppMeta.appendChild(el("span", { class: "pill" }, opp.mvp_tech_stack));
+      card.appendChild(oppMeta);
+
+      // Triage grid
+      const dims = ["triage_bootstrappability", "triage_pmf", "triage_competition", "triage_revenue", "triage_technical", "triage_moat"];
+      const tg = el("div", { class: "triage-grid" });
+      for (const dim of dims) {
+        const val = opp[dim];
+        const item = el("div", { class: "tg-item" });
+        item.appendChild(el("span", { class: "tg-label" }, DIMENSION_LABELS[dim]));
+        item.appendChild(el("span", { class: `tg-val ${val || ""}` }, val || "-"));
+        tg.appendChild(item);
+      }
+      card.appendChild(tg);
+
+      if (opp.triage_reasoning) {
+        card.appendChild(el("p", { class: "fs td mt-s" }, opp.triage_reasoning));
+      }
+
+      // Evidence
+      const evidence = opp.evidence || [];
+      if (evidence.length > 0) {
+        const evSec = el("details", { class: "mt-s" });
+        evSec.appendChild(el("summary", {}, `Evidence (${evidence.length})`));
+        const evList = el("div", { class: "ev-list" });
+        for (const ev of evidence) {
+          const item = el("div", { class: "ev-item" });
+          if (ev.quote) item.appendChild(el("div", { class: "ev-quote" }, `"${ev.quote}"`));
+          const evMeta = el("div", { class: "ev-meta" });
+          if (ev.source_category) evMeta.appendChild(el("span", {}, ev.source_category));
+          if (ev.signal_type) evMeta.appendChild(el("span", {}, SIGNAL_LABELS[ev.signal_type] || ev.signal_type));
+          if (ev.intensity) evMeta.appendChild(el("span", {}, ev.intensity));
+          if (ev.source_tool) evMeta.appendChild(el("span", {}, ev.source_tool));
+          if (ev.source_url) evMeta.appendChild(el("a", { href: ev.source_url, target: "_blank", rel: "noopener" }, ev.source_url));
+          if (ev.payment_signal) evMeta.appendChild(el("span", { style: "color:var(--ok);font-weight:700" }, "$"));
+          item.appendChild(evMeta);
+          if (ev.context) item.appendChild(el("div", { class: "fs td mt-s" }, ev.context));
+          evList.appendChild(item);
+        }
+        evSec.appendChild(evList);
+        card.appendChild(evSec);
+      }
+
+      // Counter-evidence
+      let counterEvidence = opp.counter_evidence || [];
+      if (typeof opp.counter_evidence_json === "string") {
+        try { counterEvidence = JSON.parse(opp.counter_evidence_json); } catch {}
+      }
+      if (counterEvidence.length > 0) {
+        const ceSec = el("details", { class: "mt-s" });
+        ceSec.appendChild(el("summary", { style: "color:var(--bad)" }, "Why This Might Be Wrong"));
+        const ceList = el("div", { class: "counter-list" });
+        for (const ce of counterEvidence) {
+          ceList.appendChild(el("div", { class: "counter-item" }, typeof ce === "string" ? ce : JSON.stringify(ce)));
+        }
+        ceSec.appendChild(ceList);
+        card.appendChild(ceSec);
+      }
+
+      // Panel
+      if (opp.panel_json) {
+        let panel;
+        try { panel = typeof opp.panel_json === "string" ? JSON.parse(opp.panel_json) : opp.panel_json; } catch { panel = null; }
+        if (panel && panel.final_verdict) {
+          const pDiv = el("div", { class: "mt-s", style: "border-top:1px solid var(--border);padding-top:0.4rem" });
+          const color = panel.final_verdict === "go" ? "var(--ok)" : panel.final_verdict === "nogo" ? "var(--bad)" : "var(--warn)";
+          pDiv.appendChild(el("span", { class: "badge", style: `background:${color};color:oklch(0.15 0.02 260)` }, `Panel: ${panel.final_verdict}`));
+          if (panel.synthesis) pDiv.appendChild(el("p", { class: "fs td mt-s" }, panel.synthesis));
+          card.appendChild(pDiv);
+        }
+      }
+
+      // Notes
+      if (opp.notes) {
+        card.appendChild(el("p", { class: "fs td mt-s", style: "font-style:italic" }, opp.notes));
+      }
+
+      card.dataset.searchText = `${opp.title || ""} ${opp.niche || ""} ${opp.primary_signal || ""} ${opp.one_liner || ""}`.toLowerCase();
+      grid.appendChild(card);
+    }
+    if (filterInp) {
+      filterInp.addEventListener("input", () => {
+        const q = filterInp.value.trim().toLowerCase();
+        for (const card of grid.querySelectorAll(".opp-card")) {
+          card.style.display = (q && !card.dataset.searchText.includes(q)) ? "none" : "";
+        }
+      });
+    }
+    F.appendChild(grid);
+  }
+
+  app.appendChild(F);
+
+  // Stagger animations
+  const cards = app.querySelectorAll(".glass");
+  cards.forEach((c, i) => { c.style.animationDelay = `${i * 0.05}s`; });
+})();
+</script>
+</body>
+</html>
