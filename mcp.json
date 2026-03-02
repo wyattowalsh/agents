@@ -2,159 +2,285 @@
   "mcpServers": {
     "sequential-thinking": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     },
     "atom-of-thoughts": {
       "command": "node",
-      "args": ["/Users/ww/dev/tools/mcp/MCP_Atom_of_Thoughts/build/index.js"]
+      "args": [
+        "/Users/ww/dev/tools/mcp/MCP_Atom_of_Thoughts/build/index.js"
+      ]
     },
     "shannon-thinking": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "server-shannon-thinking@latest"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "server-shannon-thinking@latest"
+      ],
+      "timeout": 600000
     },
     "structured-thinking": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "structured-thinking"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "structured-thinking"
+      ],
+      "timeout": 600000
     },
     "cascade-thinking": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "cascade-thinking-mcp"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "cascade-thinking-mcp"
+      ],
+      "timeout": 600000
     },
     "crash": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "crash-mcp"],
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "crash-mcp"
+      ],
       "env": {
         "CRASH_STRICT_MODE": "false",
         "MAX_HISTORY_SIZE": "100"
-      }
+      },
+      "timeout": 600000
     },
     "deep-lucid-3d": {
       "command": "node",
-      "args": ["/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"]
+      "args": [
+        "/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"
+      ]
     },
     "lotus-wisdom-mcp": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "lotus-wisdom-mcp"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "lotus-wisdom-mcp"
+      ],
+      "timeout": 600000
     },
     "think-strategies": {
       "command": "npx",
-      "args": ["-y", "github:aaronsb/think-strategies"]
+      "args": [
+        "-y",
+        "github:aaronsb/think-strategies"
+      ]
     },
     "creative-thinking": {
       "command": "node",
-      "args": ["/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"]
+      "args": [
+        "/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"
+      ],
+      "timeout": 600000
     },
     "ableton": {
       "command": "bash",
-      "args": ["-lc", "uvx --offline ableton-mcp || uvx ableton-mcp"]
+      "args": [
+        "-lc",
+        "uvx --offline ableton-mcp || uvx ableton-mcp"
+      ],
+      "timeout": 600000
     },
     "apple-mail": {
       "command": "/Users/ww/dev/tools/mcp/apple-mail-mcp/venv/bin/python3",
-      "args": ["/Users/ww/dev/tools/mcp/apple-mail-mcp/apple_mail_mcp.py"]
+      "args": [
+        "/Users/ww/dev/tools/mcp/apple-mail-mcp/apple_mail_mcp.py"
+      ],
+      "timeout": 600000
     },
     "default": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.w4w.dev/mcp/default"]
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.w4w.dev/mcp/default"
+      ]
     },
     "playwright": {
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest", "--extension"],
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "@playwright/mcp@latest",
+        "--extension"
+      ],
       "env": {
         "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "${PLAYWRIGHT_MCP_EXTENSION_TOKEN}",
         "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
-      }
+      },
+      "timeout": 600000
     },
     "docling": {
       "command": "uvx",
-      "args": ["--offline", "--from=docling-mcp==1.3.4", "docling-mcp-server"]
+      "args": [
+        "--offline",
+        "--from=docling-mcp==1.3.4",
+        "docling-mcp-server"
+      ],
+      "timeout": 600000
     },
     "package-version": {
       "command": "/Users/ww/go/bin/mcp-package-version",
       "args": []
     },
     "things": {
-      "command": "uv",
-      "args": ["--directory", "/Users/ww/dev/tools/mcp/things-mcp", "run", "things_server.py"]
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uv --directory /Users/ww/dev/tools/mcp/things-mcp run --no-sync things_server.py || uv --directory /Users/ww/dev/tools/mcp/things-mcp run things_server.py"
+      ],
+      "timeout": 600000
     },
     "fetch": {
       "command": "npx",
-      "args": ["-y", "mcp-fetch-server"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "mcp-fetch-server"
+      ],
+      "timeout": 600000
     },
     "context7": {
       "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "${CONTEXT7_API_KEY}"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "${CONTEXT7_API_KEY}"
+      ],
+      "timeout": 600000
     },
     "ffmpeg": {
-      "command": "uv",
-      "args": ["--directory", "/Users/ww/dev/tools/mcp/ffmpeg-mcp", "run", "ffmpeg-mcp"]
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uv --directory /Users/ww/dev/tools/mcp/ffmpeg-mcp run --no-sync ffmpeg-mcp || uv --directory /Users/ww/dev/tools/mcp/ffmpeg-mcp run ffmpeg-mcp"
+      ],
+      "timeout": 600000
     },
     "gmail": {
       "command": "bash",
       "args": [
         "-lc",
         "uvx --offline mcp-gsuite --gauth-file /Users/ww/.gmail-mcp/.gauth.json --accounts-file /Users/ww/.gmail-mcp/.accounts.json --credentials-dir /Users/ww/.gmail-mcp || uvx mcp-gsuite --gauth-file /Users/ww/.gmail-mcp/.gauth.json --accounts-file /Users/ww/.gmail-mcp/.accounts.json --credentials-dir /Users/ww/.gmail-mcp"
-      ]
+      ],
+      "timeout": 600000
     },
     "fetcher": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "fetcher-mcp"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "fetcher-mcp"
+      ],
+      "timeout": 600000
     },
     "deepwiki": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.deepwiki.com/mcp"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "mcp-remote",
+        "https://mcp.deepwiki.com/mcp"
+      ],
+      "timeout": 600000
     },
     "repomix": {
       "command": "npx",
-      "args": ["-y", "repomix", "--mcp"]
+      "args": [
+        "-y",
+        "repomix",
+        "--mcp"
+      ]
     },
     "trafilatura": {
       "command": "bash",
       "args": [
         "-lc",
         "uv --directory /Users/ww/dev/tools/mcp/trafilatura_mcp run --no-sync python3 trafilatura_mcp.py || uv --directory /Users/ww/dev/tools/mcp/trafilatura_mcp run python3 trafilatura_mcp.py"
-      ]
+      ],
+      "timeout": 600000
     },
     "brave-search": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
       "env": {
         "BRAVE_API_KEY": "${BRAVE_API_KEY}"
       }
     },
     "exa": {
       "command": "npx",
-      "args": ["-y", "exa-mcp-server"],
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
       "env": {
         "EXA_API_KEY": "${EXA_API_KEY}"
       }
     },
     "web-search": {
       "command": "node",
-      "args": ["/Users/ww/dev/tools/mcp/web-search-mcp/dist/index.js"]
+      "args": [
+        "/Users/ww/dev/tools/mcp/web-search-mcp/dist/index.js"
+      ]
     },
     "linkedin": {
       "command": "uvx",
-      "args": ["linkedin-scraper-mcp"]
+      "args": [
+        "linkedin-scraper-mcp"
+      ]
     },
     "g-search": {
       "command": "npx",
-      "args": ["-y", "g-search-mcp"]
+      "args": [
+        "-y",
+        "g-search-mcp"
+      ]
     },
     "duckduckgo-search": {
       "command": "uvx",
-      "args": ["duckduckgo-mcp-server"]
+      "args": [
+        "duckduckgo-mcp-server"
+      ]
     },
     "arxiv": {
-      "command": "uvx",
-      "args": ["arxiv-mcp-server"]
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"
+      ],
+      "timeout": 600000
     },
     "wikipedia": {
       "command": "npx",
-      "args": ["-y", "--prefer-offline", "wikipedia-mcp"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "wikipedia-mcp"
+      ],
+      "timeout": 600000
     },
     "wayback": {
       "command": "npx",
-      "args": ["-y", "mcp-wayback-machine"]
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "mcp-wayback-machine"
+      ],
+      "timeout": 600000
     }
   }
 }
