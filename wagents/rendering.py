@@ -473,7 +473,9 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     if fm.get("agent"):
         cc_rows.append(f"| Agent | `{fm['agent']}` |")
     if fm.get("argument-hint"):
-        cc_rows.append(f"| Argument Hint | `{fm['argument-hint']}` |")
+        # Replace angle brackets — MDX parses <word> as JSX inside TabItem
+        _hint = fm["argument-hint"].replace("<", "[").replace(">", "]")
+        cc_rows.append(f"| Argument Hint | `{_hint}` |")
     if fm.get("user-invocable") is False:
         cc_rows.append("| User Invocable | No |")
     if fm.get("disable-model-invocation"):
