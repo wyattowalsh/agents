@@ -168,6 +168,8 @@ make help                                    # Show all make targets
 
 `~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + Clarification Gate + orchestration core (~600 tokens) — this is the only always-loaded instruction content.
 
+For GitHub Copilot CLI, use `COPILOT.md` as the bridge layer to apply Copilot-specific overrides on top of `@instructions/global.md`.
+
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
 Everything situational uses **skills as context loaders** — Claude sees skill descriptions at startup and auto-invokes relevant ones on demand:
@@ -207,4 +209,4 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Crush | `AGENTS.md` | — |
 | OpenCode | `AGENTS.md` | — |
 | Cursor | `AGENTS.md` | — |
-| GitHub Copilot | `AGENTS.md` + `CLAUDE.md` + `GEMINI.md` | — |
+| GitHub Copilot | `COPILOT.md` → `@instructions/global.md` + `AGENTS.md` conventions | `COPILOT.md` |

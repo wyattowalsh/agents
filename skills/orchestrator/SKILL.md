@@ -79,8 +79,8 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / gpt-5.3-codex xhigh (GitHub Copilot CLI) |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / gpt-5.3-codex xhigh (GitHub Copilot CLI) |
 | **Single session** | Direct execution | Exactly 1 action | N/A |
 
 Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
@@ -99,7 +99,9 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 - Do NOT rely on the subagent inheriting conversation history — it does not.
 
 ### Model selection
-- `opus` — the ONLY model. Every subagent, every teammate, every wave. No exceptions. Never downgrade for any reason.
+- Default policy: `opus` for every subagent, teammate, and wave.
+- GitHub Copilot CLI override: `gpt-5.3-codex` with `xhigh` effort for every subagent, teammate, wave, and `/fleet` member.
+- When both policies are present, apply the environment-specific override for the active runtime.
 
 ### Context management
 - Delegate verbose operations (test suites, log parsing, doc fetching) to subagents.

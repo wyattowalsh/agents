@@ -34,7 +34,7 @@ export function EvidenceSection({ evidence }: { evidence: Evidence[] }) {
 
 export function CounterEvidence({ json }: { json?: string }) {
   if (!json) return null;
-  let items: string[];
+  let items: (string | { claim?: string; source?: string; impact?: string })[];
   try {
     items = JSON.parse(json);
   } catch {
@@ -45,11 +45,20 @@ export function CounterEvidence({ json }: { json?: string }) {
     <div className="detail-section">
       <h3 style={{ color: "var(--bad)" }}>Why This Might Be Wrong</h3>
       <div className="counter-list">
-        {items.map((ce, i) => (
-          <div key={i} className="counter-item">
-            {ce}
-          </div>
-        ))}
+        {items.map((ce, i) => {
+          const text = typeof ce === "string" ? ce : ce.claim ?? JSON.stringify(ce);
+          const impact = typeof ce === "object" && ce.impact ? ce.impact : null;
+          return (
+            <div key={i} className="counter-item">
+              {text}
+              {impact && (
+                <span className="pill" style={{ marginLeft: "0.4rem", fontSize: "0.68rem" }}>
+                  {impact} impact
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
