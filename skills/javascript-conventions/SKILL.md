@@ -1,9 +1,8 @@
 ---
 name: javascript-conventions
 description: >-
-  JavaScript/Node.js tooling conventions. Use when working on JS/TS files,
-  package.json, or Node.js projects. Enforce pnpm for package management.
-  NOT for Python projects, backend-only work, or shell scripts.
+  JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files
+  or package.json. NOT for Python, backend-only, or shell scripts.
 user-invocable: false
 disable-model-invocation: false
 license: MIT

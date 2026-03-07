@@ -1,0 +1,12 @@
+{
+  "skills": ["database-architect"],
+  "query": "/database-architect design a user management system with roles and permissions",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Design mode",
+    "Agent gathers entity requirements (users, roles, permissions, relationships)",
+    "Agent generates complete DDL with tables, indexes, constraints, foreign keys",
+    "Agent reads references/normalization-guide.md for normalization decisions",
+    "Agent presents schema with summary table and rationale for design choices"
+  ]
+}

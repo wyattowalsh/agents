@@ -1,9 +1,8 @@
 ---
 name: python-conventions
 description: >-
-  Python tooling conventions. Use when working on .py files, pyproject.toml,
-  or Python projects. Enforce uv for package management, ty for type checking.
-  NOT for JavaScript/TypeScript projects or shell scripts.
+  Python tooling conventions. Enforce uv, ty. Use when working on .py files
+  or pyproject.toml. NOT for JS/TS or shell scripts.
 user-invocable: false
 disable-model-invocation: false
 license: MIT

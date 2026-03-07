@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure Coder - IaC Overview</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --dim: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --orange: #db6d28;
+  --purple: #bc8cff;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --card: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --dim: #656d76;
+    --accent: #0969da;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+    --orange: #bc4c00;
+    --purple: #8250df;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 24px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 24px; margin-bottom: 8px; }
+h2 { font-size: 18px; margin: 24px 0 12px; color: var(--accent); }
+h3 { font-size: 14px; margin: 16px 0 8px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.5px; }
+.subtitle { color: var(--dim); margin-bottom: 24px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.stat-value { font-size: 28px; font-weight: 600; }
+.stat-label { font-size: 12px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.5px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+.badge-critical { background: var(--red); color: #fff; }
+.badge-high { background: var(--orange); color: #fff; }
+.badge-medium { background: var(--yellow); color: #000; }
+.badge-low { background: var(--dim); color: #fff; }
+table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+th { color: var(--dim); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+tr:hover td { background: var(--card); }
+.section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+.empty { color: var(--dim); font-style: italic; padding: 16px; text-align: center; }
+.provider-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px; background: var(--border); margin-right: 4px; }
+.bar { height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; margin-top: 4px; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+</style>
+</head>
+<body>
+<h1>IaC Overview</h1>
+<p class="subtitle">Infrastructure-as-Code analysis dashboard</p>
+<div id="app"></div>
+
+<script id="data" type="application/json">{"view":"iac-overview","resources":[],"findings":[],"dockerfile_layers":[],"cost_comparison":[]}</script>
+
+<script>
+(function() {
+  const escH = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+  let data;
+  try {
+    data = JSON.parse(document.getElementById('data').textContent);
+  } catch(e) {
+    document.getElementById('app').innerHTML = '<div class="empty">Error parsing data: ' + escH(e.message) + '</div>';
+    return;
+  }
+
+  const app = document.getElementById('app');
+  const resources = data.resources || [];
+  const findings = data.findings || [];
+  const layers = data.dockerfile_layers || [];
+  const costs = data.cost_comparison || [];
+
+  // Summary stats
+  const critical = findings.filter(f => f.severity === 'critical').length;
+  const high = findings.filter(f => f.severity === 'high').length;
+  const medium = findings.filter(f => f.severity === 'medium').length;
+  const low = findings.filter(f => f.severity === 'low').length;
+
+  let html = '<div class="grid">';
+  html += stat(resources.length, 'Resources');
+  html += stat(findings.length, 'Total Findings');
+  html += stat(critical + high, 'Critical + High', critical + high > 0 ? 'var(--red)' : 'var(--green)');
+  html += stat(layers.length, 'Docker Layers');
+  html += '</div>';
+
+  // Findings section
+  if (findings.length > 0) {
+    html += '<h2>Security & Best Practice Findings</h2>';
+    html += '<div class="section"><table><tr><th>Severity</th><th>Resource</th><th>Rule</th><th>Message</th><th>Fix</th></tr>';
+    findings.forEach(f => {
+      html += '<tr>';
+      html += '<td><span class="badge badge-' + escH(f.severity) + '">' + escH(f.severity) + '</span></td>';
+      html += '<td>' + escH(f.resource || '') + '</td>';
+      html += '<td><code>' + escH(f.rule || '') + '</code></td>';
+      html += '<td>' + escH(f.message || '') + '</td>';
+      html += '<td>' + escH(f.fix || '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Resources section
+  if (resources.length > 0) {
+    html += '<h2>Resource Inventory</h2>';
+    html += '<div class="section"><table><tr><th>Type</th><th>Name</th><th>Provider</th><th>File</th></tr>';
+    resources.forEach(r => {
+      html += '<tr>';
+      html += '<td>' + escH(r.type || r.kind || '') + '</td>';
+      html += '<td>' + escH(r.name || '') + '</td>';
+      html += '<td><span class="provider-tag">' + escH(r.provider || '') + '</span></td>';
+      html += '<td>' + escH(r.file || '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Docker layers section
+  if (layers.length > 0) {
+    html += '<h2>Dockerfile Layers</h2>';
+    html += '<div class="section"><table><tr><th>Line</th><th>Instruction</th><th>Size Impact</th><th>Cacheable</th><th>Stage</th></tr>';
+    layers.forEach(l => {
+      const impactColor = l.size_impact === 'high' ? 'var(--red)' : l.size_impact === 'medium' ? 'var(--yellow)' : 'var(--dim)';
+      html += '<tr>';
+      html += '<td>' + escH(l.line) + '</td>';
+      html += '<td><code>' + escH(l.content || l.instruction) + '</code></td>';
+      html += '<td style="color:' + impactColor + '">' + escH(l.size_impact) + '</td>';
+      html += '<td>' + (l.cacheable ? 'Yes' : 'No') + '</td>';
+      html += '<td>' + escH(l.stage || '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Cost comparison section
+  if (costs.length > 0) {
+    html += '<h2>Cost Comparison</h2>';
+    html += '<div class="section"><table><tr><th>Config</th><th>Relative Cost</th><th>Trade-off</th></tr>';
+    costs.forEach(c => {
+      html += '<tr>';
+      html += '<td>' + escH(c.config || '') + '</td>';
+      html += '<td>' + escH(c.relative_cost || '') + '</td>';
+      html += '<td>' + escH(c.tradeoff || '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  if (resources.length === 0 && findings.length === 0 && layers.length === 0) {
+    html += '<div class="empty">No data available. Run a review, security scan, or cost analysis to populate this dashboard.</div>';
+  }
+
+  app.innerHTML = html;
+
+  function stat(value, label, color) {
+    return '<div class="stat"><div class="stat-value" style="color:' + (color || 'var(--accent)') + '">' + escH(value) + '</div><div class="stat-label">' + escH(label) + '</div></div>';
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "/performance-profiler analyze src/utils.py",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Mode 1 (Analyze) based on 'analyze' keyword",
+    "Agent runs complexity-estimator.py script on the specified file",
+    "Agent parses JSON output and classifies each function by Big-O complexity",
+    "Agent presents a table with function name, estimated complexity, evidence, hotspot risk, and recommendation",
+    "Agent includes trade-off analysis for each optimization recommendation",
+    "Agent does NOT claim to measure actual performance"
+  ]
+}

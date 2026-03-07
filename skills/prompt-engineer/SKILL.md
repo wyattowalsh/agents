@@ -1,15 +1,9 @@
 ---
 name: prompt-engineer
 description: >-
-  Comprehensive prompt and context engineering for any AI system. Four modes:
-  (1) Craft new prompts from scratch, (2) Analyze existing prompts with
-  diagnostic scoring and optional improvement, (3) Convert prompts between
-  model families (Claude/GPT/Gemini/Llama), (4) Evaluate prompts with test
-  suites and rubrics. Adapts all recommendations to model class
-  (instruction-following vs reasoning). Validates findings against current
-  documentation. Use for system prompts, agent prompts, RAG pipelines, tool
-  definitions, or any LLM context design. NOT for running prompts, generating
-  content, or building agents.
+  Prompt engineering for any AI system. Craft, analyze, convert between models,
+  evaluate with rubrics. Use for system prompts, agent prompts, tool defs. NOT
+  for running prompts or building agents.
 license: MIT
 argument-hint: "<mode> [target]"
 model: opus

@@ -1,13 +1,13 @@
 ---
 title: "javascript-conventions"
-description: "JavaScript/Node.js tooling conventions. Use when working on JS/TS files, package.json, or Node.js projects. Enforce pnpm for package management."
+description: "JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
 <Badge text="javascript-conventions" variant="note" /> <Badge text="349 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
 
-> JavaScript/Node.js tooling conventions. Use when working on JS/TS files, package.json, or Node.js projects. Enforce pnpm for package management. NOT for Python projects, backend-only work, or shell scripts.
+> JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts.
 
 <div class="quick-start">
 
@@ -110,7 +110,7 @@ This is an **auto-invoke** skill -- it activates automatically when the agent de
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions. Use when working on .py files, pyproject.toml, or Python projects. Enforce uv for package management, ty for type checking." />
+  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions. Enforce uv, ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts." />
 </CardGrid>
 
 <details>
@@ -120,9 +120,8 @@ This is an **auto-invoke** skill -- it activates automatically when the agent de
 ---
 name: javascript-conventions
 description: >-
-  JavaScript/Node.js tooling conventions. Use when working on JS/TS files,
-  package.json, or Node.js projects. Enforce pnpm for package management.
-  NOT for Python projects, backend-only work, or shell scripts.
+  JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files
+  or package.json. NOT for Python, backend-only, or shell scripts.
 user-invocable: false
 disable-model-invocation: false
 license: MIT

@@ -1,0 +1,13 @@
+{
+  "skills": ["devops-engineer"],
+  "query": "/devops-engineer pipeline CI/CD for a Python FastAPI app with pytest and Docker deploy",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Generate (pipeline) mode",
+    "Agent gathers requirements (Python, FastAPI, pytest, Docker)",
+    "Agent reads references/github-actions-patterns.md",
+    "Agent generates complete GitHub Actions workflow YAML",
+    "Agent runs workflow-analyzer.py on generated output",
+    "Agent includes lint, test, build, deploy stages with appropriate caching"
+  ]
+}

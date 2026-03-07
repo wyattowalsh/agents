@@ -1,0 +1,14 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "I need help designing a caching layer for our user session service that handles 10k requests per second with a 95% read ratio",
+  "files": [],
+  "expected_behavior": [
+    "Agent auto-detects cache mode based on caching/session service context",
+    "Agent asks about or infers access patterns (read/write ratio, TTL tolerance, consistency)",
+    "Agent references caching-strategies.md decision tree",
+    "Agent recommends specific eviction policy (likely LRU or LFU given read-heavy workload)",
+    "Agent specifies write policy, invalidation strategy, and capacity planning",
+    "Agent includes trade-offs for the recommended approach",
+    "Agent does NOT recommend running a load test itself"
+  ]
+}

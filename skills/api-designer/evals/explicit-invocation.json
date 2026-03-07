@@ -1,0 +1,16 @@
+{
+  "skills": ["api-designer"],
+  "query": "/api-designer design User management API with RBAC, OAuth2 authentication, supporting create, read, update, delete operations on users and roles",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates api-designer skill in Design mode",
+    "Agent detects REST protocol from requirements (CRUD operations, resource-based)",
+    "Agent loads references/rest-conventions.md for REST best practices",
+    "Agent parses requirements to extract resources (users, roles), operations (CRUD), and auth (OAuth2)",
+    "Agent designs endpoints following REST conventions: /users, /users/{id}, /roles, /roles/{id}",
+    "Agent defines request/response schemas with proper types and validation",
+    "Agent includes error responses (400, 401, 403, 404, 422) on all endpoints",
+    "Agent generates OpenAPI 3.1 YAML spec",
+    "Agent runs api-spec-validator.py on the generated spec"
+  ]
+}

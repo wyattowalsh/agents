@@ -1,0 +1,13 @@
+{
+  "skills": ["git-workflow"],
+  "query": "/git-workflow commit",
+  "files": [],
+  "expected_behavior": [
+    "Agent runs git diff --cached to get staged changes",
+    "Agent runs diff-summarizer.py script to analyze the diff",
+    "Agent classifies the change type using conventional commit spec",
+    "Agent generates a conventional commit message with type, optional scope, and subject",
+    "Agent presents the commit message and asks for approval before committing",
+    "Agent uses imperative mood, lowercase, no period, max 72 chars for subject"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skills": ["git-workflow"],
+  "query": "Review this code for bugs and security issues",
+  "files": ["src/auth.py"],
+  "expected_behavior": [
+    "Agent does NOT activate git-workflow for code review requests",
+    "Agent recognizes this is a code review task, not a git workflow task",
+    "Agent should use honest-review or similar code review skill instead"
+  ]
+}

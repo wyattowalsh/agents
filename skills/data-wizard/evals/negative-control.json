@@ -1,0 +1,11 @@
+{
+  "skills": ["data-wizard"],
+  "query": "Set up an ETL pipeline to extract data from PostgreSQL, transform it with dbt, and load into BigQuery",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate data-wizard skill",
+    "Agent recognizes this is a data engineering/ETL task, not data science",
+    "If data-wizard is activated, it redirects per Skill Awareness table",
+    "Agent suggests appropriate tools for ETL pipeline design instead"
+  ]
+}

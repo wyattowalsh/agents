@@ -1,0 +1,12 @@
+{
+  "skills": ["git-workflow"],
+  "query": "Why does the parse_config function exist and who wrote it?",
+  "files": ["src/config.py"],
+  "expected_behavior": [
+    "Agent recognizes this as a code archaeology question and activates git-workflow",
+    "Agent uses git blame and git log to trace the function's history",
+    "Agent identifies the original author and creation commit",
+    "Agent presents a narrative timeline of the function's evolution",
+    "Agent does NOT modify any code (archaeology is read-only)"
+  ]
+}

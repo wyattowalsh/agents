@@ -43,3 +43,7 @@ Before any tool-mediated work:
 
 **Model**: opus everywhere. No exceptions. Never downgrade model for any reason.
 **Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.
+
+## Browser Tools
+
+Prefer `chrome-devtools` MCP for browser automation, testing, and debugging. Fallback: Playwright → Fetcher/Fetch → WebFetch.

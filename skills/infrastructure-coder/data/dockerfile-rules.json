@@ -1,0 +1,81 @@
+{
+  "rules": [
+    {
+      "id": "DL3007",
+      "severity": "high",
+      "category": "versioning",
+      "message": "Using 'latest' tag in FROM",
+      "fix": "Pin to specific version tag"
+    },
+    {
+      "id": "DL3002",
+      "severity": "high",
+      "category": "security",
+      "message": "No USER directive — runs as root",
+      "fix": "Add USER with non-root user"
+    },
+    {
+      "id": "DL3009",
+      "severity": "medium",
+      "category": "size",
+      "message": "apt-get update without cleanup",
+      "fix": "Add rm -rf /var/lib/apt/lists/* in same RUN"
+    },
+    {
+      "id": "DL3013",
+      "severity": "low",
+      "category": "size",
+      "message": "pip install without --no-cache-dir",
+      "fix": "Add --no-cache-dir flag"
+    },
+    {
+      "id": "DL3015",
+      "severity": "low",
+      "category": "size",
+      "message": "apt-get install without --no-install-recommends",
+      "fix": "Add --no-install-recommends"
+    },
+    {
+      "id": "DL3020",
+      "severity": "medium",
+      "category": "correctness",
+      "message": "ADD used for local files instead of COPY",
+      "fix": "Use COPY for local files"
+    },
+    {
+      "id": "DL3025",
+      "severity": "low",
+      "category": "correctness",
+      "message": "CMD uses shell form",
+      "fix": "Use exec form: CMD [\"executable\", \"arg\"]"
+    },
+    {
+      "id": "SC1001",
+      "severity": "medium",
+      "category": "size",
+      "message": "COPY . . copies everything",
+      "fix": "COPY specific files, use .dockerignore"
+    },
+    {
+      "id": "DL3003",
+      "severity": "low",
+      "category": "correctness",
+      "message": "cd in RUN instead of WORKDIR",
+      "fix": "Use WORKDIR directive"
+    },
+    {
+      "id": "LAYER001",
+      "severity": "medium",
+      "category": "size",
+      "message": "Consecutive RUN instructions",
+      "fix": "Combine with && to reduce layers"
+    },
+    {
+      "id": "ORDER001",
+      "severity": "medium",
+      "category": "performance",
+      "message": "Source files copied before dependencies",
+      "fix": "Copy dependency files first for better layer caching"
+    }
+  ]
+}

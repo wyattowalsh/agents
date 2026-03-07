@@ -1,0 +1,83 @@
+{
+  "description": "Feature engineering patterns indexed by data type",
+  "version": "1.0.0",
+  "patterns": {
+    "numeric": {
+      "transformations": [
+        {"name": "log_transform", "when": "Right-skewed distribution, large range", "library": "numpy"},
+        {"name": "sqrt_transform", "when": "Moderate skew, count data", "library": "numpy"},
+        {"name": "box_cox", "when": "Need normality for parametric methods", "library": "scipy"},
+        {"name": "standard_scaling", "when": "Features on different scales, distance-based models", "library": "scikit-learn"},
+        {"name": "min_max_scaling", "when": "Need bounded [0,1] range, neural networks", "library": "scikit-learn"},
+        {"name": "robust_scaling", "when": "Data has outliers", "library": "scikit-learn"},
+        {"name": "quantile_transform", "when": "Need uniform or normal distribution", "library": "scikit-learn"}
+      ],
+      "interactions": [
+        {"name": "polynomial_features", "when": "Non-linear relationships, small feature set", "risk": "Combinatorial explosion with many features"},
+        {"name": "ratio_features", "when": "Domain ratios are meaningful (e.g., debt-to-income)", "risk": "Division by zero"},
+        {"name": "difference_features", "when": "Change between measurements matters", "risk": "Correlated with original features"}
+      ],
+      "binning": [
+        {"name": "equal_width", "when": "Uniform distribution, simple interpretation"},
+        {"name": "equal_frequency", "when": "Skewed distribution, want balanced bins"},
+        {"name": "domain_bins", "when": "Natural breakpoints exist (e.g., age groups)"}
+      ]
+    },
+    "categorical": {
+      "encoding": [
+        {"name": "one_hot", "when": "Low cardinality (< 15 categories), tree models or linear models", "library": "pandas / scikit-learn"},
+        {"name": "label_encoding", "when": "Tree-based models, ordinal categories", "library": "scikit-learn"},
+        {"name": "target_encoding", "when": "High cardinality, supervised learning", "library": "category_encoders", "risk": "Target leakage without proper CV"},
+        {"name": "frequency_encoding", "when": "Category frequency is informative", "library": "pandas"},
+        {"name": "binary_encoding", "when": "Medium-high cardinality, memory constraints", "library": "category_encoders"},
+        {"name": "embedding", "when": "Very high cardinality, deep learning pipeline", "library": "PyTorch / TensorFlow"}
+      ],
+      "grouping": [
+        {"name": "rare_category_grouping", "when": "Long tail of rare categories", "threshold": "< 1% of data"},
+        {"name": "hierarchical_encoding", "when": "Natural hierarchy exists (country > state > city)"}
+      ]
+    },
+    "temporal": {
+      "extraction": [
+        {"name": "cyclical_encoding", "when": "Hour, day-of-week, month — circular features", "method": "sin/cos transform"},
+        {"name": "date_parts", "when": "Year, month, day, weekday, quarter needed", "library": "pandas"},
+        {"name": "is_holiday", "when": "Business domain, retail, finance", "library": "holidays"},
+        {"name": "time_since_event", "when": "Days since signup, last purchase, etc."},
+        {"name": "rolling_aggregates", "when": "Time series features — mean, std, min, max over window"},
+        {"name": "lag_features", "when": "Autoregressive modeling, time series", "risk": "Ensure no future leakage"}
+      ]
+    },
+    "text": {
+      "representations": [
+        {"name": "tfidf", "when": "Traditional NLP, interpretable features", "library": "scikit-learn"},
+        {"name": "count_vectorizer", "when": "Simple bag-of-words baseline", "library": "scikit-learn"},
+        {"name": "word2vec", "when": "Semantic similarity needed, moderate corpus", "library": "gensim"},
+        {"name": "sentence_embeddings", "when": "Semantic understanding, transfer learning", "library": "sentence-transformers"},
+        {"name": "llm_embeddings", "when": "Best quality, cost/latency acceptable", "library": "openai / cohere"}
+      ],
+      "derived": [
+        {"name": "text_length", "when": "Length is informative (reviews, descriptions)"},
+        {"name": "sentiment_score", "when": "Emotional valence matters", "library": "textblob / vader"},
+        {"name": "named_entities", "when": "Entities are features (people, orgs, locations)", "library": "spacy"}
+      ]
+    },
+    "geospatial": {
+      "features": [
+        {"name": "haversine_distance", "when": "Distance to a reference point", "library": "scikit-learn"},
+        {"name": "geohash", "when": "Location clustering, privacy-preserving", "library": "python-geohash"},
+        {"name": "h3_hexagons", "when": "Hierarchical spatial indexing", "library": "h3"},
+        {"name": "reverse_geocode", "when": "Convert coordinates to regions", "library": "geopy"}
+      ]
+    }
+  },
+  "selection_methods": [
+    {"name": "correlation_filter", "when": "Remove highly correlated features (> 0.95)", "type": "filter"},
+    {"name": "variance_threshold", "when": "Remove near-constant features", "type": "filter"},
+    {"name": "mutual_information", "when": "Non-linear feature-target relationships", "type": "filter"},
+    {"name": "recursive_feature_elimination", "when": "Wrapper method with any model", "type": "wrapper"},
+    {"name": "lasso_selection", "when": "Embedded selection, linear relationships", "type": "embedded"},
+    {"name": "tree_importance", "when": "Embedded selection, non-linear", "type": "embedded"},
+    {"name": "permutation_importance", "when": "Model-agnostic importance", "type": "model_agnostic"},
+    {"name": "shap_values", "when": "Most reliable importance, any model", "type": "model_agnostic"}
+  ]
+}

@@ -184,17 +184,17 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
-> All 12 custom skill descriptions are loaded at startup. The table above highlights the auto-invoke convention skills. User-invocable skills (honest-review, add-badges, host-panel, learn, mcp-creator, prompt-engineer, skill-creator, wargame) are also visible in context for on-demand invocation.
+> All 28 custom skill descriptions are loaded at startup (~4,800 chars total). The table above highlights the auto-invoke convention skills. User-invocable skills include: honest-review, add-badges, host-panel, learn, mcp-creator, prompt-engineer, skill-creator, wargame, security-scanner, database-architect, test-architect, api-designer, performance-profiler, devops-engineer, infrastructure-coder, git-workflow, tech-debt-analyzer, data-wizard, changelog-writer, docs-steward, shell-scripter, email-whiz, frontend-designer, research.
 
 ### Token Budget
 
 | Component | Tokens | Loading |
 |-----------|--------|---------|
 | `global.md` (general + clarification gate + orchestration core) | ~600 | Always |
-| Skill descriptions (12 custom + installed) | ~500 | Always |
-| **Total always-loaded** | **~1,100** | |
+| Skill descriptions (28 custom + installed) | ~1,200 | Always |
+| **Total always-loaded** | **~1,800** | |
 | Scoped rules (`.claude/rules/`) | ~0 | Conditional (path match) |
-| Skill bodies (when invoked) | ~5,500 | On-demand |
+| Skill bodies (when invoked) | ~12,000 | On-demand |
 
 ---
 

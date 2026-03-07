@@ -1,10 +1,9 @@
 ---
 name: skill-creator
 description: >-
-  Create, improve, and audit AI agent skills. Applies 14 proven structural
-  patterns, scores quality with deterministic audit, manages full lifecycle.
-  Use when building, refactoring, or reviewing skills.
-  NOT for agents, MCP servers, or running existing skills.
+  Create, improve, and audit AI agent skills. 14 structural patterns,
+  deterministic scoring. Use when building or reviewing skills. NOT for
+  agents, MCP servers, or running skills.
 argument-hint: "<mode> [name]"
 model: opus
 license: MIT

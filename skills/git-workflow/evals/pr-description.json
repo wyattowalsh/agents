@@ -1,0 +1,13 @@
+{
+  "skills": ["git-workflow"],
+  "query": "/git-workflow pr",
+  "files": [],
+  "expected_behavior": [
+    "Agent detects the base branch (main/master)",
+    "Agent runs git log to list commits on the branch",
+    "Agent runs commit-parser.py to classify commits",
+    "Agent runs diff-summarizer.py to analyze change statistics",
+    "Agent generates PR description with title, summary, grouped changes, and test plan",
+    "Agent presents the description and asks for approval"
+  ]
+}

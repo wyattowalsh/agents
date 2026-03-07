@@ -1,0 +1,15 @@
+{
+  "skills": ["devops-engineer"],
+  "query": "/devops-engineer review .github/workflows/ci.yml",
+  "files": [".github/workflows/ci.yml"],
+  "expected_behavior": [
+    "Agent activates devops-engineer in Review mode",
+    "Agent reads the target workflow file",
+    "Agent runs workflow-analyzer.py to analyze the workflow structure",
+    "Agent loads references/pipeline-review-checklist.md for evaluation criteria",
+    "Agent evaluates across all 5 dimensions: security, reliability, performance, maintainability, cost",
+    "Agent presents findings categorized by severity (critical/warning/info)",
+    "Agent includes specific fix recommendations for each finding",
+    "Agent does NOT modify the workflow until user approves fixes (approval gate)"
+  ]
+}

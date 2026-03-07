@@ -1,0 +1,78 @@
+{
+  "description": "Chart type selection based on data characteristics and analysis goal",
+  "version": "1.0.0",
+  "chart_selector": {
+    "comparison": {
+      "description": "Compare values across categories or groups",
+      "charts": [
+        {"type": "bar_chart", "when": "Few categories (< 12), comparing magnitudes", "library": "matplotlib / seaborn / plotly"},
+        {"type": "grouped_bar", "when": "Compare across 2 categorical dimensions", "library": "seaborn / plotly"},
+        {"type": "dot_plot", "when": "Many categories, precise comparison needed", "library": "matplotlib"},
+        {"type": "radar_chart", "when": "Multi-dimensional comparison of few items (3-8 dimensions)", "library": "plotly"}
+      ]
+    },
+    "distribution": {
+      "description": "Show how data is distributed",
+      "charts": [
+        {"type": "histogram", "when": "Single continuous variable distribution", "library": "matplotlib / seaborn"},
+        {"type": "kde_plot", "when": "Smooth distribution estimate, overlaying groups", "library": "seaborn"},
+        {"type": "box_plot", "when": "Compare distributions across groups, show outliers", "library": "seaborn / plotly"},
+        {"type": "violin_plot", "when": "Distribution shape + density across groups", "library": "seaborn"},
+        {"type": "strip_plot", "when": "Small datasets, show individual points", "library": "seaborn"},
+        {"type": "ecdf", "when": "Cumulative distribution, percentile analysis", "library": "seaborn / plotly"}
+      ]
+    },
+    "relationship": {
+      "description": "Show relationships between variables",
+      "charts": [
+        {"type": "scatter_plot", "when": "Two continuous variables", "library": "matplotlib / seaborn / plotly"},
+        {"type": "bubble_chart", "when": "Three variables (x, y, size)", "library": "plotly"},
+        {"type": "heatmap", "when": "Correlation matrix, 2D frequency", "library": "seaborn / plotly"},
+        {"type": "pair_plot", "when": "All pairwise relationships in dataset (< 8 vars)", "library": "seaborn"},
+        {"type": "hexbin", "when": "Large datasets (> 10K points), overplotting", "library": "matplotlib"}
+      ]
+    },
+    "trend": {
+      "description": "Show changes over time",
+      "charts": [
+        {"type": "line_chart", "when": "Continuous time series, few series (< 7)", "library": "matplotlib / plotly"},
+        {"type": "area_chart", "when": "Stacked composition over time", "library": "plotly"},
+        {"type": "candlestick", "when": "Financial OHLC data", "library": "plotly"},
+        {"type": "sparkline", "when": "Compact inline trend indicators", "library": "matplotlib"}
+      ]
+    },
+    "composition": {
+      "description": "Show parts of a whole",
+      "charts": [
+        {"type": "stacked_bar", "when": "Composition across categories", "library": "matplotlib / plotly"},
+        {"type": "pie_chart", "when": "Simple proportions (< 6 slices)", "library": "matplotlib / plotly"},
+        {"type": "treemap", "when": "Hierarchical composition", "library": "plotly"},
+        {"type": "sunburst", "when": "Multi-level hierarchical composition", "library": "plotly"},
+        {"type": "waffle_chart", "when": "Proportions for general audiences", "library": "pywaffle"}
+      ]
+    },
+    "spatial": {
+      "description": "Show geographic patterns",
+      "charts": [
+        {"type": "choropleth", "when": "Values by region/country", "library": "plotly / folium"},
+        {"type": "scatter_map", "when": "Point locations with attributes", "library": "plotly / folium"},
+        {"type": "heatmap_geo", "when": "Density of events on a map", "library": "folium"}
+      ]
+    }
+  },
+  "encoding_channels": {
+    "position_x": "Most accurate, use for primary comparison dimension",
+    "position_y": "Second most accurate, use for measured value",
+    "color_hue": "Categorical distinction (max 7-10 categories)",
+    "color_intensity": "Sequential numeric scale",
+    "size": "Third numeric dimension (area, not radius)",
+    "shape": "Secondary categorical (max 5-6 shapes)",
+    "opacity": "Density or certainty"
+  },
+  "color_palettes": {
+    "categorical": ["Set2", "Paired", "Dark2", "tab10"],
+    "sequential": ["viridis", "plasma", "inferno", "Blues", "Greens"],
+    "diverging": ["RdBu", "coolwarm", "BrBG", "PiYG"],
+    "accessibility": "Always include colorblind-safe palette option. Viridis is safest default."
+  }
+}

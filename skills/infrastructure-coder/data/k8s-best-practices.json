@@ -1,0 +1,55 @@
+{
+  "security": {
+    "pod_level": {
+      "runAsNonRoot": {"required": true, "severity": "high"},
+      "runAsUser": {"recommended": true, "value": ">= 1000"},
+      "fsGroup": {"recommended": true},
+      "seccompProfile": {"recommended": true, "value": "RuntimeDefault"}
+    },
+    "container_level": {
+      "allowPrivilegeEscalation": {"required": false, "severity": "high"},
+      "readOnlyRootFilesystem": {"required": true, "severity": "medium"},
+      "capabilities_drop_all": {"required": true, "severity": "high"},
+      "privileged": {"required": false, "severity": "critical"}
+    },
+    "network": {
+      "hostNetwork": {"required": false, "severity": "critical"},
+      "hostPID": {"required": false, "severity": "critical"},
+      "networkPolicy": {"recommended": true, "severity": "medium"}
+    }
+  },
+  "reliability": {
+    "probes": {
+      "livenessProbe": {"required": true, "severity": "high"},
+      "readinessProbe": {"required": true, "severity": "high"},
+      "startupProbe": {"recommended": true, "when": "slow-starting apps"}
+    },
+    "resources": {
+      "requests_cpu": {"required": true, "severity": "medium"},
+      "requests_memory": {"required": true, "severity": "medium"},
+      "limits_cpu": {"required": true, "severity": "high"},
+      "limits_memory": {"required": true, "severity": "high"}
+    },
+    "availability": {
+      "podDisruptionBudget": {"recommended": true, "when": "replicas >= 2"},
+      "topologySpreadConstraints": {"recommended": true, "when": "multi-zone"},
+      "antiAffinity": {"recommended": true, "when": "replicas >= 2"}
+    }
+  },
+  "versioning": {
+    "image_tag": {"rule": "never use latest", "severity": "high"},
+    "image_pull_policy": {"rule": "IfNotPresent for tagged, Always for latest", "severity": "low"}
+  },
+  "labels": {
+    "required": [
+      "app.kubernetes.io/name",
+      "app.kubernetes.io/version",
+      "app.kubernetes.io/managed-by"
+    ],
+    "recommended": [
+      "app.kubernetes.io/instance",
+      "app.kubernetes.io/component",
+      "app.kubernetes.io/part-of"
+    ]
+  }
+}

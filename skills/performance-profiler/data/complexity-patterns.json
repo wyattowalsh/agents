@@ -1,0 +1,23 @@
+{
+  "patterns": [
+    {"pattern": "dict_lookup", "code": "value = d[key]", "complexity": "O(1)", "note": "Hash table average case"},
+    {"pattern": "list_index", "code": "value = arr[i]", "complexity": "O(1)", "note": "Direct memory access"},
+    {"pattern": "binary_search", "code": "bisect.bisect_left(sorted_list, x)", "complexity": "O(log n)", "note": "Halving search space"},
+    {"pattern": "single_loop", "code": "for x in items: ...", "complexity": "O(n)", "note": "Linear scan"},
+    {"pattern": "list_comprehension", "code": "[f(x) for x in items]", "complexity": "O(n)", "note": "Single generator"},
+    {"pattern": "sorting", "code": "sorted(items)", "complexity": "O(n log n)", "note": "Comparison-based sort"},
+    {"pattern": "nested_loop", "code": "for x in a: for y in b: ...", "complexity": "O(n^2)", "note": "When a and b are same size"},
+    {"pattern": "nested_comprehension", "code": "[[f(x,y) for y in b] for x in a]", "complexity": "O(n^2)", "note": "Double generator"},
+    {"pattern": "triple_loop", "code": "for i: for j: for k: ...", "complexity": "O(n^3)", "note": "Matrix multiplication"},
+    {"pattern": "recursive_no_memo", "code": "def f(n): return f(n-1) + f(n-2)", "complexity": "O(2^n)", "note": "Exponential branching"},
+    {"pattern": "power_set", "code": "itertools.combinations for all sizes", "complexity": "O(2^n)", "note": "All subsets"},
+    {"pattern": "permutations", "code": "itertools.permutations(items)", "complexity": "O(n!)", "note": "All orderings"}
+  ],
+  "traps": [
+    {"appears": "O(1)", "actually": "O(n)", "pattern": "x in list", "fix": "Use set for O(1) lookup"},
+    {"appears": "O(1)", "actually": "O(n)", "pattern": "list.insert(0, x)", "fix": "Use deque.appendleft"},
+    {"appears": "O(n)", "actually": "O(n^2)", "pattern": "str += char in loop", "fix": "Use ''.join()"},
+    {"appears": "O(n log n)", "actually": "O(n^2 log n)", "pattern": "sorted() in loop", "fix": "Sort once outside loop"},
+    {"appears": "O(n)", "actually": "O(n^2)", "pattern": ".count() in loop", "fix": "Use Counter"}
+  ]
+}

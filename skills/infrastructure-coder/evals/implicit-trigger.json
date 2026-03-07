@@ -1,0 +1,14 @@
+{
+  "skills": ["infrastructure-coder"],
+  "query": "I have a Dockerfile that's 800MB and takes 10 minutes to build. It uses ubuntu:latest as the base image and installs a bunch of packages. Can you help optimize it?",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes this as an IaC optimization task and activates infrastructure-coder",
+    "Agent enters Docker mode",
+    "Agent runs dockerfile-analyzer.py on the Dockerfile",
+    "Agent identifies issues: latest tag, large base image, likely missing multi-stage build",
+    "Agent loads references/dockerfile-guide.md for optimization patterns",
+    "Agent recommends: specific base image tag, multi-stage build, Alpine/slim base, layer ordering",
+    "Agent generates optimized Dockerfile with security hardening (non-root user, etc.)"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "skills": ["infrastructure-coder"],
+  "query": "/infrastructure-coder docker Review and optimize this Dockerfile for a Python FastAPI app - it's producing 2GB images",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates infrastructure-coder skill",
+    "Agent enters Docker mode",
+    "Agent runs dockerfile-analyzer.py on the existing Dockerfile",
+    "Agent parses JSON output for issues and optimization opportunities",
+    "Agent suggests multi-stage build separating build dependencies from runtime",
+    "Agent recommends layer ordering by change frequency (dependencies before source code)",
+    "Agent suggests distroless or Alpine for runtime base image",
+    "Agent recommends .dockerignore to exclude unnecessary files from build context",
+    "Agent includes non-root USER directive for security",
+    "Agent references references/dockerfile-guide.md for detailed patterns"
+  ]
+}

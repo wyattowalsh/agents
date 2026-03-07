@@ -1,16 +1,9 @@
 ---
 name: research
 description: >-
-  General-purpose deep research with multi-source synthesis and confidence-scored
-  findings. Auto-classifies complexity from quick lookup to exhaustive investigation.
-  Cross-validates across independent sources with anti-hallucination verification,
-  contradiction detection, and bias auditing. Produces synthesis products with
-  evidence chains and provenance. Resumable journal sessions. Use when investigating
-  technical topics, academic questions, market analysis, competitive intelligence,
-  architecture decisions, technology evaluation, fact-checking, literature review,
-  or trend analysis. NOT for code review (use honest-review), strategic decisions
-  (use wargame), multi-perspective debate (use host-panel), or simple factual Q&A
-  answerable in one search.
+  Deep multi-source research with confidence scoring. Auto-classifies
+  complexity. Use for technical investigation, fact-checking. NOT for code
+  review or simple Q&A.
 argument-hint: "<question or topic> [--depth quick|standard|deep|exhaustive] [--format brief|deep|bib|matrix]"
 model: opus
 license: MIT

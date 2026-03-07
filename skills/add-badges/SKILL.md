@@ -1,13 +1,9 @@
 ---
 name: add-badges
 description: >-
-  Scan a codebase to detect languages, frameworks, CI/CD pipelines, package
-  managers, and tools, then generate and insert shields.io badges into the
-  README with correct icons, brand colors, and live data endpoints. Use when
-  adding badges, updating badges, removing badges, improving README appearance,
-  adding shields, adding CI status badges, or making a README look more
-  professional. NOT for README content writing, documentation generation, or
-  CI/CD setup.
+  Detect stack and generate shields.io README badges with icons, colors, live
+  endpoints. Use when adding or updating badges. NOT for README writing, docs,
+  or CI/CD setup.
 argument-hint: "[--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]"
 license: MIT
 metadata:

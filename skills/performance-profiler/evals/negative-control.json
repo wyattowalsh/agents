@@ -1,0 +1,10 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "Run a load test against our API endpoint at https://api.example.com/users with 1000 concurrent users",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate performance-profiler skill",
+    "Agent recognizes this is a request to execute a load test, which is outside scope",
+    "If the skill is invoked, agent explains it cannot run load tests and suggests appropriate tools (k6, locust, wrk)"
+  ]
+}

@@ -119,6 +119,22 @@
       },
       "timeout": 600000
     },
+    "playwright-headless": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "@playwright/mcp@latest",
+        "--headless",
+        "--isolated"
+      ],
+      "timeout": 600000
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"],
+      "timeout": 600000
+    },
     "docling": {
       "command": "uvx",
       "args": [
@@ -253,6 +269,7 @@
     "duckduckgo-search": {
       "command": "uvx",
       "args": [
+        "--from=duckduckgo-mcp-server==0.1.1",
         "duckduckgo-mcp-server"
       ]
     },

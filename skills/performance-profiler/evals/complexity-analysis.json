@@ -1,0 +1,12 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "/performance-profiler analyze src/algorithms/search.py",
+  "files": ["src/algorithms/search.py"],
+  "expected_behavior": [
+    "Agent dispatches to analyze mode",
+    "Agent reads the target file",
+    "Agent runs complexity-estimator.py for static complexity analysis",
+    "Agent identifies Big-O complexity for each function",
+    "Agent highlights hotspots and optimization opportunities"
+  ]
+}

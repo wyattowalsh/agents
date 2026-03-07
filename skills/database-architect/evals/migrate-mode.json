@@ -1,0 +1,16 @@
+{
+  "skills": ["database-architect"],
+  "query": "/database-architect migrate Plan a zero-downtime migration to add a user_preferences JSONB column to the users table (PostgreSQL, 50M rows)",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Migrate mode (Mode 2)",
+    "Agent runs migration-validator.py to classify the operation",
+    "Agent reads references/migration-patterns.md for zero-downtime strategies",
+    "Agent generates up migration SQL (ALTER TABLE users ADD COLUMN user_preferences JSONB)",
+    "Agent generates down migration SQL (ALTER TABLE users DROP COLUMN user_preferences)",
+    "Agent addresses zero-downtime: column addition is safe without expand-contract for 50M rows",
+    "Agent includes rollback plan with risk assessment",
+    "Agent flags that JSONB column addition does not require a table rewrite in PostgreSQL",
+    "Agent follows NNNN_description migration naming convention"
+  ]
+}

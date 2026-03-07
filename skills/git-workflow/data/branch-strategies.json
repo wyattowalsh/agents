@@ -1,0 +1,122 @@
+{
+  "strategies": [
+    {
+      "name": "trunk-based",
+      "display_name": "Trunk-Based Development",
+      "description": "All developers commit to main/trunk with short-lived feature branches",
+      "branches": ["main"],
+      "feature_branch_lifetime": "< 1 day",
+      "pros": [
+        "Minimal merge conflicts",
+        "Genuine continuous integration",
+        "Forces small, incremental changes",
+        "Fastest path to production"
+      ],
+      "cons": [
+        "Requires mature CI/CD pipeline",
+        "Feature flags add complexity",
+        "Risky without comprehensive tests",
+        "No parallel release trains"
+      ],
+      "team_size": {
+        "ideal": "1-3",
+        "works": "1-20",
+        "requires": "Strong CI, feature flags at scale"
+      },
+      "release_cadence": ["continuous", "multiple per day"],
+      "prerequisites": [
+        "Fast, reliable CI pipeline",
+        "Good test coverage",
+        "Feature flag system (for larger teams)",
+        "Code review culture (pair programming or fast PR reviews)"
+      ]
+    },
+    {
+      "name": "github-flow",
+      "display_name": "GitHub Flow",
+      "description": "main + feature branches with PR-based merging",
+      "branches": ["main", "feature/*"],
+      "feature_branch_lifetime": "1-5 days",
+      "pros": [
+        "Simple to understand and teach",
+        "PR-based review well supported by tooling",
+        "Works with any release cadence",
+        "Good balance of safety and speed"
+      ],
+      "cons": [
+        "No built-in release management",
+        "Long-lived branches if PRs stall",
+        "No separation of ready vs released"
+      ],
+      "team_size": {
+        "ideal": "4-10",
+        "works": "1-50",
+        "requires": "PR review process"
+      },
+      "release_cadence": ["daily", "weekly", "biweekly"],
+      "prerequisites": [
+        "Branch protection on main",
+        "PR review process",
+        "CI running on PRs"
+      ]
+    },
+    {
+      "name": "git-flow",
+      "display_name": "Git Flow",
+      "description": "develop, feature, release, and hotfix branches with strict merge rules",
+      "branches": ["main", "develop", "feature/*", "release/*", "hotfix/*"],
+      "feature_branch_lifetime": "1-14 days",
+      "pros": [
+        "Clear separation of concerns",
+        "Supports parallel release preparation",
+        "Well-defined hotfix process",
+        "Good for versioned software"
+      ],
+      "cons": [
+        "Complex, many branches to manage",
+        "Merge conflicts between long-lived branches",
+        "Slow feedback loop",
+        "Overhead not justified for web apps with CD"
+      ],
+      "team_size": {
+        "ideal": "10-20",
+        "works": "5-100+",
+        "requires": "Discipline, tooling support"
+      },
+      "release_cadence": ["monthly", "quarterly", "versioned"],
+      "prerequisites": [
+        "Branch protection on main and develop",
+        "Release management process",
+        "CI for multiple branch patterns",
+        "Team trained on merge direction rules"
+      ]
+    }
+  ],
+  "scoring_dimensions": [
+    {
+      "dimension": "team_size",
+      "weight": 0.3,
+      "description": "How well the strategy fits the current team size"
+    },
+    {
+      "dimension": "release_cadence",
+      "weight": 0.25,
+      "description": "Alignment with how often the project releases"
+    },
+    {
+      "dimension": "ci_maturity",
+      "weight": 0.2,
+      "description": "Whether CI/CD infrastructure supports the strategy"
+    },
+    {
+      "dimension": "complexity_budget",
+      "weight": 0.15,
+      "description": "Whether the team can absorb the workflow complexity"
+    },
+    {
+      "dimension": "current_alignment",
+      "weight": 0.1,
+      "description": "How close the current workflow already is to the strategy"
+    }
+  ]
+}

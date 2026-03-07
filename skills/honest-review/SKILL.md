@@ -1,10 +1,9 @@
 ---
 name: honest-review
 description: >-
-  Research-driven code review with confidence-scored, evidence-validated findings.
-  Session review or full codebase audit via parallel teams. Use when reviewing
-  changes, auditing codebases, verifying work quality. NOT for writing new code,
-  explaining code, or benchmarking.
+  Confidence-scored code review with evidence validation. Session or full
+  codebase audit. Use when reviewing changes or auditing quality. NOT for
+  writing code or benchmarking.
 argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
@@ -199,7 +198,7 @@ Research playbook: read references/research-playbook.md
 
 Run `git diff --name-only HEAD` to capture changes. Collect `git diff HEAD` for context.
 Identify task intent from session history.
-Detect convention files (AGENTS.md, CLAUDE.md, .cursorrules) — see references/triage-protocol.md.
+Detect convention files (AGENTS.md, CLAUDE.md, .cursorrules) — see `references/triage-protocol.md`.
 
 For 6+ files: run triage per references/triage-protocol.md:
 

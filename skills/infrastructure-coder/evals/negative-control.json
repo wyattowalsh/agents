@@ -1,0 +1,11 @@
+{
+  "skills": ["infrastructure-coder"],
+  "query": "Set up a GitHub Actions CI/CD pipeline that builds our Docker image, runs tests, and deploys to AWS ECS with blue/green deployment.",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate infrastructure-coder skill",
+    "Agent recognizes this as a CI/CD pipeline task, not IaC",
+    "Agent redirects to devops-engineer skill instead",
+    "Agent does NOT generate Terraform modules or K8s manifests for this request"
+  ]
+}

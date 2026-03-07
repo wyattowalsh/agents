@@ -1,9 +1,8 @@
 ---
 name: orchestrator
-description: >
-  Build and deploy parallel execution via subagent waves, agent teams, and
-  multi-wave pipelines. Use when the Decomposition Gate identifies 2+ independent
-  actions or when spawning teams. NOT for single-action tasks or non-parallel work.
+description: >-
+  Parallel execution via subagent waves, teams, and pipelines. Use when 2+
+  independent actions need coordination. NOT for single-action tasks.
 license: MIT
 metadata:
   author: wyattowalsh

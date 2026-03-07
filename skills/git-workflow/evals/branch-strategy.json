@@ -1,0 +1,12 @@
+{
+  "skills": ["git-workflow"],
+  "query": "/git-workflow strategy",
+  "files": [],
+  "expected_behavior": [
+    "Agent analyzes the repository: team size, release cadence, branch count, CI presence",
+    "Agent references branch-strategies.json for strategy comparison data",
+    "Agent scores each strategy against the project profile",
+    "Agent presents a recommendation with comparison table and trade-offs",
+    "Agent includes migration steps if switching from current approach"
+  ]
+}

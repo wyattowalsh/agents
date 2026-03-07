@@ -1,0 +1,12 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "this endpoint is slow, here is the cProfile output, what should I optimize?",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes profiler interpretation intent",
+    "Agent dispatches to profile mode",
+    "Agent runs profile-parser.py to parse cProfile output",
+    "Agent identifies top hotspots by cumulative time",
+    "Agent provides specific optimization recommendations"
+  ]
+}

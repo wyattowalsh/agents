@@ -1,0 +1,15 @@
+{
+  "skills": ["infrastructure-coder"],
+  "query": "/infrastructure-coder security Check our Terraform configuration for security misconfigurations. We have EC2 instances, RDS, and S3 buckets.",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates infrastructure-coder skill",
+    "Agent enters Security mode",
+    "Agent runs terraform-module-scanner.py to inventory resources",
+    "Agent loads references/security-hardening.md for checklist",
+    "Agent checks: security groups, encryption at rest, IAM policies, public access",
+    "Agent classifies findings by severity (Critical/High/Medium/Low)",
+    "Agent presents findings with specific remediation steps",
+    "Agent does NOT state absolute dollar costs"
+  ]
+}

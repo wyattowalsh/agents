@@ -1,10 +1,8 @@
 ---
 name: agent-conventions
 description: >-
-  Agent definition conventions. Use when creating or modifying agents at any
-  level (~/.claude/agents/, .claude/agents/, or project-local). Validate
-  frontmatter, update README.md index. NOT for creating skills, MCP servers,
-  or modifying CLAUDE.md.
+  Agent definition conventions. Validate frontmatter, update indexes. Use when
+  creating or modifying agents. NOT for skills, MCP servers, or CLAUDE.md.
 user-invocable: false
 disable-model-invocation: false
 license: MIT

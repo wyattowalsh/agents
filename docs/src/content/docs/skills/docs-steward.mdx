@@ -1,13 +1,13 @@
 ---
 title: "docs-steward"
-description: "Maintains docs across Starlight, Docusaurus, Fumadocs, Sphinx themes, and MkDocs. Detects stacks, syncs artifacts, runs health checks, refreshes latest versions, and plans migrations."
+description: "Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks. Use when docs change. NOT for backend code, skills (skill-creator), or MCP servers (mcp-creator)."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="docs-steward" variant="note" /> <Badge text="2088 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="docs-steward" variant="note" /> <Badge text="2447 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
-> Maintains docs across Starlight, Docusaurus, Fumadocs, Sphinx themes, and MkDocs. Detects stacks, syncs artifacts, runs health checks, refreshes latest versions, and plans migrations. Use when docs frameworks or pipelines change. NOT for backend/API work or creating skills, agents, or MCP servers.
+> Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks. Use when docs change. NOT for backend code, skills (skill-creator), or MCP servers (mcp-creator).
 
 <div class="quick-start">
 
@@ -18,7 +18,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add wyattowalsh/agents/skills/docs-steward -g
 ```
 
-**Use:** `/docs-steward` `[auto|init [framework]|init-sync [framework]|sync|enhance|maintain|research|framework <name> [sync|enhance|maintain|research|migrate]|matrix|migrate <from> -> <to>]`
+**Use:** `/docs-steward` `[auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework <name> <action>]`
 
 </div>
 
@@ -47,6 +47,14 @@ Maintain docs quality, architecture, and framework currency in project-local rep
 | `research` / `research versions` | **Research** | Mode F |
 | `matrix` | **Matrix** | Mode G |
 | `migrate <from> -> <to>` | **Migrate** | Mode H |
+| `generate api <module>` | **Generate** | Mode J |
+| `generate adr <decision>` | **Generate** | Mode J |
+| `generate runbook <process>` | **Generate** | Mode J |
+| `generate onboard` | **Generate** | Mode J |
+| `generate glossary` | **Generate** | Mode J |
+| Natural language: "generate API docs/reference" | **Generate** | Mode J |
+| Natural language: "create an ADR/decision record" | **Generate** | Mode J |
+| Natural language: "write a runbook/onboarding guide" | **Generate** | Mode J |
 | Natural language: "set up `<framework>` docs from scratch and keep it in sync" | **Init+Sync** | Mode I |
 | Natural language: "docs are stale/broken/outdated" | **Maintain** | Mode E |
 | Natural language: "improve docs UX/content/nav" | **Enhance** | Mode D |
@@ -64,6 +72,7 @@ Maintain docs quality, architecture, and framework currency in project-local rep
 7. Migration mode must be phased and reversible; avoid destructive one-pass rewrites.
 8. Refuse out-of-scope requests and route to the correct specialized skill.
 9. Init mode is non-destructive in existing repos: create missing files only unless user explicitly requests overwrite.
+10. Generate mode must extract from source code; never fabricate signatures, docstrings, or API details.
 
 <Tabs>
   <TabItem label="General">
@@ -71,14 +80,14 @@ Maintain docs quality, architecture, and framework currency in project-local rep
 | ----- | ----- |
 | Name | `docs-steward` |
 | License | MIT |
-| Version | 1.0.0 |
+| Version | 1.0 |
 | Author | wyattowalsh |
   </TabItem>
   <TabItem label="Claude Code">
 | Field | Value |
 | ----- | ----- |
 | Model | `opus` |
-| Argument Hint | `[auto|init [framework]|init-sync [framework]|sync|enhance|maintain|research|framework [name] [sync|enhance|maintain|research|migrate]|matrix|migrate [from] -] [to]]` |
+| Argument Hint | `[auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework [name] [action]]` |
   </TabItem>
 </Tabs>
 
@@ -89,16 +98,15 @@ Maintain docs quality, architecture, and framework currency in project-local rep
 ---
 name: docs-steward
 description: >-
-  Maintains docs across Starlight, Docusaurus, Fumadocs, Sphinx themes, and
-  MkDocs. Detects stacks, syncs artifacts, runs health checks, refreshes latest
-  versions, and plans migrations. Use when docs frameworks or pipelines
-  change. NOT for backend/API work or creating skills, agents, or MCP servers.
-argument-hint: "[auto|init [framework]|init-sync [framework]|sync|enhance|maintain|research|framework <name> [sync|enhance|maintain|research|migrate]|matrix|migrate <from> -> <to>]"
+  Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks,
+  migrations, ADRs, runbooks. Use when docs change. NOT for backend code, skills
+  (skill-creator), or MCP servers (mcp-creator).
+argument-hint: "[auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework <name> <action>]"
 license: MIT
 model: opus
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.0"
 ---
 
 # Docs Steward
@@ -144,6 +152,14 @@ Route `$ARGUMENTS` to mode:
 | `research` / `research versions` | **Research** | Mode F |
 | `matrix` | **Matrix** | Mode G |
 | `migrate <from> -> <to>` | **Migrate** | Mode H |
+| `generate api <module>` | **Generate** | Mode J |
+| `generate adr <decision>` | **Generate** | Mode J |
+| `generate runbook <process>` | **Generate** | Mode J |
+| `generate onboard` | **Generate** | Mode J |
+| `generate glossary` | **Generate** | Mode J |
+| Natural language: "generate API docs/reference" | **Generate** | Mode J |
+| Natural language: "create an ADR/decision record" | **Generate** | Mode J |
+| Natural language: "write a runbook/onboarding guide" | **Generate** | Mode J |
 | Natural language: "set up `<framework>` docs from scratch and keep it in sync" | **Init+Sync** | Mode I |
 | Natural language: "docs are stale/broken/outdated" | **Maintain** | Mode E |
 | Natural language: "improve docs UX/content/nav" | **Enhance** | Mode D |
@@ -375,9 +391,40 @@ Load `references/init-sync-existing-repos.md` plus the selected framework refere
 
 ---
 
+## Mode J: Generate (`generate <type> [<target>]`)
+
+Generate technical documentation from source code. Load `references/generate-mode.md` for detailed procedures, output formats, and script usage.
+
+Sub-modes:
+
+| Command | Output | Key Script |
+|---------|--------|------------|
+| `generate api <module>` | API reference with signatures, docstrings, coverage | `api-surface-extractor.py`, `doc-coverage-analyzer.py` |
+| `generate adr <decision>` | MADR-format architecture decision record | `adr-scaffolder.py` |
+| `generate runbook <process>` | Operational runbook with commands from codebase | — |
+| `generate onboard` | New contributor onboarding guide | — |
+| `generate glossary` | Term definitions extracted from code and docs | — |
+
+### J.1 Workflow
+
+1. Identify target scope (module path, process name, or whole repo).
+2. Run applicable scripts to extract structured data from source.
+3. Transform extracted data into documentation following the format in `references/generate-mode.md`.
+4. Present draft for review. Ask clarifying questions if context is ambiguous.
+5. Write output to appropriate location (e.g., `docs/api/`, `docs/decisions/`).
+
+### J.2 Generate output contract
+
+- Generated docs must trace to source code (include file paths and line numbers).
+- Never fabricate API signatures or docstrings; extract or flag as undocumented.
+- ADRs follow MADR v3 format from `data/adr-template.json`.
+- Use docstring format conventions from `data/docstring-formats.json` matching the project's language and style.
+
+---
+
 ## Scope Boundaries
 
-**In scope:** Docs framework operations, non-destructive docs bootstrap, version refresh, build/health diagnostics, quality enhancement, docs migrations.
+**In scope:** Docs framework operations, non-destructive docs bootstrap, version refresh, build/health diagnostics, quality enhancement, docs migrations, technical documentation generation from code.
 
 **NOT for:**
 - Creating/editing unrelated product features or backend APIs
@@ -403,6 +450,9 @@ Load references on demand; do not load all at once.
 | `references/mkdocs.md` | MkDocs + Material/plugin stack checks | framework/sync/maintain/enhance |
 | `references/migrations.md` | Migration playbooks and parity templates | migrate/matrix |
 | `references/version-refresh.md` | Latest-version refresh workflow and evidence rules | research + any latest-version request |
+| `references/generate-mode.md` | Generate sub-mode procedures, output formats, script usage | generate |
+| `data/docstring-formats.json` | Docstring format standards per language (Google, NumPy, Sphinx, JSDoc, TSDoc) | generate api |
+| `data/adr-template.json` | MADR v3 template structure and file naming conventions | generate adr |
 
 ---
 
@@ -417,6 +467,7 @@ Load references on demand; do not load all at once.
 7. Migration mode must be phased and reversible; avoid destructive one-pass rewrites.
 8. Refuse out-of-scope requests and route to the correct specialized skill.
 9. Init mode is non-destructive in existing repos: create missing files only unless user explicitly requests overwrite.
+10. Generate mode must extract from source code; never fabricate signatures, docstrings, or API details.
 
 ````
 
