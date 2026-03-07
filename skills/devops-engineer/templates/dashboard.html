@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Health Dashboard</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --dim: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --orange: #db6d28;
+  --radius: 8px;
+  --gap: 16px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --card: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --dim: #656d76;
+    --accent: #0969da;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+    --orange: #bc4c00;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: var(--gap);
+  line-height: 1.5;
+}
+
+h1 { font-size: 1.5em; margin-bottom: var(--gap); }
+h2 { font-size: 1.15em; margin-bottom: 12px; color: var(--dim); font-weight: 500; }
+h3 { font-size: 0.95em; margin-bottom: 8px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--gap); margin-bottom: var(--gap); }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--gap); }
+.wide { grid-column: 1 / -1; }
+
+.stat { text-align: center; }
+.stat .value { font-size: 2em; font-weight: 700; }
+.stat .label { color: var(--dim); font-size: 0.85em; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.badge.critical { background: var(--red); color: #fff; }
+.badge.warning { background: var(--yellow); color: #fff; }
+.badge.info { background: var(--accent); color: #fff; }
+.badge.ok { background: var(--green); color: #fff; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+th { text-align: left; color: var(--dim); font-weight: 500; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+tr:last-child td { border-bottom: none; }
+
+.bar-container { display: flex; align-items: center; gap: 8px; }
+.bar { height: 8px; border-radius: 4px; background: var(--border); flex: 1; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+
+.dep-graph { font-family: monospace; font-size: 0.85em; white-space: pre; padding: 12px; background: var(--bg); border-radius: var(--radius); overflow-x: auto; }
+
+.issue-list { list-style: none; }
+.issue-list li { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 8px; }
+.issue-list li:last-child { border-bottom: none; }
+
+.opt-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.opt-item:last-child { border-bottom: none; }
+.opt-impact { font-size: 0.8em; text-transform: uppercase; font-weight: 600; }
+.opt-impact.high { color: var(--green); }
+.opt-impact.medium { color: var(--yellow); }
+.opt-impact.low { color: var(--dim); }
+
+.error { color: var(--red); padding: 20px; text-align: center; }
+</style>
+</head>
+<body>
+
+<script id="data" type="application/json">{
+  "view": "pipeline-health",
+  "workflow_name": "CI",
+  "jobs": [],
+  "issues": [],
+  "optimization_opportunities": [],
+  "summary": {}
+}</script>
+
+<script>
+(function() {
+  function escH(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  let data;
+  try {
+    data = JSON.parse(document.getElementById('data').textContent);
+  } catch (e) {
+    document.body.innerHTML = '<div class="error">Failed to parse dashboard data: ' + escH(e.message) + '</div>';
+    return;
+  }
+
+  const s = data.summary || {};
+  const jobs = data.jobs || [];
+  const issues = data.issues || [];
+  const opts = data.optimization_opportunities || [];
+
+  // Severity color
+  function sevBadge(sev) {
+    const cls = sev === 'critical' ? 'critical' : sev === 'warning' ? 'warning' : 'info';
+    return '<span class="badge ' + cls + '">' + escH(sev) + '</span>';
+  }
+
+  function impactBadge(impact) {
+    return '<span class="opt-impact ' + escH(impact) + '">' + escH(impact) + '</span>';
+  }
+
+  // Build dependency graph text
+  function buildDepGraph(jobs) {
+    if (!jobs.length) return '';
+    const lines = [];
+    const roots = jobs.filter(function(j) { return !j.needs || !j.needs.length; });
+    const children = {};
+    jobs.forEach(function(j) {
+      (j.needs || []).forEach(function(n) {
+        if (!children[n]) children[n] = [];
+        children[n].push(j.name);
+      });
+    });
+    function render(name, prefix, isLast) {
+      const connector = prefix ? (isLast ? '└── ' : '├── ') : '';
+      lines.push(prefix + connector + name);
+      const kids = children[name] || [];
+      kids.forEach(function(k, i) {
+        const newPrefix = prefix + (prefix ? (isLast ? '    ' : '│   ') : '');
+        render(k, newPrefix, i === kids.length - 1);
+      });
+    }
+    roots.forEach(function(r, i) { render(r.name, '', i === roots.length - 1); });
+    return lines.join('\n');
+  }
+
+  // Duration bar
+  function durationBar(weight, maxWeight) {
+    const pct = maxWeight > 0 ? Math.round(weight / maxWeight * 100) : 0;
+    const color = pct > 75 ? 'var(--red)' : pct > 50 ? 'var(--yellow)' : 'var(--green)';
+    return '<div class="bar-container"><div class="bar"><div class="bar-fill" style="width:' + pct + '%;background:' + color + '"></div></div><span style="color:var(--dim);font-size:0.85em">' + weight + '</span></div>';
+  }
+
+  let html = '<h1>' + escH(data.workflow_name || 'Pipeline') + ' Health Dashboard</h1>';
+
+  // Summary stats
+  html += '<div class="grid">';
+  html += '<div class="card stat"><div class="value">' + (s.total_jobs || jobs.length || 0) + '</div><div class="label">Jobs</div></div>';
+  html += '<div class="card stat"><div class="value">' + (s.total_steps || 0) + '</div><div class="label">Steps</div></div>';
+  html += '<div class="card stat"><div class="value" style="color:' + ((s.critical_issues || 0) > 0 ? 'var(--red)' : 'var(--green)') + '">' + (s.critical_issues || 0) + '</div><div class="label">Critical Issues</div></div>';
+  html += '<div class="card stat"><div class="value" style="color:' + ((s.warnings || 0) > 0 ? 'var(--yellow)' : 'var(--green)') + '">' + (s.warnings || 0) + '</div><div class="label">Warnings</div></div>';
+  html += '<div class="card stat"><div class="value">' + (s.jobs_with_cache || 0) + '/' + (s.total_jobs || jobs.length || 0) + '</div><div class="label">Jobs with Cache</div></div>';
+  html += '<div class="card stat"><div class="value">' + (s.jobs_with_matrix || 0) + '</div><div class="label">Matrix Jobs</div></div>';
+  html += '</div>';
+
+  // Job dependency graph
+  if (jobs.length) {
+    const depText = buildDepGraph(jobs);
+    if (depText) {
+      html += '<div class="card wide"><h2>Job Dependency Graph</h2><div class="dep-graph">' + escH(depText) + '</div></div>';
+    }
+  }
+
+  // Job timing breakdown
+  if (jobs.length) {
+    const maxW = Math.max.apply(null, jobs.map(function(j) { return j.estimated_duration_weight || 0; }));
+    html += '<div class="card wide"><h2>Job Timing Breakdown</h2><table><thead><tr><th>Job</th><th>Steps</th><th>Cache</th><th>Matrix</th><th>Timeout</th><th>Duration Weight</th></tr></thead><tbody>';
+    jobs.forEach(function(j) {
+      html += '<tr>';
+      html += '<td><strong>' + escH(j.name) + '</strong></td>';
+      html += '<td>' + (j.steps_count || 0) + '</td>';
+      html += '<td>' + (j.uses_cache ? '<span class="badge ok">yes</span>' : '<span class="badge warning">no</span>') + '</td>';
+      html += '<td>' + (j.uses_matrix ? '<span class="badge ok">yes</span>' : '-') + '</td>';
+      html += '<td>' + (j.has_timeout ? '<span class="badge ok">set</span>' : '<span class="badge warning">missing</span>') + '</td>';
+      html += '<td>' + durationBar(j.estimated_duration_weight || 0, maxW) + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  // Issues
+  if (issues.length) {
+    html += '<div class="card wide"><h2>Issues (' + issues.length + ')</h2><ul class="issue-list">';
+    issues.forEach(function(iss) {
+      html += '<li>' + sevBadge(iss.severity) + '<div><div>' + escH(iss.message) + '</div>';
+      if (iss.fix) html += '<div style="color:var(--dim);font-size:0.85em;margin-top:4px">Fix: ' + escH(iss.fix) + '</div>';
+      html += '</div></li>';
+    });
+    html += '</ul></div>';
+  }
+
+  // Optimization recommendations
+  if (opts.length) {
+    html += '<div class="card wide"><h2>Optimization Recommendations (' + opts.length + ')</h2>';
+    opts.forEach(function(o) {
+      html += '<div class="opt-item">' + impactBadge(o.impact || 'medium') + ' <strong>' + escH(o.type || '') + '</strong>';
+      html += '<div style="margin-top:4px">' + escH(o.message) + '</div>';
+      if (o.jobs && o.jobs.length) html += '<div style="color:var(--dim);font-size:0.85em;margin-top:4px">Affected jobs: ' + o.jobs.map(escH).join(', ') + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // No issues state
+  if (!issues.length && !opts.length) {
+    html += '<div class="card wide" style="text-align:center;padding:40px"><h2 style="color:var(--green)">Pipeline is healthy</h2><p style="color:var(--dim)">No issues or optimization opportunities found.</p></div>';
+  }
+
+  document.body.innerHTML = html;
+})();
+</script>
+</body>
+</html>

@@ -1,12 +1,9 @@
 ---
 name: mcp-creator
 description: >-
-  Build production-ready MCP servers using FastMCP v3. Guides research,
-  scaffolding, tool/resource/prompt implementation, testing, and deployment.
-  Targets FastMCP 3.0.0rc2 with Providers, Transforms, middleware, OAuth,
-  and composition. Use when creating MCP servers, integrating APIs via MCP,
-  converting OpenAPI specs or FastAPI apps, or troubleshooting FastMCP issues.
-  NOT for building REST APIs, CLI tools, or non-MCP integrations.
+  Build MCP servers with FastMCP v3. Research, scaffold, implement, test,
+  deploy. Use when creating MCP servers or integrating APIs via MCP. NOT for
+  REST APIs, CLI tools, or non-MCP integrations.
 license: MIT
 argument-hint: "<service or API to integrate>"
 model: opus

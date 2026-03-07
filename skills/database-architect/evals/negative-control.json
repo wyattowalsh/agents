@@ -1,0 +1,10 @@
+{
+  "skills": ["database-architect"],
+  "query": "set up a blue/green deployment for our database migration",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT invoke database-architect for deployment strategies",
+    "Agent redirects to devops-engineer for deployment strategy design",
+    "database-architect handles schema-level migration, not deployment"
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "spec_version": "1.0.0",
+  "format": "<type>[optional scope][!]: <subject>",
+  "types": [
+    {
+      "type": "feat",
+      "description": "A new feature for the user",
+      "semver": "minor",
+      "examples": [
+        "feat: add dark mode toggle",
+        "feat(auth): implement OAuth2 login flow",
+        "feat!: replace REST API with GraphQL"
+      ]
+    },
+    {
+      "type": "fix",
+      "description": "A bug fix",
+      "semver": "patch",
+      "examples": [
+        "fix: prevent crash on empty input",
+        "fix(parser): handle unicode characters correctly"
+      ]
+    },
+    {
+      "type": "docs",
+      "description": "Documentation only changes",
+      "semver": null,
+      "examples": [
+        "docs: update API reference for v3",
+        "docs(readme): add installation instructions"
+      ]
+    },
+    {
+      "type": "style",
+      "description": "Formatting, whitespace, semicolons (no code change)",
+      "semver": null,
+      "examples": [
+        "style: fix indentation in config module",
+        "style: apply prettier formatting"
+      ]
+    },
+    {
+      "type": "refactor",
+      "description": "Code change that neither fixes a bug nor adds a feature",
+      "semver": null,
+      "examples": [
+        "refactor: extract validation into separate module",
+        "refactor(db): simplify query builder"
+      ]
+    },
+    {
+      "type": "perf",
+      "description": "Performance improvement",
+      "semver": "patch",
+      "examples": [
+        "perf: cache database query results",
+        "perf(render): batch DOM updates"
+      ]
+    },
+    {
+      "type": "test",
+      "description": "Adding or correcting tests",
+      "semver": null,
+      "examples": [
+        "test: add edge case coverage for parser",
+        "test(e2e): add login flow integration test"
+      ]
+    },
+    {
+      "type": "build",
+      "description": "Build system or external dependencies",
+      "semver": null,
+      "examples": [
+        "build: upgrade webpack to v5",
+        "build(deps): bump lodash from 4.17.20 to 4.17.21"
+      ]
+    },
+    {
+      "type": "ci",
+      "description": "CI configuration files and scripts",
+      "semver": null,
+      "examples": [
+        "ci: add lint step to GitHub Actions",
+        "ci: fix Docker build caching"
+      ]
+    },
+    {
+      "type": "chore",
+      "description": "Maintenance tasks, no production code change",
+      "semver": null,
+      "examples": [
+        "chore: update .gitignore for IDE files",
+        "chore: clean up unused dependencies"
+      ]
+    },
+    {
+      "type": "revert",
+      "description": "Reverts a previous commit",
+      "semver": null,
+      "examples": [
+        "revert: revert \"feat: add OAuth2 login flow\"",
+        "revert: revert commit abc1234"
+      ]
+    }
+  ],
+  "rules": {
+    "subject": {
+      "mood": "imperative",
+      "case": "lowercase first word",
+      "max_length": 72,
+      "no_period": true,
+      "examples_good": [
+        "add user authentication",
+        "fix null pointer in parser",
+        "remove deprecated API endpoints"
+      ],
+      "examples_bad": [
+        "Added user authentication",
+        "Fix null pointer in parser.",
+        "REMOVE deprecated API endpoints"
+      ]
+    },
+    "body": {
+      "separator": "blank line after subject",
+      "wrap_at": 72,
+      "content": "explain what and why, not how"
+    },
+    "footer": {
+      "breaking_change": "BREAKING CHANGE: <description>",
+      "issue_reference": "Fixes #123, Closes #456, Relates to #789"
+    },
+    "breaking": {
+      "indicator_suffix": "! after type/scope",
+      "indicator_footer": "BREAKING CHANGE: in footer",
+      "semver": "major"
+    }
+  }
+}

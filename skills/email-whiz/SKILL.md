@@ -1,10 +1,9 @@
 ---
 name: email-whiz
 description: >-
-  Gmail inbox copilot via MCP. Triage, inbox zero with streak tracking, smart
-  filters, auto-rules, analytics, newsletters, labels, search, senders, digest,
-  cleanup, audit. Use when overwhelmed by email or building Gmail filters. NOT
-  for: composing emails, calendar, Google Drive, non-Gmail.
+  Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels,
+  cleanup. Use when managing email or automating Gmail. NOT for composing
+  emails, calendar, or non-Gmail.
 argument-hint: "<mode> [options]"
 model: opus
 disable-model-invocation: true

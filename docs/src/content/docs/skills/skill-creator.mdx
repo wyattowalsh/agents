@@ -1,13 +1,13 @@
 ---
 title: "skill-creator"
-description: "Create, improve, and audit AI agent skills. Applies 14 proven structural patterns, scores quality with deterministic audit, manages full lifecycle. Use when building, refactoring, or reviewing skills."
+description: "Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
 <Badge text="skill-creator" variant="note" /> <Badge text="1147 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
-> Create, improve, and audit AI agent skills. Applies 14 proven structural patterns, scores quality with deterministic audit, manages full lifecycle. Use when building, refactoring, or reviewing skills. NOT for agents, MCP servers, or running existing skills.
+> Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills.
 
 <div class="quick-start">
 
@@ -143,8 +143,8 @@ wagents package --all --dry-run   # Check portability without creating ZIPs
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="prompt-engineer" href="/skills/prompt-engineer/" description="Comprehensive prompt and context engineering for any AI system." />
-  <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build production-ready MCP servers using FastMCP v3. Guides research, scaffolding, tool/resource/prompt implementation, testing, and deployment." />
+  <LinkCard title="prompt-engineer" href="/skills/prompt-engineer/" description="Prompt engineering for any AI system. Craft, analyze, convert between models, evaluate with rubrics. Use for system prompts, agent prompts, tool defs." />
+  <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
 </CardGrid>
 
 <details>
@@ -154,10 +154,9 @@ wagents package --all --dry-run   # Check portability without creating ZIPs
 ---
 name: skill-creator
 description: >-
-  Create, improve, and audit AI agent skills. Applies 14 proven structural
-  patterns, scores quality with deterministic audit, manages full lifecycle.
-  Use when building, refactoring, or reviewing skills.
-  NOT for agents, MCP servers, or running existing skills.
+  Create, improve, and audit AI agent skills. 14 structural patterns,
+  deterministic scoring. Use when building or reviewing skills. NOT for
+  agents, MCP servers, or running skills.
 argument-hint: "<mode> [name]"
 model: opus
 license: MIT

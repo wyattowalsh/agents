@@ -8,7 +8,7 @@ import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
 
 > Hand-maintained catalog of MCP servers configured in this environment, organized by category.
 
-<Badge text="31 configured servers" variant="note" size="large" />
+<Badge text="36 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
@@ -17,6 +17,170 @@ The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standa
 <Aside type="note" title="Source of truth for this page">
 This page is **hand-maintained** and currently summarizes the MCP server entries in the repository root `mcp.json`. That file includes a mix of local scripts, local packages, remote gateways, and third-party servers, so this list is broader than the repo-local `mcp/` directory.
 </Aside>
+
+## DuckDuckGo global setup (all supported clients)
+
+Use server key `duckduckgo-search` with pinned package version `duckduckgo-mcp-server==0.1.1`.
+
+```json
+{
+  "mcpServers": {
+    "duckduckgo-search": {
+      "command": "uvx",
+      "args": ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
+    }
+  }
+}
+```
+
+| Client | Global config path | MCP key path | Notes |
+| --- | --- | --- | --- |
+| antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Verify-before-apply (path/schema may vary by version). |
+| claude-code | `~/.claude.json` | `mcpServers` | Supports stdio server blocks. |
+| cursor | `~/.cursor/mcp.json` | `mcpServers` | Same JSON shape as example above. |
+| gemini-cli | `~/.gemini/settings.json` | `mcpServers` | Same JSON shape as example above. |
+| codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Use TOML snippet below. |
+| crush | `$HOME/.config/crush/crush.json` | `mcp` | Uses `mcp` root key. |
+| github-copilot (CLI) | `~/.copilot/mcp-config.json` | `mcpServers` | Include `tools: ["*"]` (snippet below). |
+| opencode | `~/.config/opencode/opencode.json` | `mcp` | Uses `mcp` root key and array-style command. |
+
+### Client-specific variants
+
+#### Codex (`~/.codex/config.toml`)
+
+```toml
+[mcp_servers.duckduckgo-search]
+command = "uvx"
+args = ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
+```
+
+#### Crush (`$HOME/.config/crush/crush.json`)
+
+```json
+{
+  "mcp": {
+    "duckduckgo-search": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
+    }
+  }
+}
+```
+
+#### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
+
+```json
+{
+  "mcpServers": {
+    "duckduckgo-search": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"],
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+#### OpenCode (`~/.config/opencode/opencode.json`)
+
+```json
+{
+  "mcp": {
+    "duckduckgo-search": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from=duckduckgo-mcp-server==0.1.1",
+        "duckduckgo-mcp-server"
+      ]
+    }
+  }
+}
+```
+
+## Chrome DevTools global setup (all supported clients)
+
+Use server key `chrome-devtools` with the `chrome-devtools-mcp` npm package. Requires Node.js v22+ and Chrome stable channel.
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}
+```
+
+| Client | Global config path | MCP key path | Notes |
+| --- | --- | --- | --- |
+| antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Same JSON shape as example above. |
+| claude-code | `~/.claude.json` | `mcpServers` | Supports stdio server blocks. |
+| cursor | `~/.cursor/mcp.json` | `mcpServers` | Same JSON shape as example above. |
+| gemini-cli | `~/.gemini/settings.json` | `mcpServers` | Add `"type": "stdio"` and `"env": {}`. |
+| codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Use TOML snippet below. |
+| crush | `$HOME/.config/crush/crush.json` | `mcp` | Uses `mcp` root key. |
+| github-copilot (CLI) | `~/.copilot/mcp-config.json` | `mcpServers` | Include `tools: ["*"]` (snippet below). |
+| opencode | `~/.config/opencode/opencode.json` | `mcp` | Uses `mcp` root key and array-style command. |
+
+### Client-specific variants
+
+#### Codex (`~/.codex/config.toml`)
+
+```toml
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = ["-y", "chrome-devtools-mcp@latest"]
+```
+
+#### Crush (`$HOME/.config/crush/crush.json`)
+
+```json
+{
+  "mcp": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}
+```
+
+#### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"],
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+#### OpenCode (`~/.config/opencode/opencode.json`)
+
+```json
+{
+  "mcp": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    }
+  }
+}
+```
 
 ## Thinking and Reasoning (10)
 
@@ -55,7 +219,7 @@ This page is **hand-maintained** and currently summarizes the MCP server entries
   </Card>
 </CardGrid>
 
-## Search and Discovery (5)
+## Search and Discovery (8)
 
 > Web search engines and content discovery services for retrieving up-to-date information from the internet.
 
@@ -74,6 +238,15 @@ This page is **hand-maintained** and currently summarizes the MCP server entries
   </Card>
   <Card title="duckduckgo-search">
     Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
+  </Card>
+  <Card title="arxiv">
+    arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries.
+  </Card>
+  <Card title="wikipedia">
+    Wikipedia content retrieval and lookup tools for encyclopedic background, entities, and topic overviews.
+  </Card>
+  <Card title="wayback">
+    Access archived pages from the Internet Archive Wayback Machine for historical snapshots and link recovery.
   </Card>
 </CardGrid>
 
@@ -109,13 +282,19 @@ This page is **hand-maintained** and currently summarizes the MCP server entries
   </Card>
 </CardGrid>
 
-## Development Tools (3)
+## Development Tools (5)
 
 > Browser automation, package management, and document processing for development workflows.
 
 <CardGrid>
+  <Card title="chrome-devtools">
+    Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
+  </Card>
   <Card title="playwright">
     Full browser automation via Playwright. Navigate pages, fill forms, click elements, take screenshots, and run end-to-end test flows.
+  </Card>
+  <Card title="playwright-headless">
+    Headless Playwright variant for isolated browser automation without extension requirements.
   </Card>
   <Card title="package-version">
     Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.

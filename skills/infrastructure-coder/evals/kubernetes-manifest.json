@@ -1,0 +1,17 @@
+{
+  "skills": ["infrastructure-coder"],
+  "query": "/infrastructure-coder kubernetes Generate Kubernetes manifests for a Node.js API with 3 replicas, resource limits, health checks, and a HorizontalPodAutoscaler",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates infrastructure-coder skill",
+    "Agent enters Kubernetes mode",
+    "Agent generates Deployment manifest with 3 replicas",
+    "Agent generates Service manifest (ClusterIP or LoadBalancer) for the API",
+    "Agent generates HorizontalPodAutoscaler manifest with CPU/memory scaling targets",
+    "Agent includes resource requests and limits on all containers",
+    "Agent includes liveness and readiness probes (HTTP health check endpoints)",
+    "Agent applies security context (non-root, read-only root filesystem, drop capabilities)",
+    "Agent runs k8s-manifest-validator.py on generated manifests",
+    "Agent uses specific base image tags (not latest)"
+  ]
+}

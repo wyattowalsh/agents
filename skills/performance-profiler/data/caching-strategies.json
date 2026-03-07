@@ -1,0 +1,40 @@
+{
+  "decision_tree": [
+    {
+      "question": "Is the workload read-heavy (>80% reads)?",
+      "yes": {
+        "question": "Is the working set stable?",
+        "yes": "LFU",
+        "no": "LRU"
+      },
+      "no": {
+        "question": "Is consistency critical?",
+        "yes": "write-through + TTL",
+        "no": "write-back + TTL"
+      }
+    },
+    {
+      "question": "Is data time-sensitive?",
+      "yes": "Add TTL (max acceptable staleness)",
+      "no": "Eviction-only (no TTL)"
+    },
+    {
+      "question": "Is cache shared across instances?",
+      "yes": "Distributed (Redis/Memcached) + invalidation protocol",
+      "no": "In-process (dict/LRU decorator)"
+    }
+  ],
+  "eviction_policies": [
+    {"name": "LRU", "best_for": "General purpose", "weakness": "Scan pollution"},
+    {"name": "LFU", "best_for": "Stable hot sets", "weakness": "Slow adaptation"},
+    {"name": "TTL", "best_for": "Time-sensitive data", "weakness": "Requires tuning"},
+    {"name": "FIFO", "best_for": "Streaming data", "weakness": "Ignores access patterns"},
+    {"name": "ARC", "best_for": "Mixed workloads", "weakness": "Complex implementation"}
+  ],
+  "write_policies": [
+    {"name": "write-through", "consistency": "strong", "latency": "higher", "failure": "safe"},
+    {"name": "write-back", "consistency": "eventual", "latency": "lower", "failure": "data loss risk"},
+    {"name": "write-around", "consistency": "eventual", "latency": "normal", "failure": "cold cache"},
+    {"name": "write-behind", "consistency": "eventual", "latency": "lowest", "failure": "data loss window"}
+  ]
+}

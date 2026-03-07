@@ -1,0 +1,87 @@
+{
+  "description": "Decision tree for statistical test selection",
+  "version": "1.0.0",
+  "tree": {
+    "goal": {
+      "difference": {
+        "data_type": {
+          "continuous": {
+            "groups": {
+              "1": {
+                "normality": {
+                  "yes": "One-Sample t-test",
+                  "no": "One-Sample Wilcoxon Signed-Rank"
+                }
+              },
+              "2": {
+                "paired": {
+                  "yes": {
+                    "normality": {
+                      "yes": "Paired t-test",
+                      "no": "Wilcoxon Signed-Rank"
+                    }
+                  },
+                  "no": {
+                    "normality": {
+                      "yes": "Independent t-test (or Welch's)",
+                      "no": "Mann-Whitney U"
+                    }
+                  }
+                }
+              },
+              "3+": {
+                "paired": {
+                  "yes": {
+                    "normality": {
+                      "yes": "Repeated Measures ANOVA",
+                      "no": "Friedman test"
+                    }
+                  },
+                  "no": {
+                    "normality": {
+                      "yes": "One-Way ANOVA",
+                      "no": "Kruskal-Wallis H"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "categorical": "Chi-Square Test of Independence",
+          "binary": {
+            "paired": {
+              "yes": "McNemar's test",
+              "no": "Chi-Square / Fisher's Exact"
+            }
+          },
+          "ordinal": "Mann-Whitney U / Kruskal-Wallis",
+          "count": "Chi-Square Goodness of Fit"
+        }
+      },
+      "association": {
+        "both_categorical": "Chi-Square Test of Independence",
+        "both_continuous": {
+          "normality": {
+            "yes": "Pearson correlation",
+            "no": "Spearman rank correlation"
+          }
+        },
+        "mixed": "Point-biserial correlation (binary + continuous)"
+      },
+      "correlation": {
+        "normality": {
+          "yes": "Pearson correlation",
+          "no": "Spearman rank correlation"
+        },
+        "ordinal": "Kendall's tau"
+      },
+      "proportion": {
+        "groups": {
+          "1": "Binomial test / One-proportion z-test",
+          "2": "Two-proportion z-test / Chi-Square",
+          "3+": "Chi-Square test for homogeneity"
+        }
+      }
+    }
+  }
+}

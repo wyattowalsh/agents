@@ -1,0 +1,60 @@
+{
+  "methods": {
+    "GET": {
+      "semantics": "Read resource(s)",
+      "idempotent": true,
+      "safe": true,
+      "request_body": false,
+      "typical_success": [200],
+      "typical_errors": [400, 401, 403, 404]
+    },
+    "POST": {
+      "semantics": "Create resource or trigger action",
+      "idempotent": false,
+      "safe": false,
+      "request_body": true,
+      "typical_success": [201, 202],
+      "typical_errors": [400, 401, 403, 409, 422]
+    },
+    "PUT": {
+      "semantics": "Full resource replacement",
+      "idempotent": true,
+      "safe": false,
+      "request_body": true,
+      "typical_success": [200, 204],
+      "typical_errors": [400, 401, 403, 404, 409]
+    },
+    "PATCH": {
+      "semantics": "Partial resource update",
+      "idempotent": false,
+      "safe": false,
+      "request_body": true,
+      "typical_success": [200, 204],
+      "typical_errors": [400, 401, 403, 404, 409, 422]
+    },
+    "DELETE": {
+      "semantics": "Remove resource",
+      "idempotent": true,
+      "safe": false,
+      "request_body": false,
+      "typical_success": [200, 204],
+      "typical_errors": [401, 403, 404]
+    },
+    "HEAD": {
+      "semantics": "Read metadata only (no body)",
+      "idempotent": true,
+      "safe": true,
+      "request_body": false,
+      "typical_success": [200],
+      "typical_errors": [401, 403, 404]
+    },
+    "OPTIONS": {
+      "semantics": "Describe available methods",
+      "idempotent": true,
+      "safe": true,
+      "request_body": false,
+      "typical_success": [200, 204],
+      "typical_errors": []
+    }
+  }
+}

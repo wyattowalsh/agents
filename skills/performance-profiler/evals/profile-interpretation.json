@@ -1,0 +1,14 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "/performance-profiler profile /tmp/cprofile_output.txt",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Mode 2 (Profile) based on 'profile' keyword",
+    "Agent runs profile-parser.py script with --input flag",
+    "Agent identifies top hotspot functions from parsed output",
+    "Agent categorizes functions as CPU-bound, I/O-bound, or overhead",
+    "Agent provides root cause hypothesis with evidence from profiler data",
+    "Agent recommends optimization approaches with expected impact and trade-offs",
+    "Agent cites specific profiler data points, not general principles"
+  ]
+}

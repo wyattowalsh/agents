@@ -1,0 +1,17 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard model I need to predict customer churn from behavioral features. What ML model should I use?",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to Model Selection mode based on 'model' keyword",
+    "Agent classifies as Standard tier (predictive modeling task)",
+    "Agent runs model-recommender.py with binary classification task parameters",
+    "Agent reads references/model-selection.md for detailed guidance",
+    "Agent identifies the task as binary classification (churn vs. no churn)",
+    "Agent presents ranked model recommendations with tradeoffs (interpretability, performance, data requirements)",
+    "Agent recommends a baseline model (logistic regression) per Critical Rule 5",
+    "Agent suggests train/val/test split strategy and appropriate evaluation metrics (precision, recall, AUC)",
+    "Agent addresses class imbalance considerations common in churn prediction"
+  ]
+}

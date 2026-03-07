@@ -1,0 +1,15 @@
+{
+  "skills": ["infrastructure-coder"],
+  "query": "/infrastructure-coder terraform Create an AWS VPC module with public and private subnets across 3 AZs, NAT gateway, and route tables",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates infrastructure-coder skill",
+    "Agent enters Terraform mode",
+    "Agent generates main.tf with VPC, subnets, NAT gateway, route tables",
+    "Agent generates variables.tf with typed inputs (vpc_cidr, availability_zones, environment)",
+    "Agent generates outputs.tf with vpc_id, subnet_ids",
+    "Agent generates versions.tf with pinned AWS provider (~> 5.0)",
+    "Agent uses for_each for subnets (not count)",
+    "Agent tags all resources with Name, Environment, ManagedBy"
+  ]
+}

@@ -1,12 +1,9 @@
 ---
 name: learn
 description: >-
-  Capture corrections, insights, and patterns as reusable project knowledge.
-  Routes learnings to the right instruction file. Applies kaizen: small
-  improvements, error-proofing, standards work. Auto-invoked when a correction
-  pattern is detected 3+ times. Also use manually when Claude makes a
-  repeated mistake, discovers a non-obvious gotcha, or when you want to
-  persist a workflow preference.
+  Capture corrections and patterns as reusable knowledge. Routes to the right
+  instruction file. Use when patterns repeat 3+ times or to save insights.
+  NOT for one-time fixes or code review.
 argument-hint: "[correction or insight to capture]"
 user-invocable: true
 disable-model-invocation: false

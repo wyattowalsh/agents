@@ -1,0 +1,16 @@
+{
+  "skills": ["devops-engineer"],
+  "query": "My GitHub Actions CI is taking 25 minutes per run. The workflow has 4 jobs but they all run sequentially and none of them use caching. Can you help speed it up?",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes this as a CI/CD optimization task and activates devops-engineer",
+    "Agent enters Optimize mode based on the optimization context",
+    "Agent asks for the workflow file path or reads .github/workflows/",
+    "Agent runs workflow-analyzer.py to analyze the current structure",
+    "Agent runs pipeline-cost-estimator.py to estimate current and potential costs",
+    "Agent identifies: missing caching, sequential jobs that could parallelize",
+    "Agent loads references/optimization-techniques.md for optimization patterns",
+    "Agent presents ranked recommendations with estimated time savings",
+    "Agent does NOT implement changes without user approval"
+  ]
+}

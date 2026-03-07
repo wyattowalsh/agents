@@ -1,0 +1,12 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard eda customer_data.csv",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to EDA mode based on 'eda' keyword",
+    "Agent attempts to run data-profiler.py on the specified file",
+    "Agent presents dataset profile: row count, column count, types, missing patterns",
+    "Agent recommends next steps based on profile findings"
+  ]
+}

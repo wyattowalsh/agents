@@ -1,0 +1,14 @@
+{
+  "skills": ["performance-profiler"],
+  "query": "/performance-profiler regression HEAD~3..HEAD",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Mode 5 (Regression) based on 'regression' keyword",
+    "Agent collects git diff for the specified range",
+    "Agent identifies changed functions and their call sites",
+    "Agent assesses risk factors: complexity increase, hot path change, data structure change, I/O pattern change, memory allocation",
+    "Agent presents regression risk matrix with per-function risk assessment",
+    "Agent recommends specific benchmark targets before merging",
+    "Agent traces all risk assessments to specific code changes"
+  ]
+}

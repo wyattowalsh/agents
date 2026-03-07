@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Wizard — EDA Report</title>
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --dim: #8b949e; --accent: #58a6ff;
+  --green: #3fb950; --yellow: #d29922; --red: #f85149;
+  --purple: #bc8cff; --orange: #f0883e;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f8fa; --card: #ffffff; --border: #d0d7de;
+    --text: #1f2328; --dim: #656d76; --accent: #0969da;
+    --green: #1a7f37; --yellow: #9a6700; --red: #cf222e;
+    --purple: #8250df; --orange: #bc4c00;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 2rem; }
+h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; color: var(--accent); }
+h3 { font-size: 0.95rem; margin: 1rem 0 0.5rem; color: var(--dim); }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.meta { color: var(--dim); font-size: 0.85rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.card-value { font-size: 1.8rem; font-weight: 600; }
+.card-label { font-size: 0.8rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.score { display: inline-flex; align-items: center; gap: 0.5rem; }
+.score-bar { height: 8px; border-radius: 4px; background: var(--border); flex: 1; min-width: 60px; position: relative; overflow: hidden; }
+.score-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+.grade-A { color: var(--green); } .grade-B { color: var(--accent); } .grade-C { color: var(--yellow); } .grade-D { color: var(--orange); } .grade-F { color: var(--red); }
+.fill-A { background: var(--green); } .fill-B { background: var(--accent); } .fill-C { background: var(--yellow); } .fill-D { background: var(--orange); } .fill-F { background: var(--red); }
+table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85rem; }
+th, td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--dim); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; }
+.tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.75rem; border: 1px solid var(--border); }
+.tag-warn { border-color: var(--yellow); color: var(--yellow); }
+.tag-error { border-color: var(--red); color: var(--red); }
+.tag-ok { border-color: var(--green); color: var(--green); }
+.corr-bar { display: inline-block; height: 12px; border-radius: 3px; vertical-align: middle; }
+.corr-pos { background: var(--accent); }
+.corr-neg { background: var(--red); }
+.section { margin-bottom: 2rem; }
+.empty { color: var(--dim); font-style: italic; padding: 1rem; text-align: center; }
+</style>
+</head>
+<body>
+<script id="data" type="application/json">{"view":"eda","file":"sample.csv","rows":0,"columns":0}</script>
+<div id="app"></div>
+<script>
+(function(){
+  function escH(s){var d=document.createElement('div');d.textContent=String(s);return d.innerHTML;}
+  function grade(s){return s>=90?'A':s>=75?'B':s>=60?'C':s>=40?'D':'F';}
+  function pct(v,t){return t>0?((v/t)*100).toFixed(1):0;}
+
+  var raw=document.getElementById('data').textContent;
+  var D;
+  try{D=JSON.parse(raw);}catch(e){document.getElementById('app').innerHTML='<p class="empty">Failed to parse data: '+escH(e.message)+'</p>';return;}
+
+  var h='';
+
+  // Header
+  h+='<div class="header"><div><h1>EDA Report</h1><div class="meta">'+escH(D.file||'Unknown file')+' &mdash; '+escH(D.rows||0)+' rows &times; '+escH(D.columns||0)+' columns</div></div>';
+  if(D.memory_mb)h+='<div class="meta">'+escH(D.memory_mb)+' MB</div>';
+  h+='</div>';
+
+  // Quality scores (if present)
+  if(D.dimensions){
+    var ov=D.overall||{};
+    var g=ov.grade||grade(ov.overall_score||0);
+    h+='<div class="section"><h2>Data Quality</h2><div class="grid">';
+    h+='<div class="card"><div class="card-value grade-'+g+'">'+escH(g)+'</div><div class="card-label">Overall: '+(ov.overall_score||0).toFixed(1)+'%</div></div>';
+    var dims=['completeness','consistency','accuracy','timeliness','uniqueness'];
+    for(var i=0;i<dims.length;i++){
+      var dm=D.dimensions[dims[i]];
+      if(!dm)continue;
+      var dg=grade(dm.score);
+      h+='<div class="card"><div class="score"><span class="grade-'+dg+'">'+dm.score.toFixed(1)+'%</span><span class="score-bar"><span class="score-fill fill-'+dg+'" style="width:'+dm.score+'%"></span></span></div><div class="card-label">'+escH(dims[i])+'</div></div>';
+    }
+    h+='</div></div>';
+  }
+
+  // Summary stats
+  if(D.dtype_summary){
+    h+='<div class="section"><h2>Data Types</h2><div class="grid">';
+    var dtypes=D.dtype_summary;
+    for(var dt in dtypes){
+      h+='<div class="card"><div class="card-value">'+escH(dtypes[dt])+'</div><div class="card-label">'+escH(dt)+'</div></div>';
+    }
+    h+='</div></div>';
+  }
+
+  // Column profiles
+  if(D.column_profiles){
+    h+='<div class="section"><h2>Column Profiles</h2><table><thead><tr><th>Column</th><th>Type</th><th>Nulls</th><th>Unique</th><th>Details</th></tr></thead><tbody>';
+    var cols=D.column_profiles;
+    for(var c in cols){
+      var p=cols[c];
+      var nullTag=p.null_pct>20?'tag-error':p.null_pct>5?'tag-warn':'tag-ok';
+      var details='';
+      if(p.stats){
+        details='mean:'+p.stats.mean+' std:'+p.stats.std+' ['+p.stats.min+'..'+p.stats.max+']';
+        if(p.skewness!==null&&p.skewness!==undefined)details+=' skew:'+p.skewness;
+      }else if(p.top_values){
+        var tv=p.top_values;var tvs=[];for(var k in tv){tvs.push(escH(k)+'('+tv[k]+')');if(tvs.length>=3)break;}
+        details='top: '+tvs.join(', ');
+      }else if(p.min_date){
+        details=escH(p.min_date)+' to '+escH(p.max_date);
+      }
+      h+='<tr><td><strong>'+escH(c)+'</strong>'+(p.is_potential_id?' <span class="tag">ID?</span>':'')+'</td>';
+      h+='<td>'+escH(p.dtype)+'</td>';
+      h+='<td><span class="tag '+nullTag+'">'+p.null_pct+'%</span></td>';
+      h+='<td>'+escH(p.unique_count)+'</td>';
+      h+='<td style="font-size:0.8rem;color:var(--dim)">'+details+'</td></tr>';
+    }
+    h+='</tbody></table></div>';
+  }
+
+  // Correlations
+  if(D.correlations&&D.correlations.length>0){
+    h+='<div class="section"><h2>Notable Correlations</h2><table><thead><tr><th>Column 1</th><th>Column 2</th><th>Correlation</th><th></th></tr></thead><tbody>';
+    for(var i=0;i<D.correlations.length&&i<15;i++){
+      var cr=D.correlations[i];
+      var w=Math.abs(cr.correlation)*100;
+      var cls=cr.correlation>=0?'corr-pos':'corr-neg';
+      h+='<tr><td>'+escH(cr.col1)+'</td><td>'+escH(cr.col2)+'</td>';
+      h+='<td>'+cr.correlation.toFixed(3)+'</td>';
+      h+='<td><span class="corr-bar '+cls+'" style="width:'+w+'px"></span></td></tr>';
+    }
+    h+='</tbody></table></div>';
+  }
+
+  // Missing patterns
+  if(D.missing_patterns){
+    var mp=D.missing_patterns;
+    if(mp.high_missing&&mp.high_missing.length>0){
+      h+='<div class="section"><h2>Missing Data Patterns</h2>';
+      if(mp.high_missing.length>0){
+        h+='<h3>High Missing (&gt;50%)</h3><table><thead><tr><th>Column</th><th>Count</th><th>%</th></tr></thead><tbody>';
+        for(var i=0;i<mp.high_missing.length;i++){
+          var m=mp.high_missing[i];
+          h+='<tr><td>'+escH(m.column)+'</td><td>'+m.count+'</td><td><span class="tag tag-error">'+m.pct+'%</span></td></tr>';
+        }
+        h+='</tbody></table>';
+      }
+      if(mp.moderate_missing&&mp.moderate_missing.length>0){
+        h+='<h3>Moderate Missing (10-50%)</h3><table><thead><tr><th>Column</th><th>Count</th><th>%</th></tr></thead><tbody>';
+        for(var i=0;i<mp.moderate_missing.length;i++){
+          var m=mp.moderate_missing[i];
+          h+='<tr><td>'+escH(m.column)+'</td><td>'+m.count+'</td><td><span class="tag tag-warn">'+m.pct+'%</span></td></tr>';
+        }
+        h+='</tbody></table>';
+      }
+      h+='</div>';
+    }
+  }
+
+  // Duplicates
+  if(D.duplicates&&D.duplicates.duplicate_rows>0){
+    h+='<div class="section"><h2>Duplicates</h2><div class="grid">';
+    h+='<div class="card"><div class="card-value" style="color:var(--yellow)">'+escH(D.duplicates.duplicate_rows)+'</div><div class="card-label">Duplicate Rows ('+D.duplicates.duplicate_pct+'%)</div></div>';
+    h+='</div></div>';
+  }
+
+  if(!h||h.indexOf('section')===-1)h+='<p class="empty">No data to display.</p>';
+
+  document.getElementById('app').innerHTML=h;
+})();
+</script>
+</body>
+</html>

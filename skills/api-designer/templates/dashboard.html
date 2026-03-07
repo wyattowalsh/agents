@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Surface Dashboard</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --dim: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --orange: #d29922;
+  --purple: #bc8cff;
+  --radius: 8px;
+  --gap: 16px;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --card: #f6f8fa;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --dim: #656d76;
+    --accent: #0969da;
+    --green: #1a7f37;
+    --red: #cf222e;
+    --orange: #9a6700;
+    --purple: #8250df;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: var(--gap);
+}
+h1 { font-size: 1.5rem; margin-bottom: var(--gap); }
+h2 { font-size: 1.15rem; margin-bottom: 12px; color: var(--accent); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--gap);
+}
+.stats {
+  display: flex;
+  gap: var(--gap);
+  flex-wrap: wrap;
+  margin-bottom: var(--gap);
+}
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px var(--gap);
+  text-align: center;
+  min-width: 120px;
+}
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+th, td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  font-weight: 600;
+  color: var(--dim);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-get { background: #1f6feb33; color: var(--accent); }
+.badge-post { background: #3fb95033; color: var(--green); }
+.badge-put { background: #d2992233; color: var(--orange); }
+.badge-patch { background: #d2992233; color: var(--orange); }
+.badge-delete { background: #f8514933; color: var(--red); }
+.badge-head { background: #bc8cff33; color: var(--purple); }
+.badge-options { background: #8b949e33; color: var(--dim); }
+.severity-critical { color: var(--red); font-weight: 700; }
+.severity-warning { color: var(--orange); }
+.severity-info { color: var(--dim); }
+.breaking { color: var(--red); font-weight: 600; }
+.compatible { color: var(--green); font-weight: 600; }
+.auth-yes { color: var(--green); }
+.auth-no { color: var(--dim); }
+.tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.7rem; background: var(--border); margin: 1px; }
+.error { background: var(--card); border: 2px solid var(--red); border-radius: var(--radius); padding: var(--gap); color: var(--red); }
+</style>
+</head>
+<body>
+<script id="data" type="application/json">{"view":"api-surface","endpoints":[],"issues":[],"compat":null}</script>
+<script>
+(function() {
+  var escH = function(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+
+  var dataEl = document.getElementById('data');
+  var data;
+  try {
+    data = JSON.parse(dataEl.textContent);
+  } catch(e) {
+    document.body.innerHTML = '<div class="error">Failed to parse dashboard data: ' + escH(e.message) + '</div>';
+    return;
+  }
+
+  var html = '<h1>API Surface Dashboard</h1>';
+
+  // Stats
+  var endpoints = data.endpoints || [];
+  var issues = data.issues || [];
+  var critical = issues.filter(function(i) { return i.severity === 'critical'; }).length;
+  var warnings = issues.filter(function(i) { return i.severity === 'warning'; }).length;
+  var authCovered = endpoints.filter(function(e) { return e.auth_required; }).length;
+
+  html += '<div class="stats">';
+  html += '<div class="stat"><div class="stat-value">' + endpoints.length + '</div><div class="stat-label">Endpoints</div></div>';
+  html += '<div class="stat"><div class="stat-value">' + issues.length + '</div><div class="stat-label">Issues</div></div>';
+  html += '<div class="stat"><div class="stat-value" style="color:' + (critical > 0 ? 'var(--red)' : 'var(--green)') + '">' + critical + '</div><div class="stat-label">Critical</div></div>';
+  html += '<div class="stat"><div class="stat-value">' + (endpoints.length > 0 ? Math.round(authCovered / endpoints.length * 100) : 0) + '%</div><div class="stat-label">Auth Coverage</div></div>';
+
+  if (data.spec_version) {
+    html += '<div class="stat"><div class="stat-value" style="font-size:1.2rem">' + escH(data.spec_version) + '</div><div class="stat-label">Spec Version</div></div>';
+  }
+  html += '</div>';
+
+  html += '<div class="grid">';
+
+  // Endpoint Matrix
+  if (endpoints.length > 0) {
+    html += '<div class="card" style="grid-column: 1 / -1"><h2>Endpoint Matrix</h2>';
+    html += '<table><tr><th>Path</th><th>Method</th><th>Tag</th><th>Auth</th><th>Params</th><th>Responses</th></tr>';
+    endpoints.forEach(function(ep) {
+      var m = (ep.method || '').toLowerCase();
+      var badgeClass = 'badge badge-' + m;
+      html += '<tr>';
+      html += '<td><code>' + escH(ep.path) + '</code></td>';
+      html += '<td><span class="' + badgeClass + '">' + escH(ep.method) + '</span></td>';
+      html += '<td><span class="tag">' + escH(ep.tag || 'untagged') + '</span></td>';
+      html += '<td class="' + (ep.auth_required ? 'auth-yes' : 'auth-no') + '">' + (ep.auth_required ? 'Yes' : 'No') + '</td>';
+      html += '<td>' + (ep.params_count || 0) + '</td>';
+      html += '<td>' + (ep.response_codes || []).join(', ') + '</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Issues
+  if (issues.length > 0) {
+    html += '<div class="card"><h2>Validation Issues</h2>';
+    html += '<table><tr><th>Severity</th><th>Path</th><th>Method</th><th>Rule</th><th>Message</th></tr>';
+    var sorted = issues.slice().sort(function(a, b) {
+      var order = { critical: 0, warning: 1, info: 2 };
+      return (order[a.severity] || 3) - (order[b.severity] || 3);
+    });
+    sorted.forEach(function(issue) {
+      html += '<tr>';
+      html += '<td class="severity-' + escH(issue.severity) + '">' + escH(issue.severity) + '</td>';
+      html += '<td><code>' + escH(issue.path) + '</code></td>';
+      html += '<td>' + escH(issue.method || '-') + '</td>';
+      html += '<td>' + escH(issue.rule) + '</td>';
+      html += '<td>' + escH(issue.message) + '</td>';
+      html += '</tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Compat diff
+  var compat = data.compat;
+  if (compat) {
+    html += '<div class="card"><h2>Compatibility Analysis</h2>';
+    var summary = compat.summary || {};
+    html += '<p>Verdict: <span class="' + (summary.verdict === 'BREAKING' ? 'breaking' : 'compatible') + '">' + escH(summary.verdict || 'UNKNOWN') + '</span></p>';
+    html += '<p>Breaking: ' + (summary.breaking_count || 0) + ' | Non-breaking: ' + (summary.non_breaking_count || 0) + '</p>';
+
+    if ((compat.breaking || []).length > 0) {
+      html += '<h3 style="margin-top:12px;color:var(--red)">Breaking Changes</h3>';
+      html += '<table><tr><th>Path</th><th>Method</th><th>Type</th><th>Description</th></tr>';
+      compat.breaking.forEach(function(c) {
+        html += '<tr>';
+        html += '<td><code>' + escH(c.path) + '</code></td>';
+        html += '<td>' + escH(c.method) + '</td>';
+        html += '<td>' + escH(c.change_type) + '</td>';
+        html += '<td>' + escH(c.description) + '</td>';
+        html += '</tr>';
+      });
+      html += '</table>';
+    }
+
+    if ((compat.non_breaking || []).length > 0) {
+      html += '<h3 style="margin-top:12px;color:var(--green)">Non-Breaking Changes</h3>';
+      html += '<table><tr><th>Path</th><th>Method</th><th>Type</th><th>Description</th></tr>';
+      compat.non_breaking.forEach(function(c) {
+        html += '<tr>';
+        html += '<td><code>' + escH(c.path) + '</code></td>';
+        html += '<td>' + escH(c.method) + '</td>';
+        html += '<td>' + escH(c.change_type) + '</td>';
+        html += '<td>' + escH(c.description) + '</td>';
+        html += '</tr>';
+      });
+      html += '</table>';
+    }
+    html += '</div>';
+  }
+
+  html += '</div>';
+  document.body.innerHTML = html;
+})();
+</script>
+</body>
+</html>

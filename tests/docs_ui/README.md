@@ -17,7 +17,7 @@ Example:
 
 ```bash
 uv add --dev playwright
-uv run playwright install chromium
+uv run playwright install chromium  # Installs Chrome for Testing (Playwright 1.57+)
 ```
 
 ## Usage

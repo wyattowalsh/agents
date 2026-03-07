@@ -1,0 +1,100 @@
+{
+  "description": "ML models indexed by task type, data size, and interpretability",
+  "version": "1.0.0",
+  "task_types": {
+    "binary_classification": {
+      "description": "Predict one of two classes",
+      "metrics": ["AUC-ROC", "F1", "precision", "recall", "log_loss"],
+      "baseline": "Logistic Regression",
+      "models_by_size": {
+        "small": ["Logistic Regression", "SVM", "Random Forest", "Naive Bayes"],
+        "medium": ["LightGBM", "XGBoost", "Random Forest", "EBM"],
+        "large": ["LightGBM", "XGBoost", "CatBoost", "Deep Learning"],
+        "very_large": ["LightGBM (distributed)", "Deep Learning", "XGBoost (distributed)"]
+      }
+    },
+    "multiclass_classification": {
+      "description": "Predict one of N classes",
+      "metrics": ["macro_F1", "weighted_F1", "accuracy", "log_loss"],
+      "baseline": "Logistic Regression (one-vs-rest)",
+      "models_by_size": {
+        "small": ["Logistic Regression", "Random Forest", "SVM", "KNN"],
+        "medium": ["LightGBM", "XGBoost", "Random Forest"],
+        "large": ["LightGBM", "CatBoost", "Deep Learning"],
+        "very_large": ["LightGBM (distributed)", "Deep Learning"]
+      }
+    },
+    "regression": {
+      "description": "Predict a continuous value",
+      "metrics": ["RMSE", "MAE", "R2", "MAPE"],
+      "baseline": "Linear Regression / Ridge",
+      "models_by_size": {
+        "small": ["Linear Regression", "Ridge/Lasso", "Random Forest", "SVR"],
+        "medium": ["LightGBM", "XGBoost", "EBM", "Random Forest"],
+        "large": ["LightGBM", "CatBoost", "Neural Network"],
+        "very_large": ["LightGBM (distributed)", "Deep Learning"]
+      }
+    },
+    "clustering": {
+      "description": "Group similar data points",
+      "metrics": ["silhouette_score", "calinski_harabasz", "davies_bouldin"],
+      "baseline": "K-Means",
+      "models_by_size": {
+        "small": ["K-Means", "Hierarchical", "DBSCAN", "GMM"],
+        "medium": ["K-Means", "HDBSCAN", "GMM"],
+        "large": ["Mini-Batch K-Means", "HDBSCAN", "Birch"],
+        "very_large": ["Faiss K-Means", "Mini-Batch K-Means"]
+      }
+    },
+    "forecasting": {
+      "description": "Predict future values in a time series",
+      "metrics": ["MAPE", "RMSE", "MAE", "SMAPE", "MASE"],
+      "baseline": "ARIMA / Exponential Smoothing",
+      "models_by_size": {
+        "small": ["ARIMA", "Exponential Smoothing", "Prophet"],
+        "medium": ["Prophet", "SARIMAX", "LightGBM (lag features)"],
+        "large": ["LightGBM", "Temporal Fusion Transformer", "N-BEATS"],
+        "very_large": ["TFT", "TimesFM", "Chronos"]
+      }
+    },
+    "anomaly_detection": {
+      "description": "Identify unusual data points or patterns",
+      "metrics": ["precision@k", "recall@k", "F1@k", "AUC-PR"],
+      "baseline": "Z-Score / IQR thresholds",
+      "models_by_size": {
+        "small": ["Isolation Forest", "LOF", "One-Class SVM", "Z-Score"],
+        "medium": ["Isolation Forest", "Autoencoder", "LOF"],
+        "large": ["Autoencoder", "Isolation Forest"],
+        "very_large": ["Streaming Autoencoder", "Statistical Process Control"]
+      }
+    },
+    "ranking": {
+      "description": "Order items by relevance",
+      "metrics": ["NDCG", "MAP", "MRR", "precision@k"],
+      "baseline": "Pointwise regression on relevance score",
+      "models_by_size": {
+        "small": ["Pointwise (LR/RF)", "RankSVM"],
+        "medium": ["LambdaMART (LightGBM)", "RankNet"],
+        "large": ["LambdaMART (LightGBM)", "Deep Learning"],
+        "very_large": ["Distributed LambdaMART", "Deep Learning"]
+      }
+    },
+    "recommendation": {
+      "description": "Suggest items to users",
+      "metrics": ["NDCG@k", "hit_rate@k", "coverage", "diversity"],
+      "baseline": "Popularity-based / Item-based CF",
+      "models_by_size": {
+        "small": ["Item-based CF", "SVD", "NMF"],
+        "medium": ["ALS", "SVD++", "LightFM"],
+        "large": ["ALS (Spark)", "Neural CF", "Two-Tower"],
+        "very_large": ["Two-Tower DNN", "DLRM"]
+      }
+    }
+  },
+  "size_thresholds": {
+    "small": "< 10K rows",
+    "medium": "10K - 1M rows",
+    "large": "1M - 100M rows",
+    "very_large": "> 100M rows"
+  }
+}

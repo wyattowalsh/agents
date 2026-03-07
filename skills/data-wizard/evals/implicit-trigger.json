@@ -1,0 +1,14 @@
+{
+  "skills": ["data-wizard"],
+  "query": "I have a dataset with 50K rows of customer behavior. I need to predict churn. What model should I use and what features should I engineer?",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates data-wizard skill via auto-detection",
+    "Agent classifies complexity tier (likely Standard)",
+    "Agent routes to Model Selection mode for churn prediction",
+    "Agent recommends models appropriate for 50K rows (medium data size)",
+    "Agent includes baseline model recommendation (Logistic Regression)",
+    "Agent suggests feature engineering approaches for behavioral data",
+    "Agent warns about target leakage with time-based features"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard experiment Design an A/B test to measure whether our new checkout flow increases conversion rate",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to Experiment Design mode based on 'experiment' keyword",
+    "Agent classifies as Standard tier (A/B test design)",
+    "Agent reads references/experiment-design.md for A/B test patterns",
+    "Agent runs statistical-test-selector.py to determine appropriate test (two-proportion z-test or Chi-Square)",
+    "Agent performs power analysis to calculate required sample size per group",
+    "Agent specifies significance level (alpha) and desired statistical power (1 - beta)",
+    "Agent recommends test duration based on expected traffic and required sample size",
+    "Agent addresses potential confounds: novelty effects, multiple comparisons, seasonal variation",
+    "Agent mentions CUPED variance reduction as an option to reduce required sample size",
+    "Agent outputs a complete experiment brief with hypothesis, metrics, and decision criteria"
+  ]
+}

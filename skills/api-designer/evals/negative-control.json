@@ -1,0 +1,11 @@
+{
+  "skills": ["api-designer"],
+  "query": "Create an MCP server with tools for managing a todo list. It should have add_todo, list_todos, and complete_todo tools.",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate api-designer skill",
+    "Agent recognizes this as an MCP server creation task",
+    "Agent redirects to mcp-creator skill instead",
+    "Agent does NOT generate OpenAPI specs or REST endpoints for this request"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "skills": ["devops-engineer"],
+  "query": "Set up a Kubernetes cluster on AWS with EKS, configure VPC networking with private subnets, and create a Terraform module for the whole infrastructure.",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate devops-engineer skill",
+    "Agent recognizes this as an infrastructure provisioning task",
+    "Agent redirects to infrastructure-coder skill instead",
+    "Agent does NOT generate CI/CD workflow files for this request"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "skills": ["database-architect"],
+  "query": "/database-architect optimize These queries are slow on our orders table: SELECT * FROM orders WHERE status = 'pending' AND created_at > now() - interval '7 days'",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Optimize mode (Mode 4)",
+    "Agent runs index-recommender.py with the query and schema context",
+    "Agent reads references/query-optimization.md for optimization patterns",
+    "Agent suggests a composite index on (status, created_at) with rationale for column order based on selectivity",
+    "Agent analyzes the query execution pattern (range scan with equality filter)",
+    "Agent discusses whether a partial index on status = 'pending' would be beneficial given cardinality",
+    "Agent includes write overhead trade-off for the recommended index",
+    "Agent presents estimated impact (high/medium/low) for each recommendation"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "skills": ["api-designer"],
+  "query": "/api-designer compat api/v1-openapi.yaml api/v2-openapi.yaml",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates api-designer skill in Compat mode",
+    "Agent loads both spec files (old and new)",
+    "Agent runs compat-checker.py with both spec paths",
+    "Agent classifies each change as breaking or non-breaking",
+    "Agent provides impact assessment for breaking changes",
+    "Agent suggests backward-compatible alternatives for each breaking change",
+    "Agent does NOT generate new specs or modify existing ones"
+  ]
+}

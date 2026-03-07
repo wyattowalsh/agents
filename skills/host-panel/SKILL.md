@@ -1,12 +1,9 @@
 ---
 name: host-panel
 description: >-
-  Host simulated panel discussions and debates among AI-simulated domain experts.
-  Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert
-  personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring
-  complex topics from multiple expert perspectives, testing argument strength,
-  academic brainstorming, or understanding trade-offs in decisions. NOT for
-  one-on-one conversations, simple Q&A, or real-time debates.
+  Simulated expert panel discussions. Roundtable, Oxford-style, Socratic
+  formats. Use when exploring topics from multiple perspectives. NOT for
+  Q&A, code review, or one-on-one conversations.
 argument-hint: '"topic" [format] [num-experts]'
 license: MIT
 metadata:

@@ -1,16 +1,9 @@
 ---
 name: frontend-designer
 description: >-
-  Build production-grade frontend interfaces with modern React, Tailwind CSS,
-  and shadcn/ui. Five modes: scaffold projects, create components, configure
-  themes and design tokens, refactor styles, and audit codebases. Encodes best
-  practices for React 19 Server Components (framework-dependent), TailwindCSS v4
-  CSS-first config, shadcn/ui with Radix primitives, modern CSS (container
-  queries, :has(), view transitions, scroll-driven animations), Monaspace
-  typography, and Vite 6. Supersedes the frontend-design skill. Use when
-  building, styling, theming, or improving any frontend project. NOT for backend
-  APIs, database design, DevOps, testing frameworks, state management libraries,
-  routing, or full SSR framework setup.
+  Build frontends with React, Tailwind, shadcn/ui. Scaffold, create, theme,
+  refactor, audit. Use when building or improving UI. NOT for backend, DevOps,
+  testing, or state management.
 argument-hint: "<mode> [target]"
 model: opus
 license: MIT

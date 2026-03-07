@@ -1,0 +1,34 @@
+{
+  "categories": {
+    "query": [
+      {"name": "N+1 queries", "detection": "Loop containing DB call; ORM lazy loading in iteration", "fix": "Eager load / JOIN / batch query", "severity": "high"},
+      {"name": "SELECT *", "detection": "SELECT * or ORM without .only()/.values()", "fix": "Select specific columns", "severity": "medium"},
+      {"name": "Missing index", "detection": "WHERE/ORDER BY on unindexed column", "fix": "Add index; check EXPLAIN", "severity": "high"},
+      {"name": "Over-fetching", "detection": "No LIMIT, unbounded queries", "fix": "Paginate, stream, or limit", "severity": "medium"},
+      {"name": "Repeated queries", "detection": "Identical queries in logs", "fix": "Cache result or restructure", "severity": "medium"}
+    ],
+    "algorithmic": [
+      {"name": "Quadratic loop", "detection": "Nested iteration over same collection", "fix": "Use set/dict for O(1) lookup", "severity": "high"},
+      {"name": "Linear search", "detection": "x in list in a loop", "fix": "Convert to set", "severity": "medium"},
+      {"name": "Repeated sorting", "detection": "sorted()/.sort() in loop body", "fix": "Sort once outside loop", "severity": "medium"},
+      {"name": "String concatenation", "detection": "+= on string in loop", "fix": "Use join() or StringIO", "severity": "medium"},
+      {"name": "Redundant computation", "detection": "Same expression in loop/branches", "fix": "Memoize or hoist", "severity": "medium"}
+    ],
+    "memory": [
+      {"name": "Unbounded collection", "detection": ".append() without cleanup", "fix": "Bound with maxlen or eviction", "severity": "high"},
+      {"name": "Large object copy", "detection": "copy.deepcopy() on large objects", "fix": "Use immutable or share refs", "severity": "medium"},
+      {"name": "Buffer bloat", "detection": "Oversized pre-allocation", "fix": "Size to actual need", "severity": "low"}
+    ],
+    "io": [
+      {"name": "Sequential I/O", "detection": "Multiple await fetch() in sequence", "fix": "asyncio.gather() or concurrent futures", "severity": "high"},
+      {"name": "Chatty protocol", "detection": "Loop containing HTTP/RPC calls", "fix": "Batch API, bulk endpoints", "severity": "high"},
+      {"name": "Missing connection pool", "detection": "connect() in request handler", "fix": "Use connection pool", "severity": "medium"},
+      {"name": "Synchronous I/O in async", "detection": "Blocking call in async context", "fix": "Use async I/O libraries", "severity": "high"}
+    ],
+    "concurrency": [
+      {"name": "Lock contention", "detection": "Global lock, lock around large block", "fix": "Fine-grained locks", "severity": "high"},
+      {"name": "GIL bottleneck", "detection": "threading for CPU-bound Python", "fix": "Use multiprocessing", "severity": "medium"},
+      {"name": "Busy wait", "detection": "while not ready: pass", "fix": "Use events/condition variables", "severity": "medium"}
+    ]
+  }
+}

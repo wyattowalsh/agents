@@ -1,15 +1,9 @@
 ---
 name: wargame
 description: >-
-  Domain-agnostic strategic decision analysis and wargaming. Auto-classifies
-  scenario complexity: simple decisions get structured analysis (pre-mortem,
-  ACH, decision trees); complex or adversarial scenarios get full multi-turn
-  interactive wargames with AI-controlled actors, Monte Carlo outcome
-  exploration, and structured adjudication. Generates visual dashboards and
-  saves markdown decision journals. Use for business strategy, crisis
-  management, competitive analysis, geopolitical scenarios, personal decisions,
-  or any consequential choice under uncertainty. NOT for simple pros/cons
-  lists, non-strategic decisions, or academic debate.
+  Strategic decision analysis and wargaming. Auto-classifies complexity for
+  analysis or simulation. Use for decisions under uncertainty. NOT for simple
+  pros/cons or code review.
 license: MIT
 argument-hint: "<scenario description>"
 model: opus

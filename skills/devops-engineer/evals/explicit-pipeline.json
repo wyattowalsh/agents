@@ -1,0 +1,17 @@
+{
+  "skills": ["devops-engineer"],
+  "query": "/devops-engineer pipeline Node.js app with npm, jest tests, Docker build, deploy to staging on push to main",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates devops-engineer skill in Generate mode",
+    "Agent gathers requirements: Node.js, npm, jest, Docker, staging deployment",
+    "Agent loads references/github-actions-patterns.md for workflow patterns",
+    "Agent generates a complete GitHub Actions workflow YAML with: checkout, setup-node with cache, npm ci, jest tests, Docker build, staging deploy",
+    "Agent pins all actions to full SHA",
+    "Agent includes explicit permissions block",
+    "Agent adds concurrency group for deployment",
+    "Agent sets timeout-minutes on every job",
+    "Agent includes inline comments explaining non-obvious configuration",
+    "Agent runs workflow-analyzer.py to validate the generated workflow"
+  ]
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Database Architect Dashboard</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --dim: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --radius: 8px;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --dim: #656d76;
+    --accent: #0969da;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); padding: 24px; line-height: 1.5; }
+h1 { font-size: 24px; margin-bottom: 8px; }
+h2 { font-size: 18px; margin-bottom: 12px; color: var(--accent); }
+h3 { font-size: 14px; margin-bottom: 8px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.subtitle { color: var(--dim); margin-bottom: 24px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+.stat { text-align: center; }
+.stat .value { font-size: 36px; font-weight: 700; }
+.stat .label { color: var(--dim); font-size: 13px; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.badge-critical { background: var(--red); color: white; }
+.badge-warning { background: var(--yellow); color: white; }
+.badge-info { background: var(--accent); color: white; }
+.badge-ok { background: var(--green); color: white; }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 13px; }
+th { color: var(--dim); font-weight: 600; }
+.mermaid-container { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
+.mermaid-container pre { white-space: pre-wrap; font-size: 12px; color: var(--dim); }
+.timeline { margin-bottom: 24px; }
+.timeline-item { display: flex; align-items: flex-start; margin-bottom: 12px; }
+.timeline-marker { width: 12px; height: 12px; border-radius: 50%; margin-right: 12px; margin-top: 4px; flex-shrink: 0; }
+.timeline-content { flex: 1; }
+.timeline-content .name { font-weight: 600; font-size: 14px; }
+.timeline-content .detail { color: var(--dim); font-size: 12px; }
+.section { margin-bottom: 32px; }
+.error { color: var(--red); padding: 16px; text-align: center; }
+</style>
+</head>
+<body>
+<script id="data" type="application/json">{"tables":[],"normalization_level":"unknown","issues":[],"recommendations":[],"migrations":[]}</script>
+<script>
+(function() {
+  var escH = function(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+
+  try {
+    var data = JSON.parse(document.getElementById('data').textContent);
+  } catch(e) {
+    document.body.innerHTML = '<div class="error">Failed to parse dashboard data: ' + escH(e.message) + '</div>';
+    return;
+  }
+
+  var tables = data.tables || [];
+  var issues = data.issues || [];
+  var recommendations = data.recommendations || [];
+  var migrations = data.migrations || [];
+  var normLevel = data.normalization_level || 'unknown';
+
+  var critCount = issues.filter(function(i) { return i.severity === 'critical'; }).length;
+  var warnCount = issues.filter(function(i) { return i.severity === 'warning'; }).length;
+  var infoCount = issues.filter(function(i) { return i.severity === 'info'; }).length;
+
+  var totalCols = tables.reduce(function(s, t) { return s + t.columns.length; }, 0);
+  var totalIdx = tables.reduce(function(s, t) { return s + t.indexes.length; }, 0);
+  var totalFk = tables.reduce(function(s, t) { return s + t.foreign_keys.length; }, 0);
+
+  var html = '';
+  html += '<h1>Database Architect Dashboard</h1>';
+  html += '<p class="subtitle">Schema analysis and evolution report</p>';
+
+  // Stats
+  html += '<div class="grid">';
+  html += '<div class="card stat"><div class="value">' + tables.length + '</div><div class="label">Tables</div></div>';
+  html += '<div class="card stat"><div class="value">' + totalCols + '</div><div class="label">Columns</div></div>';
+  html += '<div class="card stat"><div class="value">' + totalIdx + '</div><div class="label">Indexes</div></div>';
+  html += '<div class="card stat"><div class="value">' + totalFk + '</div><div class="label">Foreign Keys</div></div>';
+  html += '</div>';
+
+  // Normalization + Issues summary
+  html += '<div class="grid">';
+  html += '<div class="card"><h3>Normalization</h3><div class="stat"><div class="value">' + escH(normLevel) + '</div></div></div>';
+  html += '<div class="card"><h3>Issues</h3>';
+  if (critCount) html += '<span class="badge badge-critical">' + critCount + ' critical</span> ';
+  if (warnCount) html += '<span class="badge badge-warning">' + warnCount + ' warning</span> ';
+  if (infoCount) html += '<span class="badge badge-info">' + infoCount + ' info</span> ';
+  if (!critCount && !warnCount && !infoCount) html += '<span class="badge badge-ok">No issues</span>';
+  html += '</div>';
+  html += '</div>';
+
+  // ER Diagram (Mermaid text)
+  if (tables.length > 0) {
+    html += '<div class="section"><h2>Entity Relationships</h2><div class="mermaid-container"><pre>';
+    var mermaid = 'erDiagram\n';
+    tables.forEach(function(t) {
+      t.columns.forEach(function(c) {
+        var pk = t.primary_key.indexOf(c.name) >= 0 ? ' PK' : '';
+        var fk = '';
+        t.foreign_keys.forEach(function(f) { if (f.columns.indexOf(c.name) >= 0) fk = ' FK'; });
+        mermaid += '    ' + t.name + ' {\n        ' + c.type + ' ' + c.name + pk + fk + '\n    }\n';
+      });
+      t.foreign_keys.forEach(function(f) {
+        mermaid += '    ' + t.name + ' }o--|| ' + f.ref_table + ' : "' + f.columns.join(',') + '"\n';
+      });
+    });
+    html += escH(mermaid) + '</pre></div></div>';
+  }
+
+  // Tables detail
+  if (tables.length > 0) {
+    html += '<div class="section"><h2>Tables</h2>';
+    tables.forEach(function(t) {
+      html += '<div class="card" style="margin-bottom:12px"><h3>' + escH(t.name) + '</h3>';
+      html += '<table><tr><th>Column</th><th>Type</th><th>Nullable</th><th>Default</th><th>Constraints</th></tr>';
+      t.columns.forEach(function(c) {
+        html += '<tr><td>' + escH(c.name) + '</td><td>' + escH(c.type) + '</td>';
+        html += '<td>' + (c.nullable ? 'Yes' : 'No') + '</td>';
+        html += '<td>' + escH(c.default || '-') + '</td>';
+        html += '<td>' + escH(c.constraints.join(', ') || '-') + '</td></tr>';
+      });
+      html += '</table></div>';
+    });
+    html += '</div>';
+  }
+
+  // Issues
+  if (issues.length > 0) {
+    html += '<div class="section"><h2>Issues</h2>';
+    html += '<table><tr><th>Severity</th><th>Table</th><th>Message</th></tr>';
+    issues.forEach(function(i) {
+      var cls = i.severity === 'critical' ? 'badge-critical' : i.severity === 'warning' ? 'badge-warning' : 'badge-info';
+      html += '<tr><td><span class="badge ' + cls + '">' + escH(i.severity) + '</span></td>';
+      html += '<td>' + escH(i.table || '-') + '</td><td>' + escH(i.message) + '</td></tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Index Recommendations
+  if (recommendations.length > 0) {
+    html += '<div class="section"><h2>Index Recommendations</h2>';
+    html += '<table><tr><th>Table</th><th>Columns</th><th>Type</th><th>Impact</th><th>Rationale</th></tr>';
+    recommendations.forEach(function(r) {
+      var cls = r.estimated_impact === 'high' ? 'badge-critical' : r.estimated_impact === 'medium' ? 'badge-warning' : 'badge-info';
+      html += '<tr><td>' + escH(r.table) + '</td><td>' + escH(r.columns.join(', ')) + '</td>';
+      html += '<td>' + escH(r.type) + '</td>';
+      html += '<td><span class="badge ' + cls + '">' + escH(r.estimated_impact) + '</span></td>';
+      html += '<td>' + escH(r.rationale) + '</td></tr>';
+    });
+    html += '</table></div>';
+  }
+
+  // Migration Timeline
+  if (migrations.length > 0) {
+    html += '<div class="section"><h2>Migration Timeline</h2><div class="timeline">';
+    migrations.forEach(function(m) {
+      var hasRisk = m.operations.some(function(o) { return o.data_loss_risk; });
+      var color = hasRisk ? 'var(--red)' : 'var(--green)';
+      html += '<div class="timeline-item">';
+      html += '<div class="timeline-marker" style="background:' + color + '"></div>';
+      html += '<div class="timeline-content"><div class="name">' + escH(m.file) + '</div>';
+      html += '<div class="detail">' + m.operations.length + ' operations';
+      if (hasRisk) html += ' <span class="badge badge-critical">data loss risk</span>';
+      html += '</div></div></div>';
+    });
+    html += '</div></div>';
+  }
+
+  document.body.innerHTML = html;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "skills": ["api-designer"],
+  "query": "/api-designer design a REST API for a task management system",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Design mode",
+    "Agent classifies protocol as REST from input",
+    "Agent designs resource endpoints (tasks, projects, users)",
+    "Agent applies REST best practices (proper HTTP methods, status codes, pagination)",
+    "Agent generates OpenAPI 3.1 spec with request/response schemas"
+  ]
+}

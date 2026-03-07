@@ -1,0 +1,14 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard stats \"Is there a significant difference in conversion rates between our A and B groups?\"",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to Stats mode based on 'stats' keyword",
+    "Agent classifies as Quick tier (single analysis)",
+    "Agent recommends appropriate statistical test (Chi-Square or two-proportion z-test)",
+    "Agent states test assumptions explicitly",
+    "Agent includes effect size recommendation alongside p-value",
+    "Agent does NOT skip assumption statement per Critical Rule 3"
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "categories": {
+    "1xx": "Informational",
+    "2xx": "Success",
+    "3xx": "Redirection",
+    "4xx": "Client Error",
+    "5xx": "Server Error"
+  },
+  "codes": {
+    "200": {
+      "name": "OK",
+      "use": "Successful GET, PUT, PATCH, or DELETE",
+      "body": "Resource or result"
+    },
+    "201": {
+      "name": "Created",
+      "use": "Successful POST creating a resource",
+      "body": "Created resource",
+      "headers": ["Location"]
+    },
+    "202": {
+      "name": "Accepted",
+      "use": "Request accepted for async processing",
+      "body": "Status or tracking resource"
+    },
+    "204": {
+      "name": "No Content",
+      "use": "Successful DELETE or update with no response body",
+      "body": "None"
+    },
+    "301": {
+      "name": "Moved Permanently",
+      "use": "Resource URL changed permanently",
+      "headers": ["Location"]
+    },
+    "304": {
+      "name": "Not Modified",
+      "use": "Conditional GET, resource unchanged",
+      "body": "None"
+    },
+    "400": {
+      "name": "Bad Request",
+      "use": "Malformed syntax, invalid parameters",
+      "body": "Error details with field-level info"
+    },
+    "401": {
+      "name": "Unauthorized",
+      "use": "Missing or invalid authentication",
+      "body": "Error with auth instructions",
+      "headers": ["WWW-Authenticate"]
+    },
+    "403": {
+      "name": "Forbidden",
+      "use": "Authenticated but insufficient permissions",
+      "body": "Error with required permissions"
+    },
+    "404": {
+      "name": "Not Found",
+      "use": "Resource does not exist",
+      "body": "Error message"
+    },
+    "405": {
+      "name": "Method Not Allowed",
+      "use": "HTTP method not supported on this resource",
+      "headers": ["Allow"]
+    },
+    "409": {
+      "name": "Conflict",
+      "use": "Duplicate resource, version mismatch, state conflict",
+      "body": "Error with conflict details"
+    },
+    "422": {
+      "name": "Unprocessable Entity",
+      "use": "Valid syntax but semantically invalid values",
+      "body": "Validation error details"
+    },
+    "429": {
+      "name": "Too Many Requests",
+      "use": "Rate limit exceeded",
+      "body": "Error with limit info",
+      "headers": ["Retry-After", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"]
+    },
+    "500": {
+      "name": "Internal Server Error",
+      "use": "Unexpected server failure",
+      "body": "Generic error (no internal details)"
+    },
+    "502": {
+      "name": "Bad Gateway",
+      "use": "Upstream service returned invalid response"
+    },
+    "503": {
+      "name": "Service Unavailable",
+      "use": "Server overloaded or in maintenance",
+      "headers": ["Retry-After"]
+    },
+    "504": {
+      "name": "Gateway Timeout",
+      "use": "Upstream service did not respond in time"
+    }
+  }
+}

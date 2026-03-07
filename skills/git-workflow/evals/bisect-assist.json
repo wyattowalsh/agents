@@ -1,0 +1,12 @@
+{
+  "skills": ["git-workflow"],
+  "query": "/git-workflow bisect",
+  "files": [],
+  "expected_behavior": [
+    "Agent asks for bad commit, good commit, and optional test command",
+    "Agent starts git bisect with the provided range",
+    "Agent guides through the bisect process step by step",
+    "Agent shows the identified commit with full context when found",
+    "Agent runs git bisect reset to clean up after completion"
+  ]
+}

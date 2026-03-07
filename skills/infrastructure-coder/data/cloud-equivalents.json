@@ -1,0 +1,40 @@
+{
+  "compute": {
+    "virtual_machine": {"aws": "EC2", "gcp": "Compute Engine", "azure": "Virtual Machines"},
+    "auto_scaling": {"aws": "ASG", "gcp": "MIG", "azure": "VMSS"},
+    "spot": {"aws": "Spot Instances", "gcp": "Spot VMs", "azure": "Spot VMs"},
+    "managed_kubernetes": {"aws": "EKS", "gcp": "GKE", "azure": "AKS"},
+    "serverless_containers": {"aws": "Fargate", "gcp": "Cloud Run", "azure": "Container Apps"},
+    "functions": {"aws": "Lambda", "gcp": "Cloud Functions", "azure": "Azure Functions"}
+  },
+  "storage": {
+    "object": {"aws": "S3", "gcp": "Cloud Storage", "azure": "Blob Storage"},
+    "block": {"aws": "EBS", "gcp": "Persistent Disk", "azure": "Managed Disks"},
+    "file": {"aws": "EFS", "gcp": "Filestore", "azure": "Azure Files"},
+    "archive": {"aws": "S3 Glacier", "gcp": "Archive Storage", "azure": "Archive Storage"}
+  },
+  "database": {
+    "relational": {"aws": "RDS", "gcp": "Cloud SQL", "azure": "Azure SQL"},
+    "nosql_document": {"aws": "DynamoDB", "gcp": "Firestore", "azure": "Cosmos DB"},
+    "cache": {"aws": "ElastiCache", "gcp": "Memorystore", "azure": "Azure Cache for Redis"},
+    "data_warehouse": {"aws": "Redshift", "gcp": "BigQuery", "azure": "Synapse Analytics"}
+  },
+  "networking": {
+    "vpc": {"aws": "VPC", "gcp": "VPC", "azure": "VNet"},
+    "load_balancer_l7": {"aws": "ALB", "gcp": "HTTP(S) LB", "azure": "Application Gateway"},
+    "load_balancer_l4": {"aws": "NLB", "gcp": "TCP/UDP LB", "azure": "Azure Load Balancer"},
+    "dns": {"aws": "Route 53", "gcp": "Cloud DNS", "azure": "Azure DNS"},
+    "cdn": {"aws": "CloudFront", "gcp": "Cloud CDN", "azure": "Azure CDN"}
+  },
+  "security": {
+    "iam": {"aws": "IAM", "gcp": "IAM", "azure": "Entra ID + RBAC"},
+    "secrets": {"aws": "Secrets Manager", "gcp": "Secret Manager", "azure": "Key Vault"},
+    "kms": {"aws": "KMS", "gcp": "Cloud KMS", "azure": "Key Vault"},
+    "waf": {"aws": "WAF", "gcp": "Cloud Armor", "azure": "WAF"}
+  },
+  "monitoring": {
+    "metrics": {"aws": "CloudWatch", "gcp": "Cloud Monitoring", "azure": "Azure Monitor"},
+    "logs": {"aws": "CloudWatch Logs", "gcp": "Cloud Logging", "azure": "Log Analytics"},
+    "traces": {"aws": "X-Ray", "gcp": "Cloud Trace", "azure": "Application Insights"}
+  }
+}

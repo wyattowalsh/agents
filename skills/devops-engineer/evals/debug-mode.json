@@ -1,0 +1,14 @@
+{
+  "skills": ["devops-engineer"],
+  "query": "/devops-engineer debug Here's my CI log output showing a failure:\n\nnpm ERR! ERESOLVE could not resolve\nnpm ERR! While resolving: react-scripts@5.0.1\nnpm ERR! Found: typescript@5.4.0\nnpm ERR! peer dep: typescript@>=3 && <5 required by react-scripts@5.0.1",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates devops-engineer in Debug mode",
+    "Agent parses the inline log content for errors",
+    "Agent runs log-parser.py on the provided log content",
+    "Agent classifies the failure as 'dependency' category",
+    "Agent identifies root cause: TypeScript version conflict with react-scripts peer dependency",
+    "Agent recommends specific fix: pin TypeScript to <5 or upgrade react-scripts",
+    "Agent does NOT load entire CI logs into context for large inputs"
+  ]
+}

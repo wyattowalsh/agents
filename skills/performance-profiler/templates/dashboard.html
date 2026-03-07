@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Performance Profiler</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f172a;--card:#1e293b;--bd:#334155;--tx:#e2e8f0;--t2:#94a3b8;--ac:#6366f1;--ok:#22c55e;--warn:#eab308;--err:#ef4444;--hot:#f97316;--g:.75rem;--r:8px;color-scheme:dark}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5;padding:var(--g);max-width:1200px;margin:0 auto}
+h1,h2,h3{font-weight:700}h1{font-size:1.3rem}h2{font-size:1rem;margin-bottom:.3rem}h3{font-size:.88rem}
+.m{font-family:ui-monospace,monospace}.x{font-size:.7rem;color:var(--t2)}.y{font-size:.76rem}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:var(--g);margin-bottom:var(--g);animation:fi .3s ease-out both}
+.hd{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem var(--g);margin-bottom:var(--g)}.hd h1{flex:1}
+.b{display:inline-flex;align-items:center;padding:.12em .5em;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+.bm{background:var(--ac);color:#fff}.ba{background:var(--hot);color:#fff}
+.p{display:inline-block;padding:.08em .4em;border-radius:999px;font-size:.68rem;border:1px solid var(--bd);color:var(--t2)}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{text-align:left;padding:.4rem;border-bottom:2px solid var(--bd);color:var(--t2);font-size:.7rem;text-transform:uppercase;font-weight:600}
+td{padding:.3rem .4rem;border-bottom:1px solid rgba(51,65,85,.5)}tr:last-child td{border-bottom:none}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.4rem}.sv{text-align:center;padding:.4rem}.sn{font-size:1.3rem;font-weight:700;line-height:1}.sl{font-size:.7rem;color:var(--t2);text-transform:uppercase}
+.bar{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-top:.2rem}.bf{height:100%;border-radius:3px;transition:width .3s}
+.risk-c{color:var(--err)}.risk-h{color:var(--hot)}.risk-m{color:var(--warn)}.risk-l{color:var(--ok)}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:768px){.sg{grid-template-columns:repeat(2,1fr)}}
+@media print{body{background:#fff!important;color:#111;padding:0}.c{background:#fff;border:1px solid #ccc;animation:none}}
+</style></head><body>
+<main id="app"></main>
+<script id="data" type="application/json">{}</script>
+<script>(()=>{"use strict";
+const D=JSON.parse(document.getElementById("data").textContent),q=document.getElementById("app");
+const _=document.createElement("p"),e=s=>{if(s==null)return"";_.textContent=String(s);return _.innerHTML};
+const rc=r=>r==="CRITICAL"?"risk-c":r==="HIGH"?"risk-h":r==="MEDIUM"?"risk-m":"risk-l";
+const cc=c=>{const n=typeof c==="string"?c:c>0.7?"--ok":c>0.4?"--warn":"--err";return n.startsWith("--")?`var(${n})`:n};
+
+function render(){
+let h='<header class="hd"><h1>'+e(D.title||"Performance Report")+'</h1>';
+if(D.mode)h+='<span class="b bm">'+e(D.mode)+'</span>';
+if(D.file)h+='<span class="p m">'+e(D.file)+'</span>';
+h+='</header>';
+h+=vStats();
+if(D.functions&&D.functions.length)h+=vHotspots();
+if(D.complexity&&D.complexity.length)h+=vComplexity();
+if(D.cache)h+=vCache();
+if(D.regression&&D.regression.length)h+=vRegression();
+if(D.leaks&&D.leaks.length)h+=vLeaks();
+if(D.recommendations&&D.recommendations.length)h+=vRecs();
+q.innerHTML=h;
+q.querySelectorAll(".c").forEach((c,i)=>c.style.animationDelay=i*40+"ms");
+}
+
+function vStats(){
+const items=[];
+if(D.total_functions!=null)items.push([D.total_functions,"Functions"]);
+if(D.hotspot_count!=null)items.push([D.hotspot_count,"Hotspots"]);
+if(D.avg_complexity)items.push([D.avg_complexity,"Avg Complexity"]);
+if(D.risk_score)items.push([D.risk_score,"Risk Score"]);
+if(D.cache_hit_rate)items.push([(D.cache_hit_rate*100).toFixed(1)+"%","Hit Rate"]);
+if(D.leak_patterns)items.push([D.leak_patterns,"Leak Patterns"]);
+if(!items.length)return"";
+let h='<section class="c"><div class="sg">';
+for(const[v,l]of items)h+='<div class="sv"><div class="sn">'+e(v)+'</div><div class="sl">'+e(l)+'</div></div>';
+return h+'</div></section>';
+}
+
+function vHotspots(){
+let h='<section class="c"><h2>Hotspots</h2><table><thead><tr><th>Rank</th><th>Function</th><th>Time</th><th>Calls</th><th>Per Call</th><th>Category</th></tr></thead><tbody>';
+for(const f of D.functions.slice(0,15)){
+const pct=f.percent||f.cumulative_time||0;
+h+='<tr><td>'+e(f.rank||"")+'</td><td class="m">'+e(f.name)+'</td><td>'+e(typeof pct==="number"?pct.toFixed(4)+"s":pct)+'</td><td>'+e(f.calls||"")+'</td><td>'+e(f.time_per_call?f.time_per_call.toFixed(6)+"s":"")+'</td><td><span class="p">'+e(f.category||"")+'</span></td></tr>';
+}
+return h+'</tbody></table></section>';
+}
+
+function vComplexity(){
+let h='<section class="c"><h2>Complexity Analysis</h2><table><thead><tr><th>Function</th><th>Complexity</th><th>Hotspot</th><th>Evidence</th></tr></thead><tbody>';
+for(const f of D.complexity){
+const sc=f.hotspot_score||0;
+const col=sc>=0.7?"var(--err)":sc>=0.4?"var(--warn)":"var(--ok)";
+h+='<tr><td class="m">'+e(f.name)+'</td><td><span class="b ba">'+e(f.estimated_complexity)+'</span></td><td><div class="bar" style="width:80px"><div class="bf" style="width:'+(sc*100)+'%;background:'+col+'"></div></div><span class="x">'+sc.toFixed(2)+'</span></td><td class="x">'+e((f.evidence||[]).join("; "))+'</td></tr>';
+}
+return h+'</tbody></table></section>';
+}
+
+function vCache(){
+const c=D.cache;
+let h='<section class="c"><h2>Cache Strategy</h2>';
+if(c.eviction)h+='<div class="y"><strong>Eviction:</strong> '+e(c.eviction)+'</div>';
+if(c.write_policy)h+='<div class="y"><strong>Write Policy:</strong> '+e(c.write_policy)+'</div>';
+if(c.invalidation)h+='<div class="y"><strong>Invalidation:</strong> '+e(c.invalidation)+'</div>';
+if(c.notes)h+='<div class="x" style="margin-top:.3rem">'+e(c.notes)+'</div>';
+return h+'</section>';
+}
+
+function vRegression(){
+let h='<section class="c"><h2>Regression Risk</h2><table><thead><tr><th>Function</th><th>Risk</th><th>Score</th><th>Factors</th></tr></thead><tbody>';
+for(const r of D.regression){
+h+='<tr><td class="m">'+e(r.function)+'</td><td class="'+rc(r.risk)+'"><strong>'+e(r.risk)+'</strong></td><td>'+e(r.score)+'</td><td class="x">'+e((r.factors||[]).join(", "))+'</td></tr>';
+}
+return h+'</tbody></table></section>';
+}
+
+function vLeaks(){
+let h='<section class="c"><h2>Leak Patterns</h2><table><thead><tr><th>Pattern</th><th>Language</th><th>Severity</th><th>Location</th></tr></thead><tbody>';
+for(const l of D.leaks){
+h+='<tr><td>'+e(l.pattern)+'</td><td><span class="p">'+e(l.language)+'</span></td><td class="'+rc(l.severity)+'">'+e(l.severity)+'</td><td class="m x">'+e(l.location||"")+'</td></tr>';
+}
+return h+'</tbody></table></section>';
+}
+
+function vRecs(){
+let h='<section class="c" style="border-left:3px solid var(--ac)"><h2>Recommendations</h2><ol style="padding-left:1.2rem;font-size:.82rem">';
+for(const r of D.recommendations){
+h+='<li style="margin-bottom:.3rem">'+e(typeof r==="string"?r:r.text);
+if(r.impact)h+=' <span class="x">('+e(r.impact)+')</span>';
+h+='</li>';
+}
+return h+'</ol></section>';
+}
+
+render();
+})();</script>
+</body></html>

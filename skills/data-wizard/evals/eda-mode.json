@@ -1,0 +1,16 @@
+{
+  "skills": ["data-wizard"],
+  "query": "/data-wizard eda Profile this dataset and give me a summary of distributions, outliers, and data quality issues: sales_data.csv",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates data-wizard skill",
+    "Agent routes to EDA mode based on 'eda' keyword",
+    "Agent classifies as Quick tier (single dataset profiling)",
+    "Agent runs data-profiler.py on sales_data.csv",
+    "Agent runs data-quality-scorer.py on sales_data.csv for quality dimensions",
+    "Agent presents distribution summaries per column (types, stats, skew)",
+    "Agent flags outliers with statistical evidence",
+    "Agent produces data quality score breakdown across Completeness, Consistency, Accuracy, Timeliness, Uniqueness",
+    "Agent recommends next steps based on profile findings"
+  ]
+}

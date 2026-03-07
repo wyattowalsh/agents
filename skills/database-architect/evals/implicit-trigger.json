@@ -1,0 +1,12 @@
+{
+  "skills": ["database-architect"],
+  "query": "I need to add a created_at column to the users table without any downtime",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes migration intent and invokes database-architect",
+    "Agent dispatches to Migrate mode",
+    "Agent generates migration SQL with up and down operations",
+    "Agent applies zero-downtime strategy (column addition is safe without expand-contract)",
+    "Agent presents migration with rollback plan"
+  ]
+}
