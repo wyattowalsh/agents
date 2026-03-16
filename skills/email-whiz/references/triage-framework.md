@@ -104,7 +104,7 @@ Archive immediately when the email has useful information but requires no action
 
 ### NOISE
 
-Archive or delete without reading when the email has no value: automated notifications, unwanted marketing, social alerts. Collect NOISE IDs during scan — batch-archive at Wave 2 end (see Batch Operations below).
+Archive without reading when the email has no value: automated notifications, unwanted marketing, social alerts. Collect NOISE IDs during scan — batch-archive at Wave 2 end (see Batch Operations below).
 
 ## Sender Shortcuts
 
@@ -227,7 +227,7 @@ At 500+/day, run `gmail_search_emails` with `is:important is:unread` before gene
 | Mistake | Impact | Fix |
 |---------|--------|-----|
 | Reading fully during Wave 1 | Triage takes 30+ min | Scan subject + first line only |
-| Leaving "maybe later" in inbox | Inbox never empties | DEFER with label or delete |
+| Leaving "maybe later" in inbox | Inbox never empties | DEFER with label or archive |
 | Opening the same email twice | Double processing time | One touch: decide and act |
 | Skipping deferred review | Deferred pile grows unbounded | Schedule daily sweep per `inbox-zero-system.md` |
 | Archiving NOISE one at a time | Slow; wastes API calls | Collect IDs, batch-archive at Wave 2 end |

@@ -104,13 +104,12 @@ A — Suppress (keep list, remove from inbox):
   gmail_create_filter_from_template: fromSender
   action: {addLabelIds: ["_reading/newsletters"], removeLabelIds: ["INBOX"], markRead: true}
 
-B — Delete + unsubscribe:
+B — Archive + unsubscribe:
   gmail_read_email → surface unsubscribe link (user clicks manually)
-  from:{sender} → gmail_batch_delete_emails
-  Show Destructive Warning template (templates.md § Destructive Warning). User must TYPE 'DELETE' to confirm. This operation is IRREVERSIBLE.
+  from:{sender} → gmail_batch_modify_emails: removeLabelIds: ["INBOX"] (archive all)
 
 C — Quarterly audit:
-  label:_reading/newsletters is:unread older_than:14d → unsubscribe or delete
+  label:_reading/newsletters is:unread older_than:14d → unsubscribe or archive
 ```
 
 ---
@@ -201,12 +200,11 @@ messageIds: [...], addLabelIds: ["Label_xxx"], batchSize: 50
 ### Confirmation Protocol (required before every batch)
 - Show count: "This will modify N emails"
 - Show sample: first 3 subjects + senders
-- State reversibility: archive is reversible; delete is not
-- Delete warning: "Delete is IRREVERSIBLE. Archive instead if unsure."
+- All operations use archive, which is reversible.
 
 ### Cache Invalidation
 
-After any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`), re-fetch affected resources and update session cache. Never serve stale data after a write.
+After any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`), re-fetch affected resources and update session cache. Never serve stale data after a write.
 
 ---
 
@@ -300,8 +298,8 @@ Tiered handling:
     action: {addLabelIds: ["_dev/github"], removeLabelIds: ["INBOX"], markRead: true}
   Tier 2 — suppress inbox, keep unread (review weekly):
     action: {addLabelIds: ["_dev/ci"], removeLabelIds: ["INBOX"]}
-  Tier 3 — delete immediately (true noise, never needed):
-    action: {delete: true}
+  Tier 3 — suppress and mark read (true noise):
+    action: {addLabelIds: ["_noise"], removeLabelIds: ["INBOX"], markRead: true}
 
 Backfill: from:{sender} in:inbox → gmail_batch_modify_emails
 

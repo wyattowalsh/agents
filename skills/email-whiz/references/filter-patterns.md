@@ -194,7 +194,7 @@ Algorithms used by the `auto-rules` mode to surface filter candidates without ma
 3. Identify candidates:
    - volume >= 10 AND reply_rate < 10%   → filter (skip inbox)
    - volume >= 5  AND automated domain   → filter (skip inbox + label)
-   - volume >= 20 AND reply_rate == 0    → offer delete or filter
+   - volume >= 20 AND reply_rate == 0    → offer archive or filter
 4. Rank: volume DESC, reply_rate ASC
 5. Assign confidence:
    HIGH   (>80%):   volume >= 20, reply_rate < 5%
@@ -254,7 +254,7 @@ Propose updated filter and confirm before replacing the existing rule.
 ```
 For each auto-rule filter:
 - 30d_hits = gmail_search_emails(query: "{criteria} newer_than:30d").count
-- If 30d_hits == 0: mark stale → offer to delete
+- If 30d_hits == 0: mark stale → offer to remove
 - If 30d_hits >= 1: keep and log effectiveness
 
 Re-run sender cluster algorithm on past 30d:

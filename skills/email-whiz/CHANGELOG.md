@@ -4,6 +4,33 @@ All notable changes to email-whiz are documented here.
 
 ---
 
+## [5.0.0] - 2026-03-16
+
+### Breaking
+- Email deletion forbidden by default — `gmail_delete_email` and `gmail_batch_delete_emails` only allowed when user explicitly requests deletion (Destructive Warning required)
+- Empty invocation (`/email-whiz`) now runs auto-scan instead of showing menu
+
+### Added
+- Auto-Scan mode: empty invocation runs Phase 0 + 6 analysis queries in mega-wave, presents prioritized action plan with applicable workflows
+- Orchestration Patterns section with Decomposition Gate and per-mode wave patterns + call budget table
+- Auto-Scan Report template
+- Auto-Scan eval test cases (9 scenarios)
+- "all" option in auto-scan chains top 3 recommendations as combo mode
+
+### Changed
+- All email-delete paths replaced with archive throughout all reference files
+- Unsubscribe Strategy B now archives instead of deleting
+- High-Volume Transactional Tier 3 changed from delete to suppress+markRead
+- Destructive Warning template repurposed for label/filter deletion only
+- Scope Boundaries: removed "composing outbound emails" from NOT-for (gmail_send_email is available for DELEGATE)
+- Vocabulary: fixed "historically" note for 5-bucket term (was self-referential, now correctly says "4D+N")
+- tool-reference.md: gmail_delete_email and gmail_batch_delete_emails marked as NOT in allowed-tools
+
+### Fixed
+- Cache invalidation trigger lists no longer reference removed delete tools
+
+---
+
 ## [4.0.1] - 2026-03-15
 
 ### Fixed

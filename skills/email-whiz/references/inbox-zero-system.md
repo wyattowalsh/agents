@@ -33,7 +33,7 @@ Apply 5-bucket triage to everything unread:
 - DELEGATE: add to forward list (batch after)
 - DEFER: apply label `_deferred`, archive
 - REFERENCE: archive immediately
-- NOISE: archive or delete (batch via `gmail_batch_modify_emails`)
+- NOISE: archive (batch via `gmail_batch_modify_emails`)
 
 ### Step 3: Batch Operations (2 min)
 ```

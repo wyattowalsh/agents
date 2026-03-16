@@ -93,7 +93,7 @@ Add or remove labels on a single email.
 - Note: For single-email label changes only. Use `gmail_batch_modify_emails` for multiple.
 
 **`gmail_delete_email`**
-Permanently delete a single email.
+**NOT in allowed-tools. Email deletion is disabled in this skill.** Permanently delete a single email.
 - Params: `messageId` (string)
 - Returns: empty 204
 - Note: IRREVERSIBLE. Show destructive warning template and confirm before calling.
@@ -119,7 +119,7 @@ Apply label changes to multiple emails in one call.
 - Note: Prefer over a loop of `gmail_modify_email`. Max 1000 messages per call; split larger sets.
 
 **`gmail_batch_delete_emails`**
-Delete multiple emails in one call.
+**NOT in allowed-tools. Email deletion is disabled in this skill.** Delete multiple emails in one call.
 - Params: `messageIds` (string[], up to 1000), `batchSize` (int, default 50)
 - Returns: `{success: count, failed: []}`
 - Note: IRREVERSIBLE. Always show the destructive warning template and get explicit confirmation before calling.
