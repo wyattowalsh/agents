@@ -6,7 +6,7 @@
 
 ## Email Bankruptcy — Nuclear Reset
 
-**Trigger:** Inbox unread > 1000 or user requests a clean slate.
+**Trigger:** RED level (>100% above baseline) or >50,000 absolute, or user requests a clean slate.
 
 ```
 0 — Rescue: is:unread is:important newer_than:7d | from:{VIP_LIST} newer_than:7d → star
@@ -25,7 +25,7 @@
 
 ## Email Bankruptcy — Staged Approach
 
-**Trigger:** Inbox unread 200–1000, user prefers gradual recovery.
+**Trigger:** ORANGE level (50–100% above baseline), user prefers gradual recovery.
 
 ```
 Week 1: is:unread older_than:30d → confirm → archive batch
@@ -106,7 +106,8 @@ A — Suppress (keep list, remove from inbox):
 
 B — Delete + unsubscribe:
   gmail_read_email → surface unsubscribe link (user clicks manually)
-  from:{sender} → gmail_batch_delete_emails (confirm first)
+  from:{sender} → gmail_batch_delete_emails
+  Show Destructive Warning template (templates.md § Destructive Warning). User must TYPE 'DELETE' to confirm. This operation is IRREVERSIBLE.
 
 C — Quarterly audit:
   label:_reading/newsletters is:unread older_than:14d → unsubscribe or delete
@@ -156,9 +157,29 @@ Action: {top 1-3 quick wins}
 
 ---
 
+## Combo Mode Workflows
+
+Protocol for `<mode1> + <mode2>`:
+
+1. Phase 0 runs once (shared state)
+2. Mode 1 executes fully, returns modification manifest (archived IDs, created filters)
+3. If mode 1 performed writes: refresh affected resources before mode 2
+4. Mode 2 uses enriched context, excluding already-processed IDs
+5. Phase 0 NOT re-run for mode 2
+
+### Common Combos
+
+- **triage + filters:** NOISE patterns from triage become filter candidates
+- **audit + auto-rules:** audit findings drive rule creation
+- **cleanup + inbox-zero:** cleanup first, then assess inbox zero state
+
+---
+
 ## Batch Operations
 
 Use `gmail_batch_modify_emails` for any operation affecting 3+ emails.
+
+Batch ops on disjoint ID sets can run in parallel (1 message, multiple tool calls). After batch operations, invalidate session cache for affected resources.
 
 ### Archive Batch
 ```
@@ -182,6 +203,10 @@ messageIds: [...], addLabelIds: ["Label_xxx"], batchSize: 50
 - Show sample: first 3 subjects + senders
 - State reversibility: archive is reversible; delete is not
 - Delete warning: "Delete is IRREVERSIBLE. Archive instead if unsure."
+
+### Cache Invalidation
+
+After any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`), re-fetch affected resources and update session cache. Never serve stale data after a write.
 
 ---
 

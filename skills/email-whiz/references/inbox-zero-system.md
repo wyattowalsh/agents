@@ -7,14 +7,16 @@
 Inbox zero is a habit, not a one-time event. This system provides:
 - **Daily routine** (5 min): Quick triage to keep inbox clear
 - **Weekly review** (15 min): Deeper maintenance and filter optimization
-- **Progress tracking**: Streak and backlog trend monitoring
-- **Bankruptcy recovery**: Staged approach when inbox is beyond control
+- **Progress tracking**: Streak, backlog trend, and baseline monitoring
+- **Bankruptcy recovery**: Relative-baseline approach when inbox diverges from normal
 
 ---
 
 ## Daily Routine (5 min)
 
 Run at a consistent time (morning recommended).
+
+**Before Step 1:** Check session cache. If cached within 1h, skip label/filter discovery.
 
 ### Step 1: Quick Scan (1 min)
 ```
@@ -23,8 +25,10 @@ Goal: identify anything requiring same-day action
 Action: star P0/P1, skip the rest
 ```
 
+**Massive tier (5k+ inbox):** Start with `is:important is:unread newer_than:1d` only. Process important emails first, then broaden if time allows.
+
 ### Step 2: Triage Unread (2 min)
-Apply 4D+N to everything unread:
+Apply 5-bucket triage to everything unread:
 - DO: flag with INBOX/star, leave in inbox
 - DELEGATE: add to forward list (batch after)
 - DEFER: apply label `_deferred`, archive
@@ -52,6 +56,8 @@ Time spent < 5 minutes
 
 Run once per week (Friday afternoon or Monday morning).
 
+**Issue ALL 3 queries in 1 message:** deferred sweep + filter effectiveness + newsletter sweep. This avoids 3 round trips.
+
 ### Step 1: Clear Deferred (5 min)
 ```
 Search: label:_deferred older_than:7d
@@ -62,9 +68,9 @@ For each: follow up or archive
 
 ### Step 2: Filter Effectiveness (5 min)
 ```
-Check inbox for recurring noise → add to filters
-Check _deferred label → anything that should be filtered?
-Check top 5 senders by volume → any new filter candidates?
+Check inbox for recurring noise -> add to filters
+Check _deferred label -> anything that should be filtered?
+Check top 5 senders by volume -> any new filter candidates?
 ```
 
 ### Step 3: Newsletter Review (3 min)
@@ -75,8 +81,8 @@ Action: read or unsubscribe (unread older_than:14d = not interested)
 
 ### Step 4: Inbox State Check (2 min)
 ```
-If inbox empty → log streak + 1
-If inbox has items → address or consciously defer
+If inbox empty -> log streak + 1
+If inbox has items -> address or consciously defer
 Update progress tracking
 ```
 
@@ -93,6 +99,8 @@ Store progress at `~/.claude/email-whiz/inbox-zero-progress.json`.
   "current_streak": 0,
   "longest_streak": 0,
   "last_zero_date": null,
+  "tier": "Massive",
+  "baseline": 5200,
   "history": [
     {
       "date": "YYYY-MM-DD",
@@ -125,6 +133,7 @@ INBOX ZERO PROGRESS
 
 Streak: {current} days (best: {longest})
 Last zero: {last_zero_date}
+Tier: {tier} | Baseline: {baseline}
 This week: {weekly_review_status}
 
 Trend: {chart of last 7 days inbox counts}
@@ -139,12 +148,30 @@ Wed  | 0  v
 
 ## Bankruptcy Detection
 
-Trigger staged recovery when:
-- Inbox unread > 500, OR
-- Inbox count growing for 3+ consecutive days, OR
-- User reports feeling overwhelmed
+Bankruptcy is now RELATIVE to a rolling 30-day baseline, not absolute thresholds. This prevents permanent triggering for users with large inboxes (5k-20k).
 
-### Assessment Query
+### Baseline Calculation
+`!uv run python scripts/inbox_snapshot.py baseline --days 30`
+Returns rolling 30-day average inbox count from snapshot history.
+
+### Alert Levels (relative to baseline)
+| Level | Trigger | Action |
+|-------|---------|--------|
+| NORMAL | Within 20% of baseline | Continue daily routine |
+| YELLOW | 20-50% above baseline | Surface warning; suggest extra triage session |
+| ORANGE | 50-100% above baseline | Recommend aggressive triage + filter creation |
+| RED | >100% above baseline | Full bankruptcy protocol (Daily Blitz / Staged / Nuclear) |
+
+### Acceleration Trigger
+Week-over-week growth >20% for 2+ consecutive weeks escalates one level regardless of absolute count.
+
+### New User Default
+Users with no snapshot history default to absolute threshold of 500 until 7+ snapshots establish a baseline.
+
+### Absolute Floor
+50,000 unread always triggers RED regardless of baseline.
+
+### Assessment Query (when RED)
 ```
 Search: is:unread
 Count: {total unread}
@@ -152,8 +179,8 @@ Count: {total unread}
 Search: is:unread newer_than:7d
 Count: {recent unread}
 
-If recent / total > 0.8: inbox is active but overwhelming → Daily Blitz
-If recent / total < 0.3: backlog problem → Staged Approach
+If recent / total > 0.8: inbox is active but overwhelming -> Daily Blitz
+If recent / total < 0.3: backlog problem -> Staged Approach
 ```
 
 ### Option 1: Daily Blitz (for active overwhelm)
@@ -171,14 +198,14 @@ Week 3: Archive all is:unread older_than:7d
 Week 4: Normal daily routine
 ```
 
-### Option 3: Nuclear Reset (for 1000+ unread)
+### Option 3: Nuclear Reset (for extreme cases)
 ```
 Step 1: Rescue critical emails:
-  - is:unread is:important newer_than:7d → Review
-  - is:unread from:{VIP_LIST} → Review
+  - is:unread is:important newer_than:7d -> Review
+  - is:unread from:{VIP_LIST} -> Review
 
 Step 2: Archive everything else (with explicit confirmation):
-  - is:unread older_than:7d → Archive all (batch)
+  - is:unread older_than:7d -> Archive all (batch)
 
 Step 3: Fresh start:
   - Set up daily routine
@@ -194,7 +221,7 @@ Step 3: Fresh start:
 
 After 21 consecutive days at inbox zero, suggest moving to a weekly-only routine: increase batch processing tolerance and shift focus to filter optimization over daily triage.
 
-After 30 days without a bankruptcy trigger, the inbox system is stable — recommend a quarterly audit instead of monthly.
+After 30 days without a bankruptcy trigger, the inbox system is stable -- recommend a quarterly audit instead of monthly.
 
 ---
 

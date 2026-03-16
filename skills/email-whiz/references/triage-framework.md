@@ -31,6 +31,53 @@ Triage assigns every email to exactly one of five buckets. "4D+N" is a misnomer 
     DO (P0/P1)
 ```
 
+## Fast-Lane Classification
+
+Apply fast-lane rules before the full decision tree. These fire on metadata alone (sender, subject, headers) — no content read required.
+
+### Sender Fast-Lane Rules
+
+| Pattern | Bucket | Confidence |
+|---------|--------|------------|
+| `noreply@*`, `no-reply@*`, `donotreply@*` | NOISE | HIGH |
+| `notifications@*`, `alerts@*` | NOISE | HIGH |
+| `calendar-notification@*` | NOISE | HIGH (unless "accepted"/"declined" in subject) |
+| `*-noreply@google.com` | NOISE | HIGH |
+| Known VIP (from session cache or user history) | DO | MEDIUM |
+| `list:*` header (mailing list) | REFERENCE | MEDIUM |
+
+### Subject Fast-Lane Rules
+
+| Signal | Bucket | Confidence |
+|--------|--------|------------|
+| `[FYI]`, `[INFO]`, `[ANNOUNCEMENT]` | REFERENCE | HIGH |
+| `[ACTION]`, `[URGENT]`, `[REQUEST]` | DO | HIGH |
+| "Weekly digest", "Newsletter", "Monthly roundup" | REFERENCE | HIGH |
+| "Receipt", "Confirmation", "Your order", "Shipping" | REFERENCE | HIGH |
+| "Unsubscribe" in snippet | NOISE | MEDIUM |
+| "RE:" (active thread) | check_content | — |
+
+### Security Gate (mandatory before archiving NOISE)
+
+| Keyword in subject/snippet | Action |
+|-----------------------------|--------|
+| password reset, verify your, sign-in, unusual activity | Pull from NOISE → REVIEW |
+| 2FA, account locked, verification code, one-time password | Pull from NOISE → REVIEW |
+| security alert, breach, compromised | Pull from NOISE → REVIEW |
+| `new device` | Pull from NOISE → REVIEW |
+| `suspicious login` | Pull from NOISE → REVIEW |
+| `recovery phone` | Pull from NOISE → REVIEW |
+| `two-step verification` | Pull from NOISE → REVIEW |
+| `confirm your identity` | Pull from NOISE → REVIEW |
+| `new sign-in method` | Pull from NOISE → REVIEW |
+| Any `noreply@` email `newer_than:7d` | Pull from NOISE → REVIEW (login notifications have no expiry; this ensures account-compromise alerts are surfaced) |
+
+### Parallel Batch Protocol
+
+After fast-lane + security gate, issue 3x `gmail_batch_modify_emails` in 1 message (NOISE + REFERENCE + DEFER = disjoint IDs, parallel safe).
+
+---
+
 ## Decision Criteria
 
 ### DO (Action Required)
@@ -164,14 +211,14 @@ Recurring NOISE patterns seen during triage → candidates for new filters (`gma
 
 ## Volume Strategies
 
-| Daily Volume | Strategy |
-|-------------|---------|
-| < 30/day | Process as received; single daily Wave cycle |
-| 30–100/day | Batch 2–3x daily; strict Wave 1/2/3 separation |
-| 100–300/day | Strict filtering; process top 20% only; defer rest |
-| 300+/day | Declare email bankruptcy; use staged recovery from `inbox-zero-system.md` |
+| Daily Volume | Tier | Strategy |
+|-------------|------|---------|
+| < 50/day | Small tier | Process all; single daily Wave cycle |
+| 50–500 | Medium tier | Batch 2–3x daily; strict Wave separation |
+| 500–5000 | Large tier | Strict filtering; importance-first; date-range splitting |
+| 5000+ | Massive tier | Date-range parallel queries; baseline bankruptcy |
 
-At 100+/day, run `gmail_search_emails` with `is:important is:unread` before general triage to surface Gmail-ranked priority items first.
+At 500+/day, run `gmail_search_emails` with `is:important is:unread` before general triage to surface Gmail-ranked priority items first.
 
 ---
 

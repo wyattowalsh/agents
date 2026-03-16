@@ -15,6 +15,23 @@ All analytics use `gmail_search_emails` with date-range and label filters. Attac
 
 ---
 
+## Parallel Query Strategy
+
+All analytics queries are independent. Issue them in a SINGLE mega-wave message:
+
+```
+1. 4x weekly volume queries (Weeks N through N-3)
+2. in:sent count (30d)
+3. Inbox reach rate numerator + denominator
+4. is:starred older_than:2d (overdue)
+5. Reply rate query
+6. Top senders sample
+```
+
+This reduces analytics from 6-8 sequential messages to 1-2 mega-wave messages (~65% reduction). Each query returns independently — no query depends on another's results. Aggregate and format the report after all results arrive.
+
+---
+
 ## Volume Analysis
 
 ### Total Volume
@@ -289,8 +306,15 @@ QUICK WINS
 
 ## Performance Notes
 
-- Fetch 50-100 emails per search (set maxResults explicitly)
+- Fetch 100-200 emails per search (maxResults capped due to N+1 fetch pattern)
 - Use date ranges to scope large analyses
 - Sender frequency analysis: sample 200 most recent, not full history
 - Response time: estimate from thread structure, not exact measurement
 - All metrics are approximate — Gmail MCP doesn't expose read receipts or exact open times
+- Use INBOX label `messagesTotal` from `gmail_list_email_labels` for accurate counts, NOT `resultSizeEstimate`
+
+### Tier-Adaptive Sampling
+
+- **Massive tier (5k+ inbox):** Sample 200 most recent, not full history
+- **maxResults:** 100-200 (not 500) due to MCP N+1 fetch pattern — each result triggers an individual read
+- **Date-range splitting:** If total > 500 messages in scope, split into date-range chunks and issue all chunk queries in parallel

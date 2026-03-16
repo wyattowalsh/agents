@@ -44,6 +44,29 @@ Before any tool-mediated work:
 **Model**: opus everywhere. No exceptions. Never downgrade model for any reason.
 **Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.
 
+## Skill Accuracy
+
+### Type Inventory Verification
+
+Before documenting enum values, signal types, or category lists in a skill, read the actual implementation code (classifier prompts, keyword fallbacks, DB enum definitions). Types that exist only in the skill documentation but not in the code are **phantom types** — they will cause silent failures when the agent tries to use them.
+
+### Encryption and Security Claims
+
+Always verify encryption claims against the actual cryptography library and function calls used in the codebase. Common inaccuracies:
+- "AES-256" when the code uses Fernet (AES-128-CBC)
+- "encrypted" when the code uses XOR or base64 encoding
+- "secure storage" when tokens are stored in plaintext
+
+Read the import statements and function calls; do not trust comments or docstrings alone.
+
+### LLM Classifier Documentation
+
+When a skill wraps an LLM-based classifier, document all four of:
+1. **Model** — exact model identifier (e.g., `claude-haiku-4-5-20251001`)
+2. **Fallback mode** — what happens when the API key is missing or the call fails (e.g., keyword matching)
+3. **Confidence threshold** — the minimum score to act on a result (e.g., >= 0.6)
+4. **Failure handling** — how the agent should handle classification failures or ambiguous results
+
 ## Browser Tools
 
 Prefer `chrome-devtools` MCP for browser automation, testing, and debugging. Fallback: Playwright → Fetcher/Fetch → WebFetch.

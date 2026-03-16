@@ -80,6 +80,8 @@ Ten ready-to-use configurations. Replace `{}` placeholders before applying.
 5. Present: volume DESC, reply_rate ASC
 ```
 
+> **Parallelism:** Issue sender clustering query AND subject pattern query in parallel (same message). Both operate on the same search results but perform independent analysis.
+
 ### Subject Pattern Mining
 ```
 1. Collect subjects from: in:inbox newer_than:90d
@@ -180,6 +182,9 @@ Use `gmail_create_filter` (custom) instead when:
 Algorithms used by the `auto-rules` mode to surface filter candidates without manual input.
 
 ### Sender Cluster Algorithm
+
+> **Massive tier (5k+ inbox):** Split the 90-day analysis into 3x30-day chunks. Issue ALL 3 search queries in 1 message (date-range splitting).
+
 ```
 1. Search: in:inbox after:{90d_ago} (sample up to 500 emails)
 2. For each sender:
@@ -266,4 +271,34 @@ Report: filters created / active / stale / new candidates found
 - User explicitly invokes /email-whiz auto-rules again
 - Month 1 check identifies 3+ new candidate clusters
 - Any filter's false positive rate exceeds 5%
+```
+
+---
+
+## Fast-Lane to Filter Pipeline
+
+When fast-lane triage identifies 5+ NOISE emails from the same sender pattern in a single session, automatically surface that pattern as a HIGH confidence filter candidate. This bypasses the normal 30-day sample — the fast-lane provides real-time signal.
+
+### Rules
+
+| Condition | Action |
+|-----------|--------|
+| 5+ NOISE from same sender domain | Propose `fromSender` filter template |
+| 3+ NOISE with same subject prefix (`[JIRA]`, `PR #`, etc.) | Propose `withSubject` filter template |
+
+Present alongside normal filter suggestions with label **"Fast-Lane Detected"**.
+
+### Workflow
+```
+1. During fast-lane triage, track NOISE classifications per sender domain and subject prefix
+2. If sender_domain_noise_count >= 5:
+   - Build fromSender template with domain
+   - Assign confidence: HIGH (real-time signal, no 30-day wait)
+   - Tag: "Fast-Lane Detected"
+3. If subject_prefix_noise_count >= 3:
+   - Build withSubject template with prefix pattern
+   - Assign confidence: HIGH
+   - Tag: "Fast-Lane Detected"
+4. Surface filter candidates at end of triage summary alongside any normal suggestions
+5. Run conflict detection before creating (same as standard filters)
 ```
