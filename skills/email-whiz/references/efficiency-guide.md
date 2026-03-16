@@ -20,7 +20,7 @@
 - **Load:** !`uv run python scripts/inbox_snapshot.py cache load`
 - **Save:** !`uv run python scripts/inbox_snapshot.py cache save --labels '...' --filters '...' --inbox-count N --tier TIER`
 - **Clear:** !`uv run python scripts/inbox_snapshot.py cache clear`
-- **Write-through invalidation:** After any `gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, or `gmail_batch_delete_emails`, re-fetch the affected resource and update cache immediately. Never serve stale data after a write.
+- **Write-through invalidation:** After any `gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, or `gmail_batch_modify_emails`, re-fetch the affected resource and update cache immediately. Never serve stale data after a write.
 
 ---
 
@@ -39,6 +39,7 @@ Fuse independent calls into the fewest messages possible. Each row = one mode.
 | **Auto-Rules** | 3x discovery + sender + subject + filters | parallel create_filter | — |
 | **Senders** | 3x discovery + sample + reply-rate queries | — | — |
 | **Newsletters** | 3x discovery + list:* + subject:newsletter | per-sub read-rate queries | — |
+| **Auto-Scan** | 3x discovery + 6x analysis queries + 2x scripts (~10) | scoring + report (0 tools) | — |
 
 **Quick-compatible modes** (skip Phase 0): `search`, `digest`. Go straight to the primary query.
 
@@ -49,7 +50,7 @@ Fuse independent calls into the fewest messages possible. Each row = one mode.
 - **`gmail_search_emails`:** Accepts `query` + `maxResults` only. No `pageToken`. Hard ceiling 500 per call.
 - **`gmail_read_email`:** Accepts `messageId` only. Always returns full message. No format control. Expensive.
 - **`gmail_batch_modify_emails`:** Accepts `messageIds` + `addLabelIds`/`removeLabelIds` + `batchSize` (default 50). Up to 1000 IDs per call.
-- **`gmail_batch_delete_emails`:** Accepts `messageIds` + `batchSize`. IRREVERSIBLE.
+- **`gmail_batch_delete_emails`:** Not in allowed-tools. Email deletion is disabled in this skill.
 - **`resultSizeEstimate`** is unreliable. Use INBOX label `messagesTotal` from `gmail_list_email_labels`.
 - **N+1 fetch pattern:** `search_emails` likely fetches full message for each result. `maxResults=500` ≈ 501 API calls ≈ 2505 quota units.
 

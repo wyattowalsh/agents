@@ -12,7 +12,7 @@ context: fork
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "4.0.1"
+  version: "5.0.0"
 ---
 
 # Email Whiz
@@ -25,7 +25,7 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 
 | Term | Definition |
 |------|------------|
-| **5-bucket** | DO / DELEGATE / DEFER / REFERENCE / NOISE — five triage buckets (historically "5-bucket") |
+| **5-bucket** | DO / DELEGATE / DEFER / REFERENCE / NOISE — five triage buckets (historically "4D+N") |
 | **inbox zero** | State where inbox contains only items requiring action today |
 | **fast-lane** | Sender/subject-only classification without reading email content |
 | **security gate** | Subject-keyword scan of NOISE before archiving (catches 2FA, password resets) |
@@ -60,7 +60,7 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 | `audit` | Full inbox health report with score and action plan |
 | `quick search` or `quick digest` | Skip Phase 0, run mode directly. Only search and digest are quick-compatible |
 | `<mode> + <mode>` | Chain modes, sharing discovered state (triage + filters) |
-| _(empty)_ | Show this mode menu |
+| _(empty)_ | Auto-scan: run Phase 0 + account analysis, present prioritized action plan |
 
 **Classification gate:** If `$ARGUMENTS` could match multiple modes, ask which the user wants before proceeding.
 
@@ -73,9 +73,11 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 
 **Write operations — confirm before executing:**
 Single: `gmail_modify_email`, `gmail_delete_email`, `gmail_create_label`
-Batch: `gmail_batch_modify_emails`, `gmail_batch_delete_emails` (MUST use Destructive Warning template — user types "DELETE" to confirm)
+Batch: `gmail_batch_modify_emails`, `gmail_batch_delete_emails`
 Labels: `gmail_update_label`, `gmail_delete_label`, `gmail_get_or_create_label`
 Filters: `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_delete_filter`
+
+**Email deletion is FORBIDDEN unless the user explicitly requests it.** Never call `gmail_delete_email` or `gmail_batch_delete_emails` on your own initiative. Always archive instead. Only use delete tools when the user directly says "delete" — and even then, use the Destructive Warning template (TYPE "DELETE" confirmation) first.
 
 **Confirmation format:** See `templates.md`. Always show scope, count, and reversibility before write ops.
 
@@ -141,6 +143,61 @@ Use INBOX label `messagesTotal` (NOT `resultSizeEstimate` — it is unreliable).
 **Invalidate cache after any write operation** (filter/label create, batch modify).
 
 Use discovered label names throughout — never invent names that conflict with existing taxonomy.
+
+---
+
+## Auto-Scan (empty invocation)
+
+When invoked with no arguments, perform an intelligent account scan instead of showing a menu.
+
+### Step 1: Mega-Wave Discovery (1 message)
+
+Fuse Phase 0 core discovery with 6 analysis queries in a SINGLE message (~10 calls):
+
+- Phase 0 core: `gmail_list_email_labels` + `gmail_list_filters` + `gmail_search_emails "in:inbox is:unread"` (maxResults: 10)
+- Inbox reach: `gmail_search_emails "in:inbox has:nouserlabels newer_than:7d"` (maxResults: 10)
+- Newsletters: `gmail_search_emails "in:inbox (list:* OR subject:newsletter)"` (maxResults: 50)
+- Stale deferred: `gmail_search_emails "label:_deferred older_than:7d"` (maxResults: 10)
+- Backlog: `gmail_search_emails "in:inbox is:unread older_than:7d"` (maxResults: 10)
+- Cleanup candidates: `gmail_search_emails "in:inbox (subject:receipt OR subject:confirmation) older_than:30d"` (maxResults: 10)
+- `!uv run python scripts/inbox_snapshot.py trend --days 7`
+- `!uv run python scripts/inbox_snapshot.py baseline --days 30`
+
+### Step 2: Analyze + Score
+
+From results, compute: tier (from INBOX messagesTotal), bankruptcy level (baseline comparison), triage need (unread backlog), filter opportunity (noise sender clusters), newsletter burden, cleanup potential, deferred pile health.
+
+### Step 3: Present Action Plan
+
+Use the Auto-Scan Report template (`templates.md` § Auto-Scan Report). Present 3-5 prioritized recommendations with estimated impact. Each maps to a mode.
+
+Offer: reply with number, mode name, `all` (chain top 3 sequentially sharing Phase 0 state), or `menu` (show full mode list).
+
+---
+
+## Orchestration Patterns
+
+This skill runs in `context: fork`. Apply these patterns internally:
+
+### Decomposition Gate (before every mode)
+
+1. List all tool calls needed for the mode
+2. Classify: independent (different queries) vs dependent (needs prior results)
+3. Bundle ALL independent calls into the fewest possible messages
+4. Never execute independent calls sequentially
+
+### Mode-Specific Wave Patterns
+
+| Mode | Wave 1 | Wave 2 | Wave 3 | Total |
+|------|--------|--------|--------|-------|
+| Auto-Scan | Phase 0 + 6 analysis (~10) | scoring (0 tools) | — | ~10 |
+| Triage | Phase 0 + fast-lane (~5) | 3x batch_modify | 5-8x read_email | ~16 |
+| Analytics | Phase 0 + mega-wave (~15) | per-entity batches (~12) | — | ~27 |
+| Audit | Phase 0 + mega-wave (~14) | per-entity batches (~20) | — | ~34 |
+| Cleanup | Phase 0 + 4 stale queries (~7) | batch_modify (~3) | — | ~10 |
+| Filters | Phase 0 + sender/subject (~6) | create_filter (~5) | — | ~11 |
+| Inbox Zero | Phase 0 + unread/deferred (~5) | batch ops (~3) | — | ~8 |
+| Combo | Phase 0 + mode 1 | mode 1 ops | refresh + mode 2 | varies |
 
 ---
 
@@ -244,7 +301,7 @@ Quick-compatible (no Phase 0). Search `is:important newer_than:3d` (or `is:starr
 
 ## Mode: Cleanup
 
-Archive candidates. Issue ALL 4 stale-detection queries in 1 message: receipts/confirmations `older_than:30d` + old newsletters `older_than:30d` + expired deferrals `older_than:14d` + fully-read no-label `older_than:60d`. Batch-archive ALL results in parallel `gmail_batch_modify_emails` calls. Never use `gmail_batch_delete_emails` — archive only. Details: `workflows.md` § Batch Operations.
+Archive candidates. Issue ALL 4 stale-detection queries in 1 message: receipts/confirmations `older_than:30d` + old newsletters `older_than:30d` + expired deferrals `older_than:14d` + fully-read no-label `older_than:60d`. Batch-archive ALL results in parallel `gmail_batch_modify_emails` calls. Archive only — never delete. Details: `workflows.md` § Batch Operations.
 
 ---
 
@@ -257,7 +314,7 @@ Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label a
 ## Scope Boundaries
 
 **IS for:** Gmail triage, inbox zero, filters, auto-rules, analytics, newsletters, labels, search, senders, digest, cleanup, audit.
-**NOT for:** Composing outbound emails, calendar, Google Drive, non-Gmail, real-time monitoring, CRM.
+**NOT for:** Calendar, Google Drive, non-Gmail, real-time monitoring, CRM.
 
 ---
 
@@ -300,7 +357,7 @@ Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label a
 9. Surface unsubscribe links — make newsletter cleanup actionable
 10. Prioritize quick wins — high impact, low effort first in all reports
 11. Update inbox-zero progress after every routine
-12. Never use `gmail_batch_delete_emails` unless the user explicitly requests deletion — archive by default in all modes. Always use the Destructive Warning template (TYPE "DELETE" confirmation)
+12. NEVER delete emails unless the user explicitly requests deletion. Archive by default in all modes. When the user does request deletion, use the Destructive Warning template (TYPE "DELETE" confirmation) before calling `gmail_delete_email` or `gmail_batch_delete_emails`
 13. Issue ALL independent tool calls in a single message — sequential independent calls is a bug
 14. Use fast-lane classification before reading content — sender + subject resolve 60%+ of triage
 15. ALWAYS run the security gate on NOISE before archiving — scan subjects for 2FA/password/security keywords

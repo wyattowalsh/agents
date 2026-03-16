@@ -20,7 +20,7 @@ Evaluation cases for email-whiz dispatch table routing. Each case specifies inpu
 | `digest` | Digest | Recent important summary |
 | `cleanup` | Cleanup | Archive candidates |
 | `audit` | Audit | Full health report |
-| _(empty)_ | Menu | Show all modes |
+| _(empty)_ | Auto-Scan | Run Phase 0 + account analysis, present action plan |
 
 ---
 
@@ -148,3 +148,19 @@ Evaluation cases for email-whiz dispatch table routing. Each case specifies inpu
 | 5000 | (new user, no baseline) | Use default 500 | RED — trigger bankruptcy |
 | 12000 | 10000 | YELLOW (20% above) | Surface warning |
 | 50000+ | any | RED (absolute floor) | Full bankruptcy protocol |
+
+---
+
+## Auto-Scan Tests
+
+| Scenario | Expected Behavior |
+|----------|------------------|
+| Empty invocation, fresh account (no cache) | Run full Phase 0 + 6 analysis queries in mega-wave, present Auto-Scan Report |
+| Empty invocation, warm cache (<1h) | Use cached Phase 0, run 6 analysis queries only, present Auto-Scan Report |
+| Auto-Scan report shows 0 unread | Recommend: analytics or audit (no triage needed) |
+| Auto-Scan report shows 500+ unread | Recommend: triage as #1 priority |
+| Auto-Scan report shows 50+ newsletters | Recommend: newsletters mode |
+| Auto-Scan report shows RED bankruptcy | Recommend: inbox-zero with bankruptcy recovery |
+| User replies "all" to Auto-Scan | Chain top 3 recommendations as combo mode |
+| User replies "menu" to Auto-Scan | Show full dispatch table |
+| User replies number (e.g., "2") | Execute the corresponding recommended mode |

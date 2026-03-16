@@ -13,7 +13,7 @@ Show these BEFORE executing any operation that modifies email state.
 ```
 ACTION REQUIRED — CONFIRM
 
-Operation: {Archive | Apply label "{label}" | Remove label "{label}" | Mark read | Delete}
+Operation: {Archive | Apply label "{label}" | Remove label "{label}" | Mark read}
 Target: "{subject}" from {sender} ({date})
 
 Reply "yes" to proceed. Reply "cancel" to abort.
@@ -24,7 +24,7 @@ Reply "yes" to proceed. Reply "cancel" to abort.
 ```
 📦 BATCH OPERATION
 
-Operation: {Archive | Apply label | Remove label | Delete}
+Operation: {Archive | Apply label | Remove label}
 Scope: {count} emails matching "{search_criteria}"
 
 Sample (first 3):
@@ -33,7 +33,7 @@ Sample (first 3):
 • "{subject}" from {sender} — {date}
 {if count > 3}...and {count - 3} more{/if}
 
-Reversible: {Yes — can undo via archive | NO — permanent delete}
+Reversible: Yes — can undo via archive
 
 Reply: "execute" | "show all" | "cancel"
 ```
@@ -73,17 +73,17 @@ Trend: {trend} for {weeks} weeks
 Reply "triage" | "auto-rules" | "show recovery options"
 ```
 
-### Destructive Warning (Delete Operations)
+### Label/Filter Deletion Warning
 
 ```
-⚠ DESTRUCTIVE OPERATION — CANNOT BE UNDONE
+⚠ CONFIRM DELETION
 
-Operation: Permanent delete
-Target: {count > 1 ? "{count} emails matching {search_criteria}" : ""{subject}" from {sender}"}
+Operation: Delete {label | filter}
+Target: "{name}"
 
-This action cannot be reversed. Deleted emails do not go to Trash.
+This removes the {label | filter} only — no emails are affected.
 
-Type "DELETE" to confirm. Anything else cancels.
+Reply "confirm" to proceed. Reply "cancel" to abort.
 ```
 
 ### Filter Creation Confirmation
@@ -147,7 +147,7 @@ FILTER SUGGESTIONS — {count} patterns worth automating
 
 {n}. {sender_or_pattern}
    Frequency: ~{count}/month
-   Action: {Skip inbox + label "{label}" | Mark read + archive | Delete}
+   Action: {Skip inbox + label "{label}" | Mark read + archive}
    Matches {est_pct}% of inbox volume
 
 Reply "create all" | "create {n}" | "skip"
@@ -175,10 +175,10 @@ LABEL ANALYSIS — {total_count} labels ({system_count} system, {user_count} use
 
 ACTIVE (last 30d):    {name} — {count} total, {recent_count} new this month
 COLD (30–90d):        {name} — last message {days}d ago
-STALE (90d+):         {name} — last message {days}d ago → DELETE?
-EMPTY:                {name} → DELETE?
+STALE (90d+):         {name} — last message {days}d ago → REMOVE?
+EMPTY:                {name} → REMOVE?
 
-Reply "delete stale" | "delete empty" | "delete all unused" | "skip"
+Reply "remove stale" | "remove empty" | "remove all unused" | "skip"
 ```
 
 ### Full Audit Report
@@ -289,7 +289,7 @@ HIGH CONFIDENCE — CREATE NOW:
 {for each high_confidence_rule}
   {n}. {rule_name}
      Match: {criteria}
-     Action: {skip inbox + label | delete | mark read}
+     Action: {skip inbox + label | archive | mark read}
      ~{count}/month | Confidence: {pct}%
 {/for}
 
@@ -309,6 +309,23 @@ Est. inbox reduction: -{pct}% if all HIGH rules created
 Reply: "create all high" | "create {n}" | "review {n}" | "skip"
 ```
 
+### Auto-Scan Report
+
+```
+INBOX SCAN — {email_address}
+Tier: {tier} | Inbox: {inbox_count} | Unread: {unread_count}
+Trend: {trend} ({delta} vs last week) | Baseline: {baseline}
+{if bankruptcy_level != NORMAL}⚠ {bankruptcy_level}: {pct}% above baseline{/if}
+
+RECOMMENDED ACTIONS:
+{for each recommendation, sorted by priority}
+{n}. [{mode}] — {reason}
+   Impact: {estimated_impact}
+{/for}
+
+Reply: number | mode name | "all" (run top 3) | "menu" (full mode list)
+```
+
 ---
 
 ## Execution Result Templates
@@ -320,7 +337,7 @@ Show these AFTER an operation completes.
 ```
 DONE
 
-{Archive | Label | Delete | Filter created}: {count} email{count != 1 ? "s" : ""}
+{Archive | Label | Filter created}: {count} email{count != 1 ? "s" : ""}
 {if label_applied}Label applied: "{label_name}"{/if}
 {if filter_created}Filter saved — applies to all future matches{/if}
 ```
