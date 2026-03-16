@@ -38,6 +38,41 @@ Reversible: {Yes — can undo via archive | NO — permanent delete}
 Reply: "execute" | "show all" | "cancel"
 ```
 
+### Compact Batch Report
+
+```
+BATCH COMPLETE — {count} emails in {duration}
+
+{operation}: {count} | Failed: {failed_count}
+Top senders: {sender1} ({n}), {sender2} ({n}), {sender3} ({n})
+```
+
+### Context Pressure Warning
+
+```
+⚠ LARGE DATASET
+
+{count} emails match this query. Processing in batches of {batch_size}.
+Estimated: {rounds} rounds | ~{est_time} processing time
+
+Reply "proceed" | "narrow scope" | "cancel"
+```
+
+### Baseline Bankruptcy Alert
+
+```
+⚠ INBOX ALERT — {level}
+
+Current: {current_count} | Baseline: {baseline} | Delta: +{pct}%
+Trend: {trend} for {weeks} weeks
+
+{if YELLOW}Suggestion: Run an extra triage session today.{/if}
+{if ORANGE}Recommendation: Aggressive triage + create filters for top noise senders.{/if}
+{if RED}Action needed: Choose recovery plan — Daily Blitz | Staged | Nuclear Reset{/if}
+
+Reply "triage" | "auto-rules" | "show recovery options"
+```
+
 ### Destructive Warning (Delete Operations)
 
 ```
@@ -86,6 +121,23 @@ Action queue: P0 "{subject}" — {sender} | P1 "{subject}" — {sender}
 {if filter_candidates > 0}
 Filter suggestions: {filter_candidates} noise patterns — run /email-whiz filters to create.
 {/if}
+```
+
+### Fast-Lane Triage Summary
+
+```
+TRIAGE — {total} emails ({fast_lane_pct}% auto-classified)
+
+FAST-LANE: {fast_count} auto-classified
+  NOISE     {noise_count} (archived)
+  REFERENCE {ref_count} (archived + labeled)
+  DO        {do_count} (kept in inbox)
+SECURITY GATE: {rescued_count} rescued from NOISE
+INSPECTED: {inspect_count} content reads
+  DO {n} (P0:{n} P1:{n} P2:{n}) | DELEGATE {n} | DEFER {n} | REF {n} | NOISE {n}
+
+Inbox: {before} → {after}
+Filter candidates: {filter_count} noise patterns — run /email-whiz filters
 ```
 
 ### Filter Suggestions Report

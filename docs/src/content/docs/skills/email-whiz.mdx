@@ -5,7 +5,7 @@ description: "Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, lab
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="email-whiz" variant="note" /> <Badge text="1940 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v3.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="email-whiz" variant="note" /> <Badge text="2320 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v4.0.1" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
 > Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail.
 
@@ -30,14 +30,14 @@ This page is generated from the repository file `skills/email-whiz/SKILL.md` by 
 
 ## What It Does
 
-Gmail inbox management via MCP. Read current labels and filters before taking action.
+Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 
 ## Modes
 
 | `$ARGUMENTS` | Action |
 |--------------|--------|
-| `triage` | Categorize inbox with 4D+N, batch process by category |
-| `inbox-zero` | Daily/weekly routine, progress tracking, bankruptcy detection |
+| `triage` | Categorize inbox with fast-lane + 5-bucket, batch process by category |
+| `inbox-zero` | Daily/weekly routine, progress tracking, baseline bankruptcy detection |
 | `filters` | Pattern-detected filter suggestions with confidence scoring |
 | `auto-rules` | Behavioral analysis → auto-create Gmail filters from templates |
 | `analytics` | Volume trends, response times, sender frequency, timing patterns |
@@ -48,22 +48,30 @@ Gmail inbox management via MCP. Read current labels and filters before taking ac
 | `digest` | Recent important email summary |
 | `cleanup` | Archive candidates, duplicate detection, batch archiving |
 | `audit` | Full inbox health report with score and action plan |
+| `quick search` or `quick digest` | Skip Phase 0, run mode directly. Only search and digest are quick-compatible |
+| `<mode> + <mode>` | Chain modes, sharing discovered state (triage + filters) |
 | _(empty)_ | Show this mode menu |
 
 ## Critical Rules
 
-1. Run Phase 0 discovery before any workflow — never assume label/filter state
+1. Run Phase 0 discovery before any workflow — never assume label/filter state (unless `quick` mode)
 2. Confirm all write operations — show scope, count, and reversibility before calling
 3. Batch similar operations — never loop `gmail_modify_email` when `gmail_batch_modify_emails` applies
 4. Preserve existing taxonomy — suggest improvements, never silently rename
-5. Check filter conflicts before creating — call `gmail_get_filters` first
+5. Check filter conflicts before creating — call `gmail_list_filters` first
 6. Include confidence scores on all filter/rule suggestions
 7. Provide rollback guidance for every bulk operation
-8. Handle MCP failures gracefully — surface manual fallback steps
+8. Handle MCP failures gracefully — see `efficiency-guide.md` § Error Recovery
 9. Surface unsubscribe links — make newsletter cleanup actionable
 10. Prioritize quick wins — high impact, low effort first in all reports
-11. Update inbox-zero progress after every routine — write streak data to `~/.claude/email-whiz/inbox-zero-progress.json`
-12. Never use `gmail_batch_delete_emails` in cleanup mode — archive only; deletion requires explicit user intent
+11. Update inbox-zero progress after every routine
+12. Never use `gmail_batch_delete_emails` unless the user explicitly requests deletion — archive by default in all modes. Always use the Destructive Warning template (TYPE "DELETE" confirmation)
+13. Issue ALL independent tool calls in a single message — sequential independent calls is a bug
+14. Use fast-lane classification before reading content — sender + subject resolve 60%+ of triage
+15. ALWAYS run the security gate on NOISE before archiving — scan subjects for 2FA/password/security keywords
+16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`).
+17. maxResults 100-200 (not 500) — MCP N+1 pattern means 500 results ≈ 501 API calls
+18. Bankruptcy triggers are relative to 30-day baseline, not absolute thresholds
 
 <Tabs>
   <TabItem label="General">
@@ -71,7 +79,7 @@ Gmail inbox management via MCP. Read current labels and filters before taking ac
 | ----- | ----- |
 | Name | `email-whiz` |
 | License | MIT |
-| Version | 3.0.0 |
+| Version | 4.0.1 |
 | Author | wyattowalsh |
   </TabItem>
   <TabItem label="Claude Code">
@@ -85,7 +93,7 @@ Gmail inbox management via MCP. Read current labels and filters before taking ac
   <TabItem label="Compatibility">
 | Field | Value |
 | ----- | ----- |
-| Allowed Tools | `gmail_list_emails gmail_search_emails gmail_get_email gmail_get_labels gmail_create_label gmail_modify_email gmail_delete_email gmail_get_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_batch_delete_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write` |
+| Allowed Tools | `gmail_search_emails gmail_read_email gmail_list_email_labels gmail_create_label gmail_modify_email gmail_delete_email gmail_list_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_batch_delete_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write` |
   </TabItem>
 </Tabs>
 
@@ -102,17 +110,17 @@ description: >-
 argument-hint: "<mode> [options]"
 model: opus
 disable-model-invocation: true
-allowed-tools: gmail_list_emails gmail_search_emails gmail_get_email gmail_get_labels gmail_create_label gmail_modify_email gmail_delete_email gmail_get_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_batch_delete_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write
+allowed-tools: gmail_search_emails gmail_read_email gmail_list_email_labels gmail_create_label gmail_modify_email gmail_delete_email gmail_list_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_batch_delete_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write
 context: fork
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "3.0.0"
+  version: "4.0.1"
 ---
 
 # Email Whiz
 
-Gmail inbox management via MCP. Read current labels and filters before taking action.
+Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 
 ---
 
@@ -120,18 +128,20 @@ Gmail inbox management via MCP. Read current labels and filters before taking ac
 
 | Term | Definition |
 |------|------------|
-| **4D+N** | DO / DELEGATE / DEFER / REFERENCE / NOISE — five triage buckets |
+| **5-bucket** | DO / DELEGATE / DEFER / REFERENCE / NOISE — five triage buckets (historically "5-bucket") |
 | **inbox zero** | State where inbox contains only items requiring action today |
-| **routine** | Repeatable time-boxed workflow (daily 5 min, weekly 15 min) |
-| **streak** | Consecutive days achieving inbox zero; stored in progress file |
+| **fast-lane** | Sender/subject-only classification without reading email content |
+| **security gate** | Subject-keyword scan of NOISE before archiving (catches 2FA, password resets) |
+| **session cache** | Local cache of Phase 0 results (1h TTL) at `~/.claude/email-whiz/session-cache.json` |
+| **tier** | Inbox size class: Small (<50) / Medium (50-500) / Large (500-5k) / Massive (5k+) |
+| **quick** | Modifier prefix that skips Phase 0 for lightweight modes |
+| **combo** | Chain two modes sharing discovered state: `<mode> + <mode>` |
+| **mega-wave** | Single message with 10-15 independent tool calls bundled together |
+| **baseline** | Rolling 30-day average inbox count; bankruptcy triggers are relative to this |
 | **auto-rule** | Gmail filter created from behavioral pattern analysis |
-| **filter** | Gmail rule that matches incoming email and applies actions |
 | **VIP** | Sender who receives consistent replies and high-priority treatment |
-| **noise** | Automated or low-value email; candidate for filtering/deletion |
-| **engagement** | Reply rate to a sender: replies sent ÷ emails received |
-| **bankruptcy** | Inbox with 500+ unread or growing backlog — triggers staged recovery |
+| **engagement** | Reply rate to a sender: replies sent / emails received |
 | **confidence** | HIGH >80% / MEDIUM 50-80% / LOW <50% — governs auto-rule actions |
-| **batch op** | Single `gmail_batch_modify_emails` or `gmail_batch_delete_emails` call |
 
 ---
 
@@ -139,8 +149,8 @@ Gmail inbox management via MCP. Read current labels and filters before taking ac
 
 | `$ARGUMENTS` | Action |
 |--------------|--------|
-| `triage` | Categorize inbox with 4D+N, batch process by category |
-| `inbox-zero` | Daily/weekly routine, progress tracking, bankruptcy detection |
+| `triage` | Categorize inbox with fast-lane + 5-bucket, batch process by category |
+| `inbox-zero` | Daily/weekly routine, progress tracking, baseline bankruptcy detection |
 | `filters` | Pattern-detected filter suggestions with confidence scoring |
 | `auto-rules` | Behavioral analysis → auto-create Gmail filters from templates |
 | `analytics` | Volume trends, response times, sender frequency, timing patterns |
@@ -151,46 +161,87 @@ Gmail inbox management via MCP. Read current labels and filters before taking ac
 | `digest` | Recent important email summary |
 | `cleanup` | Archive candidates, duplicate detection, batch archiving |
 | `audit` | Full inbox health report with score and action plan |
+| `quick search` or `quick digest` | Skip Phase 0, run mode directly. Only search and digest are quick-compatible |
+| `<mode> + <mode>` | Chain modes, sharing discovered state (triage + filters) |
 | _(empty)_ | Show this mode menu |
 
-**Classification gate for ambiguous input:** If `$ARGUMENTS` could match multiple modes, ask which the user wants before proceeding.
+**Classification gate:** If `$ARGUMENTS` could match multiple modes, ask which the user wants before proceeding.
 
 ---
 
 ## Hybrid Mode Protocol
 
 **Read operations — execute immediately:**
-- `gmail_search_emails`, `gmail_get_email`, `gmail_list_emails`
-- `gmail_get_labels`, `gmail_get_filters`, `gmail_get_filter`
+`gmail_search_emails`, `gmail_read_email`, `gmail_list_email_labels`, `gmail_list_filters`, `gmail_get_filter`
 
 **Write operations — confirm before executing:**
-- Single: `gmail_modify_email`, `gmail_delete_email`, `gmail_create_label`
-- Batch: `gmail_batch_modify_emails`, `gmail_batch_delete_emails`
-- Labels: `gmail_update_label`, `gmail_delete_label`, `gmail_get_or_create_label`
-- Filters: `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_delete_filter`
+Single: `gmail_modify_email`, `gmail_delete_email`, `gmail_create_label`
+Batch: `gmail_batch_modify_emails`, `gmail_batch_delete_emails` (MUST use Destructive Warning template — user types "DELETE" to confirm)
+Labels: `gmail_update_label`, `gmail_delete_label`, `gmail_get_or_create_label`
+Filters: `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_delete_filter`
 
-**Confirmation format — always show before write ops:**
-```
-Action: {description}
-Scope: {count} email(s) / label(s) / filter(s)
-Reversible: {Yes | NO}
-[Sample: first 3 subjects for batch ops]
-```
-
-Use `templates.md` for full confirmation and report formats.
+**Confirmation format:** See `templates.md`. Always show scope, count, and reversibility before write ops.
 
 ---
 
-## Phase 0: Discovery (Run First)
+## Parallelization Rules
 
-Before any workflow, establish context:
+1. **Independent tool calls go in ONE message.** Sequential independent calls is a bug.
+2. **Phase 0 fuses with mode's first queries** — never 2 sequential rounds when fusion is possible.
+3. **Batch ops on disjoint ID sets: parallel.** NOISE + REFERENCE + DEFER = 1 message, 3 calls.
+4. **Analytics/Audit: mega-wave** — 10-15 search queries in 1 message.
+5. **gmail_read_email: batch 5-8 per message** (full messages are large).
+6. **Filter creation: parallel** after conflict check passes.
+7. **Combo mode boundary: sequential** (data dependency). But skip Phase 0 for mode 2.
+8. **Max 15-20 calls per message.** Beyond that, a single 429 impacts the entire bundle.
+9. **On 429:** preserve completed results, drop to sequential with 2s gaps. 3x429 in 60s → pause 60s.
 
-```
-1. gmail_get_labels       → store label names + IDs
-2. gmail_get_filters      → store existing filter criteria
-3. gmail_search_emails    → query: "in:inbox" (maxResults: 20)
-                            note unread count, top senders, label patterns
-```
+Details: `efficiency-guide.md` § Parallel Call Map.
+
+---
+
+## Phase 0: Discovery (skip with `quick` prefix)
+
+### 0a: Session Cache Check
+
+`!uv run python scripts/inbox_snapshot.py cache load`
+If valid (< 1h old) → use cached labels, filters, tier. Jump to mode.
+
+### 0b: Parallel Discovery + Mode Fusion (cache miss)
+
+Issue Phase 0 calls AND mode's first queries in a SINGLE message:
+
+Core discovery (always):
+1. `gmail_list_email_labels` → label name/ID map + INBOX `messagesTotal`/`messagesUnread`
+2. `gmail_list_filters` → existing filter criteria
+3. `gmail_search_emails` → `"in:inbox is:unread"` (maxResults: 10) → sample
+
+Mode-specific additions (same message):
+- Triage: + `gmail_search_emails "is:unread"` (maxResults: per tier)
+- Inbox Zero: + `"is:unread newer_than:1d"` + `"label:_deferred"`
+- Analytics: + 4x weekly volume queries (mega-wave)
+- Audit: + newsletter count + sent count + overdue count (mega-wave)
+- Cleanup: + 4x stale-detection queries
+
+### 0c: Tier Assessment
+
+Use INBOX label `messagesTotal` (NOT `resultSizeEstimate` — it is unreliable).
+
+| Inbox Size | Tier | maxResults | Strategy |
+|------------|------|------------|----------|
+| <50 | Small | 50 | Process all |
+| 50-500 | Medium | 100 | Sample recent + unread |
+| 500-5000 | Large | 200 | Importance-first, date-range splitting |
+| 5000+ | Massive | 200 | Date-range parallel queries, baseline bankruptcy |
+
+**Why maxResults 100-200:** MCP server has N+1 fetch pattern (each result triggers a separate API call). maxResults=500 ≈ 501 API calls ≈ 2505 quota units. 200 ≈ 1005 units.
+
+**Massive tier:** Split by date-range (30d chunks), issue ALL chunks in parallel. Always query `is:important is:unread` alongside general scan. No `pageToken` on MCP server — date-range splitting is the ONLY pagination.
+
+### 0d: Write Session Cache
+
+`!uv run python scripts/inbox_snapshot.py cache save --labels '...' --filters '...' --inbox-count N --unread-count M --tier TIER`
+**Invalidate cache after any write operation** (filter/label create, batch modify).
 
 Use discovered label names throughout — never invent names that conflict with existing taxonomy.
 
@@ -198,277 +249,118 @@ Use discovered label names throughout — never invent names that conflict with 
 
 ## Mode: Triage
 
-Categorize inbox using 4D+N. Reference: `triage-framework.md`.
+Three-pass classification. Details: `triage-framework.md` § Fast-Lane, `efficiency-guide.md`.
 
-```
-1. Search: is:unread (maxResults: 50)
-2. For each email: classify as DO / DELEGATE / DEFER / REFERENCE / NOISE
-3. Collect IDs by category
-4. Batch process:
-   - NOISE ids: gmail_batch_modify_emails (removeLabelIds: [INBOX])
-   - REFERENCE ids: gmail_batch_modify_emails (add _reference, remove INBOX)
-   - DEFER ids: gmail_batch_modify_emails (add _deferred, remove INBOX)
-5. Report with triage-summary template
-6. Present DO items for user action
-```
+### Pass 1: Fast-Lane (zero content reads)
 
-After triage: log session to inbox-zero progress file if running as part of daily routine.
+Classify by sender + subject + snippet ONLY from search results:
+- `noreply@*`, `notifications@*`, `calendar-notification@*` → NOISE
+- Known VIP senders → DO
+- Subject `[FYI]`/`[INFO]`/newsletter/receipt/confirmation → REFERENCE
+- Subject `[ACTION]`/`[URGENT]`/deadline → DO
+- Unmatched → UNDECIDED
+
+### Pass 1.5: Security Gate (mandatory before archiving NOISE)
+
+Scan all NOISE subjects/snippets for security keywords: `password reset`, `verify your`, `sign-in`, `unusual activity`, `2FA`, `account locked`, `verification code`, `one-time password`, `security alert`, `new device`, `suspicious login`, `recovery phone`, `two-step verification`, `confirm your identity`, `new sign-in method`. Any match → pull from NOISE to REVIEW. Also: any `noreply@` email `newer_than:7d` → REVIEW (login notifications have no expiry; codes expire but should still surface).
+
+### Pass 2: Batch Operations (all in ONE message)
+
+**Precondition:** Call `gmail_get_or_create_label` for `_reference` and `_deferred` if not already resolved in Phase 0.
+
+Issue 3 `gmail_batch_modify_emails` calls simultaneously (disjoint ID sets = parallel safe):
+- NOISE ids → remove INBOX
+- REFERENCE ids → add `_reference`, remove INBOX
+- DEFER ids → add `_deferred`, remove INBOX
+
+### Pass 3: Content Inspection (UNDECIDED + REVIEW only)
+
+Batch `gmail_read_email` 5-8 per message. Apply full 5-bucket. Batch-process results with same parallel pattern as Pass 2. Report with fast-lane triage summary (show auto-classified %). Surface recurring NOISE sender patterns as filter candidates.
 
 ---
 
 ## Mode: Inbox Zero
 
-Structured habit system for achieving and maintaining inbox zero. Reference: `inbox-zero-system.md`.
+Structured habit system. Details: `inbox-zero-system.md`.
 
-### Daily Routine (5 min)
+**Daily (5 min):** Fuse Phase 0 + `is:unread newer_than:1d` + `label:_deferred` in 1 message. Quick triage pass (5-bucket). Batch archive NOISE + REFERENCE. Report: inbox count before → after. Update progress file.
 
-```
-1. Search: is:unread newer_than:1d → identify P0/P1
-2. Run quick triage pass (4D+N)
-3. Batch archive NOISE + REFERENCE
-4. Report: inbox count before → after
-5. Update ~/.claude/email-whiz/inbox-zero-progress.json
-   - achieved_zero: inbox_count == 0
-   - increment streak if zero
-```
+**Weekly (15 min):** Issue 3 queries in 1 message: deferred sweep + filter effectiveness + newsletter sweep. Clear, re-defer, or archive. Update weekly_reviews.
 
-### Weekly Review (15 min)
-
-```
-1. Clear deferred: label:_deferred older_than:7d
-2. Filter effectiveness: inbox noise still arriving? → new filter candidates
-3. Newsletter sweep: label:_reading/newsletters is:unread older_than:14d
-4. Update weekly_reviews entry in progress file
-```
-
-**Bankruptcy detection:** If `is:unread` count > 500 or growing 3+ consecutive days, present recovery options (Daily Blitz / Staged Approach / Nuclear Reset). Always confirm before bulk archiving. See `inbox-zero-system.md` for full protocols.
-
-**Progress report format:**
-```
-📊 Streak: {n} days | Best: {n} | Last zero: {date}
-Inbox: {before} → {after}
-```
+**Bankruptcy detection:** Relative to 30-day baseline (not absolute). YELLOW: 20-50% above baseline. ORANGE: 50-100% above baseline (aggressive triage + filter creation). RED: >100% above baseline (full bankruptcy protocol). Acceleration trigger: week-over-week growth >20% for 2+ weeks. New users default to 500 until 7+ snapshots establish a baseline. See `inbox-zero-system.md` for recovery protocols.
 
 ---
 
 ## Mode: Filters
 
-Pattern-detected filter suggestions. Reference: `filter-patterns.md`.
+Pattern-detected filter suggestions. Details: `filter-patterns.md`.
 
-```
-1. Search recent inbox (maxResults: 100, last 30d)
-2. Cluster by sender domain + subject patterns
-3. Check gmail_get_filters for existing coverage
-4. Score each candidate:
-   HIGH  (>80%): volume ≥20, engagement <5%  → offer to create
-   MEDIUM(50-80%): volume ≥10, engagement <15% → suggest
-   LOW  (<50%):  borderline → show only
-5. Present with filter-suggestions template
-6. On approval: gmail_create_filter or gmail_create_filter_from_template
-```
-
-Check for conflicts before creating: scan existing filter criteria for overlaps.
+Issue sender clustering + subject pattern + `gmail_list_filters` ALL in 1 message. Score candidates: HIGH (volume ≥20, engagement <5%) → offer create. MEDIUM (≥10, <15%) → suggest. LOW → show only. Check conflicts before creating. After approval: issue multiple `gmail_create_filter` calls in 1 message. Massive tier: split 90d into 3x30d chunks, query in parallel.
 
 ---
 
 ## Mode: Auto-Rules
 
-Deep behavioral analysis → automated filter creation. Reference: `filter-patterns.md` § Auto-Rule Detection.
+Deep behavioral analysis → automated filter creation. Details: `filter-patterns.md` § Auto-Rule Detection.
 
-### Analysis Phase
-
-```
-1. Search: in:inbox after:{90d_ago} (maxResults: 500)
-2. Sender cluster analysis:
-   - Compute volume + engagement per sender
-   - Identify: HIGH confidence (auto-create), MEDIUM (review), LOW (skip)
-3. Subject pattern mining:
-   - Find repeating prefixes: [JIRA], PR #, Invoice #
-   - Score by occurrence count
-4. Check conflict with existing filters
-```
-
-### Creation Phase
-
-```
-5. Present auto-rules report (see templates.md)
-6. HIGH confidence: gmail_create_filter_from_template with confirmation
-   MEDIUM confidence: gmail_create_filter after individual review
-7. Schedule learning loop re-analysis after 2 weeks
-```
+Issue sender analysis + subject mining + filter fetch in 1 message. Massive tier: split 90d into 3x30d date-range chunks, issue ALL in parallel. Score by confidence. Present auto-rules report. HIGH: `gmail_create_filter_from_template` with confirmation. MEDIUM: individual review. Creation: multiple filters in 1 message. Schedule learning loop after 2 weeks.
 
 ---
 
 ## Mode: Analytics
 
-Email communication metrics and trends. Reference: `analytics-guide.md`.
+Email communication metrics via mega-wave. Details: `analytics-guide.md`.
 
-```
-1. Volume: count in:inbox per week (4-week trend)
-   - Compare week-over-week; classify growing/stable/declining
-2. Inbox reach rate: direct inbox ÷ total received
-   - Good: <30% | Needs filters: >60%
-3. Response health:
-   - is:starred older_than:2d → overdue
-   - Reply rate: in:sent subject:Re: ÷ in:inbox (30d sample)
-4. Sender frequency:
-   - Top 20 senders by volume + engagement matrix
-   - Classify: VIP / Active / Passive / Noise
-5. Time-of-day: extract hour from date fields in sample
-6. Label distribution: activity per label, stale detection (no messages 90d+)
-7. Present full analytics report (see templates.md)
-```
+Issue ALL queries in 1 message: 4x weekly volume + sent count + inbox reach + reply rate + overdue + sender frequency + label distribution (~12 calls, ~65% message reduction). Classify volume trend (growing/stable/declining). Compute inbox reach rate (good: <30%). Identify top 20 senders by volume + engagement matrix. Present full analytics report.
 
 ---
 
 ## Mode: Newsletters
 
-Newsletter subscription audit + unsubscribe plan.
-
-```
-1. Search: list:* OR subject:(newsletter OR digest OR "weekly roundup")
-2. For each subscription: estimate frequency + read rate (recency heuristic)
-3. Classify: UNSUBSCRIBE (low read rate) / KEEP / FILTER (keep but skip inbox)
-4. Present newsletter-audit report
-5. On approval: open unsubscribe links (provide URL) or create filter
-```
-
-Reference: `workflows.md` § Unsubscribe Strategies.
+Subscription audit. Issue `list:*` + `subject:newsletter` in 1 message. Estimate frequency + read rate per subscription. Classify: UNSUBSCRIBE / KEEP / FILTER. Surface unsubscribe links. On approval: create filter or provide unsubscribe URL. Details: `workflows.md` § Unsubscribe Strategies.
 
 ---
 
 ## Mode: Labels
 
-Label taxonomy analysis and cleanup.
-
-```
-1. gmail_get_labels → list all with counts
-2. Find issues:
-   - Duplicates/synonyms (e.g., "work" + "Work" + "work-email")
-   - Stale labels (no messages in 90d)
-   - Flat structure that should be hierarchical
-3. Suggest: MERGE / RENAME / DELETE / RESTRUCTURE
-4. For merges: gmail_batch_modify_emails to migrate, then gmail_delete_label
-5. Use gmail_update_label for renames
-6. Present label-analysis report
-```
-
-Reference: `workflows.md` § Label Hierarchy Best Practices.
+Label taxonomy analysis. `gmail_list_email_labels` returns `messagesTotal`/`messagesUnread` per label. For 30d activity classification, issue per-label search queries in batches of 10-15. Find: duplicates/synonyms, stale labels (no messages 90d+), flat structure needing hierarchy. Suggest: MERGE / RENAME / DELETE / RESTRUCTURE. For merges: `gmail_batch_modify_emails` to migrate, then `gmail_delete_label`. Details: `workflows.md` § Label Hierarchy.
 
 ---
 
 ## Mode: Search
 
-Natural language → Gmail search query.
-
-```
-Input: user's goal in plain language
-Output: optimized Gmail search query with explanation
-
-Steps:
-1. Parse intent: who / what / when / status
-2. Map to operators: from:, subject:, after:, is:unread, label:, etc.
-3. Add negations for common noise
-4. Show query + explanation + expected matches
-5. Offer to run the search
-```
-
-Reference: `filter-patterns.md` § Gmail Search Operators.
+Quick-compatible (no Phase 0). Natural language → Gmail search query. Parse intent (who/what/when/status), map to operators, add negations, show query + explanation + expected matches. Offer to run. Details: `filter-patterns.md` § Gmail Search Operators.
 
 ---
 
 ## Mode: Senders
 
-VIP and noise sender identification.
-
-```
-1. Sample last 200 inbox emails
-2. Compute per sender: volume + engagement + recency
-3. VIP candidates: reply rate >50% OR consistently starred
-4. Noise candidates: volume >10 AND engagement 0%
-5. Present sender report with recommended actions
-6. On approval: create VIP filter (always important) or noise filter
-```
-
-Reference: `triage-framework.md` § Sender Shortcuts, `workflows.md` § VIP Management.
+VIP + noise identification. Issue sample search + per-sender reply-rate queries in 1 message (if top-sender count > 12, split reply-rate queries across 2 messages to stay under call cap). VIP: reply rate >50% or consistently starred. Noise: volume >10, engagement 0%. Present sender report. On approval: create VIP filter (mark important) or noise filter. Details: `triage-framework.md` § Sender Shortcuts, `workflows.md` § VIP Management.
 
 ---
 
 ## Mode: Digest
 
-Recent important email summary.
-
-```
-1. Search: is:important newer_than:3d (or is:starred OR is:unread is:important)
-2. For each: extract sender, subject, 1-line summary
-3. Categorize: RESPOND / FYI / READING
-4. Present digest report
-5. Offer: "open N" | "archive fyi"
-```
-
-Reference: `templates.md` § Digest.
+Quick-compatible (no Phase 0). Search `is:important newer_than:3d` (or `is:starred OR is:unread is:important`). Extract sender, subject, 1-line summary per email. Categorize: RESPOND / FYI / READING. Present digest report. Offer: "open N" | "archive fyi". Details: `templates.md` § Digest.
 
 ---
 
 ## Mode: Cleanup
 
-Archive candidates and batch archiving.
-
-```
-1. Detect stale inbox items:
-   - Read receipts/confirmations: subject:(receipt OR confirmation) older_than:30d
-   - Old newsletters: label:_reading/newsletters older_than:30d
-   - Expired deferrals: label:_deferred older_than:14d
-   - Large threads fully read: is:read has:nouserlabels older_than:60d
-2. Show batch-operation-confirmation with samples
-3. On approval: gmail_batch_modify_emails (remove INBOX / add archive label)
-4. Report: inbox count before → after
-```
-
-Never use `gmail_batch_delete_emails` in cleanup — archive only.
-Reference: `workflows.md` § Batch Operations.
+Archive candidates. Issue ALL 4 stale-detection queries in 1 message: receipts/confirmations `older_than:30d` + old newsletters `older_than:30d` + expired deferrals `older_than:14d` + fully-read no-label `older_than:60d`. Batch-archive ALL results in parallel `gmail_batch_modify_emails` calls. Never use `gmail_batch_delete_emails` — archive only. Details: `workflows.md` § Batch Operations.
 
 ---
 
 ## Mode: Audit
 
-Full inbox health report.
-
-```
-1. Run Phase 0 discovery (labels, filters, sample)
-2. Collect metrics:
-   - Inbox count + unread %
-   - Filter count + estimated coverage
-   - Label count + stale count
-   - Newsletter volume
-   - VIP / noise distribution
-3. Score: 0-100 based on inbox reach rate, filter coverage, label health
-4. Identify top 3 quick wins (high impact, low effort)
-5. Generate week-by-week action plan
-6. Present full-audit report
-```
-
-Reference: `analytics-guide.md`, `templates.md` § Full Audit.
-
----
-
-## Error Handling
-
-| Scenario | Response |
-|----------|----------|
-| MCP connection failure | Report error, provide manual Gmail URL as fallback |
-| Rate limit (429) | Reduce batch size to 25, wait 60s, retry once |
-| Message not found (404) | Skip and continue; note in report |
-| Partial batch failure | Report succeeded/failed counts; suggest retry for failures |
-| Label ID mismatch | Re-fetch labels via `gmail_get_labels` and remap |
+Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label and per-sender queries run as a second wave): inbox count, unread %, filter count, inbox reach, reply rate, overdue, newsletter volume, deferred pile, sent volume, label health, sender top-20 (~70% message reduction). Score 0-100 based on inbox reach rate, filter coverage, label health. Identify top 3 quick wins. Generate action plan. Details: `analytics-guide.md`, `templates.md` § Full Audit.
 
 ---
 
 ## Scope Boundaries
 
-**IS for:** Gmail triage, inbox zero habits, filter creation, auto-rules, email analytics, newsletter management, label organization, search queries, sender analysis, digest, cleanup, inbox health audit.
-
-**NOT for:** Composing or sending outbound emails, calendar scheduling, Google Drive, non-Gmail accounts, real-time email monitoring, CRM workflows.
+**IS for:** Gmail triage, inbox zero, filters, auto-rules, analytics, newsletters, labels, search, senders, digest, cleanup, audit.
+**NOT for:** Composing outbound emails, calendar, Google Drive, non-Gmail, real-time monitoring, CRM.
 
 ---
 
@@ -476,38 +368,48 @@ Reference: `analytics-guide.md`, `templates.md` § Full Audit.
 
 | File | Content | Load When |
 |------|---------|-----------|
-| `references/triage-framework.md` | 5D+N decision trees, sender/subject signals, batch processing | triage, inbox-zero |
+| `references/efficiency-guide.md` | Cache, parallel calls, tiers, MCP constraints, fast-lane, pagination | All modes |
+| `references/triage-framework.md` | 5-bucket decision trees, fast-lane rules, security gate, batch processing | triage, inbox-zero |
 | `references/filter-patterns.md` | Gmail operators, filter templates, auto-rule algorithms, learning loop | filters, auto-rules, search |
-| `references/workflows.md` | Bankruptcy, VIP, batch ops, label hierarchy, unsubscribe, security | cleanup, labels, senders, newsletters |
+| `references/workflows.md` | Bankruptcy, VIP, batch ops, label hierarchy, unsubscribe, combo mode | cleanup, labels, senders, newsletters |
 | `references/templates.md` | All confirmation, report, and execution result templates | Every mode |
-| `references/inbox-zero-system.md` | Daily/weekly routines, progress schema, bankruptcy recovery | inbox-zero |
+| `references/inbox-zero-system.md` | Daily/weekly routines, progress schema, baseline bankruptcy | inbox-zero |
 | `references/analytics-guide.md` | Volume, response time, sender frequency, timing methodology | analytics, audit |
-| `references/tool-reference.md` | All 19 Gmail MCP tool signatures, parameters, system limits | When selecting tools |
+| `references/tool-reference.md` | All 18 Gmail MCP tool signatures, parameters, MCP constraints | When selecting tools |
 
 **Scripts:**
 
 | Script | Purpose | Run When |
 |--------|---------|----------|
 | `scripts/inbox_snapshot.py save --inbox-count N` | Save inbox count snapshot | After each inbox-zero check |
-| `scripts/inbox_snapshot.py trend --days 7` | Compute inbox trend (growing/stable/declining) | During analytics mode |
-| `scripts/inbox_snapshot.py list --days 30` | List recent snapshots | When reviewing progress |
+| `scripts/inbox_snapshot.py trend --days 7` | Compute inbox trend | During analytics mode |
+| `scripts/inbox_snapshot.py baseline --days 30` | Compute rolling baseline for bankruptcy | During inbox-zero |
+| `scripts/inbox_snapshot.py cache load` | Load session cache (1h TTL) | Phase 0 step 0a |
+| `scripts/inbox_snapshot.py cache save --labels --filters --inbox-count --unread-count --tier` | Write session cache | Phase 0 step 0d |
+| `scripts/inbox_snapshot.py cache clear` | Invalidate session cache | After write operations |
 
 ---
 
 ## Critical Rules
 
-1. Run Phase 0 discovery before any workflow — never assume label/filter state
+1. Run Phase 0 discovery before any workflow — never assume label/filter state (unless `quick` mode)
 2. Confirm all write operations — show scope, count, and reversibility before calling
 3. Batch similar operations — never loop `gmail_modify_email` when `gmail_batch_modify_emails` applies
 4. Preserve existing taxonomy — suggest improvements, never silently rename
-5. Check filter conflicts before creating — call `gmail_get_filters` first
+5. Check filter conflicts before creating — call `gmail_list_filters` first
 6. Include confidence scores on all filter/rule suggestions
 7. Provide rollback guidance for every bulk operation
-8. Handle MCP failures gracefully — surface manual fallback steps
+8. Handle MCP failures gracefully — see `efficiency-guide.md` § Error Recovery
 9. Surface unsubscribe links — make newsletter cleanup actionable
 10. Prioritize quick wins — high impact, low effort first in all reports
-11. Update inbox-zero progress after every routine — write streak data to `~/.claude/email-whiz/inbox-zero-progress.json`
-12. Never use `gmail_batch_delete_emails` in cleanup mode — archive only; deletion requires explicit user intent
+11. Update inbox-zero progress after every routine
+12. Never use `gmail_batch_delete_emails` unless the user explicitly requests deletion — archive by default in all modes. Always use the Destructive Warning template (TYPE "DELETE" confirmation)
+13. Issue ALL independent tool calls in a single message — sequential independent calls is a bug
+14. Use fast-lane classification before reading content — sender + subject resolve 60%+ of triage
+15. ALWAYS run the security gate on NOISE before archiving — scan subjects for 2FA/password/security keywords
+16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`).
+17. maxResults 100-200 (not 500) — MCP N+1 pattern means 500 results ≈ 501 API calls
+18. Bankruptcy triggers are relative to 30-day baseline, not absolute thresholds
 
 ````
 

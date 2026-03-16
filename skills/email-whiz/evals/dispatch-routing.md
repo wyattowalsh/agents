@@ -61,3 +61,90 @@ Evaluation cases for email-whiz dispatch table routing. Each case specifies inpu
 | `create 1,2` | Create only rules 1 and 2 |
 | `details 3` | Show full details for suggestion 3 |
 | `modify 2: also match from:domain.com` | Update rule 2 criteria, re-confirm |
+
+---
+
+## Quick Mode Tests
+
+| Input | Expected Mode | Notes |
+|-------|--------------|-------|
+| `quick search invoices` | Search (quick) | Skip Phase 0 |
+| `quick digest` | Digest (quick) | Skip Phase 0 |
+| `quick triage` | Reject | Triage is not quick-compatible. Run without quick prefix |
+| `quick analytics` | Reject | Analytics is not quick-compatible. Run without quick prefix |
+| `quick audit` | Reject | Audit is not quick-compatible. Run without quick prefix |
+
+---
+
+## Combo Mode Tests
+
+| Input | Expected Mode | Notes |
+|-------|--------------|-------|
+| `triage + filters` | Triage then Filters | Combo mode, shared state |
+| `audit + auto-rules` | Audit then Auto-Rules | Combo mode, shared state |
+| `cleanup + inbox-zero` | Cleanup then Inbox Zero | Combo mode, shared state |
+| `triage+filters` | Triage then Filters | No spaces variant |
+
+---
+
+## Tier Detection Tests
+
+| INBOX messagesTotal | Expected Tier | Expected maxResults |
+|---------------------|--------------|---------------------|
+| 30 | Small | 50 |
+| 200 | Medium | 100 |
+| 1500 | Large | 200 |
+| 5000 | Massive | 200 + date-range splitting |
+| 15000 | Massive | 200 + date-range splitting |
+
+---
+
+## Fast-Lane Classification Tests
+
+| Sender | Subject | Expected Bucket |
+|--------|---------|----------------|
+| noreply@github.com | "[repo] New issue: Fix bug" | NOISE |
+| notifications@slack.com | "New message in #general" | NOISE |
+| noreply@google.com | "Security alert: New sign-in" | REVIEW (security gate) |
+| noreply@bank.com | "Your verification code" | REVIEW (security gate) |
+| boss@company.com | "RE: Q4 budget review" | check_content (UNDECIDED) |
+| newsletter@techcrunch.com | "Weekly Digest: AI News" | REFERENCE |
+
+---
+
+## Security Gate Tests
+
+| Subject | Expected Action |
+|---------|----------------|
+| "Password reset requested" | Pull from NOISE → REVIEW |
+| "Your order has shipped" | Stay as REFERENCE |
+| "Unusual sign-in activity" | Pull from NOISE → REVIEW |
+| "Weekly newsletter digest" | Stay as REFERENCE |
+| "Your 2FA code is 123456" | Pull from NOISE → REVIEW |
+
+---
+
+## Session Cache Tests
+
+| Scenario | Expected Behavior |
+|----------|------------------|
+| Cache file exists, valid (<1h old) | Use cached labels/filters/tier. Skip Phase 0 discovery |
+| Cache file exists, expired (>1h old) | Ignore cache. Run full Phase 0 discovery |
+| Cache file missing | Run full Phase 0 discovery |
+| After `gmail_create_filter` write op | Invalidate cache. Re-fetch on next mode |
+| After `gmail_batch_modify_emails` write op | Invalidate cache. Re-fetch on next mode |
+| After `gmail_get_or_create_label` write op | Invalidate cache. Re-fetch on next mode |
+
+---
+
+## Bankruptcy Alert Level Tests
+
+| Current Count | Baseline | Expected Level | Expected Action |
+|--------------|----------|----------------|-----------------|
+| 100 | 100 | NORMAL | Continue daily routine |
+| 140 | 100 | YELLOW | Surface warning; suggest extra triage |
+| 170 | 100 | ORANGE | Aggressive triage + filter creation |
+| 250 | 100 | RED | Full bankruptcy protocol |
+| 5000 | (new user, no baseline) | Use default 500 | RED — trigger bankruptcy |
+| 12000 | 10000 | YELLOW (20% above) | Surface warning |
+| 50000+ | any | RED (absolute floor) | Full bankruptcy protocol |

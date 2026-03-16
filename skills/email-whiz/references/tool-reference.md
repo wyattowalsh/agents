@@ -2,13 +2,83 @@
 
 > All 19 Gmail MCP tools available in this skill, organized by category. Use this reference when selecting tools for a workflow.
 
+## MCP Server Constraints
+
+These constraints reflect the actual MCP tool signatures, not the underlying Gmail API:
+
+- **`gmail_search_emails`**: Accepts `query` + `maxResults` only. No `pageToken`, no `labelIds`, no `format` param. Hard ceiling 500 per call.
+- **`gmail_read_email`**: Accepts `messageId` only. Always returns full message. No format control.
+- **`gmail_batch_modify_emails`**: Accepts `messageIds` + `addLabelIds`/`removeLabelIds` + `batchSize` (default 50). Up to 1000 IDs.
+- **`resultSizeEstimate` is unreliable.** Use the INBOX label's `messagesTotal` from `gmail_list_email_labels` instead.
+- **N+1 fetch pattern**: `gmail_search_emails` likely fetches the full message per result. `maxResults=500` costs ~501 API calls behind the scenes.
+
+---
+
+## Parallel Call Groups
+
+Issue all tools within a group in ONE message. Never serialize independent calls.
+
+**Group A — Phase 0 Discovery:**
+
+- `gmail_list_email_labels` + `gmail_list_filters` + `gmail_search_emails`
+
+**Group B — Triage Batch:**
+
+- Multiple `gmail_batch_modify_emails` with disjoint ID sets
+
+**Group C — Analytics/Audit Mega-Wave:**
+
+- Multiple `gmail_search_emails` with different queries (up to 15 per message)
+
+**Group D — Content Inspection:**
+
+- 5–8 `gmail_read_email` calls per message
+
+**Group E — Filter Creation:**
+
+- Multiple `gmail_create_filter` / `gmail_create_filter_from_template` after conflict check
+
+> All `gmail_search_emails` calls with different queries are independent and MUST be issued in parallel.
+
+---
+
+## Date-Range Splitting
+
+For datasets exceeding the 500-result ceiling, split by date range:
+
+1. Determine the total date range from Phase 0 discovery.
+2. Split into N chunks where each chunk likely returns <500 results (target: 200).
+3. Issue ALL chunk queries in parallel (one message).
+4. Merge results after all return.
+
+**Example:** 90 days with ~3000 emails → split into 3 queries of 30 days each, issued in 1 message:
+
+- `after:2026/01/01 before:2026/01/31`
+- `after:2026/01/31 before:2026/03/02`
+- `after:2026/03/02 before:2026/03/15`
+
+---
+
+## Tier-Adaptive maxResults
+
+| Tier | maxResults | Rationale |
+|------|------------|-----------|
+| Small (<50) | 50 | Full coverage in one call |
+| Medium (50–500) | 100 | N+1: ~101 API calls, ~505 quota units |
+| Large (500–5k) | 200 | N+1: ~201 API calls, ~1005 quota units |
+| Massive (5k+) | 200 | Date-range splitting required beyond 500 |
+
+> Use INBOX label `messagesTotal` for accurate count, NOT `resultSizeEstimate`.
+
+---
+
 ### Email Management (6 tools)
 
 **`gmail_search_emails`**
 Search emails using Gmail search syntax.
-- Params: `query` (string), `maxResults` (int, default 10)
+- Params: `query` (string), `maxResults` (int, default 100)
 - Returns: list of `{id, threadId, subject, from, date, snippet}`
-- Note: Primary discovery tool. Set `maxResults` explicitly; default is only 10.
+- Note: Primary discovery tool. Set `maxResults` explicitly per tier table above.
 
 **`gmail_read_email`**
 Fetch full email content for a single message.
@@ -131,8 +201,10 @@ Delete a filter.
 | Batch size default | 50 | Configurable up to 1000 |
 | Max batch per call | 1000 emails | Split large operations into chunks |
 | Filter maximum | 500 filters | Consolidate with OR logic when approaching limit |
-| Search results default | 10 | Set `maxResults` explicitly for broader scans |
-| Search results max | ~500 | Use date ranges to paginate large datasets |
+| Search results default | 100 (MCP server) | Set `maxResults` explicitly per tier table |
+| Search results max | ~500 | Use date-range splitting for larger datasets |
+| Rate limit | 15,000 quota units/user/min | N+1 means each search result costs ~5 units |
+| Page token | Not available | Use date-range splitting for pagination |
 
 ---
 
