@@ -1,4 +1,4 @@
-@instructions/global.md
+@/Users/ww/dev/projects/agents/instructions/global.md
 
 ## GitHub Copilot CLI
 

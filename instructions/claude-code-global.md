@@ -1,4 +1,4 @@
-@./global.md
+@/Users/ww/dev/projects/agents/instructions/global.md
 
 ## Browser Tools
 

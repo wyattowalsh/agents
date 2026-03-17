@@ -1,4 +1,4 @@
-@./AGENTS.md
+@/Users/ww/dev/projects/agents/AGENTS.md
 
 ## Gemini
 
