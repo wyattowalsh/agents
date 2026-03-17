@@ -1,3 +1,5 @@
+@instructions/global.md
+
 # AGENTS.md — AI Agent Asset Standards
 
 This file is the source of truth for asset formats, naming conventions, and workflows in this repository.
@@ -202,11 +204,11 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 
 | Agent | Reads | Bridge File |
 |-------|-------|-------------|
-| Claude Code | `CLAUDE.md` → `@AGENTS.md` | `CLAUDE.md` |
-| Gemini CLI | `GEMINI.md` → `@./AGENTS.md` | `GEMINI.md` |
-| Antigravity | `GEMINI.md` → `@./AGENTS.md` | `GEMINI.md` |
-| Codex | `AGENTS.md` | — |
-| Crush | `AGENTS.md` | — |
-| OpenCode | `AGENTS.md` | — |
-| Cursor | `AGENTS.md` | — |
+| Claude Code | `CLAUDE.md` → `@AGENTS.md` + `@instructions/global.md` | `CLAUDE.md` |
+| Gemini CLI | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
+| Antigravity | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
+| Codex | `AGENTS.md` → `@instructions/global.md` | — |
+| Crush | `AGENTS.md` → `@instructions/global.md` | — |
+| OpenCode | `AGENTS.md` → `@instructions/global.md` | — |
+| Cursor | `AGENTS.md` → `@instructions/global.md` | — |
 | GitHub Copilot | `COPILOT.md` → `@instructions/global.md` + `AGENTS.md` conventions | `COPILOT.md` |
