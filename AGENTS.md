@@ -1,4 +1,4 @@
-@instructions/global.md
+@/Users/ww/dev/projects/agents/instructions/global.md
 
 # AGENTS.md — AI Agent Asset Standards
 
@@ -170,7 +170,7 @@ make help                                    # Show all make targets
 
 `~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + Clarification Gate + orchestration core (~600 tokens) — this is the only always-loaded instruction content.
 
-For GitHub Copilot CLI, use `COPILOT.md` as the bridge layer to apply Copilot-specific overrides on top of `@instructions/global.md`.
+For GitHub Copilot, use `.github/copilot-instructions.md` as the bridge layer to apply Copilot-specific overrides on top of `@instructions/global.md`.
 
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
@@ -211,4 +211,4 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Crush | `AGENTS.md` → `@instructions/global.md` | — |
 | OpenCode | `AGENTS.md` → `@instructions/global.md` | — |
 | Cursor | `AGENTS.md` → `@instructions/global.md` | — |
-| GitHub Copilot | `COPILOT.md` → `@instructions/global.md` + `AGENTS.md` conventions | `COPILOT.md` |
+| GitHub Copilot | `.github/copilot-instructions.md` → `@instructions/global.md` + `AGENTS.md` conventions | `.github/copilot-instructions.md` |

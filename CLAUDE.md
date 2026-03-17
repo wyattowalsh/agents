@@ -1,5 +1,5 @@
 @AGENTS.md
-@instructions/global.md
+@/Users/ww/dev/projects/agents/instructions/global.md
 
 ## Claude Code
 
