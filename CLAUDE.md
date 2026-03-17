@@ -1,4 +1,5 @@
 @AGENTS.md
+@instructions/global.md
 
 ## Claude Code
 

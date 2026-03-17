@@ -7,6 +7,7 @@
 - Verify, validate, and debug your work before ending your response.
 - Use Context7 and relevant tools for up-to-date context; prefer latest dependency versions.
 - Install skills: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- After non-trivial changes in a project with a `docs-steward` skill (`skills/docs-steward/` or `.claude/skills/docs-steward/`), invoke `/docs-steward` to sync dev docs and nested agent instructions.
 - Never sign or add self-attribution.
 
 ## Clarification Gate
