@@ -24,7 +24,7 @@ Skills extend your AI agent with domain expertise, structured workflows, and pro
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">26 User-Invocable</span>
+  <span class="stat stat-skill">27 User-Invocable</span>
   <span class="stat stat-agent">3 Convention Skills</span>
   <span class="stat stat-installed">18 Installed Skills</span>
 </div>
@@ -35,7 +35,7 @@ This repository contains three categories of skills, each serving a different pu
 
 | Category | Count | How they work |
 |----------|-------|---------------|
-| **User-Invocable** | 26 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
+| **User-Invocable** | 27 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
 | **Convention** | 3 | The agent auto-invokes these when it detects relevant context (e.g., editing Python files). Hidden from the `/` menu. |
 | **Installed** | 18 | Third-party skills installed from external sources via `~/.claude/skills/`. |
 
@@ -45,7 +45,7 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
 
 ---
 
-## User-Invocable Skills (26)
+## User-Invocable Skills (27)
 
 <Badge text="Manual invocation" variant="tip" /> Trigger these with `/skill-name` during a conversation. They appear in the autocomplete menu.
 
@@ -66,6 +66,7 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
   <LinkCard title="infrastructure-coder" href="/skills/infrastructure-coder/" description="Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work." />
   <LinkCard title="learn" href="/skills/learn/" description="Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights." />
   <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
+  <LinkCard title="namer" href="/skills/namer/" description="TODO — What this skill does and when to use it" />
   <LinkCard title="orchestrator" href="/skills/orchestrator/" description="Parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks." />
   <LinkCard title="performance-profiler" href="/skills/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
   <LinkCard title="prompt-engineer" href="/skills/prompt-engineer/" description="Prompt engineering for any AI system. Craft, analyze, convert between models, evaluate with rubrics. Use for system prompts, agent prompts, tool defs." />

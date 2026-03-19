@@ -1,0 +1,13 @@
+{
+  "skills": ["namer"],
+  "query": "/namer compare neon vs flux vs zed",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill in Compare mode",
+    "Agent skips name generation",
+    "Agent checks availability for all 3 names across domains and platforms",
+    "Agent scores all 3 names on intrinsic and extrinsic dimensions",
+    "Agent presents side-by-side comparison table with all 10 scoring dimensions",
+    "Agent highlights winner with rationale for the recommendation"
+  ]
+}

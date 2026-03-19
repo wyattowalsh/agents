@@ -1,0 +1,98 @@
+---
+title: "namer"
+description: "TODO — What this skill does and when to use it"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="namer" variant="note" /> <Badge text="31 words" variant="default" /> <Badge text="Custom" variant="tip" />
+
+> TODO — What this skill does and when to use it
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/namer -g
+```
+
+**Use:** `/namer`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/namer/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Skill instructions go here in markdown. Use imperative voice.
+
+### General
+
+| Field | Value |
+| ----- | ----- |
+| Name | `namer` |
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: namer
+description: TODO — What this skill does and when to use it
+
+## Cross-Platform (agentskills.io spec)
+# license: MIT                              # SPDX identifier
+# compatibility: "Requires git and docker"  # Environment requirements (max 500 chars)
+# allowed-tools: Read Grep Glob             # Space-delimited tool allowlist (experimental)
+# metadata:
+#   author: wyattowalsh
+#   version: "1.0"
+#   internal: false                         # If true, hidden unless INSTALL_INTERNAL_SKILLS=1
+
+## Claude Code Extensions
+# argument-hint: "[query]"                  # Shown during autocomplete
+# model: sonnet                             # Model override: sonnet | opus | haiku
+# context: fork                             # Run in isolated subagent
+# agent: Explore                            # Subagent type when context: fork
+# user-invocable: true                      # Set false to hide from / menu (background knowledge only)
+# disable-model-invocation: false           # Set true to prevent auto-invocation (manual /name only)
+# hooks:                                    # Lifecycle hooks scoped to this skill
+#   PreToolUse:
+#     - matcher: Bash
+#       hooks: [{command: "echo check"}]
+---
+
+# Namer
+
+Skill instructions go here in markdown. Use imperative voice.
+
+## When to Use
+
+Describe when an AI agent should invoke this skill.
+
+## Instructions
+
+Step-by-step instructions for the agent.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/namer/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/namer/SKILL.md)

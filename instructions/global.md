@@ -5,10 +5,12 @@
 - Review relevant `AGENTS.md` docs in every project you work in.
 - Check for existing (code, servers, etc) before creating anything new.
 - Verify, validate, and debug your work before ending your response.
-- Use Context7 and relevant tools for up-to-date context; prefer latest dependency versions.
-- Install skills: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- After non-trivial changes in a project with a `docs-steward` skill (`skills/docs-steward/` or `.claude/skills/docs-steward/`), invoke `/docs-steward` to sync dev docs and nested agent instructions.
+- Use llms.txt, Context7, and relevant tools for up-to-date context; prefer latest dependency versions.
+- After changes to public APIs, file structure, agent definitions, or skill definitions, invoke `/docs-steward` if available.
+- When skills need installing, surface the command to the user: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
 - Never sign or add self-attribution.
+- Use hooks for deterministic enforcement; reserve instructions for intent and heuristics that require judgment.
+- **Precedence**: explicit user instructions override all rules → Clarification Gate governs ambiguous decisions → platform bridge files override global.md on the same topic.
 
 ## Clarification Gate
 
@@ -30,44 +32,24 @@ Before any tool-mediated work:
 2. **CLASSIFY**: Independent (no data dependency) vs dependent.
 3. **MAXIMIZE**: Actively split actions further — find every opportunity to parallelize. Each independent action = its own subagent.
 4. **CONFLICT CHECK**: Same-file edits → sequential. Everything else → parallel.
-5. **DISPATCH**: Default is Pattern E (TeamCreate + nested subagent waves per teammate). Pre-approve permissions before spawning. Use bare subagent waves only when single domain, no coordination, no context pressure. Single session only when there is literally 1 action.
-6. **TRACK**: TaskCreate entries before every dispatch. `activeForm` in present continuous. Mark `in_progress` → `completed`. N dispatched = N resolved before advancing.
+5. **DISPATCH**: When team/subagent tools are available (TeamCreate, TaskCreate), default to Pattern E (team + nested subagent waves). Otherwise, maximize parallel tool calls within a single session. Single session only when there is literally 1 action.
+6. **TRACK**: Track entries before every dispatch. Mark `in_progress` → `completed`. N dispatched = N resolved before advancing.
 
 **Fast path**: Exactly 1 action → single session. All other cases → parallelize.
-**Explore-first**: Cannot decompose → spawn parallel exploration team first, then re-enter this gate.
+**Explore-first**: Cannot decompose → spawn parallel exploration first, then re-enter this gate.
 
-| Tier | Mechanism | Default for |
-|------|-----------|-------------|
-| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure |
-| **Single session** | Direct | Exactly 1 action |
-
-**Model**: opus everywhere. No exceptions. Never downgrade model for any reason.
+**Model**: opus by default. Platform-specific bridge files may override.
 **Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.
 
-## Skill Accuracy
+## Commit Discipline
 
-### Type Inventory Verification
+In git repositories, commit after each completed logical unit of work — not at the end of the session.
 
-Before documenting enum values, signal types, or category lists in a skill, read the actual implementation code (classifier prompts, keyword fallbacks, DB enum definitions). Types that exist only in the skill documentation but not in the code are **phantom types** — they will cause silent failures when the agent tries to use them.
+- **Atomic**: one logical change per commit (a feature, a fix, a refactor — not all three)
+- **Conventional messages**: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`, `test:` prefixes with concise scope and description
 
-### Encryption and Security Claims
+## Docs Lookup (`llms.txt`)
 
-Always verify encryption claims against the actual cryptography library and function calls used in the codebase. Common inaccuracies:
-- "AES-256" when the code uses Fernet (AES-128-CBC)
-- "encrypted" when the code uses XOR or base64 encoding
-- "secure storage" when tokens are stored in plaintext
+For unfamiliar tools/APIs, check `{docs_url}/llms.txt` (index) and `llms-full.txt` (full docs) before web search. Try `{domain}/llms.txt`, `docs.{domain}/llms.txt`, `{domain}/docs/llms.txt`. A 404 is expected — move to the next source.
 
-Read the import statements and function calls; do not trust comments or docstrings alone.
-
-### LLM Classifier Documentation
-
-When a skill wraps an LLM-based classifier, document all four of:
-1. **Model** — exact model identifier (e.g., `claude-haiku-4-5-20251001`)
-2. **Fallback mode** — what happens when the API key is missing or the call fails (e.g., keyword matching)
-3. **Confidence threshold** — the minimum score to act on a result (e.g., >= 0.6)
-4. **Failure handling** — how the agent should handle classification failures or ambiguous results
-
-## Browser Tools
-
-Prefer `chrome-devtools` MCP for browser automation, testing, and debugging. Fallback: Playwright → Fetcher/Fetch → WebFetch.
+**Resolution order:** `llms.txt` / `llms-full.txt` → Context7 / doc-search MCP → web search. Prefer `llms-full.txt` over web search — authoritative, versioned, no SEO noise.

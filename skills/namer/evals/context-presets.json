@@ -1,0 +1,13 @@
+{
+  "skills": ["namer"],
+  "query": "/namer creative-project --context \"indie game studio making pixel art games\"",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill",
+    "Agent classifies as Creative context (not Product or Brand)",
+    "Agent applies Creative preset: 55/45 intrinsic/extrinsic split",
+    "Agent prioritizes phonetic quality (35%) and memorability (35%) in intrinsic scoring",
+    "Agent checks YouTube, TikTok, X/Twitter, Reddit as primary platforms",
+    "Agent generates candidates with emphasis on evocative and invented-word archetypes"
+  ]
+}

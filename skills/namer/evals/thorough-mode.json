@@ -1,0 +1,13 @@
+{
+  "skills": ["namer"],
+  "query": "/namer my-cli-tool --context \"terminal file manager in Rust\" --thorough",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill with --thorough flag",
+    "Agent classifies as CLI Tool context with 30/70 intrinsic/extrinsic split",
+    "Agent runs multiple generation passes for extra diversity",
+    "Agent checks social platforms and trademark databases beyond standard checks",
+    "Agent generates 40-60 initial candidates across all 6 archetypes",
+    "Agent shows three views: Best Names, Best Available, Best with Variants"
+  ]
+}

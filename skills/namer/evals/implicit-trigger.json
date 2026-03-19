@@ -1,0 +1,12 @@
+{
+  "skills": ["namer"],
+  "query": "I need a name for my new Rust CLI tool that manages dotfiles across machines",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes naming intent and activates namer skill",
+    "Agent classifies as CLI Tool context",
+    "Agent prioritizes short names, dev registries (crates.io, GitHub), .dev domain",
+    "Agent generates candidates optimized for typeability and CLI ergonomics",
+    "Agent checks crates.io and GitHub availability"
+  ]
+}

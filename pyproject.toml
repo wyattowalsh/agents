@@ -10,6 +10,9 @@ dependencies = [
     "typer>=0.15",
     "pyyaml>=6",
     "uvicorn>=0.41.0",
+    "loguru>=0.7.3",
+    "rich>=14.3.2",
+    "httpx>=0.28.1",
 ]
 
 [project.scripts]

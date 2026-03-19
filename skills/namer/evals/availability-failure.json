@@ -1,0 +1,13 @@
+{
+  "skills": ["namer"],
+  "query": "/namer check thisisatestname12345",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill in Check mode",
+    "Agent attempts availability checks across all platforms",
+    "On timeout or API error, agent marks status as unknown (not available)",
+    "Agent never fabricates availability data for failed checks",
+    "Availability matrix shows unknown status markers for failed checks",
+    "Agent notes which platforms had check failures in the output"
+  ]
+}
