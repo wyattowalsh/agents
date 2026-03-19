@@ -4,6 +4,32 @@ All notable changes to email-whiz are documented here.
 
 ---
 
+## [5.1.0] - 2026-03-18
+
+### Added
+
+- Long-term user memory system at `~/.claude/email-whiz/memory.json`
+- `scripts/memory.py` Typer CLI with 10 commands: load, save-sender, save-override, save-correction, save-filter, save-labels, save-patterns, remove, prune, stats
+- Phase -1 (Memory Load): loads user memory before Phase 0 discovery, fused in same message as cache check
+- Memory Save Triggers section: defines when each mode saves memories (VIPs, noise, corrections, filters, labels, patterns)
+- Memory-aware fast-lane classification: VIP/noise senders from memory classified without content reads
+- Correction priority system: user corrections override all fast-lane rules
+- Automatic staleness pruning with configurable thresholds (VIP: 90d, noise: 90d, overrides: 60d, corrections: 120d)
+- Memory Integration eval test cases (12 scenarios)
+- Memory Summary report template
+- 3 canonical vocabulary terms: memory, correction, staleness
+- Critical rule 19: memory load/save timing
+- Test suite for memory.py
+
+### Changed
+
+- Triage Pass 1 fast-lane now checks memory corrections, VIPs, and noise senders before static rules
+- Phase 0 prerequisite note points to Phase -1
+- Triage-framework.md: sender fast-lane table includes memory-aware rows with priority ordering
+- Reference File Index: 5 new memory.py script entries
+
+---
+
 ## [5.0.0] - 2026-03-16
 
 ### Breaking

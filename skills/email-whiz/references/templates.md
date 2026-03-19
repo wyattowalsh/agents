@@ -371,3 +371,26 @@ Code:  {error_code}
 
 No emails were modified.
 ```
+
+---
+
+## Memory Summary
+
+Show at end of session when memories were saved or updated.
+
+### Memory Update Report
+
+```
+MEMORIES UPDATED
+
+Saved: {new_count} new | Updated: {updated_count} existing | Pruned: {pruned_count} stale
+VIPs: {vip_count} | Noise: {noise_count} | Overrides: {override_count} | Corrections: {correction_count}
+
+{if corrections_saved > 0}
+Corrections recorded — will apply in future sessions:
+  • {pattern} → {bucket} (was: {original_bucket})
+{/if}
+{if pruned_count > 0}
+Pruned stale entries: {pruned_details}
+{/if}
+```
