@@ -1,0 +1,14 @@
+{
+  "skills": ["namer"],
+  "query": "/namer my-saas-project --context \"developer productivity tool for code review\"",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill",
+    "Agent classifies as Product context",
+    "Agent generates 15+ candidates across multiple archetypes",
+    "Agent checks domain and platform availability in parallel",
+    "Agent produces ranked table with availability matrix",
+    "Agent provides actionable next steps for top recommendations",
+    "Agent shows three views: Best Names, Best Available, Best with Variants"
+  ]
+}

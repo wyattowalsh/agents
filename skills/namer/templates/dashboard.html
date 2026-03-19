@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Namer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a14;--bg2:#0f0f1e;--bd:#1e1e3a;--bd2:#2a2a4a;
+  --tx:#e8e8f4;--t2:#8888aa;--t3:#5555777;
+  --c0:#00d4ff;--c1:#7c3aed;--c2:#a855f7;--c3:#06b6d4;
+  --ok:#22c55e;--warn:#f59e0b;--err:#ef4444;--info:#3b82f6;
+  --g:.75rem;--r:10px;--r2:6px;color-scheme:dark;
+  --grad:linear-gradient(135deg,var(--c0),var(--c2));
+}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5;padding:var(--g);max-width:1280px;margin:0 auto;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 15% 20%,rgba(0,212,255,.06),transparent 55%),
+             radial-gradient(ellipse at 85% 80%,rgba(168,85,247,.07),transparent 55%),
+             radial-gradient(ellipse at 50% 50%,rgba(124,58,237,.04),transparent 70%)}
+
+/* typography */
+h1{font-size:1.4rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:.95rem;font-weight:700;letter-spacing:-.01em}
+h3{font-size:.82rem;font-weight:600}
+.mono{font-family:ui-monospace,monospace}
+.xs{font-size:.68rem;color:var(--t2)}
+.sm{font-size:.76rem}
+.dim{color:var(--t2)}
+
+/* card */
+.card{background:rgba(15,15,30,.7);border:1px solid var(--bd);border-radius:var(--r);padding:var(--g);margin-bottom:var(--g);backdrop-filter:blur(8px);animation:fadeUp .3s ease-out both}
+.card-glow{border-color:rgba(0,212,255,.2);box-shadow:0 0 20px rgba(0,212,255,.05),inset 0 1px 0 rgba(255,255,255,.04)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* header */
+.hdr{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem var(--g);margin-bottom:var(--g)}
+.hdr h1{flex:1;min-width:0}
+.hdr h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;padding:.14em .55em;border-radius:999px;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.badge-ctx{background:rgba(0,212,255,.15);color:var(--c0);border:1px solid rgba(0,212,255,.25)}
+.badge-preset{background:rgba(168,85,247,.15);color:var(--c2);border:1px solid rgba(168,85,247,.25)}
+.badge-date{background:rgba(255,255,255,.06);color:var(--t2);border:1px solid var(--bd)}
+
+/* score bars overview */
+.overview{display:flex;flex-direction:column;gap:.45rem}
+.ov-row{display:grid;grid-template-columns:90px 1fr 44px;align-items:center;gap:.4rem}
+.ov-name{font-weight:700;font-size:.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ov-track{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;position:relative}
+.ov-fill{height:100%;border-radius:4px;background:var(--grad);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.ov-fill-i{background:linear-gradient(90deg,var(--c3),var(--c0))}
+.ov-fill-e{background:linear-gradient(90deg,var(--c1),var(--c2))}
+.ov-score{font-size:.8rem;font-weight:800;text-align:right;font-family:ui-monospace,monospace}
+
+/* tabs */
+.tabs{display:flex;gap:.3rem;border-bottom:1px solid var(--bd);margin-bottom:var(--g);overflow-x:auto;padding-bottom:0;flex-wrap:nowrap}
+.tab{padding:.45rem .75rem;font-size:.78rem;font-weight:600;cursor:pointer;border:none;background:none;color:var(--t2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s;border-radius:var(--r2) var(--r2) 0 0}
+.tab:hover{color:var(--tx)}
+.tab.active{color:var(--c0);border-bottom-color:var(--c0);background:rgba(0,212,255,.05)}
+
+/* ranked table */
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th{text-align:left;padding:.4rem .45rem;border-bottom:2px solid var(--bd2);color:var(--t2);font-size:.66rem;text-transform:uppercase;font-weight:700;letter-spacing:.06em;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--tx)}
+td{padding:.32rem .45rem;border-bottom:1px solid rgba(30,30,58,.6);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.clickable{cursor:pointer}
+tr.clickable:hover td{background:rgba(0,212,255,.03)}
+tr.expanded td{border-bottom:none}
+.rank-num{font-weight:800;font-family:ui-monospace,monospace;font-size:.88rem;color:var(--t2)}
+.rank-num.gold{color:#fbbf24}
+.rank-num.silver{color:#94a3b8}
+.rank-num.bronze{color:#c47b3a}
+.name-cell{font-weight:800;font-size:.9rem;letter-spacing:-.01em}
+.arch-badge{font-size:.62rem;padding:.1em .4em;border-radius:999px;background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.2);white-space:nowrap}
+.score-pill{font-weight:800;font-family:ui-monospace,monospace;font-size:.85rem;padding:.1em .4em;border-radius:var(--r2)}
+.score-high{color:#22c55e}
+.score-mid{color:#f59e0b}
+.score-low{color:#ef4444}
+.avail-dot{display:inline-block;width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.avail-row{display:flex;gap:3px;align-items:center;flex-wrap:wrap}
+.rationale-cell{color:var(--t2);font-size:.72rem;max-width:200px}
+
+/* detail panel */
+.detail{overflow:hidden;max-height:0;transition:max-height .25s ease-out}
+.detail.open{max-height:1600px;transition:max-height .35s ease-in}
+.detail-inner{padding:.75rem;background:rgba(0,0,0,.3);border-top:1px solid var(--bd2);display:grid;grid-template-columns:1fr 1fr;gap:var(--g)}
+.detail-inner.single{grid-template-columns:1fr}
+
+/* radar */
+.radar-wrap{display:flex;justify-content:center;padding:.25rem 0}
+
+/* dimension bars */
+.dim-bar-row{display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem}
+.dim-label{flex:0 0 120px;font-size:.68rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dim-track{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;position:relative}
+.dim-fill{height:100%;border-radius:3px;background:var(--grad)}
+.dim-weight{position:absolute;inset:0;background:rgba(255,255,255,.08);border-radius:3px}
+.dim-val{flex:0 0 22px;font-size:.7rem;font-weight:700;font-family:ui-monospace,monospace;text-align:right}
+
+/* availability grid */
+.avail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.3rem}
+.avail-item{display:flex;align-items:center;gap:.35rem;padding:.3rem .4rem;border-radius:var(--r2);background:rgba(255,255,255,.03);border:1px solid var(--bd)}
+.avail-platform{font-size:.72rem;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avail-price{font-size:.62rem;color:var(--ok)}
+
+/* strengths / risks */
+.sr-list{list-style:none;display:flex;flex-direction:column;gap:.2rem}
+.sr-list li{font-size:.74rem;display:flex;align-items:flex-start;gap:.3rem;line-height:1.4}
+.sr-list li::before{flex-shrink:0;font-weight:700;margin-top:.05em}
+.strengths li::before{content:"+";color:var(--ok)}
+.risks li::before{content:"▲";color:var(--warn);font-size:.6rem}
+
+/* next steps */
+.steps-list{list-style:none;counter-reset:steps;display:flex;flex-direction:column;gap:.3rem}
+.steps-list li{font-size:.74rem;display:flex;align-items:flex-start;gap:.4rem;counter-increment:steps;line-height:1.4}
+.steps-list li::before{content:counter(steps);flex-shrink:0;width:16px;height:16px;border-radius:50%;background:var(--grad);color:#fff;font-size:.58rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:.1em}
+.copy-btn{margin-left:auto;flex-shrink:0;padding:.1em .35em;border-radius:var(--r2);font-size:.6rem;background:rgba(255,255,255,.07);border:1px solid var(--bd2);color:var(--t2);cursor:pointer;transition:background .15s,color .15s}
+.copy-btn:hover{background:rgba(0,212,255,.15);color:var(--c0);border-color:rgba(0,212,255,.25)}
+
+/* variants table */
+.vt{font-size:.72rem}
+.vt th{font-size:.62rem}
+.vt td{padding:.22rem .35rem}
+
+/* matrix */
+.matrix-wrap{overflow-x:auto}
+.matrix-table{border-collapse:collapse;font-size:.72rem;min-width:600px;width:100%}
+.matrix-table th{padding:.3rem .4rem;border-bottom:2px solid var(--bd2);font-size:.62rem;text-transform:uppercase;font-weight:700;letter-spacing:.05em;color:var(--t2);text-align:center;white-space:nowrap}
+.matrix-table th.name-th{text-align:left}
+.matrix-table td{padding:.28rem .4rem;border-bottom:1px solid rgba(30,30,58,.5);text-align:center}
+.matrix-table td.name-td{text-align:left;font-weight:700;font-family:ui-monospace,monospace}
+.matrix-table tr:last-child td{border-bottom:none}
+.matrix-table tr:hover td{background:rgba(0,212,255,.03)}
+.mx-avail{color:var(--ok)}
+.mx-taken{color:var(--err)}
+.mx-parked{color:var(--warn)}
+.mx-unknown{color:var(--bd2)}
+
+/* weights panel */
+.weights-toggle{display:flex;align-items:center;gap:.4rem;cursor:pointer;padding:.3rem 0;color:var(--t2);font-size:.74rem;font-weight:600;user-select:none;border:none;background:none;width:100%}
+.weights-toggle:hover{color:var(--tx)}
+.weights-toggle .chevron{transition:transform .2s;font-size:.6rem}
+.weights-toggle.open .chevron{transform:rotate(180deg)}
+.weights-body{overflow:hidden;max-height:0;transition:max-height .2s}
+.weights-body.open{max-height:400px}
+.weights-cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--g);padding-top:.5rem}
+.w-row{display:flex;align-items:center;gap:.35rem;margin-bottom:.2rem}
+.w-label{flex:0 0 140px;font-size:.68rem;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-track{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.w-fill{height:100%;border-radius:2px;background:var(--grad)}
+.w-pct{flex:0 0 28px;font-size:.66rem;font-weight:700;font-family:ui-monospace,monospace;text-align:right;color:var(--t2)}
+.split-bar{display:flex;height:10px;border-radius:5px;overflow:hidden;margin:.4rem 0}
+.split-i{background:linear-gradient(90deg,var(--c3),var(--c0))}
+.split-e{background:linear-gradient(90deg,var(--c1),var(--c2))}
+
+/* stat pills */
+.stats-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.5rem}
+.stat-pill{padding:.18em .55em;border-radius:999px;font-size:.68rem;font-weight:700;font-family:ui-monospace,monospace;background:rgba(255,255,255,.05);border:1px solid var(--bd);color:var(--t2)}
+.stat-pill span{color:var(--tx);font-size:.78rem}
+
+/* section headers */
+.section-hdr{display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem}
+.section-hdr h2{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--bd2),transparent)}
+
+/* empty */
+.empty{padding:1.5rem;text-align:center;color:var(--t2);font-size:.8rem}
+
+/* responsive */
+@media(max-width:700px){
+  .detail-inner{grid-template-columns:1fr}
+  .weights-cols{grid-template-columns:1fr}
+  .ov-row{grid-template-columns:70px 1fr 38px}
+  .dim-label{flex:0 0 90px}
+  .avail-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media print{
+  body{background:#fff;color:#111;padding:0}
+  body::before{display:none}
+  .card{background:#fff;border:1px solid #ccc;break-inside:avoid;animation:none}
+  .detail{max-height:none!important;overflow:visible}
+  .tab{display:none}
+  [data-tab]{display:block!important}
+}
+</style></head><body>
+<main id=app></main>
+<script id=data type="application/json">{}</script>
+<script>(()=>{"use strict";
+const D=JSON.parse(document.getElementById("data").textContent),q=document.getElementById("app");
+const _=document.createElement("p"),esc=s=>{if(s==null)return"";_.textContent=String(s);return _.innerHTML};
+if(!D.candidates||!D.candidates.length){q.innerHTML='<div class="card empty"><p>No data yet — run namer and inject results into this template.</p></div>';return}
+
+/* State */
+let activeTab="best_available",expanded=new Set(),sortKey=null,sortAsc=true;
+
+const PLAT_LABELS={domain_com:".com",domain_dev:".dev",domain_net:".net",github:"GitHub",npm:"npm",pypi:"PyPI",crates:"Crates",bluesky:"Bluesky",reddit:"Reddit",x_twitter:"X/Twitter",instagram:"Instagram",linkedin:"LinkedIn",youtube:"YouTube",homebrew:"Homebrew"};
+const PLAT_ORDER=["domain_com","domain_dev","domain_net","github","npm","pypi","crates","bluesky","reddit","x_twitter"];
+const DIMS_INTRINSIC=["memorability","phonetic_quality","semantic_fit","morphological_flexibility","visual_quality"];
+const DIMS_EXTRINSIC=["domain_availability","registry_availability","handle_consistency","search_distinctiveness","typeability"];
+const DIM_LABEL={"memorability":"Memorability","phonetic_quality":"Phonetic Quality","semantic_fit":"Semantic Fit","morphological_flexibility":"Morph. Flexibility","visual_quality":"Visual Quality","domain_availability":"Domain Avail.","registry_availability":"Registry Avail.","handle_consistency":"Handle Consist.","search_distinctiveness":"Search Distinct.","typeability":"Typeability"};
+
+function scoreColor(s){return s>=80?"score-high":s>=60?"score-mid":"score-low"}
+function availDot(v){const c=v===true?"var(--ok)":v===false?"var(--err)":v==="parked"?"var(--warn)":"var(--bd2)";return`<span class=avail-dot style="background:${c}"></span>`}
+function availIcon(v){return v===true?'<span class=mx-avail>✓</span>':v===false?'<span class=mx-taken>✕</span>':v==="parked"?'<span class=mx-parked>~</span>':'<span class=mx-unknown>·</span>'}
+
+/* Radar SVG */
+function radar(dims,scores,weights,size=140){
+  const n=dims.length,C=size/2,R=C*.58,W=2*Math.PI/n,T=1;
+  const P=(a,r)=>[(C+r*Math.cos(a)).toFixed(T),(C+r*Math.sin(a)).toFixed(T)];
+  let s=`<svg viewBox="0 0 ${size} ${size}" width=${size} height=${size}>`;
+  for(const f of[.25,.5,.75,1]){let p="";for(let i=0;i<n;i++){const[x,y]=P(-Math.PI/2+i*W,R*f);p+=`${x},${y} `}s+=`<polygon points="${p.trim()}" fill=none stroke="rgba(30,30,58,.7)" stroke-width=.5/>`}
+  for(let i=0;i<n;i++){const a=-Math.PI/2+i*W,[x,y]=P(a,R);s+=`<line x1=${C} y1=${C} x2=${x} y2=${y} stroke="rgba(30,30,58,.5)" stroke-width=.4/>`}
+  if(weights){let wpts="";for(let i=0;i<n;i++){const a=-Math.PI/2+i*W,w=weights[dims[i]]||0,[x,y]=P(a,R*w*n);wpts+=`${x},${y} `}s+=`<polygon points="${wpts.trim()}" fill="rgba(0,212,255,.06)" stroke="rgba(0,212,255,.2)" stroke-width=.8 stroke-dasharray="2,2"/>`}
+  let dp="";for(let i=0;i<n;i++){const a=-Math.PI/2+i*W,v=(scores[dims[i]]||0)/10,[x,y]=P(a,R*v);dp+=`${x},${y} `}
+  s+=`<polygon points="${dp.trim()}" fill="rgba(168,85,247,.18)" stroke="url(#rg)" stroke-width=1.8/>`;
+  s+=`<defs><linearGradient id=rg x1=0 y1=0 x2=1 y2=1><stop offset=0% stop-color="var(--c0)"/><stop offset=100% stop-color="var(--c2)"/></linearGradient></defs>`;
+  for(let i=0;i<n;i++){const a=-Math.PI/2+i*W,v=(scores[dims[i]]||0)/10,[cx,cy]=P(a,R*v);s+=`<circle cx=${cx} cy=${cy} r=3 fill="var(--c0)"/>`}
+  for(let i=0;i<n;i++){const a=-Math.PI/2+i*W,[lx,ly]=P(a,R+14),an=Math.cos(a)<-.1?"end":Math.cos(a)>.1?"start":"middle",lbl=DIM_LABEL[dims[i]]||dims[i],short=lbl.split(" ")[0];s+=`<text x=${lx} y=${ly} text-anchor=${an} dy=.35em fill="var(--t2)" font-size=6.5 font-family="system-ui,sans-serif">${esc(short)}</text>`}
+  return s+"</svg>"}
+
+/* Header */
+function renderHeader(){
+  let h=`<header class="card card-glow"><div class=hdr><h1><span>Namer</span></h1>`;
+  if(D.context)h+=`<span class="badge badge-ctx">${esc(D.context)}</span>`;
+  if(D.preset)h+=`<span class="badge badge-preset">${esc(D.preset)}</span>`;
+  if(D.generated)h+=`<span class="badge badge-date">${esc(D.generated)}</span>`;
+  h+=`</div>`;
+  if(D.query)h+=`<p class=sm style="color:var(--t2)">Naming: <strong style="color:var(--tx)">${esc(D.query)}</strong></p>`;
+  const cands=D.candidates||[];
+  if(cands.length){
+    h+=`<div class=stats-row style="margin-top:.5rem">`;
+    h+=`<div class=stat-pill><span>${cands.length}</span> candidates</div>`;
+    const best=cands.reduce((a,b)=>b.composite_score>a.composite_score?b:a,cands[0]);
+    h+=`<div class=stat-pill>Top: <span>${esc(best.name)}</span> ${esc(best.composite_score)}</div>`;
+    const avail=cands.filter(c=>Object.values(c.availability||{}).some(v=>v===true));
+    h+=`<div class=stat-pill><span>${avail.length}</span> with available handles</div>`;
+    h+=`</div>`;
+  }
+  return h+"</header>"}
+
+/* Score Overview */
+function renderOverview(){
+  const cands=(D.candidates||[]).slice(0,6);
+  let h=`<section class=card><div class=section-hdr><h2>Score Overview</h2><div class=section-line></div></div><div class=overview>`;
+  for(const c of cands){
+    const cs=c.composite_score||0,is=c.intrinsic_score||0,es=c.extrinsic_score||0;
+    h+=`<div><div class=ov-row><div class="ov-name mono">${esc(c.name)}</div><div class=ov-track><div class="ov-fill" style="width:${cs}%"></div></div><div class="ov-score ${scoreColor(cs)}">${cs}</div></div>`;
+    h+=`<div class=ov-row><div class="ov-name xs">intrinsic</div><div class=ov-track><div class="ov-fill ov-fill-i" style="width:${is}%"></div></div><div class="xs mono" style="flex:0 0 44px;text-align:right">${is}</div></div>`;
+    h+=`<div class=ov-row style="margin-bottom:.4rem"><div class="ov-name xs">extrinsic</div><div class=ov-track><div class="ov-fill ov-fill-e" style="width:${es}%"></div></div><div class="xs mono" style="flex:0 0 44px;text-align:right">${es}</div></div></div>`;
+  }
+  return h+"</div></section>"}
+
+/* View indices */
+function viewIndices(tab){
+  const v=D.views||{};
+  if(tab==="best_names"&&v.best_names)return v.best_names;
+  if(tab==="best_available"&&v.best_available)return v.best_available;
+  if(tab==="best_with_variants"&&v.best_with_variants)return v.best_with_variants;
+  const all=(D.candidates||[]).map((_,i)=>i);
+  if(tab==="best_names")return all.slice().sort((a,b)=>(D.candidates[b].intrinsic_score||0)-(D.candidates[a].intrinsic_score||0));
+  if(tab==="best_with_variants")return all.filter(i=>(D.candidates[i].variants||[]).some(vr=>Object.values(vr.availability||{}).some(x=>x===true)));
+  return all.slice().sort((a,b)=>(D.candidates[b].composite_score||0)-(D.candidates[a].composite_score||0));
+}
+
+/* Platform availability dots for table */
+function availDots(avail){
+  const platforms=PLAT_ORDER.filter(p=>p in (avail||{}));
+  if(!platforms.length)return'<span class=xs>—</span>';
+  let h='<div class=avail-row>';
+  for(const p of platforms){const title=PLAT_LABELS[p]||p;h+=`<span title="${esc(title)}">${availDot(avail[p])}</span>`}
+  return h+"</div>"}
+
+/* Detail panel */
+function renderDetail(c,idx){
+  const dims=c.dimensions||{},avail=c.availability||{},iw=(D.weights||{}).intrinsic||{},ew=(D.weights||{}).extrinsic||{};
+  const platforms=PLAT_ORDER.filter(p=>p in avail);
+  let h=`<tr><td colspan=99 style="padding:0;border:none"><div class="detail${expanded.has(idx)?" open":""}" id="det-${idx}"><div class=detail-inner>`;
+
+  /* col 1: radar + dimensions */
+  h+=`<div>`;
+  h+=`<div class=radar-wrap>${radar(DIMS_INTRINSIC,dims,iw)}</div>`;
+  h+=`<div style="margin-top:.5rem"><h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;color:var(--t2)">10 Dimensions</h3>`;
+  for(const dim of [...DIMS_INTRINSIC,...DIMS_EXTRINSIC]){
+    const v=dims[dim]||0,w=iw[dim]||ew[dim]||0,pct=(v/10)*100;
+    h+=`<div class=dim-bar-row><span class=dim-label>${esc(DIM_LABEL[dim]||dim)}</span><div class=dim-track>`;
+    if(w>0)h+=`<div class=dim-weight style="width:${(w*100).toFixed(0)}%"></div>`;
+    h+=`<div class=dim-fill style="width:${pct.toFixed(0)}%"></div></div><span class=dim-val>${v}</span></div>`;
+  }
+  h+=`</div></div>`;
+
+  /* col 2: avail + strengths + risks + steps + variants */
+  h+=`<div>`;
+  if(platforms.length){
+    h+=`<h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;color:var(--t2)">Availability</h3>`;
+    h+=`<div class=avail-grid>`;
+    for(const p of platforms){
+      const v=avail[p],price=(c.domain_prices||{})[p];
+      const dot=v===true?"var(--ok)":v===false?"var(--err)":v==="parked"?"var(--warn)":"var(--bd2)";
+      h+=`<div class=avail-item><span class=avail-dot style="background:${dot}"></span><span class=avail-platform>${esc(PLAT_LABELS[p]||p)}</span>`;
+      if(price)h+=`<span class=avail-price>${esc(price)}</span>`;
+      h+=`</div>`;
+    }
+    h+=`</div>`;
+  }
+  if((c.strengths||[]).length){
+    h+=`<h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin:.5rem 0 .3rem;color:var(--t2)">Strengths</h3>`;
+    h+=`<ul class="sr-list strengths">`;
+    for(const s of c.strengths)h+=`<li>${esc(s)}</li>`;
+    h+=`</ul>`;
+  }
+  if((c.risks||[]).length){
+    h+=`<h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin:.5rem 0 .3rem;color:var(--t2)">Risks</h3>`;
+    h+=`<ul class="sr-list risks">`;
+    for(const r of c.risks)h+=`<li>${esc(r)}</li>`;
+    h+=`</ul>`;
+  }
+  if((c.next_steps||[]).length){
+    h+=`<h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin:.5rem 0 .3rem;color:var(--t2)">Next Steps</h3>`;
+    h+=`<ol class=steps-list>`;
+    for(const s of c.next_steps){
+      const hasCmd=s.includes("`"),cmd=hasCmd?s.match(/`([^`]+)`/)?.[1]:"";
+      h+=`<li>${esc(s)}${hasCmd&&cmd?`<button class=copy-btn onclick="navigator.clipboard.writeText(${JSON.stringify(cmd)});this.textContent='✓';setTimeout(()=>this.textContent='copy',1200)" title="Copy command">copy</button>`:""}`;
+      h+=`</li>`;
+    }
+    h+=`</ol>`;
+  }
+  if((c.variants||[]).length&&activeTab==="best_with_variants"){
+    h+=`<h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin:.5rem 0 .3rem;color:var(--t2)">Variants</h3>`;
+    h+=`<div style="overflow-x:auto"><table class=vt><thead><tr><th>Name</th><th>Type</th>`;
+    const vplats=PLAT_ORDER.filter(p=>c.variants.some(v=>p in (v.availability||{})));
+    for(const p of vplats)h+=`<th>${esc(PLAT_LABELS[p]||p)}</th>`;
+    h+=`<th>Notes</th></tr></thead><tbody>`;
+    for(const vr of c.variants){
+      h+=`<tr><td class=mono style="font-weight:700">${esc(vr.name)}</td><td class=xs>${esc(vr.type)}</td>`;
+      for(const p of vplats)h+=`<td style="text-align:center">${availIcon((vr.availability||{})[p])}</td>`;
+      h+=`<td class=xs>${esc(vr.note||"")}</td></tr>`;
+    }
+    h+=`</tbody></table></div>`;
+  }
+  h+=`</div>`;
+  return h+"</div></div></td></tr>"}
+
+/* Ranked table */
+function renderTable(tab){
+  const idxs=viewIndices(tab);
+  if(!idxs.length)return`<div class=empty>No candidates for this view.</div>`;
+  const scoreField=tab==="best_names"?"intrinsic_score":"composite_score";
+  let cands=idxs.map((i,rank)=>({...D.candidates[i],_idx:i,_rank:rank+1}));
+
+  /* sorting */
+  if(sortKey){const k=sortKey;cands.sort((a,b)=>sortAsc?(a[k]||0)-(b[k]||0):(b[k]||0)-(a[k]||0))}
+
+  /* collect used platforms */
+  const usedPlats=PLAT_ORDER.filter(p=>cands.some(c=>p in (c.availability||{})));
+
+  function th(label,key,tip=""){return`<th title="${esc(tip)}" data-k="${esc(key)}" style="${sortKey===key?"color:var(--c0)":""}">${esc(label)}${sortKey===key?(sortAsc?" ▲":" ▼"):""}</th>`}
+
+  let h=`<div style=overflow-x:auto><table><thead><tr>`;
+  h+=th("#","_rank")+th("Name","name")+th("Archetype","archetype");
+  h+=th(tab==="best_names"?"Intrinsic":"Score",scoreField);
+  h+=th("I","intrinsic_score","Intrinsic")+th("E","extrinsic_score","Extrinsic");
+  for(const p of usedPlats.slice(0,6))h+=`<th title="${esc(PLAT_LABELS[p]||p)}" style="text-align:center">${esc((PLAT_LABELS[p]||p).replace(/domain_/,""))}</th>`;
+  h+=`<th>Rationale</th></tr></thead><tbody>`;
+
+  for(const c of cands){
+    const s=c[scoreField]||0,av=c.availability||{};
+    const rankClass=c._rank===1?"gold":c._rank===2?"silver":c._rank===3?"bronze":"";
+    const isExp=expanded.has(c._idx);
+    h+=`<tr class="clickable${isExp?" expanded":""}" data-idx="${c._idx}">`;
+    h+=`<td><span class="rank-num ${rankClass}">${c._rank}</span></td>`;
+    h+=`<td><span class="name-cell mono">${esc(c.name)}</span></td>`;
+    h+=`<td><span class=arch-badge>${esc((c.archetype||"").split(" ")[0])}</span></td>`;
+    h+=`<td><span class="score-pill ${scoreColor(s)}">${s}</span></td>`;
+    h+=`<td class=xs>${c.intrinsic_score||"—"}</td>`;
+    h+=`<td class=xs>${c.extrinsic_score||"—"}</td>`;
+    for(const p of usedPlats.slice(0,6))h+=`<td style="text-align:center">${availDot(av[p])}</td>`;
+    h+=`<td class=rationale-cell>${esc((c.rationale||"").slice(0,80)+(c.rationale?.length>80?"…":""))}</td>`;
+    h+=`</tr>`;
+    h+=renderDetail(c,c._idx);
+  }
+  return h+"</tbody></table></div>"}
+
+/* Availability Matrix */
+function renderMatrix(){
+  const cands=D.candidates||[];
+  if(!cands.length)return"";
+  const usedPlats=PLAT_ORDER.filter(p=>cands.some(c=>p in (c.availability||{})));
+  let h=`<section class=card><div class=section-hdr><h2>Availability Matrix</h2><div class=section-line></div></div>`;
+  h+=`<div class=matrix-wrap><table class=matrix-table><thead><tr><th class=name-th>Name</th>`;
+  for(const p of usedPlats)h+=`<th>${esc((PLAT_LABELS[p]||p).replace("domain_",""))}</th>`;
+  h+=`<th>Score</th></tr></thead><tbody>`;
+  for(const c of cands){
+    h+=`<tr><td class="name-td mono">${esc(c.name)}</td>`;
+    for(const p of usedPlats)h+=`<td>${availIcon((c.availability||{})[p])}</td>`;
+    h+=`<td class="xs mono" style="color:var(--t2)">${c.composite_score||"—"}</td></tr>`;
+  }
+  h+=`</tbody></table></div>`;
+  h+=`<p class=xs style="margin-top:.4rem">✓ available &nbsp; ✕ taken &nbsp; ~ parked/uncertain &nbsp; · not checked</p>`;
+  return h+"</section>"}
+
+/* Weights panel */
+function renderWeights(){
+  const w=D.weights;if(!w)return"";
+  const is=((w.intrinsic_split||0)*100).toFixed(0),es=((w.extrinsic_split||0)*100).toFixed(0);
+  let h=`<section class=card><button class="weights-toggle" id=wt-btn onclick="toggleWeights()"><span>Scoring Weights</span><span class=chevron>▼</span></button>`;
+  h+=`<div class="weights-body" id=wt-body>`;
+  h+=`<div class=xs style="margin-bottom:.3rem">Intrinsic/Extrinsic split: <strong>${is}% / ${es}%</strong></div>`;
+  h+=`<div class="split-bar"><div class="split-i" style="width:${is}%"></div><div class="split-e" style="width:${es}%"></div></div>`;
+  h+=`<div class=weights-cols>`;
+  /* intrinsic */
+  h+=`<div><h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;color:var(--t2)">Intrinsic (${is}%)</h3>`;
+  for(const [k,v] of Object.entries(w.intrinsic||{})){h+=`<div class=w-row><span class=w-label>${esc(DIM_LABEL[k]||k)}</span><div class=w-track><div class=w-fill style="width:${(v*100).toFixed(0)}%"></div></div><span class=w-pct>${(v*100).toFixed(0)}%</span></div>`}
+  h+=`</div>`;
+  /* extrinsic */
+  h+=`<div><h3 class=xs style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;color:var(--t2)">Extrinsic (${es}%)</h3>`;
+  for(const [k,v] of Object.entries(w.extrinsic||{})){h+=`<div class=w-row><span class=w-label>${esc(DIM_LABEL[k]||k)}</span><div class=w-track><div class=w-fill style="width:${(v*100).toFixed(0)}%"></div></div><span class=w-pct>${(v*100).toFixed(0)}%</span></div>`}
+  h+=`</div></div>`;
+  return h+"</div></section>"}
+
+/* Main render */
+function render(){
+  let h=renderHeader()+renderOverview();
+  h+=`<section class=card>`;
+  h+=`<div class=tabs>`;
+  for(const[id,label]of[["best_available","Best Available"],["best_names","Best Names"],["best_with_variants","Best with Variants"]]){
+    h+=`<button class="tab${activeTab===id?" active":""}" data-tab="${id}">${esc(label)}</button>`;
+  }
+  h+=`</div>`;
+  h+=renderTable(activeTab);
+  h+=`</section>`;
+  h+=renderMatrix()+renderWeights();
+  q.innerHTML=h;
+
+  /* stagger animations */
+  q.querySelectorAll(".card").forEach((c,i)=>c.style.animationDelay=i*35+"ms");
+
+  /* tab clicks */
+  q.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{activeTab=t.dataset.tab;sortKey=null;render()});
+
+  /* row expand */
+  q.querySelectorAll("tr.clickable").forEach(r=>r.onclick=()=>{
+    const idx=+r.dataset.idx;
+    expanded.has(idx)?expanded.delete(idx):expanded.add(idx);
+    const det=document.getElementById(`det-${idx}`);
+    if(det)det.classList.toggle("open");
+    r.classList.toggle("expanded");
+  });
+
+  /* sort */
+  q.querySelectorAll("th[data-k]").forEach(t=>t.onclick=()=>{
+    const k=t.dataset.k;
+    sortKey===k?sortAsc=!sortAsc:(sortKey=k,sortAsc=false);
+    render();
+  });
+}
+
+window.toggleWeights=function(){
+  const btn=document.getElementById("wt-btn"),body=document.getElementById("wt-body");
+  if(btn&&body){btn.classList.toggle("open");body.classList.toggle("open")}
+}
+
+render();
+})();
+</script></body></html>

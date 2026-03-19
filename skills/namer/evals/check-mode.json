@@ -1,0 +1,13 @@
+{
+  "skills": ["namer"],
+  "query": "/namer check aurora nexus vortex luminex",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill in Check mode",
+    "Agent skips name generation",
+    "Agent checks availability for all 4 provided names across domains and platforms",
+    "Agent produces availability matrix for the 4 names",
+    "Agent scores and ranks the 4 names",
+    "Agent recommends the best available option with next steps"
+  ]
+}

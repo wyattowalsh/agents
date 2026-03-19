@@ -192,9 +192,9 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 
 | Component | Tokens | Loading |
 |-----------|--------|---------|
-| `global.md` (general + clarification gate + orchestration core) | ~600 | Always |
+| `global.md` (general + clarification gate + orchestration core + commit + docs lookup) | ~870 | Always |
 | Skill descriptions (29 custom + installed) | ~1,200 | Always |
-| **Total always-loaded** | **~1,800** | |
+| **Total always-loaded** | **~2,070** | |
 | Scoped rules (`.claude/rules/`) | ~0 | Conditional (path match) |
 | Skill bodies (when invoked) | ~12,000 | On-demand |
 

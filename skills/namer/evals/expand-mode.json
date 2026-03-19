@@ -1,0 +1,13 @@
+{
+  "skills": ["namer"],
+  "query": "/namer expand aurora",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates namer skill in Expand mode",
+    "Agent skips name generation from scratch",
+    "Agent generates 10-15 variations of 'aurora': prefixes, suffixes, vowel dropping, respelling",
+    "Agent checks availability for generated variants",
+    "Agent produces ranked table of variants with availability matrix",
+    "Agent recommends the best available variant with next steps"
+  ]
+}
