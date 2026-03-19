@@ -36,6 +36,7 @@ Not for domain registration, branding strategy, or logo design. Not for reviewin
 | `compare <name1> vs <name2> [vs...]` | **Compare** — side-by-side scoring of specific names |
 | `resume [# or keyword]` | **Resume** — load prior naming session |
 | `list` | **List** — show saved naming sessions |
+| `preferences` | **Preferences** — show accumulated naming profile and memory stats |
 | Empty | **Gallery** — show examples + "what are you naming?" prompt |
 
 ### Gallery (Empty Arguments)
@@ -81,7 +82,23 @@ Auto-detect from the user's description. Adjusts both platform priority AND scor
 
 Present the classification and preset to the user. User can override with `--style` or adjust weights manually.
 
-## Core Workflow (5 Phases)
+## Core Workflow (6 Phases)
+
+### Phase -1: Memory Load (runs once per session)
+
+`!uv run python skills/namer/scripts/memory.py load`
+
+If memory exists, integrate into session:
+
+- **Archetype affinities** → bias Phase 1 generation distribution (e.g., 35% evocative if user favors it)
+- **Phonetic likes/dislikes** → add to Phase 1 hard filters (dislikes) and soft scoring boosts (likes)
+- **Length preferences** → adjust length constraints in Phase 1
+- **Weight overrides** → pre-fill Phase 3 scoring weights
+- **Context defaults** → suggest context in Phase 0 Brief ("Last time you named a CLI tool — same context?")
+- **Inspirations** → reference in Phase 1 generation as stylistic anchors
+- **Past selections** → avoid regenerating names the user already picked
+
+If no memory exists, proceed normally. Memory is additive — never block a phase on missing memory.
 
 ### Phase 0: Brief (sequential, interactive)
 
@@ -209,6 +226,23 @@ Each view: ranked table with availability matrix (✅ ❌ ⚠️ ❓), scores, r
 
 Save to `~/.claude/namer/{YYYY-MM-DD}-{context}-{slug}.md` with YAML frontmatter after Phase 1 (candidates), Phase 2 (availability), Phase 4 (ranking). Supports resume.
 
+## Memory Save Triggers
+
+Save memories at natural decision points. NEVER slow down a phase for a memory write — always save AFTER delivering primary output.
+
+| Trigger | Command |
+|---------|---------|
+| Phase 0: User states style preference | `memory.py save-preference --type vibe --value "..."` |
+| Phase 0: User cites inspiration names | `memory.py save-inspiration --name "..." --context "..."` |
+| Phase 0: User adjusts weights | `memory.py save-weights --intrinsic-split F --extrinsic-split F` |
+| Phase 1: User says "avoid X sounds" | `memory.py save-rejection --pattern "X" --type phonetic --reason "..."` |
+| Phase 4: User selects a name | `memory.py save-selection --name "..." --archetype "..." --context "..." --score N --query "..."` |
+| Refinement: "more like #N" | `memory.py save-preference --type archetype --value "..." --like` |
+| Refinement: "shorter" / "longer" | `memory.py save-preference --type length --value "max=5"` or `"min=8"` |
+| Any: User rejects a style | `memory.py save-rejection --pattern "..." --type archetype --reason "..."` |
+
+Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python skills/namer/scripts/`.
+
 ## Canonical Vocabulary
 
 | Term | Definition |
@@ -223,6 +257,10 @@ Save to `~/.claude/namer/{YYYY-MM-DD}-{context}-{slug}.md` with YAML frontmatter
 | **variant** | Modification of a candidate: prefix, suffix, respelling |
 | **namespace report** | Per-candidate availability matrix across all platforms |
 | **context preset** | Auto-configured weights + platforms for what's being named |
+| **memory** | Persistent naming preferences at `~/.claude/namer/memory.json` |
+| **archetype affinity** | Weighted distribution of user's preferred naming archetypes, computed from selections |
+| **selection** | A name the user chose as their winner, stored for preference learning |
+| **rejection** | An explicitly unwanted pattern (phonetic, archetype, or specific name) |
 
 ## Reference File Index
 
@@ -233,6 +271,7 @@ Save to `~/.claude/namer/{YYYY-MM-DD}-{context}-{slug}.md` with YAML frontmatter
 | `references/scoring-rubric.md` | 10 dimensions detailed, 6 presets, hard filters, composite formula | Phase 3 (scoring) |
 | `references/output-formats.md` | Templates for 3 views, name cards, variant tables, next-steps | Phase 4 (presentation) |
 | `templates/dashboard.html` | Self-contained GUI — inject structured JSON from § Structured Output Schema | Phase 4 (dashboard render) |
+| `scripts/memory.py` | CLI for persistent naming preferences (load, save, prune, stats) | Phase -1 (load), end of session (save) |
 
 Load ONE reference at a time per the "Read When" column.
 
@@ -250,3 +289,4 @@ Load ONE reference at a time per the "Read When" column.
 10. Generation must use multiple archetypes — never produce candidates from only one strategy
 11. Context classification before generation — weights and platforms depend on it
 12. Intrinsic and extrinsic scores shown separately — user needs to see the trade-off
+13. Load user memory before Phase 0 (Phase -1). Save memories AFTER delivering primary output — never block a phase for a memory write

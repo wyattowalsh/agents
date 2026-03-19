@@ -1,0 +1,16 @@
+{
+  "skills": ["namer"],
+  "query": "/namer name a CLI tool for database migrations",
+  "files": [],
+  "expected_behavior": [
+    "Agent runs memory.py load before Phase 0 Brief",
+    "If memory has archetype affinities, Phase 1 biases generation toward preferred archetypes",
+    "If memory has phonetic dislikes, Phase 1 hard filters exclude those sounds",
+    "If memory has weight overrides, Phase 3 scoring uses stored splits",
+    "If memory has context defaults, Phase 0 suggests prior context to user",
+    "After user selects a name, agent runs memory.py save-selection",
+    "When user cites inspirations, agent runs memory.py save-inspiration",
+    "Memory saves happen AFTER primary output, never blocking a phase",
+    "If no memory exists, agent proceeds normally without error"
+  ]
+}
