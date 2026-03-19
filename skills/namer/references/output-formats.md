@@ -79,6 +79,20 @@ After all ranked views and cards are produced, assemble a single JSON object mat
     "best_names": [0, 2, 1],
     "best_available": [0, 1, 2],
     "best_with_variants": [0, 2]
+  },
+  "memory_profile": {
+    "session_count": 5,
+    "archetype_affinities": {
+      "evocative_fragment": 0.35, "classical_root": 0.25,
+      "compound_blend": 0.15, "invented_word": 0.10,
+      "metaphorical_transfer": 0.10, "descriptive_creative": 0.05
+    },
+    "preferred_length": { "min": 4, "max": 7 },
+    "phonetic_likes": ["sibilants", "open vowels"],
+    "phonetic_dislikes": ["hard K"],
+    "vibe_words": ["minimal", "technical"],
+    "recent_selections": ["neon", "flux", "arc"],
+    "context_default": "cli-tool"
   }
 }
 ```

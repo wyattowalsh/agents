@@ -1,5 +1,5 @@
 {
-  "skills": [],
+  "skills": ["namer"],
   "query": "Review the naming conventions used in this codebase and suggest improvements",
   "files": [],
   "expected_behavior": [
