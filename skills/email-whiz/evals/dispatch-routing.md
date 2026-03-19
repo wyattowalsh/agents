@@ -164,3 +164,22 @@ Evaluation cases for email-whiz dispatch table routing. Each case specifies inpu
 | User replies "all" to Auto-Scan | Chain top 3 recommendations as combo mode |
 | User replies "menu" to Auto-Scan | Show full dispatch table |
 | User replies number (e.g., "2") | Execute the corresponding recommended mode |
+
+---
+
+## Memory Integration Tests
+
+| Scenario | Expected Behavior |
+| -------- | ----------------- |
+| Memory exists with VIP sender, triage mode | VIP sender classified as DO in fast-lane without content read |
+| Memory exists with noise sender, triage mode | Noise sender classified as NOISE in fast-lane without content read |
+| Memory correction conflicts with fast-lane rule | Correction wins — overrides noreply→NOISE or any other rule |
+| Quick search mode | No memory load (Phase -1 skipped) |
+| Quick digest mode | No memory load (Phase -1 skipped) |
+| User overrides a fast-lane classification | Save correction via `memory.py save-correction` after delivering results |
+| Triage archives NOISE batch | Save noise senders via `memory.py save-sender` after batch completes |
+| Senders mode identifies VIP (reply rate >50%) | Save VIP via `memory.py save-sender` after report |
+| Filter suggestion rejected by user | Save rejection via `memory.py save-filter --effectiveness failed` |
+| Previously rejected filter pattern | Excluded from filter suggestions in future sessions |
+| Memory file missing | Phase -1 returns empty memory, mode proceeds normally |
+| Memory file corrupt | Phase -1 returns empty memory, mode proceeds normally |

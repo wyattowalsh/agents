@@ -17,7 +17,9 @@ import os
 import sys
 from datetime import date, datetime, timedelta
 
-SNAPSHOT_DIR = os.path.expanduser("~/.claude/email-whiz")
+from constants import EMAIL_WHIZ_DIR
+
+SNAPSHOT_DIR = EMAIL_WHIZ_DIR
 SNAPSHOT_FILE = os.path.join(SNAPSHOT_DIR, "snapshots.json")
 CACHE_FILE = os.path.join(SNAPSHOT_DIR, "session-cache.json")
 

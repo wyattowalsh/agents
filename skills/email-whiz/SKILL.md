@@ -39,6 +39,9 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 | **VIP** | Sender who receives consistent replies and high-priority treatment |
 | **engagement** | Reply rate to a sender: replies sent / emails received |
 | **confidence** | HIGH >80% / MEDIUM 50-80% / LOW <50% — governs auto-rule actions |
+| **memory** | Persistent user preferences and patterns at `~/.claude/email-whiz/memory.json` |
+| **correction** | User disagreement with auto-classification, stored as a memory override |
+| **staleness** | Memory entry not confirmed/used beyond threshold (VIP: 90d, override: 60d) |
 
 ---
 
@@ -99,7 +102,36 @@ Details: `efficiency-guide.md` § Parallel Call Map.
 
 ---
 
+## Phase -1: Memory Load (skip with `quick` prefix)
+
+Load long-term user memory before discovery. Runs once per session.
+
+`!uv run python scripts/memory.py load --mode <current_mode>`
+
+Fuse with Phase 0 cache check in the SAME message (both are local file reads, zero API calls):
+
+```bash
+!uv run python scripts/memory.py load --mode triage
+!uv run python scripts/inbox_snapshot.py cache load
+```
+
+If memory exists, integrate into session:
+
+- **VIP senders** → fast-lane DO classification (Pass 1)
+- **Noise senders** → fast-lane NOISE classification (Pass 1)
+- **Corrections** → highest priority: override any conflicting fast-lane rule
+- **Triage overrides** → apply before generic decision tree
+- **Filter history** → skip suggesting previously rejected filters
+- **Label prefs** → use preferred naming when creating labels
+- **Inbox patterns** → adjust expectations in analytics/audit
+
+Run `!uv run python scripts/memory.py prune` once per session if memory exists. Report pruned entries only if count > 0.
+
+---
+
 ## Phase 0: Discovery (skip with `quick` prefix)
+
+**Prerequisite:** Run Phase -1 (Memory Load) first unless in `quick` mode.
 
 ### 0a: Session Cache Check
 
@@ -208,8 +240,12 @@ Three-pass classification. Details: `triage-framework.md` § Fast-Lane, `efficie
 ### Pass 1: Fast-Lane (zero content reads)
 
 Classify by sender + subject + snippet ONLY from search results:
+
+- Memory corrections → override any conflicting rule (highest priority)
+- Memory VIP senders → DO (confidence from memory)
+- Memory noise senders → NOISE (confidence from memory)
 - `noreply@*`, `notifications@*`, `calendar-notification@*` → NOISE
-- Known VIP senders → DO
+- Known VIP senders (from session cache) → DO
 - Subject `[FYI]`/`[INFO]`/newsletter/receipt/confirmation → REFERENCE
 - Subject `[ACTION]`/`[URGENT]`/deadline → DO
 - Unmatched → UNDECIDED
@@ -341,6 +377,11 @@ Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label a
 | `scripts/inbox_snapshot.py cache load` | Load session cache (1h TTL) | Phase 0 step 0a |
 | `scripts/inbox_snapshot.py cache save --labels --filters --inbox-count --unread-count --tier` | Write session cache | Phase 0 step 0d |
 | `scripts/inbox_snapshot.py cache clear` | Invalidate session cache | After write operations |
+| `scripts/memory.py load --mode MODE` | Load user memory filtered by mode | Phase -1 |
+| `scripts/memory.py save-sender` | Save VIP or noise sender | After triage/senders |
+| `scripts/memory.py save-correction` | Record user classification override | When user corrects |
+| `scripts/memory.py prune` | Remove stale memory entries | Once per session |
+| `scripts/memory.py stats` | Memory summary counts | Diagnostics |
 
 ---
 
@@ -364,3 +405,23 @@ Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label a
 16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`).
 17. maxResults 100-200 (not 500) — MCP N+1 pattern means 500 results ≈ 501 API calls
 18. Bankruptcy triggers are relative to 30-day baseline, not absolute thresholds
+19. Load user memory before Phase 0 (Phase -1). Save memories AFTER delivering primary output — never block a mode's core workflow for a memory write
+
+---
+
+## Memory Save Triggers
+
+Save memories at natural decision points. NEVER slow down a mode to save — always save AFTER the mode's primary output.
+
+| Trigger | Command |
+| ------- | ------- |
+| Triage: user overrides fast-lane classification | `memory.py save-correction --mode triage --what "..." --correction "..." --pattern "..." --action BUCKET` |
+| Triage: NOISE batch archived successfully | `memory.py save-sender --email X --type noise --reason "..." --source triage` (batch multiple in 1 message) |
+| Senders: VIP identified (reply rate >50%) | `memory.py save-sender --email X --type vip --name "..." --reason "..." --source senders` |
+| Filters: filter created successfully | `memory.py save-filter --filter-id ID --description "..." --effectiveness high` |
+| Filters: user rejects a suggestion | `memory.py save-filter --filter-id rejected --description "..." --effectiveness failed` |
+| Labels: user states naming preference | `memory.py save-labels --convention "..." --structure "..."` |
+| Analytics: volume patterns computed | `memory.py save-patterns --daily-volume N --busy '[...]'` |
+| Any mode: user corrects a classification | `memory.py save-correction ...` |
+
+Batch multiple save calls in a SINGLE message when a mode produces several memories (e.g., triage identifies 5 noise senders)

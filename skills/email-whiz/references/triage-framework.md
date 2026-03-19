@@ -43,8 +43,13 @@ Apply fast-lane rules before the full decision tree. These fire on metadata alon
 | `notifications@*`, `alerts@*` | NOISE | HIGH |
 | `calendar-notification@*` | NOISE | HIGH (unless "accepted"/"declined" in subject) |
 | `*-noreply@google.com` | NOISE | HIGH |
-| Known VIP (from session cache or user history) | DO | MEDIUM |
+| Memory VIP (from `memory.json` senders.vip) | DO | HIGH (from memory) |
+| Memory Noise (from `memory.json` senders.noise) | NOISE | HIGH (from memory) |
+| Memory Correction match | per correction | HIGHEST (overrides all rules) |
+| Known VIP (from session cache) | DO | MEDIUM |
 | `list:*` header (mailing list) | REFERENCE | MEDIUM |
+
+**Memory priority:** Corrections > memory VIP/noise > fast-lane rules > generic patterns. When a memory correction conflicts with any other rule, the correction always wins.
 
 ### Subject Fast-Lane Rules
 
