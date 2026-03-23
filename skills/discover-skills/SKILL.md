@@ -1,11 +1,9 @@
 ---
 name: discover-skills
 description: >-
-  Discover new AI agent skills via deep audit, multi-source web research, and
-  gap-driven ideation. Orchestrates a Pattern E team to audit existing skills,
-  search skills.sh/GitHub/blogs/HN, and propose custom skills to fill gaps.
-  Use when expanding your skill collection. NOT for creating skills
-  (skill-creator) or installing known skills (npx skills add).
+  Discover AI agent skills via gap analysis, registry search, and ideation.
+  Use when expanding your collection systematically.
+  NOT for creating skills (skill-creator) or ad-hoc search (find-skills).
 argument-hint: "[mode] [query]"
 model: opus
 license: MIT
@@ -17,6 +15,9 @@ hooks:
     - matcher: Edit
       hooks:
         - command: 'bash -c "echo BLOCKED: discover-skills is read-only — no file edits permitted >&2; exit 1"'
+    - matcher: Write
+      hooks:
+        - command: 'bash -c "echo BLOCKED: discover-skills is read-only — no file writes permitted >&2; exit 1"'
 ---
 
 # Discover Skills
@@ -122,7 +123,9 @@ All teammates and their nested subagents use `opus`. No downgrades.
 | Full discovery | All 4 | 1 → 2 → 3 → 4 |
 | Audit only | auditor | 1 only |
 | Research [focus] | registry-scout + web-researcher | 2 only (with focus filter) |
-| Ideate | ideator | 3 only (requires prior audit/research in journal) |
+| Ideate | ideator | 3 only (requires prior journal; if none found, ask user to run `audit` first or switch to full discovery) |
+| Resume | Lead only | Load journal → reconstruct state → continue from last wave |
+| List | Lead only | Scan journals → display |
 
 ## Quality Verification
 
@@ -139,6 +142,14 @@ Before recommending any external skill:
 - **High**: >= 1K installs + reputable source + fills clear gap
 - **Medium**: 100-999 installs or less-known source but fills gap
 - **Investigate**: < 100 installs or unclear quality, but interesting concept
+
+## Scaling Strategy
+
+| Collection Size | Audit Strategy | Research Queries | Subagent Count |
+|----------------|---------------|------------------|----------------|
+| Small (< 20 skills) | Single auditor pass | 10 targeted queries | 4-6 |
+| Medium (20-100 skills) | Parallel auditor subagents by domain | 20 queries | 10-15 |
+| Large (100+ skills) | Domain-partitioned waves, prune low-priority domains | Full 42 queries | 20+ |
 
 ## Interactive Report Format
 
@@ -188,6 +199,10 @@ After the user picks:
 2. `resume N`: Nth journal from `list` output.
 3. `resume keyword`: search frontmatter for match.
 
+**Install protocol**:
+1. `install <owner/repo@skill>`: run the install command directly after confirmation.
+2. `install <name-or-number>`: look up the most recent journal, search `discovered_external` for a matching candidate by name or report number, extract the stored install command, confirm with user, then run.
+
 ## Critical Rules
 
 1. **Never install without confirmation** — always present the report and wait for user selection
@@ -197,7 +212,7 @@ After the user picks:
 5. **NOT-for exclusions** — custom skill proposals must name existing skills they do NOT replace
 6. **Save after each wave** — enables resume on interruption
 7. **Accounting Rule** — N dispatched = N resolved before advancing to next wave
-8. **Read-only** — PreToolUse Edit hook blocks file edits; only writes journals via script
+8. **Read-only** — PreToolUse hooks block Edit and Write tools; only writes journals via script
 9. **Verify quality** — check install count, source reputation, recency before recommending
 10. **Deduplicate across sources** — same skill may appear in registry, GitHub, and blog posts
 

@@ -16,14 +16,18 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
+import os
 import re
+import shutil
 import sys
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
 JOURNAL_DIR = Path.home() / ".claude" / "discover-skills"
+ARCHIVE_DIR = JOURNAL_DIR / "archive"
 
 
 # --- YAML frontmatter parsing (stdlib only, no pyyaml) ---
@@ -34,9 +38,10 @@ def parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
     if not text.startswith("---"):
         return {}, text
 
-    end = text.find("\n---", 3)
-    if end == -1:
+    closing = re.search(r"\n---[ \t]*\n|\n---[ \t]*$", text[3:])
+    if closing is None:
         return {}, text
+    end = closing.start() + 3  # adjust offset back to full string
 
     yaml_block = text[4:end].strip()
     body = text[end + 4 :].lstrip("\n")
@@ -66,7 +71,7 @@ def _parse_yaml_simple(text: str) -> dict[str, Any]:
             continue
 
         # Key-value pair
-        m = re.match(r"^([a-z_][a-z0-9_]*)\s*:\s*(.*)", stripped)
+        m = re.match(r"^([a-zA-Z_][a-zA-Z0-9_-]*)\s*:\s*(.*)", stripped)
         if m:
             key, val_str = m.group(1), m.group(2).strip()
             current_key = key
@@ -121,9 +126,10 @@ def _parse_yaml_value(val: str) -> Any:
     if not val:
         return ""
     # Remove quotes
-    if (val.startswith('"') and val.endswith('"')) or (
-        val.startswith("'") and val.endswith("'")
-    ):
+    if val.startswith('"') and val.endswith('"'):
+        inner = val[1:-1]
+        return inner.replace('\\"', '"').replace('\\\\', '\\')
+    if val.startswith("'") and val.endswith("'"):
         return val[1:-1]
     # Booleans
     if val.lower() in ("true", "yes"):
@@ -194,6 +200,40 @@ def parse_state_blocks(body: str) -> list[dict[str, Any]]:
     for m in _STATE_PATTERN.finditer(body):
         blocks.append(_parse_yaml_simple(m.group(1)))
     return blocks
+
+
+_CANDIDATES_PATTERN = re.compile(
+    r"<!-- CANDIDATES_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL
+)
+_PROPOSALS_PATTERN = re.compile(
+    r"<!-- PROPOSALS_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL
+)
+
+
+def parse_data_blocks(body: str) -> dict[str, Any]:
+    """Extract candidate and proposal data blocks from journal body."""
+    candidates: dict[int, Any] = {}
+    for m in _CANDIDATES_PATTERN.finditer(body):
+        wave = int(m.group(1))
+        with contextlib.suppress(json.JSONDecodeError):
+            candidates[wave] = json.loads(m.group(2))
+    proposals: dict[int, Any] = {}
+    for m in _PROPOSALS_PATTERN.finditer(body):
+        wave = int(m.group(1))
+        with contextlib.suppress(json.JSONDecodeError):
+            proposals[wave] = json.loads(m.group(2))
+    return {"candidates_by_wave": candidates, "proposals_by_wave": proposals}
+
+
+def _atomic_write(path: Path, content: str) -> None:
+    """Write content atomically via temp file + os.replace."""
+    tmp = path.with_suffix(".tmp")
+    try:
+        tmp.write_text(content, encoding="utf-8")
+        os.replace(tmp, path)
+    except OSError:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 # --- Slug generation ---
@@ -342,16 +382,18 @@ def _resolve_path(target: str) -> Path | None:
         journals = list_journals(JOURNAL_DIR)
         target_lower = target.lower()
         for j in journals:
-            if target_lower in str(j.get("focus", "")).lower() or target_lower in Path(
-                j["path"]
-            ).stem:
+            if (
+                target_lower in str(j.get("focus", "")).lower()
+                or target_lower in Path(j["path"]).stem
+                or target_lower in str(j.get("session_type", "")).lower()
+            ):
                 result = Path(j["path"]).resolve()
                 break
 
     # Containment check -- reject paths outside JOURNAL_DIR
     if result is not None:
         jail = JOURNAL_DIR.resolve()
-        if not str(result).startswith(str(jail) + "/") and result != jail:
+        if not result.is_relative_to(jail):
             print(
                 f"Error: path outside discover-skills directory: {target}",
                 file=sys.stderr,
@@ -395,7 +437,7 @@ def cmd_init(args: argparse.Namespace) -> None:
     path = JOURNAL_DIR / filename
     content = serialize_frontmatter(meta) + "\n\n" + "\n".join(body_lines) + "\n"
     try:
-        path.write_text(content, encoding="utf-8")
+        _atomic_write(path, content)
     except OSError as exc:
         print(f"Error: could not write journal: {exc}", file=sys.stderr)
         sys.exit(1)
@@ -427,21 +469,37 @@ def cmd_save(args: argparse.Namespace) -> None:
         meta["last_wave"] = args.wave
 
     # Parse and merge candidates
+    parsed_candidates: list[Any] | None = None
     if args.candidates:
         try:
             candidates = json.loads(args.candidates)
             if isinstance(candidates, list):
+                parsed_candidates = candidates
                 meta["candidates_found"] = len(candidates)
+            else:
+                print(
+                    f"Error: --candidates must be a JSON array, not {type(candidates).__name__}",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
         except json.JSONDecodeError as exc:
             print(f"Error: invalid JSON in --candidates: {exc}", file=sys.stderr)
             sys.exit(1)
 
     # Parse and merge proposals
+    parsed_proposals: list[Any] | None = None
     if args.proposals:
         try:
             proposals = json.loads(args.proposals)
             if isinstance(proposals, list):
+                parsed_proposals = proposals
                 meta["proposals_made"] = len(proposals)
+            else:
+                print(
+                    f"Error: --proposals must be a JSON array, not {type(proposals).__name__}",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
         except json.JSONDecodeError as exc:
             print(f"Error: invalid JSON in --proposals: {exc}", file=sys.stderr)
             sys.exit(1)
@@ -452,6 +510,12 @@ def cmd_save(args: argparse.Namespace) -> None:
             installed = json.loads(args.installed)
             if isinstance(installed, list):
                 meta["installed"] = installed
+            else:
+                print(
+                    f"Error: --installed must be a JSON array, not {type(installed).__name__}",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
         except json.JSONDecodeError as exc:
             print(f"Error: invalid JSON in --installed: {exc}", file=sys.stderr)
             sys.exit(1)
@@ -459,7 +523,7 @@ def cmd_save(args: argparse.Namespace) -> None:
     # Build STATE block for this save
     state_lines = ["<!-- STATE"]
     state_lines.append(f"wave: {args.wave if args.wave is not None else 0}")
-    state_lines.append(f"timestamp: {now}")
+    state_lines.append(f'timestamp: "{now}"')
     if args.candidates:
         state_lines.append(f"candidates_found: {meta.get('candidates_found', 0)}")
     if args.proposals:
@@ -474,12 +538,30 @@ def cmd_save(args: argparse.Namespace) -> None:
     state_lines.append("-->")
     state_block = "\n".join(state_lines)
 
-    # Append state block to body
-    body = body.rstrip("\n") + "\n\n" + state_block + "\n"
+    # Build data sections for full candidate/proposal storage
+    data_sections: list[str] = []
+    if parsed_candidates is not None:
+        data_sections.append(
+            f"<!-- CANDIDATES_WAVE_{args.wave or 0} -->\n```json\n"
+            + json.dumps(parsed_candidates, indent=2)
+            + "\n```"
+        )
+    if parsed_proposals is not None:
+        data_sections.append(
+            f"<!-- PROPOSALS_WAVE_{args.wave or 0} -->\n```json\n"
+            + json.dumps(parsed_proposals, indent=2)
+            + "\n```"
+        )
+
+    # Append state block + data to body
+    body = body.rstrip("\n") + "\n\n" + state_block
+    if data_sections:
+        body += "\n\n" + "\n\n".join(data_sections)
+    body += "\n"
 
     content = serialize_frontmatter(meta) + "\n\n" + body
     try:
-        path.write_text(content, encoding="utf-8")
+        _atomic_write(path, content)
     except OSError as exc:
         print(f"Error: could not write journal: {exc}", file=sys.stderr)
         sys.exit(1)
@@ -545,14 +627,101 @@ def cmd_resume(args: argparse.Namespace) -> None:
     text = path.read_text(encoding="utf-8")
     meta, body = parse_frontmatter(text)
     state_blocks = parse_state_blocks(body)
+    data = parse_data_blocks(body)
+
+    # Compute resume context
+    resume_context = {
+        "last_wave": meta.get("last_wave", 0),
+        "last_updated": meta.get("updated", ""),
+        "candidates_found": meta.get("candidates_found", 0),
+        "proposals_made": meta.get("proposals_made", 0),
+        "installed": meta.get("installed", []),
+        "rejected": meta.get("rejected", []),
+    }
 
     result = {
         "path": str(path),
         "metadata": meta,
         "state_blocks": state_blocks,
+        "data": data,
+        "resume_context": resume_context,
         "body": body,
     }
-    json.dump(result, sys.stdout, indent=2)
+    json.dump(result, sys.stdout, indent=2, default=str)
+    print()
+
+
+# --- Archive / Delete ---
+
+
+def cmd_archive(args: argparse.Namespace) -> None:
+    """Move journals older than N days to archive/ subdirectory."""
+    if not JOURNAL_DIR.exists():
+        json.dump({"archived": 0, "files": []}, sys.stdout, indent=2)
+        print()
+        return
+
+    ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    cutoff = datetime.now(UTC) - timedelta(days=args.days)
+    archived: list[str] = []
+
+    for f in JOURNAL_DIR.glob("*.md"):
+        try:
+            text = f.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        meta, _ = parse_frontmatter(text)
+        created = meta.get("created", "")
+        if not created:
+            continue
+        try:
+            dt = datetime.fromisoformat(str(created).replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=UTC)
+        except (ValueError, TypeError):
+            continue
+        if dt < cutoff:
+            dest = ARCHIVE_DIR / f.name
+            if dest.exists():
+                stem, suffix, v = dest.stem, dest.suffix, 2
+                while dest.exists():
+                    dest = ARCHIVE_DIR / f"{stem}-v{v}{suffix}"
+                    v += 1
+            try:
+                shutil.move(str(f), str(dest))
+            except OSError as exc:
+                print(f"Error: could not archive {f.name}: {exc}", file=sys.stderr)
+                continue
+            archived.append(str(dest))
+
+    json.dump({"archived": len(archived), "files": archived}, sys.stdout, indent=2)
+    print()
+
+
+def cmd_delete(args: argparse.Namespace) -> None:
+    """Delete a journal with confirmation."""
+    path = _resolve_path(args.target)
+    if path is None:
+        print(f"Error: journal not found: {args.target}", file=sys.stderr)
+        sys.exit(1)
+
+    if not args.force:
+        print(
+            f"Delete {path.name}? Type 'yes' to confirm: ",
+            file=sys.stderr,
+            end="",
+            flush=True,
+        )
+        try:
+            answer = input()
+        except EOFError:
+            answer = ""
+        if answer.strip().lower() != "yes":
+            print("Aborted.", file=sys.stderr)
+            sys.exit(1)
+
+    path.unlink()
+    json.dump({"action": "deleted", "path": str(path)}, sys.stdout, indent=2)
     print()
 
 
@@ -611,6 +780,22 @@ def main() -> None:
         help="Optional: number or keyword to resume a specific journal.",
     )
 
+    # archive
+    sp_archive = sub.add_parser("archive", help="Move old journals to archive/.")
+    sp_archive.add_argument(
+        "--days",
+        type=int,
+        default=30,
+        help="Archive journals older than N days (default: 30).",
+    )
+
+    # delete
+    sp_delete = sub.add_parser("delete", help="Delete a journal.")
+    sp_delete.add_argument("target", help="Journal path, number, or keyword.")
+    sp_delete.add_argument(
+        "--force", action="store_true", help="Skip confirmation prompt."
+    )
+
     args = ap.parse_args()
 
     dispatch: dict[str, Any] = {
@@ -619,6 +804,8 @@ def main() -> None:
         "load": cmd_load,
         "list": cmd_list,
         "resume": cmd_resume,
+        "archive": cmd_archive,
+        "delete": cmd_delete,
     }
     dispatch[args.command](args)
 
