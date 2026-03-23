@@ -45,7 +45,7 @@ mobile, flutter, expo, electron, ios, android
 
 ### Cloud
 ```
-aws, terraform
+aws
 ```
 
 ### AI
