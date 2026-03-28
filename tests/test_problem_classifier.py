@@ -8,11 +8,7 @@ import pytest
 # Import the classifier — filename uses a hyphen so importlib is required
 _spec = importlib.util.spec_from_file_location(
     "problem_classifier",
-    Path(__file__).resolve().parents[1]
-    / "skills"
-    / "reasoning-router"
-    / "scripts"
-    / "problem-classifier.py",
+    Path(__file__).resolve().parents[1] / "skills" / "reasoning-router" / "scripts" / "problem-classifier.py",
 )
 _mod = importlib.util.module_from_spec(_spec)  # type: ignore[arg-type]
 _spec.loader.exec_module(_mod)  # type: ignore[union-attr]

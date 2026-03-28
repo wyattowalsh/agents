@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes } from 'node:crypto';
 
 import {
   ADMIN_SESSION_COOKIE,
@@ -6,6 +6,7 @@ import {
   getAdminSessionSecret,
   getConfiguredAdminPassword,
 } from './config';
+import { safeEqualStrings } from './compare';
 
 export type AdminSession = {
   actor: 'shared-password';
@@ -18,14 +19,6 @@ function hashValue(value: string): Buffer {
   return createHash('sha256').update(value).digest();
 }
 
-function safeEqual(left: string, right: string): boolean {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
-
-  if (leftBuffer.length !== rightBuffer.length) return false;
-  return timingSafeEqual(leftBuffer, rightBuffer);
-}
-
 function signPayload(encodedPayload: string, secret: string): string {
   return createHmac('sha256', secret).update(encodedPayload).digest('base64url');
 }
@@ -34,7 +27,7 @@ export function isAdminPasswordValid(submittedPassword: string): boolean {
   const configuredPassword = getConfiguredAdminPassword();
   if (!configuredPassword || !submittedPassword) return false;
 
-  return safeEqual(
+  return safeEqualStrings(
     hashValue(submittedPassword).toString('base64url'),
     hashValue(configuredPassword).toString('base64url')
   );
@@ -70,7 +63,7 @@ export function decodeAdminSession(token: string | undefined): AdminSession | nu
   if (!encodedPayload || !signature) return null;
 
   const expectedSignature = signPayload(encodedPayload, secret);
-  if (!safeEqual(signature, expectedSignature)) return null;
+  if (!safeEqualStrings(signature, expectedSignature)) return null;
 
   try {
     const parsed = JSON.parse(Buffer.from(encodedPayload, 'base64url').toString('utf8')) as AdminSession;

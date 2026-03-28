@@ -76,9 +76,7 @@ def test_validate_jsonl_failure(patched_repo):
 
 def test_doctor_json_success(patched_repo, monkeypatch):
     """Doctor should emit structured JSON with successful checks when the environment is healthy."""
-    (patched_repo / "pyproject.toml").write_text(
-        "[project]\nname = \"wagents\"\nrequires-python = \">=3.13\"\n"
-    )
+    (patched_repo / "pyproject.toml").write_text('[project]\nname = "wagents"\nrequires-python = ">=3.13"\n')
     docs_dir = patched_repo / "docs"
     docs_dir.mkdir()
     (docs_dir / "package.json").write_text("{}\n")
@@ -106,9 +104,7 @@ def test_doctor_json_success(patched_repo, monkeypatch):
 
 def test_doctor_jsonl_failure_and_warnings(patched_repo, monkeypatch):
     """Doctor should surface failures and warnings with summary records in jsonl mode."""
-    (patched_repo / "pyproject.toml").write_text(
-        "[project]\nname = \"wagents\"\nrequires-python = \">=3.13\"\n"
-    )
+    (patched_repo / "pyproject.toml").write_text('[project]\nname = "wagents"\nrequires-python = ">=3.13"\n')
     docs_dir = patched_repo / "docs"
     docs_dir.mkdir()
     (docs_dir / "package.json").write_text("{}\n")
