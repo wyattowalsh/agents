@@ -1,0 +1,698 @@
+{
+  "version": 1,
+  "instruction_source": "/Users/ww/dev/projects/agents/instructions/global.md",
+  "servers": {
+    "brave-search": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brave/brave-search-mcp-server"
+      ],
+      "env": {
+        "BRAVE_API_KEY": {
+          "env_var": "BRAVE_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "cascade-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "cascade-thinking-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "chrome-devtools": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--autoConnect"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "context7": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "${CONTEXT7_API_KEY}"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": {
+          "env_var": "CONTEXT7_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "deepwiki": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.deepwiki.com/mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "docling": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from=docling-mcp",
+        "docling-mcp-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "fetch": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-fetch-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "fetcher": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "fetcher-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "package-version": {
+      "transport": "stdio",
+      "command": "/Users/ww/go/bin/mcp-package-version",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "check_docker_tags",
+        "check_github_actions",
+        "check_go_versions",
+        "check_npm_versions",
+        "check_pyproject_versions",
+        "check_python_versions"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "playwright": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--cdp-endpoint",
+        "http://127.0.0.1:9222"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "repomix": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "repomix",
+        "--mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "sequential-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "structured-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "structured-thinking"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "tavily": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "tavily-mcp"
+      ],
+      "env": {
+        "TAVILY_API_KEY": {
+          "env_var": "TAVILY_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "trafilatura": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/ww/dev/tools/mcp/trafilatura_mcp",
+        "run",
+        "python3",
+        "trafilatura_mcp.py"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "web-search": {
+      "transport": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/ww/dev/tools/mcp/web-search/build/index.js"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "ableton": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "ableton-mcp"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "apple-mail": {
+      "transport": "stdio",
+      "command": "/Users/ww/dev/tools/mcp/apple-mail-mcp/venv/bin/python3",
+      "args": [
+        "/Users/ww/dev/tools/mcp/apple-mail-mcp/apple_mail_mcp.py"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "arxiv": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "atom-of-thoughts": {
+      "transport": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/ww/dev/tools/mcp/MCP_Atom_of_Thoughts/build/index.js"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "crash": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "crash-mcp"
+      ],
+      "env": {
+        "CRASH_STRICT_MODE": {
+          "env_var": "CRASH_STRICT_MODE"
+        },
+        "MAX_HISTORY_SIZE": {
+          "env_var": "MAX_HISTORY_SIZE"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "creative-thinking": {
+      "transport": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "deep-lucid-3d": {
+      "transport": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "default": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.w4w.dev/mcp/default"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "duckduckgo-search": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "duckduckgo-mcp-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "exa": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
+      "env": {
+        "EXA_API_KEY": {
+          "env_var": "EXA_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "ffmpeg": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/ww/dev/tools/mcp/ffmpeg-mcp",
+        "run",
+        "ffmpeg-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "g-search": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "g-search-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "gmail": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gongrzhe/server-gmail-autoauth-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "linkedin": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "linkedin-scraper-mcp",
+        "--no-headless"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "lotus-wisdom-mcp": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "lotus-wisdom-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "playwright-headless": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "@playwright/mcp@latest",
+        "--headless",
+        "--isolated"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "serena": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--enable-web-dashboard",
+        "false",
+        "--project",
+        "."
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "shannon-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "server-shannon-thinking@latest"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "things": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/ww/dev/tools/mcp/things-mcp",
+        "run",
+        "things_server.py"
+      ],
+      "env": {},
+      "enabled": false,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "think-strategies": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:aaronsb/think-strategies"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "wayback": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "mcp-wayback-machine"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "wikipedia": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "wikipedia-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    }
+  }
+}
