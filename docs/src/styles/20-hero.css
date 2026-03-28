@@ -38,13 +38,44 @@
 /* Terminal mockup styling */
 .hero-terminal {
   background: oklch(0.15 0 0);
-  border: 1px solid oklch(0.3 0 0);
+  border: 1px solid oklch(0.3 0.03 285 / 0.4);
   border-radius: 12px;
   overflow: hidden;
+  position: relative;
   max-width: 540px;
   margin: 0 auto;
   box-shadow: 0 25px 50px -12px oklch(0 0 0 / 0.5),
               0 0 40px oklch(0.62 0.1 205 / 0.12);
+  animation: softBreath 6s ease-in-out infinite;
+}
+.hero-terminal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, oklch(0.7 0.13 200 / 0.7), oklch(0.7 0.12 285 / 0.55), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+  animation: glowPulse 4.5s ease-in-out infinite;
+}
+.hero-terminal::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 14% 24%, oklch(0.82 0.1 200 / 0.4) 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 22%, oklch(0.78 0.12 285 / 0.35) 0 2px, transparent 3px),
+    radial-gradient(circle at 72% 78%, oklch(0.8 0.08 160 / 0.28) 0 1.5px, transparent 2.5px),
+    radial-gradient(circle at 22% 82%, oklch(0.82 0.1 200 / 0.22) 0 1.5px, transparent 2.5px);
+  pointer-events: none;
+  opacity: 0.9;
+  animation: particleFloat 12s linear infinite;
 }
 .hero-terminal-header {
   display: flex;
@@ -106,6 +137,32 @@
   color: oklch(0.86 0.05 200);
   border: 1px solid oklch(0.4 0.06 205 / 0.45);
   letter-spacing: 0.02em;
+  transition: transform var(--duration-fast) ease,
+              box-shadow var(--duration-fast) ease,
+              background var(--duration-fast) ease;
+}
+.hero-agent-badge:hover {
+  transform: translateY(-1px);
+  background: oklch(0.25 0.05 210 / 0.65);
+  box-shadow: 0 0 12px oklch(0.5 0.1 205 / 0.2);
+}
+
+.hero-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: -0.25rem 0 2rem;
+}
+
+.hero-badge-row a {
+  display: inline-flex;
+  transition: transform var(--duration-fast) ease, filter var(--duration-fast) ease;
+}
+
+.hero-badge-row a:hover {
+  transform: translateY(-1px);
+  filter: saturate(1.1);
 }
 
 /* ===== SPLASH PAGE CONTENT WIDTH ===== */
@@ -138,10 +195,29 @@
   border-radius: 99px;
   border: 1px solid oklch(0.3 0 0);
   background: oklch(0.15 0 0 / 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform var(--duration-fast) ease,
+              box-shadow var(--duration-normal) ease;
+}
+.stat:hover {
+  transform: translateY(-2px);
+  animation: statPulse 1.5s ease-in-out infinite;
 }
 .stat-skill { border-color: oklch(0.5 0.15 285 / 0.5); color: var(--type-skill); }
 .stat-agent { border-color: oklch(0.5 0.1 200 / 0.5); color: var(--type-agent); }
 .stat-mcp { border-color: oklch(0.5 0.12 155 / 0.5); color: var(--type-mcp); }
+
+@media (max-width: 50rem) {
+  .hero-badge-row {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-terminal::after {
+    opacity: 0.7;
+  }
+}
 
 /* Stats bar entrance animation — staggered fade-up */
 @keyframes statEnter {

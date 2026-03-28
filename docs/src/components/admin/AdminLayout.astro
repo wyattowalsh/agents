@@ -1,0 +1,125 @@
+---
+import '../../styles/00-tokens.css';
+import '../../styles/10-base.css';
+import '../../styles/30-cards.css';
+import '../../styles/40-content.css';
+import '../../styles/70-a11y.css';
+import '../../styles/80-admin.css';
+
+type NavItem = {
+  href: string;
+  key: 'events' | 'flags' | 'overview' | 'security';
+  label: string;
+};
+
+interface Props {
+  active?: NavItem['key'];
+  description?: string;
+  title: string;
+}
+
+const { active = 'overview', description = 'Protected docs telemetry console', title } = Astro.props;
+const admin = Astro.locals.admin;
+const isAuthenticated = admin?.isAuthenticated ?? false;
+
+const navItems: NavItem[] = [
+  { href: '/admin', key: 'overview', label: 'Overview' },
+  { href: '/admin/events', key: 'events', label: 'Events' },
+  { href: '/admin/flags', key: 'flags', label: 'Flags' },
+  { href: '/admin/security', key: 'security', label: 'Security' },
+];
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} | Agents Admin</title>
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('agents-admin-theme');
+        const theme = stored === 'light' || stored === 'dark'
+          ? stored
+          : window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'dark';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body class="admin-app">
+    <div class="admin-bg admin-bg--grid" aria-hidden="true"></div>
+    <div class="admin-bg admin-bg--orb" aria-hidden="true"></div>
+    <div class="admin-shell">
+      <header class="admin-topbar">
+        <div class="admin-brand-block">
+          <a href={isAuthenticated ? '/admin' : '/admin/login'} class="admin-brand">
+            <span class="admin-brand-mark">OP</span>
+            <span>
+              <strong>Agents Admin</strong>
+              <small>telemetry and observability console</small>
+            </span>
+          </a>
+          {isAuthenticated && <span class="admin-pill">request {admin.requestId.slice(0, 8)}</span>}
+        </div>
+
+        <div class="admin-toolbar">
+          <button type="button" class="admin-button admin-button--ghost" data-theme-toggle>
+            Toggle theme
+          </button>
+          <a href="/" class="admin-button admin-button--ghost">Back to docs</a>
+          {isAuthenticated && (
+            <form method="post" action="/api/admin/logout">
+              <input type="hidden" name="csrf" value={admin.csrfToken} />
+              <button type="submit" class="admin-button">Sign out</button>
+            </form>
+          )}
+        </div>
+      </header>
+
+      <div class:list={['admin-grid', isAuthenticated && 'admin-grid--with-sidebar']}>
+        {isAuthenticated && (
+          <aside class="admin-sidebar">
+            <nav aria-label="Admin navigation">
+              <ul class="admin-nav-list">
+                {navItems.map((item) => (
+                  <li>
+                    <a href={item.href} class:list={['admin-nav-link', active === item.key && 'is-active']}>
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div class="admin-sidebar-note">
+              <p>Shared-password access only.</p>
+              <p>Server-side cookies, CSRF checks, and audit events are enabled for privileged actions.</p>
+            </div>
+          </aside>
+        )}
+
+        <main class="admin-main">
+          <slot />
+        </main>
+      </div>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const button = document.querySelector('[data-theme-toggle]');
+        if (!button) return;
+
+        button.addEventListener('click', () => {
+          const current = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.dataset.theme = next;
+          localStorage.setItem('agents-admin-theme', next);
+        });
+      })();
+    </script>
+  </body>
+</html>

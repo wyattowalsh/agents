@@ -1,116 +1,243 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <!-- Body gradient: violet to deep violet -->
-    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="100%" stop-color="#6d28d9"/>
+    <!-- Core gradients -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0"/>
+      <stop offset="85%" stop-color="#0f0a1a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0f0a1a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Central nexus gradient: violet core -->
+    <radialGradient id="nexusCore" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="40%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#5b21b6"/>
+    </radialGradient>
+
+    <!-- Inner energy: cyan -->
+    <radialGradient id="innerEnergy" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#22d3ee" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Orbital ring gradient -->
+    <linearGradient id="orbitGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#22d3ee" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.1"/>
     </linearGradient>
-    <!-- Head gradient: lighter top -->
-    <linearGradient id="head" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#8b5cf6"/>
+
+    <!-- Node gradients for each type -->
+    <radialGradient id="nodeSkill" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
       <stop offset="100%" stop-color="#7c3aed"/>
-    </linearGradient>
-    <!-- Antenna glow gradient: warm cyan -->
-    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    </radialGradient>
+    <radialGradient id="nodeAgent" cx="40%" cy="35%" r="60%">
       <stop offset="0%" stop-color="#67e8f9"/>
-      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0891b2"/>
     </radialGradient>
-    <!-- Eye shine gradient -->
-    <radialGradient id="eyeShine" cx="40%" cy="35%" r="50%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="100%" stop-color="#e8e0ff"/>
+    <radialGradient id="nodeMcp" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#059669"/>
     </radialGradient>
+    <radialGradient id="nodeInstalled" cx="40%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#fdba74"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </radialGradient>
+
+    <!-- Glow filters -->
+    <filter id="glowSoft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowStrong" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowSubtle" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Hexagon clip path for central core -->
+    <clipPath id="hexClip">
+      <polygon points="32,17 42.5,22.5 42.5,33.5 32,39 21.5,33.5 21.5,22.5"/>
+    </clipPath>
   </defs>
 
-  <!-- === ANTENNA === -->
-  <!-- Antenna stick -->
-  <line x1="32" y1="12" x2="32" y2="4.5" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/>
-  <!-- Antenna glow (warm, layered) -->
-  <circle cx="32" cy="4" r="5" fill="url(#glow)" opacity="0.5"/>
-  <circle cx="32" cy="4" r="2.5" fill="#67e8f9"/>
-  <circle cx="32" cy="3.2" r="0.8" fill="white" opacity="0.9"/>
+  <!-- ============================================ -->
+  <!-- LAYER 1: Outer orbital rings                 -->
+  <!-- ============================================ -->
 
-  <!-- === SPARKLES near antenna === -->
-  <!-- Left sparkle (4-point star) -->
-  <path d="M23 5 L24 3.5 L25 5 L24 6.5 Z" fill="#67e8f9" opacity="0.7"/>
-  <!-- Right sparkle -->
-  <path d="M39 7 L40.2 5.2 L41.4 7 L40.2 8.8 Z" fill="#a78bfa" opacity="0.6"/>
-  <!-- Tiny dot sparkle -->
-  <circle cx="26" cy="8" r="0.6" fill="white" opacity="0.5"/>
+  <!-- Outer orbit ring (tilted ellipse 1) -->
+  <ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="url(#orbitGrad)" stroke-width="0.4" opacity="0.5"
+    transform="rotate(-30,32,32)"/>
+  <!-- Outer orbit ring (tilted ellipse 2) -->
+  <ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="url(#orbitGrad)" stroke-width="0.4" opacity="0.4"
+    transform="rotate(30,32,32)"/>
+  <!-- Outer orbit ring (tilted ellipse 3) -->
+  <ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="url(#orbitGrad)" stroke-width="0.3" opacity="0.3"
+    transform="rotate(90,32,32)"/>
 
-  <!-- === EARS (slightly behind head) === -->
-  <rect x="7" y="18" width="6" height="8" rx="3" fill="#6d28d9"/>
-  <rect x="51" y="18" width="6" height="8" rx="3" fill="#6d28d9"/>
-  <!-- Ear inner highlight -->
-  <rect x="8.5" y="19.5" width="3" height="5" rx="1.5" fill="#8b5cf6" opacity="0.5"/>
-  <rect x="52.5" y="19.5" width="3" height="5" rx="1.5" fill="#8b5cf6" opacity="0.5"/>
+  <!-- Middle orbit ring -->
+  <ellipse cx="32" cy="32" rx="21" ry="8" fill="none" stroke="#7c3aed" stroke-width="0.35" opacity="0.35"
+    transform="rotate(-55,32,32)"/>
+  <ellipse cx="32" cy="32" rx="21" ry="8" fill="none" stroke="#22d3ee" stroke-width="0.35" opacity="0.3"
+    transform="rotate(55,32,32)"/>
 
-  <!-- === HEAD (large, chibi-style) === -->
-  <rect x="11" y="11" width="42" height="32" rx="16" fill="url(#head)"/>
-  <!-- Head highlight (subtle top reflection) -->
-  <ellipse cx="32" cy="16" rx="14" ry="4" fill="white" opacity="0.08"/>
+  <!-- ============================================ -->
+  <!-- LAYER 2: Connection lines (neural network)   -->
+  <!-- ============================================ -->
 
-  <!-- === EYES (big, round, anime sparkle) === -->
-  <!-- Left eye -->
-  <ellipse cx="23" cy="26" rx="6.5" ry="7" fill="url(#eyeShine)"/>
-  <ellipse cx="23" cy="26" rx="6.5" ry="7" fill="none" stroke="#6d28d9" stroke-width="0.5" opacity="0.3"/>
-  <!-- Left pupil -->
-  <circle cx="24" cy="26.5" r="3.8" fill="#1e1b4b"/>
-  <!-- Left iris ring -->
-  <circle cx="24" cy="26.5" r="3.8" fill="none" stroke="#4c1d95" stroke-width="0.5"/>
-  <!-- Left eye reflections (anime sparkle) -->
-  <circle cx="22" cy="24.5" r="1.6" fill="white"/>
-  <circle cx="26" cy="25" r="0.8" fill="white" opacity="0.9"/>
-  <circle cx="23" cy="28.5" r="0.6" fill="white" opacity="0.5"/>
+  <!-- Radial connection lines from center to outer nodes -->
+  <!-- Top cluster -->
+  <line x1="32" y1="23" x2="32" y2="5" stroke="#a78bfa" stroke-width="0.5" opacity="0.4"/>
+  <line x1="32" y1="23" x2="22" y2="7" stroke="#7c3aed" stroke-width="0.4" opacity="0.3"/>
+  <line x1="32" y1="23" x2="42" y2="7" stroke="#7c3aed" stroke-width="0.4" opacity="0.3"/>
 
-  <!-- Right eye -->
-  <ellipse cx="41" cy="26" rx="6.5" ry="7" fill="url(#eyeShine)"/>
-  <ellipse cx="41" cy="26" rx="6.5" ry="7" fill="none" stroke="#6d28d9" stroke-width="0.5" opacity="0.3"/>
-  <!-- Right pupil -->
-  <circle cx="42" cy="26.5" r="3.8" fill="#1e1b4b"/>
-  <!-- Right iris ring -->
-  <circle cx="42" cy="26.5" r="3.8" fill="none" stroke="#4c1d95" stroke-width="0.5"/>
-  <!-- Right eye reflections (anime sparkle) -->
-  <circle cx="40" cy="24.5" r="1.6" fill="white"/>
-  <circle cx="44" cy="25" r="0.8" fill="white" opacity="0.9"/>
-  <circle cx="41" cy="28.5" r="0.6" fill="white" opacity="0.5"/>
+  <!-- Right cluster -->
+  <line x1="38" y1="28" x2="57" y2="18" stroke="#22d3ee" stroke-width="0.5" opacity="0.4"/>
+  <line x1="38" y1="30" x2="58" y2="32" stroke="#0891b2" stroke-width="0.4" opacity="0.3"/>
+  <line x1="38" y1="32" x2="55" y2="45" stroke="#22d3ee" stroke-width="0.4" opacity="0.3"/>
 
-  <!-- === BLUSH MARKS (soft pink cheeks) === -->
-  <ellipse cx="14.5" cy="30" rx="3" ry="2" fill="#f9a8d4" opacity="0.4"/>
-  <ellipse cx="49.5" cy="30" rx="3" ry="2" fill="#f9a8d4" opacity="0.4"/>
+  <!-- Bottom cluster -->
+  <line x1="32" y1="35" x2="32" y2="58" stroke="#34d399" stroke-width="0.5" opacity="0.4"/>
+  <line x1="32" y1="35" x2="22" y2="56" stroke="#059669" stroke-width="0.4" opacity="0.3"/>
+  <line x1="32" y1="35" x2="42" y2="56" stroke="#059669" stroke-width="0.4" opacity="0.3"/>
 
-  <!-- === SMILE (wider, friendlier) === -->
-  <path d="M25 33 Q32 39 39 33" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
-  <!-- Tiny mouth highlight -->
-  <path d="M29 34.5 Q32 37 35 34.5" fill="white" opacity="0.15"/>
+  <!-- Left cluster -->
+  <line x1="26" y1="28" x2="7" y2="18" stroke="#fdba74" stroke-width="0.5" opacity="0.4"/>
+  <line x1="26" y1="30" x2="6" y2="32" stroke="#ea580c" stroke-width="0.4" opacity="0.3"/>
+  <line x1="26" y1="32" x2="9" y2="45" stroke="#fdba74" stroke-width="0.4" opacity="0.3"/>
 
-  <!-- === BODY (smaller, chibi proportion) === -->
-  <rect x="19" y="42" width="26" height="14" rx="8" fill="url(#body)"/>
-  <!-- Body highlight -->
-  <ellipse cx="32" cy="45" rx="8" ry="2" fill="white" opacity="0.07"/>
+  <!-- Cross connections between outer nodes -->
+  <line x1="22" y1="7" x2="7" y2="18" stroke="#8b5cf6" stroke-width="0.25" opacity="0.2"/>
+  <line x1="42" y1="7" x2="57" y2="18" stroke="#8b5cf6" stroke-width="0.25" opacity="0.2"/>
+  <line x1="55" y1="45" x2="42" y2="56" stroke="#8b5cf6" stroke-width="0.25" opacity="0.2"/>
+  <line x1="9" y1="45" x2="22" y2="56" stroke="#8b5cf6" stroke-width="0.25" opacity="0.2"/>
 
-  <!-- === HEART on chest (emerald accent) === -->
-  <path d="M32 50 L29.5 47.2 C28.5 46 28.5 44.5 29.8 44.5 C30.8 44.5 31.5 45.2 32 45.8 C32.5 45.2 33.2 44.5 34.2 44.5 C35.5 44.5 35.5 46 34.5 47.2 Z" fill="#34d399"/>
-  <!-- Heart highlight -->
-  <circle cx="30.5" cy="45.5" r="0.5" fill="white" opacity="0.4"/>
+  <!-- ============================================ -->
+  <!-- LAYER 3: Central hexagonal nexus             -->
+  <!-- ============================================ -->
 
-  <!-- === ARMS === -->
-  <!-- Left arm (relaxed) -->
-  <line x1="19" y1="47" x2="12" y2="52" stroke="#6d28d9" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="11" cy="53" r="2.5" fill="#8b5cf6"/>
-  <!-- Left hand highlight -->
-  <circle cx="10.5" cy="52.2" r="0.7" fill="white" opacity="0.3"/>
+  <!-- Outer hexagon glow -->
+  <polygon points="32,15 44,21.5 44,34.5 32,41 20,34.5 20,21.5"
+    fill="none" stroke="#7c3aed" stroke-width="0.6" opacity="0.4" filter="url(#glowSoft)"/>
 
-  <!-- Right arm (waving up) -->
-  <line x1="45" y1="46" x2="53" y2="40" stroke="#6d28d9" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="54" cy="39" r="2.5" fill="#8b5cf6"/>
-  <!-- Right hand highlight -->
-  <circle cx="53.5" cy="38.2" r="0.7" fill="white" opacity="0.3"/>
+  <!-- Main hexagon body -->
+  <polygon points="32,17 42.5,22.5 42.5,33.5 32,39 21.5,33.5 21.5,22.5"
+    fill="url(#nexusCore)" stroke="#a78bfa" stroke-width="0.8" opacity="0.95"/>
 
-  <!-- === FEET === -->
-  <rect x="22" y="55" width="7" height="4.5" rx="2.2" fill="#5b21b6"/>
-  <rect x="35" y="55" width="7" height="4.5" rx="2.2" fill="#5b21b6"/>
-  <!-- Foot highlights -->
-  <ellipse cx="25.5" cy="56" rx="2" ry="0.8" fill="white" opacity="0.1"/>
-  <ellipse cx="38.5" cy="56" rx="2" ry="0.8" fill="white" opacity="0.1"/>
+  <!-- Hexagon inner facets (3D depth effect) -->
+  <polygon points="32,17 42.5,22.5 32,28" fill="#8b5cf6" opacity="0.3"/>
+  <polygon points="32,17 21.5,22.5 32,28" fill="#9333ea" opacity="0.2"/>
+  <polygon points="42.5,22.5 42.5,33.5 32,28" fill="#6d28d9" opacity="0.2"/>
+  <polygon points="21.5,22.5 21.5,33.5 32,28" fill="#7c3aed" opacity="0.15"/>
+  <polygon points="32,39 42.5,33.5 32,28" fill="#5b21b6" opacity="0.25"/>
+  <polygon points="32,39 21.5,33.5 32,28" fill="#4c1d95" opacity="0.3"/>
+
+  <!-- Inner hexagon energy ring -->
+  <polygon points="32,22 37.5,25 37.5,31 32,34 26.5,31 26.5,25"
+    fill="none" stroke="#22d3ee" stroke-width="0.6" opacity="0.6"/>
+
+  <!-- Core energy circle -->
+  <circle cx="32" cy="28" r="4.5" fill="url(#innerEnergy)" filter="url(#glowStrong)"/>
+  <circle cx="32" cy="28" r="2.8" fill="#67e8f9" opacity="0.8"/>
+  <circle cx="32" cy="28" r="1.5" fill="white" opacity="0.9"/>
+
+  <!-- Hexagon vertex sparkles -->
+  <circle cx="32" cy="17" r="1" fill="#c4b5fd" opacity="0.8" filter="url(#glowSubtle)"/>
+  <circle cx="42.5" cy="22.5" r="0.8" fill="#a78bfa" opacity="0.7" filter="url(#glowSubtle)"/>
+  <circle cx="42.5" cy="33.5" r="0.8" fill="#8b5cf6" opacity="0.7" filter="url(#glowSubtle)"/>
+  <circle cx="32" cy="39" r="1" fill="#c4b5fd" opacity="0.8" filter="url(#glowSubtle)"/>
+  <circle cx="21.5" cy="33.5" r="0.8" fill="#8b5cf6" opacity="0.7" filter="url(#glowSubtle)"/>
+  <circle cx="21.5" cy="22.5" r="0.8" fill="#a78bfa" opacity="0.7" filter="url(#glowSubtle)"/>
+
+  <!-- ============================================ -->
+  <!-- LAYER 4: Outer satellite nodes (typed)       -->
+  <!-- ============================================ -->
+
+  <!-- TOP: Skill nodes (violet) -->
+  <circle cx="32" cy="5" r="2.5" fill="url(#nodeSkill)" filter="url(#glowSubtle)"/>
+  <circle cx="32" cy="4.3" r="0.7" fill="white" opacity="0.6"/>
+  <circle cx="22" cy="7" r="1.8" fill="url(#nodeSkill)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="22" cy="6.5" r="0.5" fill="white" opacity="0.5"/>
+  <circle cx="42" cy="7" r="1.8" fill="url(#nodeSkill)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="42" cy="6.5" r="0.5" fill="white" opacity="0.5"/>
+
+  <!-- RIGHT: Agent nodes (cyan) -->
+  <circle cx="57" cy="18" r="2.5" fill="url(#nodeAgent)" filter="url(#glowSubtle)"/>
+  <circle cx="56.3" cy="17.3" r="0.7" fill="white" opacity="0.6"/>
+  <circle cx="58" cy="32" r="1.8" fill="url(#nodeAgent)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="57.5" cy="31.5" r="0.5" fill="white" opacity="0.5"/>
+  <circle cx="55" cy="45" r="1.8" fill="url(#nodeAgent)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="54.5" cy="44.5" r="0.5" fill="white" opacity="0.5"/>
+
+  <!-- BOTTOM: MCP nodes (emerald) -->
+  <circle cx="32" cy="58" r="2.5" fill="url(#nodeMcp)" filter="url(#glowSubtle)"/>
+  <circle cx="31.3" cy="57.3" r="0.7" fill="white" opacity="0.6"/>
+  <circle cx="22" cy="56" r="1.8" fill="url(#nodeMcp)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="21.5" cy="55.5" r="0.5" fill="white" opacity="0.5"/>
+  <circle cx="42" cy="56" r="1.8" fill="url(#nodeMcp)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="41.5" cy="55.5" r="0.5" fill="white" opacity="0.5"/>
+
+  <!-- LEFT: Installed nodes (orange) -->
+  <circle cx="7" cy="18" r="2.5" fill="url(#nodeInstalled)" filter="url(#glowSubtle)"/>
+  <circle cx="6.3" cy="17.3" r="0.7" fill="white" opacity="0.6"/>
+  <circle cx="6" cy="32" r="1.8" fill="url(#nodeInstalled)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="5.5" cy="31.5" r="0.5" fill="white" opacity="0.5"/>
+  <circle cx="9" cy="45" r="1.8" fill="url(#nodeInstalled)" opacity="0.85" filter="url(#glowSubtle)"/>
+  <circle cx="8.5" cy="44.5" r="0.5" fill="white" opacity="0.5"/>
+
+  <!-- ============================================ -->
+  <!-- LAYER 5: Ambient particles & sparkles        -->
+  <!-- ============================================ -->
+
+  <!-- Tiny ambient particles scattered around -->
+  <circle cx="15" cy="12" r="0.5" fill="#a78bfa" opacity="0.4"/>
+  <circle cx="49" cy="12" r="0.4" fill="#22d3ee" opacity="0.35"/>
+  <circle cx="12" cy="50" r="0.45" fill="#fdba74" opacity="0.35"/>
+  <circle cx="52" cy="50" r="0.5" fill="#34d399" opacity="0.4"/>
+
+  <circle cx="18" cy="30" r="0.3" fill="#c4b5fd" opacity="0.3"/>
+  <circle cx="46" cy="30" r="0.3" fill="#67e8f9" opacity="0.3"/>
+  <circle cx="25" cy="48" r="0.35" fill="#6ee7b7" opacity="0.3"/>
+  <circle cx="39" cy="48" r="0.35" fill="#6ee7b7" opacity="0.3"/>
+
+  <!-- Diamond sparkles (4-pointed stars) -->
+  <path d="M14 3 L15 1.5 L16 3 L15 4.5 Z" fill="#67e8f9" opacity="0.5"/>
+  <path d="M50 3 L51 1.5 L52 3 L51 4.5 Z" fill="#a78bfa" opacity="0.45"/>
+  <path d="M3 38 L4 36.5 L5 38 L4 39.5 Z" fill="#fdba74" opacity="0.4"/>
+  <path d="M59 38 L60 36.5 L61 38 L60 39.5 Z" fill="#34d399" opacity="0.4"/>
+
+  <!-- Micro-dots along orbital paths -->
+  <circle cx="48" cy="11" r="0.6" fill="#22d3ee" opacity="0.5"/>
+  <circle cx="16" cy="11" r="0.6" fill="#a78bfa" opacity="0.5"/>
+  <circle cx="56" cy="40" r="0.5" fill="#22d3ee" opacity="0.4"/>
+  <circle cx="8" cy="40" r="0.5" fill="#fdba74" opacity="0.4"/>
+  <circle cx="20" cy="60" r="0.5" fill="#34d399" opacity="0.4"/>
+  <circle cx="44" cy="60" r="0.5" fill="#34d399" opacity="0.4"/>
+
+  <!-- ============================================ -->
+  <!-- LAYER 6: "A" letterform (subtle, integrated) -->
+  <!-- ============================================ -->
+
+  <!-- Subtle "A" formed by the inner hexagon structure -->
+  <!-- Left leg of A -->
+  <line x1="28" y1="34" x2="32" y2="22" stroke="white" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <!-- Right leg of A -->
+  <line x1="36" y1="34" x2="32" y2="22" stroke="white" stroke-width="0.8" opacity="0.25" stroke-linecap="round"/>
+  <!-- Crossbar of A -->
+  <line x1="29.5" y1="29.5" x2="34.5" y2="29.5" stroke="white" stroke-width="0.6" opacity="0.2" stroke-linecap="round"/>
+
 </svg>

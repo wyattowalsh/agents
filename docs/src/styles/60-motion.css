@@ -20,9 +20,17 @@
   50% { filter: hue-rotate(8deg) drop-shadow(0 0 30px oklch(0.62 0.1 180 / 0.22)); }
 }
 
-@keyframes glow-pulse {
+@keyframes glowPulse {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 1.0; }
+}
+
+@keyframes particleFloat {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  25% { transform: translate3d(4px, -6px, 0) scale(1.02); }
+  50% { transform: translate3d(-3px, -10px, 0) scale(0.98); }
+  75% { transform: translate3d(-5px, -4px, 0) scale(1.01); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* ===== HERO TYPEWRITER MOTION (migrated from Hero.astro override) ===== */
@@ -66,4 +74,41 @@
 @keyframes terminal-entrance {
   from { opacity: 0; transform: translateY(20px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== CARD ENTRANCE ANIMATIONS ===== */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered card entrance — each card within a grid enters sequentially */
+.card-grid .sl-link-card {
+  opacity: 0;
+  animation: fadeSlideUp 0.5s var(--ease-snappy) forwards;
+}
+.card-grid .sl-link-card:nth-child(1) { animation-delay: 0.08s; }
+.card-grid .sl-link-card:nth-child(2) { animation-delay: 0.16s; }
+.card-grid .sl-link-card:nth-child(3) { animation-delay: 0.24s; }
+.card-grid .sl-link-card:nth-child(4) { animation-delay: 0.32s; }
+.card-grid .sl-link-card:nth-child(5) { animation-delay: 0.40s; }
+.card-grid .sl-link-card:nth-child(6) { animation-delay: 0.48s; }
+
+/* ===== GRADIENT BORDER ANIMATION ===== */
+@keyframes gradientBorder {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== HERO TERMINAL BREATHING GLOW ===== */
+@keyframes softBreath {
+  0%, 100% { box-shadow: 0 0 20px oklch(0.5 0.15 285 / 0.12), 0 0 60px oklch(0.5 0.1 205 / 0.06); }
+  50%      { box-shadow: 0 0 30px oklch(0.5 0.15 285 / 0.2),  0 0 80px oklch(0.5 0.1 205 / 0.1); }
+}
+
+/* ===== STATS BAR PULSE ===== */
+@keyframes statPulse {
+  0%, 100% { box-shadow: 0 0 0 oklch(0.5 0.1 205 / 0); }
+  50%      { box-shadow: 0 0 12px oklch(0.5 0.1 205 / 0.12); }
 }

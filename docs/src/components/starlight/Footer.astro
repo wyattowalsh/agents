@@ -41,19 +41,30 @@ if (category && sidebar) {
 
 // Get skill name for install footer
 const skillName = category === 'skills' && !path.startsWith('skills/installed') ? path.replace('skills/', '') : null;
+const installCommand = skillName ? `npx skills add wyattowalsh/agents/skills/${skillName} -g` : '';
 ---
 
 {category && (prevPage || nextPage) && (
   <nav class="category-nav" aria-label="In-category navigation">
     <div class="category-nav-inner">
       {prevPage && (
-        <a href={prevPage.href} class="category-nav-link category-nav-prev">
+        <a
+          href={prevPage.href}
+          class="category-nav-link category-nav-prev"
+          data-telemetry-event="docs_category_navigation_clicked"
+          data-telemetry-label={prevPage.label}
+        >
           <span class="category-nav-dir">&larr; Previous</span>
           <span class="category-nav-title">{prevPage.label}</span>
         </a>
       )}
       {nextPage && (
-        <a href={nextPage.href} class="category-nav-link category-nav-next">
+        <a
+          href={nextPage.href}
+          class="category-nav-link category-nav-next"
+          data-telemetry-event="docs_category_navigation_clicked"
+          data-telemetry-label={nextPage.label}
+        >
           <span class="category-nav-dir">Next &rarr;</span>
           <span class="category-nav-title">{nextPage.label}</span>
         </a>
@@ -64,11 +75,43 @@ const skillName = category === 'skills' && !path.startsWith('skills/installed') 
 
 {skillName && (
   <div class="skill-install-footer">
-    <code>npx skills add wyattowalsh/agents/skills/{skillName} -g</code>
+    <code>{installCommand}</code>
+    <button
+      type="button"
+      class="skill-install-copy"
+      data-install-command={installCommand}
+      data-telemetry-event="docs_install_command_copied"
+      data-telemetry-label={skillName}
+    >
+      Copy
+    </button>
   </div>
 )}
 
 <Default><slot /></Default>
+
+<script is:inline>
+  (() => {
+    const buttons = document.querySelectorAll('.skill-install-copy');
+    for (const button of buttons) {
+      button.addEventListener('click', async () => {
+        const command = button.getAttribute('data-install-command') ?? '';
+        if (!command) return;
+
+        try {
+          await navigator.clipboard.writeText(command);
+          button.textContent = 'Copied';
+        } catch {
+          button.textContent = 'Failed';
+        }
+
+        window.setTimeout(() => {
+          button.textContent = 'Copy';
+        }, 1500);
+      });
+    }
+  })();
+</script>
 
 <style>
   .category-nav {
@@ -120,6 +163,11 @@ const skillName = category === 'skills' && !path.startsWith('skills/installed') 
     color: var(--sl-color-text-accent);
   }
   .skill-install-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
     text-align: center;
     padding: 1rem;
     margin-top: 1rem;
@@ -131,6 +179,19 @@ const skillName = category === 'skills' && !path.startsWith('skills/installed') 
     font-size: 0.85rem;
     color: var(--sl-color-text-accent);
     user-select: all;
+  }
+  .skill-install-copy {
+    border: 1px solid var(--sl-color-gray-5);
+    background: transparent;
+    color: var(--sl-color-text-accent);
+    border-radius: 999px;
+    padding: 0.45rem 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .skill-install-copy:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
   }
   :global([data-theme='light']) .category-nav-link:hover {
     background: oklch(0.95 0.02 285 / 0.3);

@@ -1,0 +1,86 @@
+---
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { getAdminDistinctId } from '../../lib/admin/auth';
+import { getFeatureEntries } from '../../lib/admin/flags';
+import { captureServerEvent } from '../../lib/admin/telemetry';
+
+export const prerender = false;
+
+const admin = Astro.locals.admin;
+const featureEntries = getFeatureEntries(admin.featureOverrides);
+const saved = Astro.url.searchParams.get('saved') === '1';
+
+await captureServerEvent(
+  'admin_flags_viewed',
+  {
+    outcome: 'ready',
+    request_id: admin.requestId,
+    route: '/admin/flags',
+  },
+  { distinctId: getAdminDistinctId() }
+);
+---
+
+<AdminLayout title="Feature Flags" description="Protected feature override controls" active="flags">
+  <section class="admin-masthead">
+    <div class="admin-pills">
+      <span class="admin-pill">cookie-backed overrides</span>
+      <span class="admin-pill">browser-scoped</span>
+      <span class="admin-pill">no vendor secrets</span>
+    </div>
+    <h1>Feature flags</h1>
+    <p>
+      These controls override the docs admin feature catalog in the current browser session. They are designed
+      for safe operator testing rather than global vendor-side mutation.
+    </p>
+  </section>
+
+  {saved && <div class="admin-banner admin-banner--success">Feature overrides were updated for this browser.</div>}
+
+  <section class="admin-section-card">
+    <h2>Override catalog</h2>
+    <form method="post" action="/api/admin/flags" class="admin-form-grid">
+      <input type="hidden" name="csrf" value={admin.csrfToken} />
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Flag</th>
+              <th>Scope</th>
+              <th>Default</th>
+              <th>Current state</th>
+            </tr>
+          </thead>
+          <tbody>
+            {featureEntries.map((feature) => (
+              <tr>
+                <td>
+                  <strong>{feature.label}</strong>
+                  <div class="admin-subtle">{feature.description}</div>
+                </td>
+                <td>{feature.scope}</td>
+                <td>{feature.defaultEnabled ? 'enabled' : 'disabled'}</td>
+                <td>
+                  <select class="admin-select" name={`flag:${feature.key}`}>
+                    <option value="inherit" selected={feature.state === 'inherit'}>inherit</option>
+                    <option value="enabled" selected={feature.state === 'enabled'}>enabled</option>
+                    <option value="disabled" selected={feature.state === 'disabled'}>disabled</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="admin-inline-actions">
+        <button type="submit" class="admin-button">Save overrides</button>
+      </div>
+      <p class="admin-form-note">
+        Public telemetry capture changes take effect on the next page load in this browser. Other flags gate the
+        protected admin views only.
+      </p>
+    </form>
+  </section>
+</AdminLayout>

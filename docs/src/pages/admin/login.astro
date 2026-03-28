@@ -1,0 +1,108 @@
+---
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { getAdminConfigSnapshot } from '../../lib/admin/config';
+
+export const prerender = false;
+
+if (Astro.locals.admin.isAuthenticated) {
+  return Astro.redirect('/admin');
+}
+
+const config = getAdminConfigSnapshot();
+const errorCode = Astro.url.searchParams.get('error');
+const redirectPath = Astro.url.searchParams.get('redirect')?.startsWith('/admin')
+  ? Astro.url.searchParams.get('redirect')!
+  : '/admin';
+
+const errorMessage =
+  errorCode === 'invalid_credentials'
+    ? 'Password rejected. The console did not issue a session.'
+    : errorCode === 'csrf'
+      ? 'The login form expired. Refresh and try again.'
+      : errorCode === 'origin'
+        ? 'Origin validation failed for this request.'
+        : errorCode === 'missing_password'
+          ? 'DOCS_ADMIN_PASSWORD is not configured for this environment.'
+          : '';
+
+const wasLoggedOut = Astro.url.searchParams.get('logged_out') === '1';
+---
+
+<AdminLayout title="Admin Login" description="Shared-password gate for the protected docs telemetry console">
+  <section class="admin-masthead">
+    <div class="admin-pills">
+      <span class="admin-pill">shared-password auth</span>
+      <span class="admin-pill">httpOnly session cookies</span>
+      <span class="admin-pill">csrf enforcement</span>
+    </div>
+    <h1>Protected docs control plane</h1>
+    <p>
+      This operator surface is isolated from generated docs content and only renders privileged telemetry
+      data after server-side authentication succeeds.
+    </p>
+  </section>
+
+  {errorMessage && <div class="admin-banner admin-banner--danger">{errorMessage}</div>}
+  {wasLoggedOut && <div class="admin-banner admin-banner--success">The admin session was cleared.</div>}
+
+  <div class="admin-section-grid">
+    <section class="admin-card">
+      <h2>Sign in</h2>
+      <form class="admin-form-grid" method="post" action="/api/admin/login">
+        <input type="hidden" name="csrf" value={Astro.locals.admin.csrfToken} />
+        <input type="hidden" name="redirect" value={redirectPath} />
+
+        <label>
+          <span>Password</span>
+          <input
+            class="admin-input"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+
+        <button type="submit" class="admin-button">Unlock admin console</button>
+        <p class="admin-form-note">
+          Access is backed by a signed, short-lived session cookie and rejected on failed origin or CSRF checks.
+        </p>
+      </form>
+    </section>
+
+    <section class="admin-card">
+      <h2>Runtime posture</h2>
+      <ul class="admin-meta-list">
+        <li>
+          <span>Admin password configured</span>
+          <strong class:list={['admin-status', config.hasAdminPassword ? 'admin-status--ok' : 'admin-status--danger']}>
+            {config.hasAdminPassword ? 'ready' : 'missing'}
+          </strong>
+        </li>
+        <li>
+          <span>Explicit session secret</span>
+          <strong class:list={['admin-status', config.hasExplicitSessionSecret ? 'admin-status--ok' : 'admin-status--warn']}>
+            {config.hasExplicitSessionSecret ? 'configured' : 'derived'}
+          </strong>
+        </li>
+        <li>
+          <span>Public telemetry key</span>
+          <strong class:list={['admin-status', config.publicTelemetryConfigured ? 'admin-status--ok' : 'admin-status--warn']}>
+            {config.publicTelemetryConfigured ? 'ready' : 'missing'}
+          </strong>
+        </li>
+        <li>
+          <span>PostHog query access</span>
+          <strong class:list={['admin-status', config.posthogQueryConfigured ? 'admin-status--ok' : 'admin-status--warn']}>
+            {config.posthogQueryConfigured ? 'ready' : 'view-only'}
+          </strong>
+        </li>
+      </ul>
+      {config.usingDevelopmentPasswordFallback && (
+        <p class="admin-subtle">
+          Development fallback is active locally. Set <code>DOCS_ADMIN_PASSWORD</code> in deployed environments.
+        </p>
+      )}
+    </section>
+  </div>
+</AdminLayout>

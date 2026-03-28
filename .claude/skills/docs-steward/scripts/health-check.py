@@ -36,7 +36,16 @@ TOKEN_CATEGORIES = {
     "motion": re.compile(r"--duration|--ease|--transition|--motion"),
     "z-index": re.compile(r"--z-"),
 }
-CUSTOM_CSS = Path("docs/src/styles/custom.css")
+TOKEN_CSS_SOURCES = (
+    Path("docs/src/styles/00-tokens.css"),
+    Path("docs/src/styles/10-base.css"),
+    Path("docs/src/styles/20-hero.css"),
+    Path("docs/src/styles/30-cards.css"),
+    Path("docs/src/styles/40-content.css"),
+    Path("docs/src/styles/50-layout-nav.css"),
+    Path("docs/src/styles/60-motion.css"),
+    Path("docs/src/styles/70-a11y.css"),
+)
 SPECIAL_PAGES = {"index.mdx"}
 
 
@@ -176,18 +185,23 @@ def check_components(root: Path) -> dict:
 
 
 def check_tokens(root: Path) -> dict:
-    """Audit CSS custom property coverage in custom.css."""
-    css_path = root / CUSTOM_CSS
-    if not css_path.is_file():
+    """Audit CSS custom property coverage in loaded docs CSS partials."""
+    css_paths = [root / rel_path for rel_path in TOKEN_CSS_SOURCES]
+    existing_paths = [p for p in css_paths if p.is_file()]
+    missing_paths = [p for p in css_paths if not p.is_file()]
+    if not existing_paths:
         return {"status": "critical", "defined_categories": [],
-                "missing_categories": sorted(TOKEN_CATEGORIES), "total_custom_properties": 0}
-    text = css_path.read_text(encoding="utf-8")
+                "missing_categories": sorted(TOKEN_CATEGORIES), "total_custom_properties": 0,
+                "inspected_sources": [], "missing_sources": [str(p.relative_to(root)) for p in missing_paths]}
+    text = "\n".join(p.read_text(encoding="utf-8") for p in existing_paths)
     props = re.findall(r"^\s*(--[\w-]+)\s*:", text, re.MULTILINE)
     defined = sorted(c for c, p in TOKEN_CATEGORIES.items() if p.search(text))
     missing = sorted(c for c, p in TOKEN_CATEGORIES.items() if not p.search(text))
     status = "ok" if not missing else ("info" if len(missing) <= 2 else "warning")
     return {"status": status, "defined_categories": defined,
-            "missing_categories": missing, "total_custom_properties": len(props)}
+            "missing_categories": missing, "total_custom_properties": len(props),
+            "inspected_sources": [str(p.relative_to(root)) for p in existing_paths],
+            "missing_sources": [str(p.relative_to(root)) for p in missing_paths]}
 
 
 # -- Runner ----------------------------------------------------------------

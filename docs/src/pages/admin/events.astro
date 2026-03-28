@@ -1,0 +1,108 @@
+---
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { getAdminDistinctId } from '../../lib/admin/auth';
+import { formatDateTime } from '../../lib/admin/format';
+import { isFeatureEnabled } from '../../lib/admin/flags';
+import { getEventExplorerData } from '../../lib/admin/posthog';
+import { captureServerEvent } from '../../lib/admin/telemetry';
+
+export const prerender = false;
+
+const admin = Astro.locals.admin;
+const selectedEvent = Astro.url.searchParams.get('event');
+const requestedLimit = Number(Astro.url.searchParams.get('limit') ?? 50);
+const limit = Number.isFinite(requestedLimit) ? Math.max(10, Math.min(requestedLimit, 100)) : 50;
+const explorerEnabled = isFeatureEnabled('admin_event_explorer', admin.featureOverrides);
+
+const explorer = explorerEnabled
+  ? await getEventExplorerData(selectedEvent, limit, admin.requestId)
+  : { queryStatus: 'missing' as const, rows: [] };
+
+await captureServerEvent(
+  'admin_events_viewed',
+  {
+    filter: selectedEvent ?? '',
+    outcome: explorer.queryStatus,
+    request_id: admin.requestId,
+    route: '/admin/events',
+  },
+  { distinctId: getAdminDistinctId() }
+);
+---
+
+<AdminLayout title="Event Explorer" description="Protected event explorer for docs telemetry" active="events">
+  <section class="admin-masthead">
+    <div class="admin-pills">
+      <span class="admin-pill">event explorer</span>
+      <span class="admin-pill">limit {limit}</span>
+      <span class="admin-pill">query {explorer.queryStatus}</span>
+    </div>
+    <h1>Event explorer</h1>
+    <p>
+      Review recent telemetry rows without exposing the PostHog query key to the client. Event names are
+      intentionally constrained to low-cardinality filters.
+    </p>
+  </section>
+
+  {!explorerEnabled && (
+    <div class="admin-banner">
+      The <code>admin_event_explorer</code> feature is disabled for this browser session. Re-enable it in the
+      flag console.
+    </div>
+  )}
+
+  <section class="admin-card">
+    <form class="admin-form-grid" method="get" action="/admin/events">
+      <label>
+        <span>Event name</span>
+        <input class="admin-input" type="search" name="event" value={selectedEvent ?? ''} placeholder="admin_login_failed" />
+      </label>
+
+      <label>
+        <span>Result limit</span>
+        <select class="admin-select" name="limit">
+          {[10, 25, 50, 100].map((value) => (
+            <option value={value} selected={value === limit}>{value}</option>
+          ))}
+        </select>
+      </label>
+
+      <div class="admin-inline-actions">
+        <button type="submit" class="admin-button">Run query</button>
+        <a href="/admin/events" class="admin-button admin-button--ghost">Reset</a>
+      </div>
+    </form>
+  </section>
+
+  <section class="admin-section-card">
+    <h2>Recent events</h2>
+    {explorer.rows.length ? (
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Event</th>
+              <th>Path</th>
+              <th>Outcome</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            {explorer.rows.map((row) => (
+              <tr>
+                <td>{formatDateTime(row.timestamp)}</td>
+                <td>{row.event}</td>
+                <td>{row.path || 'n/a'}</td>
+                <td>{row.outcome || 'n/a'}</td>
+                <td>{row.summary || row.requestId || row.distinctId}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div class="admin-empty">No rows matched this filter.</div>
+    )}
+  </section>
+</AdminLayout>

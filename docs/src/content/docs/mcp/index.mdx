@@ -182,42 +182,46 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 }
 ```
 
+---
+
 ## Thinking and Reasoning (10)
 
 > Structured reasoning frameworks that guide agents through multi-step analysis, creative problem-solving, and decision evaluation.
 
 <CardGrid>
   <Card title="sequential-thinking">
-    Step-by-step reasoning with revision and branching. The reference implementation from Anthropic for dynamic, reflective thought processes.
+    <Badge text="Analysis" variant="note" /> Step-by-step reasoning with revision and branching. The reference implementation from Anthropic for dynamic, reflective thought processes.
   </Card>
   <Card title="atom-of-thoughts">
-    Decomposes complex problems into atomic, independent thought units that can be contracted and combined for robust answers.
+    <Badge text="Synthesis" variant="note" /> Decomposes complex problems into atomic, independent thought units that can be contracted and combined for robust answers.
   </Card>
   <Card title="shannon-thinking">
-    Information-theoretic reasoning inspired by Claude Shannon. Reduces noise and uncertainty through systematic problem decomposition.
+    <Badge text="Information Theory" variant="note" /> Information-theoretic reasoning inspired by Claude Shannon. Reduces noise and uncertainty through systematic problem decomposition.
   </Card>
   <Card title="structured-thinking">
-    Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions.
+    <Badge text="Memory" variant="note" /> Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions.
   </Card>
   <Card title="cascade-thinking">
-    Multi-stage reasoning cascade that escalates through progressively deeper analysis levels when simpler passes are insufficient.
+    <Badge text="Deep Dive" variant="note" /> Multi-stage reasoning cascade that escalates through progressively deeper analysis levels when simpler passes are insufficient.
   </Card>
   <Card title="crash">
-    Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions.
+    <Badge text="Verification" variant="note" /> Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions.
   </Card>
   <Card title="deep-lucid-3d">
-    Three-dimensional problem analysis exploring depth, breadth, and lateral connections. Includes creative exploration mode.
+    <Badge text="Exploration" variant="note" /> Three-dimensional problem analysis exploring depth, breadth, and lateral connections. Includes creative exploration mode.
   </Card>
   <Card title="lotus-wisdom-mcp">
-    Eastern-philosophy-inspired reasoning combining multiple perspectives and reflective synthesis for balanced conclusions.
+    <Badge text="Perspective" variant="note" /> Eastern-philosophy-inspired reasoning combining multiple perspectives and reflective synthesis for balanced conclusions.
   </Card>
   <Card title="think-strategies">
-    Strategy-selection toolkit that matches reasoning patterns to problem types. Session management for ongoing analysis threads.
+    <Badge text="Routing" variant="note" /> Strategy-selection toolkit that matches reasoning patterns to problem types. Session management for ongoing analysis threads.
   </Card>
   <Card title="creative-thinking">
-    Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces.
+    <Badge text="Ideation" variant="note" /> Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces.
   </Card>
 </CardGrid>
+
+---
 
 ## Search and Discovery (8)
 
@@ -225,30 +229,32 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="brave-search">
-    Brave Search API with web, news, image, video, and local search. Includes AI-powered summarization of search results.
+    <Badge text="Web/Local" variant="tip" /> Brave Search API with web, news, image, video, and local search. Includes AI-powered summarization of search results.
   </Card>
   <Card title="exa">
-    Neural search engine that understands meaning, not just keywords. Optimized for finding technical content, papers, and documentation.
+    <Badge text="Neural Search" variant="tip" /> Neural search engine that understands meaning, not just keywords. Optimized for finding technical content, papers, and documentation.
   </Card>
   <Card title="web-search">
-    General-purpose web search with result extraction and content parsing. Lightweight alternative for quick lookups.
+    <Badge text="General Web" variant="tip" /> General-purpose web search with result extraction and content parsing. Lightweight alternative for quick lookups.
   </Card>
   <Card title="g-search">
-    Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web.
+    <Badge text="Google" variant="tip" /> Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web.
   </Card>
   <Card title="duckduckgo-search">
-    Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
+    <Badge text="Privacy First" variant="tip" /> Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
   </Card>
   <Card title="arxiv">
-    arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries.
+    <Badge text="Academic" variant="tip" /> arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries.
   </Card>
   <Card title="wikipedia">
-    Wikipedia content retrieval and lookup tools for encyclopedic background, entities, and topic overviews.
+    <Badge text="Encyclopedic" variant="tip" /> Wikipedia content retrieval and lookup tools for encyclopedic background, entities, and topic overviews.
   </Card>
   <Card title="wayback">
-    Access archived pages from the Internet Archive Wayback Machine for historical snapshots and link recovery.
+    <Badge text="Archive" variant="tip" /> Access archived pages from the Internet Archive Wayback Machine for historical snapshots and link recovery.
   </Card>
 </CardGrid>
+
+---
 
 ## Web Fetching and Extraction (3)
 
@@ -256,15 +262,17 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="fetch">
-    Core URL fetcher from the MCP reference servers. Retrieves web pages and returns content in multiple formats.
+    <Badge text="HTTP Fetch" variant="caution" /> Core URL fetcher from the MCP reference servers. Retrieves web pages and returns content in multiple formats.
   </Card>
   <Card title="fetcher">
-    Browser-based URL fetcher with JavaScript rendering. Handles SPAs and dynamic content that simple HTTP fetches miss.
+    <Badge text="JS Rendering" variant="caution" /> Browser-based URL fetcher with JavaScript rendering. Handles SPAs and dynamic content that simple HTTP fetches miss.
   </Card>
   <Card title="trafilatura">
-    High-quality web content extraction using the Trafilatura library. Strips boilerplate to return clean article text and metadata.
+    <Badge text="Content Extraction" variant="caution" /> High-quality web content extraction using the Trafilatura library. Strips boilerplate to return clean article text and metadata.
   </Card>
 </CardGrid>
+
+---
 
 ## Knowledge and Documentation (3)
 
@@ -272,15 +280,17 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="context7">
-    Retrieves up-to-date documentation for libraries and frameworks directly from source. Eliminates hallucinated APIs and outdated references.
+    <Badge text="API Docs" variant="success" /> Retrieves up-to-date documentation for libraries and frameworks directly from source. Eliminates hallucinated APIs and outdated references.
   </Card>
   <Card title="deepwiki">
-    Queries the DeepWiki knowledge base of open-source project documentation. Ask questions about repos and read generated wiki pages.
+    <Badge text="GitHub Wikis" variant="success" /> Queries the DeepWiki knowledge base of open-source project documentation. Ask questions about repos and read generated wiki pages.
   </Card>
   <Card title="repomix">
-    Packs entire codebases into AI-friendly context. Supports local directories and remote repositories with grep and directory browsing.
+    <Badge text="Codebase Context" variant="success" /> Packs entire codebases into AI-friendly context. Supports local directories and remote repositories with grep and directory browsing.
   </Card>
 </CardGrid>
+
+---
 
 ## Development Tools (5)
 
@@ -288,21 +298,23 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="chrome-devtools">
-    Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
+    <Badge text="CDP Automation" variant="danger" /> Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
   </Card>
   <Card title="playwright">
-    Full browser automation via Playwright. Navigate pages, fill forms, click elements, take screenshots, and run end-to-end test flows.
+    <Badge text="E2E Testing" variant="danger" /> Full browser automation via Playwright. Navigate pages, fill forms, click elements, take screenshots, and run end-to-end test flows.
   </Card>
   <Card title="playwright-headless">
-    Headless Playwright variant for isolated browser automation without extension requirements.
+    <Badge text="CI/CD Ready" variant="danger" /> Headless Playwright variant for isolated browser automation without extension requirements.
   </Card>
   <Card title="package-version">
-    Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.
+    <Badge text="Dependency Mgmt" variant="danger" /> Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.
   </Card>
   <Card title="docling">
-    Converts documents (PDF, DOCX, PPTX, HTML) into structured Docling format. Create, edit, search, and export documents as Markdown.
+    <Badge text="Doc Processing" variant="danger" /> Converts documents (PDF, DOCX, PPTX, HTML) into structured Docling format. Create, edit, search, and export documents as Markdown.
   </Card>
 </CardGrid>
+
+---
 
 ## Productivity (3)
 
@@ -310,15 +322,17 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="gmail">
-    Full Gmail access: search, read, send, draft, label, filter, and batch-manage emails. Supports attachment downloads.
+    <Badge text="Inbox Zero" variant="default" /> Full Gmail access: search, read, send, draft, label, filter, and batch-manage emails. Supports attachment downloads.
   </Card>
   <Card title="apple-mail">
-    Native macOS Mail.app integration. Read, search, and manage emails through Apple's built-in mail client.
+    <Badge text="Native macOS" variant="default" /> Native macOS Mail.app integration. Read, search, and manage emails through Apple's built-in mail client.
   </Card>
   <Card title="things">
-    Things 3 task manager integration. Create and manage todos, projects, areas, and tags. Query inbox, today, upcoming, and logbook.
+    <Badge text="Task Mgmt" variant="default" /> Things 3 task manager integration. Create and manage todos, projects, areas, and tags. Query inbox, today, upcoming, and logbook.
   </Card>
 </CardGrid>
+
+---
 
 ## Media (2)
 
@@ -326,12 +340,14 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="ffmpeg">
-    Video and audio processing via FFmpeg. Get info, clip, scale, concatenate, overlay, extract frames, and play media files.
+    <Badge text="Video Processing" variant="note" /> Video and audio processing via FFmpeg. Get info, clip, scale, concatenate, overlay, extract frames, and play media files.
   </Card>
   <Card title="ableton">
-    Ableton Live integration for music production. Control sessions, tracks, and clips programmatically.
+    <Badge text="Music Production" variant="note" /> Ableton Live integration for music production. Control sessions, tracks, and clips programmatically.
   </Card>
 </CardGrid>
+
+---
 
 ## Social (1)
 
@@ -339,9 +355,11 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="linkedin">
-    LinkedIn profile scraping for professional networking data. Extract public profile information and connections.
+    <Badge text="Professional Data" variant="tip" /> LinkedIn profile scraping for professional networking data. Extract public profile information and connections.
   </Card>
 </CardGrid>
+
+---
 
 ## Remote Gateway (1)
 
@@ -349,6 +367,7 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 <CardGrid>
   <Card title="default">
-    Remote MCP gateway at `mcp.w4w.dev` providing a curated default toolset via `mcp-remote` proxy.
+    <Badge text="Network Proxy" variant="caution" /> Remote MCP gateway at `mcp.w4w.dev` providing a curated default toolset via `mcp-remote` proxy.
   </Card>
 </CardGrid>
+
