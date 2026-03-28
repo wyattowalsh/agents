@@ -9,7 +9,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 <Badge text="host-panel" variant="note" /> <Badge text="3256 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
-> Host simulated panel discussions and debates among AI-simulated domain experts. Supports roundtable, Oxford-style, and Socratic formats with heterogeneous expert personas, anti-groupthink mechanisms, and structured synthesis. Use when exploring complex topics from multiple expert perspectives, testing argument strength, academic brainstorming, or understanding trade-offs in decisions. NOT for one-on-one conversations, simple Q&A, or real-time debates.
+> Simulated expert panel discussions. Roundtable, Oxford-style, Socratic formats. Use when exploring topics from multiple perspectives. NOT for Q&A, code review, or one-on-one conversations.
 
 <div class="quick-start">
 
@@ -60,6 +60,18 @@ If the user omits the format, the skill auto-selects: binary propositions ("Shou
 
 </Steps>
 
+## Dispatch
+
+| Input | Mode |
+|------|------|
+| Empty `$ARGUMENTS` | Show example gallery and ask user to choose/provide topic |
+| `"topic"` only | Parse topic, auto-select format from structure, default to 4 experts |
+| `"topic" roundtable\|oxford\|socratic` | Use explicit format |
+| `"topic" ... <2-6>` | Use explicit expert count (order with format does not matter) |
+| Oxford + 2 experts | Direct proposition-vs-opposition (no swing/floor questions) |
+| Oxford + 3 experts | One swing participant per `references/formats.md` |
+| Socratic + 2 experts | Paired inquiry with moderator-guided questioning |
+
 ## Moderator Mechanisms
 
 Claude acts as the moderator with these standing orders:
@@ -80,6 +92,13 @@ The synthesis is NOT a summary. It must include:
 - **Uncomfortable implications** -- Do not let them disappear into polite summary
 - **Key takeaways** -- 3-5 condensed bullets
 - **Further reading** -- Real works only, never fabricated
+
+## Reference Files
+
+| File | Read When |
+|------|-----------|
+| `references/formats.md` | Loading phase structure and phase names for chosen format |
+| `references/archetypes.md` | Building personas across distinct domains or unfamiliar fields |
 
 ## Output Length
 

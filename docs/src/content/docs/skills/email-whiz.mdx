@@ -5,7 +5,7 @@ description: "Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, lab
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="email-whiz" variant="note" /> <Badge text="2726 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="email-whiz" variant="note" /> <Badge text="3289 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
 > Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail.
 
@@ -65,13 +65,16 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 9. Surface unsubscribe links — make newsletter cleanup actionable
 10. Prioritize quick wins — high impact, low effort first in all reports
 11. Update inbox-zero progress after every routine
-12. NEVER delete emails. Archive by default in all modes. `gmail_delete_email` and `gmail_batch_delete_emails` are not in allowed-tools
+12. NEVER delete emails unless the user explicitly requests deletion. Archive by default in all modes. When the user does request deletion, use the Destructive Warning template (TYPE "DELETE" confirmation) before calling `gmail_delete_email` or `gmail_batch_delete_emails`
 13. Issue ALL independent tool calls in a single message — sequential independent calls is a bug
 14. Use fast-lane classification before reading content — sender + subject resolve 60%+ of triage
 15. ALWAYS run the security gate on NOISE before archiving — scan subjects for 2FA/password/security keywords
-16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`).
+16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`).
 17. maxResults 100-200 (not 500) — MCP N+1 pattern means 500 results ≈ 501 API calls
 18. Bankruptcy triggers are relative to 30-day baseline, not absolute thresholds
+19. Load user memory before Phase 0 (Phase -1). Save memories AFTER delivering primary output — never block a mode's core workflow for a memory write
+
+---
 
 <Tabs>
   <TabItem label="General">
@@ -93,7 +96,7 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
   <TabItem label="Compatibility">
 | Field | Value |
 | ----- | ----- |
-| Allowed Tools | `gmail_search_emails gmail_read_email gmail_list_email_labels gmail_create_label gmail_modify_email gmail_list_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write` |
+| Allowed Tools | `gmail_search_emails gmail_read_email gmail_list_email_labels gmail_create_label gmail_modify_email gmail_delete_email gmail_list_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_batch_delete_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write` |
   </TabItem>
 </Tabs>
 
@@ -110,7 +113,7 @@ description: >-
 argument-hint: "<mode> [options]"
 model: opus
 disable-model-invocation: true
-allowed-tools: gmail_search_emails gmail_read_email gmail_list_email_labels gmail_create_label gmail_modify_email gmail_list_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write
+allowed-tools: gmail_search_emails gmail_read_email gmail_list_email_labels gmail_create_label gmail_modify_email gmail_delete_email gmail_list_filters gmail_get_filter gmail_create_filter gmail_create_filter_from_template gmail_delete_filter gmail_batch_modify_emails gmail_batch_delete_emails gmail_get_or_create_label gmail_update_label gmail_delete_label gmail_send_email Read Grep Write
 context: fork
 license: MIT
 metadata:
@@ -142,6 +145,9 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 | **VIP** | Sender who receives consistent replies and high-priority treatment |
 | **engagement** | Reply rate to a sender: replies sent / emails received |
 | **confidence** | HIGH >80% / MEDIUM 50-80% / LOW <50% — governs auto-rule actions |
+| **memory** | Persistent user preferences and patterns at `~/.claude/email-whiz/memory.json` |
+| **correction** | User disagreement with auto-classification, stored as a memory override |
+| **staleness** | Memory entry not confirmed/used beyond threshold (VIP: 90d, override: 60d) |
 
 ---
 
@@ -175,12 +181,12 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 `gmail_search_emails`, `gmail_read_email`, `gmail_list_email_labels`, `gmail_list_filters`, `gmail_get_filter`
 
 **Write operations — confirm before executing:**
-Single: `gmail_modify_email`, `gmail_create_label`
-Batch: `gmail_batch_modify_emails`
+Single: `gmail_modify_email`, `gmail_delete_email`, `gmail_create_label`
+Batch: `gmail_batch_modify_emails`, `gmail_batch_delete_emails`
 Labels: `gmail_update_label`, `gmail_delete_label`, `gmail_get_or_create_label`
 Filters: `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_delete_filter`
 
-**Email deletion is disabled.** `gmail_delete_email` and `gmail_batch_delete_emails` are not in allowed-tools. Always archive instead.
+**Email deletion is FORBIDDEN unless the user explicitly requests it.** Never call `gmail_delete_email` or `gmail_batch_delete_emails` on your own initiative. Always archive instead. Only use delete tools when the user directly says "delete" — and even then, use the Destructive Warning template (TYPE "DELETE" confirmation) first.
 
 **Confirmation format:** See `templates.md`. Always show scope, count, and reversibility before write ops.
 
@@ -202,7 +208,36 @@ Details: `efficiency-guide.md` § Parallel Call Map.
 
 ---
 
+## Phase -1: Memory Load (skip with `quick` prefix)
+
+Load long-term user memory before discovery. Runs once per session.
+
+`!uv run python scripts/memory.py load --mode <current_mode>`
+
+Fuse with Phase 0 cache check in the SAME message (both are local file reads, zero API calls):
+
+```bash
+!uv run python scripts/memory.py load --mode triage
+!uv run python scripts/inbox_snapshot.py cache load
+```
+
+If memory exists, integrate into session:
+
+- **VIP senders** → fast-lane DO classification (Pass 1)
+- **Noise senders** → fast-lane NOISE classification (Pass 1)
+- **Corrections** → highest priority: override any conflicting fast-lane rule
+- **Triage overrides** → apply before generic decision tree
+- **Filter history** → skip suggesting previously rejected filters
+- **Label prefs** → use preferred naming when creating labels
+- **Inbox patterns** → adjust expectations in analytics/audit
+
+Run `!uv run python scripts/memory.py prune` once per session if memory exists. Report pruned entries only if count > 0.
+
+---
+
 ## Phase 0: Discovery (skip with `quick` prefix)
+
+**Prerequisite:** Run Phase -1 (Memory Load) first unless in `quick` mode.
 
 ### 0a: Session Cache Check
 
@@ -311,8 +346,12 @@ Three-pass classification. Details: `triage-framework.md` § Fast-Lane, `efficie
 ### Pass 1: Fast-Lane (zero content reads)
 
 Classify by sender + subject + snippet ONLY from search results:
+
+- Memory corrections → override any conflicting rule (highest priority)
+- Memory VIP senders → DO (confidence from memory)
+- Memory noise senders → NOISE (confidence from memory)
 - `noreply@*`, `notifications@*`, `calendar-notification@*` → NOISE
-- Known VIP senders → DO
+- Known VIP senders (from session cache) → DO
 - Subject `[FYI]`/`[INFO]`/newsletter/receipt/confirmation → REFERENCE
 - Subject `[ACTION]`/`[URGENT]`/deadline → DO
 - Unmatched → UNDECIDED
@@ -444,6 +483,11 @@ Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label a
 | `scripts/inbox_snapshot.py cache load` | Load session cache (1h TTL) | Phase 0 step 0a |
 | `scripts/inbox_snapshot.py cache save --labels --filters --inbox-count --unread-count --tier` | Write session cache | Phase 0 step 0d |
 | `scripts/inbox_snapshot.py cache clear` | Invalidate session cache | After write operations |
+| `scripts/memory.py load --mode MODE` | Load user memory filtered by mode | Phase -1 |
+| `scripts/memory.py save-sender` | Save VIP or noise sender | After triage/senders |
+| `scripts/memory.py save-correction` | Record user classification override | When user corrects |
+| `scripts/memory.py prune` | Remove stale memory entries | Once per session |
+| `scripts/memory.py stats` | Memory summary counts | Diagnostics |
 
 ---
 
@@ -460,13 +504,33 @@ Full inbox health via mega-wave. Issue 11 base queries in 1 message (per-label a
 9. Surface unsubscribe links — make newsletter cleanup actionable
 10. Prioritize quick wins — high impact, low effort first in all reports
 11. Update inbox-zero progress after every routine
-12. NEVER delete emails. Archive by default in all modes. `gmail_delete_email` and `gmail_batch_delete_emails` are not in allowed-tools
+12. NEVER delete emails unless the user explicitly requests deletion. Archive by default in all modes. When the user does request deletion, use the Destructive Warning template (TYPE "DELETE" confirmation) before calling `gmail_delete_email` or `gmail_batch_delete_emails`
 13. Issue ALL independent tool calls in a single message — sequential independent calls is a bug
 14. Use fast-lane classification before reading content — sender + subject resolve 60%+ of triage
 15. ALWAYS run the security gate on NOISE before archiving — scan subjects for 2FA/password/security keywords
-16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`).
+16. Check session cache before Phase 0. Invalidate cache after any write operation (`gmail_create_label`, `gmail_get_or_create_label`, `gmail_create_filter`, `gmail_create_filter_from_template`, `gmail_batch_modify_emails`, `gmail_batch_delete_emails`).
 17. maxResults 100-200 (not 500) — MCP N+1 pattern means 500 results ≈ 501 API calls
 18. Bankruptcy triggers are relative to 30-day baseline, not absolute thresholds
+19. Load user memory before Phase 0 (Phase -1). Save memories AFTER delivering primary output — never block a mode's core workflow for a memory write
+
+---
+
+## Memory Save Triggers
+
+Save memories at natural decision points. NEVER slow down a mode to save — always save AFTER the mode's primary output.
+
+| Trigger | Command |
+| ------- | ------- |
+| Triage: user overrides fast-lane classification | `memory.py save-correction --mode triage --what "..." --correction "..." --pattern "..." --action BUCKET` |
+| Triage: NOISE batch archived successfully | `memory.py save-sender --email X --type noise --reason "..." --source triage` (batch multiple in 1 message) |
+| Senders: VIP identified (reply rate >50%) | `memory.py save-sender --email X --type vip --name "..." --reason "..." --source senders` |
+| Filters: filter created successfully | `memory.py save-filter --filter-id ID --description "..." --effectiveness high` |
+| Filters: user rejects a suggestion | `memory.py save-filter --filter-id rejected --description "..." --effectiveness failed` |
+| Labels: user states naming preference | `memory.py save-labels --convention "..." --structure "..."` |
+| Analytics: volume patterns computed | `memory.py save-patterns --daily-volume N --busy '[...]'` |
+| Any mode: user corrects a classification | `memory.py save-correction ...` |
+
+Batch multiple save calls in a SINGLE message when a mode produces several memories (e.g., triage identifies 5 noise senders)
 
 ````
 

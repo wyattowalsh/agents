@@ -9,7 +9,7 @@ import { Aside, Badge, Card, CardGrid, LinkCard, Steps, Tabs, TabItem } from '@a
 
 <Badge text="honest-review" variant="note" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
-> Research-driven code review with confidence-scored, evidence-validated findings. Session review or full codebase audit via parallel teams. Use when reviewing changes, auditing codebases, verifying work quality. NOT for writing new code, explaining code, or benchmarking.
+> Confidence-scored code review with evidence validation. Session or full codebase audit. Use when reviewing changes or auditing quality. NOT for writing code or benchmarking.
 
 <div class="quick-start">
 
@@ -65,7 +65,7 @@ Every non-trivial finding must have research evidence or be discarded. Confidenc
 
 Also includes: 10 creative lenses, review history, HTML dashboard, degraded mode, classification gating, CI integration, and hooks.
 
-## Modes
+## Dispatch
 
 | $ARGUMENTS | Mode |
 |------------|------|
@@ -80,6 +80,7 @@ Also includes: 10 creative lenses, review history, HTML dashboard, degraded mode
 | `--format sarif` (with any mode) | Output findings in SARIF v2.1 |
 | "learnings" [command] | Manage false-positive learnings (add/list/clear) |
 | `--format conventional` (with any mode) | Output in Conventional Comments format |
+| Unrecognized input | Ask for clarification |
 
 ## Review Pipeline
 
@@ -89,13 +90,17 @@ Both modes follow a 4-wave pipeline:
 
 1. **Triage (Wave 0)** -- Risk-stratify files as HIGH/MEDIUM/LOW. Run `uv run scripts/project-scanner.py` for project profiling. Compute review depth score (0-10) for classification gating. Determine specialist triggers (security, observability, requirements).
 
-2. **Analysis (Wave 1)** -- Scale by scope: 1-2 files get inline review at all 3 levels; 3-5 files get 3 parallel level-based reviewers (Correctness/Design/Efficiency); 6+ files get a full team with lead, domain reviewers, and specialists. Each reviewer runs 3 internal passes (A: scan, B: deep dive, C: research).
+2. **Analysis (Wave 1)** -- Always run the content-adaptive team at maximum depth (no inline-only mode): Correctness, Design, Efficiency, Code Reuse, and Test Quality reviewers always spawn; specialists (Security, Observability, Requirements, Data Migration, Frontend) are triggered by triage. Each reviewer runs 3 internal passes (A: scan, B: deep dive, C: research).
 
 3. **Research Validation (Wave 2)** -- Three-phase review: **Flag** (hypothesize), **Verify** (tool calls via Grep/Read to confirm assumptions before reporting), **Validate** (spawn research subagents for external evidence). Dispatch order: slopsquatting detection first, then HIGH-risk (2+ sources), then MEDIUM-risk. In degraded mode, apply confidence ceilings per unavailable tool.
 
 4. **Judge Reconciliation (Wave 3)** -- Normalize findings, cluster by root cause, deduplicate with weighted confidence merging (`1-(1-c1)(1-c2)...`), apply confidence filter, resolve conflicts, check interactions, elevate systemic patterns (3+ files), and rank by score = severity\_weight x confidence x blast\_radius.
 
 </Steps>
+
+<Aside type="tip" title="Execution posture">
+No inline-only review mode: this skill always uses the full content-adaptive team, then reconciles findings in Judge.
+</Aside>
 
 ## Review Levels
 
@@ -234,27 +239,33 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 
 ## Critical Rules
 
-1. Never skip triage (Wave 0) -- risk classification informs everything downstream
-2. Every non-trivial finding must have research evidence or be discarded
-3. Confidence \< 0.3 = discard (except P0/S0 -- report as unconfirmed)
-4. Do not police style -- follow the codebase's conventions
-5. Do not report phantom bugs requiring impossible conditions
-6. More than 12 findings means re-prioritize -- 5 validated findings beat 50 speculative
-7. Never skip Judge reconciliation (Wave 3)
-8. Always present before implementing (approval gate)
-9. Always verify after implementing (build, tests, behavior)
-10. Never assign overlapping file ownership
-11. Maintain positive-to-constructive ratio of 3:1
-12. Acknowledge healthy codebases explicitly
-13. Apply at least 2 creative lenses per scope -- Adversary mandatory for security code
-14. Load ONE reference file at a time
-15. Review against the codebase's own conventions, not an ideal standard
-16. Run self-verification (Wave 3.5) when 3+ findings survive Judge
-17. Follow auto-fix protocol -- never apply without diff preview and user confirmation
-18. Check for convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage
-19. Every finding must include a reasoning chain (WHY) before the finding statement (WHAT)
-20. Every finding must include a citation anchor `[file:start-end]` mechanically verified against source
-21. Check learnings store during Judge Wave 3 -- suppress findings matching stored false-positive dismissals
+1. Never skip triage (Wave 0) — risk classification informs everything downstream.
+2. Every non-trivial finding must have evidence validation or be discarded.
+3. Confidence &lt; 0.3 = discard (except P0/S0 — report as unconfirmed).
+4. Do not police style preferences; follow the codebase’s conventions. Exception: violations of agent behavior rules in AGENTS.md/CLAUDE.md are reportable findings.
+5. Do not report phantom bugs requiring impossible conditions.
+6. More than 12 findings means re-prioritize — 5 validated findings beat 50 speculative.
+7. Never skip Judge reconciliation (Wave 3).
+8. Always present findings before implementing (approval gate).
+9. Always verify after implementing (build, tests, behavior).
+10. Never assign overlapping file ownership.
+11. Maintain a 3:1 positive-to-constructive ratio, except when 3+ P0/P1 findings are present.
+12. Acknowledge healthy codebases explicitly when no P0/P1 or S0 findings survive.
+13. Apply at least 2 creative lenses per scope — Adversary is mandatory for security-sensitive code.
+14. Load ONE reference file at a time.
+15. Review against the codebase’s conventions, not an idealized standard.
+16. Run self-verification (Wave 3.5) when 2+ findings survive Judge (skip for fewer findings or fully degraded mode).
+17. Follow the auto-fix protocol — never apply without diff preview and user confirmation.
+18. Check convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage.
+19. Every finding must include a reasoning chain (WHY) before the finding statement (WHAT).
+20. Every finding must include a mechanically verified citation anchor `[file:start-end]`.
+21. Check learnings store during Judge Wave 3 Step 4 — suppress known false positives.
+22. Code Reuse Reviewer runs on every review scope and must cite existing equivalents (file:line).
+23. Fact evidence (Grep) is sufficient for reuse/simplification findings; external research is required for assumption-based findings.
+24. No inline-only review — always spawn the full content-adaptive team.
+25. Test Quality Reviewer always spawns (full review when tests are in scope; coverage-gap search otherwise).
+26. Agent behavior rule violations are findings; style-only preferences remain non-findings.
+27. Post-approval execution uses orchestration Pattern E and parallelizes independent fixes.
 
 ---
 

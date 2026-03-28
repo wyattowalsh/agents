@@ -1,0 +1,182 @@
+---
+title: "shell-conventions"
+description: "Shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="shell-conventions" variant="note" /> <Badge text="404 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
+
+> Shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/shell-conventions -g
+```
+
+**Use:** `/shell-conventions`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/shell-conventions/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Apply these conventions whenever working on shell scripts, shell snippets, Makefiles, or justfiles.
+
+<Aside type="note">
+This is an **auto-invoke** skill -- it activates automatically when the agent detects relevant context. It is not visible in the `/` slash command menu.
+</Aside>
+
+## Modes
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Active (auto-invoked when editing `.sh`, `.bash`, `.zsh`, `Makefile`, or `justfile`) | Apply the conventions below |
+| Empty | Display the conventions summary |
+| `check` | Verify conventions only |
+
+## Tooling Preferences
+
+- Prefer POSIX `sh` for simple automation that does not need arrays, `[[ ]]`, or process substitution.
+- Use `bash` only when the script clearly benefits from bash-only features.
+- Use env-based shebangs such as `#!/usr/bin/env bash` or `#!/usr/bin/env sh`.
+- Prefer built-ins and standard utilities before adding dependencies.
+
+## Critical Rules
+
+1. Always use env-based shebangs, not hardcoded interpreter paths.
+2. Quote variable expansions unless intentional splitting is required.
+3. Use `bash` only when you need bash; otherwise prefer portable `sh`.
+4. Do not use `eval` unless there is no safer alternative and the risk is explained.
+5. Validate required external commands before first use.
+6. Make or just tasks that mutate state must be named clearly and predictably.
+7. Route script generation and major refactors to shell-scripter; this skill is conventions only.
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `shell-conventions` |
+| License | MIT |
+| Version | 1.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| User Invocable | No |
+  </TabItem>
+</Tabs>
+
+## Related Skills
+
+<CardGrid>
+  <LinkCard title="shell-scripter" href="/skills/shell-scripter/" description="Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work." />
+  <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions. Enforce uv, ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts." />
+  <LinkCard title="javascript-conventions" href="/skills/javascript-conventions/" description="JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts." />
+</CardGrid>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: shell-conventions
+description: >-
+  Shell tooling conventions. Enforce portable bash and sh practices, quoting,
+  env usage, and Make or just patterns. Use when editing shell files. NOT for
+  Python or CI/CD.
+user-invocable: false
+disable-model-invocation: false
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0"
+---
+
+# Shell Conventions
+
+Apply these conventions whenever working on shell scripts, shell snippets,
+Makefiles, or justfiles.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Active (auto-invoked when editing `.sh`, `.bash`, `.zsh`, `Makefile`, or `justfile`) | Apply the conventions below |
+| Empty | Display the conventions summary |
+| `check` | Verify conventions only |
+
+## Scope
+
+- Use this skill for style, portability, safety, and repo-wide shell habits.
+- Use shell-scripter when the task is generating, converting, or deeply reviewing shell code.
+- Use devops-engineer for CI workflow YAML and release automation.
+
+## Tooling Preferences
+
+- Prefer POSIX `sh` for simple automation that does not need arrays, `[[ ]]`, or process substitution.
+- Use `bash` only when the script clearly benefits from bash-only features.
+- Use env-based shebangs such as `#!/usr/bin/env bash` or `#!/usr/bin/env sh`.
+- Prefer built-ins and standard utilities before adding dependencies.
+
+## Script Baseline
+
+- For `bash`, start with `set -euo pipefail` unless there is a clear reason not to.
+- For portable `sh`, use `set -eu` and avoid `pipefail`.
+- Quote variable expansions unless word splitting is intentionally required.
+- Use `command -v tool >/dev/null 2>&1` before depending on a non-guaranteed tool.
+- Prefer explicit long flags over obscure short-flag combinations in repository automation.
+- Keep shell functions short and single-purpose.
+
+## Make and Just Conventions
+
+- Make targets must be task-oriented and documented through a `help` target when the file is substantial.
+- Use `.PHONY` for non-file Make targets.
+- Keep recipes idempotent where possible.
+- In Makefiles, escape `$` as `$$` inside recipes.
+- In justfiles, use parameters only when they materially simplify repeated tasks.
+- Do not hide destructive behavior behind vague target names.
+
+## Naming and Structure
+
+- Use lowercase, descriptive function names.
+- Prefer `project_root`, `target_path`, or `output_file` over one-letter names.
+- Keep environment variable names uppercase.
+- Favor early validation and explicit usage text over silent failure.
+
+## Critical Rules
+
+1. Always use env-based shebangs, not hardcoded interpreter paths.
+2. Quote variable expansions unless intentional splitting is required.
+3. Use `bash` only when you need bash; otherwise prefer portable `sh`.
+4. Do not use `eval` unless there is no safer alternative and the risk is explained.
+5. Validate required external commands before first use.
+6. Make or just tasks that mutate state must be named clearly and predictably.
+7. Route script generation and major refactors to shell-scripter; this skill is conventions only.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/shell-conventions/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/shell-conventions/SKILL.md)
