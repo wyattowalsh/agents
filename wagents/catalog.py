@@ -43,7 +43,34 @@ RELATED_SKILLS = {
     "python-conventions": ["javascript-conventions"],
     "javascript-conventions": ["python-conventions"],
     "learn": ["python-conventions", "javascript-conventions", "agent-conventions"],
+    "release-pipeline-architect": ["devops-engineer", "incident-response-engineer", "changelog-writer"],
+    "incident-response-engineer": ["release-pipeline-architect", "security-scanner", "honest-review"],
+    "observability-advisor": ["incident-response-engineer", "performance-profiler", "devops-engineer"],
+    "shell-conventions": ["shell-scripter", "python-conventions", "javascript-conventions"],
+    "schema-evolution-planner": ["database-architect", "api-designer", "data-pipeline-architect"],
+    "event-driven-architect": ["api-designer", "orchestrator", "data-pipeline-architect"],
+    "data-pipeline-architect": ["data-wizard", "database-architect", "event-driven-architect"],
 }
+
+
+def _load_installed_skill_sources() -> dict[str, dict]:
+    """Load installed skill source metadata from known global lock files."""
+    merged: dict[str, dict] = {}
+    candidates = [
+        Path.home() / ".agents" / ".skill-lock.json",
+        Path.home() / ".local" / "state" / "skills" / ".skill-lock.json",
+    ]
+    for lock_path in candidates:
+        if not lock_path.exists():
+            continue
+        try:
+            data = json.loads(lock_path.read_text())
+            skills = data.get("skills", {})
+            if isinstance(skills, dict):
+                merged.update(skills)
+        except (OSError, json.JSONDecodeError):
+            continue
+    return merged
 
 
 def collect_nodes() -> list[CatalogNode]:
@@ -144,6 +171,7 @@ def collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
     skills_dir = Path.home() / ".claude" / "skills"
     if not skills_dir.exists():
         return nodes
+    installed_sources = _load_installed_skill_sources()
 
     seen_ids: set[str] = set()
     for skill_dir in sorted(skills_dir.iterdir()):
@@ -170,13 +198,17 @@ def collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
             if resolved_id in existing_ids or resolved_id in seen_ids:
                 continue
             seen_ids.add(resolved_id)
+            lock_meta = installed_sources.get(resolved_id) or installed_sources.get(dir_name) or {}
+            metadata = dict(fm)
+            if isinstance(lock_meta, dict) and lock_meta.get("source"):
+                metadata["_skills_source"] = lock_meta["source"]
             nodes.append(
                 CatalogNode(
                     kind="skill",
                     id=resolved_id,
                     title=to_title(skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name),
                     description=str(fm.get("description", f"Installed skill: {dir_name}")),
-                    metadata=fm,
+                    metadata=metadata,
                     body=body,
                     source_path=str(skill_file),
                     source="installed",

@@ -1,5 +1,7 @@
 """Integration tests for the wagents CLI via typer.testing.CliRunner."""
 
+import json
+
 import pytest
 from typer.testing import CliRunner
 
@@ -45,6 +47,86 @@ def test_validate_real_repo():
     result = runner.invoke(app, ["validate"])
     assert result.exit_code == 0, f"validate failed:\n{result.output}"
     assert "All validations passed" in result.output
+
+
+def test_validate_json_success(patched_repo):
+    """Validate should emit structured JSON on success."""
+    result = runner.invoke(app, ["validate", "--format", "json"])
+    assert result.exit_code == 0, f"validate json failed:\n{result.output}"
+    payload = json.loads(result.output)
+    assert payload["ok"] is True
+    assert payload["error_count"] == 0
+    assert payload["errors"] == []
+
+
+def test_validate_jsonl_failure(patched_repo):
+    """Validate should emit error and summary records in jsonl mode."""
+    bad_skill_dir = patched_repo / "skills" / "bad-skill"
+    bad_skill_dir.mkdir()
+    (bad_skill_dir / "SKILL.md").write_text("---\ndescription: Missing the name field\n---\n\n# Bad Skill\n\nBody.\n")
+
+    result = runner.invoke(app, ["validate", "--format", "jsonl"])
+    assert result.exit_code == 1, "validate jsonl should fail for invalid input"
+    records = [json.loads(line) for line in result.output.strip().splitlines()]
+    assert records[0]["type"] == "error"
+    assert records[0]["source"].endswith("bad-skill/SKILL.md")
+    assert records[-1]["type"] == "summary"
+    assert records[-1]["ok"] is False
+
+
+def test_doctor_json_success(patched_repo, monkeypatch):
+    """Doctor should emit structured JSON with successful checks when the environment is healthy."""
+    (patched_repo / "pyproject.toml").write_text(
+        "[project]\nname = \"wagents\"\nrequires-python = \">=3.13\"\n"
+    )
+    docs_dir = patched_repo / "docs"
+    docs_dir.mkdir()
+    (docs_dir / "package.json").write_text("{}\n")
+    (docs_dir / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n")
+    node_modules = docs_dir / "node_modules"
+    node_modules.mkdir()
+
+    home_dir = patched_repo / "fake-home"
+    browser_cache = home_dir / "Library/Caches/ms-playwright/chromium-1234"
+    browser_cache.mkdir(parents=True)
+    monkeypatch.setattr("wagents.cli.Path.home", lambda: home_dir)
+    monkeypatch.setattr("shutil.which", lambda name: f"/usr/bin/{name}")
+    monkeypatch.setattr("importlib.util.find_spec", lambda name: object() if name == "playwright" else None)
+
+    result = runner.invoke(app, ["doctor", "--format", "json"])
+    assert result.exit_code == 0, f"doctor json failed:\n{result.output}"
+    payload = json.loads(result.output)
+    assert payload["ok"] is True
+    checks = {check["name"]: check for check in payload["checks"]}
+    assert checks["python-version"]["status"] == "ok"
+    assert checks["uv"]["status"] == "ok"
+    assert checks["docs-deps"]["status"] == "ok"
+    assert checks["playwright-browsers"]["status"] == "ok"
+
+
+def test_doctor_jsonl_failure_and_warnings(patched_repo, monkeypatch):
+    """Doctor should surface failures and warnings with summary records in jsonl mode."""
+    (patched_repo / "pyproject.toml").write_text(
+        "[project]\nname = \"wagents\"\nrequires-python = \">=3.13\"\n"
+    )
+    docs_dir = patched_repo / "docs"
+    docs_dir.mkdir()
+    (docs_dir / "package.json").write_text("{}\n")
+    (docs_dir / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n")
+
+    monkeypatch.setattr("shutil.which", lambda name: None if name == "uv" else f"/usr/bin/{name}")
+    monkeypatch.setattr("importlib.util.find_spec", lambda name: None)
+    monkeypatch.setattr("wagents.cli.Path.home", lambda: patched_repo / "fake-home")
+
+    result = runner.invoke(app, ["doctor", "--format", "jsonl"])
+    assert result.exit_code == 1, "doctor should fail when required checks fail"
+    records = [json.loads(line) for line in result.output.strip().splitlines()]
+    checks = {record["name"]: record for record in records if record["type"] == "check"}
+    assert checks["uv"]["status"] == "fail"
+    assert checks["docs-deps"]["status"] == "warn"
+    assert checks["playwright-python"]["status"] == "warn"
+    assert records[-1]["type"] == "summary"
+    assert records[-1]["ok"] is False
 
 
 # ---------------------------------------------------------------------------

@@ -27,9 +27,14 @@ def test_readme_contains_skills_table(tmp_repo):
     assert result.exit_code == 0, result.output
 
     readme_text = (tmp_repo / "README.md").read_text()
-    assert "## Skills" in readme_text
+    assert 'alt="CI"' in readme_text
+    assert 'alt="Skills"' in readme_text
+    assert "## 📚 Documentation" in readme_text
+    assert "agents.w4w.dev" in readme_text
+    assert "## 🧰 Skills" in readme_text
     assert "hello-world" in readme_text
     assert "Greets the world" in readme_text
+    assert "wagents docs generate --include-installed" in readme_text
 
 
 # ---------------------------------------------------------------------------
@@ -96,10 +101,12 @@ def test_readme_empty_repo_produces_valid_output(tmp_repo):
 
     readme_text = (tmp_repo / "README.md").read_text()
     # Should NOT contain asset sections since directories are empty
-    assert "## Skills" not in readme_text
-    assert "## Agents" not in readme_text
-    assert "## MCP Servers" not in readme_text
+    assert "## 🧰 Skills" not in readme_text
+    assert "## 🤖 Agents" not in readme_text
+    assert "## 🔌 MCP Servers" not in readme_text
     # But should still contain structural sections
-    assert "# agents" in readme_text
-    assert "## Development" in readme_text
-    assert "## License" in readme_text
+    assert "<h1>agents</h1>" in readme_text
+    assert 'alt="CI"' in readme_text
+    assert "## 🛠️ Development" in readme_text
+    assert "## 📚 Documentation" in readme_text
+    assert "## 📜 License" in readme_text

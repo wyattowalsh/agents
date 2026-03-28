@@ -61,6 +61,23 @@ class TestEvalList:
         assert "test-skill" in result.output
         assert "1" in result.output
 
+    def test_with_evals_json(self, patched_repo):
+        _make_skill_with_eval(
+            patched_repo,
+            "test-skill",
+            {
+                "skills": ["test-skill"],
+                "query": "/test-skill hello",
+                "expected_behavior": ["Says hello"],
+            },
+        )
+        result = runner.invoke(app, ["eval", "list", "--format", "json"])
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        assert payload["count"] == 1
+        assert payload["eval_count"] == 1
+        assert payload["skills"][0]["skill"] == "test-skill"
+
     @staticmethod
     def test_real_repo():
         """List evals from the actual repo."""
@@ -96,6 +113,23 @@ class TestEvalValidate:
         result = runner.invoke(app, ["eval", "validate"])
         assert result.exit_code == 1
         assert "missing required field 'skills'" in result.output
+
+    def test_missing_skills_field_json(self, patched_repo):
+        _make_skill_with_eval(
+            patched_repo,
+            "test-skill",
+            {
+                "query": "/test-skill hello",
+                "expected_behavior": ["Says hello"],
+            },
+        )
+        result = runner.invoke(app, ["eval", "validate", "--format", "json"])
+        assert result.exit_code == 1
+        payload = json.loads(result.output)
+        assert payload["ok"] is False
+        assert payload["error_count"] == 1
+        assert payload["errors"][0]["source"].endswith("skills/test-skill/evals/test.json")
+        assert payload["errors"][0]["message"] == "missing required field 'skills'"
 
     def test_missing_query_field(self, patched_repo):
         _make_skill_with_eval(
@@ -197,3 +231,27 @@ class TestEvalCoverage:
         assert "no-evals" in result.output
         assert "Yes" in result.output
         assert "No" in result.output
+
+    def test_mixed_coverage_jsonl(self, patched_repo):
+        _make_skill_with_eval(
+            patched_repo,
+            "has-evals",
+            {
+                "skills": ["has-evals"],
+                "query": "/has-evals test",
+                "expected_behavior": ["Works"],
+            },
+        )
+        no_eval_dir = patched_repo / "skills" / "no-evals"
+        no_eval_dir.mkdir(parents=True)
+        (no_eval_dir / "SKILL.md").write_text(
+            "---\nname: no-evals\ndescription: No evals\n---\n\n# No Evals\n\nBody.\n"
+        )
+
+        result = runner.invoke(app, ["eval", "coverage", "--format", "jsonl"])
+        assert result.exit_code == 0
+        records = [json.loads(line) for line in result.output.strip().splitlines()]
+        by_skill = {record["skill"]: record for record in records if record["type"] == "skill"}
+        assert by_skill["has-evals"]["has_evals"] is True
+        assert by_skill["has-evals"]["eval_count"] == 1
+        assert by_skill["no-evals"]["has_evals"] is False
