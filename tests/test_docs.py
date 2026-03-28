@@ -2,9 +2,11 @@
 
 from wagents.catalog import CatalogNode
 from wagents.docs import (
+    docs_generate,
     write_agents_index,
     write_cli_page,
     write_index_page,
+    write_installed_skills_page,
     write_mcp_index,
     write_sidebar,
     write_skills_index,
@@ -53,6 +55,7 @@ class TestWriteIndexPage:
         assert idx.exists()
         text = idx.read_text()
         assert "template: splash" in text
+        assert "CI status" in text
         assert "Featured Skills" in text
         assert "Agents" in text
         assert "MCP Servers" in text
@@ -78,6 +81,14 @@ class TestWriteIndexPage:
         assert "Custom Skills" in text
         assert "Installed Skills" in text
 
+    def test_skills_index_copy_is_repo_only_without_installed(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_index_page([_make_node("skill")])
+        text = (content_dir / "index.mdx").read_text()
+        assert "Browse repository skills grouped by invocation model" in text
+        assert "custom and installed skills" not in text
+
 
 # ---------------------------------------------------------------------------
 # write_cli_page
@@ -95,6 +106,8 @@ class TestWriteCliPage:
         assert "CLI Reference" in text
         assert "wagents new skill" in text
         assert "<FileTree>" in text
+        assert "wagents docs generate --include-installed" in text
+        assert "wagents docs generate --no-installed" not in text
 
 
 # ---------------------------------------------------------------------------
@@ -123,6 +136,73 @@ class TestWriteSkillsIndex:
         write_skills_index(nodes)
         text = (content_dir / "skills" / "index.mdx").read_text()
         assert "Installed Skills (1)" in text
+
+    def test_skips_installed_category_row_when_none_are_present(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_skills_index([_make_node("skill")])
+        text = (content_dir / "skills" / "index.mdx").read_text()
+        assert "defines two built-in skill categories" in text
+        assert "| **Installed** |" not in text
+
+
+class TestDocsGenerate:
+    def test_excludes_installed_skills_by_default(self, tmp_repo, monkeypatch):
+        calls = []
+
+        monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
+        monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
+        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Test\n---\n")
+
+        def _collect_installed(existing_ids):
+            calls.append(existing_ids)
+            return [_make_node("skill", id_suffix="ext", source="installed")]
+
+        monkeypatch.setattr("wagents.docs.collect_installed_skills", _collect_installed)
+
+        docs_generate()
+
+        assert calls == []
+        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+
+    def test_can_include_installed_skills_explicitly(self, tmp_repo, monkeypatch):
+        calls = []
+
+        monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
+        monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
+        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Test\n---\n")
+
+        def _collect_installed(existing_ids):
+            calls.append(existing_ids)
+            return [_make_node("skill", id_suffix="ext", source="installed")]
+
+        monkeypatch.setattr("wagents.docs.collect_installed_skills", _collect_installed)
+
+        docs_generate(include_installed=True)
+
+        assert calls == [{"test-skill"}]
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+
+
+class TestWriteInstalledSkillsPage:
+    def test_uses_source_qualified_install_command(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        nodes = [
+            _make_node(
+                "skill",
+                id_suffix="ext",
+                id="ext-skill",
+                source="installed",
+                metadata={
+                    "name": "ext-skill",
+                    "_skills_source": "example/skills",
+                },
+            )
+        ]
+        write_installed_skills_page(nodes)
+        text = (content_dir / "skills" / "installed.mdx").read_text()
+        assert "npx skills add example/skills --skill ext-skill -g" in text
 
 
 # ---------------------------------------------------------------------------

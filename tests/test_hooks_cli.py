@@ -106,6 +106,12 @@ class TestHooksList:
         assert result.exit_code == 0
         assert "No hooks found" in result.output
 
+    def test_no_hooks_json(self, patched_repo):
+        result = runner.invoke(app, ["hooks", "list", "--format", "json"])
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        assert payload == {"count": 0, "hooks": []}
+
     def test_settings_hooks(self, patched_repo):
         settings = {
             "hooks": {
@@ -136,6 +142,23 @@ class TestHooksList:
         assert result.exit_code == 0
         assert "skill:test-skill" in result.output
         assert "PreToolUse" in result.output
+
+    def test_skill_hooks_jsonl(self, patched_repo):
+        skill_dir = patched_repo / "skills" / "test-skill"
+        skill_dir.mkdir()
+        (skill_dir / "SKILL.md").write_text(
+            "---\nname: test-skill\ndescription: Test\nhooks:\n"
+            "  PreToolUse:\n    - matcher: Bash\n      hooks:\n"
+            "        - type: command\n          command: echo check\n"
+            "---\n\n# Test\n\nBody.\n"
+        )
+        result = runner.invoke(app, ["hooks", "list", "--format", "jsonl"])
+        assert result.exit_code == 0
+        records = [json.loads(line) for line in result.output.strip().splitlines()]
+        assert records[0]["type"] == "hook"
+        assert records[0]["source"] == "skill:test-skill"
+        assert records[0]["handler_type"] == "command"
+        assert records[-1] == {"type": "summary", "count": 1}
 
     def test_skill_shorthand_hooks(self, patched_repo):
         """Skills using shorthand format appear in list."""
@@ -180,6 +203,14 @@ class TestHooksValidate:
         assert result.exit_code == 0
         assert "All hooks valid" in result.output
 
+    def test_no_hooks_valid_json(self, patched_repo):
+        result = runner.invoke(app, ["hooks", "validate", "--format", "json"])
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        assert payload["ok"] is True
+        assert payload["error_count"] == 0
+        assert payload["errors"] == []
+
     def test_valid_hooks(self, patched_repo):
         settings = {
             "hooks": {
@@ -201,6 +232,18 @@ class TestHooksValidate:
         result = runner.invoke(app, ["hooks", "validate"])
         assert result.exit_code == 1
         assert "unknown hook event" in result.output
+
+    def test_unknown_event_jsonl(self, patched_repo):
+        settings = {"hooks": {"FakeEvent": [{"hooks": [{"type": "command", "command": "echo bad"}]}]}}
+        (patched_repo / ".claude" / "settings.json").write_text(json.dumps(settings))
+        result = runner.invoke(app, ["hooks", "validate", "--format", "jsonl"])
+        assert result.exit_code == 1
+        records = [json.loads(line) for line in result.output.strip().splitlines()]
+        assert records[0]["type"] == "error"
+        assert records[0]["source"] == "settings.json"
+        assert "unknown hook event" in records[0]["message"]
+        assert records[-1]["type"] == "summary"
+        assert records[-1]["ok"] is False
 
     def test_unknown_handler_type(self, patched_repo):
         settings = {"hooks": {"PostToolUse": [{"hooks": [{"type": "invalid", "command": "echo bad"}]}]}}

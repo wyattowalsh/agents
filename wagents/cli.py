@@ -1,6 +1,10 @@
 """CLI for managing centralized AI agent assets."""
 
+import importlib.util
 import json
+import re
+import shutil
+import sys
 import tomllib
 from pathlib import Path
 from typing import Annotated
@@ -23,6 +27,8 @@ app.add_typer(hooks_app, name="hooks")
 eval_app = typer.Typer(help="Manage and validate skill evals")
 app.add_typer(eval_app, name="eval")
 
+OUTPUT_FORMATS = ("text", "json", "jsonl")
+
 
 def version_callback(value: bool):
     """Print version and exit."""
@@ -37,6 +43,319 @@ def main(
 ):
     """CLI for managing centralized AI agent assets."""
     pass
+
+
+def _normalize_output_format(format_: str) -> str:
+    """Normalize and validate a requested output format."""
+    normalized = format_.lower()
+    if normalized not in OUTPUT_FORMATS:
+        typer.echo(
+            f"Error: unsupported format '{format_}'. Use one of: {', '.join(OUTPUT_FORMATS)}",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    return normalized
+
+
+def _emit_structured_output(
+    format_: str,
+    *,
+    text_lines: list[str] | None = None,
+    json_data: dict | list | None = None,
+    jsonl_records: list[dict] | None = None,
+) -> None:
+    """Emit command output in text, json, or jsonl format."""
+    normalized = _normalize_output_format(format_)
+    if normalized == "text":
+        for line in text_lines or []:
+            typer.echo(line)
+        return
+    if normalized == "json":
+        typer.echo(json.dumps(json_data, indent=2))
+        return
+    for record in jsonl_records or []:
+        typer.echo(json.dumps(record))
+
+
+def _format_error(source: str, message: str) -> str:
+    """Render a validation-style error for text output."""
+    return f"{source}: {message}"
+
+
+def _collect_hooks():
+    """Collect hooks from settings, skills, and agents."""
+    from wagents.parsing import Hook, extract_hooks
+
+    all_hooks: list[Hook] = []
+
+    for settings_name in ["settings.json", "settings.local.json"]:
+        settings_file = ROOT / ".claude" / settings_name
+        if settings_file.exists():
+            try:
+                data = json.loads(settings_file.read_text())
+                hooks_dict = data.get("hooks", {})
+                all_hooks.extend(extract_hooks(settings_name, hooks_dict))
+            except Exception as e:
+                typer.echo(
+                    f"Warning: could not parse {settings_name}: {e}",
+                    err=True,
+                )
+
+    skills_dir = ROOT / "skills"
+    if skills_dir.exists():
+        for skill_dir in sorted(skills_dir.iterdir()):
+            if not skill_dir.is_dir():
+                continue
+            skill_file = skill_dir / "SKILL.md"
+            if not skill_file.exists():
+                continue
+            try:
+                fm, _ = parse_frontmatter(skill_file.read_text())
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    all_hooks.extend(extract_hooks(f"skill:{skill_dir.name}", hooks_dict))
+            except Exception:
+                pass
+
+    agents_dir = ROOT / "agents"
+    if agents_dir.exists():
+        for agent_file in sorted(agents_dir.glob("*.md")):
+            try:
+                fm, _ = parse_frontmatter(agent_file.read_text())
+                hooks_dict = fm.get("hooks", {})
+                if hooks_dict:
+                    all_hooks.extend(extract_hooks(f"agent:{agent_file.stem}", hooks_dict))
+            except Exception:
+                pass
+
+    return all_hooks
+
+
+def _parse_min_python_version(spec: str) -> tuple[int, int] | None:
+    """Extract a minimum major/minor version from a requires-python spec."""
+    match = re.search(r">=\s*(\d+)\.(\d+)", spec)
+    if not match:
+        return None
+    return int(match.group(1)), int(match.group(2))
+
+
+def _make_doctor_check(
+    name: str,
+    status: str,
+    summary: str,
+    remediation: str | None = None,
+) -> dict[str, str]:
+    """Create a normalized doctor check record."""
+    check = {"name": name, "status": status, "summary": summary}
+    if remediation:
+        check["remediation"] = remediation
+    return check
+
+
+def _collect_doctor_checks() -> list[dict[str, str]]:
+    """Collect environment and toolchain diagnostics for the repo."""
+    checks: list[dict[str, str]] = []
+
+    pyproject_file = ROOT / "pyproject.toml"
+    requires_python = ""
+    if pyproject_file.exists():
+        data = tomllib.loads(pyproject_file.read_text())
+        requires_python = str(data.get("project", {}).get("requires-python", ""))
+
+    min_version = _parse_min_python_version(requires_python)
+    current_version = (sys.version_info.major, sys.version_info.minor)
+    if min_version is None:
+        checks.append(
+            _make_doctor_check(
+                "python-version",
+                "warn",
+                "Could not determine required Python version from pyproject.toml",
+                "Set project.requires-python in pyproject.toml.",
+            )
+        )
+    elif current_version >= min_version:
+        checks.append(
+            _make_doctor_check(
+                "python-version",
+                "ok",
+                f"Python {current_version[0]}.{current_version[1]} satisfies {requires_python}",
+            )
+        )
+    else:
+        checks.append(
+            _make_doctor_check(
+                "python-version",
+                "fail",
+                f"Python {current_version[0]}.{current_version[1]} does not satisfy {requires_python}",
+                "Install a compatible Python version and run commands through uv.",
+            )
+        )
+
+    tool_checks = [
+        ("uv", "fail", "Install uv: https://docs.astral.sh/uv/"),
+        ("node", "warn", "Install Node.js to use docs and install workflows."),
+        ("npx", "warn", "Install Node.js so npx is available for wagents install."),
+        ("pnpm", "warn", "Install pnpm to manage docs dependencies."),
+    ]
+    for tool_name, missing_status, remediation in tool_checks:
+        tool_path = shutil.which(tool_name)
+        if tool_path:
+            checks.append(_make_doctor_check(tool_name, "ok", f"Found at {tool_path}"))
+        else:
+            checks.append(
+                _make_doctor_check(
+                    tool_name,
+                    missing_status,
+                    f"{tool_name} is not available on PATH",
+                    remediation,
+                )
+            )
+
+    docs_dir = ROOT / "docs"
+    package_json = docs_dir / "package.json"
+    lock_file = docs_dir / "pnpm-lock.yaml"
+    node_modules = docs_dir / "node_modules"
+    if not docs_dir.exists():
+        checks.append(
+            _make_doctor_check(
+                "docs-deps",
+                "warn",
+                "docs directory is missing",
+                "Restore docs/ if you intend to build the documentation site.",
+            )
+        )
+    elif not package_json.exists() or not lock_file.exists():
+        checks.append(
+            _make_doctor_check(
+                "docs-deps",
+                "warn",
+                "docs dependency manifests are incomplete",
+                "Ensure docs/package.json and docs/pnpm-lock.yaml both exist.",
+            )
+        )
+    elif not node_modules.exists():
+        checks.append(
+            _make_doctor_check(
+                "docs-deps",
+                "warn",
+                "docs/node_modules is missing",
+                "Run pnpm --dir docs install.",
+            )
+        )
+    else:
+        node_modules_mtime = node_modules.stat().st_mtime
+        stale_inputs = [
+            path.name for path in (package_json, lock_file) if path.stat().st_mtime > node_modules_mtime
+        ]
+        if stale_inputs:
+            checks.append(
+                _make_doctor_check(
+                    "docs-deps",
+                    "warn",
+                    f"docs/node_modules may be stale relative to {', '.join(stale_inputs)}",
+                    "Run pnpm --dir docs install to refresh docs dependencies.",
+                )
+            )
+        else:
+            checks.append(
+                _make_doctor_check(
+                    "docs-deps",
+                    "ok",
+                    "docs dependency manifests and node_modules look present",
+                )
+            )
+
+    if importlib.util.find_spec("playwright") is None:
+        checks.append(
+            _make_doctor_check(
+                "playwright-python",
+                "warn",
+                "Python Playwright package is not installed",
+                "Run uv add --dev playwright.",
+            )
+        )
+    else:
+        checks.append(
+            _make_doctor_check(
+                "playwright-python",
+                "ok",
+                "Python Playwright package is installed",
+            )
+        )
+
+    browser_cache_candidates = [
+        Path.home() / "Library/Caches/ms-playwright",
+        Path.home() / ".cache/ms-playwright",
+    ]
+    browser_cache = next((candidate for candidate in browser_cache_candidates if candidate.exists()), None)
+    if browser_cache and any(browser_cache.iterdir()):
+        checks.append(
+            _make_doctor_check(
+                "playwright-browsers",
+                "ok",
+                f"Playwright browser cache found at {browser_cache}",
+            )
+        )
+    else:
+        checks.append(
+            _make_doctor_check(
+                "playwright-browsers",
+                "warn",
+                "No Playwright browser cache detected",
+                "Run uv run playwright install chromium.",
+            )
+        )
+
+    return checks
+
+
+def _emit_doctor_report(format_: str, checks: list[dict[str, str]]) -> None:
+    """Emit doctor results in text, json, or jsonl format."""
+    counts = {
+        "ok": sum(1 for check in checks if check["status"] == "ok"),
+        "warn": sum(1 for check in checks if check["status"] == "warn"),
+        "fail": sum(1 for check in checks if check["status"] == "fail"),
+    }
+    json_result = {
+        "ok": counts["fail"] == 0,
+        "summary": {
+            "total": len(checks),
+            **counts,
+        },
+        "checks": checks,
+    }
+    text_lines = [
+        (
+            "Doctor summary: "
+            f"{len(checks)} checks, {counts['ok']} ok, {counts['warn']} warn, {counts['fail']} fail"
+        )
+    ]
+    for check in checks:
+        line = f"{check['status'].upper():<4} {check['name']:<20} {check['summary']}"
+        if check.get("remediation"):
+            line = f"{line} Fix: {check['remediation']}"
+        text_lines.append(line)
+
+    jsonl_records = [{"type": "check", **check} for check in checks]
+    jsonl_records.append({"type": "summary", **json_result["summary"], "ok": json_result["ok"]})
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=json_result,
+        jsonl_records=jsonl_records,
+    )
+
+
+@app.command()
+def doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Check environment and toolchain health for this repo."""
+    checks = _collect_doctor_checks()
+    _emit_doctor_report(format_, checks)
+    if any(check["status"] == "fail" for check in checks):
+        raise typer.Exit(code=1)
 
 
 def validate_name(name: str) -> None:
@@ -286,9 +605,14 @@ build-backend = "hatchling.build"
 
 
 @app.command()
-def validate():
+def validate(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """Validate all skills and agents."""
-    errors = []
+    errors: list[dict[str, str]] = []
+
+    def add_error(source: str | Path, message: str) -> None:
+        errors.append({"source": str(source), "message": message})
 
     # Validate skills
     skills_dir = ROOT / "skills"
@@ -307,30 +631,30 @@ def validate():
 
                 # Validate name
                 if "name" not in fm:
-                    errors.append(f"{skill_file}: missing required field 'name'")
+                    add_error(skill_file, "missing required field 'name'")
                 else:
                     name = fm["name"]
                     if not KEBAB_CASE_PATTERN.match(name):
-                        errors.append(f"{skill_file}: name must be kebab-case")
+                        add_error(skill_file, "name must be kebab-case")
                     if len(name) > 64:
-                        errors.append(f"{skill_file}: name exceeds 64 characters")
+                        add_error(skill_file, "name exceeds 64 characters")
                     if name != skill_dir.name:
-                        errors.append(f"{skill_file}: name '{name}' doesn't match directory '{skill_dir.name}'")
+                        add_error(skill_file, f"name '{name}' doesn't match directory '{skill_dir.name}'")
 
                 # Validate description
                 if "description" not in fm:
-                    errors.append(f"{skill_file}: missing required field 'description'")
+                    add_error(skill_file, "missing required field 'description'")
                 elif not str(fm["description"]).strip():
-                    errors.append(f"{skill_file}: description cannot be empty")
+                    add_error(skill_file, "description cannot be empty")
                 elif len(str(fm["description"])) > 1024:
-                    errors.append(f"{skill_file}: description exceeds 1024 characters")
+                    add_error(skill_file, "description exceeds 1024 characters")
 
                 # Validate body
                 if not body:
-                    errors.append(f"{skill_file}: body cannot be empty")
+                    add_error(skill_file, "body cannot be empty")
 
             except Exception as e:
-                errors.append(f"{skill_file}: {e}")
+                add_error(skill_file, str(e))
 
     # Validate agents
     agents_dir = ROOT / "agents"
@@ -342,22 +666,22 @@ def validate():
 
                 # Validate name
                 if "name" not in fm:
-                    errors.append(f"{agent_file}: missing required field 'name'")
+                    add_error(agent_file, "missing required field 'name'")
                 else:
                     name = fm["name"]
                     if not KEBAB_CASE_PATTERN.match(name):
-                        errors.append(f"{agent_file}: name must be kebab-case")
+                        add_error(agent_file, "name must be kebab-case")
                     if name != agent_file.stem:
-                        errors.append(f"{agent_file}: name '{name}' doesn't match filename '{agent_file.stem}'")
+                        add_error(agent_file, f"name '{name}' doesn't match filename '{agent_file.stem}'")
 
                 # Validate description
                 if "description" not in fm:
-                    errors.append(f"{agent_file}: missing required field 'description'")
+                    add_error(agent_file, "missing required field 'description'")
                 elif not str(fm["description"]).strip():
-                    errors.append(f"{agent_file}: description cannot be empty")
+                    add_error(agent_file, "description cannot be empty")
 
             except Exception as e:
-                errors.append(f"{agent_file}: {e}")
+                add_error(agent_file, str(e))
 
     # Validate MCP servers
     mcp_dir = ROOT / "mcp"
@@ -367,43 +691,43 @@ def validate():
                 continue
             dir_name = mcp_subdir.name
             if not KEBAB_CASE_PATTERN.match(dir_name):
-                errors.append(f"mcp/{dir_name}: directory name must be kebab-case")
+                add_error(f"mcp/{dir_name}", "directory name must be kebab-case")
             server_py = mcp_subdir / "server.py"
             if not server_py.exists():
-                errors.append(f"mcp/{dir_name}: missing server.py")
+                add_error(f"mcp/{dir_name}", "missing server.py")
             else:
                 server_text = server_py.read_text()
                 if "FastMCP" not in server_text:
-                    errors.append(f"mcp/{dir_name}: server.py does not reference FastMCP")
+                    add_error(f"mcp/{dir_name}", "server.py does not reference FastMCP")
             pyproject = mcp_subdir / "pyproject.toml"
             if not pyproject.exists():
-                errors.append(f"mcp/{dir_name}: missing pyproject.toml")
+                add_error(f"mcp/{dir_name}", "missing pyproject.toml")
             else:
                 pyproject_text = pyproject.read_text()
                 if "fastmcp" not in pyproject_text:
-                    errors.append(f"mcp/{dir_name}: pyproject.toml missing fastmcp dependency")
+                    add_error(f"mcp/{dir_name}", "pyproject.toml missing fastmcp dependency")
             fastmcp_json = mcp_subdir / "fastmcp.json"
             if not fastmcp_json.exists():
-                errors.append(f"mcp/{dir_name}: missing fastmcp.json")
+                add_error(f"mcp/{dir_name}", "missing fastmcp.json")
 
     # Validate RELATED_SKILLS references
     for key, values in RELATED_SKILLS.items():
         if not (ROOT / "skills" / key).is_dir():
-            errors.append(f"RELATED_SKILLS: key '{key}' does not match a skill directory")
+            add_error("RELATED_SKILLS", f"key '{key}' does not match a skill directory")
         for val in values:
             if not (ROOT / "skills" / val).is_dir():
-                errors.append(f"RELATED_SKILLS: value '{val}' (in '{key}') does not match a skill directory")
+                add_error("RELATED_SKILLS", f"value '{val}' (in '{key}') does not match a skill directory")
 
     # Validate hooks
     from wagents.parsing import KNOWN_HOOK_EVENTS
 
     def _check_hooks(source: str, hooks_dict: dict) -> None:
         if not isinstance(hooks_dict, dict):
-            errors.append(f"{source}: hooks must be a mapping")
+            add_error(source, "hooks must be a mapping")
             return
         for event in hooks_dict:
             if event not in KNOWN_HOOK_EVENTS:
-                errors.append(f"{source}: unknown hook event '{event}'")
+                add_error(source, f"unknown hook event '{event}'")
 
     for settings_name in ["settings.json", "settings.local.json"]:
         settings_file = ROOT / ".claude" / settings_name
@@ -414,7 +738,7 @@ def validate():
                 if hooks_dict:
                     _check_hooks(settings_name, hooks_dict)
             except json.JSONDecodeError as e:
-                errors.append(f"{settings_name}: invalid JSON: {e}")
+                add_error(settings_name, f"invalid JSON: {e}")
 
     # Skills hooks — check events from already-parsed frontmatter
     if skills_dir.exists():
@@ -444,12 +768,31 @@ def validate():
             except Exception:
                 pass
 
+    text_errors = [_format_error(error["source"], error["message"]) for error in errors]
+    json_result = {
+        "ok": not errors,
+        "error_count": len(errors),
+        "errors": errors,
+        "message": "All validations passed" if not errors else "Validation failed",
+    }
+    jsonl_records = [{"type": "error", **error} for error in errors]
+    jsonl_records.append(
+        {
+            "type": "summary",
+            "ok": not errors,
+            "error_count": len(errors),
+            "message": json_result["message"],
+        }
+    )
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_errors if errors else ["All validations passed"],
+        json_data=json_result,
+        jsonl_records=jsonl_records,
+    )
     if errors:
-        for error in errors:
-            typer.echo(error, err=True)
         raise typer.Exit(code=1)
-    else:
-        typer.echo("All validations passed")
 
 
 SUPPORTED_AGENTS = [
@@ -558,23 +901,9 @@ def readme(
     check: bool = typer.Option(False, "--check", help="Check if README is up to date"),
 ):
     """Generate or check README.md."""
-    content_parts = [
-        "# agents",
-        "",
-        "AI agent artifacts, configs, skills, tools, and more",
-        "",
-        "## Install",
-        "",
-        "```bash",
-        "npx skills add wyattowalsh/agents --all -g",
-        "```",
-        "",
-    ]
-
-    # Skills table
+    skills = []
     skills_dir = ROOT / "skills"
     if skills_dir.exists():
-        skills = []
         for skill_dir in sorted(skills_dir.iterdir()):
             if not skill_dir.is_dir():
                 continue
@@ -586,16 +915,9 @@ def readme(
                 except Exception as e:
                     typer.echo(f"Warning: skipping {skill_file}: {e}", err=True)
 
-        if skills:
-            content_parts.extend(["## Skills", "", "| Name | Description |", "| ---- | ----------- |"])
-            for name, desc in skills:
-                content_parts.append(f"| {name} | {desc} |")
-            content_parts.append("")
-
-    # Agents table
+    agents = []
     agents_dir = ROOT / "agents"
     if agents_dir.exists():
-        agents = []
         for agent_file in sorted(agents_dir.glob("*.md")):
             try:
                 fm, _ = parse_frontmatter(agent_file.read_text())
@@ -603,16 +925,9 @@ def readme(
             except Exception as e:
                 typer.echo(f"Warning: skipping {agent_file}: {e}", err=True)
 
-        if agents:
-            content_parts.extend(["## Agents", "", "| Name | Description |", "| ---- | ----------- |"])
-            for name, desc in agents:
-                content_parts.append(f"| {name} | {desc} |")
-            content_parts.append("")
-
-    # MCP servers table
+    mcps = []
     mcp_dir = ROOT / "mcp"
     if mcp_dir.exists():
-        mcps = []
         for mcp_subdir in sorted(mcp_dir.iterdir()):
             if not mcp_subdir.is_dir():
                 continue
@@ -626,29 +941,121 @@ def readme(
                 except Exception:
                     mcps.append((mcp_subdir.name, ""))
 
-        if mcps:
-            content_parts.extend(
-                [
-                    "## MCP Servers",
-                    "",
-                    "| Name | Description |",
-                    "| ---- | ----------- |",
-                ]
-            )
-            for name, desc in mcps:
-                content_parts.append(f"| {name} | {desc} |")
-            content_parts.append("")
+    content_parts = [
+        '<div align="center">',
+        (
+            '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
+            'docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">'
+        ),
+        '  <h1>agents</h1>',
+        '  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>',
+        '  <p>',
+        (
+            '    <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml">'
+            '<img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/'
+            'badge.svg" alt="CI"></a>'
+        ),
+        (
+            '    <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE">'
+            '<img src="https://img.shields.io/github/license/wyattowalsh/agents?'
+            'style=flat-square&color=5D6D7E" alt="License"></a>'
+        ),
+        (
+            '    <a href="https://github.com/wyattowalsh/agents/releases"><img '
+            'src="https://img.shields.io/github/v/release/wyattowalsh/agents?'
+            'style=flat-square&color=2E86C1" alt="Release"></a>'
+        ),
+        (
+            f'    <a href="https://agents.w4w.dev/skills/"><img '
+            f'src="https://img.shields.io/badge/skills-{len(skills)}-0f766e?'
+            'style=flat-square" alt="Skills"></a>'
+        ),
+        (
+            '    <a href="https://agents.w4w.dev"><img src="https://img.shields.io/'
+            'badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs'
+            '&logoColor=white" alt="Docs"></a>'
+        ),
+        '  </p>',
+        '</div>',
+        '',
+        '---',
+        '',
+        '## 🚀 Quick Start',
+        '',
+        'Install all skills globally into your favorite agents:',
+        '',
+        '```bash',
+        'npx -y skills add wyattowalsh/agents --all -g',
+        '```',
+        '',
+        '## ✨ Why use this repository?',
+        '',
+        '| 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |',
+        '| :--- | :--- | :--- |',
+        (
+            '| Use skills across Claude Code, Cursor, Copilot, and more. | Combine '
+            'simple skills into complex, multi-agent workflows. | Extensible, '
+            'readable, and community-driven. |'
+        ),
+        '',
+    ]
+
+    if skills:
+        content_parts.extend(
+            [
+                "## 🧰 Skills",
+                "",
+                "Reusable actions and knowledge bases for AI agents.",
+                "",
+                "| Name | Description |",
+                "| ---- | ----------- |",
+            ]
+        )
+        for name, desc in skills:
+            content_parts.append(f"| {name} | {desc} |")
+        content_parts.append("")
+
+    if agents:
+        content_parts.extend(
+            [
+                "## 🤖 Agents",
+                "",
+                "System prompts and context definitions for AI agents.",
+                "",
+                "| Name | Description |",
+                "| ---- | ----------- |",
+            ]
+        )
+        for name, desc in agents:
+            content_parts.append(f"| {name} | {desc} |")
+        content_parts.append("")
+
+    if mcps:
+        content_parts.extend(
+            [
+                "## 🔌 MCP Servers",
+                "",
+                "Model Context Protocol servers for interacting with external tools.",
+                "",
+                "| Name | Description |",
+                "| ---- | ----------- |",
+            ]
+        )
+        for name, desc in mcps:
+            content_parts.append(f"| {name} | {desc} |")
+        content_parts.append("")
 
     # Dev commands
     content_parts.extend(
         [
-            "## Development",
+            "## 🛠️ Development",
             "",
             "| Command | Description |",
             "| ------- | ----------- |",
             "| `wagents new skill <name>` | Create a new skill |",
             "| `wagents new agent <name>` | Create a new agent |",
             "| `wagents new mcp <name>` | Create a new MCP server |",
+            "| `wagents doctor` | Check local environment and toolchain health |",
             "| `wagents validate` | Validate all skills and agents |",
             "| `wagents readme` | Regenerate this README |",
             "| `wagents package <name>` | Package a skill into portable ZIP |",
@@ -658,6 +1065,7 @@ def readme(
             "| `wagents install <name>` | Install specific skill to all agents |",
             "| `wagents docs init` | One-time setup: install docs dependencies |",
             "| `wagents docs generate` | Generate MDX content pages from assets |",
+            "| `wagents docs generate --include-installed` | Include installed skills from ~/.claude/skills/ in generated docs |",
             "| `wagents docs dev` | Generate + launch dev server |",
             "| `wagents docs build` | Generate + production build |",
             "| `wagents docs preview` | Generate + build + preview server |",
@@ -669,15 +1077,35 @@ def readme(
     # Supported agents
     content_parts.extend(
         [
-            "## Supported Agents",
+            "## 🤝 Supported Agents",
             "",
-            "Claude Code, Codex, Gemini CLI, and other agentskills.io-compatible agents.",
+            "- [Antigravity](https://antigravity.google/)",
+            "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
+            "- [Codex](https://github.com/codex-team/codex)",
+            "- [Crush](https://github.com/crush-ai/crush)",
+            "- [Cursor](https://cursor.sh/)",
+            "- [Gemini CLI](https://github.com/google/gemini-cli)",
+            "- [GitHub Copilot](https://github.com/features/copilot)",
+            "- [OpenCode](https://github.com/opencode-ai/opencode)",
+            "And other [agentskills.io](https://agentskills.io)-compatible agents.",
+            "",
+        ]
+    )
+
+    content_parts.extend(
+        [
+            "## 📚 Documentation",
+            "",
+            (
+                "Explore the full catalog, installation guides, and generated reference pages "
+                "at [agents.w4w.dev](https://agents.w4w.dev)."
+            ),
             "",
         ]
     )
 
     # License
-    content_parts.extend(["## License", "", "[MIT](LICENSE)", ""])
+    content_parts.extend(["## 📜 License", "", "[MIT](LICENSE)", ""])
 
     generated_content = "\n".join(content_parts)
 
@@ -702,122 +1130,109 @@ def readme(
 
 
 @hooks_app.command("list")
-def hooks_list():
+def hooks_list(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """List all hooks across skills, agents, and settings."""
-    from wagents.parsing import Hook, extract_hooks
-
-    all_hooks: list[Hook] = []
-
-    # 1. Scan .claude/settings.json and .claude/settings.local.json
-    for settings_name in ["settings.json", "settings.local.json"]:
-        settings_file = ROOT / ".claude" / settings_name
-        if settings_file.exists():
-            try:
-                data = json.loads(settings_file.read_text())
-                hooks_dict = data.get("hooks", {})
-                all_hooks.extend(extract_hooks(settings_name, hooks_dict))
-            except Exception as e:
-                typer.echo(
-                    f"Warning: could not parse {settings_name}: {e}",
-                    err=True,
-                )
-
-    # 2. Scan skills
-    skills_dir = ROOT / "skills"
-    if skills_dir.exists():
-        for skill_dir in sorted(skills_dir.iterdir()):
-            if not skill_dir.is_dir():
-                continue
-            skill_file = skill_dir / "SKILL.md"
-            if not skill_file.exists():
-                continue
-            try:
-                fm, _ = parse_frontmatter(skill_file.read_text())
-                hooks_dict = fm.get("hooks", {})
-                if hooks_dict:
-                    all_hooks.extend(extract_hooks(f"skill:{skill_dir.name}", hooks_dict))
-            except Exception:
-                pass
-
-    # 3. Scan agents
-    agents_dir = ROOT / "agents"
-    if agents_dir.exists():
-        for agent_file in sorted(agents_dir.glob("*.md")):
-            try:
-                fm, _ = parse_frontmatter(agent_file.read_text())
-                hooks_dict = fm.get("hooks", {})
-                if hooks_dict:
-                    all_hooks.extend(extract_hooks(f"agent:{agent_file.stem}", hooks_dict))
-            except Exception:
-                pass
+    all_hooks = _collect_hooks()
 
     if not all_hooks:
-        typer.echo("No hooks found.")
+        _emit_structured_output(
+            format_,
+            text_lines=["No hooks found."],
+            json_data={"count": 0, "hooks": []},
+            jsonl_records=[{"type": "summary", "count": 0}],
+        )
         return
 
-    # Print table
-    typer.echo(f"{'Source':<30} {'Event':<20} {'Matcher':<15} {'Type':<10} {'Command/Prompt'}")
-    typer.echo("-" * 100)
-    for h in all_hooks:
-        value = h.command if h.handler_type == "command" else h.prompt
-        # Truncate long values
+    rows: list[dict[str, str]] = []
+    for hook in all_hooks:
+        rows.append(
+            {
+                "source": hook.source,
+                "event": hook.event,
+                "matcher": hook.matcher,
+                "handler_type": hook.handler_type,
+                "command": hook.command,
+                "prompt": hook.prompt,
+            }
+        )
+
+    text_lines = [f"{'Source':<30} {'Event':<20} {'Matcher':<15} {'Type':<10} {'Command/Prompt'}", "-" * 100]
+    for row in rows:
+        value = row["command"] if row["handler_type"] == "command" else row["prompt"]
         if len(value) > 50:
             value = value[:47] + "..."
-        typer.echo(f"{h.source:<30} {h.event:<20} {h.matcher or '(all)':<15} {h.handler_type:<10} {value}")
+        matcher = row["matcher"] or "(all)"
+        text_lines.append(
+            f"{row['source']:<30} {row['event']:<20} {matcher:<15} {row['handler_type']:<10} {value}"
+        )
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data={"count": len(rows), "hooks": rows},
+        jsonl_records=[{"type": "hook", **row} for row in rows] + [{"type": "summary", "count": len(rows)}],
+    )
 
 
 @hooks_app.command("validate")
-def hooks_validate():
+def hooks_validate(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """Validate all hooks across skills, agents, and settings."""
     from wagents.parsing import KNOWN_HOOK_EVENTS
 
-    errors: list[str] = []
+    errors: list[dict[str, str]] = []
+
+    def add_error(source: str, message: str) -> None:
+        errors.append({"source": source, "message": message})
 
     def _validate_hooks(source: str, hooks_dict: dict) -> None:
         if not isinstance(hooks_dict, dict):
-            errors.append(f"{source}: hooks must be a mapping")
+            add_error(source, "hooks must be a mapping")
             return
         for event, entries in hooks_dict.items():
             if event not in KNOWN_HOOK_EVENTS:
-                errors.append(f"{source}: unknown hook event '{event}'")
+                add_error(source, f"unknown hook event '{event}'")
             if not isinstance(entries, list):
-                errors.append(f"{source}: entries for '{event}' must be a list")
+                add_error(source, f"entries for '{event}' must be a list")
                 continue
             for entry in entries:
                 if not isinstance(entry, dict):
-                    errors.append(f"{source}: each entry in '{event}' must be a mapping")
+                    add_error(source, f"each entry in '{event}' must be a mapping")
                     continue
                 hook_list = entry.get("hooks", [])
                 # Standard format: nested hooks list
                 if isinstance(hook_list, list) and hook_list:
                     for hook_def in hook_list:
                         if not isinstance(hook_def, dict):
-                            errors.append(f"{source}: each hook definition must be a mapping")
+                            add_error(source, "each hook definition must be a mapping")
                             continue
                         handler_type = hook_def.get("type", "command")
                         if handler_type not in ("command", "prompt", "agent"):
-                            errors.append(f"{source}: unknown handler type '{handler_type}' in '{event}'")
+                            add_error(source, f"unknown handler type '{handler_type}' in '{event}'")
                         if handler_type == "command" and not hook_def.get("command"):
-                            errors.append(f"{source}: command handler in '{event}' has empty command")
+                            add_error(source, f"command handler in '{event}' has empty command")
                         if handler_type in (
                             "prompt",
                             "agent",
                         ) and not hook_def.get("prompt"):
-                            errors.append(f"{source}: {handler_type} handler in '{event}' has empty prompt")
+                            add_error(source, f"{handler_type} handler in '{event}' has empty prompt")
                 elif not isinstance(hook_list, list):
-                    errors.append(f"{source}: 'hooks' in '{event}' entry must be a list")
+                    add_error(source, f"'hooks' in '{event}' entry must be a list")
                 # Shorthand format: command/prompt directly on entry
                 elif "command" in entry or "prompt" in entry:
                     handler_type = entry.get("type", "command")
                     if handler_type not in ("command", "prompt", "agent"):
-                        errors.append(f"{source}: unknown handler type '{handler_type}' in '{event}'")
+                        add_error(source, f"unknown handler type '{handler_type}' in '{event}'")
                     if handler_type == "command" and not entry.get("command"):
-                        errors.append(f"{source}: command handler in '{event}' has empty command")
+                        add_error(source, f"command handler in '{event}' has empty command")
                     if handler_type in (
                         "prompt",
                         "agent",
                     ) and not entry.get("prompt"):
-                        errors.append(f"{source}: {handler_type} handler in '{event}' has empty prompt")
+                        add_error(source, f"{handler_type} handler in '{event}' has empty prompt")
 
     # 1. Settings files
     for settings_name in ["settings.json", "settings.local.json"]:
@@ -829,7 +1244,7 @@ def hooks_validate():
                 if hooks_dict:
                     _validate_hooks(settings_name, hooks_dict)
             except json.JSONDecodeError as e:
-                errors.append(f"{settings_name}: invalid JSON: {e}")
+                add_error(settings_name, f"invalid JSON: {e}")
 
     # 2. Skills
     skills_dir = ROOT / "skills"
@@ -860,12 +1275,31 @@ def hooks_validate():
             except Exception:
                 pass
 
+    text_errors = [_format_error(error["source"], error["message"]) for error in errors]
+    json_result = {
+        "ok": not errors,
+        "error_count": len(errors),
+        "errors": errors,
+        "message": "All hooks valid" if not errors else "Hook validation failed",
+    }
+    jsonl_records = [{"type": "error", **error} for error in errors]
+    jsonl_records.append(
+        {
+            "type": "summary",
+            "ok": not errors,
+            "error_count": len(errors),
+            "message": json_result["message"],
+        }
+    )
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_errors if errors else ["All hooks valid"],
+        json_data=json_result,
+        jsonl_records=jsonl_records,
+    )
     if errors:
-        for error in errors:
-            typer.echo(error, err=True)
         raise typer.Exit(code=1)
-    else:
-        typer.echo("All hooks valid")
 
 
 # ---------------------------------------------------------------------------
@@ -895,11 +1329,18 @@ def _collect_evals() -> list[tuple[Path, dict]]:
 
 
 @eval_app.command("list")
-def eval_list():
+def eval_list(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """List all eval files grouped by skill."""
     evals = _collect_evals()
     if not evals:
-        typer.echo("No evals found.")
+        _emit_structured_output(
+            format_,
+            text_lines=["No evals found."],
+            json_data={"count": 0, "eval_count": 0, "skills": []},
+            jsonl_records=[{"type": "summary", "count": 0, "eval_count": 0}],
+        )
         return
 
     # Group by skill directory name
@@ -908,9 +1349,7 @@ def eval_list():
         skill_name = path.parent.parent.name
         by_skill.setdefault(skill_name, []).append(data)
 
-    # Print table
-    typer.echo(f"{'Skill':<25} {'Evals':>5}  Sample Query")
-    typer.echo("-" * 70)
+    rows: list[dict[str, str | int]] = []
     for skill_name in sorted(by_skill):
         items = by_skill[skill_name]
         count = len(items)
@@ -920,70 +1359,119 @@ def eval_list():
             if q:
                 sample = q
                 break
-        typer.echo(f"{skill_name:<25} {count:>5}  {sample}")
+        rows.append({"skill": skill_name, "eval_count": count, "sample_query": sample})
+
+    text_lines = [f"{'Skill':<25} {'Evals':>5}  Sample Query", "-" * 70]
+    text_lines.extend(
+        [f"{row['skill']:<25} {row['eval_count']:>5}  {row['sample_query']}" for row in rows]
+    )
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data={"count": len(rows), "eval_count": len(evals), "skills": rows},
+        jsonl_records=[{"type": "skill", **row} for row in rows],
+    )
 
 
 @eval_app.command("validate")
-def eval_validate():
+def eval_validate(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """Validate all eval JSON files."""
     evals = _collect_evals()
     if not evals:
-        typer.echo("No evals found. Nothing to validate.")
+        _emit_structured_output(
+            format_,
+            text_lines=["No evals found. Nothing to validate."],
+            json_data={"ok": True, "eval_count": 0, "error_count": 0, "errors": []},
+            jsonl_records=[{"type": "summary", "ok": True, "eval_count": 0, "error_count": 0}],
+        )
         return
 
-    errors: list[str] = []
+    errors: list[dict[str, str]] = []
     skills_dir = ROOT / "skills"
+
+    def add_error(source: str | Path, message: str) -> None:
+        errors.append({"source": str(source), "message": message})
 
     for path, data in evals:
         rel = path.relative_to(ROOT)
 
         # Check for parse failure (empty dict from JSONDecodeError)
         if not data and path.stat().st_size > 2:
-            errors.append(f"{rel}: invalid JSON")
+            add_error(rel, "invalid JSON")
             continue
 
         # Required field: skills
         if "skills" not in data:
-            errors.append(f"{rel}: missing required field 'skills'")
+            add_error(rel, "missing required field 'skills'")
         elif not isinstance(data["skills"], list) or len(data["skills"]) < 1:
-            errors.append(f"{rel}: 'skills' must be a non-empty list of strings")
+            add_error(rel, "'skills' must be a non-empty list of strings")
         else:
             for s in data["skills"]:
                 if not isinstance(s, str):
-                    errors.append(f"{rel}: each entry in 'skills' must be a string")
+                    add_error(rel, "each entry in 'skills' must be a string")
                 elif not (skills_dir / s).is_dir():
-                    errors.append(f"{rel}: skill '{s}' does not match a skill directory")
+                    add_error(rel, f"skill '{s}' does not match a skill directory")
 
         # Required field: query
         if "query" not in data:
-            errors.append(f"{rel}: missing required field 'query'")
+            add_error(rel, "missing required field 'query'")
         elif not isinstance(data["query"], str) or not data["query"].strip():
-            errors.append(f"{rel}: 'query' must be a non-empty string")
+            add_error(rel, "'query' must be a non-empty string")
 
         # Required field: expected_behavior
         if "expected_behavior" not in data:
-            errors.append(f"{rel}: missing required field 'expected_behavior'")
+            add_error(rel, "missing required field 'expected_behavior'")
         elif not isinstance(data["expected_behavior"], list) or len(data["expected_behavior"]) < 1:
-            errors.append(f"{rel}: 'expected_behavior' must be a non-empty list of strings")
+            add_error(rel, "'expected_behavior' must be a non-empty list of strings")
         else:
             for eb in data["expected_behavior"]:
                 if not isinstance(eb, str):
-                    errors.append(f"{rel}: each entry in 'expected_behavior' must be a string")
+                    add_error(rel, "each entry in 'expected_behavior' must be a string")
 
+    text_errors = [_format_error(error["source"], error["message"]) for error in errors]
+    json_result = {
+        "ok": not errors,
+        "eval_count": len(evals),
+        "error_count": len(errors),
+        "errors": errors,
+        "message": "All evals valid" if not errors else "Eval validation failed",
+    }
+    jsonl_records = [{"type": "error", **error} for error in errors]
+    jsonl_records.append(
+        {
+            "type": "summary",
+            "ok": not errors,
+            "eval_count": len(evals),
+            "error_count": len(errors),
+            "message": json_result["message"],
+        }
+    )
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_errors if errors else ["All evals valid"],
+        json_data=json_result,
+        jsonl_records=jsonl_records,
+    )
     if errors:
-        for error in errors:
-            typer.echo(error, err=True)
         raise typer.Exit(code=1)
-    else:
-        typer.echo("All evals valid")
 
 
 @eval_app.command("coverage")
-def eval_coverage():
+def eval_coverage(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """Show eval coverage for all skills."""
     skills_dir = ROOT / "skills"
     if not skills_dir.exists():
-        typer.echo("No skills directory found.")
+        _emit_structured_output(
+            format_,
+            text_lines=["No skills directory found."],
+            json_data={"count": 0, "skills": []},
+            jsonl_records=[{"type": "summary", "count": 0}],
+        )
         return
 
     # Collect all skills
@@ -993,7 +1481,12 @@ def eval_coverage():
             skill_names.append(skill_dir.name)
 
     if not skill_names:
-        typer.echo("No skills found.")
+        _emit_structured_output(
+            format_,
+            text_lines=["No skills found."],
+            json_data={"count": 0, "skills": []},
+            jsonl_records=[{"type": "summary", "count": 0}],
+        )
         return
 
     # Count evals per skill
@@ -1003,13 +1496,24 @@ def eval_coverage():
         skill_name = path.parent.parent.name
         counts[skill_name] = counts.get(skill_name, 0) + 1
 
-    # Print table
-    typer.echo(f"{'Skill':<25} {'Has Evals':<12} {'Count':>5}")
-    typer.echo("-" * 45)
+    rows: list[dict[str, str | int | bool]] = []
     for name in skill_names:
         count = counts.get(name, 0)
-        has = "Yes" if count > 0 else "No"
-        typer.echo(f"{name:<25} {has:<12} {count:>5}")
+        rows.append({"skill": name, "has_evals": count > 0, "eval_count": count})
+
+    text_lines = [f"{'Skill':<25} {'Has Evals':<12} {'Count':>5}", "-" * 45]
+    text_lines.extend(
+        [
+            f"{row['skill']:<25} {('Yes' if row['has_evals'] else 'No'):<12} {row['eval_count']:>5}"
+            for row in rows
+        ]
+    )
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data={"count": len(rows), "skills": rows},
+        jsonl_records=[{"type": "skill", **row} for row in rows],
+    )
 
 
 if __name__ == "__main__":

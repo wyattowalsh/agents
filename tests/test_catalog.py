@@ -1,5 +1,6 @@
 """Tests for wagents.catalog — node collection, deduplication, and edge extraction."""
 
+import json
 from pathlib import Path
 
 from wagents.catalog import (
@@ -95,6 +96,39 @@ def test_collect_installed_skills_skips_existing(tmp_path, monkeypatch):
     assert len(result) == 1
     assert result[0].id == "my-skill"
     assert result[0].source == "installed"
+
+
+def test_collect_installed_skills_includes_lock_source(tmp_path, monkeypatch):
+    """Installed skills carry source metadata from the active skills lock file."""
+    real_installed = tmp_path / "home" / ".claude" / "skills"
+    real_installed.mkdir(parents=True)
+    skill_dir = real_installed / "my-skill"
+    skill_dir.mkdir()
+    (skill_dir / "SKILL.md").write_text(
+        "---\nname: my-skill\ndescription: An installed skill\n---\n\n# My Skill\n\nBody.\n"
+    )
+
+    state_dir = tmp_path / "home" / ".local" / "state" / "skills"
+    state_dir.mkdir(parents=True)
+    (state_dir / ".skill-lock.json").write_text(
+        json.dumps(
+            {
+                "version": 3,
+                "skills": {
+                    "my-skill": {
+                        "source": "example/skills",
+                        "sourceType": "github",
+                    }
+                },
+            }
+        )
+    )
+
+    monkeypatch.setattr("wagents.catalog.Path.home", staticmethod(lambda: tmp_path / "home"))
+
+    result = collect_installed_skills(set())
+    assert len(result) == 1
+    assert result[0].metadata["_skills_source"] == "example/skills"
 
 
 # ---------------------------------------------------------------------------

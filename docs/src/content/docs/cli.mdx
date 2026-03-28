@@ -235,14 +235,14 @@ wagents docs generate
 **Options:**
 
 ```bash
-# Skip installed skills from ~/.claude/skills/
-wagents docs generate --no-installed
+# Include installed skills from ~/.claude/skills/
+wagents docs generate --include-installed
 
 # Include skills with TODO descriptions
 wagents docs generate --include-drafts
 ```
 
-The generator creates individual pages for each skill, agent, and MCP server, plus category index pages and the sidebar navigation.
+By default, generation is deterministic and repository-only. The generator creates individual pages for each skill, agent, and MCP server, plus category index pages and the sidebar navigation.
 
   </TabItem>
   <TabItem label="dev">
