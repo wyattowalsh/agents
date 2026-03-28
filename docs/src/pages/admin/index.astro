@@ -1,0 +1,198 @@
+---
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { getAdminConfigSnapshot } from '../../lib/admin/config';
+import { formatDateTime, formatNumber, formatSessionTtl } from '../../lib/admin/format';
+import { isFeatureEnabled } from '../../lib/admin/flags';
+import { getDashboardData } from '../../lib/admin/posthog';
+import { getAdminDistinctId } from '../../lib/admin/auth';
+import { captureServerEvent } from '../../lib/admin/telemetry';
+
+export const prerender = false;
+
+const admin = Astro.locals.admin;
+const dashboardData = isFeatureEnabled('admin_dashboard_metrics', admin.featureOverrides)
+  ? await getDashboardData(admin.requestId)
+  : {
+      adminLogins: 0,
+      authFailures: 0,
+      queryStatus: 'missing' as const,
+      recentAdminEvents: [],
+      recentErrors: [],
+      topPages: [],
+      totalPageviews: 0,
+      uniqueVisitors: 0,
+    };
+const config = getAdminConfigSnapshot();
+
+await captureServerEvent(
+  'admin_dashboard_viewed',
+  {
+    outcome: dashboardData.queryStatus,
+    request_id: admin.requestId,
+    route: '/admin',
+  },
+  { distinctId: getAdminDistinctId() }
+);
+---
+
+<AdminLayout title="Overview" description="Protected telemetry and observability overview" active="overview">
+  <section class="admin-masthead">
+    <div class="admin-pills">
+      <span class="admin-pill">request {admin.requestId.slice(0, 8)}</span>
+      <span class="admin-pill">session {formatSessionTtl(admin.session?.expiresAt)}</span>
+      <span class="admin-pill">query {dashboardData.queryStatus}</span>
+    </div>
+    <h1>Telemetry overview</h1>
+    <p>
+      This dashboard combines docs traffic, protected admin activity, and recent operational failures without
+      leaking vendor secrets to the browser.
+    </p>
+  </section>
+
+  {!config.posthogQueryConfigured && (
+    <div class="admin-banner">
+      PostHog query access is not configured yet. The overview will still capture audit events, but historical
+      metrics stay empty until <code>POSTHOG_API_KEY</code> and <code>POSTHOG_PROJECT_ID</code> are set.
+    </div>
+  )}
+
+  <section class="admin-card-grid">
+    <article class="admin-card">
+      <p>Total pageviews, 7d</p>
+      <h2 class="admin-kpi">{formatNumber(dashboardData.totalPageviews)}</h2>
+      <p class="admin-subtle">Public docs pageview telemetry.</p>
+    </article>
+
+    <article class="admin-card">
+      <p>Unique visitors, 7d</p>
+      <h2 class="admin-kpi">{formatNumber(dashboardData.uniqueVisitors)}</h2>
+      <p class="admin-subtle">Anonymous session identifiers only.</p>
+    </article>
+
+    <article class="admin-card">
+      <p>Admin logins, 7d</p>
+      <h2 class="admin-kpi">{formatNumber(dashboardData.adminLogins)}</h2>
+      <p class="admin-subtle">Successful shared-password unlocks.</p>
+    </article>
+
+    <article class="admin-card">
+      <p>Auth failures, 7d</p>
+      <h2 class="admin-kpi">{formatNumber(dashboardData.authFailures)}</h2>
+      <p class="admin-subtle">Rejected passwords, origin failures, and CSRF rejections.</p>
+    </article>
+  </section>
+
+  <div class="admin-section-grid">
+    <section class="admin-section-card">
+      <h2>Top content paths</h2>
+      {dashboardData.topPages.length ? (
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Path</th>
+                <th>Views</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboardData.topPages.map((row) => (
+                <tr>
+                  <td>{row.path}</td>
+                  <td>{formatNumber(row.views)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div class="admin-empty">No content metrics available yet.</div>
+      )}
+    </section>
+
+    <section class="admin-section-card">
+      <h2>Runtime state</h2>
+      <ul class="admin-meta-list">
+        <li>
+          <span>Telemetry capture</span>
+          <strong class:list={['admin-status', isFeatureEnabled('telemetry_capture', admin.featureOverrides) ? 'admin-status--ok' : 'admin-status--warn']}>
+            {isFeatureEnabled('telemetry_capture', admin.featureOverrides) ? 'enabled' : 'disabled'}
+          </strong>
+        </li>
+        <li>
+          <span>Session expiry</span>
+          <strong>{formatSessionTtl(admin.session?.expiresAt)}</strong>
+        </li>
+        <li>
+          <span>Session issued</span>
+          <strong>{formatDateTime(admin.session?.issuedAt)}</strong>
+        </li>
+        <li>
+          <span>Derived session secret</span>
+          <strong class:list={['admin-status', config.usingDerivedSessionSecret ? 'admin-status--warn' : 'admin-status--ok']}>
+            {config.usingDerivedSessionSecret ? 'yes' : 'no'}
+          </strong>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="admin-section-grid">
+    <section class="admin-section-card">
+      <h2>Recent admin events</h2>
+      {dashboardData.recentAdminEvents.length ? (
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Event</th>
+                <th>Outcome</th>
+                <th>Path</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboardData.recentAdminEvents.slice(0, 8).map((row) => (
+                <tr>
+                  <td>{formatDateTime(row.timestamp)}</td>
+                  <td>{row.event}</td>
+                  <td>{row.outcome || 'n/a'}</td>
+                  <td>{row.path || 'n/a'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div class="admin-empty">No admin audit events available yet.</div>
+      )}
+    </section>
+
+    <section class="admin-section-card">
+      <h2>Recent errors</h2>
+      {dashboardData.recentErrors.length ? (
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Event</th>
+                <th>Summary</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dashboardData.recentErrors.slice(0, 8).map((row) => (
+                <tr>
+                  <td>{formatDateTime(row.timestamp)}</td>
+                  <td>{row.event}</td>
+                  <td>{row.summary || row.path || 'n/a'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div class="admin-empty">No recent client or admin failures captured.</div>
+      )}
+    </section>
+  </div>
+</AdminLayout>

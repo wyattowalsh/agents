@@ -21,35 +21,62 @@ hero:
         <div class="hero-agents-row">
           <span class="hero-agent-badge">Claude</span>
           <span class="hero-agent-badge">Gemini</span>
-          <span class="hero-agent-badge">Codex</span>
           <span class="hero-agent-badge">Cursor</span>
           <span class="hero-agent-badge">Copilot</span>
+          <span class="hero-agent-badge">Antigravity</span>
+          <span class="hero-agent-badge">Crush</span>
+          <span class="hero-agent-badge">OpenCode</span>
         </div>
       </div>
   actions:
     - text: Get Started
       link: /skills/
       icon: right-arrow
-    - text: GitHub
+    - text: Star on GitHub
       link: https://github.com/wyattowalsh/agents
       variant: minimal
-      icon: external
+      icon: github
 ---
 
-import { Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+import { Badge, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
 <div class="stats-bar">
-  <span class="stat stat-skill">30 Custom Skills</span>
-  <span class="stat stat-installed">18 Installed Skills</span>
-  <span class="stat stat-mcp">36 MCP Tools Configured</span>
+  <span class="stat stat-skill">38 Custom Skills</span>
+  <span class="stat stat-mcp">38 MCP Tools Configured</span>
 </div>
 
-<Aside type="tip" title="What are Skills?">
-Skills are reusable knowledge and workflows that extend AI coding agents. Install once, invoke with `/skill-name` in any supported agent. [Learn more at agentskills.io →](https://agentskills.io)
+<div class="hero-badge-row">
+  <a href="https://github.com/wyattowalsh/agents/stargazers"><img src="https://img.shields.io/github/stars/wyattowalsh/agents?style=flat-square&label=stars&color=0f766e" alt="GitHub stars" /></a>
+  <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>
+  <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5d6d7e" alt="License" /></a>
+  <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=0284c7" alt="Latest release" /></a>
+</div>
+
+<Aside type="tip" title="Why use Skills?">
+Instead of keeping an unorganized document of prompts to copy-paste, **skills** package expert prompts, complex multi-step workflows, and tools into a single version-controlled, portable asset. Install them once, then seamlessly invoke them with `/skill-name` inside your favorite AI agent. [Learn more at agentskills.io →](https://agentskills.io)
 </Aside>
 
+## Why Use Skills?
+
+<div class="catalog-skill">
+<CardGrid>
+  <Card title="Portable">
+    <div class="feature-card-icon" aria-hidden="true">P</div>
+    <Badge text="Install once" variant="note" /> Move the same workflows across Claude Code, Cursor, GitHub Copilot, Gemini CLI, Antigravity, and more.
+  </Card>
+  <Card title="Composable">
+    <div class="feature-card-icon" aria-hidden="true">C</div>
+    <Badge text="Stackable" variant="tip" /> Combine focused skills into richer multi-step systems without rewriting prompts every time.
+  </Card>
+  <Card title="Open Source">
+    <div class="feature-card-icon" aria-hidden="true">OS</div>
+    <Badge text="Inspectable" variant="success" /> Keep your agent workflows version-controlled, reviewable, and easy to extend with your own conventions.
+  </Card>
+</CardGrid>
+</div>
+
 <Aside type="note" title="How these docs are built">
-Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the 36 servers configured in `mcp.json` (including local and remote servers outside this repo).
+Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the 38 servers configured in `mcp.json` (including local and remote servers outside this repo).
 </Aside>
 
 ## What Can You Do?
@@ -86,8 +113,8 @@ npx skills add wyattowalsh/agents --all -g
 ## Explore the Catalog
 
 <CardGrid>
-  <LinkCard title="Skills Index" href="/skills/" description="Browse custom and installed skills grouped by invocation model, with install commands and docs pages." />
-  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 36 configured MCP servers from `mcp.json`." />
+  <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills grouped by invocation model, with install commands and docs pages." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 38 configured MCP servers from `mcp.json`." />
   <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
 </CardGrid>
 
@@ -101,13 +128,13 @@ npx skills add wyattowalsh/agents --all -g
 </CardGrid>
 </div>
 
-[View all 48 skills →](/skills/)
+[View all 38 skills →](/skills/)
 
 ## MCP Servers
 
 <div class="catalog-mcp">
 <CardGrid>
-  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 36 configured MCP servers from mcp.json (local and remote)." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 38 configured MCP servers from mcp.json (local and remote)." />
 </CardGrid>
 </div>
 
@@ -115,9 +142,13 @@ npx skills add wyattowalsh/agents --all -g
 
 <CardGrid>
   <LinkCard title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code" description="Anthropic's official CLI for Claude." />
-  <LinkCard title="Gemini CLI" href="https://github.com/google-gemini/gemini-cli" description="Google's command-line interface for Gemini." />
-  <LinkCard title="Codex CLI" href="https://github.com/openai/codex" description="OpenAI's coding agent with skills support." />
-  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+  <LinkCard title="Gemini CLI" href="https://github.com/google/gemini-cli" description="Google's command-line interface for Gemini." />
+  <LinkCard title="Codex" href="https://github.com/codex-team/codex" description="Autonomous coding workflows for command-line development." />
+  <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />
+  <LinkCard title="GitHub Copilot" href="https://github.com/features/copilot" description="Your AI pair programmer, right in your IDE." />
+  <LinkCard title="Antigravity" href="https://antigravity.google/" description="Advanced Agentic Coding assistant." />
+  <LinkCard title="Crush" href="https://github.com/crush-ai/crush" description="Autonomous development agent focused on fast terminal workflows." />
+  <LinkCard title="OpenCode" href="https://github.com/opencode-ai/opencode" description="Open coding agent with repo-native instruction support." />
 </CardGrid>
 
 ## Resources

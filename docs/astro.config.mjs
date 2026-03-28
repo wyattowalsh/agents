@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import { fileURLToPath } from 'node:url';
+import vercel from '@astrojs/vercel';
 import starlight from '@astrojs/starlight';
 import starlightThemeBlack from 'starlight-theme-black';
 import starlightSiteGraph from 'starlight-site-graph';
@@ -13,6 +14,8 @@ const siteGraphMicromatchShimPath = fileURLToPath(
 );
 
 export default defineConfig({
+  adapter: vercel(),
+  output: 'server',
   site: 'https://agents.w4w.dev',
   vite: {
     plugins: [
@@ -45,6 +48,10 @@ export default defineConfig({
     starlight({
       title: 'wyattowalsh/agents | AI Agent Configs',
       description: 'AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more',
+      favicon: '/favicon.svg',
+      logo: {
+        src: './src/assets/logo.webp',
+      },
       editLink: { baseUrl: 'https://github.com/wyattowalsh/agents/edit/main/docs/' },
       lastUpdated: true,
       plugins: [

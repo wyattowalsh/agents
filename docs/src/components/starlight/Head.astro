@@ -5,6 +5,8 @@ import VtbotStarlight from 'astro-vtbot/components/starlight/Base.astro';
 const { id } = Astro.locals.starlightRoute;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
 const ogImageUrl = Astro.site ? new URL(`/og/${id || ''}.png`, Astro.site).href : '';
+const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
+const posthogHost = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
 ---
 <VtbotStarlight>
   <StarlightHead><slot /></StarlightHead>
@@ -18,3 +20,97 @@ const ogImageUrl = Astro.site ? new URL(`/og/${id || ''}.png`, Astro.site).href 
 <meta property="og:site_name" content="Agents Docs" />
 <meta property="og:url" content={canonicalUrl.href} />
 <meta name="twitter:card" content="summary_large_image" />
+
+{posthogKey && (
+  <script define:vars={{ posthogHost, posthogKey }}>
+    (() => {
+      const overrideCookieName = 'agents_docs_admin_flags';
+
+      function readOverrides() {
+        try {
+          const cookieValue = document.cookie
+            .split('; ')
+            .find((entry) => entry.startsWith(`${overrideCookieName}=`))
+            ?.split('=')
+            .slice(1)
+            .join('=');
+
+          return cookieValue ? JSON.parse(decodeURIComponent(cookieValue)) : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function getDistinctId() {
+        const storageKey = 'agents-docs-anon-id';
+        const existing = window.localStorage.getItem(storageKey);
+        if (existing) return existing;
+
+        const generated = `anon_${crypto.randomUUID()}`;
+        window.localStorage.setItem(storageKey, generated);
+        return generated;
+      }
+
+      function sendEvent(event, properties) {
+        const body = JSON.stringify({
+          api_key: posthogKey,
+          distinct_id: getDistinctId(),
+          event,
+          properties: {
+            ...properties,
+            '$process_person_profile': false,
+            path: window.location.pathname,
+            source: 'agents-docs-browser',
+          },
+          timestamp: new Date().toISOString(),
+        });
+
+        const captureUrl = new URL('/i/v0/e/', posthogHost).toString();
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(captureUrl, new Blob([body], { type: 'application/json' }));
+          return;
+        }
+
+        fetch(captureUrl, {
+          body,
+          headers: { 'content-type': 'application/json' },
+          keepalive: true,
+          method: 'POST',
+        }).catch(() => undefined);
+      }
+
+      const overrides = readOverrides();
+      if (overrides.telemetry_capture === false) return;
+
+      sendEvent('docs_pageview', {
+        canonical_url: document.querySelector('link[rel="canonical"]')?.getAttribute('href') ?? window.location.href,
+        page_title: document.title,
+      });
+
+      document.addEventListener('click', (event) => {
+        const target = event.target instanceof HTMLElement ? event.target.closest('[data-telemetry-event]') : null;
+        if (!(target instanceof HTMLElement)) return;
+
+        sendEvent(target.dataset.telemetryEvent || 'docs_interaction', {
+          href: target.getAttribute('href') ?? '',
+          label: target.dataset.telemetryLabel ?? target.textContent?.trim().slice(0, 120) ?? '',
+        });
+      });
+
+      window.addEventListener('error', (event) => {
+        sendEvent('docs_client_error', {
+          file: event.filename?.split('/').slice(-1)[0] ?? '',
+          line: event.lineno ?? 0,
+          message: String(event.message ?? '').slice(0, 200),
+        });
+      });
+
+      window.addEventListener('unhandledrejection', (event) => {
+        const reason = event.reason instanceof Error ? event.reason.message : String(event.reason ?? 'Unknown rejection');
+        sendEvent('docs_client_promise_rejection', {
+          message: reason.slice(0, 200),
+        });
+      });
+    })();
+  </script>
+)}

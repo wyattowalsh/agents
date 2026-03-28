@@ -2,6 +2,9 @@
   "name": "agents-docs",
   "packageManager": "pnpm@10.11.1",
   "private": true,
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -30,6 +33,7 @@
     ]
   },
   "devDependencies": {
+    "@astrojs/vercel": "^9.0.5",
     "@astrojs/check": "^0.9.6",
     "typescript": "^5.9.3"
   }

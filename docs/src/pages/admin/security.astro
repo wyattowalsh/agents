@@ -1,0 +1,154 @@
+---
+import AdminLayout from '../../components/admin/AdminLayout.astro';
+import { getAdminConfigSnapshot } from '../../lib/admin/config';
+import { formatDateTime, formatSessionTtl } from '../../lib/admin/format';
+import { isFeatureEnabled } from '../../lib/admin/flags';
+import { getRecentSecurityEvents } from '../../lib/admin/posthog';
+import { getAdminDistinctId } from '../../lib/admin/auth';
+import { captureServerEvent } from '../../lib/admin/telemetry';
+
+export const prerender = false;
+
+const admin = Astro.locals.admin;
+const config = getAdminConfigSnapshot();
+const securityEnabled = isFeatureEnabled('admin_security_audit', admin.featureOverrides);
+const auditData = securityEnabled
+  ? await getRecentSecurityEvents(admin.requestId)
+  : { queryStatus: 'missing' as const, rows: [] };
+
+await captureServerEvent(
+  'admin_security_viewed',
+  {
+    outcome: auditData.queryStatus,
+    request_id: admin.requestId,
+    route: '/admin/security',
+  },
+  { distinctId: getAdminDistinctId() }
+);
+---
+
+<AdminLayout title="Security Audit" description="Protected auth and hardening console" active="security">
+  <section class="admin-masthead">
+    <div class="admin-pills">
+      <span class="admin-pill">shared-password gate</span>
+      <span class="admin-pill">same-origin post only</span>
+      <span class="admin-pill">csrf token {admin.csrfToken.slice(0, 8)}…</span>
+    </div>
+    <h1>Security and auth audit</h1>
+    <p>
+      Review the current authentication posture, cookie/session state, and recent privileged actions captured in
+      telemetry.
+    </p>
+  </section>
+
+  {!securityEnabled && (
+    <div class="admin-banner">
+      The <code>admin_security_audit</code> feature is disabled for this browser session. Re-enable it in the flag
+      console to resume live audit reads.
+    </div>
+  )}
+
+  <section class="admin-card-grid">
+    <article class="admin-card">
+      <p>Session TTL</p>
+      <h2 class="admin-kpi">{formatSessionTtl(admin.session?.expiresAt)}</h2>
+      <p class="admin-subtle">Short-lived, signed, httpOnly session cookie.</p>
+    </article>
+
+    <article class="admin-card">
+      <p>Password source</p>
+      <h2 class="admin-kpi">{config.usingDevelopmentPasswordFallback ? 'dev' : 'env'}</h2>
+      <p class="admin-subtle">Set DOCS_ADMIN_PASSWORD in deployed environments.</p>
+    </article>
+
+    <article class="admin-card">
+      <p>CSRF posture</p>
+      <h2 class="admin-kpi">strict</h2>
+      <p class="admin-subtle">Double-submit token plus same-origin enforcement.</p>
+    </article>
+  </section>
+
+  <div class="admin-section-grid">
+    <section class="admin-section-card">
+      <h2>Hardening checklist</h2>
+      <ul class="admin-meta-list">
+        <li>
+          <span>Admin password</span>
+          <strong class:list={['admin-status', config.hasAdminPassword ? 'admin-status--ok' : 'admin-status--danger']}>
+            {config.hasAdminPassword ? 'configured' : 'missing'}
+          </strong>
+        </li>
+        <li>
+          <span>Explicit session secret</span>
+          <strong class:list={['admin-status', config.hasExplicitSessionSecret ? 'admin-status--ok' : 'admin-status--warn']}>
+            {config.hasExplicitSessionSecret ? 'configured' : 'derived'}
+          </strong>
+        </li>
+        <li>
+          <span>Public telemetry key</span>
+          <strong class:list={['admin-status', config.publicTelemetryConfigured ? 'admin-status--ok' : 'admin-status--warn']}>
+            {config.publicTelemetryConfigured ? 'configured' : 'missing'}
+          </strong>
+        </li>
+        <li>
+          <span>Query API access</span>
+          <strong class:list={['admin-status', config.posthogQueryConfigured ? 'admin-status--ok' : 'admin-status--warn']}>
+            {config.posthogQueryConfigured ? 'configured' : 'missing'}
+          </strong>
+        </li>
+      </ul>
+    </section>
+
+    <section class="admin-section-card">
+      <h2>Current operator session</h2>
+      <ul class="admin-meta-list">
+        <li>
+          <span>Issued at</span>
+          <strong>{formatDateTime(admin.session?.issuedAt)}</strong>
+        </li>
+        <li>
+          <span>Expires at</span>
+          <strong>{formatDateTime(admin.session?.expiresAt)}</strong>
+        </li>
+        <li>
+          <span>Nonce</span>
+          <strong>{admin.session?.nonce.slice(0, 12)}…</strong>
+        </li>
+        <li>
+          <span>Request ID</span>
+          <strong>{admin.requestId}</strong>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="admin-section-card">
+    <h2>Recent access events</h2>
+    {auditData.rows.length ? (
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Event</th>
+              <th>Outcome</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            {auditData.rows.map((row) => (
+              <tr>
+                <td>{formatDateTime(row.timestamp)}</td>
+                <td>{row.event}</td>
+                <td>{row.outcome || 'n/a'}</td>
+                <td>{row.summary || row.path || row.requestId || 'n/a'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div class="admin-empty">No recent access telemetry available.</div>
+    )}
+  </section>
+</AdminLayout>
