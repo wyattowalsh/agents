@@ -132,7 +132,7 @@ wagents readme --check       # Exits 1 if README is stale
 # Documentation site
 wagents docs init                       # One-time: pnpm install in docs/
 wagents docs generate                   # Generate MDX content pages
-wagents docs generate --no-installed    # Skip installed skills from ~/.claude/skills/
+wagents docs generate --include-installed  # Opt in to installed skills from ~/.claude/skills/
 wagents docs generate --include-drafts  # Include skills with TODO descriptions
 wagents docs dev                        # Generate + launch dev server
 wagents docs build                      # Generate + static build
@@ -168,9 +168,7 @@ make help                                    # Show all make targets
 
 ### Architecture
 
-`~/.claude/CLAUDE.md` contains a single `@` import pointing to `instructions/global.md` in this repo. That file contains general rules + Clarification Gate + orchestration core (~600 tokens) — this is the only always-loaded instruction content.
-
-For GitHub Copilot, use `.github/copilot-instructions.md` as the bridge layer to apply Copilot-specific overrides on top of `@instructions/global.md`.
+`instructions/global.md` is the only canonical global instruction source in this repo. Home entrypoints should point directly at it where the platform allows; repo-local mirrors should be generated from it where the platform requires a specific filename.
 
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
@@ -202,13 +200,13 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 
 ## 6. Supported Agents
 
-| Agent | Reads | Bridge File |
-|-------|-------|-------------|
-| Claude Code | `CLAUDE.md` → `@AGENTS.md` + `@instructions/global.md` | `CLAUDE.md` |
-| Gemini CLI | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
-| Antigravity | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
-| Codex | `AGENTS.md` → `@instructions/global.md` | — |
-| Crush | `AGENTS.md` → `@instructions/global.md` | — |
-| OpenCode | `AGENTS.md` → `@instructions/global.md` | — |
-| Cursor | `AGENTS.md` → `@instructions/global.md` | — |
-| GitHub Copilot | `.github/copilot-instructions.md` → `@instructions/global.md` + `AGENTS.md` conventions | `.github/copilot-instructions.md` |
+| Agent | Reads | Notes |
+|-------|-------|-------|
+| Claude Code | `CLAUDE.md` → `instructions/global.md` | `instructions/claude-code-global.md` is compatibility only |
+| Gemini CLI | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
+| Antigravity | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
+| Codex | `AGENTS.md` → `@instructions/global.md` | Home entrypoint should symlink to `global.md` |
+| Crush | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
+| OpenCode | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
+| Cursor | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
+| GitHub Copilot | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Generated mirror of `global.md` |

@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "managed": [
+    {
+      "path": "/Users/ww/dev/projects/agents/config/mcp-registry.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/tooling-policy.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/sync-manifest.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/mcp.json",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/.vscode/mcp.json",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/.github/copilot-instructions.md",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/.github/instructions",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/.github/hooks",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/hooks",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/platforms/copilot/agents",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/.codex/AGENTS.md",
+      "mode": "symlink"
+    },
+    {
+      "path": "/Users/ww/.claude/CLAUDE.md",
+      "mode": "symlink"
+    },
+    {
+      "path": "/Users/ww/.copilot/copilot-instructions.md",
+      "mode": "symlink"
+    },
+    {
+      "path": "/Users/ww/.copilot/agents",
+      "mode": "symlink"
+    },
+    {
+      "path": "/Users/ww/.copilot/mcp-config.json",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/.codex/config.toml",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.claude/settings.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.codex/skills",
+      "mode": "symlinked-entries"
+    },
+    {
+      "path": "/Users/ww/.copilot/skills",
+      "mode": "symlinked-entries"
+    }
+  ]
+}
