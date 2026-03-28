@@ -1,14 +1,7 @@
-import { randomBytes, timingSafeEqual } from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 
+import { safeEqualStrings } from './compare';
 import { ADMIN_CSRF_COOKIE, ADMIN_CSRF_TTL_SECONDS } from './config';
-
-function safeEqual(left: string, right: string): boolean {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
-
-  if (leftBuffer.length !== rightBuffer.length) return false;
-  return timingSafeEqual(leftBuffer, rightBuffer);
-}
 
 export function generateCsrfToken(): string {
   return randomBytes(24).toString('base64url');
@@ -38,5 +31,5 @@ export function validateCsrfToken(
 ): boolean {
   const stored = cookies.get(ADMIN_CSRF_COOKIE)?.value;
   if (!stored || !submittedToken) return false;
-  return safeEqual(stored, submittedToken);
+  return safeEqualStrings(stored, submittedToken);
 }

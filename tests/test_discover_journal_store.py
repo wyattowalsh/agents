@@ -15,13 +15,7 @@ import pytest
 # Load the module from its file path (not a normal importable package)
 # ---------------------------------------------------------------------------
 
-_SCRIPT_PATH = (
-    Path(__file__).resolve().parent.parent
-    / "skills"
-    / "discover-skills"
-    / "scripts"
-    / "journal-store.py"
-)
+_SCRIPT_PATH = Path(__file__).resolve().parent.parent / "skills" / "discover-skills" / "scripts" / "journal-store.py"
 
 _spec = importlib.util.spec_from_file_location("journal_store", _SCRIPT_PATH)
 assert _spec is not None and _spec.loader is not None, f"Cannot find {_SCRIPT_PATH}"
@@ -93,10 +87,7 @@ def test_parse_frontmatter_roundtrip():
 
 def test_parse_frontmatter_body_with_hrule():
     """A horizontal rule (---) inside the body must not be confused with frontmatter."""
-    text = (
-        "---\ntitle: My Doc\nstatus: ok\n---\n\n"
-        "# Heading\n\nSome text.\n\n---\n\nMore text after hrule.\n"
-    )
+    text = "---\ntitle: My Doc\nstatus: ok\n---\n\n# Heading\n\nSome text.\n\n---\n\nMore text after hrule.\n"
     meta, body = jmod.parse_frontmatter(text)
     assert meta["title"] == "My Doc"
     assert meta["status"] == "ok"
@@ -341,8 +332,9 @@ def test_atomic_write_leaves_original_on_failure(tmp_path):
     target = tmp_path / "test.md"
     target.write_text("original content", encoding="utf-8")
 
-    with patch("os.replace", side_effect=OSError("mock replace failure")), pytest.raises(
-        OSError, match="mock replace failure"
+    with (
+        patch("os.replace", side_effect=OSError("mock replace failure")),
+        pytest.raises(OSError, match="mock replace failure"),
     ):
         jmod._atomic_write(target, "new content that should NOT land")
 

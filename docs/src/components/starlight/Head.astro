@@ -22,7 +22,7 @@ const posthogHost = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog
 <meta name="twitter:card" content="summary_large_image" />
 
 {posthogKey && (
-  <script define:vars={{ posthogHost, posthogKey }}>
+  <script is:inline define:vars={{ posthogHost, posthogKey }}>
     (() => {
       const overrideCookieName = 'agents_docs_admin_flags';
 

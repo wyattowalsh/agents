@@ -121,16 +121,24 @@ def write_index_page(nodes: list) -> None:
 
     parts.append('<div class="hero-badge-row">')
     parts.append(
-        '  <a href="https://github.com/wyattowalsh/agents/stargazers"><img src="https://img.shields.io/github/stars/wyattowalsh/agents?style=flat-square&label=stars&color=0f766e" alt="GitHub stars" /></a>'
+        '  <a href="https://github.com/wyattowalsh/agents/stargazers">'
+        '<img src="https://img.shields.io/github/stars/wyattowalsh/agents?style=flat-square&label=stars&color=0f766e" '
+        'alt="GitHub stars" /></a>'
     )
     parts.append(
-        '  <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI status" /></a>'
+        '  <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml">'
+        '<img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" '
+        'alt="CI status" /></a>'
     )
     parts.append(
-        '  <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5d6d7e" alt="License" /></a>'
+        '  <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE">'
+        '<img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5d6d7e" '
+        'alt="License" /></a>'
     )
     parts.append(
-        '  <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=0284c7" alt="Latest release" /></a>'
+        '  <a href="https://github.com/wyattowalsh/agents/releases">'
+        '<img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=0284c7" '
+        'alt="Latest release" /></a>'
     )
     parts.append("</div>")
     parts.append("")
@@ -154,24 +162,24 @@ def write_index_page(nodes: list) -> None:
     parts.append('    <div class="feature-card-icon" aria-hidden="true">P</div>')
     parts.append(
         '    <Badge text="Install once" variant="note" /> '
-        'Move the same workflows across Claude Code, Cursor, GitHub Copilot, '
-        'Gemini CLI, Antigravity, and more.'
+        "Move the same workflows across Claude Code, Cursor, GitHub Copilot, "
+        "Gemini CLI, Antigravity, and more."
     )
     parts.append("  </Card>")
     parts.append('  <Card title="Composable">')
     parts.append('    <div class="feature-card-icon" aria-hidden="true">C</div>')
     parts.append(
         '    <Badge text="Stackable" variant="tip" /> '
-        'Combine focused skills into richer multi-step systems without '
-        'rewriting prompts every time.'
+        "Combine focused skills into richer multi-step systems without "
+        "rewriting prompts every time."
     )
     parts.append("  </Card>")
     parts.append('  <Card title="Open Source">')
     parts.append('    <div class="feature-card-icon" aria-hidden="true">OS</div>')
     parts.append(
         '    <Badge text="Inspectable" variant="success" /> '
-        'Keep your agent workflows version-controlled, reviewable, and easy '
-        'to extend with your own conventions.'
+        "Keep your agent workflows version-controlled, reviewable, and easy "
+        "to extend with your own conventions."
     )
     parts.append("  </Card>")
     parts.append("</CardGrid>")
@@ -265,10 +273,7 @@ def write_index_page(nodes: list) -> None:
         skills_index_desc = (
             "Browse repository skills plus optional installed external skills, grouped by invocation model."
         )
-    parts.append(
-        '  <LinkCard title="Skills Index" href="/skills/"'
-        f' description="{escape_attr(skills_index_desc)}" />'
-    )
+    parts.append(f'  <LinkCard title="Skills Index" href="/skills/" description="{escape_attr(skills_index_desc)}" />')
     if has_mcp_overview:
         if mcp_config_count:
             mcp_desc = f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`."
@@ -363,11 +368,7 @@ def write_index_page(nodes: list) -> None:
         ' href="https://github.com/codex-team/codex"'
         ' description="Autonomous coding workflows for command-line development." />'
     )
-    parts.append(
-        '  <LinkCard title="Cursor"'
-        ' href="https://cursor.com/"'
-        ' description="The AI Code Editor." />'
-    )
+    parts.append('  <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />')
     parts.append(
         '  <LinkCard title="GitHub Copilot"'
         ' href="https://github.com/features/copilot"'

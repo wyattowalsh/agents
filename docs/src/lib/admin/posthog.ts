@@ -22,6 +22,14 @@ export type DashboardData = {
   uniqueVisitors: number;
 };
 
+function rowsFromTabularResults(columns: unknown[], results: unknown[]): Array<Record<string, unknown>> {
+  return results.map((row) => {
+    if (!Array.isArray(row)) return {};
+    const cells: unknown[] = row;
+    return Object.fromEntries(columns.map((column: unknown, index: number) => [String(column), cells[index]]));
+  });
+}
+
 function quoteSqlString(value: string): string {
   return `'${value.replaceAll('\\', '\\\\').replaceAll("'", "\\'")}'`;
 }
@@ -39,10 +47,9 @@ function toRowObjects(payload: unknown): Array<Record<string, unknown>> {
   }
 
   if (Array.isArray(root.columns) && Array.isArray(root.results)) {
-    return root.results.map((row) => {
-      if (!Array.isArray(row)) return {};
-      return Object.fromEntries(root.columns!.map((column, index) => [String(column), row[index]]));
-    });
+    const columns: unknown[] = root.columns;
+    const results: unknown[] = root.results;
+    return rowsFromTabularResults(columns, results);
   }
 
   if (typeof root.results === 'object' && root.results !== null) {
@@ -56,10 +63,9 @@ function toRowObjects(payload: unknown): Array<Record<string, unknown>> {
     }
 
     if (Array.isArray(nested.columns) && Array.isArray(nested.results)) {
-      return nested.results.map((row) => {
-        if (!Array.isArray(row)) return {};
-        return Object.fromEntries(nested.columns!.map((column, index) => [String(column), row[index]]));
-      });
+      const columns: unknown[] = nested.columns;
+      const results: unknown[] = nested.results;
+      return rowsFromTabularResults(columns, results);
     }
   }
 
