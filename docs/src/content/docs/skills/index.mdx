@@ -24,20 +24,18 @@ Skills extend your AI agent with domain expertise, structured workflows, and pro
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">27 User-Invocable</span>
-  <span class="stat stat-agent">3 Convention Skills</span>
-  <span class="stat stat-installed">18 Installed Skills</span>
+  <span class="stat stat-skill">34 User-Invocable</span>
+  <span class="stat stat-agent">4 Convention Skills</span>
 </div>
 
 ## Understanding Skill Categories
 
-This repository contains three categories of skills, each serving a different purpose:
+This repository defines two built-in skill categories. You can also opt in to installed external skills.
 
 | Category | Count | How they work |
 |----------|-------|---------------|
-| **User-Invocable** | 27 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
-| **Convention** | 3 | The agent auto-invokes these when it detects relevant context (e.g., editing Python files). Hidden from the `/` menu. |
-| **Installed** | 18 | Third-party skills installed from external sources via `~/.claude/skills/`. |
+| **User-Invocable** | 34 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
+| **Convention** | 4 | The agent auto-invokes these when it detects relevant context (e.g., editing Python files). Hidden from the `/` menu. |
 
 <Aside type="note" title="Generated docs vs hand-maintained guides">
 Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a deeper curated guide exists (for example, architecture or roadmap notes), the generated skill page links to it.
@@ -45,33 +43,48 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
 
 ---
 
-## User-Invocable Skills (27)
+## User-Invocable Skills (34)
 
 <Badge text="Manual invocation" variant="tip" /> Trigger these with `/skill-name` during a conversation. They appear in the autocomplete menu.
+
+These skills are designed to be explicitly called when you want specialized domain knowledge or a structured workflow. They behave like focused teammates you can pull into the session on demand.
+
+<div class="tool-pills">
+  <Badge text="Featured: honest-review" variant="note" />
+  <Badge text="Featured: skill-creator" variant="note" />
+  <Badge text="Featured: wargame" variant="note" />
+</div>
 
 <div class="catalog-skill">
 <CardGrid>
   <LinkCard title="add-badges" href="/skills/add-badges/" description="Detect stack and generate shields.io README badges with icons, colors, live endpoints. Use when adding or updating badges." />
   <LinkCard title="api-designer" href="/skills/api-designer/" description="Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs." />
   <LinkCard title="changelog-writer" href="/skills/changelog-writer/" description="Generate changelogs, release notes, and migration guides from git history. Parse conventional commits. Use for releases." />
+  <LinkCard title="data-pipeline-architect" href="/skills/data-pipeline-architect/" description="Design batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems." />
   <LinkCard title="data-wizard" href="/skills/data-wizard/" description="Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work." />
   <LinkCard title="database-architect" href="/skills/database-architect/" description="Design schemas, plan migrations, and optimize queries. Six modes from modeling to evolution. Use for database architecture." />
   <LinkCard title="devops-engineer" href="/skills/devops-engineer/" description="Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work." />
+  <LinkCard title="discover-skills" href="/skills/discover-skills/" description="Discover AI agent skills via gap analysis, registry search, and ideation. Use when expanding your collection systematically." />
   <LinkCard title="docs-steward" href="/skills/docs-steward/" description="Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks. Use when docs change." />
   <LinkCard title="email-whiz" href="/skills/email-whiz/" description="Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail." />
+  <LinkCard title="event-driven-architect" href="/skills/event-driven-architect/" description="Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines." />
   <LinkCard title="frontend-designer" href="/skills/frontend-designer/" description="Build frontends with React, Tailwind, shadcn/ui. Scaffold, create, theme, refactor, audit. Use when building or improving UI." />
   <LinkCard title="git-workflow" href="/skills/git-workflow/" description="Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks." />
   <LinkCard title="honest-review" href="/skills/honest-review/" description="Confidence-scored code review with evidence validation. Session or full codebase audit. Use when reviewing changes or auditing quality." />
   <LinkCard title="host-panel" href="/skills/host-panel/" description="Simulated expert panel discussions. Roundtable, Oxford-style, Socratic formats. Use when exploring topics from multiple perspectives." />
+  <LinkCard title="incident-response-engineer" href="/skills/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use during outages." />
   <LinkCard title="infrastructure-coder" href="/skills/infrastructure-coder/" description="Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work." />
   <LinkCard title="learn" href="/skills/learn/" description="Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights." />
   <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
-  <LinkCard title="namer" href="/skills/namer/" description="TODO — What this skill does and when to use it" />
+  <LinkCard title="namer" href="/skills/namer/" description="Name anything: projects, products, companies, packages." />
+  <LinkCard title="observability-advisor" href="/skills/observability-advisor/" description="Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps." />
   <LinkCard title="orchestrator" href="/skills/orchestrator/" description="Parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks." />
   <LinkCard title="performance-profiler" href="/skills/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
   <LinkCard title="prompt-engineer" href="/skills/prompt-engineer/" description="Prompt engineering for any AI system. Craft, analyze, convert between models, evaluate with rubrics. Use for system prompts, agent prompts, tool defs." />
   <LinkCard title="reasoning-router" href="/skills/reasoning-router/" description="Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning." />
+  <LinkCard title="release-pipeline-architect" href="/skills/release-pipeline-architect/" description="Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines." />
   <LinkCard title="research" href="/skills/research/" description="Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking." />
+  <LinkCard title="schema-evolution-planner" href="/skills/schema-evolution-planner/" description="Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops." />
   <LinkCard title="security-scanner" href="/skills/security-scanner/" description="Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit." />
   <LinkCard title="shell-scripter" href="/skills/shell-scripter/" description="Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work." />
   <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills." />
@@ -81,48 +94,24 @@ Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a d
 </CardGrid>
 </div>
 
-## Convention Skills (3)
+## Convention Skills (4)
 
 <Badge text="Auto-invoked" variant="caution" /> The agent loads these automatically when it detects relevant context -- no manual invocation needed. They enforce consistency across the codebase.
+
+Convention skills stay out of the `/` menu but remain available to the agent. When the repo context matches, they quietly apply the right rules, tooling, and formatting patterns.
 
 <div class="catalog-skill">
 <CardGrid>
   <LinkCard title="agent-conventions" href="/skills/agent-conventions/" description="Agent definition conventions. Validate frontmatter, update indexes. Use when creating or modifying agents. NOT for skills, MCP servers, or CLAUDE.md." />
   <LinkCard title="javascript-conventions" href="/skills/javascript-conventions/" description="JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts." />
   <LinkCard title="python-conventions" href="/skills/python-conventions/" description="Python tooling conventions. Enforce uv, ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts." />
+  <LinkCard title="shell-conventions" href="/skills/shell-conventions/" description="Shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files." />
 </CardGrid>
 </div>
 
 <Aside type="note" title="How convention skills work">
 Convention skills set `user-invocable: false` in their frontmatter. This hides them from the `/` menu but keeps their descriptions in the agent's context, allowing automatic discovery and invocation when the agent encounters matching file types or patterns.
 </Aside>
-
-## Installed Skills (18)
-
-<Badge text="External" variant="default" /> Third-party skills installed from the [agentskills.io](https://agentskills.io) ecosystem via `npx skills add`. These live in `~/.claude/skills/` and are available across all your projects.
-
-<div class="catalog-installed">
-<CardGrid>
-  <LinkCard title="agents-md-updater" href="/skills/installed/#agents-md-updater" description="Validate AGENTS.md against actual codebase - checks commands, paths, test config, and links. Use after code changes or before commits." />
-  <LinkCard title="continuous-improvement" href="/skills/installed/#continuous-improvement" description="Instruction file maintenance protocol. Propose updates when a pattern is corrected 3+ times across 2+ sessions. Route: cross-project → global." />
-  <LinkCard title="docx" href="/skills/installed/#docx" description="Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files)." />
-  <LinkCard title="domain-name-brainstormer" href="/skills/installed/#domain-name-brainstormer" description="Generates creative domain name ideas for your project and checks availability across multiple TLDs (.com, .io, .dev, .ai, etc.)." />
-  <LinkCard title="file-organizer" href="/skills/installed/#file-organizer" description="Intelligently organizes your files and folders across your computer by understanding context, finding duplicates, suggesting better structures, and automating…" />
-  <LinkCard title="find-skills" href="/skills/installed/#find-skills" description="Helps users discover and install agent skills when they ask questions like &quot;how do I do X&quot;, &quot;find a skill for X&quot;, &quot;is there a skill that can..." />
-  <LinkCard title="frontend-design" href="/skills/installed/#frontend-design" description="Create distinctive, production-grade frontend interfaces with high design quality." />
-  <LinkCard title="image-enhancer" href="/skills/installed/#image-enhancer" description="Improves the quality of images, especially screenshots, by enhancing resolution, sharpness, and clarity." />
-  <LinkCard title="kaizen" href="/skills/installed/#kaizen" description="Use when Code implementation and refactoring, architecturing or designing systems, process and workflow improvements, error handling and validation." />
-  <LinkCard title="pdf" href="/skills/installed/#pdf" description="Use this skill whenever the user wants to do anything with PDF files." />
-  <LinkCard title="pptx" href="/skills/installed/#pptx" description="Use this skill any time a .pptx file is involved in any way — as input, output, or both." />
-  <LinkCard title="project-context" href="/skills/installed/#project-context" description="Summarize the project context and key constraints" />
-  <LinkCard title="subagent-driven-development" href="/skills/installed/#subagent-driven-development" description="Use when executing implementation plans with independent tasks in the current session or facing 3+ independent issues that can be investigated without shared…" />
-  <LinkCard title="test-driven-development" href="/skills/installed/#test-driven-development" description="Use when implementing any feature or bugfix, before writing implementation code" />
-  <LinkCard title="using-git-worktrees" href="/skills/installed/#using-git-worktrees" description="Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart…" />
-  <LinkCard title="web-artifacts-builder" href="/skills/installed/#web-artifacts-builder" description="Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui)." />
-  <LinkCard title="webapp-testing" href="/skills/installed/#webapp-testing" description="Toolkit for interacting with and testing local web applications using Playwright." />
-  <LinkCard title="xlsx" href="/skills/installed/#xlsx" description="Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing ." />
-</CardGrid>
-</div>
 
 ---
 

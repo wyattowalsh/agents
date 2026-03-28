@@ -9,7 +9,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 <Badge text="mcp-creator" variant="note" /> <Badge text="2489 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
 
-> Build production-ready MCP servers using FastMCP v3. Guides research, scaffolding, tool/resource/prompt implementation, testing, and deployment. Targets FastMCP 3.0.0rc2 with Providers, Transforms, middleware, OAuth, and composition. Use when creating MCP servers, integrating APIs via MCP, converting OpenAPI specs or FastAPI apps, or troubleshooting FastMCP issues. NOT for building REST APIs, CLI tools, or non-MCP integrations.
+> Build MCP servers with FastMCP v3. Research, scaffold, implement, test, and deploy. Use when creating MCP servers or integrating APIs via MCP. NOT for REST APIs, CLI tools, or non-MCP integrations.
 
 <div class="quick-start">
 
@@ -34,14 +34,14 @@ Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides
 Before implementation, fetch current FastMCP v3 docs via Context7 or WebFetch (`https://gofastmcp.com/llms-full.txt`). If live docs contradict bundled references, live docs win.
 </Aside>
 
-## Modes
+## Dispatch
 
 | $ARGUMENTS pattern | Mode | Start at |
 |---------------------|------|----------|
 | Service/API name (e.g., "GitHub", "Stripe") | **New server** | Phase 1 |
 | Path to existing server (e.g., `mcp/myserver/`) | **Extend** | Phase 3 |
-| OpenAPI spec URL or file path | **Convert OpenAPI** | Phase 2 (scaffold) then `references/server-composition.md` section 6 |
-| FastAPI app to convert | **Convert FastAPI** | Phase 2 (scaffold) then `references/server-composition.md` section 7 |
+| OpenAPI spec URL or file path | **Convert OpenAPI** | Phase 2 (scaffold) then load `references/server-composition.md` §6 |
+| FastAPI app to convert | **Convert FastAPI** | Phase 2 (scaffold) then load `references/server-composition.md` §7 |
 | Error message or "debug" + description | **Debug** | Load `references/common-errors.md`, match symptom |
 | "learn" or conceptual question | **Learn** | Load relevant reference file, explain |
 | Empty | **Gallery / help overview** | Show available modes and example invocations |
@@ -143,12 +143,9 @@ These are non-negotiable. Violating any of these produces broken MCP servers.
 ---
 name: mcp-creator
 description: >-
-  Build production-ready MCP servers using FastMCP v3. Guides research,
-  scaffolding, tool/resource/prompt implementation, testing, and deployment.
-  Targets FastMCP 3.0.0rc2 with Providers, Transforms, middleware, OAuth,
-  and composition. Use when creating MCP servers, integrating APIs via MCP,
-  converting OpenAPI specs or FastAPI apps, or troubleshooting FastMCP issues.
-  NOT for building REST APIs, CLI tools, or non-MCP integrations.
+  Build MCP servers with FastMCP v3. Research, scaffold, implement, test,
+  deploy. Use when creating MCP servers or integrating APIs via MCP. NOT for
+  REST APIs, CLI tools, or non-MCP integrations.
 license: MIT
 argument-hint: "<service or API to integrate>"
 model: opus

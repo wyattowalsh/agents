@@ -1,0 +1,228 @@
+---
+title: "release-pipeline-architect"
+description: "Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="release-pipeline-architect" variant="note" /> <Badge text="853 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
+
+> Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/release-pipeline-architect -g
+```
+
+**Use:** `/release-pipeline-architect` `<mode> [target]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/release-pipeline-architect/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Design release pipelines that move one immutable artifact through test, staging, and production with clear gates, rollout strategy, and rollback procedure.
+
+## Modes
+
+| $ARGUMENTS | Mode |
+|------------|------|
+| `design <requirements>` | Design a release pipeline and operating model |
+| `review <pipeline or runbook>` | Audit an existing release flow |
+| `cutover <release>` | Plan the release-day sequence and handoffs |
+| `hotfix <incident>` | Design an emergency release lane |
+| `checklist <release type>` | Produce a release readiness checklist |
+| Natural language about release workflows | Auto-detect the closest mode |
+| Empty | Show the mode menu with examples |
+
+## Critical Rules
+
+1. Always promote one immutable artifact across environments. Never rebuild for production.
+2. Always define a rollback point before production rollout begins.
+3. Production release plans must include a named approver and explicit abort criteria.
+4. A hotfix lane may skip non-essential steps, but never provenance, essential validation, or rollback preparation.
+5. Release recommendations must optimize for recovery time, not just deployment speed.
+6. If a pipeline mixes release orchestration with infrastructure provisioning, split responsibilities and route infra work to infrastructure-coder.
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `release-pipeline-architect` |
+| License | MIT |
+| Version | 1.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[mode] [target]` |
+  </TabItem>
+</Tabs>
+
+## Related Skills
+
+<CardGrid>
+  <LinkCard title="devops-engineer" href="/skills/devops-engineer/" description="Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work." />
+  <LinkCard title="incident-response-engineer" href="/skills/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use during outages." />
+  <LinkCard title="changelog-writer" href="/skills/changelog-writer/" description="Generate changelogs, release notes, and migration guides from git history. Parse conventional commits. Use for releases." />
+</CardGrid>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: release-pipeline-architect
+description: >-
+  Release workflow architecture for versioning, artifact promotion, rollout
+  safety, and rollback design. Use for release pipelines. NOT for generic CI
+  tuning or infrastructure.
+argument-hint: "<mode> [target]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0"
+---
+
+# Release Pipeline Architect
+
+Design release pipelines that move one immutable artifact through test, staging,
+and production with clear gates, rollout strategy, and rollback procedure.
+
+**Scope:** Release orchestration after code is ready. NOT for infrastructure
+provisioning (infrastructure-coder), generic CI job optimization
+(devops-engineer), or release-note writing (changelog-writer).
+
+## Canonical Vocabulary
+
+| Term | Definition |
+|------|------------|
+| **release candidate** | A versioned build proposed for promotion |
+| **artifact** | The immutable build output promoted across environments |
+| **promotion** | Moving the same artifact to the next environment |
+| **gate** | A manual or automated approval checkpoint |
+| **provenance** | Evidence tying an artifact to source commit, build, and checks |
+| **rollout** | The production exposure strategy: all-at-once, canary, or phased |
+| **rollback point** | The last known-good release that can be restored safely |
+| **freeze window** | A period where changes are limited to release-critical work |
+| **hotfix lane** | A minimal path for urgent production repairs |
+
+## Dispatch
+
+| $ARGUMENTS | Mode |
+|------------|------|
+| `design <requirements>` | Design a release pipeline and operating model |
+| `review <pipeline or runbook>` | Audit an existing release flow |
+| `cutover <release>` | Plan the release-day sequence and handoffs |
+| `hotfix <incident>` | Design an emergency release lane |
+| `checklist <release type>` | Produce a release readiness checklist |
+| Natural language about release workflows | Auto-detect the closest mode |
+| Empty | Show the mode menu with examples |
+
+## Mode Menu
+
+| # | Mode | Example |
+|---|------|---------|
+| 1 | Design | `design weekly SaaS release with staging and canary prod` |
+| 2 | Review | `review .github/workflows/release.yml` |
+| 3 | Cutover | `cutover v2.8.0` |
+| 4 | Hotfix | `hotfix rollback path for broken payments deploy` |
+| 5 | Checklist | `checklist mobile app store release` |
+
+## When to Use
+
+- Creating or redesigning a release workflow
+- Introducing staging, promotion, canary, or rollback controls
+- Formalizing release-day roles, approvals, or freeze windows
+- Building a hotfix process that bypasses non-essential steps safely
+- Reviewing a pipeline that rebuilds artifacts per environment or lacks rollback
+
+## Instructions
+
+### Mode: Design
+
+1. Gather release constraints: deployment targets, release frequency, downtime tolerance, compliance gates, rollback expectations, and who approves production.
+2. Identify the artifact boundary. Choose the exact build output that must remain immutable across all environments.
+3. Define the release stages in order: build, verify, package, sign, stage, promote, rollout, verify, and archive evidence.
+4. Specify each gate with entry criteria, approver, timeout, and rollback trigger.
+5. Choose a rollout pattern based on blast radius and recovery speed: all-at-once, canary, phased, or blue/green.
+6. Produce a release design that includes versioning scheme, provenance requirements, environment promotion rules, and rollback point handling.
+
+### Mode: Review
+
+1. Read the workflow, deployment runbook, or release checklist.
+2. Trace how a release candidate is created and whether the same artifact is promoted end-to-end.
+3. Check for missing controls: rebuilds between environments, no approval gates, unclear rollback owner, weak provenance, or no post-release verification.
+4. Classify findings as critical, warning, or info.
+5. Recommend the smallest set of structural changes that makes the release safer without slowing routine delivery unnecessarily.
+
+### Mode: Cutover
+
+1. Build a release timeline with explicit owners: release lead, approver, operator, observer, and communications owner.
+2. Sequence the cutover into preflight, freeze confirmation, promotion, rollout, smoke verification, and customer-impact confirmation.
+3. Define the exact rollback point before rollout starts.
+4. Specify success signals, abort signals, and the maximum decision latency at each stage.
+5. Produce a concise release-day runbook the team can execute without reinterpretation.
+
+### Mode: Hotfix
+
+1. Narrow scope to the smallest repair that restores service.
+2. Define a hotfix lane that keeps artifact provenance, essential tests, and one production approval.
+3. Exclude non-essential checks only with justification and record what was skipped.
+4. Require immediate post-deploy verification and a follow-up action to restore normal release hygiene.
+
+### Mode: Checklist
+
+1. Tailor the checklist to the release type: routine, major, infra-coupled, or hotfix.
+2. Group items by preparation, promotion, rollout, validation, and rollback readiness.
+3. Keep each item binary and observable.
+
+## Output Requirements
+
+- Include a stage-by-stage release flow.
+- Name the artifact, its provenance fields, and the rollback point.
+- State who approves production and what evidence they must see.
+- For review mode, rank findings by severity.
+
+## Critical Rules
+
+1. Always promote one immutable artifact across environments. Never rebuild for production.
+2. Always define a rollback point before production rollout begins.
+3. Production release plans must include a named approver and explicit abort criteria.
+4. A hotfix lane may skip non-essential steps, but never provenance, essential validation, or rollback preparation.
+5. Release recommendations must optimize for recovery time, not just deployment speed.
+6. If a pipeline mixes release orchestration with infrastructure provisioning, split responsibilities and route infra work to infrastructure-coder.
+
+## Scope Boundaries
+
+**IS for:** release trains, approvals, environment promotion, rollout strategy, rollback design, cutover sequencing.
+
+**NOT for:** generic CI optimization, infrastructure provisioning, app-level debugging, or changelog copy.
+
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/release-pipeline-architect/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/release-pipeline-architect/SKILL.md)

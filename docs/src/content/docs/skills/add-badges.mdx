@@ -9,7 +9,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 <Badge text="add-badges" variant="note" /> <Badge text="1448 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
-> Scan a codebase to detect languages, frameworks, CI/CD pipelines, package managers, and tools, then generate and insert shields.io badges into the README with correct icons, brand colors, and live data endpoints. Use when adding badges, updating badges, removing badges, improving README appearance, adding shields, adding CI status badges, or making a README look more professional. NOT for README content writing, documentation generation, or CI/CD setup.
+> Detect stack and generate shields.io README badges with icons, colors, and live endpoints. Use when adding or updating badges. NOT for README writing, docs, or CI/CD setup.
 
 <div class="quick-start">
 
@@ -54,6 +54,19 @@ Preset badge selections by project maturity:
 | `enterprise` | 15-20 | ALL 16 categories including OpenSSF |
 
 No profile = auto-select based on detected features.
+
+## Dispatch
+
+| Input | Behavior |
+|------|----------|
+| `/add-badges` (no flags) | Auto-detect stack, auto-select badges, preview, then ask approval before writing |
+| `--profile <new\|active\|mature\|enterprise>` | Use maturity preset; overrides `--include` / `--exclude` |
+| `--include <categories>` | Generate badges only from listed categories (**mutually exclusive with `--exclude`**) |
+| `--exclude <categories>` | Skip listed categories (supports `tech-stack` alias) (**mutually exclusive with `--include`**) |
+| `--dry-run` | Show proposed block + diff indicators, then exit without file changes |
+| `--yes` | Skip approval prompt before write (but still prompts for missing required info) |
+| `--replace` | Replace marker block and consolidate scattered badges into it |
+| Removal-only request (e.g., "remove social badges") | Skip detection and update only the existing badge block |
 
 ## Display Super-Groups
 
@@ -131,7 +144,7 @@ Non-negotiable constraints for every badge operation:
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="honest-review" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with strengths acknowledgment, creative review lenses, AI code smell detection, and severity calibration by project type." />
+  <LinkCard title="honest-review" href="/skills/honest-review/" description="Confidence-scored code review with evidence validation for session diffs and full codebase audits." />
 </CardGrid>
 
 <details>

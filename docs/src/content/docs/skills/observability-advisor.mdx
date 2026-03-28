@@ -1,0 +1,264 @@
+---
+title: "observability-advisor"
+description: "Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="observability-advisor" variant="note" /> <Badge text="1180 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
+
+> Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/observability-advisor -g
+```
+
+**Use:** `/observability-advisor` `<mode> [target]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/observability-advisor/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Design and review telemetry that helps teams detect, diagnose, and improve service behavior before and during reliability problems.
+
+## Modes
+
+| $ARGUMENTS | Mode |
+|------------|------|
+| `design <system>` | Design an observability architecture for a service or workflow |
+| `review <service or stack>` | Audit existing telemetry, dashboards, and alerts |
+| `instrument <service or path>` | Plan what to emit and where to add instrumentation |
+| `alert <service or journey>` | Design actionable alerting and escalation |
+| `slo <service or journey>` | Define SLIs, SLOs, and error budget policy |
+| `investigate <signal or symptom>` | Structure cross-signal diagnosis for an issue |
+| Natural language about logs, metrics, traces, dashboards, or alerting | Auto-detect the closest mode |
+| Empty | Show the mode menu with examples |
+
+## Critical Rules
+
+1. Tie every telemetry plan to user or business outcomes, not just infrastructure internals.
+2. Correlate logs, metrics, and traces with stable request or workflow identifiers.
+3. Avoid high-cardinality labels and raw PII in telemetry.
+4. Keep dashboards, alerts, and runbooks as distinct artifacts with distinct purposes.
+5. Page only on symptoms or leading indicators that demand operator action.
+6. Route vendor-specific implementation to the relevant platform skill, such as cloudwatch for AWS-native setup.
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `observability-advisor` |
+| License | MIT |
+| Version | 1.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[mode] [target]` |
+  </TabItem>
+</Tabs>
+
+## Related Skills
+
+<CardGrid>
+  <LinkCard title="incident-response-engineer" href="/skills/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use during outages." />
+  <LinkCard title="performance-profiler" href="/skills/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
+  <LinkCard title="devops-engineer" href="/skills/devops-engineer/" description="Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work." />
+</CardGrid>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: observability-advisor
+description: >-
+  Design and review logs, metrics, traces, SLOs, and alerting for reliable
+  systems. Use for telemetry strategy and coverage gaps. NOT for live incident
+  command or vendor-specific setup.
+argument-hint: "<mode> [target]"
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0"
+---
+
+# Observability Advisor
+
+Design and review telemetry that helps teams detect, diagnose, and improve
+service behavior before and during reliability problems.
+
+**Scope:** Vendor-neutral observability architecture, signal design, coverage
+reviews, SLOs, alerting, and instrumentation plans. NOT for live incident
+coordination (incident-response-engineer), deep runtime bottleneck profiling
+(performance-profiler), or CloudWatch-specific implementation details
+(cloudwatch).
+
+## Canonical Vocabulary
+
+| Term | Definition |
+|------|------------|
+| **telemetry** | Logs, metrics, traces, profiles, and events emitted by a system |
+| **signal** | A measurable indicator used to detect or explain behavior |
+| **metric** | Numeric time-series measurement aggregated over time |
+| **log** | Structured event record capturing context for a specific occurrence |
+| **trace** | End-to-end record of work moving through distributed components |
+| **span** | A timed unit of work within a trace |
+| **SLI** | Concrete measurement of a user-relevant reliability property |
+| **SLO** | Target threshold and window for an SLI |
+| **error budget** | Allowed unreliability implied by an SLO over its window |
+| **cardinality** | Number of unique label or attribute values attached to telemetry |
+
+## Dispatch
+
+| $ARGUMENTS | Mode |
+|------------|------|
+| `design <system>` | Design an observability architecture for a service or workflow |
+| `review <service or stack>` | Audit existing telemetry, dashboards, and alerts |
+| `instrument <service or path>` | Plan what to emit and where to add instrumentation |
+| `alert <service or journey>` | Design actionable alerting and escalation |
+| `slo <service or journey>` | Define SLIs, SLOs, and error budget policy |
+| `investigate <signal or symptom>` | Structure cross-signal diagnosis for an issue |
+| Natural language about logs, metrics, traces, dashboards, or alerting | Auto-detect the closest mode |
+| Empty | Show the mode menu with examples |
+
+## When to Use
+
+- A team can see failures but cannot explain them quickly
+- Alerts are noisy, late, or missing user-impact context
+- A service lacks clear SLIs, SLOs, or error budget policy
+- You need to add instrumentation to a new service, workflow, or migration
+- Dashboards exist but ownership, escalation, or runbook linkage is weak
+
+## Classification Gate
+
+- If the task is active outage coordination, use incident-response-engineer.
+- If the task is CPU, memory, query, or runtime hotspot analysis, use performance-profiler.
+- If the task is AWS-native dashboard, alarm, or log-group setup, use cloudwatch.
+- If the task is CI, deploy, or platform rollout wiring, use devops-engineer.
+
+## Mode Menu
+
+| # | Mode | Example |
+|---|------|---------|
+| 1 | Design | `design observability for multi-region checkout service` |
+| 2 | Review | `review telemetry coverage for payments-api` |
+| 3 | Instrument | `instrument order placement workflow across api and workers` |
+| 4 | Alert | `alert strategy for login availability and latency` |
+| 5 | SLO | `slo for customer webhook delivery` |
+| 6 | Investigate | `investigate rising 5xx with queue lag and timeout traces` |
+
+## Instructions
+
+### Mode: Design
+
+1. Identify the user journeys, critical dependencies, and failure domains that matter most.
+2. Define the questions operators must be able to answer within minutes during degradation.
+3. Choose the minimum useful signals across logs, metrics, and traces for each critical boundary.
+4. Specify correlation identifiers, structured fields, and service naming so signals can be joined reliably.
+5. Define dashboards, alerts, runbook links, and ownership for each critical path.
+6. Call out sampling, retention, and cardinality constraints before recommending implementation details.
+
+### Mode: Review
+
+1. Inspect current logs, metrics, traces, dashboards, alerts, and on-call pathways.
+2. Check whether user-visible symptoms can be detected before customer reports arrive.
+3. Identify blind spots, duplicate signals, noisy alerts, weak labels, and missing trace correlation.
+4. Separate findings into coverage gaps, alert quality issues, and operational debt.
+5. Rank issues by detection risk and operator impact.
+
+### Mode: Instrument
+
+1. Map the request or workflow path and identify the decision points, retries, queues, and external calls.
+2. Define which metrics, logs, and spans should be emitted at each boundary.
+3. Require stable request, tenant, or workflow identifiers only where they aid diagnosis without creating cardinality explosions.
+4. Keep logs structured and redact or exclude secrets and unnecessary PII.
+5. Produce a rollout plan that starts with the highest-value path first.
+
+### Mode: Alert
+
+1. Distinguish page-worthy conditions from ticket-only or dashboard-only signals.
+2. Prefer alerts tied to user symptoms, SLO burn, saturation, or stalled workflows over internal noise.
+3. Define threshold, duration, owner, runbook, and escalation target for every alert.
+4. Call out what evidence an operator should inspect first after the alert fires.
+5. Reduce duplicate alerts that page different teams for the same symptom.
+
+### Mode: SLO
+
+1. Start from the user-facing promise, not the easiest internal metric to measure.
+2. Define the SLI precisely: numerator, denominator, exclusions, and measurement window.
+3. Choose a target that matches business expectations and operational reality.
+4. State the error budget policy, review cadence, and what actions are triggered when the budget is burned.
+5. Separate availability, latency, freshness, or correctness objectives when one combined SLO would hide tradeoffs.
+
+### Mode: Investigate
+
+1. Start from verified symptoms, not assumed root causes.
+2. Correlate recent deploys, traffic changes, metrics, logs, traces, and dependency health.
+3. Build a short hypothesis list and name the next measurement that would confirm or reject each one.
+4. Distinguish signal quality problems from system behavior problems.
+5. If the issue is actively impacting customers and needs command-and-control response, route to incident-response-engineer.
+
+## Output Requirements
+
+- Every design must name the key questions, signals, owners, and escalation path.
+- Every review must separate missing coverage, alert quality, and observability debt.
+- Every instrumentation plan must define correlation strategy and data-safety constraints.
+- Every alert plan must distinguish paging from informational notifications.
+- Every SLO plan must name the SLI, target, window, and error budget policy.
+
+## Critical Rules
+
+1. Tie every telemetry plan to user or business outcomes, not just infrastructure internals.
+2. Correlate logs, metrics, and traces with stable request or workflow identifiers.
+3. Avoid high-cardinality labels and raw PII in telemetry.
+4. Keep dashboards, alerts, and runbooks as distinct artifacts with distinct purposes.
+5. Page only on symptoms or leading indicators that demand operator action.
+6. Route vendor-specific implementation to the relevant platform skill, such as cloudwatch for AWS-native setup.
+
+## Scaling Strategy
+
+- Start with the highest-value user journey or failure path before broadening coverage.
+- Prefer one dependable service-level dashboard and a small alert set over wide but noisy signal sprawl.
+- Expand dimensions, retention, and trace depth only after the base signal set proves useful in practice.
+
+## State Management
+
+- Preserve correlation identifiers across service boundaries, queue hops, and async retries.
+- Track alert ownership, runbook links, and SLO definitions as first-class operational metadata.
+- Re-evaluate telemetry after major architecture, dependency, or traffic-shape changes.
+
+## Scope Boundaries
+
+**IS for:** telemetry design, coverage reviews, instrumentation strategy, SLO definition, alert quality, cross-signal diagnosis.
+
+**NOT for:** live incident command, low-level profiler output analysis, or vendor-specific configuration walkthroughs.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/observability-advisor/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/observability-advisor/SKILL.md)

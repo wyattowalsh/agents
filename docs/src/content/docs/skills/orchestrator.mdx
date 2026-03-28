@@ -9,7 +9,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 <Badge text="orchestrator" variant="note" /> <Badge text="1483 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
-> Build and deploy parallel execution via subagent waves, agent teams, and multi-wave pipelines. Use when the Decomposition Gate identifies 2+ independent actions or when spawning teams. NOT for single-action tasks or non-parallel work.
+> Parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks.
 
 <div class="quick-start">
 
@@ -34,7 +34,7 @@ These rules govern ALL parallelization decisions. Apply them on every task. The 
 MANDATORY before any tool-mediated work. Decompose the request, classify actions as independent or dependent, then dispatch accordingly. Skipping the gate is never acceptable.
 </Aside>
 
-## Modes
+## Dispatch
 
 | $ARGUMENTS | Action |
 |------------|--------|
@@ -66,6 +66,23 @@ Before executing any request that involves tool-mediated work:
 **Fast path:** Single-action requests skip directly to single session.
 **Explore-first path:** Cannot decompose without exploration? Dispatch parallel exploration subagents first (Pattern F Wave 1), then re-enter the gate.
 **Transition heuristic:** Subagent waves hitting context limits or agents need to share findings → upgrade to Pattern E (teams + nested waves).
+**User override:** Explicit user requests for a specific execution approach take precedence.
+
+### Common rationalizations (all invalid)
+- "It's faster to do it myself" — Parallel subagents complete N tasks in time of the slowest 1.
+- "The task is too simple" — If it has 2+ independent actions, parallelize them.
+- "I'll just do this one thing first" — Decompose BEFORE doing anything.
+
+### Mode constraints
+- **Plan mode**: Read-only subagents only. No teams, no write-capable agents.
+- **Implementation mode**: All tiers available. Default to highest applicable tier.
+- **Delegate mode**: Lead orchestrates only. All implementation via teammates/subagents.
+
+### Skill integration
+When a superpowers skill is active, the gate operates WITHIN the skill's execution structure:
+- **Phase-gated skills**: Parallelize within each phase. Do not parallelize across phase boundaries.
+- **Per-task review loop skills**: The skill's sequential structure takes precedence. Parallelize exploration within each task, not across tasks.
+- **Dispatch-precondition skills**: The skill's "Don't use when" conditions remain valid. The gate does not override skill-level safety guards.
 
 ## Tier Selection
 
@@ -73,8 +90,8 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
 | **Single session** | Direct execution | Exactly 1 action | N/A |
 
 ## Orchestration Patterns
@@ -92,9 +109,9 @@ See `references/patterns.md` for detailed patterns with ASCII diagrams, key rule
 
 ## Model Selection
 
-| Model | Use for |
-|-------|---------|
-| `opus` | The ONLY model. Every subagent, every teammate, every wave. No exceptions. Never downgrade. |
+- Default policy: `opus` for every subagent, teammate, and wave.
+- GitHub Copilot CLI override: `gpt-5.4` with `xhigh` effort for every subagent, teammate, wave, and `/fleet` member.
+- When both policies are present, apply the environment-specific override for the active runtime.
 
 ## The Accounting Rule
 
@@ -132,8 +149,11 @@ MANDATORY after every parallel dispatch. When N agents are dispatched, all N mus
 - One team per session -- clean up before starting a new one
 - Lead is fixed -- cannot transfer leadership
 - All teammates inherit the lead's permission mode at spawn
+- Subagent resumption may not recover from all failure modes (re-spawn instead)
 - No built-in timeout detection -- orchestrator must poll with `TaskOutput` manually
 - Recovery re-spawns count toward the session's agent budget
+- Display modes: in-process (Shift+Down to cycle) is default; split panes require tmux or iTerm2
+- Teammate interaction: Enter to view session, Escape to interrupt, Ctrl+T for task list
 
 ## Critical Rules
 
@@ -171,9 +191,8 @@ MANDATORY after every parallel dispatch. When N agents are dispatched, all N mus
 ---
 name: orchestrator
 description: >
-  Build and deploy parallel execution via subagent waves, agent teams, and
-  multi-wave pipelines. Use when the Decomposition Gate identifies 2+ independent
-  actions or when spawning teams. NOT for single-action tasks or non-parallel work.
+  Parallel execution via subagent waves, teams, and pipelines. Use when 2+
+  independent actions need coordination. NOT for single-action tasks.
 license: MIT
 metadata:
   author: wyattowalsh
@@ -249,8 +268,8 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
 | **Single session** | Direct execution | Exactly 1 action | N/A |
 
 Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
@@ -269,7 +288,9 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 - Do NOT rely on the subagent inheriting conversation history — it does not.
 
 ### Model selection
-- `opus` — the ONLY model. Every subagent, every teammate, every wave. No exceptions. Never downgrade for any reason.
+- Default policy: `opus` for every subagent, teammate, and wave.
+- GitHub Copilot CLI override: `gpt-5.4` with `xhigh` effort for every subagent, teammate, wave, and `/fleet` member.
+- When both policies are present, apply the environment-specific override for the active runtime.
 
 ### Context management
 - Delegate verbose operations (test suites, log parsing, doc fetching) to subagents.
