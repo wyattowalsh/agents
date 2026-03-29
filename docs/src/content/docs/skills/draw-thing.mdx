@@ -1,0 +1,437 @@
+---
+title: "draw-thing"
+description: "Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS. NOT for UI implementation (frontend-designer)."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="draw-thing" variant="note" /> <Badge text="1890 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+
+> Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS. NOT for UI implementation (frontend-designer).
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wyattowalsh/agents/skills/draw-thing -g
+```
+
+**Use:** `/draw-thing` `<mode> [prompt or path] [--model flux|sdxl|sd15]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/draw-thing/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Things inference stack for txt2img, img2img, upscaling, inpainting, ControlNet, LoRA, batch generation, and hi-res fix on macOS.
+
+## Modes
+
+| `$ARGUMENTS` | Mode | Action |
+|--------------|------|--------|
+| `generate <prompt>` / `create <prompt>` | **Generate** | txt2img via CLI |
+| `edit <path> <prompt>` / `transform <path>` | **Edit** | img2img with `--strength` |
+| `upscale <path>` / `enhance <path>` / `superres <path>` | **Upscale** | `--upscaler` + `--upscaler-scale-factor` |
+| `inpaint <path> <mask> <prompt>` | **Inpaint** | img2img with mask input |
+| `controlnet <control_path> <prompt>` / `cn <path> <prompt>` | **ControlNet** | `--controls` JSON |
+| `lora <prompt> --lora <name>` | **LoRA** | `--loras` JSON |
+| `batch <prompt>` / `variations <prompt>` | **Batch** | `--batch-count` variations |
+| `model <name>` / `use <name>` | **Model info** | Show recommended settings |
+| `refine` / `iterate` | **Refine** | Re-run with adjusted params, locked seed |
+| `gallery` / `recent` | **Gallery** | List recent outputs |
+| _(empty)_ | **Help** | Verify CLI, show modes, examples |
+| Natural language image description | Auto: **Generate** | Detect prompt intent |
+| Path to image + modification intent | Auto: **Edit/Upscale** | Detect intent from context |
+
+## Critical Rules
+
+1. **Always check CLI** before any operation — `which draw-things-cli`
+2. **Always report the seed** so results are reproducible
+3. **Model-appropriate dimensions**: SD 1.5 -> 512x512, SDXL -> 1024x1024, Flux -> 1024x1024
+4. **Flux has NO negative prompt** — omit `--negative-prompt` entirely; use detailed positive descriptions
+5. **Prompt style must match model**: Flux = natural language, SD 1.5 = comma tags, SDXL = hybrid
+6. **Upscale preserves originals** — always output to a new file, never overwrite
+7. **Default output**: `~/Pictures/draw-thing/` with descriptive filenames
+8. **Show the full CLI command** before running — transparency enables learning and debugging
+9. **Upscaling denoising 0.2-0.4** — higher values alter the image instead of enhancing
+10. **Single-quote JSON** for `--loras` and `--controls` to prevent shell expansion
+11. **Refuse video requests** — out of scope for v1.0; Draw Things supports it but workflows differ
+12. **Verify unknown flags** — if unsure about a flag, run `draw-things-cli generate --help` first
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `draw-thing` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `opus` |
+| Argument Hint | `[mode] [prompt or path] [--model flux|sdxl|sd15]` |
+  </TabItem>
+  <TabItem label="Compatibility">
+| Field | Value |
+| ----- | ----- |
+| Allowed Tools | `Bash Read Glob` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: draw-thing
+description: >-
+  Local AI image generation via Draw Things CLI. txt2img, img2img, upscale,
+  inpaint, ControlNet, LoRA, batch. Use when you need local image work on
+  macOS. NOT for UI implementation (frontend-designer).
+argument-hint: "<mode> [prompt or path] [--model flux|sdxl|sd15]"
+model: opus
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+allowed-tools: Bash Read Glob
+---
+
+# Draw Thing
+
+Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Things inference stack for txt2img, img2img, upscaling, inpainting, ControlNet, LoRA, batch generation, and hi-res fix on macOS.
+
+**Scope:** Local Draw Things image generation and editing only. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research).
+
+---
+
+## Canonical Vocabulary
+
+| Term | Meaning | NOT |
+|------|---------|-----|
+| **txt2img** | Text-to-image generation: prompt in, image out | img2img |
+| **img2img** | Image-to-image: input image + prompt, modified image out | txt2img |
+| **upscale** | Increase resolution while preserving/enhancing detail | img2img with high strength |
+| **inpaint** | Replace content within a masked region | img2img (full image) |
+| **ControlNet** | Structural guidance from a control image (edges, depth, pose) | LoRA (style/subject) |
+| **LoRA** | Low-Rank Adaptation: small model add-on for style/subject | ControlNet (structure) |
+| **negative prompt** | Text describing what to exclude; essential for SD 1.5, minimal for SDXL, **unused for Flux** | positive prompt |
+| **cfg_scale** | Guidance scale: how literally the model follows the prompt | denoising strength |
+| **denoising strength** | How much to change an input image (0.0 = none, 1.0 = complete redraw) | cfg_scale |
+| **sampler** | Diffusion algorithm (DPM++ 2M Karras, Euler a, DDIM, etc.) | model |
+| **seed** | Random number determining exact output; same seed = same image | prompt |
+| **batch** | Generate multiple images in one run with different seeds | sequential runs |
+| **hi-res fix** | Two-pass: generate at low res, then upscale with denoising | standalone upscaler |
+
+---
+
+## Dispatch
+
+| `$ARGUMENTS` | Mode | Action |
+|--------------|------|--------|
+| `generate <prompt>` / `create <prompt>` | **Generate** | txt2img via CLI |
+| `edit <path> <prompt>` / `transform <path>` | **Edit** | img2img with `--strength` |
+| `upscale <path>` / `enhance <path>` / `superres <path>` | **Upscale** | `--upscaler` + `--upscaler-scale-factor` |
+| `inpaint <path> <mask> <prompt>` | **Inpaint** | img2img with mask input |
+| `controlnet <control_path> <prompt>` / `cn <path> <prompt>` | **ControlNet** | `--controls` JSON |
+| `lora <prompt> --lora <name>` | **LoRA** | `--loras` JSON |
+| `batch <prompt>` / `variations <prompt>` | **Batch** | `--batch-count` variations |
+| `model <name>` / `use <name>` | **Model info** | Show recommended settings |
+| `refine` / `iterate` | **Refine** | Re-run with adjusted params, locked seed |
+| `gallery` / `recent` | **Gallery** | List recent outputs |
+| _(empty)_ | **Help** | Verify CLI, show modes, examples |
+| Natural language image description | Auto: **Generate** | Detect prompt intent |
+| Path to image + modification intent | Auto: **Edit/Upscale** | Detect intent from context |
+
+### Auto-Detection Heuristic
+
+1. File path + "upscale/enhance/bigger/higher res/superres" -> **Upscale**
+2. File path + mask path + descriptive prompt -> **Inpaint**
+3. File path + modification verb (change, edit, transform, restyle) -> **Edit**
+4. Descriptive text with no file path -> **Generate**
+5. Ambiguous -> ask which mode
+
+---
+
+## Prerequisite Protocol
+
+Run this before any generation operation:
+
+1. Check CLI: `which draw-things-cli`
+2. If NOT found, show install command and STOP:
+   ```
+   brew tap drawthingsai/draw-things
+   brew install --HEAD drawthingsai/draw-things/draw-things-cli
+   ```
+3. If found, verify: `draw-things-cli generate --help`
+4. Detect model directory:
+   - Default: `~/Library/Containers/com.liuliu.draw-things/Data/Documents/Models`
+   - Override: `$DRAWTHINGS_MODELS_DIR`
+5. List available models if user needs guidance:
+   ```bash
+   ls "${DRAWTHINGS_MODELS_DIR:-$HOME/Library/Containers/com.liuliu.draw-things/Data/Documents/Models}"/*.{ckpt,safetensors} 2>/dev/null
+   ```
+
+---
+
+## Model Quick-Reference
+
+| Family | `--model` | Dims | Steps | CFG | Sampler | Prompt Style |
+|--------|-----------|------|-------|-----|---------|-------------|
+| **Flux Schnell** | `flux_1_schnell_q5p.ckpt` | 1024x1024 | 4 | 1.0 | `"Euler a"` | Natural language |
+| **Flux Dev** | `flux_1_dev_q6p.ckpt` | 1024x1024 | 30 | 1.0 | `"Euler a"` | Natural language |
+| **Flux Klein** | `flux_2_klein_4b_q6p.ckpt` | 1024x1024 | 4 | 1.0 | `"DPM++ 2M AYS"` | Natural language |
+| **SDXL** | `sd_xl_base_1.0.safetensors` | 1024x1024 | 25 | 7.0 | `"DPM++ 2M Karras"` | Tags + sentences |
+| **SD 1.5** | `v1-5-pruned-emaonly.ckpt` | 512x512 | 25 | 7.5 | `"DPM++ 2M Karras"` | Comma-separated tags |
+
+**Decision guide:**
+- Need fast prototyping? -> Flux Schnell or Klein (4 steps, ~1-2s)
+- Need best quality? -> Flux Dev (30 steps) or SDXL (Juggernaut XL)
+- Need huge LoRA library? -> SD 1.5 (most mature ecosystem)
+- Need text in images? -> Flux (dramatically better text rendering)
+- Low VRAM / fastest? -> SD 1.5 (4-6 GB)
+
+For full model catalog with checkpoints, quantization guide, and SDXL resolutions, load `references/model-catalog.md`.
+
+---
+
+## Core Generation Protocols
+
+Every mode follows this pattern:
+
+1. **Validate** — file exists? CLI available? model downloaded?
+2. **Select defaults** — from model quick-ref table (user overrides take precedence)
+3. **Build CLI command** — assemble all flags
+4. **Show command** — display the full command to user before running
+5. **Execute** — run via Bash, capture output
+6. **Report** — image path, seed used, dimensions
+
+**Flag verification note:** The examples below reflect the approved research plan. If your local CLI help differs — especially around `--image`, `--mask`, `--upscaler`, or output-path flags — trust `draw-things-cli generate --help` over this file and adapt the command.
+
+### Mode: Generate (txt2img)
+
+Build the command using model-appropriate defaults:
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --prompt "<prompt>" \
+  --negative-prompt "<negative>" \
+  --width <W> --height <H> \
+  --steps <N> \
+  --guidance-scale <cfg> \
+  --sampler "<sampler>" \
+  --seed <seed or -1>
+```
+
+- For **Flux**: omit `--negative-prompt` entirely (not supported). Write detailed natural language prompts.
+- For **SD 1.5**: include aggressive negative prompt. Use comma-separated tags. Load `references/prompt-patterns.md` for templates.
+- For **SDXL**: include short targeted negative prompt. Use descriptive sentences.
+
+### Mode: Edit (img2img)
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --image <input_path> \
+  --prompt "<what to change>" \
+  --strength 0.75 \
+  --steps <N> --guidance-scale <cfg>
+```
+
+- `--strength` controls how much to change: 0.3 = subtle, 0.5 = moderate, 0.75 = significant, 0.9 = near-complete redraw
+- If width/height not specified, preserve input image dimensions
+
+### Mode: Upscale
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --image <input_path> \
+  --upscaler <upscaler_filename> \
+  --upscaler-scale-factor <2 or 4> \
+  --strength 0.2 \
+  --steps 30
+```
+
+Available upscalers:
+
+| Upscaler | Filename | Scale |
+|----------|----------|-------|
+| Real-ESRGAN X2+ | `realesrgan_x2plus_f16.ckpt` | 2x |
+| Real-ESRGAN X4+ | `realesrgan_x4plus_f16.ckpt` | 4x |
+| Real-ESRGAN X4+ Anime | `realesrgan_x4plus_anime_6b_f16.ckpt` | 4x |
+| Remacri | `remacri_4x_f16.ckpt` | 4x |
+| 4x UltraSharp | `4x_ultrasharp_f16.ckpt` | 4x |
+
+- Default upscaler: `realesrgan_x4plus_f16.ckpt`
+- Use `--strength 0.2-0.4` for upscaling (preserve detail). Higher values alter the image.
+
+### Mode: Inpaint
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --image <input_path> \
+  --mask <mask_path> \
+  --prompt "<what to paint in masked area>" \
+  --strength 0.75 \
+  --mask-blur 4 \
+  --preserve-original-after-inpaint true
+```
+
+- Mask: white = area to repaint, black = keep original
+- Prompt should describe ONLY what goes in the masked area, not the full image
+- `--mask-blur 4` default; increase if seams are visible
+
+### Mode: ControlNet
+
+Load `references/controlnet-guide.md` for module details and weight recommendations.
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --image <control_image_path> \
+  --prompt "<prompt>" \
+  --controls '[{"file": "<controlnet_model>", "weight": 0.6, "guidanceStart": 0.0, "guidanceEnd": 1.0, "controlMode": "Balanced"}]' \
+  --width <W> --height <H>
+```
+
+Common modules: Canny (edges), Depth (spatial layout), Pose (human skeleton), Scribble (sketches), Tile (upscaling).
+
+### Mode: LoRA
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --prompt "<prompt>" \
+  --loras '[{"file": "<lora_filename>", "weight": 0.8}]' \
+  --width <W> --height <H>
+```
+
+- Default weight: 0.6. Range: -1.5 to 2.5. Typical: 0.5-1.0.
+- Multiple LoRAs: add objects to the JSON array
+- Modes: `"All"` (default), `"Base"`, `"Refiner"`
+
+### Mode: Batch
+
+```bash
+draw-things-cli generate \
+  --model <model> \
+  --prompt "<prompt>" \
+  --batch-count <N> \
+  --seed <start_seed> \
+  --width <W> --height <H>
+```
+
+- `--batch-count 4` generates 4 images with incrementing seeds
+- Use to explore variations, then pick the best seed for refinement
+
+### Mode: Refine
+
+Re-run the previous generation with adjustments:
+
+1. Lock the seed from the previous generation
+2. Adjust one parameter at a time (prompt, cfg, steps, strength)
+3. Compare results
+
+### Mode: Gallery
+
+```bash
+ls -lt "${DRAWTHINGS_OUTPUT_DIR:-$HOME/Pictures/draw-thing}/" | head -20
+```
+
+---
+
+## Prompt Engineering Quick-Reference
+
+| Model | Style | Example |
+|-------|-------|---------|
+| **Flux** | Natural language sentences, subject-first, camera/lens terms | `"Portrait of a woman with auburn hair, studio headshot, 85mm lens, f/1.8, soft diffused light, neutral backdrop"` |
+| **SDXL** | Descriptive sentences, Subject-Action-Location-Style | `"A majestic castle on a cliff overlooking the sea, golden hour lighting, dramatic clouds, highly detailed, masterpiece"` |
+| **SD 1.5** | Comma-separated tags, most important first | `"castle, cliff, ocean, golden hour, dramatic sky, highly detailed, masterpiece, best quality, 8k"` |
+
+**Flux has NO negative prompt support.** Frame exclusions positively: "perfect hands with five fingers" not "no extra fingers".
+
+For advanced prompt patterns, quality boosters, negative prompt templates, and weighting syntax, load `references/prompt-patterns.md`.
+
+---
+
+## Iterative Refinement Workflow
+
+1. **Generate** with a starting prompt and note the seed
+2. **Evaluate** the result — what's good? what needs changing?
+3. **Lock seed** (`--seed <value>`) to isolate the effect of parameter changes
+4. **Adjust one thing** at a time:
+   - Prompt wording -> changes content/composition
+   - `--guidance-scale` -> higher = more literal, lower = more creative
+   - `--steps` -> more steps = more detail (diminishing returns past 30-40)
+   - `--strength` (img2img) -> how much to change
+5. **Unlock seed** when satisfied with parameters, generate variations with `--seed -1`
+
+---
+
+## Output Handling
+
+- Default output directory: `~/Pictures/draw-thing/`
+- Create it if it doesn't exist: `mkdir -p ~/Pictures/draw-thing`
+- PNG files include embedded metadata (prompt, seed, model, parameters)
+- If `draw-things-cli` outputs to a different location, move/copy to the standard directory
+- Always report the output file path and seed to the user
+
+---
+
+## Reference Files
+
+Load ONE reference at a time. Do not preload all references into context.
+
+| File | Content | Load When |
+|------|---------|-----------|
+| `references/cli-reference.md` | Complete flag tables: 60+ flags, 19 samplers, 4 seed modes, JSON schemas | Building non-trivial commands, user asks about flags |
+| `references/model-catalog.md` | Model variants, checkpoints, SDXL resolutions, quantization guide | User asks about models, `model` mode |
+| `references/prompt-patterns.md` | Prompt engineering, quality boosters, negative templates, weighting | Complex prompts, quality issues |
+| `references/controlnet-guide.md` | Modules, weights, scheduling, multi-ControlNet, JSON format | ControlNet mode |
+| `references/workflow-recipes.md` | Multi-step recipes: character design, photo restoration, style transfer | Complex creative goals |
+
+---
+
+## Critical Rules
+
+1. **Always check CLI** before any operation — `which draw-things-cli`
+2. **Always report the seed** so results are reproducible
+3. **Model-appropriate dimensions**: SD 1.5 -> 512x512, SDXL -> 1024x1024, Flux -> 1024x1024
+4. **Flux has NO negative prompt** — omit `--negative-prompt` entirely; use detailed positive descriptions
+5. **Prompt style must match model**: Flux = natural language, SD 1.5 = comma tags, SDXL = hybrid
+6. **Upscale preserves originals** — always output to a new file, never overwrite
+7. **Default output**: `~/Pictures/draw-thing/` with descriptive filenames
+8. **Show the full CLI command** before running — transparency enables learning and debugging
+9. **Upscaling denoising 0.2-0.4** — higher values alter the image instead of enhancing
+10. **Single-quote JSON** for `--loras` and `--controls` to prevent shell expansion
+11. **Refuse video requests** — out of scope for v1.0; Draw Things supports it but workflows differ
+12. **Verify unknown flags** — if unsure about a flag, run `draw-things-cli generate --help` first
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/draw-thing/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/draw-thing/SKILL.md)
