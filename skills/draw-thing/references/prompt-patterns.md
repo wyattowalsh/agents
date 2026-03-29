@@ -72,7 +72,7 @@ SDXL bridges tags and natural language. Descriptive sentences outperform pure ta
 ### Rules
 - Subject → Action/State → Location → Style/Quality (S-A-L-S)
 - Include a short, focused negative prompt — avoid piling in every bad token.
-- CFG 7.0 default; raise to 9–12 for more literal adherence, lower to 5–6 for creative variation.
+- CFG 7.0 default; raise to 9–10 for more literal adherence, lower to 5–6 for creative variation.
 - Prompt weighting `(term:weight)` is supported — use sparingly (max 1.3–1.5 per term).
 
 ### Structure

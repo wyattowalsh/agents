@@ -47,12 +47,12 @@ Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Thin
 |--------------|------|--------|
 | `generate <prompt>` / `create <prompt>` | **Generate** | txt2img via CLI |
 | `edit <path> <prompt>` / `transform <path>` | **Edit** | img2img with `--strength` |
-| `upscale <path>` / `enhance <path>` / `superres <path>` | **Upscale** | `--upscaler` + `--upscaler-scale-factor` |
+| `upscale <path>` / `enhance <path>` / `superres <path>` | **Upscale** | `--upscaler` + `--upscaler-scale` |
 | `inpaint <path> <mask> <prompt>` | **Inpaint** | img2img with mask input |
 | `controlnet <control_path> <prompt>` / `cn <path> <prompt>` | **ControlNet** | `--controls` JSON |
 | `lora <prompt> --lora <name>` | **LoRA** | `--loras` JSON |
 | `batch <prompt>` / `variations <prompt>` | **Batch** | `--batch-count` variations |
-| `model <name>` / `use <name>` | **Model info** | Show recommended settings |
+| `model <name>` | **Model info** | Show recommended settings |
 | `refine` / `iterate` | **Refine** | Re-run with adjusted params, locked seed |
 | `gallery` / `recent` | **Gallery** | List recent outputs |
 | _(empty)_ | **Help** | Verify CLI, show modes, examples |
@@ -61,12 +61,13 @@ Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Thin
 
 ### Auto-Detection Heuristic
 
-1. File path + "upscale/enhance/bigger/higher res/superres" -> **Upscale**
-2. File path + mask path + descriptive prompt -> **Inpaint**
-3. File path + modification verb (change, edit, transform, restyle) -> **Edit**
-4. Descriptive text with no file path -> **Generate**
-5. Ambiguous -> ask which mode
-6. Keywords: animate, video, motion, gif, mp4 -> **Refuse**: out of scope for v1.0
+1. Keywords: animate, video, motion, gif, mp4 -> **Refuse**: out of scope for v1.0
+2. File path + "upscale/enhance/bigger/higher res/superres" -> **Upscale**
+3. File path + mask path + descriptive prompt -> **Inpaint**
+4. File path + "inpaint" keyword but NO mask path -> inform user a mask is required; offer to create one via ImageMagick or suggest Edit mode
+5. File path + modification verb (change, edit, transform, restyle) -> **Edit**
+6. Descriptive text with no file path -> **Generate**
+7. Ambiguous -> ask which mode
 
 ---
 
@@ -97,10 +98,10 @@ Run this before any generation operation:
 |--------|-----------|------|-------|-----|---------|-------------|
 | **Flux Schnell** | `flux_1_schnell_q5p.ckpt` | 1024x1024 | 4 | 1.0 | `"Euler a"` | Natural language |
 | **Flux Dev** | `flux_1_dev_q6p.ckpt` | 1024x1024 | 30 | 1.0 | `"Euler a"` | Natural language |
-| **Flux Klein** | `flux_2_klein_4b_q6p.ckpt` | 1024x1024 | 4 | 1.0 | `"DPMPP 2M AYS"` | Natural language |
-| **Flux Klein 9B** | `flux_2_klein_9b_q6p.ckpt` | 1024x1024 | 8 | 1.0 | `"DPMPP 2M AYS"` | Natural language |
-| **SDXL** | `sd_xl_base_1.0.safetensors` | 1024x1024 | 25 | 7.0 | `"DPMPP 2M Karras"` | Tags + sentences |
-| **SD 1.5** | `v1-5-pruned-emaonly.ckpt` | 512x512 | 25 | 7.5 | `"DPMPP 2M Karras"` | Comma-separated tags |
+| **Flux Klein** | `flux_2_klein_4b_q6p.ckpt` | 1024x1024 | 4 | 1.0 | `"DPM++ 2M AYS"` | Natural language |
+| **Flux Klein 9B** | `flux_2_klein_9b_q6p.ckpt` | 1024x1024 | 8 | 1.0 | `"DPM++ 2M AYS"` | Natural language |
+| **SDXL** | `sd_xl_base_1.0.safetensors` | 1024x1024 | 25 | 7.0 | `"DPM++ 2M Karras"` | Tags + sentences |
+| **SD 1.5** | `v1-5-pruned-emaonly.ckpt` | 512x512 | 25 | 7.5 | `"DPM++ 2M Karras"` | Comma-separated tags |
 
 **Decision guide:**
 - Need fast prototyping? -> Flux Schnell or Klein (4 steps, ~1-2s)
@@ -167,7 +168,7 @@ draw-things-cli generate \
   --model <model> \
   --image <input_path> \
   --upscaler <upscaler_filename> \
-  --upscaler-scale-factor <2 or 4> \
+  --upscaler-scale <2 or 4> \
   --strength 0.2 \
   --steps 30
 ```
@@ -253,16 +254,20 @@ Re-run the previous generation with adjustments:
 2. Adjust one parameter at a time (prompt, cfg, steps, strength)
 3. Compare results
 
-Example — previous generate used seed 42, now increase guidance:
+Example — previous SDXL generate used seed 42, now increase guidance:
 
 ```bash
 draw-things-cli generate \
-  --model flux_1_schnell_q5p.ckpt \
+  --model sd_xl_base_1.0.safetensors \
   --prompt "same prompt as before" \
   --seed 42 \
   --guidance-scale 9.0 \
+  --steps 25 \
+  --sampler "DPM++ 2M Karras" \
   --width 1024 --height 1024
 ```
+
+If the previous generation is not visible in the current conversation, ask the user for: the seed, the prompt, and the model used.
 
 ### Mode: Gallery
 
