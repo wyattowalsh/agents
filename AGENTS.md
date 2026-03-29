@@ -185,14 +185,14 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
-> All 38 custom skill descriptions are loaded at startup (~7,000 chars total). The table above highlights the auto-invoke convention skills. User-invocable skills include: honest-review, add-badges, host-panel, learn, mcp-creator, prompt-engineer, reasoning-router, skill-creator, wargame, security-scanner, database-architect, test-architect, api-designer, performance-profiler, devops-engineer, infrastructure-coder, git-workflow, tech-debt-analyzer, data-wizard, changelog-writer, docs-steward, shell-scripter, email-whiz, frontend-designer, research, namer, discover-skills, incident-response-engineer, data-pipeline-architect, event-driven-architect, release-pipeline-architect, schema-evolution-planner, observability-advisor.
+> All 40 custom skill descriptions are loaded at startup (~7,000 chars total). The table above highlights the auto-invoke convention skills. User-invocable skills include: honest-review, add-badges, host-panel, learn, mcp-creator, prompt-engineer, reasoning-router, skill-creator, wargame, security-scanner, database-architect, test-architect, api-designer, performance-profiler, devops-engineer, infrastructure-coder, git-workflow, tech-debt-analyzer, data-wizard, changelog-writer, docs-steward, shell-scripter, email-whiz, frontend-designer, research, namer, discover-skills, incident-response-engineer, data-pipeline-architect, event-driven-architect, release-pipeline-architect, schema-evolution-planner, observability-advisor, draw-thing, files-buddy.
 
 ### Token Budget
 
 | Component | Tokens | Loading |
 |-----------|--------|---------|
 | `global.md` (general + clarification gate + orchestration core + commit + docs lookup) | ~870 | Always |
-| Skill descriptions (38 custom + installed) | ~1,600 | Always |
+| Skill descriptions (40 custom + installed) | ~1,600 | Always |
 | **Total always-loaded** | **~2,470** | |
 | Scoped rules (`.claude/rules/`) | ~0 | Conditional (path match) |
 | Skill bodies (when invoked) | ~12,000 | On-demand |
