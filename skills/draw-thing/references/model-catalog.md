@@ -33,8 +33,8 @@ Default recommendation:  SDXL (Juggernaut XL) or Flux Dev
 |---------|--------------------|-------|-----|---------|-------|---------|
 | **Flux Schnell** | `flux_1_schnell_q5p.ckpt` | 4 | 1.0 | `"Euler a"` | Very fast (~1–2s) | Apache 2.0 |
 | **Flux Dev** | `flux_1_dev_q6p.ckpt` | 30 | 1.0 | `"Euler a"` | Moderate | Non-commercial |
-| **Flux Klein 4B** | `flux_2_klein_4b_q6p.ckpt` | 4 | 1.0 | `"DPMPP 2M AYS"` | Very fast | Verify license |
-| **Flux Klein 9B** | `flux_2_klein_9b_q6p.ckpt` | 8 | 1.0 | `"DPMPP 2M AYS"` | Fast | Verify license |
+| **Flux Klein 4B** | `flux_2_klein_4b_q6p.ckpt` | 4 | 1.0 | `"DPM++ 2M AYS"` | Very fast | Verify license |
+| **Flux Klein 9B** | `flux_2_klein_9b_q6p.ckpt` | 8 | 1.0 | `"DPM++ 2M AYS"` | Fast | Verify license |
 
 **Flux critical notes:**
 - **No negative prompt support.** Omit `--negative-prompt` entirely.
@@ -58,7 +58,7 @@ Native resolution: **1024×1024** (see resolution table below).
 | **SDXL Base** | `sd_xl_base_1.0.safetensors` | General | Baseline, default fallback |
 
 **SDXL settings:**
-- Steps: 25 | CFG: 7.0 | Sampler: `"DPMPP 2M Karras"`
+- Steps: 25 | CFG: 7.0 | Sampler: `"DPM++ 2M Karras"`
 - Prompt style: descriptive sentences, Subject-Action-Location-Style structure
 - Negative prompt: short and targeted (5–10 words)
 
@@ -80,7 +80,7 @@ Native resolution: **512×512**.
 | **SD 1.5 Base** | `v1-5-pruned-emaonly.ckpt` | General | Baseline, broad compatibility |
 
 **SD 1.5 settings:**
-- Steps: 25 | CFG: 7.5 | Sampler: `"DPMPP 2M Karras"`
+- Steps: 25 | CFG: 7.5 | Sampler: `"DPM++ 2M Karras"`
 - Prompt style: comma-separated tags, most important first
 - Negative prompt: aggressive (20–40 words); see `references/prompt-patterns.md`
 - Best LoRA and embedding ecosystem (CivitAI, Hugging Face)

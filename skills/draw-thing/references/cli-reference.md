@@ -1,6 +1,6 @@
 # Draw Things CLI — Flag Reference
 
-Complete parameter reference for `draw-things-cli generate`. Load this file when building non-trivial commands or when the user asks about specific flags.
+Primary parameter reference for `draw-things-cli generate`. Load this file when building non-trivial commands or when the user asks about specific flags.
 
 > **Verify uncertain flags.** This reference is based on known CLI design patterns and community documentation. If any flag behaves unexpectedly, run `draw-things-cli generate --help` for the authoritative list on your installed version.
 
@@ -17,7 +17,7 @@ Complete parameter reference for `draw-things-cli generate`. Load this file when
 | `--height` | int | model default | Pixels. Use model-native resolution. |
 | `--steps` | int | 25 | Diffusion steps. Flux Schnell: 4, Flux Dev: 30, SDXL/SD 1.5: 20–30. |
 | `--guidance-scale` | float | 7.0 | CFG scale. Flux: 1.0, SDXL: 7.0, SD 1.5: 7.5. Higher = more literal. |
-| `--sampler` | string | `"DPMPP 2M Karras"` | See sampler list below. |
+| `--sampler` | string | `"DPM++ 2M Karras"` | See sampler list below. |
 | `--seed` | int | -1 | `-1` = random. Fixed value = reproducible output. |
 | `--batch-count` | int | 1 | Number of images to generate (sequential, incrementing seeds). |
 | `--batch-size` | int | 1 | Images per batch pass (parallel, same seed). Verify with `--help`. |
@@ -50,7 +50,7 @@ Complete parameter reference for `draw-things-cli generate`. Load this file when
 | Flag | Type | Default | Notes |
 |------|------|---------|-------|
 | `--upscaler` | string | — | Upscaler model filename. |
-| `--upscaler-scale-factor` | int | 2 | `2` or `4`. |
+| `--upscaler-scale` | int | 2 | `2` or `4`. |
 
 See SKILL.md Mode: Upscale section for available upscalers and filenames.
 
@@ -182,9 +182,11 @@ For seamless textures or processing images larger than VRAM allows.
 |------|------|---------|-------|
 | `--tiled-decoding` | bool | `false` | Decode VAE in tiles (reduces VRAM). |
 | `--tiled-diffusion` | bool | `false` | Run diffusion in tiles (enables huge canvases). |
-| `--tile-overlap` | int | — | Pixel overlap between tiles. |
-| `--tile-width` | int | — | Width of each tile. |
-| `--tile-height` | int | — | Height of each tile. |
+| `--decoding-tile-overlap` | int | — | Pixel overlap between decoding tiles. |
+| `--decoding-tile-width` | int | — | Width of each decoding tile. |
+| `--decoding-tile-height` | int | — | Height of each decoding tile. |
+
+Diffusion tiling uses `--diffusion-tile-width`, `--diffusion-tile-height`, `--diffusion-tile-overlap`.
 
 Verify exact flag names with `draw-things-cli generate --help`.
 
@@ -218,25 +220,25 @@ Default output directory (skill convention): `~/Pictures/draw-thing/`
 
 | Sampler | Notes |
 |---------|-------|
-| `"DPMPP 2M Karras"` | Default for SD 1.5 and SDXL. Excellent quality/speed. |
-| `"DPMPP 2M AYS"` | AYS schedule variant. Flux Klein default. |
-| `"DPMPP SDE Karras"` | Stochastic; richer details, slower. |
-| `"DPMPP 2S a Karras"` | Ancestral variant. |
-| `"DPMPP 3M SDE Karras"` | High-quality, 3rd-order. |
-| `"Euler a"` | Euler ancestral. Default for Flux Schnell/Dev. Fast and reliable. |
-| `"Euler"` | Euler (non-ancestral). Deterministic. |
+| `"Euler a"` | Default for Flux. Fast, good quality. |
+| `"Euler A Substep"` | Substep variant of Euler a. |
+| `"Euler A Trailing"` | Trailing schedule variant. |
+| `"Euler A AYS"` | AYS (Align Your Steps) schedule. |
+| `"DPM++ 2M Karras"` | Default for SD 1.5 and SDXL. Excellent quality/speed. |
+| `"DPM++ 2M AYS"` | AYS schedule variant. Flux Klein default. |
+| `"DPM++ 2M Trailing"` | Trailing schedule variant. |
+| `"DPM++ SDE Karras"` | Stochastic; richer details, slower. |
+| `"DPM++ SDE AYS"` | AYS schedule for SDE variant. |
+| `"DPM++ SDE Substep"` | Substep variant of SDE. |
+| `"DPM++ SDE Trailing"` | Trailing schedule for SDE variant. |
 | `"DDIM"` | Classic; good for inpainting. Deterministic. |
+| `"DDIM Trailing"` | Trailing schedule variant of DDIM. |
 | `"PLMS"` | Pseudo-linear multistep. |
-| `"DPM2 Karras"` | 2nd-order DPM with Karras schedule. |
-| `"DPM2 a Karras"` | Ancestral variant of DPM2 Karras. |
-| `"DPMPP 2M"` | DPMPP 2M without Karras schedule. |
-| `"DPMPP SDE"` | Stochastic without Karras. |
-| `"LCM"` | Latent Consistency Model sampler. Very fast (4–8 steps). |
-| `"TCD"` | Trajectory Consistency Distillation. |
 | `"UniPC"` | Unified Predictor-Corrector. |
-| `"Restart"` | Restart sampler. |
-| `"DEIS"` | Diffusion Exponential Integrator Sampler. |
-| `"DDPM"` | Original DDPM. Slow; rarely used for inference. |
+| `"UniPC Trailing"` | Trailing schedule variant. |
+| `"UniPC AYS"` | AYS schedule variant. |
+| `"LCM"` | Latent Consistency Model. Very fast (4-8 steps). |
+| `"TCD"` | Trajectory Consistency Distillation. |
 
 > Verify exact strings with `draw-things-cli generate --help` if a sampler is rejected.
 

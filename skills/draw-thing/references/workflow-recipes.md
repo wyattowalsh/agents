@@ -33,6 +33,7 @@ draw-things-cli generate \
   --prompt "A lone lighthouse on a rocky coast, stormy sky, crashing waves, cinematic" \
   --width 1024 --height 1024 \
   --steps 4 --guidance-scale 1.0 \
+  --sampler "Euler a" \
   --batch-count 4 \
   --seed -1
 ```
@@ -46,6 +47,7 @@ draw-things-cli generate \
   --prompt "A lone lighthouse on a rocky coast, stormy Atlantic sky, waves crashing on boulders, lighthouse beam cutting through rain, cinematic, wide angle" \
   --width 1024 --height 1024 \
   --steps 4 --guidance-scale 1.0 \
+  --sampler "Euler a" \
   --seed 12345
 ```
 
@@ -56,6 +58,7 @@ draw-things-cli generate \
   --prompt "<same refined prompt>" \
   --width 1024 --height 1024 \
   --steps 30 --guidance-scale 1.0 \
+  --sampler "Euler a" \
   --seed 12345
 ```
 
@@ -113,7 +116,7 @@ draw-things-cli generate \
   --model sd_xl_base_1.0.safetensors \
   --image ~/Pictures/draw-thing/character-final.png \
   --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale-factor 4 \
+  --upscaler-scale 4 \
   --strength 0.25 \
   --steps 30
 ```
@@ -160,7 +163,7 @@ draw-things-cli generate \
   --model sd_xl_base_1.0.safetensors \
   --image ~/Pictures/draw-thing/restored-inpainted.png \
   --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale-factor 4 \
+  --upscaler-scale 4 \
   --strength 0.2 \
   --steps 30
 ```
@@ -270,7 +273,7 @@ draw-things-cli generate \
   --model sd_xl_base_1.0.safetensors \
   --image ~/Pictures/draw-thing/vehicle-final.png \
   --upscaler 4x_ultrasharp_f16.ckpt \
-  --upscaler-scale-factor 4 \
+  --upscaler-scale 4 \
   --strength 0.3 \
   --steps 30
 ```
@@ -311,7 +314,7 @@ draw-things-cli generate \
   --model sd_xl_base_1.0.safetensors \
   --image ~/Pictures/draw-thing/wizard-final.png \
   --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale-factor 4 \
+  --upscaler-scale 4 \
   --strength 0.25 \
   --steps 30
 ```
@@ -390,7 +393,7 @@ draw-things-cli generate \
   --model sd_xl_base_1.0.safetensors \
   --image ~/Pictures/draw-thing/library-hires.png \
   --upscaler 4x_ultrasharp_f16.ckpt \
-  --upscaler-scale-factor 4 \
+  --upscaler-scale 4 \
   --strength 0.2 \
   --steps 30
 ```
@@ -459,7 +462,7 @@ draw-things-cli generate \
   --model sd_xl_base_1.0.safetensors \
   --image ~/Pictures/draw-thing/portrait-inpainted.png \
   --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale-factor 2 \
+  --upscaler-scale 2 \
   --strength 0.2 \
   --steps 30
 ```
