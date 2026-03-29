@@ -28,6 +28,7 @@ Apply these conventions when working on JavaScript or Node.js files or projects.
 | File | Purpose |
 |------|---------|
 | `references/edge-cases.md` | Repo-specific exceptions and edge cases |
+| `references/typescript-patterns.md` | Discriminated unions, type guards, utility types |
 
 ## Package Management
 
@@ -61,12 +62,23 @@ Apply these conventions when working on JavaScript or Node.js files or projects.
 | Testing | `vitest` or framework-native runner |
 | Type checking | `tsc --noEmit` |
 
+## TypeScript Type Safety
+
+1. Prefer `unknown` over `any`; enforce via `noImplicitAny` in `tsconfig.json`
+2. Prefer `interface` for object shapes; use `type` for unions and intersections
+3. Use discriminated unions for state machines and tagged types
+4. Use `as const` assertions to preserve literal types
+5. Avoid type assertions (`as`); prefer type guards and `satisfies`
+6. Enable all `strict` compiler options in `tsconfig.json`
+7. Test types with `@ts-expect-error` or `tsd`
+8. See `references/typescript-patterns.md` for discriminated union and utility type patterns
+
 ## Critical Rules
 
 1. Always use `pnpm` unless an existing lockfile or CI config mandates otherwise
 2. Never mix package managers in the same project (no `npm install` alongside `pnpm`)
 3. Commit `pnpm-lock.yaml` to version control in every project
-4. Run `pnpm install --frozen-lockfile` in CI -- never allow lockfile mutation
+4. Run `pnpm install --frozen-lockfile` in CI — never allow lockfile mutation
 5. Check `references/edge-cases.md` before breaking any convention
 6. Use `pnpm exec` instead of `npx` for running local binaries
 

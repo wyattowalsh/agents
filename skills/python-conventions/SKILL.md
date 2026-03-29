@@ -28,6 +28,8 @@ Apply these conventions when working on Python files or projects.
 | File | Purpose |
 |------|---------|
 | `references/exceptions.md` | When to break conventions (legacy, corporate) |
+| `references/performance-tips.md` | Profiling tools, optimization patterns quick-reference |
+| `references/testing-patterns.md` | Fixture scopes, markers, conftest skeleton |
 
 ## Tooling
 
@@ -68,11 +70,40 @@ When applicable, prefer these libraries over alternatives:
 - Use `uv` workspace members for monorepo sub-packages
 - Run `ruff check` and `ruff format` before committing
 
+## Performance Conventions
+
+1. Profile before optimizing — use `cProfile` or `py-spy` to find real bottlenecks
+2. Prefer list comprehensions over `for` + `append` loops
+3. Use generators / `yield` for large datasets to avoid memory spikes
+4. Use `str.join()` instead of `+=` concatenation in loops
+5. Use `dict` / `set` for membership tests instead of `list`
+6. Use `functools.lru_cache` for expensive pure functions
+7. Use `__slots__` on data classes instantiated at high volume
+8. Batch database writes — avoid per-row commits
+9. Prefer `asyncio` / `aiohttp` for I/O-bound concurrency; `multiprocessing` for CPU-bound
+10. See `references/performance-tips.md` for profiling tool quick-reference
+
+## Testing Conventions
+
+1. Follow AAA (Arrange / Act / Assert) structure in every test
+2. One behavior per test function — if the name needs "and", split it
+3. Name tests: `test_<unit>_<scenario>_<expected_outcome>`
+4. Use `pytest.raises(ExType, match=...)` for exception testing
+5. Use `pytest.mark.parametrize` instead of copy-pasting test variants
+6. Use fixtures (`conftest.py`) for shared setup; prefer narrow scope
+7. Use `monkeypatch` over `unittest.mock.patch` for env vars and attributes
+8. Use `tmp_path` fixture for file I/O tests
+9. Use `freezegun` or `time-machine` for time-dependent tests
+10. Use `@pytest.mark.slow` / `@pytest.mark.integration` markers and run with `-m`
+11. Configure pytest in `pyproject.toml` under `[tool.pytest.ini_options]`
+12. Set coverage thresholds: `--cov-fail-under=80`
+13. See `references/testing-patterns.md` for fixture scope cheat sheet and conftest skeleton
+
 ## Critical Rules
 
-1. Always use `uv` for package management -- never `pip install` or `pip`
-2. Use `uv add` to add dependencies -- never `uv pip install`
-3. Use `ty` for type checking -- never `mypy`
+1. Always use `uv` for package management — never `pip install` or `pip`
+2. Use `uv add` to add dependencies — never `uv pip install`
+3. Use `ty` for type checking — never `mypy`
 4. Run `uv run pytest` before committing any Python changes
 5. Run `uv run ruff check` to lint before committing
 6. Check `references/exceptions.md` before breaking any convention

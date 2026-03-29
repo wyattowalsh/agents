@@ -256,7 +256,7 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 15. Review against the codebase’s conventions, not an idealized standard.
 16. Run self-verification (Wave 3.5) when 2+ findings survive Judge (skip for fewer findings or fully degraded mode).
 17. Follow the auto-fix protocol — never apply without diff preview and user confirmation.
-18. Check convention files (AGENTS.md, CLAUDE.md, .cursorrules) during triage.
+18. Check convention files (AGENTS.md, CLAUDE.md, GEMINI.md, .github/copilot-instructions.md) during triage.
 19. Every finding must include a reasoning chain (WHY) before the finding statement (WHAT).
 20. Every finding must include a mechanically verified citation anchor `[file:start-end]`.
 21. Check learnings store during Judge Wave 3 Step 4 — suppress known false positives.
@@ -290,7 +290,7 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 | [Crush](https://github.com/crush-ai/crush) | `AGENTS.md` | -- |
 | [OpenCode](https://github.com/opencode-ai/opencode) | `AGENTS.md` | -- |
 | [Cursor](https://cursor.sh) | `AGENTS.md` | -- |
-| [GitHub Copilot](https://github.com/features/copilot) | `AGENTS.md` + `CLAUDE.md` + `GEMINI.md` | -- |
+| [GitHub Copilot](https://github.com/features/copilot) | Generated `.github/copilot-instructions.md` + `AGENTS.md` | `.github/copilot-instructions.md` |
 
 <Aside type="tip" title="Cross-platform agents">
 The `wagents install` command distributes agent-compatible skills across all supported platforms at once. Run `wagents install -a claude-code -a cursor` to target specific agents.
