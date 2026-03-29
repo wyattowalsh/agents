@@ -32,48 +32,6 @@ This page is generated from the repository file `skills/files-buddy/SKILL.md` by
 
 Safe filesystem organization and cleanup. Delegates to best-in-class CLI tools for deduplication, renaming, archiving, and analysis. Cloud drives (iCloud, Google Drive, Dropbox, OneDrive) are first-class citizens with auto-detection and adjusted safety.
 
-<Aside type="danger" title="Destructive modes stay preview-first">
-`files-buddy` never uses `rm`. Local cleanups go through trash, cloud-tagged paths stage removals into local `.files-buddy-trash/`, and undo only proceeds when completed file operations still match their recorded BLAKE3 metadata.
-</Aside>
-
-## Recommended Workflow
-
-<Steps>
-
-1. Start with a read-only scan
-
-   ```bash
-   /files-buddy audit ~/Downloads
-   ```
-
-   Use `audit` or `find` first to understand disk usage, duplicate groups, and stale files before choosing a mutating mode.
-
-2. Preview the destructive mode you actually want
-
-   ```bash
-   /files-buddy clean ~/Downloads
-   ```
-
-   Destructive modes are expected to show a blast radius, native dry-run output, and a confirmation gate before anything is moved, renamed, archived, or trashed.
-
-3. Render a local dashboard when you need a shareable report
-
-   ```bash
-   /files-buddy dashboard ~/Downloads
-   ```
-
-   Dashboard analysis stays read-only, but the renderer writes a local HTML file so you can inspect treemaps, duplicates, and recent manifest history in the browser.
-
-4. Keep the manifest if you might need to reverse the work
-
-   ```bash
-   /files-buddy undo ~/.files-buddy/manifests/<manifest>.json
-   ```
-
-   Undo expects completed file operations to have recorded hash metadata and aborts if current files no longer match the manifest.
-
-</Steps>
-
 ## Modes
 
 | $ARGUMENTS | Mode | Destructive? |
@@ -115,14 +73,6 @@ Safe filesystem organization and cleanup. Delegates to best-in-class CLI tools f
 20. NEVER auto-delete cloud-synced files — deletion syncs to all devices
 21. Materialize evicted files before size or hash analysis
 22. Rate-limit cloud batch ops — use pueue with throttled parallelism
-
-## Use Another Skill When
-
-<CardGrid>
-  <LinkCard title="shell-scripter" href="/skills/shell-scripter/" description="Use this when the real task is writing shell scripts, Makefiles, or justfiles rather than managing files on disk." />
-  <LinkCard title="devops-engineer" href="/skills/devops-engineer/" description="Use this for CI/CD pipelines and automation flows instead of filesystem cleanup or local organization work." />
-  <LinkCard title="database-architect" href="/skills/database-architect/" description="Use this for schema design, migrations, and query planning when the problem is data modeling rather than file management." />
-</CardGrid>
 
 <Tabs>
   <TabItem label="General">
