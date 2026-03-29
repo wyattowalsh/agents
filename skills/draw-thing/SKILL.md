@@ -66,6 +66,7 @@ Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Thin
 3. File path + modification verb (change, edit, transform, restyle) -> **Edit**
 4. Descriptive text with no file path -> **Generate**
 5. Ambiguous -> ask which mode
+6. Keywords: animate, video, motion, gif, mp4 -> **Refuse**: out of scope for v1.0
 
 ---
 
@@ -73,7 +74,7 @@ Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Thin
 
 Run this before any generation operation:
 
-1. Check CLI: `which draw-things-cli`
+1. Check CLI: `command -v draw-things-cli`
 2. If NOT found, show install command and STOP:
    ```
    brew tap drawthingsai/draw-things
@@ -96,9 +97,10 @@ Run this before any generation operation:
 |--------|-----------|------|-------|-----|---------|-------------|
 | **Flux Schnell** | `flux_1_schnell_q5p.ckpt` | 1024x1024 | 4 | 1.0 | `"Euler a"` | Natural language |
 | **Flux Dev** | `flux_1_dev_q6p.ckpt` | 1024x1024 | 30 | 1.0 | `"Euler a"` | Natural language |
-| **Flux Klein** | `flux_2_klein_4b_q6p.ckpt` | 1024x1024 | 4 | 1.0 | `"DPM++ 2M AYS"` | Natural language |
-| **SDXL** | `sd_xl_base_1.0.safetensors` | 1024x1024 | 25 | 7.0 | `"DPM++ 2M Karras"` | Tags + sentences |
-| **SD 1.5** | `v1-5-pruned-emaonly.ckpt` | 512x512 | 25 | 7.5 | `"DPM++ 2M Karras"` | Comma-separated tags |
+| **Flux Klein** | `flux_2_klein_4b_q6p.ckpt` | 1024x1024 | 4 | 1.0 | `"DPMPP 2M AYS"` | Natural language |
+| **Flux Klein 9B** | `flux_2_klein_9b_q6p.ckpt` | 1024x1024 | 8 | 1.0 | `"DPMPP 2M AYS"` | Natural language |
+| **SDXL** | `sd_xl_base_1.0.safetensors` | 1024x1024 | 25 | 7.0 | `"DPMPP 2M Karras"` | Tags + sentences |
+| **SD 1.5** | `v1-5-pruned-emaonly.ckpt` | 512x512 | 25 | 7.5 | `"DPMPP 2M Karras"` | Comma-separated tags |
 
 **Decision guide:**
 - Need fast prototyping? -> Flux Schnell or Klein (4 steps, ~1-2s)
@@ -251,11 +253,26 @@ Re-run the previous generation with adjustments:
 2. Adjust one parameter at a time (prompt, cfg, steps, strength)
 3. Compare results
 
+Example — previous generate used seed 42, now increase guidance:
+
+```bash
+draw-things-cli generate \
+  --model flux_1_schnell_q5p.ckpt \
+  --prompt "same prompt as before" \
+  --seed 42 \
+  --guidance-scale 9.0 \
+  --width 1024 --height 1024
+```
+
 ### Mode: Gallery
 
 ```bash
 ls -lt "${DRAWTHINGS_OUTPUT_DIR:-$HOME/Pictures/draw-thing}/" | head -20
 ```
+
+### Mode: Model info
+
+Load `references/model-catalog.md`. Display the requested model's recommended settings (dimensions, steps, CFG, sampler, prompt style). If the model name is not recognized, list available model families.
 
 ---
 
@@ -297,6 +314,17 @@ For advanced prompt patterns, quality boosters, negative prompt templates, and w
 
 ---
 
+## Error Recovery
+
+| Error | Likely Cause | Action |
+|-------|-------------|--------|
+| Model file not found | Wrong filename or missing download | List models dir, suggest correct name from model quick-ref |
+| Process killed / OOM | Model too large for available memory | Suggest smaller model or quantized variant (e.g., q5p/q6p) |
+| Unknown flag error | CLI version mismatch with this skill | Run `draw-things-cli generate --help`, adapt command |
+| No output file | Silent failure or wrong output path | Check CLI stderr, verify output location |
+
+---
+
 ## Reference Files
 
 Load ONE reference at a time. Do not preload all references into context.
@@ -313,7 +341,7 @@ Load ONE reference at a time. Do not preload all references into context.
 
 ## Critical Rules
 
-1. **Always check CLI** before any operation — `which draw-things-cli`
+1. **Always check CLI** before any operation — `command -v draw-things-cli`
 2. **Always report the seed** so results are reproducible
 3. **Model-appropriate dimensions**: SD 1.5 -> 512x512, SDXL -> 1024x1024, Flux -> 1024x1024
 4. **Flux has NO negative prompt** — omit `--negative-prompt` entirely; use detailed positive descriptions

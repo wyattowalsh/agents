@@ -13,5 +13,12 @@ if [[ -d "$models_dir" ]]; then
   model_count="$(find "$models_dir" -maxdepth 1 \( -name '*.ckpt' -o -name '*.safetensors' \) 2>/dev/null | wc -l | tr -d ' ')"
 fi
 
+# Escape JSON-special chars in paths
+cli_path="$(command -v draw-things-cli)"
+escaped_path="${cli_path//\\/\\\\}"
+escaped_path="${escaped_path//\"/\\\"}"
+escaped_dir="${models_dir//\\/\\\\}"
+escaped_dir="${escaped_dir//\"/\\\"}"
+
 printf '{"status":"installed","path":"%s","models_dir":"%s","model_count":%s}\n' \
-  "$(command -v draw-things-cli)" "$models_dir" "$model_count"
+  "$escaped_path" "$escaped_dir" "$model_count"

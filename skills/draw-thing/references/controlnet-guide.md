@@ -231,10 +231,3 @@ draw-things-cli generate \
 | JSON parse error | Shell expansion on quotes | Always **single-quote** the JSON: `--controls '[...]'` |
 | Unexpected model error | ControlNet/base model mismatch | Use SD 1.5 ControlNet with SD 1.5 models, SDXL with SDXL |
 
----
-
-## See Also
-
-- `references/workflow-recipes.md` — recipes using ControlNet in multi-step pipelines
-- `references/prompt-patterns.md` — prompts to pair with structural guidance
-- `references/cli-reference.md` — complete flag reference and JSON schemas
