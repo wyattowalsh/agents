@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>files-buddy Dashboard</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --card-bg: #161b22;
+  --border: #30363d;
+  --dim: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --orange: #db6d28;
+  --radius: 8px;
+  --gap: 16px;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f8fa;
+    --fg: #1f2328;
+    --card-bg: #ffffff;
+    --border: #d0d7de;
+    --dim: #656d76;
+    --accent: #0969da;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+    --orange: #bc4c00;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.5; padding: var(--gap); max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin-bottom: 4px; }
+h2 { font-size: 1.1rem; margin-bottom: 8px; color: var(--dim); }
+.header { margin-bottom: var(--gap); border-bottom: 1px solid var(--border); padding-bottom: var(--gap); }
+.header .timestamp { font-size: 0.8rem; color: var(--dim); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--gap); margin-bottom: var(--gap); }
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--gap); }
+.stat { text-align: center; }
+.stat .value { font-size: 2rem; font-weight: 700; }
+.stat .label { color: var(--dim); font-size: 0.85rem; }
+.stat .icon { font-size: 1.2rem; margin-bottom: 4px; }
+.pie-container { display: flex; justify-content: center; align-items: center; gap: 24px; margin: var(--gap) 0; flex-wrap: wrap; }
+.pie { width: 180px; height: 180px; border-radius: 50%; position: relative; }
+.legend { display: flex; flex-direction: column; gap: 6px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--dim); font-weight: 600; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { color: var(--fg); }
+th .sort-arrow { margin-left: 4px; font-size: 0.7rem; }
+tr:hover { background: rgba(88, 166, 255, 0.05); }
+.section { margin-bottom: 24px; }
+.no-data { text-align: center; color: var(--dim); padding: 40px; }
+.treemap-container { width: 100%; min-height: 400px; position: relative; }
+.treemap-grid { display: flex; flex-wrap: wrap; gap: 8px; align-content: stretch; }
+.treemap-tile { min-width: 150px; min-height: 96px; border-radius: var(--radius); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); overflow: hidden; }
+.treemap-label { font-weight: 600; font-size: 0.85rem; line-height: 1.2; word-break: break-word; }
+.treemap-size { font-size: 0.75rem; opacity: 0.85; }
+.treemap-fallback table { margin-top: 8px; }
+.bar { height: 8px; border-radius: 4px; display: inline-block; vertical-align: middle; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.link-button { background: none; border: none; padding: 0; color: var(--accent); cursor: pointer; font: inherit; }
+.link-button:hover { text-decoration: underline; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.badge-success { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+.badge-warning { background: rgba(210, 153, 34, 0.15); color: var(--yellow); }
+.badge-error { background: rgba(248, 81, 73, 0.15); color: var(--red); }
+.cloud-provider { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 12px; background: rgba(88, 166, 255, 0.1); font-size: 0.85rem; margin: 2px; }
+.footer { text-align: center; color: var(--dim); font-size: 0.8rem; margin-top: 32px; padding-top: var(--gap); border-top: 1px solid var(--border); }
+.mono { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.8rem; }
+.truncate { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+</head>
+<body>
+<script id="data" type="application/json">{}</script>
+<div id="app"></div>
+<script>
+(function(){
+  /* --- Utilities --- */
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function fmtSize(bytes){
+    if(bytes==null||isNaN(bytes)) return '—';
+    var units=['B','KB','MB','GB','TB','PB'];
+    var i=0; var v=Math.abs(bytes);
+    while(v>=1024&&i<units.length-1){v/=1024;i++;}
+    return (bytes<0?'-':'')+v.toFixed(i===0?0:1)+' '+units[i];
+  }
+
+  function fmtDate(d){
+    if(!d) return '—';
+    try{ var dt=new Date(d); return isNaN(dt)?String(d):dt.toLocaleDateString()+' '+dt.toLocaleTimeString(); }
+    catch(e){ return String(d); }
+  }
+
+  function daysSince(d){
+    if(!d) return Infinity;
+    try{ return Math.floor((Date.now()-new Date(d).getTime())/(86400000)); }
+    catch(e){ return Infinity; }
+  }
+
+  /* --- Parse data --- */
+  var raw;
+  try{ raw=JSON.parse(document.getElementById('data').textContent); }
+  catch(e){ document.getElementById('app').innerHTML='<div class="no-data">Failed to parse dashboard data.</div>'; return; }
+
+  var files       = raw.files       || [];
+  var duplicates  = raw.duplicates  || [];
+  var directories = raw.directories || [];
+  var operations  = raw.operations  || [];
+  var cloud       = raw.cloud       || null;
+  var summary     = raw.summary     || {};
+  var generated   = raw.generated   || new Date().toISOString();
+
+  /* --- Derived stats --- */
+  var totalFiles    = summary.total_files    != null ? summary.total_files    : files.length;
+  var totalSize     = summary.total_size     != null ? summary.total_size     : files.reduce(function(a,f){return a+(f.size||0);},0);
+  var dupCount      = summary.duplicates     != null ? summary.duplicates     : duplicates.length;
+  var reclaimable   = summary.reclaimable    != null ? summary.reclaimable    : duplicates.reduce(function(a,g){return a+(g.size||0)*Math.max(0,(g.count||g.paths&&g.paths.length||1)-1);},0);
+  var cloudDirs     = summary.cloud_dirs     != null ? summary.cloud_dirs     : (cloud&&cloud.directories?cloud.directories.length:0);
+
+  var html = '';
+
+  /* --- Header --- */
+  html += '<div class="header">';
+  html += '<h1>files-buddy Dashboard</h1>';
+  html += '<div class="timestamp">Generated: '+esc(fmtDate(generated))+'</div>';
+  html += '</div>';
+
+  /* --- Summary cards --- */
+  html += '<div class="grid">';
+  html += '<div class="card stat"><div class="value">'+esc(totalFiles.toLocaleString())+'</div><div class="label">Total Files</div></div>';
+  html += '<div class="card stat"><div class="value">'+esc(fmtSize(totalSize))+'</div><div class="label">Total Size</div></div>';
+  html += '<div class="card stat"><div class="value" style="color:var(--'+(dupCount>0?'yellow':'green')+')">'+esc(dupCount.toLocaleString())+'</div><div class="label">Duplicates Found</div></div>';
+  html += '<div class="card stat"><div class="value" style="color:var(--'+(reclaimable>0?'orange':'green')+')">'+esc(fmtSize(reclaimable))+'</div><div class="label">Space Reclaimable</div></div>';
+  html += '<div class="card stat"><div class="icon">&#9729;</div><div class="value">'+esc(cloudDirs)+'</div><div class="label">Cloud Directories</div></div>';
+  html += '</div>';
+
+  /* --- File Type Distribution --- */
+  var typeColors = {
+    Documents:'#58a6ff', Images:'#3fb950', Audio:'#d29922', Video:'#f85149',
+    Code:'#bc8cff', Data:'#39d2c0', Archives:'#db6d28', Other:'#8b949e'
+  };
+  var typeCounts = summary.file_types || {};
+  /* Auto-classify from files if no summary */
+  if(Object.keys(typeCounts).length===0 && files.length>0){
+    var extMap = {
+      Documents:/\.(pdf|doc|docx|txt|rtf|odt|pages|md|tex|epub)$/i,
+      Images:/\.(jpg|jpeg|png|gif|bmp|svg|webp|ico|tiff|psd|raw|heic)$/i,
+      Audio:/\.(mp3|wav|flac|aac|ogg|m4a|wma|aiff)$/i,
+      Video:/\.(mp4|mkv|avi|mov|wmv|flv|webm|m4v)$/i,
+      Code:/\.(js|ts|py|rb|go|rs|java|c|cpp|h|cs|php|swift|kt|sh|zsh|bash|html|css|scss|jsx|tsx|vue|svelte)$/i,
+      Data:/\.(json|yaml|yml|xml|csv|tsv|sql|sqlite|db|parquet|avro)$/i,
+      Archives:/\.(zip|tar|gz|bz2|xz|7z|rar|dmg|iso)$/i
+    };
+    files.forEach(function(f){
+      var name=f.name||f.path||'';
+      var matched=false;
+      for(var cat in extMap){ if(extMap[cat].test(name)){typeCounts[cat]=(typeCounts[cat]||0)+1;matched=true;break;} }
+      if(!matched) typeCounts['Other']=(typeCounts['Other']||0)+1;
+    });
+  }
+
+  var typeTotal=0; for(var k in typeCounts) typeTotal+=typeCounts[k];
+  if(typeTotal>0){
+    html += '<div class="card section"><h2>File Type Distribution</h2>';
+    html += '<div class="pie-container">';
+    var segs=[]; var angle=0;
+    var typeOrder=['Documents','Images','Audio','Video','Code','Data','Archives','Other'];
+    typeOrder.forEach(function(t){
+      var n=typeCounts[t]||0;
+      if(n>0){ var deg=n/typeTotal*360; segs.push((typeColors[t]||'#8b949e')+' '+angle.toFixed(2)+'deg '+(angle+deg).toFixed(2)+'deg'); angle+=deg; }
+    });
+    html += '<div class="pie" style="background:conic-gradient('+segs.join(',')+')"></div>';
+    html += '<div class="legend">';
+    typeOrder.forEach(function(t){
+      var n=typeCounts[t]||0;
+      if(n>0){
+        var pct=(n/typeTotal*100).toFixed(1);
+        html += '<div class="legend-item"><div class="legend-dot" style="background:'+(typeColors[t]||'#8b949e')+'"></div>'+esc(t)+': '+n.toLocaleString()+' ('+pct+'%)</div>';
+      }
+    });
+    html += '</div></div></div>';
+  }
+
+  /* --- Disk Usage Treemap --- */
+  if(directories.length>0){
+    html += '<div class="card section"><h2>Disk Usage Treemap</h2>';
+    html += '<div id="treemap-container" class="treemap-container"></div>';
+    html += '<div id="treemap-fallback" class="treemap-fallback" style="display:none">';
+    html += '<table id="treemap-table"><thead><tr><th onclick="sortTable(\'treemap-table\',0)">Directory <span class="sort-arrow"></span></th><th onclick="sortTable(\'treemap-table\',1,true)">Size <span class="sort-arrow"></span></th><th onclick="sortTable(\'treemap-table\',2,true)">Files <span class="sort-arrow"></span></th></tr></thead><tbody>';
+    directories.sort(function(a,b){return (b.size||0)-(a.size||0);}).forEach(function(d){
+      html += '<tr><td class="mono truncate" title="'+esc(d.path||d.name||'')+'">'+esc(d.path||d.name||'')+'</td><td>'+esc(fmtSize(d.size))+'</td><td>'+(d.count||d.files||'—')+'</td></tr>';
+    });
+    html += '</tbody></table></div></div>';
+  }
+
+  /* --- Sortable table helper (declared on window) --- */
+  html += ''; /* tables follow */
+
+  /* --- Largest Files --- */
+  var largestFiles = files.slice().sort(function(a,b){return (b.size||0)-(a.size||0);}).slice(0,50);
+  if(largestFiles.length>0){
+    html += '<div class="card section"><h2>Largest Files</h2>';
+    html += '<table id="tbl-largest"><thead><tr>';
+    html += '<th onclick="sortTable(\'tbl-largest\',0)">Name <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-largest\',1,true)">Size <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-largest\',2)">Modified <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-largest\',3)">Path <span class="sort-arrow"></span></th>';
+    html += '</tr></thead><tbody>';
+    largestFiles.forEach(function(f){
+      html += '<tr>';
+      html += '<td>'+esc(f.name||'')+'</td>';
+      html += '<td data-sort="'+(f.size||0)+'">'+esc(fmtSize(f.size))+'</td>';
+      html += '<td data-sort="'+(f.modified||f.mtime||'')+'">'+esc(fmtDate(f.modified||f.mtime))+'</td>';
+      html += '<td class="mono truncate" title="'+esc(f.path||'')+'">'+esc(f.path||'')+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  /* --- Duplicate Groups --- */
+  if(duplicates.length>0){
+    html += '<div class="card section"><h2>Duplicate Groups</h2>';
+    html += '<table id="tbl-dupes"><thead><tr>';
+    html += '<th onclick="sortTable(\'tbl-dupes\',0)">Hash <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-dupes\',1,true)">Size <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-dupes\',2,true)">Count <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-dupes\',3)">Paths <span class="sort-arrow"></span></th>';
+    html += '</tr></thead><tbody>';
+    duplicates.forEach(function(g){
+      var paths = g.paths||[];
+      var count = g.count||paths.length||0;
+      html += '<tr>';
+      html += '<td class="mono">'+esc((g.hash||'').substring(0,12))+'</td>';
+      html += '<td data-sort="'+(g.size||0)+'">'+esc(fmtSize(g.size))+'</td>';
+      html += '<td data-sort="'+count+'">'+count+'</td>';
+      html += '<td class="mono" style="font-size:0.75rem">'+paths.map(function(p){return esc(p);}).join('<br>')+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  /* --- Stale Files (>180 days) --- */
+  var staleFiles = files.filter(function(f){ return daysSince(f.modified||f.mtime)>180; })
+    .sort(function(a,b){ return daysSince(b.modified||b.mtime)-daysSince(a.modified||a.mtime); })
+    .slice(0,50);
+  if(staleFiles.length>0){
+    html += '<div class="card section"><h2>Stale Files (&gt;180 days)</h2>';
+    html += '<table id="tbl-stale"><thead><tr>';
+    html += '<th onclick="sortTable(\'tbl-stale\',0)">Name <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-stale\',1,true)">Size <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-stale\',2)">Last Modified <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-stale\',3)">Path <span class="sort-arrow"></span></th>';
+    html += '</tr></thead><tbody>';
+    staleFiles.forEach(function(f){
+      var age = daysSince(f.modified||f.mtime);
+      html += '<tr>';
+      html += '<td>'+esc(f.name||'')+'</td>';
+      html += '<td data-sort="'+(f.size||0)+'">'+esc(fmtSize(f.size))+'</td>';
+      html += '<td data-sort="'+(f.modified||f.mtime||'')+'" title="'+age+' days ago">'+esc(fmtDate(f.modified||f.mtime))+' <span style="color:var(--dim);font-size:0.75rem">('+age+'d)</span></td>';
+      html += '<td class="mono truncate" title="'+esc(f.path||'')+'">'+esc(f.path||'')+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  /* --- Operation History --- */
+  if(operations.length>0){
+    html += '<div class="card section"><h2>Operation History</h2>';
+    html += '<table id="tbl-ops"><thead><tr>';
+    html += '<th onclick="sortTable(\'tbl-ops\',0)">Date <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-ops\',1)">Mode <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-ops\',2,true)">Files Affected <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-ops\',3)">Status <span class="sort-arrow"></span></th>';
+    html += '<th>Undo</th>';
+    html += '</tr></thead><tbody>';
+    operations.forEach(function(op){
+      var statusClass = (op.status||'').toLowerCase()==='success'?'success':(op.status||'').toLowerCase()==='error'?'error':'warning';
+      html += '<tr>';
+      html += '<td data-sort="'+(op.date||'')+'">'+esc(fmtDate(op.date))+'</td>';
+      html += '<td>'+esc(op.mode||'')+'</td>';
+      html += '<td data-sort="'+(op.files_affected||0)+'">'+(op.files_affected||0)+'</td>';
+      html += '<td><span class="badge badge-'+statusClass+'">'+esc(op.status||'unknown')+'</span></td>';
+      html += '<td>'+(op.undo_command?'<button type="button" class="link-button undo-copy-button" data-undo-command="'+esc(op.undo_command)+'" title="'+esc(op.undo_command)+'">Copy undo cmd</button>':'—')+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  /* --- Cloud Status --- */
+  if(cloud && cloud.directories && cloud.directories.length>0){
+    html += '<div class="card section"><h2>Cloud Status</h2>';
+    html += '<div style="margin-bottom:12px">';
+    var providers = {};
+    cloud.directories.forEach(function(d){ var p=d.provider||'Unknown'; providers[p]=(providers[p]||0)+1; });
+    for(var prov in providers){
+      var icon = prov.toLowerCase()==='icloud'?'&#9729;':prov.toLowerCase()==='dropbox'?'&#128230;':prov.toLowerCase()==='google drive'||prov.toLowerCase()==='gdrive'?'&#128194;':prov.toLowerCase()==='onedrive'?'&#9729;':'&#128193;';
+      html += '<span class="cloud-provider">'+icon+' '+esc(prov)+' ('+providers[prov]+' dirs)</span> ';
+    }
+    html += '</div>';
+
+    /* Eviction status counts */
+    if(cloud.eviction_status){
+      var ev = cloud.eviction_status;
+      html += '<div class="grid" style="margin-bottom:12px">';
+      if(ev.local!=null) html += '<div class="card stat"><div class="value" style="color:var(--green)">'+ev.local+'</div><div class="label">Local (Downloaded)</div></div>';
+      if(ev.evicted!=null) html += '<div class="card stat"><div class="value" style="color:var(--yellow)">'+ev.evicted+'</div><div class="label">Evicted (Cloud Only)</div></div>';
+      if(ev.mixed!=null) html += '<div class="card stat"><div class="value" style="color:var(--accent)">'+ev.mixed+'</div><div class="label">Mixed</div></div>';
+      html += '</div>';
+    }
+
+    html += '<table id="tbl-cloud"><thead><tr>';
+    html += '<th onclick="sortTable(\'tbl-cloud\',0)">Directory <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-cloud\',1)">Provider <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-cloud\',2)">Status <span class="sort-arrow"></span></th>';
+    html += '<th onclick="sortTable(\'tbl-cloud\',3,true)">Files <span class="sort-arrow"></span></th>';
+    html += '</tr></thead><tbody>';
+    cloud.directories.forEach(function(d){
+      html += '<tr>';
+      html += '<td class="mono truncate" title="'+esc(d.path||'')+'">'+esc(d.path||d.name||'')+'</td>';
+      html += '<td>'+esc(d.provider||'')+'</td>';
+      html += '<td>'+esc(d.status||'synced')+'</td>';
+      html += '<td>'+(d.files||d.count||'—')+'</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  }
+
+  /* --- Empty state --- */
+  if(!totalFiles && !duplicates.length && !operations.length){
+    html += '<div class="no-data">No file data available. Run files-buddy to generate a scan.</div>';
+  }
+
+  /* --- Footer --- */
+  html += '<div class="footer">Generated by files-buddy &middot; '+esc(fmtDate(generated))+'</div>';
+
+  document.getElementById('app').innerHTML = html;
+
+  Array.prototype.forEach.call(document.querySelectorAll('.undo-copy-button'), function(button){
+    button.addEventListener('click', function(){
+      var originalText = button.textContent;
+      var undoCommand = button.getAttribute('data-undo-command') || '';
+      if(!navigator.clipboard || !navigator.clipboard.writeText){
+        button.textContent = 'Copy unavailable';
+        setTimeout(function(){ button.textContent = originalText; }, 1200);
+        return;
+      }
+      navigator.clipboard.writeText(undoCommand).then(function(){
+        button.textContent = 'Copied!';
+        setTimeout(function(){ button.textContent = originalText; }, 1200);
+      }).catch(function(){
+        button.textContent = 'Copy failed';
+        setTimeout(function(){ button.textContent = originalText; }, 1200);
+      });
+    });
+  });
+
+  /* --- Sortable tables (vanilla JS) --- */
+  var sortState = {};
+  window.sortTable = function(tableId, colIdx, numeric){
+    var table = document.getElementById(tableId);
+    if(!table) return;
+    var tbody = table.querySelector('tbody');
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    var key = tableId+'-'+colIdx;
+    var asc = sortState[key] = !sortState[key];
+
+    rows.sort(function(a,b){
+      var cellA = a.children[colIdx];
+      var cellB = b.children[colIdx];
+      var va = (cellA.getAttribute('data-sort')!=null ? cellA.getAttribute('data-sort') : cellA.textContent).trim();
+      var vb = (cellB.getAttribute('data-sort')!=null ? cellB.getAttribute('data-sort') : cellB.textContent).trim();
+      if(numeric){ va=parseFloat(va)||0; vb=parseFloat(vb)||0; }
+      else { va=va.toLowerCase(); vb=vb.toLowerCase(); }
+      if(va<vb) return asc?-1:1;
+      if(va>vb) return asc?1:-1;
+      return 0;
+    });
+
+    rows.forEach(function(r){ tbody.appendChild(r); });
+
+    /* Update sort arrows */
+    var ths = table.querySelectorAll('th .sort-arrow');
+    for(var i=0;i<ths.length;i++) ths[i].textContent='';
+    var arrow = table.querySelectorAll('th')[colIdx].querySelector('.sort-arrow');
+    if(arrow) arrow.textContent = asc?'\u25B2':'\u25BC';
+  };
+
+  /* --- Self-contained treemap with fallback --- */
+  if(directories.length>0){
+    var treemapEl = document.getElementById('treemap-container');
+    var fallbackEl = document.getElementById('treemap-fallback');
+    if(!treemapEl) return;
+
+    function showFallback(){
+      treemapEl.style.display='none';
+      fallbackEl.style.display='block';
+    }
+
+    function tileColor(index, depth, total){
+      var hue = 210;
+      var saturation = 70 - Math.min(depth||1, 6) * 4;
+      var lightness = 58 - Math.min(index, Math.max(total-1, 1)) * 1.5;
+      return 'hsl('+hue+' '+saturation+'% '+Math.max(lightness, 32)+'%)';
+    }
+
+    function renderTreemap(){
+      var root = { name:'root', children:[] };
+      directories.forEach(function(d){
+        root.children.push({ name: d.path||d.name||'unknown', value: d.size||0, depth: d.depth||1 });
+      });
+
+      if(root.children.length===0){ showFallback(); return; }
+      var total = root.children.reduce(function(sum, item){ return sum + (item.value || 0); }, 0);
+      if(total <= 0){ showFallback(); return; }
+
+      treemapEl.className = 'treemap-container treemap-grid';
+      treemapEl.innerHTML = '';
+
+      root.children
+        .sort(function(a,b){ return (b.value||0) - (a.value||0); })
+        .forEach(function(item, index){
+          var pct = (item.value || 0) / total;
+          var tile = document.createElement('div');
+          var label = (item.name || '').split('/').pop() || item.name || 'unknown';
+          tile.className = 'treemap-tile';
+          tile.style.flex = Math.max(1, Math.round(pct * 100)) + ' 1 0';
+          tile.style.background = tileColor(index, item.depth||1, root.children.length);
+          tile.title = (item.name||'unknown') + '\n' + fmtSize(item.value) + ' (' + (pct*100).toFixed(1) + '%)';
+          tile.innerHTML =
+            '<div class="treemap-label">' + esc(label) + '</div>' +
+            '<div class="treemap-size">' + esc(fmtSize(item.value)) + ' · ' + esc((pct*100).toFixed(1)) + '%</div>';
+          treemapEl.appendChild(tile);
+        });
+    }
+
+    try { renderTreemap(); }
+    catch(e){ showFallback(); }
+  }
+})();
+</script>
+</body>
+</html>
