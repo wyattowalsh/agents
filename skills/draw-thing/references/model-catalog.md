@@ -169,14 +169,4 @@ ls "${DRAWTHINGS_MODELS_DIR:-$HOME/Library/Containers/com.liuliu.draw-things/Dat
 
 ---
 
-## Model-Family Defaults Summary
-
-| Family | Steps | CFG | Sampler | Width | Height | Negative Prompt |
-|--------|-------|-----|---------|-------|--------|-----------------|
-| Flux Schnell | 4 | 1.0 | `"Euler a"` | 1024 | 1024 | **None** |
-| Flux Dev | 30 | 1.0 | `"Euler a"` | 1024 | 1024 | **None** |
-| Flux Klein | 4–8 | 1.0 | `"DPMPP 2M AYS"` | 1024 | 1024 | **None** |
-| SDXL | 25 | 7.0 | `"DPMPP 2M Karras"` | 1024 | 1024 | Short |
-| SD 1.5 | 25 | 7.5 | `"DPMPP 2M Karras"` | 512 | 512 | Aggressive |
-
-Use these as starting points. User overrides always take precedence.
+For model-family defaults (steps, CFG, sampler, dimensions), see the Model Quick-Reference table in SKILL.md.

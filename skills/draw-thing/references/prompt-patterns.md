@@ -267,10 +267,3 @@ a {red|blue|golden} dragon flying over {mountains|ocean|forest}
 | Too many steps wasted | Steps too high | 20–30 is sufficient for most samplers |
 | Flux output ignoring words | Natural language order off | Put subject first, qualifiers last |
 
----
-
-## See Also
-
-- `references/controlnet-guide.md` — structural guidance alongside prompts
-- `references/workflow-recipes.md` — multi-step creative pipelines
-- `references/model-catalog.md` — checkpoint selection and quantization

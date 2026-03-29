@@ -17,7 +17,7 @@ Complete parameter reference for `draw-things-cli generate`. Load this file when
 | `--height` | int | model default | Pixels. Use model-native resolution. |
 | `--steps` | int | 25 | Diffusion steps. Flux Schnell: 4, Flux Dev: 30, SDXL/SD 1.5: 20–30. |
 | `--guidance-scale` | float | 7.0 | CFG scale. Flux: 1.0, SDXL: 7.0, SD 1.5: 7.5. Higher = more literal. |
-| `--sampler` | string | `"DPM++ 2M Karras"` | See sampler list below. |
+| `--sampler` | string | `"DPMPP 2M Karras"` | See sampler list below. |
 | `--seed` | int | -1 | `-1` = random. Fixed value = reproducible output. |
 | `--batch-count` | int | 1 | Number of images to generate (sequential, incrementing seeds). |
 | `--batch-size` | int | 1 | Images per batch pass (parallel, same seed). Verify with `--help`. |
@@ -52,17 +52,7 @@ Complete parameter reference for `draw-things-cli generate`. Load this file when
 | `--upscaler` | string | — | Upscaler model filename. |
 | `--upscaler-scale-factor` | int | 2 | `2` or `4`. |
 
-**Available upscalers:**
-
-| Model | Filename | Scale | Best for |
-|-------|----------|-------|----------|
-| Real-ESRGAN X2+ | `realesrgan_x2plus_f16.ckpt` | 2× | General, moderate upscale |
-| Real-ESRGAN X4+ | `realesrgan_x4plus_f16.ckpt` | 4× | General, default choice |
-| Real-ESRGAN X4+ Anime | `realesrgan_x4plus_anime_6b_f16.ckpt` | 4× | Illustrations, anime |
-| Remacri | `remacri_4x_f16.ckpt` | 4× | Detailed textures |
-| 4x UltraSharp | `4x_ultrasharp_f16.ckpt` | 4× | Architecture, fine detail |
-
-Default: `realesrgan_x4plus_f16.ckpt`
+See SKILL.md Mode: Upscale section for available upscalers and filenames.
 
 ---
 
@@ -83,32 +73,9 @@ Default: `realesrgan_x4plus_f16.ckpt`
 |------|------|-------|
 | `--controls` | JSON array | One or more ControlNet config objects. Single-quote on the shell. |
 
-### ControlNet JSON Schema
+### ControlNet (`--controls`)
 
-```json
-[
-  {
-    "file": "<controlnet_model_filename>",
-    "weight": 0.6,
-    "guidanceStart": 0.0,
-    "guidanceEnd": 1.0,
-    "controlMode": "Balanced",
-    "inputOverride": "none"
-  }
-]
-```
-
-**`controlMode` values:**
-
-| Value | Effect |
-|-------|--------|
-| `"Balanced"` | Equal weight between prompt and control (default) |
-| `"Prompt"` | Prompt takes priority; control is weaker |
-| `"Control"` | Control image takes strict priority |
-
-**`inputOverride` preprocessor types** (pass `"none"` to use the image as-is):
-
-`none`, `canny`, `hed`, `scribble`, `mlsd`, `depth`, `depth-and-normal`, `openpose`, `openpose-with-hand`, `color`, `tile`, `blur`, `gray`, `low-quality`, `inpainting`, `ip-adapter`, `ip-adapter-face`
+JSON array of control configurations. See `references/controlnet-guide.md` for the complete JSON schema, control modes, preprocessor types, and weight recommendations.
 
 **Step scheduling tips:**
 
@@ -262,8 +229,8 @@ Default output directory (skill convention): `~/Pictures/draw-thing/`
 | `"PLMS"` | Pseudo-linear multistep. |
 | `"DPM2 Karras"` | 2nd-order DPM with Karras schedule. |
 | `"DPM2 a Karras"` | Ancestral variant of DPM2 Karras. |
-| `"DPM++ 2M"` | DPM++ 2M without Karras schedule. |
-| `"DPM++ SDE"` | Stochastic without Karras. |
+| `"DPMPP 2M"` | DPMPP 2M without Karras schedule. |
+| `"DPMPP SDE"` | Stochastic without Karras. |
 | `"LCM"` | Latent Consistency Model sampler. Very fast (4–8 steps). |
 | `"TCD"` | Trajectory Consistency Distillation. |
 | `"UniPC"` | Unified Predictor-Corrector. |
@@ -297,66 +264,3 @@ Default mode is `"Legacy"`. Use `"ScaleAlike"` when generating the same composit
 - Use double-quotes for `--prompt` and `--negative-prompt`.
 - Escape internal double-quotes in prompts with `\"` if using double-quote wrappers, or switch to single-quote wrappers.
 
----
-
-## Quick Command Templates
-
-### Minimal txt2img (Flux Schnell)
-```bash
-draw-things-cli generate \
-  --model flux_1_schnell_q5p.ckpt \
-  --prompt "your prompt here" \
-  --width 1024 --height 1024 \
-  --steps 4 \
-  --guidance-scale 1.0 \
-  --sampler "Euler a" \
-  --seed -1
-```
-
-### txt2img with LoRA (SD 1.5)
-```bash
-draw-things-cli generate \
-  --model v1-5-pruned-emaonly.ckpt \
-  --prompt "portrait of a woman, professional photo, studio lighting" \
-  --negative-prompt "blurry, low quality, extra limbs" \
-  --width 512 --height 512 \
-  --steps 25 \
-  --guidance-scale 7.5 \
-  --sampler "DPMPP 2M Karras" \
-  --loras '[{"file": "portrait_lora.safetensors", "weight": 0.8}]' \
-  --seed 42
-```
-
-### img2img
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image input.png \
-  --prompt "same scene, golden hour lighting" \
-  --strength 0.5 \
-  --steps 25 \
-  --guidance-scale 7.0 \
-  --sampler "DPMPP 2M Karras"
-```
-
-### Upscale 4×
-```bash
-draw-things-cli generate \
-  --model v1-5-pruned-emaonly.ckpt \
-  --image input.png \
-  --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale-factor 4 \
-  --strength 0.25 \
-  --steps 30
-```
-
-### ControlNet (Canny)
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image edge_image.png \
-  --prompt "architectural render, modern building" \
-  --controls '[{"file": "canny_controlnet.safetensors", "weight": 0.6, "guidanceStart": 0.0, "guidanceEnd": 1.0, "controlMode": "Balanced", "inputOverride": "canny"}]' \
-  --width 1024 --height 1024 \
-  --steps 25
-```

@@ -342,7 +342,7 @@ def score_pattern_coverage(body: str, dir_path: Path, fm: dict) -> dict:
         found.append("state-management")
     # 9. Scripts
     sd = dir_path / "scripts"
-    if sd.is_dir() and list(sd.glob("*.py")):
+    if sd.is_dir() and (list(sd.glob("*.py")) or list(sd.glob("*.sh"))):
         found.append("scripts")
     # 10. Templates
     td = dir_path / "templates"
@@ -477,14 +477,21 @@ def score_scripts(dir_path: Path) -> dict:
             "score": 0, "max": 5, "weight": 0.5, "findings": f,
         }
     py = list(sd.glob("*.py"))
-    if not py:
-        f.append("scripts/ exists but no .py files")
+    sh = list(sd.glob("*.sh"))
+    scripts = py + sh
+    if not scripts:
+        f.append("scripts/ exists but no .py or .sh files")
         return {
             "name": "Scripts", "id": "scripts",
             "score": 0, "max": 5, "weight": 0.5, "findings": f,
         }
     s += 1
-    f.append(f"Found {len(py)} Python script(s)")
+    parts = []
+    if py:
+        parts.append(f"{len(py)} Python")
+    if sh:
+        parts.append(f"{len(sh)} Shell")
+    f.append(f"Found {' + '.join(parts)} script(s)")
     ap, jo, ds = False, False, False
     for p in py:
         c = _read(p)
@@ -496,6 +503,24 @@ def score_scripts(dir_path: Path) -> dict:
             jo = True
         if '"""' in c[:500] or "'''" in c[:500]:
             ds = True
+    # Shell-specific checks: shebang and executable bit
+    sh_shebang, sh_exec = False, False
+    for p in sh:
+        c = _read(p)
+        if c is None:
+            continue
+        if c.startswith("#!"):
+            sh_shebang = True
+        if p.stat().st_mode & 0o111:
+            sh_exec = True
+    if sh and sh_shebang:
+        f.append("Shell script(s) have shebang line")
+    elif sh and not sh_shebang:
+        f.append("Shell script(s) missing shebang line")
+    if sh and sh_exec:
+        f.append("Shell script(s) are executable")
+    elif sh and not sh_exec:
+        f.append("Shell script(s) missing executable bit")
     if ap:
         s += 1
         f.append("Script(s) use argparse")
@@ -505,9 +530,9 @@ def score_scripts(dir_path: Path) -> dict:
     if ds:
         s += 1
         f.append("Script(s) have docstrings")
-    if len(py) >= 2:
+    if len(scripts) >= 2:
         s += 1
-        f.append(f"Multiple scripts ({len(py)})")
+        f.append(f"Multiple scripts ({len(scripts)})")
     return {
         "name": "Scripts", "id": "scripts",
         "score": min(s, 5), "max": 5, "weight": 0.5, "findings": f,
