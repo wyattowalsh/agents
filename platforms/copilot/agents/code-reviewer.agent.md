@@ -6,7 +6,7 @@ description: >
   performance, error handling, readability, and test coverage. Use before merging to main.
 tools: Read, Glob, Grep, Bash, Task
 disallowedTools: Write, Edit
-model: sonnet
+model: opus
 maxTurns: 25
 memory: user
 ---

@@ -6,7 +6,7 @@ description: >
   users report slowness, when profiling data is available, when code review flags potential
   performance issues, or when optimizing build/test/deploy times.
 tools: Read, Bash, Glob, Grep, Write, Edit, Task
-model: sonnet
+model: opus
 maxTurns: 40
 memory: project
 ---

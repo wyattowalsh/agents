@@ -15,6 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
 CLAUDE_COMPAT_MD = REPO_ROOT / "instructions" / "claude-code-global.md"
+COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
 TOOLING_POLICY_PATH = CONFIG_DIR / "tooling-policy.json"
 SYNC_MANIFEST_PATH = CONFIG_DIR / "sync-manifest.json"
@@ -39,6 +40,9 @@ COPILOT_CONFIG_PATH = HOME / ".copilot" / "config.json"
 COPILOT_MCP_PATH = HOME / ".copilot" / "mcp-config.json"
 COPILOT_AGENTS_HOME_DIR = HOME / ".copilot" / "agents"
 COPILOT_SKILLS_DIR = HOME / ".copilot" / "skills"
+GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
+GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
+GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -186,6 +190,11 @@ def load_codex_config() -> dict[str, Any]:
 
 def load_current_secret_fallbacks() -> dict[str, str]:
     fallbacks: dict[str, str] = {}
+    if GEMINI_SETTINGS_PATH.exists():
+        for server in load_json(GEMINI_SETTINGS_PATH).get("mcpServers", {}).values():
+            for key, value in server.get("env", {}).items():
+                if isinstance(value, str) and value and not value.startswith("${"):
+                    fallbacks.setdefault(key, value)
     if COPILOT_MCP_PATH.exists():
         for server in load_json(COPILOT_MCP_PATH).get("mcpServers", {}).values():
             for key, value in server.get("env", {}).items():
@@ -260,13 +269,27 @@ def seed_registry_from_current_state() -> dict[str, Any]:
         if COPILOT_MCP_PATH.exists()
         else {}
     )
+    gemini_servers = (
+        {normalize_name(name): value for name, value in load_json(GEMINI_SETTINGS_PATH).get("mcpServers", {}).items()}
+        if GEMINI_SETTINGS_PATH.exists()
+        else {}
+    )
     codex_servers = parse_codex_servers()
-    names = sorted({*repo_servers.keys(), *vscode_servers.keys(), *copilot_servers.keys(), *codex_servers.keys()})
+    names = sorted(
+        {
+            *repo_servers.keys(),
+            *vscode_servers.keys(),
+            *copilot_servers.keys(),
+            *gemini_servers.keys(),
+            *codex_servers.keys(),
+        }
+    )
 
     servers: dict[str, Any] = {}
     for name in names:
         base = (
-            codex_servers.get(name)
+            gemini_servers.get(name)
+            or codex_servers.get(name)
             or repo_servers.get(name)
             or copilot_servers.get(name)
             or vscode_servers.get(name)
@@ -460,7 +483,18 @@ def merge_codex_config(
 
 
 def generate_copilot_repo_instructions(ctx: SyncContext) -> None:
-    content = MANAGED_HEADER + GLOBAL_MD.read_text(encoding="utf-8")
+    copilot_text = COPILOT_GLOBAL_MD.read_text(encoding="utf-8")
+    global_text = GLOBAL_MD.read_text(encoding="utf-8").rstrip("\n")
+    content, replacements = re.subn(
+        r"^@.*instructions/global\.md\s*$",
+        global_text,
+        copilot_text,
+        count=1,
+        flags=re.MULTILINE,
+    )
+    if replacements != 1:
+        raise ValueError(f"Expected a single global.md import in {COPILOT_GLOBAL_MD}")
+    content = MANAGED_HEADER + content
     write_text(ctx, COPILOT_REPO_INSTRUCTIONS_PATH, content)
 
 
@@ -561,12 +595,55 @@ def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any]) -> None:
     generate_copilot_hooks(ctx)
 
 
+def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    servers: dict[str, Any] = {}
+    for name, entry in registry["servers"].items():
+        if entry.get("enabled") is False:
+            continue
+        server: dict[str, Any] = {
+            "type": entry.get("transport", "stdio"),
+            "command": entry["command"],
+            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
+        }
+        if entry.get("env"):
+            server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+        servers[name] = server
+    return servers
+
+def merge_gemini_settings(
+    ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
+) -> None:
+    if not GEMINI_SETTINGS_PATH.exists():
+        return
+    settings = load_json(GEMINI_SETTINGS_PATH)
+    settings["mcpServers"] = render_gemini_mcp(registry, fallbacks)
+    
+    defaults = policy.get("model_defaults", {}).get("gemini", {})
+    if "model" in defaults:
+        settings["model"] = defaults["model"]
+    if "effort_level" in defaults:
+        settings["effortLevel"] = defaults["effort_level"]
+        
+    trusted = set(settings.get("trusted_folders", []))
+    trusted.update(policy.get("trusted_roots", []))
+    settings["trusted_folders"] = sorted(trusted)
+    
+    allowed = set(settings.get("allowed_urls", []))
+    for domain in policy.get("docs_domains", []):
+        allowed.add(f"https://{domain}")
+    settings["allowed_urls"] = sorted(allowed)
+    
+    settings["experimental"] = True
+    
+    write_json(ctx, GEMINI_SETTINGS_PATH, settings)
+
 def sync_home_targets(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
     ensure_symlink(ctx, CODEX_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
-    ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, GLOBAL_MD)
+    ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
+    write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{GLOBAL_MD}\n")
     write_text(
         ctx,
         CLAUDE_COMPAT_MD,
@@ -577,10 +654,12 @@ def sync_home_targets(
     )
     merge_claude_settings(ctx, policy)
     merge_copilot_config(ctx, policy)
+    merge_gemini_settings(ctx, registry, policy, fallbacks)
     write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
     sync_skill_entries(ctx, CODEX_SKILLS_DIR)
     sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
+    sync_skill_entries(ctx, GEMINI_SKILLS_DIR)
     sync_copilot_agents(ctx)
 
 

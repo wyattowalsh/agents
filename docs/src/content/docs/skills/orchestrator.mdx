@@ -90,8 +90,8 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
 | **Single session** | Direct execution | Exactly 1 action | N/A |
 
 ## Orchestration Patterns
@@ -110,7 +110,8 @@ See `references/patterns.md` for detailed patterns with ASCII diagrams, key rule
 ## Model Selection
 
 - Default policy: `opus` for every subagent, teammate, and wave.
-- GitHub Copilot CLI override: `gpt-5.4` with `xhigh` effort for every subagent, teammate, wave, and `/fleet` member.
+- GitHub Copilot CLI override: all plans should be `/fleet`-optimized per `/orchestrator`. For `/fleet`, use **Claude Opus 4.6 with max thinking** for every non-trivial subagent, teammate, wave, and `/fleet` member.
+- Use **Claude Sonnet 4.6 with max thinking** only for incredibly/extremely trivial `/fleet` subagents. If there is any ambiguity, escalate to Opus.
 - When both policies are present, apply the environment-specific override for the active runtime.
 
 ## The Accounting Rule
@@ -268,8 +269,8 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
-| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / gpt-5.4 xhigh (GitHub Copilot CLI) |
+| **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
+| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
 | **Single session** | Direct execution | Exactly 1 action | N/A |
 
 Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
@@ -289,7 +290,8 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 
 ### Model selection
 - Default policy: `opus` for every subagent, teammate, and wave.
-- GitHub Copilot CLI override: `gpt-5.4` with `xhigh` effort for every subagent, teammate, wave, and `/fleet` member.
+- GitHub Copilot CLI override: all plans should be `/fleet`-optimized per `/orchestrator`. For `/fleet`, use **Claude Opus 4.6 with max thinking** for every non-trivial subagent, teammate, wave, and `/fleet` member.
+- Use **Claude Sonnet 4.6 with max thinking** only for incredibly/extremely trivial `/fleet` subagents. If there is any ambiguity, escalate to Opus.
 - When both policies are present, apply the environment-specific override for the active runtime.
 
 ### Context management
