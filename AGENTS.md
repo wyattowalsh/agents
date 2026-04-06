@@ -168,7 +168,7 @@ make help                                    # Show all make targets
 
 ### Architecture
 
-`instructions/global.md` is the only canonical global instruction source in this repo. Home entrypoints should point directly at it where the platform allows; repo-local mirrors should be generated from it where the platform requires a specific filename.
+`instructions/global.md` is the canonical cross-platform instruction source in this repo. Platform-specific files in `instructions/` may import it to add runtime-specific guidance without bloating the shared base. Home entrypoints should point directly at it where the platform allows, except GitHub Copilot, which uses `instructions/copilot-global.md`; repo-local mirrors should be generated from the platform-specific source when a platform requires a specific filename.
 
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
@@ -210,4 +210,4 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Crush | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
 | OpenCode | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
 | Cursor | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
-| GitHub Copilot | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Generated mirror of `global.md` |
+| GitHub Copilot | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Repo/home source is `instructions/copilot-global.md`, which imports `instructions/global.md` |

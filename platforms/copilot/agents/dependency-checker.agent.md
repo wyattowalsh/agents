@@ -7,7 +7,7 @@ description: >
   package files without explicit approval — it reports findings and recommends actions.
 tools: Read, Bash, Glob, Grep, WebFetch, WebSearch, Task
 disallowedTools: Write, Edit
-model: sonnet
+model: opus
 maxTurns: 30
 memory: user
 ---

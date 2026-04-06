@@ -6,7 +6,7 @@ description: >
   agent reads code first, then writes documentation grounded in what actually exists — not
   what should theoretically exist. Use after implementing features or when docs drift from code.
 tools: Read, Glob, Grep, Write, Edit, Bash, WebFetch, Task
-model: sonnet
+model: opus
 maxTurns: 30
 memory: user
 ---

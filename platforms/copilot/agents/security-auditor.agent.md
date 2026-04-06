@@ -6,7 +6,7 @@ description: >
   PRs, and deployments. Read-only — reports findings with severity and remediation.
 tools: Read, Glob, Grep, Bash, WebSearch, WebFetch, Task
 disallowedTools: Write, Edit
-model: sonnet
+model: opus
 maxTurns: 30
 memory: user
 ---

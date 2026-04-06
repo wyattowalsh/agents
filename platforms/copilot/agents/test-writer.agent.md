@@ -5,7 +5,7 @@ description: >
   identifies edge cases, and produces thorough coverage following project conventions.
   Use after implementing features or when backfilling tests for untested modules.
 tools: Read, Write, Edit, Bash, Glob, Grep, Task
-model: sonnet
+model: opus
 maxTurns: 40
 memory: project
 ---
