@@ -56,6 +56,9 @@ test:                     ## Run test suite
 lint:                     ## Lint Python code
 	uv run ruff check wagents/ skills/skill-creator/scripts/
 
+typecheck:                ## Type-check Python code
+	uv run --with ty==0.0.29 ty check
+
 audit:                    ## Audit all skill quality scores
 	uv run python skills/skill-creator/scripts/audit.py --all --format table
 
@@ -74,4 +77,4 @@ help:                     ## Show this help
 .PHONY: install install-agent install-skill list help \
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
-        validate test lint audit package readme
+        validate test lint typecheck audit package readme

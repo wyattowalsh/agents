@@ -13,7 +13,11 @@ FILE_PATH=$(echo "$INPUT" | jq -r '
 
 case "${FILE_PATH##*.}" in
   py)
-    command -v ruff &>/dev/null && ruff format "$FILE_PATH" 2>/dev/null ;;
+    if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
+      uv run ruff format "$FILE_PATH" 2>/dev/null
+    elif command -v ruff &>/dev/null; then
+      ruff format "$FILE_PATH" 2>/dev/null
+    fi ;;
   js|jsx|ts|tsx|css|scss|html|json|yaml|yml)
     if [ -f "node_modules/.bin/prettier" ]; then
       node_modules/.bin/prettier --write "$FILE_PATH" 2>/dev/null

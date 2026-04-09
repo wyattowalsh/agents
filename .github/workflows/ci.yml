@@ -28,7 +28,7 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync
-      - run: uvx ty check wagents/
+      - run: uv run --with ty==0.0.29 ty check --output-format github --no-progress
 
   test:
     runs-on: ubuntu-latest

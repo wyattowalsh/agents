@@ -35,8 +35,8 @@ Apply these conventions when working on Python files or projects.
 
 - **Package manager**: `uv` for all Python operations (`uv run python ...` instead of `python`, `uv add` instead of `pip install`)
 - **Project config**: `pyproject.toml` with `uv add <pkg>` (never `uv pip install` or `pip install`)
-- **Type checking**: `ty` (not mypy)
-- **Linting**: `ruff check` and `ruff format`
+- **Type checking**: `uv run --with ty==0.0.29 ty check` (not `mypy`)
+- **Linting**: `uv run ruff check` and `uv run ruff format`
 - **Testing**: `uv run pytest`
 - **Task running**: `uv run <command>` for all script execution
 
@@ -68,7 +68,7 @@ When applicable, prefer these libraries over alternatives:
 - Use `pyproject.toml` for all project metadata and dependencies
 - Place source code in a package directory matching the project name
 - Use `uv` workspace members for monorepo sub-packages
-- Run `ruff check` and `ruff format` before committing
+- Run `uv run ruff check`, `uv run ruff format`, and `uv run --with ty==0.0.29 ty check` before committing
 
 ## Performance Conventions
 
@@ -103,15 +103,16 @@ When applicable, prefer these libraries over alternatives:
 
 1. Always use `uv` for package management — never `pip install` or `pip`
 2. Use `uv add` to add dependencies — never `uv pip install`
-3. Use `ty` for type checking — never `mypy`
+3. Use `uv run --with ty==0.0.29 ty check` for type checking — never `mypy`
 4. Run `uv run pytest` before committing any Python changes
-5. Run `uv run ruff check` to lint before committing
+5. Run `uv run ruff check` and `uv run ruff format` before committing
 6. Check `references/exceptions.md` before breaking any convention
 7. Prefer libraries from the preferred table over their alternatives
 
 **Canonical terms** (use these exactly):
 - `uv` -- the required package manager and task runner
 - `ty` -- the required type checker (not mypy)
+- `uv run --with ty==0.0.29 ty check` -- the required type-check command
 - `ruff` -- the required linter and formatter
 - `pyproject.toml` -- the single source of project configuration
 - `uv run` -- prefix for all Python command execution

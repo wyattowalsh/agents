@@ -8,11 +8,11 @@ When to break the standard Python conventions in this repo.
 - Corporate environment that mandates pip with a private index
 - Docker images that use pip for minimal layer size (document the reason)
 
-## When mypy Is Acceptable
+## Legacy Type Checker Exceptions
 
-- Project already has extensive mypy configuration and type stubs
-- CI pipeline uses mypy with strict mode and custom plugins
-- Migration to ty would require rewriting type stubs (defer to a dedicated PR)
+- Only keep `mypy` temporarily when migrating an existing codebase to `ty`
+- Document the migration owner, scope, and exit criteria
+- Prefer isolating legacy `mypy` usage to the package being migrated instead of making it the repo-wide standard
 
 ## When Alternative Libraries Are Acceptable
 
