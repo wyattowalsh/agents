@@ -7,7 +7,7 @@
     "Agent uses 'uv run' prefix for any Python command execution, never bare 'python'",
     "Agent recommends 'tenacity' for retry logic (preferred library per conventions), not manual retry loops",
     "Agent uses 'uv add tenacity' if the dependency needs to be added, never 'pip install'",
-    "Agent runs 'uv run --with ty==0.0.29 ty check' to type check before considering the change complete",
+    "Agent runs 'uv run ty check' to type check before considering the change complete",
     "Agent runs 'uv run ruff check' to lint before considering the change complete",
     "Agent runs 'uv run pytest' before considering the change complete"
   ]

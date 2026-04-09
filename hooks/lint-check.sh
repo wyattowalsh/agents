@@ -28,7 +28,7 @@ case "${FILE_PATH##*.}" in
     if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
       case "$FILE_PATH" in
         wagents/*|scripts/*)
-          TYPECHECK=$(uv run --with ty==0.0.29 ty check --output-format concise --no-progress "$FILE_PATH" 2>&1)
+          TYPECHECK=$(uv run ty check --output-format concise --no-progress "$FILE_PATH" 2>&1)
           TYPECHECK_EXIT=$?
           TYPECHECK=$(echo "$TYPECHECK" | head -20)
           [ $TYPECHECK_EXIT -ne 0 ] && printf -v DETAILS "%sTy issues in %s:\n%s\n" "$DETAILS" "$FILE_PATH" "$TYPECHECK"

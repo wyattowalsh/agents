@@ -57,7 +57,7 @@ lint:                     ## Lint Python code
 	uv run ruff check wagents/ skills/skill-creator/scripts/
 
 typecheck:                ## Type-check Python code
-	uv run --with ty==0.0.29 ty check
+	uv run ty check
 
 audit:                    ## Audit all skill quality scores
 	uv run python skills/skill-creator/scripts/audit.py --all --format table
