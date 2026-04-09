@@ -437,6 +437,22 @@ def write_cli_page() -> None:
         " validating frontmatter, generating documentation, and packaging skills for distribution."
     )
     parts.append("")
+    parts.append("## Quick Reference")
+    parts.append("")
+    parts.append("| Command | Description |")
+    parts.append("|---------|-------------|")
+    parts.append("| `wagents new skill <name>` | Scaffold a new [skill](/skills/) |")
+    parts.append("| `wagents new agent <name>` | Scaffold a new agent configuration |")
+    parts.append("| `wagents new mcp <name>` | Scaffold a new [MCP server](/mcp/) |")
+    parts.append("| `wagents validate` | Validate all assets' frontmatter and structure |")
+    parts.append("| `wagents readme` | Regenerate `README.md` |")
+    parts.append("| `wagents install` | Install skills into agent platforms |")
+    parts.append("| `wagents package <name>` | Package skills as portable ZIPs |")
+    parts.append("| `wagents doctor` | Check environment and toolchain health |")
+    parts.append("| `wagents docs <subcommand>` | Manage the documentation site |")
+    parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
+    parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
+    parts.append("")
     parts.append("## Installation")
     parts.append("")
     parts.append("<Steps>")
@@ -565,10 +581,16 @@ def write_cli_page() -> None:
     # --- wagents validate ---
     parts.append("### `wagents validate` -- Check All Assets")
     parts.append("")
-    parts.append("Validate frontmatter and structure for every skill, agent, and MCP server in the repository:")
+    parts.append(
+        "Validate frontmatter and structure for every skill, agent, and MCP server in the repository. "
+        "Also validates hook event names and `RELATED_SKILLS` references."
+    )
     parts.append("")
     parts.append("```bash")
     parts.append("wagents validate")
+    parts.append("")
+    parts.append("# Output as JSON or JSONL")
+    parts.append("wagents validate --format json")
     parts.append("```")
     parts.append("")
     parts.append("**What it checks:**")
@@ -584,6 +606,8 @@ def write_cli_page() -> None:
         "| **MCP servers** | Directory is kebab-case, `server.py` exists and references FastMCP, "
         "`pyproject.toml` includes fastmcp dependency, `fastmcp.json` exists |"
     )
+    parts.append("| **Hooks** | Hook event names are known lifecycle events across skills, agents, and settings |")
+    parts.append("| **Related skills** | Every key and value in `RELATED_SKILLS` maps to an existing skill directory |")
     parts.append("")
     parts.append("The command exits with code 1 if any validation fails, printing each error to stderr.")
     parts.append("")
@@ -592,6 +616,43 @@ def write_cli_page() -> None:
         "Run `wagents validate` in your CI pipeline to catch frontmatter issues before merge. "
         "It is included in the repository's pre-commit and CI checks."
     )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents doctor ---
+    parts.append("### `wagents doctor` -- Environment Health Check")
+    parts.append("")
+    parts.append(
+        "Diagnose your local environment and toolchain. Checks for required tools, "
+        "correct Python version, docs dependency status, and Playwright availability."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents doctor")
+    parts.append("")
+    parts.append("# Output as JSON for scripting")
+    parts.append("wagents doctor --format json")
+    parts.append("```")
+    parts.append("")
+    parts.append("**What it checks:**")
+    parts.append("")
+    parts.append("| Check | Status on failure |")
+    parts.append("|-------|-------------------|")
+    parts.append("| Python version satisfies `requires-python` | `fail` |")
+    parts.append("| `uv` on PATH | `fail` |")
+    parts.append("| `node`, `npx`, `pnpm` on PATH | `warn` |")
+    parts.append("| `docs/node_modules` present and fresh | `warn` |")
+    parts.append("| Playwright Python package installed | `warn` |")
+    parts.append("| Playwright browser cache exists | `warn` |")
+    parts.append("")
+    parts.append(
+        "Exits with code 1 if any check has `fail` status. Warnings are informational and do not affect the exit code."
+    )
+    parts.append("")
+    parts.append('<Aside type="tip" title="First-time setup">')
+    parts.append("Run `wagents doctor` after cloning to verify your environment before working with skills or docs.")
     parts.append("</Aside>")
     parts.append("")
     parts.append("---")
@@ -635,6 +696,9 @@ def write_cli_page() -> None:
     parts.append("# Install to a specific agent")
     parts.append("wagents install -a claude-code")
     parts.append("")
+    parts.append("# Project-local install instead of global")
+    parts.append("wagents install --local")
+    parts.append("")
     parts.append("# List available skills without installing")
     parts.append("wagents install --list")
     parts.append("")
@@ -645,9 +709,19 @@ def write_cli_page() -> None:
     parts.append("wagents install -y")
     parts.append("```")
     parts.append("")
+    parts.append("| Option | Default | Description |")
+    parts.append("|--------|---------|-------------|")
+    parts.append("| `<skills>` | all | Positional skill name(s) to install |")
+    parts.append("| `-a`, `--agent` | all | Target agent(s), repeatable |")
+    parts.append("| `-g`, `--global` | `true` | Install globally (default) |")
+    parts.append("| `--local` | `false` | Install into current project only |")
+    parts.append("| `--list` | `false` | List available skills without installing |")
+    parts.append("| `--copy` | `false` | Copy files instead of symlinking |")
+    parts.append("| `-y`, `--yes` | `false` | Skip confirmation prompts |")
+    parts.append("")
     parts.append(
-        "**Supported agents:** `claude-code`, `gemini-cli`, `codex`, `crush`, "
-        "`cursor`, `antigravity`, `github-copilot`, `opencode`"
+        "**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, "
+        "`cursor`, `gemini-cli`, `github-copilot`, `opencode`"
     )
     parts.append("")
     parts.append("---")
@@ -786,6 +860,119 @@ def write_cli_page() -> None:
     parts.append("---")
     parts.append("")
 
+    # --- wagents hooks ---
+    parts.append("### `wagents hooks` -- Lifecycle Hooks")
+    parts.append("")
+    parts.append(
+        "Inspect and validate lifecycle hooks defined in `.claude/settings.json`, "
+        "skill frontmatter, and agent frontmatter."
+    )
+    parts.append("")
+    parts.append("<Tabs>")
+    parts.append('  <TabItem label="list">')
+    parts.append("")
+    parts.append("List all hooks across skills, agents, and settings:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents hooks list")
+    parts.append("")
+    parts.append("# Output as JSON")
+    parts.append("wagents hooks list --format json")
+    parts.append("```")
+    parts.append("")
+    parts.append("Shows source, event, matcher, handler type, and command/prompt for each hook.")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="validate">')
+    parts.append("")
+    parts.append("Validate hook definitions for correct structure and known event names:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents hooks validate")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), "
+        "handler types are valid (`command`, `prompt`, `agent`), and required fields are present."
+    )
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append("</Tabs>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents eval ---
+    parts.append("### `wagents eval` -- Skill Evals")
+    parts.append("")
+    parts.append(
+        "Manage and validate eval files stored in `skills/<name>/evals/*.json`. "
+        "Evals define test queries and expected behaviors for skills."
+    )
+    parts.append("")
+    parts.append("<Tabs>")
+    parts.append('  <TabItem label="list">')
+    parts.append("")
+    parts.append("List all eval files grouped by skill:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents eval list")
+    parts.append("")
+    parts.append("# Output as JSON")
+    parts.append("wagents eval list --format json")
+    parts.append("```")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="validate">')
+    parts.append("")
+    parts.append("Validate eval JSON files for required fields and referential integrity:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents eval validate")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Each eval file must contain three required fields: `skills` (a non-empty list of "
+        "strings matching existing skill directories), `query` (a non-empty string), and "
+        "`expected_behavior` (a non-empty list of strings)."
+    )
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append('  <TabItem label="coverage">')
+    parts.append("")
+    parts.append("Show which skills have evals and how many:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents eval coverage")
+    parts.append("```")
+    parts.append("")
+    parts.append("Useful for identifying skills that lack test coverage.")
+    parts.append("")
+    parts.append("  </TabItem>")
+    parts.append("</Tabs>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- Structured output ---
+    parts.append('### Structured Output <Badge text="All validation commands" variant="note" />')
+    parts.append("")
+    parts.append("Most inspection and validation commands accept `--format` to control output:")
+    parts.append("")
+    parts.append("| Format | Description |")
+    parts.append("|--------|-------------|")
+    parts.append("| `text` | Human-readable table output (default) |")
+    parts.append("| `json` | Single JSON object with full results |")
+    parts.append("| `jsonl` | One JSON object per line — ideal for piping to `jq` or log aggregators |")
+    parts.append("")
+    parts.append(
+        "Commands supporting `--format`: `validate`, `doctor`, `hooks list`, "
+        "`hooks validate`, `eval list`, `eval validate`, `eval coverage`."
+    )
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
     # --- Common Workflows ---
     parts.append("## Common Workflows")
     parts.append("")
@@ -838,6 +1025,24 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append("</Steps>")
     parts.append("")
+    parts.append("### Checking environment health")
+    parts.append("")
+    parts.append("<Steps>")
+    parts.append("")
+    parts.append("1. Run the doctor check:")
+    parts.append("   ```bash")
+    parts.append("   wagents doctor")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("2. Fix any `FAIL` items shown in the output.")
+    parts.append("")
+    parts.append("3. Run validation and hook checks:")
+    parts.append("   ```bash")
+    parts.append("   wagents validate && wagents hooks validate")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("</Steps>")
+    parts.append("")
     parts.append("---")
     parts.append("")
 
@@ -873,6 +1078,17 @@ def write_cli_page() -> None:
     parts.append("- tests/")
     parts.append("</FileTree>")
     parts.append("")
+    parts.append("## Related Pages")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <LinkCard title="Skills Catalog" href="/skills/" description="Browse all available skills." />')
+    parts.append(
+        '  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" '
+        'description="Browse agent configurations in the repository." />'
+    )
+    parts.append('  <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />')
+    parts.append("</CardGrid>")
+    parts.append("")
 
     # Built With
     parts.append("## Built With")
@@ -884,9 +1100,7 @@ def write_cli_page() -> None:
     parts.append(
         '  <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />'
     )
-    parts.append(
-        '  <LinkCard title="ty" href="https://docs.astral.sh/ty/" description="Fast Python type checker." />'
-    )
+    parts.append('  <LinkCard title="ty" href="https://docs.astral.sh/ty/" description="Fast Python type checker." />')
     parts.append(
         '  <LinkCard title="Starlight"'
         ' href="https://starlight.astro.build/"'

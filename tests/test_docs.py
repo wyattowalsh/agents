@@ -104,7 +104,12 @@ class TestWriteCliPage:
         assert cli_page.exists()
         text = cli_page.read_text()
         assert "CLI Reference" in text
+        assert "## Quick Reference" in text
         assert "wagents new skill" in text
+        assert "wagents doctor" in text
+        assert "wagents hooks validate" in text
+        assert "wagents eval coverage" in text
+        assert "## Related Pages" in text
         assert "<FileTree>" in text
         assert "wagents docs generate --include-installed" in text
         assert "wagents docs generate --no-installed" not in text
@@ -182,6 +187,20 @@ class TestDocsGenerate:
 
         assert calls == [{"test-skill"}]
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+
+    def test_preserves_hand_maintained_skill_page(self, tmp_repo, monkeypatch):
+        monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
+        monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
+        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Replaced\n---\n")
+
+        skill_page = tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "test-skill.mdx"
+        skill_page.parent.mkdir(parents=True, exist_ok=True)
+        preserved = "---\ntitle: Curated\n---\n\n{/* HAND-MAINTAINED */}\n\nCurated page.\n"
+        skill_page.write_text(preserved)
+
+        docs_generate()
+
+        assert skill_page.read_text() == preserved
 
 
 class TestWriteInstalledSkillsPage:

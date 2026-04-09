@@ -30,7 +30,7 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
     fi
     TYPED_PY=$(echo "$PY" | grep -E '^(wagents|scripts)/')
     if [ -n "$TYPED_PY" ] && [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
-      TY_ERRS=$(echo "$TYPED_PY" | xargs uv run --with ty==0.0.29 ty check --output-format concise --no-progress 2>&1)
+      TY_ERRS=$(echo "$TYPED_PY" | xargs uv run ty check --output-format concise --no-progress 2>&1)
       TY_EXIT=$?
       TY_ERRS=$(echo "$TY_ERRS" | head -10)
       [ $TY_EXIT -ne 0 ] && ISSUES="$(printf '%sPython type errors:\n%s\n\n' "$ISSUES" "$TY_ERRS")"
