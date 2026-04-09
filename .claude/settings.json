@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path // empty' | xargs -I{} sh -c 'case \"{}\" in *.py) ruff check --fix --quiet \"{}\" 2>/dev/null ;; *.js|*.ts|*.jsx|*.tsx) pnpm exec prettier --write \"{}\" 2>/dev/null ;; esac' || true"
+            "command": "jq -r '.tool_input.file_path // empty' | xargs -I{} sh -c 'case \"{}\" in *.py) if command -v uv >/dev/null && [ -f pyproject.toml ]; then uv run ruff check --fix --quiet \"{}\" 2>/dev/null; elif command -v ruff >/dev/null; then ruff check --fix --quiet \"{}\" 2>/dev/null; fi ;; *.js|*.ts|*.jsx|*.tsx) pnpm exec prettier --write \"{}\" 2>/dev/null ;; esac' || true"
           }
         ]
       }

@@ -7,6 +7,22 @@ import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge } from
 
 The `wagents` CLI manages AI agent assets in this repository -- creating skills, agents, and MCP servers from templates, validating frontmatter, generating documentation, and packaging skills for distribution.
 
+## Quick Reference
+
+| Command | Description |
+|---------|-------------|
+| `wagents new skill <name>` | Scaffold a new [skill](/skills/) |
+| `wagents new agent <name>` | Scaffold a new agent configuration |
+| `wagents new mcp <name>` | Scaffold a new [MCP server](/mcp/) |
+| `wagents validate` | Validate all assets' frontmatter and structure |
+| `wagents readme` | Regenerate `README.md` |
+| `wagents install` | Install skills into agent platforms |
+| `wagents package <name>` | Package skills as portable ZIPs |
+| `wagents doctor` | Check environment and toolchain health |
+| `wagents docs <subcommand>` | Manage the documentation site |
+| `wagents hooks <subcommand>` | List and validate lifecycle hooks |
+| `wagents eval <subcommand>` | List, validate, and check eval coverage |
+
 ## Installation
 
 <Steps>
@@ -113,10 +129,13 @@ All asset names must be kebab-case (`^[a-z0-9][a-z0-9-]*$`) and at most 64 chara
 
 ### `wagents validate` -- Check All Assets
 
-Validate frontmatter and structure for every skill, agent, and MCP server in the repository:
+Validate frontmatter and structure for every skill, agent, and MCP server in the repository. Also validates hook event names and `RELATED_SKILLS` references.
 
 ```bash
 wagents validate
+
+# Output as JSON or JSONL
+wagents validate --format json
 ```
 
 **What it checks:**
@@ -126,11 +145,43 @@ wagents validate
 | **Skills** | Required `name` and `description` fields, kebab-case naming, name matches directory, description within 1024 chars, body is non-empty |
 | **Agents** | Required `name` and `description` fields, kebab-case naming, name matches filename |
 | **MCP servers** | Directory is kebab-case, `server.py` exists and references FastMCP, `pyproject.toml` includes fastmcp dependency, `fastmcp.json` exists |
+| **Hooks** | Hook event names are known lifecycle events across skills, agents, and settings |
+| **Related skills** | Every key and value in `RELATED_SKILLS` maps to an existing skill directory |
 
 The command exits with code 1 if any validation fails, printing each error to stderr.
 
 <Aside type="tip" title="CI integration">
 Run `wagents validate` in your CI pipeline to catch frontmatter issues before merge. It is included in the repository's pre-commit and CI checks.
+</Aside>
+
+---
+
+### `wagents doctor` -- Environment Health Check
+
+Diagnose your local environment and toolchain. Checks for required tools, correct Python version, docs dependency status, and Playwright availability.
+
+```bash
+wagents doctor
+
+# Output as JSON for scripting
+wagents doctor --format json
+```
+
+**What it checks:**
+
+| Check | Status on failure |
+|-------|-------------------|
+| Python version satisfies `requires-python` | `fail` |
+| `uv` on PATH | `fail` |
+| `node`, `npx`, `pnpm` on PATH | `warn` |
+| `docs/node_modules` present and fresh | `warn` |
+| Playwright Python package installed | `warn` |
+| Playwright browser cache exists | `warn` |
+
+Exits with code 1 if any check has `fail` status. Warnings are informational and do not affect the exit code.
+
+<Aside type="tip" title="First-time setup">
+Run `wagents doctor` after cloning to verify your environment before working with skills or docs.
 </Aside>
 
 ---
@@ -165,6 +216,9 @@ wagents install my-skill
 # Install to a specific agent
 wagents install -a claude-code
 
+# Project-local install instead of global
+wagents install --local
+
 # List available skills without installing
 wagents install --list
 
@@ -175,7 +229,17 @@ wagents install --copy
 wagents install -y
 ```
 
-**Supported agents:** `claude-code`, `gemini-cli`, `codex`, `crush`, `cursor`, `antigravity`, `github-copilot`, `opencode`
+| Option | Default | Description |
+|--------|---------|-------------|
+| `<skills>` | all | Positional skill name(s) to install |
+| `-a`, `--agent` | all | Target agent(s), repeatable |
+| `-g`, `--global` | `true` | Install globally (default) |
+| `--local` | `false` | Install into current project only |
+| `--list` | `false` | List available skills without installing |
+| `--copy` | `false` | Copy files instead of symlinking |
+| `-y`, `--yes` | `false` | Skip confirmation prompts |
+
+**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`
 
 ---
 
@@ -293,6 +357,99 @@ For day-to-day development, `wagents docs dev` is the most common command -- it 
 
 ---
 
+### `wagents hooks` -- Lifecycle Hooks
+
+Inspect and validate lifecycle hooks defined in `.claude/settings.json`, skill frontmatter, and agent frontmatter.
+
+<Tabs>
+  <TabItem label="list">
+
+List all hooks across skills, agents, and settings:
+
+```bash
+wagents hooks list
+
+# Output as JSON
+wagents hooks list --format json
+```
+
+Shows source, event, matcher, handler type, and command/prompt for each hook.
+
+  </TabItem>
+  <TabItem label="validate">
+
+Validate hook definitions for correct structure and known event names:
+
+```bash
+wagents hooks validate
+```
+
+Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), handler types are valid (`command`, `prompt`, `agent`), and required fields are present.
+
+  </TabItem>
+</Tabs>
+
+---
+
+### `wagents eval` -- Skill Evals
+
+Manage and validate eval files stored in `skills/<name>/evals/*.json`. Evals define test queries and expected behaviors for skills.
+
+<Tabs>
+  <TabItem label="list">
+
+List all eval files grouped by skill:
+
+```bash
+wagents eval list
+
+# Output as JSON
+wagents eval list --format json
+```
+
+  </TabItem>
+  <TabItem label="validate">
+
+Validate eval JSON files for required fields and referential integrity:
+
+```bash
+wagents eval validate
+```
+
+Each eval file must contain three required fields: `skills` (a non-empty list of
+strings matching existing skill directories), `query` (a non-empty string), and
+`expected_behavior` (a non-empty list of strings).
+
+  </TabItem>
+  <TabItem label="coverage">
+
+Show which skills have evals and how many:
+
+```bash
+wagents eval coverage
+```
+
+Useful for identifying skills that lack test coverage.
+
+  </TabItem>
+</Tabs>
+
+---
+
+### Structured Output <Badge text="All validation commands" variant="note" />
+
+Most inspection and validation commands accept `--format` to control output:
+
+| Format | Description |
+|--------|-------------|
+| `text` | Human-readable table output (default) |
+| `json` | Single JSON object with full results |
+| `jsonl` | One JSON object per line — ideal for piping to `jq` or log aggregators |
+
+Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks validate`, `eval list`, `eval validate`, `eval coverage`.
+
+---
+
 ## Common Workflows
 
 ### Adding a new skill end-to-end
@@ -344,6 +501,24 @@ For day-to-day development, `wagents docs dev` is the most common command -- it 
 
 </Steps>
 
+### Checking environment health
+
+<Steps>
+
+1. Run the doctor check:
+   ```bash
+   wagents doctor
+   ```
+
+2. Fix any `FAIL` items shown in the output.
+
+3. Run validation and hook checks:
+   ```bash
+   wagents validate && wagents hooks validate
+   ```
+
+</Steps>
+
 ---
 
 ## Repository Structure
@@ -377,11 +552,20 @@ For day-to-day development, `wagents docs dev` is the most common command -- it 
 - tests/
 </FileTree>
 
+## Related Pages
+
+<CardGrid>
+  <LinkCard title="Skills Catalog" href="/skills/" description="Browse all available skills." />
+  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" description="Browse agent configurations in the repository." />
+  <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />
+</CardGrid>
+
 ## Built With
 
 <CardGrid>
   <LinkCard title="uv" href="https://docs.astral.sh/uv/" description="Fast Python package manager." />
   <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />
+  <LinkCard title="ty" href="https://docs.astral.sh/ty/" description="Fast Python type checker." />
   <LinkCard title="Starlight" href="https://starlight.astro.build/" description="Documentation framework for this site." />
   <LinkCard title="ruff" href="https://docs.astral.sh/ruff/" description="Fast Python linter and formatter." />
 </CardGrid>

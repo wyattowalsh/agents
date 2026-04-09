@@ -24,6 +24,10 @@ jobs:
         run: uv run pytest
       - name: Lint
         run: uv run ruff check wagents/
+      - name: Format check
+        run: uv run ruff format --check wagents/
+      - name: Type check
+        run: uv run --with ty==0.0.29 ty check --output-format github --no-progress
 
   package-and-release:
     needs: validate

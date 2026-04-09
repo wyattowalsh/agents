@@ -21,9 +21,19 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
 
     # Python critical errors only (skip deleted files)
     PY=$(echo "$MODIFIED" | grep '\.py$' | while read -r f; do [ -f "$f" ] && echo "$f"; done)
-    if [ -n "$PY" ] && command -v ruff &>/dev/null; then
+    if [ -n "$PY" ] && [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
+      ERRS=$(echo "$PY" | xargs uv run ruff check --select E9,F63,F7,F82 2>/dev/null | head -10)
+      [ -n "$ERRS" ] && ISSUES="$(printf '%sPython errors:\n%s\n\n' "$ISSUES" "$ERRS")"
+    elif [ -n "$PY" ] && command -v ruff &>/dev/null; then
       ERRS=$(echo "$PY" | xargs ruff check --select E9,F63,F7,F82 2>/dev/null | head -10)
       [ -n "$ERRS" ] && ISSUES="$(printf '%sPython errors:\n%s\n\n' "$ISSUES" "$ERRS")"
+    fi
+    TYPED_PY=$(echo "$PY" | grep -E '^(wagents|scripts)/')
+    if [ -n "$TYPED_PY" ] && [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
+      TY_ERRS=$(echo "$TYPED_PY" | xargs uv run --with ty==0.0.29 ty check --output-format concise --no-progress 2>&1)
+      TY_EXIT=$?
+      TY_ERRS=$(echo "$TY_ERRS" | head -10)
+      [ $TY_EXIT -ne 0 ] && ISSUES="$(printf '%sPython type errors:\n%s\n\n' "$ISSUES" "$TY_ERRS")"
     fi
 
     # TypeScript errors

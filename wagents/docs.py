@@ -885,6 +885,9 @@ def write_cli_page() -> None:
         '  <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />'
     )
     parts.append(
+        '  <LinkCard title="ty" href="https://docs.astral.sh/ty/" description="Fast Python type checker." />'
+    )
+    parts.append(
         '  <LinkCard title="Starlight"'
         ' href="https://starlight.astro.build/"'
         ' description="Documentation framework for this site." />'

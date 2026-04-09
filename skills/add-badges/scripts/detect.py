@@ -688,8 +688,27 @@ def detect_code_quality(root: Path) -> dict:
     try:
         pyp = root / "pyproject.toml"
         pyp_data = None
+        dependency_names: set[str] = set()
         if pyp.is_file():
             pyp_data = _load_toml_cached(pyp)
+            if pyp_data:
+                def _record_dep_names(values: object) -> None:
+                    if not isinstance(values, list):
+                        return
+                    for dep in values:
+                        m = re.match(r"([a-zA-Z0-9_-]+)", str(dep))
+                        if m:
+                            dependency_names.add(m.group(1).lower().replace("_", "-"))
+
+                _record_dep_names(pyp_data.get("project", {}).get("dependencies", []))
+                opt_deps = pyp_data.get("project", {}).get("optional-dependencies", {})
+                if isinstance(opt_deps, dict):
+                    for group_deps in opt_deps.values():
+                        _record_dep_names(group_deps)
+                dep_groups = pyp_data.get("dependency-groups", {})
+                if isinstance(dep_groups, dict):
+                    for group_deps in dep_groups.values():
+                        _record_dep_names(group_deps)
 
         # Linters
         if (root / "ruff.toml").is_file() or (pyp_data and pyp_data.get("tool", {}).get("ruff")):
@@ -713,7 +732,17 @@ def detect_code_quality(root: Path) -> dict:
             result["formatters"].append("black")
 
         # Type checkers
-        if (root / "mypy.ini").is_file() or (pyp_data and pyp_data.get("tool", {}).get("mypy")):
+        if (
+            (root / "ty.toml").is_file()
+            or (pyp_data and pyp_data.get("tool", {}).get("ty") is not None)
+            or "ty" in dependency_names
+        ):
+            result["type_checkers"].append("ty")
+        if (
+            (root / "mypy.ini").is_file()
+            or (pyp_data and pyp_data.get("tool", {}).get("mypy") is not None)
+            or "mypy" in dependency_names
+        ):
             result["type_checkers"].append("mypy")
         if (root / "tsconfig.json").is_file():
             result["type_checkers"].append("typescript")

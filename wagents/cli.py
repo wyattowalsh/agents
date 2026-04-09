@@ -6,7 +6,6 @@ import re
 import shutil
 import sys
 import tomllib
-from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Annotated
 
@@ -29,7 +28,6 @@ eval_app = typer.Typer(help="Manage and validate skill evals")
 app.add_typer(eval_app, name="eval")
 
 OUTPUT_FORMATS = ("text", "json", "jsonl")
-JsonlRecord = dict[str, object]
 
 
 def version_callback(value: bool):
@@ -64,7 +62,7 @@ def _emit_structured_output(
     *,
     text_lines: list[str] | None = None,
     json_data: dict | list | None = None,
-    jsonl_records: Sequence[Mapping[str, object]] | None = None,
+    jsonl_records: list[dict] | None = None,
 ) -> None:
     """Emit command output in text, json, or jsonl format."""
     normalized = _normalize_output_format(format_)
@@ -246,7 +244,9 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
         )
     else:
         node_modules_mtime = node_modules.stat().st_mtime
-        stale_inputs = [path.name for path in (package_json, lock_file) if path.stat().st_mtime > node_modules_mtime]
+        stale_inputs = [
+            path.name for path in (package_json, lock_file) if path.stat().st_mtime > node_modules_mtime
+        ]
         if stale_inputs:
             checks.append(
                 _make_doctor_check(
@@ -325,7 +325,10 @@ def _emit_doctor_report(format_: str, checks: list[dict[str, str]]) -> None:
         "checks": checks,
     }
     text_lines = [
-        (f"Doctor summary: {len(checks)} checks, {counts['ok']} ok, {counts['warn']} warn, {counts['fail']} fail")
+        (
+            "Doctor summary: "
+            f"{len(checks)} checks, {counts['ok']} ok, {counts['warn']} warn, {counts['fail']} fail"
+        )
     ]
     for check in checks:
         line = f"{check['status'].upper():<4} {check['name']:<20} {check['summary']}"
@@ -333,7 +336,7 @@ def _emit_doctor_report(format_: str, checks: list[dict[str, str]]) -> None:
             line = f"{line} Fix: {check['remediation']}"
         text_lines.append(line)
 
-    jsonl_records: list[JsonlRecord] = [{"type": "check", **check} for check in checks]
+    jsonl_records: list[dict[str, object]] = [{"type": "check", **check} for check in checks]
     jsonl_records.append({"type": "summary", **json_result["summary"], "ok": json_result["ok"]})
 
     _emit_structured_output(
@@ -772,7 +775,7 @@ def validate(
         "errors": errors,
         "message": "All validations passed" if not errors else "Validation failed",
     }
-    jsonl_records: list[JsonlRecord] = [{"type": "error", **error} for error in errors]
+    jsonl_records: list[dict[str, object]] = [{"type": "error", **error} for error in errors]
     jsonl_records.append(
         {
             "type": "summary",
@@ -944,9 +947,9 @@ def readme(
             '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
             'docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">'
         ),
-        "  <h1>agents</h1>",
-        "  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>",
-        "  <p>",
+        '  <h1>agents</h1>',
+        '  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>',
+        '  <p>',
         (
             '    <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml">'
             '<img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/'
@@ -969,32 +972,32 @@ def readme(
         ),
         (
             '    <a href="https://agents.w4w.dev"><img src="https://img.shields.io/'
-            "badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs"
+            'badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs'
             '&logoColor=white" alt="Docs"></a>'
         ),
-        "  </p>",
-        "</div>",
-        "",
-        "---",
-        "",
-        "## 🚀 Quick Start",
-        "",
-        "Install all skills globally into your favorite agents:",
-        "",
-        "```bash",
-        "npx -y skills add wyattowalsh/agents --all -g",
-        "```",
-        "",
-        "## ✨ Why use this repository?",
-        "",
-        "| 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |",
-        "| :--- | :--- | :--- |",
+        '  </p>',
+        '</div>',
+        '',
+        '---',
+        '',
+        '## 🚀 Quick Start',
+        '',
+        'Install all skills globally into your favorite agents:',
+        '',
+        '```bash',
+        'npx -y skills add wyattowalsh/agents --all -g',
+        '```',
+        '',
+        '## ✨ Why use this repository?',
+        '',
+        '| 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |',
+        '| :--- | :--- | :--- |',
         (
-            "| Use skills across Claude Code, Cursor, Copilot, and more. | Combine "
-            "simple skills into complex, multi-agent workflows. | Extensible, "
-            "readable, and community-driven. |"
+            '| Use skills across Claude Code, Cursor, Copilot, and more. | Combine '
+            'simple skills into complex, multi-agent workflows. | Extensible, '
+            'readable, and community-driven. |'
         ),
-        "",
+        '',
     ]
 
     if skills:
@@ -1054,6 +1057,7 @@ def readme(
             "| `wagents new mcp <name>` | Create a new MCP server |",
             "| `wagents doctor` | Check local environment and toolchain health |",
             "| `wagents validate` | Validate all skills and agents |",
+            "| `make typecheck` | Run ty across `wagents/` and `scripts/` |",
             "| `wagents readme` | Regenerate this README |",
             "| `wagents package <name>` | Package a skill into portable ZIP |",
             "| `wagents package --all` | Package all skills |",
@@ -1063,8 +1067,8 @@ def readme(
             "| `wagents docs init` | One-time setup: install docs dependencies |",
             "| `wagents docs generate` | Generate MDX content pages from assets |",
             (
-                "| `wagents docs generate --include-installed` | "
-                "Include installed skills from ~/.claude/skills/ in generated docs |"
+                "| `wagents docs generate --include-installed` | Include installed "
+                "skills from ~/.claude/skills/ in generated docs |"
             ),
             "| `wagents docs dev` | Generate + launch dev server |",
             "| `wagents docs build` | Generate + production build |",
@@ -1164,7 +1168,9 @@ def hooks_list(
         if len(value) > 50:
             value = value[:47] + "..."
         matcher = row["matcher"] or "(all)"
-        text_lines.append(f"{row['source']:<30} {row['event']:<20} {matcher:<15} {row['handler_type']:<10} {value}")
+        text_lines.append(
+            f"{row['source']:<30} {row['event']:<20} {matcher:<15} {row['handler_type']:<10} {value}"
+        )
 
     _emit_structured_output(
         format_,
@@ -1280,7 +1286,7 @@ def hooks_validate(
         "errors": errors,
         "message": "All hooks valid" if not errors else "Hook validation failed",
     }
-    jsonl_records: list[JsonlRecord] = [{"type": "error", **error} for error in errors]
+    jsonl_records: list[dict[str, object]] = [{"type": "error", **error} for error in errors]
     jsonl_records.append(
         {
             "type": "summary",
@@ -1360,7 +1366,9 @@ def eval_list(
         rows.append({"skill": skill_name, "eval_count": count, "sample_query": sample})
 
     text_lines = [f"{'Skill':<25} {'Evals':>5}  Sample Query", "-" * 70]
-    text_lines.extend([f"{row['skill']:<25} {row['eval_count']:>5}  {row['sample_query']}" for row in rows])
+    text_lines.extend(
+        [f"{row['skill']:<25} {row['eval_count']:>5}  {row['sample_query']}" for row in rows]
+    )
     _emit_structured_output(
         format_,
         text_lines=text_lines,
@@ -1434,7 +1442,7 @@ def eval_validate(
         "errors": errors,
         "message": "All evals valid" if not errors else "Eval validation failed",
     }
-    jsonl_records: list[JsonlRecord] = [{"type": "error", **error} for error in errors]
+    jsonl_records: list[dict[str, object]] = [{"type": "error", **error} for error in errors]
     jsonl_records.append(
         {
             "type": "summary",
@@ -1499,7 +1507,10 @@ def eval_coverage(
 
     text_lines = [f"{'Skill':<25} {'Has Evals':<12} {'Count':>5}", "-" * 45]
     text_lines.extend(
-        [f"{row['skill']:<25} {('Yes' if row['has_evals'] else 'No'):<12} {row['eval_count']:>5}" for row in rows]
+        [
+            f"{row['skill']:<25} {('Yes' if row['has_evals'] else 'No'):<12} {row['eval_count']:>5}"
+            for row in rows
+        ]
     )
     _emit_structured_output(
         format_,
