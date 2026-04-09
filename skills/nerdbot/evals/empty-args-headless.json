@@ -1,0 +1,12 @@
+{
+  "skills": ["nerdbot"],
+  "query": "CI headless run with prompts disabled: /nerdbot",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes the empty '/nerdbot' invocation and enters the Empty-Args handler",
+    "Agent surfaces the mode menu or a headless equivalent summary of the available create, ingest, enrich, audit, derive, improve, and migration routes",
+    "Agent detects that clarifying exchange is unavailable in headless execution",
+    "Agent downgrades to inventory-only planning with no destructive or mutating file changes",
+    "Agent does not guess a high-impact route such as migration or bulk repo repair without more input"
+  ]
+}

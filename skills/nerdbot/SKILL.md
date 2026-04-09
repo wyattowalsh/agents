@@ -1,0 +1,305 @@
+---
+name: nerdbot
+description: >-
+  Create, manage, and improve markdown-first LLM knowledge bases with layered
+  raw/wiki patterns, audits, and provenance. Use for git-friendly KBs. NOT for
+  docs sites (docs-steward) or generic notes.
+argument-hint: "[create|ingest|enrich|audit|derive|improve|migrate] [topic|path]"
+model: opus
+license: MIT
+compatibility: "Requires git and a writable repository. Optional Python 3.10+ for kb_* scripts."
+metadata:
+  author: wyattowalsh
+  version: "0.1.0"
+user-invocable: true
+---
+
+# Nerdbot
+
+Build and maintain markdown-first, git-friendly, agent-managed knowledge bases that separate raw evidence from synthesized wiki knowledge. Nerdbot is for layered KBs with provenance, indexes, schema/config, and activity logging.
+
+**NOT for:** freeform note-taking, docs site maintenance (docs-steward), database-backed knowledge systems (database-architect), or one-off research that does not maintain a repository (research).
+
+**Input:** `$ARGUMENTS` — mode keywords, topics, repo paths, or natural-language KB requests.
+
+## Dispatch Table
+
+| `$ARGUMENTS` | Workflow | First move |
+|--------------|----------|------------|
+| (empty) | Interview | Show mode menu; if headless, run inventory-only planning and do not mutate files |
+| `create <topic>` | Create | Establish the KB root, layered structure, starter indexes, and activity log |
+| `ingest <source-or-path>` | Ingest | Add sources to `raw/`, preserve originals, then update indexes and provenance stubs |
+| `enrich <page-or-topic>` | Enrich | Improve `wiki/` pages from raw or canonical inputs with traceable synthesis |
+| `audit [path]` | Audit | Run inventory + lint read-only; report structure, provenance, and drift findings |
+| `derive <artifact-or-target>` | Derive | Generate reproducible outputs from the current KB without replacing canonical material |
+| `improve <path>` | Existing repo | Start with inventory-first, additive-first repair of an imperfect repo |
+| `migrate <path-or-scope>` | Migration | Run the risky-change interview + inversion before any move, rename, cutover, or replacement |
+| Natural language: "create a knowledge base for ..." | Create | Treat the remainder as topic and scope |
+| Natural language: "ingest/import these sources" | Ingest | Route sources into `raw/` and update indexes |
+| Natural language: "improve/fix this knowledge base/repo" | Existing repo | Start with a read-only inventory and preservation map |
+| Natural language: "audit/lint/check the knowledge base" | Audit | Stay read-only unless the user explicitly asks for fixes |
+| Requests for generic notes or docs-site work | Refuse + redirect | Redirect to the correct workflow or specialized skill |
+
+### Empty-Args Handler
+
+Present this menu:
+1. Create a new KB from a topic
+2. Ingest sources into `raw/`
+3. Enrich `wiki/` pages
+4. Audit/lint the KB
+5. Generate derived outputs
+6. Improve an existing imperfect repo safely
+7. Plan a risky migration or restructure
+
+If clarifying exchange is unavailable, default to inventory-only planning with no destructive changes.
+
+## When to Use
+
+- Starting a new topic KB in a repository
+- Adding sources, extracts, or captures into a layered KB
+- Improving synthesized wiki pages while preserving provenance
+- Auditing structure, source coverage, stale indexes, or activity-log drift
+- Repairing a messy repo into a safer layered KB without rewriting user-authored canon
+- Generating derived outputs from a maintained KB
+
+## When NOT to Use
+
+- Freeform personal notes, journals, or ad-hoc scratchpads
+- Docs-site generation, framework sync, or docs UX work (docs-steward)
+- Database design, vector-store schema design, or migration planning for database-backed systems (database-architect)
+- Standalone research reports that do not maintain a git-friendly KB (research)
+
+## Canonical Vocabulary
+
+Use these terms exactly throughout:
+
+| Term | Meaning | Default rule |
+|------|---------|--------------|
+| `raw` | Source captures, imports, transcripts, extracts, and normalized evidence | Append-only; preserve source metadata and originals |
+| `wiki` | Synthesized markdown knowledge for humans and agents | Every substantive claim traces to `raw` or declared canonical material |
+| `schema` | Structural contracts: naming, frontmatter, required fields, taxonomies | Change deliberately and version consciously |
+| `config` | Operational settings for ingest, derive, lint, or publish flows | Keep separate from content |
+| `indexes` | Coverage maps, navigation pages, source-to-page maps, inventories | Update in the same batch as related content changes |
+| `activity log` | Append-only record of decisions, mutations, imports, and known gaps | Update after every mutating batch |
+| `provenance` | Trace from a wiki or derived claim back to raw evidence | Mandatory for enrich and derive flows |
+| `canonical material` | User-authored pages or files that remain authoritative | Preserve unless explicitly told to rewrite, move, or delete |
+| `derived output` | Rebuildable exports generated from the KB | Never treat as the sole source of truth |
+| `imperfect repo` | Existing repo with mixed docs, partial layers, or unclear ownership | Use inventory-first, additive-first repair |
+| `migration` | Move, rename, replace, or cut over existing KB structure | Requires interview + explicit approval |
+
+## Default KB Pattern
+
+Teach and prefer this layered shape unless the repository has a stronger existing convention:
+
+```text
+<kb-root>/
+  raw/
+    sources/
+    captures/
+    extracts/
+  wiki/
+    index.md
+    topics/
+  schema/
+  config/
+  indexes/
+    coverage.md
+    source-map.md
+  activity/
+    log.md
+```
+
+Notes:
+- Keep the layer semantics intact even if directory names need small repo-local adjustments.
+- `raw/` stores evidence, `wiki/` stores synthesis, `schema/` + `config/` store contracts, `indexes/` stores navigational and coverage maps, and `activity/` stores the append-only operating history.
+- Put derived artifacts in a non-canonical export location only after the KB is already structured and traceable.
+
+## Core Operating Pipeline
+
+Use gates for every multi-step flow. Stop at the first blocked gate.
+
+| Gate | Goal | Output |
+|------|------|--------|
+| Gate 0 — Classify | Decide whether this is Create, Ingest, Enrich, Audit, Derive, Existing repo, or Migration | Safe workflow selection |
+| Gate 1 — Inventory | Map layers, canonical material, source surfaces, risky paths, and existing automation | Read-only inventory |
+| Gate 2 — Plan | Propose the smallest additive, reviewable batch | File-level plan with explicit non-goals |
+| Gate 3 — Confirm | Require approval for destructive or high-impact changes | Approval or downgrade to plan-only |
+| Gate 4 — Execute | Change one layer at a time: `raw` -> `wiki` -> `indexes` -> `activity` | Small reviewable edit set |
+| Gate 5 — Verify | Check provenance, index freshness, schema/config consistency, and activity logging | Lint/audit results |
+| Gate 6 — Handoff | Record next steps, unresolved gaps, and missing dependencies | Activity-log entry + follow-up plan |
+
+## Primary Workflows
+
+### Create
+
+Use when the user wants a new KB for a topic or scope.
+
+1. Load `references/kb-architecture.md` first.
+2. Create the default layered structure with `raw/`, `wiki/`, `schema/`, `config/`, `indexes/`, and `activity/`.
+3. Seed the root index, source map, coverage index, and activity log with `scripts/kb_bootstrap.py`, or copy the manual starter packet in `assets/kb-bootstrap-template.md`.
+4. Record scope, non-goals, and the first ingest queue before writing synthesized content.
+
+### Ingest
+
+Use when sources already exist and the KB needs trustworthy evidence capture.
+
+1. Preserve originals in `raw/`; add normalized extracts beside them, not instead of them. For sources over `50 MB`, a `raw/` pointer or stub that records checksum, size, original location, and import notes is acceptable when vendoring the binary into git is impractical.
+2. Update indexes to show source status, intended wiki coverage, and unresolved gaps.
+3. Add provenance stubs before or during synthesis work.
+4. Never polish or paraphrase away primary-source details inside `raw/`.
+
+### Enrich
+
+Use when `wiki/` needs new or improved synthesized pages.
+
+1. Load `references/kb-operations.md` and `references/page-templates.md` before creating new page shapes.
+2. Synthesize from `raw/` or explicitly identified canonical material only.
+3. Add or refresh provenance links, source lists, and related index entries in the same batch.
+4. Preserve user-authored voice by supplementing, annotating, or extending instead of blindly rewriting.
+
+### Audit
+
+Use for read-only diagnosis, linting, and confidence checks.
+
+1. Run inventory before any recommendation.
+2. Report missing layers, stale indexes, provenance gaps, orphan wiki pages, schema/config drift, and activity-log gaps.
+3. Classify findings as critical, warning, or suggestion.
+4. Use `scripts/kb_lint.py --root <path> --include-unlayered` when the repo mixes KB files with adjacent markdown that still participates in the knowledge graph.
+5. Recommend the next smallest safe batch instead of proposing a monolithic rewrite.
+
+### Derive
+
+Use when the user wants generated artifacts from the maintained KB.
+
+1. Confirm the canonical inputs and target output path.
+2. Build outputs from `raw/`, `wiki/`, `schema/`, and `config/` without replacing them.
+3. Keep derivations reproducible and easy to regenerate.
+4. Log the inputs, recipe, timestamp, and output target in `activity/`.
+
+### Existing Imperfect Repo
+
+Use when the repo already contains notes, docs, or a partial KB and the safe path is not obvious.
+
+1. Run Gate 1 inventory before any mutation.
+2. Identify canonical material, current source surfaces, and repo-owned vs generated content.
+3. Prefer additive repair: add missing `indexes/`, `activity/`, and `raw/` intake areas around existing material before moving files.
+4. Split work into small reviewable batches: structure first, mapping second, provenance backfill third, derived outputs last.
+5. Escalate to Migration only when additive repair cannot meet the user’s goal.
+
+## Risky Migration Interview + Inversion
+
+Use this pattern for any rename, move, replace, re-root, or cutover.
+
+Even when the user explicitly says `migrate`, do a quick additive-repair check first. If a small in-place repair cannot satisfy the request, continue into the interview instead of forcing a full repair pass before migration planning.
+
+### Interview
+
+Ask or determine:
+1. What files are canonical and must keep authority?
+2. What paths are consumed by people, agents, or automation today?
+3. What can be regenerated, and what is irreplaceable?
+4. What is allowed to move, rename, merge, or disappear?
+5. What is the rollback plan if the new structure fails?
+
+### Inversion
+
+Assume the migration will fail in the most likely ways, then design against them:
+
+| Failure to prevent | Safe response |
+|--------------------|---------------|
+| Canonical material gets overwritten | Preserve originals and write companion pages or stubs instead |
+| Links and agent references break | Add indexes, aliases, redirects, or mapping pages before cutover |
+| Provenance becomes unverifiable | Capture raw evidence and source maps before restructuring wiki pages |
+| Schema/config change invalidates pages | Stage compatibility updates and lint before switching defaults |
+| Rollback is unclear | Stop after the plan; do not execute the migration |
+
+If any answer is unknown and clarification is unavailable, halt at Gate 2 and return a plan only.
+
+## Safety and Confirmation Rules
+
+Require explicit confirmation before:
+
+- Deleting, moving, renaming, or bulk rewriting canonical material
+- Re-rooting the KB or converting an existing repo into the layered pattern
+- Replacing schema/config conventions used by other automation
+- Overwriting tracked derived outputs or user-facing exports
+- Any change that would temporarily break provenance, indexes, or path stability
+- Any large batch: `6+` files, `3+` KB layers in one execution, any canonical-material rewrite, any path-stability change, or any batch where the blast radius is not yet explicit
+
+When confirmation is unavailable:
+
+1. Stay read-only through Gate 2.
+2. Return the inventory, proposed batches, and exact files or paths that would change.
+3. Do not perform destructive or high-impact operations.
+
+## Reference File Index
+
+Load references on demand; do not load all at once. If a listed reference, script, or asset is not scaffolded yet, follow this core contract and report the missing dependency instead of inventing its contents.
+
+### References
+
+| File | Content | Load When |
+|------|---------|-----------|
+| `references/kb-architecture.md` | Canonical KB layer model, directory semantics, provenance contract, and safe default layouts | Create, Existing Imperfect Repo, Migration planning |
+| `references/kb-operations.md` | Detailed create/ingest/enrich/derive procedures, ordering rules, and verification steps | Create, Ingest, Enrich, Derive |
+| `references/audit-checklist.md` | Audit rubric for structure, provenance, coverage, drift, stale indexes, and activity logging | Audit, post-change verification, pre-migration checks |
+| `references/migration-playbooks.md` | Additive repair patterns, phased restructure plans, cutover sequencing, and rollback playbooks | Existing Imperfect Repo when additive repair is insufficient, all Migration flows |
+| `references/page-templates.md` | Canonical page shapes for wiki pages, source notes, indexes, and activity-log entries | Create, Enrich, Derive, additive repair that adds missing pages |
+
+### Scripts
+
+| Script | Purpose | Use When |
+|--------|---------|----------|
+| `scripts/kb_inventory.py` | Inventory layers, canonical material, risky paths, source surfaces, and missing structure | Gate 1 for Audit, Existing Imperfect Repo, and every Migration |
+| `scripts/kb_lint.py` | Check provenance, index freshness, schema/config drift, required files, and activity-log coverage | Gate 5 after any mutating batch and before declaring work complete |
+| `scripts/kb_bootstrap.py` | Scaffold the approved layered structure and default starter files | Create and additive repair after Gate 3 approval; never for cutover or overwrite-by-default |
+
+Run from the repo root:
+- `uv run python skills/nerdbot/scripts/kb_inventory.py --root .`
+- `uv run python skills/nerdbot/scripts/kb_lint.py --root . --fail-on warning`
+- `uv run python skills/nerdbot/scripts/kb_lint.py --root . --include-unlayered` for mixed repos where important markdown still lives outside the default layers
+- `uv run python skills/nerdbot/scripts/kb_bootstrap.py --root ./knowledge-base --dry-run`
+
+### Assets
+
+| Asset path | Use When |
+|------------|----------|
+| `assets/kb-bootstrap-template.md` | Manual starter packet for `wiki/index.md`, `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` when scripted scaffolding is not the right fit |
+| `assets/activity-log-template.md`, `assets/*-page-template.md` | Optional activity-log and wiki-page starters during Create, Enrich, or additive repair; never overwrite existing user-authored files by template expansion without explicit approval |
+
+## Examples
+
+### Example: Create a new KB for a topic
+
+`/nerdbot create "field guide to agentic knowledge bases"`
+
+Expected flow:
+1. Load `references/kb-architecture.md`.
+2. Choose the KB root and scaffold `raw/`, `wiki/`, `schema/`, `config/`, `indexes/`, and `activity/`.
+3. Seed `wiki/index.md`, `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` with `scripts/kb_bootstrap.py` or the manual packet in `assets/kb-bootstrap-template.md`.
+4. Record scope, constraints, and the first ingest queue before writing synthesized topic pages.
+
+### Example: Improve an existing KB in an arbitrary repo
+
+`/nerdbot improve ./client-repo`
+
+Expected flow:
+1. Run `scripts/kb_inventory.py` first.
+2. Identify canonical user-authored material, current source files, existing indexes, and risky paths.
+3. Propose an additive plan: add missing `indexes/` and `activity/`, establish a safe `raw/` intake area, and map existing docs into the `wiki/` layer without destructive rewrites.
+4. After approval, execute the smallest batch and run `scripts/kb_lint.py`, adding `--include-unlayered` when adjacent markdown still participates in the repo's knowledge graph.
+
+## Critical Rules
+
+1. Inventory first: do not mutate an existing repo before mapping canonical material, layers, and risky paths.
+2. Preserve user-authored canonical material unless the user explicitly authorizes rewrite, move, or deletion.
+3. Prefer additive repair over migration; add indexes, logs, and mapping pages before relocating content.
+4. Never synthesize `wiki/` content without provenance to `raw/` or declared canonical material.
+5. Keep `raw/` append-only; preserve originals and store normalization as separate artifacts, or use a provenance-rich pointer/stub for sources over `50 MB` when vendoring the binary is impractical.
+6. Update related `indexes/` and the `activity log` in the same batch as content or structure changes.
+7. Keep changes small and reviewable; split structural, content, and derived-output work into separate batches.
+8. Treat derived outputs as rebuildable products, not canonical knowledge.
+9. Use the migration interview + inversion before any rename, move, replace, or cutover.
+10. When confirmation is unavailable, stop after inventory + plan for any high-impact operation.
+11. If a referenced file or script is missing, follow this body and report the gap; do not invent nonexistent guidance or pretend checks passed.
+12. Use the default layered vocabulary exactly: `raw`, `wiki`, `schema`, `config`, `indexes`, `activity log`, `provenance`, `canonical material`, `derived output`, `imperfect repo`, `migration`.

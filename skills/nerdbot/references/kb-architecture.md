@@ -34,7 +34,7 @@ Use this reference to keep a markdown-first KB legible, layered, and reviewable.
 ### Layer semantics
 | Layer | What belongs here | Common file shapes | Safe default |
 |-------|-------------------|--------------------|--------------|
-| `raw` | Imported originals, captures, transcripts, extracts, and normalization notes | `raw/sources/...`, `raw/captures/...`, `raw/extracts/...` | Preserve originals and add new files instead of overwriting old ones |
+| `raw` | Imported originals, captures, transcripts, extracts, and normalization notes | `raw/sources/...`, `raw/captures/...`, `raw/extracts/...` | Preserve originals and add new files instead of overwriting old ones; for sources over `50 MB`, a pointer/stub with checksum, size, and source location is acceptable when vendoring the binary is impractical |
 | `wiki` | Synthesized knowledge for humans and agents | `wiki/index.md`, `wiki/topics/...` | Back every substantive claim with `provenance` |
 | `schema` | Naming rules, required sections, taxonomies, and page contracts | `schema/page-types.md`, `schema/fields.md` | Change deliberately and review the blast radius first |
 | `config` | Operational settings for ingest, derive, and verification flows | `config/ingest.md`, `config/derive.md` | Keep settings separate from `raw` and `wiki` |
@@ -91,15 +91,15 @@ Suggested sections:
 ### `indexes/source-map.md`
 Use a table that makes `raw` coverage easy to audit.
 
-| Source ID | Raw path | Capture type | Planned wiki target | Provenance status | Status |
-|-----------|----------|--------------|---------------------|-------------------|--------|
-| `vendor-brief-2026` | `raw/sources/vendor-brief-2026.pdf` | import | `wiki/topics/vendor-landscape.md` | linked | summarized |
+| Source ID | Raw path | Capture type | Planned wiki target | Canonical material touched? | Provenance status | Status |
+|-----------|----------|--------------|---------------------|-----------------------------|-------------------|--------|
+| `vendor-brief-2026` | `raw/sources/vendor-brief-2026.pdf` | import | `wiki/topics/vendor-landscape.md` | no | linked | summarized |
 
 ### `indexes/coverage.md`
 Track maintained `wiki` pages against backing evidence.
 
-| Wiki path | Page type | Backing raw or canonical material | Coverage status | Last reviewed | Next action |
-|-----------|-----------|-----------------------------------|-----------------|---------------|-------------|
+| Wiki path | Page type | Backing raw or canonical material | Coverage status | Last reviewed | Notes |
+|-----------|-----------|-----------------------------------|-----------------|---------------|-------|
 | `wiki/topics/vendor-landscape.md` | overview | `raw/sources/vendor-brief-2026.pdf` | partial | `2026-04-06` | backfill provenance for pricing notes |
 
 ### `activity/log.md`
@@ -107,13 +107,17 @@ Record one append-only entry per mutating batch.
 
 ```md
 ### [YYYY-MM-DD HH:MM] [Batch label]
+- Mode: [create|ingest|enrich|derive|improve|migration]
 - Summary: [what changed]
 - `raw`: [files added or updated]
 - `wiki`: [files added or updated]
 - `indexes`: [files added or updated]
+- `schema`: [files added or updated / unchanged]
+- `config`: [files added or updated / unchanged]
 - `canonical material`: [unchanged, annotated, or approved exception]
 - `provenance`: [what is now linked or what remains missing]
 - `derived output`: [none or output path]
+- Risks / rollback: [if relevant]
 - Follow-up:
   - [next safe batch]
 ```
@@ -125,7 +129,8 @@ Use additive-first repair when the existing layout is mixed or incomplete.
 2. Create a safe `raw/` intake area and begin preserving evidence there.
 3. Map existing notes into the `wiki` layer with links, companion pages, or summaries.
 4. Backfill `provenance` on the most important pages.
-5. Escalate to `migration` only when additive repair cannot meet the goal.
+5. Use `scripts/kb_lint.py --root <path> --include-unlayered` when important repo markdown still sits outside the default layers.
+6. Escalate to `migration` only when additive repair cannot meet the goal.
 
 ## Architecture exit checklist
 - [ ] Layer boundaries are clear.

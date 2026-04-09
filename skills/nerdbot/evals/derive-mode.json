@@ -1,0 +1,17 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot derive ./knowledge-base export a concise architecture brief from wiki/topics/agent-patterns.md into derived/agent-patterns-brief.md",
+  "files": [
+    "knowledge-base/wiki/topics/agent-patterns.md",
+    "knowledge-base/indexes/source-map.md",
+    "knowledge-base/activity/log.md"
+  ],
+  "expected_behavior": [
+    "Agent dispatches to the Derive workflow based on the explicit '/nerdbot derive' invocation",
+    "Agent confirms the canonical inputs and the target output path before generating the artifact",
+    "Agent writes the result to a non-canonical output path such as derived/ or exports/ instead of replacing wiki or raw content",
+    "Agent records the recipe or regeneration path so the derived output is reproducible",
+    "Agent keeps the derived output explicitly non-canonical and linked back to the KB inputs",
+    "Agent appends an activity-log entry with the inputs, output path, and rollback or regeneration notes"
+  ]
+}

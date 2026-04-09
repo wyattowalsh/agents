@@ -1,0 +1,17 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot migrate ./knowledge-base move wiki/topics/vendor-landscape.md to wiki/platform/vendor-landscape.md and replace the old path everywhere",
+  "files": [
+    "knowledge-base/wiki/topics/vendor-landscape.md",
+    "knowledge-base/indexes/source-map.md",
+    "knowledge-base/indexes/coverage.md"
+  ],
+  "expected_behavior": [
+    "Agent dispatches to the Migration workflow based on the explicit '/nerdbot migrate' invocation",
+    "Agent loads references/migration-playbooks.md and treats migration as a last resort after considering additive repair first",
+    "Agent inventories canonical material, current path consumers, allowed changes, and rollback requirements before proposing a cutover",
+    "Agent plans aliases, mapping pages, or parallel paths so the old location stays usable during review",
+    "Agent requires explicit confirmation before any move, rename, delete, or destructive cutover of canonical material",
+    "If the migration interview remains incomplete or approval is not specific enough, agent stops after the inventory and plan instead of executing the rename"
+  ]
+}

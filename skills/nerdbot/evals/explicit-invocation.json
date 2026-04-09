@@ -1,0 +1,12 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot create \"field guide to incident postmortems\"",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to the Create workflow based on the explicit '/nerdbot create' invocation",
+    "Agent loads references/kb-architecture.md first before proposing or scaffolding structure",
+    "Agent establishes the layered KB pattern with raw/, wiki/, schema/, config/, indexes/, and activity/",
+    "Agent seeds starter indexes and the activity log as part of the initial KB setup",
+    "Agent records scope, non-goals, and an initial ingest queue before writing synthesized wiki content"
+  ]
+}
