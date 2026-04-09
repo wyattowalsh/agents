@@ -185,14 +185,14 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
-> All 41 custom skill descriptions are loaded at startup (~7,000 chars total). The table above highlights the auto-invoke convention skills. The remaining 37 repository skills are user-invocable, including `simplify` and `orchestrator`.
+> All 42 custom skill descriptions are loaded at startup (~7,000 chars total). The table above highlights the auto-invoke convention skills. The remaining 38 repository skills are user-invocable, including `simplify` and `orchestrator`.
 
 ### Token Budget
 
 | Component | Tokens | Loading |
 |-----------|--------|---------|
 | `global.md` (general + clarification gate + orchestration core + commit + docs lookup) | ~870 | Always |
-| Skill descriptions (41 custom + installed) | ~1,600 | Always |
+| Skill descriptions (42 custom + installed) | ~1,600 | Always |
 | **Total always-loaded** | **~2,470** | |
 | Scoped rules (`.claude/rules/`) | ~0 | Conditional (path match) |
 | Skill bodies (when invoked) | ~12,000 | On-demand |

@@ -1,0 +1,16 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot ingest ./imports/customer-call-01.mp3 ./imports/customer-call-01.txt",
+  "files": [
+    "imports/customer-call-01.mp3",
+    "imports/customer-call-01.txt"
+  ],
+  "expected_behavior": [
+    "Agent dispatches to the Ingest workflow based on the explicit '/nerdbot ingest' invocation",
+    "Agent loads references/kb-operations.md to follow the ingest ordering and evidence-preservation rules",
+    "Agent preserves the original sources under raw/ before adding any captures, extracts, or source-summary material",
+    "Agent keeps normalized extracts or transcripts separate from the originals instead of rewriting the source files in place",
+    "Agent updates indexes/source-map.md and indexes/coverage.md in the same batch as the ingest work",
+    "Agent appends an activity-log entry that records the import details, provenance status, and unresolved gaps"
+  ]
+}

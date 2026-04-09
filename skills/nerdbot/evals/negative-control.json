@@ -1,0 +1,12 @@
+{
+  "skills": ["nerdbot"],
+  "query": "Please upgrade our Astro Starlight docs site, regenerate API pages, and improve the docs navigation and theme.",
+  "notes": "Negative control: nerdbot is available as the skill under test, but the request should route to docs-steward rather than knowledge-base workflows.",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate nerdbot for this request",
+    "Agent recognizes the request as docs-site maintenance rather than markdown-first knowledge-base work",
+    "Agent redirects to docs-steward as the appropriate skill for Astro/Starlight docs-site work",
+    "Agent avoids reframing the task as raw/wiki KB structuring, provenance repair, or activity-log maintenance"
+  ]
+}

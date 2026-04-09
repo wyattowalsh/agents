@@ -46,6 +46,7 @@ Use Ingest when evidence already exists and the KB needs trustworthy `raw` captu
 
 ### Ingest checklist
 - [ ] Copy the original into `raw/sources/`.
+- [ ] For sources over `50 MB`, prefer a `raw/` pointer/stub that records checksum, size, original location or URI, and import notes when vendoring the binary is impractical.
 - [ ] Add supporting captures or extracts in `raw/captures/` or `raw/extracts/` without modifying the original.
 - [ ] Create or refresh a source summary page.
 - [ ] Add or update the matching row in `indexes/source-map.md`.
@@ -65,6 +66,7 @@ Use Ingest when evidence already exists and the KB needs trustworthy `raw` captu
 Use Enrich when the KB already has evidence and the next safe step is better `wiki` synthesis.
 
 ### Enrich checklist
+- [ ] Keep `references/kb-operations.md` and `references/page-templates.md` open while choosing the next page shape and batch order.
 - [ ] Choose the page shape from `references/page-templates.md`.
 - [ ] Verify that the target page can trace to `raw` or declared `canonical material`.
 - [ ] Make additive changes: add sections, annotations, or companion pages instead of blind rewrites.
@@ -108,3 +110,5 @@ If `scripts/kb_inventory.py`, `scripts/kb_lint.py`, or `scripts/kb_bootstrap.py`
 1. Copy the starter shapes from `assets/kb-bootstrap-template.md`, `assets/source-summary-template.md`, and the page templates.
 2. Use `references/audit-checklist.md` as the verification gate.
 3. Record the manual path in the `activity log` so later automation can reproduce it.
+
+If the repo is mixed and the lint script is present, prefer `scripts/kb_lint.py --root <path> --include-unlayered` for read-only audits that need to account for markdown outside the default KB layers.

@@ -4,7 +4,7 @@
 ## Operating rules
 - Append-only.
 - Record one entry per mutating batch.
-- Name the `raw`, `wiki`, and `indexes` touched in each batch.
+- Name the `raw`, `wiki`, `indexes`, `schema`, and `config` surfaces touched in each batch.
 - Call out `canonical material`, `provenance`, and `derived output` decisions explicitly.
 
 ## Entry template

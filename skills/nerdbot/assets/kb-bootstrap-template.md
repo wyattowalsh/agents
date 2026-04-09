@@ -82,6 +82,7 @@ Path: `activity/log.md`
 ## Operating rules
 - Append-only.
 - Record one entry per mutating batch.
+- Name the `raw`, `wiki`, `indexes`, `schema`, and `config` surfaces touched in each batch.
 - Call out `canonical material`, `provenance`, and `derived output` decisions explicitly.
 
 ### [YYYY-MM-DD HH:MM] Bootstrap
@@ -95,5 +96,6 @@ Path: `activity/log.md`
 - `canonical material`: [none yet / listed in `wiki/index.md`]
 - `provenance`: initial placeholders only
 - `derived output`: none
+- Risks / rollback: remove only the new scaffold if the KB root was created in error
 - Follow-up:
   - [ ] Add the first source to `raw/`

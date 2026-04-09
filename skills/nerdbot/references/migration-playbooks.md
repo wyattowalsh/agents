@@ -3,6 +3,8 @@
 ## Default stance
 Treat `migration` as the last resort. If an `imperfect repo` can be repaired by adding `raw`, `indexes`, `activity log`, and `provenance` around existing material, stop there.
 
+Even explicit `/nerdbot migrate` requests start with a quick additive-repair triage. If a small in-place repair can satisfy the goal, stop there; otherwise continue into the migration interview without forcing a full repair workflow first.
+
 ## Decision gate: additive repair or migration?
 | Situation | Safe default |
 |-----------|--------------|
@@ -35,7 +37,8 @@ Use this before any real `migration`.
 2. Create a safe `raw/` intake area for future evidence.
 3. Map existing notes into `wiki` through links, companion pages, or summaries.
 4. Backfill `provenance` on the highest-value pages.
-5. Re-audit. Only escalate if the goal is still blocked.
+5. Re-audit, using `scripts/kb_lint.py --root <path> --include-unlayered` when important markdown still sits outside the default layers.
+6. Only escalate if the goal is still blocked.
 
 ### Review checkpoints
 - [ ] No existing path was deleted or renamed.

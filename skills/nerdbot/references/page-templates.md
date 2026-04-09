@@ -51,9 +51,12 @@ Recommended entry shape:
 - `raw`: [files]
 - `wiki`: [files]
 - `indexes`: [files]
+- `schema`: [files added or updated / unchanged]
+- `config`: [files added or updated / unchanged]
 - `canonical material`: [unchanged/annotated/approved exception]
 - `provenance`: [linked or missing]
 - `derived output`: [none or path]
+- Risks / rollback: [if relevant]
 - Follow-up:
   - [next safe batch]
 ```
