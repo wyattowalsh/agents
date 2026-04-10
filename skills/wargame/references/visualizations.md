@@ -40,17 +40,16 @@ mmdc -i /tmp/wargame.mmd -o /tmp/wargame.svg && open /tmp/wargame.svg
 dot -Tsvg /tmp/wargame.dot -o /tmp/wargame.svg && open /tmp/wargame.svg
 ```
 
-## Tier 3 — Rich Rendering (Playwright MCP)
+## Tier 3 — Rich Rendering (Browser Automation)
 
 Generate a dark-theme (`#0f172a` background) responsive HTML dashboard to
 `/tmp/wargame-dashboard-{turn}.html` with: scenario header, metric cards per actor
 (name, resource %, progress bar), decision history timeline with current turn
-highlighted. All CSS inline. Then:
+highlighted. All CSS inline. Then, if a browser automation tool is available:
 
-```
-mcp__playwright__browser_navigate(url: "file:///tmp/wargame-dashboard-{turn}.html")
-mcp__playwright__browser_take_screenshot(fullPage: true)
-```
+1. Open `file:///tmp/wargame-dashboard-{turn}.html` in the active browser tool.
+2. Capture a full-page screenshot or equivalent visual snapshot.
+3. Return the screenshot in-terminal or attach it back to the user.
 
 Only generate when user explicitly requests a dashboard.
 
@@ -87,11 +86,11 @@ When generating dashboard JSON, reference `references/dashboard-schema.md` for t
 
 ### Cross-Platform Rendering Flow
 
-1. **Playwright available** (`mcp__playwright__browser_navigate`): Navigate to file URL → screenshot → display in terminal
+1. **Browser automation available**: Use the available browser tool's local-file navigation plus screenshot primitives
 2. **Browser available** (`open` / `xdg-open` / `wslview`): Open file URL in default browser
 3. **Neither available**: Fall back to Tier 1 Unicode rendering (always works)
 
-Detect capability at export time. Prefer Playwright for consistent screenshots; fall back gracefully.
+Detect capability at export time. Prefer browser automation for consistent screenshots, but do not assume a specific MCP or browser client.
 
 ## Mermaid Recipes
 
@@ -154,7 +153,7 @@ Use `+` for reinforcing links, `-` for dampening links. Highlight intervention p
 | Actor interaction | Sequence diagram | 2 | Journal `.mmd` |
 | State change | State diagram | 2 | Journal `.mmd` |
 | Post-game AAR | Timeline + decision tree | 2 | Journal `.mmd` |
-| On request | HTML dashboard via Playwright | 3 | Screenshot to terminal |
+| On request | HTML dashboard via browser automation | 3 | Screenshot to terminal |
 | `export` / `dashboard` command | Composable HTML dashboard | 3b | `/tmp/wargame-dashboard-{turn}.html` |
 | Decision tree branching | Flowchart (decision tree) | 2 | Journal `.mmd` |
 | Causal analysis | Causal diagram | 2 | Journal `.mmd` |

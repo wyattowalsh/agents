@@ -74,11 +74,63 @@
       "mode": "merged"
     },
     {
+      "path": "/Users/ww/.claude/settings.local.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/Library/Application Support/Claude/claude_desktop_config.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.cursor/mcp.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.gemini/settings.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.gemini/GEMINI.md",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/Library/Application Support/ChatGPT/mcp.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.config/.copilot/mcp-config.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.gemini/antigravity/mcp_config.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.config/opencode/opencode.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.aitk/mcp.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.config/crush/crush.json",
+      "mode": "merged"
+    },
+    {
       "path": "/Users/ww/.codex/skills",
       "mode": "symlinked-entries"
     },
     {
       "path": "/Users/ww/.copilot/skills",
+      "mode": "symlinked-entries"
+    },
+    {
+      "path": "/Users/ww/.gemini/skills",
       "mode": "symlinked-entries"
     }
   ]
