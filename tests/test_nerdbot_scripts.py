@@ -146,9 +146,7 @@ def test_scaffold_rerun_no_force_preserves_all_existing_files(
     # Every file still contains the user sentinel
     for rel_path in _all_starter_rel_paths():
         content = (root / rel_path).read_text(encoding="utf-8")
-        assert content == sentinel + rel_path, (
-            f"File was overwritten when it should have been skipped: {rel_path}"
-        )
+        assert content == sentinel + rel_path, f"File was overwritten when it should have been skipped: {rel_path}"
 
     # Return dict reports nothing created, everything skipped
     assert result["root_created"] is False
@@ -181,9 +179,7 @@ def test_scaffold_rerun_force_overwrites_normal_but_preserves_activity_log(
     # Non-append-only files must have been overwritten (no more sentinel)
     for rel_path in _non_append_only_rel_paths():
         content = (root / rel_path).read_text(encoding="utf-8")
-        assert user_sentinel not in content, (
-            f"Starter file was NOT overwritten by --force: {rel_path}"
-        )
+        assert user_sentinel not in content, f"Starter file was NOT overwritten by --force: {rel_path}"
         assert content.strip(), f"Overwritten file is empty: {rel_path}"
 
     # Return dict reports the right buckets
