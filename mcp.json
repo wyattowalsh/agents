@@ -79,16 +79,6 @@
       "args": [],
       "timeout": 600000
     },
-    "playwright": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@playwright/mcp@latest",
-        "--cdp-endpoint",
-        "http://127.0.0.1:9222"
-      ],
-      "timeout": 600000
-    },
     "repomix": {
       "command": "npx",
       "args": [
@@ -136,27 +126,6 @@
       ],
       "timeout": 600000
     },
-    "web-search": {
-      "command": "node",
-      "args": [
-        "/Users/ww/dev/tools/mcp/web-search/build/index.js"
-      ],
-      "timeout": 600000
-    },
-    "ableton": {
-      "command": "uvx",
-      "args": [
-        "ableton-mcp"
-      ],
-      "timeout": 600000
-    },
-    "apple-mail": {
-      "command": "/Users/ww/dev/tools/mcp/apple-mail-mcp/venv/bin/python3",
-      "args": [
-        "/Users/ww/dev/tools/mcp/apple-mail-mcp/apple_mail_mcp.py"
-      ],
-      "timeout": 600000
-    },
     "arxiv": {
       "command": "bash",
       "args": [
@@ -195,15 +164,6 @@
       "command": "node",
       "args": [
         "/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"
-      ],
-      "timeout": 600000
-    },
-    "default": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.w4w.dev/mcp/default"
       ],
       "timeout": 600000
     },
@@ -267,48 +227,11 @@
       ],
       "timeout": 600000
     },
-    "playwright-headless": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "--prefer-offline",
-        "@playwright/mcp@latest",
-        "--headless",
-        "--isolated"
-      ],
-      "timeout": 600000
-    },
-    "serena": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--context",
-        "ide-assistant",
-        "--enable-web-dashboard",
-        "false",
-        "--project",
-        "."
-      ],
-      "timeout": 600000
-    },
     "shannon-thinking": {
       "command": "npx",
       "args": [
         "-y",
         "server-shannon-thinking@latest"
-      ],
-      "timeout": 600000
-    },
-    "things": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/Users/ww/dev/tools/mcp/things-mcp",
-        "run",
-        "things_server.py"
       ],
       "timeout": 600000
     },

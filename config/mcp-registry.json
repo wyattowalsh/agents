@@ -169,25 +169,6 @@
       "tool_approvals": {},
       "platform_overrides": {}
     },
-    "playwright": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "@playwright/mcp@latest",
-        "--cdp-endpoint",
-        "http://127.0.0.1:9222"
-      ],
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
     "repomix": {
       "transport": "stdio",
       "command": "npx",
@@ -281,54 +262,6 @@
       "tool_approvals": {},
       "platform_overrides": {}
     },
-    "web-search": {
-      "transport": "stdio",
-      "command": "node",
-      "args": [
-        "/Users/ww/dev/tools/mcp/web-search/build/index.js"
-      ],
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
-    "ableton": {
-      "transport": "stdio",
-      "command": "uvx",
-      "args": [
-        "ableton-mcp"
-      ],
-      "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
-    "apple-mail": {
-      "transport": "stdio",
-      "command": "/Users/ww/dev/tools/mcp/apple-mail-mcp/venv/bin/python3",
-      "args": [
-        "/Users/ww/dev/tools/mcp/apple-mail-mcp/apple_mail_mcp.py"
-      ],
-      "env": {},
-      "enabled": false,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
     "arxiv": {
       "transport": "stdio",
       "command": "bash",
@@ -410,24 +343,6 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
-    "default": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote",
-        "https://mcp.w4w.dev/mcp/default"
-      ],
-      "env": {},
-      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [
@@ -560,51 +475,6 @@
       "tool_approvals": {},
       "platform_overrides": {}
     },
-    "playwright-headless": {
-      "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "--prefer-offline",
-        "@playwright/mcp@latest",
-        "--headless",
-        "--isolated"
-      ],
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
-    "serena": {
-      "transport": "stdio",
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena",
-        "start-mcp-server",
-        "--context",
-        "ide-assistant",
-        "--enable-web-dashboard",
-        "false",
-        "--project",
-        "."
-      ],
-      "env": {},
-      "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
     "shannon-thinking": {
       "transport": "stdio",
       "command": "npx",
@@ -614,25 +484,6 @@
       ],
       "env": {},
       "enabled": true,
-      "startup_timeout_sec": 90,
-      "timeout_ms": 600000,
-      "tools": [
-        "*"
-      ],
-      "tool_approvals": {},
-      "platform_overrides": {}
-    },
-    "things": {
-      "transport": "stdio",
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/Users/ww/dev/tools/mcp/things-mcp",
-        "run",
-        "things_server.py"
-      ],
-      "env": {},
-      "enabled": false,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
       "tools": [

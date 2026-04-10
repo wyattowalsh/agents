@@ -4,11 +4,11 @@ description: "Model Context Protocol servers providing tools and data to AI agen
 ---
 {/* HAND-MAINTAINED */}
 
-import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
+import { Card, CardGrid, Badge, Aside, Steps } from '@astrojs/starlight/components';
 
 > Hand-maintained catalog of MCP servers configured in this environment, organized by category.
 
-<Badge text="36 configured servers" variant="note" size="large" />
+<Badge text="30 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
@@ -18,54 +18,77 @@ The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standa
 This page is **hand-maintained** and currently summarizes the MCP server entries in the repository root `mcp.json`. That file includes a mix of local scripts, local packages, remote gateways, and third-party servers, so this list is broader than the repo-local `mcp/` directory.
 </Aside>
 
-## DuckDuckGo global setup (all supported clients)
+## Managed client sync coverage
 
-Use server key `duckduckgo-search` with pinned package version `duckduckgo-mcp-server==0.1.1`.
+<Aside type="tip" title="Sync source of truth">
+Edit `config/mcp-registry.json`, then preview local drift with `uv run python scripts/sync_agent_stack.py --targets home --check`. Apply repo and home updates with `uv run python scripts/sync_agent_stack.py --targets repo,home --apply`.
+</Aside>
+
+<Aside type="note" title="Exact vs merge behavior">
+`ChatGPT Desktop`, the GitHub Copilot shadow config, `Gemini antigravity`, the Gemini extension config, `OpenCode`, `AITK`, and `Crush` all receive the canonical baseline **and** preserve non-canonical extras already present in those files. `Claude Desktop`, `Cursor`, `Gemini CLI`, `GitHub Copilot CLI`, and `Codex` are rewritten to the exact canonical baseline.
+</Aside>
+
+| Client | Managed path | Root key / shape | Sync behavior |
+| --- | --- | --- | --- |
+| ChatGPT Desktop | `~/Library/Application Support/ChatGPT/mcp.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras |
+| Claude Code local enablement | `~/.claude/settings.local.json` | `enabledMcpjsonServers` | Filters enabled names to valid synced servers |
+| Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `mcpServers` | Exact 30-server baseline |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Exact 30-server baseline |
+| Crush | `~/.config/crush/crush.json` | `mcp` | Canonical baseline + preserve non-canonical extras |
+| Cursor | `~/.cursor/mcp.json` | `mcpServers` | Exact 30-server baseline |
+| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` | Exact 30-server baseline |
+| Gemini antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras |
+| Gemini extension antigravity | `~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve extension-specific extras |
+| GitHub Copilot CLI | `~/.copilot/mcp-config.json` | `mcpServers` | Exact 30-server baseline with Copilot tool allowlists |
+| GitHub Copilot shadow config | `~/.config/.copilot/mcp-config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras in Copilot-style schema |
+| OpenCode | `~/.config/opencode/opencode.json` | `mcp` | Canonical baseline + preserve non-canonical extras in local/remote schema |
+| AITK | `~/.aitk/mcp.json` | `servers` | Canonical baseline + preserve non-canonical extras |
+
+<Steps>
+
+1. Update the canonical MCP registry.
+
+   Edit `config/mcp-registry.json` or the repo sources that feed it.
+
+2. Preview repo and home drift.
+
+   ```bash
+   uv run python scripts/sync_agent_stack.py --targets repo,home --check
+   ```
+
+3. Apply the synchronized config set.
+
+   ```bash
+   uv run python scripts/sync_agent_stack.py --targets repo,home --apply
+   ```
+
+</Steps>
+
+## DuckDuckGo setup (representative client snippets)
+
+Use server key `duckduckgo-search` with the `duckduckgo-mcp-server` package.
+
+#### Standard JSON clients (`mcpServers`)
+
+Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravity, and the Gemini extension config.
 
 ```json
 {
   "mcpServers": {
     "duckduckgo-search": {
       "command": "uvx",
-      "args": ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
+      "args": ["duckduckgo-mcp-server"]
     }
   }
 }
 ```
-
-| Client | Global config path | MCP key path | Notes |
-| --- | --- | --- | --- |
-| antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Verify-before-apply (path/schema may vary by version). |
-| claude-code | `~/.claude.json` | `mcpServers` | Supports stdio server blocks. |
-| cursor | `~/.cursor/mcp.json` | `mcpServers` | Same JSON shape as example above. |
-| gemini-cli | `~/.gemini/settings.json` | `mcpServers` | Same JSON shape as example above. |
-| codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Use TOML snippet below. |
-| crush | `$HOME/.config/crush/crush.json` | `mcp` | Uses `mcp` root key. |
-| github-copilot (CLI) | `~/.copilot/mcp-config.json` | `mcpServers` | Include `tools: ["*"]` (snippet below). |
-| opencode | `~/.config/opencode/opencode.json` | `mcp` | Uses `mcp` root key and array-style command. |
-
-### Client-specific variants
 
 #### Codex (`~/.codex/config.toml`)
 
 ```toml
 [mcp_servers.duckduckgo-search]
 command = "uvx"
-args = ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
-```
-
-#### Crush (`$HOME/.config/crush/crush.json`)
-
-```json
-{
-  "mcp": {
-    "duckduckgo-search": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
-    }
-  }
-}
+args = ["duckduckgo-mcp-server"]
 ```
 
 #### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
@@ -76,7 +99,7 @@ args = ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
     "duckduckgo-search": {
       "type": "stdio",
       "command": "uvx",
-      "args": ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"],
+      "args": ["duckduckgo-mcp-server"],
       "tools": ["*"]
     }
   }
@@ -90,64 +113,52 @@ args = ["--from=duckduckgo-mcp-server==0.1.1", "duckduckgo-mcp-server"]
   "mcp": {
     "duckduckgo-search": {
       "type": "local",
-      "command": [
-        "uvx",
-        "--from=duckduckgo-mcp-server==0.1.1",
-        "duckduckgo-mcp-server"
-      ]
+      "command": ["uvx", "duckduckgo-mcp-server"],
+      "enabled": true
     }
   }
 }
 ```
 
-## Chrome DevTools global setup (all supported clients)
+#### AITK (`~/.aitk/mcp.json`)
 
-Use server key `chrome-devtools` with the `chrome-devtools-mcp` npm package. Requires Node.js v22+ and Chrome stable channel.
+```json
+{
+  "servers": {
+    "duckduckgo-search": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["duckduckgo-mcp-server"]
+    }
+  }
+}
+```
+
+## Chrome DevTools setup (representative client snippets)
+
+Use server key `chrome-devtools` with `chrome-devtools-mcp@latest`. The managed baseline passes `--autoConnect`.
+
+#### Standard JSON clients (`mcpServers`)
+
+Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravity, and the Gemini extension config.
 
 ```json
 {
   "mcpServers": {
     "chrome-devtools": {
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
     }
   }
 }
 ```
-
-| Client | Global config path | MCP key path | Notes |
-| --- | --- | --- | --- |
-| antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Same JSON shape as example above. |
-| claude-code | `~/.claude.json` | `mcpServers` | Supports stdio server blocks. |
-| cursor | `~/.cursor/mcp.json` | `mcpServers` | Same JSON shape as example above. |
-| gemini-cli | `~/.gemini/settings.json` | `mcpServers` | Add `"type": "stdio"` and `"env": {}`. |
-| codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Use TOML snippet below. |
-| crush | `$HOME/.config/crush/crush.json` | `mcp` | Uses `mcp` root key. |
-| github-copilot (CLI) | `~/.copilot/mcp-config.json` | `mcpServers` | Include `tools: ["*"]` (snippet below). |
-| opencode | `~/.config/opencode/opencode.json` | `mcp` | Uses `mcp` root key and array-style command. |
-
-### Client-specific variants
 
 #### Codex (`~/.codex/config.toml`)
 
 ```toml
 [mcp_servers.chrome-devtools]
 command = "npx"
-args = ["-y", "chrome-devtools-mcp@latest"]
-```
-
-#### Crush (`$HOME/.config/crush/crush.json`)
-
-```json
-{
-  "mcp": {
-    "chrome-devtools": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"]
-    }
-  }
-}
+args = ["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
 ```
 
 #### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
@@ -158,7 +169,7 @@ args = ["-y", "chrome-devtools-mcp@latest"]
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"],
+      "args": ["-y", "chrome-devtools-mcp@latest", "--autoConnect"],
       "tools": ["*"]
     }
   }
@@ -172,11 +183,22 @@ args = ["-y", "chrome-devtools-mcp@latest"]
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@latest"
-      ]
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--autoConnect"],
+      "enabled": true
+    }
+  }
+}
+```
+
+#### Crush (`~/.config/crush/crush.json`)
+
+```json
+{
+  "mcp": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
     }
   }
 }
@@ -234,9 +256,6 @@ args = ["-y", "chrome-devtools-mcp@latest"]
   <Card title="exa">
     <Badge text="Neural Search" variant="tip" /> Neural search engine that understands meaning, not just keywords. Optimized for finding technical content, papers, and documentation.
   </Card>
-  <Card title="web-search">
-    <Badge text="General Web" variant="tip" /> General-purpose web search with result extraction and content parsing. Lightweight alternative for quick lookups.
-  </Card>
   <Card title="g-search">
     <Badge text="Google" variant="tip" /> Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web.
   </Card>
@@ -251,6 +270,9 @@ args = ["-y", "chrome-devtools-mcp@latest"]
   </Card>
   <Card title="wayback">
     <Badge text="Archive" variant="tip" /> Access archived pages from the Internet Archive Wayback Machine for historical snapshots and link recovery.
+  </Card>
+  <Card title="tavily">
+    <Badge text="Research" variant="tip" /> Tavily-powered web search, extraction, crawl, and deep-research workflows for current-event and multi-source investigations.
   </Card>
 </CardGrid>
 
@@ -292,19 +314,13 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 ---
 
-## Development Tools (5)
+## Development Tools (3)
 
 > Browser automation, package management, and document processing for development workflows.
 
 <CardGrid>
   <Card title="chrome-devtools">
     <Badge text="CDP Automation" variant="danger" /> Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
-  </Card>
-  <Card title="playwright">
-    <Badge text="E2E Testing" variant="danger" /> Full browser automation via Playwright. Navigate pages, fill forms, click elements, take screenshots, and run end-to-end test flows.
-  </Card>
-  <Card title="playwright-headless">
-    <Badge text="CI/CD Ready" variant="danger" /> Headless Playwright variant for isolated browser automation without extension requirements.
   </Card>
   <Card title="package-version">
     <Badge text="Dependency Mgmt" variant="danger" /> Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.
@@ -316,7 +332,7 @@ args = ["-y", "chrome-devtools-mcp@latest"]
 
 ---
 
-## Productivity (3)
+## Productivity (1)
 
 > Email, task management, and personal productivity integrations.
 
@@ -324,26 +340,17 @@ args = ["-y", "chrome-devtools-mcp@latest"]
   <Card title="gmail">
     <Badge text="Inbox Zero" variant="default" /> Full Gmail access: search, read, send, draft, label, filter, and batch-manage emails. Supports attachment downloads.
   </Card>
-  <Card title="apple-mail">
-    <Badge text="Native macOS" variant="default" /> Native macOS Mail.app integration. Read, search, and manage emails through Apple's built-in mail client.
-  </Card>
-  <Card title="things">
-    <Badge text="Task Mgmt" variant="default" /> Things 3 task manager integration. Create and manage todos, projects, areas, and tags. Query inbox, today, upcoming, and logbook.
-  </Card>
 </CardGrid>
 
 ---
 
-## Media (2)
+## Media (1)
 
 > Audio production and video processing tools.
 
 <CardGrid>
   <Card title="ffmpeg">
     <Badge text="Video Processing" variant="note" /> Video and audio processing via FFmpeg. Get info, clip, scale, concatenate, overlay, extract frames, and play media files.
-  </Card>
-  <Card title="ableton">
-    <Badge text="Music Production" variant="note" /> Ableton Live integration for music production. Control sessions, tracks, and clips programmatically.
   </Card>
 </CardGrid>
 
@@ -358,16 +365,3 @@ args = ["-y", "chrome-devtools-mcp@latest"]
     <Badge text="Professional Data" variant="tip" /> LinkedIn profile scraping for professional networking data. Extract public profile information and connections.
   </Card>
 </CardGrid>
-
----
-
-## Remote Gateway (1)
-
-> Cloud-hosted MCP endpoints providing aggregated or custom tool access.
-
-<CardGrid>
-  <Card title="default">
-    <Badge text="Network Proxy" variant="caution" /> Remote MCP gateway at `mcp.w4w.dev` providing a curated default toolset via `mcp-remote` proxy.
-  </Card>
-</CardGrid>
-

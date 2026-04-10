@@ -31,6 +31,9 @@ SKILLS_DIR = REPO_ROOT / "skills"
 
 HOME = Path.home()
 CLAUDE_SETTINGS_PATH = HOME / ".claude" / "settings.json"
+CLAUDE_SETTINGS_LOCAL_PATH = HOME / ".claude" / "settings.local.json"
+CLAUDE_DESKTOP_CONFIG_PATH = HOME / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
+CHATGPT_MCP_PATH = HOME / "Library" / "Application Support" / "ChatGPT" / "mcp.json"
 CLAUDE_ENTRYPOINT_PATH = HOME / ".claude" / "CLAUDE.md"
 CODEX_ENTRYPOINT_PATH = HOME / ".codex" / "AGENTS.md"
 CODEX_CONFIG_PATH = HOME / ".codex" / "config.toml"
@@ -38,11 +41,20 @@ CODEX_SKILLS_DIR = HOME / ".codex" / "skills"
 COPILOT_ENTRYPOINT_PATH = HOME / ".copilot" / "copilot-instructions.md"
 COPILOT_CONFIG_PATH = HOME / ".copilot" / "config.json"
 COPILOT_MCP_PATH = HOME / ".copilot" / "mcp-config.json"
+COPILOT_SHADOW_MCP_PATH = HOME / ".config" / ".copilot" / "mcp-config.json"
 COPILOT_AGENTS_HOME_DIR = HOME / ".copilot" / "agents"
 COPILOT_SKILLS_DIR = HOME / ".copilot" / "skills"
+CURSOR_MCP_PATH = HOME / ".cursor" / "mcp.json"
 GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
+GEMINI_ANTIGRAVITY_MCP_PATH = HOME / ".gemini" / "antigravity" / "mcp_config.json"
+GEMINI_EXTENSION_MCP_PATH = (
+    HOME / ".gemini" / "extensions" / "outline-driven-development" / "antigravity" / "mcp_config.json"
+)
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
 GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
+OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
+AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
+CRUSH_CONFIG_PATH = HOME / ".config" / "crush" / "crush.json"
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -50,7 +62,26 @@ MANAGED_HEADER = "<!-- Managed by scripts/sync_agent_stack.py. Do not edit direc
 TOML_TABLE_RE = re.compile(r"^\[(?P<header>[^\]]+)\]\s*$")
 
 NAME_MAP = {
+    "atom of thoughts": "atom-of-thoughts",
     "apple_mail": "apple-mail",
+    "apple mail": "apple-mail",
+    "deep lucid 3d": "deep-lucid-3d",
+    "defaulttools": "default",
+    "duck duck go search": "duckduckgo-search",
+    "duckduckgo": "duckduckgo-search",
+    "package version": "package-version",
+    "shannon problem solver": "shannon-thinking",
+    "structured thinking": "structured-thinking",
+}
+REMOVED_MCP_SERVERS = {
+    "ableton",
+    "apple-mail",
+    "default",
+    "playwright",
+    "playwright-headless",
+    "serena",
+    "things",
+    "web-search",
 }
 CORE_INVENTORY = [
     "context7",
@@ -58,7 +89,6 @@ CORE_INVENTORY = [
     "deepwiki",
     "fetch",
     "fetcher",
-    "playwright",
     "chrome-devtools",
     "docling",
     "package-version",
@@ -68,7 +98,6 @@ CORE_INVENTORY = [
     "tavily",
     "repomix",
     "trafilatura",
-    "web-search",
 ]
 NORMALIZED_BASES: dict[str, dict[str, Any]] = {
     "brave-search": {
@@ -83,18 +112,9 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
         "command": "npx",
         "args": ["-y", "@upstash/context7-mcp", "--api-key", "${CONTEXT7_API_KEY}"],
     },
-    "default": {
-        "command": "npx",
-        "args": ["-y", "mcp-remote", "https://mcp.w4w.dev/mcp/default"],
-        "enabled": False,
-    },
     "docling": {
         "command": "uvx",
         "args": ["--from=docling-mcp", "docling-mcp-server"],
-    },
-    "playwright": {
-        "command": "npx",
-        "args": ["-y", "@playwright/mcp@latest", "--cdp-endpoint", "http://127.0.0.1:9222"],
     },
     "repomix": {
         "command": "npx",
@@ -127,7 +147,18 @@ class SyncContext:
 
 
 def normalize_name(name: str) -> str:
-    return NAME_MAP.get(name, name)
+    normalized = NAME_MAP.get(name)
+    if normalized is not None:
+        return normalized
+    return NAME_MAP.get(name.lower(), name)
+
+
+def normalize_existing_server_name(name: str, known_names: set[str]) -> str:
+    normalized = normalize_name(name)
+    lowered = normalized.lower()
+    if lowered in known_names or lowered in REMOVED_MCP_SERVERS:
+        return lowered
+    return normalized
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -336,9 +367,13 @@ def load_registry(ctx: SyncContext) -> dict[str, Any]:
     return registry
 
 
+def enabled_registry_servers(registry: dict[str, Any]) -> dict[str, Any]:
+    return {name: entry for name, entry in registry["servers"].items() if entry.get("enabled") is not False}
+
+
 def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in registry["servers"].items():
+    for name, entry in enabled_registry_servers(registry).items():
         server: dict[str, Any] = {
             "command": entry["command"],
             "args": replace_arg_placeholders(entry.get("args", []), {}, local_values=False),
@@ -353,7 +388,7 @@ def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
 
 def render_copilot_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in registry["servers"].items():
+    for name, entry in enabled_registry_servers(registry).items():
         server: dict[str, Any] = {
             "tools": entry.get("tools", ["*"]),
             "type": entry.get("transport", "stdio"),
@@ -380,7 +415,7 @@ def toml_value(value: Any) -> str:
 
 def render_codex_mcp_block(registry: dict[str, Any], fallbacks: dict[str, str]) -> str:
     lines = [CODEX_MCP_BEGIN]
-    for name, entry in registry["servers"].items():
+    for name, entry in enabled_registry_servers(registry).items():
         lines.append("")
         lines.append(f"[mcp_servers.{name}]")
         lines.append(
@@ -389,8 +424,6 @@ def render_codex_mcp_block(registry: dict[str, Any], fallbacks: dict[str, str]) 
         lines.append(f"command = {toml_value(entry['command'])}")
         lines.append(f"startup_timeout_sec = {toml_value(entry.get('startup_timeout_sec', 90))}")
         lines.append(f"type = {toml_value(entry.get('transport', 'stdio'))}")
-        if entry.get("enabled") is False:
-            lines.append("enabled = false")
         lines.append("")
         lines.append(f"[mcp_servers.{name}.env]")
         for env_name, env_meta in entry.get("env", {}).items():
@@ -597,9 +630,7 @@ def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any]) -> None:
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in registry["servers"].items():
-        if entry.get("enabled") is False:
-            continue
+    for name, entry in enabled_registry_servers(registry).items():
         server: dict[str, Any] = {
             "type": entry.get("transport", "stdio"),
             "command": entry["command"],
@@ -609,6 +640,77 @@ def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> di
             server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
         servers[name] = server
     return servers
+
+
+def render_client_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    servers: dict[str, Any] = {}
+    for name, entry in enabled_registry_servers(registry).items():
+        server: dict[str, Any] = {
+            "command": entry["command"],
+            "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
+        }
+        if entry.get("env"):
+            server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+        servers[name] = server
+    return {"mcpServers": servers}
+
+
+def merge_server_maps(rendered: dict[str, Any], existing: dict[str, Any]) -> dict[str, Any]:
+    merged = dict(rendered)
+    known_names = set(rendered)
+    for name, entry in existing.items():
+        normalized = normalize_existing_server_name(name, known_names)
+        if normalized in known_names or normalized in REMOVED_MCP_SERVERS:
+            continue
+        if name not in merged:
+            merged[name] = entry
+    return merged
+
+
+def merge_server_root_config(ctx: SyncContext, path: Path, root_key: str, rendered: dict[str, Any]) -> None:
+    if not path.exists():
+        return
+    settings = load_json(path)
+    existing = settings.get(root_key)
+    if not isinstance(existing, dict):
+        return
+    settings[root_key] = merge_server_maps(rendered, existing)
+    write_json(ctx, path, settings)
+
+
+def render_shadow_copilot_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    servers = render_copilot_mcp(registry, fallbacks)["mcpServers"]
+    for server in servers.values():
+        server["source"] = "user"
+    return servers
+
+
+def extract_remote_url(command: str, args: list[Any]) -> str | None:
+    if command != "npx":
+        return None
+    compact = [item for item in args if item != "-y"]
+    if len(compact) == 2 and compact[0] == "mcp-remote" and isinstance(compact[1], str):
+        return compact[1]
+    return None
+
+
+def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    servers: dict[str, Any] = {}
+    for name, entry in enabled_registry_servers(registry).items():
+        args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
+        remote_url = extract_remote_url(entry["command"], args)
+        server: dict[str, Any]
+        if remote_url:
+            server = {"type": "remote", "url": remote_url, "enabled": True}
+        else:
+            server = {"type": "local", "command": [entry["command"], *args], "enabled": True}
+        if entry.get("env"):
+            server["environment"] = {
+                key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()
+            }
+        servers[name] = server
+    return servers
+
 
 def merge_gemini_settings(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
@@ -637,6 +739,31 @@ def merge_gemini_settings(
     
     write_json(ctx, GEMINI_SETTINGS_PATH, settings)
 
+
+def merge_client_mcp_config(ctx: SyncContext, path: Path, registry: dict[str, Any], fallbacks: dict[str, str]) -> None:
+    if not path.exists():
+        return
+    settings = load_json(path)
+    settings["mcpServers"] = render_client_mcp(registry, fallbacks)["mcpServers"]
+    write_json(ctx, path, settings)
+
+
+def merge_claude_settings_local(ctx: SyncContext, registry: dict[str, Any]) -> None:
+    if not CLAUDE_SETTINGS_LOCAL_PATH.exists():
+        return
+    settings = load_json(CLAUDE_SETTINGS_LOCAL_PATH)
+    enabled = settings.get("enabledMcpjsonServers")
+    if not isinstance(enabled, list):
+        return
+    valid_names = set(enabled_registry_servers(registry))
+    filtered: list[str] = []
+    for name in enabled:
+        if isinstance(name, str) and name in valid_names and name not in filtered:
+            filtered.append(name)
+    settings["enabledMcpjsonServers"] = filtered
+    write_json(ctx, CLAUDE_SETTINGS_LOCAL_PATH, settings)
+
+
 def sync_home_targets(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
@@ -653,9 +780,31 @@ def sync_home_targets(
         ),
     )
     merge_claude_settings(ctx, policy)
+    merge_claude_settings_local(ctx, registry)
+    merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks)
+    merge_client_mcp_config(ctx, CURSOR_MCP_PATH, registry, fallbacks)
     merge_copilot_config(ctx, policy)
     merge_gemini_settings(ctx, registry, policy, fallbacks)
     write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks))
+    merge_server_root_config(ctx, CHATGPT_MCP_PATH, "mcpServers", render_client_mcp(registry, fallbacks)["mcpServers"])
+    merge_server_root_config(
+        ctx, COPILOT_SHADOW_MCP_PATH, "mcpServers", render_shadow_copilot_mcp(registry, fallbacks)
+    )
+    merge_server_root_config(
+        ctx,
+        GEMINI_ANTIGRAVITY_MCP_PATH,
+        "mcpServers",
+        render_client_mcp(registry, fallbacks)["mcpServers"],
+    )
+    merge_server_root_config(
+        ctx,
+        GEMINI_EXTENSION_MCP_PATH,
+        "mcpServers",
+        render_client_mcp(registry, fallbacks)["mcpServers"],
+    )
+    merge_server_root_config(ctx, OPENCODE_CONFIG_PATH, "mcp", render_opencode_mcp(registry, fallbacks))
+    merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
+    merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
     sync_skill_entries(ctx, CODEX_SKILLS_DIR)
     sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
