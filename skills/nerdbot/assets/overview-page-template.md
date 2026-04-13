@@ -1,4 +1,16 @@
 <!-- Suggested path: wiki/index.md or wiki/topics/[topic]/index.md -->
+---
+title: [Overview Title]
+tags:
+  - kb
+  - overview
+aliases: []
+kind: overview
+status: active
+updated: [YYYY-MM-DD]
+source_count: 0
+---
+
 # [Overview Title]
 
 ## Scope
@@ -12,10 +24,10 @@
 | `[path]` | [authoritative / pending review] | [notes] |
 
 ## Key concepts
-- [ ] `[Concept]([path-to-concept-page])`
+- [ ] `[[[path-to-concept-page]|Concept]]`
 
 ## Key entities
-- [ ] `[Entity]([path-to-entity-page])`
+- [ ] `[[[path-to-entity-page]|Entity]]`
 
 ## Current wiki map
 | Path | Purpose | Coverage status |
@@ -36,6 +48,11 @@
 | Summary | `[supporting source or path]` | [detail] |
 
 ## Related indexes
-- [Source Map]([path-to-source-map])
-- [Coverage]([path-to-coverage-index])
-- [Activity Log]([path-to-activity-log])
+- `[[[path-to-source-map]|Source Map]]`
+- `[[[path-to-coverage-index]|Coverage]]`
+- `[[[path-to-activity-log]|Activity Log]]`
+
+## Vault conventions
+- Prefer `[[wikilinks]]` for local notes.
+- Use `aliases` when note names are likely to change during migration.
+- Keep local supporting assets under `raw/assets/` unless the repo already has a stronger convention.

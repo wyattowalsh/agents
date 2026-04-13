@@ -1,0 +1,10 @@
+{
+  "skills": ["nerdbot"],
+  "query": "Please customize my Obsidian window layout, recent files behavior, pane arrangement, and personal appearance settings.",
+  "files": [],
+  "expected_behavior": [
+    "Agent does not treat volatile workspace or personal UI state as first-class nerdbot work by default",
+    "Agent distinguishes shared vault config from user-local workspace state",
+    "Agent either refuses the request or narrows it to project-safe shared surfaces such as templates, snippets, or documented vault conventions"
+  ]
+}

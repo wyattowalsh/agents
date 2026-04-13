@@ -35,11 +35,7 @@ KB_BOOTSTRAP_TEMPLATE_PATH = ASSETS_DIR / "kb-bootstrap-template.md"
 ACTIVITY_LOG_TEMPLATE_PATH = ASSETS_DIR / "activity-log-template.md"
 PATH_MARKER_PREFIX = "Path: `"
 ACTIVITY_LOG_INITIAL_MARKER = "## Initial entry example"
-PACKET_STARTER_FILES = (
-    STARTER_FILES["wiki_index"],
-    STARTER_FILES["coverage_index"],
-    STARTER_FILES["source_map"],
-)
+PACKET_STARTER_FILES = tuple(STARTER_FILES.values())
 
 
 def knowledge_base_title(root: Path) -> str:
@@ -62,9 +58,7 @@ def read_asset_text(asset_path: Path) -> str:
     try:
         return asset_path.read_text(encoding="utf-8")
     except OSError as exc:
-        raise RuntimeError(
-            f"Could not read starter template asset: {asset_path}"
-        ) from exc
+        raise RuntimeError(f"Could not read starter template asset: {asset_path}") from exc
 
 
 def finalize_template_section(lines: list[str]) -> str:
@@ -95,9 +89,7 @@ def parse_bootstrap_packet_sections(packet_text: str) -> dict[str, str]:
                 next_index = index + 1
                 while next_index < len(lines) and not lines[next_index]:
                     next_index += 1
-                if next_index >= len(lines) or lines[next_index].startswith(
-                    PATH_MARKER_PREFIX
-                ):
+                if next_index >= len(lines) or lines[next_index].startswith(PATH_MARKER_PREFIX):
                     sections[current_path] = finalize_template_section(current_lines)
                     current_path = None
                     index = next_index
@@ -112,17 +104,11 @@ def parse_bootstrap_packet_sections(packet_text: str) -> dict[str, str]:
 @lru_cache(maxsize=1)
 def load_bootstrap_packet_sections() -> dict[str, str]:
     """Load the starter-file packet sections from the bundled asset."""
-    sections = parse_bootstrap_packet_sections(
-        read_asset_text(KB_BOOTSTRAP_TEMPLATE_PATH)
-    )
-    missing_sections = [
-        rel_path for rel_path in PACKET_STARTER_FILES if rel_path not in sections
-    ]
+    sections = parse_bootstrap_packet_sections(read_asset_text(KB_BOOTSTRAP_TEMPLATE_PATH))
+    missing_sections = [rel_path for rel_path in PACKET_STARTER_FILES if rel_path not in sections]
     if missing_sections:
         missing_list = ", ".join(missing_sections)
-        raise RuntimeError(
-            f"Starter template sections missing from {KB_BOOTSTRAP_TEMPLATE_PATH}: {missing_list}"
-        )
+        raise RuntimeError(f"Starter template sections missing from {KB_BOOTSTRAP_TEMPLATE_PATH}: {missing_list}")
     return sections
 
 
@@ -131,9 +117,7 @@ def load_bootstrap_packet_section(rel_path: str) -> str:
     try:
         return load_bootstrap_packet_sections()[rel_path]
     except KeyError as exc:
-        raise RuntimeError(
-            f"Starter template for {rel_path} not found in {KB_BOOTSTRAP_TEMPLATE_PATH}"
-        ) from exc
+        raise RuntimeError(f"Starter template for {rel_path} not found in {KB_BOOTSTRAP_TEMPLATE_PATH}") from exc
 
 
 def strip_leading_comment_block(template: str, asset_path: Path) -> str:
@@ -162,15 +146,11 @@ def load_activity_log_sections() -> tuple[str, str]:
     )
     before, separator, after = template.partition(ACTIVITY_LOG_INITIAL_MARKER)
     if not separator:
-        raise RuntimeError(
-            f"Could not find '{ACTIVITY_LOG_INITIAL_MARKER}' in {ACTIVITY_LOG_TEMPLATE_PATH}"
-        )
+        raise RuntimeError(f"Could not find '{ACTIVITY_LOG_INITIAL_MARKER}' in {ACTIVITY_LOG_TEMPLATE_PATH}")
     prelude = f"{before.rstrip()}\n\n{separator}\n\n"
     initial_example = after.lstrip()
     if not initial_example:
-        raise RuntimeError(
-            f"Initial activity-log example is empty in {ACTIVITY_LOG_TEMPLATE_PATH}"
-        )
+        raise RuntimeError(f"Initial activity-log example is empty in {ACTIVITY_LOG_TEMPLATE_PATH}")
     return prelude, initial_example.rstrip() + "\n"
 
 
@@ -236,16 +216,26 @@ def render_activity_log(root: Path) -> str:
     return prelude + render_starter_template(initial_example, root)
 
 
+def render_packet_starter(root: Path, rel_path: str) -> str:
+    """Render a packet-backed starter file with repo-local placeholder defaults."""
+    return render_starter_template(load_bootstrap_packet_section(rel_path), root)
+
+
 STARTER_TEMPLATES: dict[str, TemplateFactory] = {
     STARTER_FILES["wiki_index"]: render_wiki_index,
     STARTER_FILES["coverage_index"]: render_coverage_index,
     STARTER_FILES["source_map"]: render_source_map,
     STARTER_FILES["activity_log"]: render_activity_log,
+    STARTER_FILES["vault_config"]: lambda root: render_packet_starter(root, STARTER_FILES["vault_config"]),
+    STARTER_FILES["vault_wiki_template"]: lambda root: render_packet_starter(
+        root, STARTER_FILES["vault_wiki_template"]
+    ),
+    STARTER_FILES["vault_source_template"]: lambda root: render_packet_starter(
+        root, STARTER_FILES["vault_source_template"]
+    ),
 }
 if set(STARTER_TEMPLATES) != set(STARTER_FILES.values()):
-    raise RuntimeError(
-        "STARTER_TEMPLATES must define a renderer for every starter file"
-    )
+    raise RuntimeError("STARTER_TEMPLATES must define a renderer for every starter file")
 # The activity log is append-only by contract, so bootstrap never overwrites it.
 APPEND_ONLY_STARTER_FILES = {STARTER_FILES["activity_log"]}
 
@@ -380,9 +370,9 @@ def scaffold(root: Path, *, force: bool, dry_run: bool) -> dict[str, object]:
             ensure_safe_target(root, target_file)
             write_text_safely(target_file, content, overwrite=force)
     next_actions = [
-        "Add source captures under raw/sources/, raw/captures/, or raw/extracts/.",
-        "Create synthesized pages under wiki/topics/ with explicit provenance back to raw evidence.",
-        "Refresh indexes/coverage.md, indexes/source-map.md, and activity/log.md in the same batch as content changes.",
+        "Add source captures under raw/sources/, raw/captures/, or raw/extracts/, and place local supporting assets under raw/assets/.",
+        "Create synthesized pages under wiki/topics/ with explicit provenance back to raw evidence and Obsidian-native frontmatter.",
+        "Refresh indexes/coverage.md, indexes/source-map.md, activity/log.md, and config/obsidian-vault.md in the same batch as content changes.",
     ]
     if skipped_existing and not force:
         next_actions.append("Re-run with --force only if you explicitly want to overwrite the known starter files.")

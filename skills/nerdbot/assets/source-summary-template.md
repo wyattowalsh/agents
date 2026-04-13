@@ -1,4 +1,16 @@
 <!-- Suggested path: wiki/topics/[source-id]-source-summary.md -->
+---
+title: [Source Title]
+tags:
+  - kb
+  - source
+aliases: []
+kind: source-summary
+status: active
+updated: [YYYY-MM-DD]
+source_count: 1
+---
+
 # [Source Title]
 
 ## Source record
@@ -7,6 +19,7 @@
 | Source ID | `[source-id]` |
 | Raw source | `raw/sources/[file]` |
 | Capture or extract | `raw/captures/[file]` or `raw/extracts/[file]` |
+| Local asset embeds | `raw/assets/[file]` or none |
 | Imported on | [YYYY-MM-DD] |
 | Status | [queued / in review / synthesized] |
 | Canonical material impacted | [none / path list] |
@@ -27,6 +40,9 @@
 | Wiki path | Coverage goal | Status |
 |-----------|---------------|--------|
 | `wiki/topics/[page].md` | [summary / comparison / evidence backfill] | queued |
+
+## Related notes
+- [[wiki/index]]
 
 ## Open questions
 - [ ]

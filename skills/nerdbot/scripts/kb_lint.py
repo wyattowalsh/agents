@@ -28,11 +28,17 @@ from urllib.parse import unquote
 from kb_inventory import (
     DEFAULT_LAYER_PATHS,
     MARKDOWN_SUFFIXES,
+    OBSIDIAN_VOLATILE_FILES,
     STARTER_FILES,
     build_inventory,
     emit_error_payload,
+    extract_all_local_references,
+    extract_frontmatter_aliases,
+    extract_frontmatter_block,
+    extract_frontmatter_keys,
     extract_headings,
     extract_markdown_links,
+    extract_obsidian_references,
     is_index_like_path,
     iter_repo_files,
     normalize_anchor,
@@ -50,6 +56,7 @@ EXPLICIT_PROVENANCE_HEADINGS = {"provenance", "sources", "evidence", "references
 ACTIVITY_ENTRY_HEADER_PATTERN = re.compile(r"^### \[\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2})?\] .+$", re.MULTILINE)
 MARKDOWN_HEADING_PATTERN = re.compile(r"^\s{0,3}(#{1,6})\s+(.*?)\s*$", re.MULTILINE)
 INLINE_CODE_PATTERN = re.compile(r"`([^`\n]+)`")
+BLOCK_ID_PATTERN = re.compile(r"(?:^|\s)\^([A-Za-z0-9-]+)\s*$", re.MULTILINE)
 PATH_REFERENCE_PATTERN = re.compile(
     r"(?P<path>(?:\.\./|\.?/)?(?:[\w.-]+/)*[\w .-]+\.[a-z0-9]{1,8}(?:#[^\s`|)]+)?)",
     re.IGNORECASE,
@@ -91,6 +98,18 @@ class MarkdownPage:
     is_wiki: bool
     is_index_like: bool
     plain_excerpt: str
+    aliases: set[str] = None  # type: ignore[assignment]
+    block_ids: set[str] = None  # type: ignore[assignment]
+    frontmatter_keys: set[str] = None  # type: ignore[assignment]
+    has_frontmatter: bool = False
+
+    def __post_init__(self) -> None:
+        if self.aliases is None:
+            self.aliases = set()
+        if self.block_ids is None:
+            self.block_ids = set()
+        if self.frontmatter_keys is None:
+            self.frontmatter_keys = set()
 
 
 def make_issue(
@@ -127,9 +146,19 @@ def markdown_to_plain_text(text: str, *, max_words: int = 400) -> str:
     without_code = re.sub(r"```.*?```", " ", without_frontmatter, flags=re.DOTALL)
     without_inline_code = re.sub(r"`[^`]+`", " ", without_code)
     without_links = re.sub(r"(?<!!)\[([^\]]+)\]\([^)]+\)", r"\1", without_inline_code)
-    normalized = re.sub(r"[^a-zA-Z0-9\s]+", " ", without_links).lower()
+    without_obsidian_links = re.sub(
+        r"!?\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|([^\]]+))?\]\]",
+        lambda match: (match.group(2) or Path(match.group(1)).stem),
+        without_links,
+    )
+    normalized = re.sub(r"[^a-zA-Z0-9\s]+", " ", without_obsidian_links).lower()
     words = normalized.split()
     return " ".join(words[:max_words])
+
+
+def extract_block_ids(text: str) -> set[str]:
+    """Extract Obsidian block IDs from note content."""
+    return {match.group(1) for match in BLOCK_ID_PATTERN.finditer(text)}
 
 
 def collect_markdown_pages(root: Path, *, include_unlayered: bool = False) -> dict[str, MarkdownPage]:
@@ -152,6 +181,7 @@ def collect_markdown_pages(root: Path, *, include_unlayered: bool = False) -> di
         headings = extract_headings(text)
         title = headings[0] if headings else path.stem.replace("-", " ").replace("_", " ").title()
         is_wiki = rel_path.startswith("wiki/")
+        links = extract_all_local_references(text)
         pages[rel_path] = MarkdownPage(
             path=path,
             relative_path=rel_path,
@@ -159,10 +189,14 @@ def collect_markdown_pages(root: Path, *, include_unlayered: bool = False) -> di
             title=title,
             normalized_title=normalize_title(title),
             headings=build_heading_anchor_set(headings),
-            links=extract_markdown_links(text),
+            links=links,
             is_wiki=is_wiki,
             is_index_like=is_index_like_path(Path(rel_path)),
             plain_excerpt=markdown_to_plain_text(text),
+            aliases=set(extract_frontmatter_aliases(text)),
+            block_ids=extract_block_ids(text),
+            frontmatter_keys=set(key.lower() for key in extract_frontmatter_keys(text)),
+            has_frontmatter=extract_frontmatter_block(text) is not None,
         )
     return pages
 
@@ -218,7 +252,7 @@ def extract_reference_candidates(text: str) -> set[str]:
         >>> sorted(extract_reference_candidates("`raw/extracts/a.md#x` and [doc](../docs/spec.md)"))
         ['../docs/spec.md', 'raw/extracts/a.md#x']
     """
-    candidates = set(extract_markdown_links(text))
+    candidates = set(extract_all_local_references(text))
     candidates.update(match.group(1).strip() for match in INLINE_CODE_PATTERN.finditer(text))
     candidates.update(match.group("path").strip() for match in PATH_REFERENCE_PATTERN.finditer(text))
     return {candidate for candidate in candidates if candidate}
@@ -311,9 +345,7 @@ def extract_explicit_provenance_blocks(page: MarkdownPage) -> list[str]:
         ['## Provenance\\n`raw/extracts/a.md#x`']
     """
     blocks = [
-        block
-        for heading, block in extract_markdown_sections(page.text)
-        if heading in EXPLICIT_PROVENANCE_HEADINGS
+        block for heading, block in extract_markdown_sections(page.text) if heading in EXPLICIT_PROVENANCE_HEADINGS
     ]
     blocks.extend(match.group(0).strip() for match in PROVENANCE_FIELD_PATTERN.finditer(page.text))
     return blocks
@@ -405,9 +437,7 @@ def has_explicit_provenance(page: MarkdownPage) -> bool:
         return False
     block_references = {
         block: {
-            reference
-            for reference in extract_reference_candidates(block)
-            if looks_like_local_path_reference(reference)
+            reference for reference in extract_reference_candidates(block) if looks_like_local_path_reference(reference)
         }
         for block in blocks
     }
@@ -424,8 +454,7 @@ def has_explicit_provenance(page: MarkdownPage) -> bool:
     has_canonical_material_reference = any(
         "canonical material" in block.lower()
         and any(
-            not reference.startswith("raw/")
-            and not reference.startswith(("indexes/", "activity/"))
+            not reference.startswith("raw/") and not reference.startswith(("indexes/", "activity/"))
             for reference in references
         )
         for block, references in block_reference_paths.items()
@@ -446,8 +475,30 @@ def has_explicit_provenance(page: MarkdownPage) -> bool:
     return page.is_index_like and OVERVIEW_PROVENANCE_PATHS.issubset(page_reference_paths)
 
 
-def resolve_link_target(source_page: MarkdownPage, target: str) -> tuple[Path | None, str | None]:
-    """Resolve a markdown link target relative to a source page."""
+def build_note_lookup(pages: dict[str, MarkdownPage]) -> dict[str, list[MarkdownPage]]:
+    """Build a lookup of note names and aliases to markdown pages."""
+    lookup: dict[str, list[MarkdownPage]] = defaultdict(list)
+    for page in pages.values():
+        note_names = {
+            page.path.stem,
+            page.relative_path.removesuffix(page.path.suffix),
+            page.relative_path,
+        }
+        note_names.update(page.aliases)
+        for note_name in note_names:
+            key = normalize_title(note_name.removesuffix(".md"))
+            if page not in lookup[key]:
+                lookup[key].append(page)
+    return lookup
+
+
+def resolve_path_like_target(
+    source_page: MarkdownPage,
+    target: str,
+    *,
+    root: Path | None = None,
+) -> tuple[Path | None, str | None]:
+    """Resolve a path-like local reference relative to a source page."""
     target = unquote(target.strip())
     if not target or target.startswith("#"):
         return source_page.path, target[1:] if target.startswith("#") else None
@@ -460,7 +511,10 @@ def resolve_link_target(source_page: MarkdownPage, target: str) -> tuple[Path | 
         path_part, anchor = link_target.split("#", 1)
     else:
         path_part, anchor = link_target, None
-    candidate = (source_page.path.parent / path_part).resolve()
+    if root is not None:
+        candidate = (root / path_part).resolve()
+    else:
+        candidate = (source_page.path.parent / path_part).resolve()
     candidates = []
     if candidate.suffix:
         candidates.append(candidate)
@@ -472,6 +526,66 @@ def resolve_link_target(source_page: MarkdownPage, target: str) -> tuple[Path | 
                 continue
             return option, anchor
     return candidate, anchor
+
+
+def resolve_obsidian_target(
+    source_page: MarkdownPage,
+    target: str,
+    note_lookup: dict[str, list[MarkdownPage]],
+    root: Path,
+) -> tuple[Path | None, str | None, list[str]]:
+    """Resolve an Obsidian note reference using names, aliases, or paths."""
+    cleaned = unquote(target.strip())
+    if not cleaned:
+        return None, None, []
+    if cleaned.startswith("#"):
+        return source_page.path, cleaned[1:], []
+    link_target = cleaned.split("?", 1)[0]
+    if "#" in link_target:
+        note_part, anchor = link_target.split("#", 1)
+    else:
+        note_part, anchor = link_target, None
+    note_part = note_part.strip()
+    if not note_part:
+        return source_page.path, anchor, []
+    path_like = note_part.startswith(("./", "../")) or Path(note_part).suffix.lower() in MARKDOWN_SUFFIXES
+    if path_like:
+        root_relative = not note_part.startswith(("./", "../"))
+        resolved_path, resolved_anchor = resolve_path_like_target(
+            source_page,
+            link_target,
+            root=root if root_relative else None,
+        )
+        return resolved_path, resolved_anchor, []
+    matches = note_lookup.get(normalize_title(note_part.removesuffix(".md")), [])
+    if len(matches) == 1:
+        return matches[0].path, anchor, []
+    if len(matches) > 1:
+        return None, anchor, sorted(match.relative_path for match in matches)
+    return None, anchor, []
+
+
+def resolve_link_target(
+    source_page: MarkdownPage,
+    target: str,
+    note_lookup: dict[str, list[MarkdownPage]],
+    root: Path,
+) -> tuple[Path | None, str | None, list[str]]:
+    """Resolve a local link target relative to a source page."""
+    normalized_target = unquote(target.strip())
+    if not normalized_target:
+        return None, None, []
+    if normalized_target.startswith(("./", "../", "/")) or Path(normalized_target.split("#", 1)[0]).suffix:
+        path_part = normalized_target.split("#", 1)[0]
+        first_part = PurePosixPath(path_part).parts[0] if PurePosixPath(path_part).parts else ""
+        root_relative = first_part in (*KB_ROOT_LAYERS, ".obsidian") and not normalized_target.startswith(
+            ("./", "../", "/")
+        )
+        resolved_path, anchor = resolve_path_like_target(
+            source_page, normalized_target, root=root if root_relative else None
+        )
+        return resolved_path, anchor, []
+    return resolve_obsidian_target(source_page, normalized_target, note_lookup, root)
 
 
 def lint_structure(root: Path, inventory: dict[str, Any]) -> list[dict[str, Any]]:
@@ -500,6 +614,9 @@ def lint_structure(root: Path, inventory: dict[str, Any]) -> list[dict[str, Any]
         "coverage_index": "coverage_index",
         "source_map": "source_map",
         "activity_log": "activity_log",
+        "vault_config": "vault_config",
+        "vault_wiki_template": "vault_wiki_template",
+        "vault_source_template": "vault_source_template",
     }
     for starter_name, rel_path in STARTER_FILES.items():
         if inventory["starter_files"][starter_name]["present"]:
@@ -548,10 +665,32 @@ def lint_links(root: Path, pages: dict[str, MarkdownPage]) -> tuple[list[dict[st
     """Check local links and return inbound-link map for wiki orphan detection."""
     issues: list[dict[str, Any]] = []
     inbound_links: dict[str, set[str]] = defaultdict(set)
+    note_lookup = build_note_lookup(pages)
     for page in pages.values():
         for raw_target in page.links:
-            resolved_path, anchor = resolve_link_target(page, raw_target)
+            resolved_path, anchor, collisions = resolve_link_target(page, raw_target, note_lookup, root)
+            if collisions:
+                issues.append(
+                    make_issue(
+                        "ambiguous_obsidian_link",
+                        "warning",
+                        page.relative_path,
+                        f"Obsidian link target is ambiguous: {raw_target}",
+                        {"target": raw_target, "matches": collisions},
+                    )
+                )
+                continue
             if resolved_path is None:
+                if not SCHEME_PATTERN.match(raw_target):
+                    issues.append(
+                        make_issue(
+                            "broken_local_link",
+                            "critical",
+                            page.relative_path,
+                            f"Broken local link target: {raw_target}",
+                            {"target": raw_target},
+                        )
+                    )
                 continue
             rel_target = relative_posix(root, resolved_path)
             if not resolved_path.is_relative_to(root):
@@ -579,8 +718,22 @@ def lint_links(root: Path, pages: dict[str, MarkdownPage]) -> tuple[list[dict[st
             if rel_target in pages and rel_target != page.relative_path:
                 inbound_links[rel_target].add(page.relative_path)
             if anchor and rel_target in pages:
+                target_page = pages[rel_target]
+                if anchor.startswith("^"):
+                    block_id = anchor[1:]
+                    if block_id and block_id not in target_page.block_ids:
+                        issues.append(
+                            make_issue(
+                                "broken_obsidian_block_ref",
+                                "critical",
+                                page.relative_path,
+                                f"Broken Obsidian block reference '{anchor}' in link target {raw_target}.",
+                                {"target": raw_target, "resolved_target": rel_target},
+                            )
+                        )
+                    continue
                 normalized_anchor = normalize_anchor(anchor)
-                if normalized_anchor and normalized_anchor not in pages[rel_target].headings:
+                if normalized_anchor and normalized_anchor not in target_page.headings:
                     issues.append(
                         make_issue(
                             "broken_local_anchor",
@@ -629,6 +782,22 @@ def lint_duplicates_and_overlap(pages: dict[str, MarkdownPage]) -> list[dict[str
                 "warning",
                 grouped_pages[0].relative_path,
                 f"Multiple wiki pages normalize to the same title '{title}'.",
+                {"paths": sorted(page.relative_path for page in grouped_pages)},
+            )
+        )
+    alias_map: dict[str, list[MarkdownPage]] = defaultdict(list)
+    for page in wiki_pages:
+        for alias in page.aliases:
+            alias_map[normalize_title(alias)].append(page)
+    for alias, grouped_pages in sorted(alias_map.items()):
+        if len(grouped_pages) < 2:
+            continue
+        issues.append(
+            make_issue(
+                "duplicate_obsidian_alias",
+                "warning",
+                grouped_pages[0].relative_path,
+                f"Multiple wiki pages share the same normalized alias '{alias}'.",
                 {"paths": sorted(page.relative_path for page in grouped_pages)},
             )
         )
@@ -728,6 +897,62 @@ def lint_schema_config_drift(root: Path, pages: dict[str, MarkdownPage]) -> list
                 "Config layer exists but has no files to capture KB-specific operational settings.",
             )
         )
+    return issues
+
+
+def lint_obsidian_vault(root: Path, pages: dict[str, MarkdownPage]) -> list[dict[str, Any]]:
+    """Check Obsidian-native surfaces, shared config, and metadata hygiene."""
+    issues: list[dict[str, Any]] = []
+    obsidian_root = root / ".obsidian"
+    wiki_pages = [page for page in pages.values() if page.is_wiki and not page.is_index_like]
+    obsidian_signal_pages = [
+        page
+        for page in pages.values()
+        if page.has_frontmatter or "[[" in page.text or "![[" in page.text or page.aliases
+    ]
+    if obsidian_signal_pages and not obsidian_root.is_dir():
+        issues.append(
+            make_issue(
+                "missing_obsidian_root",
+                "suggestion",
+                ".obsidian/",
+                "Vault-like note syntax or metadata exists, but the repository has no shared `.obsidian/` root.",
+            )
+        )
+    if obsidian_root.is_dir():
+        for shared_dir in ("templates", "snippets"):
+            shared_path = obsidian_root / shared_dir
+            if not shared_path.is_dir():
+                issues.append(
+                    make_issue(
+                        "missing_shared_obsidian_surface",
+                        "suggestion",
+                        relative_posix(root, shared_path),
+                        f"Missing shared Obsidian surface: {relative_posix(root, shared_path)}.",
+                    )
+                )
+        for volatile_name in OBSIDIAN_VOLATILE_FILES:
+            volatile_path = obsidian_root / volatile_name
+            if volatile_path.is_file():
+                issues.append(
+                    make_issue(
+                        "tracked_volatile_obsidian_state",
+                        "warning",
+                        relative_posix(root, volatile_path),
+                        "Tracked volatile Obsidian workspace state should not be treated as required shared config.",
+                    )
+                )
+    if wiki_pages and any(page.has_frontmatter for page in obsidian_signal_pages):
+        missing_frontmatter = [page.relative_path for page in wiki_pages if not page.has_frontmatter]
+        for rel_path in missing_frontmatter[:10]:
+            issues.append(
+                make_issue(
+                    "missing_vault_frontmatter",
+                    "suggestion",
+                    rel_path,
+                    "Wiki page is missing frontmatter even though the repo is using Obsidian-native metadata elsewhere.",
+                )
+            )
     return issues
 
 
@@ -899,7 +1124,13 @@ def summarize_actions(issues: list[dict[str, Any]]) -> list[str]:
         actions.append(
             "Run kb_bootstrap.py --root <path> to add missing layers and starter files without destructive overwrites."
         )
-    if {"broken_local_link", "broken_local_anchor", "out_of_root_local_link"} & rules:
+    if {
+        "broken_local_link",
+        "broken_local_anchor",
+        "broken_obsidian_block_ref",
+        "ambiguous_obsidian_link",
+        "out_of_root_local_link",
+    } & rules:
         actions.append("Fix broken local links and anchors before relying on wiki or index navigation.")
     if "missing_provenance_marker" in rules:
         actions.append("Add Sources/Provenance sections or raw links to substantive wiki pages.")
@@ -910,6 +1141,16 @@ def summarize_actions(issues: list[dict[str, Any]]) -> list[str]:
     if {"empty_schema_layer", "empty_config_layer"} & rules:
         actions.append(
             "Add lightweight schema/ and config/ files so page shapes and KB-specific settings stay explicit."
+        )
+    if {
+        "missing_obsidian_root",
+        "missing_shared_obsidian_surface",
+        "tracked_volatile_obsidian_state",
+        "missing_vault_frontmatter",
+        "duplicate_obsidian_alias",
+    } & rules:
+        actions.append(
+            "Normalize the Obsidian vault surface: keep shared `.obsidian/` config project-safe, add frontmatter where expected, and resolve alias collisions."
         )
     if {
         "weak_wiki_index_coverage",
@@ -959,6 +1200,7 @@ def run_lint(root: Path, *, include_unlayered: bool = False) -> dict[str, Any]:
     issues.extend(lint_duplicates_and_overlap(pages))
     issues.extend(lint_raw_summary_stubs(root, pages))
     issues.extend(lint_schema_config_drift(root, pages))
+    issues.extend(lint_obsidian_vault(root, pages))
     issues.extend(lint_index_activity_coverage(root, pages, inbound_links))
     issues.sort(key=lambda issue: (SEVERITY_ORDER.get(issue["severity"], 99), issue["path"], issue["rule"]))
     issues_by_severity: Counter[str] = Counter(issue["severity"] for issue in issues)

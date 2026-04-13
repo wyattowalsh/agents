@@ -1,0 +1,11 @@
+{
+  "skills": ["nerdbot"],
+  "query": "Please improve ./client-repo, but first overhaul it into an Obsidian-native vault before you expand or refine anything else.",
+  "files": [],
+  "expected_behavior": [
+    "Agent activates nerdbot for an existing-repo improvement request",
+    "Agent starts with a read-only inventory and classifies the repo's vault state before proposing edits",
+    "Agent defaults to migration-first Obsidian normalization: shared .obsidian surfaces, frontmatter, aliases, wikilinks, and attachment placement",
+    "Agent does not jump directly into content expansion or wiki enrichment before the vault baseline is stabilized"
+  ]
+}

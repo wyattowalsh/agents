@@ -20,7 +20,7 @@ import re
 import sys
 from collections import Counter, defaultdict
 from collections.abc import Iterator
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 DEFAULT_LAYER_PATHS: dict[str, str] = {
@@ -33,7 +33,7 @@ DEFAULT_LAYER_PATHS: dict[str, str] = {
 }
 
 DEFAULT_LAYER_CHILDREN: dict[str, tuple[str, ...]] = {
-    "raw": ("sources", "captures", "extracts"),
+    "raw": ("assets", "sources", "captures", "extracts"),
     "wiki": ("topics",),
     "schema": (),
     "config": (),
@@ -42,7 +42,11 @@ DEFAULT_LAYER_CHILDREN: dict[str, tuple[str, ...]] = {
 }
 
 DEFAULT_DIRECTORIES: tuple[str, ...] = (
+    ".obsidian",
+    ".obsidian/templates",
+    ".obsidian/snippets",
     "raw",
+    "raw/assets",
     "raw/sources",
     "raw/captures",
     "raw/extracts",
@@ -59,6 +63,9 @@ STARTER_FILES: dict[str, str] = {
     "coverage_index": "indexes/coverage.md",
     "source_map": "indexes/source-map.md",
     "activity_log": "activity/log.md",
+    "vault_config": "config/obsidian-vault.md",
+    "vault_wiki_template": ".obsidian/templates/wiki-note-template.md",
+    "vault_source_template": ".obsidian/templates/source-note-template.md",
 }
 
 LAYER_ALIAS_HINTS: dict[str, tuple[str, ...]] = {
@@ -120,6 +127,24 @@ INDEX_ROLE_HINTS: dict[str, tuple[str, ...]] = {
     "activity_log": ("activity/log", "log", "journal", "changelog", "history"),
     "inventory": ("inventory", "audit"),
 }
+OBSIDIAN_VOLATILE_FILES = {
+    "app.json",
+    "graph.json",
+    "workspace.json",
+    "workspace-mobile.json",
+    "workspace",
+}
+OBSIDIAN_SHARED_DIRS = {"templates", "snippets"}
+DATAVIEW_RECOMMENDED_FIELDS = {
+    "title",
+    "tags",
+    "aliases",
+    "kind",
+    "status",
+    "updated",
+    "source_count",
+    "cssclasses",
+}
 PROVENANCE_TERMS = (
     "provenance",
     "sources",
@@ -132,6 +157,9 @@ PROVENANCE_TERMS = (
 )
 HEADING_PATTERN = re.compile(r"^\s{0,3}#{1,6}\s+(.*?)\s*$", re.MULTILINE)
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+FRONTMATTER_PATTERN = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
+FRONTMATTER_KEY_PATTERN = re.compile(r"^([A-Za-z0-9_-]+):", re.MULTILINE)
+OBSIDIAN_REFERENCE_PATTERN = re.compile(r"(?P<embed>!)?\[\[([^\[\]\n]+)\]\]")
 
 
 def warn(message: str) -> None:
@@ -277,6 +305,82 @@ def extract_headings(text: str) -> list[str]:
     return headings
 
 
+def extract_frontmatter_block(text: str) -> str | None:
+    """Return the frontmatter body without surrounding delimiters when present."""
+    match = FRONTMATTER_PATTERN.match(text)
+    return match.group(1) if match else None
+
+
+def extract_frontmatter_keys(text: str) -> list[str]:
+    """Return top-level frontmatter keys when present."""
+    frontmatter = extract_frontmatter_block(text)
+    if not frontmatter:
+        return []
+    return [match.group(1).strip() for match in FRONTMATTER_KEY_PATTERN.finditer(frontmatter)]
+
+
+def _clean_frontmatter_scalar(value: str) -> str:
+    return value.strip().strip('"').strip("'")
+
+
+def extract_frontmatter_aliases(text: str) -> list[str]:
+    """Extract alias values from simple YAML frontmatter patterns."""
+    frontmatter = extract_frontmatter_block(text)
+    if not frontmatter:
+        return []
+    aliases: list[str] = []
+    lines = frontmatter.splitlines()
+    in_aliases = False
+    for line in lines:
+        stripped = line.strip()
+        if in_aliases:
+            if stripped.startswith("- "):
+                alias = _clean_frontmatter_scalar(stripped[2:])
+                if alias:
+                    aliases.append(alias)
+                continue
+            if not stripped or line.startswith((" ", "\t")):
+                continue
+            in_aliases = False
+        if stripped.startswith(("aliases:", "alias:")):
+            _, value = stripped.split(":", 1)
+            value = value.strip()
+            if not value:
+                in_aliases = True
+                continue
+            if value.startswith("[") and value.endswith("]"):
+                for part in value[1:-1].split(","):
+                    alias = _clean_frontmatter_scalar(part)
+                    if alias:
+                        aliases.append(alias)
+                continue
+            alias = _clean_frontmatter_scalar(value)
+            if alias:
+                aliases.append(alias)
+    return aliases
+
+
+def split_obsidian_reference(value: str) -> str:
+    """Remove display text or width suffixes from an Obsidian reference."""
+    target, *_rest = value.split("|", 1)
+    return target.strip()
+
+
+def extract_obsidian_references(text: str) -> tuple[list[str], list[str]]:
+    """Extract Obsidian wikilink and embed targets."""
+    links: list[str] = []
+    embeds: list[str] = []
+    for match in OBSIDIAN_REFERENCE_PATTERN.finditer(text):
+        target = split_obsidian_reference(match.group(2))
+        if not target:
+            continue
+        if match.group("embed"):
+            embeds.append(target)
+        else:
+            links.append(target)
+    return links, embeds
+
+
 def extract_markdown_links(text: str) -> list[str]:
     """Extract inline markdown link targets.
 
@@ -285,6 +389,13 @@ def extract_markdown_links(text: str) -> list[str]:
         ['indexes/source-map.md']
     """
     return [target.strip() for target in LINK_PATTERN.findall(text)]
+
+
+def extract_all_local_references(text: str) -> list[str]:
+    """Extract markdown links, wikilinks, and embeds as a combined list."""
+    obsidian_links, obsidian_embeds = extract_obsidian_references(text)
+    combined = [*extract_markdown_links(text), *obsidian_links, *obsidian_embeds]
+    return list(dict.fromkeys(reference for reference in combined if reference.strip()))
 
 
 def has_provenance_markers(text: str, links: list[str] | None = None) -> bool:
@@ -360,6 +471,9 @@ def classify_content(root: Path, path: Path, text: str | None) -> tuple[str, lis
     lowered_parts = [part.lower() for part in parts]
     evidence: list[str] = []
     top = lowered_parts[0] if lowered_parts else ""
+    if top == ".obsidian":
+        evidence.append("path:obsidian")
+        return "obsidian_config", evidence
     if top == "raw":
         evidence.append("path:raw")
         if len(lowered_parts) > 1 and lowered_parts[1] == "extracts":
@@ -387,8 +501,16 @@ def classify_content(root: Path, path: Path, text: str | None) -> tuple[str, lis
         evidence.append("path:derived")
         return "derived_output", evidence
     if path.suffix.lower() in MARKDOWN_SUFFIXES:
-        if text and has_provenance_markers(text, extract_markdown_links(text)):
+        if text and has_provenance_markers(text, extract_all_local_references(text)):
             evidence.append("content:provenance")
+        if text:
+            obsidian_links, obsidian_embeds = extract_obsidian_references(text)
+            if obsidian_links:
+                evidence.append("content:wikilinks")
+            if obsidian_embeds:
+                evidence.append("content:embeds")
+            if extract_frontmatter_block(text):
+                evidence.append("content:frontmatter")
         kind = "unlayered_index" if is_index_like_path(Path(*lowered_parts)) else "unlayered_markdown"
         return kind, evidence
     if path.suffix.lower() in {".json", ".yaml", ".yml", ".toml", ".ini"}:
@@ -437,7 +559,14 @@ def assess_risk(root: Path, path: Path, classification: str) -> dict[str, Any] |
         reasons.append("markdown exists outside the default KB layers")
     if classification == "derived_output":
         reasons.append("derived output can be mistaken for canonical material")
-    if any(part.startswith(".") and part != ".git" for part in parts):
+    if parts and parts[0] == ".obsidian":
+        if len(parts) > 1 and parts[1] in OBSIDIAN_SHARED_DIRS:
+            reasons.append("shared Obsidian config should stay project-safe and reviewable")
+        elif path.is_file() and path.name.lower() in OBSIDIAN_VOLATILE_FILES:
+            reasons.append("volatile Obsidian workspace state should not be treated as canonical config")
+        elif len(parts) > 1 and parts[1] == "plugins":
+            reasons.append("community plugin config should be preserved carefully during vault migration")
+    elif any(part.startswith(".") and part != ".git" for part in parts):
         reasons.append("hidden metadata or editor state may be easy to miss during review")
     for part in parts:
         if part in RISK_REASON_BY_MARKER:
@@ -490,6 +619,33 @@ def detect_layers(root: Path) -> dict[str, dict[str, Any]]:
     return layers
 
 
+def detect_vault_surface(root: Path) -> dict[str, Any]:
+    """Detect Obsidian vault signals and shared-surface state."""
+    obsidian_root = root / ".obsidian"
+    shared_config_paths: list[str] = []
+    volatile_paths: list[str] = []
+    plugin_paths: list[str] = []
+    if obsidian_root.is_dir() and not obsidian_root.is_symlink():
+        for child in sorted(obsidian_root.rglob("*")):
+            if child.is_symlink():
+                continue
+            rel_path = relative_posix(root, child)
+            if child.is_dir() and child.parent == obsidian_root and child.name in OBSIDIAN_SHARED_DIRS:
+                shared_config_paths.append(rel_path)
+            elif child.is_file() and child.name.lower() in OBSIDIAN_VOLATILE_FILES:
+                volatile_paths.append(rel_path)
+            elif (
+                len(child.parts) >= len(obsidian_root.parts) + 1 and child.parts[len(obsidian_root.parts)] == "plugins"
+            ):
+                plugin_paths.append(rel_path)
+    return {
+        "obsidian_config_present": obsidian_root.is_dir() and not obsidian_root.is_symlink(),
+        "shared_config_paths": sorted(set(shared_config_paths)),
+        "volatile_paths": sorted(set(volatile_paths)),
+        "plugin_paths": sorted(set(plugin_paths)),
+    }
+
+
 def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
     """Build a structured inventory for a candidate KB root.
 
@@ -510,11 +666,18 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
     classification_counts: Counter[str] = Counter()
     classification_examples: dict[str, list[str]] = defaultdict(list)
     layer_file_counts: Counter[str] = Counter()
+    dataview_field_counts: Counter[str] = Counter()
     risky_paths: list[dict[str, Any]] = []
     likely_indexes_logs: list[dict[str, str]] = []
     canonical_candidates: list[dict[str, str]] = []
+    attachment_directories: set[str] = set()
     seen_risky_paths: set[str] = set()
     seen_index_paths: set[str] = set()
+    obsidian_link_count = 0
+    obsidian_embed_count = 0
+    markdown_link_count = 0
+    files_with_frontmatter = 0
+    alias_count = 0
     top_level_entries = []
     for entry in sorted(root.iterdir(), key=lambda item: item.name.lower()):
         top_level_entries.append(
@@ -548,16 +711,41 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
         layer_file_counts[top] += 1
         if len(classification_examples[classification]) < max_examples:
             classification_examples[classification].append(rel_path)
+        if text and path.suffix.lower() in MARKDOWN_SUFFIXES:
+            markdown_links = extract_markdown_links(text)
+            obsidian_links, obsidian_embeds = extract_obsidian_references(text)
+            frontmatter_keys = extract_frontmatter_keys(text)
+            aliases = extract_frontmatter_aliases(text)
+            markdown_link_count += len(markdown_links)
+            obsidian_link_count += len(obsidian_links)
+            obsidian_embed_count += len(obsidian_embeds)
+            if frontmatter_keys:
+                files_with_frontmatter += 1
+            alias_count += len(aliases)
+            for key in frontmatter_keys:
+                lowered = key.lower()
+                if lowered in DATAVIEW_RECOMMENDED_FIELDS:
+                    dataview_field_counts[lowered] += 1
+            for embed in obsidian_embeds:
+                if "." not in Path(embed.split("#", 1)[0]).name:
+                    continue
+                embed_path = embed.split("#", 1)[0]
+                if "/" in embed_path:
+                    attachment_directories.add(str(PurePosixPath(embed_path).parent))
+                else:
+                    attachment_directories.add(".")
         if (
             classification in {"wiki_page", "wiki_index", "unlayered_markdown", "unlayered_index"}
             and len(canonical_candidates) < max_examples * 2
         ):
             headings = extract_headings(text) if text else []
+            aliases = extract_frontmatter_aliases(text) if text else []
             canonical_candidates.append(
                 {
                     "path": rel_path,
                     "classification": classification,
                     "title": headings[0] if headings else path.stem,
+                    "aliases": aliases[:3],
                 }
             )
         role = infer_index_role(root, path, text)
@@ -573,10 +761,37 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
     present_layers = [name for name, info in layers.items() if info["present"]]
     missing_layers = [name for name, info in layers.items() if not info["present"]]
     kb_root_detected = len(present_layers) >= 2 or sum(1 for info in starter_files.values() if info["present"]) >= 2
+    vault_surface = detect_vault_surface(root)
+    vault_detected = bool(
+        vault_surface["obsidian_config_present"]
+        or obsidian_link_count
+        or obsidian_embed_count
+        or files_with_frontmatter
+    )
+    if vault_surface["obsidian_config_present"] and obsidian_link_count and markdown_link_count == 0:
+        vault_mode = "obsidian_native_vault"
+    elif vault_surface["obsidian_config_present"] and (
+        obsidian_link_count or obsidian_embed_count or files_with_frontmatter
+    ):
+        vault_mode = "mixed_vault" if markdown_link_count else "obsidian_native_vault"
+    elif vault_detected:
+        vault_mode = "legacy_markdown_repo"
+    else:
+        vault_mode = "legacy_markdown_repo"
     suggested_next_actions: list[str] = []
     if missing_layers:
         suggested_next_actions.append(
             "Run kb_bootstrap.py --root <path> to scaffold missing layers and starter files safely."
+        )
+    if vault_mode == "legacy_markdown_repo" and (
+        classification_counts.get("unlayered_markdown") or classification_counts.get("wiki_page")
+    ):
+        suggested_next_actions.append(
+            "Plan an Obsidian-native overhaul before expansion or refinement: normalize frontmatter, note names, aliases, and link style first."
+        )
+    if vault_mode == "mixed_vault":
+        suggested_next_actions.append(
+            "Normalize shared `.obsidian/` surfaces, note metadata, and link style before deeper synthesis or migration work."
         )
     if classification_counts.get("unlayered_markdown"):
         suggested_next_actions.append(
@@ -591,6 +806,18 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
         suggested_next_actions.append("Add indexes/source-map.md to map raw evidence to wiki pages.")
     if not any(item["role"] == "activity_log" for item in likely_indexes_logs):
         suggested_next_actions.append("Add activity/log.md and append every mutating batch to it.")
+    if vault_detected and not vault_surface["shared_config_paths"]:
+        suggested_next_actions.append(
+            "Add `.obsidian/templates/` and `.obsidian/snippets/` or document why the vault intentionally omits shared surfaces."
+        )
+    if vault_surface["volatile_paths"]:
+        suggested_next_actions.append(
+            "Review tracked volatile `.obsidian` files and keep only project-safe shared config under version control."
+        )
+    if obsidian_embed_count and "raw/assets" not in attachment_directories:
+        suggested_next_actions.append(
+            "Standardize local supporting assets under `raw/assets/` unless the repo already has an approved attachment convention."
+        )
     if risky_paths:
         suggested_next_actions.append("Inspect risky paths before any rename, cutover, or bulk rewrite.")
     if not suggested_next_actions:
@@ -607,6 +834,24 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
             "total_directories": directory_count,
             "by_classification": dict(sorted(classification_counts.items())),
             "examples": dict(sorted(classification_examples.items())),
+        },
+        "vault": {
+            "detected": vault_detected,
+            "mode": vault_mode,
+            "shared_config_paths": vault_surface["shared_config_paths"],
+            "volatile_paths": vault_surface["volatile_paths"],
+            "plugin_paths": vault_surface["plugin_paths"],
+            "attachment_directories": sorted(attachment_directories),
+            "link_summary": {
+                "markdown_links": markdown_link_count,
+                "obsidian_links": obsidian_link_count,
+                "obsidian_embeds": obsidian_embed_count,
+            },
+            "frontmatter_summary": {
+                "files_with_frontmatter": files_with_frontmatter,
+                "alias_count": alias_count,
+                "dataview_field_counts": dict(sorted(dataview_field_counts.items())),
+            },
         },
         "canonical_material_candidates": canonical_candidates,
         "canonical_material_candidates_sampled": len(canonical_candidates) >= max_examples * 2,

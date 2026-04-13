@@ -1,4 +1,16 @@
 <!-- Suggested path: wiki/topics/[comparison-slug].md -->
+---
+title: [Comparison Title]
+tags:
+  - kb
+  - comparison
+aliases: []
+kind: comparison
+status: active
+updated: [YYYY-MM-DD]
+source_count: 0
+---
+
 # [Comparison Title]
 
 ## Comparison question
@@ -28,7 +40,7 @@
 | Comparison table | `raw/extracts/[file].md#[anchor]` | [supporting detail] |
 
 ## Related wiki pages
-- [ ]
+- [ ] `[[../[related-path]|Related page]]`
 
 ## Follow-up
 - [ ]

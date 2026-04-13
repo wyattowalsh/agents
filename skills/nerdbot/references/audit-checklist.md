@@ -7,7 +7,7 @@ Use this checklist for read-only diagnosis, post-change verification, and pre-`m
 | Severity | Meaning | Typical response |
 |----------|---------|------------------|
 | Critical | `provenance` is broken, `canonical material` is at risk, or a path change could break consumers | Stop and plan a small corrective batch |
-| Warning | Coverage, index freshness, `schema`, `config`, or `activity log` discipline is incomplete | Queue an additive repair batch |
+| Warning | Coverage, index freshness, `schema`, `config`, `activity log`, or vault discipline is incomplete | Queue an additive repair batch |
 | Suggestion | The KB works, but clarity, consistency, or reviewability can improve | Log it and bundle with the next safe batch |
 
 ## Audit report shape
@@ -22,6 +22,7 @@ Use this checklist for read-only diagnosis, post-change verification, and pre-`m
 - [ ] `activity/log.md` exists and is append-only.
 - [ ] `derived output` lives outside the canonical KB layers.
 - [ ] If the repo is mixed or partial, it is explicitly treated as an `imperfect repo`.
+- [ ] If the repo is a vault, shared `.obsidian/` surfaces are distinct from volatile workspace state.
 
 ### Common findings
 - Critical: user-authored pages are being replaced by generated summaries.
@@ -34,6 +35,7 @@ Use this checklist for read-only diagnosis, post-change verification, and pre-`m
 - [ ] Source summary pages identify the matching `raw` paths.
 - [ ] `canonical material` is listed before recommending structural changes.
 - [ ] No unsupported claims were introduced during enrichment.
+- [ ] Obsidian-native references such as `[[wikilinks]]`, embeds, aliases, and block refs still point to resolvable material.
 
 ### Provenance spot-check example
 | Page | Claim | Backing source | Result |
@@ -46,6 +48,7 @@ Use this checklist for read-only diagnosis, post-change verification, and pre-`m
 - [ ] Orphan `wiki` pages are called out explicitly.
 - [ ] Gaps and unknowns are tracked instead of silently skipped.
 - [ ] Index rows use current paths and stable naming.
+- [ ] Mapping notes, aliases, or path-map rows exist when note moves or splits are in progress.
 
 ### Coverage examples
 - Warning: source exists in `raw/sources/` but has no planned `wiki` target.
@@ -56,12 +59,15 @@ Use this checklist for read-only diagnosis, post-change verification, and pre-`m
 - [ ] `config` paths, slugs, and output targets still exist.
 - [ ] Any `schema` or `config` change was deliberate and reviewable.
 - [ ] No content change quietly introduced a new untracked field or status.
+- [ ] Shared `.obsidian/` templates, snippets, and documented vault conventions match current note practice.
+- [ ] Volatile `.obsidian` workspace files are not being treated as canonical or required shared config.
 
 ## Activity log continuity
 - [ ] Every mutating batch has a corresponding `activity log` entry.
 - [ ] Entries name changed files or file groups.
 - [ ] Entries call out `canonical material`, `provenance`, and `derived output` decisions when relevant.
 - [ ] Follow-up work is recorded instead of left implicit.
+- [ ] Vault-impact fields capture aliases, path maps, embeds, or shared `.obsidian/` changes when relevant.
 
 ### Activity log example finding
 | Severity | Finding | Safe next batch |
@@ -74,6 +80,14 @@ Use this checklist for read-only diagnosis, post-change verification, and pre-`m
 - [ ] Old exports are preserved until the replacement is verified.
 - [ ] Consumers can tell which file is canonical and which file is derived.
 
+## Obsidian-native checks
+- [ ] `[[wikilinks]]` resolve to a stable note name, alias, or mapping page.
+- [ ] `![[embeds]]` still point to real notes, sections, blocks, or local assets.
+- [ ] Aliases do not collide in a way that makes navigation ambiguous.
+- [ ] High-value notes have frontmatter that matches the shared Dataview metadata contract.
+- [ ] Attachment placement is consistent with the vault convention, usually `raw/assets/`.
+- [ ] Shared `.obsidian/templates/` and `.obsidian/snippets/` surfaces exist when the repo expects them.
+
 ## Pre-migration checks
 Run these before approving any `migration`:
 - [ ] The `canonical material` inventory is complete.
@@ -81,6 +95,7 @@ Run these before approving any `migration`:
 - [ ] Rollback is documented.
 - [ ] Additive repair was considered first.
 - [ ] `provenance` will remain verifiable during and after the move.
+- [ ] Backlinks, embeds, aliases, and Dataview-sensitive metadata remain reviewable during and after the move.
 
 ## Audit exit checklist
 - [ ] Findings are classified as critical, warning, or suggestion.

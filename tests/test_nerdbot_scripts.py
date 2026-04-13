@@ -32,7 +32,8 @@ def test_render_activity_log_keeps_mode_and_risk_fields(tmp_path: Path) -> None:
 
     assert "- Mode: create" in rendered
     assert "- `schema`: unchanged" in rendered
-    assert "- `config`: unchanged" in rendered
+    assert "- `config`: added `config/obsidian-vault.md`" in rendered
+    assert "- `vault`: initialized `.obsidian/` shared surfaces and note metadata defaults" in rendered
     assert "- Risks / rollback:" in rendered
 
 
@@ -54,6 +55,23 @@ def test_canonicalize_reference_path_normalizes_relative_links() -> None:
     assert kb_lint.canonicalize_reference_path(page, "../../indexes/source-map.md") == "indexes/source-map.md"
 
 
+def test_extract_obsidian_references_splits_links_and_embeds() -> None:
+    text = "See [[wiki/index|Home]] and ![[raw/assets/diagram.png|300]]."
+
+    links, embeds = kb_inventory.extract_obsidian_references(text)
+
+    assert links == ["wiki/index"]
+    assert embeds == ["raw/assets/diagram.png"]
+
+
+def test_extract_frontmatter_aliases_supports_list_and_scalar_forms() -> None:
+    list_text = "---\naliases:\n  - Alpha\n  - Beta\n---\n# Note\n"
+    scalar_text = "---\nalias: Gamma\n---\n# Note\n"
+
+    assert kb_inventory.extract_frontmatter_aliases(list_text) == ["Alpha", "Beta"]
+    assert kb_inventory.extract_frontmatter_aliases(scalar_text) == ["Gamma"]
+
+
 def test_collect_markdown_pages_respects_include_unlayered(tmp_path: Path) -> None:
     (tmp_path / "wiki").mkdir()
     (tmp_path / "wiki" / "index.md").write_text("# KB\n", encoding="utf-8")
@@ -65,6 +83,57 @@ def test_collect_markdown_pages_respects_include_unlayered(tmp_path: Path) -> No
     assert "wiki/index.md" in layered_only
     assert "notes.md" not in layered_only
     assert "notes.md" in with_unlayered
+
+
+def test_build_inventory_detects_obsidian_vault_and_shared_surfaces(tmp_path: Path) -> None:
+    (tmp_path / ".obsidian" / "templates").mkdir(parents=True)
+    (tmp_path / ".obsidian" / "snippets").mkdir(parents=True)
+    (tmp_path / "wiki").mkdir()
+    (tmp_path / "wiki" / "index.md").write_text(
+        "---\naliases:\n  - Home\nkind: overview\nstatus: active\nupdated: 2026-04-13\n---\n# KB\n\nSee [[wiki/topic]].\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "wiki" / "topic.md").write_text("# Topic\n", encoding="utf-8")
+
+    inventory = kb_inventory.build_inventory(tmp_path)
+
+    assert inventory["vault"]["detected"] is True
+    assert inventory["vault"]["mode"] in {"obsidian_native_vault", "mixed_vault"}
+    assert ".obsidian/templates" in inventory["vault"]["shared_config_paths"]
+    assert inventory["vault"]["link_summary"]["obsidian_links"] >= 1
+    assert inventory["vault"]["frontmatter_summary"]["alias_count"] >= 1
+
+
+def test_lint_links_resolves_wikilinks_aliases_and_block_refs(tmp_path: Path) -> None:
+    (tmp_path / "wiki").mkdir()
+    source = tmp_path / "wiki" / "source.md"
+    target = tmp_path / "wiki" / "target.md"
+    source.write_text(
+        "---\naliases:\n  - Source Alias\n---\n# Source\n\nSee [[Target Note#^claim-block]].\n",
+        encoding="utf-8",
+    )
+    target.write_text(
+        "---\naliases:\n  - Target Note\n---\n# Target\n\nClaim text. ^claim-block\n",
+        encoding="utf-8",
+    )
+
+    pages = kb_lint.collect_markdown_pages(tmp_path)
+    issues, inbound = kb_lint.lint_links(tmp_path, pages)
+
+    assert issues == []
+    assert inbound["wiki/target.md"] == {"wiki/source.md"}
+
+
+def test_lint_obsidian_vault_flags_tracked_volatile_state(tmp_path: Path) -> None:
+    (tmp_path / ".obsidian").mkdir()
+    (tmp_path / ".obsidian" / "workspace.json").write_text("{}", encoding="utf-8")
+    (tmp_path / "wiki").mkdir()
+    (tmp_path / "wiki" / "index.md").write_text("# KB\n", encoding="utf-8")
+
+    pages = kb_lint.collect_markdown_pages(tmp_path)
+    issues = kb_lint.lint_obsidian_vault(tmp_path, pages)
+
+    assert any(issue["rule"] == "tracked_volatile_obsidian_state" for issue in issues)
 
 
 # ---------------------------------------------------------------------------
@@ -100,6 +169,10 @@ def test_scaffold_initial_creates_all_directories_and_starter_files(
         assert target.is_file(), f"Missing starter file: {rel_path}"
         assert target.read_text(encoding="utf-8").strip(), f"Empty starter file: {rel_path}"
 
+    assert (root / ".obsidian" / "templates").is_dir()
+    assert (root / ".obsidian" / "snippets").is_dir()
+    assert (root / "raw" / "assets").is_dir()
+
     # Return dict reports everything as newly created
     assert result["root_created"] is True
     assert result["dry_run"] is False
@@ -120,12 +193,14 @@ def test_scaffold_initial_renders_placeholders_from_root_name(
 
     wiki_index = (root / STARTER_FILES["wiki_index"]).read_text(encoding="utf-8")
     activity_log = (root / STARTER_FILES["activity_log"]).read_text(encoding="utf-8")
+    vault_config = (root / STARTER_FILES["vault_config"]).read_text(encoding="utf-8")
 
     # Title derived from root name appears in the wiki index
     assert "Acme Docs" in wiki_index
     # Activity log contains the initial bootstrap entry
     assert "- Mode: create" in activity_log
     assert "Bootstrap" in activity_log
+    assert "obsidian-native" in vault_config
 
 
 def test_scaffold_rerun_no_force_preserves_all_existing_files(
