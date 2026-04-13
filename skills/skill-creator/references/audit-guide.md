@@ -84,7 +84,7 @@ Render a visual creation process monitor or audit quality dashboard.
 
 ### Process Monitor (active session)
 
-When a creation session is active (`~/.claude/skill-progress/<name>.json` exists):
+When a creation session is active (`~/.{gemini|copilot|codex|claude}/skill-progress/<name>.json` exists):
 
 1. **Quick open (recommended):**
    ```bash

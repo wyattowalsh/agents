@@ -206,7 +206,7 @@ def recommend_indexes(patterns: list[dict], existing: list[dict]) -> list[dict]:
                         "table": table,
                         "columns": composite,
                         "type": "B-tree",
-                        "rationale": f"Composite index for WHERE + ORDER BY (avoids sort)",
+                        "rationale": "Composite index for WHERE + ORDER BY (avoids sort)",
                         "estimated_impact": "medium",
                         "write_overhead": "medium",
                     })

@@ -1,3 +1,5 @@
+import os
+
 #!/usr/bin/env python3
 """Inject JSON data into the dashboard HTML template and optionally open it."""
 
@@ -8,6 +10,16 @@ import json
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+
+
+def get_agent_dir(skill_name: str) -> Path:
+    """Get the base directory for a skill based on the active agent."""
+    agent = os.environ.get("AGENT_NAME", "").lower()
+    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
+            return Path.home() / folder / skill_name
+    return Path.home() / ".claude" / skill_name
+
 
 
 def error_exit(msg: str) -> None:
@@ -52,7 +64,7 @@ def resolve_output(output_arg: str | None) -> Path:
     if output_arg:
         return Path(output_arg)
     today = datetime.now(tz=UTC).strftime("%Y-%m-%d")
-    return Path.home() / ".claude" / "files-buddy" / f"{today}-dashboard.html"
+    return get_agent_dir("files-buddy") / f"{today}-dashboard.html"
 
 
 def render_data_script(data: object) -> str:

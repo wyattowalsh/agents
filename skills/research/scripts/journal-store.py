@@ -1,3 +1,5 @@
+import os
+
 #!/usr/bin/env python3
 """CRUD operations for research journals stored in ~/.claude/research/.
 
@@ -24,7 +26,16 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
-JOURNAL_DIR = Path.home() / ".claude" / "research"
+
+def get_agent_dir(skill_name: str) -> Path:
+    """Get the base directory for a skill based on the active agent."""
+    agent = os.environ.get("AGENT_NAME", "").lower()
+    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
+            return Path.home() / folder / skill_name
+    return Path.home() / ".claude" / skill_name
+
+JOURNAL_DIR = get_agent_dir("research")
 ARCHIVE_DIR = JOURNAL_DIR / "archive"
 
 # --- YAML frontmatter parsing (stdlib only, no pyyaml) ---

@@ -220,11 +220,11 @@ Each view: ranked table with availability matrix (✅ ❌ ⚠️ ❓), scores, r
 
 **Interactive refinement**: "more like #3", "shorter", "more technical", "avoid X sounds"
 
-**Dashboard**: After all views and cards are produced, assemble the full session into the JSON schema from `references/output-formats.md § Structured Output Schema`. Read `templates/dashboard.html`, replace `{}` in `<script id="data" type="application/json">{}</script>` with the JSON, and write the result to `~/.claude/namer/{session-slug}-dashboard.html`. Print the open command: `open ~/.claude/namer/{slug}-dashboard.html`
+**Dashboard**: After all views and cards are produced, assemble the full session into the JSON schema from `references/output-formats.md § Structured Output Schema`. Read `templates/dashboard.html`, replace `{}` in `<script id="data" type="application/json">{}</script>` with the JSON, and write the result to `~/.{gemini|copilot|codex|claude}/namer/{session-slug}-dashboard.html`. Print the open command: `open ~/.{gemini|copilot|codex|claude}/namer/{slug}-dashboard.html`
 
 ### Save Session
 
-Save to `~/.claude/namer/{YYYY-MM-DD}-{context}-{slug}.md` with YAML frontmatter after Phase 1 (candidates), Phase 2 (availability), Phase 4 (ranking). Supports resume.
+Save to `~/.{gemini|copilot|codex|claude}/namer/{YYYY-MM-DD}-{context}-{slug}.md` with YAML frontmatter after Phase 1 (candidates), Phase 2 (availability), Phase 4 (ranking). Supports resume.
 
 ## Memory Save Triggers
 
@@ -257,7 +257,7 @@ Batch multiple saves in a SINGLE message when a session produces several memorie
 | **variant** | Modification of a candidate: prefix, suffix, respelling |
 | **namespace report** | Per-candidate availability matrix across all platforms |
 | **context preset** | Auto-configured weights + platforms for what's being named |
-| **memory** | Persistent naming preferences at `~/.claude/namer/memory.json` |
+| **memory** | Persistent naming preferences at `~/.{gemini|copilot|codex|claude}/namer/memory.json` |
 | **archetype affinity** | Weighted distribution of user's preferred naming archetypes, computed from selections |
 | **selection** | A name the user chose as their winner, stored for preference learning |
 | **rejection** | An explicitly unwanted pattern (phonetic, archetype, or specific name) |
@@ -283,7 +283,7 @@ Load ONE reference at a time per the "Read When" column.
 4. Always run hard filters before availability checks — don't waste API calls on disqualified names
 5. Maximum 25 candidates through full availability pipeline — budget tool calls
 6. Always surface trademark/conflict risks — legal issues trump name quality
-7. Never modify user files — namer is read-only except session journals in `~/.claude/namer/`
+7. Never modify user files — namer is read-only except session journals in `~/.{gemini|copilot|codex|claude}/namer/`
 8. Always produce all three output views — Best Names, Best Available, Best with Variants
 9. Always provide actionable next steps — "register X at Y for $Z" not just "X is available"
 10. Generation must use multiple archetypes — never produce candidates from only one strategy

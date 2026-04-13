@@ -60,7 +60,7 @@ def shannon_entropy(s):
 def scan_file(filepath):
     findings = []
     try:
-        with open(filepath, "r", errors="ignore") as f:
+        with open(filepath, errors="ignore") as f:
             lines = f.readlines()
     except (PermissionError, OSError):
         return findings

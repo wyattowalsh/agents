@@ -35,7 +35,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 | **triangulation** | Confirming a finding using 3+ methodologically diverse sources |
 | **contradiction** | When two credible sources assert incompatible claims; must be surfaced explicitly |
 | **synthesis** | The final research product: not a summary but a novel integration of evidence with analysis |
-| **journal** | The saved markdown record of a research session, stored in `~/.claude/research/` |
+| **journal** | The saved markdown record of a research session, stored in `~/.{gemini|copilot|codex|claude}/research/` |
 | **sweep** | Wave 1: broad parallel search across multiple tools and sources |
 | **deep dive** | Wave 2: targeted follow-up on specific leads from the sweep |
 | **lead** | A promising source or thread identified during the sweep, warranting deeper investigation |
@@ -308,8 +308,8 @@ Check every finding against 10 bias categories. Read `references/bias-detection.
 
 ## State Management
 
-- **Journal path:** `~/.claude/research/`
-- **Archive path:** `~/.claude/research/archive/`
+- **Journal path:** `~/.{gemini|copilot|codex|claude}/research/`
+- **Archive path:** `~/.{gemini|copilot|codex|claude}/research/archive/`
 - **Filename convention:** `{YYYY-MM-DD}-{domain}-{slug}.md`
   - `{domain}`: `tech`, `academic`, `market`, `policy`, `factcheck`, `compare`, `survey`, `track`, `general`
   - `{slug}`: 3-5 word semantic summary, kebab-case
@@ -390,4 +390,4 @@ Read `references/session-commands.md` for full protocols.
 12. **Load ONE reference file at a time** — do not preload all references into context
 13. **Track mode must load prior journal before searching** — avoid re-researching what is already known
 14. **The synthesis is not a summary** — it must integrate findings into novel analysis, identify patterns across sources, and surface emergent insights not present in any single source
-15. **PreToolUse Edit hook is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.claude/research/`
+15. **PreToolUse Edit hook is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`

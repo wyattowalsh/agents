@@ -11,7 +11,6 @@ import re
 import sys
 from pathlib import Path
 
-
 RULES = {
     "DL3007": {
         "pattern": r"^FROM\s+\S+:latest",

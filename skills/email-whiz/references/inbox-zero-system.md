@@ -90,7 +90,7 @@ Update progress tracking
 
 ## Progress Tracking
 
-Store progress at `~/.claude/email-whiz/inbox-zero-progress.json`.
+Store progress at `~/.{gemini|copilot|codex|claude}/email-whiz/inbox-zero-progress.json`.
 
 ### Schema
 

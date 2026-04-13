@@ -65,7 +65,7 @@ Skills packaged with this system work across agents that support the agentskills
 
 | Agent | Import Method | Notes |
 |-------|--------------|-------|
-| Claude Code | Unzip to `~/.claude/skills/<name>/` | Full support including hooks |
+| Claude Code | Unzip to `~/.{gemini|copilot|codex|claude}/skills/<name>/` | Full support including hooks |
 | Claude Code Desktop | Import via skill manager | Reads `manifest.json` for metadata |
 | Gemini CLI | Unzip to project `skills/` | Reads SKILL.md body only |
 | Codex / Cursor / OpenCode | Unzip to project root | Reads SKILL.md as markdown instructions |
@@ -74,7 +74,7 @@ Skills packaged with this system work across agents that support the agentskills
 
 **Manual install:**
 ```bash
-unzip <name>-v<version>.skill.zip -d ~/.claude/skills/<name>/
+unzip <name>-v<version>.skill.zip -d ~/.{gemini|copilot|codex|claude}/skills/<name>/
 ```
 
 **Via npx (if published):**

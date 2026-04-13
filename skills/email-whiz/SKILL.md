@@ -29,7 +29,7 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 | **inbox zero** | State where inbox contains only items requiring action today |
 | **fast-lane** | Sender/subject-only classification without reading email content |
 | **security gate** | Subject-keyword scan of NOISE before archiving (catches 2FA, password resets) |
-| **session cache** | Local cache of Phase 0 results (1h TTL) at `~/.claude/email-whiz/session-cache.json` |
+| **session cache** | Local cache of Phase 0 results (1h TTL) at `~/.{gemini|copilot|codex|claude}/email-whiz/session-cache.json` |
 | **tier** | Inbox size class: Small (<50) / Medium (50-500) / Large (500-5k) / Massive (5k+) |
 | **quick** | Modifier prefix that skips Phase 0 for lightweight modes |
 | **combo** | Chain two modes sharing discovered state: `<mode> + <mode>` |
@@ -39,7 +39,7 @@ Gmail inbox management via MCP. Parallel-first, large-inbox optimized.
 | **VIP** | Sender who receives consistent replies and high-priority treatment |
 | **engagement** | Reply rate to a sender: replies sent / emails received |
 | **confidence** | HIGH >80% / MEDIUM 50-80% / LOW <50% — governs auto-rule actions |
-| **memory** | Persistent user preferences and patterns at `~/.claude/email-whiz/memory.json` |
+| **memory** | Persistent user preferences and patterns at `~/.{gemini|copilot|codex|claude}/email-whiz/memory.json` |
 | **correction** | User disagreement with auto-classification, stored as a memory override |
 | **staleness** | Memory entry not confirmed/used beyond threshold (VIP: 90d, override: 60d) |
 

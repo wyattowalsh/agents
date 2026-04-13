@@ -4,7 +4,7 @@
 
 ## Session Cache Protocol
 
-- **Path:** `~/.claude/email-whiz/session-cache.json`
+- **Path:** `~/.{gemini|copilot|codex|claude}/email-whiz/session-cache.json`
 - **TTL:** 60 minutes. Invalidate on any write operation (filter/label create, batch modify).
 - **Schema:**
   ```json

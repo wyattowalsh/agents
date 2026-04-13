@@ -18,7 +18,7 @@ Task: Read all existing skills and produce a gap analysis report.
 
 Steps:
 1. Read every SKILL.md in skills/ directory. For each, extract: name, description, domain category.
-2. Read installed skills from ~/.claude/skills/ (run `npx skills list -g --json`).
+2. Read installed skills from ~/.{gemini|copilot|codex|claude}/skills/ (run `npx skills list -g --json`).
 3. Read docs/src/content/docs/skills/installed.mdx for additional installed skill info.
 4. Load references/gap-analysis.md for the 18-domain taxonomy and scoring rubric.
 5. Assign each skill to exactly one domain.

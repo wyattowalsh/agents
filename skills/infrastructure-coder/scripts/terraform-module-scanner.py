@@ -44,14 +44,7 @@ def extract_blocks(content: str, block_types: list[str], line_index: list[int] |
             second = match.group(2)
             line = _get_line_num(line_index, match.start())
 
-            if block_type == "resource":
-                results[block_type].append({
-                    "type": first,
-                    "name": second or "",
-                    "provider": first.split("_")[0] if "_" in first else first,
-                    "line": line,
-                })
-            elif block_type == "data":
+            if block_type == "resource" or block_type == "data":
                 results[block_type].append({
                     "type": first,
                     "name": second or "",

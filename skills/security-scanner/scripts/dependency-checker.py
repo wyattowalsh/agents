@@ -22,7 +22,7 @@ LOCKFILE_PARSERS = {
 
 def parse_package_lock(filepath):
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         data = json.load(f)
     packages = data.get("packages", {})
     if not packages:
@@ -42,7 +42,7 @@ def parse_package_lock(filepath):
 
 def parse_requirements_txt(filepath):
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith("#") or line.startswith("-"):
@@ -57,7 +57,7 @@ def parse_requirements_txt(filepath):
 
 def parse_uv_lock(filepath):
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         content = f.read()
     blocks = re.split(r"\[\[package\]\]", content)
     for block in blocks[1:]:
@@ -72,7 +72,7 @@ def parse_uv_lock(filepath):
 
 def parse_cargo_lock(filepath):
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         content = f.read()
     blocks = re.split(r"\[\[package\]\]", content)
     for block in blocks[1:]:
@@ -88,7 +88,7 @@ def parse_cargo_lock(filepath):
 def parse_go_sum(filepath):
     deps = []
     seen = set()
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         for line in f:
             parts = line.strip().split()
             if len(parts) >= 2:
@@ -105,7 +105,7 @@ def parse_gemfile_lock(filepath):
     SECTION_HEADERS = {"PLATFORMS", "DEPENDENCIES", "BUNDLED WITH", "GIT", "PATH", "RUBY VERSION", "CHECKSUMS"}
     deps = []
     in_specs = False
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         for line in f:
             stripped = line.strip()
             if stripped == "specs:":
@@ -125,7 +125,7 @@ def parse_gemfile_lock(filepath):
 
 def parse_composer_lock(filepath):
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         data = json.load(f)
     for pkg in data.get("packages", []) + data.get("packages-dev", []):
         name = pkg.get("name", "unknown")
@@ -136,7 +136,7 @@ def parse_composer_lock(filepath):
 
 def parse_yarn_lock(filepath):
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         content = f.read()
     pattern = re.compile(r'^"?([^@\s][^@]*?)@[^:]+:\s*\n\s+version\s+"([^"]+)"', re.MULTILINE)
     for match in pattern.finditer(content):
@@ -147,7 +147,7 @@ def parse_yarn_lock(filepath):
 def parse_pnpm_lock(filepath):
     # NOTE: pnpm v6+ lockfile format is not yet supported
     deps = []
-    with open(filepath, "r") as f:
+    with open(filepath) as f:
         content = f.read()
     in_deps = False
     for line in content.split("\n"):

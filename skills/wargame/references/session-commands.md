@@ -20,17 +20,17 @@ When the user types `export` or `dashboard`:
 | CSV | `export csv` | Decisions + outcomes table | Spreadsheet analysis |
 | Slide outline | `export slides` | Markdown slide deck outline | Presenting findings to stakeholders |
 
-**JSON export:** Full game state including all turns, actor states, decisions, outcomes, and AAR. Saved to `~/.claude/wargames/{slug}-export.json`.
+**JSON export:** Full game state including all turns, actor states, decisions, outcomes, and AAR. Saved to `~/.{gemini|copilot|codex|claude}/wargames/{slug}-export.json`.
 
-**CSV export:** One row per turn with columns: Turn, Decision, Outcome, Criteria Scores, Surprise. Saved to `~/.claude/wargames/{slug}-export.csv`.
+**CSV export:** One row per turn with columns: Turn, Decision, Outcome, Criteria Scores, Surprise. Saved to `~/.{gemini|copilot|codex|claude}/wargames/{slug}-export.csv`.
 
-**Slide outline:** Markdown outline with: title slide, scenario overview, key decision points (1 slide each), findings, action bridge. Saved to `~/.claude/wargames/{slug}-slides.md`.
+**Slide outline:** Markdown outline with: title slide, scenario overview, key decision points (1 slide each), findings, action bridge. Saved to `~/.{gemini|copilot|codex|claude}/wargames/{slug}-slides.md`.
 
 ## Meta Command
 
 When the user types `meta` (no active session required):
 
-1. Read all journals from `~/.claude/wargames/`
+1. Read all journals from `~/.{gemini|copilot|codex|claude}/wargames/`
 2. Analyze across journals for patterns:
    - **Recurring biases:** Which human/LLM biases appear most frequently?
    - **Domain performance:** Which domains show strongest/weakest decision quality?

@@ -17,6 +17,16 @@ import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 
+
+def get_agent_dir(skill_name: str) -> Path:
+    """Get the base directory for a skill based on the active agent."""
+    agent = os.environ.get("AGENT_NAME", "").lower()
+    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
+            return Path.home() / folder / skill_name
+    return Path.home() / ".claude" / skill_name
+
+
 try:
     from rich.console import Console
     from rich.panel import Panel
@@ -66,7 +76,7 @@ VALID_PHASE_STATUSES = {"pending", "active", "completed", "skipped", "failed"}
 VALID_AGENT_STATUSES = {"pending", "active", "completed", "failed"}
 VALID_SESSION_STATUSES = {"active", "completed", "failed"}
 
-_DEFAULT_STATE_DIR = Path.home() / ".claude" / "skill-progress"
+_DEFAULT_STATE_DIR = get_agent_dir("skill-progress")
 
 
 def _warn(msg: str) -> None:
