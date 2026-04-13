@@ -721,7 +721,13 @@ def merge_gemini_settings(
         return
     settings = load_json(GEMINI_SETTINGS_PATH)
     settings["mcpServers"] = render_gemini_mcp(registry, fallbacks)
-    
+
+    if CLAUDE_SETTINGS_PATH.exists():
+        claude_settings = load_json(CLAUDE_SETTINGS_PATH)
+        for key in ["hooks", "permissions", "enabledPlugins", "alwaysThinkingEnabled", "autoUpdatesChannel"]:
+            if key in claude_settings:
+                settings[key] = claude_settings[key]
+
     defaults = policy.get("model_defaults", {}).get("gemini", {})
     if "model" in defaults:
         settings["model"] = defaults["model"]
