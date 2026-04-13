@@ -281,9 +281,10 @@
     },
     "atom-of-thoughts": {
       "transport": "stdio",
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/Users/ww/dev/tools/mcp/MCP_Atom_of_Thoughts/build/index.js"
+        "-y",
+        "github:kbsooo/MCP_Atom_of_Thoughts"
       ],
       "env": {},
       "enabled": true,
@@ -338,9 +339,10 @@
     },
     "deep-lucid-3d": {
       "transport": "stdio",
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"
+        "-y",
+        "github:mushroomfleet/deeplucid3d-mcp"
       ],
       "env": {},
       "enabled": true,

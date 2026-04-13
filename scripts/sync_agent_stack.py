@@ -638,6 +638,8 @@ def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> di
         }
         if entry.get("env"):
             server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+        if entry.get("tools") and entry.get("tools") != ["*"]:
+            server["includeTools"] = entry["tools"]
         servers[name] = server
     return servers
 
@@ -770,7 +772,7 @@ def sync_home_targets(
     ensure_symlink(ctx, CODEX_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
-    write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{GLOBAL_MD}\n")
+    write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{REPO_ROOT / 'AGENTS.md'}\n@{GLOBAL_MD}\n")
     write_text(
         ctx,
         CLAUDE_COMPAT_MD,
