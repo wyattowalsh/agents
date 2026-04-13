@@ -13,7 +13,6 @@ import sys
 import textwrap
 from pathlib import Path
 
-
 SKIP_DIRS = {
     "node_modules", ".git", "__pycache__", ".venv", "venv",
     "dist", "build", ".next", ".astro", "coverage", "tests", "test",

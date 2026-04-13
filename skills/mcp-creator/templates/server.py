@@ -5,9 +5,8 @@ Copy to mcp/<name>/server.py and customize.
 
 from typing import Annotated
 
+from fastmcp import Context, FastMCP
 from pydantic import Field
-from fastmcp import FastMCP, Context
-from fastmcp.exceptions import ToolError
 
 mcp = FastMCP(
     "service-name",

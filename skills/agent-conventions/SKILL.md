@@ -66,7 +66,7 @@ Every agent file must include these fields in YAML frontmatter:
 
 When defining a new agent at **any** level:
 
-- `~/.claude/agents/`
+- `~/.{gemini|copilot|codex|claude}/agents/`
 - `.claude/agents/` (project-level)
 - Project-local agent directories
 

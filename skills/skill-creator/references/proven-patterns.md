@@ -185,7 +185,7 @@ A protocol for persisting state between sessions: save location, filename conven
 **Snippet (wargame):**
 
 ```markdown
-- Journal directory: `~/.claude/wargames/`
+- Journal directory: `~/.{gemini|copilot|codex|claude}/wargames/`
 - Create the directory on first use with `mkdir -p`
 - Filename: `{YYYY-MM-DD}-{scenario-slug}.md`
 - Save after EVERY turn in Interactive Wargame mode
@@ -193,7 +193,7 @@ A protocol for persisting state between sessions: save location, filename conven
 - Collision: append version suffix (`-v2.md`)
 ```
 
-**Guidance:** Use `~/.claude/<skill-name>/` as default directory. Define filename convention with an explicit template. Support `resume` and `list` commands in the dispatch table. Handle collisions with version suffixes.
+**Guidance:** Use `~/.{gemini|copilot|codex|claude}/<skill-name>/` as default directory. Define filename convention with an explicit template. Support `resume` and `list` commands in the dispatch table. Handle collisions with version suffixes.
 
 ---
 

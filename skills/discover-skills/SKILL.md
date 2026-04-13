@@ -64,7 +64,7 @@ If no mode keyword matches:
 | **domain** | A category of skill functionality (e.g., Testing, Frontend, Security) |
 | **candidate** | An external skill discovered during research, not yet installed |
 | **proposal** | A custom skill idea with spec sketch, not yet created |
-| **journal** | A saved discovery session in `~/.claude/discover-skills/` |
+| **journal** | A saved discovery session in `~/.{gemini|copilot|codex|claude}/discover-skills/` |
 | **auditor** | Teammate that reads and categorizes all existing skills |
 | **registry-scout** | Teammate that searches skills.sh via `npx skills find` |
 | **web-researcher** | Teammate that searches GitHub, blogs, HN, Reddit |
@@ -76,7 +76,7 @@ If no mode keyword matches:
 Lead (orchestrate + synthesize + present interactive report)
   ├── auditor
   │     Wave 1a: parallel subagents read repo skills (skills/*/SKILL.md)
-  │     Wave 1b: read installed skills (~/.claude/skills/ + installed.mdx)
+  │     Wave 1b: read installed skills (~/.{gemini|copilot|codex|claude}/skills/ + installed.mdx)
   │     → domain taxonomy, coverage scores, gap report (JSON)
   │
   ├── registry-scout
@@ -183,7 +183,7 @@ After the user picks:
 
 ## State Management
 
-- **Path**: `~/.claude/discover-skills/`
+- **Path**: `~/.{gemini|copilot|codex|claude}/discover-skills/`
 - **Filename**: `{YYYY-MM-DD}-discovery-{slug}.md`
 - **Format**: YAML frontmatter + markdown body + `<!-- STATE -->` blocks
 - **Tracks**: `discovered_external`, `discovered_custom`, `installed`, `rejected`

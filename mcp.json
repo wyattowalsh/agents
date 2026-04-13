@@ -154,9 +154,10 @@
       "timeout": 600000
     },
     "creative-thinking": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"
+        "-y",
+        "github:VitalyMalakanov/mcp-thinking"
       ],
       "timeout": 600000
     },

@@ -6,7 +6,7 @@ Templates for ranked views, name cards, variant tables, and next steps. Read dur
 
 ## Structured Output Schema
 
-After all ranked views and cards are produced, assemble a single JSON object matching this schema. Inject it into `templates/dashboard.html` (replace `{}` in `<script id="data" type="application/json">{}</script>`), write the result to `~/.claude/namer/{session-slug}-dashboard.html`, then print the path for the user.
+After all ranked views and cards are produced, assemble a single JSON object matching this schema. Inject it into `templates/dashboard.html` (replace `{}` in `<script id="data" type="application/json">{}</script>`), write the result to `~/.{gemini|copilot|codex|claude}/namer/{session-slug}-dashboard.html`, then print the path for the user.
 
 ```json
 {

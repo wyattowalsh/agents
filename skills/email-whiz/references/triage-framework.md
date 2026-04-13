@@ -204,7 +204,7 @@ After triage, log results to the inbox-zero-system protocol (see `inbox-zero-sys
 1. Inbox contains only DO items (P0/P1/P2).
 2. `_deferred` label holds actionable-but-not-now items.
 3. NOISE and REFERENCE are out of inbox (batch-archived above).
-4. Update progress tracking at `~/.claude/email-whiz/inbox-zero-progress.json`.
+4. Update progress tracking at `~/.{gemini|copilot|codex|claude}/email-whiz/inbox-zero-progress.json`.
 
 ### Logging the Session
 

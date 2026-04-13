@@ -32,7 +32,7 @@ Spawn a devil's advocate subagent for finding RR-{#}. The subagent explicitly se
 
 ### `export`
 
-Read `references/dashboard-schema.md`. Format all current findings, contradictions, sources, and metadata as JSON matching the schema. Inject into the HTML dashboard template. Write to `~/.claude/research/exports/{journal-slug}.html`. Report the file path.
+Read `references/dashboard-schema.md`. Format all current findings, contradictions, sources, and metadata as JSON matching the schema. Inject into the HTML dashboard template. Write to `~/.{gemini|copilot|codex|claude}/research/exports/{journal-slug}.html`. Report the file path.
 
 ### `status`
 

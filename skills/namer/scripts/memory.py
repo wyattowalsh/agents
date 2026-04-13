@@ -12,6 +12,16 @@ from __future__ import annotations
 
 import json
 import os
+
+
+def get_agent_dir(skill_name: str) -> Path:
+    """Get the base directory for a skill based on the active agent."""
+    agent = os.environ.get("AGENT_NAME", "").lower()
+    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
+            return Path.home() / folder / skill_name
+    return Path.home() / ".claude" / skill_name
+
 import sys
 import tempfile
 from collections import Counter
@@ -34,7 +44,7 @@ app = typer.Typer(help="Long-term naming preference memory.", no_args_is_help=Tr
 # Constants
 # ---------------------------------------------------------------------------
 
-MEMORY_DIR = os.path.expanduser("~/.claude/namer")
+MEMORY_DIR = str(get_agent_dir("namer"))
 MEMORY_FILE = os.path.join(MEMORY_DIR, "memory.json")
 MAX_FILE_SIZE = 50 * 1024  # 50KB
 MAX_STRING_LEN = 500

@@ -113,7 +113,7 @@ PreToolUse hooks intercept tool calls during skill execution. The `hooks:` front
 
 ## State Management
 
-Creation progress persists at `~/.claude/skill-progress/<name>.json`. Read/write via `scripts/progress.py`. Survives session restarts. Use `--state-dir` to override the default location.
+Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<name>.json`. Read/write via `scripts/progress.py`. Survives session restarts. Use `--state-dir` to override the default location.
 
 ## Reference File Index
 

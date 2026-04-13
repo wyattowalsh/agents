@@ -24,9 +24,19 @@ import shutil
 import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
+
+def get_agent_dir(skill_name: str) -> Path:
+    """Get the base directory for a skill based on the active agent."""
+    agent = os.environ.get("AGENT_NAME", "").lower()
+    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
+            return Path.home() / folder / skill_name
+    return Path.home() / ".claude" / skill_name
+
 from typing import Any
 
-JOURNAL_DIR = Path.home() / ".claude" / "discover-skills"
+JOURNAL_DIR = get_agent_dir("discover-skills")
 ARCHIVE_DIR = JOURNAL_DIR / "archive"
 
 

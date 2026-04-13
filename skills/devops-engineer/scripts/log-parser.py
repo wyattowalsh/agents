@@ -11,7 +11,6 @@ import re
 import sys
 from pathlib import Path
 
-
 # Error patterns by category
 ERROR_PATTERNS = {
     "dependency": [

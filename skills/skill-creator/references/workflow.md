@@ -217,7 +217,7 @@ Common errors and their fixes during skill development.
 ### Corrupted State File
 
 **Symptom:** `progress.py` commands fail with JSON decode errors.
-**Fix:** Delete `~/.claude/skill-progress/<name>.json` and reinitialize with `progress.py init --skill <name>`.
+**Fix:** Delete `~/.{gemini|copilot|codex|claude}/skill-progress/<name>.json` and reinitialize with `progress.py init --skill <name>`.
 
 ### Broken Reference Links
 

@@ -30,7 +30,7 @@ Use these terms exactly throughout all modes:
 | **inject** | A pre-seeded unexpected event deployed mid-game to force trade-offs between competing objectives |
 | **tier** | Complexity classification: Clear (0-3), Complicated (4-6), Complex (7-10), Chaotic (9-10) |
 | **AAR** | After Action Review — mandatory end-of-game analysis extracting biases, insights, and transferable principles |
-| **journal** | The saved markdown record of an analysis or wargame session, stored in `~/.claude/wargames/` |
+| **journal** | The saved markdown record of an analysis or wargame session, stored in `~/.{gemini|copilot|codex|claude}/wargames/` |
 | **action bridge** | Three-level commitment framework: Probe (low-cost test), Position (reversible move), Commit (irreversible) |
 | **criteria** | User-ranked decision dimensions (e.g., Speed, Cost, Risk) that weight option evaluation |
 | **bias sweep** | Systematic check for human and LLM biases per `references/cognitive-biases.md` protocol |
@@ -99,7 +99,7 @@ When uncertain whether input is vague, default to one clarifying question rather
 
 ### Journal Resume
 
-**`resume` (no args):** Read `~/.claude/wargames/`, find journals with `status: In Progress` in YAML frontmatter (or `**Status:** In Progress` for v1 journals). If exactly one, auto-resume. If multiple, show numbered list.
+**`resume` (no args):** Read `~/.{gemini|copilot|codex|claude}/wargames/`, find journals with `status: In Progress` in YAML frontmatter (or `**Status:** In Progress` for v1 journals). If exactly one, auto-resume. If multiple, show numbered list.
 
 **`resume N` (number):** Resume the Nth journal from `list` output. Sort is reverse chronological (newest first) — this ordering is canonical for both `list` and `resume N`.
 
@@ -109,7 +109,7 @@ When uncertain whether input is vague, default to one clarifying question rather
 
 ### Journal List
 
-If `$ARGUMENTS` starts with `list`: read `~/.claude/wargames/`, extract metadata from YAML frontmatter. For v1 journals without frontmatter, fall back to parsing `**Scenario:**`, `**Tier:**`, `**Status:**`, `**Turns:**` lines.
+If `$ARGUMENTS` starts with `list`: read `~/.{gemini|copilot|codex|claude}/wargames/`, extract metadata from YAML frontmatter. For v1 journals without frontmatter, fall back to parsing `**Scenario:**`, `**Tier:**`, `**Status:**`, `**Turns:**` lines.
 
 **Filters** (optional, AND-combined):
 - `list active` — filter to `status: In Progress` only
@@ -122,7 +122,7 @@ Present using the list display from `references/output-formats-core.md`. Sort re
 
 ### Journal Lifecycle
 
-**`archive`:** Move journals older than 90 days from `~/.claude/wargames/` to `~/.claude/wargames/archive/`. Only runs when journal count > 20.
+**`archive`:** Move journals older than 90 days from `~/.{gemini|copilot|codex|claude}/wargames/` to `~/.{gemini|copilot|codex|claude}/wargames/archive/`. Only runs when journal count > 20.
 
 **`delete N`:** Delete journal N from `list`. Confirm before deleting: "Delete '{scenario}'? [yes/no]"
 
@@ -262,7 +262,7 @@ Clear tier (score 0-3). Single output, minimal ceremony.
 6b. **Proactive bias detection** — Suggest relevant commands for overconfidence signals (max one per turn). See `references/cognitive-biases.md` Enhanced Debiasing.
 7. **Action Bridge** — See `references/output-formats-core.md` Action Bridge template. Each move must reference a specific analysis output.
 8. **Monte Carlo option** — If uncertainty warrants it, offer: "Want to explore N variations? Type `explore [N]`." See `references/wargame-engine.md` Monte Carlo Iteration Protocol.
-9. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
+9. **Save journal** to `~/.{gemini|copilot|codex|claude}/wargames/{date}-{slug}.md`
 
 Keep the total output concise. This mode exists for decisions that do not
 warrant deep analysis. Resist scope creep. If the analysis reveals the
@@ -303,7 +303,7 @@ Complicated tier (score 4-6). Single output, thorough examination.
 8b. **Proactive bias detection** — Suggest relevant commands for overconfidence signals (max one per turn). See `references/cognitive-biases.md` Enhanced Debiasing.
 9. **Action Bridge** — See `references/output-formats-core.md` Action Bridge template.
 10. **Monte Carlo option** — Offer: "Want to explore N variations? Type `explore [N]`." See `references/wargame-engine.md` Monte Carlo Iteration Protocol.
-11. **Save journal** to `~/.claude/wargames/{date}-{slug}.md`
+11. **Save journal** to `~/.{gemini|copilot|codex|claude}/wargames/{date}-{slug}.md`
 
 ## Mode C: Interactive Wargame
 
@@ -377,9 +377,9 @@ Never skip the AAR. This is where learning happens.
 ## State Management
 
 ### Journal Directory
-- Path: `~/.claude/wargames/`
+- Path: `~/.{gemini|copilot|codex|claude}/wargames/`
 - Create on first use with `mkdir -p`
-- Archive path: `~/.claude/wargames/archive/`
+- Archive path: `~/.{gemini|copilot|codex|claude}/wargames/archive/`
 
 ### Journal Format
 Journals use YAML frontmatter for machine-parseable metadata:

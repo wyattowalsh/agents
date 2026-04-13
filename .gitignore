@@ -34,3 +34,5 @@ skills/prospector/webapp/frontend/dist/
 
 # Local ideation / research scratchpad (intentionally untracked)
 /IDEAS/
+*_cache/
+.venv-copilot/

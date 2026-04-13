@@ -9,7 +9,6 @@ import argparse
 import json
 import sys
 
-
 # Base duration estimates per step type (minutes)
 STEP_WEIGHTS = {
     "checkout": 0.5,

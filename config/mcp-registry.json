@@ -321,9 +321,10 @@
     },
     "creative-thinking": {
       "transport": "stdio",
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/Users/ww/dev/tools/mcp/creative-thinking/dist/index.js"
+        "-y",
+        "github:VitalyMalakanov/mcp-thinking"
       ],
       "env": {},
       "enabled": true,

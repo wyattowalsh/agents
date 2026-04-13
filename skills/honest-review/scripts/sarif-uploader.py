@@ -52,7 +52,7 @@ def get_current_ref() -> str:
     )
     if result.returncode != 0:
         # Fallback for detached HEAD
-        return f"refs/heads/main"
+        return "refs/heads/main"
     return result.stdout.strip()
 
 

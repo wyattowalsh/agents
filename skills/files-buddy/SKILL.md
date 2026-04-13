@@ -238,7 +238,7 @@ Open a visual HTML dashboard. Analysis stays read-only, but rendering writes a l
 1. Run audit analysis (dust, rmlint, fd) to collect data for target path
 2. Generate JSON: disk usage treemap, file type distribution, duplicates, large files, stale files, operation history from manifests
 3. Run `uv run python skills/files-buddy/scripts/dashboard-renderer.py --data <json-file|-> --output <path> --open`
-4. Default dashboard path is `~/.claude/files-buddy/{YYYY-MM-DD}-dashboard.html` unless `--output` is provided
+4. Default dashboard path is `~/.{gemini|copilot|codex|claude}/files-buddy/{YYYY-MM-DD}-dashboard.html` unless `--output` is provided
 5. Opens in default browser. Includes a self-contained treemap, sortable tables, dark/light theme
 6. **Fallback:** Print summary tables in terminal if browser unavailable
 

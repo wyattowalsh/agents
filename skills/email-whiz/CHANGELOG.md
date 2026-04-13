@@ -8,7 +8,7 @@ All notable changes to email-whiz are documented here.
 
 ### Added
 
-- Long-term user memory system at `~/.claude/email-whiz/memory.json`
+- Long-term user memory system at `~/.{gemini|copilot|codex|claude}/email-whiz/memory.json`
 - `scripts/memory.py` Typer CLI with 10 commands: load, save-sender, save-override, save-correction, save-filter, save-labels, save-patterns, remove, prune, stats
 - Phase -1 (Memory Load): loads user memory before Phase 0 discovery, fused in same message as cache check
 - Memory Save Triggers section: defines when each mode saves memories (VIPs, noise, corrections, filters, labels, patterns)
@@ -127,12 +127,12 @@ All notable changes to email-whiz are documented here.
 - `references/analytics-guide.md`: full analytics methodology, report formats, performance notes
 - `references/tool-reference.md`: all 19 Gmail MCP tool signatures, system limits, tool selection guide
 - `evals/` directory with dispatch routing evals
-- State management: `~/.claude/email-whiz/inbox-zero-progress.json` for streak persistence
+- State management: `~/.{gemini|copilot|codex|claude}/email-whiz/inbox-zero-progress.json` for streak persistence
 - Canonical vocabulary section to SKILL.md
 - `argument-hint`, `model`, `license`, and `metadata` frontmatter fields
 
 ### Changed
-- Migrated from `~/.claude/skills/email-whiz/` (installed) to `skills/email-whiz/` (project repo)
+- Migrated from `~/.{gemini|copilot|codex|claude}/skills/email-whiz/` (installed) to `skills/email-whiz/` (project repo)
 - Expanded `allowed-tools` from 10 to 19 Gmail tools plus `Read`, `Grep`, `Write`
 - Added `gmail_batch_modify_emails`, `gmail_batch_delete_emails`, `gmail_create_filter_from_template`, `gmail_get_or_create_label`, `gmail_update_label`, `gmail_delete_label`, `gmail_delete_filter`, `gmail_get_filter`
 - Enhanced `references/triage-framework.md`: 5D+N clarification, inbox-zero integration, `gmail_batch_modify_emails` wave protocol

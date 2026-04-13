@@ -1,3 +1,5 @@
+import os
+
 #!/usr/bin/env python3
 """Manage false-positive dismissals for the honest-review learning loop.
 
@@ -21,9 +23,19 @@ import re
 import sys
 from datetime import date
 from pathlib import Path
+
+
+def get_agent_dir(skill_name: str) -> Path:
+    """Get the base directory for a skill based on the active agent."""
+    agent = os.environ.get("AGENT_NAME", "").lower()
+    for cli, folder in [("GEMINI_CLI", ".gemini"), ("COPILOT_CLI", ".copilot"), ("CODEX_CLI", ".codex")]:
+        if os.environ.get(cli) == "1" or folder.strip(".") in agent:
+            return Path.home() / folder / skill_name
+    return Path.home() / ".claude" / skill_name
+
 from typing import Any
 
-LEARNINGS_DIR = Path.home() / ".claude" / "honest-reviews" / "learnings"
+LEARNINGS_DIR = get_agent_dir("honest-reviews") / "learnings"
 
 
 def slugify(name: str) -> str:

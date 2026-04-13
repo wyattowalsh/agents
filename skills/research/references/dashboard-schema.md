@@ -114,6 +114,6 @@ JSON data contract for the HTML research dashboard. The dashboard template reads
 
 ## Export Path
 
-Write the rendered dashboard to: `~/.claude/research/exports/{journal-slug}.html`
+Write the rendered dashboard to: `~/.{gemini|copilot|codex|claude}/research/exports/{journal-slug}.html`
 
 The `journal-slug` matches the journal filename without date prefix and extension. Example: journal `2026-02-27-tech-llm-agent-patterns.md` exports to `llm-agent-patterns.html`.
