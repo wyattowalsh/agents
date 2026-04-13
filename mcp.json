@@ -135,9 +135,10 @@
       "timeout": 600000
     },
     "atom-of-thoughts": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/Users/ww/dev/tools/mcp/MCP_Atom_of_Thoughts/build/index.js"
+        "-y",
+        "github:kbsooo/MCP_Atom_of_Thoughts"
       ],
       "timeout": 600000
     },
@@ -162,9 +163,10 @@
       "timeout": 600000
     },
     "deep-lucid-3d": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/Users/ww/dev/tools/mcp/DeepLucid3D-MCP/build/index.js"
+        "-y",
+        "github:mushroomfleet/deeplucid3d-mcp"
       ],
       "timeout": 600000
     },
