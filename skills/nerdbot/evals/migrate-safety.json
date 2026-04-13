@@ -11,6 +11,7 @@
     "Agent loads references/migration-playbooks.md and treats migration as a last resort after considering additive repair first",
     "Agent inventories canonical material, current path consumers, allowed changes, and rollback requirements before proposing a cutover",
     "Agent plans aliases, mapping pages, or parallel paths so the old location stays usable during review",
+    "Agent preserves or repairs Obsidian-native navigation by accounting for [[wikilinks]], backlinks, embeds, aliases, and Dataview-sensitive frontmatter before approving the move",
     "Agent requires explicit confirmation before any move, rename, delete, or destructive cutover of canonical material",
     "If the migration interview remains incomplete or approval is not specific enough, agent stops after the inventory and plan instead of executing the rename"
   ]

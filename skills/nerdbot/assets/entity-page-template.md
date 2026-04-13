@@ -1,4 +1,17 @@
 <!-- Suggested path: wiki/topics/[entity-slug].md -->
+---
+title: [Entity Name]
+tags:
+  - kb
+  - entity
+aliases:
+  - [alias list]
+kind: entity
+status: active
+updated: [YYYY-MM-DD]
+source_count: 0
+---
+
 # [Entity Name]
 
 ## Identity
@@ -32,7 +45,7 @@
 | Summary | `raw/extracts/[file].md#[anchor]` | [supporting detail] |
 
 ## Related wiki pages
-- [ ]
+- [ ] `[[../[related-path]|Related page]]`
 
 ## Open questions
 - [ ]

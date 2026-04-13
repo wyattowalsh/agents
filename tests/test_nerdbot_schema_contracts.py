@@ -222,6 +222,9 @@ class TestActivityLogEntryFields:
             "canonical material",
             "provenance",
             "derived output",
+            "vault",
+            "path map",
+            "link/backlink impact",
             "Risks / rollback",
             "Follow-up",
         ]
@@ -280,3 +283,11 @@ class TestActivityLogOperatingRules:
             f"  log-tpl:   {canon}\n"
             f"  bootstrap: {boot}"
         )
+
+
+def test_bootstrap_packet_defines_obsidian_vault_starter_section() -> None:
+    bootstrap_text = _read(KB_BOOTSTRAP_TEMPLATE)
+
+    assert "Path: `config/obsidian-vault.md`" in bootstrap_text
+    assert "Path: `.obsidian/templates/wiki-note-template.md`" in bootstrap_text
+    assert "Path: `.obsidian/templates/source-note-template.md`" in bootstrap_text

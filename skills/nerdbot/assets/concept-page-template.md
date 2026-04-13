@@ -1,4 +1,16 @@
 <!-- Suggested path: wiki/topics/[concept-slug].md -->
+---
+title: [Concept Title]
+tags:
+  - kb
+  - concept
+aliases: []
+kind: concept
+status: active
+updated: [YYYY-MM-DD]
+source_count: 0
+---
+
 # [Concept Title]
 
 ## Summary
@@ -24,7 +36,7 @@
 | Summary | `raw/extracts/[file].md#[anchor]` | [supporting detail] |
 
 ## Related wiki pages
-- [ ] `[Related page](../[related-path].md)`
+- [ ] `[[../[related-path]|Related page]]`
 
 ## Open questions
 - [ ]

@@ -6,7 +6,7 @@
     "Agent recognizes this as a nerdbot request even though the skill is not named explicitly",
     "Agent classifies the request as an Existing Imperfect Repo / improve-style workflow rather than freeform note-taking",
     "Agent starts with an inventory-first, read-only assessment of canonical material, current layers, risky paths, and source surfaces",
-    "Agent prefers additive repair around existing material instead of destructive rewrites or migrations",
+    "Agent prefers additive repair and Obsidian-native overhaul around existing material instead of destructive rewrites or migrations",
     "Agent requires explicit confirmation before any move, rename, delete, or bulk rewrite of canonical material",
     "Agent updates indexes and the activity log in the same batch as any approved structural or content changes"
   ]
