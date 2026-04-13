@@ -16,6 +16,7 @@ CONFIG_DIR = REPO_ROOT / "config"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
 CLAUDE_COMPAT_MD = REPO_ROOT / "instructions" / "claude-code-global.md"
 COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
+GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
 TOOLING_POLICY_PATH = CONFIG_DIR / "tooling-policy.json"
 SYNC_MANIFEST_PATH = CONFIG_DIR / "sync-manifest.json"
@@ -778,7 +779,7 @@ def sync_home_targets(
     ensure_symlink(ctx, CODEX_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
-    write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{REPO_ROOT / 'AGENTS.md'}\n@{GLOBAL_MD}\n")
+    write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{REPO_ROOT / 'AGENTS.md'}\n@{GEMINI_GLOBAL_MD}\n")
     write_text(
         ctx,
         CLAUDE_COMPAT_MD,
