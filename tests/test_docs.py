@@ -59,6 +59,7 @@ class TestWriteIndexPage:
         assert "Featured Skills" in text
         assert "Agents" in text
         assert "MCP Servers" in text
+        assert "OpenCode" in text
 
     def test_no_skills_no_featured_section(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -89,6 +90,20 @@ class TestWriteIndexPage:
         assert "Browse repository skills grouped by invocation model" in text
         assert "custom and installed skills" not in text
 
+    def test_does_not_duplicate_mcp_overview_when_no_repo_mcp_nodes_exist(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        mcp_dir = content_dir / "mcp"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        mcp_dir.mkdir(parents=True, exist_ok=True)
+        (mcp_dir / "index.mdx").write_text("---\ntitle: MCP\n---\n")
+        (tmp_repo / "mcp.json").write_text('{"mcpServers": {"alpha": {}, "beta": {}}}')
+
+        write_index_page([_make_node("skill")])
+
+        text = (content_dir / "index.mdx").read_text()
+        assert text.count('title="MCP Overview"') == 1
+        assert "## MCP Servers" not in text
+
 
 # ---------------------------------------------------------------------------
 # write_cli_page
@@ -112,6 +127,8 @@ class TestWriteCliPage:
         assert "## Related Pages" in text
         assert "<FileTree>" in text
         assert "wagents docs generate --include-installed" in text
+        assert "local agent skill directories" in text
+        assert "~/.config/opencode/skills/" in text
         assert "wagents docs generate --no-installed" not in text
 
 
@@ -141,6 +158,7 @@ class TestWriteSkillsIndex:
         write_skills_index(nodes)
         text = (content_dir / "skills" / "index.mdx").read_text()
         assert "Installed Skills (1)" in text
+        assert "~/.config/opencode/skills/" in text
 
     def test_skips_installed_category_row_when_none_are_present(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -222,6 +240,7 @@ class TestWriteInstalledSkillsPage:
         write_installed_skills_page(nodes)
         text = (content_dir / "skills" / "installed.mdx").read_text()
         assert "npx skills add example/skills --skill ext-skill -g" in text
+        assert "~/.config/opencode/skills/" in text
 
 
 # ---------------------------------------------------------------------------

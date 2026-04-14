@@ -236,7 +236,11 @@ def write_index_page(nodes: list) -> None:
     parts.append("### Quick Install")
     parts.append("")
     parts.append("```bash")
+    parts.append("# Install this repository's full catalog")
     parts.append("npx skills add wyattowalsh/agents --all -g")
+    parts.append("")
+    parts.append("# Or install a targeted third-party collection")
+    parts.append("npx skills add <source> --skill <name> -g -y --agent claude-code --agent codex")
     parts.append("```")
     parts.append("")
     parts.append("</div>")
@@ -247,7 +251,9 @@ def write_index_page(nodes: list) -> None:
     parts.append("")
     parts.append("<Steps>")
     parts.append("")
-    parts.append("1. **Install** — `npx skills add wyattowalsh/agents --all -g` installs all skills globally.")
+    parts.append(
+        "1. **Install** — Use `npx skills add wyattowalsh/agents --all -g` for the full catalog, or `npx skills add <source> --skill <name> -g -y --agent <agent>` for a targeted external install."
+    )
     parts.append("")
     parts.append(
         "2. **Invoke** — Type `/skill-name` in "
@@ -332,23 +338,6 @@ def write_index_page(nodes: list) -> None:
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
-    elif has_mcp_overview:
-        parts.append("## MCP Servers")
-        parts.append("")
-        parts.append('<div class="catalog-mcp">')
-        parts.append("<CardGrid>")
-        if mcp_config_count:
-            desc = escape_attr(
-                f"Hand-maintained overview of {mcp_config_count} configured"
-                " MCP servers from mcp.json (local and remote)."
-            )
-        else:
-            desc = "Hand-maintained overview of configured MCP servers."
-        parts.append(f'  <LinkCard title="MCP Overview" href="/mcp/" description="{desc}" />')
-        parts.append("</CardGrid>")
-        parts.append("</div>")
-        parts.append("")
-
     # Supported Agents
     parts.append("## Supported Agents")
     parts.append("")
@@ -386,8 +375,8 @@ def write_index_page(nodes: list) -> None:
     )
     parts.append(
         '  <LinkCard title="OpenCode"'
-        ' href="https://github.com/opencode-ai/opencode"'
-        ' description="Open coding agent with repo-native instruction support." />'
+        ' href="https://github.com/anomalyco/opencode"'
+        ' description="Native AGENTS.md support plus repo-level OpenCode config and subagents." />'
     )
     parts.append("</CardGrid>")
     parts.append("")
@@ -709,6 +698,12 @@ def write_cli_page() -> None:
     parts.append("wagents install -y")
     parts.append("```")
     parts.append("")
+    parts.append("For third-party skill sources or curated subsets, use `npx skills add` directly:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("npx skills add <source> --skill <name> -g -y --agent claude-code --agent codex")
+    parts.append("```")
+    parts.append("")
     parts.append("| Option | Default | Description |")
     parts.append("|--------|---------|-------------|")
     parts.append("| `<skills>` | all | Positional skill name(s) to install |")
@@ -794,7 +789,10 @@ def write_cli_page() -> None:
     parts.append("**Options:**")
     parts.append("")
     parts.append("```bash")
-    parts.append("# Include installed skills from ~/.claude/skills/")
+    parts.append(
+        "# Include installed skills from local agent skill directories "
+        "(~/.config/opencode/skills/, ~/.agents/skills/, ~/.claude/skills/)"
+    )
     parts.append("wagents docs generate --include-installed")
     parts.append("")
     parts.append("# Include skills with TODO descriptions")
@@ -932,9 +930,9 @@ def write_cli_page() -> None:
     parts.append("```")
     parts.append("")
     parts.append(
-        "Each eval file must contain three required fields: `skills` (a non-empty list of "
-        "strings matching existing skill directories), `query` (a non-empty string), and "
-        "`expected_behavior` (a non-empty list of strings)."
+        "Legacy scenario files must contain `skills`, `query`, and `expected_behavior`. "
+        "Canonical manifests may use `evals/evals.json` with `skill_name` plus an `evals` array "
+        "of cases containing `prompt` and `expected_output`, with optional `files` and `assertions`."
     )
     parts.append("")
     parts.append("  </TabItem>")
@@ -1139,7 +1137,7 @@ def write_skills_index(nodes: list) -> None:
     parts.append("")
     parts.append(
         "Skills are reusable knowledge and workflows that make AI coding agents dramatically more capable. "
-        "They work across **Claude Code**, **Gemini CLI**, **Codex**, **Cursor**, **GitHub Copilot**, "
+        "They work across **Claude Code**, **Gemini CLI**, **OpenCode**, **Codex**, **Cursor**, **GitHub Copilot**, "
         "and any [agentskills.io](https://agentskills.io)-compatible agent."
     )
     parts.append("")
@@ -1154,7 +1152,11 @@ def write_skills_index(nodes: list) -> None:
     parts.append("### Quick Install All")
     parts.append("")
     parts.append("```bash")
+    parts.append("# Install this repository's full catalog")
     parts.append("npx skills add wyattowalsh/agents --all -g")
+    parts.append("")
+    parts.append("# Or install a targeted third-party collection")
+    parts.append("npx skills add <source> --skill <name> -g -y --agent claude-code --agent codex")
     parts.append("```")
     parts.append("")
     parts.append("</div>")
@@ -1168,6 +1170,12 @@ def write_skills_index(nodes: list) -> None:
         "`/skill-name` in any supported agent. "
         "See [How it Works](/) for a quick overview, or browse the full "
         "[agentskills.io](https://agentskills.io) ecosystem."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append('<Aside type="note" title="Installed external skills">')
+    parts.append(
+        "Use `npx skills add <source> --skill <name> -g -y --agent <agent>` for third-party collections or curated subsets. Run `wagents docs generate --include-installed` when you want those locally installed skills included in a docs build."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -1209,7 +1217,7 @@ def write_skills_index(nodes: list) -> None:
     if has_installed:
         parts.append(
             f"| **Installed** | {len(installed)} "
-            "| Third-party skills installed from external sources via `~/.claude/skills/`. |"
+            "| Third-party skills discovered from local agent skill directories such as `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`. |"
         )
     parts.append("")
     parts.append('<Aside type="note" title="Generated docs vs hand-maintained guides">')
@@ -1294,7 +1302,7 @@ def write_skills_index(nodes: list) -> None:
             '<Badge text="External" variant="default" /> '
             "Third-party skills installed from the "
             "[agentskills.io](https://agentskills.io) ecosystem via `npx skills add`. "
-            "These live in `~/.claude/skills/` and are available across all your projects."
+            "These are discovered from local agent skill directories such as `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
         )
         parts.append("")
         parts.append(
@@ -1355,7 +1363,10 @@ def write_installed_skills_page(nodes: list) -> None:
     parts.append("")
     parts.append("import { Badge, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';")
     parts.append("")
-    parts.append(f"> {len(nodes)} skills installed from external sources via `~/.claude/skills/`.")
+    parts.append(
+        f"> {len(nodes)} skills installed from external sources and discovered from local agent skill directories "
+        "like `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
+    )
     parts.append("")
 
     def install_command(node) -> str:
@@ -1759,7 +1770,7 @@ def docs_generate(
     include_installed: bool = typer.Option(
         False,
         "--include-installed/--no-installed",
-        help="Include installed skills from ~/.claude/skills/ in generated docs",
+        help="Include installed skills discovered from local agent skill directories in generated docs",
     ),
 ):
     """Generate MDX content pages from repo assets."""
