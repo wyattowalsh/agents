@@ -40,6 +40,16 @@ def _make_skill_with_eval(repo, name, eval_data):
     (evals_dir / "test.json").write_text(json.dumps(eval_data, indent=2))
 
 
+def _make_skill_with_eval_manifest(repo, name, eval_items):
+    """Helper: create a minimal skill with a canonical eval manifest."""
+    skill_dir = repo / "skills" / name
+    skill_dir.mkdir(parents=True, exist_ok=True)
+    (skill_dir / "SKILL.md").write_text(f"---\nname: {name}\ndescription: Test skill\n---\n\n# {name}\n\nBody.\n")
+    evals_dir = skill_dir / "evals"
+    evals_dir.mkdir(exist_ok=True)
+    (evals_dir / "evals.json").write_text(json.dumps({"skill_name": name, "evals": eval_items}, indent=2))
+
+
 class TestEvalList:
     def test_no_evals(self, patched_repo):
         result = runner.invoke(app, ["eval", "list"])
@@ -77,6 +87,23 @@ class TestEvalList:
         assert payload["count"] == 1
         assert payload["eval_count"] == 1
         assert payload["skills"][0]["skill"] == "test-skill"
+
+    def test_with_eval_manifest_counts_cases(self, patched_repo):
+        _make_skill_with_eval_manifest(
+            patched_repo,
+            "test-skill",
+            [
+                {"id": "one", "prompt": "first prompt", "expected_output": "first output"},
+                {"id": "two", "prompt": "second prompt", "expected_output": "second output"},
+            ],
+        )
+        result = runner.invoke(app, ["eval", "list", "--format", "json"])
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        assert payload["eval_count"] == 2
+        assert payload["skills"][0]["skill"] == "test-skill"
+        assert payload["skills"][0]["eval_count"] == 2
+        assert payload["skills"][0]["sample_query"] == "first prompt"
 
     @staticmethod
     def test_real_repo():
@@ -143,6 +170,47 @@ class TestEvalValidate:
         result = runner.invoke(app, ["eval", "validate"])
         assert result.exit_code == 1
         assert "missing required field 'query'" in result.output
+
+    def test_valid_eval_manifest(self, patched_repo):
+        _make_skill_with_eval_manifest(
+            patched_repo,
+            "test-skill",
+            [
+                {
+                    "id": "case-1",
+                    "prompt": "Run the eval",
+                    "expected_output": "A valid output description.",
+                    "files": ["evals/files/input.txt"],
+                    "assertions": ["Uses the skill correctly."],
+                }
+            ],
+        )
+        result = runner.invoke(app, ["eval", "validate"])
+        assert result.exit_code == 0
+        assert "All evals valid" in result.output
+
+    def test_eval_manifest_missing_prompt(self, patched_repo):
+        _make_skill_with_eval_manifest(
+            patched_repo,
+            "test-skill",
+            [{"id": "case-1", "expected_output": "A valid output description."}],
+        )
+        result = runner.invoke(app, ["eval", "validate"])
+        assert result.exit_code == 1
+        assert "missing required non-empty string 'prompt'" in result.output
+
+    def test_eval_manifest_missing_skill_name(self, patched_repo):
+        skill_dir = patched_repo / "skills" / "test-skill"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text("---\nname: test-skill\ndescription: Test\n---\n\n# Test\n\nBody.\n")
+        evals_dir = skill_dir / "evals"
+        evals_dir.mkdir()
+        (evals_dir / "evals.json").write_text(
+            json.dumps({"evals": [{"prompt": "Hello", "expected_output": "World"}]}, indent=2)
+        )
+        result = runner.invoke(app, ["eval", "validate"])
+        assert result.exit_code == 1
+        assert "'skill_name' must be a non-empty string" in result.output
 
     def test_missing_expected_behavior(self, patched_repo):
         _make_skill_with_eval(
@@ -255,3 +323,19 @@ class TestEvalCoverage:
         assert by_skill["has-evals"]["has_evals"] is True
         assert by_skill["has-evals"]["eval_count"] == 1
         assert by_skill["no-evals"]["has_evals"] is False
+
+    def test_manifest_coverage_counts_all_cases(self, patched_repo):
+        _make_skill_with_eval_manifest(
+            patched_repo,
+            "has-evals",
+            [
+                {"id": "one", "prompt": "first prompt", "expected_output": "first output"},
+                {"id": "two", "prompt": "second prompt", "expected_output": "second output"},
+            ],
+        )
+        result = runner.invoke(app, ["eval", "coverage", "--format", "json"])
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        row = next(item for item in payload["skills"] if item["skill"] == "has-evals")
+        assert row["has_evals"] is True
+        assert row["eval_count"] == 2
