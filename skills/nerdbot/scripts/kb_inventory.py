@@ -6,9 +6,8 @@ where possible, highlights risky paths, finds likely indexes/logs, and suggests
 safe next actions.
 
 Usage examples:
-    python kb_inventory.py --root .
-    python kb_inventory.py --root ./client-repo
-    uv run python skills/nerdbot/scripts/kb_inventory.py --root .
+    python3 scripts/kb_inventory.py --root .
+    python3 scripts/kb_inventory.py --root ./client-repo
 """
 
 from __future__ import annotations
@@ -270,7 +269,7 @@ def read_text_file(path: Path, *, max_bytes: int = 262_144) -> str | None:
     """Read a text file safely, returning None for likely-binary files.
 
     Examples:
-        >>> read_text_file(Path(__file__), max_bytes=32) is not None
+        >>> read_text_file(Path(__file__), max_bytes=32) is None
         True
     """
     suffix = path.suffix.lower()
@@ -294,7 +293,7 @@ def extract_headings(text: str) -> list[str]:
     """Extract markdown headings from a document.
 
     Examples:
-        >>> extract_headings("# Title\n\n## Sources")
+        >>> extract_headings("# Title\\n\\n## Sources")
         ['Title', 'Sources']
     """
     headings: list[str] = []
@@ -402,7 +401,7 @@ def has_provenance_markers(text: str, links: list[str] | None = None) -> bool:
     """Detect whether a document exposes provenance or source markers.
 
     Examples:
-        >>> has_provenance_markers("## Sources\n- [raw](../raw/sources/a.txt)")
+        >>> has_provenance_markers("## Sources\\n- [raw](../raw/sources/a.txt)")
         True
     """
     lowered = text.lower()

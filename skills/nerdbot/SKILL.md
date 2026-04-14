@@ -1,22 +1,23 @@
 ---
 name: nerdbot
 description: >-
-  Create and migrate Obsidian-native knowledge bases with layered raw/wiki
-  structure, provenance, indexes, logs, and safe vault overhauls. Use for
-  git-friendly KBs. NOT for docs sites or generic notes.
-argument-hint: "[create|ingest|enrich|audit|derive|improve|migrate] [topic|path]"
+  Create, repair, query, audit, and migrate Obsidian-native knowledge bases
+  with layered raw/wiki structure, provenance, indexes, logs, and safe vault
+  overhauls. Use for git-friendly KBs and persistent llm-wiki-style vaults.
+  NOT for docs sites or generic notes.
+argument-hint: "[create|ingest|enrich|audit|query|derive|improve|migrate] [topic|path]"
 model: opus
 license: MIT
 compatibility: "Requires git and a writable repository. Optional Python 3.10+ for kb_* scripts."
 metadata:
   author: wyattowalsh
-  version: "0.2.0"
+  version: "0.3.0"
 user-invocable: true
 ---
 
 # Nerdbot
 
-Build and maintain Obsidian-native, git-friendly, agent-managed knowledge bases that separate raw evidence from synthesized wiki knowledge. Nerdbot is for layered KBs with provenance, indexes, schema/config, shared vault conventions, and append-only activity logging.
+Build, query, and maintain Obsidian-native, git-friendly, agent-managed knowledge bases that separate raw evidence from synthesized wiki knowledge. Nerdbot is for layered KBs with provenance, indexes, schema/config, shared vault conventions, and append-only activity logging.
 
 **NOT for:** freeform note-taking, docs site maintenance (docs-steward), database-backed knowledge systems (database-architect), or one-off research that does not maintain a repository (research).
 
@@ -31,12 +32,14 @@ Build and maintain Obsidian-native, git-friendly, agent-managed knowledge bases 
 | `ingest <source-or-path>` | Ingest | Add sources to `raw/`, preserve originals, then update indexes and provenance stubs |
 | `enrich <page-or-topic>` | Enrich | Improve `wiki/` pages from raw or canonical inputs with traceable synthesis |
 | `audit [path]` | Audit | Run inventory + lint read-only; report structure, provenance, and drift findings |
+| `query <question-or-topic>` | Query | Answer from `wiki/` + `indexes/` first, inspect `raw/` only to verify citations or confirm gaps, and stay read-only |
 | `derive <artifact-or-target>` | Derive | Generate reproducible outputs from the current KB without replacing canonical material |
 | `improve <path>` | Existing repo | Start with inventory-first, Obsidian-native overhaul planning before any expansion or refinement |
 | `migrate <path-or-scope>` | Migration | Run the risky-change interview + inversion before any move, rename, cutover, or replacement |
 | Natural language: "create a knowledge base / vault for ..." | Create | Treat the remainder as topic and scope; default to an Obsidian-native vault |
 | Natural language: "ingest/import these sources" | Ingest | Route sources into `raw/` and update indexes |
-| Natural language: "improve/fix this knowledge base/repo/vault" | Existing repo | Start with a read-only inventory, vault classification, and migration-first preservation map |
+| Natural language: "improve/fix this knowledge base/repo/vault" | Existing repo | Start with a read-only inventory, vault classification, and additive-first repair plan |
+| Natural language: "query/search/ask this KB/wiki/vault about ..." | Query | Read maintained `wiki/` + `indexes/`, answer with provenance, and recommend `enrich` or `ingest` if the KB has a gap |
 | Natural language mentioning `Obsidian`, `vault`, `.obsidian`, `[[wikilinks]]`, `embeds`, or `Dataview` | Create / Existing repo / Audit | Route to the matching workflow with Obsidian-native assumptions turned on |
 | Natural language: "audit/lint/check the knowledge base" | Audit | Stay read-only unless the user explicitly asks for fixes |
 | Requests for generic notes or docs-site work | Refuse + redirect | Redirect to the correct workflow or specialized skill |
@@ -48,9 +51,10 @@ Present this menu:
 2. Ingest sources into `raw/`
 3. Enrich `wiki/` pages
 4. Audit/lint the KB
-5. Generate derived outputs
-6. Improve an existing imperfect repo safely
-7. Plan a risky migration or restructure
+5. Query the KB without mutating it
+6. Generate derived outputs
+7. Improve an existing imperfect repo safely
+8. Plan a risky migration or restructure
 
 If clarifying exchange is unavailable, default to inventory-only planning with no destructive changes.
 
@@ -61,6 +65,7 @@ If clarifying exchange is unavailable, default to inventory-only planning with n
 - Adding sources, extracts, or captures into a layered KB
 - Improving synthesized wiki pages while preserving provenance
 - Auditing structure, source coverage, stale indexes, or activity-log drift
+- Answering questions from a maintained KB without rediscovering the same raw evidence from scratch
 - Repairing a messy repo into a safer layered KB without rewriting user-authored canon
 - Normalizing note metadata, `[[wikilinks]]`, embeds, aliases, and shared `.obsidian/` surfaces before deeper synthesis
 - Generating derived outputs from a maintained KB
@@ -134,13 +139,15 @@ Use gates for every multi-step flow. Stop at the first blocked gate.
 
 | Gate | Goal | Output |
 |------|------|--------|
-| Gate 0 — Classify | Decide whether this is Create, Ingest, Enrich, Audit, Derive, Existing repo, or Migration | Safe workflow selection |
+| Gate 0 — Classify | Decide whether this is Create, Ingest, Enrich, Audit, Query, Derive, Existing repo, or Migration | Safe workflow selection |
 | Gate 1 — Inventory | Map layers, canonical material, vault state, source surfaces, risky paths, and existing automation | Read-only inventory |
-| Gate 2 — Plan | Propose the smallest additive, reviewable batch or migration-first overhaul | File-level plan with explicit non-goals |
+| Gate 2 — Plan | Propose the smallest additive, reviewable batch or migration plan | File-level plan with explicit non-goals |
 | Gate 3 — Confirm | Require approval for destructive or high-impact changes | Approval or downgrade to plan-only |
 | Gate 4 — Execute | Change one layer at a time: `raw` -> `wiki` -> `indexes` -> `activity` | Small reviewable edit set |
 | Gate 5 — Verify | Check provenance, index freshness, schema/config consistency, and activity logging | Lint/audit results |
 | Gate 6 — Handoff | Record next steps, unresolved gaps, and missing dependencies | Activity-log entry + follow-up plan |
+
+For Query, stop after Gate 2 unless the user explicitly asks to turn a KB gap into `enrich`, `ingest`, or `derive` work.
 
 ## Primary Workflows
 
@@ -184,6 +191,16 @@ Use for read-only diagnosis, linting, and confidence checks.
 3. Classify findings as critical, warning, or suggestion.
 4. Use `scripts/kb_lint.py --root <path> --include-unlayered` when the repo mixes KB files with adjacent markdown that still participates in the knowledge graph.
 5. Recommend the next smallest safe batch instead of proposing a monolithic rewrite.
+
+### Query
+
+Use when the user wants an answer from the maintained KB without mutating it.
+
+1. Load `references/kb-architecture.md` first.
+2. Read `wiki/` and `indexes/` first; inspect `raw/` only to verify citations or confirm that the KB still has a gap.
+3. Answer with note paths, `[[wikilinks]]`, provenance references, and an explicit confidence level.
+4. Classify the result as `answered`, `partial`, or `gap`.
+5. If the KB cannot answer confidently, recommend the next safe follow-up mode (`enrich`, `ingest`, or `derive`) instead of mutating content during query.
 
 ### Derive
 
@@ -262,7 +279,7 @@ Load references on demand; do not load all at once. If a listed reference, scrip
 
 | File | Content | Load When |
 |------|---------|-----------|
-| `references/kb-architecture.md` | Canonical KB layer model, directory semantics, provenance contract, and safe default layouts | Create, Existing Imperfect Repo, Migration planning |
+| `references/kb-architecture.md` | Canonical KB layer model, directory semantics, provenance contract, and safe default layouts | Create, Query, Existing Imperfect Repo, Migration planning |
 | `references/obsidian-vaults.md` | Obsidian syntax contract, shared `.obsidian/` surfaces, Dataview metadata, and vault-safe migration rules | Create, Existing Imperfect Repo, Migration, Enrich when note metadata or linking changes |
 | `references/kb-operations.md` | Detailed create/ingest/enrich/derive procedures, ordering rules, and verification steps | Create, Ingest, Enrich, Derive |
 | `references/audit-checklist.md` | Audit rubric for structure, provenance, coverage, drift, stale indexes, and activity logging | Audit, post-change verification, pre-migration checks |
@@ -277,11 +294,11 @@ Load references on demand; do not load all at once. If a listed reference, scrip
 | `scripts/kb_lint.py` | Check provenance, index freshness, schema/config drift, wikilinks, embeds, aliases, required files, and activity-log coverage | Gate 5 after any mutating batch and before declaring work complete |
 | `scripts/kb_bootstrap.py` | Scaffold the approved layered structure, shared `.obsidian/` surfaces, and default starter files | Create and additive repair after Gate 3 approval; never for cutover or overwrite-by-default |
 
-Run from the repo root:
-- `uv run python skills/nerdbot/scripts/kb_inventory.py --root .`
-- `uv run python skills/nerdbot/scripts/kb_lint.py --root . --fail-on warning`
-- `uv run python skills/nerdbot/scripts/kb_lint.py --root . --include-unlayered` for mixed repos where important markdown still lives outside the default layers
-- `uv run python skills/nerdbot/scripts/kb_bootstrap.py --root ./knowledge-base --dry-run`
+Run from the skill root:
+- `python3 scripts/kb_inventory.py --root .`
+- `python3 scripts/kb_lint.py --root . --fail-on warning`
+- `python3 scripts/kb_lint.py --root . --include-unlayered` for mixed repos where important markdown still lives outside the default layers
+- `python3 scripts/kb_bootstrap.py --root ./knowledge-base --dry-run`
 
 ### Assets
 
@@ -312,6 +329,17 @@ Expected flow:
 3. Propose an Obsidian-native overhaul plan: add missing `indexes/` and `activity/`, establish a safe `raw/` intake area, normalize note metadata, introduce shared vault surfaces, and map existing docs into the `wiki/` layer without destructive rewrites.
 4. After approval, execute the smallest batch and run `scripts/kb_lint.py`, adding `--include-unlayered` when adjacent markdown still participates in the repo's knowledge graph.
 
+### Example: Query a maintained KB
+
+`/nerdbot query "What do we know about vendor pricing risk?"`
+
+Expected flow:
+1. Load `references/kb-architecture.md`.
+2. Read `wiki/` and `indexes/` first to locate the maintained synthesis and its coverage state.
+3. Inspect `raw/` only if a citation needs verification or the KB appears incomplete.
+4. Return an answer with note paths, `[[wikilinks]]`, provenance references, and an explicit confidence level.
+5. If the KB is still `partial` or has a `gap`, recommend `enrich` or `ingest` as the next safe follow-up instead of mutating content during the query.
+
 ### Example: Overhaul an existing repo into an Obsidian-native vault
 
 `/nerdbot improve ./client-repo turn this into an Obsidian vault before you expand it`
@@ -328,14 +356,17 @@ Expected flow:
 1. Inventory first: do not mutate an existing repo before mapping canonical material, layers, and risky paths.
 2. Preserve user-authored canonical material unless the user explicitly authorizes rewrite, move, or deletion.
 3. Prefer additive repair over migration, but default existing repos toward an Obsidian-native overhaul before deeper expansion or refinement.
-4. Never synthesize `wiki/` content without provenance to `raw/` or declared canonical material.
-5. Keep `raw/` append-only; preserve originals and store normalization as separate artifacts, or use a provenance-rich pointer/stub for sources over `50 MB` when vendoring the binary is impractical.
-6. Update related `indexes/` and the `activity log` in the same batch as content or structure changes.
-7. Keep changes small and reviewable; split structural, content, and derived-output work into separate batches.
-8. Treat derived outputs as rebuildable products, not canonical knowledge.
-9. Use the migration interview + inversion before any rename, move, replace, or cutover.
-10. When confirmation is unavailable, stop after inventory + plan for any high-impact operation.
-11. If a referenced file or script is missing, follow this body and report the gap; do not invent nonexistent guidance or pretend checks passed.
-12. Normalize existing repos toward Obsidian-native note metadata, `[[wikilinks]]`, and shared vault conventions before expanding the wiki surface.
-13. Manage `.obsidian/` as a shared working surface only for project-safe templates, snippets, and documented conventions; do not rewrite volatile workspace state by default.
-14. Use the default layered vocabulary exactly: `raw`, `wiki`, `schema`, `config`, `indexes`, `activity log`, `provenance`, `canonical material`, `derived output`, `imperfect repo`, `migration`, `vault`, `shared vault config`, `Dataview metadata`.
+4. Query is read-only by default; answer from the maintained KB unless the user explicitly asks for follow-on mutation.
+5. Never synthesize `wiki/` content without provenance to `raw/` or declared canonical material.
+6. Keep `raw/` append-only; preserve originals and store normalization as separate artifacts, or use a provenance-rich pointer/stub for sources over `50 MB` when vendoring the binary is impractical.
+7. Prefer `wiki/` + `indexes/` before mining `raw/`; use `raw/` to verify citations or confirm gaps, not to bypass missing synthesis.
+8. Update related `indexes/` and the `activity log` in the same batch as content or structure changes.
+9. If the KB cannot answer confidently during query, state the gap and recommend `enrich`, `ingest`, or `derive` instead of mutating content in place.
+10. Keep changes small and reviewable; split structural, content, and derived-output work into separate batches.
+11. Treat derived outputs as rebuildable products, not canonical knowledge.
+12. Use the migration interview + inversion before any rename, move, replace, or cutover.
+13. When confirmation is unavailable, stop after inventory + plan for any high-impact operation.
+14. If a referenced file or script is missing, follow this body and report the gap; do not invent nonexistent guidance or pretend checks passed.
+15. Normalize existing repos toward Obsidian-native note metadata, `[[wikilinks]]`, and shared vault conventions before expanding the wiki surface.
+16. Manage `.obsidian/` as a shared working surface only for project-safe templates, snippets, and documented conventions; do not rewrite volatile workspace state by default.
+17. Use the default layered vocabulary exactly: `raw`, `wiki`, `schema`, `config`, `indexes`, `activity log`, `provenance`, `canonical material`, `derived output`, `imperfect repo`, `migration`, `vault`, `shared vault config`, `Dataview metadata`.

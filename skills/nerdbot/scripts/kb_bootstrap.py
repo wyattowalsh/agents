@@ -6,9 +6,9 @@ By default this command creates only missing directories and starter files. Use
 append-only activity log.
 
 Usage examples:
-    python kb_bootstrap.py --root .
-    python kb_bootstrap.py --root ./new-kb --dry-run
-    python kb_bootstrap.py --root ./existing-kb --force
+    python3 scripts/kb_bootstrap.py --root .
+    python3 scripts/kb_bootstrap.py --root ./new-kb --dry-run
+    python3 scripts/kb_bootstrap.py --root ./existing-kb --force
 """
 
 from __future__ import annotations

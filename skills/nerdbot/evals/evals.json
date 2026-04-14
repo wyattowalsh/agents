@@ -1,0 +1,117 @@
+{
+  "skill_name": "nerdbot",
+  "evals": [
+    {
+      "id": "explicit-create",
+      "prompt": "/nerdbot create \"field guide to incident postmortems\"",
+      "expected_output": "A create-mode plan or execution path that scaffolds a layered, Obsidian-native KB with starter indexes, shared vault config, and an activity log before synthesis begins.",
+      "files": [],
+      "assertions": [
+        "Dispatches to Create.",
+        "Loads references/kb-architecture.md before proposing structure.",
+        "Establishes .obsidian/, raw/, wiki/, schema/, config/, indexes/, and activity/.",
+        "Seeds starter indexes and the activity log before writing synthesized wiki content."
+      ]
+    },
+    {
+      "id": "implicit-improve-trigger",
+      "prompt": "Can you turn this messy markdown repo into a git-friendly knowledge base? Please preserve the original transcripts and notes, separate raw evidence from synthesized wiki pages, add provenance, create coverage/source indexes, and keep an append-only activity log.",
+      "expected_output": "An inventory-first additive repair plan for an imperfect repo, with explicit protection for canonical material and no destructive rewrite by default.",
+      "files": [],
+      "assertions": [
+        "Activates nerdbot without the skill being named explicitly.",
+        "Classifies the request as an existing-repo improvement flow instead of generic notes.",
+        "Starts with a read-only inventory of canonical material, current layers, and risky paths.",
+        "Requires explicit confirmation before destructive or path-stability changes."
+      ]
+    },
+    {
+      "id": "audit-mode",
+      "prompt": "/nerdbot audit ./knowledge-base",
+      "expected_output": "A read-only audit report with severity-classified findings, concrete paths, and the next smallest additive repair batch.",
+      "files": [
+        "knowledge-base/wiki/index.md",
+        "knowledge-base/indexes/source-map.md",
+        "knowledge-base/activity/log.md"
+      ],
+      "assertions": [
+        "Dispatches to Audit.",
+        "Loads references/audit-checklist.md before presenting findings.",
+        "Runs python3 scripts/kb_inventory.py before recommending changes.",
+        "Runs python3 scripts/kb_lint.py as a read-only verification pass.",
+        "Keeps audit mode read-only."
+      ]
+    },
+    {
+      "id": "query-mode",
+      "prompt": "/nerdbot query \"What do we know about vendor pricing risk?\"",
+      "expected_output": "A read-only answer grounded in the maintained KB, with note paths or wikilinks, provenance references, and an explicit confidence level or gap statement.",
+      "files": [
+        "knowledge-base/wiki/index.md",
+        "knowledge-base/indexes/source-map.md",
+        "knowledge-base/indexes/coverage.md"
+      ],
+      "assertions": [
+        "Dispatches to Query.",
+        "Reads wiki and indexes before relying on raw.",
+        "Uses raw only to verify citations or confirm gaps.",
+        "Stays read-only by default.",
+        "Recommends enrich, ingest, or derive if the KB has a gap."
+      ]
+    },
+    {
+      "id": "migrate-safety",
+      "prompt": "/nerdbot migrate ./knowledge-base move wiki/topics/vendor-landscape.md to wiki/platform/vendor-landscape.md and replace the old path everywhere",
+      "expected_output": "A migration-first planning response that inventories canonical material, consumers, rollback, and Obsidian navigation impacts before any rename or cutover.",
+      "files": [
+        "knowledge-base/wiki/topics/vendor-landscape.md",
+        "knowledge-base/indexes/source-map.md",
+        "knowledge-base/indexes/coverage.md"
+      ],
+      "assertions": [
+        "Dispatches to Migration.",
+        "Loads references/migration-playbooks.md.",
+        "Considers additive repair before migration cutover.",
+        "Requires explicit confirmation before any move, rename, delete, or destructive cutover.",
+        "Preserves or repairs wikilinks, embeds, aliases, and Dataview-sensitive metadata in the plan."
+      ]
+    },
+    {
+      "id": "large-source-stub-ingest",
+      "prompt": "/nerdbot ingest ./incoming/vendor-demo-video.mp4",
+      "expected_output": "An ingest response that preserves the source as raw evidence and uses a provenance-rich pointer or stub when vendoring a large binary into git is impractical.",
+      "files": [
+        "incoming/vendor-demo-video.mp4"
+      ],
+      "assertions": [
+        "Dispatches to Ingest.",
+        "Preserves originals in raw.",
+        "Uses a checksum/size/location import stub or pointer for a source over 50 MB when needed.",
+        "Updates indexes and provenance expectations around the ingest plan."
+      ]
+    },
+    {
+      "id": "no-confirmation-plan-only",
+      "prompt": "Please fix this messy vault and normalize the note names, aliases, wikilinks, shared .obsidian surfaces, and attachment layout, but do not ask me any questions because I am about to go offline.",
+      "expected_output": "A plan-only response that inventories the vault, identifies the first safe batches, and stops short of high-impact execution because confirmation is unavailable.",
+      "files": [],
+      "assertions": [
+        "Activates nerdbot for the vault-repair request.",
+        "Inventories the repo before proposing edits.",
+        "Stops after inventory and plan for high-impact work when confirmation is unavailable.",
+        "Returns exact files or paths that would change in the first approved batch."
+      ]
+    },
+    {
+      "id": "generic-notes-negative-control",
+      "prompt": "Please help me turn today's journal thoughts into nicer personal notes and a private reflection outline.",
+      "expected_output": "Nerdbot should not trigger because the request is freeform personal note-taking rather than layered KB maintenance.",
+      "files": [],
+      "assertions": [
+        "Does not activate nerdbot.",
+        "Recognizes the task as journaling or generic notes rather than a knowledge-base workflow.",
+        "Avoids reframing the request as provenance repair, vault migration, or raw/wiki restructuring."
+      ]
+    }
+  ]
+}

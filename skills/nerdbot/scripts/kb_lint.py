@@ -6,9 +6,9 @@ wiki pages, duplicate or overlapping pages, broken local links, raw sources
 without summary stubs where detectable, and index/activity coverage heuristics.
 
 Usage examples:
-    python kb_lint.py --root .
-    uv run python skills/nerdbot/scripts/kb_lint.py --root ./knowledge-base
-    uv run python skills/nerdbot/scripts/kb_lint.py --root ./client-repo --include-unlayered
+    python3 scripts/kb_lint.py --root .
+    python3 scripts/kb_lint.py --root ./knowledge-base
+    python3 scripts/kb_lint.py --root ./client-repo --include-unlayered
 """
 
 from __future__ import annotations
@@ -135,7 +135,7 @@ def markdown_to_plain_text(text: str, *, max_words: int = 400) -> str:
     """Reduce markdown to a comparable text snippet.
 
     Examples:
-        >>> markdown_to_plain_text('# Title\n\nSee [map](x.md).', max_words=5)
+        >>> markdown_to_plain_text('# Title\\n\\nSee [map](x.md).', max_words=5)
         'title see map'
     """
     without_frontmatter = text

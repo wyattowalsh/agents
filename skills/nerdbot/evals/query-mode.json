@@ -1,0 +1,16 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot query \"What do we know about vendor pricing risk?\"",
+  "files": [
+    "knowledge-base/wiki/index.md",
+    "knowledge-base/indexes/source-map.md",
+    "knowledge-base/indexes/coverage.md"
+  ],
+  "expected_behavior": [
+    "Agent dispatches to the Query workflow based on the explicit '/nerdbot query' invocation",
+    "Agent loads references/kb-architecture.md before answering so the response follows the KB layer contract",
+    "Agent reads wiki and indexes first, using raw only to verify citations or confirm gaps",
+    "Agent answers with note paths, wikilinks, provenance references, and an explicit confidence level",
+    "Agent keeps query read-only by default and recommends enrich, ingest, or derive when the KB has a partial answer or a gap"
+  ]
+}

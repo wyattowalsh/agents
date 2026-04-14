@@ -1,0 +1,12 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot improve ./client-repo",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to the Existing Imperfect Repo workflow based on the explicit '/nerdbot improve' invocation",
+    "Agent runs an inventory-first, read-only assessment before proposing edits",
+    "Agent identifies canonical material, source surfaces, risky paths, shared .obsidian surfaces, and volatile workspace files",
+    "Agent proposes an additive-first repair plan that normalizes the vault before deeper enrichment",
+    "Agent requires explicit confirmation before any destructive or high-impact structural batch"
+  ]
+}
