@@ -17,6 +17,7 @@ GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
 CLAUDE_COMPAT_MD = REPO_ROOT / "instructions" / "claude-code-global.md"
 COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
 GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
+OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
 TOOLING_POLICY_PATH = CONFIG_DIR / "tooling-policy.json"
 SYNC_MANIFEST_PATH = CONFIG_DIR / "sync-manifest.json"
@@ -56,6 +57,9 @@ GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
 CRUSH_CONFIG_PATH = HOME / ".config" / "crush" / "crush.json"
+CHERRY_STUDIO_DIR = HOME / "Library" / "Application Support" / "CherryStudio"
+CHERRY_STUDIO_IMPORT_DIR = CHERRY_STUDIO_DIR / "mcp-import"
+CHERRY_STUDIO_MANAGED_IMPORT_DIR = CHERRY_STUDIO_IMPORT_DIR / "managed"
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -68,8 +72,8 @@ NAME_MAP = {
     "apple mail": "apple-mail",
     "deep lucid 3d": "deep-lucid-3d",
     "defaulttools": "default",
-    "duck duck go search": "duckduckgo-search",
-    "duckduckgo": "duckduckgo-search",
+    "duck duck go search": "duckduckgo",
+    "duckduckgo-search": "duckduckgo",
     "package version": "package-version",
     "shannon problem solver": "shannon-thinking",
     "structured thinking": "structured-thinking",
@@ -78,11 +82,8 @@ REMOVED_MCP_SERVERS = {
     "ableton",
     "apple-mail",
     "default",
-    "playwright",
     "playwright-headless",
     "serena",
-    "things",
-    "web-search",
 }
 CORE_INVENTORY = [
     "context7",
@@ -186,6 +187,22 @@ def write_json(ctx: SyncContext, path: Path, data: Any) -> None:
     write_text(ctx, path, dump_json(data))
 
 
+def sync_generated_json_directory(ctx: SyncContext, path: Path, files: dict[str, Any]) -> None:
+    existing: set[str] = set()
+    if path.exists() and path.is_dir():
+        existing = {child.name for child in path.iterdir() if child.is_file() and child.suffix == ".json"}
+
+    for file_name, data in files.items():
+        write_json(ctx, path / file_name, data)
+
+    for stale_name in sorted(existing - set(files)):
+        stale_path = path / stale_name
+        ctx.note(f"remove {stale_path}")
+        if not ctx.apply:
+            continue
+        stale_path.unlink()
+
+
 def ensure_symlink(ctx: SyncContext, path: Path, target: Path) -> None:
     target_str = str(target)
     if path.is_symlink() and os.readlink(path) == target_str:
@@ -250,6 +267,48 @@ def load_current_secret_fallbacks() -> dict[str, str]:
 
 def env_placeholder(name: str) -> str:
     return "${" + name + "}"
+
+
+def render_home_path(path: Path) -> str:
+    try:
+        relative = path.resolve().relative_to(HOME.resolve())
+    except ValueError:
+        return str(path)
+    return f"~/{relative.as_posix()}"
+
+
+def normalize_path_value(value: str) -> str:
+    if value == "~":
+        return str(HOME.resolve())
+    if value.startswith("~/"):
+        return str((HOME / value[2:]).resolve())
+    if value.startswith("/"):
+        return str(Path(value).resolve())
+    return value
+
+
+def merge_unique_path_strings(managed: list[str], existing: Any) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+
+    for item in managed:
+        key = normalize_path_value(item)
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(item)
+
+    if isinstance(existing, list):
+        for item in existing:
+            if not isinstance(item, str):
+                continue
+            key = normalize_path_value(item)
+            if key in seen:
+                continue
+            seen.add(key)
+            merged.append(item)
+
+    return merged
 
 
 def resolve_env_value(name: str, fallbacks: dict[str, str]) -> str:
@@ -486,7 +545,8 @@ def merge_codex_config(
     filtered_chunks: list[str] = []
     for header, chunk in chunk_toml_sections(remove_managed_codex_block(current)):
         server_name = codex_mcp_server_name(header)
-        if server_name and server_name in managed_names:
+        normalized_server_name = normalize_name(server_name) if server_name else None
+        if normalized_server_name and normalized_server_name in managed_names:
             continue
         filtered_chunks.append(chunk)
     filtered = "".join(filtered_chunks).strip()
@@ -715,6 +775,67 @@ def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> 
     return servers
 
 
+def cherry_remote_transport(url: str) -> str:
+    return "streamableHttp" if url.endswith("/mcp") else "sse"
+
+
+def render_cherry_server(name: str, entry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
+    remote_url = extract_remote_url(entry["command"], args)
+
+    if remote_url:
+        server: dict[str, Any] = {
+            "type": cherry_remote_transport(remote_url),
+            "baseUrl": remote_url,
+        }
+    else:
+        server = {
+            "type": entry.get("transport", "stdio"),
+            "command": entry["command"],
+            "args": args,
+        }
+
+    if entry.get("env"):
+        server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+
+    return server
+
+
+def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    servers = {
+        name: render_cherry_server(name, entry, fallbacks) for name, entry in enabled_registry_servers(registry).items()
+    }
+    files: dict[str, Any] = {"all.json": {"mcpServers": servers}}
+
+    for name, server in servers.items():
+        files[f"{name}.json"] = {"mcpServers": {name: server}}
+
+    return files
+
+
+def merge_opencode_config(ctx: SyncContext, registry: dict[str, Any], fallbacks: dict[str, str]) -> None:
+    if not OPENCODE_CONFIG_PATH.exists():
+        return
+
+    settings = load_json(OPENCODE_CONFIG_PATH)
+    existing_mcp = settings.get("mcp")
+    settings["mcp"] = merge_server_maps(
+        render_opencode_mcp(registry, fallbacks), existing_mcp if isinstance(existing_mcp, dict) else {}
+    )
+    settings["instructions"] = merge_unique_path_strings(
+        [render_home_path(GLOBAL_MD), render_home_path(OPENCODE_GLOBAL_MD)],
+        settings.get("instructions"),
+    )
+
+    skills = settings.get("skills")
+    if not isinstance(skills, dict):
+        skills = {}
+        settings["skills"] = skills
+    skills["paths"] = merge_unique_path_strings([render_home_path(SKILLS_DIR)], skills.get("paths"))
+
+    write_json(ctx, OPENCODE_CONFIG_PATH, settings)
+
+
 def merge_gemini_settings(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
@@ -734,18 +855,18 @@ def merge_gemini_settings(
         settings["model"] = defaults["model"]
     if "effort_level" in defaults:
         settings["effortLevel"] = defaults["effort_level"]
-        
+
     trusted = set(settings.get("trusted_folders", []))
     trusted.update(policy.get("trusted_roots", []))
     settings["trusted_folders"] = sorted(trusted)
-    
+
     allowed = set(settings.get("allowed_urls", []))
     for domain in policy.get("docs_domains", []):
         allowed.add(f"https://{domain}")
     settings["allowed_urls"] = sorted(allowed)
-    
+
     settings["experimental"] = True
-    
+
     write_json(ctx, GEMINI_SETTINGS_PATH, settings)
 
 
@@ -796,9 +917,7 @@ def sync_home_targets(
     merge_gemini_settings(ctx, registry, policy, fallbacks)
     write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CHATGPT_MCP_PATH, "mcpServers", render_client_mcp(registry, fallbacks)["mcpServers"])
-    merge_server_root_config(
-        ctx, COPILOT_SHADOW_MCP_PATH, "mcpServers", render_shadow_copilot_mcp(registry, fallbacks)
-    )
+    merge_server_root_config(ctx, COPILOT_SHADOW_MCP_PATH, "mcpServers", render_shadow_copilot_mcp(registry, fallbacks))
     merge_server_root_config(
         ctx,
         GEMINI_ANTIGRAVITY_MCP_PATH,
@@ -811,10 +930,13 @@ def sync_home_targets(
         "mcpServers",
         render_client_mcp(registry, fallbacks)["mcpServers"],
     )
-    merge_server_root_config(ctx, OPENCODE_CONFIG_PATH, "mcp", render_opencode_mcp(registry, fallbacks))
+    merge_opencode_config(ctx, registry, fallbacks)
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
+    sync_generated_json_directory(
+        ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)
+    )
     sync_skill_entries(ctx, CODEX_SKILLS_DIR)
     sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
     sync_skill_entries(ctx, GEMINI_SKILLS_DIR)
@@ -822,7 +944,7 @@ def sync_home_targets(
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Sync Codex, Claude, and Copilot config from repo-managed sources.")
+    parser = argparse.ArgumentParser(description="Sync repo-managed agent stack config into local harnesses.")
     parser.add_argument("--targets", default="all", help="Comma-separated list: repo,home,all")
     parser.add_argument("--apply", action="store_true", help="Apply changes")
     parser.add_argument("--check", action="store_true", help="Check drift without writing")

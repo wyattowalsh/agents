@@ -8,7 +8,7 @@ import { Card, CardGrid, Badge, Aside, Steps } from '@astrojs/starlight/componen
 
 > Hand-maintained catalog of MCP servers configured in this environment, organized by category.
 
-<Badge text="30 configured servers" variant="note" size="large" />
+<Badge text="34 configured servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
@@ -25,21 +25,22 @@ Edit `config/mcp-registry.json`, then preview local drift with `uv run python sc
 </Aside>
 
 <Aside type="note" title="Exact vs merge behavior">
-`ChatGPT Desktop`, the GitHub Copilot shadow config, `Gemini antigravity`, the Gemini extension config, `OpenCode`, `AITK`, and `Crush` all receive the canonical baseline **and** preserve non-canonical extras already present in those files. `Claude Desktop`, `Cursor`, `Gemini CLI`, `GitHub Copilot CLI`, and `Codex` are rewritten to the exact canonical baseline.
+`ChatGPT Desktop`, the GitHub Copilot shadow config, `Gemini antigravity`, the Gemini extension config, `OpenCode`, `AITK`, and `Crush` all receive the canonical baseline **and** preserve non-canonical extras already present in those files. `Claude Desktop`, `Cursor`, `Gemini CLI`, `GitHub Copilot CLI`, and `Codex` are rewritten to the exact canonical baseline. `Cherry Studio` receives a generated import pack in a tool-owned subdirectory instead of direct config mutation so unmanaged local MCP entries and ad hoc import bundles in the parent directory stay untouched.
 </Aside>
 
 | Client | Managed path | Root key / shape | Sync behavior |
 | --- | --- | --- | --- |
 | ChatGPT Desktop | `~/Library/Application Support/ChatGPT/mcp.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras |
 | Claude Code local enablement | `~/.claude/settings.local.json` | `enabledMcpjsonServers` | Filters enabled names to valid synced servers |
-| Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `mcpServers` | Exact 30-server baseline |
-| Codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Exact 30-server baseline |
+| Claude Desktop | `~/Library/Application Support/Claude/claude_desktop_config.json` | `mcpServers` | Exact canonical baseline |
+| Cherry Studio | `~/Library/Application Support/CherryStudio/mcp-import/managed/` | `all.json` + one `<server>.json` per managed server | Generated import pack; does not mutate live app state |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.<name>]` | Exact canonical baseline |
 | Crush | `~/.config/crush/crush.json` | `mcp` | Canonical baseline + preserve non-canonical extras |
-| Cursor | `~/.cursor/mcp.json` | `mcpServers` | Exact 30-server baseline |
-| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` | Exact 30-server baseline |
+| Cursor | `~/.cursor/mcp.json` | `mcpServers` | Exact canonical baseline |
+| Gemini CLI | `~/.gemini/settings.json` | `mcpServers` | Exact canonical baseline |
 | Gemini antigravity | `~/.gemini/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras |
 | Gemini extension antigravity | `~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json` | `mcpServers` | Canonical baseline + preserve extension-specific extras |
-| GitHub Copilot CLI | `~/.copilot/mcp-config.json` | `mcpServers` | Exact 30-server baseline with Copilot tool allowlists |
+| GitHub Copilot CLI | `~/.copilot/mcp-config.json` | `mcpServers` | Exact canonical baseline with Copilot tool allowlists |
 | GitHub Copilot shadow config | `~/.config/.copilot/mcp-config.json` | `mcpServers` | Canonical baseline + preserve non-canonical extras in Copilot-style schema |
 | OpenCode | `~/.config/opencode/opencode.json` | `mcp` | Canonical baseline + preserve non-canonical extras in local/remote schema |
 | AITK | `~/.aitk/mcp.json` | `servers` | Canonical baseline + preserve non-canonical extras |
@@ -62,11 +63,17 @@ Edit `config/mcp-registry.json`, then preview local drift with `uv run python sc
    uv run python scripts/sync_agent_stack.py --targets repo,home --apply
    ```
 
+4. Import Cherry Studio MCP files only if you use Cherry Studio.
+
+   Use `~/Library/Application Support/CherryStudio/mcp-import/managed/<server>.json` for additive one-server imports, or `~/Library/Application Support/CherryStudio/mcp-import/managed/all.json` only when you intentionally want to replace Cherry Studio's full managed MCP list.
+
+   Top-level files already sitting in `~/Library/Application Support/CherryStudio/mcp-import/` are left alone intentionally.
+
 </Steps>
 
 ## DuckDuckGo setup (representative client snippets)
 
-Use server key `duckduckgo-search` with the `duckduckgo-mcp-server` package.
+Use server key `duckduckgo` with the `duckduckgo-mcp-server` package.
 
 #### Standard JSON clients (`mcpServers`)
 
@@ -75,7 +82,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 ```json
 {
   "mcpServers": {
-    "duckduckgo-search": {
+    "duckduckgo": {
       "command": "uvx",
       "args": ["duckduckgo-mcp-server"]
     }
@@ -86,7 +93,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 #### Codex (`~/.codex/config.toml`)
 
 ```toml
-[mcp_servers.duckduckgo-search]
+[mcp_servers.duckduckgo]
 command = "uvx"
 args = ["duckduckgo-mcp-server"]
 ```
@@ -96,7 +103,7 @@ args = ["duckduckgo-mcp-server"]
 ```json
 {
   "mcpServers": {
-    "duckduckgo-search": {
+    "duckduckgo": {
       "type": "stdio",
       "command": "uvx",
       "args": ["duckduckgo-mcp-server"],
@@ -111,7 +118,7 @@ args = ["duckduckgo-mcp-server"]
 ```json
 {
   "mcp": {
-    "duckduckgo-search": {
+    "duckduckgo": {
       "type": "local",
       "command": ["uvx", "duckduckgo-mcp-server"],
       "enabled": true
@@ -125,7 +132,7 @@ args = ["duckduckgo-mcp-server"]
 ```json
 {
   "servers": {
-    "duckduckgo-search": {
+    "duckduckgo": {
       "type": "stdio",
       "command": "uvx",
       "args": ["duckduckgo-mcp-server"]
@@ -259,7 +266,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
   <Card title="g-search">
     <Badge text="Google" variant="tip" /> Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web.
   </Card>
-  <Card title="duckduckgo-search">
+  <Card title="duckduckgo">
     <Badge text="Privacy First" variant="tip" /> Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
   </Card>
   <Card title="arxiv">
