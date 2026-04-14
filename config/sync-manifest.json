@@ -122,6 +122,10 @@
       "mode": "merged"
     },
     {
+      "path": "/Users/ww/Library/Application Support/CherryStudio/mcp-import/managed",
+      "mode": "generated"
+    },
+    {
       "path": "/Users/ww/.codex/skills",
       "mode": "symlinked-entries"
     },
