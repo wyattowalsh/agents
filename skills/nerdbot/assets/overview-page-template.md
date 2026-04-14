@@ -24,10 +24,10 @@ source_count: 0
 | `[path]` | [authoritative / pending review] | [notes] |
 
 ## Key concepts
-- [ ] `[[[path-to-concept-page]|Concept]]`
+- [ ] `[[path-to-concept-page|Concept]]`
 
 ## Key entities
-- [ ] `[[[path-to-entity-page]|Entity]]`
+- [ ] `[[path-to-entity-page|Entity]]`
 
 ## Current wiki map
 | Path | Purpose | Coverage status |
@@ -48,9 +48,9 @@ source_count: 0
 | Summary | `[supporting source or path]` | [detail] |
 
 ## Related indexes
-- `[[[path-to-source-map]|Source Map]]`
-- `[[[path-to-coverage-index]|Coverage]]`
-- `[[[path-to-activity-log]|Activity Log]]`
+- `[[path-to-source-map|Source Map]]`
+- `[[path-to-coverage-index|Coverage]]`
+- `[[path-to-activity-log|Activity Log]]`
 
 ## Vault conventions
 - Prefer `[[wikilinks]]` for local notes.

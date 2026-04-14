@@ -1,0 +1,13 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot ingest ./incoming/vendor-demo-video.mp4",
+  "files": [
+    "incoming/vendor-demo-video.mp4"
+  ],
+  "expected_behavior": [
+    "Agent dispatches to the Ingest workflow for the provided source path",
+    "Agent preserves the source as raw evidence instead of paraphrasing it away",
+    "For a source over 50 MB or an impractical binary, agent records a provenance-rich pointer or stub with checksum, size, original location, and import notes instead of pretending the binary was vendored into git",
+    "Agent updates indexes and provenance stubs around the ingest plan rather than skipping large-source traceability"
+  ]
+}

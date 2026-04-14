@@ -9,8 +9,8 @@
   "expected_behavior": [
     "Agent dispatches to the Audit workflow based on the explicit '/nerdbot audit' invocation",
     "Agent loads references/audit-checklist.md before presenting findings or recommendations",
-    "Agent runs 'uv run python skills/nerdbot/scripts/kb_inventory.py --root ./knowledge-base' before any recommendation so the audit starts from a read-only inventory",
-    "Agent runs 'uv run python skills/nerdbot/scripts/kb_lint.py --root ./knowledge-base' as a read-only verification pass",
+    "Agent runs 'python3 scripts/kb_inventory.py --root ./knowledge-base' before any recommendation so the audit starts from a read-only inventory",
+    "Agent runs 'python3 scripts/kb_lint.py --root ./knowledge-base' as a read-only verification pass",
     "Agent checks for Obsidian-specific issues such as broken [[wikilinks]], broken embeds, alias collisions, and shared .obsidian drift when the repo is a vault",
     "Agent classifies findings as critical, warning, or suggestion with concrete paths and evidence",
     "Agent recommends the next smallest additive repair batch instead of mutating files during the audit"

@@ -1,0 +1,10 @@
+{
+  "skills": ["nerdbot"],
+  "query": "Please help me turn today's journal thoughts into nicer personal notes and a private reflection outline.",
+  "files": [],
+  "expected_behavior": [
+    "Agent does NOT activate nerdbot for this request",
+    "Agent recognizes the request as freeform personal note-taking or journaling rather than layered knowledge-base maintenance",
+    "Agent avoids reframing the request as raw/wiki KB structuring, provenance repair, or vault migration work"
+  ]
+}
