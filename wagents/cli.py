@@ -687,6 +687,11 @@ def validate(
             dir_name = mcp_subdir.name
             if not KEBAB_CASE_PATTERN.match(dir_name):
                 add_error(f"mcp/{dir_name}", "directory name must be kebab-case")
+            # Check if it's a Node.js project
+            package_json = mcp_subdir / "package.json"
+            if package_json.exists():
+                continue
+
             server_py = mcp_subdir / "server.py"
             if not server_py.exists():
                 add_error(f"mcp/{dir_name}", "missing server.py")
@@ -1059,16 +1064,19 @@ def readme(
             "| `wagents install` | Install all skills to all agents |",
             "| `wagents install -a <agent>` | Install all skills to specific agent |",
             "| `wagents install <name>` | Install specific skill to all agents |",
+            "| `wagents install <name> -a <agent>` | Install specific skill to specific agents |",
             "| `wagents docs init` | One-time setup: install docs dependencies |",
             "| `wagents docs generate` | Generate MDX content pages from assets |",
             (
                 "| `wagents docs generate --include-installed` | Include installed "
-                "skills from ~/.claude/skills/ in generated docs |"
+                "skills discovered from local agent skill directories in generated docs |"
             ),
             "| `wagents docs dev` | Generate + launch dev server |",
             "| `wagents docs build` | Generate + production build |",
             "| `wagents docs preview` | Generate + build + preview server |",
             "| `wagents docs clean` | Remove generated content pages |",
+            "",
+            "Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -g -y --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.",
             "",
         ]
     )
@@ -1085,7 +1093,7 @@ def readme(
             "- [Cursor](https://cursor.sh/)",
             "- [Gemini CLI](https://github.com/google/gemini-cli)",
             "- [GitHub Copilot](https://github.com/features/copilot)",
-            "- [OpenCode](https://github.com/opencode-ai/opencode)",
+            "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
             "And other [agentskills.io](https://agentskills.io)-compatible agents.",
             "",
         ]
@@ -1325,6 +1333,33 @@ def _collect_evals() -> list[tuple[Path, dict]]:
     return results
 
 
+def _is_eval_manifest(data: dict) -> bool:
+    """Return True when an eval JSON file uses the canonical manifest shape."""
+    return "evals" in data
+
+
+def _expand_eval_cases(path: Path, data: dict) -> list[dict[str, object]]:
+    """Expand an eval file into normalized per-case records."""
+    skill_name = path.parent.parent.name
+    if _is_eval_manifest(data):
+        records: list[dict[str, object]] = []
+        manifest_skill = data.get("skill_name", skill_name)
+        for index, item in enumerate(data.get("evals", []), start=1):
+            if not isinstance(item, dict):
+                records.append({"skill": manifest_skill, "query": "", "source": path.name, "case_id": index})
+                continue
+            records.append(
+                {
+                    "skill": manifest_skill,
+                    "query": item.get("prompt", ""),
+                    "source": path.name,
+                    "case_id": item.get("id", index),
+                }
+            )
+        return records
+    return [{"skill": skill_name, "query": data.get("query", ""), "source": path.name, "case_id": path.stem}]
+
+
 @eval_app.command("list")
 def eval_list(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
@@ -1340,30 +1375,28 @@ def eval_list(
         )
         return
 
-    # Group by skill directory name
-    by_skill: dict[str, list[dict]] = {}
+    # Group by skill directory name.
+    by_skill: dict[str, list[dict[str, object]]] = {}
     for path, data in evals:
-        skill_name = path.parent.parent.name
-        by_skill.setdefault(skill_name, []).append(data)
+        for record in _expand_eval_cases(path, data):
+            skill_name = str(record["skill"])
+            by_skill.setdefault(skill_name, []).append(record)
 
     rows: list[dict[str, str | int]] = []
     for skill_name in sorted(by_skill):
         items = by_skill[skill_name]
         count = len(items)
-        sample = ""
-        for item in items:
-            q = item.get("query", "")
-            if q:
-                sample = q
-                break
+        sample = next((str(item.get("query", "")) for item in items if item.get("query", "")), "")
         rows.append({"skill": skill_name, "eval_count": count, "sample_query": sample})
+
+    total_cases = sum(len(items) for items in by_skill.values())
 
     text_lines = [f"{'Skill':<25} {'Evals':>5}  Sample Query", "-" * 70]
     text_lines.extend([f"{row['skill']:<25} {row['eval_count']:>5}  {row['sample_query']}" for row in rows])
     _emit_structured_output(
         format_,
         text_lines=text_lines,
-        json_data={"count": len(rows), "eval_count": len(evals), "skills": rows},
+        json_data={"count": len(rows), "eval_count": total_cases, "skills": rows},
         jsonl_records=[{"type": "skill", **row} for row in rows],
     )
 
@@ -1397,7 +1430,38 @@ def eval_validate(
             add_error(rel, "invalid JSON")
             continue
 
-        # Required field: skills
+        if _is_eval_manifest(data):
+            if not isinstance(data.get("skill_name"), str) or not data["skill_name"].strip():
+                add_error(rel, "'skill_name' must be a non-empty string")
+            elif not (skills_dir / data["skill_name"]).is_dir():
+                add_error(rel, f"skill '{data['skill_name']}' does not match a skill directory")
+
+            if not isinstance(data.get("evals"), list) or len(data["evals"]) < 1:
+                add_error(rel, "'evals' must be a non-empty list")
+                continue
+
+            for index, item in enumerate(data["evals"], start=1):
+                case_label = f"eval {index}"
+                if not isinstance(item, dict):
+                    add_error(rel, f"{case_label} must be an object")
+                    continue
+                if not isinstance(item.get("prompt"), str) or not item["prompt"].strip():
+                    add_error(rel, f"{case_label} missing required non-empty string 'prompt'")
+                if not isinstance(item.get("expected_output"), str) or not item["expected_output"].strip():
+                    add_error(rel, f"{case_label} missing required non-empty string 'expected_output'")
+                if "files" in item and (
+                    not isinstance(item["files"], list)
+                    or any(not isinstance(file_path, str) for file_path in item["files"])
+                ):
+                    add_error(rel, f"{case_label} field 'files' must be a list of strings")
+                if "assertions" in item:
+                    if not isinstance(item["assertions"], list) or len(item["assertions"]) < 1:
+                        add_error(rel, f"{case_label} field 'assertions' must be a non-empty list of strings")
+                    elif any(not isinstance(assertion, str) for assertion in item["assertions"]):
+                        add_error(rel, f"{case_label} field 'assertions' must contain only strings")
+            continue
+
+        # Legacy eval scenario format.
         if "skills" not in data:
             add_error(rel, "missing required field 'skills'")
         elif not isinstance(data["skills"], list) or len(data["skills"]) < 1:
@@ -1409,13 +1473,11 @@ def eval_validate(
                 elif not (skills_dir / s).is_dir():
                     add_error(rel, f"skill '{s}' does not match a skill directory")
 
-        # Required field: query
         if "query" not in data:
             add_error(rel, "missing required field 'query'")
         elif not isinstance(data["query"], str) or not data["query"].strip():
             add_error(rel, "'query' must be a non-empty string")
 
-        # Required field: expected_behavior
         if "expected_behavior" not in data:
             add_error(rel, "missing required field 'expected_behavior'")
         elif not isinstance(data["expected_behavior"], list) or len(data["expected_behavior"]) < 1:
@@ -1425,10 +1487,11 @@ def eval_validate(
                 if not isinstance(eb, str):
                     add_error(rel, "each entry in 'expected_behavior' must be a string")
 
+    total_cases = sum(len(_expand_eval_cases(path, data)) for path, data in evals)
     text_errors = [_format_error(error["source"], error["message"]) for error in errors]
     json_result = {
         "ok": not errors,
-        "eval_count": len(evals),
+        "eval_count": total_cases,
         "error_count": len(errors),
         "errors": errors,
         "message": "All evals valid" if not errors else "Eval validation failed",
@@ -1438,7 +1501,7 @@ def eval_validate(
         {
             "type": "summary",
             "ok": not errors,
-            "eval_count": len(evals),
+            "eval_count": total_cases,
             "error_count": len(errors),
             "message": json_result["message"],
         }
@@ -1487,9 +1550,10 @@ def eval_coverage(
     # Count evals per skill
     evals = _collect_evals()
     counts: dict[str, int] = {}
-    for path, _data in evals:
-        skill_name = path.parent.parent.name
-        counts[skill_name] = counts.get(skill_name, 0) + 1
+    for path, data in evals:
+        for record in _expand_eval_cases(path, data):
+            skill_name = str(record["skill"])
+            counts[skill_name] = counts.get(skill_name, 0) + 1
 
     rows: list[dict[str, str | int | bool]] = []
     for name in skill_names:
