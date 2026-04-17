@@ -432,10 +432,12 @@ h3 { font-size: 0.95rem; }
 
 .pattern-dot.found { background: hsl(var(--grade-a)); }
 .pattern-dot.suggested { background: transparent; border: 1.5px solid hsl(var(--grade-c)); }
+.pattern-dot.not-applicable { background: transparent; border: 1.5px dashed hsl(var(--text-muted)); opacity: 0.9; }
 .pattern-dot.missing { background: hsl(var(--border)); opacity: 0.5; }
 
 .pattern-name.found { color: hsl(var(--text)); }
 .pattern-name.suggested { color: hsl(var(--grade-c)); }
+.pattern-name.not-applicable { color: hsl(var(--text-muted)); }
 .pattern-name.missing { color: hsl(var(--text-muted)); opacity: 0.5; }
 
 /* ==========================================================================
@@ -945,6 +947,7 @@ h3 { font-size: 0.95rem; }
     "references": "Refs",
     "critical-rules": "Rules",
     "scripts": "Scripts",
+    "portability": "Port",
     "conciseness": "Conc"
   };
 
@@ -952,7 +955,7 @@ h3 { font-size: 0.95rem; }
     "dispatch-table", "reference-file-index", "critical-rules",
     "canonical-vocabulary", "scope-boundaries", "classification-gating",
     "scaling-strategy", "state-management", "scripts", "templates",
-    "hooks", "progressive-disclosure", "body-substitutions"
+    "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
   ];
 
   /** Format duration between two ISO timestamps (or from start to now) */
@@ -1129,7 +1132,7 @@ h3 { font-size: 0.95rem; }
         <div class="header-left">
           <h1>Creating: ${data.skill_name}</h1>
           <div class="process-status-bar">
-            <span class="pill">Mode: ${data.mode}</span>
+            <span class="pill">Mode: ${data.mode_label ?? data.mode}</span>
             <span class="pill" style="border-color: hsl(var(${statusVar}) / 0.5); color: hsl(var(${statusVar}));">Status: ${data.status}</span>
             <span class="pill">Elapsed: ${elapsed}</span>
           </div>
@@ -1412,7 +1415,7 @@ h3 { font-size: 0.95rem; }
 
   const renderSkillCard = (sk, index) => {
     const pFound = (sk.patterns_found ?? []).length;
-    const pTotal = ALL_PATTERNS.length;
+    const pApplicable = pFound + (sk.patterns_suggested ?? []).length;
 
     return html`
       <div class="card skill-card" data-grade="${sk.grade}" data-action="detail" data-skill="${sk.skill}"
@@ -1434,7 +1437,7 @@ h3 { font-size: 0.95rem; }
           </div>
         </div>
         <div class="skill-meta">
-          <span class="pill">${String(pFound)}/${String(pTotal)} patterns</span>
+          <span class="pill">${String(pFound)}/${String(pApplicable)} applicable patterns</span>
           ${trust(sk.meta ? `
             <span class="pill">${sk.meta.lines} lines</span>
             <span class="pill">${sk.meta.refs} refs</span>
@@ -1578,12 +1581,16 @@ h3 { font-size: 0.95rem; }
   const renderPatternGrid = (sk) => {
     const found = new Set(sk.patterns_found ?? []);
     const suggested = new Set(sk.patterns_suggested ?? []);
+    const notApplicable = new Set(sk.patterns_not_applicable ?? []);
 
     return trust(ALL_PATTERNS.map(p => {
       let dotClass, nameClass;
       if (found.has(p)) {
         dotClass = "found";
         nameClass = "found";
+      } else if (notApplicable.has(p)) {
+        dotClass = "not-applicable";
+        nameClass = "not-applicable";
       } else if (suggested.has(p)) {
         dotClass = "suggested";
         nameClass = "suggested";
@@ -1594,7 +1601,7 @@ h3 { font-size: 0.95rem; }
       return `
         <div class="pattern-item">
           <span class="pattern-dot ${dotClass}"></span>
-          <span class="pattern-name ${nameClass}">${escH(p)}</span>
+          <span class="pattern-name ${nameClass}">${escH(p)}${notApplicable.has(p) ? ' <span style="color: hsl(var(--text-muted)); font-size: 0.72rem;">(n/a)</span>' : ''}</span>
         </div>
       `;
     }).join(""));
@@ -1649,10 +1656,11 @@ h3 { font-size: 0.95rem; }
           </div>
 
           <div class="card" style="margin-bottom: 1rem;" data-grade="${escH(sk.grade)}">
-            <h3 style="margin-bottom: 0.75rem;">Pattern Coverage <span style="font-weight: 400; color: hsl(var(--text-muted)); font-size: 0.8rem;">${(sk.patterns_found ?? []).length}/${ALL_PATTERNS.length}</span></h3>
+            <h3 style="margin-bottom: 0.75rem;">Pattern Coverage <span style="font-weight: 400; color: hsl(var(--text-muted)); font-size: 0.8rem;">${(sk.patterns_found ?? []).length}/${(sk.patterns_found ?? []).length + (sk.patterns_suggested ?? []).length} applicable</span></h3>
             <div style="display: flex; gap: 1rem; margin-bottom: 0.75rem; font-size: 0.72rem; color: hsl(var(--text-muted));">
               <span><span class="pattern-dot found" style="display: inline-block; vertical-align: middle;"></span> Found</span>
               <span><span class="pattern-dot suggested" style="display: inline-block; vertical-align: middle;"></span> Suggested</span>
+              <span><span class="pattern-dot not-applicable" style="display: inline-block; vertical-align: middle;"></span> Not applicable</span>
               <span><span class="pattern-dot missing" style="display: inline-block; vertical-align: middle;"></span> Missing</span>
             </div>
             <div class="pattern-grid">

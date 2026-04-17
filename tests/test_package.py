@@ -5,6 +5,8 @@ import sys
 import zipfile
 from pathlib import Path
 
+import pytest
+
 # Insert the package script directory into sys.path so we can import directly.
 sys.path.insert(0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts"))
 
@@ -12,7 +14,9 @@ from package import (
     ABSOLUTE_PATH_RE,
     check_name_directory_match,
     check_no_absolute_paths,
-    check_reference_files,
+    check_referenced_files,
+    main,
+    package_all,
     package_skill,
 )
 
@@ -80,8 +84,8 @@ class TestZipValidity:
 
         with zipfile.ZipFile(zip_path) as zf:
             names = zf.namelist()
-            assert "SKILL.md" in names
-            assert "manifest.json" in names
+            assert "test-pkg/SKILL.md" in names
+            assert "test-pkg/manifest.json" in names
 
     def test_manifest_json_is_valid(self, tmp_path: Path):
         skill_dir = _make_skill(tmp_path)
@@ -91,11 +95,26 @@ class TestZipValidity:
         zip_path = Path(result["output_path"])
 
         with zipfile.ZipFile(zip_path) as zf:
-            manifest = json.loads(zf.read("manifest.json"))
+            manifest = json.loads(zf.read("test-pkg/manifest.json"))
             assert manifest["name"] == "test-pkg"
             assert manifest["version"] == "1.0.0"
             assert manifest["packaged_by"] == "package.py"
             assert "created_at" in manifest
+
+    def test_zip_includes_assets_and_extra_top_level_files(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path)
+        (skill_dir / "assets").mkdir()
+        (skill_dir / "assets" / "logo.txt").write_text("logo")
+        (skill_dir / "notes.md").write_text("pack me")
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir)
+        zip_path = Path(result["output_path"])
+
+        with zipfile.ZipFile(zip_path) as zf:
+            names = set(zf.namelist())
+            assert "test-pkg/assets/logo.txt" in names
+            assert "test-pkg/notes.md" in names
 
 
 # ---------------------------------------------------------------------------
@@ -123,6 +142,16 @@ class TestDryRun:
         assert len(result["portability_checks"]) > 0
         assert result["files_included"]
 
+    def test_package_all_dry_run_manifest_reports_no_emitted_archives(self, tmp_path: Path):
+        skills_dir = tmp_path / "skills"
+        skills_dir.mkdir()
+        _make_skill(skills_dir)
+        output_dir = tmp_path / "dist"
+
+        data = package_all(skills_dir, output_dir, dry_run=True)
+
+        assert data["manifest"]["skills"][0]["zip"] is None
+
 
 # ---------------------------------------------------------------------------
 # Missing fields
@@ -148,6 +177,119 @@ class TestMissingFields:
         result = package_skill(skill_dir, output_dir, dry_run=True)
 
         assert len(result["warnings"]) >= 3
+
+    def test_dry_run_blocks_on_portability_failures(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path, MINIMAL_SKILL_MD)
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, dry_run=True)
+
+        assert result["blocked"] is True
+        assert result["portable"] is False
+
+    def test_packaging_fails_closed_without_force(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path, MINIMAL_SKILL_MD)
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir)
+
+        assert result["blocked"] is True
+        assert result["output_path"] is not None
+        assert not Path(result["output_path"]).exists()
+        assert result["errors"]
+
+    def test_force_overrides_portability_failures(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path, MINIMAL_SKILL_MD)
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, force=True)
+
+        assert result["blocked"] is False
+        assert Path(result["output_path"]).exists()
+        assert any("--force" in warning for warning in result["warnings"])
+
+    def test_package_all_manifest_only_lists_emitted_archives(self, tmp_path: Path):
+        skills_dir = tmp_path / "skills"
+        skills_dir.mkdir()
+        valid_dir = skills_dir / "valid-skill"
+        valid_dir.mkdir()
+        (valid_dir / "SKILL.md").write_text(
+            """\
+---
+name: valid-skill
+description: Valid skill
+license: MIT
+metadata:
+  author: tester
+  version: "1.0.0"
+---
+
+Body.
+""",
+            encoding="utf-8",
+        )
+        invalid_dir = skills_dir / "invalid-skill"
+        invalid_dir.mkdir()
+        (invalid_dir / "SKILL.md").write_text(
+            """\
+---
+name: invalid-skill
+description: Invalid skill
+---
+
+Body.
+""",
+            encoding="utf-8",
+        )
+        output_dir = tmp_path / "dist"
+
+        data = package_all(skills_dir, output_dir, dry_run=False, force=False)
+        manifest = json.loads((output_dir / "manifest.json").read_text(encoding="utf-8"))
+        results = {result["skill"]: result for result in data["results"]}
+        manifest_entries = {entry["name"]: entry for entry in manifest["skills"]}
+
+        assert results["invalid-skill"]["blocked"] is True
+        assert results["valid-skill"]["blocked"] is False
+        assert (output_dir / "valid-skill-v1.0.0.skill.zip").exists()
+        assert not (output_dir / "invalid-skill-v0.0.0.skill.zip").exists()
+        assert manifest_entries["valid-skill"]["zip"] == "valid-skill-v1.0.0.skill.zip"
+        assert manifest_entries["invalid-skill"]["zip"] is None
+
+    def test_main_exits_nonzero_when_package_all_has_blocked_results(self, monkeypatch, tmp_path: Path):
+        skills_dir = tmp_path / "skills"
+        skills_dir.mkdir()
+        _make_skill(skills_dir)
+        output_dir = tmp_path / "dist"
+        data = package_all(skills_dir, output_dir, dry_run=False)
+        blocked_result = {
+            "skill": "blocked-skill",
+            "version": "0.0.0",
+            "output_path": str(output_dir / "blocked-skill-v0.0.0.skill.zip"),
+            "files_included": [],
+            "files_excluded": [],
+            "portability_checks": [],
+            "portable": False,
+            "blocked": True,
+            "warnings": [],
+            "errors": ["blocked"],
+        }
+        data["results"].append(blocked_result)
+        data["manifest"]["skills"].append(
+            {
+                "name": "blocked-skill",
+                "version": "0.0.0",
+                "description": "Blocked skill",
+                "zip": None,
+            }
+        )
+
+        monkeypatch.setattr("package.package_all", lambda *args, **kwargs: data)
+        monkeypatch.setattr(sys, "argv", ["package.py", "--all"])
+
+        with pytest.raises(SystemExit) as exc_info:
+            main()
+
+        assert exc_info.value.code == 1
 
 
 # ---------------------------------------------------------------------------
@@ -194,25 +336,35 @@ class TestAbsolutePaths:
 
 
 class TestBrokenRefs:
-    def test_detects_missing_reference(self, tmp_path: Path):
+    def test_detects_missing_packaged_resource(self, tmp_path: Path):
         skill_dir = tmp_path / "my-skill"
         skill_dir.mkdir()
         (skill_dir / "references").mkdir()
-        body = "See references/nonexistent.md for details."
+        body = "See scripts/helper.py and references/nonexistent.md for details."
 
-        result = check_reference_files(skill_dir, body)
+        result = check_referenced_files(skill_dir, body)
         assert not result["passed"]
         assert "nonexistent.md" in result["details"]
+        assert "scripts/helper.py" in result["details"]
 
-    def test_passes_with_existing_reference(self, tmp_path: Path):
+    def test_passes_with_existing_referenced_resources(self, tmp_path: Path):
         skill_dir = tmp_path / "my-skill"
         skill_dir.mkdir()
         ref_dir = skill_dir / "references"
         ref_dir.mkdir()
         (ref_dir / "guide.md").write_text("# Guide\n")
-        body = "See references/guide.md for details."
+        scripts_dir = skill_dir / "scripts"
+        scripts_dir.mkdir()
+        (scripts_dir / "helper.py").write_text("print('ok')\n")
+        assets_dir = skill_dir / "assets"
+        assets_dir.mkdir()
+        (assets_dir / "logo.svg").write_text("<svg />\n")
+        body = (
+            "See skills/my-skill/references/guide.md, scripts/helper.py, "
+            "and assets/logo.svg for details."
+        )
 
-        result = check_reference_files(skill_dir, body)
+        result = check_referenced_files(skill_dir, body)
         assert result["passed"]
 
     def test_passes_with_no_references(self, tmp_path: Path):
@@ -220,7 +372,7 @@ class TestBrokenRefs:
         skill_dir.mkdir()
         body = "No reference mentions at all."
 
-        result = check_reference_files(skill_dir, body)
+        result = check_referenced_files(skill_dir, body)
         assert result["passed"]
 
 

@@ -42,7 +42,7 @@ PATTERN_NAMES = [
     "dispatch-table", "reference-file-index", "critical-rules",
     "canonical-vocabulary", "scope-boundaries", "classification-gating",
     "scaling-strategy", "state-management", "scripts", "templates",
-    "hooks", "progressive-disclosure", "body-substitutions",
+    "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks",
 ]
 
 GRADE_STATUS = {
@@ -78,6 +78,185 @@ def _grade(score: float) -> str:
         if score >= threshold:
             return letter
     return "F"
+
+
+def _extract_heading_section(body: str, heading_re: str) -> str:
+    """Return the section content after a matching heading, if present."""
+    match = re.search(heading_re, body, re.I | re.M)
+    if not match:
+        return ""
+    next_heading = re.search(r"^#{1,6}\s+", body[match.end():], re.M)
+    if not next_heading:
+        return body[match.end():]
+    return body[match.end():match.end() + next_heading.start()]
+
+
+def _dispatch_table_rows(body: str) -> list[str]:
+    """Return data rows from the first $ARGUMENTS dispatch table."""
+    rows: list[str] = []
+    in_table = False
+    for line in body.splitlines():
+        if "$ARGUMENTS" in line and "|" in line:
+            in_table = True
+            continue
+        if not in_table:
+            continue
+        if "|" not in line:
+            break
+        stripped = line.strip().strip("|").strip()
+        if not stripped:
+            break
+        if re.match(r"^[-:\s|]+$", stripped):
+            continue
+        rows.append(line)
+    return rows
+
+
+def _has_reference_index(body: str) -> bool:
+    """Return True when the body contains a references index table."""
+    return any("references/" in ln.lower() and "|" in ln for ln in body.splitlines())
+
+
+def _has_canonical_vocabulary_section(body: str) -> bool:
+    """Return True for a dedicated canonical terms/vocabulary section."""
+    section_patterns = [
+        r"^#+\s*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)\b",
+        r"^\*\*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)\*\*",
+    ]
+    return any(re.search(pattern, body, re.I | re.M) for pattern in section_patterns)
+
+
+def _has_classification_structure(body: str) -> bool:
+    """Return True when the skill contains explicit routing or tiering logic."""
+    heading_re = (
+        r"^#+\s*(auto[- ]detection\s+heuristic|classification(?:/gating)?\s+logic|"
+        r"classifier|gating(?:\s+logic)?|complexity\s+tier(?:s)?|tiering)\b"
+    )
+    section = _extract_heading_section(body, heading_re)
+    if section:
+        numbered = re.findall(r"^\s*\d+[.)]\s+.+", section, re.M)
+        if len(numbered) >= 3:
+            return True
+
+    score_table = re.search(
+        r"^\|\s*[^|\n]*score[^|\n]*\|\s*[^|\n]*(tier|mode|action)[^|\n]*\|",
+        body,
+        re.I | re.M,
+    )
+    range_rows = re.findall(r"^\|\s*(?:\d+\s*-\s*\d+|\d+\+)\s*\|", body, re.M)
+    return bool(score_table and len(range_rows) >= 2)
+
+
+def _classification_applicable(body: str) -> bool:
+    """Return True when explicit routing heuristics would fit the skill."""
+    if _has_classification_structure(body):
+        return True
+    dispatch_rows = _dispatch_table_rows(body)
+    heuristic_markers = [
+        "auto-detect", "heuristic", "ambiguous", "complexity", "tier", "classif",
+    ]
+    return len(dispatch_rows) >= 4 and any(marker in body.lower() for marker in heuristic_markers)
+
+
+def _has_scaling_structure(body: str) -> bool:
+    """Return True when the skill maps scope/size to execution strategy."""
+    table_header = re.search(
+        r"^\|\s*(scope|size|input size|files?|complexity)\s*\|\s*(strategy|action|execution)\s*\|",
+        body,
+        re.I | re.M,
+    )
+    table_rows = re.findall(
+        r"^\|\s*(?:[^|\n]*\d[^|\n]*files?[^|\n]*|\d+\s*-\s*\d+(?:\s+\w+)?|\d+\+(?:\s+\w+)?|small|medium|large|trivial)\s*\|",
+        body,
+        re.I | re.M,
+    )
+    if table_header and len(table_rows) >= 2:
+        return True
+
+    heading_re = r"^#+\s*(scaling\s+strategy|execution\s+strategy|scale\s+by\s+input\s+size)\b"
+    section = _extract_heading_section(body, heading_re)
+    if not section:
+        return False
+    threshold_lines = re.findall(
+        r"^\s*[-*]\s*(?:\d+\s*-\s*\d+|\d+\+|small|medium|large|trivial)\b.+",
+        section,
+        re.I | re.M,
+    )
+    strategy_markers = ["subagent", "parallel", "batch", "team", "delegate"]
+    return len(threshold_lines) >= 2 and any(marker in section.lower() for marker in strategy_markers)
+
+
+def _scaling_applicable(body: str) -> bool:
+    """Return True when the skill acknowledges variable-size workloads."""
+    if _has_scaling_structure(body):
+        return True
+    markers = ["subagent", "parallel", "batch", "large input", "multiple files", "many files"]
+    return any(marker in body.lower() for marker in markers)
+
+
+def _has_state_management_structure(body: str) -> bool:
+    """Return True when the skill defines a real persistence contract."""
+    heading_re = r"^#+\s*(state\s+management|progress|journal|resume)\b"
+    section = _extract_heading_section(body, heading_re)
+    scope = section or body
+    has_state_path = bool(re.search(r"~\/\.\{[^}]+\}\/[a-z0-9._-]+\/", scope))
+    has_state_contract = any(
+        marker in scope.lower()
+        for marker in ["state-dir", "resume", "list", "read/write", "persist", "progress.py", "filename:"]
+    )
+    return has_state_path and has_state_contract
+
+
+def _state_management_applicable(body: str, dir_path: Path) -> bool:
+    """Return True when the skill exposes resumable or persisted state."""
+    if _has_state_management_structure(body):
+        return True
+    markers = ["dashboard", "resume", "session state", "state-dir", "state file"]
+    if any(marker in body.lower() for marker in markers):
+        return True
+    return (dir_path / "scripts" / "progress.py").is_file()
+
+
+def _body_substitutions_present(body: str) -> bool:
+    """Return True when SKILL.md uses supported body substitutions."""
+    return bool(re.search(r"\$(?:ARGUMENTS(?:\[\d+\])?|N|\d+)", body))
+
+
+def _has_stop_hooks(fm: dict, body: str) -> bool:
+    """Return True when Stop hook guidance or config is present."""
+    hooks = fm.get("hooks")
+    if isinstance(hooks, dict) and any(key in hooks for key in ("Stop", "SubagentStop")):
+        return True
+    if re.search(r"^#+\s*Stop\s+Hooks?\b", body, re.I | re.M):
+        return True
+    return "stop_hook_active" in body
+
+
+def _has_progressive_disclosure_guidance(body: str) -> bool:
+    """Return True when the body explicitly describes layered, selective loading."""
+    guidance_patterns = [
+        r"^#+\s*progressive\s+disclosure\b",
+        r"do not load all at once",
+        r"load(?:ed)? on demand",
+        r"read (?:reference )?files? as indicated",
+        r"frontmatter for discovery",
+        r"scripts/templates? for execution",
+    ]
+    return any(re.search(pattern, body, re.I | re.M) for pattern in guidance_patterns)
+
+
+def _progressive_disclosure_applicable(references_exist: bool, scripts_exist: bool,
+                                       templates_exist: bool) -> bool:
+    """Return True when the skill has at least one real progressive-disclosure surface."""
+    return references_exist or scripts_exist or templates_exist
+
+
+def _has_progressive_disclosure_structure(body: str, references_exist: bool,
+                                          scripts_exist: bool, templates_exist: bool) -> bool:
+    """Return True when explicit progressive-disclosure guidance matches real surfaces."""
+    if not _progressive_disclosure_applicable(references_exist, scripts_exist, templates_exist):
+        return False
+    return _has_progressive_disclosure_guidance(body)
 
 
 # ---------------------------------------------------------------------------
@@ -211,8 +390,8 @@ def score_description(fm: dict) -> dict:
 def score_dispatch_table(body: str) -> dict:
     """Dispatch table presence and quality (0-10, weight 1.0)."""
     s, f = 0, []
-    has_args = any("$ARGUMENTS" in ln and "|" in ln for ln in body.splitlines())
-    if not has_args:
+    table_rows = _dispatch_table_rows(body)
+    if not table_rows:
         f.append("No dispatch table with $ARGUMENTS found")
         return {
             "name": "Dispatch Table", "id": "dispatch-table",
@@ -220,20 +399,7 @@ def score_dispatch_table(body: str) -> dict:
         }
     s += 4
     f.append("Dispatch table with $ARGUMENTS found")
-    # Count data rows
-    in_t, rows = False, 0
-    for line in body.splitlines():
-        if "$ARGUMENTS" in line and "|" in line:
-            in_t = True
-            continue
-        if in_t and "|" in line:
-            stripped = line.strip().strip("|").strip()
-            if stripped and not re.match(r"^[-:\s|]+$", stripped):
-                rows += 1
-            elif not re.match(r"^[-:\s|]+$", stripped):
-                break
-        elif in_t:
-            break
+    rows = len(table_rows)
     if rows >= 3:
         s += 3
         f.append(f"Dispatch table has {rows} rows (>= 3)")
@@ -241,22 +407,7 @@ def score_dispatch_table(body: str) -> dict:
         s += 1
         f.append(f"Dispatch table has only {rows} rows (< 3)")
     empty_synonyms = {"empty", "no arg", "no args", "none", "blank", "default"}
-    # Collect only dispatch table lines (tracked via in_t scope)
-    table_lines = []
-    in_t2 = False
-    for line in body.splitlines():
-        if "$ARGUMENTS" in line and "|" in line:
-            in_t2 = True
-            continue
-        if in_t2 and "|" in line:
-            stripped = line.strip().strip("|").strip()
-            if stripped and not re.match(r"^[-:\s|]+$", stripped):
-                table_lines.append(line)
-            elif not re.match(r"^[-:\s|]+$", stripped):
-                break
-        elif in_t2:
-            break
-    if any(any(syn in ln.lower() for syn in empty_synonyms) for ln in table_lines):
+    if any(any(syn in ln.lower() for syn in empty_synonyms) for ln in table_rows):
         s += 3
         f.append("Empty-args handler row found")
     else:
@@ -313,61 +464,81 @@ def score_body_structure(body: str) -> dict:
 
 
 def score_pattern_coverage(body: str, dir_path: Path, fm: dict) -> dict:
-    """Coverage of 13 skill patterns (0-15, weight 1.5)."""
-    f, found = [], []
-    bl = body.lower()
-    # 1. Dispatch Table
-    if any("$ARGUMENTS" in ln and "|" in ln for ln in body.splitlines()):
-        found.append("dispatch-table")
-    # 2. Reference File Index
-    if any("references/" in ln.lower() and "|" in ln for ln in body.splitlines()):
-        found.append("reference-file-index")
-    # 3. Critical Rules
-    if re.search(r"^#+\s*critical\s+rules", body, re.I | re.M) and re.findall(r"^\s*\d+[.)]\s+", body, re.M):
-        found.append("critical-rules")
-    # 4. Canonical Vocabulary
-    if re.search(r"canonical\s+term|canonical\s+vocab|vocabulary", bl):
-        found.append("canonical-vocabulary")
-    # 5. Scope Boundaries
-    if "not for" in bl or "not when" in bl:
-        found.append("scope-boundaries")
-    # 6. Classification / Gating Logic
-    if re.search(r"tier\s+assign|classif|gating\s+logic|complexity\s+tier", bl):
-        found.append("classification-gating")
-    # 7. Scaling Strategy
-    if re.search(r"scal(e|ing)|scope.based|dispatch.*table", bl) and "|" in body:
-        found.append("scaling-strategy")
-    # 8. State Management
-    if re.search(r"state\s+manage|journal|save|resume", bl):
-        found.append("state-management")
-    # 9. Scripts
-    sd = dir_path / "scripts"
-    if sd.is_dir() and (list(sd.glob("*.py")) or list(sd.glob("*.sh"))):
-        found.append("scripts")
-    # 10. Templates
-    td = dir_path / "templates"
-    if td.is_dir() and list(td.glob("*.html")):
-        found.append("templates")
-    # 11. Hooks — check body and frontmatter
-    if "hooks:" in body or fm.get("hooks"):
-        found.append("hooks")
-    # 12. Progressive Disclosure
-    rd = dir_path / "references"
-    if rd.is_dir() and any(rd.iterdir()):
-        found.append("progressive-disclosure")
-    # 13. Body Substitutions
-    if "$ARGUMENTS" in body or re.search(r"\$\d+|\$N", body):
-        found.append("body-substitutions")
-    suggested = [p for p in PATTERN_NAMES if p not in found]
-    pc = len(found)
-    f.append(f"Patterns found: {pc}/13")
-    for p in found:
-        f.append(f"  [+] {p}")
+    """Coverage of applicable skill patterns (0-15, weight 1.5)."""
+    f = []
+    description = str(fm.get("description", "")).lower()
+    dispatch_rows = _dispatch_table_rows(body)
+    refs_dir = dir_path / "references"
+    scripts_dir = dir_path / "scripts"
+    templates_dir = dir_path / "templates"
+    hooks_config = fm.get("hooks")
+    references_exist = refs_dir.is_dir() and any(p.is_file() for p in refs_dir.iterdir())
+    scripts_exist = scripts_dir.is_dir() and bool(list(scripts_dir.glob("*.py")) or list(scripts_dir.glob("*.sh")))
+    templates_exist = templates_dir.is_dir() and bool(list(templates_dir.glob("*.html")))
+    user_invocable = fm.get("user-invocable", True) is not False
+
+    pattern_status: dict[str, str] = {}
+
+    def set_status(name: str, applicable: bool, found: bool) -> None:
+        if found:
+            pattern_status[name] = "found"
+        elif applicable:
+            pattern_status[name] = "suggested"
+        else:
+            pattern_status[name] = "not-applicable"
+
+    set_status("dispatch-table", user_invocable, bool(dispatch_rows))
+    set_status("reference-file-index", references_exist, _has_reference_index(body))
+    set_status(
+        "critical-rules",
+        True,
+        bool(re.search(r"^#+\s*critical\s+rules", body, re.I | re.M) and re.findall(r"^\s*\d+[.)]\s+", body, re.M)),
+    )
+    canonical_applicable = len(dispatch_rows) >= 4 or "mode" in body.lower() or "tier" in body.lower()
+    set_status("canonical-vocabulary", canonical_applicable, _has_canonical_vocabulary_section(body))
+    set_status("scope-boundaries", True, "not for" in body.lower() or "not for" in description or "not when" in body.lower())
+    set_status("classification-gating", _classification_applicable(body), _has_classification_structure(body))
+    set_status("scaling-strategy", _scaling_applicable(body), _has_scaling_structure(body))
+    set_status("state-management", _state_management_applicable(body, dir_path), _has_state_management_structure(body))
+    set_status("scripts", scripts_exist or "scripts/" in body.lower(), scripts_exist)
+    set_status("templates", templates_exist or "templates/" in body.lower(), templates_exist)
+    hooks_applicable = bool(hooks_config) or "hooks:" in body or re.search(r"^#+\s*hooks\b", body, re.I | re.M)
+    set_status("hooks", hooks_applicable, bool("hooks:" in body or hooks_config))
+    progressive_applicable = _progressive_disclosure_applicable(
+        references_exist, scripts_exist, templates_exist
+    )
+    progressive_found = _has_progressive_disclosure_structure(
+        body, references_exist, scripts_exist, templates_exist
+    )
+    set_status("progressive-disclosure", progressive_applicable, progressive_found)
+    set_status("body-substitutions", user_invocable, _body_substitutions_present(body))
+    stop_hooks_applicable = bool(hooks_config) or "stop hook" in body.lower() or "stop_hook_active" in body
+    set_status("stop-hooks", stop_hooks_applicable, _has_stop_hooks(fm, body))
+
+    found = [name for name in PATTERN_NAMES if pattern_status[name] == "found"]
+    suggested = [name for name in PATTERN_NAMES if pattern_status[name] == "suggested"]
+    not_applicable = [name for name in PATTERN_NAMES if pattern_status[name] == "not-applicable"]
+    applicable_count = len(found) + len(suggested)
+    score = round((len(found) / applicable_count) * 15) if applicable_count else 0
+
+    f.append(f"Patterns found: {len(found)}/{len(PATTERN_NAMES)}")
+    f.append(f"Applicable patterns: {applicable_count}/{len(PATTERN_NAMES)}")
+    for name in found:
+        f.append(f"  [+] {name}")
     if suggested:
         f.append(f"Suggested additions: {', '.join(suggested[:5])}")
+    if not_applicable:
+        f.append(f"Not applicable: {', '.join(not_applicable[:5])}")
     return {
-        "name": "Pattern Coverage", "id": "pattern-coverage", "score": min(round(pc / 13 * 15), 15), "max": 15,
-        "weight": 1.5, "findings": f, "_found": found, "_suggested": suggested,
+        "name": "Pattern Coverage",
+        "id": "pattern-coverage",
+        "score": min(score, 15),
+        "max": 15,
+        "weight": 1.5,
+        "findings": f,
+        "_found": found,
+        "_suggested": suggested,
+        "_not_applicable": not_applicable,
     }
 
 
@@ -627,11 +798,7 @@ def score_conciseness(body: str) -> dict:
 
 def _canonical_bonus(body: str) -> int:
     """Return +3 if a dedicated canonical terms/vocabulary section exists."""
-    if re.search(r"^#+\s*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)", body, re.I | re.M):
-        return 3
-    if re.search(r"\*\*Canonical\s+terms?\*\*", body, re.I):
-        return 3
-    return 0
+    return 3 if _has_canonical_vocabulary_section(body) else 0
 
 
 # ---------------------------------------------------------------------------
@@ -662,7 +829,7 @@ _DIMENSION_SUGGESTIONS: dict[str, list[str]] = {
         "Keep body <= 500 lines (+4)",
     ],
     "pattern-coverage": [
-        "Add more skill patterns (2 pts each, capped at 15)",
+        "Add missing applicable patterns or mark them out of scope in the skill design",
     ],
     "references": [
         "Create references/ directory with index table (+3)",
@@ -705,6 +872,7 @@ def audit_skill(path: str) -> dict:
             "skill": dp.name, "path": str(dp) + "/", "score": 0, "max": 100,
             "grade": "F", "dimensions": [], "bonus": 0, "patterns_found": [],
             "patterns_suggested": PATTERN_NAMES[:],
+            "patterns_not_applicable": [],
             "meta": {"lines": 0, "refs": 0, "scripts": 0},
         }
         if not skill_md.is_file():
@@ -735,12 +903,13 @@ def audit_skill(path: str) -> dict:
         final = min(round(norm), 100) + bonus
         pf = dims[4].pop("_found", [])
         ps = dims[4].pop("_suggested", [])
+        pna = dims[4].pop("_not_applicable", [])
         rd = dp / "references"
         sd = dp / "scripts"
         return {
             "skill": dp.name, "path": str(dp) + "/", "score": final, "max": 100 + bonus,
             "grade": _grade(final), "dimensions": dims, "bonus": bonus,
-            "patterns_found": pf, "patterns_suggested": ps,
+            "patterns_found": pf, "patterns_suggested": ps, "patterns_not_applicable": pna,
             "meta": {
                 "lines": len(body.splitlines()),
                 "refs": len([
@@ -756,7 +925,7 @@ def audit_skill(path: str) -> dict:
             "path": str(Path(path).resolve()) + "/",
             "score": 0, "max": 100, "grade": "F",
             "dimensions": [], "bonus": 0,
-            "patterns_found": [], "patterns_suggested": PATTERN_NAMES[:],
+            "patterns_found": [], "patterns_suggested": PATTERN_NAMES[:], "patterns_not_applicable": [],
             "meta": {"lines": 0, "refs": 0, "scripts": 0},
             "error": str(exc),
         }
@@ -789,11 +958,12 @@ def format_table(results: list[dict]) -> str:
     for r in results:
         m = r.get("meta", {})
         pc = len(r.get("patterns_found", []))
+        applicable = pc + len(r.get("patterns_suggested", []))
         sc = f"{r['score']}/{r['max']}"
         out.append(
             f"{r['skill']:<22} {sc:>7}  {r['grade']:>5}  "
             f"{m.get('lines', 0):>5}  {m.get('refs', 0):>4}  "
-            f"{m.get('scripts', 0):>7}  {pc:>3}/13"
+            f"{m.get('scripts', 0):>7}  {pc:>3}/{applicable:<3}"
         )
     out.append("")
     out.append(f"Total skills audited: {len(results)}")
@@ -837,12 +1007,15 @@ def format_single_table(result: dict) -> str:
     m = result.get("meta", {})
     out.append(f"Lines: {m.get('lines', 0)}  Refs: {m.get('refs', 0)}  Scripts: {m.get('scripts', 0)}")
     pf = result.get("patterns_found", [])
-    out.append(f"Patterns: {len(pf)}/13")
+    ps = result.get("patterns_suggested", [])
+    pna = result.get("patterns_not_applicable", [])
+    out.append(f"Patterns: {len(pf)}/{len(pf) + len(ps)} applicable ({len(PATTERN_NAMES)} in catalog)")
     if pf:
         out.append(f"  Found: {', '.join(pf)}")
-    ps = result.get("patterns_suggested", [])
     if ps:
         out.append(f"  Suggested: {', '.join(ps[:5])}")
+    if pna:
+        out.append(f"  Not applicable: {', '.join(pna[:5])}")
     return "\n".join(out)
 
 
@@ -938,12 +1111,17 @@ def format_rich_single(result: dict) -> None:
     # Pattern coverage
     console.print()
     pf = result.get("patterns_found", [])
+    ps = result.get("patterns_suggested", [])
+    pna = result.get("patterns_not_applicable", [])
     patterns_text = Text("Patterns: ")
-    patterns_text.append(f"{len(pf)}/13", style="bold")
+    patterns_text.append(f"{len(pf)}/{len(pf) + len(ps)} applicable", style="bold")
+    patterns_text.append(f"  ({len(PATTERN_NAMES)} in catalog)", style="dim")
     console.print(patterns_text)
     for p in PATTERN_NAMES:
         if p in pf:
             console.print(f"  [green]\u2713[/green] {p}")
+        elif p in pna:
+            console.print(f"  [dim]-[/dim] {p} [dim](not applicable)[/dim]")
         else:
             console.print(f"  [red]\u2717[/red] {p}")
 
@@ -970,6 +1148,7 @@ def format_rich_table(results: list[dict]) -> None:
     for r in results:
         m = r.get("meta", {})
         pc = len(r.get("patterns_found", []))
+        applicable = pc + len(r.get("patterns_suggested", []))
         grade = r["grade"]
         grade_color = GRADE_COLORS.get(grade, "white")
         status = GRADE_STATUS.get(grade, "")
@@ -981,7 +1160,7 @@ def format_rich_table(results: list[dict]) -> None:
             str(m.get("lines", 0)),
             str(m.get("refs", 0)),
             str(m.get("scripts", 0)),
-            f"{pc}/13",
+            f"{pc}/{applicable}",
         )
 
     console.print(table)
