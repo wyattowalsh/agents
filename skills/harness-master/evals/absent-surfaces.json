@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "Review Codex and OpenCode globally even if some config files are missing, and tell me what is absent versus actually wrong.",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats missing surfaces as evidence to assess rather than an execution failure",
+    "Agent distinguishes `missing` from `blind-spot` and from actual misconfiguration",
+    "Agent avoids inventing file contents for absent surfaces"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master windsurf project",
+  "files": [],
+  "expected_behavior": [
+    "Agent refuses the unsupported harness cleanly",
+    "Agent lists the supported 7 harnesses",
+    "Agent asks the user to choose from the supported set instead of guessing an adjacent harness"
+  ]
+}

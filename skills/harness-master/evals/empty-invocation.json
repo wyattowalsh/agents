@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats empty invocation as intake rather than guessing a harness or level",
+    "Agent asks for the harness set or `all` first, then asks for `project`, `global`, or `both`",
+    "Agent stays in dry-run mode and does not propose edits before the missing inputs are resolved"
+  ]
+}

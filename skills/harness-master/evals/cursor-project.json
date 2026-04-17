@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master project cursor",
+  "files": [],
+  "expected_behavior": [
+    "Agent checks `AGENTS.md`, nested `AGENTS.md`, `.cursor/rules/**`, and `.cursor/mcp.json` when present",
+    "Agent treats Cursor user and team rules in the UI as blind spots unless exported",
+    "Agent reports project-scope findings before discussing global Cursor config"
+  ]
+}

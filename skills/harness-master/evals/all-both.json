@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master all both",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats `all` as the full 7-harness set",
+    "Agent processes harnesses in deterministic order",
+    "Agent runs a dry-run review first and prepares a matrix-style output with per-harness sections plus synthesis"
+  ]
+}

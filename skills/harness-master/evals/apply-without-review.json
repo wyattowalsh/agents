@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master apply project codex",
+  "files": [],
+  "expected_behavior": [
+    "Agent refuses to edit because no matching in-session dry-run review has been established",
+    "Agent tells the user it needs to rerun the audit first",
+    "Agent does not guess or synthesize an unstated plan"
+  ]
+}

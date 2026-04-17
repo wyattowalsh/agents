@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "Approved. Apply the project-level Cursor and OpenCode fixes from your last harness-master review.",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats this as Apply Approved only if the immediately preceding harness-master review already covered the same scope in the current session",
+    "Agent restates the approved scope before editing",
+    "Agent applies only the approved batch and reruns targeted checks afterward"
+  ]
+}

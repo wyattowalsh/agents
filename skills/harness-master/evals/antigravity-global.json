@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master global antigravity",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats Antigravity as a supported first-class harness",
+    "Agent checks first-party documented MCP and settings surfaces such as `~/.gemini/antigravity/mcp_config.json` when observable",
+    "Agent explicitly notes Antigravity-specific blind spots and confidence limits"
+  ]
+}
