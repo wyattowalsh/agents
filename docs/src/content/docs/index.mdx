@@ -1,9 +1,9 @@
 ---
 title: Agents
-description: AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more
+description: Portable skills and MCP tools for coding agents
 template: splash
 hero:
-  tagline: Open-source skills, agents, and MCP servers — install in one command
+  tagline: Portable skills and MCP tools for coding agents
   image:
     html: |
       <div class="hero-terminal">
@@ -11,11 +11,11 @@ hero:
           <span class="hero-terminal-dot red"></span>
           <span class="hero-terminal-dot yellow"></span>
           <span class="hero-terminal-dot green"></span>
-          <span class="hero-terminal-title">terminal</span>
+          <span class="hero-terminal-title">agent control plane</span>
         </div>
         <div class="hero-terminal-body">
           <span class="hero-terminal-prompt">$</span>
-          <span class="hero-terminal-cmd">npx skills add wyattowalsh/agents --all -g</span>
+          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode</span>
           <span class="hero-terminal-cursor">▋</span>
         </div>
         <div class="hero-agents-row">
@@ -30,19 +30,19 @@ hero:
       </div>
   actions:
     - text: Get Started
-      link: /skills/
+      link: /start-here/
       icon: right-arrow
-    - text: Star on GitHub
-      link: https://github.com/wyattowalsh/agents
+    - text: Explore Skills
+      link: /skills/
       variant: minimal
-      icon: github
+      icon: right-arrow
 ---
 
-import { Badge, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
 <div class="stats-bar">
   <span class="stat stat-skill">43 Custom Skills</span>
-  <span class="stat stat-mcp">30 MCP Tools Configured</span>
+  <span class="stat stat-mcp">33 MCP Tools Configured</span>
 </div>
 
 <div class="hero-badge-row">
@@ -52,11 +52,29 @@ import { Badge, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starligh
   <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=0284c7" alt="Latest release" /></a>
 </div>
 
-<Aside type="tip" title="Why use Skills?">
-Instead of keeping an unorganized document of prompts to copy-paste, **skills** package expert prompts, complex multi-step workflows, and tools into a single version-controlled, portable asset. Install them once, then seamlessly invoke them with `/skill-name` inside your favorite AI agent. [Learn more at agentskills.io →](https://agentskills.io)
+## Start Here
+
+Install the catalog once, then call a focused specialist inside your agent. If you want the shortest guided path through setup, start with [Start Here](/start-here/).
+
+<div class="install-section">
+
+```bash
+# Install the full catalog
+npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+
+# Or start with one focused skill
+npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+```
+
+</div>
+
+Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent.
+
+<Aside type="tip" title="Fastest path">
+Use [Start Here](/start-here/) when you want the shortest setup path, a few strong starter skills, and a quick mental model of the repo.
 </Aside>
 
-## Why Use Skills?
+## What Skills Are
 
 <div class="catalog-skill">
 <CardGrid>
@@ -64,79 +82,34 @@ Instead of keeping an unorganized document of prompts to copy-paste, **skills** 
     <div class="feature-card-icon" aria-hidden="true">P</div>
     <Badge text="Install once" variant="note" /> Move the same workflows across Claude Code, Cursor, GitHub Copilot, Gemini CLI, Antigravity, and more.
   </Card>
-  <Card title="Composable">
+  <Card title="Inspectable">
     <div class="feature-card-icon" aria-hidden="true">C</div>
-    <Badge text="Stackable" variant="tip" /> Combine focused skills into richer multi-step systems without rewriting prompts every time.
+    <Badge text="Versioned" variant="tip" /> Keep prompts, workflows, and conventions in source control instead of buried in copy-paste docs.
   </Card>
-  <Card title="Open Source">
+  <Card title="Composable">
     <div class="feature-card-icon" aria-hidden="true">OS</div>
-    <Badge text="Inspectable" variant="success" /> Keep your agent workflows version-controlled, reviewable, and easy to extend with your own conventions.
+    <Badge text="Stackable" variant="success" /> Pull in one specialist for reviews, another for architecture, and another for docs without rebuilding the workflow each time.
   </Card>
 </CardGrid>
 </div>
 
-<Aside type="note" title="How these docs are built">
-Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the 30 servers configured in `mcp.json` (including local and remote servers outside this repo).
-</Aside>
-
-## What Can You Do?
+## Popular Starting Points
 
 <CardGrid>
-  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/" description="Research-driven code review at multiple abstraction levels with AI code smell detection and severity calibration." />
-  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/" description="Domain-agnostic wargaming with Monte Carlo exploration, structured adjudication, and visual dashboards." />
-  <LinkCard title="Host Expert Panels" href="/skills/host-panel/" description="Simulated panel discussions among AI experts in roundtable, Oxford-style, and Socratic formats." />
-  <LinkCard title="Create MCP Servers" href="/skills/mcp-creator/" description="Build production-ready MCP servers using FastMCP v3 with tool design, testing, and deployment guidance." />
+  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
+  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/" description="Pressure-test a product or engineering decision before you commit to it." />
+  <LinkCard title="Host Expert Panels" href="/skills/host-panel/" description="Get multiple expert perspectives in one session when the problem has real trade-offs." />
+  <LinkCard title="Create MCP Servers" href="/skills/mcp-creator/" description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />
 </CardGrid>
-
-<div class="install-section">
-
-### Quick Install
-
-```bash
-npx skills add wyattowalsh/agents --all -g
-```
-
-</div>
-
-## How it Works
-
-<Steps>
-
-1. **Install** — `npx skills add wyattowalsh/agents --all -g` installs all skills globally.
-
-2. **Invoke** — Type `/skill-name` in [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), or any [agentskills.io](https://agentskills.io)-compatible agent.
-
-3. **Enhance** — Each skill provides domain expertise, structured workflows, and proven patterns that make your agent dramatically more capable.
-
-</Steps>
 
 ## Explore the Catalog
 
 <CardGrid>
-  <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills grouped by invocation model, with install commands and docs pages." />
-  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 30 configured MCP servers from `mcp.json`." />
+  <LinkCard title="Start Here" href="/start-here/" description="The shortest guided path: install the catalog, pick a starter skill, and understand the repo layout." />
+  <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills with install commands, generated detail pages, and convention-skill context." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 33 configured MCP servers from `mcp.json`, including repo-local and external servers." />
   <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
 </CardGrid>
-
-## Featured Skills
-
-<div class="catalog-skill">
-<CardGrid>
-  <LinkCard title="wargame" href="/skills/wargame/" description="Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty." />
-  <LinkCard title="honest-review" href="/skills/honest-review/" description="Confidence-scored code review with evidence validation. Session or full codebase audit. Use when reviewing changes or auditing quality." />
-  <LinkCard title="skill-creator" href="/skills/skill-creator/" description="Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills." />
-</CardGrid>
-</div>
-
-[View all 42 skills →](/skills/)
-
-## MCP Servers
-
-<div class="catalog-mcp">
-<CardGrid>
-  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 30 configured MCP servers from mcp.json (local and remote)." />
-</CardGrid>
-</div>
 
 ## Supported Agents
 
@@ -148,13 +121,20 @@ npx skills add wyattowalsh/agents --all -g
   <LinkCard title="GitHub Copilot" href="https://github.com/features/copilot" description="Your AI pair programmer, right in your IDE." />
   <LinkCard title="Antigravity" href="https://antigravity.google/" description="Advanced Agentic Coding assistant." />
   <LinkCard title="Crush" href="https://github.com/crush-ai/crush" description="Autonomous development agent focused on fast terminal workflows." />
-  <LinkCard title="OpenCode" href="https://github.com/opencode-ai/opencode" description="Open coding agent with repo-native instruction support." />
+  <LinkCard title="OpenCode" href="https://github.com/anomalyco/opencode" description="Native AGENTS.md support plus repo-level OpenCode config and subagents." />
 </CardGrid>
+
+## How These Docs Work
+
+<Aside type="note" title="Generated pages, curated framing">
+Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The top-level navigation stays concise, curated onboarding pages stay hand-maintained, and the MCP overview is currently a hand-maintained summary of 33 servers from `mcp.json`.
+</Aside>
 
 ## Resources
 
 <CardGrid>
   <LinkCard title="GitHub" href="https://github.com/wyattowalsh/agents" description="Source code, issues, and contributions." />
   <LinkCard title="CLI Reference" href="/cli/" description="Full command reference for the wagents CLI." />
+  <LinkCard title="Start Here" href="/start-here/" description="Use the shortest guided path through install, invocation, and the repo map." />
   <LinkCard title="Create Your Own" href="/skills/skill-creator/" description="Build, improve, and audit skills with the skill-creator." />
 </CardGrid>

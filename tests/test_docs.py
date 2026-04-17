@@ -56,9 +56,10 @@ class TestWriteIndexPage:
         text = idx.read_text()
         assert "template: splash" in text
         assert "CI status" in text
-        assert "Featured Skills" in text
-        assert "Agents" in text
-        assert "MCP Servers" in text
+        assert "## Start Here" in text
+        assert "## Popular Starting Points" in text
+        assert 'title="Start Here"' in text
+        assert "npx skills add github:wyattowalsh/agents --all -y -g" in text
         assert "OpenCode" in text
 
     def test_no_skills_no_featured_section(self, tmp_repo):
@@ -66,9 +67,8 @@ class TestWriteIndexPage:
         content_dir.mkdir(parents=True, exist_ok=True)
         write_index_page([])
         text = (content_dir / "index.mdx").read_text()
-        assert "Featured Skills" not in text
-        # "## Agents" section shouldn't appear (title: Agents is the page title)
-        assert "## Agents" not in text
+        assert "## Popular Starting Points" in text
+        assert "## How These Docs Work" in text
 
     def test_stats_bar_with_installed(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -87,8 +87,8 @@ class TestWriteIndexPage:
         content_dir.mkdir(parents=True, exist_ok=True)
         write_index_page([_make_node("skill")])
         text = (content_dir / "index.mdx").read_text()
-        assert "Browse repository skills grouped by invocation model" in text
-        assert "custom and installed skills" not in text
+        assert "generated detail pages, and convention-skill context" in text
+        assert "local agent directories" not in text
 
     def test_does_not_duplicate_mcp_overview_when_no_repo_mcp_nodes_exist(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -119,9 +119,10 @@ class TestWriteCliPage:
         assert cli_page.exists()
         text = cli_page.read_text()
         assert "CLI Reference" in text
-        assert "## Quick Reference" in text
+        assert "## Boot Sequence" in text
+        assert "## Command Map" in text
         assert "wagents new skill" in text
-        assert "wagents doctor" in text
+        assert "uv run wagents doctor" in text
         assert "wagents hooks validate" in text
         assert "wagents eval coverage" in text
         assert "## Related Pages" in text
@@ -147,6 +148,8 @@ class TestWriteSkillsIndex:
         assert idx.exists()
         text = idx.read_text()
         assert "User-Invocable Skills (1)" in text
+        assert "## Skill Lanes" in text
+        assert "npx skills add github:wyattowalsh/agents --skill honest-review -y -g" in text
 
     def test_installed_skills_section(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -165,8 +168,8 @@ class TestWriteSkillsIndex:
         content_dir.mkdir(parents=True, exist_ok=True)
         write_skills_index([_make_node("skill")])
         text = (content_dir / "skills" / "index.mdx").read_text()
-        assert "defines two built-in skill categories" in text
-        assert "| **Installed** |" not in text
+        assert "## Skill Lanes" in text
+        assert "Installed Skills (" not in text
 
 
 class TestDocsGenerate:
@@ -239,7 +242,7 @@ class TestWriteInstalledSkillsPage:
         ]
         write_installed_skills_page(nodes)
         text = (content_dir / "skills" / "installed.mdx").read_text()
-        assert "npx skills add example/skills --skill ext-skill -g" in text
+        assert "npx skills add example/skills --skill ext-skill -y -g" in text
         assert "~/.config/opencode/skills/" in text
 
 
@@ -302,6 +305,7 @@ class TestWriteSidebar:
         assert sidebar.exists()
         text = sidebar.read_text()
         assert "navLinks" in text
+        assert "Start Here" in text
         assert "Skills" in text
         assert "Agents" in text
         assert "CLI Reference" in text

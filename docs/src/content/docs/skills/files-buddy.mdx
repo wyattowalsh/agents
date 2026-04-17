@@ -15,14 +15,14 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add wyattowalsh/agents/skills/files-buddy -g
+npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
 **Use:** `/files-buddy` `<mode> <path> [options]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from the repository file `skills/files-buddy/SKILL.md` by `wagents docs generate`.
@@ -335,7 +335,7 @@ Open a visual HTML dashboard. Analysis stays read-only, but rendering writes a l
 1. Run audit analysis (dust, rmlint, fd) to collect data for target path
 2. Generate JSON: disk usage treemap, file type distribution, duplicates, large files, stale files, operation history from manifests
 3. Run `uv run python skills/files-buddy/scripts/dashboard-renderer.py --data <json-file|-> --output <path> --open`
-4. Default dashboard path is `~/.claude/files-buddy/{YYYY-MM-DD}-dashboard.html` unless `--output` is provided
+4. Default dashboard path is `~/.{gemini|copilot|codex|claude}/files-buddy/{YYYY-MM-DD}-dashboard.html` unless `--output` is provided
 5. Opens in default browser. Includes a self-contained treemap, sortable tables, dark/light theme
 6. **Fallback:** Print summary tables in terminal if browser unavailable
 

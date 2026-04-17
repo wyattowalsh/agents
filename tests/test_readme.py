@@ -35,6 +35,8 @@ def test_readme_contains_skills_table(tmp_repo):
     assert "hello-world" in readme_text
     assert "Greets the world" in readme_text
     assert "wagents docs generate --include-installed" in readme_text
+    assert "local agent skill directories" in readme_text
+    assert "https://github.com/anomalyco/opencode" in readme_text
 
 
 # ---------------------------------------------------------------------------

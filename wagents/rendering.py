@@ -310,9 +310,13 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("**Install:**")
     parts.append("```bash")
     if node.source == "custom":
-        parts.append(f"npx skills add wyattowalsh/agents/skills/{node.id} -g")
+        parts.append(
+            f"npx skills add github:wyattowalsh/agents --skill {node.id} -y -g "
+            "--agent claude-code --agent codex --agent gemini-cli "
+            "--agent antigravity --agent github-copilot --agent opencode"
+        )
     else:
-        parts.append(f"npx skills add {node.id} -g")
+        parts.append(f"npx skills add {node.id} -y -g")
     parts.append("```")
     parts.append("")
     use_line = f"**Use:** `/{node.id}`"
@@ -326,6 +330,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         "Works with "
         "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
         "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
+        "[OpenCode](https://github.com/anomalyco/opencode), "
         "and other "
         "[agentskills.io](https://agentskills.io)-compatible agents."
     )

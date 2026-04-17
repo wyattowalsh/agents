@@ -41,7 +41,9 @@ if (category && sidebar) {
 
 // Get skill name for install footer
 const skillName = category === 'skills' && !path.startsWith('skills/installed') ? path.replace('skills/', '') : null;
-const installCommand = skillName ? `npx skills add wyattowalsh/agents/skills/${skillName} -g` : '';
+const installCommand = skillName
+  ? `npx skills add github:wyattowalsh/agents --skill ${skillName} -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode`
+  : '';
 ---
 
 {category && (prevPage || nextPage) && (

@@ -15,14 +15,14 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add wyattowalsh/agents/skills/tech-debt-analyzer -g
+npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
 **Use:** `/tech-debt-analyzer` `<mode> [path]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from the repository file `skills/tech-debt-analyzer/SKILL.md` by `wagents docs generate`.
@@ -115,7 +115,7 @@ Multi-pass analysis with confidence scoring and evidence-based findings.
 | **inconsistency** | Same pattern implemented differently across files |
 | **remediation** | Specific fix action with effort estimate and risk level |
 | **debt score** | Aggregate metric: sum of (severity_weight x confidence) across all items |
-| **baseline** | Previous scan stored at ~/.claude/tech-debt/ for longitudinal comparison |
+| **baseline** | Previous scan stored at ~/.{gemini|copilot|codex|claude}/tech-debt/ for longitudinal comparison |
 | **heatmap** | Visual density of debt items per file or directory |
 | **risk x effort** | Prioritization matrix: impact vs. remediation cost |
 
@@ -172,7 +172,7 @@ Merge all findings into a unified inventory:
 - Deduplicate across script outputs
 - Assign categories from debt taxonomy (references/debt-taxonomy.md)
 - Calculate debt score: sum of (severity_weight x confidence)
-- Store baseline at `~/.claude/tech-debt/<project-slug>-<date>.json`
+- Store baseline at `~/.{gemini|copilot|codex|claude}/tech-debt/<project-slug>-<date>.json`
 
 Present findings grouped by category, sorted by severity within each group.
 
@@ -200,7 +200,7 @@ Output a ranked list with priority labels (P0-P4).
 
 ## Mode: Roadmap
 
-Generate a phased remediation plan. Requires a prior scan (reads baseline from `~/.claude/tech-debt/`).
+Generate a phased remediation plan. Requires a prior scan (reads baseline from `~/.{gemini|copilot|codex|claude}/tech-debt/`).
 
 **Phase structure:**
 1. **Quick Wins** (P0 + low-effort P1): immediate fixes, minimal risk
@@ -214,7 +214,7 @@ Each phase includes: items, estimated effort, dependencies, success criteria.
 
 Render dashboard visualization. Requires a prior scan.
 
-1. Read the most recent baseline from `~/.claude/tech-debt/`
+1. Read the most recent baseline from `~/.{gemini|copilot|codex|claude}/tech-debt/`
 2. Copy `templates/dashboard.html` to a temporary file
 3. Inject findings JSON into the `<script id="data">` tag
 4. Open in browser or report the path
@@ -226,13 +226,13 @@ Dashboard sections: category pie chart, complexity heatmap, trend chart (if mult
 Compare current scan against previous baseline for longitudinal tracking.
 
 1. Run a fresh scan (Mode: Scan steps 1-6)
-2. Load previous baseline from `~/.claude/tech-debt/<project-slug>-*.json` (most recent)
+2. Load previous baseline from `~/.{gemini|copilot|codex|claude}/tech-debt/<project-slug>-*.json` (most recent)
 3. Compute delta: new items, resolved items, changed severities, score trend
 4. Present comparison report with trend indicators
 
 ## State Management
 
-- State directory: `~/.claude/tech-debt/`
+- State directory: `~/.{gemini|copilot|codex|claude}/tech-debt/`
 - Create directory on first use with `mkdir -p`
 - Filename: `<project-slug>-<YYYY-MM-DD>.json`
 - Project slug: sanitized basename of the project root directory
