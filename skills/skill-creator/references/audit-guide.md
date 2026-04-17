@@ -22,7 +22,7 @@ Score a single skill using deterministic analysis + AI review.
    ```bash
    uv run python skills/skill-creator/scripts/audit.py skills/<name>/
    ```
-   Produces a JSON report with 10 scored dimensions, detected patterns, and suggested patterns.
+   Produces a JSON report with 10 scored dimensions, a +3 canonical-vocabulary bonus, and pattern status buckets (`found`, `suggested`, `not-applicable`).
 
 2. **AI review** — supplement the script's findings with judgment-based assessment:
    - Description quality: Is the CSO optimization effective? Does it enable discovery?
@@ -40,9 +40,14 @@ Score a single skill using deterministic analysis + AI review.
 4. **Report** — present the graded report:
    - Letter grade (A-F) with numeric score
    - Dimension breakdown (10 dimensions with scores and findings)
-   - Pattern checklist (13 patterns: present/absent/suggested)
+   - Pattern checklist (14 catalog patterns: found/suggested/not-applicable)
    - Top 3 improvement opportunities (highest impact)
    - Pressure test results
+
+### Pattern interpretation notes
+
+- `progressive-disclosure` is earned when the skill has at least one real disclosure surface on disk (`references/`, `scripts/`, or `templates/`) and the body includes explicit layered-loading guidance such as a dedicated Progressive Disclosure section, "do not load all at once", or equivalent on-demand loading instructions.
+- Skills with disclosure surfaces but no explicit layered-loading guidance should leave `progressive-disclosure` in `suggested`, not `found`.
 
 ---
 
@@ -90,16 +95,16 @@ When a creation session is active (`~/.{gemini|copilot|codex|claude}/skill-progr
    ```bash
    uv run python skills/skill-creator/scripts/progress.py serve --skill <name>
    ```
-   This reads current session state, injects it into the dashboard template, writes a
-   temporary HTML file, and opens it in the default browser. Use `--no-open` to suppress
-   the browser launch and just print the file URL. Use `--state-dir <path>` to read from
-   a custom state directory.
+   This renders the current session into the canonical `<script id="data" type="application/json">`
+   payload block, writes a temporary HTML snapshot, and opens it in the default browser.
+   Use `--no-open` to suppress browser launch, `--state-dir <path>` to read from a custom
+   state directory, and `--live` to serve a polling dashboard over HTTP.
 
 2. **Manual setup** (alternative):
    1. Read progress: `uv run python skills/skill-creator/scripts/progress.py read --skill <name>`
    2. Copy template: `cp skills/skill-creator/templates/dashboard.html /tmp/skill-dashboard.html`
    3. Inject progress JSON into `<script id="data">` block. Dashboard auto-detects process mode from `phases` field.
-   4. For live polling, set `data-poll-url` attribute on the script tag.
+   4. For live polling, set the script tag's `data-poll-url` attribute and expose a JSON endpoint that serves the same session payload.
    5. Render via Playwright screenshot or browser open.
 
 ### Audit Dashboard (no active session)
@@ -107,7 +112,7 @@ When a creation session is active (`~/.{gemini|copilot|codex|claude}/skill-progr
 When no creation session exists, fall back to the audit quality overview:
 
 1. Run: `uv run python skills/skill-creator/scripts/audit.py --all`
-2. Copy template, inject audit JSON with `"skills": [...]` array.
+2. Copy template, inject audit JSON as `{ "skills": [...] }`.
 3. Dashboard auto-detects audit overview mode.
 4. Render via Playwright screenshot or browser open.
 

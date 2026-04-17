@@ -945,7 +945,7 @@ def readme(
         '<div align="center">',
         (
             '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
-            'docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">'
+            'docs/src/assets/agents-nexus-mark-z.png" alt="Agents Logo" width="100" height="100">'
         ),
         "  <h1>agents</h1>",
         "  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>",
@@ -985,7 +985,11 @@ def readme(
         "Install all skills globally into your favorite agents:",
         "",
         "```bash",
-        "npx -y skills add wyattowalsh/agents --all -g",
+        (
+            "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code "
+            "--agent codex --agent gemini-cli --agent antigravity "
+            "--agent github-copilot --agent opencode"
+        ),
         "```",
         "",
         "## ✨ Why use this repository?",
@@ -1076,7 +1080,7 @@ def readme(
             "| `wagents docs preview` | Generate + build + preview server |",
             "| `wagents docs clean` | Remove generated content pages |",
             "",
-            "Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -g -y --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.",
+            "Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -y -g --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.",
             "",
         ]
     )

@@ -5,7 +5,7 @@ description: "Create, improve, and audit AI agent skills. 14 structural patterns
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="skill-creator" variant="note" /> <Badge text="1147 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="skill-creator" variant="note" /> <Badge text="1318 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
 > Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills.
 
@@ -15,14 +15,14 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add wyattowalsh/agents/skills/skill-creator -g
+npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
 **Use:** `/skill-creator` `<mode> [name]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from the repository file `skills/skill-creator/SKILL.md` by `wagents docs generate`.
@@ -41,8 +41,8 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 | `improve <name>` / `improve <path>` | Develop (existing) | `/skill-creator improve add-badges` |
 | `audit <name>` | Audit | `/skill-creator audit honest-review` |
 | `audit --all` | Audit All | `/skill-creator audit --all` |
-| `dashboard` | Dashboard | `/skill-creator dashboard` |
-| `package <name>` / `package --all` | Package | `/skill-creator package wargame` |
+| `dashboard [name]` | Dashboard | `/skill-creator dashboard my-skill` |
+| `package <name>` / `package --all` | Package | `/skill-creator package wargame --dry-run` |
 | Natural language skill idea | Auto: Develop (new) | `"tool that audits Python type safety"` |
 | Skill name + modification verb | Auto: Develop (existing) | `"refactor the wargame skill"` |
 | Path to SKILL.md | Auto: Develop (existing) | `skills/wargame/SKILL.md` |
@@ -54,8 +54,9 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 ```bash
 wagents new skill <name>           # Scaffold from template
 wagents validate                   # Check all skills
+uv run wagents eval validate       # Validate eval manifests
 uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
-wagents package <name>             # Package as portable ZIP
+uv run python skills/skill-creator/scripts/package.py skills/<name> --dry-run --format table
 ```
 
 ## Skill Development
@@ -68,7 +69,7 @@ Unified process for creating new skills and improving existing ones. Load `refer
 | 2. Plan | Structure, description, frontmatter | Gap analysis + improvement plan (approval gate) |
 | 3. Scaffold | `wagents new skill <name>` | Skip |
 | 4. Build | Write/edit body, references, scripts, templates, evals | Same |
-| 5. Validate | `wagents validate` + `audit.py` | Same |
+| 5. Validate | `wagents validate` + `wagents eval validate` + `audit.py` | Same |
 | 6. Iterate | Test, identify issues, loop to Step 4 | Same |
 
 ## Audit
@@ -81,13 +82,15 @@ Comparative ranking of all repository skills. Load `references/audit-guide.md` �
 
 ## Package
 
-Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
+Package skills into portable ZIP files. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
 
 ```bash
-wagents package <name>            # Single skill → <name>-v<version>.skill.zip
-wagents package --all             # All skills → dist/ with manifest.json
-wagents package --all --dry-run   # Check portability without creating ZIPs
+uv run python skills/skill-creator/scripts/package.py skills/<name> --dry-run --format table
+uv run python skills/skill-creator/scripts/package.py skills/<name> --force
+uv run python skills/skill-creator/scripts/package.py --all --dry-run --format table
 ```
+
+Packaging is fail-closed by default. If portability checks fail, dry-run exits non-zero and real packaging refuses to emit a ZIP unless `--force` is provided explicitly.
 
 ## Core Principles
 
@@ -100,28 +103,31 @@ wagents package --all --dry-run   # Check portability without creating ZIPs
 ## Critical Rules
 
 1. Run `uv run wagents validate` before declaring any skill complete
-2. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
-3. Never create a skill without a dispatch table — it is the routing contract
-4. Never create a dispatch table without an empty-args handler — unrouted input is a bug
-5. Every reference file must appear in the Reference File Index — orphan refs are invisible
-6. Every indexed reference must exist on disk — phantom refs cause agent errors
-7. Body must stay under 500 lines (below frontmatter) — move detail to references
-8. Description must include "Use when" trigger phrases AND "NOT for" exclusions
-9. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
-10. Scripts use argparse + JSON to stdout — no custom output formats
-11. Templates are self-contained HTML with no external dependencies
-12. Do NOT call `wagents docs generate` — delegate to docs-steward
-13. Do NOT create agents or MCP servers — refuse gracefully and redirect
-14. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
-15. Audit mode is read-only — never modify the skill being audited
-16. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
+2. Run `uv run wagents eval validate` after changing evals and before declaring the skill complete
+3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
+4. Never create a skill without a dispatch table — it is the routing contract
+5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
+6. Every reference file must appear in the Reference File Index — orphan refs are invisible
+7. Every indexed reference must exist on disk — phantom refs cause agent errors
+8. Body must stay under 500 lines (below frontmatter) — move detail to references
+9. Description must include "Use when" trigger phrases AND "NOT for" exclusions
+10. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
+11. Scripts use argparse + JSON to stdout — no custom output formats
+12. Templates are self-contained HTML with no external dependencies
+13. Package dry-runs are fail-closed — use `--force` only with explicit intent
+14. Do NOT call `wagents docs generate` directly — run docs sync through docs-steward conventions
+15. Do NOT create agents or MCP servers — refuse gracefully and redirect
+16. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
+17. Audit mode is read-only — never modify the skill being audited
+18. Update `evals/evals.json` when dispatch behavior or modes change — stale evals are invisible bugs
 
 **Canonical terms** (use these exactly throughout):
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90+), "B" (75-89), "C" (60-74), "D" (40-59), "F" (\<40)
+- Pattern status: "found", "suggested", "not-applicable"
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
-- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary"
+- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "references", "critical-rules", "scripts", "portability", "conciseness"
 
 <Tabs>
   <TabItem label="General">
@@ -164,15 +170,11 @@ metadata:
   author: wyattowalsh
   version: "2.0.0"
 hooks:
-  PreToolUse:
-    - matcher: Bash
-      hooks:
-        - command: "echo 'skill-creator: Bash access granted for script execution'"
   PostToolUse:
-    - matcher: "Write|Edit"
+    - matcher: "Write|Edit|MultiEdit"
       hooks:
         - type: command
-          command: "jq -r '.tool_input.file_path // empty' | grep -q 'skills/.*/SKILL.md' && wagents validate 2>/dev/null || true"
+          command: "FILE=$(jq -r '.tool_input.file_path // empty'); case \"$FILE\" in *'/skills/skill-creator/SKILL.md') uv run wagents validate >/dev/null ;; *'/skills/skill-creator/evals/'*.json) uv run wagents eval validate >/dev/null ;; esac || true"
 ---
 
 # Skill Creator
@@ -190,8 +192,8 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 | `improve <name>` / `improve <path>` | Develop (existing) | `/skill-creator improve add-badges` |
 | `audit <name>` | Audit | `/skill-creator audit honest-review` |
 | `audit --all` | Audit All | `/skill-creator audit --all` |
-| `dashboard` | Dashboard | `/skill-creator dashboard` |
-| `package <name>` / `package --all` | Package | `/skill-creator package wargame` |
+| `dashboard [name]` | Dashboard | `/skill-creator dashboard my-skill` |
+| `package <name>` / `package --all` | Package | `/skill-creator package wargame --dry-run` |
 | Natural language skill idea | Auto: Develop (new) | `"tool that audits Python type safety"` |
 | Skill name + modification verb | Auto: Develop (existing) | `"refactor the wargame skill"` |
 | Path to SKILL.md | Auto: Develop (existing) | `skills/wargame/SKILL.md` |
@@ -214,8 +216,9 @@ If no explicit mode keyword is provided:
 ```bash
 wagents new skill <name>           # Scaffold from template
 wagents validate                   # Check all skills
+uv run wagents eval validate       # Validate eval manifests
 uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
-wagents package <name>             # Package as portable ZIP
+uv run python skills/skill-creator/scripts/package.py skills/<name> --dry-run --format table
 ```
 
 ## Skill Development
@@ -228,7 +231,7 @@ Unified process for creating new skills and improving existing ones. Load `refer
 | 2. Plan | Structure, description, frontmatter | Gap analysis + improvement plan (approval gate) |
 | 3. Scaffold | `wagents new skill <name>` | Skip |
 | 4. Build | Write/edit body, references, scripts, templates, evals | Same |
-| 5. Validate | `wagents validate` + `audit.py` | Same |
+| 5. Validate | `wagents validate` + `wagents eval validate` + `audit.py` | Same |
 | 6. Iterate | Test, identify issues, loop to Step 4 | Same |
 
 ## Audit
@@ -243,7 +246,7 @@ Comparative ranking of all repository skills. Load `references/audit-guide.md` �
 
 Render visual creation process monitor or audit quality dashboard. Load `references/audit-guide.md` § Dashboard.
 
-Auto-detects mode from data: `phases` field → process monitor; `skills` array → audit overview.
+Use `dashboard <name>` to target a specific active session. `progress.py serve` now renders a correct snapshot by default and supports `--live` for polling dashboards. Auto-detects mode from data: `phases` field → process monitor; `skills` array → audit overview.
 
 ## Gallery (Empty Arguments)
 
@@ -252,21 +255,35 @@ Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, 
 
 ## Package
 
-Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
+Package skills into portable ZIP files. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
 
 ```bash
-wagents package <name>            # Single skill → <name>-v<version>.skill.zip
-wagents package --all             # All skills → dist/ with manifest.json
-wagents package --all --dry-run   # Check portability without creating ZIPs
+uv run python skills/skill-creator/scripts/package.py skills/<name> --dry-run --format table
+uv run python skills/skill-creator/scripts/package.py skills/<name> --force
+uv run python skills/skill-creator/scripts/package.py --all --dry-run --format table
 ```
+
+Packaging is fail-closed by default. If portability checks fail, dry-run exits non-zero and real packaging refuses to emit a ZIP unless `--force` is provided explicitly.
 
 ## Hooks
 
-PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
+The `hooks:` frontmatter field scopes hooks to this skill only. This skill keeps hooks narrow and deterministic:
+- `SKILL.md` writes trigger `uv run wagents validate`
+- `evals/evals.json` writes trigger `uv run wagents eval validate`
+
+Docs sync is explicit via docs-steward. It is not an automatic hook.
 
 ## State Management
 
-Creation progress persists at `~/.claude/skill-progress/<name>.json`. Read/write via `scripts/progress.py`. Survives session restarts. Use `--state-dir` to override the default location.
+Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<name>.json`. Read/write via `scripts/progress.py`. Survives session restarts. Use `--state-dir` to override the default location.
+
+## Scaling Strategy
+
+| Scope | Strategy |
+|-------|----------|
+| 1 skill, 1-2 files | Work inline after a read-only audit |
+| 1 skill, 3+ files or mixed artifacts | Parallelize read-only analysis, then serialize shared-file edits in small batches |
+| Repo-wide or multi-skill | Audit and plan in parallel, implement one logical workstream at a time, validate after each batch |
 
 ## Reference File Index
 
@@ -278,7 +295,7 @@ Creation progress persists at `~/.claude/skill-progress/<name>.json`. Read/write
 | `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
 | `references/frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree | Step 3 (Scaffold), frontmatter configuration |
 | `references/packaging-guide.md` | ZIP structure, manifest schema, portability checks, import instructions | Package |
-| `references/evaluation-rubric.md` | 11 scoring dimensions, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
+| `references/evaluation-rubric.md` | 10 scored dimensions, +3 canonical-vocabulary bonus, pressure testing | Audit (pressure testing), scoring targets |
 
 Read reference files as indicated by the "Read When" column above. Do not rely on memory or prior knowledge of their contents.
 
@@ -293,28 +310,31 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 ## Critical Rules
 
 1. Run `uv run wagents validate` before declaring any skill complete
-2. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
-3. Never create a skill without a dispatch table — it is the routing contract
-4. Never create a dispatch table without an empty-args handler — unrouted input is a bug
-5. Every reference file must appear in the Reference File Index — orphan refs are invisible
-6. Every indexed reference must exist on disk — phantom refs cause agent errors
-7. Body must stay under 500 lines (below frontmatter) — move detail to references
-8. Description must include "Use when" trigger phrases AND "NOT for" exclusions
-9. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
-10. Scripts use argparse + JSON to stdout — no custom output formats
-11. Templates are self-contained HTML with no external dependencies
-12. Do NOT call `wagents docs generate` — delegate to docs-steward
-13. Do NOT create agents or MCP servers — refuse gracefully and redirect
-14. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
-15. Audit mode is read-only — never modify the skill being audited
-16. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
+2. Run `uv run wagents eval validate` after changing evals and before declaring the skill complete
+3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
+4. Never create a skill without a dispatch table — it is the routing contract
+5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
+6. Every reference file must appear in the Reference File Index — orphan refs are invisible
+7. Every indexed reference must exist on disk — phantom refs cause agent errors
+8. Body must stay under 500 lines (below frontmatter) — move detail to references
+9. Description must include "Use when" trigger phrases AND "NOT for" exclusions
+10. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
+11. Scripts use argparse + JSON to stdout — no custom output formats
+12. Templates are self-contained HTML with no external dependencies
+13. Package dry-runs are fail-closed — use `--force` only with explicit intent
+14. Do NOT call `wagents docs generate` directly — run docs sync through docs-steward conventions
+15. Do NOT create agents or MCP servers — refuse gracefully and redirect
+16. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
+17. Audit mode is read-only — never modify the skill being audited
+18. Update `evals/evals.json` when dispatch behavior or modes change — stale evals are invisible bugs
 
 **Canonical terms** (use these exactly throughout):
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90+), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)
+- Pattern status: "found", "suggested", "not-applicable"
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
-- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary"
+- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "references", "critical-rules", "scripts", "portability", "conciseness"
 
 ````
 

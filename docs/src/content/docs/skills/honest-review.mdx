@@ -17,7 +17,7 @@ import { Aside, Badge, Card, CardGrid, LinkCard, Steps, Tabs, TabItem } from '@a
 
 **Install:**
 ```bash
-npx skills add wyattowalsh/agents/skills/honest-review -g
+npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
 **Use:** `/honest-review [path | audit | PR#]`
@@ -288,7 +288,7 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 | [Antigravity](https://github.com/google-gemini/gemini-cli) | `GEMINI.md` | `GEMINI.md` |
 | [Codex](https://github.com/openai/codex) | `AGENTS.md` | -- |
 | [Crush](https://github.com/crush-ai/crush) | `AGENTS.md` | -- |
-| [OpenCode](https://github.com/opencode-ai/opencode) | `AGENTS.md` | -- |
+| [OpenCode](https://github.com/anomalyco/opencode) | Global `AGENTS.md` + repo `AGENTS.md` | `opencode.json` + `tui.json` |
 | [Cursor](https://cursor.sh) | `AGENTS.md` | -- |
 | [GitHub Copilot](https://github.com/features/copilot) | Generated `.github/copilot-instructions.md` + `AGENTS.md` | `.github/copilot-instructions.md` |
 

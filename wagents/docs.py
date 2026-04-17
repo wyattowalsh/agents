@@ -50,12 +50,10 @@ def write_index_page(nodes: list) -> None:
     parts = []
     parts.append("---")
     parts.append("title: Agents")
-    parts.append(
-        "description: AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more"
-    )
+    parts.append("description: Portable skills and MCP tools for coding agents")
     parts.append("template: splash")
     parts.append("hero:")
-    parts.append("  tagline: Open-source skills, agents, and MCP servers — install in one command")
+    parts.append("  tagline: Portable skills and MCP tools for coding agents")
     parts.append("  image:")
     parts.append("    html: |")
     parts.append('      <div class="hero-terminal">')
@@ -63,11 +61,13 @@ def write_index_page(nodes: list) -> None:
     parts.append('          <span class="hero-terminal-dot red"></span>')
     parts.append('          <span class="hero-terminal-dot yellow"></span>')
     parts.append('          <span class="hero-terminal-dot green"></span>')
-    parts.append('          <span class="hero-terminal-title">terminal</span>')
+    parts.append('          <span class="hero-terminal-title">agent control plane</span>')
     parts.append("        </div>")
     parts.append('        <div class="hero-terminal-body">')
     parts.append('          <span class="hero-terminal-prompt">$</span>')
-    parts.append('          <span class="hero-terminal-cmd">npx skills add wyattowalsh/agents --all -g</span>')
+    parts.append(
+        '          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode</span>'
+    )
     parts.append('          <span class="hero-terminal-cursor">▋</span>')
     parts.append("        </div>")
     parts.append('        <div class="hero-agents-row">')
@@ -82,15 +82,15 @@ def write_index_page(nodes: list) -> None:
     parts.append("      </div>")
     parts.append("  actions:")
     parts.append("    - text: Get Started")
-    parts.append("      link: /skills/")
+    parts.append("      link: /start-here/")
     parts.append("      icon: right-arrow")
-    parts.append("    - text: Star on GitHub")
-    parts.append("      link: https://github.com/wyattowalsh/agents")
+    parts.append("    - text: Explore Skills")
+    parts.append("      link: /skills/")
     parts.append("      variant: minimal")
-    parts.append("      icon: github")
+    parts.append("      icon: right-arrow")
     parts.append("---")
     parts.append("")
-    parts.append("import { Badge, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';")
+    parts.append("import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';")
     parts.append("")
 
     # Stats bar — only show non-zero counts
@@ -143,18 +143,45 @@ def write_index_page(nodes: list) -> None:
     parts.append("</div>")
     parts.append("")
 
-    # "Why Use Skills?" explainer
-    parts.append('<Aside type="tip" title="Why use Skills?">')
+    parts.append("## Start Here")
+    parts.append("")
     parts.append(
-        "Instead of keeping an unorganized document of prompts to copy-paste, **skills** package "
-        "expert prompts, complex multi-step workflows, and tools into a single version-controlled, portable asset. "
-        "Install them once, then seamlessly invoke them with `/skill-name` inside your favorite AI agent. "
-        "[Learn more at agentskills.io \u2192](https://agentskills.io)"
+        "Install the catalog once, then call a focused specialist inside your agent. If you want the shortest guided path through setup, start with [Start Here](/start-here/)."
+    )
+    parts.append("")
+
+    parts.append('<div class="install-section">')
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Install the full catalog")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --all -y -g "
+        "--agent claude-code --agent codex --agent gemini-cli "
+        "--agent antigravity --agent github-copilot --agent opencode"
+    )
+    parts.append("")
+    parts.append("# Or start with one focused skill")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --skill honest-review -y -g "
+        "--agent claude-code --agent codex --agent gemini-cli "
+        "--agent antigravity --agent github-copilot --agent opencode"
+    )
+    parts.append("```")
+    parts.append("")
+    parts.append("</div>")
+    parts.append("")
+    parts.append(
+        "Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent."
+    )
+    parts.append("")
+    parts.append('<Aside type="tip" title="Fastest path">')
+    parts.append(
+        "Use [Start Here](/start-here/) when you want the shortest setup path, a few strong starter skills, and a quick mental model of the repo."
     )
     parts.append("</Aside>")
     parts.append("")
 
-    parts.append("## Why Use Skills?")
+    parts.append("## What Skills Are")
     parts.append("")
     parts.append('<div class="catalog-skill">')
     parts.append("<CardGrid>")
@@ -166,123 +193,63 @@ def write_index_page(nodes: list) -> None:
         "Gemini CLI, Antigravity, and more."
     )
     parts.append("  </Card>")
-    parts.append('  <Card title="Composable">')
+    parts.append('  <Card title="Inspectable">')
     parts.append('    <div class="feature-card-icon" aria-hidden="true">C</div>')
     parts.append(
-        '    <Badge text="Stackable" variant="tip" /> '
-        "Combine focused skills into richer multi-step systems without "
-        "rewriting prompts every time."
+        '    <Badge text="Versioned" variant="tip" /> '
+        "Keep prompts, workflows, and conventions in source control instead of buried in copy-paste docs."
     )
     parts.append("  </Card>")
-    parts.append('  <Card title="Open Source">')
+    parts.append('  <Card title="Composable">')
     parts.append('    <div class="feature-card-icon" aria-hidden="true">OS</div>')
     parts.append(
-        '    <Badge text="Inspectable" variant="success" /> '
-        "Keep your agent workflows version-controlled, reviewable, and easy "
-        "to extend with your own conventions."
+        '    <Badge text="Stackable" variant="success" /> '
+        "Pull in one specialist for reviews, another for architecture, and another for docs without rebuilding the workflow each time."
     )
     parts.append("  </Card>")
     parts.append("</CardGrid>")
     parts.append("</div>")
     parts.append("")
 
-    parts.append('<Aside type="note" title="How these docs are built">')
-    if has_mcp_overview and not mcps and mcp_config_count:
-        parts.append(
-            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via "
-            "`wagents docs generate`. The MCP overview is currently hand-maintained and summarizes the "
-            f"{mcp_config_count} servers configured in `mcp.json`"
-            " (including local and remote servers outside this repo)."
-        )
-    else:
-        parts.append(
-            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via "
-            "`wagents docs generate`. Hand-maintained pages are preserved"
-            " when they include the `HAND-MAINTAINED` sentinel."
-        )
-    parts.append("</Aside>")
-    parts.append("")
-
-    # Manually curated showcase — update when key skills change
-    parts.append("## What Can You Do?")
+    parts.append("## Popular Starting Points")
     parts.append("")
     parts.append("<CardGrid>")
     parts.append(
         '  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/"'
-        ' description="Research-driven code review at multiple abstraction levels'
-        ' with AI code smell detection and severity calibration." />'
+        ' description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />'
     )
     parts.append(
         '  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/"'
-        ' description="Domain-agnostic wargaming with Monte Carlo exploration,'
-        ' structured adjudication, and visual dashboards." />'
+        ' description="Pressure-test a product or engineering decision before you commit to it." />'
     )
     parts.append(
         '  <LinkCard title="Host Expert Panels" href="/skills/host-panel/"'
-        ' description="Simulated panel discussions among AI experts in roundtable,'
-        ' Oxford-style, and Socratic formats." />'
+        ' description="Get multiple expert perspectives in one session when the problem has real trade-offs." />'
     )
     parts.append(
         '  <LinkCard title="Create MCP Servers" href="/skills/mcp-creator/"'
-        ' description="Build production-ready MCP servers using FastMCP v3'
-        ' with tool design, testing, and deployment guidance." />'
+        ' description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />'
     )
     parts.append("</CardGrid>")
-    parts.append("")
-
-    # Install section
-    parts.append('<div class="install-section">')
-    parts.append("")
-    parts.append("### Quick Install")
-    parts.append("")
-    parts.append("```bash")
-    parts.append("# Install this repository's full catalog")
-    parts.append("npx skills add wyattowalsh/agents --all -g")
-    parts.append("")
-    parts.append("# Or install a targeted third-party collection")
-    parts.append("npx skills add <source> --skill <name> -g -y --agent claude-code --agent codex")
-    parts.append("```")
-    parts.append("")
-    parts.append("</div>")
-    parts.append("")
-
-    # How it Works
-    parts.append("## How it Works")
-    parts.append("")
-    parts.append("<Steps>")
-    parts.append("")
-    parts.append(
-        "1. **Install** — Use `npx skills add wyattowalsh/agents --all -g` for the full catalog, or `npx skills add <source> --skill <name> -g -y --agent <agent>` for a targeted external install."
-    )
-    parts.append("")
-    parts.append(
-        "2. **Invoke** — Type `/skill-name` in "
-        "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
-        "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
-        "or any [agentskills.io](https://agentskills.io)-compatible agent."
-    )
-    parts.append("")
-    parts.append(
-        "3. **Enhance** — Each skill provides domain expertise, "
-        "structured workflows, and proven patterns that make your "
-        "agent dramatically more capable."
-    )
-    parts.append("")
-    parts.append("</Steps>")
     parts.append("")
 
     parts.append("## Explore the Catalog")
     parts.append("")
     parts.append("<CardGrid>")
-    skills_index_desc = "Browse repository skills grouped by invocation model, with install commands and docs pages."
+    parts.append(
+        '  <LinkCard title="Start Here" href="/start-here/" description="The shortest guided path: install the catalog, pick a starter skill, and understand the repo layout." />'
+    )
+    skills_index_desc = (
+        "Browse repository skills with install commands, generated detail pages, and convention-skill context."
+    )
     if installed_skills:
         skills_index_desc = (
-            "Browse repository skills plus optional installed external skills, grouped by invocation model."
+            "Browse repository skills plus optional installed external skills from local agent directories."
         )
     parts.append(f'  <LinkCard title="Skills Index" href="/skills/" description="{escape_attr(skills_index_desc)}" />')
     if has_mcp_overview:
         if mcp_config_count:
-            mcp_desc = f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`."
+            mcp_desc = f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`, including repo-local and external servers."
         else:
             mcp_desc = "Hand-maintained overview of configured MCP servers."
         parts.append(f'  <LinkCard title="MCP Overview" href="/mcp/" description="{escape_attr(mcp_desc)}" />')
@@ -293,51 +260,6 @@ def write_index_page(nodes: list) -> None:
     )
     parts.append("</CardGrid>")
     parts.append("")
-
-    # Skills section — curated featured picks + link to full index
-    _featured_ids = ["wargame", "honest-review", "skill-creator"]
-    _skills_by_id = {n.id: n for n in skills}
-    featured = [_skills_by_id[fid] for fid in _featured_ids if fid in _skills_by_id]
-    if featured:
-        parts.append("## Featured Skills")
-        parts.append("")
-        parts.append('<div class="catalog-skill">')
-        parts.append("<CardGrid>")
-        for n in featured:
-            desc = escape_attr(truncate_sentence(n.description, 160))
-            parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/skills/{n.id}/" description="{desc}" />')
-        parts.append("</CardGrid>")
-        parts.append("</div>")
-        parts.append("")
-        if len(skills) > len(featured):
-            parts.append(f"[View all {len(skills)} skills →](/skills/)")
-            parts.append("")
-
-    # Agents section
-    if agents:
-        parts.append("## Agents")
-        parts.append("")
-        parts.append('<div class="catalog-agent">')
-        parts.append("<CardGrid>")
-        for n in agents:
-            desc = escape_attr(truncate_sentence(n.description, 160))
-            parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/agents/{n.id}/" description="{desc}" />')
-        parts.append("</CardGrid>")
-        parts.append("</div>")
-        parts.append("")
-
-    # MCP section
-    if mcps:
-        parts.append("## MCP Servers")
-        parts.append("")
-        parts.append('<div class="catalog-mcp">')
-        parts.append("<CardGrid>")
-        for n in mcps:
-            desc = escape_attr(truncate_sentence(n.description, 160))
-            parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/mcp/{n.id}/" description="{desc}" />')
-        parts.append("</CardGrid>")
-        parts.append("</div>")
-        parts.append("")
     # Supported Agents
     parts.append("## Supported Agents")
     parts.append("")
@@ -381,6 +303,21 @@ def write_index_page(nodes: list) -> None:
     parts.append("</CardGrid>")
     parts.append("")
 
+    parts.append("## How These Docs Work")
+    parts.append("")
+    parts.append('<Aside type="note" title="Generated pages, curated framing">')
+    if has_mcp_overview and not mcps and mcp_config_count:
+        parts.append(
+            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The top-level navigation stays concise, curated onboarding pages stay hand-maintained, and the MCP overview is currently a hand-maintained summary of "
+            f"{mcp_config_count} servers from `mcp.json`."
+        )
+    else:
+        parts.append(
+            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. Curated onboarding pages stay hand-maintained, and generated catalogs keep the docs in sync with the repo."
+        )
+    parts.append("</Aside>")
+    parts.append("")
+
     # Resources
     parts.append("## Resources")
     parts.append("")
@@ -392,6 +329,9 @@ def write_index_page(nodes: list) -> None:
     )
     parts.append(
         '  <LinkCard title="CLI Reference" href="/cli/" description="Full command reference for the wagents CLI." />'
+    )
+    parts.append(
+        '  <LinkCard title="Start Here" href="/start-here/" description="Use the shortest guided path through install, invocation, and the repo map." />'
     )
     parts.append(
         '  <LinkCard title="Create Your Own"'
@@ -421,57 +361,56 @@ def write_cli_page() -> None:
     )
     parts.append("")
     parts.append(
-        "The `wagents` CLI manages AI agent assets in this repository"
-        " -- creating skills, agents, and MCP servers from templates,"
-        " validating frontmatter, generating documentation, and packaging skills for distribution."
+        "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. Use it to scaffold new assets, validate the repo, publish docs, and package skills for release."
     )
     parts.append("")
-    parts.append("## Quick Reference")
-    parts.append("")
-    parts.append("| Command | Description |")
-    parts.append("|---------|-------------|")
-    parts.append("| `wagents new skill <name>` | Scaffold a new [skill](/skills/) |")
-    parts.append("| `wagents new agent <name>` | Scaffold a new agent configuration |")
-    parts.append("| `wagents new mcp <name>` | Scaffold a new [MCP server](/mcp/) |")
-    parts.append("| `wagents validate` | Validate all assets' frontmatter and structure |")
-    parts.append("| `wagents readme` | Regenerate `README.md` |")
-    parts.append("| `wagents install` | Install skills into agent platforms |")
-    parts.append("| `wagents package <name>` | Package skills as portable ZIPs |")
-    parts.append("| `wagents doctor` | Check environment and toolchain health |")
-    parts.append("| `wagents docs <subcommand>` | Manage the documentation site |")
-    parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
-    parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
-    parts.append("")
-    parts.append("## Installation")
+    parts.append("## Boot Sequence")
     parts.append("")
     parts.append("<Steps>")
     parts.append("")
-    parts.append("1. Clone the repository:")
-    parts.append("   ```bash")
-    parts.append("   git clone https://github.com/wyattowalsh/agents.git")
-    parts.append("   cd agents")
-    parts.append("   ```")
-    parts.append("")
-    parts.append("2. Install with uv:")
+    parts.append("1. Sync the repo environment:")
     parts.append("   ```bash")
     parts.append("   uv sync")
     parts.append("   ```")
     parts.append("")
-    parts.append("3. Verify installation:")
+    parts.append("2. Sanity-check your toolchain:")
     parts.append("   ```bash")
-    parts.append("   uv run wagents --version")
+    parts.append("   uv run wagents doctor")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("3. Validate the repo before making changes:")
+    parts.append("   ```bash")
+    parts.append("   uv run wagents validate")
+    parts.append("   ```")
+    parts.append("")
+    parts.append("4. Start the docs site when you need to inspect generated output:")
+    parts.append("   ```bash")
+    parts.append("   uv run wagents docs dev")
     parts.append("   ```")
     parts.append("")
     parts.append("</Steps>")
     parts.append("")
     parts.append('<Aside type="tip" title="Running commands">')
     parts.append(
-        "All `wagents` commands should be run with `uv run wagents` from the repository root. "
-        "The examples below omit the `uv run` prefix for brevity."
+        "Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wagents ...` from the repository root."
     )
     parts.append("</Aside>")
     parts.append("")
-    parts.append("## Commands")
+    parts.append("## Command Map")
+    parts.append("")
+    parts.append("| Command | Description |")
+    parts.append("|---------|-------------|")
+    parts.append("| `wagents new <asset>` | Scaffold a new skill, agent, or MCP server from repo templates |")
+    parts.append("| `wagents validate` | Check frontmatter, naming, hooks, and related-skill integrity |")
+    parts.append("| `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |")
+    parts.append("| `wagents readme` | Regenerate `README.md` or fail if it is stale |")
+    parts.append("| `wagents install` | Install repo skills into supported agent platforms |")
+    parts.append("| `wagents package <name>` | Build portable ZIP packages for sharing or release |")
+    parts.append("| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |")
+    parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
+    parts.append("| `wagents eval <subcommand>` | List, validate, and check eval coverage |")
+    parts.append("")
+    parts.append("## Command Reference")
     parts.append("")
 
     # --- wagents new ---
@@ -701,7 +640,10 @@ def write_cli_page() -> None:
     parts.append("For third-party skill sources or curated subsets, use `npx skills add` directly:")
     parts.append("")
     parts.append("```bash")
-    parts.append("npx skills add <source> --skill <name> -g -y --agent claude-code --agent codex")
+    parts.append(
+        "npx skills add <source> --skill <name> -y -g --agent claude-code --agent codex "
+        "--agent gemini-cli --agent antigravity --agent github-copilot --agent opencode"
+    )
     parts.append("```")
     parts.append("")
     parts.append("| Option | Default | Description |")
@@ -1133,17 +1075,13 @@ def write_skills_index(nodes: list) -> None:
     parts.append("description: Browse all available AI agent skills")
     parts.append("---")
     parts.append("")
-    parts.append("import { Card, CardGrid, LinkCard, Badge, Aside, Steps } from '@astrojs/starlight/components';")
+    parts.append("import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append(
-        "Skills are reusable knowledge and workflows that make AI coding agents dramatically more capable. "
-        "They work across **Claude Code**, **Gemini CLI**, **OpenCode**, **Codex**, **Cursor**, **GitHub Copilot**, "
-        "and any [agentskills.io](https://agentskills.io)-compatible agent."
+        "Skills are portable prompt-and-workflow bundles for coding agents. Install them once, invoke them with `/skill-name`, and keep the behavior under version control."
     )
     parts.append("")
-    parts.append(
-        "Each skill packages domain expertise into a portable format: install once, invoke anywhere with `/skill-name`."
-    )
+    parts.append("New here? Start with [Start Here](/start-here/) for the shortest setup path.")
     parts.append("")
 
     # Install section
@@ -1153,29 +1091,32 @@ def write_skills_index(nodes: list) -> None:
     parts.append("")
     parts.append("```bash")
     parts.append("# Install this repository's full catalog")
-    parts.append("npx skills add wyattowalsh/agents --all -g")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --all -y -g "
+        "--agent claude-code --agent codex --agent gemini-cli "
+        "--agent antigravity --agent github-copilot --agent opencode"
+    )
     parts.append("")
-    parts.append("# Or install a targeted third-party collection")
-    parts.append("npx skills add <source> --skill <name> -g -y --agent claude-code --agent codex")
+    parts.append("# Install a focused starter skill")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --skill honest-review -y -g "
+        "--agent claude-code --agent codex --agent gemini-cli "
+        "--agent antigravity --agent github-copilot --agent opencode"
+    )
     parts.append("```")
     parts.append("")
     parts.append("</div>")
     parts.append("")
 
-    # New-to-skills aside
-    parts.append('<Aside type="tip" title="New to skills?">')
+    parts.append('<Aside type="tip" title="How to use this page">')
     parts.append(
-        "Skills extend your AI agent with domain expertise, structured workflows, and proven patterns. "
-        "Install with `npx skills add` and invoke with "
-        "`/skill-name` in any supported agent. "
-        "See [How it Works](/) for a quick overview, or browse the full "
-        "[agentskills.io](https://agentskills.io) ecosystem."
+        "Use the lane cards below when you want a fast starting point. Use the full catalog sections when you already know the exact skill you need."
     )
     parts.append("</Aside>")
     parts.append("")
     parts.append('<Aside type="note" title="Installed external skills">')
     parts.append(
-        "Use `npx skills add <source> --skill <name> -g -y --agent <agent>` for third-party collections or curated subsets. Run `wagents docs generate --include-installed` when you want those locally installed skills included in a docs build."
+        "Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-party collections or curated subsets. Run `wagents docs generate --include-installed` when you want those locally installed skills included in a docs build."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -1183,7 +1124,6 @@ def write_skills_index(nodes: list) -> None:
     # Split custom skills into user-invocable and auto-invoke
     user_invocable = [n for n in custom if n.metadata.get("user-invocable") is not False]
     auto_invoke = [n for n in custom if n.metadata.get("user-invocable") is False]
-    has_installed = bool(installed)
 
     parts.append('<div class="stats-bar">')
     parts.append(f'  <span class="stat stat-skill">{len(user_invocable)} User-Invocable</span>')
@@ -1193,42 +1133,22 @@ def write_skills_index(nodes: list) -> None:
     parts.append("</div>")
     parts.append("")
 
-    # Category explanation table
-    parts.append("## Understanding Skill Categories")
+    parts.append("## Skill Lanes")
     parts.append("")
-    if has_installed:
-        parts.append("This docs build includes three categories of skills, each serving a different purpose:")
-    else:
-        parts.append(
-            "This repository defines two built-in skill categories. You can also opt in to installed external skills."
-        )
-    parts.append("")
-    parts.append("| Category | Count | How they work |")
-    parts.append("|----------|-------|---------------|")
+    parts.append("<CardGrid>")
     parts.append(
-        f"| **User-Invocable** | {len(user_invocable)} "
-        "| You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |"
+        '  <LinkCard title="Review & QA" href="/skills/honest-review/" description="Start here for code review, docs QA, test strategy, performance review, or security scanning." />'
     )
     parts.append(
-        f"| **Convention** | {len(auto_invoke)} "
-        "| The agent auto-invokes these when it detects relevant context "
-        "(e.g., editing Python files). Hidden from the `/` menu. |"
+        '  <LinkCard title="Build & Design" href="/skills/frontend-designer/" description="Use these when you are creating frontends, APIs, data systems, infra, or MCP servers." />'
     )
-    if has_installed:
-        parts.append(
-            f"| **Installed** | {len(installed)} "
-            "| Third-party skills discovered from local agent skill directories such as `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`. |"
-        )
-    parts.append("")
-    parts.append('<Aside type="note" title="Generated docs vs hand-maintained guides">')
     parts.append(
-        "Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. "
-        "If a deeper curated guide exists (for example, architecture"
-        " or roadmap notes), the generated skill page links to it."
+        '  <LinkCard title="Strategy & Research" href="/skills/research/" description="Use these when the problem is fuzzy, the trade-offs are real, or you need deeper investigation first." />'
     )
-    parts.append("</Aside>")
-    parts.append("")
-    parts.append("---")
+    parts.append(
+        '  <LinkCard title="Workflow & Utility" href="/skills/orchestrator/" description="Use these to coordinate work, simplify code, manage git flow, package releases, or handle local file tasks." />'
+    )
+    parts.append("</CardGrid>")
     parts.append("")
 
     if user_invocable:
@@ -1236,21 +1156,12 @@ def write_skills_index(nodes: list) -> None:
         parts.append("")
         parts.append(
             '<Badge text="Manual invocation" variant="tip" /> '
-            "Trigger these with `/skill-name` during a conversation. "
-            "They appear in the autocomplete menu."
+            "Call these when you want a specialist on demand. They appear in the autocomplete menu."
         )
         parts.append("")
         parts.append(
-            "These skills are designed to be explicitly called when you want specialized "
-            "domain knowledge or a structured workflow. They behave like focused teammates "
-            "you can pull into the session on demand."
+            "These are the main building blocks in the catalog: focused specialists for review, docs, architecture, data, infra, research, prompting, and workflow design."
         )
-        parts.append("")
-        parts.append('<div class="tool-pills">')
-        parts.append('  <Badge text="Featured: honest-review" variant="note" />')
-        parts.append('  <Badge text="Featured: skill-creator" variant="note" />')
-        parts.append('  <Badge text="Featured: wargame" variant="note" />')
-        parts.append("</div>")
         parts.append("")
         parts.append('<div class="catalog-skill">')
         parts.append("<CardGrid>")
@@ -1266,14 +1177,11 @@ def write_skills_index(nodes: list) -> None:
         parts.append("")
         parts.append(
             '<Badge text="Auto-invoked" variant="caution" /> '
-            "The agent loads these automatically when it detects relevant context "
-            "-- no manual invocation needed. They enforce consistency across the codebase."
+            "The agent loads these automatically when repo context matches. They stay out of the `/` menu."
         )
         parts.append("")
         parts.append(
-            "Convention skills stay out of the `/` menu but remain available to the agent. "
-            "When the repo context matches, they quietly apply the right rules, tooling, "
-            "and formatting patterns."
+            "Convention skills quietly enforce repo standards like Python tooling, shell conventions, JavaScript package management, and agent metadata rules."
         )
         parts.append("")
         parts.append('<div class="catalog-skill">')
@@ -1284,15 +1192,6 @@ def write_skills_index(nodes: list) -> None:
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
-        parts.append('<Aside type="note" title="How convention skills work">')
-        parts.append(
-            "Convention skills set `user-invocable: false` in their frontmatter. "
-            "This hides them from the `/` menu but keeps their descriptions in the agent's context, "
-            "allowing automatic discovery and invocation when the agent encounters matching "
-            "file types or patterns."
-        )
-        parts.append("</Aside>")
-        parts.append("")
 
     # Installed skills — link to anchors on aggregated page
     if installed:
@@ -1300,15 +1199,11 @@ def write_skills_index(nodes: list) -> None:
         parts.append("")
         parts.append(
             '<Badge text="External" variant="default" /> '
-            "Third-party skills installed from the "
-            "[agentskills.io](https://agentskills.io) ecosystem via `npx skills add`. "
-            "These are discovered from local agent skill directories such as `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
+            "Third-party skills installed from the [agentskills.io](https://agentskills.io) ecosystem via `npx skills add`."
         )
         parts.append("")
         parts.append(
-            "Installed skills let you extend the agent continuously without changing this "
-            "repository. Use them to pull in targeted outside expertise while keeping your "
-            "local workflow consistent."
+            "Installed skills only appear in docs builds that opt into local agent skill directories such as `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
         )
         parts.append("")
         parts.append('<div class="catalog-installed">')
@@ -1331,13 +1226,23 @@ def write_skills_index(nodes: list) -> None:
     parts.append("")
     parts.append("```bash")
     parts.append("# Install a single skill globally")
-    parts.append("npx skills add wyattowalsh/agents --skill honest-review -g")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --skill honest-review -y -g "
+        "--agent claude-code --agent codex --agent gemini-cli "
+        "--agent antigravity --agent github-copilot --agent opencode"
+    )
     parts.append("")
     parts.append("# Install multiple specific skills")
-    parts.append("npx skills add wyattowalsh/agents --skill honest-review --skill wargame -g")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --skill honest-review --skill wargame -y -g "
+        "--agent claude-code --agent codex --agent gemini-cli "
+        "--agent antigravity --agent github-copilot --agent opencode"
+    )
     parts.append("")
     parts.append("# Install to a specific agent only")
-    parts.append("npx skills add wyattowalsh/agents --skill orchestrator -g -a claude-code")
+    parts.append(
+        "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code"
+    )
     parts.append("```")
     parts.append("")
     parts.append('<Aside type="tip" title="Creating your own skills">')
@@ -1372,8 +1277,8 @@ def write_installed_skills_page(nodes: list) -> None:
     def install_command(node) -> str:
         source = node.metadata.get("_skills_source") if isinstance(node.metadata, dict) else None
         if source:
-            return f"npx skills add {source} --skill {node.id} -g"
-        return f"npx skills add {node.id} -g"
+            return f"npx skills add {source} --skill {node.id} -y -g"
+        return f"npx skills add {node.id} -y -g"
 
     for n in nodes:
         fm = n.metadata
@@ -1518,11 +1423,12 @@ def write_sidebar(nodes: list) -> None:
     lines.append("// Auto-generated by wagents docs generate — do not edit")
     lines.append("export const navLinks = [")
     total_skills = len(custom_skills) + len(installed_skills)
+    nav_items = ["  { label: 'Start Here', link: '/start-here/' }"]
     skills_nav = "  { label: 'Skills', link: '/skills/'"
     if total_skills:
         skills_nav += f", badge: '{total_skills}'"
     skills_nav += " }"
-    nav_items = [skills_nav]
+    nav_items.append(skills_nav)
     if agents:
         nav_items.append("  { label: 'Agents', link: '/agents/' }")
     mcp_content_dir = CONTENT_DIR / "mcp"
@@ -1538,6 +1444,7 @@ def write_sidebar(nodes: list) -> None:
     lines.append("")
     lines.append("export default [")
     lines.append("  { slug: '' },")
+    lines.append("  { slug: 'start-here', label: 'Start Here' },")
 
     # Skills group with subgroups
     lines.append("  {")

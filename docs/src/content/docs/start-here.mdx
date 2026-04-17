@@ -1,0 +1,64 @@
+---
+title: Start Here
+description: The shortest path through install, invocation, and the repo layout
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Aside, Badge, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+This is the shortest guided path through the repo. Install the catalog, try one skill, then branch into the docs sections that matter for your workflow.
+
+<Aside type="tip" title="What a skill is">
+Skills are portable prompt-and-workflow bundles for coding agents. Install them once, then call them with `/skill-name` inside Claude Code, Gemini CLI, OpenCode, Cursor, GitHub Copilot, Codex, and other [agentskills.io](https://agentskills.io)-compatible agents.
+</Aside>
+
+## 1. Install The Catalog
+
+```bash
+# Install the repository catalog globally
+npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+
+# Or start with one focused skill
+npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+```
+
+## 2. Try A Starter Skill
+
+<CardGrid>
+  <LinkCard title="honest-review" href="/skills/honest-review/" description="Start here if you want stronger code review, bug-finding, and risk assessment." />
+  <LinkCard title="wargame" href="/skills/wargame/" description="Use this when the problem is strategic and you want to compare paths before building." />
+  <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Start here when you need to build a new FastMCP server or expose tools cleanly." />
+  <LinkCard title="frontend-designer" href="/skills/frontend-designer/" description="Use this when the work is user-facing and you need stronger UI implementation decisions." />
+</CardGrid>
+
+## 3. Invoke It Inside Your Agent
+
+<Steps>
+
+1. Open your supported coding agent.
+
+2. Call the skill with `/skill-name`.
+
+   Example: `/honest-review`
+
+3. Give it the concrete task or target.
+
+   Example: `/honest-review review this diff for correctness and regressions`
+
+</Steps>
+
+## 4. Use The Right Docs Path
+
+<CardGrid>
+  <LinkCard title="Skills" href="/skills/" description="Browse the catalog when you know the kind of specialist you need but not the exact skill name." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Use the wagents CLI to scaffold assets, validate the repo, package skills, and regenerate docs." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Use this when you need the configured MCP landscape, client sync coverage, or example client snippets." />
+  <LinkCard title="GitHub" href="https://github.com/wyattowalsh/agents" description="Use the repo directly when you want the raw source, issues, or contribution flow." />
+</CardGrid>
+
+## 5. Know What Is Generated
+
+<Aside type="note" title="Generated vs curated docs">
+Most pages in this site are generated from repository assets via `wagents docs generate`. This page is hand-maintained on purpose so the onboarding path stays short, stable, and easier to refine than the generated catalogs.
+</Aside>

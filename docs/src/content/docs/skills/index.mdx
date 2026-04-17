@@ -3,24 +3,32 @@ title: Skills
 description: Browse all available AI agent skills
 ---
 
-import { Card, CardGrid, LinkCard, Badge, Aside, Steps } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';
 
-Skills are reusable knowledge and workflows that make AI coding agents dramatically more capable. They work across **Claude Code**, **Gemini CLI**, **Codex**, **Cursor**, **GitHub Copilot**, and any [agentskills.io](https://agentskills.io)-compatible agent.
+Skills are portable prompt-and-workflow bundles for coding agents. Install them once, invoke them with `/skill-name`, and keep the behavior under version control.
 
-Each skill packages domain expertise into a portable format: install once, invoke anywhere with `/skill-name`.
+New here? Start with [Start Here](/start-here/) for the shortest setup path.
 
 <div class="install-section">
 
 ### Quick Install All
 
 ```bash
-npx skills add wyattowalsh/agents --all -g
+# Install this repository's full catalog
+npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+
+# Install a focused starter skill
+npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
 </div>
 
-<Aside type="tip" title="New to skills?">
-Skills extend your AI agent with domain expertise, structured workflows, and proven patterns. Install with `npx skills add` and invoke with `/skill-name` in any supported agent. See [How it Works](/) for a quick overview, or browse the full [agentskills.io](https://agentskills.io) ecosystem.
+<Aside type="tip" title="How to use this page">
+Use the lane cards below when you want a fast starting point. Use the full catalog sections when you already know the exact skill you need.
+</Aside>
+
+<Aside type="note" title="Installed external skills">
+Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-party collections or curated subsets. Run `wagents docs generate --include-installed` when you want those locally installed skills included in a docs build.
 </Aside>
 
 <div class="stats-bar">
@@ -28,32 +36,20 @@ Skills extend your AI agent with domain expertise, structured workflows, and pro
   <span class="stat stat-agent">4 Convention Skills</span>
 </div>
 
-## Understanding Skill Categories
+## Skill Lanes
 
-This repository defines two built-in skill categories. You can also opt in to installed external skills.
+<CardGrid>
+  <LinkCard title="Review & QA" href="/skills/honest-review/" description="Start here for code review, docs QA, test strategy, performance review, or security scanning." />
+  <LinkCard title="Build & Design" href="/skills/frontend-designer/" description="Use these when you are creating frontends, APIs, data systems, infra, or MCP servers." />
+  <LinkCard title="Strategy & Research" href="/skills/research/" description="Use these when the problem is fuzzy, the trade-offs are real, or you need deeper investigation first." />
+  <LinkCard title="Workflow & Utility" href="/skills/orchestrator/" description="Use these to coordinate work, simplify code, manage git flow, package releases, or handle local file tasks." />
+</CardGrid>
 
-| Category | Count | How they work |
-|----------|-------|---------------|
-| **User-Invocable** | 38 | You trigger these manually with `/skill-name`. They appear in the autocomplete menu. |
-| **Convention** | 4 | The agent auto-invokes these when it detects relevant context (e.g., editing Python files). Hidden from the `/` menu. |
+## User-Invocable Skills (39)
 
-<Aside type="note" title="Generated docs vs hand-maintained guides">
-Skill pages under `/skills/*` are generated from each skill's `SKILL.md`. If a deeper curated guide exists (for example, architecture or roadmap notes), the generated skill page links to it.
-</Aside>
+<Badge text="Manual invocation" variant="tip" /> Call these when you want a specialist on demand. They appear in the autocomplete menu.
 
----
-
-## User-Invocable Skills (38)
-
-<Badge text="Manual invocation" variant="tip" /> Trigger these with `/skill-name` during a conversation. They appear in the autocomplete menu.
-
-These skills are designed to be explicitly called when you want specialized domain knowledge or a structured workflow. They behave like focused teammates you can pull into the session on demand.
-
-<div class="tool-pills">
-  <Badge text="Featured: honest-review" variant="note" />
-  <Badge text="Featured: skill-creator" variant="note" />
-  <Badge text="Featured: wargame" variant="note" />
-</div>
+These are the main building blocks in the catalog: focused specialists for review, docs, architecture, data, infra, research, prompting, and workflow design.
 
 <div class="catalog-skill">
 <CardGrid>
@@ -80,7 +76,7 @@ These skills are designed to be explicitly called when you want specialized doma
   <LinkCard title="learn" href="/skills/learn/" description="Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights." />
   <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
   <LinkCard title="namer" href="/skills/namer/" description="Name anything: projects, products, companies, packages." />
-  <LinkCard title="nerdbot" href="/skills/nerdbot/" description="Create, manage, and improve markdown-first LLM knowledge bases with layered raw/wiki patterns, audits, and provenance. Use for git-friendly KBs." />
+  <LinkCard title="nerdbot" href="/skills/nerdbot/" description="Create, repair, query, audit, and migrate Obsidian-native knowledge bases with layered raw/wiki structure, provenance, indexes, logs, and safe vault overhauls." />
   <LinkCard title="observability-advisor" href="/skills/observability-advisor/" description="Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps." />
   <LinkCard title="orchestrator" href="/skills/orchestrator/" description="Parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks." />
   <LinkCard title="performance-profiler" href="/skills/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
@@ -101,9 +97,9 @@ These skills are designed to be explicitly called when you want specialized doma
 
 ## Convention Skills (4)
 
-<Badge text="Auto-invoked" variant="caution" /> The agent loads these automatically when it detects relevant context -- no manual invocation needed. They enforce consistency across the codebase.
+<Badge text="Auto-invoked" variant="caution" /> The agent loads these automatically when repo context matches. They stay out of the `/` menu.
 
-Convention skills stay out of the `/` menu but remain available to the agent. When the repo context matches, they quietly apply the right rules, tooling, and formatting patterns.
+Convention skills quietly enforce repo standards like Python tooling, shell conventions, JavaScript package management, and agent metadata rules.
 
 <div class="catalog-skill">
 <CardGrid>
@@ -114,10 +110,6 @@ Convention skills stay out of the `/` menu but remain available to the agent. Wh
 </CardGrid>
 </div>
 
-<Aside type="note" title="How convention skills work">
-Convention skills set `user-invocable: false` in their frontmatter. This hides them from the `/` menu but keeps their descriptions in the agent's context, allowing automatic discovery and invocation when the agent encounters matching file types or patterns.
-</Aside>
-
 ---
 
 ## Installing Individual Skills
@@ -126,13 +118,13 @@ You can also install specific skills rather than the full collection:
 
 ```bash
 # Install a single skill globally
-npx skills add wyattowalsh/agents --skill honest-review -g
+npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 
 # Install multiple specific skills
-npx skills add wyattowalsh/agents --skill honest-review --skill wargame -g
+npx skills add github:wyattowalsh/agents --skill honest-review --skill wargame -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 
 # Install to a specific agent only
-npx skills add wyattowalsh/agents --skill orchestrator -g -a claude-code
+npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code
 ```
 
 <Aside type="tip" title="Creating your own skills">

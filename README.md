@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">
+  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/src/assets/agents-nexus-mark-z.png" alt="Agents Logo" width="100" height="100">
   <h1>agents</h1>
   <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>
   <p>
@@ -18,7 +18,7 @@
 Install all skills globally into your favorite agents:
 
 ```bash
-npx -y skills add wyattowalsh/agents --all -g
+npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
 ## ✨ Why use this repository?
@@ -58,7 +58,7 @@ Reusable actions and knowledge bases for AI agents.
 | learn | Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review. |
 | mcp-creator | Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP. NOT for REST APIs, CLI tools, or non-MCP integrations. |
 | namer | Name anything: projects, products, companies, packages. Generates creative names across linguistic archetypes, checks handle/username availability across platforms, checks domain availability with pricing, and ranks options with scored rationales. Use when naming projects, products, startups, packages, or brands. NOT for domain management (infrastructure-coder) or branding strategy beyond naming (host-panel). |
-| nerdbot | Create, manage, and improve markdown-first LLM knowledge bases with layered raw/wiki patterns, audits, and provenance. Use for git-friendly KBs. NOT for docs sites (docs-steward) or generic notes. |
+| nerdbot | Create, repair, query, audit, and migrate Obsidian-native knowledge bases with layered raw/wiki structure, provenance, indexes, logs, and safe vault overhauls. Use for git-friendly KBs and persistent llm-wiki-style vaults. NOT for docs sites or generic notes. |
 | observability-advisor | Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup. |
 | orchestrator | Parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks. |
 | performance-profiler | Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance. NOT for running profilers, load tests, or monitoring. |
@@ -93,13 +93,16 @@ Reusable actions and knowledge bases for AI agents.
 | `wagents install` | Install all skills to all agents |
 | `wagents install -a <agent>` | Install all skills to specific agent |
 | `wagents install <name>` | Install specific skill to all agents |
+| `wagents install <name> -a <agent>` | Install specific skill to specific agents |
 | `wagents docs init` | One-time setup: install docs dependencies |
 | `wagents docs generate` | Generate MDX content pages from assets |
-| `wagents docs generate --include-installed` | Include installed skills from ~/.claude/skills/ in generated docs |
+| `wagents docs generate --include-installed` | Include installed skills discovered from local agent skill directories in generated docs |
 | `wagents docs dev` | Generate + launch dev server |
 | `wagents docs build` | Generate + production build |
 | `wagents docs preview` | Generate + build + preview server |
 | `wagents docs clean` | Remove generated content pages |
+
+Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -y -g --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.
 
 ## 🤝 Supported Agents
 
@@ -110,7 +113,7 @@ Reusable actions and knowledge bases for AI agents.
 - [Cursor](https://cursor.sh/)
 - [Gemini CLI](https://github.com/google/gemini-cli)
 - [GitHub Copilot](https://github.com/features/copilot)
-- [OpenCode](https://github.com/opencode-ai/opencode)
+- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config
 And other [agentskills.io](https://agentskills.io)-compatible agents.
 
 ## 📚 Documentation

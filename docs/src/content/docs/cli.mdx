@@ -5,51 +5,53 @@ description: wagents CLI commands and usage
 
 import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge } from '@astrojs/starlight/components';
 
-The `wagents` CLI manages AI agent assets in this repository -- creating skills, agents, and MCP servers from templates, validating frontmatter, generating documentation, and packaging skills for distribution.
+`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. Use it to scaffold new assets, validate the repo, publish docs, and package skills for release.
 
-## Quick Reference
-
-| Command | Description |
-|---------|-------------|
-| `wagents new skill <name>` | Scaffold a new [skill](/skills/) |
-| `wagents new agent <name>` | Scaffold a new agent configuration |
-| `wagents new mcp <name>` | Scaffold a new [MCP server](/mcp/) |
-| `wagents validate` | Validate all assets' frontmatter and structure |
-| `wagents readme` | Regenerate `README.md` |
-| `wagents install` | Install skills into agent platforms |
-| `wagents package <name>` | Package skills as portable ZIPs |
-| `wagents doctor` | Check environment and toolchain health |
-| `wagents docs <subcommand>` | Manage the documentation site |
-| `wagents hooks <subcommand>` | List and validate lifecycle hooks |
-| `wagents eval <subcommand>` | List, validate, and check eval coverage |
-
-## Installation
+## Boot Sequence
 
 <Steps>
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/wyattowalsh/agents.git
-   cd agents
-   ```
-
-2. Install with uv:
+1. Sync the repo environment:
    ```bash
    uv sync
    ```
 
-3. Verify installation:
+2. Sanity-check your toolchain:
    ```bash
-   uv run wagents --version
+   uv run wagents doctor
+   ```
+
+3. Validate the repo before making changes:
+   ```bash
+   uv run wagents validate
+   ```
+
+4. Start the docs site when you need to inspect generated output:
+   ```bash
+   uv run wagents docs dev
    ```
 
 </Steps>
 
 <Aside type="tip" title="Running commands">
-All `wagents` commands should be run with `uv run wagents` from the repository root. The examples below omit the `uv run` prefix for brevity.
+Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wagents ...` from the repository root.
 </Aside>
 
-## Commands
+## Command Map
+
+| Command | Description |
+|---------|-------------|
+| `wagents new <asset>` | Scaffold a new skill, agent, or MCP server from repo templates |
+| `wagents validate` | Check frontmatter, naming, hooks, and related-skill integrity |
+| `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |
+| `wagents readme` | Regenerate `README.md` or fail if it is stale |
+| `wagents install` | Install repo skills into supported agent platforms |
+| `wagents package <name>` | Build portable ZIP packages for sharing or release |
+| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |
+| `wagents hooks <subcommand>` | List and validate lifecycle hooks |
+| `wagents eval <subcommand>` | List, validate, and check eval coverage |
+
+## Command Reference
 
 ### `wagents new` -- Create Assets
 
@@ -229,6 +231,12 @@ wagents install --copy
 wagents install -y
 ```
 
+For third-party skill sources or curated subsets, use `npx skills add` directly:
+
+```bash
+npx skills add <source> --skill <name> -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+```
+
 | Option | Default | Description |
 |--------|---------|-------------|
 | `<skills>` | all | Positional skill name(s) to install |
@@ -299,7 +307,7 @@ wagents docs generate
 **Options:**
 
 ```bash
-# Include installed skills from ~/.claude/skills/
+# Include installed skills from local agent skill directories (~/.config/opencode/skills/, ~/.agents/skills/, ~/.claude/skills/)
 wagents docs generate --include-installed
 
 # Include skills with TODO descriptions
@@ -416,7 +424,7 @@ Validate eval JSON files for required fields and referential integrity:
 wagents eval validate
 ```
 
-Each eval file must contain three required fields: `skills` (a non-empty list of strings matching existing skill directories), `query` (a non-empty string), and `expected_behavior` (a non-empty list of strings).
+Legacy scenario files must contain `skills`, `query`, and `expected_behavior`. Canonical manifests may use `evals/evals.json` with `skill_name` plus an `evals` array of cases containing `prompt` and `expected_output`, with optional `files` and `assertions`.
 
   </TabItem>
   <TabItem label="coverage">
