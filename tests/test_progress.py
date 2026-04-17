@@ -1,16 +1,28 @@
 """Tests for skills/skill-creator/scripts/progress.py — progress tracking."""
 
 import json
+import re
 import sys
+import threading
 from pathlib import Path
 from unittest.mock import patch
+from urllib.request import urlopen
 
 import pytest
 
 # Insert the script directory into sys.path so we can import directly.
 sys.path.insert(0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts"))
 
-from progress import cmd_init, cmd_metric, cmd_phase, cmd_read, cmd_status, main
+from progress import (
+    _create_live_dashboard_server,
+    cmd_init,
+    cmd_metric,
+    cmd_phase,
+    cmd_read,
+    cmd_serve,
+    cmd_status,
+    main,
+)
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -31,6 +43,19 @@ def _run_init(state_dir: Path, skill: str = "test-skill", mode: str = "create"):
         cmd_init(args)
     state_file = state_dir / f"{skill}.json"
     return json.loads(state_file.read_text())
+
+
+def _extract_dashboard_payload(html_text: str) -> tuple[str | None, dict]:
+    """Return the embedded dashboard JSON plus optional polling URL."""
+    match = re.search(
+        r'<script id="data" type="application/json"(?: data-poll-url="([^"]*)")?>\s*(\{.*?\})\s*</script>',
+        html_text,
+        re.DOTALL,
+    )
+    assert match, "dashboard HTML is missing the canonical script#data payload"
+    poll_url = match.group(1)
+    payload = json.loads(match.group(2))
+    return poll_url, payload
 
 
 # ---------------------------------------------------------------------------
@@ -278,6 +303,100 @@ class TestRead:
         args = argparse.Namespace(skill="nonexistent", format="json", state_dir=tmp_path)
         with pytest.raises(SystemExit):
             cmd_read(args)
+
+
+# ---------------------------------------------------------------------------
+# serve subcommand
+# ---------------------------------------------------------------------------
+
+
+class TestServe:
+    def test_snapshot_serve_embeds_current_state(self, tmp_path: Path, capsys):
+        _run_init(tmp_path)
+        import argparse
+
+        metric_args = argparse.Namespace(
+            skill="test-skill",
+            key="current_score",
+            value="88",
+            state_dir=tmp_path,
+        )
+        with patch("sys.stdout"):
+            cmd_metric(metric_args)
+
+        serve_args = argparse.Namespace(
+            skill="test-skill",
+            no_open=True,
+            live=False,
+            host="127.0.0.1",
+            port=0,
+            state_dir=tmp_path,
+        )
+        cmd_serve(serve_args)
+        result = json.loads(capsys.readouterr().out)
+
+        assert result["mode"] == "snapshot"
+        assert result["url"].startswith("file://")
+
+        html_path = Path(result["url"].removeprefix("file://"))
+        html_text = html_path.read_text(encoding="utf-8")
+        poll_url, payload = _extract_dashboard_payload(html_text)
+
+        assert poll_url is None
+        assert payload["skill_name"] == "test-skill"
+        assert payload["metrics"]["current_score"] == 88
+        assert payload["mode"] == "create"
+        assert payload["mode_label"] == "Develop (new)"
+
+    def test_live_dashboard_serves_html_and_fresh_json(self, tmp_path: Path):
+        _run_init(tmp_path, mode="improve")
+        import argparse
+
+        server, url = _create_live_dashboard_server("test-skill", state_dir=tmp_path)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            html_text = urlopen(url, timeout=5).read().decode("utf-8")
+            poll_url, payload = _extract_dashboard_payload(html_text)
+            assert poll_url == "/data.json"
+            assert payload["skill_name"] == "test-skill"
+            assert payload["mode"] == "improve"
+            assert payload["mode_label"] == "Develop (existing)"
+
+            json_payload = json.loads(urlopen(f"{url}data.json", timeout=5).read().decode("utf-8"))
+            assert json_payload["metrics"]["current_score"] is None
+
+            metric_args = argparse.Namespace(
+                skill="test-skill",
+                key="current_score",
+                value="91",
+                state_dir=tmp_path,
+            )
+            with patch("sys.stdout"):
+                cmd_metric(metric_args)
+
+            updated_payload = json.loads(urlopen(f"{url}data.json", timeout=5).read().decode("utf-8"))
+            assert updated_payload["metrics"]["current_score"] == 91
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=5)
+
+    def test_dashboard_template_has_distinct_not_applicable_pattern_state(self):
+        template_path = (
+            Path(__file__).parent.parent
+            / "skills"
+            / "skill-creator"
+            / "templates"
+            / "dashboard.html"
+        )
+        template = template_path.read_text(encoding="utf-8")
+
+        assert ".pattern-dot.not-applicable" in template
+        assert ".pattern-name.not-applicable" in template
+        assert 'dotClass = "not-applicable"' in template
+        assert "Not applicable" in template
+        assert "Missing" in template
 
 
 # ---------------------------------------------------------------------------
