@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "Audit our Claude Code and Cursor setup, but if the docs lookup fails, still give me a careful report based on what you can verify locally.",
+  "files": [],
+  "expected_behavior": [
+    "Agent enters degraded mode if official docs are unavailable",
+    "Agent lowers confidence explicitly and avoids unsupported `latest` claims",
+    "Agent keeps the report grounded in observable repo evidence and patch previews only where they are justified"
+  ]
+}

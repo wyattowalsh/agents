@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master claude cursor",
+  "files": [],
+  "expected_behavior": [
+    "Agent normalizes `claude` to `claude-code` and preserves `cursor`",
+    "Agent asks only for the missing level",
+    "Agent does not start apply mode or install mode"
+  ]
+}

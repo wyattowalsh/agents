@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "Create a new MCP server that syncs our docs and add a Claude agent for it.",
+  "files": [],
+  "expected_behavior": [
+    "Agent refuses to treat this as a harness-master task",
+    "Agent redirects agent creation to `agent-conventions` and MCP server creation to `mcp-creator`",
+    "Agent does not enter dry-run harness review mode"
+  ]
+}

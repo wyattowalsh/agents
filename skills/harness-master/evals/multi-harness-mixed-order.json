@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master global opencode github-copilot cursor",
+  "files": [],
+  "expected_behavior": [
+    "Agent parses the level and multiple harnesses regardless of order",
+    "Agent keeps per-harness review sections separate",
+    "Agent adds a cross-harness synthesis after the individual reviews"
+  ]
+}

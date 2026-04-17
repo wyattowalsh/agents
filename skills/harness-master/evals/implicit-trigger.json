@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "Can you review our Cursor, Copilot, and OpenCode setup at both the repo and user level, compare them to the latest official guidance, and tell me what should change before we touch anything?",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes this as a harness-master request even though the skill is not named explicitly",
+    "Agent defaults to dry-run review mode and does not edit anything on the first pass",
+    "Agent audits each selected harness independently before producing cross-harness synthesis"
+  ]
+}

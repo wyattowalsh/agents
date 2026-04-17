@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master both",
+  "files": [],
+  "expected_behavior": [
+    "Agent recognizes `both` as the level",
+    "Agent asks only for the harness set or `all`",
+    "Agent explains neither harnesses nor edits will be guessed"
+  ]
+}

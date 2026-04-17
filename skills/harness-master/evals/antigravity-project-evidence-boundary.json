@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master project antigravity",
+  "files": [],
+  "expected_behavior": [
+    "Agent audits repo wrapper compatibility such as `GEMINI.md` and `AGENTS.md` before recommending changes",
+    "Agent labels native Antigravity project-level assumptions as `repo-observed` or `blind-spot` when they are not first-party verified",
+    "Agent does not overstate certainty for non-observable Antigravity project behavior"
+  ]
+}
