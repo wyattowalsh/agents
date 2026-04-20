@@ -16,7 +16,44 @@ hooks:
         - command: "git diff --quiet HEAD -- README.md 2>/dev/null || echo 'WARNING: README.md has uncommitted changes that may be overwritten'"
 ---
 
-## Phase 1 — Detect
+# Add Badges
+
+Generate and update README badge blocks without drifting into general README editing.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Show the empty/help gallery and ask for the target repo or README path |
+| Flags or natural-language badge request | Run the full badge workflow: detect -> select -> present -> insert |
+| `--dry-run` with any request | Run through preview only and stop before file edits |
+| removal-only request | Skip detection, inspect the existing badge block, and present the reduced set |
+
+## Empty/Help Gallery
+
+When `$ARGUMENTS` is empty, show the main usage shape plus examples:
+
+- `/add-badges --profile active --dry-run`
+- `/add-badges --include status,package --readme README.md`
+- `/add-badges --replace --yes`
+- `/add-badges remove social badges`
+
+State the main phases and the write boundary:
+
+- Detect the repo and existing badge state
+- Select badges and layout based on flags and detected signals
+- Present the proposed block and diff indicators
+- Insert only after approval, unless `--yes` was explicitly passed
+
+## Progressive Disclosure
+
+- Keep `SKILL.md` focused on routing, phase order, approval boundaries, and flag semantics.
+- Read `references/badge-catalog-core.md` on every run.
+- Read `references/badge-catalog-extended.md` only when non-basic signals are detected.
+- Read `references/style-guide.md` only when layout, format-specific syntax, or dark-mode output matters.
+- Use `scripts/detect.py` for repository detection and `scripts/validate-badges.py` only after insertion when verification is requested.
+
+## Internal Phase 1 — Detect
 
 Run the detection script via the Bash tool:
 
@@ -33,7 +70,7 @@ If the script fails (uv unavailable, Python missing, script error, invalid JSON)
 - Read LICENSE first line for SPDX type
 - Check for Dockerfile, .pre-commit-config.yaml, codecov.yml, etc.
 
-## Phase 2 — Select
+## Internal Phase 2 — Select
 
 Read `references/badge-catalog-core.md` (always). Read `references/badge-catalog-extended.md` when detection reports any non-basic signals (any of: frameworks, infrastructure, code_quality linters/formatters/type_checkers, docs, release, security, monorepo, databases, developer_tooling, community).
 
@@ -74,7 +111,7 @@ Read `references/style-guide.md` for layout, ordering, and URL conventions.
 - `--yes`: skip approval prompt before modifying files
 - `--replace`: replace content within markers AND consolidate scattered badges into the marker block
 
-## Phase 3 — Present
+## Internal Phase 3 — Present
 
 Show grouped preview with category headers. Render badges as actual `[![alt](url)](link)` markdown so the user can see them.
 
@@ -93,7 +130,7 @@ Ask for approval before modifying files. Skip approval if `--yes` passed. **Neve
 
 If `--dry-run`, output the proposed block and exit without modifying files.
 
-## Phase 4 — Insert
+## Internal Phase 4 — Insert
 
 Find existing `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers or create them.
 
@@ -113,6 +150,23 @@ If `--dark-mode`, wrap each badge in `<picture>` elements per style-guide.md.
 Preserve any manual content outside markers.
 
 After insertion, optionally run `uv run python skills/add-badges/scripts/validate-badges.py <readme-path>` via Bash to verify all badge URLs return valid responses. Report any broken or slow badges to the user.
+
+## Stop Hooks
+
+Stop and ask instead of writing when any of these are true:
+
+- the target README path is unclear
+- required repo identity details are missing for dynamic badges
+- workflow file names or badge-specific parameters are missing
+- the user did not approve a write and `--yes` was not passed
+- `--replace` would move or consolidate scattered badges the user has not seen yet
+
+For write operations:
+
+- `--dry-run` must always stop after preview and diff
+- approval is mandatory before insertion unless `--yes` is explicit
+- missing required info never gets bypassed by `--yes`
+- preserve all non-marker README content and stop if the requested change would require broader README editing
 
 ## Style Rules
 
@@ -166,6 +220,12 @@ Common Simple Icons gotchas: `gnubash` not `bash`, `nodedotjs` not `node`, `vued
 | profile | Preset badge selection by project maturity: new, active, mature, enterprise |
 | dynamic badge | Badge that fetches live data from an endpoint (version, coverage, downloads) |
 | static badge | Badge with hardcoded text — avoid when a dynamic alternative exists |
+
+## Scope Boundaries
+
+**IS for:** badge detection, badge selection, badge preview, badge insertion inside marker blocks, and badge-specific README updates.
+
+**NOT for:** general README rewriting, broader docs work, CI/CD design, or non-badge documentation changes.
 
 ## Critical Rules
 
