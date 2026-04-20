@@ -219,8 +219,8 @@ Rules 1–3 are hard requirements. Breaking them causes CI failures and inconsis
 ---
 name: python-conventions
 description: >-
-  Python tooling conventions. Enforce uv, ty. Use when working on .py files
-  or pyproject.toml. NOT for JS/TS or shell scripts.
+  Apply Python tooling conventions. Enforce uv and ty. Use when working on .py
+  files or pyproject.toml. NOT for JS/TS or shell scripts.
 user-invocable: false
 disable-model-invocation: false
 license: MIT
@@ -231,32 +231,57 @@ metadata:
 
 # Python Conventions
 
-Apply these conventions when working on Python files or projects.
+Apply these conventions when Python work is the primary workstream.
 
 ## Dispatch
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| Active (auto-invoked when working on Python files) | Apply all conventions below |
-| Empty | Display convention summary |
+| Active (auto-invoked when Python work is primary) | Apply the operator contract below |
+| Empty | Display the convention summary and routing guidance |
 | `check` | Verify tooling compliance only |
 
-## References
+## Reference File Index
 
 | File | Purpose |
 |------|---------|
+| `references/tooling-contract.md` | Required command sequence for install, run, lint, type-check, and test flows |
+| `references/redirection-boundaries.md` | When Python conventions should yield to shell, JS/TS, or domain-specific skills |
 | `references/exceptions.md` | When to break conventions (legacy, corporate) |
 | `references/performance-tips.md` | Profiling tools, optimization patterns quick-reference |
 | `references/testing-patterns.md` | Fixture scopes, markers, conftest skeleton |
 
-## Tooling
+## Operator Contract
 
-- **Package manager**: `uv` for all Python operations (`uv run python ...` instead of `python`, `uv add` instead of `pip install`)
-- **Project config**: `pyproject.toml` with `uv add <pkg>` (never `uv pip install` or `pip install`)
-- **Type checking**: `uv run ty check` (not `mypy`)
-- **Linting**: `uv run ruff check` and `uv run ruff format`
-- **Testing**: `uv run pytest`
-- **Task running**: `uv run <command>` for all script execution
+### Active
+
+1. Apply this skill only when Python files, Python tooling, or `pyproject.toml` are the primary surface of the task.
+2. Read `references/redirection-boundaries.md` when Python appears alongside shell, JS/TS, or other dominant workstreams.
+3. Enforce the hard requirements in `references/tooling-contract.md` for package management, command execution, linting, type checking, and tests.
+4. Check `references/exceptions.md` before recommending any legacy or constrained-environment deviation.
+5. Use guided preferences only when starting new work or when the repo does not already have a stronger local convention.
+
+### Empty / Help
+
+1. Summarize the hard requirements: `uv`, `uv run`, `uv add`, `ty`, `ruff`, `pytest`, and `pyproject.toml`.
+2. Show the difference between hard requirements and guided preferences.
+3. Point to the exact reference files for exceptions, testing, performance, tooling flow, and mixed-language routing.
+
+### `check`
+
+1. Verify tooling compliance only; do not widen into full implementation advice unless the user asks.
+2. Report whether the project uses `uv`, `uv run`, `ty`, `ruff`, `pytest`, and `pyproject.toml` in the expected ways.
+3. Flag legacy or exception-path deviations and require the reason to match `references/exceptions.md`.
+4. Reject recommendations that replace repo-required tooling with `mypy`, `pip install`, or bare `python`.
+
+## Hard Requirements
+
+- **Package manager**: use `uv` for all Python package operations
+- **Project config**: keep Python project configuration in `pyproject.toml`
+- **Type checking**: use `uv run ty check`, not `mypy`
+- **Linting**: use `uv run ruff check` and `uv run ruff format`
+- **Testing**: use `uv run pytest`
+- **Task running**: use `uv run <command>` for Python command execution
 
 ### Virtual Environments
 
@@ -264,9 +289,11 @@ Apply these conventions when working on Python files or projects.
 - Never manually create or activate `.venv` directories
 - Use `uv run` to execute within the project environment
 
-## Preferred Libraries
+## Guided Preferences
 
-When applicable, prefer these libraries over alternatives:
+When starting new Python work and no stronger local constraint already exists,
+prefer these libraries. These are defaults, not absolute law; check
+`references/exceptions.md` before overriding an established project choice.
 
 | Purpose | Library | Instead of |
 |---------|---------|------------|
@@ -286,7 +313,7 @@ When applicable, prefer these libraries over alternatives:
 - Use `pyproject.toml` for all project metadata and dependencies
 - Place source code in a package directory matching the project name
 - Use `uv` workspace members for monorepo sub-packages
-- Run `uv run ruff check`, `uv run ruff format`, and `uv run ty check` before committing
+- Run the required lint, format, type-check, and test sequence from `references/tooling-contract.md` before considering Python work complete
 
 ## Performance Conventions
 
@@ -319,13 +346,13 @@ When applicable, prefer these libraries over alternatives:
 
 ## Critical Rules
 
-1. Always use `uv` for package management — never `pip install` or `pip`
-2. Use `uv add` to add dependencies — never `uv pip install`
-3. Use `uv run ty check` for type checking — never `mypy`
-4. Run `uv run pytest` before committing any Python changes
-5. Run `uv run ruff check` and `uv run ruff format` before committing
-6. Check `references/exceptions.md` before breaking any convention
-7. Prefer libraries from the preferred table over their alternatives
+1. Reject Python setup advice that uses `pip install`, `uv pip install`, or bare `python` when the task is not explicitly on an approved exception path.
+2. Require `uv add` for dependency changes unless `references/exceptions.md` justifies a legacy or constrained-environment deviation.
+3. Require `uv run ty check` for type checking; do not recommend `mypy` as the default path in this repo.
+4. Treat `uv run ruff check`, `uv run ruff format`, and `uv run pytest` as the default completion gate for Python changes unless an exception is documented.
+5. Do not present guided library preferences as mandatory replacements for an already-established local stack.
+6. Read `references/exceptions.md` before approving a legacy toolchain, alternate environment manager, or alternate library path.
+7. Redirect mixed-language or non-Python-primary work through `references/redirection-boundaries.md` instead of force-fitting this skill onto the whole task.
 
 **Canonical terms** (use these exactly):
 - `uv` -- the required package manager and task runner
@@ -334,6 +361,26 @@ When applicable, prefer these libraries over alternatives:
 - `ruff` -- the required linter and formatter
 - `pyproject.toml` -- the single source of project configuration
 - `uv run` -- prefix for all Python command execution
+
+## Scaling Strategy
+
+- Incidental Python file in a broader non-Python task: enforce only the hard requirements that touch the Python-owned surface, then route mixed-workflow questions through `references/redirection-boundaries.md`.
+- Python-primary feature or refactor work: apply the full operator contract, including tooling, testing, and guided preferences where relevant.
+- Repo-wide Python tooling or migration work: use `check`, `references/tooling-contract.md`, and `references/exceptions.md` to separate hard violations from documented transition paths.
+
+## Progressive Disclosure
+
+- Do not load every reference by default.
+- Read `references/tooling-contract.md` first for command-sequence questions.
+- Read `references/redirection-boundaries.md` when shell, JS/TS, CI, or framework-specific work is mixed into the request.
+- Read `references/exceptions.md` only when the task appears to require legacy, corporate, or constrained-environment exceptions.
+- Read performance or testing references only when the active task actually touches those areas.
+
+## Scope Boundaries
+
+**IS for:** Python tooling conventions, command selection, dependency-management rules, type/lint/test gates, and exception-aware repo guidance.
+
+**NOT for:** JS/TS conventions, shell conventions, CI pipeline design, or framework/domain-specific implementation strategy.
 
 ````
 
