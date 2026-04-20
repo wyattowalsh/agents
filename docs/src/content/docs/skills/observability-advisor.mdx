@@ -5,7 +5,7 @@ description: "Design and review logs, metrics, traces, SLOs, and alerting for re
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="observability-advisor" variant="note" /> <Badge text="1180 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
+<Badge text="observability-advisor" variant="note" /> <Badge text="1461 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
 
 > Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup.
 
@@ -47,12 +47,12 @@ Design and review telemetry that helps teams detect, diagnose, and improve servi
 
 ## Critical Rules
 
-1. Tie every telemetry plan to user or business outcomes, not just infrastructure internals.
-2. Correlate logs, metrics, and traces with stable request or workflow identifiers.
-3. Avoid high-cardinality labels and raw PII in telemetry.
-4. Keep dashboards, alerts, and runbooks as distinct artifacts with distinct purposes.
-5. Page only on symptoms or leading indicators that demand operator action.
-6. Route vendor-specific implementation to the relevant platform skill, such as cloudwatch for AWS-native setup.
+1. Reject telemetry plans that optimize infrastructure visibility while leaving user-impact questions unanswered.
+2. Require a stable request, workflow, or journey identifier whenever the proposed design needs cross-signal correlation.
+3. Reject labels, fields, or exemplars that create avoidable cardinality explosions or expose raw PII.
+4. Keep dashboards, alerts, and runbooks as separate deliverables; do not collapse them into one artifact or one ownerless checklist.
+5. Page only on symptoms or leading indicators that demand operator action; downgrade the rest to ticket, dashboard, or review-only signals.
+6. Redirect vendor-specific setup, implementation commands, or managed-service configuration to the relevant platform skill instead of inventing provider steps here.
 
 <Tabs>
   <TabItem label="General">
@@ -73,7 +73,7 @@ Design and review telemetry that helps teams detect, diagnose, and improve servi
 ## Related Skills
 
 <CardGrid>
-  <LinkCard title="incident-response-engineer" href="/skills/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use during outages." />
+  <LinkCard title="incident-response-engineer" href="/skills/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation." />
   <LinkCard title="performance-profiler" href="/skills/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
   <LinkCard title="devops-engineer" href="/skills/devops-engineer/" description="Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work." />
 </CardGrid>
@@ -160,56 +160,78 @@ coordination (incident-response-engineer), deep runtime bottleneck profiling
 | 5 | SLO | `slo for customer webhook delivery` |
 | 6 | Investigate | `investigate rising 5xx with queue lag and timeout traces` |
 
+## Reference File Index
+
+| File | Use When |
+|------|----------|
+| `references/signal-selection-matrix.md` | Choosing between metrics, logs, traces, profiles, and workflow events |
+| `references/alert-anti-patterns.md` | Reviewing noisy, duplicate, or unactionable alerts |
+| `references/sli-slo-examples.md` | Defining availability, latency, freshness, or correctness SLIs and SLOs |
+| `references/investigation-workflows.md` | Structuring symptom-first diagnosis across signals and dependency boundaries |
+| `references/output-templates.md` | Formatting design, review, instrumentation, alert, SLO, and investigation deliverables |
+
 ## Instructions
 
 ### Mode: Design
 
 1. Identify the user journeys, critical dependencies, and failure domains that matter most.
 2. Define the questions operators must be able to answer within minutes during degradation.
-3. Choose the minimum useful signals across logs, metrics, and traces for each critical boundary.
-4. Specify correlation identifiers, structured fields, and service naming so signals can be joined reliably.
-5. Define dashboards, alerts, runbook links, and ownership for each critical path.
-6. Call out sampling, retention, and cardinality constraints before recommending implementation details.
+3. Read `references/signal-selection-matrix.md` when signal tradeoffs, sampling, or join strategy are unclear.
+4. Choose the minimum useful signals across logs, metrics, and traces for each critical boundary.
+5. Specify correlation identifiers, structured fields, and service naming so signals can be joined reliably.
+6. Define dashboards, alerts, runbook links, and ownership for each critical path.
+7. Call out sampling, retention, and cardinality constraints before recommending implementation details.
+8. Use `references/output-templates.md#design-template` when producing the final deliverable.
 
 ### Mode: Review
 
 1. Inspect current logs, metrics, traces, dashboards, alerts, and on-call pathways.
 2. Check whether user-visible symptoms can be detected before customer reports arrive.
-3. Identify blind spots, duplicate signals, noisy alerts, weak labels, and missing trace correlation.
-4. Separate findings into coverage gaps, alert quality issues, and operational debt.
-5. Rank issues by detection risk and operator impact.
+3. Read `references/alert-anti-patterns.md` when alert noise, duplication, or escalation quality is part of the review.
+4. Identify blind spots, duplicate signals, noisy alerts, weak labels, and missing trace correlation.
+5. Separate findings into coverage gaps, alert quality issues, and operational debt.
+6. Rank issues by detection risk and operator impact.
+7. Use `references/output-templates.md#review-template` when formatting the audit.
 
 ### Mode: Instrument
 
 1. Map the request or workflow path and identify the decision points, retries, queues, and external calls.
-2. Define which metrics, logs, and spans should be emitted at each boundary.
-3. Require stable request, tenant, or workflow identifiers only where they aid diagnosis without creating cardinality explosions.
-4. Keep logs structured and redact or exclude secrets and unnecessary PII.
-5. Produce a rollout plan that starts with the highest-value path first.
+2. Read `references/signal-selection-matrix.md` before choosing signal types for each boundary.
+3. Define which metrics, logs, and spans should be emitted at each boundary.
+4. Require stable request, tenant, or workflow identifiers only where they aid diagnosis without creating cardinality explosions.
+5. Keep logs structured and redact or exclude secrets and unnecessary PII.
+6. Produce a rollout plan that starts with the highest-value path first.
+7. Use `references/output-templates.md#instrumentation-template` for the emitted deliverable shape.
 
 ### Mode: Alert
 
 1. Distinguish page-worthy conditions from ticket-only or dashboard-only signals.
 2. Prefer alerts tied to user symptoms, SLO burn, saturation, or stalled workflows over internal noise.
-3. Define threshold, duration, owner, runbook, and escalation target for every alert.
-4. Call out what evidence an operator should inspect first after the alert fires.
-5. Reduce duplicate alerts that page different teams for the same symptom.
+3. Read `references/alert-anti-patterns.md` before recommending thresholds, paging, or deduplication changes.
+4. Define threshold, duration, owner, runbook, and escalation target for every alert.
+5. Call out what evidence an operator should inspect first after the alert fires.
+6. Reduce duplicate alerts that page different teams for the same symptom.
+7. Use `references/output-templates.md#alert-template` when presenting the alert plan.
 
 ### Mode: SLO
 
 1. Start from the user-facing promise, not the easiest internal metric to measure.
-2. Define the SLI precisely: numerator, denominator, exclusions, and measurement window.
-3. Choose a target that matches business expectations and operational reality.
-4. State the error budget policy, review cadence, and what actions are triggered when the budget is burned.
-5. Separate availability, latency, freshness, or correctness objectives when one combined SLO would hide tradeoffs.
+2. Read `references/sli-slo-examples.md` when choosing SLI type, exclusions, windows, or error-budget policy.
+3. Define the SLI precisely: numerator, denominator, exclusions, and measurement window.
+4. Choose a target that matches business expectations and operational reality.
+5. State the error budget policy, review cadence, and what actions are triggered when the budget is burned.
+6. Separate availability, latency, freshness, or correctness objectives when one combined SLO would hide tradeoffs.
+7. Use `references/output-templates.md#slo-template` for the final deliverable.
 
 ### Mode: Investigate
 
 1. Start from verified symptoms, not assumed root causes.
 2. Correlate recent deploys, traffic changes, metrics, logs, traces, and dependency health.
-3. Build a short hypothesis list and name the next measurement that would confirm or reject each one.
-4. Distinguish signal quality problems from system behavior problems.
-5. If the issue is actively impacting customers and needs command-and-control response, route to incident-response-engineer.
+3. Read `references/investigation-workflows.md` when building the hypothesis tree or evidence order.
+4. Build a short hypothesis list and name the next measurement that would confirm or reject each one.
+5. Distinguish signal quality problems from system behavior problems.
+6. If the issue is actively impacting customers and needs command-and-control response, route to incident-response-engineer.
+7. Use `references/output-templates.md#investigation-template` for the final response.
 
 ## Output Requirements
 
@@ -221,12 +243,12 @@ coordination (incident-response-engineer), deep runtime bottleneck profiling
 
 ## Critical Rules
 
-1. Tie every telemetry plan to user or business outcomes, not just infrastructure internals.
-2. Correlate logs, metrics, and traces with stable request or workflow identifiers.
-3. Avoid high-cardinality labels and raw PII in telemetry.
-4. Keep dashboards, alerts, and runbooks as distinct artifacts with distinct purposes.
-5. Page only on symptoms or leading indicators that demand operator action.
-6. Route vendor-specific implementation to the relevant platform skill, such as cloudwatch for AWS-native setup.
+1. Reject telemetry plans that optimize infrastructure visibility while leaving user-impact questions unanswered.
+2. Require a stable request, workflow, or journey identifier whenever the proposed design needs cross-signal correlation.
+3. Reject labels, fields, or exemplars that create avoidable cardinality explosions or expose raw PII.
+4. Keep dashboards, alerts, and runbooks as separate deliverables; do not collapse them into one artifact or one ownerless checklist.
+5. Page only on symptoms or leading indicators that demand operator action; downgrade the rest to ticket, dashboard, or review-only signals.
+6. Redirect vendor-specific setup, implementation commands, or managed-service configuration to the relevant platform skill instead of inventing provider steps here.
 
 ## Scaling Strategy
 
@@ -239,6 +261,17 @@ coordination (incident-response-engineer), deep runtime bottleneck profiling
 - Preserve correlation identifiers across service boundaries, queue hops, and async retries.
 - Track alert ownership, runbook links, and SLO definitions as first-class operational metadata.
 - Re-evaluate telemetry after major architecture, dependency, or traffic-shape changes.
+
+## Progressive Disclosure
+
+- Do not load all references by default.
+- Read only the reference files needed for the active mode:
+  - signal selection work: `references/signal-selection-matrix.md`
+  - alert quality work: `references/alert-anti-patterns.md`
+  - SLI or SLO design: `references/sli-slo-examples.md`
+  - symptom-first diagnosis: `references/investigation-workflows.md`
+  - final formatting: `references/output-templates.md`
+- Keep `SKILL.md` as the operator contract and use the references for matrices, examples, and output shapes.
 
 ## Scope Boundaries
 

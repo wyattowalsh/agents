@@ -1,6 +1,6 @@
 ---
 title: "python-conventions"
-description: "Python tooling conventions. Enforce uv, ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts."
+description: "Apply Python tooling conventions. Enforce uv and ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts."
 ---
 
 {/* HAND-MAINTAINED */}
@@ -9,7 +9,7 @@ import { Badge, Tabs, TabItem, CardGrid, LinkCard, Aside, Steps } from '@astrojs
 
 <Badge text="python-conventions" variant="note" /> <Badge text="706 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Custom" variant="tip" />
 
-> Python tooling conventions. Enforce uv, ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts.
+> Apply Python tooling conventions. Enforce uv and ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts.
 
 <div class="quick-start">
 
@@ -54,7 +54,7 @@ This is an **auto-invoke** skill — it activates automatically when the agent d
     ```
     /python-conventions check
     ```
-    Verifies tooling compliance only — checks that `uv`, `ruff`, and `ty` are used correctly without applying other conventions.
+    Verifies the tooling contract only — checks command execution through `uv`, dependency management via `pyproject.toml`, `ty` typing, `ruff` linting/formatting, and `pytest` test entrypoints without applying broader refactors.
   </TabItem>
 </Tabs>
 
