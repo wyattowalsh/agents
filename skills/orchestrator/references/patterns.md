@@ -4,6 +4,21 @@ Detailed pattern descriptions for parallel execution, agent teams, and multi-wav
 
 ---
 
+## Classification Gate Summary
+
+Classify before you pick a topology:
+
+- Independent actions can proceed without waiting on each other's outputs.
+- Dependent actions share state, depend on a previous edit, or need a shared
+  file transition first.
+- Same-file sequential work is dependent unless a real split is proven.
+- Phase-gated skills keep their phase order; orchestrator only parallelizes
+  inside the current phase.
+
+If the topology is still unclear, explore first and return with evidence.
+
+---
+
 ## Pattern A: Parallel Subagent Wave
 
 For 2+ independent subtasks within a single session:
@@ -116,7 +131,9 @@ The primary orchestration pattern. Use this by default whenever 2+ independent s
 
 **When to use**: 2+ independent streams of work. This is the default pattern — use it unless a more specialized pattern clearly applies. Upgrade from subagent waves when hitting context limits or needing inter-agent communication.
 
-**When NOT to use**: Exactly 1 action (single session), or all actions in a single domain with no coordination needed and no context pressure (Pattern A).
+**When NOT to use**: Exactly 1 action (single session), any same-file sequential
+chain, or all actions in a single domain with no coordination needed and no
+context pressure (Pattern A).
 
 ### Setup checklist
 
@@ -136,6 +153,8 @@ The primary orchestration pattern. Use this by default whenever 2+ independent s
 - Lead never implements directly — all work flows through teammates.
 - Teammates do not inherit conversation history. Include full context in spawn prompts.
 - Never assign two teammates overlapping file ownership.
+- The runtime cannot parallelize across a phase boundary defined by another
+  skill.
 
 ### Plan approval (for risky changes)
 
@@ -200,13 +219,61 @@ Default: **Pattern E** for all multi-action work.
 
 | Situation | Pattern | Why not E? |
 |-----------|---------|------------|
-| Exactly 1 action | Single session | No parallelism needed |
-| 2+ actions, single domain, no coordination, no context pressure | A (subagent wave) | Team overhead exceeds benefit |
+| Exactly 1 action, or a same-file sequential chain | Single session | No parallelism needed |
+| 2+ independent actions, single domain, no coordination, no context pressure | A (subagent wave) | Team overhead exceeds benefit |
 | Cross-domain with distinct ownership, no nested parallelism needed | B (team with file ownership) | Simpler team structure suffices |
 | Debugging, root cause unclear | C (competing hypotheses) | Adversarial structure is the point |
 | Large task, needs human approval first | D (plan-then-swarm) | Plan approval gate is the point |
 | 2+ independent streams (anything else) | **E (THE DEFAULT)** | — |
-| Explore → implement → verify phases | F (multi-wave pipeline) | Phase structure is the point |
+| Explore → implement → verify phases, or any phase-gated skill with bounded parallelism | F (multi-wave pipeline) | Phase structure is the point |
+
+The pattern choice is never just "how many things". Independence and phase
+order outrank raw count.
+
+---
+
+## Runtime Capability Boundaries
+
+The runtime can spawn waves and teams, but it cannot remove dependencies or
+cross phase boundaries for you.
+
+- Teams do not nest teams.
+- Teammates cannot be resumed.
+- Plan mode is read-only.
+- No built-in timeout detection exists; poll with `TaskOutput`.
+- If a required capability is missing, fall back to the nearest supported
+  pattern and report the limitation clearly.
+
+---
+
+## Progress Accounting
+
+Every dispatch needs one tracking entry per spawned agent or teammate.
+
+- Create task records before dispatch.
+- Give each task a present-continuous `activeForm`.
+- Mark tasks `in_progress` before work starts.
+- Mark tasks `completed` only after the deliverable is verified.
+- Mark unresolved work explicitly if it is re-spawned, skipped, or escalated.
+
+Post-wave summaries must include dispatched, resolved, skipped, recovered,
+escalated, and unresolved counts.
+
+---
+
+## Misroute Examples
+
+Use these as negative controls when classifying requests.
+
+| Prompt | Correct handling | Why |
+|--------|------------------|-----|
+| "Rename this variable in one file." | Single session | One action only |
+| "Rename the export, then fix the import, then update the comment in the same file." | Single session | Same-file sequential chain |
+| "/schema-evolution-planner plan this rename, then backfill, then cutover." | Respect the phase boundary | Phase-gated skill takes precedence |
+| "Run this prompt for me." | Refuse or redirect | Not an orchestration task |
+
+If a request lands here, explain the nearest valid path instead of forcing a
+parallel pattern.
 
 ---
 
