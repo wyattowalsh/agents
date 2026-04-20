@@ -191,9 +191,10 @@ MANDATORY after every parallel dispatch. When N agents are dispatched, all N mus
 ````yaml title="SKILL.md"
 ---
 name: orchestrator
-description: >
-  Parallel execution via subagent waves, teams, and pipelines. Use when 2+
-  independent actions need coordination. NOT for single-action tasks.
+description: >-
+  Review and orchestrate parallel execution via subagent waves, teams, and
+  pipelines. Use when 2+ independent actions need coordination. NOT for
+  single-action tasks.
 license: MIT
 metadata:
   author: wyattowalsh
@@ -210,7 +211,7 @@ Not for single-action requests, simple file edits, or sequential-only workflows.
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| *(empty)* | Load full orchestration guide; apply Decomposition Gate to current request |
+| *(empty)* | Show the empty/help gallery, then apply the Classification Gate and Decomposition Gate to the current request |
 | `pattern <A-F>` | Show the named pattern from `references/patterns.md` |
 | `tier` | Display Tier Selection table and model guidance |
 | `recovery` | Show the Accounting Rule and Recovery Ladder |
@@ -227,6 +228,43 @@ Not for single-action requests, simple file edits, or sequential-only workflows.
 | **dispatch** | Send one or more subagents/teammates to execute in parallel |
 | **gate** | A mandatory checkpoint that must pass before proceeding |
 | **accounting rule** | N dispatched = N resolved; no agent silently dropped |
+
+## Gating Logic
+
+Use this gate before loading the full orchestration doctrine:
+
+1. If the request has exactly one action, stay in a single session and do not invoke this skill.
+2. If the work has multiple steps but they all edit the same file or depend on strict sequencing, do not force parallelism; keep the sequential constraint explicit.
+3. If decomposition is unclear, run an explore-first pass and then re-enter the gate instead of guessing the topology.
+4. If another active skill has a stricter phase order or dispatch precondition, preserve that skill's control flow and parallelize only inside its allowed boundaries.
+5. If the user explicitly requests a specific execution approach, honor it unless it conflicts with a hard safety constraint.
+
+## Operator Contract
+
+### Empty / Help
+
+1. Show the public entry paths: empty/help, `pattern <A-F>`, `tier`, and `recovery`.
+2. Run the Classification Gate before applying the Decomposition Gate.
+3. Explain the near-miss cases where this skill should not take over: single-action work, same-file sequential work, and phase-gated skills with stricter ordering.
+4. Point to the specific references needed for pattern selection, progress accounting, runtime limits, and misroute examples instead of pasting the entire doctrine.
+
+### `pattern <A-F>`
+
+1. Load `references/patterns.md`.
+2. Present the named pattern, when to use it, when not to use it, and the recovery implications.
+3. Keep Pattern E as the default unless the named pattern is the clear better fit for the actual request.
+
+### `tier`
+
+1. Load `references/runtime-capability-boundaries.md` before discussing mechanism limits or environment-specific tooling constraints.
+2. Show the Tier Selection table and explain why the highest applicable tier wins.
+3. Name the near-miss cases where a lower tier is still correct, such as exactly one action or a single-domain, no-coordination task.
+
+### `recovery`
+
+1. Load `references/progress-accounting.md`.
+2. Present the Accounting Rule, recovery ladder, and reporting contract.
+3. Explain how to handle missing agents, re-spawns, and explicit skips before advancing to the next wave.
 
 ## 0. Decomposition Gate (MANDATORY before any work)
 
@@ -263,6 +301,8 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 - **Per-task review loop skills**: The skill's sequential structure takes precedence. Parallelize exploration within each task, not across tasks.
 - **Dispatch-precondition skills**: The skill's "Don't use when" conditions remain valid. The gate does not override skill-level safety guards.
 
+See `references/misroute-examples.md` for concrete near-miss cases such as same-file sequential edits, phase-gated review loops, and single-action requests.
+
 ---
 
 ## 1. Tier Selection (mandatory — highest applicable tier wins)
@@ -270,10 +310,21 @@ When a superpowers skill is active, the gate operates WITHIN the skill's executi
 | Tier | Mechanism | Use when | Model |
 |------|-----------|----------|-------|
 | **Team + nested waves (Pattern E)** | TeamCreate + subagent waves per teammate — up to ~50 agents total | 2+ independent streams — THE DEFAULT | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
-| **Subagent wave** | Task tool, parallel calls | 2+ actions, single domain, no coordination, no context pressure | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
-| **Single session** | Direct execution | Exactly 1 action | N/A |
+| **Subagent wave** | Task tool, parallel calls | 2+ independent actions in one domain, no coordination pressure, and no same-file linear chain | opus (default) / Copilot: Opus 4.6 max thinking; Sonnet 4.6 max thinking only for extremely trivial `/fleet` work |
+| **Single session** | Direct execution | Exactly 1 action, or any same-file sequential chain that must remain linear | N/A |
 
-Select the highest tier whose criteria are met. Never select a lower tier to reduce cost.
+Select the highest tier whose criteria are met. Never select a lower tier to
+reduce cost. A count of 2 is not enough on its own; the actions must be
+independent.
+
+## Scaling Strategy
+
+| Situation | Recommended shape |
+|-----------|-------------------|
+| Small multi-action task in one domain | Use a subagent wave only if there are 2+ truly independent actions and no coordination pressure. |
+| Cross-domain implementation | Use Pattern E with distinct ownership lanes and nested waves only where verbose work benefits from delegation. |
+| Explore → implement → verify work | Use a multi-wave pipeline and close accounting between waves before advancing. |
+| Same-file or tightly ordered work | Keep the sequential boundary explicit instead of manufacturing parallelism. |
 
 ---
 
@@ -297,7 +348,8 @@ Select the highest tier whose criteria are met. Never select a lower tier to red
 ### Context management
 - Delegate verbose operations (test suites, log parsing, doc fetching) to subagents.
 - Use subagent resumption (agent ID) for multi-phase work rather than spawning fresh.
-- After a wave completes, apply the Accounting Rule (Section 4) before synthesizing.
+- After a wave completes, apply the Accounting Rule (Section 4) before
+  synthesizing or dispatching the next wave.
 
 ---
 
@@ -334,7 +386,7 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 
 ### Plan approval workflow
 - For risky changes, include "Require plan approval before making changes" in the spawn prompt.
-- Teammate enters read-only plan mode, sends plan_approval_request to lead.
+- Teammate enters read-only plan mode, sends plan_approval_request to lead when ready.
 - Lead approves or rejects with feedback. Teammate revises if rejected.
 - Influence approval criteria in spawn prompt: "only approve plans that include test coverage."
 
@@ -366,13 +418,22 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 - Display modes: in-process (Shift+Down to cycle) is default; split panes require tmux or iTerm2.
 - Teammate interaction: Enter to view session, Escape to interrupt, Ctrl+T for task list.
 
+## Progressive Disclosure
+
+- Do not load every orchestration detail by default.
+- Read `references/classification-gate.md` when deciding whether this skill should own the task at all.
+- Read `references/patterns.md` only when the user requests a specific pattern or the topology choice is the main question.
+- Read `references/progress-accounting.md` when discussing reporting, accounting, or recovery behavior.
+- Read `references/runtime-capability-boundaries.md` when tool/runtime limits or environment-specific constraints affect the topology.
+- Read `references/misroute-examples.md` when a request is close to the trigger boundary.
+
 ---
 
 ## Critical Rules
 
 1. Never dispatch independent actions sequentially — all independent Task calls MUST appear in one response.
 2. Always run the Decomposition Gate before any tool-mediated work; skipping it is never acceptable.
-3. Never reduce parallelism, tier, or model quality for any reason — always use opus, no exceptions. Never downgrade.
+3. Never reduce parallelism or tier when the higher tier criteria are met; follow the documented environment-specific model policy.
 4. Never silently drop a failed subagent — N dispatched = N accounted for; apply the Accounting Rule after every wave.
 5. Never advance to Wave N+1 with unresolved agents — resolve all agents in Wave N first.
 6. Always create TaskCreate entries before dispatching subagent waves or agent teams — silent orchestration is forbidden.
@@ -385,7 +446,11 @@ When N agents are dispatched, all N must be accounted for before proceeding:
 
 | File | Content | Read When |
 |------|---------|-----------|
+| `references/classification-gate.md` | Invocation gate, near-miss rules, and ask-first logic before orchestration starts | Deciding whether to invoke the skill |
 | `references/patterns.md` | Detailed patterns A-F with ASCII diagrams, key rules, recovery ladder | Designing parallel execution or selecting a pattern |
+| `references/progress-accounting.md` | Progress tracking contract, Accounting Rule details, and recovery/reporting expectations | Explaining recovery, accounting, or reporting |
+| `references/runtime-capability-boundaries.md` | Tier and runtime boundary guidance, including when tool or environment limits constrain the topology | Choosing a tier or discussing environment limits |
+| `references/misroute-examples.md` | Concrete false-trigger and near-miss scenarios | Checking borderline requests |
 
 ---
 
@@ -404,6 +469,12 @@ All orchestrated work must produce structured progress indicators via TaskCreate
 - Each task MUST have a descriptive `activeForm` in present continuous tense naming the specific action and target.
 - Update tasks to `in_progress` before starting, `completed` immediately after.
 - After wave completion + accounting, summarize all agent outcomes before dispatching the next wave.
+
+## Scope Boundaries
+
+**IS for:** decomposition, orchestration topology, pattern selection, progress accounting, recovery/reporting, and multi-agent execution rules.
+
+**NOT for:** single-action requests, same-file sequential work that should stay serialized, or overriding stricter phase-gated skill contracts.
 
 ````
 
