@@ -193,9 +193,10 @@ Load `references/proven-patterns.md`. Apply:
 ## Step 5: Validate
 
 1. Run `uv run wagents validate` — must pass with zero errors
-2. Run `uv run python skills/skill-creator/scripts/audit.py skills/<name>/` — target A (90+)
-3. Run `uv run wagents readme` — regenerate README
-4. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call `wagents docs generate` directly.
+2. Run `uv run wagents eval validate` whenever eval manifests changed — must pass with zero errors
+3. Run `uv run python skills/skill-creator/scripts/audit.py skills/<name>/` — target A (90+)
+4. Run `uv run wagents readme` — regenerate README
+5. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call `wagents docs generate` directly.
 
 ### Portability Check
 
@@ -211,6 +212,7 @@ Run `wagents package <name> --dry-run` to verify the skill is distributable:
 ### Completion Criteria
 
 - `wagents validate` passes with zero errors
+- `wagents eval validate` passes when evals changed
 - `audit.py` scores the skill at A (90+)
 - `wagents readme --check` exits 0 (README is current)
 
