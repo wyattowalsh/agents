@@ -59,7 +59,15 @@ If no explicit mode keyword is provided:
 2. Simplification verbs without a concrete target -> **Mode A: Analyze**
 3. Simplification verbs plus a multi-file, wide recent scope, or risky active diff -> **Mode A: Analyze** first, or ask before editing
 4. Requests centered on explanation, trade-offs, or coaching -> **Mode C: Explain**
-5. If the target is ambiguous or the work would cross risky boundaries -> ask before editing
+5. If the request mixes a pasted snippet with a file-backed target, ask whether the snippet is illustrative or the actual edit scope before editing
+6. If the target is ambiguous or the work would cross risky boundaries -> ask before editing
+
+## Snippet Contract
+
+- `analyze` on a snippet: stay read-only, classify simplification opportunities inside the pasted code only, and state any assumptions explicitly.
+- `explain` on a snippet: explain what feels complex and what a safer simpler shape would look like without implying repo-backed edits.
+- `apply` on a snippet: treat the snippet as the whole scope, simplify only within the pasted text, and verify by invariant reasoning or explicit limitation when project checks are unavailable.
+- Mixed snippet plus file/diff context: do not auto-apply until the user clarifies whether the snippet is the edit target or an example of a broader issue.
 
 ### Example Invocations
 
@@ -123,8 +131,9 @@ Make a behavior-preserving simplification pass.
    - renaming for clarity when names are part of the complexity
 5. Do **not** mix simplification with bug fixes, feature work, API redesign, or performance-only rewrites.
 6. Apply the smallest coherent set of edits that materially improves clarity.
-7. Run the narrowest relevant existing validation available. If no automation exists, state the verification basis explicitly.
-8. Present the result with the Apply template from `references/output-formats.md`.
+7. If the verification basis is weak, the diff is risky, or the target boundary is still fuzzy, stop and fall back to Analyze or ask before editing further.
+8. Run the narrowest relevant existing validation available. If no automation exists, state the verification basis explicitly.
+9. Present the result with the Apply template from `references/output-formats.md`.
 
 ## Mode C: Explain
 
