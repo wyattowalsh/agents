@@ -1,0 +1,100 @@
+{
+  "skill_name": "observability-advisor",
+  "evals": [
+    {
+      "id": "empty-args-menu",
+      "prompt": "/observability-advisor",
+      "expected_output": "A mode menu response with examples and no guessed mode.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent shows the six modes with examples.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "design-happy-path",
+      "prompt": "/observability-advisor design observability for multi-region checkout service",
+      "expected_output": "A design-mode response that maps key questions, signals, owners, and escalation path.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Design mode based on the explicit mode keyword.",
+        "Agent identifies user journeys, critical dependencies, and failure domains.",
+        "Agent consults references/signal-selection-matrix.md when selecting signal families.",
+        "Agent names dashboards, alerts, runbook linkage, and ownership.",
+        "Agent formats the answer using the Design Template from references/output-templates.md."
+      ]
+    },
+    {
+      "id": "review-happy-path",
+      "prompt": "/observability-advisor review telemetry coverage for payments-api",
+      "expected_output": "A review-mode response that separates coverage gaps, alert quality issues, and observability debt.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Review mode based on the explicit mode keyword.",
+        "Agent inspects logs, metrics, traces, dashboards, alerts, and on-call pathways conceptually.",
+        "Agent separates findings into coverage gaps, alert quality issues, and operational debt.",
+        "Agent ranks issues by detection risk and operator impact.",
+        "Agent uses the Review Template from references/output-templates.md."
+      ]
+    },
+    {
+      "id": "instrument-vs-design-mixed-prompt",
+      "prompt": "/observability-advisor We need to instrument order placement across api and workers and also design dashboards for the launch",
+      "expected_output": "A clarification response or explicit primary-mode choice that distinguishes instrumentation from broader design work.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that the request mixes Instrument and Design work.",
+        "Agent does not silently flatten the request into one vague plan.",
+        "Agent either asks the user to prioritize the primary deliverable or clearly structures the response as instrument-first plus design follow-up."
+      ]
+    },
+    {
+      "id": "investigate-vs-alert-mixed-prompt",
+      "prompt": "/observability-advisor investigate rising 5xx and tell me what alert should page first",
+      "expected_output": "A response that distinguishes investigation from alert design instead of treating them as the same task.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes the prompt spans Investigate and Alert modes.",
+        "Agent starts from symptom verification and evidence order before proposing paging changes.",
+        "Agent uses references/investigation-workflows.md for symptom-first reasoning.",
+        "Agent avoids proposing duplicate or unactionable pages."
+      ]
+    },
+    {
+      "id": "slo-happy-path",
+      "prompt": "/observability-advisor slo for customer webhook delivery",
+      "expected_output": "An SLO-mode response with SLI definition, target, window, and error budget policy.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to SLO mode based on the explicit mode keyword.",
+        "Agent starts from the user-facing promise rather than a convenient internal metric.",
+        "Agent consults references/sli-slo-examples.md for SLI type and policy examples.",
+        "Agent defines numerator, denominator, exclusions, target, window, and error budget policy.",
+        "Agent uses the SLO Template from references/output-templates.md."
+      ]
+    },
+    {
+      "id": "vendor-specific-out-of-scope",
+      "prompt": "/observability-advisor set up AWS CloudWatch alarms and dashboards for ECS cpu and memory",
+      "expected_output": "A concise redirect to the relevant vendor-specific skill instead of provider-specific setup guidance.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes AWS-native setup as out of scope for observability-advisor.",
+        "Agent redirects to cloudwatch rather than inventing AWS implementation steps.",
+        "Agent does not provide provider-specific commands or configuration."
+      ]
+    },
+    {
+      "id": "incident-command-out-of-scope",
+      "prompt": "/observability-advisor lead the Sev-1 outage, assign responders, and run the incident bridge",
+      "expected_output": "A concise redirect to incident-response-engineer instead of live incident command guidance.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes live incident coordination as out of scope.",
+        "Agent redirects to incident-response-engineer.",
+        "Agent does not pretend to run command-and-control response from this skill."
+      ]
+    }
+  ]
+}
