@@ -1,0 +1,84 @@
+{
+  "skill_name": "orchestrator",
+  "evals": [
+    {
+      "id": "empty-help-gallery",
+      "prompt": "/orchestrator",
+      "expected_output": "An empty/help response that applies the classification gate before the decomposition gate.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty/help handler.",
+        "Agent shows the public entry paths: empty/help, pattern, tier, and recovery.",
+        "Agent explains that the classification gate runs before the decomposition gate.",
+        "Agent names near-miss cases such as single-action and same-file sequential work."
+      ]
+    },
+    {
+      "id": "pattern-selection",
+      "prompt": "/orchestrator pattern B",
+      "expected_output": "A response explaining Pattern B using the pattern reference.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the named pattern mode.",
+        "Agent reads references/patterns.md for the detailed pattern content.",
+        "Agent explains when Pattern B is appropriate and why Pattern E remains the default."
+      ]
+    },
+    {
+      "id": "tier-selection",
+      "prompt": "/orchestrator tier",
+      "expected_output": "A tier-selection response grounded in runtime boundaries.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to tier mode.",
+        "Agent explains that the highest applicable tier wins.",
+        "Agent names the main reasons to stay single-session or use a flat subagent wave."
+      ]
+    },
+    {
+      "id": "recovery-contract",
+      "prompt": "/orchestrator recovery",
+      "expected_output": "A recovery response grounded in the accounting rule and recovery ladder.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to recovery mode.",
+        "Agent explains the accounting rule.",
+        "Agent explains resume, re-spawn, re-assign, and escalate behavior.",
+        "Agent makes it explicit that the next wave cannot start before unresolved lanes are reconciled."
+      ]
+    },
+    {
+      "id": "single-action-false-trigger",
+      "prompt": "Use /orchestrator to rename one function and update its one test in the same file.",
+      "expected_output": "A refusal to invoke orchestrator for a single tightly-coupled action.",
+      "files": ["one_file.py"],
+      "assertions": [
+        "Agent recognizes the request as effectively one serialized action.",
+        "Agent does not force parallelism.",
+        "Agent keeps the work in a single session."
+      ]
+    },
+    {
+      "id": "same-file-sequential-false-trigger",
+      "prompt": "Split this same-file refactor into three parallel lanes: simplify, patch, and review.",
+      "expected_output": "A response that rejects parallelism because the work overlaps on one file.",
+      "files": ["module.py"],
+      "assertions": [
+        "Agent identifies same-file overlap as a sequential constraint.",
+        "Agent explains why same-file work should remain serialized.",
+        "Agent does not recommend a parallel topology."
+      ]
+    },
+    {
+      "id": "phase-gated-skill-precedence",
+      "prompt": "Use a phase-gated skill with an explore phase and an implement phase, but parallelize across both phases immediately.",
+      "expected_output": "A response preserving the phase-gated skill's precedence.",
+      "files": [],
+      "assertions": [
+        "Agent states that phase-gated skills keep their phase boundaries.",
+        "Agent allows parallelism only within a phase, not across phase boundaries.",
+        "Agent preserves the active skill's stricter control flow."
+      ]
+    }
+  ]
+}
