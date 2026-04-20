@@ -14,6 +14,9 @@ Report templates for final output. Read when producing the final report.
 ## Compact Format (5 or fewer findings, small reviews)
 
 Use for quick reviews of 1-2 files with few findings.
+Every listed finding still follows the Individual Finding Format: keep the
+`[file:start-end]` citation anchor and the reasoning-first ordering even when
+the presentation is compressed.
 
 ```
 HONEST REVIEW (N files)
@@ -21,7 +24,7 @@ HONEST REVIEW (N files)
 STRENGTHS:
 + [well-engineered pattern or decision worth preserving]
 
-P1: [file:line] description — evidence: [citation]. Fix: approach. (Level)
+P1: [file:start-end] Reasoning: [WHY this matters]. Description: [WHAT is wrong] — evidence: [citation]. Fix: approach. (Level)
 S0: [module] description — evidence: [citation]. Fix: approach. (Level)
 
 Verified: build clean, tests pass.
@@ -30,6 +33,9 @@ Verified: build clean, tests pass.
 ## Session Review Format (6+ findings)
 
 Use for session reviews with multiple findings across files.
+Every finding below expands to the Individual Finding Format. If the report is
+still in the approval-gate phase, omit `IMPROVEMENTS MADE` and `VERIFIED`; those
+sections are only for a post-approval fix pass.
 
 ```
 ======================================
@@ -48,17 +54,23 @@ STRENGTHS:
 DEFECTS:
 
 P0 - MUST FIX:
-1. HR-S-001 [file:line] Missing null check
+1. HR-S-001 [file:start-end] Missing null check
    Level: Correctness
    Confidence: 0.95
+   Reasoning: The code dereferences a nullable value on the hot path without a guard.
+   When the upstream lookup misses, the review path shifts from a recoverable miss to a crash.
+   Description: Missing null check before dereference.
    Evidence: [research result — doc citation, advisory URL, etc.]
    Impact: Can crash when user not found
    Fix: Add guard clause
 
 P1 - SHOULD FIX:
-2. HR-S-002 [file:line] Query in loop
+2. HR-S-002 [file:start-end] Query in loop
    Level: Efficiency
    Confidence: 0.85
+   Reasoning: The current structure issues one query per item even though the data can be fetched in one batch.
+   That pattern scales linearly with the collection size and compounds latency under larger review scopes.
+   Description: Query in loop produces an avoidable N+1 pattern.
    Evidence: [research result]
    Impact: N+1 pattern, O(n) queries where 1 suffices
    Fix: Batch fetch
@@ -69,6 +81,9 @@ S0 - SHOULD SIMPLIFY:
 3. HR-S-003 [module] Service layer wraps repository 1:1
    Level: Design
    Confidence: 0.90
+   Reasoning: The layer adds no policy, orchestration, or stability boundary beyond simple delegation.
+   Keeping it separate increases indirection and maintenance cost without protecting a real contract.
+   Description: Pure delegation layer adds unnecessary indirection.
    Evidence: [codebase analysis — N files, M lines of pure delegation]
    Impact: Removes 2 files, 1 layer of indirection, ~80 lines
    Fix: Inline repository calls
@@ -95,6 +110,9 @@ STATISTICS:
 ## Full Codebase Audit Format
 
 Use for Mode 2 full audit reports.
+Every enumerated finding in this format still expands to the Individual Finding
+Format, including `[file:start-end]` anchors and `Reasoning` before
+`Description`.
 
 ```
 ======================================
@@ -112,9 +130,11 @@ STRENGTHS:
 + [pattern] [additional strength]
 
 CRITICAL (P0/S0):
-1. HR-A-001 [file:line or module] [category] description
+1. HR-A-001 [file:start-end or module] [category] description
    Level: [Correctness/Design/Efficiency]
    Confidence: [0.0-1.0]
+   Reasoning: [WHY this is a problem]
+   Description: [WHAT is wrong]
    Evidence: [research citation]
    Impact: [what breaks or what complexity it removes]
    Fix: [recommended approach]
@@ -154,6 +174,9 @@ STATISTICS:
 ## Differential Review Format
 
 Use when comparing against a previous review (via `scripts/review-store.py diff`).
+Each `NEW FINDINGS` entry still follows the Individual Finding Format; the
+summary lists may compress wording, but not the citation-anchor or reasoning
+requirements.
 
 ```
 ======================================
@@ -165,8 +188,8 @@ PROGRESS SUMMARY:
   +N new findings | -N resolved | ~N recurring
 
 NEW FINDINGS (not in baseline):
-1. HR-S-001 [file:line] [description]
-   Level: [level] | Confidence: [score] | Evidence: [citation]
+1. HR-S-001 [file:start-end] [description]
+   Level: [level] | Confidence: [score] | Reasoning: [WHY] | Evidence: [citation]
 
 RESOLVED (in baseline, not in current):
 - HR-S-003 [was: file:line] [description] — resolved by [commit/change]

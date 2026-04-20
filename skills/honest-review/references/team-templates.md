@@ -14,7 +14,7 @@ Read when designing review teams (Mode 2 or large Mode 1).
 - [Mode 1 Reviewer Prompt Template](#mode-1-reviewer-prompt-template)
 - [Specialist Prompt Templates](#specialist-prompt-templates)
 
-## Session Review Team (6+ Files)
+## Session Review Team (All Scopes)
 
 ```
 [Lead: triage, reconcile (Judge protocol), final report]
@@ -24,8 +24,8 @@ Read when designing review teams (Mode 2 or large Mode 1).
   |-- [Context-triggered specialists — see below]
 ```
 
-For 3-5 files: spawn 3 level-based reviewers (no lead team, lead reconciles directly).
-For 6+ files: full team with lead orchestration.
+For 1-5 files: keep lightweight triage, but still use the full content-adaptive reviewer set from `SKILL.md` rather than an inline-only or reduced-team mode.
+For 6+ files: full team with lead orchestration and the same content-adaptive reviewer set.
 For 6+ files spanning 3+ modules: consider switching to domain-based ownership (Full Audit archetypes) instead.
 
 ## Specialist Agents
