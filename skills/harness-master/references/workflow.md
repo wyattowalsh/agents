@@ -53,7 +53,7 @@ Read additional context when relevant:
 
 In this repository, treat these as especially important:
 
-- `scripts/sync_agent_stack.py`
+- the repo-level harness sync script
 - `config/tooling-policy.json`
 - `config/sync-manifest.json`
 
