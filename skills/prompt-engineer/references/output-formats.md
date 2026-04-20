@@ -70,6 +70,23 @@ OVERALL RISK: {Critical | High | Medium | Low}
 RECOMMENDED NEXT: {Mode B (Analyze) | Mode D (Evaluate) | Deploy with monitoring}
 ```
 
+## Clarify / Refuse
+
+Use when dispatch remains ambiguous after the auto-detect heuristic, or when the
+request is outside prompt-engineer scope.
+
+```
+CLARIFY / REFUSE
+
+Classification: {Ambiguous prompt-vs-request | Out-of-scope}
+Why: {One or two sentences explaining the ambiguity or scope boundary}
+
+Next step:
+- {Ask which mode the user wants: craft, analyze, audit, convert, or evaluate}
+or
+- {Redirect to the better-fit skill or tool and explain why}
+```
+
 ## Conversion Diff
 
 Used by Convert (Mode C) step 7.

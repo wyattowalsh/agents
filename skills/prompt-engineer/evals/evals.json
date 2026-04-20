@@ -146,6 +146,17 @@
       ]
     },
     {
+      "id": "malformed-prompt-text",
+      "prompt": "/prompt-engineer <system You are a support assistant ## output json maybe use xml?",
+      "expected_output": "A clarification response that treats malformed mixed text as ambiguous rather than confidently analyzing it as a complete prompt.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that the text is malformed and does not cleanly classify as a complete prompt or a pure natural-language request.",
+        "Agent asks the user whether they want craft or analyze mode before proceeding.",
+        "Agent does not silently guess a mode from malformed mixed text."
+      ]
+    },
+    {
       "id": "scope-refusal",
       "prompt": "/prompt-engineer build this agent and run the prompt for me",
       "expected_output": "A refusal that redirects to a better-fit tool or skill instead of running prompts or building agents.",
