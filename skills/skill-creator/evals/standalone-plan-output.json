@@ -1,0 +1,10 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator plan honest-review",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to read-only planning for an existing skill.",
+    "Agent includes baseline audit summary, file targets, rationale, expected score impact, verification commands, and approval gate wording.",
+    "Agent treats the output as a standalone refinement plan rather than starting implementation."
+  ]
+}

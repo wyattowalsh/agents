@@ -35,6 +35,8 @@ Create, improve, and audit AI agent skills. Every skill follows 14 proven struct
 | `create <name>` / `new <name>` | Develop (new) | `/skill-creator create my-analyzer` |
 | `create <name> --from <source>` | Develop (new, from exemplar) | `/skill-creator create my-analyzer --from wargame` |
 | `improve <name>` / `improve <path>` | Develop (existing) | `/skill-creator improve add-badges` |
+| `plan <name>` / `plan <path>` | Plan (existing) | `/skill-creator plan honest-review` |
+| `plan --all` / `plan repo` | Plan (repo-wide) | `/skill-creator plan --all` |
 | `audit <name>` | Audit | `/skill-creator audit honest-review` |
 | `audit --all` | Audit All | `/skill-creator audit --all` |
 | `dashboard` | Dashboard | `/skill-creator dashboard` |
@@ -78,6 +80,22 @@ Unified process for creating new skills and improving existing ones. Load `refer
 | 5. Validate | `wagents validate` + `audit.py` | Same |
 | 6. Iterate | Test, identify issues, loop to Step 4 | Same |
 
+## Repo-Wide / Multi-Skill Planning
+
+Use `plan <name>` for an existing-skill refinement plan without editing and `plan --all` or `plan repo` for a ranked repo-wide planning pass.
+
+Required planning output:
+
+1. baseline audit summary
+2. highest-value findings
+3. explicit file targets
+4. expected score impact
+5. approval gate before any edits
+
+For repo-wide planning, produce a ranked queue plus one standalone refinement plan per promoted skill or skill cluster. Do not edit any skill until the user approves the plan.
+
+Load `references/refinement-plan.md` when producing the standalone refinement-plan packet.
+
 ## Audit
 
 Score a skill using deterministic analysis + AI review. Load `references/audit-guide.md`.
@@ -120,6 +138,7 @@ Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<
 | File | Content | Read When |
 |------|---------|-----------|
 | `references/workflow.md` | Unified 6-step skill development process for new and existing skills | Develop (new), Develop (existing) |
+| `references/refinement-plan.md` | Standalone refinement-plan contract for existing-skill and repo-wide planning output | Plan (existing), Plan (repo-wide) |
 | `references/audit-guide.md` | Audit procedure, Audit All, Dashboard rendering, Gallery, grade thresholds | Audit, Audit All, Dashboard, Gallery |
 | `references/proven-patterns.md` | 14 structural patterns with examples from repo skills | Step 4 (Build), gap analysis |
 | `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
@@ -155,6 +174,8 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 14. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
 15. Audit mode is read-only — never modify the skill being audited
 16. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
+17. `plan <name>` and `plan --all` are read-only planning modes — never edit during planning
+18. Repo-wide or multi-skill requests require a ranked plan and standalone refinement-plan output before any implementation begins
 
 **Canonical terms** (use these exactly throughout):
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
