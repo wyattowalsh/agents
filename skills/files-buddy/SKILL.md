@@ -79,7 +79,7 @@ or database work (database-architect).
 
 1. **Operation whitelist:** move, rename, copy, trash, mkdir. NEVER `rm`, `chmod`, `chown`.
 2. **Scope pinning:** boundary = user-referenced directory only.
-3. **Hard-blocked paths:** root/system directories from `references/protected-paths.md`, including `/`, `/System`, `/Library`, `/Applications`, `/usr`, `/bin`, `/sbin`, `/var`, `/etc`, `/private`, `/boot`, `/dev`, `/proc`, `/sys`, `/run`, `/lib`, `/lib64`
+3. **Hard-blocked paths:** never operate on filesystem roots or OS-managed system directories; use `references/protected-paths.md` as the canonical path list and validation source
 4. **Symlink resolution:** `os.path.realpath()` before plan gen. Cycles detected (max 40 hops).
 5. **`.git/` always excluded.**
 6. **Cloud-safe:** NEVER auto-delete cloud files. Materialize evicted files before analysis.
