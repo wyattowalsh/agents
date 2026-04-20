@@ -25,7 +25,7 @@ STRENGTHS:
 + [well-engineered pattern or decision worth preserving]
 
 P1: [file:start-end] Reasoning: [WHY this matters]. Description: [WHAT is wrong] — evidence: [citation]. Fix: approach. (Level)
-S0: [module] description — evidence: [citation]. Fix: approach. (Level)
+S0: [module] Reasoning: [WHY this simplification matters]. Description: [WHAT is overly complex] — evidence: [citation]. Fix: approach. (Level)
 
 Verified: build clean, tests pass.
 ```
@@ -33,9 +33,8 @@ Verified: build clean, tests pass.
 ## Session Review Format (6+ findings)
 
 Use for session reviews with multiple findings across files.
-Every finding below expands to the Individual Finding Format. If the report is
-still in the approval-gate phase, omit `IMPROVEMENTS MADE` and `VERIFIED`; those
-sections are only for a post-approval fix pass.
+Every finding below expands to the Individual Finding Format. Read-only review
+output and post-approval fix reporting are separate shapes; do not mix them.
 
 ```
 ======================================
@@ -90,6 +89,17 @@ S0 - SHOULD SIMPLIFY:
 
 CROSS-LEVEL NOTES:
 - [conflicts resolved, symptoms elevated to root causes]
+
+NEXT STEP:
+- Approval gate: `Implement fixes? [all / select / skip]`
+```
+
+### Post-Approval Fix Addendum
+
+Append this block only after the user approves a fix pass and the fixes have
+actually been implemented and verified.
+
+```
 
 IMPROVEMENTS MADE:
 - #1 (HR-S-001): Added null check [x]
@@ -201,6 +211,28 @@ TREND: [improving | stable | degrading] — [brief justification]
 ======================================
 ```
 
+## History Format
+
+Use for `history` output from review-store history/list operations. This is a
+read-only summary of stored reviews, not a finding report.
+
+```
+======================================
+HONEST REVIEW — HISTORY
+======================================
+PROJECT: [name]
+
+REVIEWS:
+- [date] [mode] [commit or range] — [N findings, trend or note]
+- [date] [mode] [commit or range] — [N findings, trend or note]
+
+LATEST BASELINE:
+- [date] [commit]
+- [scope]
+- [high-level outcome]
+======================================
+```
+
 ## Individual Finding Format
 
 Use this structure for each finding in any report format:
@@ -249,7 +281,7 @@ Under concurrent load, interleaved reads and writes produce stale session data.
 
 ## Verification Summary
 
-Append to every report after implementing fixes:
+Append only to post-approval fix reports after implementing fixes:
 
 ```
 VERIFIED:
