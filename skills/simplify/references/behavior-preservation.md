@@ -43,6 +43,11 @@ Ask before applying when:
 - the work spans 6+ files
 - a "simpler" shape removes an abstraction that clearly encodes policy
 - the request smells like review, debugging, debt analysis, or performance work
+- verification is weaker than invariant reasoning on a clearly bounded target
+- the request mixes a pasted snippet with file-backed code and the true edit scope is unclear
+
+When the proof is weak, prefer `analyze` over `apply`. If even analysis depends on
+unstated assumptions, ask instead of inferring behavior.
 
 ## Safe Simplification Loop
 
