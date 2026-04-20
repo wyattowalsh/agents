@@ -1,0 +1,131 @@
+{
+  "skill_name": "incident-response-engineer",
+  "evals": [
+    {
+      "id": "empty-args-menu",
+      "prompt": "/incident-response-engineer",
+      "expected_output": "A mode menu response for empty invocation.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent presents the mode menu with Triage, Stabilize, Comms, Postmortem, Review, and Drill.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "triage-routing",
+      "prompt": "/incident-response-engineer triage elevated 500s in eu-west checkout after deploy",
+      "expected_output": "A triage response with severity, blast radius, commander, checkpoint, and immediate actions.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Triage based on the triage keyword.",
+        "Agent uses verified facts, severity, blast radius, and commander assignment.",
+        "Agent produces the first 15-minute response plan.",
+        "Agent includes evidence needed to confirm or reject the working hypothesis."
+      ]
+    },
+    {
+      "id": "stabilize-routing",
+      "prompt": "/incident-response-engineer stabilize auth outage caused by bad deploy",
+      "expected_output": "A stabilization plan that separates containment from diagnosis and tracks recovery state.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Stabilize based on the stabilize keyword.",
+        "Agent separates containment from root cause work.",
+        "Agent prioritizes harm-reduction options such as rollback, traffic shift, or feature flagging.",
+        "Agent tracks contained, partially recovered, and fully recovered states."
+      ]
+    },
+    {
+      "id": "comms-routing",
+      "prompt": "/incident-response-engineer comms database failover affecting signups",
+      "expected_output": "A communications draft with audience, current impact, team action, and next update time.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Comms based on the comms keyword.",
+        "Agent identifies the target audience before drafting the update.",
+        "Agent avoids speculative root-cause claims.",
+        "Agent includes the next update time."
+      ]
+    },
+    {
+      "id": "review-routing",
+      "prompt": "/incident-response-engineer review incident timeline from 2026-03-12",
+      "expected_output": "A review response that grades incident handling gaps as critical, warning, or info.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Review based on the review keyword.",
+        "Agent evaluates detection, triage speed, command structure, communications quality, recovery strategy, and action-item quality.",
+        "Agent presents gaps as critical, warning, or info."
+      ]
+    },
+    {
+      "id": "postmortem-routing",
+      "prompt": "/incident-response-engineer postmortem queue backlog incident",
+      "expected_output": "A postmortem structure with timeline, contributing factors, and owned corrective actions.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Postmortem based on the postmortem keyword.",
+        "Agent builds from verified events instead of memory alone.",
+        "Agent distinguishes trigger, contributing factors, failed defenses, recovery actions, and lessons.",
+        "Agent includes action items with owners."
+      ]
+    },
+    {
+      "id": "drill-routing",
+      "prompt": "/incident-response-engineer drill primary region outage",
+      "expected_output": "A drill plan with scenario, objective, stop condition, and decision bottlenecks to observe.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Drill based on the drill keyword.",
+        "Agent defines scenario, objective, and stop condition.",
+        "Agent simulates detection, escalation, rollback, and customer communications."
+      ]
+    },
+    {
+      "id": "weak-signal-auto-triage",
+      "prompt": "Customers say checkout is hanging, but dashboards are inconclusive and support reports are increasing.",
+      "expected_output": "An auto-detected triage response that treats the signal as a possible incident without inventing facts.",
+      "files": [],
+      "assertions": [
+        "Agent auto-detects Triage as the closest mode for a weak-signal potential outage.",
+        "Agent distinguishes fact, inference, and hypothesis.",
+        "Agent requests or names the next evidence needed to confirm severity and blast radius.",
+        "Agent does not claim a root cause."
+      ]
+    },
+    {
+      "id": "misroute-code-review",
+      "prompt": "/incident-response-engineer review this auth service diff for bugs",
+      "expected_output": "A concise refusal that redirects code review work elsewhere.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that reviewing a code diff for bugs is outside incident-response-engineer scope.",
+        "Agent redirects to honest-review.",
+        "Agent does not pretend a code review request is incident review mode."
+      ]
+    },
+    {
+      "id": "misroute-security-scan",
+      "prompt": "/incident-response-engineer find vulnerabilities in this API",
+      "expected_output": "A concise refusal that redirects proactive security work elsewhere.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that proactive vulnerability discovery is outside scope.",
+        "Agent redirects to security-scanner.",
+        "Agent does not treat the request as a live incident."
+      ]
+    },
+    {
+      "id": "misroute-observability-design",
+      "prompt": "/incident-response-engineer design alerts and dashboards for checkout",
+      "expected_output": "A concise refusal that redirects observability design work elsewhere.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that telemetry design outside an active incident is outside scope.",
+        "Agent redirects to observability-advisor.",
+        "Agent does not answer with incident command guidance."
+      ]
+    }
+  ]
+}
