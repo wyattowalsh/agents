@@ -1,0 +1,114 @@
+{
+  "skill_name": "data-pipeline-architect",
+  "evals": [
+    {
+      "id": "empty-args-menu",
+      "prompt": "/data-pipeline-architect",
+      "expected_output": "A mode menu response with examples for all public modes.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent shows the mode menu with Design, Review, Operate, Migrate, and Contract examples.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "design-batch-or-streaming",
+      "prompt": "/data-pipeline-architect design clickstream ingestion to warehouse and feature store",
+      "expected_output": "A design response that chooses a processing model, stages the flow, and names contracts and recovery controls.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Design mode.",
+        "Agent identifies sources, sinks, latency expectations, correctness requirements, and downstream consumers.",
+        "Agent chooses a processing model: batch, streaming, or hybrid.",
+        "Agent defines ingest, validate, normalize, transform, publish, and monitor stages.",
+        "Agent names a contract at each producer-consumer boundary.",
+        "Agent specifies checkpointing, replay strategy, late-data handling, and quarantine behavior."
+      ]
+    },
+    {
+      "id": "review-nightly-billing-etl",
+      "prompt": "/data-pipeline-architect review nightly billing ETL architecture",
+      "expected_output": "A review response separating reliability, data quality, cost, and operability concerns.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Review mode.",
+        "Agent inspects orchestration flow and dataset interfaces.",
+        "Agent checks for weak contracts, silent data loss, retry-boundary issues, lineage gaps, or missing replay strategy.",
+        "Agent separates findings into reliability, data quality, cost, and operability."
+      ]
+    },
+    {
+      "id": "operate-backfills-and-failed-partitions",
+      "prompt": "/data-pipeline-architect operate strategy for backfills and failed partitions",
+      "expected_output": "An operate-mode response with SLOs, checkpointing, replay, quarantine, and operator-visible recovery controls.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Operate mode.",
+        "Agent defines freshness, success-rate, and data-quality thresholds.",
+        "Agent specifies what is checkpointed, retried, and quarantined.",
+        "Agent designs backfill and replay paths that do not interfere with the live path.",
+        "Agent recommends dashboards and alerts tied to business-significant failure modes."
+      ]
+    },
+    {
+      "id": "migrate-cron-to-orchestration",
+      "prompt": "/data-pipeline-architect migrate from cron scripts to orchestrated pipeline",
+      "expected_output": "A migration plan with coexistence, validation, rollback, and staged cutover.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Migrate mode.",
+        "Agent maps the current state and pain points.",
+        "Agent preserves source-of-truth semantics while moving stages one at a time.",
+        "Agent defines coexistence, validation, and rollback for the migration window.",
+        "Agent keeps migration-state bookkeeping separate from business output state."
+      ]
+    },
+    {
+      "id": "contract-orders-feed",
+      "prompt": "/data-pipeline-architect contract orders fact table feed",
+      "expected_output": "A contract response naming ownership, versioning, freshness, validation, and invalid-record handling.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Contract mode.",
+        "Agent defines dataset owner, schema versioning rule, freshness target, and required validations.",
+        "Agent names breaking and non-breaking changes explicitly.",
+        "Agent states what invalid records look like and how they are handled.",
+        "Agent defines replay and backfill expectations for consumers when contract versions change."
+      ]
+    },
+    {
+      "id": "misroute-schema-design",
+      "prompt": "/data-pipeline-architect design a star schema for our orders warehouse",
+      "expected_output": "A redirect to database-architect because the task is schema design rather than pipeline architecture.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes the task is primarily database schema modeling.",
+        "Agent redirects to database-architect.",
+        "Agent does not continue with pipeline design guidance."
+      ]
+    },
+    {
+      "id": "misroute-bi-analysis",
+      "prompt": "/data-pipeline-architect analyze why revenue is down on our dashboard this week",
+      "expected_output": "A redirect to data-wizard because the task is analytics rather than pipeline design.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes the task is primarily BI or ad-hoc analytics.",
+        "Agent redirects to data-wizard.",
+        "Agent does not frame the response as a pipeline architecture task."
+      ]
+    },
+    {
+      "id": "misroute-platform-ops",
+      "prompt": "/data-pipeline-architect set up Kafka brokers and Terraform for our ingestion stack",
+      "expected_output": "A redirect to devops-engineer or infrastructure-coder because the task is platform setup.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes the task is primarily vendor setup or infrastructure provisioning.",
+        "Agent redirects to devops-engineer or infrastructure-coder.",
+        "Agent does not provide low-level platform setup steps."
+      ]
+    }
+  ]
+}
