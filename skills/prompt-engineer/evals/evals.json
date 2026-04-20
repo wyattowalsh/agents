@@ -1,0 +1,160 @@
+{
+  "skill_name": "prompt-engineer",
+  "evals": [
+    {
+      "id": "craft-new-prompt",
+      "prompt": "/prompt-engineer craft a system prompt for a RAG customer support agent on Claude",
+      "expected_output": "A craft-mode response that gathers requirements, selects an architecture, and returns an annotated prompt plus evaluation guidance.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Mode A: Craft based on 'craft' keyword.",
+        "Agent performs model-class detection and identifies Claude as instruction-following or reasoning depending on variant.",
+        "Agent asks targeted requirements gathering questions (task, model, deployment context, format, failure modes, input trust).",
+        "Agent selects a RAG architecture pattern from references/architecture-patterns.md.",
+        "Agent reads references/context-management.md when the prompt is multi-turn, long-context, RAG, agent-loop, or cost-sensitive.",
+        "Agent drafts the prompt using XML tags as a default starting point unless the model or output contract suggests a better structure.",
+        "Agent structures content for prefix caching efficiency (static early, dynamic late).",
+        "Agent runs the hardening checklist from references/hardening-checklist.md.",
+        "Agent presents the result using the Annotated Prompt format and recommends Mode D (Evaluate)."
+      ]
+    },
+    {
+      "id": "analyze-prompt",
+      "prompt": "/prompt-engineer analyze You are a helpful coding assistant. Always write clean code. Think step by step before answering. Use best practices.",
+      "expected_output": "An analyze-mode response with a diagnostic scorecard, anti-pattern findings, and a changelog of targeted improvements.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Mode B (Analyze) based on 'analyze' keyword in arguments.",
+        "Agent runs Common Preflight before scoring the prompt.",
+        "Agent performs diagnostic scoring on 5 dimensions: Clarity, Completeness, Efficiency, Robustness, Model Fit (each scored 1-5).",
+        "Agent runs four-lens analysis: ambiguity lens, security lens, robustness lens, efficiency lens.",
+        "Agent detects anti-patterns from references/anti-patterns.md.",
+        "Agent flags 'Think step by step' as potentially harmful if the target model is a reasoning model (Prompting Inversion).",
+        "Agent proposes targeted fixes for each dimension scoring below 4 with before/after examples.",
+        "Agent formats the diagnosis with Diagnostic Scorecard and the changes with Changelog.",
+        "Agent recommends Mode D (Evaluate) to build a test suite."
+      ]
+    },
+    {
+      "id": "analyze-existing-prompt",
+      "prompt": "/prompt-engineer analyze ./prompts/system.md",
+      "expected_output": "A full analyze response for a file-backed prompt with scorecard, lens findings, targeted improvements, and evaluation follow-up.",
+      "files": ["prompts/system.md"],
+      "assertions": [
+        "Agent dispatches to Mode B: Analyze (full mode with fixes) based on 'analyze' keyword.",
+        "Agent reads the file at ./prompts/system.md.",
+        "Agent runs Common Preflight before deeper analysis.",
+        "Agent produces a diagnostic scorecard on 5 dimensions (Clarity, Completeness, Efficiency, Robustness, Model Fit) scored 1-5.",
+        "Agent applies four-lens analysis (Ambiguity, Security, Robustness, Efficiency).",
+        "Agent runs anti-pattern scan against references/anti-patterns.md.",
+        "Agent proposes targeted fixes for dimensions scoring below 4 with before/after diffs.",
+        "Agent recommends Mode D (Evaluate) if no eval exists."
+      ]
+    },
+    {
+      "id": "audit-report-only",
+      "prompt": "/prompt-engineer audit You are a helpful assistant that answers questions about our product. Be concise and accurate. If you don't know, say so.",
+      "expected_output": "A report-only audit using the Audit Report format without modifying the prompt.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Mode B: Analyze in report-only mode based on 'audit' keyword.",
+        "Agent auto-detects the pasted text as an existing prompt (contains 'You are...' role definition).",
+        "Agent performs model-class detection and asks the user for the target model when needed.",
+        "Agent produces a diagnostic scorecard with total score out of 25.",
+        "Agent applies four-lens analysis without modifying the prompt.",
+        "Agent identifies anti-patterns such as vague instructions, missing output format, or missing hardening.",
+        "Agent does NOT propose or apply changes in report-only mode.",
+        "Agent recommends full Analyze if fixes are needed, and Mode D (Evaluate)."
+      ]
+    },
+    {
+      "id": "auto-detect-existing",
+      "prompt": "/prompt-engineer <system>You are a code review assistant. Review the following code for bugs and security issues.</system><instructions>Be thorough but concise. Flag severity levels.</instructions>",
+      "expected_output": "An auto-detected report-only analysis of an existing prompt.",
+      "files": [],
+      "assertions": [
+        "Agent auto-detects Mode B (Analyze, report only) based on XML tags in input.",
+        "Agent does NOT ask for mode selection since the heuristic is unambiguous.",
+        "Agent identifies XML tags as existing prompt markers.",
+        "Agent produces diagnostic scorecard and four-lens analysis in report-only mode.",
+        "Agent does NOT modify the prompt."
+      ]
+    },
+    {
+      "id": "convert-between-models",
+      "prompt": "/prompt-engineer convert claude gemini ./prompts/system.md",
+      "expected_output": "A conversion plan and converted-prompt diff using model-family-specific guidance.",
+      "files": ["prompts/system.md"],
+      "assertions": [
+        "Agent dispatches to Mode C: Convert based on 'convert' keyword with source=claude target=gemini.",
+        "Agent reads the file at ./prompts/system.md.",
+        "Agent runs Common Preflight before building the conversion plan.",
+        "Agent loads both Claude and Gemini playbook sections from references/model-playbooks.md.",
+        "Agent builds a conversion plan identifying direct mappings, adaptations, removals, and new features.",
+        "Agent executes conversion showing source pattern, target pattern, and rationale for each change.",
+        "Agent presents the result using the Conversion Diff format.",
+        "Agent recommends Mode D (Evaluate) using the same test cases on both models."
+      ]
+    },
+    {
+      "id": "evaluate-prompt",
+      "prompt": "/prompt-engineer evaluate ./prompts/agent-system.md",
+      "expected_output": "An evaluation plan with success criteria, test categories, rubric, and CI guidance.",
+      "files": ["prompts/agent-system.md"],
+      "assertions": [
+        "Agent dispatches to Mode D: Evaluate based on 'evaluate' keyword.",
+        "Agent reads the file at ./prompts/agent-system.md.",
+        "Agent runs Common Preflight before designing the evaluation framework.",
+        "Agent works with the user to define success criteria (functional, quality, safety, edge case).",
+        "Agent designs a test suite with categories: golden set, edge cases, adversarial, regression.",
+        "Agent generates concrete test cases with input, expected behavior, and failure indicators.",
+        "Agent builds a scoring rubric with dimensions, 1-5 levels, and an LLM-as-judge prompt when applicable.",
+        "Agent presents the result using the Evaluation Framework format with recommended eval tools."
+      ]
+    },
+    {
+      "id": "empty-args-menu",
+      "prompt": "/prompt-engineer",
+      "expected_output": "A mode menu response for empty invocation.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent presents the mode menu with Craft, Analyze, Analyze (report only), Convert, and Evaluate.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "auto-craft-natural-language",
+      "prompt": "I need a prompt that reviews pull requests for breaking API changes and outputs a JSON summary.",
+      "expected_output": "An auto-detected craft-mode response for a natural-language prompt request.",
+      "files": [],
+      "assertions": [
+        "Agent auto-detects Mode A: Craft from a natural-language request describing desired behavior.",
+        "Agent does not ask the user to pick a mode when the heuristic is unambiguous.",
+        "Agent asks requirements questions and then drafts toward the requested JSON-output contract."
+      ]
+    },
+    {
+      "id": "ambiguous-mixed-input",
+      "prompt": "/prompt-engineer Improve this prompt and also create a new version for a different use case: You are a support assistant that answers billing questions.",
+      "expected_output": "A clarification response that refuses to guess between analyze and craft modes.",
+      "files": [],
+      "assertions": [
+        "Agent detects ambiguity between improving an existing prompt and crafting a new one.",
+        "Agent asks the user which mode they want before proceeding.",
+        "Agent does not silently choose a mode for mixed requests."
+      ]
+    },
+    {
+      "id": "scope-refusal",
+      "prompt": "/prompt-engineer build this agent and run the prompt for me",
+      "expected_output": "A refusal that redirects to a better-fit tool or skill instead of running prompts or building agents.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that running prompts or building agents is outside prompt-engineer scope.",
+        "Agent refuses concisely and redirects to a better-fit tool or skill.",
+        "Agent does not attempt to run the prompt or build the agent itself."
+      ]
+    }
+  ]
+}
