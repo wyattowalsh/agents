@@ -37,7 +37,7 @@ Reusable actions and knowledge bases for AI agents.
 | agent-conventions | Agent definition conventions. Validate frontmatter, update indexes. Use when creating or modifying agents. NOT for skills, MCP servers, or CLAUDE.md. |
 | api-designer | Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs. NOT for MCP servers (mcp-creator) or frontend API calls. |
 | changelog-writer | Generate changelogs, release notes, and migration guides from git history. Parse conventional commits. Use for releases. NOT for git ops (git-workflow) or doc sites (docs-steward). |
-| data-pipeline-architect | Design batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design. |
+| data-pipeline-architect | Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design. |
 | data-wizard | Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code. |
 | database-architect | Design schemas, plan migrations, and optimize queries. Six modes from modeling to evolution. Use for database architecture. NOT for DBA ops, backups, or deployment (devops-engineer). |
 | devops-engineer | Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code. |
@@ -52,7 +52,7 @@ Reusable actions and knowledge bases for AI agents.
 | harness-master | Audit harness configs and apply fixes. Use when tuning Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents (agent-conventions) or MCP servers (mcp-creator). |
 | honest-review | Confidence-scored code review with evidence validation. Session or full codebase audit. Use when reviewing changes or auditing quality. NOT for writing code or benchmarking. |
 | host-panel | Simulated expert panel discussions. Roundtable, Oxford-style, Socratic formats. Use when exploring topics from multiple perspectives. NOT for Q&A, code review, or one-on-one conversations. |
-| incident-response-engineer | Operational incident response for triage, containment, communications, recovery, and postmortems. Use during outages. NOT for code review or proactive security scanning. |
+| incident-response-engineer | Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning. |
 | infrastructure-coder | Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work. NOT for CI/CD (devops-engineer), application code, or actual pricing. |
 | javascript-conventions | JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts. |
 | learn | Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review. |
@@ -60,16 +60,16 @@ Reusable actions and knowledge bases for AI agents.
 | namer | Name anything: projects, products, companies, packages. Generates creative names across linguistic archetypes, checks handle/username availability across platforms, checks domain availability with pricing, and ranks options with scored rationales. Use when naming projects, products, startups, packages, or brands. NOT for domain management (infrastructure-coder) or branding strategy beyond naming (host-panel). |
 | nerdbot | Create, repair, query, audit, and migrate Obsidian-native knowledge bases with layered raw/wiki structure, provenance, indexes, logs, and safe vault overhauls. Use for git-friendly KBs and persistent llm-wiki-style vaults. NOT for docs sites or generic notes. |
 | observability-advisor | Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup. |
-| orchestrator | Parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks. |
+| orchestrator | Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks. |
 | performance-profiler | Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance. NOT for running profilers, load tests, or monitoring. |
 | prompt-engineer | Prompt engineering for any AI system. Craft, analyze, convert between models, evaluate with rubrics. Use for system prompts, agent prompts, tool defs. NOT for running prompts or building agents. |
-| python-conventions | Python tooling conventions. Enforce uv, ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts. |
+| python-conventions | Apply Python tooling conventions. Enforce uv and ty. Use when working on .py files or pyproject.toml. NOT for JS/TS or shell scripts. |
 | reasoning-router | Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (honest-review). |
 | release-pipeline-architect | Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure. |
 | research | Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A. |
 | schema-evolution-planner | Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops. |
 | security-scanner | Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (honest-review) or pen testing. |
-| shell-conventions | Shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD. |
+| shell-conventions | Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD. |
 | shell-scripter | Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work. NOT for Python (python-conventions) or CI/CD (devops-engineer). |
 | simplify | Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex. NOT for review (honest-review) or debt scans (tech-debt-analyzer). |
 | skill-creator | Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills. |
