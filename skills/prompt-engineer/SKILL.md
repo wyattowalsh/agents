@@ -56,7 +56,7 @@ If no explicit mode keyword is provided:
 
 1. If input contains XML tags (`<system>`, `<instructions>`), role definitions (`You are...`, `Act as...`), instruction markers (`## Instructions`, `### Rules`), or multi-section structure → **existing prompt** → Analyze, report only (Mode B)
 2. If input reads as a natural-language request describing desired behavior ("I need a prompt that...", "Create a system prompt for...") → **new prompt request** → Craft (Mode A)
-3. If ambiguous → ask the user which mode they want
+3. If the text mixes an existing prompt with a new-use-case request, or the input is malformed enough that prompt-vs-request is unclear, ask the user which mode they want before proceeding
 
 ### Example Invocations
 
@@ -137,15 +137,15 @@ usage, and output structure recommendations.
 | Prompt length | Longer prompts with details generally help | Concise prompts with clear objectives outperform verbose ones |
 | Temperature | Task-dependent (0.0-1.0) | Often fixed internally; external temp has less effect |
 
-## Common Preflight
+## Shared Preflight
 
-Use this preflight for Analyze, Convert, and Evaluate before entering the
-mode-specific workflow.
+Use this preflight for every mode before entering the mode-specific workflow.
 
 1. **Ingest** — Read the prompt from `$ARGUMENTS` text or file path. If a file path is provided, read the file.
 2. **Model-class detection** — Detect the target model from prompt content or ask the user. Run Model-Class Detection above. Flag any model-class mismatches (e.g., CoT scaffolding sent to a reasoning model).
 3. **Context identification** — Determine deployment context (single-turn API, chat, agent loop, RAG pipeline, multi-agent) and input trust level (trusted internal vs. untrusted external).
 4. **Context-management trigger** — If the work involves multi-turn, long-context, RAG, agent-loop, or cost-sensitive prompting, read `references/context-management.md` and surface the relevant caching, compaction, selection, or isolation decisions explicitly in the result.
+5. **Scope check** — If the user is asking to run prompts, build agents, or perform non-prompt implementation work, refuse and redirect before doing prompt analysis or generation.
 
 ## Mode A: Craft
 
@@ -153,7 +153,8 @@ Build a new prompt from scratch. For when the user has no existing prompt.
 
 ### Craft Workflow
 
-1. **Requirements gathering** — Ask targeted questions:
+1. **Run Shared Preflight** — Complete the shared preflight above, including scope and trust-boundary checks.
+2. **Requirements gathering** — Ask targeted questions:
    - What is the task? (Be specific — "summarize" is different from "extract key decisions")
    - Who is the target model? (Detect model class)
    - What is the deployment context? (Single-turn API call, chat, agent loop, RAG pipeline, task delegation / research service)
@@ -161,7 +162,7 @@ Build a new prompt from scratch. For when the user has no existing prompt.
    - What are the failure modes to prevent?
    - Who provides the input? (Trusted internal vs. untrusted external — determines security needs)
 
-2. **Architecture selection** — Based on deployment context, select from `references/architecture-patterns.md`:
+3. **Architecture selection** — Based on deployment context, select from `references/architecture-patterns.md`:
    - Single-turn: 4-block pattern (Context/Task/Constraints/Output)
    - Multi-turn: Conversation-aware with state management
    - Agent: ReAct with 3-instruction pattern (persistence + tool-calling + planning)
@@ -169,22 +170,22 @@ Build a new prompt from scratch. For when the user has no existing prompt.
    - Multi-agent: Orchestration with role isolation
    - Task delegation: 4-block pattern with emphasis on scope definition and output structure
 
-3. **Context-management check** — If the prompt is multi-turn, long-context, RAG, agent-loop, or cost-sensitive, read `references/context-management.md` and decide what should be cached, compacted, selected, or isolated.
+4. **Context-management check** — If the prompt is multi-turn, long-context, RAG, agent-loop, or cost-sensitive, read `references/context-management.md` and decide what should be cached, compacted, selected, or isolated.
 
-4. **Draft prompt** — Write the prompt using the selected architecture. Apply model-class-specific guidance from `references/model-playbooks.md`. Use XML tags as a default starting point for multi-section prompts unless the target model or output contract suggests a better structure. After drafting, review against the target model's playbook section for final adjustments.
+5. **Draft prompt** — Write the prompt using the selected architecture. Apply model-class-specific guidance from `references/model-playbooks.md`. Use XML tags as a default starting point for multi-section prompts unless the target model or output contract suggests a better structure. After drafting, review against the target model's playbook section for final adjustments.
 
-5. **Structure for cacheability** — Arrange content for prompt caching efficiency:
+6. **Structure for cacheability** — Arrange content for prompt caching efficiency:
    - Static content (system instructions, role definitions, tool descriptions) → early in the prompt
    - Dynamic content (user input, retrieved documents, conversation history) → late in the prompt
    - This ordering enables 50-90% cost reduction via prefix caching (Anthropic explicit breakpoints, OpenAI automatic prefix matching)
 
-6. **Harden** — Run through `references/hardening-checklist.md`:
+7. **Harden** — Run through `references/hardening-checklist.md`:
    - If input source is untrusted → apply injection resistance patterns
    - If output is user-facing → add safety constraints
    - If tool-calling → apply permission minimization
    - Add edge case handling for expected failure modes
 
-7. **Present** — Format per `references/output-formats.md` `Annotated Prompt`. Recommend Mode D (Evaluate) to build a test suite.
+8. **Present** — Format per `references/output-formats.md` `Annotated Prompt`. Recommend Mode D (Evaluate) to build a test suite.
 
 ## Mode B: Analyze
 
@@ -193,7 +194,7 @@ Diagnose an existing prompt and optionally improve it. Dispatched as `analyze`
 
 ### Analyze Workflow
 
-1. **Run Common Preflight** — Complete the shared preflight above before scoring or analyzing the prompt.
+1. **Run Shared Preflight** — Complete the shared preflight above before scoring or analyzing the prompt.
 2. **Diagnostic scoring** — Score the prompt on 5 dimensions using the `Diagnostic Scorecard` in `references/output-formats.md`:
 
    | Dimension | Score (1-5) | Assessment |
@@ -240,7 +241,7 @@ Port a prompt between model families while preserving intent and quality.
 
 ### Convert Workflow
 
-1. **Run Common Preflight** — Complete the shared preflight above before building the conversion plan.
+1. **Run Shared Preflight** — Complete the shared preflight above before building the conversion plan.
 2. **Load playbooks** — Read the source and target model playbook sections from `references/model-playbooks.md`. Note key differences:
    - Structural format preferences (XML vs. markdown vs. JSON)
    - System prompt conventions
@@ -266,7 +267,7 @@ Build an evaluation framework for a prompt. Does not run the evaluations — pro
 
 ### Evaluate Workflow
 
-1. **Run Common Preflight** — Complete the shared preflight above before defining the evaluation plan.
+1. **Run Shared Preflight** — Complete the shared preflight above before defining the evaluation plan.
 2. **Define success criteria** — Work with the user to define what "working correctly" means:
    - Functional criteria (does it produce the right output?)
    - Quality criteria (is the output good enough?)
@@ -319,3 +320,5 @@ it but note the gap.
 5. Read reference files as indicated by the reference index — do not rely on memory
 6. Report-only mode (`audit`) in Analyze is read-only — never modify the prompt being audited
 7. The 3-instruction pattern (persistence + tool-calling + planning) is the highest-impact single change for agent prompts — recommend it by default for agent architectures
+8. If prompt-vs-request classification is ambiguous, ask before choosing a mode
+9. Refuse and redirect requests to run prompts, build agents, or do non-prompt implementation work
