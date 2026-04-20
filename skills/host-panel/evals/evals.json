@@ -1,0 +1,41 @@
+{
+  "skill_name": "host-panel",
+  "evals": [
+    {
+      "id": "weak-topic-reframe",
+      "prompt": "/host-panel \"AI\" roundtable",
+      "expected_output": "A topic-diagnostic response that flags the topic as too weak or too broad and asks the user to narrow it before personas are generated.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the topic diagnostic before persona generation.",
+        "Agent flags the prompt as too broad or too weak for a useful panel.",
+        "Agent suggests narrowing with a more specific question or concrete example.",
+        "Agent does not fabricate panelists or move into synthesis before the topic is sharpened."
+      ]
+    },
+    {
+      "id": "settled-topic-reframe",
+      "prompt": "/host-panel \"Is climate change real?\" oxford",
+      "expected_output": "A settled-science response that reframes the prompt toward an open question instead of staging a fake balanced debate.",
+      "files": [],
+      "assertions": [
+        "Agent identifies the topic as settled science or a mostly closed factual question.",
+        "Agent reframes toward an open implementation, value, or boundary question.",
+        "Agent does not create a false proposition-versus-opposition split.",
+        "Agent preserves citation integrity rather than inventing a balanced debate."
+      ]
+    },
+    {
+      "id": "under-researched-topic-grounding",
+      "prompt": "/host-panel \"What do we know about the social effects of small-scale AI co-ops in regulated health systems?\" socratic 3",
+      "expected_output": "A highly specialized response that proceeds with extra research rigor and makes any evidence gaps explicit.",
+      "files": [],
+      "assertions": [
+        "Agent flags the topic as highly specialized and research-grounding critical.",
+        "Agent uses real sources when available and calls out evidence gaps if the literature is thin.",
+        "Agent does not fabricate titles, authors, years, or journals.",
+        "Agent keeps the panel moving rather than pausing unnecessarily."
+      ]
+    }
+  ]
+}
