@@ -1,0 +1,130 @@
+{
+  "skill_name": "release-pipeline-architect",
+  "evals": [
+    {
+      "id": "design-release-pipeline",
+      "prompt": "/release-pipeline-architect design weekly SaaS release with staging, canary prod rollout, and compliance approval",
+      "expected_output": "A release pipeline design with stages, gates, rollout choice, provenance requirements, and rollback handling.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Design mode based on the 'design' keyword.",
+        "Agent gathers release constraints including deployment targets, release frequency, downtime tolerance, compliance gates, rollback expectations, and approver.",
+        "Agent defines one immutable artifact boundary and environment promotion rules.",
+        "Agent consults references/rollout-decision-matrix.md when selecting the rollout pattern.",
+        "Agent consults references/provenance-evidence-checklist.md when defining approval evidence and provenance requirements.",
+        "Agent returns a stage-by-stage flow that names the artifact, approver, required evidence, and rollback point."
+      ]
+    },
+    {
+      "id": "review-existing-release-flow",
+      "prompt": "/release-pipeline-architect review .github/workflows/release.yml and docs/release-runbook.md",
+      "expected_output": "A severity-ranked review of an existing release flow with the smallest structural changes needed to make it safer.",
+      "files": [
+        ".github/workflows/release.yml",
+        "docs/release-runbook.md"
+      ],
+      "assertions": [
+        "Agent dispatches to Review mode based on the 'review' keyword.",
+        "Agent reads the supplied workflow and runbook files.",
+        "Agent evaluates whether the same artifact is promoted end-to-end.",
+        "Agent consults references/failure-modes.md and references/provenance-evidence-checklist.md as review baselines.",
+        "Agent classifies findings as critical, warning, or info.",
+        "Agent recommends the smallest structural changes that improve release safety."
+      ]
+    },
+    {
+      "id": "cutover-runbook",
+      "prompt": "/release-pipeline-architect cutover v2.8.0",
+      "expected_output": "A release-day cutover plan with owners, sequence, success and abort signals, and rollback readiness.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Cutover mode based on the 'cutover' keyword.",
+        "Agent builds a timeline with release lead, approver, operator, observer, and communications owner.",
+        "Agent consults references/runbook-templates.md to structure the final runbook.",
+        "Agent defines the rollback point before rollout starts.",
+        "Agent specifies success signals, abort signals, and decision latency."
+      ]
+    },
+    {
+      "id": "hotfix-lane",
+      "prompt": "/release-pipeline-architect hotfix rollback path for broken payments deploy",
+      "expected_output": "An emergency release lane that keeps provenance, essential validation, and rollback readiness while narrowing scope to the smallest repair.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Hotfix mode based on the 'hotfix' keyword.",
+        "Agent narrows scope to the smallest repair that restores service.",
+        "Agent preserves provenance, essential validation, one production approval, and rollback preparation.",
+        "Agent records skipped non-essential checks with justification.",
+        "Agent consults references/runbook-templates.md and references/provenance-evidence-checklist.md."
+      ]
+    },
+    {
+      "id": "release-checklist",
+      "prompt": "/release-pipeline-architect checklist mobile app store release",
+      "expected_output": "A binary, observable release-readiness checklist tailored to the release type.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Checklist mode based on the 'checklist' keyword.",
+        "Agent tailors the checklist to the release type.",
+        "Agent groups checklist items by preparation, promotion, rollout, validation, and rollback readiness.",
+        "Agent keeps checklist items binary and observable.",
+        "Agent uses references/runbook-templates.md and references/provenance-evidence-checklist.md."
+      ]
+    },
+    {
+      "id": "empty-args-menu",
+      "prompt": "/release-pipeline-architect",
+      "expected_output": "A mode menu with examples for Design, Review, Cutover, Hotfix, and Checklist.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent shows the mode menu with examples for all five public modes.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "auto-detect-release-workflow",
+      "prompt": "We have staging and production, but prod deploys are rebuilt separately and nobody can tell me what the rollback point is. How should we fix this release flow?",
+      "expected_output": "An auto-detected release workflow response that behaves like Design or Review rather than asking for an irrelevant mode pick.",
+      "files": [],
+      "assertions": [
+        "Agent auto-detects the closest release-pipeline mode from natural language about release workflow safety.",
+        "Agent focuses on immutable artifacts, approval gates, rollback point handling, and post-release verification.",
+        "Agent does not route the task to generic CI tuning because the problem is release orchestration."
+      ]
+    },
+    {
+      "id": "misroute-generic-ci",
+      "prompt": "/release-pipeline-architect review how to speed up our CI with better caching and parallel test shards",
+      "expected_output": "A concise refusal or redirect to devops-engineer because the request is generic CI optimization rather than release architecture.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes generic CI speed and caching work as out of scope.",
+        "Agent redirects to devops-engineer.",
+        "Agent does not attempt to redesign a release pipeline for a pure CI tuning request."
+      ]
+    },
+    {
+      "id": "misroute-app-debugging",
+      "prompt": "/release-pipeline-architect review why production started returning 500s after today's deploy",
+      "expected_output": "A concise redirect to incident-response-engineer or investigate because the request is app-level debugging or active incident handling.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes app-level debugging or active incident response as out of scope.",
+        "Agent redirects to incident-response-engineer for active production command-and-control or to investigate for debugging.",
+        "Agent does not pretend that the right first step is release process redesign."
+      ]
+    },
+    {
+      "id": "misroute-infra-provisioning",
+      "prompt": "/release-pipeline-architect design Terraform and Kubernetes changes to provision blue-green environments",
+      "expected_output": "A concise redirect to infrastructure-coder because the task is infrastructure provisioning rather than release workflow design.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes environment provisioning and platform wiring as out of scope.",
+        "Agent redirects to infrastructure-coder.",
+        "Agent does not provide infrastructure implementation guidance."
+      ]
+    }
+  ]
+}
