@@ -1,0 +1,88 @@
+{
+  "skill_name": "python-conventions",
+  "evals": [
+    {
+      "id": "active-python-primary",
+      "prompt": "Add a retry decorator to the fetch_data function in wagents/utils.py",
+      "files": ["wagents/utils.py"],
+      "expected_output": "An active auto-invoked response that applies Python conventions to a Python-primary task.",
+      "assertions": [
+        "Agent auto-invokes python-conventions when the primary file is Python.",
+        "Agent uses uv-based command guidance, not bare python.",
+        "Agent treats uv, ty, ruff, pytest, and pyproject.toml as hard requirements.",
+        "Agent may suggest tenacity as a guided preference rather than presenting it as absolute law."
+      ]
+    },
+    {
+      "id": "empty-help-menu",
+      "prompt": "/python-conventions",
+      "files": [],
+      "expected_output": "A summary response that distinguishes hard requirements from guided preferences and points to references.",
+      "assertions": [
+        "Agent dispatches to the empty/help handler.",
+        "Agent summarizes uv, uv run, ty, ruff, pytest, and pyproject.toml as hard requirements.",
+        "Agent distinguishes guided preferences from hard requirements.",
+        "Agent points to tooling-contract, redirection-boundaries, and exceptions references."
+      ]
+    },
+    {
+      "id": "check-mode",
+      "prompt": "/python-conventions check",
+      "files": ["pyproject.toml"],
+      "expected_output": "A compliance-only response describing what check mode verifies.",
+      "assertions": [
+        "Agent dispatches to check mode.",
+        "Agent limits the response to tooling compliance verification.",
+        "Agent names uv, uv run, ty, ruff, pytest, and pyproject.toml as the compliance surface.",
+        "Agent rejects mypy, pip install, or bare python as default recommendations."
+      ]
+    },
+    {
+      "id": "mixed-python-shell",
+      "prompt": "Update the Python CLI and the helper shell script that invokes it.",
+      "files": ["tool/main.py", "scripts/run-tool.sh"],
+      "expected_output": "A mixed-language response that keeps Python conventions scoped to the Python-owned surface and routes shell concerns appropriately.",
+      "assertions": [
+        "Agent recognizes mixed Python and shell work.",
+        "Agent applies python-conventions only to the Python-owned surface.",
+        "Agent references redirection-boundaries behavior for shell-primary or mixed tasks.",
+        "Agent does not force Python command rules onto the shell script itself."
+      ]
+    },
+    {
+      "id": "mixed-python-js",
+      "prompt": "Update the FastAPI backend and the React client in the same task.",
+      "files": ["api/app.py", "web/src/App.tsx"],
+      "expected_output": "A mixed-language response that keeps Python guidance scoped and yields JS/TS concerns to the appropriate conventions skill.",
+      "assertions": [
+        "Agent recognizes mixed Python and JS/TS work.",
+        "Agent scopes Python conventions to the Python-owned files or commands.",
+        "Agent routes JS/TS conventions to javascript-conventions instead of claiming repo-wide ownership."
+      ]
+    },
+    {
+      "id": "legacy-exception-path",
+      "prompt": "This legacy service still uses requirements.txt and mypy during a staged migration. What should we do?",
+      "files": ["requirements.txt", "mypy.ini"],
+      "expected_output": "An exception-aware response that permits a documented transition path without replacing repo defaults.",
+      "assertions": [
+        "Agent recognizes the task as a legacy exception path.",
+        "Agent reads or cites the exceptions framework rather than treating the legacy setup as normal default guidance.",
+        "Agent requires a migration owner, scope, or exit criteria for continuing mypy or pip-based flows.",
+        "Agent keeps uv and ty as the default target state."
+      ]
+    },
+    {
+      "id": "reject-mypy-pip-python",
+      "prompt": "Set this Python project up with pip install, mypy, and plain python commands.",
+      "files": ["pyproject.toml"],
+      "expected_output": "A rejection or correction response that refuses those defaults and replaces them with repo-approved tooling.",
+      "assertions": [
+        "Agent rejects pip install as the default package-management guidance.",
+        "Agent rejects mypy as the default type-checking guidance.",
+        "Agent rejects bare python as the default execution guidance.",
+        "Agent replaces them with uv add, uv run ty check, and uv run commands."
+      ]
+    }
+  ]
+}
