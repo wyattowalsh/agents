@@ -95,7 +95,7 @@ If the user invokes `/harness-master` with no arguments:
 
 2. **Gate 1 — Inspect project context before recommending fixes**
    - Read the repo's intent and operating model first: `README.md`, `AGENTS.md`, harness-facing project files, key manifests, CI/workflow signals, and repo-native orchestration logic when present.
-   - In this repository, treat `scripts/sync_agent_stack.py`, `config/tooling-policy.json`, and `config/sync-manifest.json` as canonical context for managed/generated/merged harness surfaces.
+   - In this repository, treat the repo-level harness sync script together with `config/tooling-policy.json` and `config/sync-manifest.json` as canonical context for managed/generated/merged harness surfaces.
 
 3. **Gate 2 — Refresh latest official guidance**
    - Read `references/latest-doc-sources.md`.
