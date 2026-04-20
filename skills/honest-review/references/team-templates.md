@@ -28,6 +28,13 @@ For 1-5 files: keep lightweight triage, but still use the full content-adaptive 
 For 6+ files: full team with lead orchestration and the same content-adaptive reviewer set.
 For 6+ files spanning 3+ modules: consider switching to domain-based ownership (Full Audit archetypes) instead.
 
+## Shared Scaling Contract
+
+- Small review scope changes triage depth, not review depth.
+- The core reviewer set stays content-adaptive in both session review and full audit modes.
+- Team size scales with owned surface area and triggered specialists, but the reasoning-first finding contract never changes.
+- Read-only review mode ends at findings plus approval gate; post-fix reporting is a later, separate output shape.
+
 ## Specialist Agents
 
 Context-triggered agents that run cross-cutting analysis across all domains. Activate based on triage results (see references/triage-protocol.md, Specialist Triggers section).

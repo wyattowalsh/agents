@@ -105,6 +105,13 @@ Review against the codebase's own standards, not an ideal standard.
 **Healthy codebase acknowledgment**:
 If no P0/P1 or S0 findings: state this explicitly. A short report is a good report.
 
+## Scaling Contract
+
+- Small scoped reviews still use the full content-adaptive reviewer set; only the triage depth becomes lighter.
+- Session Review and Full Audit share one core scaling rule: maximum review depth, content-adaptive reviewers, and no inline-only shortcut.
+- Large full-codebase audits may split ownership by domain or risk tier, but that does not weaken the evidence-validation or reasoning-first output contract.
+- Read-only review output stops at findings, strengths, and next-step recommendations; implementation summaries appear only after explicit approval and a fix pass.
+
 ## Review Levels (Both Modes)
 
 Three abstraction levels, each examining defects and unnecessary complexity:
