@@ -16,10 +16,10 @@ hooks:
       hooks:
         - command: "echo 'skill-creator: Bash access granted for script execution'"
   PostToolUse:
-    - matcher: "Write|Edit"
+    - matcher: "Write|Edit|MultiEdit"
       hooks:
         - type: command
-          command: "jq -r '.tool_input.file_path // empty' | grep -q 'skills/.*/SKILL.md' && wagents validate 2>/dev/null || true"
+          command: "bash -lc 'FILE=$(jq -r \".tool_input.file_path // empty\" 2>/dev/null); case \"$FILE\" in skills/*/SKILL.md|*/skills/*/SKILL.md) wagents validate 2>/dev/null ;; skills/*/evals/*.json|*/skills/*/evals/*.json) wagents eval validate 2>/dev/null ;; esac; true'"
 ---
 
 # Skill Creator
@@ -63,8 +63,9 @@ If no explicit mode keyword is provided:
 ```bash
 wagents new skill <name>           # Scaffold from template
 wagents validate                   # Check all skills
+wagents eval validate              # Check eval manifests after eval changes
 uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
-wagents package <name>             # Package as portable ZIP
+wagents package <name> --dry-run   # Check single-skill portability before packaging
 ```
 
 ## Skill Development
@@ -77,7 +78,7 @@ Unified process for creating new skills and improving existing ones. Load `refer
 | 2. Plan | Structure, description, frontmatter | Gap analysis + improvement plan (approval gate) |
 | 3. Scaffold | `wagents new skill <name>` | Skip |
 | 4. Build | Write/edit body, references, scripts, templates, evals | Same |
-| 5. Validate | `wagents validate` + `audit.py` | Same |
+| 5. Validate | `wagents validate` + `wagents eval validate` + `audit.py` | Same |
 | 6. Iterate | Test, identify issues, loop to Step 4 | Same |
 
 ## Repo-Wide / Multi-Skill Planning
@@ -120,6 +121,7 @@ Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, 
 Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
 
 ```bash
+wagents package <name> --dry-run  # Check a single skill before emitting a ZIP
 wagents package <name>            # Single skill → <name>-v<version>.skill.zip
 wagents package --all             # All skills → dist/ with manifest.json
 wagents package --all --dry-run   # Check portability without creating ZIPs
@@ -128,6 +130,11 @@ wagents package --all --dry-run   # Check portability without creating ZIPs
 ## Hooks
 
 PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
+
+Post-edit enforcement for this skill:
+- `SKILL.md` edits trigger `wagents validate`
+- `evals/*.json` edits trigger `wagents eval validate`
+- bulk edits should be covered through the same post-tool hook path
 
 ## State Management
 
@@ -159,23 +166,24 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 ## Critical Rules
 
 1. Run `uv run wagents validate` before declaring any skill complete
-2. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
-3. Never create a skill without a dispatch table — it is the routing contract
-4. Never create a dispatch table without an empty-args handler — unrouted input is a bug
-5. Every reference file must appear in the Reference File Index — orphan refs are invisible
-6. Every indexed reference must exist on disk — phantom refs cause agent errors
-7. Body must stay under 500 lines (below frontmatter) — move detail to references
-8. Description must include "Use when" trigger phrases AND "NOT for" exclusions
-9. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
-10. Scripts use argparse + JSON to stdout — no custom output formats
-11. Templates are self-contained HTML with no external dependencies
-12. Do NOT call `wagents docs generate` — delegate to docs-steward
-13. Do NOT create agents or MCP servers — refuse gracefully and redirect
-14. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
-15. Audit mode is read-only — never modify the skill being audited
-16. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
-17. `plan <name>` and `plan --all` are read-only planning modes — never edit during planning
-18. Repo-wide or multi-skill requests require a ranked plan and standalone refinement-plan output before any implementation begins
+2. Run `uv run wagents eval validate` after changing evals and before declaring the skill complete
+3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
+4. Never create a skill without a dispatch table — it is the routing contract
+5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
+6. Every reference file must appear in the Reference File Index — orphan refs are invisible
+7. Every indexed reference must exist on disk — phantom refs cause agent errors
+8. Body must stay under 500 lines (below frontmatter) — move detail to references
+9. Description must include "Use when" trigger phrases AND "NOT for" exclusions
+10. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
+11. Scripts use argparse + JSON to stdout — no custom output formats
+12. Templates are self-contained HTML with no external dependencies
+13. Do NOT call `wagents docs generate` — delegate to docs-steward
+14. Do NOT create agents or MCP servers — refuse gracefully and redirect
+15. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
+16. Audit mode is read-only — never modify the skill being audited
+17. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
+18. `plan <name>` and `plan --all` are read-only planning modes — never edit during planning
+19. Repo-wide or multi-skill requests require a ranked plan and standalone refinement-plan output before any implementation begins
 
 **Canonical terms** (use these exactly throughout):
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
