@@ -1,0 +1,104 @@
+{
+  "skill_name": "event-driven-architect",
+  "evals": [
+    {
+      "id": "empty-args-menu",
+      "prompt": "/event-driven-architect",
+      "expected_output": "A mode menu response with examples and no guessed mode.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent presents the mode menu with Design, Review, Contract, Reliability, and Migration.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "design-architecture",
+      "prompt": "/event-driven-architect design order fulfillment across payments, inventory, and shipping",
+      "expected_output": "A design response covering producers, events, topics, consumers, saga choice, and reliability.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Design mode from the explicit 'design' keyword.",
+        "Agent identifies business facts as events in past tense.",
+        "Agent defines producer, topic, partition key, consumers, and contract for each core event.",
+        "Agent addresses ordering, failure handling, replay, and observability.",
+        "Agent uses saga-comparison guidance when the workflow spans multiple services."
+      ]
+    },
+    {
+      "id": "review-mode-separation",
+      "prompt": "/event-driven-architect review event flow for user-created to email sync",
+      "expected_output": "A review response with severity-ranked findings about coupling, idempotency, or replay behavior.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Review mode from the explicit 'review' keyword.",
+        "Agent looks for hidden synchronous coupling, missing idempotency, weak contract ownership, or undefined replay behavior.",
+        "Agent presents findings by severity rather than redesigning the system from scratch."
+      ]
+    },
+    {
+      "id": "contract-mode-separation",
+      "prompt": "/event-driven-architect contract invoice.paid",
+      "expected_output": "A contract response defining ownership, fields, ordering expectations, and versioning strategy.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Contract mode from the explicit 'contract' keyword.",
+        "Agent defines required fields, identifiers, metadata, producer, and ownership.",
+        "Agent states ordering expectations and additive evolution guidance."
+      ]
+    },
+    {
+      "id": "reliability-mode-separation",
+      "prompt": "/event-driven-architect reliability retry strategy for webhook ingestion",
+      "expected_output": "A reliability plan covering retries, idempotency, replay, and dead-letter handling.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Reliability mode from the explicit 'reliability' keyword.",
+        "Agent designs retry policy, poison-message handling, and dead-letter routing.",
+        "Agent specifies idempotency strategy and replay safety."
+      ]
+    },
+    {
+      "id": "migration-mode-separation",
+      "prompt": "/event-driven-architect migration move monolith side effects to events",
+      "expected_output": "A migration plan with checkpoints, rollback framing, and staged adoption guidance.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Migration mode from the explicit 'migration' keyword.",
+        "Agent maps the current synchronous path and introduces the new event path behind checkpoints.",
+        "Agent keeps rollback simple by preserving the old path until the new path proves stable."
+      ]
+    },
+    {
+      "id": "event-vs-command-confusion",
+      "prompt": "/event-driven-architect design should send-invoice be an event or a command",
+      "expected_output": "A clarification that distinguishes facts from commands and redirects toward the correct interaction shape.",
+      "files": [],
+      "assertions": [
+        "Agent identifies that 'send-invoice' reads like a command, not a business event.",
+        "Agent uses event-vs-command reasoning instead of treating the imperative name as a valid event by default.",
+        "Agent explains when to keep the action as a command or synchronous call."
+      ]
+    },
+    {
+      "id": "crud-api-misroute",
+      "prompt": "/event-driven-architect design a REST API for user CRUD with pagination and filtering",
+      "expected_output": "A refusal or redirect to api-designer because the task is synchronous CRUD API design.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that CRUD API design is outside event-driven-architect scope.",
+        "Agent redirects to api-designer rather than inventing an event-driven answer."
+      ]
+    },
+    {
+      "id": "etl-misroute",
+      "prompt": "/event-driven-architect design a nightly ETL pipeline from Postgres into Snowflake",
+      "expected_output": "A refusal or redirect to data-pipeline-architect because the task is batch ETL.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that batch ETL pipeline design is outside event-driven-architect scope.",
+        "Agent redirects to data-pipeline-architect rather than treating ETL as event architecture."
+      ]
+    }
+  ]
+}
