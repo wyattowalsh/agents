@@ -55,10 +55,11 @@ Use these terms exactly throughout all modes:
 
 If no explicit mode keyword is provided:
 
-1. Simplification verbs plus an editable target or active diff -> **Mode B: Apply**
+1. Simplification verbs plus a single-file, single-symbol, pasted-snippet, or otherwise clearly narrow target -> **Mode B: Apply**
 2. Simplification verbs without a concrete target -> **Mode A: Analyze**
-3. Requests centered on explanation, trade-offs, or coaching -> **Mode C: Explain**
-4. If the target is ambiguous or the work would cross risky boundaries -> ask before editing
+3. Simplification verbs plus a multi-file, wide recent scope, or risky active diff -> **Mode A: Analyze** first, or ask before editing
+4. Requests centered on explanation, trade-offs, or coaching -> **Mode C: Explain**
+5. If the target is ambiguous or the work would cross risky boundaries -> ask before editing
 
 ### Example Invocations
 
@@ -107,6 +108,7 @@ Read-only simplification report.
 Make a behavior-preserving simplification pass.
 
 1. Determine the narrowest target. Default to the **recent scope**.
+   If the target is a pasted snippet, treat the snippet itself as the whole scope and verify by invariant reasoning when no project checks exist.
 2. Load:
    - `references/simplification-taxonomy.md`
    - `references/behavior-preservation.md`
