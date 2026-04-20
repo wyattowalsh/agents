@@ -59,6 +59,27 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 3. **Present improvement plan** — each item includes: what to change, why, expected score impact, which file(s) to modify
 4. **Approval gate** — show projected before/after score. Wait for user approval. Do NOT implement until approved.
 
+### Repo-Wide / Multi-Skill Planning
+
+Use this branch for `plan --all`, `plan repo`, or any request to improve multiple existing skills as a program.
+
+1. **Inventory** — run the audit sweep first and identify the current score floor, promoted candidates, and shared authority surfaces.
+2. **Rank** — order the work by structural failures, prompt-contract risk, eval gaps, portability/docs blockers, and simplification leverage.
+3. **Produce standalone refinement plans** — one per promoted skill or tightly related cluster.
+4. **Attach file targets and score goals** — every plan item names the target files and expected score delta.
+5. **Approval gate** — repo-wide planning is strictly read-only until the user explicitly approves implementation.
+
+### Standalone Refinement Plan Contract
+
+Every existing-skill or repo-wide plan packet must include:
+
+- target skill or cluster
+- baseline audit score and key findings
+- proposed changes by file
+- rationale and expected score impact
+- verification commands
+- explicit approval gate wording before edits
+
 Each improvement item must include:
 - **File(s):** Which files will be modified
 - **Finding:** What the audit or analysis identified

@@ -1,0 +1,11 @@
+{
+  "skills": ["skill-creator"],
+  "query": "/skill-creator plan --all",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to a repo-wide planning mode rather than directly editing skills.",
+    "Agent runs or references a repo-wide audit baseline before ranking the work.",
+    "Agent produces a ranked planning queue plus standalone refinement plans for promoted skills.",
+    "Agent does not edit any skill during the planning response."
+  ]
+}
