@@ -805,11 +805,10 @@ def filter_codex_top_level_chunk(chunk: str) -> str:
 
 
 def render_preserved_codex_config(current: str, *, include_local_extras: bool) -> str:
+    if not include_local_extras:
+        return ""
     preserved_chunks: list[str] = []
     for header, chunk in chunk_toml_sections(remove_managed_codex_block(current)):
-        server_name = codex_mcp_server_name(header)
-        if server_name and not include_local_extras:
-            continue
         if header in CODEX_OWNED_TABLES:
             continue
         if header is None:
@@ -840,7 +839,7 @@ def render_codex_config(
                 continue
             filtered_chunks.append(chunk.strip())
         preserved = "\n\n".join(chunk for chunk in filtered_chunks if chunk)
-    parts = [render_codex_base_config(policy, current_data).rstrip()]
+    parts = [render_codex_base_config(policy, current_data if include_local_extras else None).rstrip()]
     if preserved:
         parts.append(preserved)
     parts.append(render_codex_mcp_block(registry).rstrip())

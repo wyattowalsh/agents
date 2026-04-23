@@ -399,6 +399,12 @@ url = "http://localhost:8000/mcp/"
 
 [mcp_servers.ronin.http_headers]
 Authorization = "Bearer local-secret"
+
+[projects."/private/work"]
+trust_level = "trusted"
+
+[plugins."secret-local@dev"]
+enabled = true
 """
 
     home_config = render_codex_config(current, registry, policy, include_local_extras=True)
@@ -412,8 +418,14 @@ Authorization = "Bearer local-secret"
     assert "job_max_runtime_seconds = 7200" in home_config
     assert 'model = "gpt-5.5"' in home_config
     assert "local-secret" in home_config
+    assert 'notify = ["/tmp/notifier"]' in home_config
+    assert '[projects."/private/work"]' in home_config
+    assert '[plugins."secret-local@dev"]' in home_config
     assert "local-secret" not in repo_config
+    assert 'notify = ["/tmp/notifier"]' not in repo_config
     assert "[mcp_servers.ronin]" not in repo_config
+    assert "[projects." not in repo_config
+    assert "[plugins." not in repo_config
     assert 'env_vars = ["BRAVE_API_KEY"]' in repo_config
 
 
