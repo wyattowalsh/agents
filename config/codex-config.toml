@@ -5,7 +5,7 @@ approvals_reviewer = "guardian_subagent"
 background_terminal_max_timeout = 300000
 check_for_update_on_startup = true
 file_opener = "vscode"
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "detailed"
 model_verbosity = "medium"
@@ -57,7 +57,7 @@ max_threads = 16
 job_max_runtime_seconds = 7200
 
 [profiles.deep]
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "detailed"
 model_verbosity = "medium"
@@ -76,7 +76,7 @@ service_tier = "fast"
 web_search = "live"
 
 [profiles.full_access]
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "detailed"
 model_verbosity = "medium"
@@ -139,11 +139,273 @@ show_tooltips = true
 status_line = ["model", "approval", "sandbox", "cwd"]
 terminal_title = ["spinner", "project"]
 
+[projects."/Users/ww"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/careerflows"]
+trust_level = "trusted"
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."canva@openai-curated"]
+enabled = true
+
+[plugins."vercel@openai-curated"]
+enabled = true
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."stripe@openai-curated"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."browser-use@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[projects."/Users/ww/dev/projects"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/ai-web-feeds"]
+trust_level = "trusted"
+
+[projects."/Users/ww/Documents/New project"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/tavrapay"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/ronin"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/gmail-studio"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/agents"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/reportcontext"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/nbadb"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/resume"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/wyattowalsh"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/proxywhirl"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/personal-website"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/listentropy"]
+trust_level = "trusted"
+
+[projects."/Users/ww/dev/projects/siggy"]
+trust_level = "trusted"
+
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
-[mcp_servers.duckduckgo]
+[mcp_servers.brave-search]
+args = ["-y", "@brave/brave-search-mcp-server"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+env_vars = ["BRAVE_API_KEY"]
+
+[mcp_servers.cascade-thinking]
+args = ["-y", "cascade-thinking-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.chrome-devtools]
+args = ["-y", "chrome-devtools-mcp@latest", "--autoConnect"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.context7]
+args = ["-y", "@upstash/context7-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+env_vars = ["CONTEXT7_API_KEY"]
+
+[mcp_servers.deepwiki]
+args = ["-y", "mcp-remote", "https://mcp.deepwiki.com/mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.docling]
+args = ["--from=docling-mcp", "docling-mcp-server"]
+command = "uvx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.fetch]
+args = ["-y", "mcp-fetch-server"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.fetcher]
+args = ["-y", "fetcher-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.package-version]
+args = []
+command = "/Users/ww/go/bin/mcp-package-version"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+enabled_tools = ["check_docker_tags", "check_github_actions", "check_go_versions", "check_npm_versions", "check_pyproject_versions", "check_python_versions"]
+
+[mcp_servers.repomix]
+args = ["-y", "repomix", "--mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.sequential-thinking]
+args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.structured-thinking]
+args = ["-y", "structured-thinking"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.tavily]
+args = ["-y", "tavily-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+env_vars = ["TAVILY_API_KEY"]
+
+[mcp_servers.trafilatura]
+args = ["--directory", "/Users/ww/dev/tools/mcp/trafilatura_mcp", "run", "python3", "trafilatura_mcp.py"]
+command = "uv"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.arxiv]
+args = ["-lc", "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"]
+command = "bash"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.atom-of-thoughts]
+args = ["-y", "github:kbsooo/MCP_Atom_of_Thoughts"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.crash]
+args = ["-y", "crash-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+env_vars = ["CRASH_STRICT_MODE", "MAX_HISTORY_SIZE"]
+
+[mcp_servers.creative-thinking]
+args = ["-y", "github:VitalyMalakanov/mcp-thinking"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.deep-lucid-3d]
+args = ["-y", "github:mushroomfleet/deeplucid3d-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.duckduckgo-search]
 args = ["duckduckgo-mcp-server"]
 command = "uvx"
 startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.exa]
+args = ["-y", "exa-mcp-server"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+env_vars = ["EXA_API_KEY"]
+
+[mcp_servers.ffmpeg]
+args = ["--directory", "/Users/ww/dev/tools/mcp/ffmpeg-mcp", "run", "ffmpeg-mcp"]
+command = "uv"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.g-search]
+args = ["-y", "g-search-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.gmail]
+args = ["-y", "@gongrzhe/server-gmail-autoauth-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.linkedin]
+args = ["linkedin-scraper-mcp", "--no-headless"]
+command = "uvx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.lotus-wisdom-mcp]
+args = ["-y", "lotus-wisdom-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.shannon-thinking]
+args = ["-y", "server-shannon-thinking@latest"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.think-strategies]
+args = ["-y", "github:aaronsb/think-strategies"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.wayback]
+args = ["-y", "--prefer-offline", "mcp-wayback-machine"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
+
+[mcp_servers.wikipedia]
+args = ["-y", "--prefer-offline", "wikipedia-mcp"]
+command = "npx"
+startup_timeout_sec = 90
+tool_timeout_sec = 600
 
 # END MANAGED BY sync_agent_stack.py: MCP_SERVERS
