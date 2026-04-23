@@ -120,6 +120,38 @@ and "conciseness".
 
 DSPy optimizers (BootstrapFewShot, MIPRO, etc.) can automate prompt optimization but are outside the scope of this skill's workflows.
 
+## PromptOps Lifecycle
+
+Use with Mode G (`promptops`) to make prompt changes deployable rather than
+anecdotal.
+
+1. **Version source** — Store the prompt in a versioned surface: repo file,
+   provider prompt object, or managed prompt registry. Record model/provider,
+   owner, and date.
+2. **Link evals** — Every production prompt version must name its golden,
+   adversarial, edge, and regression sets.
+3. **Set gates** — Define minimum pass rate, maximum regression allowance,
+   latency/cost budget, and safety-failure blockers.
+4. **Stage rollout** — Shadow, canary, partial rollout, then full rollout. Do not
+   jump from local testing to full production for high-risk prompts.
+5. **Monitor drift** — Track output quality, refusal/overtrigger rate,
+   schema-valid rate, tool-call rate, token cost, latency, and user feedback.
+6. **Rollback** — Keep the previous prompt/model pair available and document the
+   trigger that reverts traffic.
+7. **Refresh provider facts** — Re-check model-specific guidance before changing
+   model family, reasoning effort, tool policy, or cache assumptions.
+
+## Provider Claim Audit
+
+Run before deploying model-specific recommendations:
+
+- [ ] Provider and exact model/API surface identified
+- [ ] Official docs or provider guide checked within 90 days
+- [ ] Evidence class attached to each non-obvious claim
+- [ ] Claim scope states model, mode, API, and task type
+- [ ] Stale or conflicting guidance is flagged rather than resolved silently
+- [ ] Eval cases cover the behavior the provider claim is expected to improve
+
 ## Tool Guidance
 
 | Tool | Best For | Notes |
@@ -128,6 +160,14 @@ DSPy optimizers (BootstrapFewShot, MIPRO, etc.) can automate prompt optimization
 | Braintrust | Team collab, PR comparisons | Production monitoring, golden set management |
 | Langfuse | Tracing, cost tracking | Open-source, self-hosted or cloud |
 | LMQL/guidance | Constrained generation | Structured output, grammar enforcement |
+
+## Mode-Specific Eval Additions
+
+| Mode | Required eval focus |
+|------|---------------------|
+| Harden | Direct injection, indirect injection, extraction, tool abuse, output escape |
+| Tool | Overlapping tools, bad arguments, missing optional params, unsafe permission request |
+| PromptOps | Version regression, stale provider claim, rollback trigger, monitoring metric |
 
 ## Eval Design Checklist
 

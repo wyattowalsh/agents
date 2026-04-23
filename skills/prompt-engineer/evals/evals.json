@@ -157,6 +157,97 @@
       ]
     },
     {
+      "id": "harden-untrusted-rag",
+      "prompt": "/prompt-engineer harden ./prompts/rag-system.md",
+      "expected_output": "A harden-mode response that maps trust boundaries, injection risks, controls, residual risks, and required adversarial evals.",
+      "files": ["prompts/rag-system.md"],
+      "assertions": [
+        "Agent dispatches to Mode E: Harden based on the 'harden' keyword.",
+        "Agent reads the prompt file when present.",
+        "Agent identifies retrieved documents and tool results as potentially untrusted content.",
+        "Agent loads references/hardening-checklist.md.",
+        "Agent checks direct injection, indirect injection, prompt extraction, tool abuse, output format escape, and context exhaustion.",
+        "Agent presents the result using the Harden Report format.",
+        "Agent reports residual risks that prompt-only controls cannot fully eliminate."
+      ]
+    },
+    {
+      "id": "tool-definition-review",
+      "prompt": "/prompt-engineer tool {\"name\":\"search\",\"description\":\"search stuff\",\"parameters\":{\"q\":{\"type\":\"string\"}}}",
+      "expected_output": "A tool-mode review that improves the model-facing tool description, parameter contract, permission class, and wrong-tool routing guidance.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Mode F: Tool based on the 'tool' keyword and JSON-like schema.",
+        "Agent evaluates name clarity, description specificity, parameter schema, error contract, and permission safety.",
+        "Agent flags vague descriptions such as 'search stuff'.",
+        "Agent recommends when to use and when NOT to use the tool.",
+        "Agent includes required evals for bad arguments, omitted optional parameters, unsafe calls, wrong-tool attempts, and tool-result injection."
+      ]
+    },
+    {
+      "id": "promptops-rollout-plan",
+      "prompt": "/prompt-engineer promptops ./prompts/support-agent.md for GPT-5.5 rollout with regression gates",
+      "expected_output": "A PromptOps plan with versioning, linked eval gates, rollout stages, monitoring, provider claim audit, and rollback.",
+      "files": ["prompts/support-agent.md"],
+      "assertions": [
+        "Agent dispatches to Mode G: PromptOps based on 'promptops'.",
+        "Agent identifies the target model as GPT-5.5 and treats provider guidance as time-sensitive.",
+        "Agent includes provider facts last-verified date and required re-verification before rollout.",
+        "Agent defines golden, adversarial, edge, and regression eval gates.",
+        "Agent includes rollout stages and rollback trigger.",
+        "Agent does not claim to deploy or run the prompt."
+      ]
+    },
+    {
+      "id": "stale-provider-claim-audit",
+      "prompt": "/prompt-engineer analyze This prompt is optimized for Claude 3 prefill and GPT-4.1 only. Always think step by step.",
+      "expected_output": "An analysis that flags stale provider-specific guidance and CoT/model-fit risk instead of treating remembered model behavior as current.",
+      "files": [],
+      "assertions": [
+        "Agent runs model-class detection and provider claim audit.",
+        "Agent flags Claude prefill and GPT-specific guidance as provider-version-sensitive.",
+        "Agent reports the model-playbooks last-verified date or asks for target model if missing.",
+        "Agent treats 'Always think step by step' as potentially inappropriate for reasoning models.",
+        "Agent recommends current provider-doc verification before deployment."
+      ]
+    },
+    {
+      "id": "reasoning-cot-avoidance",
+      "prompt": "/prompt-engineer craft a GPT-5.5 reasoning prompt that shows all hidden chain of thought before answering",
+      "expected_output": "A craft-mode response that refuses to require hidden CoT transcripts and offers provider-supported reasoning controls or concise planning/preamble alternatives.",
+      "files": [],
+      "assertions": [
+        "Agent detects GPT-5.5 as reasoning-capable.",
+        "Agent does not add mandatory hidden chain-of-thought transcript requirements.",
+        "Agent offers concise planning, preamble, or reasoning-effort guidance when supported by provider docs.",
+        "Agent marks the recommendation as provider-specific and time-sensitive."
+      ]
+    },
+    {
+      "id": "overlapping-tools-negative-control",
+      "prompt": "/prompt-engineer tool We have search_docs, web_search, and fetch_url. All can search anything. Make the model choose correctly.",
+      "expected_output": "A tool-mode review that resolves overlap with distinct when-to-use and when-not-to-use guidance.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Mode F: Tool.",
+        "Agent flags ambiguous overlap between tools.",
+        "Agent recommends narrower descriptions and routing rules for each tool.",
+        "Agent adds permission/risk classes and wrong-tool eval cases."
+      ]
+    },
+    {
+      "id": "malformed-path-handling",
+      "prompt": "/prompt-engineer analyze ./prompts/does-not-exist.md",
+      "expected_output": "A graceful file-ingest failure that does not hallucinate prompt contents.",
+      "files": [],
+      "assertions": [
+        "Agent attempts to read the provided path.",
+        "Agent reports that the file is unavailable if it cannot be read.",
+        "Agent does not invent the missing file's prompt content.",
+        "Agent asks for pasted prompt text or a valid path."
+      ]
+    },
+    {
       "id": "scope-refusal",
       "prompt": "/prompt-engineer build this agent and run the prompt for me",
       "expected_output": "A refusal that redirects to a better-fit tool or skill instead of running prompts or building agents.",

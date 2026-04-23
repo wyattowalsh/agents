@@ -175,6 +175,122 @@ CI/CD INTEGRATION: {Suggested pipeline configuration}
 BASELINE EXPECTATIONS: {Expected scores from current prompt version}
 ```
 
+## Harden Report
+
+Used by Harden (Mode E).
+
+```
+HARDEN REPORT: {Prompt Name}
+Target model/provider: {Model and API surface}
+Trust boundary: {trusted instructions vs untrusted inputs/tool results/retrieved docs}
+Risk level: {Low | Medium | High | Critical}
+
+ATTACK SURFACE
+| Surface | Trust level | Failure mode | Control |
+|---------|-------------|--------------|---------|
+| User input | {trusted/untrusted} | {risk} | {mitigation} |
+| Retrieved docs/tool results | {trust} | {risk} | {mitigation} |
+
+FINDINGS
+| # | Severity | Finding | Evidence class | Fix |
+|---|----------|---------|----------------|-----|
+
+HARDENED PROMPT CHANGES
+{Before/after or patch-style prompt deltas}
+
+RESIDUAL RISKS
+{What prompt-only controls cannot guarantee}
+
+REQUIRED EVALS
+{Direct injection, indirect injection, extraction, tool abuse, output escape, long input}
+```
+
+## Tool Definition Review
+
+Used by Tool (Mode F).
+
+```
+TOOL DEFINITION REVIEW: {Tool Name}
+Target model/provider: {Model and API surface}
+Permission class: {read-only | write | destructive | external-network | sensitive-data}
+
+SCORECARD
+| Dimension | Score | Finding |
+|-----------|-------|---------|
+| Name clarity | {1-5} | {assessment} |
+| Description specificity | {1-5} | {assessment} |
+| Parameter schema | {1-5} | {assessment} |
+| Error contract | {1-5} | {assessment} |
+| Permission safety | {1-5} | {assessment} |
+
+RECOMMENDED TOOL DESCRIPTION / SCHEMA
+{Rewritten model-facing description or schema delta}
+
+ADJACENT TOOL CONFLICTS
+{Overlap and routing guidance}
+
+REQUIRED EVALS
+{Bad args, omitted optionals, unsafe call, wrong-tool attempt, tool-result injection}
+```
+
+## PromptOps Plan
+
+Used by PromptOps (Mode G).
+
+```
+PROMPTOPS PLAN: {Prompt Name}
+Owner: {Team/person}
+Target model/provider: {Model and API surface}
+Provider facts last verified: {Date + source}
+
+VERSIONING
+{Prompt source of truth, version identifier, variables, rollback target}
+
+EVAL GATES
+| Gate | Threshold | Blocks rollout? |
+|------|-----------|-----------------|
+| Golden pass rate | {threshold} | yes/no |
+| Regression failures | {threshold} | yes/no |
+| Safety failures | {threshold} | yes/no |
+
+ROLLOUT
+{Shadow -> canary -> partial -> full, with stop conditions}
+
+MONITORING
+{Quality, schema-valid rate, refusal rate, tool-call rate, cost, latency, drift signals}
+
+ROLLBACK
+{Trigger, owner, exact prior prompt/model version}
+```
+
+## Provider Claim Audit
+
+Used whenever recommendations depend on a current provider/model fact.
+
+```
+PROVIDER CLAIM AUDIT
+Claim: {Recommendation}
+Provider/model/API: {Exact surface}
+Evidence class: {official-doc | provider-guide | research | community-heuristic | single-study}
+Source checked: {URL or reference section}
+Last verified: {YYYY-MM-DD}
+Stale after: {YYYY-MM-DD}
+Scope: {Where this claim applies}
+Caveats: {Known limitations or conflicts}
+Required local eval: {How to validate before rollout}
+```
+
+## Rationalization Audit
+
+Used when adding or revising critical rules.
+
+```
+RATIONALIZATION AUDIT
+| Rule | Likely dodge | Required counter/check |
+|------|--------------|------------------------|
+| {rule} | {how a model might skip it} | {observable artifact or command} |
+```
+
 ## Annotated Prompt
 
 Used by Craft (Mode A) step 6.
