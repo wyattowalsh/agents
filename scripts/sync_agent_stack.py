@@ -14,6 +14,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
+CODEX_GLOBAL_MD = REPO_ROOT / "instructions" / "codex-global.md"
 CLAUDE_COMPAT_MD = REPO_ROOT / "instructions" / "claude-code-global.md"
 COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
 GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
@@ -21,6 +22,7 @@ OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
 TOOLING_POLICY_PATH = CONFIG_DIR / "tooling-policy.json"
 SYNC_MANIFEST_PATH = CONFIG_DIR / "sync-manifest.json"
+CODEX_CONFIG_COPY_PATH = CONFIG_DIR / "codex-config.toml"
 REPO_MCP_PATH = REPO_ROOT / "mcp.json"
 VSCODE_MCP_PATH = REPO_ROOT / ".vscode" / "mcp.json"
 COPILOT_REPO_INSTRUCTIONS_PATH = REPO_ROOT / ".github" / "copilot-instructions.md"
@@ -65,6 +67,64 @@ CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 MANAGED_HEADER = "<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->\n"
 TOML_TABLE_RE = re.compile(r"^\[(?P<header>[^\]]+)\]\s*$")
+CODEX_CONFIG_SCHEMA_COMMENT = "#:schema https://developers.openai.com/codex/config-schema.json"
+CODEX_OWNED_TOP_LEVEL_KEYS = {
+    "analytics",
+    "approval_policy",
+    "approvals_reviewer",
+    "background_terminal_max_timeout",
+    "check_for_update_on_startup",
+    "default_permissions",
+    "developer_instructions",
+    "feedback",
+    "file_opener",
+    "model",
+    "model_reasoning_effort",
+    "model_reasoning_summary",
+    "model_verbosity",
+    "notify",
+    "personality",
+    "plan_mode_reasoning_effort",
+    "project_doc_fallback_filenames",
+    "project_doc_max_bytes",
+    "sandbox_mode",
+    "suppress_unstable_features_warning",
+    "tool_output_token_limit",
+    "web_search",
+}
+CODEX_OWNED_TABLES = {
+    "agents",
+    "analytics",
+    "apps",
+    "apps._default",
+    "auto_review",
+    "features",
+    "features.multi_agent_v2",
+    "feedback",
+    "history",
+    "memories",
+    "profiles.deep",
+    "profiles.fast",
+    "profiles.full_access",
+    "sandbox_workspace_write",
+    "shell_environment_policy",
+    "tools",
+    "tools.web_search",
+    "tools.web_search.location",
+    "tui",
+}
+CODEX_AUTO_REVIEW_POLICY = "\n".join(
+    [
+        "Approve routine read-only inspection and bounded edits inside trusted workspaces.",
+        "Reject or escalate destructive filesystem operations, credential exposure, global package manager mutations,",
+        "privilege escalation, broad network side effects, and irreversible VCS operations unless explicitly",
+        "requested.",
+    ]
+)
+CODEX_MULTI_AGENT_USAGE_HINT = (
+    "Use dynamic subagents for bounded parallel exploration, tests, and sidecar implementation. "
+    "Do not hardcode static teams; keep the main thread responsible for integration and final judgment."
+)
 
 NAME_MAP = {
     "atom of thoughts": "atom-of-thoughts",
@@ -473,24 +533,318 @@ def toml_value(value: Any) -> str:
     raise TypeError(f"Unsupported TOML value: {value!r}")
 
 
-def render_codex_mcp_block(registry: dict[str, Any], fallbacks: dict[str, str]) -> str:
+def render_toml_block(header: str | None, values: dict[str, Any]) -> list[str]:
+    lines: list[str] = []
+    if header is not None:
+        lines.append(f"[{header}]")
+    for key, value in values.items():
+        if isinstance(value, str) and "\n" in value:
+            lines.append(f'{key} = """{value}"""')
+        else:
+            lines.append(f"{key} = {toml_value(value)}")
+    return lines
+
+
+def render_codex_args(entry: dict[str, Any]) -> list[Any]:
+    args = list(entry.get("args", []))
+    env_names = {value["env_var"] for value in entry.get("env", {}).values()}
+    rendered: list[Any] = []
+    idx = 0
+    while idx < len(args):
+        arg = args[idx]
+        next_arg = args[idx + 1] if idx + 1 < len(args) else None
+        if (
+            isinstance(arg, str)
+            and arg.startswith("--")
+            and isinstance(next_arg, str)
+            and next_arg.startswith("${")
+            and next_arg.endswith("}")
+            and next_arg[2:-1] in env_names
+        ):
+            idx += 2
+            continue
+        if isinstance(arg, str) and arg.startswith("${") and arg.endswith("}") and arg[2:-1] in env_names:
+            idx += 1
+            continue
+        rendered.append(arg)
+        idx += 1
+    return rendered
+
+
+def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     lines = [CODEX_MCP_BEGIN]
     for name, entry in enabled_registry_servers(registry).items():
         lines.append("")
         lines.append(f"[mcp_servers.{name}]")
-        lines.append(
-            f"args = {toml_value(replace_arg_placeholders(entry.get('args', []), fallbacks, local_values=True))}"
-        )
+        lines.append(f"args = {toml_value(render_codex_args(entry))}")
         lines.append(f"command = {toml_value(entry['command'])}")
         lines.append(f"startup_timeout_sec = {toml_value(entry.get('startup_timeout_sec', 90))}")
-        lines.append(f"type = {toml_value(entry.get('transport', 'stdio'))}")
-        lines.append("")
-        lines.append(f"[mcp_servers.{name}.env]")
-        for env_name, env_meta in entry.get("env", {}).items():
-            lines.append(f"{env_name} = {toml_value(resolve_env_value(env_meta['env_var'], fallbacks))}")
+        if entry.get("timeout_ms"):
+            lines.append(f"tool_timeout_sec = {toml_value(max(1, int(entry['timeout_ms']) // 1000))}")
+        if entry.get("tools") and entry.get("tools") != ["*"]:
+            lines.append(f"enabled_tools = {toml_value(entry['tools'])}")
+        if entry.get("env"):
+            env_vars = [value["env_var"] for value in entry["env"].values()]
+            lines.append(f"env_vars = {toml_value(env_vars)}")
     lines.append("")
     lines.append(CODEX_MCP_END)
     return "\n".join(lines) + "\n"
+
+
+def render_codex_global_instructions() -> str:
+    global_text = GLOBAL_MD.read_text(encoding="utf-8").rstrip("\n")
+    codex_suffix = """
+
+## Codex-Specific Instructions
+
+- Treat `/Users/ww/dev/projects/agents/instructions/global.md` as the canonical shared instruction source.
+- Keep Codex-specific config generation in `/Users/ww/dev/projects/agents/scripts/sync_agent_stack.py`.
+- Keep `/Users/ww/.codex/config.toml` and the repo-owned sanitized config copy schema-valid.
+- Prefer dynamic subagent delegation over hardcoded static teams; keep local agent ceilings practical.
+"""
+    return global_text + codex_suffix
+
+
+def generate_codex_global_instructions(ctx: SyncContext) -> None:
+    write_text(ctx, CODEX_GLOBAL_MD, render_codex_global_instructions())
+
+
+def sync_codex_entrypoint(ctx: SyncContext) -> None:
+    ensure_symlink(ctx, CODEX_ENTRYPOINT_PATH, CODEX_GLOBAL_MD)
+
+
+def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any] | None = None) -> str:
+    model_defaults = policy.get("model_defaults", {}).get("codex", {})
+    model = model_defaults.get("model", "gpt-5.5")
+    reasoning_effort = model_defaults.get("reasoning_effort", "xhigh")
+    personality = model_defaults.get("personality", "pragmatic")
+    top_level = {
+        "approval_policy": "on-request",
+        "approvals_reviewer": "guardian_subagent",
+        "background_terminal_max_timeout": 300000,
+        "check_for_update_on_startup": True,
+        "file_opener": "vscode",
+        "model": model,
+        "model_reasoning_effort": reasoning_effort,
+        "model_reasoning_summary": "detailed",
+        "model_verbosity": "medium",
+        "personality": personality,
+        "plan_mode_reasoning_effort": "xhigh",
+        "project_doc_fallback_filenames": ["TEAM_GUIDE.md", ".agents.md"],
+        "project_doc_max_bytes": 131072,
+        "sandbox_mode": "workspace-write",
+        "suppress_unstable_features_warning": False,
+        "tool_output_token_limit": 20000,
+        "web_search": "live",
+    }
+    if current_data and isinstance(current_data.get("notify"), list):
+        top_level["notify"] = current_data["notify"]
+    blocks: list[list[str]] = [
+        [CODEX_CONFIG_SCHEMA_COMMENT],
+        render_toml_block(None, top_level),
+        render_toml_block("auto_review", {"policy": CODEX_AUTO_REVIEW_POLICY}),
+        render_toml_block(
+            "features",
+            {
+                "apps": True,
+                "enable_request_compression": True,
+                "fast_mode": True,
+                "general_analytics": True,
+                "guardian_approval": True,
+                "image_generation": True,
+                "memories": True,
+                "multi_agent": True,
+                "personality": True,
+                "plugins": True,
+                "prevent_idle_sleep": True,
+                "shell_snapshot": True,
+                "shell_tool": True,
+                "skill_mcp_dependency_install": True,
+                "tool_call_mcp_elicitation": True,
+                "tool_search": True,
+                "tool_suggest": True,
+                "undo": True,
+                "unified_exec": True,
+                "workspace_dependencies": True,
+            },
+        ),
+        render_toml_block(
+            "features.multi_agent_v2",
+            {
+                "enabled": True,
+                "usage_hint_enabled": True,
+                "usage_hint_text": CODEX_MULTI_AGENT_USAGE_HINT,
+            },
+        ),
+        render_toml_block(
+            "agents",
+            {
+                "max_depth": 4,
+                "max_threads": 16,
+                "job_max_runtime_seconds": 7200,
+            },
+        ),
+        render_toml_block(
+            "profiles.deep",
+            {
+                "model": model,
+                "model_reasoning_effort": "xhigh",
+                "model_reasoning_summary": "detailed",
+                "model_verbosity": "medium",
+                "plan_mode_reasoning_effort": "xhigh",
+                "sandbox_mode": "workspace-write",
+                "web_search": "live",
+            },
+        ),
+        render_toml_block(
+            "profiles.fast",
+            {
+                "model": "gpt-5.4-mini",
+                "model_reasoning_effort": "medium",
+                "model_reasoning_summary": "concise",
+                "model_verbosity": "medium",
+                "plan_mode_reasoning_effort": "medium",
+                "sandbox_mode": "workspace-write",
+                "service_tier": "fast",
+                "web_search": "live",
+            },
+        ),
+        render_toml_block(
+            "profiles.full_access",
+            {
+                "model": model,
+                "model_reasoning_effort": "xhigh",
+                "model_reasoning_summary": "detailed",
+                "model_verbosity": "medium",
+                "plan_mode_reasoning_effort": "xhigh",
+                "sandbox_mode": "danger-full-access",
+                "web_search": "live",
+            },
+        ),
+        render_toml_block(
+            "apps._default",
+            {
+                "enabled": True,
+                "destructive_enabled": False,
+                "open_world_enabled": True,
+            },
+        ),
+        render_toml_block("tools", {"view_image": True}),
+        render_toml_block("tools.web_search", {"context_size": "high"}),
+        render_toml_block(
+            "tools.web_search.location",
+            {
+                "country": "US",
+                "region": "NY",
+                "city": "New York",
+                "timezone": "America/New_York",
+            },
+        ),
+        render_toml_block(
+            "history",
+            {
+                "persistence": "save-all",
+                "max_bytes": 134217728,
+            },
+        ),
+        render_toml_block("feedback", {"enabled": True}),
+        render_toml_block("analytics", {"enabled": True}),
+        render_toml_block(
+            "memories",
+            {
+                "generate_memories": True,
+                "use_memories": True,
+                "disable_on_external_context": False,
+                "max_raw_memories_for_consolidation": 1024,
+                "max_unused_days": 90,
+                "max_rollout_age_days": 45,
+                "max_rollouts_per_startup": 32,
+                "min_rollout_idle_hours": 6,
+            },
+        ),
+        render_toml_block(
+            "sandbox_workspace_write",
+            {
+                "network_access": True,
+                "exclude_tmpdir_env_var": False,
+                "exclude_slash_tmp": False,
+            },
+        ),
+        render_toml_block("shell_environment_policy", {"inherit": "core"}),
+        render_toml_block(
+            "tui",
+            {
+                "notifications": True,
+                "notification_method": "auto",
+                "notification_condition": "unfocused",
+                "animations": True,
+                "alternate_screen": "auto",
+                "show_tooltips": True,
+                "status_line": ["model", "approval", "sandbox", "cwd"],
+                "terminal_title": ["spinner", "project"],
+            },
+        ),
+    ]
+    return "\n\n".join("\n".join(block) for block in blocks) + "\n\n"
+
+
+def filter_codex_top_level_chunk(chunk: str) -> str:
+    lines: list[str] = []
+    for line in chunk.splitlines():
+        stripped = line.strip()
+        if stripped == CODEX_CONFIG_SCHEMA_COMMENT:
+            continue
+        if not stripped or stripped.startswith("#"):
+            lines.append(line)
+            continue
+        key = stripped.split("=", 1)[0].strip()
+        if key in CODEX_OWNED_TOP_LEVEL_KEYS:
+            continue
+        lines.append(line)
+    return "\n".join(lines).strip()
+
+
+def render_preserved_codex_config(current: str, *, include_local_extras: bool) -> str:
+    preserved_chunks: list[str] = []
+    for header, chunk in chunk_toml_sections(remove_managed_codex_block(current)):
+        server_name = codex_mcp_server_name(header)
+        if server_name and not include_local_extras:
+            continue
+        if header in CODEX_OWNED_TABLES:
+            continue
+        if header is None:
+            filtered = filter_codex_top_level_chunk(chunk)
+            if filtered:
+                preserved_chunks.append(filtered)
+            continue
+        preserved_chunks.append(chunk.strip())
+    return "\n\n".join(chunk for chunk in preserved_chunks if chunk)
+
+
+def render_codex_config(
+    current: str,
+    registry: dict[str, Any],
+    policy: dict[str, Any],
+    *,
+    include_local_extras: bool,
+) -> str:
+    current_data = tomllib.loads(current)
+    preserved = render_preserved_codex_config(current, include_local_extras=include_local_extras)
+    if include_local_extras:
+        managed_names = set(registry["servers"])
+        filtered_chunks: list[str] = []
+        for header, chunk in chunk_toml_sections(preserved):
+            server_name = codex_mcp_server_name(header)
+            normalized_server_name = normalize_name(server_name) if server_name else None
+            if normalized_server_name and normalized_server_name in managed_names:
+                continue
+            filtered_chunks.append(chunk.strip())
+        preserved = "\n\n".join(chunk for chunk in filtered_chunks if chunk)
+    parts = [render_codex_base_config(policy, current_data).rstrip()]
+    if preserved:
+        parts.append(preserved)
+    parts.append(render_codex_mcp_block(registry).rstrip())
+    return "\n\n".join(parts) + "\n"
 
 
 def remove_managed_codex_block(text: str) -> str:
@@ -541,39 +895,16 @@ def merge_codex_config(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
     current = CODEX_CONFIG_PATH.read_text(encoding="utf-8")
-    managed_names = set(registry["servers"])
-    filtered_chunks: list[str] = []
-    for header, chunk in chunk_toml_sections(remove_managed_codex_block(current)):
-        server_name = codex_mcp_server_name(header)
-        normalized_server_name = normalize_name(server_name) if server_name else None
-        if normalized_server_name and normalized_server_name in managed_names:
-            continue
-        filtered_chunks.append(chunk)
-    filtered = "".join(filtered_chunks).strip()
-    model_defaults = policy.get("model_defaults", {}).get("codex", {})
-    reasoning_effort = model_defaults.get("reasoning_effort", "xhigh")
-    replacements = {
-        "model = ": f'model = "{model_defaults.get("model", "gpt-5.4")}"',
-        "model_reasoning_effort = ": f'model_reasoning_effort = "{reasoning_effort}"',
-        "plan_mode_reasoning_effort = ": f'plan_mode_reasoning_effort = "{reasoning_effort}"',
-        "personality = ": f'personality = "{model_defaults.get("personality", "pragmatic")}"',
-    }
-    filtered_lines = []
-    for line in filtered.splitlines():
-        replaced = False
-        for prefix, value in replacements.items():
-            if line.startswith(prefix):
-                filtered_lines.append(value)
-                replaced = True
-                break
-        if not replaced:
-            filtered_lines.append(line)
-    shared_root = '[projects."/Users/ww/dev/projects"]\ntrust_level = "trusted"'
-    filtered_text = "\n".join(filtered_lines).rstrip() + "\n\n"
-    if shared_root not in filtered_text:
-        filtered_text += shared_root + "\n\n"
-    rendered = filtered_text + render_codex_mcp_block(registry, fallbacks)
-    write_text(ctx, CODEX_CONFIG_PATH, rendered)
+    write_text(
+        ctx,
+        CODEX_CONFIG_PATH,
+        render_codex_config(current, registry, policy, include_local_extras=True),
+    )
+    write_text(
+        ctx,
+        CODEX_CONFIG_COPY_PATH,
+        render_codex_config(current, registry, policy, include_local_extras=False),
+    )
 
 
 def generate_copilot_repo_instructions(ctx: SyncContext) -> None:
@@ -684,6 +1015,7 @@ def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any]) -> None:
     write_json(ctx, MCP_REGISTRY_PATH, registry)
     write_json(ctx, REPO_MCP_PATH, render_repo_mcp(registry))
     write_json(ctx, VSCODE_MCP_PATH, render_repo_mcp(registry))
+    generate_codex_global_instructions(ctx)
     generate_copilot_repo_instructions(ctx)
     generate_copilot_rule_instructions(ctx)
     generate_copilot_hooks(ctx)
@@ -897,7 +1229,7 @@ def merge_claude_settings_local(ctx: SyncContext, registry: dict[str, Any]) -> N
 def sync_home_targets(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
-    ensure_symlink(ctx, CODEX_ENTRYPOINT_PATH, GLOBAL_MD)
+    sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
     write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{REPO_ROOT / 'AGENTS.md'}\n@{GEMINI_GLOBAL_MD}\n")
