@@ -3,6 +3,14 @@
 Strategies for managing context windows, preventing context rot, and optimizing
 token usage. Applies to any system using long contexts or multi-turn conversations.
 
+## Evidence Discipline
+
+Context and caching claims are provider-sensitive. When using this reference in
+output, include the active provider/API surface and whether the recommendation is
+`official-doc`, `provider-guide`, `research`, `community-heuristic`, or
+`local-practice`. Re-check provider docs before quoting exact thresholds,
+discounts, TTLs, or model-specific compaction features.
+
 ---
 
 ## Context Rot
@@ -82,8 +90,21 @@ and irreversible — use only when Tiers 1-2 are insufficient.
 ## Prompt Caching Strategies
 
 **General Principle:** Arrange prompt content so that the longest stable prefix
-is cached. Static content early, dynamic content late. This enables 50-90%
-cost reduction on cached tokens.
+is cached. Static content early, dynamic content late. Exact savings, minimum
+tokens, and TTLs are provider-specific; report current provider terms rather than
+using a universal discount claim.
+
+### Provider Cache Matrix
+
+Last verified: 2026-04-23.
+
+| Provider | Mechanism | Design implication | Evidence class |
+|----------|-----------|--------------------|----------------|
+| Anthropic | Explicit `cache_control` breakpoints | Place stable system/tool/examples before breakpoints; keep dynamic user and retrieved content after them | `official-doc` |
+| OpenAI | Automatic prompt caching for stable prefixes | Keep prefix byte-identical across calls; use prompt objects/versioning when available | `official-doc` |
+| Google Gemini API | Explicit cached content API | Best for large reusable context; minimums and TTL are API-surface-specific | `official-doc` |
+| Vertex AI Gemini | Context cache resource | Verify Vertex-specific token thresholds, model support, and TTL pricing | `official-doc` |
+| Self-hosted | Runtime KV/prefix cache | Depends on serving stack such as vLLM, llama.cpp, or provider wrapper | `community-heuristic` |
 
 ### Anthropic (Claude)
 
@@ -91,8 +112,8 @@ cost reduction on cached tokens.
 - Up to 4 breakpoints per request
 - Place breakpoints after: system prompt, tool definitions, few-shot examples
 - Dynamic content (user query, retrieved docs) after the last breakpoint
-- 5-minute TTL — design interactions to hit cache within this window
-- Minimum cacheable tokens: 4,096 (Opus 4.5+, Haiku 4.5), 1,024 (Sonnet, Opus 4/4.1), 2,048 (Haiku 3/3.5)
+- TTL and minimum-token thresholds vary by model/API version — verify current
+  docs before quoting values
 
 ### OpenAI (GPT)
 
@@ -101,12 +122,14 @@ cost reduction on cached tokens.
 - Minimum 1024 tokens for eligibility
 - Keep the shared prefix byte-identical across requests — any difference
   invalidates the cache from that point forward
-- 50% discount on cached input tokens
+- Provider docs describe latency and cost reductions for cached prompts; verify
+  current pricing before quoting exact percentages
 
 ### Google (Gemini)
 
 - Context caching API — create a named cache with specified TTL
-- Higher minimum threshold: 32,768 tokens
+- Gemini API and Vertex AI have different context-cache surfaces and thresholds.
+  Verify the active surface before designing economics.
 - Best for large, stable contexts (full codebases, document collections)
 - Cache is explicitly managed (create, use, delete)
 - Cost-effective only when the cached content is reused many times within TTL
@@ -138,7 +161,8 @@ knowledge base that improves with each task execution.
 - **Selection**: Before each task, select relevant playbook entries based on
   task characteristics — not all entries apply to every task
 
-**Reported results:** +10.6% improvement on benchmarks vs. static prompts.
+**Reported results:** benchmark-specific improvement vs. static prompts; treat
+as `research`, not a guaranteed production lift.
 
 **Application to prompt engineering:**
 - Maintain a "prompt playbook" for recurring prompt types (summarization,
@@ -173,6 +197,19 @@ Separate concerns into different context windows to prevent cross-contamination:
 - Each agent gets only the context relevant to its role
 - Prevents one task's context from degrading performance on another task
 - Especially valuable in multi-agent systems where agents have distinct roles
+
+### Tool Result Isolation
+
+Tool outputs, retrieved documents, emails, web pages, and MCP resources can carry
+indirect prompt injection. Treat them as untrusted context unless the caller has
+validated provenance and integrity.
+
+- Wrap tool results in explicit data tags with source metadata.
+- Separate privileged instructions from untrusted retrieved/tool content.
+- Summarize or validate tool results before passing them into a higher-privilege
+  decision prompt.
+- For write-capable tools, keep read/reasoning context separate from execution
+  context and require explicit action gates.
 
 ### Structured Note-Taking for Cross-Session Persistence
 

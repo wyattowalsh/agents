@@ -1,20 +1,20 @@
 ---
 name: prompt-engineer
 description: >-
-  Prompt engineering for any AI system. Craft, analyze, convert between models,
-  evaluate with rubrics. Use for system prompts, agent prompts, tool defs. NOT
-  for running prompts or building agents.
+  Prompt engineering. Craft, analyze, harden, convert, design tool prompts, and
+  build PromptOps/eval plans. Use for system, agent, tool, RAG prompts. NOT for
+  running prompts or building agents.
 license: MIT
 argument-hint: "<mode> [target]"
 model: opus
 metadata:
   author: wyattowalsh
-  version: "1.1"
+  version: "1.2"
 ---
 
 # Prompt Engineer
 
-Comprehensive prompt and context engineering. Every recommendation grounded in research.
+Comprehensive prompt and context engineering. Every non-obvious recommendation must be evidence-scoped.
 
 ## Canonical Vocabulary
 
@@ -36,6 +36,9 @@ Use these terms exactly throughout all modes:
 | **scorecard** | The 5-dimension diagnostic (Clarity, Completeness, Efficiency, Robustness, Model Fit) scored 1-5 |
 | **playbook** | Model-family-specific guidance document in `references/model-playbooks.md` |
 | **prefix caching** | Cost optimization by placing static content early so API providers cache the prefix |
+| **trust boundary** | The separation between trusted instructions and untrusted user, tool, retrieved, or external content |
+| **evidence class** | Source type behind a recommendation: official docs, peer-reviewed/preprint, community heuristic, local practice, or single-study |
+| **PromptOps** | Versioning, evals, rollout checks, observability, and rollback discipline for prompts in production |
 
 ## Dispatch
 
@@ -46,6 +49,9 @@ Use these terms exactly throughout all modes:
 | `audit <prompt or path>` | → Mode B: Analyze, report only (no changes) |
 | `convert <source-model> <target-model> <prompt or path>` | → Mode C: Convert between model families |
 | `evaluate <prompt or path>` | → Mode D: Build evaluation framework |
+| `harden <prompt or path>` | → Mode E: Security and robustness hardening |
+| `tool <tool definition or schema>` | → Mode F: Design or review model-facing tool definitions |
+| `promptops <prompt or path>` | → Mode G: Versioning, rollout, observability, and rollback plan |
 | Raw prompt text (XML tags, role definitions, multi-section structure) | → Auto-detect: Mode B (Analyze, report only) |
 | Natural-language request describing desired behavior | → Auto-detect: Mode A (Craft) |
 | Empty / no args | Show mode menu with examples |
@@ -54,9 +60,12 @@ Use these terms exactly throughout all modes:
 
 If no explicit mode keyword is provided:
 
-1. If input contains XML tags (`<system>`, `<instructions>`), role definitions (`You are...`, `Act as...`), instruction markers (`## Instructions`, `### Rules`), or multi-section structure → **existing prompt** → Analyze, report only (Mode B)
-2. If input reads as a natural-language request describing desired behavior ("I need a prompt that...", "Create a system prompt for...") → **new prompt request** → Craft (Mode A)
-3. If the text mixes an existing prompt with a new-use-case request, or the input is malformed enough that prompt-vs-request is unclear, ask the user which mode they want before proceeding
+1. If input mentions injection, jailbreaks, untrusted content, data leakage, tool abuse, or production robustness → **Harden** (Mode E)
+2. If input is a tool/function schema, MCP tool description, OpenAPI fragment, or asks for tool-selection guidance → **Tool** (Mode F)
+3. If input mentions prompt versions, eval gates, rollout, monitoring, regression, or rollback → **PromptOps** (Mode G)
+4. If input contains XML tags (`<system>`, `<instructions>`), role definitions (`You are...`, `Act as...`), instruction markers (`## Instructions`, `### Rules`), or multi-section structure → **existing prompt** → Analyze, report only (Mode B)
+5. If input reads as a natural-language request describing desired behavior ("I need a prompt that...", "Create a system prompt for...") → **new prompt request** → Craft (Mode A)
+6. If the text mixes an existing prompt with a new-use-case request, or the input is malformed enough that prompt-vs-request is unclear, ask the user which mode they want before proceeding
 
 ### Example Invocations
 
@@ -66,6 +75,9 @@ If no explicit mode keyword is provided:
 /prompt-engineer audit <paste prompt here>
 /prompt-engineer convert claude gemini ./prompts/system.md
 /prompt-engineer evaluate ./prompts/agent-system.md
+/prompt-engineer harden ./prompts/rag-system.md
+/prompt-engineer tool ./tools/search-docs.json
+/prompt-engineer promptops ./prompts/support-agent.md
 ```
 
 ### Empty Arguments
@@ -79,6 +91,9 @@ When `$ARGUMENTS` is empty, present the mode menu:
 | Analyze (report only) | `audit <prompt>` | Read-only review for anti-patterns and security |
 | Convert | `convert <src> <tgt> <prompt>` | Port between model families |
 | Evaluate | `evaluate <prompt>` | Build test suite and evaluation rubric |
+| Harden | `harden <prompt>` | Stress-test trust boundaries, injection resistance, and safety |
+| Tool | `tool <schema>` | Design or review model-facing tool definitions |
+| PromptOps | `promptops <prompt>` | Plan versioning, rollout, monitoring, and rollback |
 
 > Paste a prompt, describe what you need, or pick a mode above.
 
@@ -92,11 +107,11 @@ history, tool results, retrieved documents, and injected state. Most production
 failures are context failures, not prompt failures. Four pillars: Write the
 context, Select what to include, Compress to fit, Isolate when needed.
 
-**Model-class awareness** — Instruction-following models (GPT-4o, Claude 3.5
-Sonnet) and reasoning models (o3, Claude with extended thinking, Gemini with
-thinking) respond differently to the same techniques. Techniques that help
-instruction-followers can actively hurt reasoning models (Prompting Inversion).
-Always detect model class first.
+**Model-class awareness** — Instruction-following models and reasoning models
+respond differently to the same techniques. Techniques that help
+instruction-followers can hurt reasoning models in some tested settings, while
+provider guidance can change by model and reasoning mode. Always detect model
+class first and verify model-specific advice against `references/model-playbooks.md`.
 
 **Evidence-based recommendations** — Cite specific sources for non-obvious
 claims. Do not present anecdotal patterns as established best practice.
@@ -124,14 +139,14 @@ usage, and output structure recommendations.
 
 **Heuristic:** If the model has a native reasoning/thinking mode → **Reasoning**. Otherwise → **Instruction-following**. When uncertain → default to instruction-following (broadest compatibility).
 
-**Reasoning:** Claude 4.x (extended thinking), GPT-5.x (reasoning mode), Gemini 3 (thinking), o3/o4-mini, Llama 4 reasoning variants
+**Reasoning:** Claude with extended thinking, GPT-5.5/GPT-5.x reasoning modes, Gemini thinking modes, o-series models, Llama reasoning variants
 **Instruction-following:** Claude 3.5 Sonnet/Haiku, GPT-4o/4.1, Gemini 2 Flash, Llama 4 standard
 
 ### Model-Class Behavioral Differences
 
 | Dimension | Instruction-Following | Reasoning |
 |-----------|----------------------|-----------|
-| Chain-of-thought | Add explicit CoT scaffolding ("Think step by step") | **Never add external CoT** — model has internal reasoning; external prompts degrade performance |
+| Chain-of-thought | Use concise reasoning scaffolding when it improves reliability | Do not require hidden reasoning transcripts; use provider-supported reasoning effort or short planning/preambles when current docs recommend them |
 | Few-shot examples | Highly beneficial — provide 3-5 diverse examples | Minimal benefit — 1 example for format only, or zero-shot |
 | Scaffolding | More structure improves output | Excessive structure constrains reasoning — provide goals, not steps |
 | Prompt length | Longer prompts with details generally help | Concise prompts with clear objectives outperform verbose ones |
@@ -145,7 +160,8 @@ Use this preflight for every mode before entering the mode-specific workflow.
 2. **Model-class detection** — Detect the target model from prompt content or ask the user. Run Model-Class Detection above. Flag any model-class mismatches (e.g., CoT scaffolding sent to a reasoning model).
 3. **Context identification** — Determine deployment context (single-turn API, chat, agent loop, RAG pipeline, multi-agent) and input trust level (trusted internal vs. untrusted external).
 4. **Context-management trigger** — If the work involves multi-turn, long-context, RAG, agent-loop, or cost-sensitive prompting, read `references/context-management.md` and surface the relevant caching, compaction, selection, or isolation decisions explicitly in the result.
-5. **Scope check** — If the user is asking to run prompts, build agents, or perform non-prompt implementation work, refuse and redirect before doing prompt analysis or generation.
+5. **Evidence-class check** — Classify non-obvious recommendations as official docs, peer-reviewed/preprint, community heuristic, local practice, or single-study; flag any provider recommendation older than 90 days for verification.
+6. **Scope check** — If the user is asking to run prompts, build agents, or perform non-prompt implementation work, refuse and redirect before doing prompt analysis or generation.
 
 ## Mode A: Craft
 
@@ -177,7 +193,7 @@ Build a new prompt from scratch. For when the user has no existing prompt.
 6. **Structure for cacheability** — Arrange content for prompt caching efficiency:
    - Static content (system instructions, role definitions, tool descriptions) → early in the prompt
    - Dynamic content (user input, retrieved documents, conversation history) → late in the prompt
-   - This ordering enables 50-90% cost reduction via prefix caching (Anthropic explicit breakpoints, OpenAI automatic prefix matching)
+   - Exact savings, TTLs, and token thresholds are provider-specific; cite `references/context-management.md` before quoting cache economics
 
 7. **Harden** — Run through `references/hardening-checklist.md`:
    - If input source is untrusted → apply injection resistance patterns
@@ -293,6 +309,38 @@ Build an evaluation framework for a prompt. Does not run the evaluations — pro
 
 6. **Present** — Format per the `Evaluation Framework` in `references/output-formats.md`. Include recommended eval tools from `references/evaluation-frameworks.md` and CI/CD integration pattern.
 
+## Mode E: Harden
+
+Stress-test and improve a prompt that handles untrusted input, tool results,
+retrieved documents, user-facing output, or production actions.
+
+1. **Run Shared Preflight** — Identify trust boundaries, external content sources, tools, output sinks, and failure cost.
+2. **Load hardening guidance** — Read `references/hardening-checklist.md` and the security sections of `references/architecture-patterns.md`.
+3. **Map attacks** — Check direct injection, indirect injection, prompt extraction, tool abuse, output format escape, context exhaustion, and sensitive-data leakage.
+4. **Propose controls** — Add delimiters, instruction hierarchy, tool permission minimization, output validation, token budgets, graceful degradation, and monitoring hooks as applicable.
+5. **Present** — Use the `Harden Report` template. Include residual risks and eval cases that should fail before deployment.
+
+## Mode F: Tool
+
+Design or review model-facing tool definitions, function schemas, MCP tool
+descriptions, and tool-selection instructions.
+
+1. **Run Shared Preflight** — Identify target model/provider, tool surface, permissions, input/output schema, and failure modes.
+2. **Load tool patterns** — Read `references/architecture-patterns.md` and `references/hardening-checklist.md`.
+3. **Review schema** — Check name clarity, description specificity, parameter types/enums/defaults, optional behavior, error contract, and overlap with adjacent tools.
+4. **Review safety** — Apply least privilege, allowed-tools scoping, destructive/open-world action gates, tool result validation, and untrusted-result isolation.
+5. **Present** — Use the `Tool Definition Review` template with rewritten tool docs or schema deltas.
+
+## Mode G: PromptOps
+
+Plan prompt lifecycle controls. Does not deploy or run prompts.
+
+1. **Run Shared Preflight** — Identify owner, model/provider, versioning surface, evals, rollout risk, and observability stack.
+2. **Load eval guidance** — Read `references/evaluation-frameworks.md`, `references/output-formats.md`, and relevant provider playbook sections.
+3. **Design lifecycle** — Define prompt versions, linked evals, golden/adversarial/regression sets, release gates, monitoring metrics, drift checks, and rollback steps.
+4. **Set evidence gates** — Require current provider-doc verification before model-specific rollout changes.
+5. **Present** — Use the `PromptOps Plan` template.
+
 ## Reference File Index
 
 | File | Content | Read When |
@@ -305,6 +353,7 @@ Build an evaluation framework for a prompt. Does not run the evaluations — pro
 | `references/hardening-checklist.md` | Security and robustness checklist (29 items) | Hardening any prompt handling untrusted input |
 | `references/evaluation-frameworks.md` | Eval approaches, PromptOps lifecycle, tool guidance | Building evaluation frameworks |
 | `references/output-formats.md` | Templates for all skill outputs (scorecards, reports, diffs) | Formatting any skill output |
+| `scripts/validate-references.py` | Deterministic checks for reference index, provider metadata, dispatch/eval coverage | After editing references, dispatch, or evals |
 
 Read reference files as indicated by the "Read When" column above. Do not
 rely on memory or prior knowledge of their contents. Reference files are
@@ -313,12 +362,25 @@ it but note the gap.
 
 ## Critical Rules
 
-1. Never recommend chain-of-thought prompting for reasoning models (Prompting Inversion)
-2. Use XML tags as a default starting point for multi-section prompts unless the target model or output contract suggests a better structure
+1. Do not recommend mandatory hidden chain-of-thought transcripts for reasoning models; prefer provider-supported reasoning controls or concise planning/preambles when current docs support them
+2. Use clear delimiters for multi-section prompts; XML tags are a strong default for Claude and many complex prompts, but verify provider-specific format guidance
 3. Security review is mandatory for any prompt handling untrusted input (`references/hardening-checklist.md`)
 4. Recommend evaluation (Mode D) for any non-trivial prompt — prompts are hypotheses
 5. Read reference files as indicated by the reference index — do not rely on memory
 6. Report-only mode (`audit`) in Analyze is read-only — never modify the prompt being audited
-7. The 3-instruction pattern (persistence + tool-calling + planning) is the highest-impact single change for agent prompts — recommend it by default for agent architectures
+7. Scope agent prompt recommendations to their evidence class; do not present OpenAI agentic guidance as universal proof for all models
 8. If prompt-vs-request classification is ambiguous, ask before choosing a mode
 9. Refuse and redirect requests to run prompts, build agents, or do non-prompt implementation work
+10. For provider-specific claims, cite `references/model-playbooks.md`, include its last-verified date, and flag stale guidance older than 90 days
+11. Update evals when adding modes or changing dispatch behavior
+12. Run `scripts/validate-references.py` after reference, dispatch, or eval changes
+
+### Rationalization Counters
+
+| Rule pressure | Likely dodge | Required counter |
+|---------------|--------------|------------------|
+| Provider-doc freshness | "I remember the current model behavior." | Check `model-playbooks.md` and report the last-verified date. |
+| Security hardening | "The prompt is internal only." | State the trust boundary; if any external content exists, run Mode E. |
+| Eval follow-up | "The prompt looks fine." | Include at least golden, edge, adversarial, and regression eval categories. |
+| Scope boundary | "Running it would prove the prompt works." | Refuse execution and provide a prompt/eval plan instead. |
+| Dispatch ambiguity | "The intent is obvious enough." | Ask for mode selection when craft-vs-analyze or prompt-vs-implementation is mixed. |

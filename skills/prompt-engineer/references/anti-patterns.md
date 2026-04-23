@@ -3,6 +3,18 @@
 Detection and remediation catalog for common prompting mistakes. Each pattern
 includes severity, detection heuristic, and fix. Used by Analyze (Mode B).
 
+## Evidence Classes
+
+Attach evidence class when reporting non-obvious findings:
+
+| Evidence class | Meaning |
+|----------------|---------|
+| `official-doc` | Provider documentation or API reference |
+| `provider-guide` | Provider cookbook/migration/best-practice guide |
+| `research` | Paper, benchmark, or public experiment |
+| `community-heuristic` | Widely observed practice without official guarantee |
+| `single-study` | One narrow study or benchmark; needs local eval confirmation |
+
 **Severity levels:**
 - **Critical** — Can cause security issues or major failures.
 - **High** — Significant quality or cost impact.
@@ -35,7 +47,7 @@ includes severity, detection heuristic, and fix. Used by Analyze (Mode B).
 
 **Severity:** Critical
 **Detection:** Check for CoT scaffolding ("think step by step"), excessive few-shot examples (>2), or detailed reasoning templates sent to reasoning models (o3, Claude with extended thinking, Gemini with thinking).
-**Impact:** Performance degradation — techniques that help instruction-following models actively hurt reasoning models. Source: arXiv:2510.22251 (Prompt Sculpting paper).
+**Impact:** May degrade reasoning-model performance in tested settings — techniques that help instruction-following models can conflict with native reasoning. Evidence class: `research`; verify against the target model and reasoning mode.
 **Remediation:** Detect model class first. For reasoning models: remove external CoT and provide clear objectives instead. See `references/technique-catalog.md` § Thought Generation for full model-class guidance.
 **Example:**
 - Before: `Think step by step. First analyze the code. Then identify bugs. Then suggest fixes.` (sent to o3)
@@ -55,7 +67,7 @@ includes severity, detection heuristic, and fix. Used by Analyze (Mode B).
 
 **Severity:** Medium
 **Detection:** Prompt is >50% constraint language vs. task language. Instructions restate model defaults. Detailed format specs when a single example would suffice.
-**Impact:** Quadratic performance degradation beyond specificity threshold S*=0.509 (UCL, arXiv:2601.00880). Wastes tokens. May confuse the model with contradictory details.
+**Impact:** Single-study evidence suggests excessive specificity can reduce quality beyond a task-dependent threshold. Also wastes tokens and may introduce contradictory details. Evidence class: `single-study`; do not present S*=0.509 as a universal law.
 **Remediation:** Apply the "removal test": for each constraint, ask "if I removed this, would the output meaningfully change?" If not, remove it. Show by example rather than specifying exhaustively.
 **Example:**
 - Before: `Return JSON with key "result" as a string, the string must be UTF-8 encoded, use double quotes, no trailing commas, ensure valid JSON syntax...` (300 tokens of format spec)

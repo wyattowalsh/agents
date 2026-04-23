@@ -4,7 +4,31 @@ Model-family-specific guidance for prompt engineering. Each section includes a
 "Last verified" date — verify against current official documentation before
 applying recommendations older than 3 months.
 
-## Claude (Anthropic) — Last verified: Feb 2026
+## Evidence Classes
+
+Use these labels when citing this file in prompt-engineer output:
+
+| Evidence class | Meaning | Use in output |
+|----------------|---------|---------------|
+| `official-doc` | Current provider documentation or API reference | Strongest provider-specific guidance |
+| `provider-guide` | Provider cookbook, migration guide, or best-practice page | Strong but may be model-version scoped |
+| `research` | Paper, benchmark, or public experiment | Use with scope and caveats |
+| `community-heuristic` | Widely used practice without official guarantee | Present as a hypothesis to test |
+| `local-practice` | Repo/team convention or skill-local pattern | Do not generalize outside context |
+
+## Provider Verification Matrix
+
+Last verified: 2026-04-23. Treat provider-specific claims as stale after 90 days
+or sooner when a new flagship/model family is released.
+
+| Provider | Current docs checked | Evidence class | Staleness rule |
+|----------|----------------------|----------------|----------------|
+| OpenAI | `https://platform.openai.com/docs/guides/prompting`, `https://platform.openai.com/docs/guides/latest-model`, `https://platform.openai.com/docs/guides/reasoning`, `https://developers.openai.com/api/docs/guides/agent-builder-safety` | `official-doc` / `provider-guide` | Re-check before GPT-5.x/GPT-5.5 rollout, reasoning-effort changes, tool policy changes, or prompt caching claims |
+| Anthropic | `https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview`, `https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching`, `https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking` | `official-doc` | Re-check before Claude version changes, thinking-mode changes, caching breakpoints, or prefill claims |
+| Google Gemini | `https://ai.google.dev/gemini-api/docs/system-instructions`, `https://ai.google.dev/gemini-api/docs/thinking`, `https://ai.google.dev/gemini-api/docs/caching`, `https://cloud.google.com/vertex-ai/generative-ai/docs/context-cache/context-cache-overview` | `official-doc` | Re-check for Gemini API vs Vertex differences, thinking budgets, and caching thresholds |
+| Llama / self-hosted | `https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/`, `https://www.llama.com/docs/how-to-guides/prompting/`, `https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md`, serving runtime docs (`llama.cpp`, vLLM, provider wrapper) | `official-doc` / `community-heuristic` | Re-check per model revision, chat template, quantization, and serving runtime |
+
+## Claude (Anthropic) — Last verified: 2026-04-23
 
 ### Claude 4.6 (Opus) / Claude 4.5 (Sonnet/Haiku)
 
@@ -13,9 +37,9 @@ applying recommendations older than 3 months.
 - **Adaptive thinking**: Replaces the old `budget_tokens` parameter. The model
   automatically allocates thinking effort based on task complexity. Do not try
   to micromanage thinking — provide clear objectives and let the model reason.
-- **Prefilled responses removed**: Attempting to prefill the assistant response
-  returns a 400 error on Claude 4.x. This is a hard removal, not a soft
-  deprecation. Do not use prefill patterns from Claude 3.x guides.
+- **Prefill / assistant continuation**: Support and limits vary by API surface
+  and thinking mode. Verify current Anthropic docs before using prefill for
+  format steering; do not carry Claude 3.x prefill patterns forward blindly.
 - **XML tags strongly preferred**: Claude has the strongest XML tag support of
   any model family. Use `<instructions>`, `<context>`, `<examples>`,
   `<output_format>`, `<constraints>`. Nest freely.
@@ -38,7 +62,7 @@ applying recommendations older than 3 months.
 
 ### Prompt Caching
 
-**See `references/context-management.md` § Anthropic for full caching strategy.** Key: explicit breakpoints via `cache_control`, up to 4 per request, 5-minute TTL, 50-90% cost reduction.
+**See `references/context-management.md` § Anthropic for full caching strategy.** Key: explicit breakpoints via `cache_control`, provider-defined minimum token thresholds, short TTL by default, and provider-specific cached-token pricing.
 
 ### Claude Code / Agent Patterns
 
@@ -52,38 +76,39 @@ applying recommendations older than 3 months.
 
 ---
 
-## GPT (OpenAI) — Last verified: Feb 2026
+## GPT (OpenAI) — Last verified: 2026-04-23
 
-### GPT-5.2 / GPT-4.1
+### GPT-5.5 / GPT-5.x / GPT-4.1
 
-- **Model class**: GPT-5 has reasoning mode (reasoning class) and standard mode
-  (instruction-following). GPT-4.1 is instruction-following only.
+- **Model class**: GPT-5.5/GPT-5.x models are reasoning-capable; behavior depends
+  on API reasoning settings. GPT-4.1-style models are instruction-following.
 - **4-block pattern**: Effective prompt structure: Context, Task, Constraints,
-  Output format.
-- **3-instruction pattern**: For agent prompts, the most impactful single change
-  (~20% SWE-bench improvement per OpenAI GPT-4.1 guide, continued in GPT-5
-  guide):
+  Output format. Evidence class: `provider-guide` / `community-heuristic`.
+- **3-instruction pattern**: For OpenAI agentic coding prompts, provider guidance
+  reports strong gains from persistence, tool-use, and planning instructions.
+  Evidence class: `provider-guide`; do not present as universal proof for all
+  models or all agent tasks.
   1. Persistence instruction: "Keep going until the task is fully complete. Do
      not stop unless explicitly told."
   2. Tool-calling instruction: "Use tools to verify your work. Never guess when
      you can check."
   3. Planning instruction: "Plan your approach before starting. Revise the plan
      as you learn more."
-- **Compaction endpoint**: GPT-5 series has a conversation compaction endpoint
-  for managing long conversations. Summarizes prior turns while preserving key
-  context. Use for multi-turn agents approaching context limits.
-- **Responses API with reasoning persistence**: The `reasoning` parameter in the
-  Responses API persists reasoning across turns. Tau-Bench improvement: 73.9%
-  to 78.2%.
+- **Responses API and reasoning continuity**: For reasoning-capable models, pass
+  prior response identifiers or provider-supported reasoning items when current
+  docs recommend it. This avoids reconstructing state in long tool loops.
 - **Meta-prompting support**: GPT models respond well to meta-prompts ("Generate
   the best prompt for this task"). Use for prompt automation workflows.
 - **Structured outputs**: `response_format: { type: "json_schema" }` for
   guaranteed JSON conformance. Define schemas explicitly. Use for any pipeline
   requiring machine-parseable output.
+- **PromptOps**: OpenAI prompt objects support versioning, variables, linked evals,
+  and rollback through the prompt surface. Use these rather than hand-copying
+  production prompts when available.
 
 ### Prompt Caching
 
-**See `references/context-management.md` § OpenAI for full caching strategy.** Key: automatic prefix caching, 1024-token minimum, 50% discount, keep prefixes byte-identical.
+**See `references/context-management.md` § OpenAI for full caching strategy.** Key: automatic prefix caching, exact stable prefixes, and provider-stated latency/cost reductions that must be rechecked before quoting.
 
 ### Reasoning Models (o3, o4-mini)
 
@@ -98,7 +123,7 @@ applying recommendations older than 3 months.
 
 ---
 
-## Gemini (Google) — Last verified: Feb 2026
+## Gemini (Google) — Last verified: 2026-04-23
 
 ### Gemini 3 / Gemini 2 Flash
 
@@ -129,7 +154,7 @@ applying recommendations older than 3 months.
 
 ### Prompt Caching
 
-**See `references/context-management.md` § Google for full caching strategy.** Key: context caching API, 32,768-token minimum, best for large stable contexts.
+**See `references/context-management.md` § Google for full caching strategy.** Key: Gemini API and Vertex AI caching thresholds differ; verify the active API surface before designing cache economics.
 
 ### Gemini Prompt Structure
 
@@ -145,7 +170,9 @@ Place content in this order for best results:
 
 ---
 
-## Llama (Meta) — Last verified: Feb 2026
+## Llama (Meta) — Last verified: 2026-04-23
+
+Sources checked: `https://www.llama.com/docs/model-cards-and-prompt-formats/llama4/`, `https://www.llama.com/docs/how-to-guides/prompting/`, `https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md`.
 
 ### Llama 4
 
@@ -160,7 +187,8 @@ Place content in this order for best results:
   ```json
   {"role": "assistant", "content": "```json\n"}
   ```
-  This forces JSON output without relying on prompt instructions alone.
+  This can steer JSON output without relying on prompt instructions alone; test
+  against the exact chat template and serving runtime.
 - **Structured output via constrained decoding**: When hosting Llama locally,
   use constrained decoding (grammar-based generation) for guaranteed format
   compliance. More reliable than prompt-based format instructions. Libraries:
@@ -218,7 +246,7 @@ hosted API models:
 | Prompt length sensitivity | Low | Low | Medium | High | Llama degrades fastest with verbose prompts; trim aggressively (aim for <500 system tokens) |
 | Constraint placement | Inline/early | Inline/early | End of prompt | Inline/early | Gemini attends most to late-positioned constraints |
 
-The 3-instruction minimal pattern (persistence + tool-calling + planning) works across all model families — see `architecture-patterns.md` § Agent Patterns for details.
+The 3-instruction minimal pattern (persistence + tool-calling + planning) is a useful agent-prompt hypothesis across model families, but the strongest evidence in this file is provider-scoped. See `architecture-patterns.md` § Agent Patterns and test before rollout.
 
 ### Conversion Checklist
 

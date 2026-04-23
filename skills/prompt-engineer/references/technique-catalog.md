@@ -3,24 +3,36 @@
 Prompting techniques organized by category. Each entry includes model-class compatibility.
 Consult the Selection Heuristic at the end to match techniques to tasks.
 
+## Evidence Classes
+
+Tag non-obvious recommendations with one of:
+
+| Evidence class | Meaning |
+|----------------|---------|
+| `official-doc` | Current provider documentation or API reference |
+| `provider-guide` | Provider cookbook, migration guide, or best-practice guide |
+| `research` | Paper, benchmark, or public experiment |
+| `community-heuristic` | Widely used practice without provider guarantee |
+| `single-study` | One narrow study or benchmark; test before relying on it |
+
 ---
 
 ## Zero-Shot Techniques
 
 Techniques requiring no examples. Start here; add complexity only when these fail.
 
-**Direct Instruction**: State the task explicitly in imperative voice. Works on all models.
-Most underrated technique — a clear, specific instruction outperforms clever scaffolding.
+**Direct Instruction** (`community-heuristic`): State the task explicitly in imperative voice. Works on all models.
+A clear, specific instruction should be the starting point before adding heavier scaffolding.
 ```
 Summarize the following article in 3 bullet points, each under 20 words.
 ```
 
 **Role Prompting**: Assign an expert persona to prime domain-appropriate vocabulary and
 reasoning frames. `"You are a senior security engineer reviewing this code for
-vulnerabilities."` Higher impact on instruction-following models. Minimal effect on
-reasoning models — their internal reasoning already adopts relevant expertise.
+vulnerabilities."` Often higher impact on instruction-following models. For reasoning
+models, treat persona gains as task-dependent and verify with evals.
 
-**Emotion Prompting**: Adding emotional stakes/framing (e.g., `"This is very important to my career"`) can marginally improve instruction-following models; no effect on reasoning models — improve the instruction itself instead.
+**Emotion Prompting** (`single-study`): Adding emotional stakes/framing (e.g., `"This is very important to my career"`) has narrow evidence of marginal gains in some instruction-following settings. Do not use by default for production prompts; improve task clarity first.
 
 **Style Transfer**: Specify output style, register, or audience level. Combine with
 Direct Instruction for precise tone control. `"Explain like I'm five"` or
@@ -46,10 +58,10 @@ to demonstrate output format. Select examples that are representative of real di
 just happy paths. More effective than random selection. Include at least one example near
 each decision boundary in classification tasks.
 
-**Chain-of-Thought Few-Shot**: Examples include intermediate reasoning steps before the
+**Chain-of-Thought Few-Shot** (`research`): Examples include intermediate reasoning steps before the
 answer. ONLY for instruction-following models. Never add to reasoning models — external
-CoT competes with their internal reasoning chain (Prompting Inversion —
-arXiv:2510.22251).
+CoT can compete with internal reasoning in tested settings (Prompting Inversion evidence;
+verify against the target model and reasoning mode).
 ```
 Q: Roger has 5 tennis balls. He buys 2 cans of 3. How many does he have?
 A: Roger starts with 5 balls. 2 cans × 3 balls = 6 new balls. 5 + 6 = 11. The answer is 11.
@@ -70,10 +82,11 @@ INCORRECT: "The server returned a 404 error." → Category: Security  ← Wrong:
 Techniques that elicit intermediate reasoning. Apply ONLY to instruction-following models
 unless explicitly noted otherwise.
 
-**Zero-Shot CoT**: Append "Think step by step" or "Let's work through this." Simplest
-CoT technique. ONLY for instruction-following models. On reasoning models, this degrades
-performance — the model already thinks internally, and external prompts add noise
-(Prompting Inversion — arXiv:2510.22251).
+**Zero-Shot CoT** (`research`): Append "Think step by step" or "Let's work through this."
+Simplest CoT technique. Use mainly for instruction-following models. For reasoning
+models, prefer provider-supported reasoning controls or short planning/preamble
+instructions when current provider docs recommend them; avoid requiring hidden reasoning
+transcripts.
 
 **Structured CoT**: Provide explicit reasoning scaffolding with named stages.
 `"First identify the key variables, then evaluate each constraint, finally decide which
@@ -214,10 +227,11 @@ information across modalities rather than relying on one.
 
 How to organize the prompt itself. Structure affects parsing accuracy and maintainability.
 
-**XML Tags** (recommended default): Use semantic tags to delimit sections.
+**XML Tags** (`provider-guide` / `community-heuristic`): Use semantic tags to delimit sections.
 `<instructions>`, `<context>`, `<examples>`, `<output>`. Cross-model compatible — all
-4 major labs (Anthropic, OpenAI, Google, Meta) endorse XML tags. Best for complex,
-multi-section prompts. Nest freely for hierarchical structure.
+major model families usually handle clear delimiters, and Claude guidance is especially
+XML-friendly. Verify provider-specific format guidance before claiming XML is preferred.
+Best for complex, multi-section prompts.
 ```xml
 <instructions>Summarize the document below.</instructions>
 <context>{{document}}</context>
@@ -232,7 +246,7 @@ structures, but sufficient for most prompts.
 consumed. Machine-readable. Risk: models may try to "complete" the JSON structure rather
 than follow it as instructions. Mitigate by placing JSON in a clearly delimited block.
 
-**TOON Format**: Typed Object-Oriented Notation. 73.9% accuracy on format-following
+**TOON Format** (`single-study`): Typed Object-Oriented Notation. 73.9% accuracy on format-following
 benchmarks (toonformat.dev). Uses `type: object` notation with clear field definitions.
 Best for smaller models needing strict output format adherence. Note: benchmark is from
 the format creator; independent verification is limited to small models.
@@ -264,5 +278,5 @@ technique that fits; escalate only when results are insufficient.
 | Multiple perspectives needed | Multi-Persona Ensemble | Both classes |
 | Image understanding | Image-Before-Text, Detail Mode, Cross-Modal Grounding | Vision-capable models only |
 | Long document analysis | Decomposition, Tab-CoT | Both classes; watch context limits |
-| Agent/tool-calling | 3-Instruction Pattern (persistence, tool-calling, planning) | Both classes; ~20% improvement (OpenAI) |
+| Agent/tool-calling | 3-Instruction Pattern (persistence, tool-calling, planning) | Both classes; strongest evidence is OpenAI provider-scoped agentic coding guidance |
 | Adversarial/safety-critical | Hardening patterns (see hardening-checklist.md) | Both classes |
