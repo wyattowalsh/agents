@@ -296,6 +296,7 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
 
 def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extras(tmp_path, monkeypatch):
     config_path = tmp_path / "config.toml"
+    config_copy_path = tmp_path / "codex-config.toml"
     config_path.write_text(
         "\n".join(
             [
@@ -315,6 +316,7 @@ def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extr
     )
 
     monkeypatch.setattr(sync_agent_stack, "CODEX_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "CODEX_CONFIG_COPY_PATH", config_copy_path)
 
     registry = {
         "servers": {
