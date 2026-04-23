@@ -18,6 +18,14 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/instructions/codex-global.md",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
+      "mode": "generated"
+    },
+    {
       "path": "/Users/ww/dev/projects/agents/mcp.json",
       "mode": "generated"
     },

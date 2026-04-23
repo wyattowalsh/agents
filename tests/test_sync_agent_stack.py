@@ -10,7 +10,10 @@ from scripts.sync_agent_stack import (
     merge_server_root_config,
     render_cherry_import_files,
     render_cherry_server,
+    render_codex_config,
+    render_codex_mcp_block,
     render_opencode_mcp,
+    sync_codex_entrypoint,
     sync_generated_json_directory,
 )
 
@@ -294,7 +297,20 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
 def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extras(tmp_path, monkeypatch):
     config_path = tmp_path / "config.toml"
     config_path.write_text(
-        """model = \"gpt-5.4\"\n\n[mcp_servers.duckduckgo-search]\ncommand = \"uvx\"\nargs = [\"duckduckgo-mcp-server\"]\n\n[mcp_servers.custom-extra]\ncommand = \"uvx\"\nargs = [\"custom-mcp\"]\n""",
+        "\n".join(
+            [
+                'model = "gpt-5.4"',
+                "",
+                "[mcp_servers.duckduckgo-search]",
+                'command = "uvx"',
+                'args = ["duckduckgo-mcp-server"]',
+                "",
+                "[mcp_servers.custom-extra]",
+                'command = "uvx"',
+                'args = ["custom-mcp"]',
+                "",
+            ]
+        ),
         encoding="utf-8",
     )
 
@@ -323,3 +339,94 @@ def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extr
     assert "[mcp_servers.duckduckgo-search]" not in rendered
     assert rendered.count("[mcp_servers.duckduckgo]") == 1
     assert "[mcp_servers.custom-extra]" in rendered
+
+
+def test_render_codex_mcp_block_uses_current_schema_shape():
+    registry = {
+        "servers": {
+            "context7": {
+                "command": "npx",
+                "args": ["-y", "@upstash/context7-mcp", "--api-key", "${CONTEXT7_API_KEY}"],
+                "enabled": True,
+                "env": {"CONTEXT7_API_KEY": {"env_var": "CONTEXT7_API_KEY"}},
+                "startup_timeout_sec": 90,
+                "timeout_ms": 600000,
+                "tools": ["*"],
+            },
+            "package-version": {
+                "command": "/Users/ww/go/bin/mcp-package-version",
+                "args": [],
+                "enabled": True,
+                "startup_timeout_sec": 90,
+                "tools": ["check_npm_versions"],
+            },
+        }
+    }
+
+    rendered = render_codex_mcp_block(registry)
+
+    assert 'type = "stdio"' not in rendered
+    assert 'env_vars = ["CONTEXT7_API_KEY"]' in rendered
+    assert "--api-key" not in rendered
+    assert 'tool_timeout_sec = 600' in rendered
+    assert 'enabled_tools = ["check_npm_versions"]' in rendered
+
+
+def test_render_codex_config_adds_dynamic_agent_limits_and_multi_agent_v2_without_secrets():
+    registry = {
+        "servers": {
+            "brave-search": {
+                "command": "npx",
+                "args": ["-y", "@brave/brave-search-mcp-server"],
+                "enabled": True,
+                "env": {"BRAVE_API_KEY": {"env_var": "BRAVE_API_KEY"}},
+                "startup_timeout_sec": 90,
+                "timeout_ms": 600000,
+                "tools": ["*"],
+            }
+        }
+    }
+    policy = {
+        "model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "xhigh", "personality": "pragmatic"}}
+    }
+    current = """
+notify = ["/tmp/notifier"]
+
+[mcp_servers.ronin]
+url = "http://localhost:8000/mcp/"
+
+[mcp_servers.ronin.http_headers]
+Authorization = "Bearer local-secret"
+"""
+
+    home_config = render_codex_config(current, registry, policy, include_local_extras=True)
+    repo_config = render_codex_config(current, registry, policy, include_local_extras=False)
+
+    assert home_config.startswith("#:schema https://developers.openai.com/codex/config-schema.json")
+    assert 'approvals_reviewer = "guardian_subagent"' in home_config
+    assert "[features.multi_agent_v2]" in home_config
+    assert "max_depth = 4" in home_config
+    assert "max_threads = 16" in home_config
+    assert "job_max_runtime_seconds = 7200" in home_config
+    assert 'model = "gpt-5.5"' in home_config
+    assert "local-secret" in home_config
+    assert "local-secret" not in repo_config
+    assert "[mcp_servers.ronin]" not in repo_config
+    assert 'env_vars = ["BRAVE_API_KEY"]' in repo_config
+
+
+def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    codex_home = home_dir / ".codex"
+    codex_home.mkdir(parents=True)
+    (repo_root / "instructions").mkdir(parents=True)
+
+    monkeypatch.setattr(sync_agent_stack, "CODEX_ENTRYPOINT_PATH", codex_home / "AGENTS.md")
+    monkeypatch.setattr(sync_agent_stack, "CODEX_GLOBAL_MD", repo_root / "instructions" / "codex-global.md")
+
+    ctx = SyncContext(apply=True)
+    sync_codex_entrypoint(ctx)
+
+    assert (codex_home / "AGENTS.md").is_symlink()
+    assert (codex_home / "AGENTS.md").readlink() == repo_root / "instructions" / "codex-global.md"

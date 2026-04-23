@@ -1,0 +1,149 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+approval_policy = "on-request"
+approvals_reviewer = "guardian_subagent"
+background_terminal_max_timeout = 300000
+check_for_update_on_startup = true
+file_opener = "vscode"
+model = "gpt-5.4"
+model_reasoning_effort = "xhigh"
+model_reasoning_summary = "detailed"
+model_verbosity = "medium"
+personality = "pragmatic"
+plan_mode_reasoning_effort = "xhigh"
+project_doc_fallback_filenames = ["TEAM_GUIDE.md", ".agents.md"]
+project_doc_max_bytes = 131072
+sandbox_mode = "workspace-write"
+suppress_unstable_features_warning = false
+tool_output_token_limit = 20000
+web_search = "live"
+
+[auto_review]
+policy = """Approve routine read-only inspection and bounded edits inside trusted workspaces.
+Reject or escalate destructive filesystem operations, credential exposure, global package manager mutations,
+privilege escalation, broad network side effects, and irreversible VCS operations unless explicitly
+requested."""
+
+[features]
+apps = true
+enable_request_compression = true
+fast_mode = true
+general_analytics = true
+guardian_approval = true
+image_generation = true
+memories = true
+multi_agent = true
+personality = true
+plugins = true
+prevent_idle_sleep = true
+shell_snapshot = true
+shell_tool = true
+skill_mcp_dependency_install = true
+tool_call_mcp_elicitation = true
+tool_search = true
+tool_suggest = true
+undo = true
+unified_exec = true
+workspace_dependencies = true
+
+[features.multi_agent_v2]
+enabled = true
+usage_hint_enabled = true
+usage_hint_text = "Use dynamic subagents for bounded parallel exploration, tests, and sidecar implementation. Do not hardcode static teams; keep the main thread responsible for integration and final judgment."
+
+[agents]
+max_depth = 4
+max_threads = 16
+job_max_runtime_seconds = 7200
+
+[profiles.deep]
+model = "gpt-5.4"
+model_reasoning_effort = "xhigh"
+model_reasoning_summary = "detailed"
+model_verbosity = "medium"
+plan_mode_reasoning_effort = "xhigh"
+sandbox_mode = "workspace-write"
+web_search = "live"
+
+[profiles.fast]
+model = "gpt-5.4-mini"
+model_reasoning_effort = "medium"
+model_reasoning_summary = "concise"
+model_verbosity = "medium"
+plan_mode_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
+service_tier = "fast"
+web_search = "live"
+
+[profiles.full_access]
+model = "gpt-5.4"
+model_reasoning_effort = "xhigh"
+model_reasoning_summary = "detailed"
+model_verbosity = "medium"
+plan_mode_reasoning_effort = "xhigh"
+sandbox_mode = "danger-full-access"
+web_search = "live"
+
+[apps._default]
+enabled = true
+destructive_enabled = false
+open_world_enabled = true
+
+[tools]
+view_image = true
+
+[tools.web_search]
+context_size = "high"
+
+[tools.web_search.location]
+country = "US"
+region = "NY"
+city = "New York"
+timezone = "America/New_York"
+
+[history]
+persistence = "save-all"
+max_bytes = 134217728
+
+[feedback]
+enabled = true
+
+[analytics]
+enabled = true
+
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = false
+max_raw_memories_for_consolidation = 1024
+max_unused_days = 90
+max_rollout_age_days = 45
+max_rollouts_per_startup = 32
+min_rollout_idle_hours = 6
+
+[sandbox_workspace_write]
+network_access = true
+exclude_tmpdir_env_var = false
+exclude_slash_tmp = false
+
+[shell_environment_policy]
+inherit = "core"
+
+[tui]
+notifications = true
+notification_method = "auto"
+notification_condition = "unfocused"
+animations = true
+alternate_screen = "auto"
+show_tooltips = true
+status_line = ["model", "approval", "sandbox", "cwd"]
+terminal_title = ["spinner", "project"]
+
+# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
+
+[mcp_servers.duckduckgo]
+args = ["duckduckgo-mcp-server"]
+command = "uvx"
+startup_timeout_sec = 90
+
+# END MANAGED BY sync_agent_stack.py: MCP_SERVERS

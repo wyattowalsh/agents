@@ -3,7 +3,7 @@
   "instruction_source": "/Users/ww/dev/projects/agents/instructions/global.md",
   "model_defaults": {
     "codex": {
-      "model": "gpt-5.4",
+      "model": "gpt-5.5",
       "reasoning_effort": "xhigh",
       "personality": "pragmatic"
     },
