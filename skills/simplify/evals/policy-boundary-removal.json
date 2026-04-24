@@ -1,0 +1,11 @@
+{
+  "skills": ["simplify"],
+  "query": "/simplify apply src/security/permissions.ts by inlining the requireAdmin helper into its only caller",
+  "files": ["src/security/permissions.ts"],
+  "expected_behavior": [
+    "Agent recognizes that a single-use abstraction can still encode a security or policy boundary.",
+    "Agent does not inline or remove the helper until it proves the boundary is purely pass-through and non-policy.",
+    "Agent asks before editing or falls back to Analyze with the policy-boundary risk called out.",
+    "Agent preserves authorization, validation, and security semantics."
+  ]
+}

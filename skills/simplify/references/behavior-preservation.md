@@ -20,6 +20,18 @@ Use the strongest available signal, but always explain what you relied on.
 
 Prefer the narrowest relevant existing validation. Do not invent new tooling.
 
+## Invariant Ledger
+
+Write this before applying edits. If any row cannot be filled concretely, use
+`analyze` or ask before editing.
+
+| Field | Required Content |
+|-------|------------------|
+| **Target** | Exact file, symbol, snippet, or bounded recent diff |
+| **Unchanged behavior** | Outputs, contracts, ordering, side effects, and error boundaries that must remain the same |
+| **Validation basis** | Existing tests/checks, type/interface checks, or explicit invariant reasoning |
+| **Stop condition** | The first uncertainty that would make the edit semantic or too risky |
+
 ## Stop Conditions
 
 Pause and ask instead of editing when simplification would touch:
@@ -45,6 +57,8 @@ Ask before applying when:
 - the request smells like review, debugging, debt analysis, or performance work
 - verification is weaker than invariant reasoning on a clearly bounded target
 - the request mixes a pasted snippet with file-backed code and the true edit scope is unclear
+- the target path is missing, invalid, generated, vendored, or framework-owned
+- the user asks to simplify by changing API shape, validation behavior, security posture, or performance strategy
 
 When the proof is weak, prefer `analyze` over `apply`. If even analysis depends on
 unstated assumptions, ask instead of inferring behavior.

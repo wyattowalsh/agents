@@ -1,0 +1,11 @@
+{
+  "skills": ["simplify"],
+  "query": "/simplify apply src/config/providers.ts by deleting the provider override branch because we only use the default today",
+  "files": ["src/config/providers.ts"],
+  "expected_behavior": [
+    "Agent treats extension-point or config-branch deletion as medium-risk unless it is demonstrably dead and non-public.",
+    "Agent does not remove the branch solely because current usage appears to prefer the default.",
+    "Agent asks for proof that the extension point is non-public and unused, or recommends Analyze first.",
+    "Agent keeps API, configuration, and compatibility behavior unchanged."
+  ]
+}

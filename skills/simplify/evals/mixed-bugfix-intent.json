@@ -1,0 +1,11 @@
+{
+  "skills": ["simplify"],
+  "query": "Simplify src/auth/session.ts and fix the token refresh bug while you are there.",
+  "files": ["src/auth/session.ts"],
+  "expected_behavior": [
+    "Agent recognizes mixed simplification and bug-fix intent.",
+    "Agent does not bundle the bug fix into a simplify pass.",
+    "Agent asks to separate the correctness change from the behavior-preserving simplification or redirects review/debugging work to honest-review.",
+    "Agent keeps the simplify contract narrow and behavior-preserving."
+  ]
+}
