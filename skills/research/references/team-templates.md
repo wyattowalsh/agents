@@ -9,11 +9,12 @@ Team archetypes, subagent prompts, and perspective agents for each research tier
 - [Exhaustive Tier Additions](#exhaustive-tier-additions)
 - [Perspective Agent Prompts](#perspective-agent-prompts)
 - [Thinking MCP Integration](#thinking-mcp-integration)
+- [Capability Resolution](#capability-resolution)
 - [Subagent Return Schema](#subagent-return-schema)
 
 ## Standard Tier Subagent Prompts
 
-Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a tool set.
+Dispatch 3-5 parallel research tasks with the platform's available delegation primitive. Each subagent receives one sub-question and a capability set. If no delegation primitive exists, run these prompts sequentially and mark orchestration as degraded.
 
 ### Web Searcher
 
@@ -21,7 +22,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 >
 > **Sub-question:** [sub_question]
 > **Query context:** [parent query for framing]
-> **Tools to use:** brave-search, duckduckgo-search, exa, g-search
+> **Capabilities to use:** at least two independent web search engines, plus extraction if a result needs full-text review
 >
 > Execute at least 2 searches using different engines. For each result:
 > - Extract the specific claim relevant to the sub-question
@@ -30,7 +31,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 > - Note promising leads (URLs worth deeper extraction)
 > - Note gaps (what you searched for but could not find)
 >
-> Return your results as JSON matching the subagent return schema.
+> Return your results as JSON matching the canonical subagent return schema.
 
 ### Technical Researcher
 
@@ -38,7 +39,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 >
 > **Sub-question:** [sub_question]
 > **Query context:** [parent query for framing]
-> **Tools to use:** context7, deepwiki, package-version, repomix
+> **Capabilities to use:** docs-index lookup (`llms.txt`/`llms-full.txt`) first, then current docs search, repository analysis, and package-version lookup
 >
 > Search official documentation and repository wikis. For each finding:
 > - Extract the specific technical claim with version context
@@ -47,7 +48,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 > - Note leads to related docs or linked repositories
 > - Note gaps in documentation coverage
 >
-> Return your results as JSON matching the subagent return schema.
+> Return your results as JSON matching the canonical subagent return schema.
 
 ### Academic Researcher
 
@@ -55,7 +56,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 >
 > **Sub-question:** [sub_question]
 > **Query context:** [parent query for framing]
-> **Tools to use:** arxiv, semantic-scholar, PubMed, openalex, crossref
+> **Capabilities to use:** scholarly search, citation graph lookup, DOI/metadata lookup, and biomedical databases when relevant
 >
 > Search academic databases for peer-reviewed evidence. For each finding:
 > - Extract the specific claim with methodology context (sample size, study design)
@@ -64,7 +65,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 > - Note citation count and recency as quality signals
 > - Note gaps in the literature
 >
-> Return your results as JSON matching the subagent return schema.
+> Return your results as JSON matching the canonical subagent return schema.
 
 ### Content Extractor
 
@@ -72,7 +73,7 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 >
 > **URLs to extract:** [list of lead URLs from Wave 1]
 > **Query context:** [parent query for framing]
-> **Tools to use:** fetcher, trafilatura, docling, wayback
+> **Capabilities to use:** URL fetch, clean text extraction, PDF/document parsing, and historical snapshot lookup when relevant
 >
 > For each URL:
 > - Extract full page content
@@ -80,11 +81,11 @@ Dispatch 3-5 parallel Task calls. Each subagent receives one sub-question and a 
 > - Record verbatim excerpts supporting each claim
 > - Note if the page references other sources worth following
 >
-> Return your results as JSON matching the subagent return schema.
+> Return your results as JSON matching the canonical subagent return schema.
 
 ## Deep Tier Team Structure
 
-Use TeamCreate with team name `research-{slug}` where slug is 2-4 words from the query in kebab-case.
+Create a research team named `research-{slug}` where slug is 2-4 words from the query in kebab-case. Prefer Claude `TeamCreate`, Codex dynamic workers, or the host platform's native equivalent; otherwise run the same roles as sequential batches.
 
 ```
 Lead: triage (Wave 0), orchestrate waves, judge reconcile (Wave 3), synthesize (Wave 4)
@@ -104,7 +105,7 @@ Lead: triage (Wave 0), orchestrate waves, judge reconcile (Wave 3), synthesize (
 
 ### Task Breakdown per Wave
 
-**Wave 1 tasks (one TaskCreate per teammate):**
+**Wave 1 tasks (one delegated task per teammate when available):**
 - `web-researcher`: "Search [sub-questions 1-2] across web engines. Return structured findings JSON."
 - `tech-researcher`: "Search [sub-questions 2-3] in technical docs and repos. Return structured findings JSON."
 - `content-extractor`: "Extract full content from [N] seed URLs. Identify claims and leads."
@@ -123,7 +124,7 @@ Lead: triage (Wave 0), orchestrate waves, judge reconcile (Wave 3), synthesize (
 
 Exhaustive builds on Deep with two additions:
 
-1. **Nested subagent waves inside teammates** — each teammate dispatches 2-3 parallel Task calls internally to cover more sub-questions per wave.
+1. **Nested subagent waves inside teammates** — each teammate dispatches 2-3 internal research tasks when the platform supports nested delegation.
 
 2. **Perspective agents (Wave 1.5)** — spawn 2-4 STORM-style perspective agents after Wave 1 findings are collected. Their additional sub-questions feed into Wave 2.
 
@@ -136,7 +137,7 @@ web-researcher (teammate)
   |-- Task: sub-question C via brave-search + duckduckgo-search
 ```
 
-Each teammate runs its own internal parallel wave, tripling throughput.
+Each teammate runs its own internal parallel wave when supported. If unsupported, preserve the wave order, reduce breadth, and state the skipped nested coverage in the methodology.
 
 ## Perspective Agent Prompts
 
@@ -225,9 +226,23 @@ Use `structured-thinking` to maintain evidence chains across waves:
 
 > Track the evidence chain for finding RR-NNN. Record: original claim, supporting sources, contradicting sources, cross-validation status, confidence adjustments, and remaining gaps.
 
+## Capability Resolution
+
+Resolve capabilities before dispatching:
+
+| Need | Preferred | Fallback |
+|------|-----------|----------|
+| Web search | brave-search, duckduckgo-search, exa, g-search, tavily | Any two independent web search engines |
+| Current technical docs | `llms.txt`/`llms-full.txt`, Context7/doc-search, package-version | Official docs via web search with confidence ceiling |
+| Content extraction | fetcher, trafilatura, docling, fetch | Search snippets plus source limitation note |
+| Team delegation | TeamCreate, Task, Codex dynamic subagents, native workers | Serial batches with degraded-orchestration label |
+| Structured reasoning | structured-thinking, cascade-thinking, think-strategies | Inline evidence table and explicit assumptions |
+
+Never block solely because a named tool is missing. For source or retrieval tools, continue with the nearest capability, apply the degraded-mode ceiling from `source-selection.md`, and record the substitution. For delegation tools, preserve wave order, reduce breadth if needed, and label the run "degraded orchestration" without lowering confidence solely because execution was serial.
+
 ## Subagent Return Schema
 
-All subagents and teammates return findings in this structure:
+All subagents and teammates return findings in this canonical structure:
 
 ```json
 {
@@ -235,13 +250,24 @@ All subagents and teammates return findings in this structure:
   "findings": [
     {
       "claim": "discrete assertion statement",
-      "source_url": "https://...",
-      "source_tool": "brave-search|context7|arxiv|...",
-      "excerpt": "verbatim excerpt from source, max 100 words",
-      "confidence_raw": 0.6
+      "confidence": 0.6,
+      "evidence": [
+        {
+          "tool": "brave-search|context7|arxiv|...",
+          "url": "https://...",
+          "timestamp": "2026-04-24T12:00:00Z",
+          "excerpt": "verbatim excerpt from source, max 100 words",
+          "independent": true
+        }
+      ],
+      "cross_validation": "unknown",
+      "bias_markers": [],
+      "gaps": []
     }
   ],
   "leads": ["https://promising-url-1", "https://promising-url-2"],
   "gaps": ["could not find data on X", "no sources address Y"]
 }
 ```
+
+Legacy fields from older prompts are accepted only as input to normalization: convert `source_url`, `source_tool`, `excerpt`, and `confidence_raw` into `evidence[]` plus `confidence` before deduplication, scoring, dashboard export, or synthesis.

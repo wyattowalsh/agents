@@ -1,5 +1,3 @@
-import os
-
 #!/usr/bin/env python3
 """CRUD operations for research journals stored in ~/.claude/research/.
 
@@ -17,8 +15,11 @@ Usage:
   python journal-store.py archive --days 90
   python journal-store.py delete 1 --force
 """
+from __future__ import annotations
+
 import argparse
 import json
+import os
 import re
 import shutil
 import sys
@@ -45,12 +46,13 @@ def parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
     if not text.startswith("---"):
         return {}, text
 
-    end = text.find("\n---", 3)
-    if end == -1:
+    closing = re.search(r"\n---[ \t]*\n|\n---[ \t]*$", text[3:])
+    if closing is None:
         return {}, text
+    end = closing.start() + 3
 
     yaml_block = text[4:end].strip()
-    body = text[end + 4:].lstrip("\n")
+    body = text[end + 4 :].lstrip("\n")
     meta = _parse_yaml_simple(yaml_block)
     return meta, body
 
@@ -73,7 +75,7 @@ def _parse_yaml_simple(text: str) -> dict[str, Any]:
             continue
 
         # Key-value pair
-        m = re.match(r"^([a-z_][a-z0-9_]*)\s*:\s*(.*)", stripped)
+        m = re.match(r"^([a-zA-Z_][a-zA-Z0-9_-]*)\s*:\s*(.*)", stripped)
         if m:
             key, val_str = m.group(1), m.group(2).strip()
             current_key = key
@@ -126,7 +128,10 @@ def _parse_yaml_value(val: str) -> Any:
     if not val:
         return ""
     # Remove quotes
-    if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+    if val.startswith('"') and val.endswith('"'):
+        inner = val[1:-1]
+        return inner.replace('\\"', '"').replace('\\\\', '\\')
+    if val.startswith("'") and val.endswith("'"):
         return val[1:-1]
     # Booleans
     if val.lower() in ("true", "yes"):
@@ -150,24 +155,27 @@ def serialize_frontmatter(meta: dict[str, Any]) -> str:
     """Serialize a dict to YAML frontmatter string."""
     lines = ["---"]
     for key, val in meta.items():
-        if isinstance(val, list):
-            if not val:
-                lines.append(f"{key}: []")
-            elif all(isinstance(v, str) and len(v) < 60 for v in val):
-                items = ", ".join(_yaml_scalar(v) for v in val)
-                lines.append(f"{key}: [{items}]")
-            else:
-                lines.append(f"{key}:")
-                for item in val:
-                    lines.append(f"  - {_yaml_scalar(item)}")
-        elif isinstance(val, bool):
-            lines.append(f"{key}: {'true' if val else 'false'}")
-        elif val is None:
-            lines.append(f"{key}: null")
-        else:
-            lines.append(f"{key}: {_yaml_scalar(val)}")
+        lines.extend(_yaml_field_lines(key, val))
     lines.append("---")
     return "\n".join(lines)
+
+
+def _yaml_field_lines(key: str, val: Any) -> list[str]:
+    """Format a scalar or list field for the simple YAML parser."""
+    if isinstance(val, list):
+        if not val:
+            return [f"{key}: []"]
+        if all(isinstance(v, str) and len(v) < 60 for v in val):
+            items = ", ".join(_yaml_scalar(v) for v in val)
+            return [f"{key}: [{items}]"]
+        lines = [f"{key}:"]
+        lines.extend(f"  - {_yaml_scalar(item)}" for item in val)
+        return lines
+    if isinstance(val, bool):
+        return [f"{key}: {'true' if val else 'false'}"]
+    if val is None:
+        return [f"{key}: null"]
+    return [f"{key}: {_yaml_scalar(val)}"]
 
 
 def _yaml_scalar(val: Any) -> str:
@@ -197,6 +205,33 @@ def parse_state_blocks(body: str) -> list[dict[str, Any]]:
     for m in _STATE_PATTERN.finditer(body):
         blocks.append(_parse_yaml_simple(m.group(1)))
     return blocks
+
+
+_FINDINGS_PATTERN = re.compile(
+    r"<!-- FINDINGS_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL
+)
+
+
+def parse_findings_blocks(body: str) -> dict[int, Any]:
+    """Extract saved findings JSON blocks from journal body."""
+    blocks: dict[int, Any] = {}
+    for m in _FINDINGS_PATTERN.finditer(body):
+        try:
+            blocks[int(m.group(1))] = json.loads(m.group(2))
+        except json.JSONDecodeError:
+            continue
+    return blocks
+
+
+def _atomic_write(path: Path, content: str) -> None:
+    """Write content atomically via temp file + os.replace."""
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    try:
+        tmp.write_text(content, encoding="utf-8")
+        os.replace(tmp, path)
+    except OSError:
+        tmp.unlink(missing_ok=True)
+        raise
 
 
 # --- Slug generation ---
@@ -316,9 +351,26 @@ def cmd_save(args: argparse.Namespace) -> None:
             findings_data = json.loads(args.findings)
             if isinstance(findings_data, dict):
                 findings_data = [findings_data]
+            if not isinstance(findings_data, list):
+                print(
+                    f"Error: --findings must be a JSON array or object, not {type(findings_data).__name__}",
+                    file=sys.stderr,
+                )
+                sys.exit(1)
         except json.JSONDecodeError as exc:
             print(f"Error: invalid JSON in --findings: {exc}", file=sys.stderr)
             sys.exit(1)
+    state_data: dict[str, Any] = {}
+    if args.state:
+        try:
+            parsed_state = json.loads(args.state)
+        except json.JSONDecodeError as exc:
+            print(f"Error: invalid JSON in --state: {exc}", file=sys.stderr)
+            sys.exit(1)
+        if not isinstance(parsed_state, dict):
+            print("Error: --state must be a JSON object.", file=sys.stderr)
+            sys.exit(1)
+        state_data = parsed_state
 
     # Check if updating existing
     if args.update:
@@ -331,19 +383,49 @@ def cmd_save(args: argparse.Namespace) -> None:
         meta["updated"] = now
         if args.status:
             meta["status"] = args.status
-        meta["findings_count"] = len(findings_data)
+        if args.wave is not None:
+            meta["last_wave"] = args.wave
         if findings_data:
+            meta["findings_count"] = len(findings_data)
             confidences = [
                 f.get("confidence", 0) for f in findings_data
                 if isinstance(f.get("confidence"), (int, float))
             ]
             if confidences:
-                meta["confidence_mean"] = round(sum(confidences) / len(confidences), 2)
+                meta["mean_confidence"] = round(sum(confidences) / len(confidences), 2)
             else:
-                meta["confidence_mean"] = 0
+                meta["mean_confidence"] = 0
+
+        append_sections: list[str] = []
+        if args.wave is not None or state_data or findings_data:
+            state = {
+                "wave_completed": args.wave if args.wave is not None else meta.get("last_wave", 0),
+                "timestamp": now,
+                "findings_count": meta.get("findings_count", 0),
+                "next_action": state_data.get("next_action", ""),
+            }
+            state.update(state_data)
+            state_lines = ["<!-- STATE"]
+            for key, value in state.items():
+                if value == "" or value is None:
+                    continue
+                state_lines.extend(_yaml_field_lines(key, value))
+            state_lines.append("-->")
+            append_sections.append("\n".join(state_lines))
+
+        if findings_data:
+            wave = args.wave if args.wave is not None else meta.get("last_wave", 0)
+            append_sections.append(
+                f"<!-- FINDINGS_WAVE_{wave} -->\n```json\n"
+                + json.dumps(findings_data, indent=2)
+                + "\n```"
+            )
+
+        if append_sections:
+            body = body.rstrip("\n") + "\n\n" + "\n\n".join(append_sections) + "\n"
         content = serialize_frontmatter(meta) + "\n\n" + body
         try:
-            path.write_text(content, encoding="utf-8")
+            _atomic_write(path, content)
         except OSError as exc:
             print(f"Error: could not write journal: {exc}", file=sys.stderr)
             sys.exit(1)
@@ -364,7 +446,7 @@ def cmd_save(args: argparse.Namespace) -> None:
     domain = detect_domain_tag(query, mode)
 
     confidences = [f.get("confidence", 0) for f in findings_data if isinstance(f.get("confidence"), (int, float))]
-    confidence_mean = round(sum(confidences) / len(confidences), 2) if confidences else 0
+    mean_confidence = round(sum(confidences) / len(confidences), 2) if confidences else 0
 
     meta: dict[str, Any] = {
         "query": query,
@@ -377,7 +459,7 @@ def cmd_save(args: argparse.Namespace) -> None:
         "domain_tags": [domain],
         "sources_consulted": 0,
         "findings_count": len(findings_data),
-        "confidence_mean": confidence_mean,
+        "mean_confidence": mean_confidence,
         "tools_used": [],
     }
 
@@ -394,7 +476,7 @@ def cmd_save(args: argparse.Namespace) -> None:
     path = JOURNAL_DIR / filename
     content = serialize_frontmatter(meta) + "\n\n" + "\n".join(body_lines) + "\n"
     try:
-        path.write_text(content, encoding="utf-8")
+        _atomic_write(path, content)
     except OSError as exc:
         print(f"Error: could not write journal: {exc}", file=sys.stderr)
         sys.exit(1)
@@ -414,11 +496,13 @@ def cmd_load(args: argparse.Namespace) -> None:
     text = path.read_text(encoding="utf-8")
     meta, body = parse_frontmatter(text)
     state_blocks = parse_state_blocks(body)
+    findings_blocks = parse_findings_blocks(body)
 
     result = {
         "path": str(path),
         "metadata": meta,
         "state_blocks": state_blocks,
+        "findings_blocks": findings_blocks,
         "body": body,
     }
     json.dump(result, sys.stdout, indent=2)
@@ -452,15 +536,15 @@ def cmd_diff(args: argparse.Namespace) -> None:
     text2 = path2.read_text(encoding="utf-8")
     meta1, _ = parse_frontmatter(text1)
     meta2, _ = parse_frontmatter(text2)
+    mean1 = meta1.get("mean_confidence", meta1.get("confidence_mean", 0)) or 0
+    mean2 = meta2.get("mean_confidence", meta2.get("confidence_mean", 0)) or 0
 
     result = {
         "journal_1": {"path": str(path1), "metadata": meta1},
         "journal_2": {"path": str(path2), "metadata": meta2},
         "changes": {
             "findings_count_delta": (meta2.get("findings_count", 0) or 0) - (meta1.get("findings_count", 0) or 0),
-            "confidence_mean_delta": round(
-                (meta2.get("confidence_mean", 0) or 0) - (meta1.get("confidence_mean", 0) or 0), 2
-            ),
+            "mean_confidence_delta": round(mean2 - mean1, 2),
             "sources_consulted_delta": (
                 (meta2.get("sources_consulted", 0) or 0)
                 - (meta1.get("sources_consulted", 0) or 0)
@@ -599,9 +683,11 @@ def main() -> None:
         choices=["investigate", "factcheck", "compare", "survey", "track"],
         default="investigate",
     )
-    sp_save.add_argument("--status", default="In Progress", help="Journal status.")
+    sp_save.add_argument("--status", default=None, help="Journal status.")
     sp_save.add_argument("--findings", default=None, help="JSON string of findings array.")
     sp_save.add_argument("--update", default=None, help="Path or number of existing journal to update.")
+    sp_save.add_argument("--wave", type=int, default=None, help="Last completed wave number to append as STATE.")
+    sp_save.add_argument("--state", default=None, help="JSON object with additional STATE fields.")
 
     # load
     sp_load = sub.add_parser("load", help="Load a journal and output as JSON.")

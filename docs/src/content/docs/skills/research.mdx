@@ -5,7 +5,7 @@ description: "Deep multi-source research with confidence scoring. Auto-classifie
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="research" variant="note" /> <Badge text="3036 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="research" variant="note" /> <Badge text="3373 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
 > Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.
 
@@ -57,7 +57,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 4. **Always present triage scoring before executing research** — user must see and can override complexity tier
 5. **Save journal after every wave in Deep/Exhaustive mode** — enables resume after interruption
 6. **Never skip Wave 3 (cross-validation) for Standard/Deep/Exhaustive tiers** — this is the anti-hallucination mechanism
-7. **Multi-engine search is mandatory for fact-checking** — use minimum 2 different search tools (e.g., brave-search + duckduckgo-search)
+7. **Multi-engine search is mandatory for fact-checking** — use minimum 3 different search tools (e.g., brave-search + duckduckgo-search + exa)
 8. **Apply the Accounting Rule after every parallel dispatch** — N dispatched = N accounted for before proceeding to next wave
 9. **Distinguish facts from interpretations in all output** — factual claims carry evidence; interpretive claims are explicitly labeled as analysis
 10. **Flag all LLM-prior findings** — claims matching common training data but lacking fresh evidence must be flagged with bias marker
@@ -65,7 +65,9 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 12. **Load ONE reference file at a time** — do not preload all references into context
 13. **Track mode must load prior journal before searching** — avoid re-researching what is already known
 14. **The synthesis is not a summary** — it must integrate findings into novel analysis, identify patterns across sources, and surface emergent insights not present in any single source
-15. **PreToolUse Edit hook is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`
+15. **PreToolUse write guard is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`
+16. **Stop hook must pass** — `verify.py stop` confirms the skill did not leave tracked research-source files dirty
+17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape
 
 <Tabs>
   <TabItem label="General">
@@ -102,9 +104,13 @@ metadata:
   version: "1.0.0"
 hooks:
   PreToolUse:
-    - matcher: Edit
+    - matcher: "Write|Edit|MultiEdit"
       hooks:
         - command: 'bash -c "echo BLOCKED: research skill is read-only — no file edits permitted >&2; exit 1"'
+  Stop:
+    - hooks:
+        - type: command
+          command: "uv run python skills/research/scripts/verify.py stop"
 ---
 
 # Deep Research
@@ -134,6 +140,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 | **gap** | An identified area where evidence is insufficient, contradictory, or absent |
 | **bias marker** | An explicit flag on a finding indicating potential bias (recency, authority, LLM prior, etc.) |
 | **degraded mode** | Operation when research tools are unavailable; confidence ceilings applied |
+| **capability** | A research ability such as web search, docs lookup, extraction, or subagent delegation; tool names are preferred implementations, not guarantees |
 
 ## Dispatch
 
@@ -211,6 +218,19 @@ Score the query on 5 dimensions (0-2 each, total 0-10):
 
 Present the scoring to the user. User can override tier with `--depth <tier>`.
 
+## Scaling Strategy
+
+Scale work by query complexity and available orchestration capabilities:
+
+| Scope | Strategy | Delegation |
+|-------|----------|------------|
+| Quick (0-2) | Inline answer after 1-2 searches | No subagents |
+| Standard (3-5) | Parallel broad sweep across 2-5 sub-questions | Use available subagent primitive; otherwise batch sequentially |
+| Deep (6-8) | Lead-driven team workflow with perspective expansion | Use team/subagent primitives when present; otherwise bounded serial waves |
+| Exhaustive (9-10) | Deep workflow plus adversarial and nested waves | Use nested delegation when available; otherwise state degraded throughput explicitly |
+
+**Capability resolution:** Treat named tools and orchestration APIs as preferred capabilities. Claude Code may use `Task`/`TeamCreate`; Codex may use dynamic subagents or parallel tool calls; other agents may use their native delegation or run the wave pipeline serially. If no delegation equivalent exists, use degraded orchestration: preserve wave order, reduce breadth, and report the limitation in methodology. Apply confidence ceilings only when source or retrieval capabilities are unavailable, per `references/source-selection.md`.
+
 ## Wave Pipeline
 
 All non-Quick research follows this 5-wave pipeline. Quick merges Waves 0+1+4 inline.
@@ -231,7 +251,7 @@ Scale by tier:
 
 **Quick (inline):** 1-2 tool calls sequentially. No subagents.
 
-**Standard (subagent wave):** Dispatch 3-5 parallel subagents via Task tool:
+**Standard (subagent wave):** Dispatch 3-5 parallel subagents with the platform's available delegation primitive:
 ```
 Subagent A → brave-search + duckduckgo-search for sub-question 1
 Subagent B → exa + g-search for sub-question 2
@@ -240,7 +260,7 @@ Subagent D → wikipedia / wikidata for factual grounding
 [Subagent E → PubMed / openalex if academic domain detected]
 ```
 
-**Deep (agent team):** TeamCreate `"research-{slug}"`:
+**Deep (agent team):** Create a research team with the platform's available team primitive:
 ```
 Lead: triage (Wave 0), orchestrate, judge reconcile (Wave 3), synthesize (Wave 4)
   |-- web-researcher:       brave-search, duckduckgo-search, exa, g-search
@@ -251,13 +271,20 @@ Lead: triage (Wave 0), orchestrate, judge reconcile (Wave 3), synthesize (Wave 4
 ```
 Spawn academic-researcher if domain signals include academic/scientific. Spawn adversarial-reviewer for Exhaustive tier or if verification complexity >= 2.
 
-**Exhaustive:** Deep team + each teammate runs nested subagent waves internally.
+**Exhaustive:** Deep team + each teammate runs nested subagent waves internally when supported; otherwise use serial batches and label the run "degraded orchestration."
 
 Each subagent/teammate returns structured findings:
 ```json
 {
   "sub_question": "...",
-  "findings": [{"claim": "...", "source_url": "...", "source_tool": "...", "excerpt": "...", "confidence_raw": 0.6}],
+  "findings": [{
+    "claim": "...",
+    "confidence": 0.6,
+    "evidence": [{"tool": "brave-search", "url": "https://...", "timestamp": "2026-04-24T12:00:00Z", "excerpt": "..."}],
+    "cross_validation": "unknown",
+    "bias_markers": [],
+    "gaps": []
+  }],
   "leads": ["url1", "url2"],
   "gaps": ["could not find data on X"]
 }
@@ -371,7 +398,7 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 
 | Domain Signal | Primary Tools | Secondary Tools |
 |--------------|---------------|-----------------|
-| Library/API docs | context7, deepwiki, package-version | brave-search |
+| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version | brave-search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed, openalex | crossref, brave-search |
 | Current events/trends | brave-search, exa, duckduckgo-search, g-search | fetcher, trafilatura |
 | GitHub repos/OSS | deepwiki, repomix | brave-search |
@@ -381,6 +408,16 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 | PDF/document analysis | docling | trafilatura |
 
 **Multi-engine protocol:** For any claim requiring verification, use minimum 2 different search engines. Different engines have different indices and biases. Agreement across engines increases confidence.
+
+## Progressive Disclosure
+
+Load only the next required reference:
+
+1. Start with this file for routing, classification, and wave order.
+2. Load `references/source-selection.md` during Wave 0 only.
+3. Load validation references during Wave 3 only: confidence, contradiction, self-verification, and bias files as needed.
+4. Load `references/output-formats.md` or `references/dashboard-schema.md` only when producing final output or exports.
+5. Never preload all references; summarize tool limitations instead of filling context with unused mappings.
 
 ## Bias Detection
 
@@ -472,7 +509,7 @@ Read `references/session-commands.md` for full protocols.
 4. **Always present triage scoring before executing research** — user must see and can override complexity tier
 5. **Save journal after every wave in Deep/Exhaustive mode** — enables resume after interruption
 6. **Never skip Wave 3 (cross-validation) for Standard/Deep/Exhaustive tiers** — this is the anti-hallucination mechanism
-7. **Multi-engine search is mandatory for fact-checking** — use minimum 2 different search tools (e.g., brave-search + duckduckgo-search)
+7. **Multi-engine search is mandatory for fact-checking** — use minimum 3 different search tools (e.g., brave-search + duckduckgo-search + exa)
 8. **Apply the Accounting Rule after every parallel dispatch** — N dispatched = N accounted for before proceeding to next wave
 9. **Distinguish facts from interpretations in all output** — factual claims carry evidence; interpretive claims are explicitly labeled as analysis
 10. **Flag all LLM-prior findings** — claims matching common training data but lacking fresh evidence must be flagged with bias marker
@@ -480,7 +517,9 @@ Read `references/session-commands.md` for full protocols.
 12. **Load ONE reference file at a time** — do not preload all references into context
 13. **Track mode must load prior journal before searching** — avoid re-researching what is already known
 14. **The synthesis is not a summary** — it must integrate findings into novel analysis, identify patterns across sources, and surface emergent insights not present in any single source
-15. **PreToolUse Edit hook is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`
+15. **PreToolUse write guard is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`
+16. **Stop hook must pass** — `verify.py stop` confirms the skill did not leave tracked research-source files dirty
+17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape
 
 ````
 

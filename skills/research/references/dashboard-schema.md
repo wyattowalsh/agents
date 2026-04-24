@@ -27,7 +27,8 @@ JSON data contract for the HTML research dashboard. The dashboard template reads
           "tool": "string — MCP tool or search engine used",
           "url": "string — source URL",
           "timestamp": "string — ISO 8601 access timestamp",
-          "excerpt": "string — verbatim excerpt, max 100 words"
+          "excerpt": "string — verbatim excerpt, max 100 words",
+          "independent": true
         }
       ],
       "cross_validation": "agrees|contradicts|partial|unverified",
@@ -90,12 +91,17 @@ JSON data contract for the HTML research dashboard. The dashboard template reads
 | `metadata.sources_count` | Yes | Total unique sources consulted |
 | `metadata.findings_count` | Yes | Total findings produced |
 | `metadata.mean_confidence` | Yes | Arithmetic mean of all finding confidence scores |
+| `metadata.confidence_mean` | No | Legacy alias; normalize to `metadata.mean_confidence` before export |
 | `metadata.waves_completed` | No | Number of waves executed (0-4) (recommended) |
 | `metadata.tools_used` | No | List of MCP tools and search engines used (recommended) |
 | `findings[].id` | Yes | Sequential ID: `RR-001`, `RR-002`, ... |
 | `findings[].claim` | Yes | Discrete assertion statement |
 | `findings[].confidence` | Yes | Score 0.0-1.0 per confidence rubric |
 | `findings[].evidence` | Yes | Array of evidence items with provenance |
+| `findings[].evidence[].tool` | Yes | Tool or capability used to retrieve the evidence |
+| `findings[].evidence[].url` | Yes | Source URL or stable document identifier |
+| `findings[].evidence[].timestamp` | Yes | ISO 8601 access timestamp when available |
+| `findings[].evidence[].independent` | No | Whether the source counts as independent for confidence scoring; default true until Wave 3 checks |
 | `findings[].cross_validation` | Yes | Cross-source agreement status |
 | `findings[].bias_markers` | No | Empty array if none detected |
 | `findings[].gaps` | No | Empty array if none identified |

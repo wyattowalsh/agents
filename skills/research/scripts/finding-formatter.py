@@ -17,6 +17,55 @@ import sys
 from typing import Any
 
 
+def normalize_evidence(finding: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return canonical evidence[] items, accepting legacy top-level source fields."""
+    raw_evidence = finding.get("evidence", [])
+    evidence: list[dict[str, Any]] = []
+    if isinstance(raw_evidence, list):
+        evidence = [dict(e) for e in raw_evidence if isinstance(e, dict)]
+
+    legacy_url = finding.get("source_url") or finding.get("url")
+    legacy_tool = finding.get("source_tool") or finding.get("tool")
+    legacy_excerpt = finding.get("excerpt")
+    if legacy_url and not evidence:
+        evidence.append({
+            "tool": legacy_tool or "unknown",
+            "url": legacy_url,
+            "timestamp": finding.get("timestamp", "N/A"),
+            "excerpt": legacy_excerpt or "",
+        })
+
+    normalized: list[dict[str, Any]] = []
+    for ev in evidence:
+        item = dict(ev)
+        if "source_tool" in item and "tool" not in item:
+            item["tool"] = item.pop("source_tool")
+        if "source_url" in item and "url" not in item:
+            item["url"] = item.pop("source_url")
+        item.setdefault("tool", "unknown")
+        item.setdefault("url", "N/A")
+        item.setdefault("timestamp", "N/A")
+        item.setdefault("excerpt", "")
+        item.setdefault("independent", True)
+        normalized.append(item)
+    return normalized
+
+
+def independent_source_count(evidence: list[dict[str, Any]]) -> int:
+    """Count distinct independent evidence URLs, falling back to evidence count."""
+    seen: set[str] = set()
+    anonymous = 0
+    for ev in evidence:
+        if ev.get("independent") is False:
+            continue
+        url = str(ev.get("url") or "").strip()
+        if url and url != "N/A":
+            seen.add(url)
+        else:
+            anonymous += 1
+    return len(seen) + anonymous
+
+
 def load_findings(source: str | None) -> list[dict[str, Any]]:
     """Load raw findings from a file path, stdin ('-' or None)."""
     if source is None or source == "-":
@@ -54,25 +103,22 @@ def validate_finding(finding: dict[str, Any], index: int) -> list[str]:
     warnings: list[str] = []
     if not finding.get("claim"):
         warnings.append(f"Finding {index}: missing required field 'claim'")
-    conf = finding.get("confidence")
+    conf = finding.get("confidence", finding.get("confidence_raw"))
     if conf is None:
         warnings.append(f"Finding {index}: missing required field 'confidence'")
     elif not isinstance(conf, (int, float)) or conf < 0.0 or conf > 1.0:
         warnings.append(f"Finding {index}: 'confidence' must be a number between 0.0 and 1.0, got {conf}")
-    evidence = finding.get("evidence")
-    if not evidence or not isinstance(evidence, list) or len(evidence) == 0:
+    evidence = normalize_evidence(finding)
+    if not evidence:
         warnings.append(f"Finding {index}: must have at least 1 evidence item")
     return warnings
 
 
 def normalize_finding(finding: dict[str, Any], seq: int) -> dict[str, Any]:
     """Normalize a raw finding into the output schema with an assigned ID."""
-    evidence = finding.get("evidence", [])
-    if not isinstance(evidence, list):
-        evidence = []
-    evidence = [e for e in evidence if isinstance(e, dict)]
+    evidence = normalize_evidence(finding)
 
-    raw_conf = finding.get("confidence")
+    raw_conf = finding.get("confidence", finding.get("confidence_raw"))
     conf = max(0.0, min(1.0, float(raw_conf))) if isinstance(raw_conf, (int, float)) else 0.0
 
     return {
@@ -84,6 +130,7 @@ def normalize_finding(finding: dict[str, Any], seq: int) -> dict[str, Any]:
         "bias_markers": finding.get("bias_markers", []),
         "gaps": finding.get("gaps", []),
         "source_count": len(evidence),
+        "independent_source_count": independent_source_count(evidence),
     }
 
 
@@ -105,8 +152,11 @@ def format_markdown(findings: list[dict[str, Any]]) -> str:
             excerpt = ev.get("excerpt", "N/A")
             lines.append(f"    {i}. [{tool}] {url} [{ts}] -- {excerpt}")
         cv = f.get("cross_validation", "unknown")
-        sc = f.get("source_count", 0)
-        lines.append(f"  CROSS-VALIDATION: {cv} across {sc} independent sources")
+        sc = f.get("independent_source_count", f.get("source_count", 0))
+        if "source" in str(cv).lower():
+            lines.append(f"  CROSS-VALIDATION: {cv}")
+        else:
+            lines.append(f"  CROSS-VALIDATION: {cv} across {sc} independent sources")
         bias = f.get("bias_markers", [])
         lines.append(f"  BIAS MARKERS: {', '.join(bias) if bias else 'none'}")
         gaps = f.get("gaps", [])
