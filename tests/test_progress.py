@@ -383,13 +383,7 @@ class TestServe:
             thread.join(timeout=5)
 
     def test_dashboard_template_has_distinct_not_applicable_pattern_state(self):
-        template_path = (
-            Path(__file__).parent.parent
-            / "skills"
-            / "skill-creator"
-            / "templates"
-            / "dashboard.html"
-        )
+        template_path = Path(__file__).parent.parent / "skills" / "skill-creator" / "templates" / "dashboard.html"
         template = template_path.read_text(encoding="utf-8")
 
         assert ".pattern-dot.not-applicable" in template
@@ -413,3 +407,15 @@ class TestCLIParsing:
         # Exit code 1 = runtime error (no state file) — expected
         # Exit code 2 = argument parsing error — would mean --inject still required
         assert exc_info.value.code == 1
+
+    def test_serve_help_shows_live_flags(self, monkeypatch, capsys):
+        monkeypatch.setattr(sys, "argv", ["progress.py", "serve", "--help"])
+
+        with pytest.raises(SystemExit) as exc_info:
+            main()
+
+        assert exc_info.value.code == 0
+        output = capsys.readouterr().out
+        assert "--live" in output
+        assert "--host" in output
+        assert "--port" in output

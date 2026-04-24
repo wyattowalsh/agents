@@ -98,7 +98,7 @@ When a creation session is active (`~/.{gemini|copilot|codex|claude}/skill-progr
    This renders the current session into the canonical `<script id="data" type="application/json">`
    payload block, writes a temporary HTML snapshot, and opens it in the default browser.
    Use `--no-open` to suppress browser launch, `--state-dir <path>` to read from a custom
-   state directory, and `--live` to serve a polling dashboard over HTTP.
+   state directory, and `--live --host 127.0.0.1 --port 0` to serve a polling dashboard over HTTP with `/data.json`.
 
 2. **Manual setup** (alternative):
    1. Read progress: `uv run python skills/skill-creator/scripts/progress.py read --skill <name>`

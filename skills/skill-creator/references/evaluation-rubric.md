@@ -19,7 +19,7 @@ Skill quality is assessed through two complementary checks run in sequence:
 
 1. **`wagents validate`** -- structural correctness (pass/fail). Checks that `name` matches the directory, `description` is non-empty, and the body is non-empty. A skill that fails validation is broken and cannot be audited. Always run this first.
 
-2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 11 weighted dimensions. Produces a deterministic numeric score and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
+2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 10 weighted dimensions plus a vocabulary bonus. Produces a deterministic numeric score and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
 
 Always run both. A skill that passes validation but scores D or F needs significant rework. A skill that scores B but fails validation has a naming or metadata bug that must be fixed before distribution.
 
@@ -37,15 +37,15 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 | 2 | Description Quality | 2x | 20 | Length (50--200 chars optimal), action verbs, "Use when" trigger words, "NOT for" exclusion, third-person voice | CSO optimization, keyword coverage, specificity vs vagueness |
 | 3 | Dispatch Table | 1x | 10 | `$ARGUMENTS` table present, empty-args handler row, >=3 rows | Route clarity, coverage of common inputs, auto-detect logic |
 | 4 | Body Structure | 1.5x | 15 | Line count <=500 (below frontmatter), heading hierarchy valid, >=3 `##` sections | Imperative voice, logical flow, information density |
-| 5 | Pattern Coverage | 1.5x | 15 | Pattern markers detected (13 patterns, 2 pts each, capped at 15) | Fitness for skill type -- are the RIGHT patterns present? |
+| 5 | Pattern Coverage | 1.5x | 15 | Pattern markers detected (14 patterns, 2 pts each, capped at 15) | Fitness for skill type -- are the RIGHT patterns present? |
 | 6 | Reference Quality | 1x | 10 | Index table present, no orphan files, no missing files, file sizes 50--500 lines | Content relevance, depth, self-containedness |
 | 7 | Critical Rules | 1x | 10 | Section present with heading, >=5 numbered items | Testability (each rule can be verified), completeness, no overlap |
 | 8 | Script Quality | 0.5x | 5 | If `scripts/` exists: argparse present, JSON output pattern, dependency check | Error handling, edge cases, documentation |
 | 9 | Portability | 0.5x | 5 | License field, metadata.author, metadata.version, no absolute paths, no repo-specific `@` imports | Distribution readiness, environment assumptions |
 | 10 | Conciseness | 0.5x | 5 | No duplicate headings, no repeated content blocks | Token efficiency, information density, dead text |
-| 11 | Canonical Vocabulary | -- | +3 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
+| Bonus | Canonical Vocabulary | -- | +3 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
 
-**Total: 104 raw points + 3 bonus. Final score is normalized:
+**Total: 104 raw weighted-dimension points + 3 bonus. Final score is normalized:
 `(total_weighted / max_weighted * 100) + bonus`, producing a 0-103 scale.**
 
 ### Dimension Details
@@ -76,7 +76,7 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 
 **5. Pattern Coverage (15 pts, 1.5x weight)**
 
-- **Full marks (15):** 8+ of the 13 patterns detected (2 pts each, capped at 15). Patterns: dispatch-table, reference-file-index, critical-rules, canonical-vocabulary, scope-boundaries, classification-gating, scaling-strategy, state-management, scripts, templates, hooks, progressive-disclosure, body-substitutions.
+- **Full marks (15):** 8+ of the 14 patterns detected (2 pts each, capped at 15). Patterns: dispatch-table, reference-file-index, critical-rules, canonical-vocabulary, scope-boundaries, classification-gating, scaling-strategy, state-management, scripts, templates, hooks, progressive-disclosure, body-substitutions, stop-hooks.
 - **Common deductions:** Each missing pattern costs 2 pts (until floor of 0). Skills with only 3--4 patterns score 6--8 raw.
 - **Zero:** Fewer than 1 pattern detected. Indicates a stub or skeleton skill.
 
@@ -111,9 +111,9 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 - **Common deductions:** Duplicate heading text (-2), repeated paragraph blocks (-3).
 - **Zero:** Both duplicate headings and repeated content blocks detected.
 
-**11. Canonical Vocabulary (+5 bonus)**
+**Canonical Vocabulary (+3 bonus)**
 
-- **Full bonus (+5):** A dedicated "Canonical Terms," "Canonical Vocabulary," or "Vocabulary" section exists (heading or bold block).
+- **Full bonus (+3):** A dedicated "Canonical Terms," "Canonical Vocabulary," or "Vocabulary" section exists (heading or bold block).
 - **No bonus (0):** No vocabulary section found. This is not penalized -- it is purely additive.
 
 ---

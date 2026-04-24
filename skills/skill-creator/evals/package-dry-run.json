@@ -1,9 +1,0 @@
-{
-  "skills": ["skill-creator"],
-  "query": "/skill-creator package --all --dry-run",
-  "expected_behavior": [
-    "Agent dispatches to Package mode with --dry-run flag",
-    "Agent runs portability checks without creating ZIP files",
-    "Agent reports portability_checks and files_included in output"
-  ]
-}

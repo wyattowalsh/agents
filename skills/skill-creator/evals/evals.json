@@ -1,0 +1,419 @@
+{
+  "skill_name": "skill-creator",
+  "evals": [
+    {
+      "id": "explicit-invocation",
+      "prompt": "/skill-creator create my-analyzer",
+      "expected_output": "Dispatches to Develop (new), scaffolds the requested skill, builds the required skill structure, and validates before completion.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/workflow.md",
+        "skills/skill-creator/references/frontmatter-spec.md",
+        "skills/skill-creator/references/proven-patterns.md"
+      ],
+      "assertions": [
+        "Agent dispatches to Develop (new) mode based on the explicit create keyword.",
+        "Agent validates name 'my-analyzer' as kebab-case, no more than 64 chars, and conflict-free in skills/.",
+        "Agent runs 'uv run wagents new skill my-analyzer' to scaffold.",
+        "Agent loads frontmatter and proven-pattern references before filling out the skill.",
+        "Agent follows the six-step workflow: Understand, Plan, Scaffold, Build, Validate, Iterate.",
+        "Agent produces a complete SKILL.md with a dispatch table and critical rules at minimum.",
+        "Agent runs 'uv run wagents validate' before declaring completion."
+      ]
+    },
+    {
+      "id": "create-from-exemplar",
+      "prompt": "/skill-creator create my-tool --from wargame",
+      "expected_output": "Dispatches to Develop (new, from exemplar), reads the exemplar skill as a structural source, scaffolds the target skill, and adapts the structure to the new domain.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/wargame/SKILL.md"
+      ],
+      "assertions": [
+        "Agent dispatches to Develop (new, from exemplar) mode.",
+        "Agent reads skills/wargame/SKILL.md as a structural template.",
+        "Agent scaffolds skills/my-tool/SKILL.md via wagents new skill.",
+        "Agent copies applicable structure from wargame while replacing domain-specific content."
+      ]
+    },
+    {
+      "id": "implicit-trigger",
+      "prompt": "I want to build a skill that audits Python type safety across a codebase",
+      "expected_output": "Recognizes a natural-language skill creation request, suggests a skill name, asks for confirmation before scaffolding, and stays scoped to skills.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent recognizes the prompt as a skill creation request from natural language.",
+        "Agent auto-detects Develop (new) mode because the user describes a new skill idea.",
+        "Agent derives a plausible kebab-case name such as 'type-safety-auditor'.",
+        "Agent asks user to confirm the name before scaffolding.",
+        "Agent follows the same six-step workflow as explicit creation.",
+        "Agent does not confuse this with an MCP server request or agent creation."
+      ]
+    },
+    {
+      "id": "description-trigger-skill-request",
+      "prompt": "Build a reusable skill for reviewing Terraform drift reports and producing a remediation checklist",
+      "expected_output": "Classifies the request as a skill-creator trigger because it asks for a reusable skill, then starts Develop (new) with a derived name and confirmation gate.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent uses the skill-creator description trigger for building skills.",
+        "Agent routes to Develop (new), not Audit, Package, agent creation, or MCP creation.",
+        "Agent derives a kebab-case name before scaffolding.",
+        "Agent asks for name confirmation before creating files because the name is inferred.",
+        "Agent keeps the scope focused on a SKILL.md asset and supporting skill artifacts."
+      ]
+    },
+    {
+      "id": "description-near-miss-agent-request",
+      "prompt": "Create an AI agent that reviews Terraform drift reports and opens pull requests",
+      "expected_output": "Does not trigger skill-creator for an agent-definition request; redirects to the agent creation workflow instead of creating a skill.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "AGENTS.md"
+      ],
+      "assertions": [
+        "Agent identifies this as an agent creation request, not a skill creation request.",
+        "Agent does not scaffold skills/terraform-drift-reviewer/ or any SKILL.md.",
+        "Agent redirects to the agent conventions or wagents new agent workflow.",
+        "Agent explains the scope boundary using the skill-creator NOT-for-agents rule."
+      ]
+    },
+    {
+      "id": "improve-explicit",
+      "prompt": "/skill-creator improve add-badges",
+      "expected_output": "Dispatches to Develop (existing), audits the existing skill, and presents an improvement plan with an approval gate before edits.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/add-badges/SKILL.md",
+        "skills/skill-creator/references/workflow.md",
+        "skills/skill-creator/references/refinement-plan.md"
+      ],
+      "assertions": [
+        "Agent dispatches to Develop (existing) mode.",
+        "Agent resolves 'add-badges' to skills/add-badges/SKILL.md.",
+        "Agent loads references/workflow.md.",
+        "Agent runs audit.py against add-badges first.",
+        "Agent presents an improvement plan with approval gate before implementing."
+      ]
+    },
+    {
+      "id": "improve-implicit",
+      "prompt": "refactor the wargame skill to improve its description and add a scaling strategy",
+      "expected_output": "Auto-detects an existing-skill improvement request, audits the named skill, and produces a focused plan without treating it as a create request.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/wargame/SKILL.md",
+        "skills/skill-creator/references/refinement-plan.md"
+      ],
+      "assertions": [
+        "Agent auto-detects 'refactor' plus 'wargame' as Develop (existing).",
+        "Agent runs a full audit but focuses the plan on description and scaling strategy.",
+        "Agent presents a targeted improvement plan with approval gate.",
+        "Agent does not confuse this with a Create request."
+      ]
+    },
+    {
+      "id": "no-edit-before-approval",
+      "prompt": "/skill-creator improve honest-review",
+      "expected_output": "Presents an improvement plan for the existing skill and waits for approval before changing files.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/honest-review/SKILL.md",
+        "skills/skill-creator/references/refinement-plan.md"
+      ],
+      "assertions": [
+        "Agent first presents an improvement plan for the existing skill.",
+        "Agent waits for user approval before implementing changes.",
+        "Agent keeps planning and implementation as separate phases for existing-skill work."
+      ]
+    },
+    {
+      "id": "approval-gate-refusal",
+      "prompt": "/skill-creator improve honest-review and immediately edit the files without asking",
+      "expected_output": "Refuses the request to bypass the approval gate, produces the required improvement plan, and stops before editing.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/refinement-plan.md"
+      ],
+      "assertions": [
+        "Agent treats the target as an existing-skill improvement.",
+        "Agent explicitly refuses to bypass the approval gate.",
+        "Agent produces a plan with baseline audit summary, file targets, expected score impact, and verification commands.",
+        "Agent does not edit SKILL.md, references, scripts, templates, or evals in the same response."
+      ]
+    },
+    {
+      "id": "path-auto-detect",
+      "prompt": "/skill-creator skills/wargame/SKILL.md",
+      "expected_output": "Auto-detects Develop (existing) from the SKILL.md path and starts the improvement workflow.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/wargame/SKILL.md"
+      ],
+      "assertions": [
+        "Agent auto-detects Develop (existing) mode from a SKILL.md path.",
+        "Agent reads current skill content and runs audit.",
+        "Agent follows the existing-skill workflow starting with Understand."
+      ]
+    },
+    {
+      "id": "standalone-plan-output",
+      "prompt": "/skill-creator plan honest-review",
+      "expected_output": "Dispatches to read-only planning and emits a standalone refinement plan instead of starting implementation.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/refinement-plan.md",
+        "skills/honest-review/SKILL.md"
+      ],
+      "assertions": [
+        "Agent dispatches to read-only planning for an existing skill.",
+        "Agent includes baseline audit summary, file targets, rationale, expected score impact, verification commands, and approval gate wording.",
+        "Agent treats the output as a standalone refinement plan rather than starting implementation."
+      ]
+    },
+    {
+      "id": "repo-wide-planning",
+      "prompt": "/skill-creator plan --all",
+      "expected_output": "Dispatches to repo-wide planning, builds a ranked queue from a baseline, and does not edit skills.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/refinement-plan.md",
+        "skills/skill-creator/scripts/audit.py"
+      ],
+      "assertions": [
+        "Agent dispatches to a repo-wide planning mode rather than directly editing skills.",
+        "Agent runs or references a repo-wide audit baseline before ranking the work.",
+        "Agent produces a ranked planning queue plus standalone refinement plans for promoted skills.",
+        "Agent does not edit any skill during the planning response."
+      ]
+    },
+    {
+      "id": "repo-wide-planning-natural-language",
+      "prompt": "Review every skill in this repo and give me the order we should improve them in",
+      "expected_output": "Treats the request as repo-wide planning, runs or cites a repo-wide audit baseline, and returns a ranked plan without edits.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/refinement-plan.md"
+      ],
+      "assertions": [
+        "Agent recognizes the request as multi-skill planning.",
+        "Agent produces a ranked queue rather than changing all skills immediately.",
+        "Agent includes one standalone refinement plan per promoted skill or cluster.",
+        "Agent stops at the approval gate before any implementation."
+      ]
+    },
+    {
+      "id": "audit-mode",
+      "prompt": "/skill-creator audit wargame",
+      "expected_output": "Dispatches to Audit, runs deterministic scoring, supplements it with AI review, and reports concrete improvement opportunities.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/audit-guide.md",
+        "skills/skill-creator/references/evaluation-rubric.md",
+        "skills/skill-creator/scripts/audit.py"
+      ],
+      "assertions": [
+        "Agent dispatches to Audit mode based on the audit keyword.",
+        "Agent loads references/audit-guide.md for the audit procedure.",
+        "Agent runs 'uv run python skills/skill-creator/scripts/audit.py skills/wargame/' to produce deterministic scores.",
+        "Agent supplements script output with AI review using the evaluation rubric pressure testing protocol.",
+        "Agent presents a graded report with dimension breakdown, pattern checklist, and top three improvement opportunities."
+      ]
+    },
+    {
+      "id": "audit-all-mode",
+      "prompt": "/skill-creator audit --all",
+      "expected_output": "Dispatches to Audit All, runs the all-skills audit table, and presents comparative results plus a roadmap.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/audit-guide.md",
+        "skills/skill-creator/scripts/audit.py"
+      ],
+      "assertions": [
+        "Agent dispatches to Audit All mode.",
+        "Agent runs audit.py --all --format table.",
+        "Agent presents a comparative table sorted by score descending.",
+        "Agent provides summary statistics and an improvement roadmap."
+      ]
+    },
+    {
+      "id": "dashboard-mode",
+      "prompt": "/skill-creator dashboard",
+      "expected_output": "Dispatches to Dashboard and renders an audit snapshot when no live progress session is requested.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/audit-guide.md",
+        "skills/skill-creator/templates/dashboard.html",
+        "skills/skill-creator/scripts/audit.py"
+      ],
+      "assertions": [
+        "Agent dispatches to Dashboard mode based on the dashboard keyword.",
+        "Agent checks for active progress sessions before choosing a view.",
+        "If no active session is selected, agent runs audit.py --all for an audit overview snapshot.",
+        "Agent copies templates/dashboard.html and injects the audit data JSON.",
+        "Dashboard auto-detects audit overview from the skills array data shape.",
+        "Agent renders via Playwright, browser open, or another available browser surface."
+      ]
+    },
+    {
+      "id": "dashboard-process",
+      "prompt": "/skill-creator dashboard my-skill",
+      "expected_output": "Loads the named live progress session and renders the process monitor dashboard.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/templates/dashboard.html",
+        "skills/skill-creator/scripts/progress.py"
+      ],
+      "assertions": [
+        "Agent reads the progress session for 'my-skill' from the configured skill-progress state location.",
+        "Agent injects progress JSON into the dashboard template.",
+        "Dashboard renders in process monitor mode showing phase pipeline and wave execution.",
+        "If audit data is present in the session, dashboard also shows quality scores."
+      ]
+    },
+    {
+      "id": "gallery-empty-args",
+      "prompt": "/skill-creator",
+      "expected_output": "Dispatches empty arguments to Gallery, shows skill inventory scores, and offers the supported mode menu.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/scripts/audit.py"
+      ],
+      "assertions": [
+        "Agent dispatches to Gallery mode due to empty arguments.",
+        "Agent runs 'uv run python skills/skill-creator/scripts/audit.py --all --format table' to get current scores.",
+        "Agent presents a skill inventory table with scores, grades, and pattern counts.",
+        "Agent offers a mode menu: create, improve, audit, audit --all, dashboard."
+      ]
+    },
+    {
+      "id": "package-mode",
+      "prompt": "/skill-creator package add-badges",
+      "expected_output": "Dispatches to Package and packages the requested skill using the packaging reference and script.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/packaging-guide.md",
+        "skills/skill-creator/scripts/package.py",
+        "skills/add-badges/SKILL.md"
+      ],
+      "assertions": [
+        "Agent dispatches to Package mode based on the package keyword.",
+        "Agent runs package.py for the specified skill or --all target.",
+        "Agent supports --dry-run flag to run portability checks without creating ZIP files."
+      ]
+    },
+    {
+      "id": "package-dry-run",
+      "prompt": "/skill-creator package --all --dry-run",
+      "expected_output": "Dispatches to Package with dry-run behavior, checks portability for all skills, and reports results without creating ZIP files.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "skills/skill-creator/references/packaging-guide.md",
+        "skills/skill-creator/scripts/package.py"
+      ],
+      "assertions": [
+        "Agent dispatches to Package mode with the --dry-run flag.",
+        "Agent runs portability checks without creating ZIP files.",
+        "Agent reports portability_checks and files_included in output."
+      ]
+    },
+    {
+      "id": "malformed-input",
+      "prompt": "/skill-creator create My Bad Name!",
+      "expected_output": "Rejects the invalid skill name, explains the naming rule violation, and suggests a corrected kebab-case name.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "AGENTS.md"
+      ],
+      "assertions": [
+        "Agent detects invalid skill name because it is not kebab-case.",
+        "Agent reports name validation failure with a specific reason.",
+        "Agent suggests a corrected kebab-case name."
+      ]
+    },
+    {
+      "id": "malformed-consecutive-hyphen-name",
+      "prompt": "/skill-creator create drift--reviewer",
+      "expected_output": "Rejects a malformed kebab-case-like name with consecutive hyphens and asks for or suggests a valid replacement.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent detects that 'drift--reviewer' violates the no consecutive hyphens rule.",
+        "Agent does not scaffold a skill with the malformed name.",
+        "Agent suggests a valid name such as 'drift-reviewer'."
+      ]
+    },
+    {
+      "id": "ambiguous-input",
+      "prompt": "/skill-creator something about badges",
+      "expected_output": "Identifies the request as ambiguous and asks the user to choose the intended skill-creator mode before acting.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent detects ambiguous input that could be create or improve.",
+        "Agent asks user to clarify which mode they want.",
+        "Agent does not proceed without clarification."
+      ]
+    },
+    {
+      "id": "negative-control",
+      "prompt": "Create an MCP server that wraps the GitHub API",
+      "expected_output": "Does not trigger skill-creator for a plain MCP server creation request; redirects to the MCP workflow if skill-creator is invoked.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent does not trigger skill-creator for this request.",
+        "Agent recognizes this as an MCP server creation request, not a skill.",
+        "Agent should delegate to the mcp-creator skill instead.",
+        "If skill-creator is somehow invoked, it refuses gracefully and redirects to /mcp-creator."
+      ]
+    },
+    {
+      "id": "scope-refusal",
+      "prompt": "/skill-creator create an MCP server for my API",
+      "expected_output": "Refuses an explicit MCP server request inside skill-creator and redirects to MCP tooling without creating a skill.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent detects the out-of-scope MCP server request.",
+        "Agent refuses gracefully with redirect to /mcp-creator or wagents new mcp.",
+        "Agent does not attempt to create a skill."
+      ]
+    },
+    {
+      "id": "agent-scope-refusal",
+      "prompt": "/skill-creator create an agent that triages GitHub issues",
+      "expected_output": "Refuses an explicit agent-creation request inside skill-creator and redirects to agent tooling.",
+      "files": [
+        "skills/skill-creator/SKILL.md",
+        "AGENTS.md"
+      ],
+      "assertions": [
+        "Agent detects the out-of-scope agent creation request.",
+        "Agent refuses gracefully with redirect to wagents new agent or the agent-conventions workflow.",
+        "Agent does not create a skill as a substitute for the requested agent."
+      ]
+    },
+    {
+      "id": "run-scope-refusal",
+      "prompt": "/skill-creator run the honest-review skill on this pull request",
+      "expected_output": "Refuses to use skill-creator as a skill runner and redirects the user to invoke the requested skill directly.",
+      "files": [
+        "skills/skill-creator/SKILL.md"
+      ],
+      "assertions": [
+        "Agent detects that running existing skills is out of scope.",
+        "Agent refuses gracefully instead of auditing or modifying honest-review.",
+        "Agent tells the user to invoke /honest-review or the appropriate runtime path directly."
+      ]
+    }
+  ]
+}
