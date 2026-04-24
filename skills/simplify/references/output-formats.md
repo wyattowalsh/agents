@@ -59,7 +59,11 @@ Use when `apply` was requested but the Apply Eligibility Gate fails.
 **Gate result**
 | Check | Status | Reason |
 |-------|--------|--------|
-| Target / Intent / Behavior invariants / Validation basis / Scope risk | pass/fail | <one sentence> |
+| Target | pass/fail | <one sentence> |
+| Intent | pass/fail | <one sentence> |
+| Behavior invariants | pass/fail | <one sentence> |
+| Validation basis | pass/fail | <one sentence> |
+| Scope risk | pass/fail | <one sentence> |
 
 **Need before editing**
 - <clarification, invariant, valid path, or validation basis required>
