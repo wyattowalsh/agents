@@ -19,10 +19,10 @@ per references/output-formats.md).
 
 ## Step 1 — Normalize
 
-Pipe raw reviewer output through scripts/finding-formatter.py:
+Pipe raw reviewer output through skills/honest-review/scripts/finding-formatter.py:
 
 ```bash
-cat reviewer-output.txt | python scripts/finding-formatter.py --mode session  # or --mode audit
+cat reviewer-output.txt | uv run python skills/honest-review/scripts/finding-formatter.py --mode session  # or --mode audit
 ```
 
 Each finding gets a unique ID: `HR-{S|A}-{seq:03d}` (S = session, A = audit).
@@ -60,14 +60,14 @@ HR-S-003, merge the library doc citation into its evidence field.
 Before applying the confidence filter, check findings against stored learnings:
 
 ```bash
-cat findings.json | python scripts/learnings-store.py check --project [project-slug]
+cat findings.json | uv run python skills/honest-review/scripts/learnings-store.py check --project [project-slug]
 ```
 
 Findings matching a stored false-positive learning have their confidence reduced by 0.3.
 Use `--dry-run` to preview suppressions before applying. Suppress findings only when
 the match is relevant to the current review context.
 
-See scripts/learnings-store.py for matching criteria (file path + category/keyword).
+See skills/honest-review/scripts/learnings-store.py for matching criteria (file path + category/keyword).
 
 | Confidence | Action |
 |------------|--------|

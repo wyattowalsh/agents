@@ -1,9 +1,7 @@
-import os
-
 #!/usr/bin/env python3
 """Manage false-positive dismissals for the honest-review learning loop.
 
-Stores learnings in ~/.claude/honest-reviews/learnings/{project-slug}.json.
+Stores learnings in the active agent's honest-reviews state directory.
 Supports add, check, list, and clear subcommands. All output is JSON to stdout.
 
 Usage:
@@ -19,10 +17,12 @@ from __future__ import annotations
 import argparse
 import contextlib
 import json
+import os
 import re
 import sys
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 
 def get_agent_dir(skill_name: str) -> Path:
@@ -33,7 +33,6 @@ def get_agent_dir(skill_name: str) -> Path:
             return Path.home() / folder / skill_name
     return Path.home() / ".claude" / skill_name
 
-from typing import Any
 
 LEARNINGS_DIR = get_agent_dir("honest-reviews") / "learnings"
 

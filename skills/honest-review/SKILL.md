@@ -1,9 +1,9 @@
 ---
 name: honest-review
 description: >-
-  Confidence-scored code review with evidence validation. Session or full
-  codebase audit. Use when reviewing changes or auditing quality. NOT for
-  writing code or benchmarking.
+  Review code with confidence-scored evidence. Session, scoped, PR, or full
+  audit; optional approved fix pass. Use when reviewing changes or quality. NOT
+  for feature work or benchmarking.
 argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
@@ -26,7 +26,7 @@ hooks:
 Research-driven code review. Every finding validated with evidence.
 4-wave pipeline: Triage → Analysis → Research → Judge.
 
-**Scope:** Code review and audit only. NOT for writing new code, explaining code, or benchmarking.
+**Scope:** Code review and audit first. NOT for feature work, general explanation, or benchmarking. Post-review fix planning or execution is allowed only after the approval gate for selected findings.
 
 ## Canonical Vocabulary
 
@@ -65,7 +65,7 @@ Use these terms exactly throughout both modes:
 | $ARGUMENTS                            | Mode                                                       |
 | ------------------------------------- | ---------------------------------------------------------- |
 | Empty + changes in session (git diff) | Session review of changed files                            |
-| Empty + no changes (first message)    | Full codebase audit                                        |
+| Empty + no changes                    | Show mode menu; require explicit `audit` for full codebase |
 | File or directory path                | Scoped review of that path                                 |
 | "audit"                               | Force full codebase audit                                  |
 | PR number/URL                         | Review PR changes (gh pr diff)                             |
@@ -75,7 +75,20 @@ Use these terms exactly throughout both modes:
 | `--format sarif` (with any mode)      | Output findings in SARIF v2.1 (references/sarif-output.md) |
 | "learnings" [command]                 | Manage false-positive learnings (add/list/clear)           |
 | `--format conventional` (with any mode) | Output findings in Conventional Comments format          |
+| "fix" / "apply" approved findings     | Post-review fix pass via references/auto-fix-protocol.md  |
 | Unrecognized input                    | Ask for clarification                                      |
+
+### Auto-Detection Heuristic
+
+If no explicit mode keyword is provided:
+
+1. Empty args + changed files in `git diff --name-only HEAD` -> **Session review**
+2. Empty args + no changed files -> show the mode menu; do not start a full audit without explicit `audit`
+3. Existing file or directory path -> **Scoped review**
+4. PR number/URL -> **PR review**; git range (`HEAD~3..HEAD`) -> **Range review**
+5. `--format sarif` or `--format conventional` modifies the selected review mode; it never chooses the scope by itself
+6. General research, strategy debate, explanation, benchmarking, or pure simplification -> redirect to the appropriate skill or ask before proceeding
+7. Ambiguous or missing targets -> ask for clarification before triage
 
 ## Review Posture
 
@@ -92,7 +105,7 @@ Rubric: references/research-playbook.md § Confidence Scoring Rubric.
 
 **Strengths acknowledgment**:
 Call out well-engineered patterns, clean abstractions, and thoughtful design.
-Minimum one strength per review scope. Strengths are findings too.
+Minimum one strength per review scope. Strength notes are report items, not defect findings, and do not require a fix.
 
 **Positive-to-constructive ratio**:
 Target 3:1. Avoid purely negative reports. If the ratio skews negative,
@@ -110,7 +123,7 @@ If no P0/P1 or S0 findings: state this explicitly. A short report is a good repo
 - Small scoped reviews still use the full content-adaptive reviewer set; only the triage depth becomes lighter.
 - Session Review and Full Audit share one core scaling rule: maximum review depth, content-adaptive reviewers, and no inline-only shortcut.
 - Large full-codebase audits may split ownership by domain or risk tier, but that does not weaken the evidence-validation or reasoning-first output contract.
-- Read-only review output stops at findings, strengths, and next-step recommendations; implementation summaries appear only after explicit approval and a fix pass.
+- Read-only review output stops at findings, strengths, and next-step recommendations. Implementation summaries appear only after explicit approval and a separate fix pass.
 
 ## Review Levels (Both Modes)
 
@@ -209,7 +222,7 @@ Detect convention files (AGENTS.md, CLAUDE.md, .cursorrules) — see `references
 
 For 6+ files: run triage per references/triage-protocol.md:
 
-- `uv run scripts/project-scanner.py [path]` for project profile
+- `uv run python skills/honest-review/scripts/project-scanner.py [path]` for project profile
 - Git history analysis (hot files, recent changes, related issues)
 - Risk-stratify all changed files (HIGH/MEDIUM/LOW)
 - Determine specialist triggers (security, observability, requirements)
@@ -263,7 +276,7 @@ Prompt templates: read references/team-templates.md
 
 ### Session Step 3: Research Validate (Wave 2)
 
-For inline/small reviews: lead collects all findings and dispatches validation wave.
+For small-scope reviews: lead collects all findings and dispatches the validation wave.
 For team reviews: each teammate handles validation internally (Pass C).
 
 Batch findings by validation type. Dispatch order:
@@ -294,7 +307,7 @@ If 2+ findings survive, run self-verification (Wave 3.5): references/self-verifi
 
 Present all findings with evidence, confidence scores, and citations.
 After presenting findings, ask: "Which findings should I create a fix plan for? [all / select by ID / skip]"
-If approved: Generate an orchestration implementation plan for the selected findings using Pattern E (TeamCreate + nested subagent waves). No token budget caps. Create a TaskList entry per finding. Dispatch fixes in parallel where independent; sequential only when same-file edits conflict. Verify after all tasks complete (build, tests, behavior). See references/auto-fix-protocol.md for orchestration template.
+If approved: load references/auto-fix-protocol.md and start a separate post-review fix pass for selected findings only. Generate an orchestration implementation plan using Pattern E. Dispatch independent fixes in parallel; serialize same-file edits. Verify after all tasks complete (build, tests, behavior).
 Output format: read references/output-formats.md
 For SARIF output: read references/sarif-output.md
 
@@ -304,7 +317,7 @@ For SARIF output: read references/sarif-output.md
 
 Full triage per references/triage-protocol.md:
 
-- `uv run scripts/project-scanner.py [path]` for project profile
+- `uv run python skills/honest-review/scripts/project-scanner.py [path]` for project profile
 - Git history analysis (3 parallel opus subagents: hot files, recent changes, related issues)
 - Risk-stratify all files (HIGH/MEDIUM/LOW)
 - Context assembly (project type, architecture, test coverage, PR history)
@@ -387,7 +400,21 @@ Top 3 Recommendations, Statistics. All findings include evidence + citations.
 ### Audit Step 7: Execute (If Approved)
 
 After presenting findings, ask: "Which findings should I create a fix plan for? [all / select by ID / skip]"
-If approved: Generate an orchestration implementation plan for the selected findings using Pattern E (TeamCreate + nested subagent waves). No token budget caps. Create a TaskList entry per finding. Dispatch fixes in parallel where independent; sequential only when same-file edits conflict. Verify after all tasks complete (build, tests, behavior). See references/auto-fix-protocol.md for orchestration template.
+If approved: load references/auto-fix-protocol.md and start a separate post-review fix pass for selected findings only. Generate an orchestration implementation plan using Pattern E. Dispatch independent fixes in parallel; serialize same-file edits. Verify after all tasks complete (build, tests, behavior).
+
+## State Management
+
+State is optional and scoped to review history or false-positive learnings. Persist it under `~/.{gemini|copilot|codex|claude}/honest-reviews/`. Do not write state during ordinary read-only reviews unless the user asks to save history, compare runs, or manage learnings.
+
+| Need | Command |
+|------|---------|
+| Save review JSON | `cat findings.json | uv run python skills/honest-review/scripts/review-store.py save --project <slug> --mode <session|audit> --commit <sha>` |
+| Show history | `uv run python skills/honest-review/scripts/review-store.py list --project <slug>` |
+| Compare reviews | `uv run python skills/honest-review/scripts/review-store.py diff --project <slug> --old previous --new latest` |
+| Check learnings | `cat findings.json | uv run python skills/honest-review/scripts/learnings-store.py check --project <slug>` |
+| Manage learnings | `uv run python skills/honest-review/scripts/learnings-store.py <add|list|clear> --project <slug>` |
+
+If no prior review exists for `history` or `diff`, report "no stored baseline" and continue read-only.
 
 ## Reference Files
 
@@ -412,11 +439,11 @@ Load ONE reference at a time. Do not preload all references into context.
 
 | Script                       | When to Run                                                                    |
 | ---------------------------- | ------------------------------------------------------------------------------ |
-| scripts/project-scanner.py   | Wave 0 triage — deterministic project profiling                                |
-| scripts/finding-formatter.py | Wave 3 Judge — normalize findings to structured JSON (supports --format sarif) |
-| scripts/review-store.py      | Save, load, list, diff review history                                          |
-| scripts/sarif-uploader.py    | Upload SARIF results to GitHub Code Scanning                                   |
-| scripts/learnings-store.py   | Manage false-positive learnings (add, check, list, clear)              |
+| `skills/honest-review/scripts/project-scanner.py`   | Wave 0 triage — deterministic project profiling                                |
+| `skills/honest-review/scripts/finding-formatter.py` | Wave 3 Judge — normalize findings to structured JSON (supports --format sarif) |
+| `skills/honest-review/scripts/review-store.py`      | Save, load, list, diff review history                                          |
+| `skills/honest-review/scripts/sarif-uploader.py`    | Upload SARIF results to GitHub Code Scanning                                   |
+| `skills/honest-review/scripts/learnings-store.py`   | Manage false-positive learnings (add, check, list, clear)              |
 
 | Template                 | When to Render                                                  |
 | ------------------------ | --------------------------------------------------------------- |

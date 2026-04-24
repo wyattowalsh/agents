@@ -1,0 +1,10 @@
+{
+  "skills": ["honest-review"],
+  "query": "/honest-review",
+  "files": [],
+  "expected_behavior": [
+    "When no changed files are present, the agent does not silently start a full codebase audit.",
+    "Agent shows a mode menu or asks whether to run a full audit, scoped review, PR review, history, diff, or learnings command.",
+    "Agent requires the explicit audit keyword before beginning a full codebase audit."
+  ]
+}

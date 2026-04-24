@@ -40,8 +40,12 @@ HIGH_RISK_RE = re.compile(
     r"(auth|login|session|token|password|credential|secret|crypto|encrypt|decrypt|"
     r"payment|billing|checkout|stripe|invoice|user[_-]?data|pii|gdpr|privacy|"
     r"admin|permission|rbac|acl|security|migration|schema)", re.I)
-SKIP = {".git", "node_modules", "__pycache__", ".venv", "venv", ".tox",
-        "dist", "build", ".next", ".nuxt", "target", "vendor", ".mypy_cache"}
+SKIP = {
+    ".git", "node_modules", "__pycache__", ".venv", "venv", ".tox",
+    "dist", "build", ".next", ".nuxt", "target", "vendor", ".mypy_cache",
+    ".pytest_cache", ".ruff_cache", ".ty", ".cache",
+}
+SKIP_PREFIXES = (".venv-",)
 IMPORT_RE: dict[str, re.Pattern[str]] = {
     "python": re.compile(r"^(?:from\s+(\S+)\s+import|import\s+(\S+))", re.M),
     "typescript": re.compile(r"""^import\s+.*from\s+['"](\S+)['"]|require\(['"](\S+)['"]\)""", re.M),
@@ -49,6 +53,10 @@ IMPORT_RE: dict[str, re.Pattern[str]] = {
     "go": re.compile(r'"(\S+)"'),
     "rust": re.compile(r"^(?:use\s+(\S+)|mod\s+(\S+))", re.M),
 }
+
+def _skip_dir(name: str) -> bool:
+    return name in SKIP or any(name.startswith(prefix) for prefix in SKIP_PREFIXES)
+
 
 def _git(args: list[str], cwd: Path) -> str:
     try:
@@ -262,7 +270,7 @@ def scan(root: Path) -> dict:
     # Walk files — collect metrics first, then build dependency graph, then score risk
     deps = _deps(root); files: list[dict] = []; tloc = 0
     for dp, dns, fns in os.walk(root):
-        dns[:] = [d for d in dns if d not in SKIP]
+        dns[:] = [d for d in dns if not _skip_dir(d)]
         for fn in fns:
             ext = Path(fn).suffix
             if ext not in LANG_EXT: continue

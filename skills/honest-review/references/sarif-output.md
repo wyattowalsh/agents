@@ -93,10 +93,10 @@ Upload SARIF results to GitHub Code Scanning for inline PR annotations:
 
 ```bash
 # Generate SARIF from findings JSON
-cat findings.json | python scripts/finding-formatter.py --format sarif > results.sarif
+cat findings.json | uv run python skills/honest-review/scripts/finding-formatter.py --format sarif > results.sarif
 
 # Upload via script
-python scripts/sarif-uploader.py --input results.sarif
+uv run python skills/honest-review/scripts/sarif-uploader.py --input results.sarif
 
 # Or manually via gh API
 cat results.sarif | gzip | base64 | \
@@ -124,4 +124,4 @@ SARIF files render natively in VS Code with the [SARIF Viewer extension](https:/
 
 Save `results.sarif` to the project root and open in VS Code — findings map to source locations automatically.
 
-Cross-references: scripts/finding-formatter.py (--format sarif), scripts/sarif-uploader.py, references/ci-integration.md.
+Cross-references: skills/honest-review/scripts/finding-formatter.py (--format sarif), skills/honest-review/scripts/sarif-uploader.py, references/ci-integration.md.

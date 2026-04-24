@@ -20,7 +20,7 @@ Build the dependency graph during Wave 0 triage when:
 - Session review with 3-5 files — build if any file is HIGH risk
 - Session review with 1-2 files — skip (blast radius estimated from file location)
 
-The graph is built by `scripts/project-scanner.py` (the `_build_dependency_graph()` function)
+The graph is built by `skills/honest-review/scripts/project-scanner.py` (the `_build_dependency_graph()` function)
 and included in the project profile JSON.
 
 ## Construction Commands
@@ -114,4 +114,4 @@ This replaces the manual blast radius estimation with data-driven computation.
 - The graph only covers project-local dependencies, not external packages
 - For monorepos, scope the graph per workspace package (references/triage-protocol.md § Monorepo)
 
-Cross-references: scripts/project-scanner.py, references/triage-protocol.md, references/judge-protocol.md.
+Cross-references: skills/honest-review/scripts/project-scanner.py, references/triage-protocol.md, references/judge-protocol.md.

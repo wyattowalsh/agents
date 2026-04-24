@@ -13,7 +13,7 @@ Report templates for final output. Read when producing the final report.
 
 ## Compact Format (5 or fewer findings, small reviews)
 
-Use for quick reviews of 1-2 files with few findings.
+Use for compact presentation of 1-2 file scopes with few findings.
 Every listed finding still follows the Individual Finding Format: keep the
 `[file:start-end]` citation anchor and the reasoning-first ordering even when
 the presentation is compressed.
@@ -183,7 +183,7 @@ STATISTICS:
 
 ## Differential Review Format
 
-Use when comparing against a previous review (via `scripts/review-store.py diff`).
+Use when comparing against a previous review (via `skills/honest-review/scripts/review-store.py diff`).
 Each `NEW FINDINGS` entry still follows the Individual Finding Format; the
 summary lists may compress wording, but not the citation-anchor or reasoning
 requirements.
@@ -251,7 +251,7 @@ Use this structure for each finding in any report format:
 
 **Finding ID format:** `HR-{mode}-{seq}` where mode is `S` (session) or `A` (audit),
 seq is zero-padded 3-digit (e.g., `HR-S-001`, `HR-A-015`).
-See `scripts/finding-formatter.py` for programmatic ID generation.
+See `skills/honest-review/scripts/finding-formatter.py` for programmatic ID generation.
 
 **Citation anchor format:** `[file:start-end]` references the exact source lines. Anchors are mechanically verified — the referenced lines must exist and contain the described code. Findings with invalid anchors are discarded.
 
@@ -310,6 +310,6 @@ STATISTICS:
 
 For CI integration and tooling interop, additional output formats are available:
 
-- **SARIF v2.1**: `scripts/finding-formatter.py --format sarif` — see references/sarif-output.md
-- **JSON Schema**: `scripts/finding-formatter.py --format json-schema` — structured finding objects
+- **SARIF v2.1**: `skills/honest-review/scripts/finding-formatter.py --format sarif` — see references/sarif-output.md
+- **JSON Schema**: `skills/honest-review/scripts/finding-formatter.py --format json-schema` — structured finding objects
 - **Auto-fix diffs**: see references/auto-fix-protocol.md for diff preview format
