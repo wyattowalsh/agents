@@ -7,7 +7,7 @@ description: >-
 argument-hint: "[mode] [target]"
 model: opus
 license: MIT
-compatibility: "Hooks use git when available and degrade to no-op outside git repositories or when hook file-path metadata is unavailable."
+compatibility: "Pre/Post hooks inspect edited files when metadata exists and no-op outside git repos. Stop hook intentionally runs repo-wide git diff --check hygiene inside git repos."
 metadata:
   author: wyattowalsh
   version: "1.1.0"
