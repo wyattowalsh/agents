@@ -2,7 +2,7 @@
 export const navLinks = [
   { label: 'Start Here', link: '/start-here/' },
   { label: 'Skills', link: '/skills/', badge: '43' },
-  { label: 'MCP', link: '/mcp/', badge: '33' },
+  { label: 'MCP', link: '/mcp/', badge: '30' },
   { label: 'CLI', link: '/cli/' }
 ];
 
@@ -68,7 +68,7 @@ export default [
   },
   {
     label: 'MCP Servers',
-    badge: { text: '33', variant: 'note' },
+    badge: { text: '30', variant: 'note' },
     items: [
       { slug: 'mcp', label: 'Overview' },
     ],

@@ -14,12 +14,15 @@ def _write_skill(tmp_path: Path, name: str, body: str, *, frontmatter: str | Non
     """Create a minimal skill fixture on disk and return its directory."""
     skill_dir = tmp_path / name
     skill_dir.mkdir()
-    fm = frontmatter or f"""\
+    fm = (
+        frontmatter
+        or f"""\
     ---
     name: {name}
     description: Create focused skill docs. Use when auditing prompts. NOT for agents.
     ---
     """
+    )
     (skill_dir / "SKILL.md").write_text(
         textwrap.dedent(fm).strip() + "\n\n" + textwrap.dedent(body).strip() + "\n",
         encoding="utf-8",
@@ -131,6 +134,7 @@ def test_pattern_detection_requires_structural_evidence(tmp_path: Path):
     result = audit_skill(str(skill_dir))
 
     assert result["bonus"] == 3
+    assert result["max"] == 103
     assert "canonical-vocabulary" in result["patterns_found"]
     assert "classification-gating" in result["patterns_found"]
     assert "scaling-strategy" in result["patterns_found"]
@@ -164,9 +168,7 @@ def test_pattern_catalog_reports_status_buckets_and_dimension_contract(tmp_path:
 
     result = audit_skill(str(skill_dir))
     catalog_total = (
-        len(result["patterns_found"])
-        + len(result["patterns_suggested"])
-        + len(result["patterns_not_applicable"])
+        len(result["patterns_found"]) + len(result["patterns_suggested"]) + len(result["patterns_not_applicable"])
     )
 
     assert len(result["dimensions"]) == 10

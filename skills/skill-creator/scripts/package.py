@@ -4,6 +4,7 @@
 Runs portability checks, generates a manifest.json, and creates a
 <name>-v<version>.skill.zip bundle. JSON to stdout, warnings to stderr.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -33,7 +34,7 @@ AT_IMPORT_RE = re.compile(r"^@\S+", re.MULTILINE)
 
 # Regex: packaged resource mentions in SKILL.md body, optionally prefixed with skills/<name>/
 RESOURCE_PATH_RE = re.compile(
-    r"(?<![A-Za-z0-9_.-])((?:skills/[a-z0-9-]+/)?(?:references|scripts|templates|assets)/[A-Za-z0-9_./-]*[A-Za-z0-9_-]\.[A-Za-z0-9_-]+)"
+    r"(?<![A-Za-z0-9_.-])((?:skills/[a-z0-9-]+/)?(?:references|scripts|templates|assets|reports)/[A-Za-z0-9_./-]*[A-Za-z0-9_-]\.[A-Za-z0-9_-]+)"
 )
 
 
@@ -49,16 +50,43 @@ def _now() -> str:
 # File filtering
 # ---------------------------------------------------------------------------
 
-def _should_exclude(path: Path) -> bool:
+
+def _is_reports_file(path: Path) -> bool:
+    return bool(path.parts) and path.parts[0] == "reports"
+
+
+def _mentioned_resource_paths(skill_dir: Path, body: str) -> set[str]:
+    mentioned: set[str] = set()
+    skill_prefix = f"skills/{skill_dir.name}/"
+    for match in RESOURCE_PATH_RE.finditer(body):
+        raw_path = match.group(1).rstrip("`.,:;)]}")
+        if raw_path.startswith(skill_prefix):
+            raw_path = raw_path[len(skill_prefix) :]
+        mentioned.add(raw_path)
+    return mentioned
+
+
+def _referenced_report_files(skill_dir: Path, body: str) -> set[Path]:
+    return {
+        Path(rel_path) for rel_path in _mentioned_resource_paths(skill_dir, body) if _is_reports_file(Path(rel_path))
+    }
+
+
+def _should_exclude(path: Path, referenced_report_files: set[Path] | None = None) -> bool:
     """Return True if the path should be excluded from the ZIP."""
     if path.name in EXCLUDE_NAMES:
         return True
     if path.suffix in EXCLUDE_EXTENSIONS:
         return True
-    return any(part in EXCLUDE_DIRS for part in path.parts)
+    if any(part in EXCLUDE_DIRS for part in path.parts):
+        return True
+    return _is_reports_file(path) and path not in (referenced_report_files or set())
 
 
-def _collect_files(skill_dir: Path) -> tuple[list[Path], list[Path]]:
+def _collect_files(
+    skill_dir: Path,
+    referenced_report_files: set[Path] | None = None,
+) -> tuple[list[Path], list[Path]]:
     """Collect non-excluded files from the skill directory.
 
     Returns (included, excluded) as lists of paths relative to skill_dir.
@@ -69,7 +97,7 @@ def _collect_files(skill_dir: Path) -> tuple[list[Path], list[Path]]:
         if not file_path.is_file():
             continue
         rel = file_path.relative_to(skill_dir)
-        if _should_exclude(rel):
+        if _should_exclude(rel, referenced_report_files=referenced_report_files):
             excluded.append(rel)
         else:
             included.append(rel)
@@ -81,31 +109,38 @@ def _collect_files(skill_dir: Path) -> tuple[list[Path], list[Path]]:
 # Portability checks
 # ---------------------------------------------------------------------------
 
+
 def check_frontmatter_fields(fm: dict) -> list[dict]:
     """Check cross-platform frontmatter fields are populated."""
     checks = []
     meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
 
     license_val = fm.get("license", "")
-    checks.append({
-        "check": "frontmatter_license",
-        "passed": bool(license_val),
-        "details": str(license_val) if license_val else "Missing license field",
-    })
+    checks.append(
+        {
+            "check": "frontmatter_license",
+            "passed": bool(license_val),
+            "details": str(license_val) if license_val else "Missing license field",
+        }
+    )
 
     author_val = meta.get("author", "")
-    checks.append({
-        "check": "frontmatter_author",
-        "passed": bool(author_val),
-        "details": str(author_val) if author_val else "Missing metadata.author field",
-    })
+    checks.append(
+        {
+            "check": "frontmatter_author",
+            "passed": bool(author_val),
+            "details": str(author_val) if author_val else "Missing metadata.author field",
+        }
+    )
 
     version_val = meta.get("version", "")
-    checks.append({
-        "check": "frontmatter_version",
-        "passed": bool(version_val),
-        "details": str(version_val) if version_val else "Missing metadata.version field",
-    })
+    checks.append(
+        {
+            "check": "frontmatter_version",
+            "passed": bool(version_val),
+            "details": str(version_val) if version_val else "Missing metadata.version field",
+        }
+    )
 
     return checks
 
@@ -125,13 +160,7 @@ def check_no_absolute_paths(body: str) -> dict:
 
 def check_referenced_files(skill_dir: Path, body: str) -> dict:
     """Check that referenced packaged resources in the body exist on disk."""
-    mentioned: set[str] = set()
-    skill_prefix = f"skills/{skill_dir.name}/"
-    for match in RESOURCE_PATH_RE.finditer(body):
-        raw_path = match.group(1).rstrip("`.,:;)]}")
-        if raw_path.startswith(skill_prefix):
-            raw_path = raw_path[len(skill_prefix):]
-        mentioned.add(raw_path)
+    mentioned = _mentioned_resource_paths(skill_dir, body)
 
     missing = []
     for rel_path in sorted(mentioned):
@@ -147,9 +176,7 @@ def check_referenced_files(skill_dir: Path, body: str) -> dict:
         "check": "referenced_files_exist",
         "passed": len(missing) == 0,
         "details": (
-            f"Missing: {', '.join(missing)}"
-            if missing
-            else f"All {len(mentioned)} packaged resource paths resolve"
+            f"Missing: {', '.join(missing)}" if missing else f"All {len(mentioned)} packaged resource paths resolve"
         ),
     }
 
@@ -185,8 +212,7 @@ def check_name_directory_match(fm: dict, dir_name: str) -> dict:
         "check": "name_directory_match",
         "passed": fm_name == dir_name,
         "details": (
-            f"OK ({fm_name})" if fm_name == dir_name
-            else f"Mismatch: frontmatter '{fm_name}' != directory '{dir_name}'"
+            f"OK ({fm_name})" if fm_name == dir_name else f"Mismatch: frontmatter '{fm_name}' != directory '{dir_name}'"
         ),
     }
 
@@ -196,11 +222,13 @@ def check_required_fields(fm: dict) -> list[dict]:
     checks = []
     for field in ("name", "description"):
         val = fm.get(field, "")
-        checks.append({
-            "check": f"required_{field}",
-            "passed": bool(val),
-            "details": f"OK ({val[:60]})" if val else f"Missing required field: {field}",
-        })
+        checks.append(
+            {
+                "check": f"required_{field}",
+                "passed": bool(val),
+                "details": f"OK ({val[:60]})" if val else f"Missing required field: {field}",
+            }
+        )
     return checks
 
 
@@ -219,6 +247,7 @@ def run_portability_checks(skill_dir: Path, fm: dict, body: str) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Manifest generation
 # ---------------------------------------------------------------------------
+
 
 def generate_manifest(fm: dict, files: list[Path]) -> dict:
     """Generate a manifest.json dict for the ZIP bundle."""
@@ -239,8 +268,8 @@ def generate_manifest(fm: dict, files: list[Path]) -> dict:
 # ZIP creation
 # ---------------------------------------------------------------------------
 
-def create_zip(skill_dir: Path, output_dir: Path, files: list[Path],
-               manifest: dict) -> tuple[Path, list[str]]:
+
+def create_zip(skill_dir: Path, output_dir: Path, files: list[Path], manifest: dict) -> tuple[Path, list[str]]:
     """Create the .skill.zip bundle and return (path, errors)."""
     name = manifest["name"]
     version = manifest["version"]
@@ -276,8 +305,8 @@ def create_zip(skill_dir: Path, output_dir: Path, files: list[Path],
 # Package a single skill
 # ---------------------------------------------------------------------------
 
-def package_skill(skill_dir: Path, output_dir: Path,
-                  dry_run: bool = False, force: bool = False) -> dict:
+
+def package_skill(skill_dir: Path, output_dir: Path, dry_run: bool = False, force: bool = False) -> dict:
     """Package a single skill and return a result dict."""
     skill_dir = skill_dir.resolve()
     skill_md = skill_dir / "SKILL.md"
@@ -316,16 +345,18 @@ def package_skill(skill_dir: Path, output_dir: Path,
         result["warnings"].append(f"{c['check']}: {c['details']}")
 
     # Collect files
-    included, excluded = _collect_files(skill_dir)
+    referenced_report_files = _referenced_report_files(skill_dir, body)
+    included, excluded = _collect_files(
+        skill_dir,
+        referenced_report_files=referenced_report_files,
+    )
     result["files_included"] = [str(f) for f in included]
     result["files_excluded"] = [str(f) for f in excluded]
 
     if failed and not force:
         result["blocked"] = True
         if not dry_run:
-            result["errors"].append(
-                "Packaging blocked by portability failures. Re-run with --force to override."
-            )
+            result["errors"].append("Packaging blocked by portability failures. Re-run with --force to override.")
         name = fm.get("name", skill_dir.name)
         result["output_path"] = str(output_dir / f"{name}-v{version}.skill.zip")
         return result
@@ -352,8 +383,8 @@ def package_skill(skill_dir: Path, output_dir: Path,
 # Package all skills
 # ---------------------------------------------------------------------------
 
-def package_all(skills_dir: Path, output_dir: Path,
-                dry_run: bool = False, force: bool = False) -> dict:
+
+def package_all(skills_dir: Path, output_dir: Path, dry_run: bool = False, force: bool = False) -> dict:
     """Package all skills under skills_dir and return a summary dict."""
     skills_dir = skills_dir.resolve()
     results: list[dict] = []
@@ -396,9 +427,7 @@ def package_all(skills_dir: Path, output_dir: Path,
     if not dry_run:
         output_dir.mkdir(parents=True, exist_ok=True)
         manifest_path = output_dir / "manifest.json"
-        manifest_path.write_text(
-            json.dumps(top_manifest, indent=2) + "\n", encoding="utf-8"
-        )
+        manifest_path.write_text(json.dumps(top_manifest, indent=2) + "\n", encoding="utf-8")
 
     return {"results": results, "manifest": top_manifest}
 
@@ -406,6 +435,7 @@ def package_all(skills_dir: Path, output_dir: Path,
 # ---------------------------------------------------------------------------
 # Table formatters
 # ---------------------------------------------------------------------------
+
 
 def format_table(result: dict) -> str:
     """Format a single skill package result as a human-readable table."""
@@ -423,7 +453,12 @@ def format_table(result: dict) -> str:
 
     out.append("")
     out.append(f"Files included: {len(result.get('files_included', []))}")
-    out.append(f"Files excluded: {len(result.get('files_excluded', []))}")
+    excluded_files = result.get("files_excluded", [])
+    out.append(f"Files excluded: {len(excluded_files)}")
+    if excluded_files:
+        out.append("files_excluded:")
+        for file_path in excluded_files:
+            out.append(f"  - {file_path}")
     out.append(f"Portable: {'yes' if result.get('portable', True) else 'no'}")
     if result.get("blocked"):
         out.append("Blocked:  portability failures (use --force to override)")
@@ -462,16 +497,13 @@ def format_all_table(data: dict) -> str:
         all_ok = passed == total and not has_errors
         fc = len(r.get("files_included", []))
         out.append(
-            f"{r['skill']:<22} {r['version']:>8}  {fc:>5}  "
-            f"{passed}/{total:>3}  {'PASS' if all_ok else 'FAIL':>6}"
+            f"{r['skill']:<22} {r['version']:>8}  {fc:>5}  {passed}/{total:>3}  {'PASS' if all_ok else 'FAIL':>6}"
         )
 
     out.append("")
     out.append(f"Total skills: {len(results)}")
     pass_count = sum(
-        1 for r in results
-        if all(c["passed"] for c in r.get("portability_checks", []))
-        and not r.get("errors")
+        1 for r in results if all(c["passed"] for c in r.get("portability_checks", [])) and not r.get("errors")
     )
     out.append(f"Passing: {pass_count}/{len(results)}")
     return "\n".join(out)
@@ -481,21 +513,15 @@ def format_all_table(data: dict) -> str:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Package skills into portable ZIP files"
-    )
+    parser = argparse.ArgumentParser(description="Package skills into portable ZIP files")
     parser.add_argument("path", nargs="?", help="Path to skill directory")
-    parser.add_argument("--all", action="store_true",
-                        help="Package all skills under skills/")
-    parser.add_argument("--output", "-o", default=None,
-                        help="Output directory (default: dist/)")
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Run portability checks only, do not create ZIP")
-    parser.add_argument("--force", action="store_true",
-                        help="Override portability failures and package anyway")
-    parser.add_argument("--format", choices=["json", "table"], default="json",
-                        dest="output_format")
+    parser.add_argument("--all", action="store_true", help="Package all skills under skills/")
+    parser.add_argument("--output", "-o", default=None, help="Output directory (default: dist/)")
+    parser.add_argument("--dry-run", action="store_true", help="Run portability checks only, do not create ZIP")
+    parser.add_argument("--force", action="store_true", help="Override portability failures and package anyway")
+    parser.add_argument("--format", choices=["json", "table"], default="json", dest="output_format")
     args = parser.parse_args()
 
     if not args.path and not args.all:

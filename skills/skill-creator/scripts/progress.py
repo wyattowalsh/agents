@@ -6,15 +6,18 @@ user-scoped). Override with --state-dir for custom locations.
 Subcommands: init, phase, agent, metric, status, audit, read, serve.
 JSON to stdout, warnings to stderr. Atomic writes via temp+rename.
 """
+
 from __future__ import annotations
 
 import argparse
 import contextlib
 import json
 import os
+import re
 import sys
 import tempfile
 from datetime import UTC, datetime
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 
@@ -126,9 +129,7 @@ def _read_state(skill_name: str, state_dir: Path | None = None) -> dict:
         sys.exit(1)
 
 
-def _save_state(
-    skill_name: str, state: dict, state_dir: Path | None = None
-) -> None:
+def _save_state(skill_name: str, state: dict, state_dir: Path | None = None) -> None:
     """Save session state with updated timestamp."""
     state["updated_at"] = _now()
     _atomic_write(_state_path(skill_name, state_dir), state)
@@ -175,9 +176,7 @@ def _render_rich_status(state: dict) -> None:
     wave_lines = []
     for w in state.get("waves", []):
         icon = _STATUS_ICONS.get(w["status"], "[dim]??[/dim]")
-        agent_summary = ", ".join(
-            f"{a['id']}={a['status']}" for a in w.get("agents", [])
-        )
+        agent_summary = ", ".join(f"{a['id']}={a['status']}" for a in w.get("agents", []))
         wave_lines.append(f"  {icon}  {w['label']} ({w['status']})")
         if agent_summary:
             wave_lines.append(f"       {agent_summary}")
@@ -236,6 +235,7 @@ def _render_plain_status(state: dict) -> None:
 # Subcommands
 # ---------------------------------------------------------------------------
 
+
 def cmd_init(args: argparse.Namespace) -> None:
     """Initialize a new progress session."""
     now = _now()
@@ -248,34 +248,40 @@ def cmd_init(args: argparse.Namespace) -> None:
         # For improve mode, scaffold is pre-skipped
         if args.mode == "improve" and p["id"] == "scaffold":
             status = "skipped"
-        phases.append({
-            "id": p["id"],
-            "label": p["label"],
-            "status": status,
-            "started_at": None,
-            "completed_at": None,
-            "notes": None,
-            "artifacts": [],
-        })
+        phases.append(
+            {
+                "id": p["id"],
+                "label": p["label"],
+                "status": status,
+                "started_at": None,
+                "completed_at": None,
+                "notes": None,
+                "artifacts": [],
+            }
+        )
 
     waves = []
     for w in DEFAULT_WAVES:
         agents = []
         for a in w["agents"]:
-            agents.append({
-                **a,
+            agents.append(
+                {
+                    **a,
+                    "status": "pending",
+                    "started_at": None,
+                    "completed_at": None,
+                    "output_summary": None,
+                }
+            )
+        waves.append(
+            {
+                "id": w["id"],
+                "label": w["label"],
+                "phase": w["phase"],
                 "status": "pending",
-                "started_at": None,
-                "completed_at": None,
-                "output_summary": None,
-            })
-        waves.append({
-            "id": w["id"],
-            "label": w["label"],
-            "phase": w["phase"],
-            "status": "pending",
-            "agents": agents,
-        })
+                "agents": agents,
+            }
+        )
 
     state = {
         "session_id": session_id,
@@ -456,6 +462,7 @@ def cmd_audit(args: argparse.Namespace) -> None:
 
     # Import and run audit
     import importlib.util
+
     spec = importlib.util.spec_from_file_location("audit", str(audit_script))
     audit_mod = importlib.util.module_from_spec(spec)  # type: ignore[arg-type]
     spec.loader.exec_module(audit_mod)  # type: ignore[union-attr]
@@ -500,6 +507,84 @@ def cmd_read(args: argparse.Namespace) -> None:
         sys.stdout.write("\n")
 
 
+def _dashboard_payload(state: dict) -> dict:
+    """Return state with display-only fields expected by the dashboard."""
+    payload = dict(state)
+    payload["mode_label"] = {
+        "create": "Develop (new)",
+        "improve": "Develop (existing)",
+    }.get(str(state.get("mode", "")), state.get("mode", ""))
+    return payload
+
+
+def _dashboard_template_path() -> Path:
+    script_dir = Path(__file__).resolve().parent
+    return script_dir.parent / "templates" / "dashboard.html"
+
+
+def _read_dashboard_template() -> str:
+    template = _dashboard_template_path()
+    if not template.is_file():
+        _warn(f"Dashboard template not found at {template}")
+        sys.exit(1)
+    return template.read_text(encoding="utf-8")
+
+
+def _inject_dashboard_payload(html: str, payload: dict, poll_url: str | None = None) -> str:
+    """Inject payload into the canonical script#data block."""
+    attrs = 'id="data" type="application/json"'
+    if poll_url:
+        attrs += f' data-poll-url="{poll_url}"'
+    data_json = json.dumps(payload, indent=2).replace("</", "<\\/")
+    replacement = f"<script {attrs}>\n{data_json}\n</script>"
+    pattern = r'<script\s+id="data"\s+type="application/json"(?:\s+data-poll-url="[^"]*")?>.*?</script>'
+    updated, count = re.subn(pattern, replacement, html, count=1, flags=re.DOTALL)
+    if count == 0:
+        _warn('Dashboard template missing canonical <script id="data" type="application/json"> block')
+        sys.exit(1)
+    return updated
+
+
+def _create_live_dashboard_server(
+    skill_name: str,
+    state_dir: Path | None = None,
+    host: str = "127.0.0.1",
+    port: int = 0,
+) -> tuple[ThreadingHTTPServer, str]:
+    """Create a live dashboard server that serves HTML and fresh JSON state."""
+    template = _read_dashboard_template()
+
+    class DashboardHandler(BaseHTTPRequestHandler):
+        def _send(self, status: int, body: bytes, content_type: str) -> None:
+            self.send_response(status)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def _current_payload(self) -> dict:
+            return _dashboard_payload(_read_state(skill_name, state_dir))
+
+        def do_GET(self) -> None:  # noqa: N802 - stdlib handler API
+            if self.path in {"/", "/index.html"}:
+                html = _inject_dashboard_payload(template, self._current_payload(), poll_url="/data.json")
+                self._send(200, html.encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if self.path == "/data.json":
+                body = json.dumps(self._current_payload(), indent=2).encode("utf-8")
+                self._send(200, body, "application/json; charset=utf-8")
+                return
+            self._send(404, b"Not found\n", "text/plain; charset=utf-8")
+
+        def log_message(self, format: str, *args: object) -> None:
+            return
+
+    server = ThreadingHTTPServer((host, port), DashboardHandler)
+    actual_host, actual_port = server.server_address[:2]
+    url_host = "127.0.0.1" if actual_host in {"0.0.0.0", "::"} else actual_host
+    return server, f"http://{url_host}:{actual_port}/"
+
+
 def cmd_serve(args: argparse.Namespace) -> None:
     """Serve the dashboard in a browser with current state."""
     import webbrowser
@@ -507,19 +592,30 @@ def cmd_serve(args: argparse.Namespace) -> None:
     sd = _get_state_dir(args)
     state = _read_state(args.skill, sd)
 
-    # Find dashboard template
-    script_dir = Path(__file__).resolve().parent
-    template = script_dir.parent / "templates" / "dashboard.html"
-    if not template.is_file():
-        _warn(f"Dashboard template not found at {template}")
-        sys.exit(1)
+    if getattr(args, "live", False):
+        server, url = _create_live_dashboard_server(args.skill, state_dir=sd, host=args.host, port=args.port)
+        if not args.no_open:
+            webbrowser.open(url)
+        result = {
+            "mode": "live",
+            "url": url,
+            "state_file": str(_state_path(args.skill, sd)),
+            "host": server.server_address[0],
+            "port": server.server_address[1],
+        }
+        json.dump(result, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            server.server_close()
+        return
 
     # Create temp HTML with injected state
-    html = template.read_text(encoding="utf-8")
-    inject_script = (
-        f"<script>window.__SKILL_DATA__ = {json.dumps(state)};</script>"
-    )
-    html = html.replace("</head>", f"{inject_script}\n</head>")
+    html = _inject_dashboard_payload(_read_dashboard_template(), _dashboard_payload(state))
 
     # Write to temp file and open
     out_dir = Path(tempfile.mkdtemp(prefix="skill-dashboard-"))
@@ -531,6 +627,7 @@ def cmd_serve(args: argparse.Namespace) -> None:
         webbrowser.open(url)
 
     result = {
+        "mode": "snapshot",
         "url": url,
         "state_file": str(_state_path(args.skill, sd)),
     }
@@ -542,11 +639,10 @@ def cmd_serve(args: argparse.Namespace) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def _add_state_dir(parser: argparse.ArgumentParser) -> None:
     """Add the --state-dir option to a subcommand parser."""
-    parser.add_argument(
-        "--state-dir", type=Path, default=None, help="Custom state directory"
-    )
+    parser.add_argument("--state-dir", type=Path, default=None, help="Custom state directory")
 
 
 def main() -> None:
@@ -610,6 +706,9 @@ def main() -> None:
     p_serve = sub.add_parser("serve", help="Open dashboard in browser")
     p_serve.add_argument("--skill", required=True, help="Skill name")
     p_serve.add_argument("--no-open", action="store_true", help="Don't auto-open browser")
+    p_serve.add_argument("--live", action="store_true", help="Serve live dashboard over HTTP")
+    p_serve.add_argument("--host", default="127.0.0.1", help="Live dashboard host")
+    p_serve.add_argument("--port", type=int, default=0, help="Live dashboard port")
     _add_state_dir(p_serve)
 
     args = parser.parse_args()

@@ -1,9 +1,0 @@
-{
-  "skills": ["skill-creator"],
-  "query": "/skill-creator package add-badges",
-  "expected_behavior": [
-    "Agent dispatches to Package mode based on 'package' keyword in arguments",
-    "Agent runs package.py for the specified skill (single or --all)",
-    "Agent supports --dry-run flag to run portability checks without creating ZIP"
-  ]
-}

@@ -49,7 +49,7 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 
 1. **Validate name** — kebab-case, 2-64 chars, no consecutive hyphens, no leading/trailing hyphens, no reserved words ("anthropic", "claude"). Check `skills/` for conflicts.
 2. **Write description** — CSO-optimized for discovery: third person, what the skill does + when to use it + when NOT to use it. Max 1024 chars. Include action verbs and trigger phrases ("Use when..."). Load `references/best-practices.md` Description Engineering section.
-3. **Classify patterns** — Which of the 13 patterns from `references/proven-patterns.md` apply to this skill type? At minimum: dispatch table, critical rules.
+3. **Classify patterns** — Which of the 14 patterns from `references/proven-patterns.md` apply to this skill type? At minimum: dispatch table, critical rules.
 4. **Plan directory structure** — SKILL.md, references/, scripts/, templates/, evals/. Decide which are needed.
 
 ### Existing Skill
@@ -186,7 +186,7 @@ Load `references/proven-patterns.md`. Apply:
   - 1 implicit trigger eval (natural language that should activate the skill)
   - 1 negative control eval (input that should NOT trigger the skill)
 - **Existing skills:** update/extend evals to cover any changed dispatch behavior or new modes
-- Format: `{ "skills": [...], "query": "...", "files": [], "expected_behavior": [...] }`
+- Format: canonical `evals/evals.json` manifest with `skill_name`, an `evals` array, stable case IDs, realistic `prompt`, `expected_output`, optional `files`, and objective `assertions`.
 
 ---
 

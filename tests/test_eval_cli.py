@@ -5,6 +5,7 @@ import json
 import pytest
 from typer.testing import CliRunner
 
+import wagents.cli as cli_module
 from wagents.cli import app
 
 runner = CliRunner()
@@ -111,6 +112,58 @@ class TestEvalList:
         result = runner.invoke(app, ["eval", "list"])
         assert result.exit_code == 0
         assert "skill-creator" in result.output
+
+    @staticmethod
+    def test_skill_creator_real_repo_uses_single_consolidated_manifest():
+        """Regression: skill-creator evals live in one canonical manifest."""
+        evals_dir = cli_module.ROOT / "skills" / "skill-creator" / "evals"
+        json_files = sorted(path.name for path in evals_dir.glob("*.json"))
+        assert json_files == ["evals.json"]
+
+        manifest = json.loads((evals_dir / "evals.json").read_text())
+        cases = manifest["evals"]
+        case_ids = {case["id"] for case in cases}
+        expected_case_ids = {
+            "ambiguous-input",
+            "approval-gate-refusal",
+            "agent-scope-refusal",
+            "audit-all-mode",
+            "audit-mode",
+            "create-from-exemplar",
+            "dashboard-mode",
+            "dashboard-process",
+            "description-near-miss-agent-request",
+            "description-trigger-skill-request",
+            "explicit-invocation",
+            "gallery-empty-args",
+            "implicit-trigger",
+            "improve-explicit",
+            "improve-implicit",
+            "malformed-consecutive-hyphen-name",
+            "malformed-input",
+            "negative-control",
+            "no-edit-before-approval",
+            "package-dry-run",
+            "package-mode",
+            "path-auto-detect",
+            "repo-wide-planning",
+            "repo-wide-planning-natural-language",
+            "run-scope-refusal",
+            "scope-refusal",
+            "standalone-plan-output",
+        }
+
+        assert manifest["skill_name"] == "skill-creator"
+        assert expected_case_ids <= case_ids
+        assert len(cases) >= len(expected_case_ids)
+        assert all(isinstance(case.get("prompt"), str) and case["prompt"].strip() for case in cases)
+        assert all(isinstance(case.get("expected_output"), str) and case["expected_output"].strip() for case in cases)
+
+        result = runner.invoke(app, ["eval", "list", "--format", "json"])
+        assert result.exit_code == 0
+        payload = json.loads(result.output)
+        row = next(item for item in payload["skills"] if item["skill"] == "skill-creator")
+        assert row["eval_count"] == len(cases)
 
 
 class TestEvalValidate:

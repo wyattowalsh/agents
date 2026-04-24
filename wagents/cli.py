@@ -945,7 +945,7 @@ def readme(
         '<div align="center">',
         (
             '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
-            'docs/src/assets/agents-nexus-mark-z.png" alt="Agents Logo" width="100" height="100">'
+            'docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">'
         ),
         "  <h1>agents</h1>",
         "  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>",
@@ -1092,7 +1092,7 @@ def readme(
             "",
             "- [Antigravity](https://antigravity.google/)",
             "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
-            "- [Codex](https://github.com/codex-team/codex)",
+            "- [Codex](https://github.com/openai/codex)",
             "- [Crush](https://github.com/crush-ai/crush)",
             "- [Cursor](https://cursor.sh/)",
             "- [Gemini CLI](https://github.com/google/gemini-cli)",

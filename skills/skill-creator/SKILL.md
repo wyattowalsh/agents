@@ -7,6 +7,7 @@ description: >-
 argument-hint: "<mode> [name]"
 model: opus
 license: MIT
+compatibility: "Requires uv, Python 3.13+, wagents CLI; optional Node.js/npm for install commands; hook support varies by agent client."
 metadata:
   author: wyattowalsh
   version: "2.0.0"
@@ -19,7 +20,11 @@ hooks:
     - matcher: "Write|Edit|MultiEdit"
       hooks:
         - type: command
-          command: "bash -lc 'FILE=$(jq -r \".tool_input.file_path // empty\" 2>/dev/null); case \"$FILE\" in skills/*/SKILL.md|*/skills/*/SKILL.md) wagents validate 2>/dev/null ;; skills/*/evals/*.json|*/skills/*/evals/*.json) wagents eval validate 2>/dev/null ;; esac; true'"
+          command: "uv run python skills/skill-creator/scripts/verify.py post-tool-use"
+  Stop:
+    - hooks:
+        - type: command
+          command: "uv run python skills/skill-creator/scripts/verify.py stop"
 ---
 
 # Skill Creator
@@ -132,9 +137,15 @@ wagents package --all --dry-run   # Check portability without creating ZIPs
 PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
 
 Post-edit enforcement for this skill:
-- `SKILL.md` edits trigger `wagents validate`
-- `evals/*.json` edits trigger `wagents eval validate`
-- bulk edits should be covered through the same post-tool hook path
+- `SKILL.md` edits trigger `uv run wagents validate`
+- `evals/*.json` edits trigger `uv run wagents eval validate`
+- hook-bearing skill/settings edits trigger `uv run wagents hooks validate`
+- failures surface to the agent instead of being swallowed
+
+Stop hook enforcement:
+- runs `uv run python skills/skill-creator/scripts/verify.py stop`
+- validates dirty skill-definition, eval, and hook surfaces before exit
+- exits immediately when hook input has `stop_hook_active: true` to avoid recursive Stop-hook loops
 
 ## State Management
 
@@ -151,7 +162,7 @@ Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<
 | `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
 | `references/frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree | Step 3 (Scaffold), frontmatter configuration |
 | `references/packaging-guide.md` | ZIP structure, manifest schema, portability checks, import instructions | Package |
-| `references/evaluation-rubric.md` | 11 scoring dimensions, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
+| `references/evaluation-rubric.md` | 10 weighted scoring dimensions, +3 vocabulary bonus, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
 
 Read reference files as indicated by the "Read When" column above. Do not rely on memory or prior knowledge of their contents.
 
@@ -184,6 +195,7 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 17. Update evals when dispatch behavior or modes change — stale evals are invisible bugs
 18. `plan <name>` and `plan --all` are read-only planning modes — never edit during planning
 19. Repo-wide or multi-skill requests require a ranked plan and standalone refinement-plan output before any implementation begins
+20. Stop hooks must include a `stop_hook_active` guard — recursive hook loops are implementation bugs
 
 **Canonical terms** (use these exactly throughout):
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"

@@ -170,6 +170,8 @@ make help                                    # Show all make targets
 
 `instructions/global.md` is the canonical cross-platform instruction source in this repo. Platform-specific files in `instructions/` may import it to add runtime-specific guidance without bloating the shared base. Home entrypoints should point directly at it where the platform allows, except GitHub Copilot, which uses `instructions/copilot-global.md`; repo-local mirrors should be generated from the platform-specific source when a platform requires a specific filename.
 
+Docs-facing authority follows the same pattern: keep repo policy and workflow truth in `AGENTS.md`, regenerate the public README from `wagents readme`, and regenerate generated docs pages from `wagents docs generate` instead of hand-editing derived output.
+
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
 Everything situational uses **skills as context loaders** — Claude sees skill descriptions at startup and auto-invokes relevant ones on demand:
@@ -201,13 +203,13 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 
 ## 6. Supported Agents
 
-| Agent | Reads | Notes |
-|-------|-------|-------|
+| Agent | Reads | Bridge File |
+|-------|-------|-------------|
 | Claude Code | `CLAUDE.md` → `instructions/global.md` | `instructions/claude-code-global.md` is compatibility only |
-| Gemini CLI | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
-| Antigravity | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
-| Codex | `AGENTS.md` → `@instructions/global.md` | Home entrypoint should symlink to `global.md` |
-| Crush | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
-| OpenCode | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
-| Cursor | `AGENTS.md` → `@instructions/global.md` | Repo-local wrapper |
-| GitHub Copilot | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Repo/home source is `instructions/copilot-global.md`, which imports `instructions/global.md` |
+| Gemini CLI | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
+| Antigravity | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
+| Codex | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
+| Crush | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
+| OpenCode | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
+| Cursor | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
+| GitHub Copilot | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | `.github/copilot-instructions.md` |

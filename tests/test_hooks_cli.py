@@ -1,12 +1,21 @@
 """Tests for wagents hooks CLI commands."""
 
+import importlib.util
 import json
+import sys
+from pathlib import Path
 
 import pytest
 from typer.testing import CliRunner
 
 from wagents.cli import app
 from wagents.parsing import KNOWN_HOOK_EVENTS, extract_hooks
+
+_VERIFY_PATH = Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts" / "verify.py"
+_VERIFY_SPEC = importlib.util.spec_from_file_location("skill_creator_verify", _VERIFY_PATH)
+assert _VERIFY_SPEC and _VERIFY_SPEC.loader
+skill_creator_verify = importlib.util.module_from_spec(_VERIFY_SPEC)
+_VERIFY_SPEC.loader.exec_module(skill_creator_verify)
 
 runner = CliRunner()
 
@@ -294,6 +303,65 @@ class TestKnownEvents:
             "SessionEnd",
         ]:
             assert event in KNOWN_HOOK_EVENTS
+
+
+class TestSkillCreatorVerify:
+    """Regression tests for the skill-creator deterministic hook verifier."""
+
+    def test_stop_guard_skips_recursive_validation(self, monkeypatch):
+        monkeypatch.setattr(sys, "stdin", type("In", (), {"read": lambda self: '{"stop_hook_active": true}'})())
+        monkeypatch.setattr(
+            skill_creator_verify.subprocess,
+            "run",
+            lambda *args, **kwargs: pytest.fail("recursive stop guard should not run subprocesses"),
+        )
+
+        assert skill_creator_verify.main(["stop"]) == 0
+
+    def test_post_tool_use_skill_file_runs_validate_and_hooks(self, monkeypatch):
+        commands = []
+        monkeypatch.setattr(
+            sys,
+            "stdin",
+            type(
+                "In",
+                (),
+                {"read": lambda self: '{"tool_input": {"file_path": "skills/demo/SKILL.md"}}'},
+            )(),
+        )
+
+        def fake_run(command, **kwargs):
+            commands.append(command)
+            return type("Result", (), {"returncode": 0, "stdout": "", "stderr": ""})()
+
+        monkeypatch.setattr(skill_creator_verify.subprocess, "run", fake_run)
+
+        assert skill_creator_verify.main(["post-tool-use"]) == 0
+        assert ["uv", "run", "wagents", "validate"] in commands
+        assert ["uv", "run", "wagents", "hooks", "validate"] in commands
+
+    def test_stop_dirty_eval_runs_eval_validate(self, monkeypatch):
+        commands = []
+        monkeypatch.setattr(sys, "stdin", type("In", (), {"read": lambda self: "{}"})())
+
+        def fake_run(command, **kwargs):
+            commands.append(command)
+            if command[:2] == ["git", "status"]:
+                return type(
+                    "Result",
+                    (),
+                    {
+                        "returncode": 0,
+                        "stdout": " M skills/demo/evals/evals.json\n",
+                        "stderr": "",
+                    },
+                )()
+            return type("Result", (), {"returncode": 0, "stdout": "", "stderr": ""})()
+
+        monkeypatch.setattr(skill_creator_verify.subprocess, "run", fake_run)
+
+        assert skill_creator_verify.main(["stop"]) == 0
+        assert ["uv", "run", "wagents", "eval", "validate"] in commands
 
 
 class TestValidateIncludesHooks:

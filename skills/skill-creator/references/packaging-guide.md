@@ -26,10 +26,13 @@ Each skill packages as `<name>-v<version>.skill.zip`:
     ├── templates/        ← HTML/file templates (if exists)
     ├── assets/           ← Bundled binary/static files (if exists)
     ├── evals/            ← Test cases (if exists)
+    ├── reports/          ← Explicitly referenced report files only
     └── ...               ← Any other non-excluded skill files
 ```
 
-Excluded automatically: `__pycache__/`, `.DS_Store`, `*.pyc`, `*.tmp`, `.git/`.
+Excluded automatically: `__pycache__/`, `.DS_Store`, `*.pyc`, `*.tmp`, `.git/`, and unreferenced `reports/` files.
+
+`reports/` is for repo-local audit output and packaging evidence. A `reports/...` file is packaged only when `SKILL.md` explicitly references that exact file path. Unreferenced report files still appear in `files_excluded` during dry runs so reviewers can see what was intentionally left out.
 
 ## Manifest Schema
 
@@ -60,7 +63,7 @@ Nine checks run before packaging. Packaging is fail-closed by default: `--dry-ru
 | `frontmatter_author` | `metadata.author` populated | Add `metadata.author: your-name` |
 | `frontmatter_version` | `metadata.version` populated | Add `metadata.version: "1.0.0"` |
 | `no_absolute_paths` | No `/Users/`, `/home/`, `/tmp/` paths in body | Use relative paths or environment variables |
-| `referenced_files_exist` | All packaged `references/`, `scripts/`, `templates/`, and `assets/` paths mentioned in body resolve to files | Create missing files or remove stale references |
+| `referenced_files_exist` | All packaged `references/`, `scripts/`, `templates/`, `assets/`, and explicit `reports/` paths mentioned in body resolve to files | Create missing files or remove stale references |
 | `no_at_imports` | No `@path` imports in body | Remove repo-specific imports |
 | `name_directory_match` | Frontmatter `name` matches directory name | Align name field with directory |
 

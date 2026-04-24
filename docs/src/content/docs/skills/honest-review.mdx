@@ -288,11 +288,11 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 | Agent | Reads | Bridge File |
 |-------|-------|-------------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `CLAUDE.md` | `CLAUDE.md` |
-| [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `GEMINI.md` | `GEMINI.md` |
-| [Antigravity](https://github.com/google-gemini/gemini-cli) | `GEMINI.md` | `GEMINI.md` |
+| [Gemini CLI](https://github.com/google/gemini-cli) | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
+| [Antigravity](https://antigravity.google/) | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
 | [Codex](https://github.com/openai/codex) | `AGENTS.md` | -- |
 | [Crush](https://github.com/crush-ai/crush) | `AGENTS.md` | -- |
-| [OpenCode](https://github.com/anomalyco/opencode) | Global `AGENTS.md` + repo `AGENTS.md` | `opencode.json` + `tui.json` |
+| [OpenCode](https://github.com/anomalyco/opencode) | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
 | [Cursor](https://cursor.sh) | `AGENTS.md` | -- |
 | [GitHub Copilot](https://github.com/features/copilot) | Generated `.github/copilot-instructions.md` + `AGENTS.md` | `.github/copilot-instructions.md` |
 

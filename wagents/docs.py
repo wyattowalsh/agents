@@ -276,7 +276,7 @@ def write_index_page(nodes: list) -> None:
     )
     parts.append(
         '  <LinkCard title="Codex"'
-        ' href="https://github.com/codex-team/codex"'
+        ' href="https://github.com/openai/codex"'
         ' description="Autonomous coding workflows for command-line development." />'
     )
     parts.append('  <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />')
@@ -308,12 +308,22 @@ def write_index_page(nodes: list) -> None:
     parts.append('<Aside type="note" title="Generated pages, curated framing">')
     if has_mcp_overview and not mcps and mcp_config_count:
         parts.append(
-            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. The top-level navigation stays concise, curated onboarding pages stay hand-maintained, and the MCP overview is currently a hand-maintained summary of "
+            "Most pages in this site are generated from repository assets "
+            "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. "
+            "Repo workflow and policy truth lives in `AGENTS.md`, the public "
+            "README is regenerated with `wagents readme`, the top-level "
+            "navigation stays concise, curated onboarding pages stay "
+            "hand-maintained, and the MCP overview is currently a hand-maintained summary of "
             f"{mcp_config_count} servers from `mcp.json`."
         )
     else:
         parts.append(
-            "Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. Curated onboarding pages stay hand-maintained, and generated catalogs keep the docs in sync with the repo."
+            "Most pages in this site are generated from repository assets "
+            "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. "
+            "Repo workflow and policy truth lives in `AGENTS.md`, the public "
+            "README is regenerated with `wagents readme`, curated onboarding "
+            "pages stay hand-maintained, and generated catalogs keep the docs "
+            "in sync with the repo."
         )
     parts.append("</Aside>")
     parts.append("")

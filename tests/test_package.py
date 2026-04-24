@@ -15,6 +15,7 @@ from package import (
     check_name_directory_match,
     check_no_absolute_paths,
     check_referenced_files,
+    format_table,
     main,
     package_all,
     package_skill,
@@ -116,6 +117,47 @@ class TestZipValidity:
             assert "test-pkg/assets/logo.txt" in names
             assert "test-pkg/notes.md" in names
 
+    def test_reports_files_excluded_by_default(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path)
+        (skill_dir / "reports").mkdir()
+        (skill_dir / "reports" / "audit.md").write_text("local report")
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir)
+        zip_path = Path(result["output_path"])
+
+        assert "reports/audit.md" in result["files_excluded"]
+        assert "reports/audit.md" not in result["files_included"]
+        with zipfile.ZipFile(zip_path) as zf:
+            names = set(zf.namelist())
+            manifest = json.loads(zf.read("test-pkg/manifest.json"))
+            assert "test-pkg/reports/audit.md" not in names
+            assert "reports/audit.md" not in manifest["files"]
+
+    def test_explicitly_referenced_reports_file_is_included(self, tmp_path: Path):
+        skill_md = VALID_SKILL_MD.replace(
+            "Body content here.",
+            "Use reports/keep.md for the packaged evidence file.",
+        )
+        skill_dir = _make_skill(tmp_path, skill_md)
+        (skill_dir / "reports").mkdir()
+        (skill_dir / "reports" / "keep.md").write_text("packaged report")
+        (skill_dir / "reports" / "scratch.md").write_text("local scratch report")
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir)
+        zip_path = Path(result["output_path"])
+
+        assert "reports/keep.md" in result["files_included"]
+        assert "reports/scratch.md" in result["files_excluded"]
+        with zipfile.ZipFile(zip_path) as zf:
+            names = set(zf.namelist())
+            manifest = json.loads(zf.read("test-pkg/manifest.json"))
+            assert "test-pkg/reports/keep.md" in names
+            assert "test-pkg/reports/scratch.md" not in names
+            assert "reports/keep.md" in manifest["files"]
+            assert "reports/scratch.md" not in manifest["files"]
+
 
 # ---------------------------------------------------------------------------
 # Dry-run
@@ -141,6 +183,18 @@ class TestDryRun:
 
         assert len(result["portability_checks"]) > 0
         assert result["files_included"]
+
+    def test_dry_run_reports_excluded_report_files(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path)
+        (skill_dir / "reports").mkdir()
+        (skill_dir / "reports" / "audit.md").write_text("local report")
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, dry_run=True)
+        table = format_table(result)
+
+        assert "reports/audit.md" in result["files_excluded"]
+        assert "reports/audit.md" in table
 
     def test_package_all_dry_run_manifest_reports_no_emitted_archives(self, tmp_path: Path):
         skills_dir = tmp_path / "skills"
@@ -361,8 +415,11 @@ class TestBrokenRefs:
         (assets_dir / "logo.svg").write_text("<svg />\n")
         body = (
             "See skills/my-skill/references/guide.md, scripts/helper.py, "
-            "and assets/logo.svg for details."
+            "assets/logo.svg, and reports/run.md for details."
         )
+        reports_dir = skill_dir / "reports"
+        reports_dir.mkdir()
+        (reports_dir / "run.md").write_text("report\n")
 
         result = check_referenced_files(skill_dir, body)
         assert result["passed"]
