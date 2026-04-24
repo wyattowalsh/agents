@@ -1,6 +1,8 @@
 # Source Selection
 
-Complete tool-to-domain mapping for research tool selection. Read during Wave 0 to select the right tools for each sub-question.
+Complete tool-to-domain mapping for research tool selection. Read during Wave 0 to select the right capabilities for each sub-question.
+
+Tool names below are preferred implementations, not hard dependencies. If a named MCP or search tool is unavailable, use the nearest platform-equivalent capability, apply the fallback confidence ceiling, and report the limitation in the final methodology.
 
 ## Tool Inventory
 
@@ -63,13 +65,21 @@ Complete tool-to-domain mapping for research tool selection. Read during Wave 0 
 | Cascade Thinking | `cascade-thinking` → `cascade_thinking` | Multi-perspective analysis of complex findings |
 | Structured Thinking | `structured-thinking` → `capture_thought`, `revise_thought` | Evidence chain tracking, contradiction management |
 
+### Orchestration
+
+| Capability | Preferred Implementation | Fallback |
+|------------|--------------------------|----------|
+| Parallel subagents | Claude `Task`, Codex dynamic subagents, or native platform workers | Sequential sub-question batches with explicit degraded-orchestration note |
+| Research team | Claude `TeamCreate`, Codex coordinated worker set, or equivalent | Lead agent runs each wave serially and reduces breadth |
+| Nested waves | Teammates spawn bounded internal subagents | One follow-up batch per wave; record skipped breadth in gaps |
+
 ## Domain-to-Tool Mapping
 
 Select tools based on the domain signals detected in the query.
 
 | Domain Signal | Primary Tools | Secondary Tools | Notes |
 |--------------|---------------|-----------------|-------|
-| Library/API docs | context7, deepwiki, package-version | brave-search, fetch | Always resolve library ID first via context7 |
+| Library/API docs | `llms.txt`/`llms-full.txt`, context7, deepwiki, package-version | brave-search, fetch | Try docs indexes first, then Context7/doc-search, then web search |
 | Academic/scientific | arxiv, semantic-scholar, PubMed | openalex, crossref, brave-search | Use PubMed only for biomedical; crossref for DOI resolution |
 | Current events/trends | brave-search, exa, tavily | duckduckgo-search, g-search, fetcher | Use 2+ engines; exa for semantic relevance |
 | GitHub repos/OSS | deepwiki, repomix | brave-search, package-version | deepwiki for architecture; repomix for code-level analysis |
@@ -116,6 +126,16 @@ When tools are unavailable, apply confidence ceilings and use fallbacks. Check a
 | package-version | 0.6 max | brave-search + fetcher for registry lookups | Manual version checking |
 | wayback | 0.6 max | brave-search cache; note historical data unavailable | Cannot access deleted content |
 | All research tools | 0.4 max | LLM knowledge only; label ALL findings "unverified" | Report degraded mode in header |
+
+## Technical Documentation Lookup Order
+
+For library, API, framework, package, or tool research:
+
+1. Try authoritative docs indexes: `{docs_url}/llms.txt`, `{docs_url}/llms-full.txt`, `{domain}/llms.txt`, `docs.{domain}/llms.txt`, then `{domain}/docs/llms.txt`.
+2. If the docs index is unavailable or incomplete, use Context7/doc-search style tools for current API signatures and deprecation notes.
+3. Use package-version tools for release/version facts.
+4. Use web search only after authoritative docs paths are exhausted or when searching for community reports, incidents, or adoption evidence.
+5. Cite the authority level in the finding's evidence metadata.
 
 ## Thinking MCP Integration
 

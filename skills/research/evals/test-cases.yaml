@@ -303,3 +303,43 @@ test_cases:
     validation_rules:
       - "if all research tools unavailable, max confidence must be 0.4"
       - "all findings must be labeled 'unverified' in degraded mode"
+
+  - id: eval-031
+    description: "Cross-agent orchestration fallback"
+    input: "/research --depth deep What are the current best practices for AI agent observability?"
+    expected_tier: deep
+    expected_mode: investigate
+    expected_output_contains:
+      - capability resolution
+      - platform delegation or degraded orchestration note
+      - methodology lists unavailable tools if any
+
+  - id: eval-032
+    description: "Code review redirect remains out of scope"
+    input: "/research audit this pull request for security bugs"
+    expected_mode: redirect
+    expected_output_contains:
+      - suggestion to use /honest-review
+      - no source-file edits
+
+  - id: eval-033
+    description: "Legacy finding schema normalization"
+    input: "/research check PostgreSQL is better than SQLite for concurrent analytical workloads"
+    expected_tier: standard
+    expected_mode: factcheck
+    expected_output_contains:
+      - evidence[] provenance shape
+      - confidence field normalized from confidence_raw when present
+    validation_rules:
+      - "top-level source_url/source_tool inputs must be converted into evidence[] before synthesis"
+      - "source_count must reflect distinct evidence URLs after deduplication"
+
+  - id: eval-034
+    description: "Journal update appends wave state"
+    input: "/research track AI regulation updates"
+    expected_tier: standard
+    expected_mode: track
+    expected_output_contains:
+      - prior journal loaded before searching
+      - state block appended after wave save
+      - body content preserved across update

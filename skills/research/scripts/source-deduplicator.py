@@ -50,6 +50,48 @@ def merge_confidence(confidences: list[float]) -> float:
     return min(0.99, round(1.0 - product, 4))
 
 
+def normalize_evidence(finding: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return canonical evidence[] items, accepting legacy top-level source fields."""
+    raw_evidence = finding.get("evidence", [])
+    evidence: list[dict[str, Any]] = []
+    if isinstance(raw_evidence, list):
+        evidence = [dict(e) for e in raw_evidence if isinstance(e, dict)]
+
+    legacy_url = finding.get("source_url") or finding.get("url")
+    legacy_tool = finding.get("source_tool") or finding.get("tool")
+    legacy_excerpt = finding.get("excerpt")
+    if legacy_url and not evidence:
+        evidence.append({
+            "tool": legacy_tool or "unknown",
+            "url": legacy_url,
+            "timestamp": finding.get("timestamp", "N/A"),
+            "excerpt": legacy_excerpt or "",
+        })
+
+    normalized: list[dict[str, Any]] = []
+    for ev in evidence:
+        item = dict(ev)
+        if "source_tool" in item and "tool" not in item:
+            item["tool"] = item.pop("source_tool")
+        if "source_url" in item and "url" not in item:
+            item["url"] = item.pop("source_url")
+        item.setdefault("tool", "unknown")
+        item.setdefault("url", "N/A")
+        item.setdefault("timestamp", "N/A")
+        item.setdefault("excerpt", "")
+        item.setdefault("independent", True)
+        normalized.append(item)
+    return normalized
+
+
+def get_confidence(finding: dict[str, Any]) -> float | None:
+    """Return canonical confidence, accepting legacy confidence_raw."""
+    conf = finding.get("confidence", finding.get("confidence_raw"))
+    if isinstance(conf, (int, float)):
+        return max(0.0, min(1.0, float(conf)))
+    return None
+
+
 def get_evidence_domain(evidence: dict[str, Any]) -> str | None:
     """Extract domain from an evidence item's URL."""
     url = evidence.get("url", "")
@@ -96,9 +138,38 @@ def deduplicate_evidence(evidence_list: list[dict[str, Any]]) -> list[dict[str, 
     return unique
 
 
+def independent_source_count(evidence_list: list[dict[str, Any]]) -> int:
+    """Count distinct independent URLs, falling back to anonymous evidence count."""
+    urls: set[str] = set()
+    anonymous = 0
+    for ev in evidence_list:
+        if ev.get("independent") is False:
+            continue
+        url = str(ev.get("url") or "").strip()
+        if url:
+            urls.add(url)
+        else:
+            anonymous += 1
+    return len(urls) + anonymous
+
+
+def normalize_cross_validation_status(status: Any) -> str:
+    """Normalize descriptive cross-validation text to the canonical status."""
+    text = str(status or "unknown").lower()
+    if "contradict" in text:
+        return "contradicts"
+    if "agree" in text:
+        return "agrees"
+    if "partial" in text:
+        return "partial"
+    if "unverified" in text:
+        return "unverified"
+    return "unknown"
+
+
 def determine_cross_validation(findings: list[dict[str, Any]]) -> str:
     """Determine cross-validation status from merged findings."""
-    statuses = [f.get("cross_validation", "unknown") for f in findings]
+    statuses = [normalize_cross_validation_status(f.get("cross_validation", "unknown")) for f in findings]
     if "contradicts" in statuses:
         return "partial"
     non_unknown = [s for s in statuses if s != "unknown"]
@@ -109,6 +180,20 @@ def determine_cross_validation(findings: list[dict[str, Any]]) -> str:
     if len(findings) > 1:
         return "partial"
     return "unknown"
+
+
+def apply_confidence_caps(confidence: float, evidence: list[dict[str, Any]], cross_validation: str) -> float:
+    """Apply hard scoring caps from the research confidence rubric."""
+    independent_count = independent_source_count(evidence)
+    status = normalize_cross_validation_status(cross_validation)
+    capped = confidence
+    if independent_count == 0:
+        capped = min(capped, 0.29)
+    elif independent_count == 1:
+        capped = min(capped, 0.6)
+    elif status != "agrees":
+        capped = min(capped, 0.69)
+    return round(capped, 4)
 
 
 def deduplicate(
@@ -167,9 +252,15 @@ def deduplicate(
     for group in groups:
         if len(group) == 1:
             finding = dict(group[0])
-            evidence = finding.get("evidence", [])
+            evidence = normalize_evidence(finding)
+            cv = str(finding.get("cross_validation", "unknown"))
             finding["evidence"] = flag_same_domain_sources(evidence)
             finding["source_count"] = len(finding["evidence"])
+            finding["independent_source_count"] = independent_source_count(finding["evidence"])
+            conf = get_confidence(finding)
+            if conf is not None:
+                finding["confidence"] = apply_confidence_caps(conf, finding["evidence"], cv)
+            finding.pop("confidence_raw", None)
             merged_findings.append(finding)
             continue
 
@@ -182,16 +273,12 @@ def deduplicate(
         # Merge evidence
         all_evidence: list[dict[str, Any]] = []
         for f in group:
-            all_evidence.extend(f.get("evidence", []))
+            all_evidence.extend(normalize_evidence(f))
         all_evidence = deduplicate_evidence(all_evidence)
         all_evidence = flag_same_domain_sources(all_evidence)
 
         # Merge confidence
-        confidences = [
-            f.get("confidence", 0.0)
-            for f in group
-            if isinstance(f.get("confidence"), (int, float))
-        ]
+        confidences = [conf for f in group if (conf := get_confidence(f)) is not None]
         merged_conf = merge_confidence(confidences)
 
         # Union bias markers and gaps
@@ -207,6 +294,7 @@ def deduplicate(
 
         # Cross-validation
         cv = determine_cross_validation(group)
+        merged_conf = apply_confidence_caps(merged_conf, all_evidence, cv)
 
         merged_findings.append({
             "claim": claim,
@@ -216,6 +304,7 @@ def deduplicate(
             "bias_markers": bias_markers,
             "gaps": gaps,
             "source_count": len(all_evidence),
+            "independent_source_count": independent_source_count(all_evidence),
             "merged_from": len(group),
         })
 

@@ -64,6 +64,8 @@ _DOMAIN_KEYWORDS: dict[str, list[str]] = {
     "technology": [
         "api", "framework", "library", "programming", "software", "code",
         "database", "cloud", "kubernetes", "docker", "react", "vue", "angular",
+        "postgresql", "sqlite", "duckdb", "sql", "analytics", "analytical",
+        "data warehouse", "github", "copilot",
         "python", "javascript", "typescript", "rust", "go", "java", "c++",
         "llm", "ai", "machine learning", "deep learning", "neural",
         "microservice", "devops", "ci/cd", "git", "deployment", "server",
@@ -124,12 +126,13 @@ _ENTITY_PATTERN = re.compile(
       "[^"]{2,}"               #   Quoted strings (2+ chars)
     | '[^']{2,}'               #   Single-quoted strings
     | `[^`]{2,}`               #   Backtick-quoted strings
+    | \b[A-Z][A-Za-z0-9]*(?:[A-Z][A-Za-z0-9]*)+\b  # Mixed-case tech names like PostgreSQL, DuckDB
+    | \b[A-Z]{2,}(?:/[A-Z]{2,})?(?:\.[A-Z]+)*\b    # Acronyms like LLM, CI/CD, AWS
+    | \b[a-z]+[A-Z]\w*\b                            # camelCase words like JavaScript
+    | \b[A-Z][A-Za-z0-9]*(?:\.js|\.py|\.ts|\.go|\.rs)\b  # Tech names like React.js
     | (?<!\A)(?<![.!?]\s)      #   Not at very start of text, not after sentence end
-      [A-Z][a-z]+              #   Capitalized word
-      (?:\s+[A-Z][a-z]+)*     #   Followed by more capitalized words
-    | [A-Z]{2,}(?:\.[A-Z]+)*  #   Acronyms like LLM, CI/CD, AWS
-    | [a-z]+[A-Z]\w*          #   camelCase words like JavaScript
-    | [A-Z][a-z]*(?:\.js|\.py|\.ts|\.go|\.rs)  # Tech names like React.js
+      \b[A-Z][a-z]+            #   Capitalized word
+      (?:\s+[A-Z][a-z]+)*\b   #   Followed by more capitalized words
     )
     """,
     re.VERBOSE,
