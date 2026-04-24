@@ -48,6 +48,26 @@ Use these templates to keep `simplify` outputs short, concrete, and behavior-foc
 - <risky items intentionally left untouched>
 ```
 
+## Apply Deferred / Ask Before Apply
+
+Use when `apply` was requested but the Apply Eligibility Gate fails.
+
+```md
+**Scope**
+- <requested target and why it is not safe to edit yet>
+
+**Gate result**
+| Check | Status | Reason |
+|-------|--------|--------|
+| Target / Intent / Behavior invariants / Validation basis / Scope risk | pass/fail | <one sentence> |
+
+**Need before editing**
+- <clarification, invariant, valid path, or validation basis required>
+
+**Safe next step**
+- Analyze first / Confirm the target / Split out bug, API, security, or perf work
+```
+
 ## Explain
 
 ```md

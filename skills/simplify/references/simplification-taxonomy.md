@@ -25,7 +25,6 @@ These are usually safe when behavior is preserved:
 - extract duplicate logic across sibling branches into one shared path
 - rename opaque variables and helper names to match intent
 - replace hand-rolled mechanics with existing helpers or stdlib equivalents
-- remove extension points or config branches that never vary in practice
 
 ## Medium-Risk Simplifications
 
@@ -36,6 +35,7 @@ These often help, but need closer review:
 - simplifying state machines or async flows
 - consolidating error handling paths
 - collapsing modules or moving logic across files
+- removing extension points or config branches, unless they are demonstrably dead and non-public
 
 Use `references/behavior-preservation.md` before applying these.
 

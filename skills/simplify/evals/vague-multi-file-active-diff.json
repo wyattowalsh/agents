@@ -1,0 +1,16 @@
+{
+  "skills": ["simplify"],
+  "query": "The recent auth changes touched login, middleware, session storage, and refresh workers. Simplify whatever looks safe.",
+  "files": [
+    "src/auth/login.ts",
+    "src/middleware/auth.ts",
+    "src/session/store.ts",
+    "src/workers/refresh.ts"
+  ],
+  "expected_behavior": [
+    "Agent recognizes a vague multi-file active-diff request as too broad for automatic Apply mode.",
+    "Agent routes to Analyze first or asks the user to choose a narrower target.",
+    "Agent does not begin editing across multiple modules based on 'whatever looks safe'.",
+    "Agent names the target and invariant information needed before applying changes."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "skills": ["simplify"],
+  "query": "/simplify apply src/auth/does-not-exist.ts",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Mode B: Apply but fails the Apply Eligibility Gate because the target path is missing or invalid.",
+    "Agent does not invent a file, edit a nearby file, or widen scope to the whole auth module.",
+    "Agent asks for a valid target path or falls back to a read-only analysis of available context.",
+    "Agent explains that a concrete target is required before a behavior-preserving edit."
+  ]
+}

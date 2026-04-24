@@ -1,0 +1,11 @@
+{
+  "skills": ["simplify"],
+  "query": "/simplify apply src/payments/reconcile.ts, but there are no tests and I am not sure what edge cases matter.",
+  "files": ["src/payments/reconcile.ts"],
+  "expected_behavior": [
+    "Agent recognizes that the validation basis is weaker than invariant reasoning because important behavior is unknown.",
+    "Agent does not apply edits before the unchanged behavior and edge cases are clarified.",
+    "Agent uses the Apply deferred or ask-before-apply path instead of silently editing.",
+    "Agent states the missing invariants or tests needed before a safe simplification pass."
+  ]
+}

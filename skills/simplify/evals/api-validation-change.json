@@ -1,0 +1,11 @@
+{
+  "skills": ["simplify"],
+  "query": "/simplify apply src/api/create-user.ts by making it accept either email or phone instead of requiring email",
+  "files": ["src/api/create-user.ts"],
+  "expected_behavior": [
+    "Agent recognizes that changing accepted inputs or validation rules is a semantic change, not a simplification pass.",
+    "Agent does not edit the file under simplify.",
+    "Agent asks the user to split out the API or validation change before any behavior-preserving simplification.",
+    "Agent preserves the existing public contract unless a separate feature-change workflow is approved."
+  ]
+}
