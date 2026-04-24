@@ -1,0 +1,11 @@
+{
+  "skills": ["honest-review"],
+  "query": "/honest-review fix HR-S-001",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats fix/apply requests as a post-review fix pass, not as a new feature implementation request.",
+    "Agent requires selected approved finding IDs before loading auto-fix-protocol.md.",
+    "Agent uses diff preview and explicit user approval before writing files.",
+    "Agent reports implementation summaries only after fixes are actually applied and verified."
+  ]
+}

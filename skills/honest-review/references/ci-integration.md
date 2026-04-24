@@ -102,7 +102,7 @@ across manual reviews and CI annotations.
 
 See references/conventional-comments.md for the full label taxonomy and severity mapping.
 
-For batch posting, pipe findings through `scripts/finding-formatter.py` and iterate over the JSON output.
+For batch posting, pipe findings through `skills/honest-review/scripts/finding-formatter.py` and iterate over the JSON output.
 
 ## Configuration
 
@@ -132,7 +132,7 @@ When `HONEST_REVIEW_FORMAT=sarif`, pipe output to GitHub Code Scanning:
     category: honest-review
 ```
 
-Or upload manually via `scripts/sarif-uploader.py`. See `references/sarif-output.md` for full SARIF format spec.
+Or upload manually via `skills/honest-review/scripts/sarif-uploader.py`. See `references/sarif-output.md` for full SARIF format spec.
 
 ## GitHub Check Runs
 

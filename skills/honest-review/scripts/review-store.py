@@ -1,9 +1,7 @@
-import os
-
 #!/usr/bin/env python3
 """Persist and compare honest-review results across sessions.
 
-Stores review JSON in ~/.claude/honest-reviews/ with date-project-mode naming.
+Stores review JSON in the active agent's honest-reviews state directory.
 Supports save, load, list, and diff subcommands. All output is JSON to stdout.
 
 Usage:
@@ -19,11 +17,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from collections import Counter
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 
 def get_agent_dir(skill_name: str) -> Path:
@@ -34,7 +34,6 @@ def get_agent_dir(skill_name: str) -> Path:
             return Path.home() / folder / skill_name
     return Path.home() / ".claude" / skill_name
 
-from typing import Any
 
 STATE_DIR = get_agent_dir("honest-reviews")
 

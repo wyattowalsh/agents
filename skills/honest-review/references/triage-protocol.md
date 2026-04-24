@@ -18,7 +18,7 @@ Run as the first action in every Mode 2 full codebase audit.
 Invoke the scanner to generate a structured JSON project profile:
 
 ```bash
-uv run scripts/project-scanner.py [path]
+uv run python skills/honest-review/scripts/project-scanner.py [path]
 ```
 
 Detected fields: language(s), framework(s), build system, test framework, package manager, file count, LOC per file, max nesting depth, and estimated cyclomatic complexity (max/mean per file).
@@ -123,7 +123,7 @@ Route: quick scan only. Flag obvious defects. Skip deep analysis and creative le
 ## Dependency Graph Construction
 
 Build a cross-file dependency graph to inform blast radius and impact analysis.
-Run `scripts/project-scanner.py` which includes dependency graph output, or extract manually.
+Run `skills/honest-review/scripts/project-scanner.py` which includes dependency graph output, or extract manually.
 
 **When to build:**
 - Full codebase audit (Mode 2): always
@@ -268,4 +268,4 @@ CONTEXT FOR REVIEWERS:
 
 Check each applicable specialist box. The lead uses this to determine team composition (see references/team-templates.md) and write targeted teammate prompts with the correct severity bar and checklist selection.
 
-Cross-references: scripts/project-scanner.py, references/team-templates.md.
+Cross-references: skills/honest-review/scripts/project-scanner.py, references/team-templates.md.
