@@ -418,6 +418,10 @@ enabled = true
     assert "max_depth" not in home_config
     assert "max_threads" not in home_config
     assert "job_max_runtime_seconds" not in home_config
+    assert 'approval_policy = "never"' in home_config
+    assert 'approvals_reviewer = "user"' in home_config
+    assert 'sandbox_mode = "danger-full-access"' in home_config
+    assert '[profiles.deep]\napproval_policy = "on-request"\napprovals_reviewer = "guardian_subagent"' in home_config
     assert 'model = "gpt-5.5"' in home_config
     assert 'model_reasoning_effort = "high"' in home_config
     assert 'plan_mode_reasoning_effort = "high"' in home_config
