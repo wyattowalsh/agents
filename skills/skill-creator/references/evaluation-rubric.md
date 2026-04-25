@@ -19,13 +19,13 @@ Skill quality is assessed through two complementary checks run in sequence:
 
 1. **`wagents validate`** -- structural correctness (pass/fail). Checks that `name` matches the directory, `description` is non-empty, and the body is non-empty. A skill that fails validation is broken and cannot be audited. Always run this first.
 
-2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 10 weighted dimensions plus a vocabulary bonus. Produces a deterministic numeric score and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
+2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 13 weighted dimensions. Produces a deterministic numeric score capped at 100 and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
 
 Always run both. A skill that passes validation but scores D or F needs significant rework. A skill that scores B but fails validation has a naming or metadata bug that must be fixed before distribution.
 
-### Weighted Normalization + Bonus
+### Weighted Normalization
 
-Raw scores are not summed directly. Each dimension's raw score is multiplied by its weight, producing a weighted total. The weighted total is then normalized to a 0--100 scale: `(total_weighted / max_weighted) * 100`. Up to +3 bonus points from the Canonical Vocabulary dimension are added after normalization, so the theoretical maximum is 103. This means a skill can exceed 100 if it earns bonus points, even if its weighted raw scores are not perfect.
+Raw scores are not summed directly. Each dimension's raw score is multiplied by its weight, producing a weighted total. The weighted total is then normalized to a 0--100 scale: `(total_weighted / max_weighted) * 100`. Scores are capped at 100. Canonical Vocabulary is a normal scored dimension, not an additive bonus.
 
 ---
 
@@ -43,10 +43,11 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 | 8 | Script Quality | 0.5x | 5 | If `scripts/` exists: argparse present, JSON output pattern, dependency check | Error handling, edge cases, documentation |
 | 9 | Portability | 0.5x | 5 | License field, metadata.author, metadata.version, no absolute paths, no repo-specific `@` imports | Distribution readiness, environment assumptions |
 | 10 | Conciseness | 0.5x | 5 | No duplicate headings, no repeated content blocks | Token efficiency, information density, dead text |
-| Bonus | Canonical Vocabulary | -- | +3 bonus | Terms/vocabulary section present | Consistency of term usage throughout |
+| 11 | Canonical Vocabulary | 0.5x | 5 | Dedicated terms/vocabulary section, >=3 terms, grouping, non-placeholder content | Consistency of term usage throughout |
+| 12 | Evaluation Coverage | 1x | 10 | `evals/evals.json` schema, stable ids, assertions, explicit/implicit/negative/scope coverage, dispatch coverage | Scenario realism and behavioral depth |
+| 13 | Validation Contract | 1x | 10 | Completion proof commands for validation, evals, audit, package dry-run, hooks, stale command detection | Whether the proof actually matches the skill's risk |
 
-**Total: 104 raw weighted-dimension points + 3 bonus. Final score is normalized:
-`(total_weighted / max_weighted * 100) + bonus`, producing a 0-103 scale.**
+**Final score: `round(total_weighted / max_weighted * 100)`, capped to 0-100.**
 
 ### Dimension Details
 
@@ -111,10 +112,23 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 - **Common deductions:** Duplicate heading text (-2), repeated paragraph blocks (-3).
 - **Zero:** Both duplicate headings and repeated content blocks detected.
 
-**Canonical Vocabulary (+3 bonus)**
+**11. Canonical Vocabulary (5 pts, 0.5x weight)**
 
-- **Full bonus (+3):** A dedicated "Canonical Terms," "Canonical Vocabulary," or "Vocabulary" section exists (heading or bold block).
-- **No bonus (0):** No vocabulary section found. This is not penalized -- it is purely additive.
+- **Full marks (5):** A dedicated "Canonical Terms," "Canonical Vocabulary," or "Vocabulary" section exists; it explicitly marks terms as canonical, defines 3+ term entries, groups terms by category or table row, and is non-placeholder content.
+- **Common deductions:** Section exists but defines too few terms (-1), lacks "use these exactly" or equivalent wording (-1), has no grouping for multi-mode skills (-1), or contains placeholder text (-1).
+- **Zero:** No dedicated vocabulary section.
+
+**12. Evaluation Coverage (10 pts, 1x weight)**
+
+- **Full marks (10):** `evals/evals.json` exists, parses as a manifest with matching `skill_name`, has stable unique kebab-case ids, every case includes prompt/expected output/objective assertions, and coverage includes explicit invocation, implicit trigger, negative control, scope-refusal or malformed-input, and dispatch actions.
+- **Common deductions:** Missing negative control (-1), missing scope-refusal/malformed-input case (-1), unstable or duplicate ids (-1), no objective assertions (-1), dispatch modes without obvious eval coverage (-1).
+- **Zero:** No eval manifest exists or it cannot be parsed.
+
+**13. Validation Contract (10 pts, 1x weight)**
+
+- **Full marks (10):** The skill or its references define concrete proof commands for `wagents validate`, `wagents eval validate` when evals exist, `audit.py skills/<name>/`, package dry-run for distributable skills, `wagents hooks validate` when hooks are configured, no stale legacy progress-audit flag, explicit completion criteria, and at least one test or smoke-check surface.
+- **Common deductions:** Missing audit command (-2), missing `wagents validate` (-2), stale legacy progress-audit flag (-1), missing hook/eval/package checks when applicable (-1 each).
+- **Zero:** No validation or completion proof contract.
 
 ---
 
@@ -122,7 +136,7 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 
 | Grade | Score Range | Meaning |
 |-------|------------|---------|
-| A | 90--100+ | Production-ready. Follows all patterns appropriate for its type. Ready for distribution via `npx skills add`. |
+| A | 90--100 | Production-ready. Follows all patterns appropriate for its type. Ready for distribution via `npx skills add`. |
 | B | 75--89 | Good quality. Minor gaps in optional patterns. Ready for use, could improve with polish. |
 | C | 60--74 | Functional but missing important patterns. Needs improvement before distribution. |
 | D | 40--59 | Incomplete. Missing critical patterns or has structural issues. Needs significant work. |
@@ -130,7 +144,7 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 
 A skill should target B or above before merging. A grade is expected for skills intended for public distribution.
 
-> **Bonus interaction:** The +3 bonus from Canonical Vocabulary is added after normalization, so scores above 100 are possible. A skill with a weighted normalized score of 88 and full bonus would reach 91, placing it in the A tier even though its raw weighted score alone falls in the B range.
+Scores above 100 are not possible. Canonical Vocabulary contributes through its own weighted dimension.
 
 ---
 
@@ -219,4 +233,4 @@ What the AI reviewer checks beyond what `audit.py` can measure. Run this checkli
 7. **Conciseness** -- Could any section be 30% shorter without losing information? Flag sections that repeat the same idea in different words.
 8. **Completeness** -- Are there obvious gaps the user would notice? Missing error handling, undocumented modes, unaddressed edge cases.
 9. **Self-exemplar** -- Does the skill follow its own advice? A code-review skill that violates its own review criteria is disqualifying.
-10. **Edge case coverage** -- What happens with unusual inputs? Unicode, very long strings, paths with spaces, empty repositories, monorepos with 100+ packages.
+10. **Edge case coverage** -- What happens with unusual inputs? Unicode, very long strings, paths with spaces, empty repositories, and large monorepos.

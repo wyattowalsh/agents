@@ -7,7 +7,7 @@ from pathlib import Path
 # Insert the script directory into sys.path so we can import directly.
 sys.path.insert(0, str(Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts"))
 
-from audit import PATTERN_NAMES, audit_skill
+from audit import PATTERN_NAMES, audit_skill, format_table
 
 
 def _write_skill(tmp_path: Path, name: str, body: str, *, frontmatter: str | None = None) -> Path:
@@ -60,6 +60,7 @@ def test_pattern_detection_avoids_keyword_false_positives(tmp_path: Path):
     result = audit_skill(str(skill_dir))
 
     assert result["bonus"] == 0
+    assert result["max"] == 100
     assert "canonical-vocabulary" not in result["patterns_found"]
     assert "classification-gating" not in result["patterns_found"]
     assert "scaling-strategy" not in result["patterns_found"]
@@ -133,9 +134,10 @@ def test_pattern_detection_requires_structural_evidence(tmp_path: Path):
 
     result = audit_skill(str(skill_dir))
 
-    assert result["bonus"] == 3
-    assert result["max"] == 103
+    assert result["bonus"] == 0
+    assert result["max"] == 100
     assert "canonical-vocabulary" in result["patterns_found"]
+    assert _dimension(result, "canonical-vocabulary")["score"] >= 4
     assert "classification-gating" in result["patterns_found"]
     assert "scaling-strategy" in result["patterns_found"]
     assert "state-management" in result["patterns_found"]
@@ -171,9 +173,11 @@ def test_pattern_catalog_reports_status_buckets_and_dimension_contract(tmp_path:
         len(result["patterns_found"]) + len(result["patterns_suggested"]) + len(result["patterns_not_applicable"])
     )
 
-    assert len(result["dimensions"]) == 10
+    assert len(result["dimensions"]) == 13
     assert catalog_total == len(PATTERN_NAMES) == 14
     assert "dispatch-table" in result["patterns_not_applicable"]
+    assert _dimension(result, "evaluation-coverage")["score"] == 0
+    assert _dimension(result, "validation-contract")["score"] >= 4
 
 
 def test_progressive_disclosure_detects_script_backed_layered_guidance(tmp_path: Path):
@@ -215,3 +219,134 @@ def test_progressive_disclosure_detects_script_backed_layered_guidance(tmp_path:
 
     assert "scripts" in result["patterns_found"]
     assert "progressive-disclosure" in result["patterns_found"]
+
+
+def _dimension(result: dict, dim_id: str) -> dict:
+    """Return a dimension by id from an audit result."""
+    return next(dim for dim in result["dimensions"] if dim["id"] == dim_id)
+
+
+def test_evaluation_and_validation_dimensions_score_real_contracts(tmp_path: Path):
+    skill_dir = _write_skill(
+        tmp_path,
+        "contracted-skill",
+        """
+        # Contracted Skill
+
+        ## Dispatch
+
+        | $ARGUMENTS | Action |
+        |------------|--------|
+        | `audit <path>` | Audit |
+        | Natural language request | Audit |
+        | Invalid path | Refuse |
+        | Empty | Show help |
+
+        ## Validation
+
+        Run `uv run wagents validate`, `uv run wagents eval validate`,
+        `uv run python skills/contracted-skill/scripts/audit.py skills/<name>/`,
+        and `uv run wagents package contracted-skill --dry-run`.
+        These commands must pass before declaring the skill complete.
+
+        ## Critical Rules
+
+        1. Always validate before exit
+        2. Never skip eval validation
+        3. Always audit the skill path
+        4. Never package without dry-run
+        5. Always report zero errors
+        """,
+        frontmatter="""\
+        ---
+        name: contracted-skill
+        description: Audit contracted skill work. Use when checking skill quality. NOT for agents.
+        license: MIT
+        metadata:
+          author: tester
+          version: "1.0.0"
+        ---
+        """,
+    )
+    evals_dir = skill_dir / "evals"
+    evals_dir.mkdir()
+    (evals_dir / "evals.json").write_text(
+        textwrap.dedent(
+            """\
+            {
+              "skill_name": "contracted-skill",
+              "evals": [
+                {
+                  "id": "explicit-invocation",
+                  "prompt": "/contracted-skill audit skills/foo",
+                  "expected_output": "Dispatches explicit invocation to Audit.",
+                  "assertions": ["Agent routes explicit invocation to Audit."]
+                },
+                {
+                  "id": "implicit-trigger",
+                  "prompt": "Check this skill quality",
+                  "expected_output": "Treats natural-language trigger as Audit.",
+                  "assertions": ["Agent recognizes implicit trigger."]
+                },
+                {
+                  "id": "negative-control",
+                  "prompt": "Create an agent",
+                  "expected_output": "Does not trigger contracted-skill.",
+                  "assertions": ["Agent does not trigger on negative control."]
+                },
+                {
+                  "id": "scope-refusal",
+                  "prompt": "/contracted-skill invalid path",
+                  "expected_output": "Refuses malformed invalid input.",
+                  "assertions": ["Agent refuses malformed input."]
+                }
+              ]
+            }
+            """
+        ),
+        encoding="utf-8",
+    )
+
+    result = audit_skill(str(skill_dir))
+
+    assert result["max"] == 100
+    assert result["bonus"] == 0
+    assert _dimension(result, "evaluation-coverage")["score"] == 10
+    assert _dimension(result, "validation-contract")["score"] >= 9
+
+
+def test_audit_table_never_reports_legacy_103_scale(tmp_path: Path):
+    skill_dir = _write_skill(
+        tmp_path,
+        "vocab-skill",
+        """
+        # Vocab Skill
+
+        ## Dispatch
+
+        | $ARGUMENTS | Action |
+        |------------|--------|
+        | `audit` | Audit |
+        | Empty | Show help |
+
+        ## Critical Rules
+
+        1. Always validate output
+        2. Never skip checks
+        3. Always report findings
+        4. Never invent context
+        5. Always keep terms stable
+
+        **Canonical terms** (use these exactly throughout):
+        - Modes: "Audit", "Help", "Refuse"
+        - Status: "Ready", "Blocked"
+        """,
+    )
+
+    result = audit_skill(str(skill_dir))
+    table = format_table([result])
+
+    assert result["max"] == 100
+    assert result["score"] <= 100
+    assert "/" + "103" not in table
+    assert "/100" in table

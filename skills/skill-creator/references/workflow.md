@@ -206,7 +206,7 @@ Run `wagents package <name> --dry-run` to verify the skill is distributable:
 
 > **Progress tracking:**
 > Start: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase validate --status active`
-> Inject audit: `uv run python skills/skill-creator/scripts/progress.py audit --skill <name> --inject`
+> Inject audit: `uv run python skills/skill-creator/scripts/progress.py audit --skill <name>`
 > End: `uv run python skills/skill-creator/scripts/progress.py phase --skill <name> --phase validate --status completed`
 
 ### Completion Criteria

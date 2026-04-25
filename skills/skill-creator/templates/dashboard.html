@@ -244,12 +244,6 @@ h3 { font-size: 0.95rem; }
   color: hsl(var(--text-muted));
 }
 
-.skill-card-score .score-bonus {
-  font-size: 0.7rem;
-  color: hsl(var(--grade-a));
-  font-weight: 600;
-}
-
 .skill-meta {
   display: flex;
   flex-wrap: wrap;
@@ -1431,7 +1425,6 @@ h3 { font-size: 0.95rem; }
             <div class="skill-card-score">
               <span class="score-value">${String(sk.score)}</span>
               <span class="score-max">/ ${String(sk.max)}</span>
-              ${trust(sk.bonus > 0 ? `<span class="score-bonus">+${sk.bonus}</span>` : "")}
             </div>
             <div style="font-size: 0.75rem; color: hsl(var(--text-muted));">${sk.path ?? ""}</div>
           </div>
@@ -1631,7 +1624,6 @@ h3 { font-size: 0.95rem; }
               <h2 style="margin: 0;">${escH(sk.skill)}</h2>
               <span class="badge badge-grade" style="font-size: 1rem;">${escH(sk.grade)}</span>
               <span class="detail-score-display" style="color: hsl(var(${gVar}));">${sk.score}<span style="font-size: 1rem; font-weight: 400; color: hsl(var(--text-muted));">/${sk.max}</span></span>
-              ${sk.bonus > 0 ? `<span style="color: hsl(var(--grade-a)); font-size: 0.85rem; font-weight: 600;">+${sk.bonus} bonus</span>` : ""}
             </div>
             ${sk.path ? `<p style="font-size: 0.8rem; color: hsl(var(--text-muted)); margin-top: 0.3rem;">${escH(sk.path)}</p>` : ""}
           </div>
