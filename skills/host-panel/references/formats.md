@@ -1,121 +1,150 @@
 # Panel Discussion Formats
 
+Each format is a deliberation protocol, not a performance style. Use the topic
+gate and source ledger to decide which format is legitimate.
+
+## Shared Phase 0: Framing
+
+Every format starts with:
+
+1. Topic class and false-balance decision.
+2. Source status and evidence limits.
+3. Terrain map: traditions, tensions, and uncertainty.
+4. Roster rationale: why these panelists differ methodologically.
+5. Reminder: the panel simulates intellectual positions, not real human opinion.
+
 ## Roundtable
 
-Use open seating with round-robin speaking order. Allow interjections — panelists may
-respond directly to each other at any time, not only when called upon.
+Use for open exploration, policy trade-offs, decision-critical topics, and
+multi-perspective mapping.
 
-### Moderator Role
+### Success Criteria
 
-Act as facilitator, connector, and provocateur. Actively connect threads between panelists
-("Dr. X, that connects to what Dr. Y said about..."). Allow organic tangents when they are
-productive. Redirect when discussion becomes circular. Enforce balance and prevent monologues.
+- The panel maps multiple traditions without forcing a winner.
+- The moderator identifies cruxes and evidence gaps.
+- Convergence is tested rather than celebrated.
 
 ### Phase Structure
 
-Run 3-4 phases of exchange, progressively narrowing from broad positions to specific
-disagreements.
+**Phase 1 - Independent Positions.** Each panelist states their initial claim,
+evidence standard, uncertainty, and strongest self-objection before cross-talk.
 
-**Phase 1 — Opening Positions.** Each panelist states their core thesis and the
-evidence or framework behind it. Keep responses roughly equal in length.
+**Phase 2 - Cross-Pollination.** Panelists respond to specific claims from Phase 1.
+The moderator links threads and prevents repeated restatement.
 
-**Phase 2 — Cross-Pollination.** Panelists respond to each other, building on or
-challenging specific claims made in Phase 1. Connect threads across responses. Surface
-the points of agreement and disagreement explicitly.
+**Phase 3 - Crux Test.** Focus on the most important disagreement. Ask what
+evidence or value trade-off would change each position.
 
-**Phase 3 — Deep Dive.** Identify the most productive tension that has emerged and
-focus all panelists on it. Run a challenge round here — press each panelist on the
-weakest part of their position. Push past surface-level disagreement into root causes.
+**Phase 4 - Update and Residuals.** Each panelist states what changed, what did
+not, and what remains unresolved. Do not force consensus.
 
-**Phase 4 — Synthesis Prep (optional).** Each panelist states what they have updated on
-during the discussion and what remains unresolved. Identify open questions worth pursuing
-further. Do not force false consensus.
+### Stop Conditions
 
----
+- The central crux has been named.
+- Claims repeat without new evidence.
+- Source gaps, not disagreement, are now the binding constraint.
+
+### Failure Modes
+
+- Generic agreement across all panelists.
+- Brainstorming without source status.
+- Polite summary instead of crux identification.
 
 ## Oxford-Style
 
-Frame a binary motion: "This house believes that..." The moderator states the proposition
-precisely and explains what is at stake.
+Use for genuinely contestable binary propositions. Do not use Oxford to stage a
+false balance around settled factual questions.
+
+### Eligibility
+
+The motion must pass all topic-gate checks:
+
+1. Clear proposition.
+2. Defensible proposition and opposition.
+3. No settled-fact denial as one side.
+4. Source ledger can support both the motion and opposition.
 
 ### Team Assignment
 
-Divide panelists into proposition and opposition sides. Assign at least one reluctant
-member per side — someone whose natural position is opposite their assigned side. This
-forces steelmanning and produces more authentic, rigorous argumentation.
-
-Handle odd numbers by designating one panelist as "swing." The swing argues from the
-middle, free to agree with either side on specific points, but must articulate what
-would tip them decisively to one side.
-
-Handle non-binary topics by sharpening the topic into a debatable proposition. For
-example, transform "AI in education" into "This house believes that AI tutoring systems
-should replace human teachers for foundational skills instruction."
+Divide panelists into proposition and opposition sides. For 3 experts, use one
+swing panelist. For 4-6 experts, assign at least one reluctant advocate who can
+steelman the side that is not their natural conclusion.
 
 ### Phase Structure
 
-**Phase 1 — Motion Statement.** Frame the motion precisely. State what is at stake and
-what a vote for or against the motion implies.
+**Phase 1 - Motion Statement.** State the motion, stakes, source status, and what
+a vote for or against would imply.
 
-**Phase 2 — Opening Arguments.** Proposition side speaks first, then opposition. Each
-speaker gets 200-250 words. State the strongest case from the assigned side — no hedging.
+**Phase 2 - Independent Openings.** Each side gives its strongest case, evidence
+standard, and self-objection before hearing rebuttal.
 
-**Phase 3 — Direct Rebuttal.** Alternate between proposition and opposition. Address
-SPECIFIC claims from the opening arguments, not restatements of one's own position.
-Use the form: "The previous speaker claimed X, but this fails because Y."
+**Phase 3 - Direct Rebuttal.** Alternate sides. Address exact claims using:
+"The previous speaker claimed X; this fails or is incomplete because Y."
 
-**Phase 4 — Floor Questions.** The moderator asks probing questions on behalf of the
-audience, targeting weaknesses in both sides equally. Press on unstated assumptions
-and unaddressed counterexamples.
+**Phase 4 - Moderator Questions.** Probe unstated assumptions, evidence gaps,
+loaded terms, and the strongest opposing evidence.
 
-**Phase 5 — Closing Statements.** Each side gets 100-150 words for a final argument.
-Require each side to acknowledge the strongest point from the opposing side before
-making their closing case.
+**Phase 5 - Closing With Concessions.** Each side acknowledges the strongest
+opposing point before closing.
 
----
+### Stop Conditions
+
+- The decisive crux is clear.
+- The debate becomes a values trade-off rather than a factual disagreement.
+- One side lacks source-backed support and must be downgraded.
+
+### Failure Modes
+
+- Fake balance.
+- Winning by rhetoric.
+- Last-round majority voting.
+- Treating an assigned side as the panelist's true belief.
 
 ## Socratic
 
-The moderator is a Socratic questioner — ask, never assert. The moderator's goal is to
-help panelists discover contradictions, hidden assumptions, and deeper truths through
-structured inquiry. The panel succeeds when everyone understands the question more deeply
-than when they started.
+Use for conceptual, definitional, or assumption-heavy topics. The moderator asks
+more than asserts. The goal is clearer inquiry, not victory.
 
 ### Question Taxonomy
 
-Cycle through these question types deliberately:
-
-- **Clarifying.** "What do you mean by X?" "Can you give an example?" "How does that
-  differ from Y?"
-- **Probing assumptions.** "Why do you assume Y?" "What would have to be true for that
-  to hold?" "Is that always the case?"
-- **Probing evidence.** "What evidence supports Z?" "How was that measured?" "Could that
-  evidence support the opposite conclusion?"
-- **Exploring implications.** "If that's true, what follows?" "What are the consequences
-  for W?" "Does that apply in all cases?"
-- **Meta-questions.** "Why do we disagree about this?" "What would change your mind?"
-  "Are we asking the right question?"
-
-### Ground Rules
-
-Encourage panelists to question each other, not only respond to the moderator. Prompt
-cross-examination: "Dr. X, what question would you most like to ask Dr. Y?" Require
-panelists to build on others' ideas, use evidence, challenge ideas not people, avoid
-monologues, and accept that every claim can be questioned.
+- **Clarifying.** What do you mean by X? Can you give an example?
+- **Assumption.** What must be true for that to hold?
+- **Evidence.** What evidence supports this, and could it support another view?
+- **Implication.** If true, what follows?
+- **Meta.** Are we asking the right question? What would change your mind?
 
 ### Phase Structure
 
-**Phase 1 — Define.** Ask each panelist to define the core concept differently. Surface
-definitional disagreements before proceeding — these often contain the deepest disputes.
+**Phase 1 - Define.** Each panelist defines the central concept and names what
+their definition excludes.
 
-**Phase 2 — Examine.** Probe the strongest-seeming position, looking for hidden
-assumptions. Invite other panelists to join the examination. Follow threads until they
-reach bedrock or reveal gaps.
+**Phase 2 - Examine.** Probe the strongest definition or claim for hidden
+assumptions and source gaps.
 
-**Phase 3 — Deconstruct.** Focus on contradictions that have surfaced. Ask directly:
-"Dr. X, you said A, but also B — can both be true?" Press until panelists reconcile
-or abandon one claim.
+**Phase 3 - Deconstruct.** Surface contradictions and ask whether both claims can
+stand together.
 
-**Phase 4 — Reconstruct.** Panelists attempt to build a more robust position that
-incorporates what the questioning revealed. The goal is collaborative truth-seeking,
-not winning.
+**Phase 4 - Reconstruct.** Build a more robust question or framework that
+incorporates what the inquiry revealed.
+
+### Stop Conditions
+
+- The core ambiguity has been named.
+- Further questioning repeats the same distinction.
+- The remaining issue requires evidence outside the session.
+
+### Failure Modes
+
+- The moderator lectures instead of asks.
+- Panelists perform philosophy without grounding.
+- The output ends with mystery rather than a sharper question.
+
+## Condensed Panels
+
+For condensed output:
+
+1. Keep Phase 0, source status, and roster rationale.
+2. Run one independent-position pass.
+3. Include one direct challenge round.
+4. Produce full final synthesis.
+5. Omit repeated openings and decorative dialogue.

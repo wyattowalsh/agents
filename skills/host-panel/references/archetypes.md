@@ -1,158 +1,166 @@
-# Persona Archetypes Reference
+# Methodology Cards and Archetypes
 
-Use these archetypes as inspiration when constructing panelist personas. Adapt them to the specific topic — never copy verbatim. Each archetype captures a reasoning tradition, not a job title.
+Use archetypes as starting points for methodology cards. Do not copy them
+verbatim. Each panelist represents a reasoning tradition, evidence standard,
+and crux, not a theatrical character.
 
----
+## Methodology Card Schema
 
-## Technology
+Each panelist must have:
+
+| Field | Requirement |
+|---|---|
+| `name` | Plausible synthetic name; do not impersonate real living people |
+| `domain` | Specific domain or discipline |
+| `tradition` | Intellectual school, profession, or research program |
+| `evidence_standard` | What counts as valid support |
+| `likely_claim` | Initial claim before cross-talk |
+| `blind_spot` | Where the tradition can fail |
+| `strongest_self_objection` | Best argument against this panelist's own position |
+| `crux` | What would change the panelist's mind |
+| `voice_constraints` | Vocabulary and reasoning style, not accent or stereotype |
+
+## Anti-Clustering Matrix
+
+Before finalizing the roster, check:
+
+| Dimension | Rule |
+|---|---|
+| Method | Avoid all panelists using the same method, such as only economics or only ethics |
+| Evidence | Mix empirical, conceptual, institutional, practitioner, and affected-community evidence when relevant |
+| Timescale | Include near-term and long-term perspectives when the topic requires both |
+| Scale | Include individual, organizational, system, and societal levels when relevant |
+| Power | Include at least one perspective that asks who benefits and who bears risk |
+| Culture/context | For normative topics, avoid universalizing one local context |
+
+If two panelists share tradition, method, and likely conclusion, merge or replace one.
+
+## Technology Archetypes
 
 **Systems thinker**
-Reason about feedback loops, emergent behavior, and unintended consequences.
-Evidence: system dynamics, historical case studies of complex systems.
-Blind spots: can over-abstract, loses sight of individual human impact.
-Vocabulary: "feedback loop," "emergent property," "second-order effects," "coupling," "resilience."
+- Evidence: system dynamics, historical analogies, feedback loops.
+- Blind spot: can over-abstract and miss individual harm.
+- Crux: whether second-order effects dominate direct effects.
 
 **Technology ethicist**
-Reason about rights, justice, power asymmetries, and consent.
-Evidence: case studies, philosophical frameworks, affected-community testimony.
-Blind spots: can be prescriptive without implementation pathways, may underweight technical constraints.
-Vocabulary: "stakeholder," "consent," "power asymmetry," "value-laden," "accountability."
+- Evidence: rights, justice, consent, power analysis, affected communities.
+- Blind spot: can under-specify implementation.
+- Crux: whether a design can satisfy moral constraints under deployment pressure.
 
 **Startup pragmatist**
-Reason about market viability, iteration speed, and user behavior.
-Evidence: metrics, A/B tests, market data, competitive analysis.
-Blind spots: survivorship bias, can conflate "users want it" with "it's good," short time horizons.
-Vocabulary: "ship it," "iterate," "product-market fit," "traction," "unit economics."
-
-**Policy wonk**
-Reason about regulation, incentive structures, and institutional design.
-Evidence: legislative history, comparative policy analysis, regulatory impact assessments.
-Blind spots: can overestimate institutional capacity, underweight informal power, slow to update.
-Vocabulary: "regulatory framework," "incentive structure," "compliance burden," "precedent," "externality."
+- Evidence: user behavior, market data, iteration speed, unit economics.
+- Blind spot: survivorship bias and short time horizons.
+- Crux: whether adoption evidence implies social value.
 
 **Security pessimist**
-Reason about threat models, attack surfaces, and adversarial behavior.
-Evidence: vulnerability databases, incident reports, red team exercises.
-Blind spots: can paralyze action with worst-case thinking, underweight usability.
-Vocabulary: "attack surface," "threat model," "adversarial," "trust boundary," "fail-safe."
+- Evidence: threat models, incidents, red-team results, failure modes.
+- Blind spot: can overweight worst-case scenarios.
+- Crux: whether likely harms justify constraining useful capability.
 
----
+**Infrastructure operator**
+- Evidence: uptime, operational toil, cost, maintainability, incident history.
+- Blind spot: can resist paradigm shifts.
+- Crux: whether the design survives real operational constraints.
 
-## Philosophy and Ethics
+## Philosophy and Ethics Archetypes
 
 **Analytic philosopher**
-Reason through logical argument, conceptual analysis, and thought experiments.
-Evidence: logical validity, counterexamples, definitional precision.
-Blind spots: can privilege clarity over complexity, may miss lived experience.
-Vocabulary: "necessary and sufficient," "counterexample," "entailment," "conceptual distinction."
-
-**Continental philosopher**
-Reason through phenomenology, hermeneutics, and historical context.
-Evidence: textual interpretation, lived experience, cultural analysis.
-Blind spots: can be obscure, may resist empirical evidence.
-Vocabulary: "being-in-the-world," "horizon," "alterity," "discourse," "historicity."
+- Evidence: conceptual clarity, counterexamples, argument validity.
+- Blind spot: can miss institutional and lived complexity.
+- Crux: whether key terms can be made coherent.
 
 **Pragmatist**
-Reason through consequences, practical effects, and what works.
-Evidence: outcomes, experimental results, practical experience.
-Blind spots: can underweight principle, may be too accommodating of the status quo.
-Vocabulary: "cash value," "warranted assertibility," "inquiry," "consequences," "what difference does it make."
+- Evidence: consequences, experiments, practice, what changes behavior.
+- Blind spot: can underweight principle.
+- Crux: whether an idea works under real constraints.
 
 **Virtue ethicist**
-Reason through character, flourishing, and practices.
-Evidence: exemplary cases, community standards, developmental psychology.
-Blind spots: can be culturally parochial, may struggle with institutional or systemic issues.
-Vocabulary: "flourishing," "character," "phronesis," "practice," "telos."
+- Evidence: character, practices, flourishing, formative institutions.
+- Blind spot: can be culturally parochial.
+- Crux: whether the practice cultivates or deforms human capacities.
 
 **Consequentialist**
-Reason through outcomes, expected value, and aggregate welfare.
-Evidence: empirical data, cost-benefit analysis, probabilistic reasoning.
-Blind spots: can justify means by ends, may struggle with rights violations.
-Vocabulary: "expected value," "welfare," "marginal impact," "counterfactual," "utility."
-
----
-
-## Science
-
-**Experimentalist**
-Reason through controlled studies, reproducibility, and empirical data.
-Evidence: p-values, effect sizes, replication studies, controlled trials.
-Blind spots: can dismiss non-quantifiable phenomena, may miss the forest for the trees.
-Vocabulary: "statistically significant," "controlled study," "confound," "replication," "operationalize."
-
-**Theorist**
-Reason through models, mathematical frameworks, and first principles.
-Evidence: internal consistency, predictive power, parsimony.
-Blind spots: can prefer elegant models over messy reality, may resist anomalies.
-Vocabulary: "model," "first principles," "parsimony," "prediction," "symmetry."
-
-**Applied researcher**
-Reason through real-world impact, translational potential, and implementation.
-Evidence: field studies, pilot programs, clinical outcomes.
-Blind spots: can prioritize immediate utility over fundamental understanding.
-Vocabulary: "translational," "real-world evidence," "implementation," "scalable," "clinical significance."
-
-**Science communicator**
-Reason through public understanding, narrative, and accessibility.
-Evidence: public surveys, engagement metrics, pedagogical research.
-Blind spots: can oversimplify, may prioritize narrative over nuance.
-Vocabulary: "public understanding," "narrative," "accessible," "engagement," "framing."
-
-**Industry scientist**
-Reason through commercial viability, IP, and competitive advantage.
-Evidence: patents, market analysis, proprietary data.
-Blind spots: can be constrained by NDAs and corporate interests, may conflate innovation with profit.
-Vocabulary: "IP," "trade secret," "scale," "competitive advantage," "productionize."
-
----
-
-## Policy and Social Science
-
-**Libertarian**
-Reason through individual liberty, market mechanisms, and voluntary exchange.
-Evidence: market data, historical cases of deregulation, spontaneous order examples.
-Blind spots: can underweight collective action problems, may dismiss structural inequality.
-Vocabulary: "individual liberty," "voluntary exchange," "spontaneous order," "coercion," "property rights."
-
-**Progressive institutionalist**
-Reason through collective action, institutional reform, and democratic accountability.
-Evidence: cross-country comparisons, policy evaluations, institutional analysis.
-Blind spots: can overestimate institutional capacity, may dismiss market solutions.
-Vocabulary: "institutional design," "collective action," "democratic accountability," "market failure," "public good."
-
-**Empirical economist**
-Reason through data, causal identification, and natural experiments.
-Evidence: RCTs, instrumental variables, difference-in-differences, regression discontinuity.
-Blind spots: can fetishize identification at expense of importance, may miss qualitative dynamics.
-Vocabulary: "causal identification," "natural experiment," "endogeneity," "treatment effect," "external validity."
+- Evidence: expected value, welfare, trade-offs, counterfactuals.
+- Blind spot: can justify harmful means.
+- Crux: whether aggregate gains outweigh rights and distribution concerns.
 
 **Critical theorist**
-Reason through power structures, ideology, and hegemony.
-Evidence: discourse analysis, historical materialism, structural analysis.
-Blind spots: can be unfalsifiable, may dismiss reform as co-optation.
-Vocabulary: "hegemony," "structural violence," "ideology," "commodification," "praxis."
+- Evidence: power, ideology, institutional history, discourse.
+- Blind spot: can become unfalsifiable.
+- Crux: whether reform is possible inside the existing structure.
 
-**Localist practitioner**
-Reason through community knowledge, ground-level implementation, and participatory methods.
-Evidence: community testimony, participatory research, local case studies.
-Blind spots: can resist scaling, may romanticize the local.
-Vocabulary: "community-driven," "participatory," "ground truth," "context-specific," "lived experience."
+## Science Archetypes
 
----
+**Experimentalist**
+- Evidence: controlled studies, replication, measurement quality.
+- Blind spot: can dismiss phenomena that are hard to operationalize.
+- Crux: whether the core claim survives clean measurement.
 
-## Cross-Domain: Constructing Novel Archetypes
+**Theorist**
+- Evidence: model consistency, predictive power, parsimony.
+- Blind spot: can prefer elegance over messy data.
+- Crux: whether anomalies break the model or refine it.
 
-When the topic falls outside the domains above, construct archetypes from scratch:
+**Applied researcher**
+- Evidence: field studies, implementation outcomes, external validity.
+- Blind spot: can prioritize immediate utility over fundamental uncertainty.
+- Crux: whether the finding transfers outside the pilot context.
 
-1. Start from the topic map's key tensions. Each archetype should represent one side of a genuine tension, not a generic "expert in X."
-2. Identify the real intellectual traditions that engage with this topic. Look for schools of thought, professional communities, or research programs with distinct methodological commitments.
-3. For each tradition, specify what counts as evidence, what makes a good explanation, and what methodology is typical. These three anchors prevent the archetype from collapsing into a vague label.
-4. Include at least one archetype that bridges two relevant domains (e.g., a bioethicist bridges biology and philosophy). Bridge archetypes generate the most unexpected and productive disagreements.
-5. Avoid "the balanced moderate" as an archetype. A genuine bridge position is substantive and distinct — it has its own methodology and evidence standards, not simply an average of two extremes.
+**Science communicator**
+- Evidence: public understanding, pedagogy, framing studies.
+- Blind spot: can oversimplify for narrative clarity.
+- Crux: whether simplification preserves the real uncertainty.
 
-### Selecting Archetypes for a Topic
+**Industry scientist**
+- Evidence: production data, patents, benchmarks, scaling results.
+- Blind spot: commercial incentives and proprietary blinders.
+- Crux: whether private evidence can be trusted or audited.
 
-- Map each key tension from the topic map to an archetype that would take a strong position on it. Every major tension should have at least one vocal advocate on each side.
-- Ensure at least one archetype will be genuinely contrarian — not just mildly skeptical, but operating from fundamentally different assumptions about what matters.
-- If the topic is interdisciplinary, prefer archetypes from different domains over multiple from the same domain. Diversity of reasoning style matters more than depth in one tradition.
-- When the topic is specialized, adapt the closest archetype rather than using it verbatim. A "security pessimist" becomes a "quantum-threat analyst" with the same reasoning patterns but domain-specific knowledge. Preserve the reasoning structure; replace the domain content.
+## Policy and Social Science Archetypes
+
+**Policy institutionalist**
+- Evidence: comparative policy, legislative history, institutional capacity.
+- Blind spot: can overestimate formal governance.
+- Crux: whether institutions can implement the proposed design.
+
+**Empirical economist**
+- Evidence: causal identification, natural experiments, RCTs, econometrics.
+- Blind spot: can fetishize identification over importance.
+- Crux: whether the measured effect answers the real question.
+
+**Local practitioner**
+- Evidence: ground truth, community testimony, implementation experience.
+- Blind spot: can resist scale or generalization.
+- Crux: whether local context is exceptional or diagnostic.
+
+**Civil liberties advocate**
+- Evidence: constitutional principles, rights, abuse history, due process.
+- Blind spot: can underweight collective risk management.
+- Crux: whether safeguards are enforceable against future misuse.
+
+**Public-sector operator**
+- Evidence: budgets, procurement, staff capacity, service delivery.
+- Blind spot: can normalize institutional inertia.
+- Crux: whether the proposed change survives bureaucracy.
+
+## Constructing Bespoke Cards
+
+For specialized topics:
+
+1. Start from the terrain map, not from generic job titles.
+2. Identify real communities that reason differently about the topic.
+3. Assign each panelist a distinct evidence standard and crux.
+4. Include one contrarian who differs methodologically, not just rhetorically.
+5. Include one bridge figure only if they have a real method, not a compromise personality.
+6. Avoid naming real living scholars unless the user explicitly asks and sources are verified.
+
+## Roster Quality Gate
+
+Do not proceed until the roster passes all checks:
+
+- At least two evidence standards are represented.
+- At least one panelist can challenge the user's premise.
+- At least one panelist names a non-obvious self-objection.
+- No panelist exists only to be defeated.
+- No panelist is a generic "balanced moderate."
+- The roster maps to the source ledger and topic gate.
