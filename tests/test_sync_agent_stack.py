@@ -389,7 +389,7 @@ def test_render_codex_config_adds_multi_agent_v2_without_legacy_agent_limits_or_
         }
     }
     policy = {
-        "model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "xhigh", "personality": "pragmatic"}}
+        "model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}
     }
     current = """
 notify = ["/tmp/notifier"]
@@ -419,6 +419,9 @@ enabled = true
     assert "max_threads" not in home_config
     assert "job_max_runtime_seconds" not in home_config
     assert 'model = "gpt-5.5"' in home_config
+    assert 'model_reasoning_effort = "high"' in home_config
+    assert 'plan_mode_reasoning_effort = "high"' in home_config
+    assert 'model_reasoning_effort = "xhigh"' in home_config
     assert "local-secret" in home_config
     assert 'notify = ["/tmp/notifier"]' in home_config
     assert '[projects."/private/work"]' in home_config

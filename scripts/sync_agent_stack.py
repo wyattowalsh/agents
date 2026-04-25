@@ -616,7 +616,7 @@ def sync_codex_entrypoint(ctx: SyncContext) -> None:
 def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any] | None = None) -> str:
     model_defaults = policy.get("model_defaults", {}).get("codex", {})
     model = model_defaults.get("model", "gpt-5.5")
-    reasoning_effort = model_defaults.get("reasoning_effort", "xhigh")
+    reasoning_effort = model_defaults.get("reasoning_effort", "high")
     personality = model_defaults.get("personality", "pragmatic")
     top_level = {
         "approval_policy": "on-request",
@@ -629,7 +629,7 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
         "model_reasoning_summary": "detailed",
         "model_verbosity": "medium",
         "personality": personality,
-        "plan_mode_reasoning_effort": "xhigh",
+        "plan_mode_reasoning_effort": reasoning_effort,
         "project_doc_fallback_filenames": ["TEAM_GUIDE.md", ".agents.md"],
         "project_doc_max_bytes": 131072,
         "sandbox_mode": "workspace-write",
@@ -705,10 +705,10 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
             "profiles.full_access",
             {
                 "model": model,
-                "model_reasoning_effort": "xhigh",
+                "model_reasoning_effort": "high",
                 "model_reasoning_summary": "detailed",
                 "model_verbosity": "medium",
-                "plan_mode_reasoning_effort": "xhigh",
+                "plan_mode_reasoning_effort": "high",
                 "sandbox_mode": "danger-full-access",
                 "web_search": "live",
             },
