@@ -66,7 +66,9 @@ def write_index_page(nodes: list) -> None:
     parts.append('        <div class="hero-terminal-body">')
     parts.append('          <span class="hero-terminal-prompt">$</span>')
     parts.append(
-        '          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode</span>'
+        '          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g '
+        "--agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot "
+        "--agent opencode</span>"
     )
     parts.append('          <span class="hero-terminal-cursor">▋</span>')
     parts.append("        </div>")
@@ -146,7 +148,8 @@ def write_index_page(nodes: list) -> None:
     parts.append("## Start Here")
     parts.append("")
     parts.append(
-        "Install the catalog once, then call a focused specialist inside your agent. If you want the shortest guided path through setup, start with [Start Here](/start-here/)."
+        "Install the catalog once, then call a focused specialist inside your agent. "
+        "If you want the shortest guided path through setup, start with [Start Here](/start-here/)."
     )
     parts.append("")
 
@@ -171,12 +174,14 @@ def write_index_page(nodes: list) -> None:
     parts.append("</div>")
     parts.append("")
     parts.append(
-        "Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent."
+        "Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, "
+        "Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent."
     )
     parts.append("")
     parts.append('<Aside type="tip" title="Fastest path">')
     parts.append(
-        "Use [Start Here](/start-here/) when you want the shortest setup path, a few strong starter skills, and a quick mental model of the repo."
+        "Use [Start Here](/start-here/) when you want the shortest setup path, "
+        "a few strong starter skills, and a quick mental model of the repo."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -204,7 +209,8 @@ def write_index_page(nodes: list) -> None:
     parts.append('    <div class="feature-card-icon" aria-hidden="true">OS</div>')
     parts.append(
         '    <Badge text="Stackable" variant="success" /> '
-        "Pull in one specialist for reviews, another for architecture, and another for docs without rebuilding the workflow each time."
+        "Pull in one specialist for reviews, another for architecture, and another for docs "
+        "without rebuilding the workflow each time."
     )
     parts.append("  </Card>")
     parts.append("</CardGrid>")
@@ -237,7 +243,8 @@ def write_index_page(nodes: list) -> None:
     parts.append("")
     parts.append("<CardGrid>")
     parts.append(
-        '  <LinkCard title="Start Here" href="/start-here/" description="The shortest guided path: install the catalog, pick a starter skill, and understand the repo layout." />'
+        '  <LinkCard title="Start Here" href="/start-here/" description="The shortest guided path: '
+        'install the catalog, pick a starter skill, and understand the repo layout." />'
     )
     skills_index_desc = (
         "Browse repository skills with install commands, generated detail pages, and convention-skill context."
@@ -249,7 +256,10 @@ def write_index_page(nodes: list) -> None:
     parts.append(f'  <LinkCard title="Skills Index" href="/skills/" description="{escape_attr(skills_index_desc)}" />')
     if has_mcp_overview:
         if mcp_config_count:
-            mcp_desc = f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`, including repo-local and external servers."
+            mcp_desc = (
+                f"Hand-maintained overview of {mcp_config_count} configured MCP servers from `mcp.json`, "
+                "including repo-local and external servers."
+            )
         else:
             mcp_desc = "Hand-maintained overview of configured MCP servers."
         parts.append(f'  <LinkCard title="MCP Overview" href="/mcp/" description="{escape_attr(mcp_desc)}" />')
@@ -341,7 +351,8 @@ def write_index_page(nodes: list) -> None:
         '  <LinkCard title="CLI Reference" href="/cli/" description="Full command reference for the wagents CLI." />'
     )
     parts.append(
-        '  <LinkCard title="Start Here" href="/start-here/" description="Use the shortest guided path through install, invocation, and the repo map." />'
+        '  <LinkCard title="Start Here" href="/start-here/" description="Use the shortest guided path '
+        'through install, invocation, and the repo map." />'
     )
     parts.append(
         '  <LinkCard title="Create Your Own"'
@@ -371,7 +382,8 @@ def write_cli_page() -> None:
     )
     parts.append("")
     parts.append(
-        "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. Use it to scaffold new assets, validate the repo, publish docs, and package skills for release."
+        "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. "
+        "Use it to scaffold new assets, validate the repo, publish docs, and package skills for release."
     )
     parts.append("")
     parts.append("## Boot Sequence")
@@ -402,7 +414,8 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append('<Aside type="tip" title="Running commands">')
     parts.append(
-        "Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wagents ...` from the repository root."
+        "Examples below omit the `uv run` prefix for brevity. "
+        "In practice, run `uv run wagents ...` from the repository root."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -1088,7 +1101,8 @@ def write_skills_index(nodes: list) -> None:
     parts.append("import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append(
-        "Skills are portable prompt-and-workflow bundles for coding agents. Install them once, invoke them with `/skill-name`, and keep the behavior under version control."
+        "Skills are portable prompt-and-workflow bundles for coding agents. "
+        "Install them once, invoke them with `/skill-name`, and keep the behavior under version control."
     )
     parts.append("")
     parts.append("New here? Start with [Start Here](/start-here/) for the shortest setup path.")
@@ -1120,13 +1134,16 @@ def write_skills_index(nodes: list) -> None:
 
     parts.append('<Aside type="tip" title="How to use this page">')
     parts.append(
-        "Use the lane cards below when you want a fast starting point. Use the full catalog sections when you already know the exact skill you need."
+        "Use the lane cards below when you want a fast starting point. "
+        "Use the full catalog sections when you already know the exact skill you need."
     )
     parts.append("</Aside>")
     parts.append("")
     parts.append('<Aside type="note" title="Installed external skills">')
     parts.append(
-        "Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-party collections or curated subsets. Run `wagents docs generate --include-installed` when you want those locally installed skills included in a docs build."
+        "Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-party collections "
+        "or curated subsets. Run `wagents docs generate --include-installed` when you want those locally "
+        "installed skills included in a docs build."
     )
     parts.append("</Aside>")
     parts.append("")
@@ -1147,16 +1164,20 @@ def write_skills_index(nodes: list) -> None:
     parts.append("")
     parts.append("<CardGrid>")
     parts.append(
-        '  <LinkCard title="Review & QA" href="/skills/honest-review/" description="Start here for code review, docs QA, test strategy, performance review, or security scanning." />'
+        '  <LinkCard title="Review & QA" href="/skills/honest-review/" description="Start here for '
+        'code review, docs QA, test strategy, performance review, or security scanning." />'
     )
     parts.append(
-        '  <LinkCard title="Build & Design" href="/skills/frontend-designer/" description="Use these when you are creating frontends, APIs, data systems, infra, or MCP servers." />'
+        '  <LinkCard title="Build & Design" href="/skills/frontend-designer/" description="Use these '
+        'when you are creating frontends, APIs, data systems, infra, or MCP servers." />'
     )
     parts.append(
-        '  <LinkCard title="Strategy & Research" href="/skills/research/" description="Use these when the problem is fuzzy, the trade-offs are real, or you need deeper investigation first." />'
+        '  <LinkCard title="Strategy & Research" href="/skills/research/" description="Use these when '
+        'the problem is fuzzy, the trade-offs are real, or you need deeper investigation first." />'
     )
     parts.append(
-        '  <LinkCard title="Workflow & Utility" href="/skills/orchestrator/" description="Use these to coordinate work, simplify code, manage git flow, package releases, or handle local file tasks." />'
+        '  <LinkCard title="Workflow & Utility" href="/skills/orchestrator/" description="Use these to '
+        'coordinate work, simplify code, manage git flow, package releases, or handle local file tasks." />'
     )
     parts.append("</CardGrid>")
     parts.append("")
@@ -1170,7 +1191,8 @@ def write_skills_index(nodes: list) -> None:
         )
         parts.append("")
         parts.append(
-            "These are the main building blocks in the catalog: focused specialists for review, docs, architecture, data, infra, research, prompting, and workflow design."
+            "These are the main building blocks in the catalog: focused specialists for review, docs, "
+            "architecture, data, infra, research, prompting, and workflow design."
         )
         parts.append("")
         parts.append('<div class="catalog-skill">')
@@ -1191,7 +1213,8 @@ def write_skills_index(nodes: list) -> None:
         )
         parts.append("")
         parts.append(
-            "Convention skills quietly enforce repo standards like Python tooling, shell conventions, JavaScript package management, and agent metadata rules."
+            "Convention skills quietly enforce repo standards like Python tooling, shell conventions, "
+            "JavaScript package management, and agent metadata rules."
         )
         parts.append("")
         parts.append('<div class="catalog-skill">')
@@ -1209,11 +1232,13 @@ def write_skills_index(nodes: list) -> None:
         parts.append("")
         parts.append(
             '<Badge text="External" variant="default" /> '
-            "Third-party skills installed from the [agentskills.io](https://agentskills.io) ecosystem via `npx skills add`."
+            "Third-party skills installed from the [agentskills.io](https://agentskills.io) ecosystem "
+            "via `npx skills add`."
         )
         parts.append("")
         parts.append(
-            "Installed skills only appear in docs builds that opt into local agent skill directories such as `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
+            "Installed skills only appear in docs builds that opt into local agent skill directories such as "
+            "`~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
         )
         parts.append("")
         parts.append('<div class="catalog-installed">')
@@ -1250,9 +1275,7 @@ def write_skills_index(nodes: list) -> None:
     )
     parts.append("")
     parts.append("# Install to a specific agent only")
-    parts.append(
-        "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code"
-    )
+    parts.append("npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code")
     parts.append("```")
     parts.append("")
     parts.append('<Aside type="tip" title="Creating your own skills">')

@@ -90,7 +90,15 @@ def test_build_inventory_detects_obsidian_vault_and_shared_surfaces(tmp_path: Pa
     (tmp_path / ".obsidian" / "snippets").mkdir(parents=True)
     (tmp_path / "wiki").mkdir()
     (tmp_path / "wiki" / "index.md").write_text(
-        "---\naliases:\n  - Home\nkind: overview\nstatus: active\nupdated: 2026-04-13\n---\n# KB\n\nSee [[wiki/topic]].\n",
+        "---\n"
+        "aliases:\n"
+        "  - Home\n"
+        "kind: overview\n"
+        "status: active\n"
+        "updated: 2026-04-13\n"
+        "---\n"
+        "# KB\n\n"
+        "See [[wiki/topic]].\n",
         encoding="utf-8",
     )
     (tmp_path / "wiki" / "topic.md").write_text("# Topic\n", encoding="utf-8")

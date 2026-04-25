@@ -9,7 +9,6 @@ from pathlib import Path
 
 import pytest
 
-
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -174,11 +173,13 @@ def test_journal_update_appends_state_and_preserves_body(journal_dir, capsys):
             findings=json.dumps(findings),
             update=str(path),
             wave=1,
-            state=json.dumps({
-                "next_action": "Wave 2",
-                "leads_pending": ["https://example.com/a", "https://example.com/b"],
-                "gaps": ["topic X needs more sources"],
-            }),
+            state=json.dumps(
+                {
+                    "next_action": "Wave 2",
+                    "leads_pending": ["https://example.com/a", "https://example.com/b"],
+                    "gaps": ["topic X needs more sources"],
+                }
+            ),
         ),
         capsys,
     )
