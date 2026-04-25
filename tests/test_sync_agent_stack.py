@@ -370,7 +370,7 @@ def test_render_codex_mcp_block_uses_current_schema_shape():
     assert 'type = "stdio"' not in rendered
     assert 'env_vars = ["CONTEXT7_API_KEY"]' in rendered
     assert "--api-key" not in rendered
-    assert 'tool_timeout_sec = 600' in rendered
+    assert "tool_timeout_sec = 600" in rendered
     assert 'enabled_tools = ["check_npm_versions"]' in rendered
 
 
@@ -388,9 +388,7 @@ def test_render_codex_config_adds_multi_agent_v2_without_legacy_agent_limits_or_
             }
         }
     }
-    policy = {
-        "model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}
-    }
+    policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
     current = """
 notify = ["/tmp/notifier"]
 

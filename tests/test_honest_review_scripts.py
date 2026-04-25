@@ -4,7 +4,6 @@ import importlib.util
 from pathlib import Path
 from types import ModuleType
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_DIR = ROOT / "skills" / "honest-review" / "scripts"
 

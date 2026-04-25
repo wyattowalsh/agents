@@ -1080,7 +1080,9 @@ def readme(
             "| `wagents docs preview` | Generate + build + preview server |",
             "| `wagents docs clean` | Remove generated content pages |",
             "",
-            "Third-party skill collections can be installed directly with `npx skills add <source> --skill <name> -y -g --agent <agent>`. Repeat `--skill` and `--agent` to target a curated subset.",
+            "Third-party skill collections can be installed directly with "
+            "`npx skills add <source> --skill <name> -y -g --agent <agent>`. "
+            "Repeat `--skill` and `--agent` to target a curated subset.",
             "",
         ]
     )
