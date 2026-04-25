@@ -1,8 +1,9 @@
 ---
 name: python-conventions
 description: >-
-  Apply Python tooling conventions. Enforce uv and ty. Use when working on .py
-  files or pyproject.toml. NOT for JS/TS or shell scripts.
+  Enforce Python tooling conventions for uv, ty, Ruff, pytest, and
+  pyproject.toml. Use when working on .py files or Python project config.
+  NOT for JS/TS, shell scripts, CI design, profiling, or test architecture.
 user-invocable: false
 disable-model-invocation: false
 license: MIT
@@ -30,6 +31,7 @@ Apply these conventions when Python work is the primary workstream.
 | `references/tooling-contract.md` | Required command sequence for install, run, lint, type-check, and test flows |
 | `references/redirection-boundaries.md` | When Python conventions should yield to shell, JS/TS, or domain-specific skills |
 | `references/exceptions.md` | When to break conventions (legacy, corporate) |
+| `references/library-preferences.md` | Guided library defaults for new Python work |
 | `references/performance-tips.md` | Profiling tools, optimization patterns quick-reference |
 | `references/testing-patterns.md` | Fixture scopes, markers, conftest skeleton |
 
@@ -41,13 +43,13 @@ Apply these conventions when Python work is the primary workstream.
 2. Read `references/redirection-boundaries.md` when Python appears alongside shell, JS/TS, or other dominant workstreams.
 3. Enforce the hard requirements in `references/tooling-contract.md` for package management, command execution, linting, type checking, and tests.
 4. Check `references/exceptions.md` before recommending any legacy or constrained-environment deviation.
-5. Use guided preferences only when starting new work or when the repo does not already have a stronger local convention.
+5. Read `references/library-preferences.md` only when choosing libraries for new Python work.
 
 ### Empty / Help
 
 1. Summarize the hard requirements: `uv`, `uv run`, `uv add`, `ty`, `ruff`, `pytest`, and `pyproject.toml`.
 2. Show the difference between hard requirements and guided preferences.
-3. Point to the exact reference files for exceptions, testing, performance, tooling flow, and mixed-language routing.
+3. Point to the exact reference files for tooling, exceptions, libraries, testing, performance, and mixed-language routing.
 
 ### `check`
 
@@ -59,6 +61,8 @@ Apply these conventions when Python work is the primary workstream.
 ## Hard Requirements
 
 - **Package manager**: use `uv` for all Python package operations
+- **Dependencies**: use `uv add`, `uv add --group dev`, `uv remove`, and `uv lock --upgrade-package <pkg>` as appropriate
+- **Reproducible installs**: use `uv sync --locked` when validating an existing lockfile workflow
 - **Project config**: keep Python project configuration in `pyproject.toml`
 - **Type checking**: use `uv run ty check`, not `mypy`
 - **Linting**: use `uv run ruff check` and `uv run ruff format`
@@ -73,22 +77,7 @@ Apply these conventions when Python work is the primary workstream.
 
 ## Guided Preferences
 
-When starting new Python work and no stronger local constraint already exists,
-prefer these libraries. These are defaults, not absolute law; check
-`references/exceptions.md` before overriding an established project choice.
-
-| Purpose | Library | Instead of |
-|---------|---------|------------|
-| Logging | `loguru` | `logging` |
-| Retries | `tenacity` | manual retry loops |
-| Progress bars | `tqdm` | print statements |
-| Web APIs | `fastapi` | flask |
-| CLI tools | `typer` | argparse, click |
-| DB migrations | `alembic` | manual SQL |
-| DB ORM | `sqlmodel` | sqlalchemy raw |
-| UI/demos | `gradio` | streamlit |
-| Numerics | `numpy` | manual math |
-| MCP servers | `fastmcp` | raw MCP protocol |
+Guided library preferences apply only when starting new Python work and no stronger local constraint already exists. Read `references/library-preferences.md` before recommending replacements for an established stack.
 
 ## Project Structure
 
@@ -99,42 +88,38 @@ prefer these libraries. These are defaults, not absolute law; check
 
 ## Performance Conventions
 
-1. Profile before optimizing — use `cProfile` or `py-spy` to find real bottlenecks
-2. Prefer list comprehensions over `for` + `append` loops
-3. Use generators / `yield` for large datasets to avoid memory spikes
-4. Use `str.join()` instead of `+=` concatenation in loops
-5. Use `dict` / `set` for membership tests instead of `list`
-6. Use `functools.lru_cache` for expensive pure functions
-7. Use `__slots__` on data classes instantiated at high volume
-8. Batch database writes — avoid per-row commits
-9. Prefer `asyncio` / `aiohttp` for I/O-bound concurrency; `multiprocessing` for CPU-bound
-10. See `references/performance-tips.md` for profiling tool quick-reference
+1. Profile before optimizing.
+2. Use `references/performance-tips.md` for quick Python profiling and optimization patterns.
+3. Route broad profiling, regression analysis, or performance investigation to `performance-profiler`.
 
 ## Testing Conventions
 
-1. Follow AAA (Arrange / Act / Assert) structure in every test
-2. One behavior per test function — if the name needs "and", split it
-3. Name tests: `test_<unit>_<scenario>_<expected_outcome>`
-4. Use `pytest.raises(ExType, match=...)` for exception testing
-5. Use `pytest.mark.parametrize` instead of copy-pasting test variants
-6. Use fixtures (`conftest.py`) for shared setup; prefer narrow scope
-7. Use `monkeypatch` over `unittest.mock.patch` for env vars and attributes
-8. Use `tmp_path` fixture for file I/O tests
-9. Use `freezegun` or `time-machine` for time-dependent tests
-10. Use `@pytest.mark.slow` / `@pytest.mark.integration` markers and run with `-m`
-11. Configure pytest in `pyproject.toml` under `[tool.pytest.ini_options]`
-12. Set coverage thresholds: `--cov-fail-under=80`
-13. See `references/testing-patterns.md` for fixture scope cheat sheet and conftest skeleton
+1. Use pytest for Python tests and configure project test defaults in `pyproject.toml`.
+2. Use `references/testing-patterns.md` for fixtures, markers, `tmp_path`, `monkeypatch`, parametrization, and coverage policy.
+3. Route test strategy, suite design, fixture architecture, or cross-language test plans to `test-architect`.
+
+## Validation Contract
+
+Before declaring changes to this skill complete, run:
+
+1. `uv run wagents validate`
+2. `uv run wagents eval validate`
+3. `uv run python path/to/audit.py skills/python-conventions/ --format json`
+4. `uv run wagents package python-conventions --dry-run`
+5. `git diff --check`
+
+After changing skill definitions, public descriptions, reference files, or eval behavior, invoke `docs-steward` if available and then run `uv run wagents readme --check`.
 
 ## Critical Rules
 
 1. Reject Python setup advice that uses `pip install`, `uv pip install`, or bare `python` when the task is not explicitly on an approved exception path.
-2. Require `uv add` for dependency changes unless `references/exceptions.md` justifies a legacy or constrained-environment deviation.
-3. Require `uv run ty check` for type checking; do not recommend `mypy` as the default path in this repo.
-4. Treat `uv run ruff check`, `uv run ruff format`, and `uv run pytest` as the default completion gate for Python changes unless an exception is documented.
-5. Do not present guided library preferences as mandatory replacements for an already-established local stack.
-6. Read `references/exceptions.md` before approving a legacy toolchain, alternate environment manager, or alternate library path.
-7. Redirect mixed-language or non-Python-primary work through `references/redirection-boundaries.md` instead of force-fitting this skill onto the whole task.
+2. Require `uv add` for runtime dependencies and `uv add --group dev` for development-only dependencies unless `references/exceptions.md` justifies a legacy or constrained-environment deviation.
+3. Require `uv run ty check` for type checking; do not recommend `mypy` or bare `ty check` as the default path in this repo.
+4. Treat `uv run ruff check`, `uv run ruff format`, `uv run ty check`, and `uv run pytest` as the default completion gate for Python changes unless an exception is documented.
+5. Do not edit `uv.lock` by hand; use `uv lock`, `uv sync`, or dependency commands.
+6. Do not present guided library preferences as mandatory replacements for an already-established local stack.
+7. Read `references/exceptions.md` before approving a legacy toolchain, alternate environment manager, or alternate library path.
+8. Redirect mixed-language or non-Python-primary work through `references/redirection-boundaries.md` instead of force-fitting this skill onto the whole task.
 
 **Canonical terms** (use these exactly):
 - `uv` -- the required package manager and task runner
@@ -143,6 +128,7 @@ prefer these libraries. These are defaults, not absolute law; check
 - `ruff` -- the required linter and formatter
 - `pyproject.toml` -- the single source of project configuration
 - `uv run` -- prefix for all Python command execution
+- `uv sync --locked` -- default reproducible install check for lockfile-backed workflows
 
 ## Scaling Strategy
 
@@ -156,10 +142,11 @@ prefer these libraries. These are defaults, not absolute law; check
 - Read `references/tooling-contract.md` first for command-sequence questions.
 - Read `references/redirection-boundaries.md` when shell, JS/TS, CI, or framework-specific work is mixed into the request.
 - Read `references/exceptions.md` only when the task appears to require legacy, corporate, or constrained-environment exceptions.
+- Read `references/library-preferences.md` only when selecting libraries for new Python work.
 - Read performance or testing references only when the active task actually touches those areas.
 
 ## Scope Boundaries
 
 **IS for:** Python tooling conventions, command selection, dependency-management rules, type/lint/test gates, and exception-aware repo guidance.
 
-**NOT for:** JS/TS conventions, shell conventions, CI pipeline design, or framework/domain-specific implementation strategy.
+**NOT for:** JS/TS conventions, shell conventions, CI pipeline design, profiling investigations, test architecture, or framework/domain-specific implementation strategy.

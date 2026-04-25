@@ -1,5 +1,9 @@
 # Python Performance Quick-Reference
 
+Use this reference for lightweight Python optimization guidance. Route profiling
+plans, regression analysis, benchmark interpretation, caching architecture, or
+multi-service performance work to `performance-profiler`.
+
 ## Profiling Tools
 
 | Tool | Purpose | Command |

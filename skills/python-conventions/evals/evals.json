@@ -14,6 +14,39 @@
       ]
     },
     {
+      "id": "implicit-trigger-python-file",
+      "prompt": "Refactor the CSV parser in src/importer/parser.py and add the missing tests.",
+      "files": ["src/importer/parser.py", "tests/test_parser.py"],
+      "expected_output": "A natural-language Python-primary request activates python-conventions without requiring slash invocation.",
+      "assertions": [
+        "Agent treats the request as Python-primary based on .py files.",
+        "Agent applies uv run command guidance for tests and checks.",
+        "Agent keeps Python conventions scoped to Python files and pyproject.toml."
+      ]
+    },
+    {
+      "id": "negative-control-js-only",
+      "prompt": "Update the React component tests and package.json scripts.",
+      "files": ["web/src/App.test.tsx", "package.json"],
+      "expected_output": "A JS/TS-only request does not activate python-conventions or claim ownership.",
+      "assertions": [
+        "Agent does not treat python-conventions as the active skill.",
+        "Agent routes JS/TS package and test guidance to javascript-conventions.",
+        "Agent does not mention uv, ty, Ruff, or pytest as requirements for the JS/TS task."
+      ]
+    },
+    {
+      "id": "negative-control-shell-only",
+      "prompt": "Make this POSIX shell script portable and add ShellCheck guidance.",
+      "files": ["scripts/bootstrap.sh"],
+      "expected_output": "A shell-only request routes away from python-conventions.",
+      "assertions": [
+        "Agent does not apply Python package or type-check rules.",
+        "Agent routes shell behavior to shell-conventions.",
+        "Agent does not force uv run onto shell script execution."
+      ]
+    },
+    {
       "id": "empty-help-menu",
       "prompt": "/python-conventions",
       "files": [],
@@ -70,6 +103,72 @@
         "Agent reads or cites the exceptions framework rather than treating the legacy setup as normal default guidance.",
         "Agent requires a migration owner, scope, or exit criteria for continuing mypy or pip-based flows.",
         "Agent keeps uv and ty as the default target state."
+      ]
+    },
+    {
+      "id": "dependency-group-dev-tool",
+      "prompt": "Add pytest-cov to this Python project for coverage reporting.",
+      "files": ["pyproject.toml"],
+      "expected_output": "A dev-tool dependency response that uses uv dependency groups rather than runtime dependency drift.",
+      "assertions": [
+        "Agent recommends uv add --group dev pytest-cov.",
+        "Agent does not put test tooling in runtime dependencies by default.",
+        "Agent keeps dependency metadata in pyproject.toml."
+      ]
+    },
+    {
+      "id": "lockfile-reproducibility",
+      "prompt": "Verify this service installs from the existing lockfile in CI without changing dependencies.",
+      "files": ["pyproject.toml", "uv.lock"],
+      "expected_output": "A lockfile-safe response that uses locked sync/check language and avoids manual lockfile edits.",
+      "assertions": [
+        "Agent recommends uv sync --locked or equivalent locked validation.",
+        "Agent does not edit uv.lock by hand.",
+        "Agent treats locked sync failure as evidence of dependency or lockfile drift."
+      ]
+    },
+    {
+      "id": "ty-discovery-via-uv-run",
+      "prompt": "Run the Python type checker for this repo.",
+      "files": ["pyproject.toml", "wagents/cli.py"],
+      "expected_output": "A type-check response that requires uv run ty check.",
+      "assertions": [
+        "Agent recommends uv run ty check.",
+        "Agent rejects bare ty check as the repo default.",
+        "Agent explains that uv run uses the managed project environment and pyproject configuration."
+      ]
+    },
+    {
+      "id": "pytest-marker-config",
+      "prompt": "Add a slow marker for integration-heavy Python tests.",
+      "files": ["pyproject.toml", "tests/test_sync.py"],
+      "expected_output": "A pytest config response that registers markers in project config and keeps strict marker behavior.",
+      "assertions": [
+        "Agent recommends registering the marker in pyproject.toml pytest config.",
+        "Agent preserves or recommends strict marker behavior.",
+        "Agent does not hardcode a new coverage threshold over existing repo policy."
+      ]
+    },
+    {
+      "id": "test-architecture-handoff",
+      "prompt": "Design the test strategy for this multi-service Python and TypeScript system.",
+      "files": ["api/app.py", "web/src/App.tsx", "pyproject.toml", "package.json"],
+      "expected_output": "A handoff response that routes strategy to test-architect while retaining Python conventions for Python commands.",
+      "assertions": [
+        "Agent routes broad test strategy to test-architect.",
+        "Agent keeps python-conventions limited to Python-owned commands and config.",
+        "Agent does not claim python-conventions owns the TypeScript test strategy."
+      ]
+    },
+    {
+      "id": "performance-profiler-handoff",
+      "prompt": "Investigate why this Python data pipeline got slower after the last refactor.",
+      "files": ["pipeline/load.py", "pipeline/transform.py"],
+      "expected_output": "A handoff response that routes profiling investigation to performance-profiler while preserving Python command conventions.",
+      "assertions": [
+        "Agent routes profiling or regression investigation to performance-profiler.",
+        "Agent may cite performance-tips only for quick Python profiling commands.",
+        "Agent keeps uv run command guidance for Python tooling."
       ]
     },
     {

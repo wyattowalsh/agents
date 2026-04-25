@@ -1,5 +1,8 @@
 # Python Testing Patterns
 
+Use this reference for Python pytest mechanics. Route broader test strategy,
+suite design, or cross-language testing plans to `test-architect`.
+
 ## Fixture Scope Cheat Sheet
 
 | Scope | Lifetime | Use for |
@@ -60,6 +63,11 @@ addopts = "--strict-markers --cov --cov-fail-under=80"
 testpaths = ["tests"]
 ```
 
+Keep `[tool.pytest.ini_options]` as the compatible default unless the project
+intentionally targets a newer pytest-only config surface. Register custom
+markers in project config and enable strict marker behavior when the local
+suite uses markers.
+
 ## Parametrize Pattern
 
 ```python
@@ -102,3 +110,10 @@ def test_expiry_check():
     token = create_token(ttl_hours=1)
     assert not token.is_expired()
 ```
+
+## Coverage Policy
+
+- Follow the repo's configured coverage policy when one exists.
+- Do not invent a coverage threshold for an established project.
+- For new Python work, `--cov-fail-under=80` is a reasonable starting point, not a universal rule.
+- Keep coverage settings in `pyproject.toml` or the repo's existing pytest config.
