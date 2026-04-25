@@ -374,7 +374,7 @@ def test_render_codex_mcp_block_uses_current_schema_shape():
     assert 'enabled_tools = ["check_npm_versions"]' in rendered
 
 
-def test_render_codex_config_adds_dynamic_agent_limits_and_multi_agent_v2_without_secrets():
+def test_render_codex_config_adds_multi_agent_v2_without_legacy_agent_limits_or_secrets():
     registry = {
         "servers": {
             "brave-search": {
@@ -413,9 +413,11 @@ enabled = true
     assert home_config.startswith("#:schema https://developers.openai.com/codex/config-schema.json")
     assert 'approvals_reviewer = "guardian_subagent"' in home_config
     assert "[features.multi_agent_v2]" in home_config
-    assert "max_depth = 4" in home_config
-    assert "max_threads = 16" in home_config
-    assert "job_max_runtime_seconds = 7200" in home_config
+    assert "\n[features.multi_agent_v2]\nenabled = true\n" in home_config
+    assert "[agents]" not in home_config
+    assert "max_depth" not in home_config
+    assert "max_threads" not in home_config
+    assert "job_max_runtime_seconds" not in home_config
     assert 'model = "gpt-5.5"' in home_config
     assert "local-secret" in home_config
     assert 'notify = ["/tmp/notifier"]' in home_config
@@ -426,6 +428,10 @@ enabled = true
     assert "[mcp_servers.ronin]" not in repo_config
     assert "[projects." not in repo_config
     assert "[plugins." not in repo_config
+    assert "[agents]" not in repo_config
+    assert "max_depth" not in repo_config
+    assert "max_threads" not in repo_config
+    assert "job_max_runtime_seconds" not in repo_config
     assert 'env_vars = ["BRAVE_API_KEY"]' in repo_config
 
 

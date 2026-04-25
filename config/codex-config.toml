@@ -51,11 +51,6 @@ enabled = true
 usage_hint_enabled = true
 usage_hint_text = "Use dynamic subagents for bounded parallel exploration, tests, and sidecar implementation. Do not hardcode static teams; keep the main thread responsible for integration and final judgment."
 
-[agents]
-max_depth = 4
-max_threads = 16
-job_max_runtime_seconds = 7200
-
 [profiles.deep]
 model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
