@@ -1,9 +1,9 @@
 ---
 name: host-panel
 description: >-
-  Simulated expert panel discussions. Roundtable, Oxford-style, Socratic
-  formats. Use when exploring topics from multiple perspectives. NOT for
-  Q&A, code review, or one-on-one conversations.
+  Facilitate research-grounded panels in roundtable, Oxford, and Socratic
+  formats. Use when exploring contested topics from multiple angles. NOT for
+  Q&A, code review, or real human opinion simulation.
 argument-hint: '"topic" [format] [num-experts]'
 license: MIT
 metadata:
@@ -13,7 +13,7 @@ metadata:
 
 # Host Panel
 
-Simulated expert panel discussions. Surface real tensions, frameworks, and disagreements through moderated multi-expert discourse, not theatrical roleplay.
+Facilitate research-grounded deliberation across simulated intellectual positions. Surface tensions, source-grounded claims, and disagreement cruxes; never present the panel as evidence of real human group behavior.
 
 **Invocation:** `/host-panel "topic" [format] [num-experts]`
 
@@ -21,10 +21,14 @@ Simulated expert panel discussions. Surface real tensions, frameworks, and disag
 
 | `$ARGUMENTS` shape | Dispatch | Action |
 |---|---|---|
-| empty | `empty-help-gallery` | Show the empty/help gallery, state the defaults, and ask the user to supply a topic. |
-| quoted topic + optional format/count | `parse-and-diagnose` | Parse topic, format, and expert count; run the topic diagnostic before personas. |
-| format omitted | `auto-select-format` | Infer `roundtable`, `oxford`, or `socratic` from the topic and state the choice briefly. |
-| topic flagged weak, settled, or under-researched | `reframe-or-pause` | Reframe, narrow, or pause according to `references/topic-diagnostic.md`. |
+| empty | `empty-help-gallery` | Show the gallery, defaults, supported formats, and ask for a topic. |
+| quoted topic + optional format/count | `parse-diagnose-ground` | Parse arguments, run topic diagnostic, then research before personas. |
+| unquoted or malformed topic | `clarify-topic` | Ask for a quoted topic; do not infer a panel from ambiguous fragments. |
+| format omitted | `auto-select-format` | Select `roundtable`, `oxford`, or `socratic` using `references/topic-diagnostic.md`. |
+| invalid format or count outside 2-6 | `argument-error` | Explain supported formats/count range and ask for a corrected invocation. |
+| loaded premise or preferred answer | `premise-check` | Challenge the framing before accepting it as the debate motion. |
+| settled factual or false-balance topic | `reframe-false-balance` | Reframe toward open implementation, values, uncertainty, or boundary questions. |
+| Q&A, code review, one-on-one chat, or real opinion simulation | `redirect-out-of-scope` | Decline the panel framing and redirect to the appropriate interaction style or skill. |
 
 ## Empty/Help Gallery
 
@@ -45,95 +49,108 @@ Format-count notes:
 - Socratic with 2 experts becomes paired inquiry with phase-transition moderation.
 - Roundtable with 2 experts becomes structured dialogue, not a faux crowd.
 
-## Topic Diagnostic and Research
+## Progressive Disclosure
 
-Run the diagnostic in `references/topic-diagnostic.md` before creating personas. It covers breadth, specificity, settled-science, evidence asymmetry, and format auto-selection.
+Load only what the invocation requires:
 
-Run the research-integrity rules in `references/research-integrity.md` before naming citations. Never fabricate titles, authors, years, or journals. If current literature is not verified, say so explicitly.
+1. Always load `references/topic-diagnostic.md`, `references/research-integrity.md`, and `references/debate-research.md` before personas.
+2. Load `references/archetypes.md` only after the topic gate identifies the needed traditions.
+3. Load `references/moderator-rules.md` and `references/formats.md` immediately before running the panel.
+4. Load `references/synthesis.md` before the final product.
+5. Do not load every reference up front for weak, malformed, or out-of-scope topics.
 
-Use WebSearch for 3-5 relevant sources when possible, then map the core tensions, disciplines, traditions, and what is actually contested. For specialized topics, treat research grounding as critical; for casual or experiential topics, match the register without lowering the evidence standard.
+Optional parser: run `uv run python skills/host-panel/scripts/parse_args.py $ARGUMENTS` when shell access is available. Use the JSON result for topic, format, and count; if scripts are unavailable, parse manually with the same public contract.
 
-## Persona and Moderator Rules
+## Classification Gate
 
-Build personas from distinct intellectual traditions and avoid clustering. Use the archetypes in `references/archetypes.md` when they fit; adapt them when the topic requires a bespoke tradition.
+### Topic Classes
 
-Apply the moderator standing orders in `references/moderator-rules.md`. Before each panelist speaks, preserve persona integrity, keep airtime balanced, and test convergence instead of letting model priors harden into fake consensus.
+| Class | Meaning | Default Action |
+|---|---|---|
+| `settled-factual` | Mostly closed empirical question | Reframe or decline false balance |
+| `open-value` | Normative, policy, rights, incentives, or goals | Proceed |
+| `controversial-factual` | Live empirical disagreement with credible sources on multiple sides | Proceed with source ledger |
+| `speculative` | Future-facing or theory-building | Proceed with uncertainty labels |
+| `thin-evidence` | Sparse or indirect literature | Proceed only with explicit gaps |
+| `decision-critical` | User is making a practical choice | Proceed with decision implications |
 
-## Discussion Phases
+### Gate Actions
 
-Load the chosen format's specific phase guide from `references/formats.md`. Use those phase names in the output. Phase 0 framing and synthesis are universal bookends. If `formats.md` is missing, tell the user and proceed only if they confirm, using roundtable defaults.
+| Action | Use When |
+|---|---|
+| `proceed` | Topic is specific, contestable, and sourceable enough for a panel |
+| `reframe` | Topic is too broad, loaded, asymmetric, or better posed another way |
+| `clarify` | Topic cannot be parsed or has too little detail |
+| `decline-false-balance` | Debate would stage denial of a settled factual matter |
 
-## Synthesis
+## Pipeline
 
-Follow `references/synthesis.md`. Synthesis is an intellectual product, not a summary. It must identify the underlying axiom, the emergent question, the resolution evidence, the structural position map, the uncomfortable implications, key takeaways, further reading, and a self-assessment.
+1. **Parse.** Preserve the public invocation contract. Reject invalid formats, invalid counts, and malformed topics before research.
+2. **Diagnose.** Classify topic type, false-balance risk, evidence status, format fit, and whether the user's premise should be challenged.
+3. **Ground.** Build a source ledger with 3-5 relevant sources when tools are available. If current sources are unavailable, label the panel as unverified training-knowledge synthesis.
+4. **Map perspectives.** Discover traditions from the topic and sources before personas. Prefer methodology diversity over theatrical variety.
+5. **Run independent first positions.** Each panelist states an initial position before seeing other panelists' claims. Subsequent rounds critique claims, not people.
+6. **Moderate against collapse.** Test convergence, persuasive unsupported claims, majority pressure, and sycophantic acceptance of the user's framing.
+7. **Synthesize by trajectory.** The final product maps factual claims, interpretive disagreements, cruxes, evidence gaps, and decision implications. It is not a vote.
+
+## Output Contract
+
+Structure complete outputs with these sections:
+
+- `Topic Gate` - topic class, format choice, false-balance decision, and any premise challenge.
+- `Research Status` - verified/thin/unverified status and evidence limits.
+- `Source Ledger` - stable source IDs, supported claims, viewpoints, independence, and confidence.
+- `Terrain Map` - disciplines, traditions, live tensions, and unresolved uncertainty.
+- `Panelist Roster` - methodology cards, not theatrical character sheets.
+- `Panel Phases` - format-specific phases from `references/formats.md`.
+- `Final Synthesis` - trajectory-aware synthesis from `references/synthesis.md`.
+- `Follow-up Options` - 3-4 concrete next moves tied to this panel's cruxes.
+
+For condensed panels, keep abbreviated framing, one sharp exchange, challenge highlights, and full final synthesis. Cut redundant opening positions and repeated back-and-forth.
 
 ## Critical Rules
 
-1. Research before personas. Always run topic analysis and research grounding first.
-2. Never skip synthesis.
-3. Cite real works only. If unsure, stay at the tradition level instead of inventing specifics.
-4. Disagreements must be specific. Cite the claim, the counter-evidence, and why the traditions diverge.
-5. No straw men. Each position must be the strongest version of itself.
-6. Test convergence. Agreement can reflect model priors, not genuine agreement.
-7. No monologues. If a panelist talks for more than 200 words without engagement, reset the discussion.
-8. Setup is not the product. Show the topic map, research brief, and roster, then move into the panel.
+1. Research before personas. Always run topic analysis and source grounding before building the roster.
+2. Never stage fake balance. Settled factual claims must be reframed or declined as debate motions.
+3. Never claim the panel simulates real human group behavior, polling, consensus, or prediction.
+4. Cite real works only. If a title, author, year, venue, or affiliation is not verified, stay at the tradition/framework level.
+5. Show source status. Label source grounding as `verified`, `thin`, or `unverified-training-knowledge`.
+6. Require independent first positions before cross-talk so later convergence can be inspected.
+7. Treat rhetorical confidence as non-evidence. Persuasive claims need sources, logic, or explicit uncertainty.
+8. Test convergence. Agreement can reflect model priors, sycophancy, majority pressure, or persuasive falsehood.
+9. No straw men. Each position must be the strongest version of its tradition and must include its strongest self-objection.
+10. Never skip final synthesis. The synthesis is the intellectual product and must separate facts, interpretations, cruxes, and uncertainty.
 
 ## Reference File Index
 
-| File | Read When |
-|------|-----------|
-| `references/topic-diagnostic.md` | Classifying topic quality, format auto-selection, and pause/reframe decisions |
-| `references/research-integrity.md` | Preventing fabrication and keeping citations grounded |
-| `references/moderator-rules.md` | Managing persona integrity, turn-taking, and provocation |
-| `references/synthesis.md` | Building the final synthesis and follow-up options |
-| `references/formats.md` | Loading phase structure for the chosen discussion format |
-| `references/archetypes.md` | Building personas spanning 2+ distinct domains or unfamiliar fields |
+| File | Content | Read When |
+|------|---------|-----------|
+| `references/topic-diagnostic.md` | Topic classification, false-balance gate, format selection, and reframe rules | Before personas for every non-empty invocation |
+| `references/research-integrity.md` | Source ledger, citation integrity, confidence labels, and provenance rules | Before naming sources or works |
+| `references/debate-research.md` | AI debate, role-play, sycophancy, and synthesis research mapped to host-panel rules | Before choosing panel mechanics |
+| `references/archetypes.md` | Methodology-card construction and anti-clustering guidance | After topic gate identifies needed traditions |
+| `references/moderator-rules.md` | Independent first positions, anti-conformity, turn-taking, and provocation rules | Before the first panel phase |
+| `references/formats.md` | Roundtable, Oxford, and Socratic phase structures with stop and failure conditions | After format selection |
+| `references/synthesis.md` | Trajectory-aware final synthesis requirements and follow-up options | Before final synthesis |
 
 ## Canonical Vocabulary
 
 | Canonical Term | Meaning |
 |----------------|---------|
-| panel | A simulated multi-expert discussion on a topic |
-| expert / panelist | An AI-simulated domain specialist with defined tradition and credentials |
-| format | The discussion structure: roundtable, oxford, or socratic |
-| synthesis | The intellectual product produced after discussion phases |
-| tradition | An intellectual school of thought with specific methodological commitments |
-| moderator | Claude's role managing turn-taking, provocation, and phase transitions |
-| terrain mapping | The pre-discussion analysis identifying disciplines, tensions, and traditions |
-| convergence | When 2+ panelists agree - must be tested for model-prior collapse |
-| persona integrity | Maintaining each panelist's distinct voice, reasoning, and evidence standards |
-| phase | A discrete stage of the discussion governed by the chosen format |
-
-## Output Shape
-
-Structure the complete panel output as:
-
-```text
-## Panel: [Topic]
-**Format:** [format] | **Date:** [date] | **Experts:** [count]
-
-### Panelist Roster
-- **[Name]** - [credentials] *(tradition)*
-
-### Phase 0: Framing
-### [Each format-specific phase as its own H3]
-### Synthesis
-- **Axiom of disagreement:** ...
-- **Emergent question:** ...
-- **Resolution evidence:** ...
-- **Position map:** ...
-- **Uncomfortable implications:** ...
-- **Key takeaways:** [3-5 bullets]
-- **Further reading:** ...
-- **Self-assessment:** ...
-```
-
-For condensed panels, keep abbreviated framing, one sharp exchange, challenge highlights, and full synthesis. Cut redundant opening positions and repeated back-and-forth.
+| panel | A simulated deliberation across intellectual positions on a topic |
+| expert / panelist | An AI-simulated domain specialist with a defined methodology and evidence standard |
+| format | The discussion structure: `roundtable`, `oxford`, or `socratic` |
+| source ledger | Stable list of sources, supported claims, viewpoints, independence, and confidence |
+| topic gate | Pre-panel classification deciding proceed, reframe, clarify, or decline |
+| terrain map | Pre-discussion map of disciplines, traditions, tensions, and uncertainty |
+| tradition | Intellectual school, profession, or research program with methodological commitments |
+| crux | A claim or assumption that would change the disagreement if resolved |
+| convergence | Panelist agreement that must be tested for model-prior collapse or majority pressure |
+| anti-conformity | Deliberate protection against consensus pressure and persuasive unsupported claims |
+| final synthesis | Trajectory-aware product separating facts, interpretations, uncertainty, and implications |
 
 ## After the Panel
 
-When responding to follow-ups, briefly re-ground by reviewing the panelist roster before speaking in character.
+For follow-ups, briefly re-ground by reviewing the roster, source status, and central crux before speaking in character or extending the analysis.
 
-If the user is making a practical decision, connect the synthesis to decision implications: weigh the tensions explicitly, not as a generic summary.
-
-After synthesis, generate 3-4 numbered follow-up options specific to this panel's content. Each option must reference a concrete tension, expert, or emergent question.
+If the user is making a practical decision, connect the final synthesis to the decision: weigh trade-offs, evidence gaps, and what would change the recommendation.
