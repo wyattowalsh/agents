@@ -1,5 +1,52 @@
 # TypeScript Patterns
 
+Use this reference when the active task touches TypeScript source,
+`tsconfig.json`, public type contracts, or type tests.
+
+## TSConfig Baseline
+
+For new TypeScript projects, prefer `strict: true`. It enables the strict
+family of checks and may gain additional strictness in future TypeScript
+versions, so apply it intentionally on existing codebases.
+
+```jsonc
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "verbatimModuleSyntax": true
+  }
+}
+```
+
+### Strictness Tiers
+
+| Tier | Options | Use When |
+|------|---------|----------|
+| Baseline | `strict: true` | New TS projects and repos already using strict mode |
+| Data safety | `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes` | Arrays, records, env maps, config objects, and API payloads |
+| Class safety | `noImplicitOverride` | Class hierarchies or framework classes |
+| Module clarity | `verbatimModuleSyntax` | ESM/CJS boundaries, bundlers, or emitted JS must match source intent |
+
+Do not weaken strictness to hide errors. If enabling stricter options creates
+large churn, recommend a staged migration with owned follow-up.
+
+## Module Resolution
+
+Choose module settings by runtime target:
+
+| Target | Preferred Direction |
+|--------|---------------------|
+| Bundled frontend/app code | `moduleResolution: "bundler"` when the bundler owns resolution |
+| Modern Node.js runtime output | `module`/`moduleResolution` `node16` or `nodenext` as appropriate |
+| Framework-owned TS config | Extend the framework preset and avoid fighting its compiler assumptions |
+
+Use the package's `"type"` field, file extensions, and build tool before
+changing module settings. Do not mix ESM and CommonJS through assertions or
+compiler flags without documenting the runtime reason.
+
 ## Discriminated Unions
 
 Use a shared literal property (`kind`, `type`, `status`) to enable exhaustive narrowing.
@@ -15,9 +62,12 @@ function area(s: Shape): number {
       return Math.PI * s.radius ** 2;
     case "rect":
       return s.width * s.height;
+    default: {
+      const _exhaustive: never = s;
+      return _exhaustive;
+    }
   }
 }
-// Compiler errors if a variant is unhandled (with --strict).
 ```
 
 ### State Machine Pattern
@@ -31,6 +81,8 @@ type RequestState =
 ```
 
 ## Type Guards
+
+Prefer `unknown` at untrusted boundaries, then narrow with runtime checks.
 
 ```typescript
 // User-defined type guard
@@ -47,16 +99,20 @@ function assertDefined<T>(val: T | undefined): asserts val is T {
 ## `satisfies` vs `as`
 
 ```typescript
-// satisfies: validates type WITHOUT widening — preserves literal inference
+// satisfies validates shape without widening away useful inference.
 const config = {
   port: 3000,
   host: "localhost",
 } satisfies ServerConfig;
-// config.port is number (literal), not unknown
 
-// as: type assertion — OVERRIDES inference, can hide bugs
+// as overrides inference and can hide bugs.
 const config = { port: 3000 } as ServerConfig; // AVOID
 ```
+
+Use `satisfies` for configuration objects, route maps, lookup tables, and
+fixture objects where key coverage matters and literal inference is valuable.
+Reserve `as` for narrow interop boundaries where runtime evidence is already
+checked or the third-party type is incomplete.
 
 ## Utility Type Cheat Sheet
 
@@ -96,16 +152,33 @@ type EventName = `on${Capitalize<"click" | "focus" | "blur">}`;
 type Route = `/${string}`;
 ```
 
-## Strict Config Checklist
+## Type Testing
 
-```jsonc
-// tsconfig.json — enable all of these
-{
-  "compilerOptions": {
-    "strict": true,              // enables all strict checks
-    "noUncheckedIndexedAccess": true,  // arrays/records return T | undefined
-    "exactOptionalPropertyTypes": true, // distinguish undefined from missing
-    "noImplicitOverride": true   // require override keyword
+Use type tests when public helpers, library APIs, or generated types rely on
+compile-time behavior.
+
+```typescript
+expectTypeOf(result).toEqualTypeOf<Expected>();
+
+// Negative tests should fail if the contract becomes too loose.
+// @ts-expect-error invalid status must stay rejected
+handleState({ status: "done" });
+```
+
+Prefer `@ts-expect-error` over `@ts-ignore`; it fails when the expected error
+disappears.
+
+## Runtime Boundary Pattern
+
+Static types do not validate external data. Parse untrusted JSON, env vars,
+request bodies, and file content with runtime checks before treating them as
+typed values.
+
+```typescript
+function readPort(value: unknown): number {
+  if (typeof value !== "number" || !Number.isInteger(value)) {
+    throw new Error("Expected integer port");
   }
+  return value;
 }
 ```

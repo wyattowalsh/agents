@@ -1,8 +1,9 @@
 ---
 name: javascript-conventions
 description: >-
-  JS/TS tooling conventions. Enforce pnpm. Use when working on JS/TS files
-  or package.json. NOT for Python, backend-only, or shell scripts.
+  Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript,
+  ESLint, and Prettier defaults. Use when working on JS/TS files or
+  package.json. NOT for Python, backend-only, or shell scripts.
 user-invocable: false
 disable-model-invocation: false
 license: MIT
@@ -11,79 +12,145 @@ metadata:
   version: "1.0.0"
 ---
 
-# JavaScript/Node.js Conventions
+# JavaScript/TypeScript Conventions
 
-Apply these conventions when working on JavaScript or Node.js files or projects.
+Apply these conventions when JavaScript, TypeScript, Node.js tooling, or
+`package.json` is the primary workstream.
 
 ## Dispatch
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| Active (auto-invoked when working on JS/TS files) | Apply all conventions below |
-| Empty | Display convention summary |
-| `check` | Verify package manager compliance only |
+| Active (auto-invoked when JS/TS work is primary) | Apply the operator contract below |
+| Empty | Display the convention summary and routing guidance |
+| `check` | Verify tooling compliance only |
 
-## References
+## Reference File Index
 
-| File | Purpose |
-|------|---------|
-| `references/edge-cases.md` | Repo-specific exceptions and edge cases |
-| `references/typescript-patterns.md` | Discriminated unions, type guards, utility types |
+| File | Purpose | When to Read |
+|------|---------|--------------|
+| `references/tooling-contract.md` | Required package-manager, command, CI, workspace, and package-root rules | Package commands, scripts, dependencies, lockfiles, or CI |
+| `references/redirection-boundaries.md` | When JS/TS conventions should yield to Python, shell, CI, or framework-specific skills | Mixed-language or ambiguous work |
+| `references/edge-cases.md` | Exception gates for npm/yarn, Corepack, generated apps, and migrations | Deviations from pnpm defaults |
+| `references/typescript-patterns.md` | TypeScript config, narrowing, type guards, unions, and type-test patterns | TypeScript code or `tsconfig.json` |
+| `references/eslint-prettier.md` | ESLint flat config, typed linting, and Prettier separation | Linting or formatting changes |
 
-## Package Management
+## Operator Contract
 
-- Use `pnpm` for all Node.js package management
-- Do not use `npm` or `yarn` unless the project explicitly requires them
-- Commands: `pnpm install`, `pnpm add <pkg>`, `pnpm run <script>`, `pnpm exec <cmd>`
-- Always commit `pnpm-lock.yaml` -- never `.gitignore` it
-- Run `pnpm install --frozen-lockfile` in CI environments
+### Active
 
-### Monorepo Conventions
+1. Apply this skill only when JS/TS files, Node tooling, or `package.json` are the primary surface of the task.
+2. Read `references/redirection-boundaries.md` when JS/TS appears alongside Python, shell, CI, or framework-specific work.
+3. Enforce the hard requirements in `references/tooling-contract.md` for package management, package-root selection, command execution, lockfiles, workspaces, and CI installs.
+4. Check `references/edge-cases.md` before recommending npm, yarn, global package managers, Corepack assumptions, or lockfile migrations.
+5. Read `references/typescript-patterns.md` for TypeScript config or type-safety changes.
+6. Read `references/eslint-prettier.md` for linting, typed linting, or formatting changes.
+7. Use guided preferences only when starting new work or when the repo does not already have a stronger local convention.
 
-- Use `pnpm` workspaces for multi-package repositories
-- Define workspaces in `pnpm-workspace.yaml` at the repo root
-- Use `pnpm -r` or `pnpm --filter <pkg>` for targeted operations
-- Hoist shared dependencies to the root where possible
+### Empty / Help
 
-### Lockfile Handling
+1. Summarize the hard requirements: `pnpm`, `packageManager`, `pnpm-lock.yaml`, `pnpm install --frozen-lockfile`, `pnpm exec`, `pnpm dlx`, `tsc --noEmit`, `eslint`, and `prettier`.
+2. Show the difference between hard requirements and guided preferences.
+3. Point to the exact reference files for tooling, exceptions, TypeScript, lint/format, and mixed-language routing.
 
-- Commit lockfiles to version control
-- Use `--frozen-lockfile` in CI to prevent drift
-- When migrating from npm/yarn, delete the old lockfile and run `pnpm import` or `pnpm install`
+### `check`
 
-## Tooling Preferences
+1. Verify JS/TS tooling compliance only; do not widen into implementation advice unless the user asks.
+2. Report whether the project uses the expected package root, `pnpm`, `packageManager`, `pnpm-lock.yaml`, workspace config, scripts, `tsconfig.json`, ESLint flat config, and Prettier.
+3. Flag npm/yarn/Corepack/legacy deviations and require the reason to match `references/edge-cases.md`.
+4. Reject recommendations that replace repo-required tooling with `npm install`, `npx`, or ad hoc global binaries unless an exception is documented.
 
-| Purpose | Tool |
-|---------|------|
-| Package manager | `pnpm` |
-| Bundler | `vite` or `esbuild` |
-| Linting | `eslint` |
-| Formatting | `prettier` |
-| Testing | `vitest` or framework-native runner |
-| Type checking | `tsc --noEmit` |
+## Hard Requirements
+
+- **Package manager**: use `pnpm` for JS/TS package operations unless an exception is documented.
+- **Package manager pin**: honor the nearest owning `package.json` and its `packageManager` field.
+- **Lockfile**: commit `pnpm-lock.yaml`; never mix lockfiles in one package root without a migration plan.
+- **Install**: use `pnpm install`; use `pnpm install --frozen-lockfile` in CI.
+- **Dependencies**: use `pnpm add <pkg>` or `pnpm add -D <pkg>` from the owning package root.
+- **Local binaries**: use `pnpm exec <cmd>`; use `pnpm dlx <pkg>` only for one-off registry execution.
+- **Scripts**: use `pnpm run <script>` or `pnpm --filter <pkg> run <script>`.
+- **Type checking**: use `pnpm exec tsc --noEmit` or the repo's package script.
+- **Linting**: use ESLint flat config for new ESLint setup.
+- **Formatting**: use Prettier for formatting and ESLint for code-quality rules.
+
+## Guided Preferences
+
+When starting new JS/TS work and no stronger local constraint exists, prefer
+these tools. These are defaults, not absolute law; check
+`references/edge-cases.md` before overriding an established project choice.
+
+| Purpose | Tool | Notes |
+|---------|------|-------|
+| Package manager | `pnpm` | Pin through `packageManager` when the package root owns `package.json` |
+| Bundler | `vite` or `esbuild` | Respect framework-owned builders first |
+| Linting | `eslint` | Use flat config for new setup |
+| Formatting | `prettier` | Keep formatting separate from linting |
+| Testing | `vitest` or framework-native runner | Prefer existing repo scripts |
+| Type checking | `tsc --noEmit` | Run through `pnpm exec` or package scripts |
 
 ## TypeScript Type Safety
 
-1. Prefer `unknown` over `any`; enforce via `noImplicitAny` in `tsconfig.json`
-2. Prefer `interface` for object shapes; use `type` for unions and intersections
-3. Use discriminated unions for state machines and tagged types
-4. Use `as const` assertions to preserve literal types
-5. Avoid type assertions (`as`); prefer type guards and `satisfies`
-6. Enable all `strict` compiler options in `tsconfig.json`
-7. Test types with `@ts-expect-error` or `tsd`
-8. See `references/typescript-patterns.md` for discriminated union and utility type patterns
+1. Prefer `unknown` over `any`; do not weaken established strictness to make code compile.
+2. Prefer `interface` for object shapes and `type` for unions, intersections, and mapped types.
+3. Use discriminated unions for state machines and tagged variants.
+4. Use `as const` and `satisfies` to preserve literal inference without unsafe assertions.
+5. Avoid type assertions (`as`); prefer type guards, assertion functions, and schema validation at boundaries.
+6. Enable `strict` in new TypeScript projects and add stricter options when the repo can absorb them.
+7. Test negative type behavior with `@ts-expect-error` or a type-test tool when type contracts are public.
+8. See `references/typescript-patterns.md` for TSConfig, module-resolution, and narrowing patterns.
 
 ## Critical Rules
 
-1. Always use `pnpm` unless an existing lockfile or CI config mandates otherwise
-2. Never mix package managers in the same project (no `npm install` alongside `pnpm`)
-3. Commit `pnpm-lock.yaml` to version control in every project
-4. Run `pnpm install --frozen-lockfile` in CI — never allow lockfile mutation
-5. Check `references/edge-cases.md` before breaking any convention
-6. Use `pnpm exec` instead of `npx` for running local binaries
+1. Require `pnpm` for JS/TS dependency changes unless `references/edge-cases.md` justifies npm, yarn, or another manager.
+2. Resolve the owning package root before running package commands; do not assume the repository root owns every JS/TS file.
+3. Never mix `pnpm-lock.yaml`, `package-lock.json`, and `yarn.lock` in the same package root outside a dedicated migration.
+4. Run CI installs with `pnpm install --frozen-lockfile` when a `pnpm-lock.yaml` is present.
+5. Use `pnpm exec` for local binaries and `pnpm dlx` only for one-off packages fetched from the registry.
+6. Do not assume Corepack is bundled with the active Node.js runtime; check `references/edge-cases.md` before recommending Corepack setup.
+7. Keep Prettier responsible for formatting and ESLint responsible for code-quality rules.
+8. Redirect mixed-language or non-JS-primary work through `references/redirection-boundaries.md` instead of force-fitting this skill onto the whole task.
+
+## Scaling Strategy
+
+- Incidental JS/TS file in a broader non-JS task: enforce only the hard requirements that touch the JS/TS-owned surface, then route mixed-workflow questions through `references/redirection-boundaries.md`.
+- JS/TS-primary feature or refactor work: apply the full operator contract, including tooling, TypeScript, linting, formatting, and test guidance where relevant.
+- Repo-wide JS/TS tooling or migration work: use `check`, `references/tooling-contract.md`, and `references/edge-cases.md` to separate hard violations from documented transition paths.
+
+## Progressive Disclosure
+
+- Do not load every reference by default.
+- Read `references/tooling-contract.md` first for command, dependency, package-root, workspace, lockfile, or CI questions.
+- Read `references/redirection-boundaries.md` when Python, shell, CI, infra, or framework-specific work is mixed into the request.
+- Read `references/edge-cases.md` only when the task appears to require npm, yarn, Corepack setup, generated app scaffolding, or lockfile migration exceptions.
+- Read `references/typescript-patterns.md` only when TypeScript code, `tsconfig.json`, public types, or type tests are active.
+- Read `references/eslint-prettier.md` only when the task touches linting, typed linting, or formatting.
+
+## Scope Boundaries
+
+**IS for:** JS/TS tooling conventions, Node package commands, dependency-management rules, TypeScript type-safety defaults, lint/format/test command guidance, and exception-aware repo guidance.
+
+**NOT for:** Python conventions, shell conventions, CI pipeline design, framework architecture, backend-only implementation strategy, or broad frontend UX/design guidance.
 
 **Canonical terms** (use these exactly):
-- `pnpm` -- the required package manager (not npm, not yarn)
-- `lockfile` -- `pnpm-lock.yaml` specifically
-- `workspace` -- pnpm workspace for monorepo packages
-- `frozen-lockfile` -- CI mode that prevents lockfile changes
+- `pnpm` -- the required package manager for JS/TS package operations
+- `package root` -- the nearest directory whose `package.json` owns the command or dependency
+- `packageManager` -- the `package.json` field that pins the package manager and version
+- `pnpm-lock.yaml` -- the canonical JS/TS lockfile for pnpm package roots
+- `workspace` -- pnpm workspace declared by `pnpm-workspace.yaml`
+- `frozen-lockfile` -- CI install mode that prevents lockfile mutation
+- `pnpm exec` -- local project binary execution
+- `pnpm dlx` -- one-off package execution from the registry
+
+## Validation Contract
+
+Before considering this skill complete after edits, run:
+
+1. `uv run wagents validate`
+2. `uv run wagents eval validate`
+3. Run the skill-creator audit command with `audit.py skills/javascript-conventions/ --format json`
+4. `uv run wagents package javascript-conventions --dry-run`
+5. `uv run wagents readme --check`
+6. `git diff --check`
+
+Completion criteria: all applicable commands must pass with zero errors, or
+the final response must name the exact unrelated blocker.
