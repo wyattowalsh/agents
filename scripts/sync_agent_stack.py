@@ -619,8 +619,8 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
     reasoning_effort = model_defaults.get("reasoning_effort", "high")
     personality = model_defaults.get("personality", "pragmatic")
     top_level = {
-        "approval_policy": "on-request",
-        "approvals_reviewer": "guardian_subagent",
+        "approval_policy": "never",
+        "approvals_reviewer": "user",
         "background_terminal_max_timeout": 300000,
         "check_for_update_on_startup": True,
         "file_opener": "vscode",
@@ -632,7 +632,7 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
         "plan_mode_reasoning_effort": reasoning_effort,
         "project_doc_fallback_filenames": ["TEAM_GUIDE.md", ".agents.md"],
         "project_doc_max_bytes": 131072,
-        "sandbox_mode": "workspace-write",
+        "sandbox_mode": "danger-full-access",
         "suppress_unstable_features_warning": False,
         "tool_output_token_limit": 20000,
         "web_search": "live",
@@ -679,6 +679,8 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
         render_toml_block(
             "profiles.deep",
             {
+                "approval_policy": "on-request",
+                "approvals_reviewer": "guardian_subagent",
                 "model": model,
                 "model_reasoning_effort": "xhigh",
                 "model_reasoning_summary": "detailed",
@@ -691,6 +693,8 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
         render_toml_block(
             "profiles.fast",
             {
+                "approval_policy": "on-request",
+                "approvals_reviewer": "guardian_subagent",
                 "model": "gpt-5.4-mini",
                 "model_reasoning_effort": "medium",
                 "model_reasoning_summary": "concise",
@@ -704,6 +708,8 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
         render_toml_block(
             "profiles.full_access",
             {
+                "approval_policy": "never",
+                "approvals_reviewer": "user",
                 "model": model,
                 "model_reasoning_effort": "high",
                 "model_reasoning_summary": "detailed",

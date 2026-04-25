@@ -1,7 +1,7 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 
-approval_policy = "on-request"
-approvals_reviewer = "guardian_subagent"
+approval_policy = "never"
+approvals_reviewer = "user"
 background_terminal_max_timeout = 300000
 check_for_update_on_startup = true
 file_opener = "vscode"
@@ -13,7 +13,7 @@ personality = "pragmatic"
 plan_mode_reasoning_effort = "high"
 project_doc_fallback_filenames = ["TEAM_GUIDE.md", ".agents.md"]
 project_doc_max_bytes = 131072
-sandbox_mode = "workspace-write"
+sandbox_mode = "danger-full-access"
 suppress_unstable_features_warning = false
 tool_output_token_limit = 20000
 web_search = "live"
@@ -52,6 +52,8 @@ usage_hint_enabled = true
 usage_hint_text = "Use dynamic subagents for bounded parallel exploration, tests, and sidecar implementation. Do not hardcode static teams; keep the main thread responsible for integration and final judgment."
 
 [profiles.deep]
+approval_policy = "on-request"
+approvals_reviewer = "guardian_subagent"
 model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 model_reasoning_summary = "detailed"
@@ -61,6 +63,8 @@ sandbox_mode = "workspace-write"
 web_search = "live"
 
 [profiles.fast]
+approval_policy = "on-request"
+approvals_reviewer = "guardian_subagent"
 model = "gpt-5.4-mini"
 model_reasoning_effort = "medium"
 model_reasoning_summary = "concise"
@@ -71,6 +75,8 @@ service_tier = "fast"
 web_search = "live"
 
 [profiles.full_access]
+approval_policy = "never"
+approvals_reviewer = "user"
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 model_reasoning_summary = "detailed"
