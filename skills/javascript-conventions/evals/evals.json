@@ -1,0 +1,114 @@
+{
+  "skill_name": "javascript-conventions",
+  "evals": [
+    {
+      "id": "active-typescript-primary",
+      "prompt": "Add a debounce utility function to src/utils/helpers.ts",
+      "files": ["src/utils/helpers.ts"],
+      "expected_output": "An implicit trigger response that auto-invokes javascript-conventions for a TypeScript-primary task.",
+      "assertions": [
+        "Agent auto-invokes javascript-conventions when the primary file is TypeScript.",
+        "Agent uses pnpm for any package-management operations.",
+        "Agent uses pnpm exec for local binaries instead of npx.",
+        "Agent applies TypeScript type-safety guidance without weakening strictness."
+      ]
+    },
+    {
+      "id": "package-manager-guidance",
+      "prompt": "What package manager should I use for this Node.js monorepo?",
+      "files": ["package.json", "pnpm-workspace.yaml"],
+      "expected_output": "A package-manager response that recommends pnpm and workspace-aware commands.",
+      "assertions": [
+        "Agent recommends pnpm as the default package manager.",
+        "Agent recommends pnpm workspaces when pnpm-workspace.yaml owns the monorepo.",
+        "Agent recommends committing pnpm-lock.yaml.",
+        "Agent recommends pnpm install --frozen-lockfile for CI when a lockfile exists.",
+        "Agent distinguishes package root and workspace root before commands."
+      ]
+    },
+    {
+      "id": "empty-help-menu",
+      "prompt": "/javascript-conventions",
+      "files": [],
+      "expected_output": "A summary response that distinguishes hard requirements from guided preferences and points to references.",
+      "assertions": [
+        "Agent dispatches to the empty/help handler.",
+        "Agent summarizes pnpm, packageManager, pnpm-lock.yaml, frozen-lockfile, tsc, ESLint, and Prettier.",
+        "Agent distinguishes hard requirements from guided preferences.",
+        "Agent points to tooling-contract, redirection-boundaries, edge-cases, typescript-patterns, and eslint-prettier references."
+      ]
+    },
+    {
+      "id": "check-mode",
+      "prompt": "/javascript-conventions check",
+      "files": ["package.json", "pnpm-lock.yaml", "tsconfig.json"],
+      "expected_output": "A compliance-only response describing what check mode verifies.",
+      "assertions": [
+        "Agent dispatches to check mode.",
+        "Agent limits the response to JS/TS tooling compliance verification.",
+        "Agent checks package root, pnpm, packageManager, pnpm-lock.yaml, scripts, tsconfig, ESLint, and Prettier surfaces.",
+        "Agent does not widen into implementation advice unless asked."
+      ]
+    },
+    {
+      "id": "negative-control-mixed-js-python",
+      "prompt": "Update the React client and the FastAPI endpoint it calls.",
+      "files": ["web/src/App.tsx", "api/app.py"],
+      "expected_output": "A negative control mixed-language response that keeps JS/TS conventions scoped and routes Python concerns appropriately.",
+      "assertions": [
+        "Agent recognizes mixed JS/TS and Python work.",
+        "Agent applies javascript-conventions only to the JS/TS-owned surface.",
+        "Agent routes Python conventions to python-conventions instead of claiming repo-wide ownership.",
+        "Agent does not force pnpm commands onto Python-owned files."
+      ]
+    },
+    {
+      "id": "legacy-npm-exception",
+      "prompt": "This package still has package-lock.json and CI uses npm ci. Should I run pnpm install?",
+      "files": ["package.json", "package-lock.json", ".github/workflows/ci.yml"],
+      "expected_output": "An exception-aware response that does not blindly replace npm in an established npm package root.",
+      "assertions": [
+        "Agent recognizes the task as an npm exception path.",
+        "Agent requires evidence from edge-cases before deviating from pnpm defaults.",
+        "Agent does not mix pnpm-lock.yaml into the same package root without a migration plan.",
+        "Agent keeps pnpm as the default target for new JS/TS package roots."
+      ]
+    },
+    {
+      "id": "corepack-node25",
+      "prompt": "Node 25 is installed and corepack is missing, but this repo says packageManager is pnpm. What should I do?",
+      "files": ["package.json"],
+      "expected_output": "A Corepack-aware response that preserves pnpm while avoiding false assumptions about bundled Corepack.",
+      "assertions": [
+        "Agent states that Corepack may be unavailable and should not be assumed from Node alone.",
+        "Agent does not switch to npm just because Corepack is missing.",
+        "Agent recommends following the repo's pnpm/Corepack installation path or reporting the missing executable when install is out of scope.",
+        "Agent preserves the packageManager field as the package-manager authority."
+      ]
+    },
+    {
+      "id": "eslint-typed-linting",
+      "prompt": "Modernize our TypeScript ESLint config.",
+      "files": ["eslint.config.mjs", "tsconfig.json"],
+      "expected_output": "A linting response that uses flat config, typed linting when justified, and keeps Prettier separate.",
+      "assertions": [
+        "Agent recommends ESLint flat config for new ESLint setup.",
+        "Agent recommends typescript-eslint typed linting with projectService when type-aware rules are justified.",
+        "Agent treats typed linting as stronger but slower than syntax-only linting.",
+        "Agent keeps Prettier responsible for formatting and ESLint responsible for code-quality rules."
+      ]
+    },
+    {
+      "id": "typescript-strictness",
+      "prompt": "Tighten the TypeScript config for this new package.",
+      "files": ["tsconfig.json", "src/index.ts"],
+      "expected_output": "A TypeScript response that starts from strict mode and adds stricter options intentionally.",
+      "assertions": [
+        "Agent recommends strict true for a new TypeScript package.",
+        "Agent considers noUncheckedIndexedAccess and exactOptionalPropertyTypes as stricter data-safety options.",
+        "Agent considers verbatimModuleSyntax when module emit clarity matters.",
+        "Agent chooses module resolution based on bundler or Node runtime target instead of one universal setting."
+      ]
+    }
+  ]
+}
