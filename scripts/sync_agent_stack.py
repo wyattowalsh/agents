@@ -677,14 +677,6 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
             },
         ),
         render_toml_block(
-            "agents",
-            {
-                "max_depth": 4,
-                "max_threads": 16,
-                "job_max_runtime_seconds": 7200,
-            },
-        ),
-        render_toml_block(
             "profiles.deep",
             {
                 "model": model,
