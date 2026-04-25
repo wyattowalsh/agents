@@ -44,6 +44,11 @@ PATTERN_NAMES = [
     "scaling-strategy", "state-management", "scripts", "templates",
     "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks",
 ]
+RESOURCE_PATH_RE = re.compile(
+    r"(?<![A-Za-z0-9_.-])((?:skills/[a-z0-9-]+/)?"
+    r"(?:references|scripts|templates|assets|reports)/"
+    r"[A-Za-z0-9_./-]*[A-Za-z0-9_-]\.[A-Za-z0-9_-]+)"
+)
 
 GRADE_STATUS = {
     "A": "Production-Ready",
@@ -124,6 +129,55 @@ def _has_canonical_vocabulary_section(body: str) -> bool:
         r"^\*\*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)\*\*",
     ]
     return any(re.search(pattern, body, re.I | re.M) for pattern in section_patterns)
+
+
+def _canonical_vocabulary_section(body: str) -> str:
+    """Return the canonical vocabulary section content, if present."""
+    heading_re = r"^#+\s*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)\b.*$"
+    section = _extract_heading_section(body, heading_re)
+    if section:
+        return section
+
+    lines = body.splitlines()
+    for idx, line in enumerate(lines):
+        if re.search(r"^\*\*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)\*\*", line, re.I):
+            collected = [line]
+            for next_line in lines[idx + 1:]:
+                if re.match(r"^#{1,6}\s+", next_line):
+                    break
+                collected.append(next_line)
+            return "\n".join(collected)
+    return ""
+
+
+def _mentioned_resource_paths(skill_dir: Path, body: str) -> set[str]:
+    """Return packaged resource paths mentioned in SKILL.md body."""
+    mentioned: set[str] = set()
+    skill_prefix = f"skills/{skill_dir.name}/"
+    for match in RESOURCE_PATH_RE.finditer(body):
+        raw_path = match.group(1).rstrip("`.,:;)]}")
+        if raw_path.startswith(skill_prefix):
+            raw_path = raw_path[len(skill_prefix):]
+        mentioned.add(raw_path)
+    return mentioned
+
+
+def _dispatch_action_labels(body: str) -> set[str]:
+    """Return normalized action labels from the dispatch table."""
+    labels: set[str] = set()
+    ignored = {"action", "example"}
+    for row in _dispatch_table_rows(body):
+        cells = [cell.strip() for cell in row.strip().strip("|").split("|")]
+        if len(cells) < 2:
+            continue
+        label = re.sub(r"`|\*", "", cells[1]).strip()
+        label = re.sub(r"^(auto:\s*)", "", label, flags=re.I)
+        label = re.sub(r"\s+", " ", label)
+        normalized = label.lower()
+        if not normalized or normalized in ignored:
+            continue
+        labels.add(normalized)
+    return labels
 
 
 def _has_classification_structure(body: str) -> bool:
@@ -758,6 +812,13 @@ def score_portability(fm: dict, body: str, dir_path: Path) -> dict:
         f.append("No repo-specific path assumptions")
     else:
         f.append(f"Repo-specific references found in {len(repo_refs)} lines")
+    mentioned = _mentioned_resource_paths(dir_path, body)
+    missing_resources = sorted(rel_path for rel_path in mentioned if not (dir_path / rel_path).is_file())
+    if missing_resources:
+        s = max(s - 1, 0)
+        f.append(f"Missing packaged resource references: {', '.join(missing_resources[:5])}")
+    elif mentioned:
+        f.append(f"All {len(mentioned)} packaged resource references resolve")
     return {
         "name": "Portability", "id": "portability",
         "score": min(s, 5), "max": 5, "weight": 0.5, "findings": f,
@@ -796,9 +857,248 @@ def score_conciseness(body: str) -> dict:
     return {"name": "Conciseness", "id": "conciseness", "score": max(s, 0), "max": 5, "weight": 0.5, "findings": f}
 
 
-def _canonical_bonus(body: str) -> int:
-    """Return +3 if a dedicated canonical terms/vocabulary section exists."""
-    return 3 if _has_canonical_vocabulary_section(body) else 0
+def score_canonical_vocabulary(body: str) -> dict:
+    """Canonical vocabulary quality (0-5, weight 0.5)."""
+    s, f = 0, []
+    section = _canonical_vocabulary_section(body)
+    if not section:
+        f.append("No dedicated canonical vocabulary section found")
+        return {
+            "name": "Canonical Vocabulary", "id": "canonical-vocabulary",
+            "score": 0, "max": 5, "weight": 0.5, "findings": f,
+        }
+    s += 1
+    f.append("Dedicated canonical vocabulary section found")
+
+    if re.search(r"use these exactly|canonical terms|canonical vocabulary", section, re.I):
+        s += 1
+        f.append("Section marks terms as canonical")
+    else:
+        f.append("Section does not explicitly mark terms as canonical")
+
+    quoted_terms = re.findall(r'"([^"\n]{2,80})"', section)
+    bullet_terms = re.findall(r"^\s*[-*]\s+([^:\n]{2,80})(?::|$)", section, re.M)
+    table_terms = re.findall(r"^\|\s*`?([^|`\n]{2,80})`?\s*\|", section, re.M)
+    term_count = len({term.strip().lower() for term in quoted_terms + bullet_terms + table_terms})
+    if term_count >= 3:
+        s += 1
+        f.append(f"Defines {term_count} canonical term entries")
+    else:
+        f.append(f"Defines only {term_count} canonical term entries; prefer >= 3")
+
+    category_lines = re.findall(r"^\s*[-*]\s+[^:\n]{2,80}:\s+.+", section, re.M)
+    table_rows = [
+        line for line in section.splitlines()
+        if line.strip().startswith("|") and not re.match(r"^\|\s*[-:\s|]+\|?$", line.strip())
+    ]
+    if len(category_lines) >= 2 or len(table_rows) >= 3:
+        s += 1
+        f.append("Vocabulary is grouped into categories or table rows")
+    else:
+        f.append("Vocabulary is not grouped into multiple categories")
+
+    if not re.search(r"\b(todo|tbd|placeholder|example term)\b", section, re.I) and len(section.strip()) >= 80:
+        s += 1
+        f.append("Vocabulary section is non-placeholder content")
+    else:
+        f.append("Vocabulary section appears placeholder or too thin")
+
+    return {
+        "name": "Canonical Vocabulary", "id": "canonical-vocabulary",
+        "score": min(s, 5), "max": 5, "weight": 0.5, "findings": f,
+    }
+
+
+def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
+    """Eval manifest coverage and quality (0-10, weight 1.0)."""
+    s, f = 0, []
+    evals_path = dir_path / "evals" / "evals.json"
+    if not evals_path.is_file():
+        f.append("No evals/evals.json manifest found")
+        return {
+            "name": "Evaluation Coverage", "id": "evaluation-coverage",
+            "score": 0, "max": 10, "weight": 1.0, "findings": f,
+        }
+    s += 1
+    f.append("evals/evals.json manifest found")
+
+    try:
+        data = json.loads(evals_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        f.append(f"Eval manifest could not be parsed: {exc}")
+        return {
+            "name": "Evaluation Coverage", "id": "evaluation-coverage",
+            "score": s, "max": 10, "weight": 1.0, "findings": f,
+        }
+
+    evals = data.get("evals")
+    if isinstance(data, dict) and isinstance(evals, list):
+        s += 1
+        f.append(f"Eval manifest parses with {len(evals)} case(s)")
+    else:
+        f.append("Eval manifest must be an object with an evals array")
+        evals = []
+
+    if data.get("skill_name") == dir_path.name:
+        s += 1
+        f.append("skill_name matches directory name")
+    else:
+        f.append(f"skill_name does not match directory name ({dir_path.name})")
+
+    ids = [case.get("id") for case in evals if isinstance(case, dict)]
+    valid_ids = [
+        case_id for case_id in ids
+        if isinstance(case_id, str) and re.match(r"^[a-z0-9][a-z0-9-]*$", case_id)
+    ]
+    if len(valid_ids) == len(ids) and len(set(valid_ids)) == len(valid_ids) and valid_ids:
+        s += 1
+        f.append("Eval ids are stable, unique kebab-case strings")
+    else:
+        f.append("Eval ids must be present, unique, and kebab-case")
+
+    required_fields = ("id", "prompt", "expected_output")
+    cases_with_core = [
+        case for case in evals
+        if isinstance(case, dict)
+        and all(isinstance(case.get(field), str) and case.get(field).strip() for field in required_fields)
+    ]
+    if evals and len(cases_with_core) == len(evals):
+        s += 1
+        f.append("All evals include id, prompt, and expected_output")
+    else:
+        f.append("One or more evals are missing id, prompt, or expected_output")
+
+    cases_with_assertions = [
+        case for case in evals
+        if isinstance(case, dict)
+        and isinstance(case.get("assertions"), list)
+        and any(isinstance(item, str) and item.strip() for item in case.get("assertions", []))
+    ]
+    if evals and len(cases_with_assertions) == len(evals):
+        s += 1
+        f.append("All evals include objective assertions")
+    else:
+        f.append("One or more evals lack objective assertions")
+
+    combined = "\n".join(
+        " ".join(str(case.get(key, "")) for key in ("id", "prompt", "expected_output", "assertions"))
+        for case in evals if isinstance(case, dict)
+    ).lower()
+    coverage_checks = [
+        ("explicit invocation", r"/[a-z0-9-]+\s+\w+|explicit"),
+        ("implicit trigger", r"implicit|natural[- ]language|trigger"),
+        ("negative control", r"negative[- ]control|should not trigger|does not trigger"),
+        ("scope refusal or malformed input", r"scope[- ]refusal|malformed|invalid|refuses?|not for"),
+    ]
+    for label, pattern in coverage_checks:
+        if re.search(pattern, combined):
+            s += 1
+            f.append(f"Covers {label}")
+        else:
+            f.append(f"Missing {label} eval coverage")
+
+    actions = _dispatch_action_labels(body)
+    if len(actions) >= 4:
+        uncovered = []
+        for action in actions:
+            tokens = [
+                tok for tok in re.findall(r"[a-z0-9]+", action)
+                if tok not in {"auto", "redirect", "refuse"}
+            ]
+            if tokens and not all(tok in combined for tok in tokens[:3]):
+                uncovered.append(action)
+        if uncovered:
+            s = max(s - 1, 0)
+            f.append(f"Dispatch actions without obvious eval coverage: {', '.join(uncovered[:5])}")
+        else:
+            f.append("All dispatch actions have obvious eval coverage")
+
+    return {
+        "name": "Evaluation Coverage", "id": "evaluation-coverage",
+        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+    }
+
+
+def score_validation_contract(fm: dict, body: str, dir_path: Path) -> dict:
+    """Validation proof contract quality (0-10, weight 1.0)."""
+    s, f = 0, []
+    reference_text = []
+    refs_dir = dir_path / "references"
+    if refs_dir.is_dir():
+        for ref in sorted(refs_dir.glob("*.md")):
+            text = _read(ref)
+            if text:
+                reference_text.append(text)
+    corpus = "\n".join([body, *reference_text]).lower()
+    has_evals = (dir_path / "evals" / "evals.json").is_file()
+    has_hooks = bool(fm.get("hooks"))
+    distributable = bool(fm.get("license")) or isinstance(fm.get("metadata"), dict)
+
+    if "wagents validate" in corpus:
+        s += 2
+        f.append("Validation contract includes wagents validate")
+    else:
+        f.append("Missing wagents validate proof command")
+
+    if re.search(r"audit\.py\s+skills/(?:<name>|[a-z0-9-]+|.+?)/?", corpus):
+        s += 2
+        f.append("Validation contract includes audit.py against a skill path")
+    else:
+        f.append("Missing audit.py skill-path proof command")
+
+    if has_evals:
+        if "wagents eval validate" in corpus:
+            s += 1
+            f.append("Validation contract includes wagents eval validate")
+        else:
+            f.append("Missing wagents eval validate despite eval manifest")
+    else:
+        s += 1
+        f.append("Eval validation not required because no eval manifest exists")
+
+    if distributable:
+        if re.search(r"(wagents package|package\.py).+--dry-run|--dry-run.+(wagents package|package\.py)", corpus):
+            s += 1
+            f.append("Validation contract includes package dry-run")
+        else:
+            f.append("Missing package dry-run for distributable skill")
+    else:
+        s += 1
+        f.append("Package dry-run not required for non-distributable skill")
+
+    if has_hooks:
+        if "wagents hooks validate" in corpus:
+            s += 1
+            f.append("Validation contract includes wagents hooks validate")
+        else:
+            f.append("Missing wagents hooks validate despite hooks config")
+    else:
+        s += 1
+        f.append("Hook validation not required because hooks are not configured")
+
+    legacy_inject_flag = "--" + "inject"
+    if legacy_inject_flag not in corpus:
+        s += 1
+        f.append("No stale legacy progress audit flag found")
+    else:
+        f.append("Stale legacy progress audit flag found")
+
+    if re.search(r"completion criteria|before declaring|declaring .*complete|must pass|zero errors", corpus):
+        s += 1
+        f.append("Completion criteria are explicit")
+    else:
+        f.append("Missing explicit completion criteria")
+
+    if re.search(r"pytest|pnpm|npm test|test(?:s)?\s+pass|smoke", corpus):
+        s += 1
+        f.append("Validation contract includes a test or smoke-check surface")
+    else:
+        f.append("Missing test or smoke-check validation surface")
+
+    return {
+        "name": "Validation Contract", "id": "validation-contract",
+        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -856,6 +1156,21 @@ _DIMENSION_SUGGESTIONS: dict[str, list[str]] = {
         "Remove duplicate headings (+2)",
         "Remove repeated content blocks (+3)",
     ],
+    "canonical-vocabulary": [
+        "Add a dedicated Canonical Vocabulary section",
+        "Define >= 3 exact terms",
+        'Include "use these exactly" guidance',
+    ],
+    "evaluation-coverage": [
+        "Add evals/evals.json with stable case ids",
+        "Cover explicit invocation, implicit trigger, and negative control cases",
+        "Add scope-refusal or malformed-input coverage",
+    ],
+    "validation-contract": [
+        "Add wagents validate and audit.py proof commands",
+        "Add wagents eval validate when evals exist",
+        "Add package dry-run and hooks validation where applicable",
+    ],
 }
 
 
@@ -895,20 +1210,22 @@ def audit_skill(path: str) -> dict:
             score_scripts(dp),
             score_portability(fm, body, dp),
             score_conciseness(body),
+            score_canonical_vocabulary(body),
+            score_evaluation_coverage(dp, body),
+            score_validation_contract(fm, body, dp),
         ]
         tw = sum(d["score"] * d["weight"] for d in dims)
         mw = sum(d["max"] * d["weight"] for d in dims)
         norm = (tw / mw * 100) if mw > 0 else 0
-        bonus = _canonical_bonus(body)
-        final = min(round(norm), 100) + bonus
+        final = max(0, min(round(norm), 100))
         pf = dims[4].pop("_found", [])
         ps = dims[4].pop("_suggested", [])
         pna = dims[4].pop("_not_applicable", [])
         rd = dp / "references"
         sd = dp / "scripts"
         return {
-            "skill": dp.name, "path": str(dp) + "/", "score": final, "max": 100 + bonus,
-            "grade": _grade(final), "dimensions": dims, "bonus": bonus,
+            "skill": dp.name, "path": str(dp) + "/", "score": final, "max": 100,
+            "grade": _grade(final), "dimensions": dims, "bonus": 0,
             "patterns_found": pf, "patterns_suggested": ps, "patterns_not_applicable": pna,
             "meta": {
                 "lines": len(body.splitlines()),
@@ -981,9 +1298,6 @@ def format_single_table(result: dict) -> str:
     if result.get("error"):
         out.append(f"Error: {result['error']}")
         return "\n".join(out)
-    bonus = result.get("bonus", 0)
-    if bonus > 0:
-        out.append(f"Bonus: +{bonus} (canonical vocabulary section detected)")
     out.append("")
     out.append(f"{'Dimension':<28} {'Score':>7}  {'Wt':>4}  {'Weighted':>14}")
     out.append("\u2500" * 58)
@@ -1063,10 +1377,6 @@ def format_rich_single(result: dict) -> None:
     if result.get("error"):
         console.print(f"[red]Error: {result['error']}[/red]")
         return
-
-    bonus = result.get("bonus", 0)
-    if bonus > 0:
-        console.print(f"[green]Bonus: +{bonus} (canonical vocabulary section detected)[/green]")
 
     # Dimension table
     table = RichTable(title="Scoring Dimensions", show_lines=False)

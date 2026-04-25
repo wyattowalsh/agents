@@ -221,7 +221,7 @@
         "Agent loads references/audit-guide.md for the audit procedure.",
         "Agent runs 'uv run python skills/skill-creator/scripts/audit.py skills/wargame/' to produce deterministic scores.",
         "Agent supplements script output with AI review using the evaluation rubric pressure testing protocol.",
-        "Agent presents a graded report with dimension breakdown, pattern checklist, and top three improvement opportunities."
+        "Agent presents a graded /100 report with 13-dimension breakdown, pattern checklist, and top three improvement opportunities."
       ]
     },
     {
@@ -236,7 +236,7 @@
       "assertions": [
         "Agent dispatches to Audit All mode.",
         "Agent runs audit.py --all --format table.",
-        "Agent presents a comparative table sorted by score descending.",
+        "Agent presents a comparative table sorted by score descending with all scores capped at /100.",
         "Agent provides summary statistics and an improvement roadmap."
       ]
     },
@@ -286,7 +286,7 @@
       "assertions": [
         "Agent dispatches to Gallery mode due to empty arguments.",
         "Agent runs 'uv run python skills/skill-creator/scripts/audit.py --all --format table' to get current scores.",
-        "Agent presents a skill inventory table with scores, grades, and pattern counts.",
+        "Agent presents a skill inventory table with /100 scores, grades, and pattern counts.",
         "Agent offers a mode menu: create, improve, audit, audit --all, dashboard."
       ]
     },

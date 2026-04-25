@@ -162,7 +162,7 @@ Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<
 | `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
 | `references/frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree | Step 3 (Scaffold), frontmatter configuration |
 | `references/packaging-guide.md` | ZIP structure, manifest schema, portability checks, import instructions | Package |
-| `references/evaluation-rubric.md` | 10 weighted scoring dimensions, +3 vocabulary bonus, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
+| `references/evaluation-rubric.md` | 13 weighted scoring dimensions normalized to 100, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
 
 Read reference files as indicated by the "Read When" column above. Do not rely on memory or prior knowledge of their contents.
 
@@ -200,6 +200,6 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 **Canonical terms** (use these exactly throughout):
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
-- Grade scale: "A" (90+), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)
+- Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
-- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary"
+- Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract"

@@ -22,7 +22,7 @@ Score a single skill using deterministic analysis + AI review.
    ```bash
    uv run python skills/skill-creator/scripts/audit.py skills/<name>/
    ```
-   Produces a JSON report with 10 scored dimensions, a +3 canonical-vocabulary bonus, and pattern status buckets (`found`, `suggested`, `not-applicable`).
+   Produces a JSON report with 13 scored dimensions normalized to 100 and pattern status buckets (`found`, `suggested`, `not-applicable`).
 
 2. **AI review** — supplement the script's findings with judgment-based assessment:
    - Description quality: Is the CSO optimization effective? Does it enable discovery?
@@ -39,7 +39,7 @@ Score a single skill using deterministic analysis + AI review.
 
 4. **Report** — present the graded report:
    - Letter grade (A-F) with numeric score
-   - Dimension breakdown (10 dimensions with scores and findings)
+   - Dimension breakdown (13 dimensions with scores and findings)
    - Pattern checklist (14 catalog patterns: found/suggested/not-applicable)
    - Top 3 improvement opportunities (highest impact)
    - Pressure test results
