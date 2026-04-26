@@ -12,7 +12,10 @@ from scripts.sync_agent_stack import (
     render_cherry_server,
     render_codex_config,
     render_codex_mcp_block,
+    render_copilot_mcp,
+    render_gemini_mcp,
     render_opencode_mcp,
+    render_repo_mcp,
     sync_codex_entrypoint,
     sync_generated_json_directory,
 )
@@ -65,6 +68,34 @@ def test_render_opencode_mcp_renders_remote_servers():
             "enabled": True,
         }
     }
+
+
+def test_chrome_devtools_renderers_launch_isolated_browser():
+    registry = {
+        "servers": {
+            "chrome-devtools": {
+                "command": "npx",
+                "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"],
+                "enabled": True,
+                "startup_timeout_sec": 90,
+                "timeout_ms": 600000,
+                "tools": ["*"],
+            }
+        }
+    }
+
+    rendered_text = json.dumps(
+        {
+            "repo": render_repo_mcp(registry),
+            "copilot": render_copilot_mcp(registry, {}),
+            "gemini": render_gemini_mcp(registry, {}),
+            "opencode": render_opencode_mcp(registry, {}),
+            "codex": render_codex_mcp_block(registry),
+        }
+    )
+
+    assert "--isolated" in rendered_text
+    assert "--autoConnect" not in rendered_text
 
 
 def test_merge_server_root_config_uses_opencode_mcp_root(tmp_path):

@@ -46,7 +46,7 @@
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--autoConnect"
+        "--isolated"
       ],
       "env": {},
       "enabled": true,

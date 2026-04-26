@@ -168,7 +168,7 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
     },
     "chrome-devtools": {
         "command": "npx",
-        "args": ["-y", "chrome-devtools-mcp@latest", "--autoConnect"],
+        "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"],
     },
     "context7": {
         "command": "npx",
