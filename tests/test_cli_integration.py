@@ -252,7 +252,7 @@ class TestInstall:
         assert result.exit_code == 0
         assert calls, "subprocess.run was not called"
         assert "--list" in calls[0]
-        assert "wyattowalsh/agents" in calls[0]
+        assert "github:wyattowalsh/agents" in calls[0]
 
     def test_install_all_default(self, monkeypatch):
         """Install with no args installs all skills to all agents globally."""
@@ -333,5 +333,30 @@ class TestInstall:
 
         monkeypatch.setattr("shutil.which", lambda x: None)
         result = runner.invoke(app, ["install"])
+        assert result.exit_code == 1
+        assert "npx not found" in result.output
+
+
+class TestUpdate:
+    def test_update_constructs_correct_command(self, monkeypatch):
+        """Update should delegate to npx skills update."""
+        import subprocess
+
+        calls = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        result = runner.invoke(app, ["update"])
+        assert result.exit_code == 0
+        assert calls == [["npx", "-y", "skills", "update"]]
+
+    def test_update_requires_npx(self, monkeypatch):
+        """Update should fail gracefully when npx is not found."""
+
+        monkeypatch.setattr("shutil.which", lambda x: None)
+        result = runner.invoke(app, ["update"])
         assert result.exit_code == 1
         assert "npx not found" in result.output

@@ -46,6 +46,7 @@ Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wa
 | `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |
 | `wagents readme` | Regenerate `README.md` or fail if it is stale |
 | `wagents install` | Install repo skills into supported agent platforms |
+| `wagents update` | Refresh installed skills from their recorded sources |
 | `wagents package <name>` | Build portable ZIP packages for sharing or release |
 | `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |
 | `wagents hooks <subcommand>` | List and validate lifecycle hooks |
@@ -248,6 +249,19 @@ npx skills add <source> --skill <name> -y -g --agent claude-code --agent codex -
 | `-y`, `--yes` | `false` | Skip confirmation prompts |
 
 **Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`
+
+---
+
+### `wagents update` -- Refresh Installed Skills
+
+Refresh installed skills from the sources recorded by the `skills` CLI. Use this after this repository changes so downstream agent installs pick up the latest committed skill files.
+
+```bash
+wagents update
+
+# Equivalent lower-level command
+npx skills update
+```
 
 ---
 

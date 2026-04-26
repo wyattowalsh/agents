@@ -22,6 +22,16 @@ Install all skills globally into your favorite agents:
 npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
+## 📦 Distribution
+
+This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:
+
+| Target | Path | Update behavior |
+| ------ | ---- | --------------- |
+| Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | Git-hosted plugin updates resolve from the latest commit because the plugin version is intentionally unpinned |
+| Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | Codex can load the Git-backed plugin bundle and bundled skills from the repository root |
+| Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` / `npx skills update` refreshes installed skills from recorded sources |
+
 ## ✨ Why use this repository?
 
 | 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |
@@ -98,6 +108,7 @@ Reusable actions and knowledge bases for AI agents.
 | `wagents install -a <agent>` | Install all skills to specific agent |
 | `wagents install <name>` | Install specific skill to all agents |
 | `wagents install <name> -a <agent>` | Install specific skill to specific agents |
+| `wagents update` | Refresh installed skills from their recorded sources |
 | `wagents docs init` | One-time setup: install docs dependencies |
 | `wagents docs generate` | Generate MDX content pages from assets |
 | `wagents docs generate --include-installed` | Include installed skills discovered from local agent skill directories in generated docs |

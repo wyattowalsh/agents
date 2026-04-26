@@ -1,5 +1,5 @@
 # Skills installation and development commands
-REPO := wyattowalsh/agents
+REPO := github:wyattowalsh/agents
 
 ## Installation ---------------------------------------------------------------
 
@@ -45,6 +45,9 @@ install-antigravity:      ## Install all skills to Antigravity
 list:                     ## List available skills without installing
 	npx -y skills add $(REPO) --list
 
+update:                   ## Refresh installed skills from their recorded sources
+	npx -y skills update
+
 ## Development ----------------------------------------------------------------
 
 validate:                 ## Validate all skills and agents
@@ -74,7 +77,7 @@ help:                     ## Show this help
 
 .DEFAULT_GOAL := help
 
-.PHONY: install install-agent install-skill list help \
+.PHONY: install install-agent install-skill list update help \
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
         validate test lint typecheck audit package readme

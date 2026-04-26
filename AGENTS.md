@@ -101,6 +101,19 @@ MCP servers live in `mcp/<name>/` and follow FastMCP v3 conventions:
 - **Package:** `pyproject.toml` with `fastmcp>=2` dependency
 - **Workspace:** Root `pyproject.toml` includes `[tool.uv.workspace]` with `members = ["mcp/*"]`
 
+## 2.1 Bundle & Plugin Distribution
+
+The repository root is the canonical bundle root. Do not duplicate `skills/`, `agents/`, `mcp/`, or `instructions/` into platform-specific plugin folders.
+
+| Surface | Files | Purpose |
+|---------|-------|---------|
+| Bundle manifest | `agent-bundle.json` | Cross-agent source of truth for components, adapters, install commands, and update commands |
+| Claude Code plugin | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Native Claude Code marketplace/plugin adapter for the repo root |
+| Codex plugin | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | Native Codex plugin and repo marketplace adapter for the repo root |
+| Skills CLI fallback | `npx skills add github:wyattowalsh/agents ...` | Portable install path for supported agents without native plugin marketplaces |
+
+Plugin manifests intentionally omit fixed `version` fields while this repo is distributed from Git. That lets downstream update checks follow new commits rather than requiring a manifest version bump for every skill edit.
+
 ---
 
 ## 3. Naming Conventions
@@ -152,11 +165,13 @@ wagents install -a claude-code               # All skills → Claude only
 wagents install -a cursor -a github-copilot  # All skills → Cursor + Copilot
 wagents install --list                       # List available skills
 wagents install --local                      # Project-local install
+wagents update                               # Refresh installed skills from recorded sources
 
 # Or use make targets (see Makefile)
 make install                                 # All skills → all agents
 make install-claude                          # All skills → Claude
 make install-skill SKILL=honest-review       # Specific skill → all agents
+make update                                  # Refresh installed skills
 make help                                    # Show all make targets
 ```
 
@@ -206,9 +221,11 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Agent | Reads | Bridge File |
 |-------|-------|-------------|
 | Claude Code | `CLAUDE.md` → `instructions/global.md` | `instructions/claude-code-global.md` is compatibility only |
+| Claude Code plugin | `.claude-plugin/marketplace.json` → repo root plugin | `.claude-plugin/plugin.json` |
 | Gemini CLI | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
 | Antigravity | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md` | `GEMINI.md` |
 | Codex | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
+| Codex plugin | `.agents/plugins/marketplace.json` → repo root plugin | `.codex-plugin/plugin.json` |
 | Crush | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
 | OpenCode | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
 | Cursor | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |

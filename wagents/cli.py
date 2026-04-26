@@ -806,7 +806,7 @@ SUPPORTED_AGENTS = [
     "opencode",
 ]
 
-REPO_SOURCE = "wyattowalsh/agents"
+REPO_SOURCE = "github:wyattowalsh/agents"
 
 
 @app.command()
@@ -860,6 +860,20 @@ def install(
             cmd.append("-y")
 
     result = subprocess.run(cmd, capture_output=False)
+    raise typer.Exit(code=result.returncode)
+
+
+@app.command()
+def update():
+    """Refresh installed skills from their recorded sources via npx skills."""
+    import shutil
+    import subprocess
+
+    if not shutil.which("npx"):
+        typer.echo("Error: npx not found. Install Node.js first.", err=True)
+        raise typer.Exit(code=1)
+
+    result = subprocess.run(["npx", "-y", "skills", "update"], capture_output=False)
     raise typer.Exit(code=result.returncode)
 
 
@@ -996,6 +1010,26 @@ def readme(
         ),
         "```",
         "",
+        "## 📦 Distribution",
+        "",
+        "This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:",
+        "",
+        "| Target | Path | Update behavior |",
+        "| ------ | ---- | --------------- |",
+        (
+            "| Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | "
+            "Git-hosted plugin updates resolve from the latest commit because "
+            "the plugin version is intentionally unpinned |"
+        ),
+        (
+            "| Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | "
+            "Codex can load the Git-backed plugin bundle and bundled skills from the repository root |"
+        ),
+        (
+            "| Other agents | `npx skills add github:wyattowalsh/agents ...` | "
+            "`wagents update` / `npx skills update` refreshes installed skills from recorded sources |"
+        ),
+        "",
         "## ✨ Why use this repository?",
         "",
         "| 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |",
@@ -1073,6 +1107,7 @@ def readme(
             "| `wagents install -a <agent>` | Install all skills to specific agent |",
             "| `wagents install <name>` | Install specific skill to all agents |",
             "| `wagents install <name> -a <agent>` | Install specific skill to specific agents |",
+            "| `wagents update` | Refresh installed skills from their recorded sources |",
             "| `wagents docs init` | One-time setup: install docs dependencies |",
             "| `wagents docs generate` | Generate MDX content pages from assets |",
             (

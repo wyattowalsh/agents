@@ -70,6 +70,20 @@ npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent cla
 
 Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent.
 
+## Distribution Paths
+
+<CardGrid>
+  <Card title="Claude Code Plugin">
+    <Badge text="native" variant="tip" /> `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` expose the repo root as a Git-hosted plugin. The plugin version is intentionally unpinned so Git commits drive updates.
+  </Card>
+  <Card title="Codex Plugin">
+    <Badge text="native" variant="note" /> `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same `skills/` and `mcp.json` bundle for Codex.
+  </Card>
+  <Card title="Skills CLI">
+    <Badge text="fallback" variant="success" /> `npx skills add github:wyattowalsh/agents ...` remains the portable install path for Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents.
+  </Card>
+</CardGrid>
+
 <Aside type="tip" title="Fastest path">
 Use [Start Here](/start-here/) when you want the shortest setup path, a few strong starter skills, and a quick mental model of the repo.
 </Aside>

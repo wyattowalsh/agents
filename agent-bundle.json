@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "name": "agents",
+  "displayName": "Agents",
+  "description": "Portable AI agent skills, subagents, MCP configuration, and shared instructions for coding agents.",
+  "source": {
+    "type": "github",
+    "repository": "wyattowalsh/agents",
+    "defaultRef": "main",
+    "skillsSource": "github:wyattowalsh/agents"
+  },
+  "components": {
+    "skills": "./skills/",
+    "agents": "./agents/",
+    "mcpServers": "./mcp.json",
+    "instructions": "./instructions/"
+  },
+  "adapters": {
+    "claude-code": {
+      "pluginManifest": "./.claude-plugin/plugin.json",
+      "marketplace": "./.claude-plugin/marketplace.json",
+      "addMarketplace": "claude plugin marketplace add wyattowalsh/agents",
+      "install": "claude plugin install agents@agents",
+      "update": "claude plugin marketplace update agents"
+    },
+    "codex": {
+      "pluginManifest": "./.codex-plugin/plugin.json",
+      "marketplace": "./.agents/plugins/marketplace.json",
+      "install": "Open /plugins in Codex and install agents from the Agents marketplace",
+      "update": "codex plugin marketplace upgrade agents"
+    },
+    "agent-skills-cli": {
+      "install": "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode",
+      "update": "npx skills update",
+      "supportedAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "crush",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ]
+    }
+  }
+}
