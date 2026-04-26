@@ -17,8 +17,8 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync
-      - run: uv run ruff check wagents/ tests/
-      - run: uv run ruff format --check wagents/ tests/
+      - run: uv run ruff check wagents/ tests/ skills/skill-creator/scripts/
+      - run: uv run ruff format --check wagents/ tests/ skills/skill-creator/scripts/
 
   typecheck:
     runs-on: ubuntu-latest

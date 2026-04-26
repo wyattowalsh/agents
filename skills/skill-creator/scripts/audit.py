@@ -5,6 +5,7 @@ Reads skills/<name>/SKILL.md, evaluates frontmatter, body structure,
 pattern coverage, references, scripts, and conciseness, then outputs
 a structured JSON report to stdout. Warnings go to stderr.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -20,6 +21,7 @@ try:
     from rich.panel import Panel
     from rich.table import Table as RichTable
     from rich.text import Text
+
     _RICH = True
 except ImportError:
     _RICH = False
@@ -31,18 +33,54 @@ except ImportError:
 KEBAB_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 RESERVED_WORDS = {"anthropic", "claude"}
 ACTION_VERBS = {
-    "create", "detect", "analyze", "generate", "scan", "build", "run",
-    "check", "validate", "review", "host", "simulate", "audit", "deploy",
-    "transform", "convert", "extract", "parse", "install", "configure",
-    "monitor", "test", "optimize", "refactor", "scaffold", "migrate",
-    "evaluate", "research", "diagnose", "surface", "explore",
+    "create",
+    "detect",
+    "analyze",
+    "generate",
+    "scan",
+    "build",
+    "run",
+    "check",
+    "validate",
+    "review",
+    "host",
+    "simulate",
+    "audit",
+    "deploy",
+    "transform",
+    "convert",
+    "extract",
+    "parse",
+    "install",
+    "configure",
+    "monitor",
+    "test",
+    "optimize",
+    "refactor",
+    "scaffold",
+    "migrate",
+    "evaluate",
+    "research",
+    "diagnose",
+    "surface",
+    "explore",
 }
 GRADE_THRESHOLDS = [(90, "A"), (75, "B"), (60, "C"), (40, "D"), (0, "F")]
 PATTERN_NAMES = [
-    "dispatch-table", "reference-file-index", "critical-rules",
-    "canonical-vocabulary", "scope-boundaries", "classification-gating",
-    "scaling-strategy", "state-management", "scripts", "templates",
-    "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks",
+    "dispatch-table",
+    "reference-file-index",
+    "critical-rules",
+    "canonical-vocabulary",
+    "scope-boundaries",
+    "classification-gating",
+    "scaling-strategy",
+    "state-management",
+    "scripts",
+    "templates",
+    "hooks",
+    "progressive-disclosure",
+    "body-substitutions",
+    "stop-hooks",
 ]
 RESOURCE_PATH_RE = re.compile(
     r"(?<![A-Za-z0-9_.-])((?:skills/[a-z0-9-]+/)?"
@@ -90,10 +128,10 @@ def _extract_heading_section(body: str, heading_re: str) -> str:
     match = re.search(heading_re, body, re.I | re.M)
     if not match:
         return ""
-    next_heading = re.search(r"^#{1,6}\s+", body[match.end():], re.M)
+    next_heading = re.search(r"^#{1,6}\s+", body[match.end() :], re.M)
     if not next_heading:
-        return body[match.end():]
-    return body[match.end():match.end() + next_heading.start()]
+        return body[match.end() :]
+    return body[match.end() : match.end() + next_heading.start()]
 
 
 def _dispatch_table_rows(body: str) -> list[str]:
@@ -142,7 +180,7 @@ def _canonical_vocabulary_section(body: str) -> str:
     for idx, line in enumerate(lines):
         if re.search(r"^\*\*(canonical\s+(terms?|vocab(ulary)?)|vocabulary)\*\*", line, re.I):
             collected = [line]
-            for next_line in lines[idx + 1:]:
+            for next_line in lines[idx + 1 :]:
                 if re.match(r"^#{1,6}\s+", next_line):
                     break
                 collected.append(next_line)
@@ -157,7 +195,7 @@ def _mentioned_resource_paths(skill_dir: Path, body: str) -> set[str]:
     for match in RESOURCE_PATH_RE.finditer(body):
         raw_path = match.group(1).rstrip("`.,:;)]}")
         if raw_path.startswith(skill_prefix):
-            raw_path = raw_path[len(skill_prefix):]
+            raw_path = raw_path[len(skill_prefix) :]
         mentioned.add(raw_path)
     return mentioned
 
@@ -207,7 +245,12 @@ def _classification_applicable(body: str) -> bool:
         return True
     dispatch_rows = _dispatch_table_rows(body)
     heuristic_markers = [
-        "auto-detect", "heuristic", "ambiguous", "complexity", "tier", "classif",
+        "auto-detect",
+        "heuristic",
+        "ambiguous",
+        "complexity",
+        "tier",
+        "classif",
     ]
     return len(dispatch_rows) >= 4 and any(marker in body.lower() for marker in heuristic_markers)
 
@@ -299,14 +342,14 @@ def _has_progressive_disclosure_guidance(body: str) -> bool:
     return any(re.search(pattern, body, re.I | re.M) for pattern in guidance_patterns)
 
 
-def _progressive_disclosure_applicable(references_exist: bool, scripts_exist: bool,
-                                       templates_exist: bool) -> bool:
+def _progressive_disclosure_applicable(references_exist: bool, scripts_exist: bool, templates_exist: bool) -> bool:
     """Return True when the skill has at least one real progressive-disclosure surface."""
     return references_exist or scripts_exist or templates_exist
 
 
-def _has_progressive_disclosure_structure(body: str, references_exist: bool,
-                                          scripts_exist: bool, templates_exist: bool) -> bool:
+def _has_progressive_disclosure_structure(
+    body: str, references_exist: bool, scripts_exist: bool, templates_exist: bool
+) -> bool:
     """Return True when explicit progressive-disclosure guidance matches real surfaces."""
     if not _progressive_disclosure_applicable(references_exist, scripts_exist, templates_exist):
         return False
@@ -316,6 +359,7 @@ def _has_progressive_disclosure_structure(body: str, references_exist: bool,
 # ---------------------------------------------------------------------------
 # Scoring functions
 # ---------------------------------------------------------------------------
+
 
 def score_frontmatter(fm: dict, dir_name: str) -> dict:
     """Frontmatter completeness and correctness (0-9, weight 1.0)."""
@@ -371,8 +415,12 @@ def score_frontmatter(fm: dict, dir_name: str) -> dict:
             s += 1
             f.append("metadata.version present")
     return {
-        "name": "Frontmatter Completeness", "id": "frontmatter",
-        "score": min(s, 9), "max": 9, "weight": 1.0, "findings": f,
+        "name": "Frontmatter Completeness",
+        "id": "frontmatter",
+        "score": min(s, 9),
+        "max": 9,
+        "weight": 1.0,
+        "findings": f,
     }
 
 
@@ -383,8 +431,12 @@ def score_description(fm: dict) -> dict:
     if not desc:
         f.append("No description to evaluate")
         return {
-            "name": "Description Quality", "id": "description",
-            "score": 0, "max": 20, "weight": 2.0, "findings": f,
+            "name": "Description Quality",
+            "id": "description",
+            "score": 0,
+            "max": 20,
+            "weight": 2.0,
+            "findings": f,
         }
     ln = len(desc)
     if 50 <= ln <= 200:
@@ -436,8 +488,12 @@ def score_description(fm: dict) -> dict:
         s += 4
         f.append("Third-person voice check passed")
     return {
-        "name": "Description Quality", "id": "description",
-        "score": min(s, 20), "max": 20, "weight": 2.0, "findings": f,
+        "name": "Description Quality",
+        "id": "description",
+        "score": min(s, 20),
+        "max": 20,
+        "weight": 2.0,
+        "findings": f,
     }
 
 
@@ -448,8 +504,12 @@ def score_dispatch_table(body: str) -> dict:
     if not table_rows:
         f.append("No dispatch table with $ARGUMENTS found")
         return {
-            "name": "Dispatch Table", "id": "dispatch-table",
-            "score": 0, "max": 10, "weight": 1.0, "findings": f,
+            "name": "Dispatch Table",
+            "id": "dispatch-table",
+            "score": 0,
+            "max": 10,
+            "weight": 1.0,
+            "findings": f,
         }
     s += 4
     f.append("Dispatch table with $ARGUMENTS found")
@@ -467,8 +527,12 @@ def score_dispatch_table(body: str) -> dict:
     else:
         f.append("No empty-args handler row in dispatch table")
     return {
-        "name": "Dispatch Table", "id": "dispatch-table",
-        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+        "name": "Dispatch Table",
+        "id": "dispatch-table",
+        "score": min(s, 10),
+        "max": 10,
+        "weight": 1.0,
+        "findings": f,
     }
 
 
@@ -482,8 +546,7 @@ def score_body_structure(body: str) -> dict:
     else:
         s += 1
         f.append(f"Body too long ({lc} lines, >500)")
-    headings = [(len(m.group(1)), m.group(0).strip())
-                for line in lines if (m := re.match(r"^(#{1,6})\s+", line))]
+    headings = [(len(m.group(1)), m.group(0).strip()) for line in lines if (m := re.match(r"^(#{1,6})\s+", line))]
     h2 = sum(1 for lv, _ in headings if lv == 2)
     h3 = sum(1 for lv, _ in headings if lv == 3)
     first_h3 = next((i for i, (lv, _) in enumerate(headings) if lv == 3), None)
@@ -512,8 +575,12 @@ def score_body_structure(body: str) -> dict:
     elif h2 >= 3:
         f.append(f"Limited sub-section depth ({h3} ### sub-sections, need >= 2 for +3 points)")
     return {
-        "name": "Body Structure", "id": "body-structure",
-        "score": min(s, 15), "max": 15, "weight": 1.5, "findings": f,
+        "name": "Body Structure",
+        "id": "body-structure",
+        "score": min(s, 15),
+        "max": 15,
+        "weight": 1.5,
+        "findings": f,
     }
 
 
@@ -550,7 +617,11 @@ def score_pattern_coverage(body: str, dir_path: Path, fm: dict) -> dict:
     )
     canonical_applicable = len(dispatch_rows) >= 4 or "mode" in body.lower() or "tier" in body.lower()
     set_status("canonical-vocabulary", canonical_applicable, _has_canonical_vocabulary_section(body))
-    set_status("scope-boundaries", True, "not for" in body.lower() or "not for" in description or "not when" in body.lower())
+    set_status(
+        "scope-boundaries",
+        True,
+        "not for" in body.lower() or "not for" in description or "not when" in body.lower(),
+    )
     set_status("classification-gating", _classification_applicable(body), _has_classification_structure(body))
     set_status("scaling-strategy", _scaling_applicable(body), _has_scaling_structure(body))
     set_status("state-management", _state_management_applicable(body, dir_path), _has_state_management_structure(body))
@@ -558,12 +629,8 @@ def score_pattern_coverage(body: str, dir_path: Path, fm: dict) -> dict:
     set_status("templates", templates_exist or "templates/" in body.lower(), templates_exist)
     hooks_applicable = bool(hooks_config) or "hooks:" in body or re.search(r"^#+\s*hooks\b", body, re.I | re.M)
     set_status("hooks", hooks_applicable, bool("hooks:" in body or hooks_config))
-    progressive_applicable = _progressive_disclosure_applicable(
-        references_exist, scripts_exist, templates_exist
-    )
-    progressive_found = _has_progressive_disclosure_structure(
-        body, references_exist, scripts_exist, templates_exist
-    )
+    progressive_applicable = _progressive_disclosure_applicable(references_exist, scripts_exist, templates_exist)
+    progressive_found = _has_progressive_disclosure_structure(body, references_exist, scripts_exist, templates_exist)
     set_status("progressive-disclosure", progressive_applicable, progressive_found)
     set_status("body-substitutions", user_invocable, _body_substitutions_present(body))
     stop_hooks_applicable = bool(hooks_config) or "stop hook" in body.lower() or "stop_hook_active" in body
@@ -603,8 +670,12 @@ def score_references(dir_path: Path, body: str) -> dict:
     if not rd.is_dir():
         f.append("No references/ directory found")
         return {
-            "name": "References", "id": "references",
-            "score": 0, "max": 10, "weight": 1.0, "findings": f,
+            "name": "References",
+            "id": "references",
+            "score": 0,
+            "max": 10,
+            "weight": 1.0,
+            "findings": f,
         }
     if any("references/" in ln.lower() and "|" in ln for ln in body.splitlines()):
         s += 3
@@ -641,8 +712,12 @@ def score_references(dir_path: Path, body: str) -> dict:
         s += min(good, 3)
         f.append(f"{good} reference files with appropriate size")
     return {
-        "name": "References", "id": "references",
-        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+        "name": "References",
+        "id": "references",
+        "score": min(s, 10),
+        "max": 10,
+        "weight": 1.0,
+        "findings": f,
     }
 
 
@@ -653,13 +728,17 @@ def score_critical_rules(body: str) -> dict:
     if not m:
         f.append("No 'Critical Rules' section found")
         return {
-            "name": "Critical Rules", "id": "critical-rules",
-            "score": 0, "max": 10, "weight": 1.0, "findings": f,
+            "name": "Critical Rules",
+            "id": "critical-rules",
+            "score": 0,
+            "max": 10,
+            "weight": 1.0,
+            "findings": f,
         }
     s += 3
     f.append("Critical Rules section found")
-    nxt = re.search(r"^#{1,3}\s+", body[m.end():], re.M)
-    section = body[m.end():m.end() + nxt.start()] if nxt else body[m.end():]
+    nxt = re.search(r"^#{1,3}\s+", body[m.end() :], re.M)
+    section = body[m.end() : m.end() + nxt.start()] if nxt else body[m.end() :]
     items = re.findall(r"^\s*\d+[.)]\s+.+", section, re.M)
     ic = len(items)
     if ic >= 5:
@@ -673,9 +752,26 @@ def score_critical_rules(body: str) -> dict:
         f.append(f"Has only {ic} numbered rules")
     else:
         f.append("No numbered rules found")
-    imperative = ("never", "always", "must", "do not", "ensure", "require",
-                  "check", "save", "force", "label", "allow", "flag", "name",
-                  "read", "run", "skip", "acknowledge", "apply")
+    imperative = (
+        "never",
+        "always",
+        "must",
+        "do not",
+        "ensure",
+        "require",
+        "check",
+        "save",
+        "force",
+        "label",
+        "allow",
+        "flag",
+        "name",
+        "read",
+        "run",
+        "skip",
+        "acknowledge",
+        "apply",
+    )
     ac = sum(1 for item in items if any(v in item.lower() for v in imperative))
     if ac >= 3:
         s += 3
@@ -686,8 +782,12 @@ def score_critical_rules(body: str) -> dict:
     else:
         f.append("Rules lack imperative verbs")
     return {
-        "name": "Critical Rules", "id": "critical-rules",
-        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+        "name": "Critical Rules",
+        "id": "critical-rules",
+        "score": min(s, 10),
+        "max": 10,
+        "weight": 1.0,
+        "findings": f,
     }
 
 
@@ -698,8 +798,12 @@ def score_scripts(dir_path: Path) -> dict:
     if not sd.is_dir():
         f.append("No scripts/ directory (optional)")
         return {
-            "name": "Scripts", "id": "scripts",
-            "score": 0, "max": 5, "weight": 0.5, "findings": f,
+            "name": "Scripts",
+            "id": "scripts",
+            "score": 0,
+            "max": 5,
+            "weight": 0.5,
+            "findings": f,
         }
     py = list(sd.glob("*.py"))
     sh = list(sd.glob("*.sh"))
@@ -707,8 +811,12 @@ def score_scripts(dir_path: Path) -> dict:
     if not scripts:
         f.append("scripts/ exists but no .py or .sh files")
         return {
-            "name": "Scripts", "id": "scripts",
-            "score": 0, "max": 5, "weight": 0.5, "findings": f,
+            "name": "Scripts",
+            "id": "scripts",
+            "score": 0,
+            "max": 5,
+            "weight": 0.5,
+            "findings": f,
         }
     s += 1
     parts = []
@@ -759,8 +867,12 @@ def score_scripts(dir_path: Path) -> dict:
         s += 1
         f.append(f"Multiple scripts ({len(scripts)})")
     return {
-        "name": "Scripts", "id": "scripts",
-        "score": min(s, 5), "max": 5, "weight": 0.5, "findings": f,
+        "name": "Scripts",
+        "id": "scripts",
+        "score": min(s, 5),
+        "max": 5,
+        "weight": 0.5,
+        "findings": f,
     }
 
 
@@ -787,10 +899,7 @@ def score_portability(fm: dict, body: str, dir_path: Path) -> dict:
     else:
         f.append("Missing metadata.version")
     # +1: no absolute paths in body
-    abs_paths = [
-        ln for ln in body.splitlines()
-        if re.search(r'(?<![a-zA-Z])\/(?:tmp|home|Users|etc|var|opt)\/', ln)
-    ]
+    abs_paths = [ln for ln in body.splitlines() if re.search(r"(?<![a-zA-Z])\/(?:tmp|home|Users|etc|var|opt)\/", ln)]
     if not abs_paths:
         s += 1
         f.append("No absolute paths in body")
@@ -805,7 +914,7 @@ def score_portability(fm: dict, body: str, dir_path: Path) -> dict:
         if stripped.startswith("```"):
             in_code = not in_code
             continue
-        if not in_code and re.match(r'\s*@', ln):
+        if not in_code and re.match(r"\s*@", ln):
             repo_refs.append(ln)
     if not repo_refs:
         s += 1
@@ -820,16 +929,23 @@ def score_portability(fm: dict, body: str, dir_path: Path) -> dict:
     elif mentioned:
         f.append(f"All {len(mentioned)} packaged resource references resolve")
     return {
-        "name": "Portability", "id": "portability",
-        "score": min(s, 5), "max": 5, "weight": 0.5, "findings": f,
+        "name": "Portability",
+        "id": "portability",
+        "score": min(s, 5),
+        "max": 5,
+        "weight": 0.5,
+        "findings": f,
     }
 
 
 def score_conciseness(body: str) -> dict:
     """Body conciseness (0-5, weight 0.5)."""
     s, f, lines = 5, [], body.splitlines()
-    headings = [re.match(r"^#{1,6}\s+(.+)", ln).group(1).strip()  # type: ignore[union-attr]
-                for ln in lines if re.match(r"^#{1,6}\s+", ln)]
+    headings = [
+        re.match(r"^#{1,6}\s+(.+)", ln).group(1).strip()  # type: ignore[union-attr]
+        for ln in lines
+        if re.match(r"^#{1,6}\s+", ln)
+    ]
     counts: dict[str, int] = {}
     for h in headings:
         k = h.lower()
@@ -864,8 +980,12 @@ def score_canonical_vocabulary(body: str) -> dict:
     if not section:
         f.append("No dedicated canonical vocabulary section found")
         return {
-            "name": "Canonical Vocabulary", "id": "canonical-vocabulary",
-            "score": 0, "max": 5, "weight": 0.5, "findings": f,
+            "name": "Canonical Vocabulary",
+            "id": "canonical-vocabulary",
+            "score": 0,
+            "max": 5,
+            "weight": 0.5,
+            "findings": f,
         }
     s += 1
     f.append("Dedicated canonical vocabulary section found")
@@ -888,7 +1008,8 @@ def score_canonical_vocabulary(body: str) -> dict:
 
     category_lines = re.findall(r"^\s*[-*]\s+[^:\n]{2,80}:\s+.+", section, re.M)
     table_rows = [
-        line for line in section.splitlines()
+        line
+        for line in section.splitlines()
         if line.strip().startswith("|") and not re.match(r"^\|\s*[-:\s|]+\|?$", line.strip())
     ]
     if len(category_lines) >= 2 or len(table_rows) >= 3:
@@ -904,8 +1025,12 @@ def score_canonical_vocabulary(body: str) -> dict:
         f.append("Vocabulary section appears placeholder or too thin")
 
     return {
-        "name": "Canonical Vocabulary", "id": "canonical-vocabulary",
-        "score": min(s, 5), "max": 5, "weight": 0.5, "findings": f,
+        "name": "Canonical Vocabulary",
+        "id": "canonical-vocabulary",
+        "score": min(s, 5),
+        "max": 5,
+        "weight": 0.5,
+        "findings": f,
     }
 
 
@@ -916,8 +1041,12 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
     if not evals_path.is_file():
         f.append("No evals/evals.json manifest found")
         return {
-            "name": "Evaluation Coverage", "id": "evaluation-coverage",
-            "score": 0, "max": 10, "weight": 1.0, "findings": f,
+            "name": "Evaluation Coverage",
+            "id": "evaluation-coverage",
+            "score": 0,
+            "max": 10,
+            "weight": 1.0,
+            "findings": f,
         }
     s += 1
     f.append("evals/evals.json manifest found")
@@ -927,8 +1056,12 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
     except (OSError, json.JSONDecodeError) as exc:
         f.append(f"Eval manifest could not be parsed: {exc}")
         return {
-            "name": "Evaluation Coverage", "id": "evaluation-coverage",
-            "score": s, "max": 10, "weight": 1.0, "findings": f,
+            "name": "Evaluation Coverage",
+            "id": "evaluation-coverage",
+            "score": s,
+            "max": 10,
+            "weight": 1.0,
+            "findings": f,
         }
 
     evals = data.get("evals")
@@ -946,10 +1079,7 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
         f.append(f"skill_name does not match directory name ({dir_path.name})")
 
     ids = [case.get("id") for case in evals if isinstance(case, dict)]
-    valid_ids = [
-        case_id for case_id in ids
-        if isinstance(case_id, str) and re.match(r"^[a-z0-9][a-z0-9-]*$", case_id)
-    ]
+    valid_ids = [case_id for case_id in ids if isinstance(case_id, str) and re.match(r"^[a-z0-9][a-z0-9-]*$", case_id)]
     if len(valid_ids) == len(ids) and len(set(valid_ids)) == len(valid_ids) and valid_ids:
         s += 1
         f.append("Eval ids are stable, unique kebab-case strings")
@@ -958,7 +1088,8 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
 
     required_fields = ("id", "prompt", "expected_output")
     cases_with_core = [
-        case for case in evals
+        case
+        for case in evals
         if isinstance(case, dict)
         and all(isinstance(case.get(field), str) and case.get(field).strip() for field in required_fields)
     ]
@@ -969,7 +1100,8 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
         f.append("One or more evals are missing id, prompt, or expected_output")
 
     cases_with_assertions = [
-        case for case in evals
+        case
+        for case in evals
         if isinstance(case, dict)
         and isinstance(case.get("assertions"), list)
         and any(isinstance(item, str) and item.strip() for item in case.get("assertions", []))
@@ -982,7 +1114,8 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
 
     combined = "\n".join(
         " ".join(str(case.get(key, "")) for key in ("id", "prompt", "expected_output", "assertions"))
-        for case in evals if isinstance(case, dict)
+        for case in evals
+        if isinstance(case, dict)
     ).lower()
     coverage_checks = [
         ("explicit invocation", r"/[a-z0-9-]+\s+\w+|explicit"),
@@ -1001,10 +1134,7 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
     if len(actions) >= 4:
         uncovered = []
         for action in actions:
-            tokens = [
-                tok for tok in re.findall(r"[a-z0-9]+", action)
-                if tok not in {"auto", "redirect", "refuse"}
-            ]
+            tokens = [tok for tok in re.findall(r"[a-z0-9]+", action) if tok not in {"auto", "redirect", "refuse"}]
             if tokens and not all(tok in combined for tok in tokens[:3]):
                 uncovered.append(action)
         if uncovered:
@@ -1014,8 +1144,12 @@ def score_evaluation_coverage(dir_path: Path, body: str) -> dict:
             f.append("All dispatch actions have obvious eval coverage")
 
     return {
-        "name": "Evaluation Coverage", "id": "evaluation-coverage",
-        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+        "name": "Evaluation Coverage",
+        "id": "evaluation-coverage",
+        "score": min(s, 10),
+        "max": 10,
+        "weight": 1.0,
+        "findings": f,
     }
 
 
@@ -1096,8 +1230,12 @@ def score_validation_contract(fm: dict, body: str, dir_path: Path) -> dict:
         f.append("Missing test or smoke-check validation surface")
 
     return {
-        "name": "Validation Contract", "id": "validation-contract",
-        "score": min(s, 10), "max": 10, "weight": 1.0, "findings": f,
+        "name": "Validation Contract",
+        "id": "validation-contract",
+        "score": min(s, 10),
+        "max": 10,
+        "weight": 1.0,
+        "findings": f,
     }
 
 
@@ -1178,14 +1316,21 @@ _DIMENSION_SUGGESTIONS: dict[str, list[str]] = {
 # Orchestrator
 # ---------------------------------------------------------------------------
 
+
 def audit_skill(path: str) -> dict:
     """Audit a single skill directory and return a scored report."""
     try:
         dp = Path(path).resolve()
         skill_md = dp / "SKILL.md"
         empty = {
-            "skill": dp.name, "path": str(dp) + "/", "score": 0, "max": 100,
-            "grade": "F", "dimensions": [], "bonus": 0, "patterns_found": [],
+            "skill": dp.name,
+            "path": str(dp) + "/",
+            "score": 0,
+            "max": 100,
+            "grade": "F",
+            "dimensions": [],
+            "bonus": 0,
+            "patterns_found": [],
             "patterns_suggested": PATTERN_NAMES[:],
             "patterns_not_applicable": [],
             "meta": {"lines": 0, "refs": 0, "scripts": 0},
@@ -1224,15 +1369,21 @@ def audit_skill(path: str) -> dict:
         rd = dp / "references"
         sd = dp / "scripts"
         return {
-            "skill": dp.name, "path": str(dp) + "/", "score": final, "max": 100,
-            "grade": _grade(final), "dimensions": dims, "bonus": 0,
-            "patterns_found": pf, "patterns_suggested": ps, "patterns_not_applicable": pna,
+            "skill": dp.name,
+            "path": str(dp) + "/",
+            "score": final,
+            "max": 100,
+            "grade": _grade(final),
+            "dimensions": dims,
+            "bonus": 0,
+            "patterns_found": pf,
+            "patterns_suggested": ps,
+            "patterns_not_applicable": pna,
             "meta": {
                 "lines": len(body.splitlines()),
-                "refs": len([
-                    p for p in rd.iterdir()
-                    if p.is_file() and not p.name.startswith(".")
-                ]) if rd.is_dir() else 0,
+                "refs": len([p for p in rd.iterdir() if p.is_file() and not p.name.startswith(".")])
+                if rd.is_dir()
+                else 0,
                 "scripts": len(list(sd.glob("*.py"))) if sd.is_dir() else 0,
             },
         }
@@ -1240,9 +1391,14 @@ def audit_skill(path: str) -> dict:
         return {
             "skill": Path(path).resolve().name,
             "path": str(Path(path).resolve()) + "/",
-            "score": 0, "max": 100, "grade": "F",
-            "dimensions": [], "bonus": 0,
-            "patterns_found": [], "patterns_suggested": PATTERN_NAMES[:], "patterns_not_applicable": [],
+            "score": 0,
+            "max": 100,
+            "grade": "F",
+            "dimensions": [],
+            "bonus": 0,
+            "patterns_found": [],
+            "patterns_suggested": PATTERN_NAMES[:],
+            "patterns_not_applicable": [],
             "meta": {"lines": 0, "refs": 0, "scripts": 0},
             "error": str(exc),
         }
@@ -1254,10 +1410,7 @@ def audit_all(skills_dir: str) -> list[dict]:
     if not sp.is_dir():
         _warn(f"Skills directory not found: {sp}")
         return []
-    results = [
-        audit_skill(str(d)) for d in sorted(sp.iterdir())
-        if d.is_dir() and (d / "SKILL.md").is_file()
-    ]
+    results = [audit_skill(str(d)) for d in sorted(sp.iterdir()) if d.is_dir() and (d / "SKILL.md").is_file()]
     results.sort(key=lambda r: r["score"], reverse=True)
     return results
 
@@ -1265,6 +1418,7 @@ def audit_all(skills_dir: str) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Table formatters (plain text)
 # ---------------------------------------------------------------------------
+
 
 def format_table(results: list[dict]) -> str:
     """Format audit results as a human-readable summary table."""
@@ -1336,6 +1490,7 @@ def format_single_table(result: dict) -> str:
 # ---------------------------------------------------------------------------
 # Rich formatters (colored terminal output)
 # ---------------------------------------------------------------------------
+
 
 def _score_color(score: int, max_score: int) -> str:
     """Return a Rich color name based on score ratio."""
@@ -1484,14 +1639,13 @@ def format_rich_table(results: list[dict]) -> None:
 # Main
 # ---------------------------------------------------------------------------
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Audit skill quality")
     parser.add_argument("path", nargs="?", help="Path to skill directory")
     parser.add_argument("--all", action="store_true", help="Audit all skills")
-    parser.add_argument("--format", choices=["json", "table"], default="json",
-                        dest="output_format")
-    parser.add_argument("--strict", action="store_true",
-                        help="Exit with code 1 if any skill scores below B (75)")
+    parser.add_argument("--format", choices=["json", "table"], default="json", dest="output_format")
+    parser.add_argument("--strict", action="store_true", help="Exit with code 1 if any skill scores below B (75)")
     args = parser.parse_args()
 
     if not args.path and not args.all:
