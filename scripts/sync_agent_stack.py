@@ -1118,9 +1118,9 @@ def merge_copilot_config(ctx: SyncContext, policy: dict[str, Any]) -> None:
     defaults = policy.get("model_defaults", {}).get("copilot", {})
     config["model"] = defaults.get("model", config.get("model"))
     config["effortLevel"] = defaults.get("effort_level", config.get("effortLevel"))
-    trusted = set(config.get("trusted_folders", []))
+    trusted = set(config.get("trustedFolders", []))
     trusted.update(policy.get("trusted_roots", []))
-    config["trusted_folders"] = sorted(trusted)
+    config["trustedFolders"] = sorted(trusted)
     allowed = set(config.get("allowed_urls", []))
     for domain in policy.get("docs_domains", []):
         allowed.add(f"https://{domain}")
