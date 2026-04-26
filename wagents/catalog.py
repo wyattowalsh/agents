@@ -1,6 +1,7 @@
 """Data model and collection functions for skills, agents, and MCP servers."""
 
 import json
+import subprocess
 import tomllib
 from dataclasses import dataclass
 from pathlib import Path
@@ -9,6 +10,8 @@ import typer
 
 from wagents import KEBAB_CASE_PATTERN, ROOT
 from wagents.parsing import parse_frontmatter, to_title
+
+LOCAL_MCP_DIR_NAMES = {"archives", "cache", "notes", "secrets", "servers"}
 
 
 @dataclass
@@ -73,8 +76,80 @@ def _load_installed_skill_sources() -> dict[str, dict]:
     return merged
 
 
+def _is_git_ignored(path: Path) -> bool:
+    try:
+        rel_path = path.relative_to(ROOT)
+    except ValueError:
+        return False
+    candidates = [str(rel_path)]
+    if path.is_dir():
+        candidates.append(str(rel_path / "__wagents_check__"))
+    for candidate in candidates:
+        try:
+            result = subprocess.run(
+                ["git", "-C", str(ROOT), "check-ignore", "-q", candidate],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                check=False,
+            )
+        except OSError:
+            return False
+        if result.returncode == 0:
+            return True
+    return False
+
+
+def _is_local_mcp_dir(path: Path) -> bool:
+    """Return whether an MCP subdirectory is reserved for local machine assets."""
+    return path.name in LOCAL_MCP_DIR_NAMES or _is_git_ignored(path)
+
+
+def _collect_mcp_nodes(nodes: list[CatalogNode]) -> None:
+    """Append repo-authored MCP server nodes from mcp/<name>/."""
+    mcp_dir = ROOT / "mcp"
+    if not mcp_dir.exists():
+        return
+
+    for mcp_subdir in sorted(mcp_dir.iterdir()):
+        if not mcp_subdir.is_dir():
+            continue
+        if _is_local_mcp_dir(mcp_subdir):
+            continue
+        pyproject = mcp_subdir / "pyproject.toml"
+        server_py = mcp_subdir / "server.py"
+        if not pyproject.exists():
+            continue
+        try:
+            data = tomllib.loads(pyproject.read_text())
+            proj = data.get("project", {})
+            name = mcp_subdir.name
+            server_body = server_py.read_text() if server_py.exists() else ""
+
+            # Read fastmcp.json if it exists
+            fastmcp_json = mcp_subdir / "fastmcp.json"
+            fastmcp_config = {}
+            if fastmcp_json.exists():
+                fastmcp_config = json.loads(fastmcp_json.read_text())
+
+            metadata = {**data, "fastmcp_config": fastmcp_config}
+
+            nodes.append(
+                CatalogNode(
+                    kind="mcp",
+                    id=name,
+                    title=to_title(name),
+                    description=str(proj.get("description", "")),
+                    metadata=metadata,
+                    body=server_body,
+                    source_path=f"mcp/{name}/server.py",
+                )
+            )
+        except Exception as e:
+            typer.echo(f"Warning: skipping {mcp_subdir}: {e}", err=True)
+
+
 def collect_nodes() -> list[CatalogNode]:
-    """Scan skills/, agents/, mcp/ and build CatalogNode list."""
+    """Scan skills/, agents/, and repo-authored mcp/<name>/ servers."""
     nodes = []
 
     # Skills
@@ -124,43 +199,7 @@ def collect_nodes() -> list[CatalogNode]:
             except Exception as e:
                 typer.echo(f"Warning: skipping {agent_file}: {e}", err=True)
 
-    # MCP servers
-    mcp_dir = ROOT / "mcp"
-    if mcp_dir.exists():
-        for mcp_subdir in sorted(mcp_dir.iterdir()):
-            if not mcp_subdir.is_dir():
-                continue
-            pyproject = mcp_subdir / "pyproject.toml"
-            server_py = mcp_subdir / "server.py"
-            if not pyproject.exists():
-                continue
-            try:
-                data = tomllib.loads(pyproject.read_text())
-                proj = data.get("project", {})
-                name = mcp_subdir.name
-                server_body = server_py.read_text() if server_py.exists() else ""
-
-                # Read fastmcp.json if it exists
-                fastmcp_json = mcp_subdir / "fastmcp.json"
-                fastmcp_config = {}
-                if fastmcp_json.exists():
-                    fastmcp_config = json.loads(fastmcp_json.read_text())
-
-                metadata = {**data, "fastmcp_config": fastmcp_config}
-
-                nodes.append(
-                    CatalogNode(
-                        kind="mcp",
-                        id=name,
-                        title=to_title(name),
-                        description=str(proj.get("description", "")),
-                        metadata=metadata,
-                        body=server_body,
-                        source_path=f"mcp/{name}/server.py",
-                    )
-                )
-            except Exception as e:
-                typer.echo(f"Warning: skipping {mcp_subdir}: {e}", err=True)
+    _collect_mcp_nodes(nodes)
 
     return nodes
 

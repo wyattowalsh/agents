@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "agents",
   "displayName": "Agents",
-  "description": "Portable AI agent skills, subagents, MCP configuration, and shared instructions for coding agents.",
+  "description": "Portable AI agent skills, MCP configuration, and shared instructions for coding agents. The repo-level agents/ directory is currently reserved for future bundled agent definitions.",
   "source": {
     "type": "github",
     "repository": "wyattowalsh/agents",

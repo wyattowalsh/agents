@@ -75,6 +75,21 @@ def test_validate_jsonl_failure(patched_repo):
     assert records[-1]["ok"] is False
 
 
+def test_validate_skips_gitignored_mcp_cache_dirs(patched_repo, monkeypatch):
+    """Validate should ignore local MCP cache directories excluded by git."""
+    ignored_mcp_dir = patched_repo / "mcp" / "cache"
+    ignored_mcp_dir.mkdir()
+    monkeypatch.setattr("wagents.cli._is_git_ignored", lambda path: path == ignored_mcp_dir)
+
+    ignored_runtime_dir = patched_repo / "mcp" / "servers" / "missing-files"
+    ignored_runtime_dir.mkdir(parents=True)
+
+    result = runner.invoke(app, ["validate"])
+
+    assert result.exit_code == 0, f"validate failed:\n{result.output}"
+    assert "All validations passed" in result.output
+
+
 def test_doctor_json_success(patched_repo, monkeypatch):
     """Doctor should emit structured JSON with successful checks when the environment is healthy."""
     (patched_repo / "pyproject.toml").write_text('[project]\nname = "wagents"\nrequires-python = ">=3.13"\n')
@@ -223,7 +238,7 @@ def test_new_mcp(patched_repo):
     """Create an MCP server in a tmp repo, verify all 3 files are scaffolded."""
     # new mcp reads root pyproject.toml to check workspace config
     pyproject = patched_repo / "pyproject.toml"
-    pyproject.write_text('[tool.uv.workspace]\nmembers = ["mcp/*"]\n')
+    pyproject.write_text("[tool.uv.workspace]\nmembers = []\n")
 
     result = runner.invoke(app, ["new", "mcp", "tmp-test-mcp", "--no-docs"])
     assert result.exit_code == 0, f"new mcp failed:\n{result.output}"
@@ -234,6 +249,28 @@ def test_new_mcp(patched_repo):
     assert (mcp_dir / "pyproject.toml").exists()
     assert (mcp_dir / "fastmcp.json").exists()
     assert len(list(mcp_dir.iterdir())) == 3
+    assert "Created mcp/tmp-test-mcp/" in result.output
+    assert '"mcp/tmp-test-mcp"' in pyproject.read_text()
+
+    (patched_repo / ".gitignore").write_text("/mcp/servers/*\n")
+    (patched_repo / "mcp" / "servers" / "tmp-test-mcp").mkdir(parents=True)
+    subprocess.run(["git", "init"], cwd=patched_repo, check=True, capture_output=True)
+    assert (
+        subprocess.run(
+            ["git", "check-ignore", "-q", "mcp/servers/tmp-test-mcp"],
+            cwd=patched_repo,
+            check=False,
+        ).returncode
+        == 0
+    )
+    assert (
+        subprocess.run(
+            ["git", "check-ignore", "-q", "mcp/tmp-test-mcp"],
+            cwd=patched_repo,
+            check=False,
+        ).returncode
+        != 0
+    )
 
 
 # ---------------------------------------------------------------------------

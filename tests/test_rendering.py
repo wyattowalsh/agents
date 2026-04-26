@@ -233,6 +233,8 @@ class TestRenderMcpPage:
         )
         result = render_mcp_page(node, [], [node])
         assert "## Server Source" in result
+        assert "mcp/test-mcp/" in result
+        assert "mcp/servers/test-mcp" not in result
         assert "claude_desktop_config.json" in result
         assert "Source & provenance" in result
         assert "## Resources" in result

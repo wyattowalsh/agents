@@ -14,7 +14,7 @@ metadata:
 
 # MCP Creator — FastMCP v3
 
-Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides through research, scaffolding, implementation, testing, and deployment. All output follows this repo's conventions: `mcp/<name>/` directory, `fastmcp.json` config, `uv` workspace member, imperative voice, kebab-case naming.
+Build production-ready MCP servers with FastMCP v3 (3.0.0rc2). This skill guides through research, scaffolding, implementation, testing, and deployment. All first-party output follows this repo's conventions: `mcp/<name>/` directory, `fastmcp.json` config, exact `uv` workspace member, imperative voice, kebab-case naming. Reserve `mcp/servers/` for machine-local third-party MCP installs; it is gitignored.
 
 **Target:** FastMCP v3 rc2 — Provider/Transform architecture, 14 built-in middleware, OAuth 2.1, server composition, component versioning, structured output, background tasks, elicitation, sampling.
 
@@ -29,7 +29,7 @@ Route `$ARGUMENTS` to the appropriate mode:
 | $ARGUMENTS pattern | Mode | Start at |
 |---------------------|------|----------|
 | Service/API name (e.g., "GitHub", "Stripe") | **New server** | Phase 1 |
-| Path to existing server (e.g., `mcp/myserver/`) | **Extend** | Phase 3 |
+| Path to existing first-party server (e.g., `mcp/myserver/`) | **Extend** | Phase 3 |
 | OpenAPI spec URL or file path | **Convert OpenAPI** | Phase 2 (scaffold) then load `references/server-composition.md` §6 |
 | FastAPI app to convert | **Convert FastAPI** | Phase 2 (scaffold) then load `references/server-composition.md` §7 |
 | Error message or "debug" + description | **Debug** | Load `references/common-errors.md`, match symptom |
@@ -156,7 +156,7 @@ Create `tests/conftest.py` — see `references/testing.md` §4 for the complete 
 
 ### 2.3 Configure and Verify
 
-- Ensure root `pyproject.toml` has `[tool.uv.workspace] members = ["mcp/*"]`.
+- Ensure root `pyproject.toml` has `[tool.uv.workspace] members = ["mcp/<name>"]`.
 - Run `cd mcp/<name> && uv sync` to install dependencies.
 - Verify: `uv run python -c "from server import mcp; print(mcp.name)"`.
 

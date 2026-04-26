@@ -298,7 +298,7 @@ Create `tests/conftest.py` — see `references/testing.md` §4 for the complete 
 
 ### 2.3 Configure and Verify
 
-- Ensure root `pyproject.toml` has `[tool.uv.workspace] members = ["mcp/*"]`.
+- Ensure root `pyproject.toml` has `[tool.uv.workspace] members = ["mcp/<name>"]`.
 - Run `cd mcp/<name> && uv sync` to install dependencies.
 - Verify: `uv run python -c "from server import mcp; print(mcp.name)"`.
 

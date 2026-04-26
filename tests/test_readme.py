@@ -110,6 +110,7 @@ def test_readme_empty_repo_produces_valid_output(tmp_repo):
     # But should still contain structural sections
     assert "<h1>agents</h1>" in readme_text
     assert 'alt="CI"' in readme_text
+    assert "repo-level `agents/` directory is reserved for future bundled agent definitions" in readme_text
     assert "## 🛠️ Development" in readme_text
     assert "## 📚 Documentation" in readme_text
     assert "## 📜 License" in readme_text

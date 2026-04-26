@@ -69,6 +69,7 @@ class TestWriteIndexPage:
         text = (content_dir / "index.mdx").read_text()
         assert "## Popular Starting Points" in text
         assert "## How These Docs Work" in text
+        assert "repo-level `agents/` directory is currently empty" in text
 
     def test_stats_bar_with_installed(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -131,6 +132,8 @@ class TestWriteCliPage:
         assert "local agent skill directories" in text
         assert "~/.config/opencode/skills/" in text
         assert "wagents docs generate --no-installed" not in text
+        assert "Bundle Manifest" in text
+        assert "bundled agents are not published yet" in text
         assert "wagents skills search" in text
         assert "On-Demand Skill Index" in text
 
