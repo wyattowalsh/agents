@@ -75,7 +75,7 @@ def test_chrome_devtools_renderers_launch_isolated_browser():
         "servers": {
             "chrome-devtools": {
                 "command": "npx",
-                "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"],
+                "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"],
                 "enabled": True,
                 "startup_timeout_sec": 90,
                 "timeout_ms": 600000,
@@ -94,7 +94,8 @@ def test_chrome_devtools_renderers_launch_isolated_browser():
         }
     )
 
-    assert "--isolated" in rendered_text
+    assert "--isolated=true" in rendered_text
+    assert "--isolated\"" not in rendered_text
     assert "--autoConnect" not in rendered_text
 
 
