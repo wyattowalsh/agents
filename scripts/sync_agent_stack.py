@@ -106,9 +106,13 @@ CODEX_OWNED_TABLES = {
     "feedback",
     "history",
     "memories",
+    "model_providers.local-lmstudio",
+    "model_providers.lmstudio",
     "profiles.deep",
     "profiles.fast",
     "profiles.full_access",
+    "profiles.local-lmstudio",
+    "profiles.lmstudio",
     "sandbox_workspace_write",
     "shell_environment_policy",
     "skills",
@@ -386,6 +390,66 @@ def merge_unique_path_strings(managed: list[str], existing: Any) -> list[str]:
 
 def resolve_env_value(name: str, fallbacks: dict[str, str]) -> str:
     return os.environ.get(name) or fallbacks.get(name) or env_placeholder(name)
+
+
+def local_llm_provider(policy: dict[str, Any], provider: str) -> dict[str, Any] | None:
+    providers = policy.get("local_llm_providers")
+    if not isinstance(providers, dict):
+        return None
+    config = providers.get(provider)
+    return config if isinstance(config, dict) else None
+
+
+def resolve_local_llm_base_url(
+    provider_config: dict[str, Any],
+    fallbacks: dict[str, str] | None,
+    *,
+    local_values: bool,
+) -> str:
+    env_names = [provider_config.get("base_url_env")]
+    aliases = provider_config.get("base_url_env_aliases", [])
+    if isinstance(aliases, list):
+        env_names.extend(aliases)
+    if local_values:
+        for env_name in env_names:
+            if not isinstance(env_name, str):
+                continue
+            value = os.environ.get(env_name) or (fallbacks or {}).get(env_name)
+            if value:
+                return value
+    default = provider_config.get("default_base_url")
+    return str(default or "")
+
+
+def render_codex_lmstudio_blocks(
+    policy: dict[str, Any],
+    fallbacks: dict[str, str] | None,
+    *,
+    local_values: bool,
+) -> list[list[str]]:
+    provider = local_llm_provider(policy, "lmstudio")
+    if not provider:
+        return []
+    codex = provider.get("codex") if isinstance(provider.get("codex"), dict) else {}
+    provider_id = str(codex.get("provider_id", "local-lmstudio"))
+    profile = str(codex.get("profile", provider_id))
+    return [
+        render_toml_block(
+            f"model_providers.{provider_id}",
+            {
+                "name": provider.get("name", "LM Studio (local)"),
+                "base_url": resolve_local_llm_base_url(provider, fallbacks, local_values=local_values),
+                "wire_api": codex.get("wire_api", "responses"),
+            },
+        ),
+        render_toml_block(
+            f"profiles.{profile}",
+            {
+                "model": provider.get("default_model", "local-model"),
+                "model_provider": provider_id,
+            },
+        ),
+    ]
 
 
 def replace_arg_placeholders(args: list[Any], fallbacks: dict[str, str], local_values: bool) -> list[Any]:
@@ -764,7 +828,13 @@ def sync_codex_entrypoint(ctx: SyncContext) -> None:
     ensure_symlink(ctx, CODEX_ENTRYPOINT_PATH, CODEX_GLOBAL_MD)
 
 
-def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any] | None = None) -> str:
+def render_codex_base_config(
+    policy: dict[str, Any],
+    current_data: dict[str, Any] | None = None,
+    fallbacks: dict[str, str] | None = None,
+    *,
+    local_values: bool = False,
+) -> str:
     model_defaults = policy.get("model_defaults", {}).get("codex", {})
     model = model_defaults.get("model", "gpt-5.5")
     reasoning_effort = model_defaults.get("reasoning_effort", "high")
@@ -871,6 +941,7 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
                 "web_search": "live",
             },
         ),
+        *render_codex_lmstudio_blocks(policy, fallbacks, local_values=local_values),
         render_toml_block(
             "apps._default",
             {
@@ -977,6 +1048,7 @@ def render_codex_config(
     policy: dict[str, Any],
     *,
     include_local_extras: bool,
+    fallbacks: dict[str, str] | None = None,
 ) -> str:
     current_data = tomllib.loads(current)
     preserved = render_preserved_codex_config(current, include_local_extras=include_local_extras)
@@ -990,7 +1062,14 @@ def render_codex_config(
                 continue
             filtered_chunks.append(chunk.strip())
         preserved = "\n\n".join(chunk for chunk in filtered_chunks if chunk)
-    parts = [render_codex_base_config(policy, current_data if include_local_extras else None).rstrip()]
+    parts = [
+        render_codex_base_config(
+            policy,
+            current_data if include_local_extras else None,
+            fallbacks,
+            local_values=include_local_extras,
+        ).rstrip()
+    ]
     if preserved:
         parts.append(preserved)
     parts.append(render_codex_mcp_block(registry).rstrip())
@@ -1048,12 +1127,12 @@ def merge_codex_config(
     write_text(
         ctx,
         CODEX_CONFIG_PATH,
-        render_codex_config(current, registry, policy, include_local_extras=True),
+        render_codex_config(current, registry, policy, include_local_extras=True, fallbacks=fallbacks),
     )
     write_text(
         ctx,
         CODEX_CONFIG_COPY_PATH,
-        render_codex_config(current, registry, policy, include_local_extras=False),
+        render_codex_config(current, registry, policy, include_local_extras=False, fallbacks=fallbacks),
     )
 
 
@@ -1247,6 +1326,35 @@ def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> 
     return servers
 
 
+def render_opencode_lmstudio_provider(policy: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any] | None:
+    provider = local_llm_provider(policy, "lmstudio")
+    if not provider:
+        return None
+    opencode = provider.get("opencode") if isinstance(provider.get("opencode"), dict) else {}
+    models = opencode.get("models") if isinstance(opencode.get("models"), dict) else {}
+    return {
+        "npm": opencode.get("npm", "@ai-sdk/openai-compatible"),
+        "name": provider.get("name", "LM Studio (local)"),
+        "options": {
+            "baseURL": resolve_local_llm_base_url(provider, fallbacks, local_values=True),
+        },
+        "models": models or {str(provider.get("default_model", "local-model")): {"name": "LM Studio Local Model"}},
+    }
+
+
+def merge_opencode_provider_entry(existing: Any, rendered: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(existing, dict):
+        existing = {}
+    merged = dict(existing)
+    merged["npm"] = rendered["npm"]
+    merged["name"] = rendered["name"]
+    existing_options = existing.get("options") if isinstance(existing.get("options"), dict) else {}
+    merged["options"] = {**existing_options, **rendered["options"]}
+    existing_models = existing.get("models") if isinstance(existing.get("models"), dict) else {}
+    merged["models"] = {**rendered["models"], **existing_models}
+    return merged
+
+
 def cherry_remote_transport(url: str) -> str:
     return "streamableHttp" if url.endswith("/mcp") else "sse"
 
@@ -1285,11 +1393,21 @@ def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, st
     return files
 
 
-def merge_opencode_config(ctx: SyncContext, registry: dict[str, Any], fallbacks: dict[str, str]) -> None:
+def merge_opencode_config(
+    ctx: SyncContext, registry: dict[str, Any], fallbacks: dict[str, str], policy: dict[str, Any] | None = None
+) -> None:
     if not OPENCODE_CONFIG_PATH.exists():
         return
 
     settings = load_json(OPENCODE_CONFIG_PATH)
+    lmstudio_provider = render_opencode_lmstudio_provider(policy or {}, fallbacks)
+    if lmstudio_provider:
+        providers = settings.get("provider")
+        if not isinstance(providers, dict):
+            providers = {}
+            settings["provider"] = providers
+        providers["lmstudio"] = merge_opencode_provider_entry(providers.get("lmstudio"), lmstudio_provider)
+
     existing_mcp = settings.get("mcp")
     settings["mcp"] = merge_server_maps(
         render_opencode_mcp(registry, fallbacks), existing_mcp if isinstance(existing_mcp, dict) else {}
@@ -1411,7 +1529,7 @@ def sync_home_targets(
         "mcpServers",
         render_client_mcp(registry, fallbacks)["mcpServers"],
     )
-    merge_opencode_config(ctx, registry, fallbacks)
+    merge_opencode_config(ctx, registry, fallbacks, policy)
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
