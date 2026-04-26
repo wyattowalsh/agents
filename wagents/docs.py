@@ -21,6 +21,7 @@ from wagents.site_model import (
     agent_flags,
     build_install_command,
     render_site_data_module,
+    render_visual_assets_css,
     site_data,
 )
 
@@ -60,6 +61,7 @@ def write_site_data(nodes: list) -> None:
         has_mcp_overview=_has_mcp_overview_page(),
     )
     (DOCS_DIR / "src" / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
+    (DOCS_DIR / "src" / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
 
 
 def _mdx_asset_import_path(src: str) -> str:

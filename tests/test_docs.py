@@ -196,6 +196,7 @@ class TestDocsGenerate:
         docs_generate()
 
         assert calls == []
+        assert (tmp_repo / "docs" / "src" / "generated-visual-assets.css").exists()
         assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
 
     def test_can_include_installed_skills_explicitly(self, tmp_repo, monkeypatch):

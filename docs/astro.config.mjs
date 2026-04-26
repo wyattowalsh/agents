@@ -85,6 +85,7 @@ export default defineConfig({
         '@fontsource/geist-sans/600.css',
         '@fontsource/geist-sans/700.css',
         '@fontsource/geist-mono/400.css',
+        './src/generated-visual-assets.css',
         './src/styles/00-tokens.css',
         './src/styles/10-base.css',
         './src/styles/20-hero.css',
