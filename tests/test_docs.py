@@ -131,6 +131,8 @@ class TestWriteCliPage:
         assert "local agent skill directories" in text
         assert "~/.config/opencode/skills/" in text
         assert "wagents docs generate --no-installed" not in text
+        assert "wagents skills search" in text
+        assert "On-Demand Skill Index" in text
 
 
 # ---------------------------------------------------------------------------

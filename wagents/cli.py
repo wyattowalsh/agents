@@ -17,6 +17,7 @@ from wagents.catalog import RELATED_SKILLS, CatalogNode
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 from wagents.parsing import parse_frontmatter, to_title
 from wagents.rendering import scaffold_doc_page
+from wagents.skill_index import collect_skill_records, doctor_report, read_skill, search_skills
 
 # Typer apps
 app = typer.Typer(help="CLI for managing centralized AI agent assets")
@@ -27,8 +28,22 @@ hooks_app = typer.Typer(help="Manage hooks across skills and agents")
 app.add_typer(hooks_app, name="hooks")
 eval_app = typer.Typer(help="Manage and validate skill evals")
 app.add_typer(eval_app, name="eval")
+skills_app = typer.Typer(help="Index and search local skills")
+app.add_typer(skills_app, name="skills")
 
 OUTPUT_FORMATS = ("text", "json", "jsonl")
+SKILL_SOURCES = (
+    "all",
+    "repo",
+    "project",
+    "codex",
+    "global",
+    "claude-code",
+    "gemini-cli",
+    "github-copilot",
+    "opencode",
+    "plugin",
+)
 
 
 def version_callback(value: bool):
@@ -81,6 +96,31 @@ def _emit_structured_output(
 def _format_error(source: str, message: str) -> str:
     """Render a validation-style error for text output."""
     return f"{source}: {message}"
+
+
+def _normalize_skill_source(source: str) -> str:
+    """Normalize and validate a requested skill source."""
+    normalized = source.lower()
+    if normalized not in SKILL_SOURCES:
+        typer.echo(
+            f"Error: unsupported source '{source}'. Use one of: {', '.join(SKILL_SOURCES)}",
+            err=True,
+        )
+        raise typer.Exit(code=1)
+    return normalized
+
+
+def _format_skill_row(record: dict[str, object]) -> str:
+    """Render a compact skill index/search row."""
+    warnings = record.get("warnings") or []
+    warning_text = f" warnings={len(warnings)}" if warnings else ""
+    description = str(record.get("description") or "").replace("\n", " ").strip()
+    if len(description) > 120:
+        description = description[:117].rstrip() + "..."
+    return (
+        f"{record['name']} [{record['source']}:{record['trust_tier']}]"
+        f"{warning_text}\n  {record['path']}\n  {description}"
+    )
 
 
 def _collect_hooks():
@@ -1118,6 +1158,143 @@ def update():
     raise typer.Exit(code=result.returncode)
 
 
+@skills_app.command("index")
+def skills_index(
+    source: str = typer.Option("all", "--source", help="Skill source: all, repo, codex, global, plugin, ..."),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Index locally available skills without loading full skill bodies."""
+    normalized_source = _normalize_skill_source(source)
+    records = [record.public_dict() for record in collect_skill_records(source=normalized_source)]
+    text_lines = [f"{len(records)} skills found"]
+    text_lines.extend(_format_skill_row(record) for record in records)
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data={"count": len(records), "skills": records},
+        jsonl_records=[{"type": "skill", **record} for record in records],
+    )
+
+
+@skills_app.command("search")
+def skills_search(
+    query: str = typer.Argument(..., help="Search query"),
+    source: str = typer.Option("all", "--source", help="Skill source: all, repo, codex, global, plugin, ..."),
+    limit: int = typer.Option(5, "--limit", "-n", min=1, help="Maximum results"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Search locally available skills with deterministic lexical ranking."""
+    normalized_source = _normalize_skill_source(source)
+    results = [result.public_dict() for result in search_skills(query, source=normalized_source, limit=limit)]
+    text_lines = [f"{len(results)} matches for {query!r}"]
+    for result in results:
+        text_lines.append(
+            f"{result['name']} score={result['score']} fields={','.join(result['matched_fields'])}\n"
+            f"  {result['reason']}\n"
+            f"  {result['path']}\n"
+            f"  {result.get('description', '')}"
+        )
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data={"query": query, "count": len(results), "skills": results},
+        jsonl_records=[{"type": "skill", "query": query, **result} for result in results],
+    )
+
+
+@skills_app.command("read")
+def skills_read(
+    name_or_path: str = typer.Argument(..., help="Skill name, directory path, or SKILL.md path"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Read one skill body by exact name or path."""
+    try:
+        record = read_skill(name_or_path)
+    except (FileNotFoundError, LookupError) as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    data = record.public_dict(include_body=True)
+    text_lines = [
+        f"{record.name} [{record.source}:{record.trust_tier}]",
+        str(record.path),
+        "",
+        record.description,
+        "",
+        record.body,
+    ]
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=data,
+        jsonl_records=[{"type": "skill", **data}],
+    )
+
+
+@skills_app.command("context")
+def skills_context(
+    query: str = typer.Argument(..., help="Task or capability query"),
+    source: str = typer.Option("all", "--source", help="Skill source: all, repo, codex, global, plugin, ..."),
+    limit: int = typer.Option(3, "--limit", "-n", min=1, max=5, help="Maximum skill bodies to include"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Build a compact context packet for the best matching skills."""
+    normalized_source = _normalize_skill_source(source)
+    results = search_skills(query, source=normalized_source, limit=limit)
+    records = []
+    for result in results:
+        try:
+            record = read_skill(result.record.path)
+        except (FileNotFoundError, LookupError):
+            record = result.record
+        data = result.public_dict()
+        data["body"] = record.body
+        records.append(data)
+
+    text_lines = [f"Skill context for {query!r}", ""]
+    for result in records:
+        warnings = result.get("warnings") or []
+        text_lines.extend(
+            [
+                f"## {result['name']} score={result['score']} [{result['source']}:{result['trust_tier']}]",
+                f"Path: {result['path']}",
+                f"Reason: {result['reason']}",
+            ]
+        )
+        if warnings:
+            text_lines.append(f"Warnings: {', '.join(str(warning) for warning in warnings)}")
+        text_lines.extend(["", str(result.get("body") or ""), ""])
+
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data={"query": query, "count": len(records), "skills": records},
+        jsonl_records=[{"type": "skill_context", "query": query, **record} for record in records],
+    )
+
+
+@skills_app.command("doctor")
+def skills_doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Diagnose skill discovery roots and counts."""
+    report = doctor_report()
+    text_lines = [
+        f"Skill roots: {report['root_count']}",
+        f"Skills found: {report['skill_count']}",
+        f"Warnings: {report['warning_count']}",
+    ]
+    for row in report["roots"]:
+        status = "ok" if row["exists"] else "missing"
+        text_lines.append(f"{status} {row['source']} {row['skill_count']} {row['path']}")
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=report,
+        jsonl_records=[{"type": "root", **row} for row in report["roots"]],
+    )
+
+
 @app.command()
 def package(
     name: str = typer.Argument("", help="Skill name (omit for --all)"),
@@ -1340,6 +1517,8 @@ def readme(
             "| `wagents new mcp <name>` | Create a new MCP server |",
             "| `wagents doctor` | Check local environment and toolchain health |",
             "| `wagents validate` | Validate all skills and agents |",
+            "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
+            "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
             "| `make typecheck` | Run ty across `wagents/` and `scripts/` |",
             "| `wagents readme` | Regenerate this README |",
             "| `wagents package <name>` | Package a skill into portable ZIP |",

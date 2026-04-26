@@ -1,0 +1,34 @@
+{
+  "skill_name": "skill-router",
+  "evals": [
+    {
+      "id": "explicit-search",
+      "prompt": "/skill-router search \"fix Playwright test\"",
+      "expected_output": "Runs or recommends `uv run wagents skills search \"fix Playwright test\" --limit 5` and explains that ranked results should guide which skill to load.",
+      "assertions": [
+        "Uses the search dispatch path",
+        "Preserves the user query",
+        "Does not load every installed skill body"
+      ]
+    },
+    {
+      "id": "implicit-context-budget-warning",
+      "prompt": "Codex says 194 installed skills were omitted because the skills context budget was exceeded. Find the right skill for debugging GitHub Actions.",
+      "expected_output": "Invokes the skill-router workflow, searches local skills for the GitHub Actions task, and loads a compact context packet for only the best matches.",
+      "assertions": [
+        "Recognizes context-budget warning as a trigger",
+        "Uses on-demand skill retrieval",
+        "Limits loaded bodies to a small packet"
+      ]
+    },
+    {
+      "id": "negative-control-install",
+      "prompt": "Install the external stripe skill into every agent harness.",
+      "expected_output": "Negative control: does not use skill-router as the primary workflow; routes to skill installation guidance or `npx skills add` instead.",
+      "assertions": [
+        "Identifies installation as out of scope",
+        "Does not present skill search as the main action"
+      ]
+    }
+  ]
+}
