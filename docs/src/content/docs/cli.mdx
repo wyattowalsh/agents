@@ -47,6 +47,7 @@ Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wa
 | `wagents readme` | Regenerate `README.md` or fail if it is stale |
 | `wagents install` | Install repo skills into supported agent platforms |
 | `wagents update` | Refresh installed skills from their recorded sources |
+| `wagents skills <subcommand>` | Index, search, read, and diagnose local skills on demand |
 | `wagents package <name>` | Build portable ZIP packages for sharing or release |
 | `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |
 | `wagents hooks <subcommand>` | List and validate lifecycle hooks |
@@ -268,6 +269,65 @@ npx skills update
 
 ---
 
+### `wagents skills` -- On-Demand Skill Index
+
+Index and search repository, installed, and plugin skills without loading every skill description into startup context. Use this when local skill inventory exceeds an agent's context budget.
+
+<Tabs>
+  <TabItem label="search">
+
+Search for matching skills with deterministic lexical ranking:
+
+```bash
+wagents skills search "fix GitHub Actions workflow"
+
+# Restrict to repo skills and emit JSON
+wagents skills search "release notes" --source repo --format json
+```
+
+  </TabItem>
+  <TabItem label="context">
+
+Build a compact context packet from the top matching skill bodies:
+
+```bash
+wagents skills context "debug browser rendering" --limit 3
+```
+
+  </TabItem>
+  <TabItem label="read">
+
+Read one known skill by exact name or path:
+
+```bash
+wagents skills read skill-router
+wagents skills read /path/to/SKILL.md
+```
+
+  </TabItem>
+  <TabItem label="doctor">
+
+Inspect skill roots, counts, and warning totals:
+
+```bash
+wagents skills doctor
+```
+
+  </TabItem>
+</Tabs>
+
+| Source | Roots |
+|--------|-------|
+| `repo` | `skills/` |
+| `project` | `.agents/skills/` in the current project path |
+| `codex` | `~/.codex/skills/` |
+| `global` | `~/.agents/skills/` plus supported agent skill stores |
+| `plugin` | `~/.codex/plugins/cache/**/skills/` |
+
+Each result includes `name`, `path`, `source`, `trust_tier`, `score`, matched fields, and warnings.
+
+---
+
 ### `wagents package` -- Package Skills
 
 Package skills into portable ZIP files for distribution:
@@ -469,7 +529,7 @@ Most inspection and validation commands accept `--format` to control output:
 | `json` | Single JSON object with full results |
 | `jsonl` | One JSON object per line — ideal for piping to `jq` or log aggregators |
 
-Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks validate`, `eval list`, `eval validate`, `eval coverage`.
+Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks validate`, `eval list`, `eval validate`, `eval coverage`, `skills index`, `skills search`, `skills read`, `skills context`, `skills doctor`.
 
 ---
 
