@@ -1,6 +1,7 @@
 """Shared constants for email-whiz scripts."""
 
 import os
+from pathlib import Path
 
 
 def get_agent_dir(skill_name: str) -> Path:
