@@ -23,9 +23,9 @@ jobs:
       - name: Run tests
         run: uv run pytest
       - name: Lint
-        run: uv run ruff check wagents/
+        run: uv run ruff check wagents/ tests/ skills/skill-creator/scripts/
       - name: Format check
-        run: uv run ruff format --check wagents/
+        run: uv run ruff format --check wagents/ tests/ skills/skill-creator/scripts/
       - name: Type check
         run: uv run ty check --output-format github --no-progress
 

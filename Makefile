@@ -57,7 +57,7 @@ test:                     ## Run test suite
 	uv run pytest
 
 lint:                     ## Lint Python code
-	uv run ruff check wagents/ skills/skill-creator/scripts/
+	uv run ruff check wagents/ tests/ skills/skill-creator/scripts/
 
 typecheck:                ## Type-check Python code
 	uv run ty check
