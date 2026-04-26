@@ -39,3 +39,12 @@ skills/prospector/webapp/frontend/dist/
 /IDEAS/
 *_cache/
 .venv-copilot/
+
+# Local MCP server installs and machine-specific MCP assets.
+/mcp/archives/*
+/mcp/cache/*
+/mcp/notes/*
+/mcp/secrets/*
+/mcp/servers/*
+!/mcp/.gitignore
+!/mcp/README.md

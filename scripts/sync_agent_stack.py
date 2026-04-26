@@ -224,8 +224,14 @@ def normalize_existing_server_name(name: str, known_names: set[str]) -> str:
 
 
 def load_json(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+    text = path.read_text(encoding="utf-8")
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        without_line_comments = "\n".join(
+            line for line in text.splitlines() if not line.lstrip().startswith("//")
+        )
+        return json.loads(without_line_comments)
 
 
 def dump_json(data: Any) -> str:
@@ -264,7 +270,10 @@ def sync_generated_json_directory(ctx: SyncContext, path: Path, files: dict[str,
 
 
 def ensure_symlink(ctx: SyncContext, path: Path, target: Path) -> None:
-    target_str = str(target)
+    try:
+        target_str = os.path.relpath(target, start=path.parent)
+    except ValueError:
+        target_str = str(target)
     if path.is_symlink() and os.readlink(path) == target_str:
         return
     ctx.note(f"symlink {path} -> {target}")
@@ -279,7 +288,7 @@ def ensure_symlink(ctx: SyncContext, path: Path, target: Path) -> None:
             shutil.move(str(path), str(backup))
         else:
             path.unlink()
-    path.symlink_to(target)
+    path.symlink_to(target_str)
 
 
 def portable_skill_dirs() -> list[Path]:
@@ -778,7 +787,7 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
                 "animations": True,
                 "alternate_screen": "auto",
                 "show_tooltips": True,
-                "status_line": ["model", "approval", "sandbox", "cwd"],
+                "status_line": ["model-with-reasoning", "context-remaining", "current-dir"],
                 "terminal_title": ["spinner", "project"],
             },
         ),

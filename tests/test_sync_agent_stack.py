@@ -424,6 +424,8 @@ enabled = true
     assert 'model_reasoning_effort = "high"' in home_config
     assert 'plan_mode_reasoning_effort = "high"' in home_config
     assert 'model_reasoning_effort = "xhigh"' in home_config
+    assert 'status_line = ["model-with-reasoning", "context-remaining", "current-dir"]' in home_config
+    assert 'status_line = ["model", "approval", "sandbox", "cwd"]' not in home_config
     assert "local-secret" in home_config
     assert 'notify = ["/tmp/notifier"]' in home_config
     assert '[projects."/private/work"]' in home_config
@@ -454,4 +456,4 @@ def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch
     sync_codex_entrypoint(ctx)
 
     assert (codex_home / "AGENTS.md").is_symlink()
-    assert (codex_home / "AGENTS.md").readlink() == repo_root / "instructions" / "codex-global.md"
+    assert (codex_home / "AGENTS.md").resolve() == repo_root / "instructions" / "codex-global.md"

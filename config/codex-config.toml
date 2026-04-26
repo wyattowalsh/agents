@@ -137,7 +137,7 @@ notification_condition = "unfocused"
 animations = true
 alternate_screen = "auto"
 show_tooltips = true
-status_line = ["model", "approval", "sandbox", "cwd"]
+status_line = ["model-with-reasoning", "context-remaining", "current-dir"]
 terminal_title = ["spinner", "project"]
 
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
@@ -225,7 +225,7 @@ tool_timeout_sec = 600
 env_vars = ["TAVILY_API_KEY"]
 
 [mcp_servers.trafilatura]
-args = ["--directory", "/Users/ww/dev/tools/mcp/trafilatura_mcp", "run", "python3", "trafilatura_mcp.py"]
+args = ["--directory", "/Users/ww/dev/projects/agents/mcp/servers/trafilatura_mcp", "run", "python3", "trafilatura_mcp.py"]
 command = "uv"
 startup_timeout_sec = 90
 tool_timeout_sec = 600
@@ -237,8 +237,8 @@ startup_timeout_sec = 90
 tool_timeout_sec = 600
 
 [mcp_servers.atom-of-thoughts]
-args = ["-y", "github:kbsooo/MCP_Atom_of_Thoughts"]
-command = "npx"
+args = ["/Users/ww/dev/projects/agents/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"]
+command = "node"
 startup_timeout_sec = 90
 tool_timeout_sec = 600
 
@@ -250,8 +250,8 @@ tool_timeout_sec = 600
 env_vars = ["CRASH_STRICT_MODE", "MAX_HISTORY_SIZE"]
 
 [mcp_servers.creative-thinking]
-args = ["-y", "github:VitalyMalakanov/mcp-thinking"]
-command = "npx"
+args = []
+command = "/Users/ww/dev/projects/agents/scripts/mcp_tools/run_mcp_thinking.sh"
 startup_timeout_sec = 90
 tool_timeout_sec = 600
 
@@ -275,7 +275,7 @@ tool_timeout_sec = 600
 env_vars = ["EXA_API_KEY"]
 
 [mcp_servers.ffmpeg]
-args = ["--directory", "/Users/ww/dev/tools/mcp/ffmpeg-mcp", "run", "ffmpeg-mcp"]
+args = ["--directory", "/Users/ww/dev/projects/agents/mcp/servers/ffmpeg-mcp", "run", "ffmpeg-mcp"]
 command = "uv"
 startup_timeout_sec = 90
 tool_timeout_sec = 600
@@ -299,8 +299,8 @@ startup_timeout_sec = 90
 tool_timeout_sec = 600
 
 [mcp_servers.lotus-wisdom-mcp]
-args = ["-y", "lotus-wisdom-mcp"]
-command = "npx"
+args = ["/Users/ww/dev/projects/agents/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"]
+command = "node"
 startup_timeout_sec = 90
 tool_timeout_sec = 600
 
