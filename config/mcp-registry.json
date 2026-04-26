@@ -247,7 +247,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/tools/mcp/trafilatura_mcp",
+        "/Users/ww/dev/projects/agents/mcp/servers/trafilatura_mcp",
         "run",
         "python3",
         "trafilatura_mcp.py"
@@ -281,10 +281,9 @@
     },
     "atom-of-thoughts": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "github:kbsooo/MCP_Atom_of_Thoughts"
+        "/Users/ww/dev/projects/agents/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
       ],
       "env": {},
       "enabled": true,
@@ -322,11 +321,8 @@
     },
     "creative-thinking": {
       "transport": "stdio",
-      "command": "npx",
-      "args": [
-        "-y",
-        "github:VitalyMalakanov/mcp-thinking"
-      ],
+      "command": "/Users/ww/dev/projects/agents/scripts/mcp_tools/run_mcp_thinking.sh",
+      "args": [],
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
@@ -396,7 +392,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/tools/mcp/ffmpeg-mcp",
+        "/Users/ww/dev/projects/agents/mcp/servers/ffmpeg-mcp",
         "run",
         "ffmpeg-mcp"
       ],
@@ -463,10 +459,9 @@
     },
     "lotus-wisdom-mcp": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "lotus-wisdom-mcp"
+        "/Users/ww/dev/projects/agents/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
       ],
       "env": {},
       "enabled": true,

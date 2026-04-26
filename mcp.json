@@ -119,7 +119,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/tools/mcp/trafilatura_mcp",
+        "/Users/ww/dev/projects/agents/mcp/servers/trafilatura_mcp",
         "run",
         "python3",
         "trafilatura_mcp.py"
@@ -135,10 +135,9 @@
       "timeout": 600000
     },
     "atom-of-thoughts": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "github:kbsooo/MCP_Atom_of_Thoughts"
+        "/Users/ww/dev/projects/agents/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
       ],
       "timeout": 600000
     },
@@ -155,11 +154,8 @@
       "timeout": 600000
     },
     "creative-thinking": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "github:VitalyMalakanov/mcp-thinking"
-      ],
+      "command": "/Users/ww/dev/projects/agents/scripts/mcp_tools/run_mcp_thinking.sh",
+      "args": [],
       "timeout": 600000
     },
     "deep-lucid-3d": {
@@ -192,7 +188,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/tools/mcp/ffmpeg-mcp",
+        "/Users/ww/dev/projects/agents/mcp/servers/ffmpeg-mcp",
         "run",
         "ffmpeg-mcp"
       ],
@@ -223,10 +219,9 @@
       "timeout": 600000
     },
     "lotus-wisdom-mcp": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "lotus-wisdom-mcp"
+        "/Users/ww/dev/projects/agents/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
       ],
       "timeout": 600000
     },

@@ -1,0 +1,9 @@
+# Keep this directory scaffold tracked, but never track local MCP installs.
+archives/*
+cache/*
+notes/*
+secrets/*
+servers/*
+
+!.gitignore
+!README.md
