@@ -83,6 +83,14 @@ def test_claude_readonly_guard_blocks_with_exit_2(monkeypatch, tmp_path):
     assert "read-only" in stderr
 
 
+def test_research_skill_frontmatter_uses_claude_harness():
+    skill = (Path(__file__).parent.parent / "skills" / "research" / "SKILL.md").read_text(encoding="utf-8")
+
+    frontmatter = skill.split("---", 2)[1]
+    assert "--harness claude-code" in frontmatter
+    assert "--harness auto" not in frontmatter
+
+
 def test_codex_dangerous_shell_guard_denies_recursive_remove(monkeypatch, tmp_path):
     monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
 
@@ -124,6 +132,129 @@ def test_inactive_guard_records_allow_decision(monkeypatch, tmp_path):
     record = json.loads(ledger.read_text(encoding="utf-8").splitlines()[0])
     assert record["decision"] == "allow"
     assert record["policy"] == "research-readonly-write-guard"
+
+
+def test_shell_write_guard_blocks_allowed_token_comment_bypass(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "echo data > hooks/generated.py # journal-store.py"},
+            "cwd": str(Path(__file__).parent.parent),
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+        env_active=True,
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+
+
+def test_shell_write_guard_blocks_journal_token_on_write_api(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "python -c \"open('hooks/generated.py', 'w')\" journal-store.py"},
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+        env_active=True,
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+
+
+def test_shell_write_guard_blocks_compound_tee_source_write(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "printf data | tee hooks/generated.py"},
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+        env_active=True,
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+
+
+def test_shell_write_guard_allows_research_state_redirection(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+    target = tmp_path / ".codex" / "research" / "notes.jsonl"
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": f"echo data > {target}"},
+            "cwd": str(Path(__file__).parent.parent),
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+        env_active=True,
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
+def test_shell_write_guard_allows_dev_null_redirection(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "echo data > /dev/null"},
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+        env_active=True,
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
+def test_shell_write_guard_allows_direct_journal_store_invocation(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "uv run python skills/research/scripts/journal-store.py save --project demo"},
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+        env_active=True,
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
 
 
 def test_gemini_evidence_ledger_records_urls(monkeypatch, tmp_path):
