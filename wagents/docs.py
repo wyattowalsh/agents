@@ -40,6 +40,11 @@ def _has_mcp_overview_page() -> bool:
     return (CONTENT_DIR / "mcp" / "index.mdx").exists()
 
 
+def _has_repo_agents() -> bool:
+    """Whether the repository currently contains any bundled agent definitions."""
+    return any((ROOT / "agents").glob("*.md"))
+
+
 def write_index_page(nodes: list) -> None:
     """Write the index.mdx splash page."""
     skills = [n for n in nodes if n.kind == "skill"]
@@ -343,7 +348,15 @@ def write_index_page(nodes: list) -> None:
     parts.append("## How These Docs Work")
     parts.append("")
     parts.append('<Aside type="note" title="Generated pages, curated framing">')
-    if has_mcp_overview and not mcps and mcp_config_count:
+    if not agents and has_mcp_overview and not mcps and mcp_config_count:
+        parts.append(
+            "Generated catalog pages currently come from repository skills in `skills/`. "
+            "The repo-level `agents/` directory is currently empty and reserved for future bundled "
+            "agent definitions, while the MCP overview is a hand-maintained summary of "
+            f"{mcp_config_count} servers from `mcp.json`. Repo workflow and policy truth lives in "
+            "`AGENTS.md`, and the public README is regenerated with `wagents readme`."
+        )
+    elif has_mcp_overview and not mcps and mcp_config_count:
         parts.append(
             "Most pages in this site are generated from repository assets "
             "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. "
@@ -352,6 +365,13 @@ def write_index_page(nodes: list) -> None:
             "navigation stays concise, curated onboarding pages stay "
             "hand-maintained, and the MCP overview is currently a hand-maintained summary of "
             f"{mcp_config_count} servers from `mcp.json`."
+        )
+    elif not agents:
+        parts.append(
+            "Generated catalog pages currently come from populated repository assets. "
+            "Right now that means `skills/`; the repo-level `agents/` directory is currently empty "
+            "and reserved for future bundled agent definitions. Repo workflow and policy truth lives "
+            "in `AGENTS.md`, and the public README is regenerated with `wagents readme`."
         )
     else:
         parts.append(
@@ -536,7 +556,8 @@ def write_cli_page() -> None:
     parts.append("```")
     parts.append("")
     parts.append(
-        "The command also adds the `mcp/` directory to the uv workspace in `pyproject.toml` if not already present."
+        "The command also adds the exact `mcp/<name>` entry to the uv workspace in `pyproject.toml` "
+        "if not already present."
     )
     parts.append("")
     parts.append("```bash")
@@ -1138,6 +1159,7 @@ def write_cli_page() -> None:
     parts.append("    - server.py")
     parts.append("    - pyproject.toml")
     parts.append("    - fastmcp.json")
+    parts.append("  - servers/ (ignored local third-party installs)")
     parts.append("- docs/ (this site)")
     parts.append("  - src/")
     parts.append("    - content/")
@@ -1157,10 +1179,17 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append("<CardGrid>")
     parts.append('  <LinkCard title="Skills Catalog" href="/skills/" description="Browse all available skills." />')
-    parts.append(
-        '  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" '
-        'description="Browse agent configurations in the repository." />'
-    )
+    if _has_repo_agents():
+        parts.append(
+            '  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" '
+            'description="Browse agent configurations in the repository." />'
+        )
+    else:
+        parts.append(
+            '  <LinkCard title="Bundle Manifest" '
+            'href="https://github.com/wyattowalsh/agents/blob/main/agent-bundle.json" '
+            'description="See the current bundle surface; repo-level bundled agents are not published yet." />'
+        )
     parts.append('  <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />')
     parts.append("</CardGrid>")
     parts.append("")

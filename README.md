@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">
   <h1>agents</h1>
-  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>
+  <p><b>Portable AI agent skills, MCP config, and shared instructions</b></p>
   <p>
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
@@ -24,7 +24,7 @@ npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent
 
 ## 📦 Distribution
 
-This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:
+This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback. Today it primarily ships skills, MCP configuration, and shared instructions; the repo-level `agents/` directory is reserved for future bundled agent definitions.
 
 | Target | Path | Update behavior |
 | ------ | ---- | --------------- |

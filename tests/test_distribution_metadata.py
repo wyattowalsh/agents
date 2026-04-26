@@ -14,6 +14,7 @@ def test_agent_bundle_points_to_canonical_sources():
     bundle = load_json("agent-bundle.json")
 
     assert bundle["name"] == "agents"
+    assert "reserved for future bundled agent definitions" in bundle["description"]
     assert bundle["source"]["repository"] == "wyattowalsh/agents"
     assert bundle["source"]["skillsSource"] == "github:wyattowalsh/agents"
     assert bundle["components"]["skills"] == "./skills/"

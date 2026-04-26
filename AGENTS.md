@@ -94,12 +94,13 @@ The `memory` field on agents enables persistent storage across sessions:
 
 ## 2. MCP Conventions
 
-MCP servers live in `mcp/<name>/` and follow FastMCP v3 conventions:
+First-party MCP servers authored in this repository live in `mcp/<name>/` and follow FastMCP v3 conventions:
 
 - **Entry point:** `server.py` with `mcp = FastMCP("Name")`
 - **Config:** `fastmcp.json` pointing to `server.py` with `uv` environment
 - **Package:** `pyproject.toml` with `fastmcp>=2` dependency
-- **Workspace:** Root `pyproject.toml` includes `[tool.uv.workspace]` with `members = ["mcp/*"]`
+- **Workspace:** Root `pyproject.toml` includes `[tool.uv.workspace]` with the exact first-party member path, for example `members = ["mcp/<name>"]`
+- **Local installs:** Third-party MCP checkouts, archives, caches, notes, and secrets live under `mcp/servers/`; that directory is machine-local and gitignored.
 
 ## 2.1 Bundle & Plugin Distribution
 

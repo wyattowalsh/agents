@@ -44,6 +44,7 @@ SKILL_SOURCES = (
     "opencode",
     "plugin",
 )
+LOCAL_MCP_DIR_NAMES = {"archives", "cache", "notes", "secrets", "servers"}
 
 
 def version_callback(value: bool):
@@ -96,6 +97,34 @@ def _emit_structured_output(
 def _format_error(source: str, message: str) -> str:
     """Render a validation-style error for text output."""
     return f"{source}: {message}"
+
+
+def _is_git_ignored(path: Path) -> bool:
+    """Return whether *path* is ignored by this repo's git rules."""
+    try:
+        rel_path = path.relative_to(ROOT)
+    except ValueError:
+        return False
+    candidates = [str(rel_path)]
+    if path.is_dir():
+        candidates.append(str(rel_path / "__wagents_check__"))
+    for candidate in candidates:
+        try:
+            result = subprocess.run(
+                ["git", "-C", str(ROOT), "check-ignore", "-q", candidate],
+                capture_output=True,
+                check=False,
+            )
+        except OSError:
+            return False
+        if result.returncode == 0:
+            return True
+    return False
+
+
+def _is_local_mcp_dir(path: Path) -> bool:
+    """Return whether an MCP subdirectory is reserved for local machine assets."""
+    return path.name in LOCAL_MCP_DIR_NAMES or _is_git_ignored(path)
 
 
 def _normalize_skill_source(source: str) -> str:
@@ -848,11 +877,30 @@ build-backend = "hatchling.build"
     root_pyproject = ROOT / "pyproject.toml"
     content = root_pyproject.read_text()
 
+    workspace_member = f"mcp/{name}"
     if "[tool.uv.workspace]" not in content:
         if not content.endswith("\n"):
             content += "\n"
-        content += '\n[tool.uv.workspace]\nmembers = ["mcp/*"]\n'
+        content += f'\n[tool.uv.workspace]\nmembers = ["{workspace_member}"]\n'
         root_pyproject.write_text(content)
+    elif f'"{workspace_member}"' not in content and f"'{workspace_member}'" not in content:
+        workspace_match = re.search(r"(?ms)^\[tool\.uv\.workspace\]\n(?P<body>.*?)(?=^\[|\Z)", content)
+        if workspace_match:
+            body = workspace_match.group("body")
+            members_match = re.search(r"(?ms)^members\s*=\s*\[(?P<members>.*?)\]", body)
+            if members_match:
+                replacement = f"members = [{members_match.group('members').strip()}]"
+                if members_match.group("members").strip():
+                    replacement = replacement[:-1] + f', "{workspace_member}"]'
+                else:
+                    replacement = f'members = ["{workspace_member}"]'
+                start = workspace_match.start("body") + members_match.start()
+                end = workspace_match.start("body") + members_match.end()
+                content = content[:start] + replacement + content[end:]
+            else:
+                insert_at = workspace_match.start("body")
+                content = content[:insert_at] + f'members = ["{workspace_member}"]\n' + content[insert_at:]
+            root_pyproject.write_text(content)
 
     typer.echo(f"Created mcp/{name}/ with server.py, pyproject.toml, and fastmcp.json")
 
@@ -965,6 +1013,8 @@ def validate(
     if mcp_dir.exists():
         for mcp_subdir in mcp_dir.iterdir():
             if not mcp_subdir.is_dir():
+                continue
+            if _is_local_mcp_dir(mcp_subdir):
                 continue
             dir_name = mcp_subdir.name
             if not KEBAB_CASE_PATTERN.match(dir_name):
@@ -1371,6 +1421,8 @@ def readme(
         for mcp_subdir in sorted(mcp_dir.iterdir()):
             if not mcp_subdir.is_dir():
                 continue
+            if _is_local_mcp_dir(mcp_subdir):
+                continue
             pyproject = mcp_subdir / "pyproject.toml"
             if pyproject.exists():
                 try:
@@ -1388,7 +1440,7 @@ def readme(
             'docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">'
         ),
         "  <h1>agents</h1>",
-        "  <p><b>AI agent artifacts, configs, skills, tools, and more</b></p>",
+        "  <p><b>Portable AI agent skills, MCP config, and shared instructions</b></p>",
         "  <p>",
         (
             '    <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml">'
@@ -1438,7 +1490,15 @@ def readme(
         "",
         "## 📦 Distribution",
         "",
-        "This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:",
+        (
+            "This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI "
+            "fallback. Today it primarily ships skills, MCP configuration, and shared instructions; "
+            "the repo-level `agents/` directory is reserved for future bundled agent definitions."
+            if not agents
+            else (
+                "This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:"
+            )
+        ),
         "",
         "| Target | Path | Update behavior |",
         "| ------ | ---- | --------------- |",

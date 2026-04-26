@@ -43,7 +43,7 @@ Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wa
 |---------|-------------|
 | `wagents new <asset>` | Scaffold a new skill, agent, or MCP server from repo templates |
 | `wagents validate` | Check frontmatter, naming, hooks, and related-skill integrity |
-| `wagents doctor` | Sanity-check Python, Node/pnpm compatibility, docs deps, pre-commit, and Playwright |
+| `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |
 | `wagents readme` | Regenerate `README.md` or fail if it is stale |
 | `wagents install` | Install repo skills into supported agent platforms |
 | `wagents update` | Refresh installed skills from their recorded sources |
@@ -115,7 +115,7 @@ mcp/my-server/
   fastmcp.json      # FastMCP configuration
 ```
 
-The command also adds the `mcp/` directory to the uv workspace in `pyproject.toml` if not already present.
+The command also adds the exact `mcp/<name>` entry to the uv workspace in `pyproject.toml` if not already present.
 
 ```bash
 # Skip the docs page scaffold
@@ -162,7 +162,7 @@ Run `wagents validate` in your CI pipeline to catch frontmatter issues before me
 
 ### `wagents doctor` -- Environment Health Check
 
-Diagnose your local environment and toolchain. Checks for required tools, correct Python version, docs Node/pnpm compatibility, docs dependency status, pre-commit availability, and Playwright availability.
+Diagnose your local environment and toolchain. Checks for required tools, correct Python version, docs dependency status, and Playwright availability.
 
 ```bash
 wagents doctor
@@ -178,10 +178,7 @@ wagents doctor --format json
 | Python version satisfies `requires-python` | `fail` |
 | `uv` on PATH | `fail` |
 | `node`, `npx`, `pnpm` on PATH | `warn` |
-| Installed Node version satisfies `docs/package.json#engines.node` | `warn` |
-| Installed pnpm version matches `docs/package.json#packageManager` | `warn` |
 | `docs/node_modules` present and fresh | `warn` |
-| `pre-commit` on PATH when `.pre-commit-config.yaml` exists | `warn` |
 | Playwright Python package installed | `warn` |
 | Playwright browser cache exists | `warn` |
 
@@ -620,6 +617,7 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
     - server.py
     - pyproject.toml
     - fastmcp.json
+  - servers/ (ignored local third-party installs)
 - docs/ (this site)
   - src/
     - content/
@@ -639,7 +637,7 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
 
 <CardGrid>
   <LinkCard title="Skills Catalog" href="/skills/" description="Browse all available skills." />
-  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" description="Browse agent configurations in the repository." />
+  <LinkCard title="Bundle Manifest" href="https://github.com/wyattowalsh/agents/blob/main/agent-bundle.json" description="See the current bundle surface; repo-level bundled agents are not published yet." />
   <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />
 </CardGrid>
 

@@ -40,6 +40,15 @@ def test_collect_nodes_returns_all_kinds(tmp_repo):
     )
     (mcp_dir / "server.py").write_text('from fastmcp import FastMCP\n\nmcp = FastMCP("Test Mcp")\n')
 
+    ignored_runtime_dir = tmp_repo / "mcp" / "servers" / "runtime-mcp"
+    ignored_runtime_dir.mkdir(parents=True)
+    (ignored_runtime_dir / "pyproject.toml").write_text(
+        '[project]\nname = "mcp-runtime-mcp"\nversion = "0.1.0"\n'
+        'description = "A runtime MCP server"\nrequires-python = ">=3.13"\n'
+        'dependencies = ["fastmcp>=2"]\n'
+    )
+    (ignored_runtime_dir / "server.py").write_text('from fastmcp import FastMCP\n\nmcp = FastMCP("Runtime")\n')
+
     nodes = collect_nodes()
 
     assert len(nodes) == 3
@@ -51,6 +60,7 @@ def test_collect_nodes_returns_all_kinds(tmp_repo):
     assert ids_by_kind["skill"] == "test-skill"
     assert ids_by_kind["agent"] == "test-agent"
     assert ids_by_kind["mcp"] == "test-mcp"
+    assert next(n for n in nodes if n.kind == "mcp").source_path == "mcp/test-mcp/server.py"
 
 
 # ---------------------------------------------------------------------------

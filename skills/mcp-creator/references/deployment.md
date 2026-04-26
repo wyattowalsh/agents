@@ -250,11 +250,12 @@ For authenticated remote servers, add headers:
 
 Per AGENTS.md:
 
-- MCP servers live in `mcp/<name>/`
+- First-party MCP servers live in `mcp/<name>/`
 - Entry point: `server.py` with `mcp = FastMCP("Name")`
 - Config: `fastmcp.json` pointing to `server.py`
 - Package: `pyproject.toml` with `fastmcp>=2` dependency (for v3 servers built with this skill, use `fastmcp>=3.0.0rc2`)
-- Workspace: Root `pyproject.toml` includes `[tool.uv.workspace]` with `members = ["mcp/*"]`
+- Workspace: Root `pyproject.toml` includes `[tool.uv.workspace]` with the exact first-party member path, for example `members = ["mcp/<name>"]`
+- Local third-party MCP installs live under gitignored `mcp/servers/`; do not add that directory as a uv workspace glob.
 
 Minimal `fastmcp.json` for this repo:
 
