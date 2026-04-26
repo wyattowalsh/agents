@@ -1,0 +1,44 @@
+{
+  "skill_name": "external-skill-auditor",
+  "evals": [
+    {
+      "id": "explicit-triage-source",
+      "prompt": "/external-skill-auditor triage cloudflare/skills before installing",
+      "expected_output": "Classifies the source reputation, checks source-list behavior, dedupe fit, and returns an install decision category before install.",
+      "assertions": [
+        "Mentions `npx skills add <source> --list` before install",
+        "Uses one of the outcome categories",
+        "Does not run candidate scripts"
+      ]
+    },
+    {
+      "id": "implicit-hook-risk",
+      "prompt": "This external skill has a Stop hook and a scripts directory. Can I add it to the repo?",
+      "expected_output": "Audits hooks and scripts as executable surfaces, checks credential/network/destructive-command behavior, and withholds approval until inspection passes.",
+      "assertions": [
+        "Treats hooks and scripts as trust-bearing",
+        "Checks credential and network behavior",
+        "Avoids generic code-review framing"
+      ]
+    },
+    {
+      "id": "explicit-local-scan",
+      "prompt": "/external-skill-auditor scan /tmp/candidate-skill",
+      "expected_output": "Runs or describes the static scanner, interprets JSON findings, and states that script output is a first-pass signal rather than final approval.",
+      "assertions": [
+        "Uses scripts/audit_external_skill.py for local static scanning",
+        "Keeps candidate scripts unexecuted",
+        "Distinguishes static scan findings from final trust decision"
+      ]
+    },
+    {
+      "id": "negative-normal-code-review",
+      "prompt": "Review this pull request for bugs and missing tests.",
+      "expected_output": "Negative control: refuses normal code-review ownership and redirects to honest-review because the request is not external skill import auditing.",
+      "assertions": [
+        "Does not perform external skill import audit",
+        "Names honest-review as the better fit"
+      ]
+    }
+  ]
+}

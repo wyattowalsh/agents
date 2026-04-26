@@ -1,6 +1,6 @@
-# Vite 6 Setup & Configuration
+# Vite Setup & Configuration
 
-> Targets Vite 6.x + React + TypeScript. Verify via Context7 if behavior differs.
+> Version-sensitive reference. Registry check on 2026-04-25: `vite@8.0.10`. Verify current Vite, React plugin, and Node engine requirements before scaffolding.
 
 ## 1. Project Setup
 
@@ -9,7 +9,7 @@ npm create vite@latest my-app -- --template react-ts
 cd my-app && npm install
 ```
 
-Produces: `src/{App.tsx, main.tsx, vite-env.d.ts}`, `public/`, `index.html`, `vite.config.ts`, `tsconfig.json`. Node.js 18, 20, or 22+ required.
+Produces: `src/{App.tsx, main.tsx, vite-env.d.ts}`, `public/`, `index.html`, `vite.config.ts`, `tsconfig.json`. Vite 8 requires Node.js 20.19+ or 22.12+; re-check the active Vite release before creating a new project.
 
 ## 2. Vite Configuration
 
@@ -23,7 +23,7 @@ export default defineConfig({
 })
 ```
 
-Use `@vitejs/plugin-react-swc` over `@vitejs/plugin-react` for faster transforms.
+Prefer the repo's existing React plugin. For new Vite React apps, `@vitejs/plugin-react-swc` remains a good default for faster transforms; use `@vitejs/plugin-react` when Babel plugin compatibility is required.
 
 ## 3. CSS Handling
 
@@ -108,11 +108,11 @@ resolve: { alias: { '@': '/src' } }
 
 If one is missing, imports resolve at runtime but fail type-checking (or vice versa).
 
-## 7. Environment API (Experimental)
+## 7. Environment API and Devtools
 
-Experimental in Vite 6, targeted at framework authors. Lets a single dev server run code across multiple environments (browser, SSR, edge workers) concurrently. Stabilization planned for Vite 7.
+Environment APIs are framework-facing and version-sensitive. Vite 8 also includes integrated Devtools support behind config/options that should be enabled only when useful for debugging and supported by the installed version.
 
-Do not use directly in application code. Framework plugins (Remix, Nuxt, Vike) consume it internally. Choose a framework if you need edge runtime support.
+Do not use framework-facing APIs directly in normal application code. Framework plugins (Remix, Nuxt, Vike, etc.) consume them internally. Choose a framework if you need edge runtime support.
 
 ## 8. Performance
 

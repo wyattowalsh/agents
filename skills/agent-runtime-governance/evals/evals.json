@@ -1,0 +1,54 @@
+{
+  "skill_name": "agent-runtime-governance",
+  "evals": [
+    {
+      "id": "explicit-permissions-review",
+      "prompt": "/agent-runtime-governance permissions for an agent that can run shell, send email, and deploy",
+      "expected_output": "Classifies tool risk by consequence, requires approval for email/deploy/destructive shell actions, and names enforcement points.",
+      "assertions": [
+        "Classifies tool permissions by risk",
+        "Requires explicit approval for high-impact actions",
+        "Separates policy from enforcement"
+      ]
+    },
+    {
+      "id": "implicit-memory-governance",
+      "prompt": "Our agent remembers customer data and uses it in future support workflows. What controls do we need?",
+      "expected_output": "Plans memory scope, retention, redaction, invalidation, telemetry, and evals for stale or sensitive memory use.",
+      "assertions": [
+        "Addresses memory scope and retention",
+        "Mentions sensitive data handling",
+        "Includes eval or monitoring controls"
+      ]
+    },
+    {
+      "id": "explicit-rollout-governance",
+      "prompt": "/agent-runtime-governance rollout for a support agent that can refund orders and email customers",
+      "expected_output": "Defines staged rollout, approval gates for refunds and customer email, monitoring, rollback, ownership, and containment criteria.",
+      "assertions": [
+        "Requires approval for high-impact actions",
+        "Includes rollout and rollback criteria",
+        "Includes monitoring or operator evidence"
+      ]
+    },
+    {
+      "id": "explicit-audit-design-incident-routing",
+      "prompt": "/agent-runtime-governance audit an agent runtime, then design incident containment for failed tool calls",
+      "expected_output": "Audits the current control surfaces, routes design work to a governance matrix, and defines incident containment for failed or unsafe tool calls.",
+      "assertions": [
+        "Covers audit mode",
+        "Covers design mode",
+        "Covers incident containment mode"
+      ]
+    },
+    {
+      "id": "negative-static-security-scan",
+      "prompt": "Scan this repository for SQL injection and hardcoded secrets.",
+      "expected_output": "Negative control: refuses generic appsec/static scanning ownership and redirects to security-scanner because the request is not agent runtime governance.",
+      "assertions": [
+        "Does not perform generic appsec scanning",
+        "Names security-scanner as the better fit"
+      ]
+    }
+  ]
+}

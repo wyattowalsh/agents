@@ -1,0 +1,250 @@
+---
+title: "i18n-localization"
+description: "Plan and review localization changes across app, docs, and web surfaces."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="i18n-localization" variant="note" /> <Badge text="1122 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+
+> Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+```
+
+**Use:** `/i18n-localization` `<mode> [surface-or-locales]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/i18n-localization/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Use this skill to plan, review, or harden localization work across product UI, documentation, marketing pages, emails, and web/app routing surfaces.
+
+## Modes
+
+| `$ARGUMENTS` | Mode | Output |
+| --- | --- | --- |
+| Empty | Localization audit | Inspect the current surface, identify locale risks, and return a prioritized remediation plan. |
+| App, route, feature, or file path | Implementation plan | Map the affected strings, routing, formatting, QA, and release checks for that scope. |
+| Locale or market list | Locale readiness review | Verify language, region, formatting, routing, fallback, and translation handoff requirements. |
+| Existing plan or diff | Review | Check for missed strings, unsafe concatenation, formatting bugs, catalog drift, RTL gaps, and missing tests. |
+| Natural language outside localization | Redirect | Explain the scope boundary and route to the better skill. |
+
+## Critical Rules
+
+1. Treat localization as a product contract, not a translation pass. Cover routing, formatting, accessibility, search metadata, analytics labels, emails, and support surfaces when they are in scope.
+2. Never concatenate translated fragments to build a sentence. Use full messages with variables, ICU/select/plural forms, or the framework's equivalent message format.
+3. Keep user-visible strings out of business logic and shared constants unless the system already has a catalog abstraction for that layer.
+4. Use locale-aware formatters for dates, times, numbers, currencies, lists, relative times, units, and names. Do not hand-roll formatting with string templates.
+5. Separate language from region. `en`, `en-US`, and `en-GB` can imply different copy, dates, currency, measurement units, and legal content.
+6. Define fallback behavior explicitly. Missing translations should fail visibly in development and degrade intentionally in production.
+7. Include pseudo-locale checks for expansion, accenting, bracket markers, interpolation safety, and truncation.
+8. Include RTL and bidirectional text checks when any Arabic, Hebrew, Persian, Urdu, or mixed-direction user content can appear.
+9. Preserve stable message keys. Do not churn catalogs or invalidate translation memory unless the source message meaning changes.
+10. Keep translators away from code syntax. Provide notes, screenshots, variable descriptions, character constraints, and product context.
+
+<Tabs>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `i18n-localization` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `opus` |
+| Argument Hint | `[mode] [surface-or-locales]` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: i18n-localization
+description: >-
+  Plan and review localization changes across app, docs, and web surfaces. Use
+  for string extraction, locale routing, plural/date/number formatting, RTL,
+  pseudo-locale QA, message catalogs, and translation readiness. NOT for generic
+  copy editing, frontend visual design, SEO, or JavaScript conventions.
+argument-hint: "<mode> [surface-or-locales]"
+model: opus
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# i18n Localization
+
+Use this skill to plan, review, or harden localization work across product UI, documentation, marketing pages, emails, and web/app routing surfaces.
+
+## Canonical Vocabulary
+
+| Term | Meaning |
+|---|---|
+| **locale** | Language plus optional regional conventions, such as `en`, `en-US`, or `ar-EG` |
+| **message catalog** | Source of translated strings and message metadata |
+| **ICU message** | Message format that models variables, plurals, selects, and ordinals safely |
+| **pseudo-locale** | Test locale that expands and marks strings to reveal hardcoded text and layout clipping |
+| **RTL** | Right-to-left layout direction for languages such as Arabic and Hebrew |
+| **fallback** | Intentional behavior when a locale, key, or translation is missing |
+
+## Dispatch
+
+| `$ARGUMENTS` | Mode | Output |
+| --- | --- | --- |
+| Empty | Localization audit | Inspect the current surface, identify locale risks, and return a prioritized remediation plan. |
+| App, route, feature, or file path | Implementation plan | Map the affected strings, routing, formatting, QA, and release checks for that scope. |
+| Locale or market list | Locale readiness review | Verify language, region, formatting, routing, fallback, and translation handoff requirements. |
+| Existing plan or diff | Review | Check for missed strings, unsafe concatenation, formatting bugs, catalog drift, RTL gaps, and missing tests. |
+| Natural language outside localization | Redirect | Explain the scope boundary and route to the better skill. |
+
+When the user gives no arguments, start with a localization audit of the relevant repository or product surface. Do not ask for locale preferences until the codebase and user request leave a real decision unresolved.
+
+## Reference File Index
+
+| File | Read When |
+|---|---|
+| `references/localization-checklist.md` | Planning, implementing, reviewing, testing, or releasing localization work |
+
+## Critical Rules
+
+1. Treat localization as a product contract, not a translation pass. Cover routing, formatting, accessibility, search metadata, analytics labels, emails, and support surfaces when they are in scope.
+2. Never concatenate translated fragments to build a sentence. Use full messages with variables, ICU/select/plural forms, or the framework's equivalent message format.
+3. Keep user-visible strings out of business logic and shared constants unless the system already has a catalog abstraction for that layer.
+4. Use locale-aware formatters for dates, times, numbers, currencies, lists, relative times, units, and names. Do not hand-roll formatting with string templates.
+5. Separate language from region. `en`, `en-US`, and `en-GB` can imply different copy, dates, currency, measurement units, and legal content.
+6. Define fallback behavior explicitly. Missing translations should fail visibly in development and degrade intentionally in production.
+7. Include pseudo-locale checks for expansion, accenting, bracket markers, interpolation safety, and truncation.
+8. Include RTL and bidirectional text checks when any Arabic, Hebrew, Persian, Urdu, or mixed-direction user content can appear.
+9. Preserve stable message keys. Do not churn catalogs or invalidate translation memory unless the source message meaning changes.
+10. Keep translators away from code syntax. Provide notes, screenshots, variable descriptions, character constraints, and product context.
+
+## Workflow
+
+### 1. Scope The Surface
+
+Identify the surfaces affected by the request:
+
+- UI components, server-rendered pages, native screens, emails, PDFs, docs, notifications, error states, empty states, and transactional copy.
+- Route structure, locale negotiation, redirects, canonical URLs, hreflang, sitemap entries, and persisted user locale preferences.
+- Data-driven content, CMS fields, markdown/docs content, legal text, pricing, units, and market-specific availability.
+
+If the request is implementation work, read the existing i18n library, routing conventions, catalog format, and test patterns before proposing changes.
+
+### 2. Extract And Model Messages
+
+For each string-bearing surface:
+
+- Move user-visible strings into the existing catalog or message layer.
+- Use full-sentence messages with named variables.
+- Model plural, select, gender, ordinal, and count-sensitive text with ICU-style variants or the framework's native equivalent.
+- Add translator descriptions for ambiguous labels, product terms, placeholders, and variables.
+- Keep stable keys tied to semantic meaning, not English wording alone.
+
+Avoid generic keys such as `title`, `subtitle`, or `buttonText` unless they are nested under a stable feature namespace.
+
+### 3. Localize Formatting
+
+Check all locale-sensitive values:
+
+- Date, time, timezone, relative time, and calendar assumptions.
+- Number, decimal, percent, currency, accounting, compact notation, and unit formatting.
+- Lists, names, addresses, phone numbers, postal codes, sorting, casing, and search normalization.
+- Form validation, parsing, masks, and server/client round-trip behavior.
+
+Prefer platform formatters such as `Intl.*`, framework helpers, or vetted library APIs.
+
+### 4. Route And Persist Locale
+
+Verify:
+
+- How the app chooses a locale: URL prefix, domain, account setting, cookie, browser language, or explicit selector.
+- Whether redirects are deterministic and cache-safe.
+- Whether canonical URLs, alternate links, metadata, Open Graph, sitemap, robots rules, and docs navigation match the locale strategy.
+- Whether APIs, background jobs, and emails receive the same locale context as the visible app.
+
+Do not mix locale negotiation and authentication or billing policy unless the product already couples those concepts.
+
+### 5. Test And QA
+
+At minimum, recommend or add checks for:
+
+- Catalog completeness and unused key detection.
+- Missing interpolation variables.
+- Pseudo-locale rendering.
+- Snapshot or visual coverage for expanded strings and RTL layout where relevant.
+- Formatting tests for representative locales, including at least one non-US locale.
+- Accessibility checks for language attributes, direction, screen reader labels, and translated aria text.
+
+For review tasks, report what the available tests prove and what still requires visual or translator QA.
+
+## Progressive Disclosure
+
+- Start with this `SKILL.md` for routing, hard rules, and output shape.
+- Read `references/localization-checklist.md` only when planning, reviewing, or releasing concrete localization work.
+- Do not preload unrelated frontend, SEO, copywriting, or JavaScript guidance.
+- Use the existing project i18n library and catalog format before introducing new tooling.
+
+## Output Shape
+
+Return concise, implementation-oriented output:
+
+- **Findings** for audits and reviews, ordered by severity with file or route references.
+- **Plan** for implementation requests, ordered by dependency: routing/catalog foundation, extraction, formatting, QA, release.
+- **Acceptance Criteria** that include catalog completeness, pseudo-locale, formatting, fallback, and route/SEO checks when relevant.
+- **Open Questions** only for unresolved choices that cannot be grounded in the codebase or user request.
+
+Do not rewrite marketing copy unless the user explicitly asks for copy editing. Do not perform general frontend redesign unless localization exposes a concrete layout or directionality defect.
+
+## Validation Contract
+
+Before declaring this skill complete after edits:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python audit.py skills/i18n-localization
+uv run wagents package i18n-localization --dry-run
+```
+
+Completion criteria:
+
+- Skill and eval validation pass.
+- Audit score is A or all remaining findings are explicitly accepted.
+- Package dry-run passes.
+- A smoke review of the dispatch table covers empty, explicit, implicit, and negative-control prompts.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/i18n-localization/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/i18n-localization/SKILL.md)

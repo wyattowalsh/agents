@@ -1,5 +1,7 @@
 # TailwindCSS v4 Reference
 
+> Version-sensitive reference. Registry check on 2026-04-25: `tailwindcss@4.2.4`. Official v4 docs treat `@theme` variables as the source for generated utility APIs; re-check the upgrade guide before migration work.
+
 ## 1. CSS-First Configuration
 
 Tailwind v4 eliminates `tailwind.config.js`. Configure everything in CSS.

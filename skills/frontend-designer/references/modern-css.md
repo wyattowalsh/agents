@@ -1,6 +1,6 @@
 # Modern CSS Reference (2024-2026)
 
-Technical reference for modern CSS features. Each section includes syntax, use cases, browser support, and `@supports` guards where appropriate.
+Technical reference for modern CSS features. Browser support is volatile; verify current MDN/Can I Use data before shipping partial or experimental features.
 
 ---
 

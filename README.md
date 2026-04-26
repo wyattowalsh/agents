@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-43-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-46-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -36,6 +36,7 @@ Reusable actions and knowledge bases for AI agents.
 | ---- | ----------- |
 | add-badges | Detect stack and generate shields.io README badges with icons, colors, live endpoints. Use when adding or updating badges. NOT for README writing, docs, or CI/CD setup. |
 | agent-conventions | Agent definition conventions. Validate frontmatter, update indexes. Use when creating or modifying agents. NOT for skills, MCP servers, or CLAUDE.md. |
+| agent-runtime-governance | Audit runtime controls for tool permissions, approvals, memory, telemetry, evals, rollout, and containment. Use when reviewing tool-bearing agent systems. NOT for security scans, prompt-only work, or static code review. |
 | api-designer | Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs. NOT for MCP servers (mcp-creator) or frontend API calls. |
 | changelog-writer | Generate changelogs, release notes, and migration guides from git history. Parse conventional commits. Use for releases. NOT for git ops (git-workflow) or doc sites (docs-steward). |
 | data-pipeline-architect | Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design. |
@@ -47,12 +48,14 @@ Reusable actions and knowledge bases for AI agents.
 | draw-thing | Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS. NOT for UI implementation (frontend-designer). |
 | email-whiz | Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail. |
 | event-driven-architect | Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines. |
+| external-skill-auditor | Audit third-party Agent Skills before install or repo promotion. Use when evaluating external skill sources, hooks, scripts, provenance, credentials, network behavior, or destructive commands. NOT for creating skills, code review, or appsec scans. |
 | files-buddy | Safe filesystem organization, deduplication, renaming, and cleanup with cloud drive support. Delegates to best-in-class CLI tools. Use for file management. NOT for shell scripts (shell-scripter). |
-| frontend-designer | Build frontends with React, Tailwind, shadcn/ui. Scaffold, create, theme, refactor, audit. Use when building or improving UI. NOT for backend, DevOps, testing, or state management. |
+| frontend-designer | Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI. NOT for backend, tests, state, routing, or DevOps. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
 | harness-master | Audit harness configs and apply fixes. Use when tuning Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents (agent-conventions) or MCP servers (mcp-creator). |
 | honest-review | Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality. NOT for feature work or benchmarking. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
+| i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |
 | incident-response-engineer | Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning. |
 | infrastructure-coder | Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work. NOT for CI/CD (devops-engineer), application code, or actual pricing. |
 | javascript-conventions | Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts. |
