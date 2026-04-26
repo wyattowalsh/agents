@@ -67,4 +67,7 @@ For unfamiliar tools/APIs, check `{docs_url}/llms.txt` (index) and `llms-full.tx
 - Treat `/Users/ww/dev/projects/agents/instructions/global.md` as the canonical shared instruction source.
 - Keep Codex-specific config generation in `/Users/ww/dev/projects/agents/scripts/sync_agent_stack.py`.
 - Keep `/Users/ww/.codex/config.toml` and the repo-owned sanitized config copy schema-valid.
+- Codex disables automatic startup skill-list injection to avoid context-budget warnings; use
+  `uv run wagents skills search|context|read|doctor ...` from `/Users/ww/dev/projects/agents`
+  when a task needs a skill body or a missing/omitted skill must be recovered.
 - Prefer dynamic subagent delegation over hardcoded static teams; keep local agent ceilings practical.

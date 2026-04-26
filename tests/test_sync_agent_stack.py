@@ -455,6 +455,8 @@ enabled = true
     assert 'model_reasoning_effort = "high"' in home_config
     assert 'plan_mode_reasoning_effort = "high"' in home_config
     assert 'model_reasoning_effort = "xhigh"' in home_config
+    assert "[skills]" in home_config
+    assert "include_instructions = false" in home_config
     assert 'status_line = ["model-with-reasoning", "context-remaining", "current-dir"]' in home_config
     assert 'status_line = ["model", "approval", "sandbox", "cwd"]' not in home_config
     assert "local-secret" in home_config

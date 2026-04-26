@@ -130,6 +130,9 @@ exclude_slash_tmp = false
 [shell_environment_policy]
 inherit = "core"
 
+[skills]
+include_instructions = false
+
 [tui]
 notifications = true
 notification_method = "auto"
