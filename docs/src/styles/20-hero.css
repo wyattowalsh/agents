@@ -32,6 +32,17 @@
   overflow: hidden;
 }
 
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, oklch(0.06 0.01 220 / 0.78), oklch(0.06 0.01 220 / 0.92)),
+    url('../assets/brand/control-plane-hero.webp') center / cover no-repeat;
+  opacity: 0.72;
+  transform: scale(1.02);
+}
+
 /* Terminal mockup styling */
 .hero-terminal {
   background: var(--hero-panel-gradient);

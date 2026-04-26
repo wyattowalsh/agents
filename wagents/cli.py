@@ -18,7 +18,13 @@ from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 from wagents.parsing import parse_frontmatter, to_title
 from wagents.rendering import scaffold_doc_page
 from wagents.skill_index import collect_skill_records, doctor_report, read_skill, search_skills
-from wagents.site_model import REPO_SOURCE, SUPPORTED_AGENT_IDS, build_install_command
+from wagents.site_model import (
+    REPO_SOURCE,
+    SUPPORTED_AGENT_IDS,
+    VISUAL_ASSET_BY_ID,
+    build_install_command,
+    docs_asset_repo_path,
+)
 
 # Typer apps
 app = typer.Typer(help="CLI for managing centralized AI agent assets")
@@ -1446,11 +1452,14 @@ def readme(
                 except Exception:
                     mcps.append((mcp_subdir.name, ""))
 
+    logo_repo_path = docs_asset_repo_path(VISUAL_ASSET_BY_ID["logo"].src)
+    social_card_repo_path = docs_asset_repo_path(VISUAL_ASSET_BY_ID["social-card"].src)
+
     content_parts = [
         '<div align="center">',
         (
             '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
-            'docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">'
+            f'{logo_repo_path}" alt="Agents Logo" width="100" height="100">'
         ),
         "  <h1>agents</h1>",
         "  <p><b>Portable AI agent skills, MCP config, and shared instructions</b></p>",
@@ -1483,7 +1492,7 @@ def readme(
         "  </p>",
         (
             '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
-            'docs/public/social-card.png" alt="Agents social preview" width="640">'
+            f'{social_card_repo_path}" alt="Agents social preview" width="640">'
         ),
         "</div>",
         "",

@@ -40,6 +40,10 @@ hero:
 ---
 
 import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import catalogMeshArt from '../../assets/illustrations/catalog-mesh.webp';
+import mcpRoutingArt from '../../assets/illustrations/mcp-routing.webp';
+import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
+import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 <div class="stats-bar">
   <span class="stat stat-skill">48 Custom Skills</span>
@@ -88,6 +92,39 @@ Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gem
 <Aside type="tip" title="Fastest path">
 Use [Start Here](/start-here/) when you want the shortest setup path, a few strong starter skills, and a quick mental model of the repo.
 </Aside>
+
+## Visual Map
+
+<div class="visual-showcase">
+  <figure class="visual-panel">
+    <img src={catalogMeshArt.src} alt="Portable skills represented as connected modular interface cards" />
+    <figcaption>
+      <strong>Catalog Mesh</strong>
+      <span>Explains the skill catalog as reusable, connected workflow components.</span>
+    </figcaption>
+  </figure>
+  <figure class="visual-panel">
+    <img src={mcpRoutingArt.src} alt="MCP tools and document pipelines represented as a luminous routing graph" />
+    <figcaption>
+      <strong>MCP Routing</strong>
+      <span>Explains tool, server, and document flow across configured MCP surfaces.</span>
+    </figcaption>
+  </figure>
+  <figure class="visual-panel">
+    <img src={harnessMatrixArt.src} alt="Multiple coding-agent harness interfaces connected to one shared skill source" />
+    <figcaption>
+      <strong>Harness Matrix</strong>
+      <span>Shows supported agents consuming one portable skill bundle.</span>
+    </figcaption>
+  </figure>
+  <figure class="visual-panel">
+    <img src={workflowMapArt.src} alt="Repository bundle flowing through install, invocation, and validation panels" />
+    <figcaption>
+      <strong>Workflow Map</strong>
+      <span>Shows the operational path from bundle source to validated agent workflow.</span>
+    </figcaption>
+  </figure>
+</div>
 
 ## What Skills Are
 

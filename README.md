@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/src/assets/logo.webp" alt="Agents Logo" width="100" height="100">
+  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/src/assets/brand/logo.webp" alt="Agents Logo" width="100" height="100">
   <h1>agents</h1>
   <p><b>Portable AI agent skills, MCP config, and shared instructions</b></p>
   <p>

@@ -3,7 +3,9 @@
 from wagents.catalog import CatalogNode
 from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
+    VISUAL_ASSET_BY_ID,
     build_install_command,
+    docs_asset_repo_path,
     render_site_data_module,
     site_data,
 )
@@ -41,3 +43,13 @@ def test_render_site_data_module_exports_runtime_constants():
     assert "export const siteData =" in rendered
     assert "export const supportedAgents = siteData.supportedAgents;" in rendered
     assert "export const installCommands = siteData.installCommands;" in rendered
+    assert "export const visualAssets = siteData.visualAssets;" in rendered
+
+
+def test_visual_assets_are_manifest_backed():
+    data = site_data([])
+    asset_ids = {asset["id"] for asset in data["visualAssets"]}
+
+    assert {"logo", "social-card", "control-plane-hero", "catalog-mesh", "mcp-routing"} <= asset_ids
+    assert docs_asset_repo_path(VISUAL_ASSET_BY_ID["logo"].src) == "docs/src/assets/brand/logo.webp"
+    assert docs_asset_repo_path(VISUAL_ASSET_BY_ID["social-card"].src) == "docs/public/social-card.png"

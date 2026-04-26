@@ -17,6 +17,7 @@ from wagents.rendering import (
     safe_outer_fence,
 )
 from wagents.site_model import (
+    VISUAL_ASSET_BY_ID,
     agent_flags,
     build_install_command,
     render_site_data_module,
@@ -59,6 +60,13 @@ def write_site_data(nodes: list) -> None:
         has_mcp_overview=_has_mcp_overview_page(),
     )
     (DOCS_DIR / "src" / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
+
+
+def _mdx_asset_import_path(src: str) -> str:
+    """Return a generated MDX import path for an asset under docs/src/assets."""
+    if not src.startswith("/src/assets/"):
+        raise ValueError(f"Expected docs src asset path, got {src!r}")
+    return "../../assets/" + src.removeprefix("/src/assets/")
 
 
 def write_index_page(nodes: list) -> None:
@@ -110,6 +118,14 @@ def write_index_page(nodes: list) -> None:
     parts.append("---")
     parts.append("")
     parts.append("import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';")
+    visual_imports = {
+        "catalogMeshArt": VISUAL_ASSET_BY_ID["catalog-mesh"],
+        "mcpRoutingArt": VISUAL_ASSET_BY_ID["mcp-routing"],
+        "harnessMatrixArt": VISUAL_ASSET_BY_ID["harness-matrix"],
+        "workflowMapArt": VISUAL_ASSET_BY_ID["workflow-map"],
+    }
+    for import_name, asset in visual_imports.items():
+        parts.append(f"import {import_name} from '{_mdx_asset_import_path(asset.src)}';")
     parts.append("")
 
     # Stats bar — only show non-zero counts
@@ -209,6 +225,20 @@ def write_index_page(nodes: list) -> None:
         "a few strong starter skills, and a quick mental model of the repo."
     )
     parts.append("</Aside>")
+    parts.append("")
+
+    parts.append("## Visual Map")
+    parts.append("")
+    parts.append('<div class="visual-showcase">')
+    for import_name, asset in visual_imports.items():
+        parts.append('  <figure class="visual-panel">')
+        parts.append(f'    <img src={{{import_name}.src}} alt="{escape_attr(asset.alt)}" />')
+        parts.append("    <figcaption>")
+        parts.append(f"      <strong>{escape_attr(asset.title)}</strong>")
+        parts.append(f"      <span>{escape_attr(asset.description)}</span>")
+        parts.append("    </figcaption>")
+        parts.append("  </figure>")
+    parts.append("</div>")
     parts.append("")
 
     parts.append("## What Skills Are")
@@ -394,11 +424,22 @@ def write_cli_page() -> None:
         "import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge }"
         " from '@astrojs/starlight/components';"
     )
+    parts.append(f"import harnessMatrixArt from '{_mdx_asset_import_path(VISUAL_ASSET_BY_ID['harness-matrix'].src)}';")
     parts.append("")
     parts.append(
         "`wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. "
         "Use it to scaffold new assets, validate the repo, publish docs, and package skills for release."
     )
+    parts.append("")
+    parts.append('<figure class="visual-panel">')
+    parts.append(
+        f'  <img src={{harnessMatrixArt.src}} alt="{escape_attr(VISUAL_ASSET_BY_ID["harness-matrix"].alt)}" />'
+    )
+    parts.append("  <figcaption>")
+    parts.append(f"    <strong>{escape_attr(VISUAL_ASSET_BY_ID['harness-matrix'].title)}</strong>")
+    parts.append(f"    <span>{escape_attr(VISUAL_ASSET_BY_ID['harness-matrix'].description)}</span>")
+    parts.append("  </figcaption>")
+    parts.append("</figure>")
     parts.append("")
     parts.append("## Boot Sequence")
     parts.append("")
