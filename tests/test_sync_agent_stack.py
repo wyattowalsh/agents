@@ -12,10 +12,12 @@ from scripts.sync_agent_stack import (
     render_cherry_server,
     render_codex_config,
     render_codex_mcp_block,
+    render_copilot_hooks,
     render_copilot_mcp,
     render_gemini_mcp,
     render_opencode_mcp,
     render_repo_mcp,
+    render_standard_hooks,
     sync_codex_entrypoint,
     sync_generated_json_directory,
 )
@@ -220,6 +222,60 @@ def test_render_cherry_import_files_writes_all_and_per_server_files():
             },
         }
     }
+
+
+def test_hook_registry_renders_research_hooks_for_supported_harnesses():
+    registry = {
+        "version": 1,
+        "hooks": [
+            {
+                "id": "research-readonly-write-guard",
+                "logical_event": "PreToolUse",
+                "matcher": "Write|Edit|MultiEdit",
+                "command": (
+                    "python3 {repo_root}/hooks/wagents-hook.py "
+                    "research-readonly-write-guard --harness {harness}"
+                ),
+                "timeout": 5,
+                "description": "Block research writes.",
+                "harnesses": ["codex", "claude-code", "github-copilot", "gemini-cli"],
+            },
+            {
+                "id": "research-stop-verifier",
+                "logical_event": "Stop",
+                "command": "python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}",
+                "timeout": 30,
+                "harnesses": ["codex", "gemini-cli"],
+            },
+        ],
+    }
+
+    codex = render_standard_hooks(registry, "codex")
+    gemini = render_standard_hooks(registry, "gemini-cli")
+    copilot = render_copilot_hooks(registry)
+
+    codex_command = codex["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
+    gemini_command = gemini["hooks"]["BeforeTool"][0]["hooks"][0]["command"]
+    copilot_command = copilot["hooks"]["preToolUse"][0]["bash"]
+
+    assert "research-readonly-write-guard --harness codex" in codex_command
+    assert str(sync_agent_stack.REPO_ROOT) in codex_command
+    assert "research-readonly-write-guard --harness gemini-cli" in gemini_command
+    assert gemini["hooks"]["BeforeTool"][0]["hooks"][0]["timeout"] == 5000
+    assert "research-readonly-write-guard --harness github-copilot" in copilot_command
+    assert "./hooks/wagents-hook.py" in copilot_command
+    assert "Stop" in codex["hooks"]
+    assert "AfterAgent" in gemini["hooks"]
+
+
+def test_render_codex_config_enables_hooks_feature():
+    registry = {"servers": {}}
+    policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
+
+    rendered = render_codex_config("", registry, policy, include_local_extras=False)
+
+    assert "\n[features]\n" in rendered
+    assert "codex_hooks = true" in rendered
 
 
 def test_sync_generated_json_directory_rewrites_managed_json_and_leaves_parent_files_untouched(tmp_path):

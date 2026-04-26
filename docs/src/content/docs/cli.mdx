@@ -441,12 +441,12 @@ For day-to-day development, `wagents docs dev` is the most common command -- it 
 
 ### `wagents hooks` -- Lifecycle Hooks
 
-Inspect and validate lifecycle hooks defined in `.claude/settings.json`, skill frontmatter, and agent frontmatter.
+Inspect and validate lifecycle hooks defined in `.claude/settings.json`, skill frontmatter, agent frontmatter, and the portable `config/hook-registry.json`.
 
 <Tabs>
   <TabItem label="list">
 
-List all hooks across skills, agents, and settings:
+List all hooks across skills, agents, settings, and the portable hook registry:
 
 ```bash
 wagents hooks list
@@ -455,7 +455,7 @@ wagents hooks list
 wagents hooks list --format json
 ```
 
-Shows source, event, matcher, handler type, and command/prompt for each hook.
+Shows source, event, matcher, harness support, handler type, and command/prompt for each hook.
 
   </TabItem>
   <TabItem label="validate">
@@ -466,7 +466,7 @@ Validate hook definitions for correct structure and known event names:
 wagents hooks validate
 ```
 
-Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), handler types are valid (`command`, `prompt`, `agent`), and required fields are present.
+Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), handler types are valid (`command`, `prompt`, `agent`), registry harnesses are supported, and required fields are present.
 
   </TabItem>
 </Tabs>

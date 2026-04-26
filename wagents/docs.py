@@ -960,13 +960,13 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append(
         "Inspect and validate lifecycle hooks defined in `.claude/settings.json`, "
-        "skill frontmatter, and agent frontmatter."
+        "skill frontmatter, agent frontmatter, and the portable `config/hook-registry.json`."
     )
     parts.append("")
     parts.append("<Tabs>")
     parts.append('  <TabItem label="list">')
     parts.append("")
-    parts.append("List all hooks across skills, agents, and settings:")
+    parts.append("List all hooks across skills, agents, settings, and the portable hook registry:")
     parts.append("")
     parts.append("```bash")
     parts.append("wagents hooks list")
@@ -975,7 +975,9 @@ def write_cli_page() -> None:
     parts.append("wagents hooks list --format json")
     parts.append("```")
     parts.append("")
-    parts.append("Shows source, event, matcher, handler type, and command/prompt for each hook.")
+    parts.append(
+        "Shows source, event, matcher, harness support, handler type, and command/prompt for each hook."
+    )
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="validate">')
@@ -988,7 +990,8 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append(
         "Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostToolUse`, etc.), "
-        "handler types are valid (`command`, `prompt`, `agent`), and required fields are present."
+        "handler types are valid (`command`, `prompt`, `agent`), registry harnesses are supported, "
+        "and required fields are present."
     )
     parts.append("")
     parts.append("  </TabItem>")
