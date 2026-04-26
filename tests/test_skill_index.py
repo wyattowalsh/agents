@@ -14,9 +14,7 @@ runner = CliRunner()
 def _write_skill(base: Path, name: str, description: str, body: str = "Body text.") -> Path:
     skill_dir = base / name
     skill_dir.mkdir(parents=True)
-    (skill_dir / "SKILL.md").write_text(
-        f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n\n{body}\n"
-    )
+    (skill_dir / "SKILL.md").write_text(f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n\n{body}\n")
     return skill_dir
 
 
