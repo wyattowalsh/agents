@@ -19,7 +19,7 @@
 Install all skills globally into your favorite agents:
 
 ```bash
-npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
 ## 📦 Distribution

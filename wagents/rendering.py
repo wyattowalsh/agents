@@ -15,6 +15,7 @@ from wagents.parsing import (
     strip_relative_md_links,
     truncate_sentence,
 )
+from wagents.site_model import build_install_command
 
 # ---------------------------------------------------------------------------
 # MDX escaper
@@ -310,11 +311,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("**Install:**")
     parts.append("```bash")
     if node.source == "custom":
-        parts.append(
-            f"npx skills add github:wyattowalsh/agents --skill {node.id} -y -g "
-            "--agent claude-code --agent codex --agent gemini-cli "
-            "--agent antigravity --agent github-copilot --agent opencode"
-        )
+        parts.append(build_install_command(skill=node.id))
     else:
         parts.append(f"npx skills add {node.id} -y -g")
     parts.append("```")

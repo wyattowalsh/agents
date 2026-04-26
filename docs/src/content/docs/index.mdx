@@ -15,16 +15,17 @@ hero:
         </div>
         <div class="hero-terminal-body">
           <span class="hero-terminal-prompt">$</span>
-          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode</span>
+          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode</span>
           <span class="hero-terminal-cursor">▋</span>
         </div>
         <div class="hero-agents-row">
-          <span class="hero-agent-badge">Claude</span>
-          <span class="hero-agent-badge">Gemini</span>
-          <span class="hero-agent-badge">Cursor</span>
-          <span class="hero-agent-badge">Copilot</span>
           <span class="hero-agent-badge">Antigravity</span>
+          <span class="hero-agent-badge">Claude Code</span>
+          <span class="hero-agent-badge">Codex</span>
           <span class="hero-agent-badge">Crush</span>
+          <span class="hero-agent-badge">Cursor</span>
+          <span class="hero-agent-badge">Gemini CLI</span>
+          <span class="hero-agent-badge">GitHub Copilot</span>
           <span class="hero-agent-badge">OpenCode</span>
         </div>
       </div>
@@ -60,10 +61,10 @@ Install the catalog once, then call a focused specialist inside your agent. If y
 
 ```bash
 # Install the full catalog
-npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 
 # Or start with one focused skill
-npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
 </div>
@@ -80,7 +81,7 @@ Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gem
     <Badge text="native" variant="note" /> `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same `skills/` and `mcp.json` bundle for Codex.
   </Card>
   <Card title="Skills CLI">
-    <Badge text="fallback" variant="success" /> `npx skills add github:wyattowalsh/agents ...` remains the portable install path for Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents.
+    <Badge text="fallback" variant="success" /> `npx skills add github:wyattowalsh/agents ...` remains the portable install path for supported agents.
   </Card>
 </CardGrid>
 
@@ -94,7 +95,7 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
 <CardGrid>
   <Card title="Portable">
     <div class="feature-card-icon" aria-hidden="true">P</div>
-    <Badge text="Install once" variant="note" /> Move the same workflows across Claude Code, Cursor, GitHub Copilot, Gemini CLI, Antigravity, and more.
+    <Badge text="Install once" variant="note" /> Move the same workflows across supported coding agents without maintaining parallel prompt copies.
   </Card>
   <Card title="Inspectable">
     <div class="feature-card-icon" aria-hidden="true">C</div>
@@ -102,7 +103,7 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
   </Card>
   <Card title="Composable">
     <div class="feature-card-icon" aria-hidden="true">OS</div>
-    <Badge text="Stackable" variant="success" /> Pull in one specialist for reviews, another for architecture, and another for docs without rebuilding the workflow each time.
+    <Badge text="Stackable" variant="success" /> Pull specialists together for review, architecture, docs, and runtime work without rebuilding the workflow each time.
   </Card>
 </CardGrid>
 </div>

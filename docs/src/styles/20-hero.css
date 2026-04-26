@@ -7,7 +7,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, oklch(0.72 0.07 205 / 0.22) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--hero-grid-color) 1px, transparent 1px);
   background-size: 28px 28px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 70%);
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 70%);
@@ -15,10 +15,7 @@
 
 /* Layer 2: Gradient text on hero title */
 .hero h1 {
-  background: linear-gradient(135deg in oklch,
-    oklch(0.92 0.06 205),
-    oklch(0.91 0.05 160),
-    oklch(0.94 0.03 75));
+  background: var(--hero-accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -37,15 +34,14 @@
 
 /* Terminal mockup styling */
 .hero-terminal {
-  background: oklch(0.15 0 0);
-  border: 1px solid oklch(0.3 0.03 285 / 0.4);
-  border-radius: 12px;
+  background: var(--hero-panel-gradient);
+  border: 1px solid var(--border-console);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   position: relative;
   max-width: 540px;
   margin: 0 auto;
-  box-shadow: 0 25px 50px -12px oklch(0 0 0 / 0.5),
-              0 0 40px oklch(0.62 0.1 205 / 0.12);
+  box-shadow: var(--hero-panel-shadow);
   animation: softBreath 6s ease-in-out infinite;
 }
 .hero-terminal::before {
@@ -82,8 +78,8 @@
   align-items: center;
   gap: 6px;
   padding: 10px 14px;
-  background: oklch(0.12 0 0);
-  border-bottom: 1px solid oklch(0.25 0 0);
+  background: var(--surface-console-header);
+  border-bottom: 1px solid var(--border-panel);
 }
 .hero-terminal-dot {
   width: 10px;
@@ -97,14 +93,14 @@
   flex: 1;
   text-align: center;
   font-size: 0.75rem;
-  color: oklch(0.5 0 0);
+  color: var(--text-console-muted);
   font-family: var(--sl-font-mono);
 }
 .hero-terminal-body {
   padding: 16px 20px;
   font-family: var(--sl-font-mono);
   font-size: 0.875rem;
-  color: oklch(0.85 0 0);
+  color: var(--text-console);
   display: flex;
   gap: 8px;
   align-items: center;
@@ -114,7 +110,9 @@
   font-weight: 600;
 }
 .hero-terminal-cmd {
-  color: oklch(0.85 0.05 200);
+  color: var(--text-console);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 .hero-terminal-cursor {
   color: var(--primary);
@@ -132,10 +130,10 @@
   font-size: 0.7rem;
   font-family: var(--sl-font-mono);
   padding: 3px 10px;
-  border-radius: 99px;
-  background: oklch(0.2 0.03 210 / 0.55);
-  color: oklch(0.86 0.05 200);
-  border: 1px solid oklch(0.4 0.06 205 / 0.45);
+  border-radius: var(--radius-pill);
+  background: var(--badge-surface);
+  color: var(--text-console);
+  border: 1px solid var(--badge-border);
   letter-spacing: 0.02em;
   transition: transform var(--duration-fast) ease,
               box-shadow var(--duration-fast) ease,
@@ -143,7 +141,7 @@
 }
 .hero-agent-badge:hover {
   transform: translateY(-1px);
-  background: oklch(0.25 0.05 210 / 0.65);
+  background: var(--badge-surface-hover);
   box-shadow: 0 0 12px oklch(0.5 0.1 205 / 0.2);
 }
 

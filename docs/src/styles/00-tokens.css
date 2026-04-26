@@ -50,6 +50,23 @@
   --shadow-lg: 0 16px 32px oklch(0 0 0 / 0.2);
   --shadow-glow: 0 0 24px oklch(0.62 0.1 205 / 0.16);
 
+  /* Design tokens — docs control-plane surfaces */
+  --surface-console: oklch(0.145 0.01 220 / 0.82);
+  --surface-console-header: oklch(0.115 0.008 220 / 0.92);
+  --surface-panel: oklch(0.15 0.012 220 / 0.58);
+  --surface-panel-hover: oklch(0.19 0.018 220 / 0.68);
+  --border-console: oklch(0.42 0.045 210 / 0.38);
+  --border-panel: oklch(0.34 0.035 215 / 0.32);
+  --text-console: oklch(0.86 0.035 205);
+  --text-console-muted: oklch(0.58 0.018 215);
+  --hero-grid-color: oklch(0.72 0.07 205 / 0.18);
+  --hero-accent-gradient: linear-gradient(135deg in oklch, oklch(0.88 0.05 205), oklch(0.86 0.05 160), oklch(0.9 0.035 75));
+  --hero-panel-gradient: linear-gradient(180deg, var(--surface-console), oklch(0.12 0.01 220 / 0.74));
+  --hero-panel-shadow: 0 24px 60px -28px oklch(0 0 0 / 0.72), 0 0 44px oklch(0.62 0.1 205 / 0.11);
+  --badge-surface: oklch(0.2 0.03 210 / 0.52);
+  --badge-surface-hover: oklch(0.25 0.05 210 / 0.6);
+  --badge-border: oklch(0.4 0.06 205 / 0.42);
+
   /* Design tokens — radii */
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -61,4 +78,22 @@
 :root {
   --sl-font: 'Geist Sans', system-ui, sans-serif;
   --sl-font-mono: 'Geist Mono', ui-monospace, monospace;
+}
+
+:root[data-theme='light'] {
+  --surface-console: oklch(0.99 0.006 220 / 0.92);
+  --surface-console-header: oklch(0.95 0.012 220 / 0.96);
+  --surface-panel: oklch(0.98 0.01 220 / 0.82);
+  --surface-panel-hover: oklch(0.94 0.018 220 / 0.9);
+  --border-console: oklch(0.72 0.035 215 / 0.45);
+  --border-panel: oklch(0.8 0.03 215 / 0.5);
+  --text-console: oklch(0.36 0.05 215);
+  --text-console-muted: oklch(0.52 0.025 215);
+  --hero-grid-color: oklch(0.55 0.04 210 / 0.12);
+  --hero-accent-gradient: linear-gradient(135deg in oklch, oklch(0.34 0.13 215), oklch(0.38 0.11 180), oklch(0.42 0.08 80));
+  --hero-panel-gradient: linear-gradient(180deg, var(--surface-console), oklch(0.97 0.012 220 / 0.86));
+  --hero-panel-shadow: 0 18px 42px -30px oklch(0.2 0.03 220 / 0.46), 0 0 30px oklch(0.58 0.08 205 / 0.1);
+  --badge-surface: oklch(0.94 0.02 210 / 0.62);
+  --badge-surface-hover: oklch(0.9 0.035 210 / 0.72);
+  --badge-border: oklch(0.68 0.05 210 / 0.42);
 }
