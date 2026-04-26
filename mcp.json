@@ -24,7 +24,7 @@
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--autoConnect"
+        "--isolated"
       ],
       "timeout": 600000
     },
