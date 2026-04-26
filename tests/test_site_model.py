@@ -6,7 +6,9 @@ from wagents.site_model import (
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
+    docs_src_asset_css_url,
     render_site_data_module,
+    render_visual_assets_css,
     site_data,
 )
 
@@ -53,3 +55,13 @@ def test_visual_assets_are_manifest_backed():
     assert {"logo", "social-card", "control-plane-hero", "catalog-mesh", "mcp-routing"} <= asset_ids
     assert docs_asset_repo_path(VISUAL_ASSET_BY_ID["logo"].src) == "docs/src/assets/brand/logo.webp"
     assert docs_asset_repo_path(VISUAL_ASSET_BY_ID["social-card"].src) == "docs/public/social-card.png"
+    assert docs_src_asset_css_url(VISUAL_ASSET_BY_ID["control-plane-hero"].src) == (
+        "./assets/brand/control-plane-hero.webp"
+    )
+
+
+def test_render_visual_assets_css_exports_src_asset_variables():
+    rendered = render_visual_assets_css()
+
+    assert "--agents-asset-control-plane-hero: url('./assets/brand/control-plane-hero.webp');" in rendered
+    assert "--agents-asset-social-card" not in rendered

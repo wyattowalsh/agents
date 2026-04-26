@@ -2,18 +2,26 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
+
+@dataclass(frozen=True)
+class SmokeRoute:
+    path: str
+    optional: bool = False
+
+
 ROUTES = [
-    "/",
-    "/skills/",
-    "/skills/honest-review/",
-    "/skills/wargame/",
-    "/skills/orchestrator/",
-    "/skills/mcp-creator/",
-    "/skills/installed/",
-    "/mcp/",
-    "/cli/",
+    SmokeRoute("/"),
+    SmokeRoute("/skills/"),
+    SmokeRoute("/skills/honest-review/"),
+    SmokeRoute("/skills/wargame/"),
+    SmokeRoute("/skills/orchestrator/"),
+    SmokeRoute("/skills/mcp-creator/"),
+    SmokeRoute("/skills/installed/", optional=True),
+    SmokeRoute("/mcp/"),
+    SmokeRoute("/cli/"),
 ]
 
 VIEWPORTS = {
@@ -133,27 +141,52 @@ def main() -> int:
                 )
                 try:
                     for route in ROUTES:
-                        url = args.base_url.rstrip("/") + route
-                        file_stem = _slug(route)
-                        print(f"[{viewport_name}] {route}", flush=True)
+                        url = args.base_url.rstrip("/") + route.path
+                        file_stem = _slug(route.path)
+                        print(f"[{viewport_name}] {route.path}", flush=True)
                         page = None
-                        reduced_page = None
+                        skip_reduced_motion = False
                         try:
                             page = context.new_page()
+                            response = page.goto(url, wait_until="commit", timeout=args.timeout_ms)
+                            status = response.status if response else 0
+                            if status == 404 and route.optional:
+                                print(f"[skip] {route.path} returned 404 (optional generated route)", flush=True)
+                                skip_reduced_motion = True
+                            elif status >= 400:
+                                raise RuntimeError(f"{route.path} returned HTTP {status}")
+                            if not skip_reduced_motion:
+                                page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
+                                page.wait_for_timeout(250)
+                                capture_screenshot(page, out_dir / f"{viewport_name}--{file_stem}.png")
+
+                                # Keyboard smoke: page should handle a few tab presses without throwing.
+                                page.keyboard.press("Tab")
+                                page.keyboard.press("Tab")
+                                page.keyboard.press("Tab")
+                                page.keyboard.press("Escape")
+                        finally:
+                            if page:
+                                page.close()
+
+                        if skip_reduced_motion:
+                            continue
+
+                        reduced_page = None
+                        try:
+                            print(f"[{viewport_name}] {route.path} (reduced-motion)", flush=True)
                             reduced_page = reduced_context.new_page()
-                            page.goto(url, wait_until="commit", timeout=args.timeout_ms)
-                            page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
-                            page.wait_for_timeout(250)
-                            capture_screenshot(page, out_dir / f"{viewport_name}--{file_stem}.png")
-
-                            # Keyboard smoke: page should handle a few tab presses without throwing.
-                            page.keyboard.press("Tab")
-                            page.keyboard.press("Tab")
-                            page.keyboard.press("Tab")
-                            page.keyboard.press("Escape")
-
-                            print(f"[{viewport_name}] {route} (reduced-motion)", flush=True)
-                            reduced_page.goto(url, wait_until="commit", timeout=args.timeout_ms)
+                            reduced_response = reduced_page.goto(url, wait_until="commit", timeout=args.timeout_ms)
+                            reduced_status = reduced_response.status if reduced_response else 0
+                            if reduced_status == 404 and route.optional:
+                                print(
+                                    f"[skip] {route.path} returned 404 in reduced-motion"
+                                    " (optional generated route)",
+                                    flush=True,
+                                )
+                                continue
+                            if reduced_status >= 400:
+                                raise RuntimeError(f"{route.path} returned HTTP {reduced_status} in reduced-motion")
                             reduced_page.wait_for_selector("body", state="visible", timeout=args.timeout_ms)
                             reduced_page.wait_for_timeout(250)
                             capture_screenshot(
@@ -161,8 +194,6 @@ def main() -> int:
                                 out_dir / f"{viewport_name}--{file_stem}--reduced-motion.png",
                             )
                         finally:
-                            if page:
-                                page.close()
                             if reduced_page:
                                 reduced_page.close()
                 finally:
