@@ -730,6 +730,15 @@ def merge_hook_groups(existing: dict[str, Any], generated: dict[str, Any]) -> di
     return merged
 
 
+def merge_codex_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
+    existing: dict[str, Any] = {}
+    if CODEX_HOOKS_PATH.exists():
+        existing = load_json(CODEX_HOOKS_PATH)
+    existing_hooks = existing.get("hooks") if isinstance(existing.get("hooks"), dict) else {}
+    existing["hooks"] = merge_hook_groups(existing_hooks, render_standard_hooks(hook_registry, "codex"))
+    write_json(ctx, CODEX_HOOKS_PATH, existing)
+
+
 def render_codex_global_instructions() -> str:
     global_text = GLOBAL_MD.read_text(encoding="utf-8").rstrip("\n")
     codex_suffix = """
@@ -1406,7 +1415,7 @@ def sync_home_targets(
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
-    write_json(ctx, CODEX_HOOKS_PATH, render_standard_hooks(hook_registry, "codex"))
+    merge_codex_hooks(ctx, hook_registry)
     sync_generated_json_directory(
         ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)
     )

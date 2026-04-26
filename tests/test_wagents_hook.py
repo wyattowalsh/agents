@@ -97,6 +97,33 @@ def test_codex_dangerous_shell_guard_denies_recursive_remove(monkeypatch, tmp_pa
     assert code == 0
     assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
     assert "recursive remove" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+    ledger = next((tmp_path / ".codex" / "research" / "hook-ledger").glob("*.jsonl"))
+    record = json.loads(ledger.read_text(encoding="utf-8").splitlines()[0])
+    assert record["decision"] == "deny"
+    assert record["session_id_hash"]
+
+
+def test_inactive_guard_records_allow_decision(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Edit",
+            "tool_input": {"file_path": "README.md"},
+        },
+        ["research-readonly-write-guard", "--harness", "codex"],
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+    ledger = next((tmp_path / ".codex" / "research" / "hook-ledger").glob("*.jsonl"))
+    record = json.loads(ledger.read_text(encoding="utf-8").splitlines()[0])
+    assert record["decision"] == "allow"
+    assert record["policy"] == "research-readonly-write-guard"
 
 
 def test_gemini_evidence_ledger_records_urls(monkeypatch, tmp_path):
