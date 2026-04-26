@@ -9,7 +9,7 @@ license: MIT
 model: sonnet
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "1.0.0"
 ---
 
 # Shell Scripter

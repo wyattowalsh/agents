@@ -8,7 +8,7 @@ argument-hint: "<mode> [pipeline]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "1.0.0"
 ---
 
 # Data Pipeline Architect

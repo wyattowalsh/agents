@@ -8,7 +8,7 @@ argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "5.0"
+  version: "5.0.0"
 model: sonnet
 hooks:
   PreToolUse:
