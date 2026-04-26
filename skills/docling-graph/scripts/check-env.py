@@ -31,7 +31,7 @@ PROVIDER_ENV: dict[str, list[tuple[str, bool]]] = {
     ],
     "ollama": [("OLLAMA_HOST", False)],
     "vllm": [("VLLM_API_BASE", False), ("OPENAI_API_BASE", False)],
-    "lmstudio": [("LMSTUDIO_API_BASE", False), ("OPENAI_API_BASE", False)],
+    "lmstudio": [("LM_STUDIO_API_BASE", False), ("LMSTUDIO_API_BASE", False), ("OPENAI_API_BASE", False)],
 }
 
 
@@ -185,16 +185,15 @@ def check_provider(provider: str) -> dict[str, Any]:
     optional = [name for name, is_required in envs if not is_required]
     statuses = {name: env_status(name) for name, _ in envs}
 
-    if provider == "gemini":
+    if not required:
+        ok = True
+        detail = "no required environment variables; optional base URL variables are reported as set/missing"
+    elif provider == "gemini":
         ok = any(os.environ.get(name) for name in ("GOOGLE_API_KEY", "GEMINI_API_KEY"))
         detail = "one of GOOGLE_API_KEY or GEMINI_API_KEY must be set for Gemini"
     else:
         ok = all(os.environ.get(name) for name in required)
         detail = "required environment variables are set" if ok else "missing required environment variables"
-
-    if not required and not ok:
-        ok = True
-        detail = "no required environment variables; verify local server/base URL separately"
 
     return {
         "provider": provider,

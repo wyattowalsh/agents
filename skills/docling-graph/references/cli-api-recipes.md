@@ -7,7 +7,7 @@ Use these patterns as starting points. Confirm exact flags and field names again
 ```bash
 docling-graph convert docs/filing.pdf \
   --template templates.sec:FilingGraph \
-  --output out/filing \
+  --output-dir out/filing \
   --provider openai \
   --model gpt-4.1-mini \
   --extraction-contract staged \
@@ -30,7 +30,7 @@ Review graph counts, missing required fields, structured-output fallback, sparse
 ```bash
 docling-graph convert samples/simple.pdf \
   --template templates.invoice:InvoiceGraph \
-  --output out/simple \
+  --output-dir out/simple \
   --extraction-contract direct \
   --provider openai \
   --model gpt-4.1-mini \
@@ -45,7 +45,7 @@ Use this for simple templates and small samples. If required relationships are c
 ```bash
 docling-graph convert samples/report.pdf \
   --template templates.report:ReportGraph \
-  --output out/report \
+  --output-dir out/report \
   --extraction-contract staged \
   --provider mistral \
   --model mistral-large-latest \
@@ -60,7 +60,7 @@ Inspect stage outputs and merge behavior before exporting.
 ```bash
 docling-graph convert samples/contracts.pdf \
   --template templates.contracts:ContractGraph \
-  --output out/contracts \
+  --output-dir out/contracts \
   --extraction-contract delta \
   --provider openai \
   --model gpt-4.1 \
@@ -81,7 +81,7 @@ from docling_graph.pipeline import PipelineConfig
 from templates.contracts import ContractGraph
 
 config = PipelineConfig(
-    input_path=Path("samples/contracts.pdf"),
+    source=Path("samples/contracts.pdf"),
     output_dir=Path("out/contracts"),
     template=ContractGraph,
     provider_override="openai",

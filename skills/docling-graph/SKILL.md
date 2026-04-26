@@ -140,7 +140,7 @@ Give both a CLI command and validation follow-up. Keep CLI flag names distinct f
 ```bash
 docling-graph convert SOURCE_PATH \
   --template TEMPLATE_MODULE:RootModel \
-  --output OUTPUT_DIR \
+  --output-dir OUTPUT_DIR \
   --provider PROVIDER \
   --model MODEL \
   --extraction-contract direct \
@@ -170,7 +170,7 @@ from docling_graph.pipeline import PipelineConfig
 from templates.sec import FilingGraph
 
 config = PipelineConfig(
-    input_path=Path("filing.pdf"),
+    source=Path("filing.pdf"),
     output_dir=Path("out/filing"),
     template=FilingGraph,
     provider_override="openai",

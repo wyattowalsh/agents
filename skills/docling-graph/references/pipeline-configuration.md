@@ -87,7 +87,7 @@ from docling_graph import run_pipeline
 from docling_graph.pipeline import PipelineConfig
 
 config = PipelineConfig(
-    input_path=Path("input.pdf"),
+    source=Path("input.pdf"),
     output_dir=Path("out/input"),
     template=RootGraph,
     provider_override="openai",
