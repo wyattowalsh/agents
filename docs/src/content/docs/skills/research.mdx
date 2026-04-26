@@ -106,11 +106,11 @@ hooks:
   PreToolUse:
     - matcher: "Write|Edit|MultiEdit"
       hooks:
-        - command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-readonly-write-guard --harness auto'''
+        - command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-readonly-write-guard --harness claude-code'''
   Stop:
     - hooks:
         - type: command
-          command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-stop-verifier --harness auto'''
+          command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-stop-verifier --harness claude-code'''
 ---
 
 # Deep Research

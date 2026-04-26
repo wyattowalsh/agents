@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -261,7 +262,7 @@ def _policy_readonly_write_guard(payload: NormalizedPayload) -> int:
             payload,
             "Research sessions are read-only for source files; use journal-store.py for research journals.",
         )
-    if name in SHELL_TOOL_NAMES and _shell_writes_source(payload.command):
+    if name in SHELL_TOOL_NAMES and _shell_writes_source(payload.command, payload.cwd):
         return _deny(
             payload,
             "Research shell command appears to write source files; journals must stay under the research state dir.",
@@ -269,26 +270,100 @@ def _policy_readonly_write_guard(payload: NormalizedPayload) -> int:
     return 0
 
 
-def _shell_writes_source(command: str) -> bool:
+def _split_shell(command: str) -> list[str]:
+    try:
+        return shlex.split(command, comments=False)
+    except ValueError:
+        return []
+
+
+def _is_allowed_research_target(target: str, cwd: str) -> bool:
+    target = target.strip().strip("'\"")
+    if not target or target in {"/dev/null", "&1", "&2"}:
+        return target == "/dev/null"
+    raw_path = Path(target).expanduser()
+    if not raw_path.is_absolute():
+        raw_path = Path(cwd).expanduser() / raw_path
+    try:
+        resolved = raw_path.resolve(strict=False)
+    except OSError:
+        return False
+    allowed_roots = [
+        Path.home() / ".codex" / "research",
+        Path.home() / ".claude" / "research",
+        Path.home() / ".gemini" / "research",
+        Path.home() / ".copilot" / "research",
+    ]
+    return any(resolved == root or root in resolved.parents for root in allowed_roots)
+
+
+def _redirection_targets(command: str) -> list[str]:
+    pattern = re.compile(r"(?:^|\s)(?:\d?>{1,2}|&>|>{1,2})\s*(?!&)(?P<target>[^\s;&|]+)")
+    return [match.group("target") for match in pattern.finditer(command)]
+
+
+def _journal_store_invocation(tokens: list[str]) -> bool:
+    for index, token in enumerate(tokens):
+        path = Path(token)
+        if path.name != "journal-store.py":
+            continue
+        if "-c" in tokens[:index]:
+            return False
+        parts = set(path.parts)
+        return {"skills", "research", "scripts"}.issubset(parts)
+    return False
+
+
+def _tee_targets(tokens: list[str]) -> list[str]:
+    targets: list[str] = []
+    for index, token in enumerate(tokens):
+        if Path(token).name != "tee":
+            continue
+        for candidate in tokens[index + 1 :]:
+            if candidate in {"&&", "||", ";", "|"}:
+                break
+            if not candidate.startswith("-"):
+                targets.append(candidate)
+    return targets
+
+
+def _copy_move_targets(tokens: list[str]) -> list[str]:
+    targets: list[str] = []
+    for index, token in enumerate(tokens):
+        command_name = Path(token).name
+        if command_name not in {"cp", "mv", "touch"}:
+            continue
+        args: list[str] = []
+        for candidate in tokens[index + 1 :]:
+            if candidate in {"&&", "||", ";", "|"}:
+                break
+            if not candidate.startswith("-"):
+                args.append(candidate)
+        if command_name == "touch":
+            targets.extend(args)
+        elif args:
+            targets.append(args[-1])
+    return targets
+
+
+def _shell_writes_source(command: str, cwd: str) -> bool:
     if not command:
         return False
-    allowed = (
-        "journal-store.py",
-        "/research/",
-        ".codex/research",
-        ".claude/research",
-        ".gemini/research",
-        ".copilot/research",
-    )
-    if any(token in command for token in allowed):
-        return False
-    write_patterns = [
-        r"(^|\s)(cat|printf|echo)\b.*>\s*(?!/dev/null)",
-        r"(^|\s)(python|python3|node|ruby|perl)\b.*\b(open|write|write_text)\b",
-        r"(^|\s)(sed|perl)\s+-i\b",
-        r"(^|\s)(tee|touch|mv|cp)\b",
-    ]
-    return any(re.search(pattern, command) for pattern in write_patterns)
+    tokens = _split_shell(command)
+    redirection_targets = _redirection_targets(command)
+    if any(not _is_allowed_research_target(target, cwd) for target in redirection_targets):
+        return True
+    if re.search(r"(^|\s)(sed|perl)\s+-i\b", command):
+        return True
+    tee_targets = _tee_targets(tokens)
+    if tee_targets:
+        return any(not _is_allowed_research_target(target, cwd) for target in tee_targets)
+    copy_move_targets = _copy_move_targets(tokens)
+    if copy_move_targets:
+        return any(not _is_allowed_research_target(target, cwd) for target in copy_move_targets)
+    if re.search(r"(^|\s)(python|python3|node|ruby|perl)\b.*\b(open|write|write_text)\b", command):
+        return not _journal_store_invocation(tokens)
+    return False
 
 
 def _policy_dangerous_shell_guard(payload: NormalizedPayload) -> int:
