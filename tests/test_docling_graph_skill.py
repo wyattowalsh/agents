@@ -108,3 +108,24 @@ def test_check_env_redacts_provider_secrets(monkeypatch) -> None:
     assert report["providers"][0]["ok"] is True
     assert report["providers"][0]["env"]["OPENAI_API_KEY"] == "set"
     assert report["provider_env"][0]["status"] == "set"
+
+
+def test_check_env_uses_documented_lm_studio_base_url(monkeypatch) -> None:
+    monkeypatch.setenv("LM_STUDIO_API_BASE", "http://localhost:1234/v1")
+    check_env = load_script("check-env.py")
+
+    report = check_env.build_report(
+        Namespace(
+            template=None,
+            provider=["lmstudio"],
+            provider_env=[],
+            check_cli_help=False,
+            format="json",
+        )
+    )
+
+    encoded = json.dumps(report)
+    assert "http://localhost:1234/v1" not in encoded
+    assert report["providers"][0]["ok"] is True
+    assert report["providers"][0]["env"]["LM_STUDIO_API_BASE"] == "set"
+    assert report["providers"][0]["env"]["LMSTUDIO_API_BASE"] == "missing"
