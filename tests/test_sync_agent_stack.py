@@ -134,6 +134,74 @@ def test_docling_renderers_use_upstream_stdio_launch_shape():
     )
 
 
+def test_standard_hook_renderers_use_harness_specific_events():
+    hook_registry = {
+        "version": 1,
+        "hooks": [
+            {
+                "id": "research-readonly-write-guard",
+                "logical_event": "PreToolUse",
+                "matcher": "Write|Edit",
+                "command": (
+                    "python3 {repo_root}/hooks/wagents-hook.py "
+                    "research-readonly-write-guard --harness {harness}"
+                ),
+                "timeout": 5,
+                "harnesses": ["codex", "gemini-cli"],
+            }
+        ],
+    }
+
+    codex = sync_agent_stack.render_standard_hooks(hook_registry, "codex")
+    gemini = sync_agent_stack.render_standard_hooks(hook_registry, "gemini-cli")
+
+    assert "PreToolUse" in codex["hooks"]
+    assert "--harness codex" in codex["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
+    assert "BeforeTool" in gemini["hooks"]
+    assert "--harness gemini-cli" in gemini["hooks"]["BeforeTool"][0]["hooks"][0]["command"]
+    assert "PreToolUse" not in gemini["hooks"]
+
+
+def test_merge_codex_hooks_preserves_local_and_replaces_generated(tmp_path, monkeypatch):
+    hooks_path = tmp_path / "hooks.json"
+    hooks_path.write_text(
+        json.dumps(
+            {
+                "hooks": {
+                    "UserPromptSubmit": [{"hooks": [{"command": "echo local"}]}],
+                    "PreToolUse": [{"hooks": [{"command": "python3 /old/hooks/wagents-hook.py old"}]}],
+                }
+            }
+        )
+    )
+    hook_registry = {
+        "version": 1,
+        "hooks": [
+            {
+                "id": "research-readonly-write-guard",
+                "logical_event": "PreToolUse",
+                "matcher": "Write|Edit",
+                "command": (
+                    "python3 {repo_root}/hooks/wagents-hook.py "
+                    "research-readonly-write-guard --harness {harness}"
+                ),
+                "timeout": 5,
+                "harnesses": ["codex"],
+            }
+        ],
+    }
+
+    monkeypatch.setattr(sync_agent_stack, "CODEX_HOOKS_PATH", hooks_path)
+    ctx = SyncContext(apply=True)
+    sync_agent_stack.merge_codex_hooks(ctx, hook_registry)
+
+    payload = json.loads(hooks_path.read_text(encoding="utf-8"))
+    assert payload["hooks"]["UserPromptSubmit"][0]["hooks"][0]["command"] == "echo local"
+    assert len(payload["hooks"]["PreToolUse"]) == 1
+    assert "--harness codex" in payload["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
+    assert "/old/hooks/wagents-hook.py" not in json.dumps(payload)
+
+
 def test_merge_server_root_config_uses_opencode_mcp_root(tmp_path):
     opencode_config = tmp_path / "opencode.json"
     opencode_config.write_text(json.dumps({"mcp": {"custom": {"type": "local", "enabled": True}}}))

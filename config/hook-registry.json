@@ -69,6 +69,7 @@
     {
       "id": "research-prompt-triage-context",
       "description": "Activate research hook state and inject research-method reminders.",
+      "mode": "context",
       "logical_event": "UserPromptSubmit",
       "command": "python3 {repo_root}/hooks/wagents-hook.py research-prompt-triage-context --harness {harness}",
       "timeout": 5,
@@ -82,6 +83,8 @@
     {
       "id": "research-readonly-write-guard",
       "description": "Prevent source-file write tools during active research sessions.",
+      "mode": "enforce",
+      "degraded_behavior": "audit when the harness payload does not expose a tool name or writable path",
       "logical_event": "PreToolUse",
       "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
       "command": "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}",
@@ -96,6 +99,8 @@
     {
       "id": "research-dangerous-shell-guard",
       "description": "Block dangerous shell side effects during active research sessions.",
+      "mode": "enforce",
+      "degraded_behavior": "audit when the harness payload does not expose a shell command",
       "logical_event": "PreToolUse",
       "matcher": "Bash|bash|run_shell_command",
       "command": "python3 {repo_root}/hooks/wagents-hook.py research-dangerous-shell-guard --harness {harness}",
@@ -110,6 +115,7 @@
     {
       "id": "research-evidence-ledger",
       "description": "Append lightweight provenance metadata for research retrieval tools.",
+      "mode": "audit",
       "logical_event": "PostToolUse",
       "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
       "command": "python3 {repo_root}/hooks/wagents-hook.py research-evidence-ledger --harness {harness}",
@@ -124,6 +130,7 @@
     {
       "id": "research-stop-verifier",
       "description": "Verify research skill invariants before an active research session completes.",
+      "mode": "enforce",
       "logical_event": "Stop",
       "command": "python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}",
       "timeout": 30,

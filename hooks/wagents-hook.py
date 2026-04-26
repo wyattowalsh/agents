@@ -43,6 +43,7 @@ class NormalizedPayload:
     session_id: str
     stop_hook_active: bool
     raw: dict[str, Any]
+    decision_recorded: bool = False
 
 
 def _load_payload() -> dict[str, Any]:
@@ -129,6 +130,29 @@ def _state_path(payload: NormalizedPayload) -> Path:
     return _agent_home(payload.harness) / "hook-state" / f"{digest}.json"
 
 
+def _audit_path(payload: NormalizedPayload) -> Path:
+    return _agent_home(payload.harness) / "hook-ledger" / f"{_state_path(payload).stem}.jsonl"
+
+
+def _record_decision(payload: NormalizedPayload, policy_id: str, decision: str, reason: str = "") -> None:
+    path = _audit_path(payload)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    record = {
+        "timestamp": _now().isoformat(),
+        "policy": policy_id,
+        "decision": decision,
+        "reason": reason[:500],
+        "event": payload.event,
+        "tool": payload.tool_name or "unknown",
+        "cwd": payload.cwd,
+        "session_id_hash": _state_path(payload).stem,
+    }
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, sort_keys=True) + "\n")
+    path.chmod(0o600)
+    payload.decision_recorded = True
+
+
 def _now() -> datetime:
     return datetime.now(UTC)
 
@@ -175,6 +199,7 @@ def _emit_json(data: dict[str, Any]) -> int:
 def _additional_context(payload: NormalizedPayload, message: str) -> int:
     if payload.harness == "github-copilot":
         return 0
+    _record_decision(payload, "research-prompt-triage-context", "context", message)
     if payload.harness == "gemini-cli":
         return _emit_json({"hookSpecificOutput": {"additionalContext": message}, "suppressOutput": True})
     event = payload.event or "UserPromptSubmit"
@@ -182,6 +207,7 @@ def _additional_context(payload: NormalizedPayload, message: str) -> int:
 
 
 def _deny(payload: NormalizedPayload, reason: str) -> int:
+    _record_decision(payload, "policy-deny", "deny", reason)
     if payload.harness == "github-copilot":
         return _emit_json({"permissionDecision": "deny", "permissionDecisionReason": reason})
     if payload.harness == "codex":
@@ -306,7 +332,7 @@ def _policy_evidence_ledger(payload: NormalizedPayload) -> int:
     urls = _extract_urls(payload.raw.get("tool_response") or payload.raw.get("toolResult") or payload.raw)
     if not urls and not payload.tool_name:
         return 0
-    path = _agent_home(payload.harness) / "hook-ledger" / f"{_state_path(payload).stem}.jsonl"
+    path = _audit_path(payload)
     path.parent.mkdir(parents=True, exist_ok=True)
     record = {
         "timestamp": _now().isoformat(),
@@ -358,7 +384,10 @@ def main(argv: list[str] | None = None) -> int:
     raw = _load_payload()
     harness = _detect_harness(raw, args.harness)
     payload = _normalize(raw, harness)
-    return POLICIES[args.policy_id](payload)
+    code = POLICIES[args.policy_id](payload)
+    if code == 0 and not payload.decision_recorded and args.policy_id != "research-evidence-ledger":
+        _record_decision(payload, args.policy_id, "allow")
+    return code
 
 
 if __name__ == "__main__":
