@@ -24,11 +24,13 @@ scanner = _load_scanner()
 def test_scan_reports_legacy_tailwind_config_and_package_versions(tmp_path: Path):
     (tmp_path / "tailwind.config.js").write_text("module.exports = {}\n", encoding="utf-8")
     (tmp_path / "package.json").write_text(
-        json.dumps({
-            "dependencies": {"react": "19.2.5"},
-            "devDependencies": {"tailwindcss": "4.2.4", "vite": "8.0.10"},
-            "scripts": {"build": "vite build", "dev": "vite"},
-        }),
+        json.dumps(
+            {
+                "dependencies": {"react": "19.2.5"},
+                "devDependencies": {"tailwindcss": "4.2.4", "vite": "8.0.10"},
+                "scripts": {"build": "vite build", "dev": "vite"},
+            }
+        ),
         encoding="utf-8",
     )
 
