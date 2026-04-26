@@ -347,6 +347,53 @@ def test_render_codex_config_enables_hooks_feature():
     assert "codex_hooks = true" in rendered
 
 
+def test_render_codex_config_adds_lmstudio_provider_profile():
+    registry = {"servers": {}}
+    policy = {
+        "local_llm_providers": {
+            "lmstudio": {
+                "name": "LM Studio (local)",
+                "base_url_env": "LM_STUDIO_API_BASE",
+                "base_url_env_aliases": ["LMSTUDIO_API_BASE"],
+                "default_base_url": "http://127.0.0.1:1234/v1",
+                "default_model": "local-model",
+                "codex": {"provider_id": "local-lmstudio", "profile": "local-lmstudio", "wire_api": "responses"},
+            }
+        }
+    }
+
+    rendered = render_codex_config("", registry, policy, include_local_extras=False)
+
+    assert "\n[model_providers.local-lmstudio]\n" in rendered
+    assert 'name = "LM Studio (local)"' in rendered
+    assert 'base_url = "http://127.0.0.1:1234/v1"' in rendered
+    assert 'wire_api = "responses"' in rendered
+    assert "\n[profiles.local-lmstudio]\n" in rendered
+    assert 'model = "local-model"' in rendered
+    assert 'model_provider = "local-lmstudio"' in rendered
+
+
+def test_render_codex_config_uses_lmstudio_env_for_home_config(monkeypatch):
+    registry = {"servers": {}}
+    policy = {
+        "local_llm_providers": {
+            "lmstudio": {
+                "base_url_env": "LM_STUDIO_API_BASE",
+                "base_url_env_aliases": ["LMSTUDIO_API_BASE"],
+                "default_base_url": "http://127.0.0.1:1234/v1",
+                "default_model": "local-model",
+            }
+        }
+    }
+    monkeypatch.setenv("LM_STUDIO_API_BASE", "http://localhost:1234/v1")
+
+    home_config = render_codex_config("", registry, policy, include_local_extras=True)
+    repo_config = render_codex_config("", registry, policy, include_local_extras=False)
+
+    assert 'base_url = "http://localhost:1234/v1"' in home_config
+    assert 'base_url = "http://127.0.0.1:1234/v1"' in repo_config
+
+
 def test_sync_generated_json_directory_rewrites_managed_json_and_leaves_parent_files_untouched(tmp_path):
     target_dir = tmp_path / "mcp-import"
     managed_dir = target_dir / "managed"
@@ -481,6 +528,67 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
         "~/dev/projects/agents/instructions/opencode-global.md",
     ]
     assert payload["skills"]["paths"] == ["~/dev/projects/agents/skills"]
+
+
+def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_models(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+
+    repo_root.mkdir(parents=True)
+    config_path.parent.mkdir(parents=True)
+    (repo_root / "instructions").mkdir()
+    (repo_root / "skills").mkdir()
+
+    config_path.write_text(
+        json.dumps(
+            {
+                "provider": {
+                    "lmstudio": {
+                        "models": {"custom-model": {"name": "Custom Local Model"}},
+                        "options": {"headers": {"X-Local": "1"}},
+                    }
+                },
+                "mcp": {},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
+    monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
+    monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+
+    policy = {
+        "local_llm_providers": {
+            "lmstudio": {
+                "name": "LM Studio (local)",
+                "base_url_env": "LM_STUDIO_API_BASE",
+                "default_base_url": "http://127.0.0.1:1234/v1",
+                "default_model": "local-model",
+                "opencode": {
+                    "npm": "@ai-sdk/openai-compatible",
+                    "models": {"local-model": {"name": "LM Studio Local Model"}},
+                },
+            }
+        }
+    }
+
+    ctx = SyncContext(apply=True)
+    merge_opencode_config(ctx, {"servers": {}}, {"LM_STUDIO_API_BASE": "http://localhost:9999/v1"}, policy)
+    payload = json.loads(config_path.read_text(encoding="utf-8"))
+
+    provider = payload["provider"]["lmstudio"]
+    assert provider["npm"] == "@ai-sdk/openai-compatible"
+    assert provider["name"] == "LM Studio (local)"
+    assert provider["options"]["baseURL"] == "http://localhost:9999/v1"
+    assert provider["options"]["headers"] == {"X-Local": "1"}
+    assert provider["models"]["local-model"] == {"name": "LM Studio Local Model"}
+    assert provider["models"]["custom-model"] == {"name": "Custom Local Model"}
 
 
 def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extras(tmp_path, monkeypatch):
