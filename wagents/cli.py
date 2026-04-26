@@ -4,6 +4,7 @@ import importlib.util
 import json
 import re
 import shutil
+import subprocess
 import sys
 import tomllib
 from pathlib import Path
@@ -139,6 +140,95 @@ def _parse_min_python_version(spec: str) -> tuple[int, int] | None:
     return int(match.group(1)), int(match.group(2))
 
 
+def _parse_semver(raw: str) -> tuple[int, int, int] | None:
+    """Extract a semantic version from a CLI version string."""
+    match = re.search(r"v?(\d+)\.(\d+)\.(\d+)", raw)
+    if not match:
+        return None
+    return int(match.group(1)), int(match.group(2)), int(match.group(3))
+
+
+def _read_command_version(command: list[str]) -> tuple[int, int, int] | None:
+    """Read a command version as a semantic version tuple."""
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, check=False)
+    except OSError:
+        return None
+
+    return _parse_semver(result.stdout or result.stderr)
+
+
+def _version_satisfies_token(version: tuple[int, int, int], token: str) -> bool | None:
+    """Evaluate a semver token against a version."""
+    token = token.strip()
+    if not token:
+        return True
+    if token.startswith("^"):
+        minimum = _parse_semver(token[1:])
+        if minimum is None:
+            return None
+        maximum = (minimum[0] + 1, 0, 0)
+        return minimum <= version < maximum
+
+    for prefix in (">=", "<=", ">", "<"):
+        if token.startswith(prefix):
+            target = _parse_semver(token[len(prefix) :])
+            if target is None:
+                return None
+            if prefix == ">=":
+                return version >= target
+            if prefix == "<=":
+                return version <= target
+            if prefix == ">":
+                return version > target
+            return version < target
+
+    exact = _parse_semver(token)
+    if exact is None:
+        return None
+    return version == exact
+
+
+def _version_satisfies_range(version: tuple[int, int, int], spec: str) -> bool | None:
+    """Evaluate a semver range with || unions and space-delimited comparators."""
+    saw_unknown = False
+    clauses = [clause.strip() for clause in spec.split("||") if clause.strip()]
+    if not clauses:
+        return None
+
+    for clause in clauses:
+        clause_unknown = False
+        clause_matches = True
+        for token in clause.split():
+            result = _version_satisfies_token(version, token)
+            if result is None:
+                clause_unknown = True
+                clause_matches = False
+                break
+            if not result:
+                clause_matches = False
+                break
+        if clause_matches:
+            return True
+        if clause_unknown:
+            saw_unknown = True
+
+    if saw_unknown:
+        return None
+    return False
+
+
+def _parse_package_manager_pin(package_manager: str) -> tuple[str, tuple[int, int, int]] | None:
+    """Parse a packageManager pin like pnpm@10.11.1."""
+    manager, separator, version = package_manager.partition("@")
+    if not separator:
+        return None
+    parsed_version = _parse_semver(version)
+    if parsed_version is None:
+        return None
+    return manager, parsed_version
+
+
 def _make_doctor_check(
     name: str,
     status: str,
@@ -155,6 +245,7 @@ def _make_doctor_check(
 def _collect_doctor_checks() -> list[dict[str, str]]:
     """Collect environment and toolchain diagnostics for the repo."""
     checks: list[dict[str, str]] = []
+    tool_paths: dict[str, str | None] = {}
 
     pyproject_file = ROOT / "pyproject.toml"
     requires_python = ""
@@ -199,6 +290,7 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
     ]
     for tool_name, missing_status, remediation in tool_checks:
         tool_path = shutil.which(tool_name)
+        tool_paths[tool_name] = tool_path
         if tool_path:
             checks.append(_make_doctor_check(tool_name, "ok", f"Found at {tool_path}"))
         else:
@@ -215,6 +307,140 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
     package_json = docs_dir / "package.json"
     lock_file = docs_dir / "pnpm-lock.yaml"
     node_modules = docs_dir / "node_modules"
+    docs_package_data: dict[str, object] | None = None
+    docs_package_error: str | None = None
+    if package_json.exists():
+        try:
+            docs_package_data = json.loads(package_json.read_text())
+        except json.JSONDecodeError as exc:
+            docs_package_error = str(exc)
+
+    if tool_paths.get("node") and package_json.exists():
+        if docs_package_error:
+            checks.append(
+                _make_doctor_check(
+                    "node-version",
+                    "warn",
+                    f"Could not parse docs/package.json to determine supported Node range ({docs_package_error})",
+                    "Fix docs/package.json so wagents doctor can validate Node support.",
+                )
+            )
+        else:
+            node_range = str((docs_package_data or {}).get("engines", {}).get("node", "")).strip()
+            node_version = _read_command_version(["node", "--version"])
+            if not node_range:
+                checks.append(
+                    _make_doctor_check(
+                        "node-version",
+                        "warn",
+                        "docs/package.json does not declare engines.node",
+                        "Set docs/package.json engines.node to the supported Node semver range.",
+                    )
+                )
+            elif node_version is None:
+                checks.append(
+                    _make_doctor_check(
+                        "node-version",
+                        "warn",
+                        "Could not determine the installed Node.js version",
+                        "Run node --version to verify your Node.js installation.",
+                    )
+                )
+            else:
+                supported = _version_satisfies_range(node_version, node_range)
+                version_text = ".".join(str(part) for part in node_version)
+                if supported is True:
+                    checks.append(
+                        _make_doctor_check(
+                            "node-version",
+                            "ok",
+                            f"Node {version_text} satisfies docs/package.json engines.node ({node_range})",
+                        )
+                    )
+                elif supported is False:
+                    checks.append(
+                        _make_doctor_check(
+                            "node-version",
+                            "warn",
+                            f"Node {version_text} does not satisfy docs/package.json engines.node ({node_range})",
+                            "Install a supported Node.js version before working on docs.",
+                        )
+                    )
+                else:
+                    checks.append(
+                        _make_doctor_check(
+                            "node-version",
+                            "warn",
+                            (
+                                "Could not evaluate "
+                                f"Node {version_text} against docs/package.json engines.node ({node_range})"
+                            ),
+                            "Use a semver range in docs/package.json that wagents doctor can evaluate.",
+                        )
+                    )
+
+    if tool_paths.get("pnpm") and package_json.exists():
+        if docs_package_error:
+            checks.append(
+                _make_doctor_check(
+                    "pnpm-version",
+                    "warn",
+                    f"Could not parse docs/package.json to determine the pnpm pin ({docs_package_error})",
+                    "Fix docs/package.json so wagents doctor can validate the pnpm pin.",
+                )
+            )
+        else:
+            package_manager = str((docs_package_data or {}).get("packageManager", "")).strip()
+            parsed_pin = _parse_package_manager_pin(package_manager)
+            pnpm_version = _read_command_version(["pnpm", "--version"])
+            if not package_manager:
+                checks.append(
+                    _make_doctor_check(
+                        "pnpm-version",
+                        "warn",
+                        "docs/package.json does not declare packageManager",
+                        "Set docs/package.json packageManager to the supported pnpm version.",
+                    )
+                )
+            elif parsed_pin is None or parsed_pin[0] != "pnpm":
+                checks.append(
+                    _make_doctor_check(
+                        "pnpm-version",
+                        "warn",
+                        f"docs/package.json packageManager is not a pnpm pin ({package_manager})",
+                        "Set docs/package.json packageManager to a pnpm@<version> pin.",
+                    )
+                )
+            elif pnpm_version is None:
+                checks.append(
+                    _make_doctor_check(
+                        "pnpm-version",
+                        "warn",
+                        "Could not determine the installed pnpm version",
+                        "Run pnpm --version to verify your pnpm installation.",
+                    )
+                )
+            else:
+                version_text = ".".join(str(part) for part in pnpm_version)
+                expected_text = ".".join(str(part) for part in parsed_pin[1])
+                if pnpm_version == parsed_pin[1]:
+                    checks.append(
+                        _make_doctor_check(
+                            "pnpm-version",
+                            "ok",
+                            f"pnpm {version_text} matches docs/package.json packageManager ({package_manager})",
+                        )
+                    )
+                else:
+                    checks.append(
+                        _make_doctor_check(
+                            "pnpm-version",
+                            "warn",
+                            f"pnpm {version_text} does not match docs/package.json packageManager ({package_manager})",
+                            f"Install pnpm {expected_text} before working on docs.",
+                        )
+                    )
+
     if not docs_dir.exists():
         checks.append(
             _make_doctor_check(
@@ -260,6 +486,21 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
                     "docs-deps",
                     "ok",
                     "docs dependency manifests and node_modules look present",
+                )
+            )
+
+    pre_commit_config = ROOT / ".pre-commit-config.yaml"
+    if pre_commit_config.exists():
+        pre_commit_path = shutil.which("pre-commit")
+        if pre_commit_path:
+            checks.append(_make_doctor_check("pre-commit", "ok", f"Found at {pre_commit_path}"))
+        else:
+            checks.append(
+                _make_doctor_check(
+                    "pre-commit",
+                    "warn",
+                    ".pre-commit-config.yaml exists but pre-commit is not available on PATH",
+                    "Install pre-commit to run the repository hooks locally.",
                 )
             )
 

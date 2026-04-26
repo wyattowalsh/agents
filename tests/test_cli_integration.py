@@ -1,6 +1,7 @@
 """Integration tests for the wagents CLI via typer.testing.CliRunner."""
 
 import json
+import subprocess
 
 import pytest
 from typer.testing import CliRunner
@@ -79,10 +80,13 @@ def test_doctor_json_success(patched_repo, monkeypatch):
     (patched_repo / "pyproject.toml").write_text('[project]\nname = "wagents"\nrequires-python = ">=3.13"\n')
     docs_dir = patched_repo / "docs"
     docs_dir.mkdir()
-    (docs_dir / "package.json").write_text("{}\n")
+    (docs_dir / "package.json").write_text(
+        json.dumps({"packageManager": "pnpm@10.11.1", "engines": {"node": "^22.0.0 || ^24.0.0"}})
+    )
     (docs_dir / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n")
     node_modules = docs_dir / "node_modules"
     node_modules.mkdir()
+    (patched_repo / ".pre-commit-config.yaml").write_text("repos: []\n")
 
     home_dir = patched_repo / "fake-home"
     browser_cache = home_dir / "Library/Caches/ms-playwright/chromium-1234"
@@ -90,6 +94,15 @@ def test_doctor_json_success(patched_repo, monkeypatch):
     monkeypatch.setattr("wagents.cli.Path.home", lambda: home_dir)
     monkeypatch.setattr("shutil.which", lambda name: f"/usr/bin/{name}")
     monkeypatch.setattr("importlib.util.find_spec", lambda name: object() if name == "playwright" else None)
+    monkeypatch.setattr(
+        "wagents.cli.subprocess.run",
+        lambda cmd, **kwargs: subprocess.CompletedProcess(
+            cmd,
+            0,
+            stdout={"node": "v22.12.0\n", "pnpm": "10.11.1\n"}[cmd[0]],
+            stderr="",
+        ),
+    )
 
     result = runner.invoke(app, ["doctor", "--format", "json"])
     assert result.exit_code == 0, f"doctor json failed:\n{result.output}"
@@ -98,7 +111,10 @@ def test_doctor_json_success(patched_repo, monkeypatch):
     checks = {check["name"]: check for check in payload["checks"]}
     assert checks["python-version"]["status"] == "ok"
     assert checks["uv"]["status"] == "ok"
+    assert checks["node-version"]["status"] == "ok"
+    assert checks["pnpm-version"]["status"] == "ok"
     assert checks["docs-deps"]["status"] == "ok"
+    assert checks["pre-commit"]["status"] == "ok"
     assert checks["playwright-browsers"]["status"] == "ok"
 
 
@@ -107,19 +123,34 @@ def test_doctor_jsonl_failure_and_warnings(patched_repo, monkeypatch):
     (patched_repo / "pyproject.toml").write_text('[project]\nname = "wagents"\nrequires-python = ">=3.13"\n')
     docs_dir = patched_repo / "docs"
     docs_dir.mkdir()
-    (docs_dir / "package.json").write_text("{}\n")
+    (docs_dir / "package.json").write_text(
+        json.dumps({"packageManager": "pnpm@10.11.1", "engines": {"node": "^22.0.0 || ^24.0.0"}})
+    )
     (docs_dir / "pnpm-lock.yaml").write_text("lockfileVersion: '9.0'\n")
+    (patched_repo / ".pre-commit-config.yaml").write_text("repos: []\n")
 
-    monkeypatch.setattr("shutil.which", lambda name: None if name == "uv" else f"/usr/bin/{name}")
+    monkeypatch.setattr("shutil.which", lambda name: None if name in {"uv", "pre-commit"} else f"/usr/bin/{name}")
     monkeypatch.setattr("importlib.util.find_spec", lambda name: None)
     monkeypatch.setattr("wagents.cli.Path.home", lambda: patched_repo / "fake-home")
+    monkeypatch.setattr(
+        "wagents.cli.subprocess.run",
+        lambda cmd, **kwargs: subprocess.CompletedProcess(
+            cmd,
+            0,
+            stdout={"node": "v20.11.0\n", "pnpm": "10.10.0\n"}[cmd[0]],
+            stderr="",
+        ),
+    )
 
     result = runner.invoke(app, ["doctor", "--format", "jsonl"])
     assert result.exit_code == 1, "doctor should fail when required checks fail"
     records = [json.loads(line) for line in result.output.strip().splitlines()]
     checks = {record["name"]: record for record in records if record["type"] == "check"}
     assert checks["uv"]["status"] == "fail"
+    assert checks["node-version"]["status"] == "warn"
+    assert checks["pnpm-version"]["status"] == "warn"
     assert checks["docs-deps"]["status"] == "warn"
+    assert checks["pre-commit"]["status"] == "warn"
     assert checks["playwright-python"]["status"] == "warn"
     assert records[-1]["type"] == "summary"
     assert records[-1]["ok"] is False
