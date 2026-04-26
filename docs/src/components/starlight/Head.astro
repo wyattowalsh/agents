@@ -4,7 +4,7 @@ import VtbotStarlight from 'astro-vtbot/components/starlight/Base.astro';
 
 const { id } = Astro.locals.starlightRoute;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url;
-const ogImageUrl = Astro.site ? new URL(`/og/${id || ''}.png`, Astro.site).href : '';
+const ogImageUrl = Astro.site ? new URL('/social-card.png', Astro.site).href : '';
 const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY;
 const posthogHost = import.meta.env.PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
 ---

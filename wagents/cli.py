@@ -976,6 +976,10 @@ def readme(
             '&logoColor=white" alt="Docs"></a>'
         ),
         "  </p>",
+        (
+            '  <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/'
+            'docs/public/social-card.png" alt="Agents social preview" width="640">'
+        ),
         "</div>",
         "",
         "---",
