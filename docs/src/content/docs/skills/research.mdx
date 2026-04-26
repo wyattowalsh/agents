@@ -106,11 +106,11 @@ hooks:
   PreToolUse:
     - matcher: "Write|Edit|MultiEdit"
       hooks:
-        - command: 'bash -c "echo BLOCKED: research skill is read-only — no file edits permitted >&2; exit 1"'
+        - command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-readonly-write-guard --harness auto'''
   Stop:
     - hooks:
         - type: command
-          command: "uv run python skills/research/scripts/verify.py stop"
+          command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-stop-verifier --harness auto'''
 ---
 
 # Deep Research

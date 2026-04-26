@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "hooks": [
+    {
+      "id": "session-start",
+      "description": "Report basic session environment and repository state.",
+      "logical_event": "SessionStart",
+      "matcher": "startup|resume|clear",
+      "command": "./hooks/session-start.sh",
+      "timeout": 15,
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "prompt-log",
+      "description": "Write local prompt audit entries with short retention.",
+      "logical_event": "UserPromptSubmit",
+      "command": "./hooks/log-prompt.sh",
+      "timeout": 5,
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "destructive-shell-guard",
+      "description": "Block high-risk shell commands.",
+      "logical_event": "PreToolUse",
+      "matcher": "Bash|bash|run_shell_command",
+      "command": "./hooks/guard-destructive.sh",
+      "timeout": 5,
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "protected-file-guard",
+      "description": "Block edits to protected paths and secret-bearing files.",
+      "logical_event": "PreToolUse",
+      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
+      "command": "./hooks/protect-files.sh",
+      "timeout": 5,
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "post-edit-format",
+      "description": "Run best-effort formatter after edits.",
+      "logical_event": "PostToolUse",
+      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
+      "command": "./hooks/auto-format.sh",
+      "timeout": 30,
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "post-edit-lint",
+      "description": "Return concise lint/type context after edits.",
+      "logical_event": "PostToolUse",
+      "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
+      "command": "./hooks/lint-check.sh",
+      "timeout": 30,
+      "harnesses": [
+        "github-copilot"
+      ]
+    },
+    {
+      "id": "research-prompt-triage-context",
+      "description": "Activate research hook state and inject research-method reminders.",
+      "logical_event": "UserPromptSubmit",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py research-prompt-triage-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "github-copilot",
+        "gemini-cli"
+      ]
+    },
+    {
+      "id": "research-readonly-write-guard",
+      "description": "Prevent source-file write tools during active research sessions.",
+      "logical_event": "PreToolUse",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "github-copilot",
+        "gemini-cli"
+      ]
+    },
+    {
+      "id": "research-dangerous-shell-guard",
+      "description": "Block dangerous shell side effects during active research sessions.",
+      "logical_event": "PreToolUse",
+      "matcher": "Bash|bash|run_shell_command",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py research-dangerous-shell-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "github-copilot",
+        "gemini-cli"
+      ]
+    },
+    {
+      "id": "research-evidence-ledger",
+      "description": "Append lightweight provenance metadata for research retrieval tools.",
+      "logical_event": "PostToolUse",
+      "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py research-evidence-ledger --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "github-copilot",
+        "gemini-cli"
+      ]
+    },
+    {
+      "id": "research-stop-verifier",
+      "description": "Verify research skill invariants before an active research session completes.",
+      "logical_event": "Stop",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}",
+      "timeout": 30,
+      "harnesses": [
+        "codex",
+        "claude-code",
+        "gemini-cli"
+      ]
+    }
+  ]
+}

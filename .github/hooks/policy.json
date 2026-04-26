@@ -6,7 +6,8 @@
         "type": "command",
         "bash": "./hooks/session-start.sh",
         "cwd": ".",
-        "timeoutSec": 15
+        "timeoutSec": 15,
+        "comment": "Report basic session environment and repository state."
       }
     ],
     "userPromptSubmitted": [
@@ -14,7 +15,15 @@
         "type": "command",
         "bash": "./hooks/log-prompt.sh",
         "cwd": ".",
-        "timeoutSec": 5
+        "timeoutSec": 5,
+        "comment": "Write local prompt audit entries with short retention."
+      },
+      {
+        "type": "command",
+        "bash": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness github-copilot",
+        "cwd": ".",
+        "timeoutSec": 5,
+        "comment": "Activate research hook state and inject research-method reminders."
       }
     ],
     "preToolUse": [
@@ -22,13 +31,29 @@
         "type": "command",
         "bash": "./hooks/guard-destructive.sh",
         "cwd": ".",
-        "timeoutSec": 5
+        "timeoutSec": 5,
+        "comment": "Block high-risk shell commands."
       },
       {
         "type": "command",
         "bash": "./hooks/protect-files.sh",
         "cwd": ".",
-        "timeoutSec": 5
+        "timeoutSec": 5,
+        "comment": "Block edits to protected paths and secret-bearing files."
+      },
+      {
+        "type": "command",
+        "bash": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness github-copilot",
+        "cwd": ".",
+        "timeoutSec": 5,
+        "comment": "Prevent source-file write tools during active research sessions."
+      },
+      {
+        "type": "command",
+        "bash": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness github-copilot",
+        "cwd": ".",
+        "timeoutSec": 5,
+        "comment": "Block dangerous shell side effects during active research sessions."
       }
     ],
     "postToolUse": [
@@ -36,13 +61,22 @@
         "type": "command",
         "bash": "./hooks/auto-format.sh",
         "cwd": ".",
-        "timeoutSec": 30
+        "timeoutSec": 30,
+        "comment": "Run best-effort formatter after edits."
       },
       {
         "type": "command",
         "bash": "./hooks/lint-check.sh",
         "cwd": ".",
-        "timeoutSec": 30
+        "timeoutSec": 30,
+        "comment": "Return concise lint/type context after edits."
+      },
+      {
+        "type": "command",
+        "bash": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness github-copilot",
+        "cwd": ".",
+        "timeoutSec": 5,
+        "comment": "Append lightweight provenance metadata for research retrieval tools."
       }
     ]
   }

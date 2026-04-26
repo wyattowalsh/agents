@@ -8,7 +8,7 @@ import subprocess
 import sys
 import tomllib
 from pathlib import Path
-from typing import Annotated, cast
+from typing import Annotated, Any, cast
 
 import typer
 
@@ -198,6 +198,29 @@ def _collect_hooks():
                     all_hooks.extend(extract_hooks(f"agent:{agent_file.stem}", hooks_dict))
             except Exception:
                 pass
+
+    hook_registry_file = ROOT / "config" / "hook-registry.json"
+    if hook_registry_file.exists():
+        try:
+            hook_registry = json.loads(hook_registry_file.read_text())
+            for hook in hook_registry.get("hooks", []):
+                if not isinstance(hook, dict):
+                    continue
+                all_hooks.append(
+                    Hook(
+                        source=f"registry:{hook.get('id', 'unknown')}",
+                        event=str(hook.get("logical_event", "")),
+                        matcher=str(hook.get("matcher", "")),
+                        handler_type="command",
+                        command=str(hook.get("command", "")),
+                        prompt="",
+                        harness_support=[str(item) for item in hook.get("harnesses", [])],
+                        rendered_event="",
+                        blocking_mode=str(hook.get("mode", "")),
+                    )
+                )
+        except Exception as e:
+            typer.echo(f"Warning: could not parse hook-registry.json: {e}", err=True)
 
     return all_hooks
 
@@ -1685,7 +1708,7 @@ def hooks_list(
         )
         return
 
-    rows: list[dict[str, str]] = []
+    rows: list[dict[str, Any]] = []
     for hook in all_hooks:
         rows.append(
             {
@@ -1695,16 +1718,26 @@ def hooks_list(
                 "handler_type": hook.handler_type,
                 "command": hook.command,
                 "prompt": hook.prompt,
+                "harness_support": hook.harness_support or [],
+                "rendered_event": hook.rendered_event,
+                "blocking_mode": hook.blocking_mode,
             }
         )
 
-    text_lines = [f"{'Source':<30} {'Event':<20} {'Matcher':<15} {'Type':<10} {'Command/Prompt'}", "-" * 100]
+    text_lines = [
+        f"{'Source':<35} {'Event':<20} {'Matcher':<15} {'Harnesses':<28} {'Type':<10} {'Command/Prompt'}",
+        "-" * 130,
+    ]
     for row in rows:
         value = row["command"] if row["handler_type"] == "command" else row["prompt"]
         if len(value) > 50:
             value = value[:47] + "..."
         matcher = row["matcher"] or "(all)"
-        text_lines.append(f"{row['source']:<30} {row['event']:<20} {matcher:<15} {row['handler_type']:<10} {value}")
+        harnesses = ",".join(row.get("harness_support") or []) or "(native)"
+        text_lines.append(
+            f"{row['source']:<35} {row['event']:<20} {matcher:<15} {harnesses:<28} "
+            f"{row['handler_type']:<10} {value}"
+        )
 
     _emit_structured_output(
         format_,
@@ -1725,6 +1758,48 @@ def hooks_validate(
 
     def add_error(source: str, message: str) -> None:
         errors.append({"source": source, "message": message})
+
+    def _validate_hook_registry() -> None:
+        supported_harnesses = {"codex", "claude-code", "github-copilot", "gemini-cli"}
+        hook_registry_file = ROOT / "config" / "hook-registry.json"
+        if not hook_registry_file.exists():
+            return
+        try:
+            data = json.loads(hook_registry_file.read_text())
+        except json.JSONDecodeError as e:
+            add_error("hook-registry.json", f"invalid JSON: {e}")
+            return
+        hooks = data.get("hooks", [])
+        if not isinstance(hooks, list):
+            add_error("hook-registry.json", "hooks must be a list")
+            return
+        for index, hook in enumerate(hooks, 1):
+            source = f"hook-registry.json[{index}]"
+            if not isinstance(hook, dict):
+                add_error(source, "hook entry must be a mapping")
+                continue
+            hook_id = hook.get("id")
+            if not isinstance(hook_id, str) or not hook_id:
+                add_error(source, "hook id is required")
+            event = hook.get("logical_event")
+            if event not in KNOWN_HOOK_EVENTS:
+                add_error(source, f"unknown logical_event '{event}'")
+            harnesses = hook.get("harnesses")
+            if not isinstance(harnesses, list) or not harnesses:
+                add_error(source, "harnesses must be a non-empty list")
+            else:
+                unknown = sorted(set(harnesses) - supported_harnesses)
+                if unknown:
+                    add_error(source, f"unsupported harnesses: {', '.join(str(item) for item in unknown)}")
+            command = hook.get("command")
+            if not isinstance(command, str) or not command:
+                add_error(source, "command is required")
+            elif "hooks/wagents-hook.py" in command and not (ROOT / "hooks" / "wagents-hook.py").exists():
+                add_error(source, "command references missing hooks/wagents-hook.py")
+            elif command.startswith("./hooks/"):
+                script_name = command.split()[0].removeprefix("./hooks/")
+                if not (ROOT / "hooks" / script_name).exists():
+                    add_error(source, f"command references missing hooks/{script_name}")
 
     def _validate_hooks(source: str, hooks_dict: dict) -> None:
         if not isinstance(hooks_dict, dict):
@@ -1812,6 +1887,9 @@ def hooks_validate(
                     _validate_hooks(f"agent:{agent_file.stem}", hooks_dict)
             except Exception:
                 pass
+
+    # 4. Portable hook registry
+    _validate_hook_registry()
 
     text_errors = [_format_error(error["source"], error["message"]) for error in errors]
     json_result = {

@@ -6,6 +6,10 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/config/hook-registry.json",
+      "mode": "canonical"
+    },
+    {
       "path": "/Users/ww/dev/projects/agents/config/tooling-policy.json",
       "mode": "canonical"
     },
@@ -76,6 +80,10 @@
     {
       "path": "/Users/ww/.codex/config.toml",
       "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.codex/hooks.json",
+      "mode": "generated"
     },
     {
       "path": "/Users/ww/.claude/settings.json",

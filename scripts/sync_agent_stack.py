@@ -20,6 +20,7 @@ COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
 GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
+HOOK_REGISTRY_PATH = CONFIG_DIR / "hook-registry.json"
 TOOLING_POLICY_PATH = CONFIG_DIR / "tooling-policy.json"
 SYNC_MANIFEST_PATH = CONFIG_DIR / "sync-manifest.json"
 CODEX_CONFIG_COPY_PATH = CONFIG_DIR / "codex-config.toml"
@@ -41,6 +42,7 @@ CHATGPT_MCP_PATH = HOME / "Library" / "Application Support" / "ChatGPT" / "mcp.j
 CLAUDE_ENTRYPOINT_PATH = HOME / ".claude" / "CLAUDE.md"
 CODEX_ENTRYPOINT_PATH = HOME / ".codex" / "AGENTS.md"
 CODEX_CONFIG_PATH = HOME / ".codex" / "config.toml"
+CODEX_HOOKS_PATH = HOME / ".codex" / "hooks.json"
 CODEX_SKILLS_DIR = HOME / ".codex" / "skills"
 COPILOT_ENTRYPOINT_PATH = HOME / ".copilot" / "copilot-instructions.md"
 COPILOT_CONFIG_PATH = HOME / ".copilot" / "config.json"
@@ -65,6 +67,7 @@ CHERRY_STUDIO_MANAGED_IMPORT_DIR = CHERRY_STUDIO_IMPORT_DIR / "managed"
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
+HOOK_COMMAND_MARKER = "wagents-hook.py"
 MANAGED_HEADER = "<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->\n"
 TOML_TABLE_RE = re.compile(r"^\[(?P<header>[^\]]+)\]\s*$")
 CODEX_CONFIG_SCHEMA_COMMENT = "#:schema https://developers.openai.com/codex/config-schema.json"
@@ -497,6 +500,10 @@ def load_registry(ctx: SyncContext) -> dict[str, Any]:
     return registry
 
 
+def load_hook_registry() -> dict[str, Any]:
+    return load_json(HOOK_REGISTRY_PATH)
+
+
 def enabled_registry_servers(registry: dict[str, Any]) -> dict[str, Any]:
     return {name: entry for name, entry in registry["servers"].items() if entry.get("enabled") is not False}
 
@@ -601,6 +608,128 @@ def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_hook_command(entry: dict[str, Any], harness: str, *, repo_relative: bool) -> str:
+    repo_root = "." if repo_relative else str(REPO_ROOT)
+    return str(entry["command"]).format(repo_root=repo_root, harness=harness)
+
+
+def enabled_hooks_for_harness(hook_registry: dict[str, Any], harness: str) -> list[dict[str, Any]]:
+    hooks = hook_registry.get("hooks", [])
+    if not isinstance(hooks, list):
+        return []
+    return [
+        hook
+        for hook in hooks
+        if isinstance(hook, dict) and hook.get("command") and harness in set(hook.get("harnesses", []))
+    ]
+
+
+def render_copilot_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
+    event_map = {
+        "SessionStart": "sessionStart",
+        "UserPromptSubmit": "userPromptSubmitted",
+        "PreToolUse": "preToolUse",
+        "PostToolUse": "postToolUse",
+        "SessionEnd": "sessionEnd",
+    }
+    rendered: dict[str, list[dict[str, Any]]] = {}
+    for hook in enabled_hooks_for_harness(hook_registry, "github-copilot"):
+        event = event_map.get(str(hook.get("logical_event")))
+        if not event:
+            continue
+        rendered.setdefault(event, []).append(
+            {
+                "type": "command",
+                "bash": render_hook_command(hook, "github-copilot", repo_relative=True),
+                "cwd": ".",
+                "timeoutSec": int(hook.get("timeout", 5)),
+                "comment": hook.get("description", hook["id"]),
+            }
+        )
+    return {"version": int(hook_registry.get("version", 1)), "hooks": rendered}
+
+
+def render_standard_hooks(hook_registry: dict[str, Any], harness: str) -> dict[str, Any]:
+    event_map = {
+        "codex": {
+            "UserPromptSubmit": "UserPromptSubmit",
+            "PreToolUse": "PreToolUse",
+            "PostToolUse": "PostToolUse",
+            "Stop": "Stop",
+        },
+        "claude-code": {
+            "UserPromptSubmit": "UserPromptSubmit",
+            "PreToolUse": "PreToolUse",
+            "PostToolUse": "PostToolUse",
+            "Stop": "Stop",
+        },
+        "gemini-cli": {
+            "UserPromptSubmit": "BeforeAgent",
+            "PreToolUse": "BeforeTool",
+            "PostToolUse": "AfterTool",
+            "Stop": "AfterAgent",
+        },
+    }[harness]
+    rendered: dict[str, list[dict[str, Any]]] = {}
+    for hook in enabled_hooks_for_harness(hook_registry, harness):
+        event = event_map.get(str(hook.get("logical_event")))
+        if not event:
+            continue
+        config: dict[str, Any] = {
+            "type": "command",
+            "command": render_hook_command(hook, harness, repo_relative=False),
+        }
+        if harness == "gemini-cli":
+            config.update(
+                {
+                    "name": hook["id"],
+                    "timeout": int(hook.get("timeout", 5)) * 1000,
+                    "description": hook.get("description", hook["id"]),
+                }
+            )
+        group: dict[str, Any] = {"hooks": [config]}
+        if hook.get("matcher"):
+            group["matcher"] = hook["matcher"]
+        if harness == "gemini-cli":
+            group["sequential"] = True
+        rendered.setdefault(event, []).append(group)
+    return {"hooks": rendered}
+
+
+def strip_generated_hook_entries(hooks: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(hooks, dict):
+        return {}
+    stripped: dict[str, list[Any]] = {}
+    for event, entries in hooks.items():
+        if not isinstance(entries, list):
+            continue
+        kept = []
+        for entry in entries:
+            if not isinstance(entry, dict):
+                kept.append(entry)
+                continue
+            hook_configs = entry.get("hooks") if isinstance(entry.get("hooks"), list) else [entry]
+            commands = [
+                str(config.get("command") or config.get("bash") or "")
+                for config in hook_configs
+                if isinstance(config, dict)
+            ]
+            if any(HOOK_COMMAND_MARKER in command for command in commands):
+                continue
+            kept.append(entry)
+        if kept:
+            stripped[event] = kept
+    return stripped
+
+
+def merge_hook_groups(existing: dict[str, Any], generated: dict[str, Any]) -> dict[str, Any]:
+    merged = strip_generated_hook_entries(existing)
+    for event, entries in generated.get("hooks", {}).items():
+        merged.setdefault(event, [])
+        merged[event].extend(entries)
+    return merged
+
+
 def render_codex_global_instructions() -> str:
     global_text = GLOBAL_MD.read_text(encoding="utf-8").rstrip("\n")
     codex_suffix = """
@@ -660,6 +789,7 @@ def render_codex_base_config(policy: dict[str, Any], current_data: dict[str, Any
             "features",
             {
                 "apps": True,
+                "codex_hooks": True,
                 "enable_request_compression": True,
                 "fast_mode": True,
                 "general_analytics": True,
@@ -956,32 +1086,21 @@ def generate_copilot_rule_instructions(ctx: SyncContext) -> None:
         write_text(ctx, output_path, rendered)
 
 
-def generate_copilot_hooks(ctx: SyncContext) -> None:
-    hooks_config = {
-        "version": 1,
-        "hooks": {
-            "sessionStart": [{"type": "command", "bash": "./hooks/session-start.sh", "cwd": ".", "timeoutSec": 15}],
-            "userPromptSubmitted": [{"type": "command", "bash": "./hooks/log-prompt.sh", "cwd": ".", "timeoutSec": 5}],
-            "preToolUse": [
-                {"type": "command", "bash": "./hooks/guard-destructive.sh", "cwd": ".", "timeoutSec": 5},
-                {"type": "command", "bash": "./hooks/protect-files.sh", "cwd": ".", "timeoutSec": 5},
-            ],
-            "postToolUse": [
-                {"type": "command", "bash": "./hooks/auto-format.sh", "cwd": ".", "timeoutSec": 30},
-                {"type": "command", "bash": "./hooks/lint-check.sh", "cwd": ".", "timeoutSec": 30},
-            ],
-        },
-    }
-    write_json(ctx, COPILOT_HOOKS_DIR / "policy.json", hooks_config)
+def generate_copilot_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
+    write_json(ctx, COPILOT_HOOKS_DIR / "policy.json", render_copilot_hooks(hook_registry))
 
 
-def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any]) -> None:
+def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registry: dict[str, Any]) -> None:
     settings = load_json(CLAUDE_SETTINGS_PATH)
     allow = settings.setdefault("permissions", {}).setdefault("allow", [])
     for domain in policy.get("docs_domains", []):
         token = f"WebFetch(domain:{domain})"
         if token not in allow:
             allow.append(token)
+    settings["hooks"] = merge_hook_groups(
+        settings.get("hooks", {}),
+        render_standard_hooks(hook_registry, "claude-code"),
+    )
     for hook_groups in settings.get("hooks", {}).values():
         for group in hook_groups:
             for hook in group.get("hooks", []):
@@ -1022,14 +1141,15 @@ def sync_copilot_agents(ctx: SyncContext) -> None:
     ensure_symlink(ctx, COPILOT_AGENTS_HOME_DIR, COPILOT_AGENTS_REPO_DIR)
 
 
-def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any]) -> None:
+def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any]) -> None:
     write_json(ctx, MCP_REGISTRY_PATH, registry)
     write_json(ctx, REPO_MCP_PATH, render_repo_mcp(registry))
     write_json(ctx, VSCODE_MCP_PATH, render_repo_mcp(registry))
+    write_json(ctx, HOOK_REGISTRY_PATH, hook_registry)
     generate_codex_global_instructions(ctx)
     generate_copilot_repo_instructions(ctx)
     generate_copilot_rule_instructions(ctx)
-    generate_copilot_hooks(ctx)
+    generate_copilot_hooks(ctx, hook_registry)
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
@@ -1180,7 +1300,11 @@ def merge_opencode_config(ctx: SyncContext, registry: dict[str, Any], fallbacks:
 
 
 def merge_gemini_settings(
-    ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
+    ctx: SyncContext,
+    registry: dict[str, Any],
+    policy: dict[str, Any],
+    fallbacks: dict[str, str],
+    hook_registry: dict[str, Any],
 ) -> None:
     if not GEMINI_SETTINGS_PATH.exists():
         return
@@ -1189,9 +1313,10 @@ def merge_gemini_settings(
 
     if CLAUDE_SETTINGS_PATH.exists():
         claude_settings = load_json(CLAUDE_SETTINGS_PATH)
-        for key in ["hooks", "permissions", "enabledPlugins", "alwaysThinkingEnabled", "autoUpdatesChannel"]:
+        for key in ["permissions", "enabledPlugins", "alwaysThinkingEnabled", "autoUpdatesChannel"]:
             if key in claude_settings:
                 settings[key] = claude_settings[key]
+    settings["hooks"] = merge_hook_groups(settings.get("hooks", {}), render_standard_hooks(hook_registry, "gemini-cli"))
 
     defaults = policy.get("model_defaults", {}).get("gemini", {})
     if "model" in defaults:
@@ -1238,7 +1363,11 @@ def merge_claude_settings_local(ctx: SyncContext, registry: dict[str, Any]) -> N
 
 
 def sync_home_targets(
-    ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
+    ctx: SyncContext,
+    registry: dict[str, Any],
+    policy: dict[str, Any],
+    fallbacks: dict[str, str],
+    hook_registry: dict[str, Any],
 ) -> None:
     sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
@@ -1252,12 +1381,12 @@ def sync_home_targets(
             "Compatibility shim only. Active configs should point directly at `global.md`.\n"
         ),
     )
-    merge_claude_settings(ctx, policy)
+    merge_claude_settings(ctx, policy, hook_registry)
     merge_claude_settings_local(ctx, registry)
     merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks)
     merge_client_mcp_config(ctx, CURSOR_MCP_PATH, registry, fallbacks)
     merge_copilot_config(ctx, policy)
-    merge_gemini_settings(ctx, registry, policy, fallbacks)
+    merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
     write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CHATGPT_MCP_PATH, "mcpServers", render_client_mcp(registry, fallbacks)["mcpServers"])
     merge_server_root_config(ctx, COPILOT_SHADOW_MCP_PATH, "mcpServers", render_shadow_copilot_mcp(registry, fallbacks))
@@ -1277,6 +1406,7 @@ def sync_home_targets(
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
+    write_json(ctx, CODEX_HOOKS_PATH, render_standard_hooks(hook_registry, "codex"))
     sync_generated_json_directory(
         ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)
     )
@@ -1302,12 +1432,13 @@ def main(argv: list[str] | None = None) -> int:
     ctx = SyncContext(apply=args.apply)
     policy = load_json(TOOLING_POLICY_PATH)
     registry = load_registry(ctx)
+    hook_registry = load_hook_registry()
     fallbacks = load_current_secret_fallbacks()
     targets = {item.strip() for item in args.targets.split(",")} if args.targets != "all" else {"repo", "home"}
     if "repo" in targets:
-        sync_repo_targets(ctx, registry)
+        sync_repo_targets(ctx, registry, hook_registry)
     if "home" in targets:
-        sync_home_targets(ctx, registry, policy, fallbacks)
+        sync_home_targets(ctx, registry, policy, fallbacks, hook_registry)
     if args.check:
         for change in ctx.changes:
             print(change)

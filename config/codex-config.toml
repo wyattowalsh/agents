@@ -26,6 +26,7 @@ requested."""
 
 [features]
 apps = true
+codex_hooks = true
 enable_request_compression = true
 fast_mode = true
 general_analytics = true

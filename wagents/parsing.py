@@ -153,6 +153,9 @@ class Hook:
     handler_type: str  # "command", "prompt", or "agent"
     command: str  # shell command (for type=command)
     prompt: str  # prompt text (for type=prompt or type=agent)
+    harness_support: list[str] | None = None
+    rendered_event: str = ""
+    blocking_mode: str = ""
 
 
 def extract_hooks(source_name: str, hooks_dict: dict) -> list[Hook]:
