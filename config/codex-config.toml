@@ -178,7 +178,7 @@ startup_timeout_sec = 90
 tool_timeout_sec = 600
 
 [mcp_servers.docling]
-args = ["--from=docling-mcp", "docling-mcp-server"]
+args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]
 command = "uvx"
 startup_timeout_sec = 90
 tool_timeout_sec = 600

@@ -98,6 +98,38 @@ def test_chrome_devtools_renderers_launch_isolated_browser():
     assert "--autoConnect" not in rendered_text
 
 
+def test_docling_renderers_use_upstream_stdio_launch_shape():
+    registry = {
+        "servers": {
+            "docling": {
+                "command": "uvx",
+                "args": ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"],
+                "enabled": True,
+                "transport": "stdio",
+                "startup_timeout_sec": 90,
+                "timeout_ms": 600000,
+                "tools": ["*"],
+            }
+        }
+    }
+
+    repo = render_repo_mcp(registry)["mcpServers"]["docling"]
+    copilot = render_copilot_mcp(registry, {})["mcpServers"]["docling"]
+    gemini = render_gemini_mcp(registry, {})["docling"]
+    opencode = render_opencode_mcp(registry, {})["docling"]
+    codex = render_codex_mcp_block(registry)
+
+    expected_args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]
+    assert repo["args"] == expected_args
+    assert copilot["args"] == expected_args
+    assert gemini["args"] == expected_args
+    assert opencode["command"] == ["uvx", *expected_args]
+    assert 'args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]' in codex
+    assert "docling-mcp==" not in json.dumps(
+        {"repo": repo, "copilot": copilot, "gemini": gemini, "opencode": opencode, "codex": codex}
+    )
+
+
 def test_merge_server_root_config_uses_opencode_mcp_root(tmp_path):
     opencode_config = tmp_path / "opencode.json"
     opencode_config.write_text(json.dumps({"mcp": {"custom": {"type": "local", "enabled": True}}}))

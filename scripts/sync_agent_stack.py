@@ -177,7 +177,7 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
     },
     "docling": {
         "command": "uvx",
-        "args": ["--from=docling-mcp", "docling-mcp-server"],
+        "args": ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"],
     },
     "repomix": {
         "command": "npx",
