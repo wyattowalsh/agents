@@ -1,0 +1,155 @@
+{
+  "skill_name": "frontend-designer",
+  "evals": [
+    {
+      "id": "empty-args-gallery",
+      "prompt": "/frontend-designer",
+      "expected_output": "A concise gallery of available frontend-designer modes with example invocations.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent lists Scaffold, Component, Page/View, Theme, Refactor, and Audit modes.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "scaffold-vite-react",
+      "prompt": "/frontend-designer scaffold my-app",
+      "expected_output": "A scaffold workflow for a modern React frontend using Tailwind v4 and shadcn/ui.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Scaffold mode.",
+        "Agent detects or asks for the framework choice.",
+        "Agent loads Tailwind, Vite, shadcn, typography, and aesthetic references.",
+        "Agent uses Tailwind v4 CSS-first setup with @import \"tailwindcss\" and @theme.",
+        "Agent runs the Visual Acceptance Gate before declaring completion."
+      ]
+    },
+    {
+      "id": "component-sidebar",
+      "prompt": "/frontend-designer component sidebar",
+      "expected_output": "A component workflow that checks framework context, primitives, accessibility, and rendered proof.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Component mode.",
+        "Agent classifies Server vs Client component context.",
+        "Agent checks shadcn/ui or Radix primitives before building from scratch.",
+        "Agent gathers purpose, interactions, responsive behavior, and accessibility requirements.",
+        "Agent runs the Visual Acceptance Gate for the rendered component or demo."
+      ]
+    },
+    {
+      "id": "component-data-table-no-aesthetic",
+      "prompt": "/frontend-designer component data-table",
+      "expected_output": "A utility component workflow that avoids unnecessary aesthetic-guide loading.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Component mode.",
+        "Agent loads React and shadcn references.",
+        "Agent does not load aesthetic-guide.md for a utilitarian data table by default.",
+        "Agent prioritizes table accessibility, keyboard behavior, and responsive container behavior."
+      ]
+    },
+    {
+      "id": "implicit-trigger-page-dashboard-domain-fit",
+      "prompt": "/frontend-designer build an admin dashboard for support ticket triage",
+      "expected_output": "A Page/View workflow with restrained operational UI defaults and rendered acceptance checks.",
+      "files": [],
+      "assertions": [
+        "Agent treats this natural-language prompt as an implicit trigger for Page/View mode.",
+        "Agent auto-detects a Page/View request rather than a single Component request.",
+        "Agent runs the domain-fit gate before choosing aesthetic direction.",
+        "Agent chooses restrained, dense, scannable, predictable UI defaults for admin/support workflows.",
+        "Agent plans layout shell, navigation, loading, empty, and error states.",
+        "Agent runs the Visual Acceptance Gate before completion."
+      ]
+    },
+    {
+      "id": "page-landing-visual",
+      "prompt": "/frontend-designer build a hero section landing page with animated gradient background",
+      "expected_output": "A Page/View or visual component workflow using aesthetic guidance, design tokens, progressive enhancement, and contrast checks.",
+      "files": [],
+      "assertions": [
+        "Agent treats the request as a visual page or hero surface.",
+        "Agent loads aesthetic-guide.md because this is marketing or landing-page work.",
+        "Agent uses Tailwind v4 design tokens rather than tailwind.config.js.",
+        "Agent guards partial or experimental CSS features with @supports and fallbacks.",
+        "Agent verifies WCAG AA text and UI contrast."
+      ]
+    },
+    {
+      "id": "theme-token-extraction",
+      "prompt": "/frontend-designer tokens",
+      "expected_output": "A Theme workflow that extracts hardcoded values and organizes them into Tailwind v4 theme variables.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Theme mode.",
+        "Agent scans for hardcoded color and style values.",
+        "Agent organizes values into primitive, semantic, and component token layers.",
+        "Agent generates an @theme block for utility-generating design tokens.",
+        "Agent treats contrast-color() as experimental and provides manual fallbacks."
+      ]
+    },
+    {
+      "id": "refactor-approval-and-proof",
+      "prompt": "/frontend-designer refactor src/components/",
+      "expected_output": "A Refactor workflow with pre-scan, approval gate, file-by-file migration, and rendered verification.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Refactor mode.",
+        "Agent runs the pre-scan checklist before edits.",
+        "Agent presents a file-by-file migration plan and waits for approval before changing code.",
+        "Agent verifies project checks and the Visual Acceptance Gate after changes.",
+        "Agent re-runs the pre-scan checklist to confirm improvement."
+      ]
+    },
+    {
+      "id": "audit-read-only",
+      "prompt": "/frontend-designer audit",
+      "expected_output": "A read-only frontend audit report with severity-grouped findings and visual proof status.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Audit mode.",
+        "Agent never modifies code.",
+        "Agent scores stack currency, component patterns, design tokens, CSS modernness, typography, accessibility, and visual proof.",
+        "Agent reports findings grouped by Critical, Warning, Suggestion, Strengths, and Recommended Actions.",
+        "Agent states whether live visual proof was possible."
+      ]
+    },
+    {
+      "id": "scope-refusal-backend",
+      "prompt": "/frontend-designer build a REST API for user authentication",
+      "expected_output": "A refusal or redirect because backend API work is outside frontend-designer scope.",
+      "files": [],
+      "assertions": [
+        "Agent detects the request is backend/API work.",
+        "Agent refuses or redirects to an appropriate backend/API skill.",
+        "Agent does not attempt to build the API."
+      ]
+    },
+    {
+      "id": "negative-control-testing-state-routing",
+      "prompt": "/frontend-designer fix our broken Vitest tests and Zustand state bug in React Router",
+      "expected_output": "A refusal or redirect because testing, state management, and routing are outside frontend-designer scope.",
+      "files": [],
+      "assertions": [
+        "This is a negative-control eval for frontend-designer routing.",
+        "Agent detects testing, state management, and routing signals.",
+        "Agent does not route the request to generic Audit mode.",
+        "Agent redirects to more appropriate skills or project-specific tooling."
+      ]
+    },
+    {
+      "id": "mixed-ui-bug-audit",
+      "prompt": "/frontend-designer the modal layout overlaps on mobile and keyboard focus is broken",
+      "expected_output": "An Audit workflow because the bug is visual and interaction-focused UI behavior.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Audit mode.",
+        "Agent treats overlap, mobile layout, and keyboard focus as frontend UI concerns.",
+        "Agent stays read-only unless the user later requests a refactor.",
+        "Agent recommends visual acceptance checks for any subsequent fix."
+      ]
+    }
+  ]
+}

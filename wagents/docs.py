@@ -1142,7 +1142,8 @@ def write_skills_index(nodes: list) -> None:
     parts.append('<Aside type="note" title="Installed external skills">')
     parts.append(
         "Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-party collections "
-        "or curated subsets. Run `wagents docs generate --include-installed` when you want those locally "
+        "or curated subsets. See [External Skills](/external-skills/) for the curated install set "
+        "and trust gates. Run `wagents docs generate --include-installed` when you want those locally "
         "installed skills included in a docs build."
     )
     parts.append("</Aside>")

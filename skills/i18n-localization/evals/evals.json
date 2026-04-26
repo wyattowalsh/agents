@@ -1,0 +1,44 @@
+{
+  "skill_name": "i18n-localization",
+  "evals": [
+    {
+      "id": "empty-args-localization-audit",
+      "prompt": "/i18n-localization",
+      "expected_output": "Starts a localization audit that covers catalogs, pseudo-locale QA, locale routing, formatting, and acceptance criteria.",
+      "assertions": [
+        "Mentions localization audit",
+        "Includes catalog or message extraction checks",
+        "Includes pseudo-locale and locale routing checks"
+      ]
+    },
+    {
+      "id": "review-diff-for-i18n-risks",
+      "prompt": "Review this diff for localization readiness. It adds a checkout banner with 'You have ' + count + ' items' and formats price with '$' + amount.",
+      "expected_output": "Flags sentence concatenation, missing plural handling, unsafe currency formatting, and missing translator notes.",
+      "assertions": [
+        "Warns against translated fragment concatenation",
+        "Requires plural-aware messages",
+        "Requires locale-aware currency formatting"
+      ]
+    },
+    {
+      "id": "rtl-readiness",
+      "prompt": "/i18n-localization Plan support for Arabic and Hebrew in the docs site.",
+      "expected_output": "Plans RTL and bidirectional checks, language and direction attributes, pseudo-locale or visual QA, and docs routing/metadata readiness.",
+      "assertions": [
+        "Mentions RTL and bidirectional text",
+        "Checks language or direction attributes",
+        "Includes visual or pseudo-locale checks"
+      ]
+    },
+    {
+      "id": "negative-copy-editing-boundary",
+      "prompt": "Rewrite this homepage headline to sound more premium.",
+      "expected_output": "Negative control: refuses generic copy-editing ownership and redirects to a copy or marketing skill if available.",
+      "assertions": [
+        "States the request is outside i18n-localization scope",
+        "Does not perform generic headline rewriting"
+      ]
+    }
+  ]
+}

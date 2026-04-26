@@ -1,0 +1,100 @@
+---
+title: "External Skills"
+description: "Curated external Agent Skills approved for install, inspection, or global-only use with trust gates and exact npx commands."
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+# External Skills
+
+This page tracks the curated third-party Agent Skills selected for this repo's
+skill expansion. External skills are trust-bearing assets, not inert docs:
+inspect `SKILL.md`, hooks, scripts, commands, network calls, credential
+handling, and source provenance before repo promotion.
+
+<Aside type="caution">
+Do not bulk-import entire external repositories. Install only the curated
+skills listed here, and run `external-skill-auditor` before repo promotion.
+</Aside>
+
+Target agents:
+
+- `antigravity`
+- `claude-code`
+- `codex`
+- `gemini-cli`
+- `github-copilot`
+- `opencode`
+
+## Install Now After Trust Gate
+
+<Tabs>
+  <TabItem label="Web Quality">
+
+```bash
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+```
+
+  </TabItem>
+  <TabItem label="Playwright">
+
+```bash
+npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+```
+
+  </TabItem>
+  <TabItem label="Vercel">
+
+```bash
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+```
+
+  </TabItem>
+  <TabItem label="Vendors">
+
+```bash
+npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+```
+
+  </TabItem>
+</Tabs>
+
+## Inspect Then Install
+
+Run these only after source-list, hook/script, credential, network, and dedupe
+review.
+
+```bash
+npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+```
+
+## Keep Global Only Or Avoid
+
+- `vercel-labs/skills@find-skills`: duplicate of `discover-skills`.
+- `vercel-labs/agent-browser`: broad operational scope; overlaps browser automation.
+- `anthropics/skills`: inspect case-by-case because many entries duplicate local or system skills.
+- `huggingface/skills`: keep global unless ML workflows become frequent.
+- Community Better Auth, Clerk, Neon, and generic OpenAI Agent SDK skills: lower source confidence or duplicate architecture coverage.
+- `docs.stripe.com` registry entries: avoid until source syntax and provenance are resolved.
+
+## Local Custom Skills
+
+The repo-side custom additions are:
+
+- `external-skill-auditor`
+- `i18n-localization`
+- `agent-runtime-governance`
+
+No `llms-context-maintainer` skill is planned. This repo already uses generated
+docs surfaces and `starlight-llms-txt`.

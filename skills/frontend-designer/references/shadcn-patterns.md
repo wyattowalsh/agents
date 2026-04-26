@@ -1,6 +1,6 @@
 # shadcn/ui Patterns
 
-> Targets shadcn CLI 3.x with Radix UI unified package. Verify exact APIs via Context7 before relying on bundled specs.
+> Version-sensitive reference. Registry check on 2026-04-25: `shadcn@4.5.0`. Verify exact CLI flags and component APIs before relying on bundled specs.
 
 CLI commands, component architecture, registry system, RTL support, theming, and Radix primitive mapping.
 
@@ -226,6 +226,10 @@ Wrap output in `<Table>`, `<TableHeader>`, `<TableBody>`, `<TableRow>`, `<TableC
 | Hover card | `HoverCard` | `HoverCard` | Pointer-triggered preview |
 
 Components **not** built on Radix (pure Tailwind + HTML): `Button`, `Badge`, `Card`, `Input`, `Textarea`, `Label`, `Table`, `Avatar`, `Skeleton`, `Alert`, `Separator`, `Calendar`, `Carousel`.
+
+### AI Skill / MCP Context
+
+When working inside an existing shadcn/ui project, first check for `components.json`. If present, prefer project-local shadcn context (`shadcn info --json` or an installed shadcn skill/MCP server) before guessing aliases, registry settings, base color, icon library, or RSC/RTL configuration.
 
 ---
 

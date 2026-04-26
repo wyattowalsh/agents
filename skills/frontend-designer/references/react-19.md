@@ -1,6 +1,6 @@
 # React 19 Patterns
 
-> Framework-dependent behavior. Server Components are default in **Next.js App Router** and **Remix v2+** only. In **Vite + React**, all components are client components and `"use client"` is unnecessary.
+> Version-sensitive reference. Registry check on 2026-04-25: `react@19.2.5`. Framework-dependent behavior: Server Components are default in **Next.js App Router** and **Remix v2+** only. In **Vite + React**, all components are client components and `"use client"` is unnecessary.
 
 ---
 
@@ -13,7 +13,7 @@
 | **Vite + React** | Client Component | Never needed | No (no server runtime) |
 | **Astro + React** | Island (client) | No — Astro handles via `client:*` | No |
 
-**Add `"use client"` (Next.js/Remix only)** when using: `useState`, `useReducer`, `useEffect`, `useRef`, `useContext`, event handlers (`onClick`, `onChange`), browser APIs (`window`, `document`, `localStorage`), or third-party libs that use any of the above.
+**Add `"use client"` (Next.js/Remix only)** when using: `useState`, `useReducer`, `useEffect`, `useRef`, `useContext`, event handlers (`onClick`, `onChange`), browser APIs (`window`, `document`, `localStorage`), or third-party libs that use any of the above. The directive must be at the beginning of the file before imports, and importing a client-marked module from a Server Component creates a client subtree boundary.
 
 **Minimize client boundaries** — push `"use client"` to interactive leaves:
 

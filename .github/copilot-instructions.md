@@ -9,6 +9,7 @@
 - Use llms.txt, Context7, and relevant tools for up-to-date context; prefer latest dependency versions.
 - After changes to public APIs, file structure, agent definitions, or skill definitions, invoke `/docs-steward` if available.
 - When skills need installing, surface the command to the user: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- For the curated third-party skill install set and trust-gated external sources, use `/Users/ww/dev/projects/agents/instructions/external-skills.md`.
 - Never sign or add self-attribution.
 - Use hooks for deterministic enforcement; reserve instructions for intent and heuristics that require judgment.
 - **Precedence**: explicit user instructions override all rules → Clarification Gate governs ambiguous decisions → platform bridge files override global.md on the same topic.
@@ -41,6 +42,13 @@ Before any tool-mediated work:
 
 **Model**: opus by default. Platform-specific bridge files may override.
 **Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.
+
+## Git Branch Policy
+
+- Do not create new branches, create new worktrees, or switch branches for work unless the user explicitly asks for that.
+- Default to doing repository work on the existing default branch: `main`, or `master` in legacy repositories.
+- Before mutating work in a git repository, check the current branch. If it is not `main` or `master` and the user did not explicitly request that branch, stop and ask before proceeding.
+- Preserve dirty worktree state. Do not use branch changes to isolate, hide, reset, stash, or discard local changes unless the user explicitly requests that operation.
 
 ## Commit Discipline
 

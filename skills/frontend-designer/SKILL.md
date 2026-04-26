@@ -1,9 +1,9 @@
 ---
 name: frontend-designer
 description: >-
-  Build frontends with React, Tailwind, shadcn/ui. Scaffold, create, theme,
-  refactor, audit. Use when building or improving UI. NOT for backend, DevOps,
-  testing, or state management.
+  Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create
+  components/pages, theme, refactor, verify rendered UI. Use when building UI.
+  NOT for backend, tests, state, routing, or DevOps.
 argument-hint: "<mode> [target]"
 model: opus
 license: MIT
@@ -14,7 +14,7 @@ metadata:
 
 # Frontend Designer
 
-Build production-grade frontend interfaces with modern React, TailwindCSS v4, and shadcn/ui. Five modes from project scaffolding to codebase audit.
+Build production-grade frontend interfaces with modern React, TailwindCSS v4, and shadcn/ui. Six modes from project scaffolding to rendered UI audit.
 
 **Input:** `$ARGUMENTS` — mode keyword + target, natural language UI description, or file path.
 
@@ -50,13 +50,15 @@ Route `$ARGUMENTS` to the appropriate mode:
 |----------------------|------|----------|
 | `scaffold <name>` / `init <name>` | **Scaffold** | Mode A |
 | `component <name>` / `create <name>` | **Component** | Mode B |
+| `page <name>` / `view <name>` / `screen <name>` | **Page/View** | Mode F |
 | `theme` / `theme <path>` / `tokens` / `tokens <path>` | **Theme** | Mode C |
 | `refactor <path>` / `style <path>` | **Refactor** | Mode D |
 | `audit` / `audit <path>` | **Audit** | Mode E |
 | Natural language UI description ("build a sidebar", "design a card") | Auto: **Component** | Mode B |
+| Natural language page/view description ("build a landing page", "design a dashboard") | Auto: **Page/View** | Mode F |
 | Path to existing `.tsx`/`.jsx`/`.css` file or directory | Auto: **Refactor** | Mode D |
 | Error message / "not working" / "broken" | Auto: **Audit** | Mode E |
-| "backend" / "API" / "database" / "DevOps" | **Refuse** | Redirect to relevant skill |
+| "backend" / "API" / "database" / "DevOps" / testing / state / routing / build tooling | **Refuse** | Redirect to relevant skill |
 | Empty | **Gallery** | Show modes with example invocations |
 
 ### Classification Gate
@@ -66,9 +68,11 @@ For ambiguous inputs, disambiguate before routing:
 | Signal | Route to |
 |--------|----------|
 | Error, broken, bug, crash, "doesn't work" | Audit |
+| Test runner, state library, router, bundler, package manager, CI | Refuse or redirect |
 | Upgrade, modernize, migrate, update, convert | Refactor |
 | Colors, dark mode, tokens, palette, branding | Theme |
-| Build, create, design, add, new + UI noun | Component |
+| Landing page, dashboard, settings, checkout, profile, app shell, route, screen | Page/View |
+| Build, create, design, add, new + component noun | Component |
 | Setup, init, start, new project | Scaffold |
 | Mixed signals | Ask user which mode |
 
@@ -136,7 +140,7 @@ Configure `components.json` for project structure. Install core components: `but
 
 ### A.5 Aesthetic Direction
 
-Run the design thinking exercise (see Aesthetic Direction section below). Commit to a direction before writing any component code.
+Run the domain-fit gate and design thinking exercise (see Aesthetic Direction section below). Commit to an appropriate direction before writing UI code.
 
 ### A.6 File Structure
 
@@ -149,6 +153,10 @@ src/
   styles/            # Global CSS, @theme, @font-face
   app/ or pages/     # Routes (framework-dependent)
 ```
+
+### A.7 Completion
+
+Run the Visual Acceptance Gate before declaring scaffolded UI complete.
 
 ---
 
@@ -196,6 +204,10 @@ Non-negotiable for every interactive component:
 - ARIA attributes (roles, labels, descriptions, live regions)
 - Focus management (trap in modals, restore on close)
 - Color contrast: WCAG AA minimum (4.5:1 text, 3:1 large text/UI)
+
+### B.6 Completion
+
+Run the Visual Acceptance Gate for any rendered component or component demo.
 
 ---
 
@@ -306,7 +318,7 @@ Before any changes, scan the project:
 
 1. Present file-by-file migration plan → **user approval gate**
 2. Execute changes, one file at a time
-3. Verify after each file: build passes, no visual regressions
+3. Verify after each file: project checks pass and the Visual Acceptance Gate shows no regressions
 4. Re-run pre-scan checklist to confirm improvement
 
 ---
@@ -331,6 +343,7 @@ Run the same checklist as Mode D (§D.1).
 | CSS modernness | Container queries? :has()? Logical properties? @supports guards? |
 | Typography | Distinctive fonts? Monaspace for code? Fluid type scale? |
 | Accessibility | ARIA attributes? Keyboard nav? Focus management? Contrast ratios? |
+| Visual proof | Screenshots/browser inspection? Mobile/desktop states? Overflow, overlap, focus, reduced motion? |
 
 ### E.3 Report Format
 
@@ -356,13 +369,58 @@ Run the same checklist as Mode D (§D.1).
 
 ---
 
+## Mode F: Page/View
+
+**Goal:** Design and build a full page, route, screen, dashboard, landing page, or app shell.
+
+**Load:** `references/react-19.md`, `references/shadcn-patterns.md`, `references/modern-css.md`, `references/typography.md`
+**Conditional:** Load `references/aesthetic-guide.md` for marketing, hero, editorial, portfolio, game, or brand-heavy pages.
+
+### F.1 Classify Page Context
+
+Gather before building:
+- **Domain:** SaaS/admin/ops/docs/finance vs marketing/portfolio/editorial/game/product showcase
+- **User job:** Primary action, repeated workflow, scan/comparison need, decision point
+- **Composition:** Layout shell, route slots, navigation, responsive breakpoints, loading/empty/error states
+- **Integration:** Framework routing convention, Server/Client boundary, data placeholders, component reuse
+
+### F.2 Design and Implement
+
+1. Run the Aesthetic Direction domain-fit gate.
+2. Compose from shadcn/ui primitives and existing project components before custom UI.
+3. Keep page-level layout responsive with media queries and component internals responsive with container queries.
+4. Include meaningful loading, empty, and error states when the page represents data.
+5. Run the Visual Acceptance Gate before declaring complete.
+
+---
+
+## Visual Acceptance Gate
+
+Run for Scaffold, Component, Page/View, and Refactor outputs whenever a rendered surface exists.
+
+1. Start or use the project dev server when feasible; otherwise state why live rendering was not possible.
+2. Inspect at one mobile width and one desktop width.
+3. Capture or describe visual evidence for the changed surface.
+4. Verify no incoherent overlap, clipped text, horizontal overflow, layout jump, or unreadable state.
+5. Check keyboard focus order, visible focus indicators, Escape/arrow behavior where relevant, and reduced-motion behavior for animation.
+6. Check WCAG AA contrast: 4.5:1 for normal text, 3:1 for large text and UI indicators.
+7. Run the project’s relevant smoke/build command when available.
+
+---
+
 ## Aesthetic Direction
 
-Before building visual components, commit to a bold aesthetic:
+Before building visual components or pages, choose the direction that fits the domain and audience:
+
+| Domain | Default direction |
+|--------|-------------------|
+| SaaS, CRM, admin, finance, ops, docs | Restrained, dense, scannable, predictable |
+| Marketing, portfolio, editorial, brand, product showcase | Expressive, asset-led, memorable |
+| Games, toys, experiments, art tools | Playful, immersive, highly interactive |
 
 **Design Thinking:**
 1. **Purpose** — What problem does this interface solve? Who uses it?
-2. **Tone** — Pick an extreme and own it: brutalist, maximalist, minimal, editorial, retro-futuristic, organic, luxury, playful, art deco, industrial, soft pastel
+2. **Tone** — Pick a tone appropriate to the domain; use extreme aesthetics only when the product context supports them
 3. **Constraints** — Framework, performance budget, accessibility requirements
 4. **Differentiation** — What makes this unforgettable? The one thing someone remembers?
 
@@ -403,8 +461,25 @@ Load on demand during the relevant mode. Do NOT load all at once.
 | `references/modern-css.md` | Container queries, :has(), @scope, view transitions, scroll-driven animations, anchor positioning, color-mix(), @layer | Component, Theme, Refactor |
 | `references/typography.md` | Monaspace superfamily, variable fonts, @font-face, font pairing, fluid type scale with clamp() | Scaffold, Theme, Component (visual) |
 | `references/aesthetic-guide.md` | Design thinking, aesthetic catalog, color theory, motion, spatial composition, anti-slop rules | Component (visual/landing/hero), Scaffold |
-| `references/vite-config.md` | Vite 6 setup, plugins, CSS handling, asset optimization, env variable security | Scaffold |
+| `references/vite-config.md` | Current Vite setup, plugins, CSS handling, asset optimization, env variable security | Scaffold |
 | `references/anti-patterns.md` | Detection criteria and fixes for common frontend anti-patterns | Audit, Refactor |
+
+---
+
+## Validation Contract
+
+Run before declaring this skill complete after edits:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python path/to/audit.py skills/frontend-designer/ --format json
+uv run wagents package frontend-designer --dry-run
+uv run pytest -q tests/test_frontend_designer_scan.py
+uv run wagents readme --check
+```
+
+Completion criteria: all commands pass with zero errors, audit score is A (90+), and docs-steward has handled generated docs if skill docs changed.
 
 ---
 
@@ -422,3 +497,4 @@ Load on demand during the relevant mode. Do NOT load all at once.
 10. **Consult live docs only when needed** — references are stable; fetch Context7/WebSearch only for unexpected behavior or uncovered features
 11. **Body stays under 500 lines** — deep technical details go to reference files
 12. **Audit mode is read-only** — never modify code in audit mode
+13. **Rendered UI must be proven** — do not declare frontend work complete without the Visual Acceptance Gate or an explicit blocker
