@@ -6,6 +6,7 @@ from scripts import sync_agent_stack
 from scripts.sync_agent_stack import (
     SyncContext,
     merge_codex_config,
+    merge_copilot_config,
     merge_opencode_config,
     merge_server_root_config,
     render_cherry_import_files,
@@ -562,6 +563,38 @@ enabled = true
     assert "max_threads" not in repo_config
     assert "job_max_runtime_seconds" not in repo_config
     assert 'env_vars = ["BRAVE_API_KEY"]' in repo_config
+
+
+def test_merge_copilot_config_preserves_camel_case_trusted_folders(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "trustedFolders": ["/Users/ww"],
+                "model": "old-model",
+                "effortLevel": "medium",
+                "allowed_urls": ["https://docs.github.com"],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sync_agent_stack, "COPILOT_CONFIG_PATH", config_path)
+    policy = {
+        "trusted_roots": ["/Users/ww/dev/projects"],
+        "docs_domains": ["docs.github.com", "modelcontextprotocol.io"],
+        "model_defaults": {"copilot": {"model": "claude-opus-4.6", "effort_level": "xhigh"}},
+    }
+
+    ctx = SyncContext(apply=True)
+    merge_copilot_config(ctx, policy)
+
+    rendered = json.loads(config_path.read_text(encoding="utf-8"))
+    assert rendered["trustedFolders"] == ["/Users/ww", "/Users/ww/dev/projects"]
+    assert "trusted_folders" not in rendered
+    assert rendered["allowed_urls"] == ["https://docs.github.com", "https://modelcontextprotocol.io"]
+    assert rendered["model"] == "claude-opus-4.6"
+    assert rendered["effortLevel"] == "xhigh"
 
 
 def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch):
