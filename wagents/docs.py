@@ -16,6 +16,12 @@ from wagents.rendering import (
     render_page,
     safe_outer_fence,
 )
+from wagents.site_model import (
+    agent_flags,
+    build_install_command,
+    render_site_data_module,
+    site_data,
+)
 
 # ---------------------------------------------------------------------------
 # Index and CLI pages
@@ -45,8 +51,23 @@ def _has_repo_agents() -> bool:
     return any((ROOT / "agents").glob("*.md"))
 
 
+def write_site_data(nodes: list) -> None:
+    """Write generated site data consumed by Astro components."""
+    data = site_data(
+        nodes,
+        mcp_config_count=_count_mcp_servers_from_config(),
+        has_mcp_overview=_has_mcp_overview_page(),
+    )
+    (DOCS_DIR / "src" / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
+
+
 def write_index_page(nodes: list) -> None:
     """Write the index.mdx splash page."""
+    data = site_data(
+        nodes,
+        mcp_config_count=_count_mcp_servers_from_config(),
+        has_mcp_overview=_has_mcp_overview_page(),
+    )
     skills = [n for n in nodes if n.kind == "skill"]
     installed_skills = [n for n in skills if n.source != "custom"]
     agents = [n for n in nodes if n.kind == "agent"]
@@ -70,21 +91,12 @@ def write_index_page(nodes: list) -> None:
     parts.append("        </div>")
     parts.append('        <div class="hero-terminal-body">')
     parts.append('          <span class="hero-terminal-prompt">$</span>')
-    parts.append(
-        '          <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g '
-        "--agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot "
-        "--agent opencode</span>"
-    )
+    parts.append(f'          <span class="hero-terminal-cmd">{build_install_command(all_skills=True)}</span>')
     parts.append('          <span class="hero-terminal-cursor">▋</span>')
     parts.append("        </div>")
     parts.append('        <div class="hero-agents-row">')
-    parts.append('          <span class="hero-agent-badge">Claude</span>')
-    parts.append('          <span class="hero-agent-badge">Gemini</span>')
-    parts.append('          <span class="hero-agent-badge">Cursor</span>')
-    parts.append('          <span class="hero-agent-badge">Copilot</span>')
-    parts.append('          <span class="hero-agent-badge">Antigravity</span>')
-    parts.append('          <span class="hero-agent-badge">Crush</span>')
-    parts.append('          <span class="hero-agent-badge">OpenCode</span>')
+    for agent in data["supportedAgents"]:
+        parts.append(f'          <span class="hero-agent-badge">{escape_attr(agent["label"])}</span>')
     parts.append("        </div>")
     parts.append("      </div>")
     parts.append("  actions:")
@@ -163,16 +175,12 @@ def write_index_page(nodes: list) -> None:
     parts.append("```bash")
     parts.append("# Install the full catalog")
     parts.append(
-        "npx skills add github:wyattowalsh/agents --all -y -g "
-        "--agent claude-code --agent codex --agent gemini-cli "
-        "--agent antigravity --agent github-copilot --agent opencode"
+        build_install_command(all_skills=True)
     )
     parts.append("")
     parts.append("# Or start with one focused skill")
     parts.append(
-        "npx skills add github:wyattowalsh/agents --skill honest-review -y -g "
-        "--agent claude-code --agent codex --agent gemini-cli "
-        "--agent antigravity --agent github-copilot --agent opencode"
+        build_install_command(skill="honest-review")
     )
     parts.append("```")
     parts.append("")
@@ -186,28 +194,13 @@ def write_index_page(nodes: list) -> None:
     parts.append("## Distribution Paths")
     parts.append("")
     parts.append("<CardGrid>")
-    parts.append('  <Card title="Claude Code Plugin">')
-    parts.append(
-        '    <Badge text="native" variant="tip" /> '
-        "`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` expose the repo root "
-        "as a Git-hosted plugin. "
-        "The plugin version is intentionally unpinned so Git commits drive updates."
-    )
-    parts.append("  </Card>")
-    parts.append('  <Card title="Codex Plugin">')
-    parts.append(
-        '    <Badge text="native" variant="note" /> '
-        "`.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same "
-        "`skills/` and `mcp.json` bundle for Codex."
-    )
-    parts.append("  </Card>")
-    parts.append('  <Card title="Skills CLI">')
-    parts.append(
-        '    <Badge text="fallback" variant="success" /> '
-        "`npx skills add github:wyattowalsh/agents ...` remains the portable install path for "
-        "Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents."
-    )
-    parts.append("  </Card>")
+    for path in data["distributionPaths"]:
+        parts.append(f'  <Card title="{escape_attr(path["title"])}">')
+        parts.append(
+            f'    <Badge text="{escape_attr(path["badge_text"])}" variant="{escape_attr(path["badge_variant"])}" /> '
+            f"{path['body']}"
+        )
+        parts.append("  </Card>")
     parts.append("</CardGrid>")
     parts.append("")
     parts.append('<Aside type="tip" title="Fastest path">')
@@ -222,29 +215,14 @@ def write_index_page(nodes: list) -> None:
     parts.append("")
     parts.append('<div class="catalog-skill">')
     parts.append("<CardGrid>")
-    parts.append('  <Card title="Portable">')
-    parts.append('    <div class="feature-card-icon" aria-hidden="true">P</div>')
-    parts.append(
-        '    <Badge text="Install once" variant="note" /> '
-        "Move the same workflows across Claude Code, Cursor, GitHub Copilot, "
-        "Gemini CLI, Antigravity, and more."
-    )
-    parts.append("  </Card>")
-    parts.append('  <Card title="Inspectable">')
-    parts.append('    <div class="feature-card-icon" aria-hidden="true">C</div>')
-    parts.append(
-        '    <Badge text="Versioned" variant="tip" /> '
-        "Keep prompts, workflows, and conventions in source control instead of buried in copy-paste docs."
-    )
-    parts.append("  </Card>")
-    parts.append('  <Card title="Composable">')
-    parts.append('    <div class="feature-card-icon" aria-hidden="true">OS</div>')
-    parts.append(
-        '    <Badge text="Stackable" variant="success" /> '
-        "Pull in one specialist for reviews, another for architecture, and another for docs "
-        "without rebuilding the workflow each time."
-    )
-    parts.append("  </Card>")
+    for card in data["featureCards"]:
+        parts.append(f'  <Card title="{escape_attr(card["title"])}">')
+        parts.append(f'    <div class="feature-card-icon" aria-hidden="true">{escape_attr(card["icon"])}</div>')
+        parts.append(
+            f'    <Badge text="{escape_attr(card["badge_text"])}" variant="{escape_attr(card["badge_variant"])}" /> '
+            f"{card['body']}"
+        )
+        parts.append("  </Card>")
     parts.append("</CardGrid>")
     parts.append("</div>")
     parts.append("")
@@ -252,22 +230,11 @@ def write_index_page(nodes: list) -> None:
     parts.append("## Popular Starting Points")
     parts.append("")
     parts.append("<CardGrid>")
-    parts.append(
-        '  <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/"'
-        ' description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />'
-    )
-    parts.append(
-        '  <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/"'
-        ' description="Pressure-test a product or engineering decision before you commit to it." />'
-    )
-    parts.append(
-        '  <LinkCard title="Host Expert Panels" href="/skills/host-panel/"'
-        ' description="Get multiple expert perspectives in one session when the problem has real trade-offs." />'
-    )
-    parts.append(
-        '  <LinkCard title="Create MCP Servers" href="/skills/mcp-creator/"'
-        ' description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />'
-    )
+    for skill in data["featuredSkills"]:
+        parts.append(
+            f'  <LinkCard title="{escape_attr(skill["title"])}" href="{escape_attr(skill["href"])}"'
+            f' description="{escape_attr(skill["description"])}" />'
+        )
     parts.append("</CardGrid>")
     parts.append("")
 
@@ -713,10 +680,7 @@ def write_cli_page() -> None:
     parts.append("For third-party skill sources or curated subsets, use `npx skills add` directly:")
     parts.append("")
     parts.append("```bash")
-    parts.append(
-        "npx skills add <source> --skill <name> -y -g --agent claude-code --agent codex "
-        "--agent gemini-cli --agent antigravity --agent github-copilot --agent opencode"
-    )
+    parts.append(f"npx skills add <source> --skill <name> -y -g {agent_flags()}")
     parts.append("```")
     parts.append("")
     parts.append("| Option | Default | Description |")
@@ -1259,18 +1223,10 @@ def write_skills_index(nodes: list) -> None:
     parts.append("")
     parts.append("```bash")
     parts.append("# Install this repository's full catalog")
-    parts.append(
-        "npx skills add github:wyattowalsh/agents --all -y -g "
-        "--agent claude-code --agent codex --agent gemini-cli "
-        "--agent antigravity --agent github-copilot --agent opencode"
-    )
+    parts.append(build_install_command(all_skills=True))
     parts.append("")
     parts.append("# Install a focused starter skill")
-    parts.append(
-        "npx skills add github:wyattowalsh/agents --skill honest-review -y -g "
-        "--agent claude-code --agent codex --agent gemini-cli "
-        "--agent antigravity --agent github-copilot --agent opencode"
-    )
+    parts.append(build_install_command(skill="honest-review"))
     parts.append("```")
     parts.append("")
     parts.append("</div>")
@@ -1406,21 +1362,13 @@ def write_skills_index(nodes: list) -> None:
     parts.append("")
     parts.append("```bash")
     parts.append("# Install a single skill globally")
-    parts.append(
-        "npx skills add github:wyattowalsh/agents --skill honest-review -y -g "
-        "--agent claude-code --agent codex --agent gemini-cli "
-        "--agent antigravity --agent github-copilot --agent opencode"
-    )
+    parts.append(build_install_command(skill="honest-review"))
     parts.append("")
     parts.append("# Install multiple specific skills")
-    parts.append(
-        "npx skills add github:wyattowalsh/agents --skill honest-review --skill wargame -y -g "
-        "--agent claude-code --agent codex --agent gemini-cli "
-        "--agent antigravity --agent github-copilot --agent opencode"
-    )
+    parts.append(build_install_command(skills=("honest-review", "wargame")))
     parts.append("")
     parts.append("# Install to a specific agent only")
-    parts.append("npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent claude-code")
+    parts.append(build_install_command(skill="orchestrator", agent_ids=("claude-code",)))
     parts.append("```")
     parts.append("")
     parts.append('<Aside type="tip" title="Creating your own skills">')
@@ -1702,6 +1650,7 @@ def regenerate_sidebar_and_indexes() -> None:
         write_agents_index(agents_list)
     if mcps:
         write_mcp_index(mcps)
+    write_site_data(nodes)
     write_index_page(nodes)
 
 
@@ -1837,6 +1786,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
         typer.echo("  Generated mcp/index.mdx")
 
     # Write main index and CLI pages
+    write_site_data(nodes)
     write_index_page(nodes)
     typer.echo("  Generated index.mdx")
     write_cli_page()

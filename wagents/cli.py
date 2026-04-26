@@ -18,6 +18,7 @@ from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 from wagents.parsing import parse_frontmatter, to_title
 from wagents.rendering import scaffold_doc_page
 from wagents.skill_index import collect_skill_records, doctor_report, read_skill, search_skills
+from wagents.site_model import REPO_SOURCE, SUPPORTED_AGENT_IDS, build_install_command
 
 # Typer apps
 app = typer.Typer(help="CLI for managing centralized AI agent assets")
@@ -1150,18 +1151,7 @@ def validate(
         raise typer.Exit(code=1)
 
 
-SUPPORTED_AGENTS = [
-    "antigravity",
-    "claude-code",
-    "codex",
-    "crush",
-    "cursor",
-    "gemini-cli",
-    "github-copilot",
-    "opencode",
-]
-
-REPO_SOURCE = "github:wyattowalsh/agents"
+SUPPORTED_AGENTS = list(SUPPORTED_AGENT_IDS)
 
 
 @app.command()
@@ -1504,11 +1494,7 @@ def readme(
         "Install all skills globally into your favorite agents:",
         "",
         "```bash",
-        (
-            "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code "
-            "--agent codex --agent gemini-cli --agent antigravity "
-            "--agent github-copilot --agent opencode"
-        ),
+        build_install_command(all_skills=True),
         "```",
         "",
         "## 📦 Distribution",

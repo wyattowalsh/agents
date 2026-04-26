@@ -1,5 +1,6 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
+import { repoSource, supportedAgents } from '../../generated-site-data.mjs';
 
 const { id, sidebar } = Astro.locals.starlightRoute;
 const path = typeof id === 'string' ? id : '';
@@ -41,8 +42,9 @@ if (category && sidebar) {
 
 // Get skill name for install footer
 const skillName = category === 'skills' && !path.startsWith('skills/installed') ? path.replace('skills/', '') : null;
+const supportedAgentFlags = supportedAgents.map((agent: { id: string }) => `--agent ${agent.id}`).join(' ');
 const installCommand = skillName
-  ? `npx skills add github:wyattowalsh/agents --skill ${skillName} -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode`
+  ? `npx skills add ${repoSource} --skill ${skillName} -y -g ${supportedAgentFlags}`
   : '';
 ---
 
@@ -140,13 +142,13 @@ const installCommand = skillName
     gap: 0.25rem;
     padding: 0.75rem 1rem;
     border: 1px solid var(--sl-color-gray-5);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     text-decoration: none;
     transition: border-color 0.2s ease, background 0.2s ease;
   }
   .category-nav-link:hover {
     border-color: var(--primary);
-    background: oklch(0.15 0.02 285 / 0.2);
+    background: var(--surface-panel-hover);
   }
   .category-nav-link:focus-visible {
     outline: 2px solid var(--primary);
@@ -173,9 +175,9 @@ const installCommand = skillName
     text-align: center;
     padding: 1rem;
     margin-top: 1rem;
-    border-radius: 8px;
-    background: oklch(0.13 0.02 285 / 0.15);
-    border: 1px solid var(--sl-color-gray-5);
+    border-radius: var(--radius-md);
+    background: var(--surface-panel);
+    border: 1px solid var(--border-panel);
   }
   .skill-install-footer code {
     font-size: 0.85rem;
@@ -186,7 +188,7 @@ const installCommand = skillName
     border: 1px solid var(--sl-color-gray-5);
     background: transparent;
     color: var(--sl-color-text-accent);
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     padding: 0.45rem 0.8rem;
     cursor: pointer;
     transition: border-color 0.2s ease, transform 0.2s ease;
@@ -196,12 +198,9 @@ const installCommand = skillName
     transform: translateY(-1px);
   }
   :global([data-theme='light']) .category-nav-link:hover {
-    background: oklch(0.95 0.02 285 / 0.3);
+    background: var(--surface-panel-hover);
   }
   :global([data-theme='light']) .category-nav-dir {
     color: var(--sl-color-gray-3);
-  }
-  :global([data-theme='light']) .skill-install-footer {
-    background: oklch(0.97 0.01 285 / 0.15);
   }
 </style>
