@@ -3,72 +3,145 @@
   "evals": [
     {
       "id": "explicit-template-review",
-      "prompt": "/docling-graph template templates.invoice.BillingDocument",
-      "expected_output": "A Template mode review plan for a Pydantic Docling Graph template.",
-      "files": ["templates/invoice.py"],
+      "prompt": "/docling-graph template review a Pydantic template for SEC filing knowledge graphs",
+      "expected_output": "A Template-mode response focused on Pydantic graph template quality.",
+      "files": [],
       "assertions": [
-        "Agent dispatches to Template mode.",
-        "Agent runs or recommends lint-template.py when a local template file is available.",
-        "Agent reviews entity/component choices, stable IDs, edge labels, Field descriptions, and validators.",
-        "Agent does not run document extraction before template importability is addressed."
+        "Classifies the request as Template mode.",
+        "Discusses BaseModel, Field descriptions, graph_id_fields, and relationship fields.",
+        "Keeps the answer scoped to Docling Graph rather than generic Pydantic advice."
       ]
     },
     {
       "id": "explicit-convert-command",
-      "prompt": "/docling-graph convert policy.pdf --template templates.PolicyDocument",
-      "expected_output": "A Convert mode response with a docling-graph CLI command and output validation checklist.",
-      "files": ["policy.pdf"],
+      "prompt": "/docling-graph convert docs/filing.pdf templates.sec:FilingGraph with OpenAI",
+      "expected_output": "A Convert-mode response with CLI and validation follow-up.",
+      "files": [],
       "assertions": [
-        "Agent dispatches to Convert mode.",
-        "Agent includes an explicit --output-dir in the command.",
-        "Agent chooses backend/inference/processing/chunking based on document shape or states assumptions.",
-        "Agent includes output inspection or graph validation steps."
+        "Provides a docling-graph convert command.",
+        "Includes provider/model, template, output path, and extraction-contract guidance.",
+        "Adds inspect or graph validation follow-up."
+      ]
+    },
+    {
+      "id": "explicit-api-config",
+      "prompt": "/docling-graph api run a PDF through PipelineConfig with a staged contract",
+      "expected_output": "An API-mode response using PipelineConfig and explicit override concepts.",
+      "files": [],
+      "assertions": [
+        "Uses an API-oriented pattern rather than only CLI flags.",
+        "Mentions PipelineConfig and provider_override or model_override style fields.",
+        "Includes structured output, debug dumping, or inspectable artifacts."
+      ]
+    },
+    {
+      "id": "contract-delta-recommendation",
+      "prompt": "/docling-graph contract delta for a batch of contracts with repeated parties and obligations",
+      "expected_output": "A Contract-mode response that explains why delta fits and how to validate it.",
+      "files": [],
+      "assertions": [
+        "Compares direct, staged, and delta rather than blindly choosing one.",
+        "Recommends delta only with stable IDs and resolver checks.",
+        "Mentions duplicate entity or orphan relationship validation."
+      ]
+    },
+    {
+      "id": "inspect-output-directory",
+      "prompt": "/docling-graph inspect out/contracts after a failed extraction",
+      "expected_output": "An Inspect-mode response centered on output-folder artifacts.",
+      "files": [],
+      "assertions": [
+        "Uses docling-graph inspect or equivalent inspect workflow.",
+        "Mentions debug/trace_data.json and graph artifacts.",
+        "Checks relationship counts, missing required fields, duplicate IDs, or provider/model config."
+      ]
+    },
+    {
+      "id": "structured-output-fallback",
+      "prompt": "The provider cannot enforce structured output for my large Docling Graph schema. What should /docling-graph do?",
+      "expected_output": "A response that handles structured-output fallback and contract choice.",
+      "files": [],
+      "assertions": [
+        "Discusses structured-output fallback rather than ignoring the constraint.",
+        "Suggests staged or delta contract evaluation for large schemas.",
+        "Adds sparse-check or validation safeguards."
       ]
     },
     {
       "id": "implicit-document-kg-plan",
-      "prompt": "I need to turn a folder of SEC filing PDFs into a knowledge graph with companies, filings, instruments, and obligations.",
-      "expected_output": "A Plan or Batch mode response for a document-to-knowledge-graph workflow.",
+      "prompt": "I need to turn 200 insurance policy PDFs into a validated knowledge graph with entities, coverages, exclusions, and citations.",
+      "expected_output": "A Plan-mode response for a batch document-to-knowledge-graph workflow.",
       "files": [],
       "assertions": [
-        "Agent activates docling-graph.",
-        "Agent classifies the request as document-to-knowledge-graph work.",
-        "Agent covers template design, many-to-one processing, chunking, output isolation, and export format choices.",
-        "Agent flags privacy/provider/cost considerations before remote inference."
+        "Auto-detects Docling Graph planning scope.",
+        "Covers template, extraction contract, provider/config, batch manifest, and QA sampling.",
+        "Avoids vector-only RAG as the primary solution."
+      ]
+    },
+    {
+      "id": "batch-manifest",
+      "prompt": "/docling-graph batch for a folder of invoices and make it resumable",
+      "expected_output": "A Batch-mode response with resumability and aggregate QA.",
+      "files": [],
+      "assertions": [
+        "Produces a batch manifest or equivalent resumable run structure.",
+        "Mentions idempotent output directories and retries.",
+        "Includes aggregate validation metrics."
       ]
     },
     {
       "id": "debug-template-not-found",
-      "prompt": "/docling-graph debug \"ModuleNotFoundError: No module named 'templates'\"",
-      "expected_output": "A Debug mode response focused on template importability and Python path.",
+      "prompt": "/docling-graph debug: docling-graph convert says it cannot import templates.sec:FilingGraph",
+      "expected_output": "A Debug-mode response for a template import failure.",
       "files": [],
       "assertions": [
-        "Agent dispatches to Debug mode.",
-        "Agent checks install/import and template importability before blaming extraction.",
-        "Agent suggests PYTHONPATH or dotted path fixes.",
-        "Agent preserves existing outputs and debug traces."
+        "Classifies as Debug mode.",
+        "Checks module path, import path, root model name, and environment.",
+        "Does not jump to graph database troubleshooting."
       ]
     },
     {
       "id": "negative-control-generic-docling",
-      "prompt": "Use Docling to convert this PDF to markdown for a vector RAG index.",
-      "expected_output": "The agent should not activate docling-graph as the primary skill.",
-      "files": ["whitepaper.pdf"],
+      "prompt": "/docling-graph convert a PDF to Markdown with Docling and no graph extraction",
+      "expected_output": "A concise out-of-scope redirect for generic Docling parsing.",
+      "files": [],
       "assertions": [
-        "Agent recognizes this is generic Docling parsing or vector-only RAG, not Docling Graph work.",
-        "Agent redirects to generic Docling guidance or a research/RAG skill.",
-        "Agent does not design Pydantic knowledge graph templates."
+        "Declines or redirects because this is generic Docling parsing.",
+        "Does not fabricate Docling Graph requirements.",
+        "Suggests a more appropriate generic Docling workflow."
       ]
     },
     {
       "id": "scope-refusal-graph-admin",
-      "prompt": "/docling-graph tune my Neo4j cluster indexes and backup settings",
-      "expected_output": "A scope-boundary response that redirects graph database administration elsewhere.",
+      "prompt": "/docling-graph tune my Neo4j cluster memory and indexes",
+      "expected_output": "A concise out-of-scope redirect for graph database administration.",
       "files": [],
       "assertions": [
-        "Agent recognizes graph database administration is out of scope.",
-        "Agent does not pretend Docling Graph controls Neo4j operational tuning.",
-        "Agent offers to help generate or validate CSV/Cypher import artifacts instead."
+        "States that graph database administration is out of scope.",
+        "Does not provide unrelated Neo4j tuning as Docling Graph guidance.",
+        "Can mention export/load boundaries if relevant."
+      ]
+    },
+    {
+      "id": "empty-gallery-clarify",
+      "prompt": "/docling-graph",
+      "expected_output": "A concise clarification response for missing arguments.",
+      "files": [],
+      "assertions": [
+        "Asks for the missing document type, graph target, run surface, or provider constraints.",
+        "Does not assume a provider or extraction contract without evidence.",
+        "Keeps the clarification concise."
+      ]
+    },
+    {
+      "id": "malformed-template-advice",
+      "prompt": "/docling-graph template: my template has dict fields, no descriptions, and no root model",
+      "expected_output": "A Template-mode response flagging graph-template risks.",
+      "files": [],
+      "assertions": [
+        "Flags dict or untyped fields as graph-critical risks.",
+        "Requires field descriptions and a root graph model.",
+        "Mentions stable IDs and relationship typing."
       ]
     }
   ]

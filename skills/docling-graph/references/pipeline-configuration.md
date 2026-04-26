@@ -1,115 +1,129 @@
 # Pipeline Configuration
 
-## Contents
+Docling Graph configuration should make the extraction contract, provider/model, structured-output behavior, and debug artifacts explicit. Avoid relying on hidden defaults for production or reviewable workflows.
 
-1. Decision Matrix
-2. Backend Selection
-3. Inference Mode
-4. Processing Mode
-5. Chunking
-6. Provider and Model
-7. Docling Pipeline
-8. Batch Defaults
+## Core Decisions
 
-## Decision Matrix
+| Decision | Options | Guidance |
+| --- | --- | --- |
+| Extraction contract | `direct`, `staged`, `delta` | Choose deliberately for every non-trivial template. |
+| Provider/model | OpenAI, Mistral, Gemini, Watsonx, local Ollama/vLLM/LM Studio | Match privacy, cost, latency, context length, and structured-output support. |
+| Structured output | schema-enforced, sparse-check, fallback parser | Prefer schema enforcement where supported; record fallback behavior. |
+| Gleaning | disabled, one pass, bounded multi-pass | Use for recall-sensitive fields and relationship discovery. |
+| Streaming | off/on | Enable for long runs that need progress, cancellation, or live logs. |
+| Debug dumping | off/on | Enable for development, failures, and audit handoffs. |
 
-Use this reference in **Plan**, **Convert**, and **Batch** modes.
+## Extraction Contracts
 
-| Input condition | Recommended starting point |
-|---|---|
-| Text-heavy PDF, article, contract, markdown | LLM backend |
-| Image, form, scanned page, layout-heavy source | VLM backend if local runtime supports it |
-| Multi-page document with cross-page facts | `many-to-one` |
-| Independent forms/pages | `one-to-one` |
-| Large document or context pressure | enable chunking |
-| First run or failure-prone domain | enable debug traces |
-| Sensitive data | prefer local inference; call out remote exposure |
+### Direct
 
-## Backend Selection
+Use direct extraction when the schema is small enough to fit comfortably in one model call and the document-to-graph mapping is straightforward.
 
-**LLM** is the default for text-heavy extraction:
+Checks:
 
-- contracts
-- research papers
-- financial filings
-- policies
-- markdown or HTML
-- documents where semantic relationships matter more than visual layout
+- Required fields appear in the graph artifact.
+- Relationship fields are populated and directionally correct.
+- Sparse-check output does not show systematic omissions.
+- No provider context or schema-size warning appears.
 
-**VLM** is strongest when layout and image content are primary:
+### Staged
 
-- ID cards
-- invoices as images
-- forms
-- scans
-- table-heavy layouts where OCR/vision quality dominates
+Use staged extraction when the root graph can be decomposed into sections, entity groups, or document regions. Staged extraction reduces schema pressure but introduces merge risks.
 
-If the user lacks GPU/local VLM capacity, offer LLM as fallback after Docling conversion and explain the trade-off.
+Checks:
 
-## Inference Mode
+- Each stage has a clear root object and output artifact.
+- Cross-stage relationships survive the merge.
+- Stable IDs exist before merge, not only after export.
+- Inspect artifacts show which stage produced each entity group.
 
-| Mode | Use when | Risks |
-|---|---|---|
-| `local` | sensitive data, no API budget, local models available | hardware setup, speed, memory |
-| `remote` | quality/provider access matters, data can leave machine | API keys, cost, rate limits, privacy |
+### Delta
 
-Never silently choose remote inference for regulated or confidential documents.
+Use delta extraction when documents contain many observations that must be resolved into a graph, or when entity/relationship evidence is scattered across the source.
 
-## Processing Mode
+Checks:
 
-| Mode | Use when | Trade-off |
-|---|---|---|
-| `many-to-one` | facts span pages or one graph should represent the full document | higher context and merge complexity |
-| `one-to-one` | pages are independent or each page is a separate form | faster and simpler, weaker cross-page linking |
+- Entity-like models have stable `graph_id_fields`.
+- Resolver configuration is documented.
+- Duplicate entities and orphan relationships are counted.
+- High-cardinality collections are sampled before export.
 
-Default to `many-to-one` for contracts, papers, filings, and reports. Default to `one-to-one` for batches of independent forms.
+## Structured Output
 
-## Chunking
+Structured output should be enabled when the selected provider supports schema enforcement. Pair it with a sparse check when fields may be optional or partially observable.
 
-Enable chunking when:
+Record:
 
-- document has more than a few pages
-- source has long sections or many tables
-- provider context limits are likely
-- extraction fails with context or memory pressure
+- Whether schema enforcement was enabled.
+- Whether a fallback parser was used.
+- Which fields failed sparse checks.
+- Whether fallback output changed graph shape or relationship counts.
 
-Disable chunking when:
+## Gleaning
 
-- source is small
-- full context is essential for one global decision
-- the first-pass goal is a fast smoke test
+Gleaning is useful when the first pass may miss low-salience entities or relationships. Keep it bounded.
 
-If disabling chunking, add a validation note: verify no facts were missed because context was truncated.
+Recommended policy:
 
-## Provider and Model
+- Start with one additional pass for recall-sensitive runs.
+- Cap passes and token budget.
+- Compare entity and relationship deltas between passes.
+- Do not use gleaning to compensate for vague field descriptions or missing stable IDs.
 
-Docling Graph routes LLM extraction through provider/model settings. Choose provider only after these are known:
+## Streaming
 
-1. data sensitivity
-2. available API keys or local runtimes
-3. expected context length
-4. structured-output reliability
-5. cost and latency tolerance
+Enable LLM streaming for long documents or batch jobs where operators need live progress. Treat streaming as observability, not correctness.
 
-For remote providers, check that required env vars are present without printing values. Use:
+Check that streamed events line up with final artifacts before claiming completion.
 
-```bash
-uv run python skills/docling-graph/scripts/check-env.py --provider-env OPENAI_API_KEY --format json
+## Python API Shape
+
+Use explicit config fields and `Path` objects where possible:
+
+```python
+from pathlib import Path
+
+from docling_graph import run_pipeline
+from docling_graph.pipeline import PipelineConfig
+
+config = PipelineConfig(
+    input_path=Path("input.pdf"),
+    output_dir=Path("out/input"),
+    template=RootGraph,
+    provider_override="openai",
+    model_override="gpt-4.1-mini",
+    extraction_contract="direct",
+    structured_output=True,
+    structured_sparse_check=True,
+    llm_streaming=True,
+    gleaning_enabled=False,
+    dump_to_disk=True,
+    debug=True,
+)
+
+context = run_pipeline(config)
 ```
 
-## Docling Pipeline
+If the installed version uses different names, inspect the local package help and adapt the names while preserving the same decisions.
 
-Use OCR pipeline for standard PDFs and faster runs. Use vision pipeline for complex layouts, tables, forms, and scanned sources.
+## Provider Environment
 
-If the user reports poor table or layout extraction, revisit the Docling pipeline before changing the Pydantic template.
+Use environment variables, not inline secrets. Common provider checks:
 
-## Batch Defaults
+- OpenAI: `OPENAI_API_KEY`
+- Mistral: `MISTRAL_API_KEY`
+- Gemini: `GOOGLE_API_KEY` or `GEMINI_API_KEY`
+- Watsonx: `WATSONX_APIKEY`, `WATSONX_URL`, `WATSONX_PROJECT_ID`
+- Ollama: local server reachable, optional `OLLAMA_HOST`
+- vLLM or LM Studio: OpenAI-compatible base URL and model name
 
-For batches:
+## Debug Artifacts
 
-1. Use one output directory per input.
-2. Save command/config per document.
-3. Retry failed documents only.
-4. Preserve partial outputs.
-5. Start with a small sample before the full corpus.
-6. Record provider, model, template version, and command flags for reproducibility.
+For development and failures, enable disk/debug output and preserve:
+
+- Final graph artifact.
+- Intermediate extraction JSON.
+- `debug/trace_data.json`.
+- Inspect HTML output.
+- Provider/model config actually used.
+- Command or `PipelineConfig` snapshot with secrets redacted.
