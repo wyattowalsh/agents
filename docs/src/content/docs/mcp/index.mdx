@@ -143,7 +143,7 @@ args = ["duckduckgo-mcp-server"]
 
 ## Chrome DevTools setup (representative client snippets)
 
-Use server key `chrome-devtools` with `chrome-devtools-mcp@latest`. The managed baseline passes `--isolated` so the MCP server launches Chrome with a temporary user data directory instead of attaching to the user's normal Chrome profile.
+Use server key `chrome-devtools` with `chrome-devtools-mcp@latest`. The managed baseline passes `--isolated=true` so the MCP server launches Chrome with a temporary user data directory instead of attaching to the user's normal Chrome profile. Chrome opens lazily when the client invokes a browser-backed tool such as `list_pages`, `navigate_page`, or `take_screenshot`; restart the MCP client after config changes so it does not keep using an already-started server process.
 
 #### Standard JSON clients (`mcpServers`)
 
@@ -154,7 +154,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
   "mcpServers": {
     "chrome-devtools": {
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
     }
   }
 }
@@ -165,7 +165,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 ```toml
 [mcp_servers.chrome-devtools]
 command = "npx"
-args = ["-y", "chrome-devtools-mcp@latest", "--isolated"]
+args = ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
 ```
 
 #### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
@@ -176,7 +176,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--isolated"]
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"],
+      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"],
       "tools": ["*"]
     }
   }
@@ -190,7 +190,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--isolated"]
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--isolated"],
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--isolated=true"],
       "enabled": true
     }
   }
@@ -205,7 +205,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--isolated"]
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
     }
   }
 }
