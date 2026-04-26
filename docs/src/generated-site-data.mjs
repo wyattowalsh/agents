@@ -125,6 +125,57 @@ export const siteData = {
       "id": "opencode",
       "label": "OpenCode"
     }
+  ],
+  "visualAssets": [
+    {
+      "alt": "Abstract connected-node logo for the Agents repository",
+      "description": "Square brand mark used by Starlight and README surfaces.",
+      "id": "logo",
+      "src": "/src/assets/brand/logo.webp",
+      "title": "Agents Logo"
+    },
+    {
+      "alt": "Agents documentation social preview card",
+      "description": "Default Open Graph and README social preview.",
+      "id": "social-card",
+      "src": "/social-card.png",
+      "title": "Social Preview"
+    },
+    {
+      "alt": "Abstract control-plane workspace with connected agent nodes and tool panels",
+      "description": "Homepage atmosphere and Open Graph background plate.",
+      "id": "control-plane-hero",
+      "src": "/src/assets/brand/control-plane-hero.webp",
+      "title": "Control Plane"
+    },
+    {
+      "alt": "Portable skills represented as connected modular interface cards",
+      "description": "Explains the skill catalog as reusable, connected workflow components.",
+      "id": "catalog-mesh",
+      "src": "/src/assets/illustrations/catalog-mesh.webp",
+      "title": "Catalog Mesh"
+    },
+    {
+      "alt": "MCP tools and document pipelines represented as a luminous routing graph",
+      "description": "Explains tool, server, and document flow across configured MCP surfaces.",
+      "id": "mcp-routing",
+      "src": "/src/assets/illustrations/mcp-routing.webp",
+      "title": "MCP Routing"
+    },
+    {
+      "alt": "Multiple coding-agent harness interfaces connected to one shared skill source",
+      "description": "Shows supported agents consuming one portable skill bundle.",
+      "id": "harness-matrix",
+      "src": "/src/assets/illustrations/harness-matrix.webp",
+      "title": "Harness Matrix"
+    },
+    {
+      "alt": "Repository bundle flowing through install, invocation, and validation panels",
+      "description": "Shows the operational path from bundle source to validated agent workflow.",
+      "id": "workflow-map",
+      "src": "/src/assets/illustrations/workflow-map.webp",
+      "title": "Workflow Map"
+    }
   ]
 };
 export const repoSource = siteData.repoSource;
@@ -134,3 +185,4 @@ export const counts = siteData.counts;
 export const distributionPaths = siteData.distributionPaths;
 export const featureCards = siteData.featureCards;
 export const featuredSkills = siteData.featuredSkills;
+export const visualAssets = siteData.visualAssets;

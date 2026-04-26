@@ -122,6 +122,61 @@
   box-shadow: 0 8px 24px oklch(0.2 0.05 210 / 0.2);
 }
 
+/* ===== VISUAL ASSET PANELS ===== */
+.visual-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.visual-panel {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+  box-shadow: var(--shadow-md);
+}
+
+.visual-panel img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.visual-panel figcaption {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.visual-panel strong {
+  color: var(--sl-color-white);
+  font-size: 0.95rem;
+}
+
+.visual-panel span {
+  color: var(--sl-color-gray-3);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+[data-theme='light'] .visual-panel {
+  background: var(--surface-panel);
+}
+
+[data-theme='light'] .visual-panel strong {
+  color: var(--sl-color-gray-1);
+}
+
+@media (max-width: 50rem) {
+  .visual-showcase {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ===== INSTALL SECTION ===== */
 .install-section {
   border: 1px solid oklch(0.32 0.03 210 / 0.28);

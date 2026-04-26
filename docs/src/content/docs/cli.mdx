@@ -4,8 +4,17 @@ description: wagents CLI commands and usage
 ---
 
 import { Tabs, TabItem, Steps, FileTree, CardGrid, LinkCard, Aside, Badge } from '@astrojs/starlight/components';
+import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
 
 `wagents` is the repo control plane for skills, agents, MCP servers, and generated docs. Use it to scaffold new assets, validate the repo, publish docs, and package skills for release.
+
+<figure class="visual-panel">
+  <img src={harnessMatrixArt.src} alt="Multiple coding-agent harness interfaces connected to one shared skill source" />
+  <figcaption>
+    <strong>Harness Matrix</strong>
+    <span>Shows supported agents consuming one portable skill bundle.</span>
+  </figcaption>
+</figure>
 
 ## Boot Sequence
 

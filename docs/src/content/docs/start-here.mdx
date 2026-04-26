@@ -6,6 +6,8 @@ description: The shortest path through install, invocation, and the repo layout
 {/* HAND-MAINTAINED */}
 
 import { Aside, Badge, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
+import { installCommands } from '../../generated-site-data.mjs';
 
 This is the shortest guided path through the repo. Install the catalog, try one skill, then branch into the docs sections that matter for your workflow.
 
@@ -13,15 +15,23 @@ This is the shortest guided path through the repo. Install the catalog, try one 
 Skills are portable prompt-and-workflow bundles for coding agents. Install them once, then call them with `/skill-name` inside Claude Code, Gemini CLI, OpenCode, Cursor, GitHub Copilot, Codex, and other [agentskills.io](https://agentskills.io)-compatible agents.
 </Aside>
 
+<figure class="visual-panel">
+  <img src={workflowMapArt.src} alt="Repository bundle flowing through install, invocation, and validation panels" />
+  <figcaption>
+    <strong>Workflow Map</strong>
+    <span>From repository bundle to install, invocation, and validation across supported agent harnesses.</span>
+  </figcaption>
+</figure>
+
 ## 1. Install The Catalog
 
-```bash
-# Install the repository catalog globally
-npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+<div class="install-section">
+  <pre><code>{`# Install the repository catalog globally
+${installCommands.all}
 
 # Or start with one focused skill
-npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
-```
+${installCommands.starter}`}</code></pre>
+</div>
 
 ## 2. Choose The Packaging Path
 

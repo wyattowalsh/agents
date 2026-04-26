@@ -1,7 +1,10 @@
 import { getCollection } from 'astro:content';
 import { OGImageRoute } from 'astro-og-canvas';
+import { visualAssets } from '../../generated-site-data.mjs';
 
 const docs = await getCollection('docs');
+const visualAssetById = Object.fromEntries(visualAssets.map((asset) => [asset.id, asset]));
+const localAssetPath = (src: string) => (src.startsWith('/src/') ? `.${src}` : `./public${src}`);
 
 const pages = Object.fromEntries(
   docs.map(({ id, data }) => [id, { title: data.title, description: data.description || '' }])
@@ -18,6 +21,15 @@ export const { GET } = await OGImageRoute({
       [11, 33, 43],
       [36, 24, 12],
     ],
+    bgImage: {
+      path: localAssetPath(visualAssetById['control-plane-hero'].src),
+      fit: 'cover',
+      position: 'center',
+    },
+    logo: {
+      path: localAssetPath(visualAssetById.logo.src),
+      size: [88, 88],
+    },
     border: {
       color: [71, 201, 204],
       width: 4,

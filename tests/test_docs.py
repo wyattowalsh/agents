@@ -57,6 +57,8 @@ class TestWriteIndexPage:
         assert "template: splash" in text
         assert "CI status" in text
         assert "## Start Here" in text
+        assert "## Visual Map" in text
+        assert "catalogMeshArt.src" in text
         assert "## Popular Starting Points" in text
         assert 'title="Start Here"' in text
         assert "npx skills add github:wyattowalsh/agents --all -y -g" in text

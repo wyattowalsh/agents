@@ -144,6 +144,77 @@ class FeaturedSkill:
     description: str
 
 
+@dataclass(frozen=True)
+class VisualAsset:
+    id: str
+    title: str
+    src: str
+    alt: str
+    description: str
+
+
+VISUAL_ASSETS: tuple[VisualAsset, ...] = (
+    VisualAsset(
+        "logo",
+        "Agents Logo",
+        "/src/assets/brand/logo.webp",
+        "Abstract connected-node logo for the Agents repository",
+        "Square brand mark used by Starlight and README surfaces.",
+    ),
+    VisualAsset(
+        "social-card",
+        "Social Preview",
+        "/social-card.png",
+        "Agents documentation social preview card",
+        "Default Open Graph and README social preview.",
+    ),
+    VisualAsset(
+        "control-plane-hero",
+        "Control Plane",
+        "/src/assets/brand/control-plane-hero.webp",
+        "Abstract control-plane workspace with connected agent nodes and tool panels",
+        "Homepage atmosphere and Open Graph background plate.",
+    ),
+    VisualAsset(
+        "catalog-mesh",
+        "Catalog Mesh",
+        "/src/assets/illustrations/catalog-mesh.webp",
+        "Portable skills represented as connected modular interface cards",
+        "Explains the skill catalog as reusable, connected workflow components.",
+    ),
+    VisualAsset(
+        "mcp-routing",
+        "MCP Routing",
+        "/src/assets/illustrations/mcp-routing.webp",
+        "MCP tools and document pipelines represented as a luminous routing graph",
+        "Explains tool, server, and document flow across configured MCP surfaces.",
+    ),
+    VisualAsset(
+        "harness-matrix",
+        "Harness Matrix",
+        "/src/assets/illustrations/harness-matrix.webp",
+        "Multiple coding-agent harness interfaces connected to one shared skill source",
+        "Shows supported agents consuming one portable skill bundle.",
+    ),
+    VisualAsset(
+        "workflow-map",
+        "Workflow Map",
+        "/src/assets/illustrations/workflow-map.webp",
+        "Repository bundle flowing through install, invocation, and validation panels",
+        "Shows the operational path from bundle source to validated agent workflow.",
+    ),
+)
+
+VISUAL_ASSET_BY_ID = {asset.id: asset for asset in VISUAL_ASSETS}
+
+
+def docs_asset_repo_path(src: str) -> str:
+    """Map a docs asset URL to its repository path."""
+    if src.startswith("/src/"):
+        return f"docs{src}"
+    return f"docs/public{src}"
+
+
 FEATURED_SKILLS: tuple[FeaturedSkill, ...] = (
     FeaturedSkill(
         "Enhance Code Reviews",
@@ -222,6 +293,7 @@ def site_data(
         "distributionPaths": [path.__dict__ for path in DISTRIBUTION_PATHS],
         "featureCards": [card.__dict__ for card in FEATURE_CARDS],
         "featuredSkills": [skill.__dict__ for skill in FEATURED_SKILLS],
+        "visualAssets": [asset.__dict__ for asset in VISUAL_ASSETS],
     }
 
 
@@ -238,4 +310,5 @@ def render_site_data_module(data: dict[str, Any]) -> str:
         "export const distributionPaths = siteData.distributionPaths;\n"
         "export const featureCards = siteData.featureCards;\n"
         "export const featuredSkills = siteData.featuredSkills;\n"
+        "export const visualAssets = siteData.visualAssets;\n"
     )
