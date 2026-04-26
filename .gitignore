@@ -26,7 +26,9 @@ docs/src/generated-sidebar.mjs
 
 # Local skill installs (npx skills add --local)
 .claude/skills/
-.agents/
+.agents/*
+!.agents/plugins/
+!.agents/plugins/marketplace.json
 skills-lock.json
 
 # Prospector webapp frontend build artifacts

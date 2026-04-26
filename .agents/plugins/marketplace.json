@@ -1,0 +1,21 @@
+{
+  "name": "agents",
+  "interface": {
+    "displayName": "Agents"
+  },
+  "plugins": [
+    {
+      "name": "agents",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/wyattowalsh/agents.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

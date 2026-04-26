@@ -1,0 +1,65 @@
+"""Tests for cross-agent bundle and plugin distribution metadata."""
+
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def load_json(relative_path: str) -> dict:
+    return json.loads((ROOT / relative_path).read_text())
+
+
+def test_agent_bundle_points_to_canonical_sources():
+    bundle = load_json("agent-bundle.json")
+
+    assert bundle["name"] == "agents"
+    assert bundle["source"]["repository"] == "wyattowalsh/agents"
+    assert bundle["source"]["skillsSource"] == "github:wyattowalsh/agents"
+    assert bundle["components"]["skills"] == "./skills/"
+    assert bundle["adapters"]["claude-code"]["pluginManifest"] == "./.claude-plugin/plugin.json"
+    assert bundle["adapters"]["codex"]["pluginManifest"] == "./.codex-plugin/plugin.json"
+
+
+def test_claude_plugin_manifest_uses_repo_root_components():
+    manifest = load_json(".claude-plugin/plugin.json")
+
+    assert manifest["name"] == "agents"
+    assert "version" not in manifest
+    assert (ROOT / manifest["skills"]).is_dir()
+    assert (ROOT / manifest["agents"]).is_dir()
+    assert (ROOT / manifest["mcpServers"]).is_file()
+
+
+def test_claude_marketplace_exposes_repo_root_plugin_without_version_pin():
+    marketplace = load_json(".claude-plugin/marketplace.json")
+
+    assert marketplace["name"] == "agents"
+    assert marketplace["owner"]["name"]
+    assert len(marketplace["plugins"]) == 1
+    plugin = marketplace["plugins"][0]
+    assert plugin["name"] == "agents"
+    assert plugin["source"] == "./"
+    assert "version" not in plugin
+
+
+def test_codex_plugin_manifest_and_marketplace_are_git_backed():
+    manifest = load_json(".codex-plugin/plugin.json")
+    marketplace = load_json(".agents/plugins/marketplace.json")
+
+    assert manifest["name"] == "agents"
+    assert "version" not in manifest
+    assert manifest["skills"] == "./skills/"
+    assert (ROOT / manifest["skills"]).is_dir()
+    assert (ROOT / manifest["mcpServers"]).is_file()
+
+    assert marketplace["name"] == "agents"
+    assert len(marketplace["plugins"]) == 1
+    plugin = marketplace["plugins"][0]
+    assert plugin["name"] == "agents"
+    assert plugin["source"] == {
+        "source": "url",
+        "url": "https://github.com/wyattowalsh/agents.git",
+        "ref": "main",
+    }
+    assert plugin["policy"]["installation"] == "AVAILABLE"

@@ -23,7 +23,17 @@ npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent
 npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
-## 2. Try A Starter Skill
+## 2. Choose The Packaging Path
+
+<CardGrid>
+  <LinkCard title="Claude Code Plugin" href="https://code.claude.com/docs/en/plugin-marketplaces" description="Use the native .claude-plugin marketplace when you want Claude Code to install and update the whole repo bundle." />
+  <LinkCard title="Codex Plugin" href="https://developers.openai.com/codex/plugins/build" description="Use the native .codex-plugin manifest and repo marketplace when you want Codex to load bundled skills and MCP config." />
+  <LinkCard title="Skills CLI" href="/cli/" description="Use npx skills add for Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents." />
+</CardGrid>
+
+Run `wagents update` or `npx skills update` after upstream changes to refresh installed skills from their recorded sources.
+
+## 3. Try A Starter Skill
 
 <CardGrid>
   <LinkCard title="honest-review" href="/skills/honest-review/" description="Start here if you want stronger code review, bug-finding, and risk assessment." />
@@ -32,7 +42,7 @@ npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent cla
   <LinkCard title="frontend-designer" href="/skills/frontend-designer/" description="Use this when the work is user-facing and you need stronger UI implementation decisions." />
 </CardGrid>
 
-## 3. Invoke It Inside Your Agent
+## 4. Invoke It Inside Your Agent
 
 <Steps>
 
@@ -48,7 +58,7 @@ npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent cla
 
 </Steps>
 
-## 4. Use The Right Docs Path
+## 5. Use The Right Docs Path
 
 <CardGrid>
   <LinkCard title="Skills" href="/skills/" description="Browse the catalog when you know the kind of specialist you need but not the exact skill name." />
@@ -57,7 +67,7 @@ npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent cla
   <LinkCard title="GitHub" href="https://github.com/wyattowalsh/agents" description="Use the repo directly when you want the raw source, issues, or contribution flow." />
 </CardGrid>
 
-## 5. Know What Is Generated
+## 6. Know What Is Generated
 
 <Aside type="note" title="Generated vs curated docs">
 Most pages in this site are generated from repository assets via `wagents docs generate`. This page is hand-maintained on purpose so the onboarding path stays short, stable, and easier to refine than the generated catalogs.

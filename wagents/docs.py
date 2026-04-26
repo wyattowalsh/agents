@@ -178,6 +178,33 @@ def write_index_page(nodes: list) -> None:
         "Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent."
     )
     parts.append("")
+    parts.append("## Distribution Paths")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <Card title="Claude Code Plugin">')
+    parts.append(
+        '    <Badge text="native" variant="tip" /> '
+        "`.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` expose the repo root "
+        "as a Git-hosted plugin. "
+        "The plugin version is intentionally unpinned so Git commits drive updates."
+    )
+    parts.append("  </Card>")
+    parts.append('  <Card title="Codex Plugin">')
+    parts.append(
+        '    <Badge text="native" variant="note" /> '
+        "`.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same "
+        "`skills/` and `mcp.json` bundle for Codex."
+    )
+    parts.append("  </Card>")
+    parts.append('  <Card title="Skills CLI">')
+    parts.append(
+        '    <Badge text="fallback" variant="success" /> '
+        "`npx skills add github:wyattowalsh/agents ...` remains the portable install path for "
+        "Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents."
+    )
+    parts.append("  </Card>")
+    parts.append("</CardGrid>")
+    parts.append("")
     parts.append('<Aside type="tip" title="Fastest path">')
     parts.append(
         "Use [Start Here](/start-here/) when you want the shortest setup path, "
@@ -428,6 +455,7 @@ def write_cli_page() -> None:
     parts.append("| `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |")
     parts.append("| `wagents readme` | Regenerate `README.md` or fail if it is stale |")
     parts.append("| `wagents install` | Install repo skills into supported agent platforms |")
+    parts.append("| `wagents update` | Refresh installed skills from their recorded sources |")
     parts.append("| `wagents package <name>` | Build portable ZIP packages for sharing or release |")
     parts.append("| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |")
     parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
@@ -683,6 +711,24 @@ def write_cli_page() -> None:
         "**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, "
         "`cursor`, `gemini-cli`, `github-copilot`, `opencode`"
     )
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents update ---
+    parts.append("### `wagents update` -- Refresh Installed Skills")
+    parts.append("")
+    parts.append(
+        "Refresh installed skills from the sources recorded by the `skills` CLI. "
+        "Use this after this repository changes so downstream agent installs pick up the latest committed skill files."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents update")
+    parts.append("")
+    parts.append("# Equivalent lower-level command")
+    parts.append("npx skills update")
+    parts.append("```")
     parts.append("")
     parts.append("---")
     parts.append("")

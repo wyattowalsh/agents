@@ -1,0 +1,22 @@
+{
+  "name": "agents",
+  "description": "Portable AI agent skills, subagents, MCP configuration, and shared workflow guidance.",
+  "author": {
+    "name": "Wyatt Walsh",
+    "email": "wyattowalsh@gmail.com",
+    "url": "https://github.com/wyattowalsh"
+  },
+  "homepage": "https://agents.w4w.dev",
+  "repository": "https://github.com/wyattowalsh/agents",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "mcp",
+    "developer-tools"
+  ],
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "mcpServers": "./mcp.json"
+}
