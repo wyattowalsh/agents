@@ -8,7 +8,7 @@ import subprocess
 import sys
 import tomllib
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, cast
 
 import typer
 
@@ -112,8 +112,9 @@ def _normalize_skill_source(source: str) -> str:
 
 def _format_skill_row(record: dict[str, object]) -> str:
     """Render a compact skill index/search row."""
-    warnings = record.get("warnings") or []
-    warning_text = f" warnings={len(warnings)}" if warnings else ""
+    warnings = record.get("warnings")
+    warning_count = len(warnings) if isinstance(warnings, list) else 0
+    warning_text = f" warnings={warning_count}" if warning_count else ""
     description = str(record.get("description") or "").replace("\n", " ").strip()
     if len(description) > 120:
         description = description[:117].rstrip() + "..."
@@ -1188,8 +1189,10 @@ def skills_search(
     results = [result.public_dict() for result in search_skills(query, source=normalized_source, limit=limit)]
     text_lines = [f"{len(results)} matches for {query!r}"]
     for result in results:
+        matched_fields = result.get("matched_fields")
+        fields_text = ",".join(str(field) for field in matched_fields) if isinstance(matched_fields, list) else ""
         text_lines.append(
-            f"{result['name']} score={result['score']} fields={','.join(result['matched_fields'])}\n"
+            f"{result['name']} score={result['score']} fields={fields_text}\n"
             f"  {result['reason']}\n"
             f"  {result['path']}\n"
             f"  {result.get('description', '')}"
@@ -1241,7 +1244,7 @@ def skills_context(
     """Build a compact context packet for the best matching skills."""
     normalized_source = _normalize_skill_source(source)
     results = search_skills(query, source=normalized_source, limit=limit)
-    records = []
+    records: list[dict[str, object]] = []
     for result in results:
         try:
             record = read_skill(result.record.path)
@@ -1253,7 +1256,8 @@ def skills_context(
 
     text_lines = [f"Skill context for {query!r}", ""]
     for result in records:
-        warnings = result.get("warnings") or []
+        warnings = result.get("warnings")
+        warning_text = ", ".join(str(warning) for warning in warnings) if isinstance(warnings, list) else ""
         text_lines.extend(
             [
                 f"## {result['name']} score={result['score']} [{result['source']}:{result['trust_tier']}]",
@@ -1261,8 +1265,8 @@ def skills_context(
                 f"Reason: {result['reason']}",
             ]
         )
-        if warnings:
-            text_lines.append(f"Warnings: {', '.join(str(warning) for warning in warnings)}")
+        if warning_text:
+            text_lines.append(f"Warnings: {warning_text}")
         text_lines.extend(["", str(result.get("body") or ""), ""])
 
     _emit_structured_output(
@@ -1279,19 +1283,23 @@ def skills_doctor(
 ):
     """Diagnose skill discovery roots and counts."""
     report = doctor_report()
+    roots = report.get("roots")
+    root_rows: list[dict[str, object]] = []
+    if isinstance(roots, list):
+        root_rows = [cast(dict[str, object], row) for row in roots if isinstance(row, dict)]
     text_lines = [
         f"Skill roots: {report['root_count']}",
         f"Skills found: {report['skill_count']}",
         f"Warnings: {report['warning_count']}",
     ]
-    for row in report["roots"]:
-        status = "ok" if row["exists"] else "missing"
-        text_lines.append(f"{status} {row['source']} {row['skill_count']} {row['path']}")
+    for row in root_rows:
+        status = "ok" if row.get("exists") else "missing"
+        text_lines.append(f"{status} {row.get('source')} {row.get('skill_count')} {row.get('path')}")
     _emit_structured_output(
         format_,
         text_lines=text_lines,
         json_data=report,
-        jsonl_records=[{"type": "root", **row} for row in report["roots"]],
+        jsonl_records=[{"type": "root", **row} for row in root_rows],
     )
 
 
