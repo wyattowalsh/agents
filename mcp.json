@@ -53,8 +53,11 @@
     "docling": {
       "command": "uvx",
       "args": [
-        "--from=docling-mcp",
-        "docling-mcp-server"
+        "--from",
+        "docling-mcp",
+        "docling-mcp-server",
+        "--transport",
+        "stdio"
       ],
       "timeout": 600000
     },
