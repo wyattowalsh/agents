@@ -9,7 +9,7 @@ license: MIT
 model: opus
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "1.0.0"
 ---
 
 # Docs Steward

@@ -7,7 +7,7 @@ description: "Domain-agnostic strategic decision analysis and wargaming."
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="wargame" variant="note" /> <Badge text="4227 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.1" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
+<Badge text="wargame" variant="note" /> <Badge text="4227 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v2.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" />
 
 > Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty. NOT for simple pros/cons or code review.
 
@@ -57,7 +57,7 @@ Domain-agnostic strategic decision analysis. Every output labeled exploratory.
 | ----- | ----- |
 | Name | `wargame` |
 | License | MIT |
-| Version | 2.1 |
+| Version | 2.1.0 |
 | Author | wyattowalsh |
   </TabItem>
   <TabItem label="Claude Code">
@@ -91,7 +91,7 @@ argument-hint: "<scenario description>"
 model: opus
 metadata:
   author: wyattowalsh
-  version: "2.1"
+  version: "2.1.0"
 ---
 
 # Wargame
@@ -1000,12 +1000,12 @@ Features designed but deferred. Each has a clear prerequisite and rationale for 
 
 | Feature | Prerequisite | Why Deferred |
 |---------|-------------|-------------|
-| `debate <A> vs <B>` | v2.1 red team stable | Complex interaction with existing red team, counterfactual, and delphi commands |
+| `debate <A> vs <B>` | v2.1.0 red team stable | Complex interaction with existing red team, counterfactual, and delphi commands |
 | `ask <actor>` interview | Behavioral actor model validated | Needs reliable persona fidelity under sustained probing |
 | `rewind <turn>` branching | Structured `.state.json` sidecar | Prompt-only state reconstruction is unreliable for branching histories |
 | Calibration tracker | Cross-session persistence | Needs minimum 3 data points across sessions to provide useful calibration feedback |
 | `/wargame insights` | Journal metadata schema | Context budget for reading N journals; needs efficient summarization |
-| Auto-Monte-Carlo nudge | v2.1 usage patterns | Should be opt-in based on detected uncertainty, not auto-fire |
+| Auto-Monte-Carlo nudge | v2.1.0 usage patterns | Should be opt-in based on detected uncertainty, not auto-fire |
 | MCTS-enhanced Monte Carlo | Python helper for tree state | Computationally expensive; requires subprocess management |
 | Formal sensitivity analysis | SALib/Python integration | Requires `uv run` subprocess for statistical computation |
 

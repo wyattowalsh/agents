@@ -7,7 +7,7 @@ description: "Review code with confidence-scored evidence. Session, scoped, PR, 
 
 import { Aside, Badge, Card, CardGrid, LinkCard, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
-<Badge text="honest-review" variant="note" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
+<Badge text="honest-review" variant="note" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
 
 > Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality. NOT for feature work or benchmarking.
 
@@ -34,7 +34,7 @@ Research-driven code review where every finding is validated with evidence. The 
 Every non-trivial finding must have research evidence or be discarded. Confidence below 0.3 means discard (except P0/S0 -- report as unconfirmed).
 </Aside>
 
-### v5.0 Highlights
+### v5.0.0 Highlights
 
 <CardGrid>
   <Card title="Reasoning Chains" icon="document">
@@ -280,7 +280,7 @@ After Judge reconciliation, findings can be rendered into a self-contained HTML 
 | ----- | ----- |
 | Name | `honest-review` |
 | License | MIT |
-| Version | 5.0 |
+| Version | 5.0.0 |
 | Author | wyattowalsh |
 
 {/* Source of truth: AGENTS.md §6 -- update there first */}
@@ -324,7 +324,7 @@ argument-hint: "[path | audit | PR#]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "5.0"
+  version: "5.0.0"
 model: sonnet
 hooks:
   PreToolUse:

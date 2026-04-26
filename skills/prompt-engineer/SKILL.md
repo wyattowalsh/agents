@@ -9,7 +9,7 @@ argument-hint: "<mode> [target]"
 model: opus
 metadata:
   author: wyattowalsh
-  version: "1.2"
+  version: "1.2.0"
 ---
 
 # Prompt Engineer

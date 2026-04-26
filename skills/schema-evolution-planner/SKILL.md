@@ -8,7 +8,7 @@ argument-hint: "<mode> [change]"
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0"
+  version: "1.0.0"
 ---
 
 # Schema Evolution Planner
