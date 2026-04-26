@@ -1,0 +1,210 @@
+---
+name: docling-graph
+description: >-
+  Design and operate Docling Graph document-to-knowledge-graph workflows.
+  Creates/reviews Pydantic templates, CLI/API configs, exports, debug paths.
+  Use when converting documents into validated knowledge graphs. NOT for generic
+  Docling parsing, vector-only RAG, graph DB admin, or ontology-only work.
+argument-hint: "[mode] [source-or-template-or-question] [options]"
+model: opus
+license: MIT
+compatibility: "Requires Python 3.10+ and optional docling-graph installation for live validation; supports CLI/API guidance without installing dependencies."
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Docling Graph
+
+Design, review, run, and debug Docling Graph workflows that turn documents into validated Pydantic objects and directed knowledge graphs.
+
+## Dispatch
+
+| `$ARGUMENTS` | Action | Example |
+|---|---|---|
+| `plan [document-or-domain]` | **Plan** - choose template, backend, inference, chunking, processing, and exports | `/docling-graph plan "multi-page legal contracts"` |
+| `template [domain-or-path]` | **Template** - create or review Pydantic graph templates | `/docling-graph template templates.invoice.BillingDocument` |
+| `convert [source] --template [dotted.path]` | **Convert** - produce CLI command and output plan | `/docling-graph convert invoice.pdf --template templates.BillingDocument` |
+| `api [source] --template [class-or-path]` | **API** - produce `run_pipeline()` or `PipelineConfig` integration | `/docling-graph api research.pdf --template ScholarlyPaper` |
+| `export [use-case-or-outputs]` | **Export** - choose CSV, Cypher, JSON, visualization, or Neo4j path | `/docling-graph export "Neo4j import"` |
+| `debug [error-or-outputs]` | **Debug** - troubleshoot install, import, API key, backend, extraction, or graph issues | `/docling-graph debug "Template not found"` |
+| `batch [dir-or-manifest]` | **Batch** - plan multi-document processing, output isolation, rate limits, and partial success | `/docling-graph batch documents/*.pdf` |
+| Natural language document-to-KG request | **Auto-detect** - classify and route to the closest mode | `"turn SEC filings into a knowledge graph"` |
+| Empty | **Gallery** - show modes, examples, prerequisites, and safety notes | `/docling-graph` |
+
+## Auto-Detection
+
+If no mode keyword matches:
+
+1. Mentions Pydantic, schema, entity, component, relationship, edge, ID field -> **Template**
+2. Mentions command, CLI, convert, inspect, output directory -> **Convert**
+3. Mentions Python, API, service, pipeline, function, integration -> **API**
+4. Mentions CSV, Cypher, JSON, Neo4j, visualization, NetworkX -> **Export**
+5. Mentions error, failure, empty graph, missing template, API key, traceback -> **Debug**
+6. Mentions many files, folder, corpus, batch, queue -> **Batch**
+7. Mentions documents to knowledge graph without implementation detail -> **Plan**
+8. Ambiguous -> ask for source type, domain, and desired output target before prescribing commands
+
+## Gallery
+
+Show this menu for empty arguments:
+
+| Task | Mode | Example |
+|---|---|---|
+| Plan a document-to-KG pipeline | `plan` | `/docling-graph plan "research PDFs to graph"` |
+| Draft a Pydantic template | `template` | `/docling-graph template "insurance policy"` |
+| Build a CLI command | `convert` | `/docling-graph convert policy.pdf --template templates.Policy` |
+| Embed in Python | `api` | `/docling-graph api policy.pdf --template Policy` |
+| Pick graph export format | `export` | `/docling-graph export "analyst CSV and Neo4j"` |
+| Debug a failed run | `debug` | `/docling-graph debug "CUDA out of memory"` |
+| Process a folder | `batch` | `/docling-graph batch docs/*.pdf` |
+
+## Classification Gating
+
+Classify before prescribing a workflow. Present the classification briefly and let the user correct it.
+
+| Dimension | Low | Medium | High |
+|---|---|---|---|
+| Document shape | text/markdown | PDF with tables | scanned/image-heavy or complex layout |
+| Domain structure | generic | known business domain | regulated/scientific/legal/finance |
+| Corpus size | 1 document | 2-20 documents | 20+ documents or recurring pipeline |
+| Runtime constraints | local toy run | local plus one provider | sensitive data, GPU, cost, or rate limits |
+
+| Result | Default strategy |
+|---|---|
+| Mostly Low | CLI-first plan, small template, minimal exports |
+| Any Medium | explicit template review, chunking decision, output isolation |
+| Any High | privacy/provider gate, debug traces, batch recovery, validation checklist |
+
+## Mode Protocols
+
+### Plan
+
+1. Identify source formats: PDF, image, markdown, Office, HTML, URL, or DoclingDocument JSON.
+2. Choose template path: draft new Pydantic template or reuse/import an existing class.
+3. Choose backend: LLM for text-heavy documents; VLM/local for forms, images, and layout-heavy inputs when available.
+4. Choose processing: `many-to-one` with chunking for multi-page documents; `one-to-one` for independent pages/forms.
+5. Choose exports: CSV for analysis, Cypher for Neo4j, JSON/NetworkX for applications, HTML/report for inspection.
+6. Load `references/pipeline-configuration.md` when backend, provider, chunking, or processing trade-offs matter.
+
+### Template
+
+1. If a template path is provided, run `uv run python skills/docling-graph/scripts/lint-template.py <path> --format json`.
+2. Distinguish entities from components. Entities need stable identity; components are nested value objects.
+3. Require useful `Field(description=...)` guidance for extraction-critical fields.
+4. Use explicit relationship fields and `edge()` labels for semantic edges when default field names are not enough.
+5. Load `references/template-design.md` for entity/component, `graph_id_fields`, relationship, and validation rules.
+
+### Convert
+
+1. Run `uv run python skills/docling-graph/scripts/check-env.py --format json` when live environment evidence is useful.
+2. Produce a `docling-graph convert SOURCE --template TEMPLATE` command with only necessary flags.
+3. Include `--output-dir` unless the user explicitly wants defaults, so outputs are not overwritten.
+4. Add `--debug` for first runs, failures, regulated workflows, or complex extraction.
+5. Load `references/cli-api-recipes.md` for command shapes and output layout.
+
+### API
+
+1. Prefer `PipelineConfig` for application code and `run_pipeline({...})` for short examples.
+2. State that API mode returns data in memory unless `dump_to_disk` is enabled.
+3. Show access to `context.knowledge_graph`, extracted Pydantic model(s), metadata, and chunks when relevant.
+4. Handle `ConfigurationError`, `ClientError`, `ExtractionError`, `ValidationError`, `GraphError`, and `PipelineError`.
+5. Load `references/cli-api-recipes.md` and `references/debugging.md` when writing integration code.
+
+### Export
+
+1. Map target to format: CSV for tables/analysis, Cypher for Neo4j import, JSON/NetworkX for application logic, HTML/report for review.
+2. Confirm whether the user needs graph database loading or only files/artifacts.
+3. Include validation checks: non-empty nodes/edges, expected labels, stable IDs, and relationship counts.
+4. Load `references/export-graph-management.md`.
+
+### Debug
+
+1. Ask for exact command/config, source type, template path, backend/inference, provider/model, and first traceback line if missing.
+2. Run `check-env.py` when local environment evidence matters.
+3. Triage in this order: install/import, template importability, invalid backend/inference pairing, provider credentials, extraction failure, graph conversion/export failure.
+4. Preserve partial results. Do not advise deleting outputs until they are inspected or copied elsewhere.
+5. Load `references/debugging.md`.
+
+### Batch
+
+1. Use one output directory per input document.
+2. Plan retry boundaries by document, not by corpus.
+3. For remote inference, include rate-limit, cost, API-key, and partial-success handling.
+4. For recurring pipelines, recommend config files and manifest-driven runs.
+5. Load `references/pipeline-configuration.md` and `references/debugging.md`.
+
+## Scaling Strategy
+
+| Scope | Strategy |
+|---|---|
+| 1 document | Inline classify, one command or API snippet, one output directory |
+| 2-20 documents | Batch loop/manifest, per-document outputs, retry failed items |
+| 20+ documents | Provider/privacy gate, rate-limit plan, resumable manifests, sample-first validation |
+| Regulated or sensitive data | Prefer local inference when feasible; require explicit approval before remote providers |
+
+## Reference File Index
+
+This is the progressive-disclosure map. Load one reference at a time.
+
+| File | Content | Read When |
+|---|---|---|
+| `references/template-design.md` | Pydantic template design, entities/components, stable IDs, edge labels, validation | Template mode |
+| `references/pipeline-configuration.md` | Backend, inference, provider, model, processing, chunking, docling pipeline decisions | Plan, Convert, Batch |
+| `references/cli-api-recipes.md` | CLI commands, `run_pipeline()`, `PipelineConfig`, output layout, inspect flow | Convert, API |
+| `references/export-graph-management.md` | NetworkX graph access, CSV/Cypher/JSON, visualization, validation | Export |
+| `references/debugging.md` | Exception hierarchy, trace/debug exports, partial results, fallback patterns | Debug, API, Batch |
+
+## Environment Checks
+
+Use helper scripts when evidence is needed:
+
+```bash
+uv run python skills/docling-graph/scripts/check-env.py --format json
+uv run python skills/docling-graph/scripts/check-env.py --template templates.BillingDocument --format json
+uv run python skills/docling-graph/scripts/lint-template.py templates.py --format json
+```
+
+Scripts print JSON to stdout and diagnostics to stderr. If a script is unavailable in a packaged install, continue with manual checks and say validation was not run.
+
+## Validation Contract
+
+Before declaring this skill complete after edits, run:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python <repo audit.py> skills/docling-graph/
+uv run wagents package docling-graph --dry-run
+uv run python skills/docling-graph/scripts/check-env.py --format json
+```
+
+Completion criteria:
+
+1. `uv run wagents validate` exits 0.
+2. `uv run wagents eval validate` exits 0.
+3. The deterministic skill audit scores "A" or the remaining gap is documented.
+4. `uv run wagents package docling-graph --dry-run` reports portable.
+5. Helper scripts emit valid JSON and expected non-secret diagnostics.
+6. README/docs generated surfaces are current after docs-steward sync.
+
+## Critical Rules
+
+1. Never claim extraction quality without inspecting outputs or at least specifying validation checks.
+2. Never print API keys or secret values; only report whether expected environment variables are present.
+3. Always include a stable output directory for CLI examples unless the user explicitly wants defaults.
+4. Always validate template importability before blaming Docling Graph internals for "template not found".
+5. Never recommend remote inference for sensitive documents without calling out data exposure and approval needs.
+6. Preserve partial outputs and debug traces during troubleshooting.
+7. Do not confuse Docling parsing with Docling Graph extraction; redirect generic parsing or markdown export tasks to Docling docs/tools.
+8. Use one reference file at a time; do not preload all references.
+9. Treat graph database administration as out of scope after generating Cypher/CSV/JSON import artifacts.
+10. For batch jobs, isolate outputs per input and design retries around failed documents.
+
+**Canonical terms** (use these exactly throughout):
+- Modes: "Plan", "Template", "Convert", "API", "Export", "Debug", "Batch", "Gallery"
+- Backends: "LLM", "VLM"
+- Inference modes: "local", "remote"
+- Processing modes: "one-to-one", "many-to-one"
+- Export formats: "CSV", "Cypher", "JSON", "HTML report", "NetworkX"
+- Graph concepts: "entity", "component", "edge label", "stable ID", "Pydantic template", "knowledge graph"

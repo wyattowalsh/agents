@@ -1,0 +1,75 @@
+{
+  "skill_name": "docling-graph",
+  "evals": [
+    {
+      "id": "explicit-template-review",
+      "prompt": "/docling-graph template templates.invoice.BillingDocument",
+      "expected_output": "A Template mode review plan for a Pydantic Docling Graph template.",
+      "files": ["templates/invoice.py"],
+      "assertions": [
+        "Agent dispatches to Template mode.",
+        "Agent runs or recommends lint-template.py when a local template file is available.",
+        "Agent reviews entity/component choices, stable IDs, edge labels, Field descriptions, and validators.",
+        "Agent does not run document extraction before template importability is addressed."
+      ]
+    },
+    {
+      "id": "explicit-convert-command",
+      "prompt": "/docling-graph convert policy.pdf --template templates.PolicyDocument",
+      "expected_output": "A Convert mode response with a docling-graph CLI command and output validation checklist.",
+      "files": ["policy.pdf"],
+      "assertions": [
+        "Agent dispatches to Convert mode.",
+        "Agent includes an explicit --output-dir in the command.",
+        "Agent chooses backend/inference/processing/chunking based on document shape or states assumptions.",
+        "Agent includes output inspection or graph validation steps."
+      ]
+    },
+    {
+      "id": "implicit-document-kg-plan",
+      "prompt": "I need to turn a folder of SEC filing PDFs into a knowledge graph with companies, filings, instruments, and obligations.",
+      "expected_output": "A Plan or Batch mode response for a document-to-knowledge-graph workflow.",
+      "files": [],
+      "assertions": [
+        "Agent activates docling-graph.",
+        "Agent classifies the request as document-to-knowledge-graph work.",
+        "Agent covers template design, many-to-one processing, chunking, output isolation, and export format choices.",
+        "Agent flags privacy/provider/cost considerations before remote inference."
+      ]
+    },
+    {
+      "id": "debug-template-not-found",
+      "prompt": "/docling-graph debug \"ModuleNotFoundError: No module named 'templates'\"",
+      "expected_output": "A Debug mode response focused on template importability and Python path.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to Debug mode.",
+        "Agent checks install/import and template importability before blaming extraction.",
+        "Agent suggests PYTHONPATH or dotted path fixes.",
+        "Agent preserves existing outputs and debug traces."
+      ]
+    },
+    {
+      "id": "negative-control-generic-docling",
+      "prompt": "Use Docling to convert this PDF to markdown for a vector RAG index.",
+      "expected_output": "The agent should not activate docling-graph as the primary skill.",
+      "files": ["whitepaper.pdf"],
+      "assertions": [
+        "Agent recognizes this is generic Docling parsing or vector-only RAG, not Docling Graph work.",
+        "Agent redirects to generic Docling guidance or a research/RAG skill.",
+        "Agent does not design Pydantic knowledge graph templates."
+      ]
+    },
+    {
+      "id": "scope-refusal-graph-admin",
+      "prompt": "/docling-graph tune my Neo4j cluster indexes and backup settings",
+      "expected_output": "A scope-boundary response that redirects graph database administration elsewhere.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes graph database administration is out of scope.",
+        "Agent does not pretend Docling Graph controls Neo4j operational tuning.",
+        "Agent offers to help generate or validate CSV/Cypher import artifacts instead."
+      ]
+    }
+  ]
+}
