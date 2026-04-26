@@ -1,114 +1,79 @@
-# Debugging
+# Debugging Docling Graph
 
-## Contents
-
-1. Triage Order
-2. Environment Problems
-3. Template Problems
-4. Backend and Provider Problems
-5. Extraction Problems
-6. Graph Problems
-7. Batch Recovery
+Debug from source evidence to graph artifact. Do not start with the export layer unless the graph artifact is already proven correct.
 
 ## Triage Order
 
-Use this reference in **Debug**, **API**, and **Batch** modes.
+1. Confirm version, Python, provider credentials, CLI/API command, and source path.
+2. Lint the template for root model, stable IDs, field descriptions, relationship typing, and contract fit.
+3. Reproduce with one small source and debug dumping enabled.
+4. Run `docling-graph inspect OUTPUT_DIR`.
+5. Read `debug/trace_data.json` for stage inputs, structured-output failures, sparse-check findings, fallback parser output, and graph mapping errors.
+6. Compare source evidence -> extraction JSON -> graph artifact -> export artifact.
 
-Debug in this order:
+## Common Failure Patterns
 
-1. Install and import.
-2. CLI availability.
-3. Template importability.
-4. Backend/inference compatibility.
-5. Provider credentials and rate limits.
-6. Source document conversion.
-7. Extraction/validation.
-8. Graph conversion/export.
+| Symptom | Likely cause | First check |
+| --- | --- | --- |
+| Missing required fields | Weak field descriptions, source evidence absent, sparse-check failure | Field descriptions and sparse-check output |
+| Missing relationships | Relationship field typed too loosely, no stable IDs, wrong contract | Template relationship fields and graph ID fields |
+| Duplicate entities | ID strategy unstable or resolver not configured | `graph_id_fields`, normalized IDs, delta resolver traces |
+| Empty graph | Wrong root model, template import failure, source not parsed | CLI/API template path and inspect summary |
+| Provider rejects schema | Schema too large or unsupported structured output | Contract choice and structured-output fallback |
+| Export looks wrong | Graph artifact already wrong or export mapping drifted | Validate graph artifact before export |
 
-Do not skip ahead to template redesign until basic environment and import checks are proven.
+## Trace Data
 
-## Environment Problems
+When available, `debug/trace_data.json` is the most useful artifact. Look for:
 
-Run:
+- Provider/model config actually used.
+- Extraction contract and stage list.
+- Prompt/schema payload sizes.
+- Structured-output success or fallback.
+- Sparse-check failures.
+- Gleaning pass deltas.
+- Graph mapping warnings.
+- Resolver decisions for delta extraction.
 
-```bash
-uv run python skills/docling-graph/scripts/check-env.py --format json
-```
+Redact secrets before sharing traces.
 
-Common signals:
+## Inspect Report
 
-| Symptom | Likely cause | Next step |
-|---|---|---|
-| package missing | `docling-graph` not installed in active environment | install in project env or switch env |
-| CLI missing but import works | scripts path not exposed | use `uv run docling-graph` or env-specific executable |
-| API key missing | remote provider env var absent | set provider env var, do not print secret |
-| Python too old | package requires modern Python | upgrade env |
-
-## Template Problems
-
-For local files:
-
-```bash
-uv run python skills/docling-graph/scripts/lint-template.py templates.py --format json
-```
-
-For import paths:
+Use:
 
 ```bash
-uv run python skills/docling-graph/scripts/check-env.py \
-  --template templates.BillingDocument \
-  --format json
+docling-graph inspect OUTPUT_DIR
 ```
 
-Common fixes:
+Review:
 
-1. Add project root to `PYTHONPATH`.
-2. Use a full dotted import path.
-3. Ensure class name matches exactly.
-4. Add missing package `__init__.py` when needed.
-5. Fix syntax/import errors in the template module.
+- Stage timeline and errors.
+- Extracted object counts by model.
+- Relationship counts and orphan nodes.
+- Missing required fields.
+- Duplicate IDs.
+- Links from final graph fields back to extraction artifacts where available.
 
-## Backend and Provider Problems
+## Minimal Fix Ladder
 
-Common mismatches:
+Prefer the smallest change that addresses the observed artifact:
 
-| Problem | Fix |
-|---|---|
-| VLM with remote inference | Use local inference or switch to LLM |
-| GPU memory failure | Smaller model, chunking, OCR pipeline, or LLM fallback |
-| provider auth failure | Check env var presence and provider name |
-| rate limit | retry with backoff, reduce concurrency, or switch provider |
-| poor layout extraction | revisit Docling pipeline before rewriting schema |
+1. Improve field descriptions.
+2. Add or correct `graph_id_fields`.
+3. Tighten relationship types.
+4. Switch direct -> staged for oversized/nested schemas.
+5. Switch staged -> delta when entity resolution dominates.
+6. Enable structured output or adjust fallback handling.
+7. Add bounded gleaning for recall-sensitive fields.
+8. Change provider/model only after schema and contract issues are ruled out.
 
-## Extraction Problems
+## Debug Response Template
 
-If extraction fails:
+Return:
 
-1. Re-run with debug enabled.
-2. Inspect partial outputs before deleting anything.
-3. Check whether source conversion succeeded.
-4. Check whether the template is too strict.
-5. Compare one small sample against expected graph facts.
-
-For partial success, preserve the extracted model, graph files, metadata, and debug traces. Partial data can be useful for template repair.
-
-## Graph Problems
-
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| Empty graph | no entity models, extraction empty, or conversion failed | inspect extracted model and entity configs |
-| Missing edges | relationship fields not nested or edge labels absent | add explicit relationship fields |
-| Duplicate nodes | weak stable IDs | add or improve `graph_id_fields` |
-| Noisy graph | components modeled as entities | mark value objects as components |
-| Bad labels | field names too generic | add explicit edge labels |
-
-## Batch Recovery
-
-For batch failures:
-
-1. Do not rerun the whole corpus first.
-2. Build a failed-document list.
-3. Preserve successful output directories.
-4. Retry only failed documents after changing config/template.
-5. Record old and new command/config for comparison.
-6. Flag documents with outlier node/edge counts for manual review.
+- Reproduction command/config.
+- Artifact reviewed.
+- First failing step in the source -> extraction -> graph -> export chain.
+- Root cause with evidence.
+- Minimal patch.
+- Verification command and expected invariant.

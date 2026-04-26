@@ -1,92 +1,57 @@
 # Export and Graph Management
 
-## Contents
+Exports are downstream products of the Docling Graph artifact. Validate the graph before loading or analyzing it elsewhere.
 
-1. Output Targets
-2. Format Selection
-3. NetworkX Access
-4. CSV Checks
-5. Cypher Checks
-6. JSON and HTML
-7. Validation Checklist
+## Export Targets
 
-## Output Targets
+| Target | Use for | Checks |
+| --- | --- | --- |
+| JSON | Canonical handoff, regression fixtures, API payloads | Schema version, required fields, stable IDs |
+| CSV | Analyst review, staging tables, spreadsheet QA | One entity/relationship type per table, normalized IDs |
+| Cypher/Neo4j | Graph database loading | Uniqueness constraints, relationship direction, idempotent merge |
+| NetworkX | Algorithms and graph QA | Connected components, orphan nodes, centrality sanity |
 
-Use this reference in **Export** mode.
+## Pre-Export Gate
 
-Docling Graph can produce files for analysis, graph databases, application code, and human inspection. Choose the export by downstream use, not by habit.
+Before export, verify:
 
-## Format Selection
+- Inspect report has no unexplained extraction failures.
+- Root model count matches expected document-level graph count.
+- Entity IDs are stable and unique.
+- Relationship directions match the template semantics.
+- Required fields are populated or explicitly nullable.
+- Duplicate entities and orphan relationships are understood.
 
-| Target | Format | Notes |
-|---|---|---|
-| Spreadsheet, pandas, SQL, analyst review | CSV | Separate nodes and edges are easy to inspect |
-| Neo4j import or graph database loading | Cypher | Check labels and relationship names before import |
-| Application code or API response | JSON or NetworkX | Preserve graph structure for programmatic use |
-| Human review and debugging | HTML report or Markdown report | Useful before trusting extraction quality |
+## Neo4j Pattern
 
-If multiple audiences exist, export more than one format from the same run directory.
+Use stable IDs as uniqueness constraints before loading:
 
-## NetworkX Access
-
-In API mode, the graph is available in memory:
-
-```python
-context = run_pipeline(config)
-graph = context.knowledge_graph
-
-node_count = graph.number_of_nodes()
-edge_count = graph.number_of_edges()
-labels = {
-    data.get("label")
-    for _, data in graph.nodes(data=True)
-}
+```cypher
+CREATE CONSTRAINT organization_id IF NOT EXISTS
+FOR (n:Organization)
+REQUIRE n.id IS UNIQUE;
 ```
 
-Use NetworkX access when the user needs custom validation, transformation, metrics, or integration with another Python system.
+Use idempotent merge semantics for nodes and relationships. Do not create relationships from display names when stable IDs are available.
 
-## CSV Checks
+## NetworkX QA
 
-CSV export usually includes node and edge files. Validate:
+NetworkX is useful for checks that are awkward in raw JSON:
 
-1. `nodes.csv` exists and has rows.
-2. `edges.csv` exists and has rows when relationships are expected.
-3. Required labels/classes appear.
-4. Stable ID columns are populated.
-5. Edge labels match template relationship names.
+- Count connected components.
+- Find isolated nodes.
+- Check relationship direction around key entity types.
+- Compare expected vs actual degree for root entities.
+- Sample shortest paths between known linked entities.
 
-For analyst handoff, include column descriptions and known extraction caveats.
+## Export Handoff
 
-## Cypher Checks
+Include:
 
-Before importing into Neo4j:
-
-1. Review generated labels and relationship types.
-2. Confirm IDs are stable and unique.
-3. Run against a scratch database first.
-4. Add uniqueness constraints manually if the generated import does not create them.
-5. Keep the original output directory with metadata for traceability.
-
-Graph database administration is out of scope for this skill after import artifacts are produced.
-
-## JSON and HTML
-
-Use JSON when a service, notebook, or downstream script needs structured graph data.
-
-Use HTML/report output when humans need to inspect the graph. For first runs, always inspect the visualization or summary report before claiming success.
-
-## Validation Checklist
-
-Report these checks after any export plan:
-
-| Check | Pass signal |
-|---|---|
-| Node count | Greater than zero and plausible for document |
-| Edge count | Greater than zero when relationships are expected |
-| Labels | Expected domain node types appear |
-| IDs | No obvious volatile IDs or duplicates |
-| Edges | Relationship labels match domain semantics |
-| Coverage | Key facts from source appear in graph |
-| Traceability | Output dir, command/config, provider/model, template version recorded |
-
-For batch outputs, aggregate counts per document and flag outliers for manual review.
+- Source run command or redacted API config.
+- Template version or git SHA.
+- Extraction contract.
+- Inspect report path.
+- Graph artifact path.
+- Export command/config.
+- Integrity counts: nodes, relationships, duplicate IDs, orphan nodes, missing required fields.

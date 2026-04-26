@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Check local readiness for docling-graph workflows."""
+"""Check local readiness for Docling Graph workflows."""
+
 from __future__ import annotations
 
 import argparse
@@ -8,124 +9,298 @@ import importlib.metadata
 import json
 import os
 import shutil
+import subprocess
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
+
+
+TARGET_DOCLING_GRAPH_VERSION = "1.5.0"
+PYTHON_MIN = (3, 10)
+
+
+PROVIDER_ENV: dict[str, list[tuple[str, bool]]] = {
+    "openai": [("OPENAI_API_KEY", True)],
+    "mistral": [("MISTRAL_API_KEY", True)],
+    "gemini": [("GOOGLE_API_KEY", False), ("GEMINI_API_KEY", False)],
+    "watsonx": [
+        ("WATSONX_APIKEY", True),
+        ("WATSONX_URL", True),
+        ("WATSONX_PROJECT_ID", True),
+    ],
+    "ollama": [("OLLAMA_HOST", False)],
+    "vllm": [("VLLM_API_BASE", False), ("OPENAI_API_BASE", False)],
+    "lmstudio": [("LMSTUDIO_API_BASE", False), ("OPENAI_API_BASE", False)],
+}
+
+
+EXTRAS_HINTS = {
+    "vlm": "Install the docling-graph VLM extra when local vision-language model extraction is required.",
+    "delta-resolvers": "Install resolver extras when delta extraction depends on advanced entity resolution.",
+}
 
 
 @dataclass
 class Check:
     name: str
-    status: str
+    ok: bool
     detail: str
+    severity: str = "info"
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "ok": self.ok,
+            "severity": self.severity,
+            "detail": self.detail,
+        }
 
 
-def _package_version() -> tuple[str | None, str]:
-    try:
-        return importlib.metadata.version("docling-graph"), "installed"
-    except importlib.metadata.PackageNotFoundError:
+def parse_version(value: str | None) -> tuple[int, ...] | None:
+    if not value:
+        return None
+    parts: list[int] = []
+    for raw in value.split("."):
+        digits = ""
+        for char in raw:
+            if char.isdigit():
+                digits += char
+            else:
+                break
+        if not digits:
+            break
+        parts.append(int(digits))
+    return tuple(parts) if parts else None
+
+
+def installed_version() -> str | None:
+    for package in ("docling-graph", "docling_graph"):
         try:
-            return importlib.metadata.version("docling_graph"), "installed"
+            return importlib.metadata.version(package)
         except importlib.metadata.PackageNotFoundError:
-            return None, "missing"
+            continue
+    return None
 
 
-def _check_python() -> Check:
-    version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
-    if sys.version_info >= (3, 10):
-        return Check("python", "ok", version)
-    return Check("python", "error", f"{version}; Python 3.10+ required")
+def check_python() -> Check:
+    current = sys.version_info[:3]
+    ok = current >= PYTHON_MIN and current[0] < 4
+    detail = f"Python {current[0]}.{current[1]}.{current[2]} detected; expected >=3.10,<4"
+    return Check("python", ok, detail, "error" if not ok else "info")
 
 
-def _check_import() -> Check:
-    spec = importlib.util.find_spec("docling_graph")
-    if spec is None:
-        return Check("docling_graph_import", "missing", "module docling_graph not importable")
-    return Check("docling_graph_import", "ok", "module docling_graph importable")
+def check_package() -> Check:
+    version = installed_version()
+    if not version:
+        return Check(
+            "package",
+            False,
+            "docling-graph package is not installed in this environment",
+            "warning",
+        )
+
+    parsed = parse_version(version)
+    target = parse_version(TARGET_DOCLING_GRAPH_VERSION)
+    if parsed and target and parsed >= target:
+        return Check("package", True, f"docling-graph {version} installed")
+    return Check(
+        "package",
+        False,
+        f"docling-graph {version} installed; skill references {TARGET_DOCLING_GRAPH_VERSION}+ behavior",
+        "warning",
+    )
 
 
-def _check_package() -> Check:
-    version, status = _package_version()
-    if version:
-        return Check("docling_graph_package", "ok", version)
-    return Check("docling_graph_package", status, "package metadata not found")
+def check_module() -> Check:
+    try:
+        importlib.import_module("docling_graph")
+    except Exception as exc:  # pragma: no cover - exact import failures are environment-specific
+        return Check("module", False, f"cannot import docling_graph: {exc}", "warning")
+    return Check("module", True, "docling_graph imports successfully")
 
 
-def _check_cli() -> Check:
-    path = shutil.which("docling-graph")
-    if path:
-        return Check("docling_graph_cli", "ok", path)
-    return Check("docling_graph_cli", "missing", "docling-graph executable not on PATH")
+def check_cli(check_help: bool) -> Check:
+    cli = shutil.which("docling-graph")
+    if not cli:
+        return Check("cli", False, "docling-graph executable not found on PATH", "warning")
+    if not check_help:
+        return Check("cli", True, f"docling-graph executable found at {cli}")
+    try:
+        result = subprocess.run(
+            [cli, "--help"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
+        )
+    except Exception as exc:  # pragma: no cover - shell availability is environment-specific
+        return Check("cli", False, f"found {cli}, but --help failed: {exc}", "warning")
+
+    output = (result.stdout or "") + (result.stderr or "")
+    if result.returncode == 0 and "docling" in output.lower():
+        return Check("cli", True, f"docling-graph executable found at {cli}; --help works")
+    return Check(
+        "cli",
+        False,
+        f"found {cli}, but --help exited {result.returncode}",
+        "warning",
+    )
 
 
-def _check_template(dotted_path: str) -> Check:
-    module_name, sep, attr = dotted_path.rpartition(".")
-    if not sep or not module_name or not attr:
-        return Check("template_import", "error", "template must be a dotted path like package.module.Class")
+def check_template(template: str | None) -> Check | None:
+    if not template:
+        return None
+
+    module_name, sep, object_name = template.partition(":")
+    if not sep or not module_name or not object_name:
+        return Check(
+            "template",
+            False,
+            "template must use module:RootModel format",
+            "error",
+        )
+
     try:
         module = importlib.import_module(module_name)
-    except Exception as exc:  # noqa: BLE001 - report import diagnostics without hiding type.
-        return Check("template_import", "error", f"module import failed: {type(exc).__name__}: {exc}")
-    if not hasattr(module, attr):
-        return Check("template_import", "error", f"{module_name} imports but has no attribute {attr}")
-    return Check("template_import", "ok", dotted_path)
+    except Exception as exc:
+        return Check("template", False, f"cannot import {module_name}: {exc}", "error")
+
+    if not hasattr(module, object_name):
+        return Check("template", False, f"{module_name} has no attribute {object_name}", "error")
+
+    return Check("template", True, f"{template} imports successfully")
 
 
-def _check_env_var(name: str) -> Check:
-    if os.environ.get(name):
-        return Check(f"env:{name}", "ok", "present")
-    return Check(f"env:{name}", "missing", "not set")
+def env_status(name: str) -> str:
+    value = os.environ.get(name)
+    if value:
+        return "set"
+    return "missing"
+
+
+def check_provider(provider: str) -> dict[str, Any]:
+    envs = PROVIDER_ENV[provider]
+    required = [name for name, is_required in envs if is_required]
+    optional = [name for name, is_required in envs if not is_required]
+    statuses = {name: env_status(name) for name, _ in envs}
+
+    if provider == "gemini":
+        ok = any(os.environ.get(name) for name in ("GOOGLE_API_KEY", "GEMINI_API_KEY"))
+        detail = "one of GOOGLE_API_KEY or GEMINI_API_KEY must be set for Gemini"
+    else:
+        ok = all(os.environ.get(name) for name in required)
+        detail = "required environment variables are set" if ok else "missing required environment variables"
+
+    if not required and not ok:
+        ok = True
+        detail = "no required environment variables; verify local server/base URL separately"
+
+    return {
+        "provider": provider,
+        "ok": ok,
+        "required": required,
+        "optional": optional,
+        "env": statuses,
+        "detail": detail,
+    }
 
 
 def build_report(args: argparse.Namespace) -> dict[str, Any]:
-    checks = [_check_python(), _check_package(), _check_import(), _check_cli()]
-    for env_name in args.provider_env:
-        checks.append(_check_env_var(env_name))
-    if args.template:
-        checks.append(_check_template(args.template))
+    checks = [
+        check_python(),
+        check_package(),
+        check_module(),
+        check_cli(args.check_cli_help),
+    ]
 
-    statuses = [check.status for check in checks]
-    if "error" in statuses:
-        overall = "error"
-    elif "missing" in statuses:
-        overall = "warning"
-    else:
-        overall = "ok"
+    template_check = check_template(args.template)
+    if template_check:
+        checks.append(template_check)
+
+    provider_reports = [check_provider(provider) for provider in args.provider]
+
+    legacy_provider_env = []
+    for item in args.provider_env:
+        legacy_provider_env.append(
+            {
+                "name": item,
+                "ok": bool(os.environ.get(item)),
+                "status": env_status(item),
+            }
+        )
+
+    ok = all(check.ok or check.severity != "error" for check in checks)
+    ok = ok and all(report["ok"] for report in provider_reports)
 
     return {
-        "tool": "docling-graph check-env",
-        "overall_status": overall,
-        "checks": [asdict(check) for check in checks],
+        "ok": ok,
+        "target_docling_graph_version": TARGET_DOCLING_GRAPH_VERSION,
+        "checks": [check.as_dict() for check in checks],
+        "providers": provider_reports,
+        "provider_env": legacy_provider_env,
+        "extras_hints": EXTRAS_HINTS,
         "notes": [
-            "Secret values are never printed; provider environment checks only report presence.",
-            "Missing docling-graph is acceptable for planning-only use, but live convert/API validation will not run.",
+            "Provider secrets are reported only as set/missing.",
+            "Run docling-graph inspect on real output directories before declaring graph quality.",
         ],
     }
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Check local docling-graph readiness")
-    parser.add_argument("--template", help="Optional dotted template import path to validate")
+def print_pretty(report: dict[str, Any]) -> None:
+    status = "OK" if report["ok"] else "CHECK"
+    print(f"Docling Graph environment: {status}")
+    for check in report["checks"]:
+        mark = "ok" if check["ok"] else check["severity"]
+        print(f"- {check['name']}: {mark} - {check['detail']}")
+    for provider in report["providers"]:
+        mark = "ok" if provider["ok"] else "warning"
+        print(f"- provider {provider['provider']}: {mark} - {provider['detail']}")
+        for name, state in provider["env"].items():
+            print(f"  - {name}: {state}")
+    if report["provider_env"]:
+        print("- explicit provider env checks:")
+        for item in report["provider_env"]:
+            mark = "ok" if item["ok"] else "missing"
+            print(f"  - {item['name']}: {mark}")
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--template", help="Optional template import path in module:RootModel form")
+    parser.add_argument(
+        "--provider",
+        action="append",
+        choices=sorted(PROVIDER_ENV),
+        default=[],
+        help="Provider preset to check; repeat for multiple providers",
+    )
     parser.add_argument(
         "--provider-env",
         action="append",
         default=[],
-        help="Provider environment variable name to check; may be repeated",
+        help="Additional environment variable to check without printing its value",
     )
-    parser.add_argument("--format", choices=["json", "pretty"], default="json")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--no-cli-help",
+        dest="check_cli_help",
+        action="store_false",
+        help="Only check for the CLI path; do not run docling-graph --help",
+    )
+    parser.set_defaults(check_cli_help=True)
+    parser.add_argument("--format", choices=("pretty", "json"), default="pretty")
+    return parser.parse_args(argv)
 
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(sys.argv[1:] if argv is None else argv)
     report = build_report(args)
-    if args.format == "pretty":
-        for check in report["checks"]:
-            print(f"{check['status']:7} {check['name']}: {check['detail']}")
-        print(f"overall: {report['overall_status']}")
-    else:
+    if args.format == "json":
         print(json.dumps(report, indent=2, sort_keys=True))
-
-    if report["overall_status"] == "error":
-        sys.exit(1)
+    else:
+        print_pretty(report)
+    return 0 if report["ok"] else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
