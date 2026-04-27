@@ -2,6 +2,8 @@
 
 import json
 
+import pytest
+
 from scripts import sync_agent_stack
 from scripts.sync_agent_stack import (
     SyncContext,
@@ -25,7 +27,12 @@ from scripts.sync_agent_stack import (
     sync_codex_entrypoint,
     sync_copilot_subagent_env,
     sync_generated_json_directory,
+    sync_repo_targets,
 )
+from wagents.platforms import base as platform_base
+from wagents.platforms import cursor as cursor_platform
+from wagents.platforms import opencode as opencode_platform
+from wagents.platforms import vscode as vscode_platform
 
 
 def test_render_opencode_mcp_renders_local_servers():
@@ -720,6 +727,164 @@ def test_generate_project_opencode_config_creates_file(tmp_path, monkeypatch):
     assert payload["skills"]["paths"] == ["skills"]
 
 
+def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monkeypatch):
+    registry_path = tmp_path / "config" / "mcp-registry.json"
+    hook_path = tmp_path / "config" / "hook-registry.json"
+    called: list[str] = []
+
+    monkeypatch.setattr(sync_agent_stack, "MCP_REGISTRY_PATH", registry_path)
+    monkeypatch.setattr(sync_agent_stack, "HOOK_REGISTRY_PATH", hook_path)
+    monkeypatch.setattr(sync_agent_stack, "generate_codex_global_instructions", lambda ctx: None)
+    monkeypatch.setattr(sync_agent_stack, "generate_copilot_repo_instructions", lambda ctx: None)
+    monkeypatch.setattr(sync_agent_stack, "generate_copilot_rule_instructions", lambda ctx: None)
+    monkeypatch.setattr(sync_agent_stack, "generate_copilot_hooks", lambda ctx, hook_registry: None)
+    monkeypatch.setattr(
+        sync_agent_stack,
+        "sync_platform_repo_target",
+        lambda name, ctx, registry, hook_registry, policy: called.append(name),
+    )
+
+    registry = {"servers": {}}
+    hook_registry = {"hooks": []}
+    policy = {"model_defaults": {}}
+
+    ctx = SyncContext(apply=True)
+    sync_repo_targets(ctx, registry, hook_registry, policy)
+
+    assert json.loads(registry_path.read_text(encoding="utf-8")) == registry
+    assert json.loads(hook_path.read_text(encoding="utf-8")) == hook_registry
+    assert called == ["vscode", "opencode"]
+
+
+def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
+    monkeypatch.setenv("EXAMPLE_TOKEN", "real-secret")
+    adapter = vscode_platform.Adapter()
+    registry = {
+        "servers": {
+            "example": {
+                "command": "uvx",
+                "args": ["example-mcp", "${EXAMPLE_TOKEN}"],
+                "enabled": True,
+                "env": {"TOKEN": {"env_var": "EXAMPLE_TOKEN"}},
+                "timeout_ms": 5000,
+            }
+        }
+    }
+
+    rendered = adapter.render_mcp(registry, {})
+
+    assert rendered == {
+        "mcpServers": {
+            "example": {
+                "command": "uvx",
+                "args": ["example-mcp", "${EXAMPLE_TOKEN}"],
+                "env": {"TOKEN": "${EXAMPLE_TOKEN}"},
+                "timeout": 5000,
+            }
+        }
+    }
+
+
+def test_cursor_adapter_sync_home_replaces_existing_mcp_servers(tmp_path, monkeypatch):
+    config_path = tmp_path / "mcp.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "mcpServers": {"custom": {"command": "custom-mcp"}},
+                "other": True,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(cursor_platform, "CURSOR_MCP_PATH", config_path)
+
+    adapter = cursor_platform.Adapter()
+    ctx = cursor_platform.SyncContext(apply=True)
+    registry = {
+        "servers": {
+            "managed": {
+                "command": "uvx",
+                "args": ["managed-mcp"],
+                "enabled": True,
+            }
+        }
+    }
+
+    adapter.sync_home(ctx, registry, {}, {}, {})
+    payload = json.loads(config_path.read_text(encoding="utf-8"))
+
+    assert payload["other"] is True
+    assert payload["mcpServers"] == {
+        "managed": {
+            "command": "uvx",
+            "args": ["managed-mcp"],
+        }
+    }
+
+
+def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_models(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+
+    repo_root.mkdir(parents=True)
+    config_path.parent.mkdir(parents=True)
+    (repo_root / "instructions").mkdir()
+    (repo_root / "skills").mkdir()
+
+    config_path.write_text(
+        json.dumps(
+            {
+                "provider": {
+                    "lmstudio": {
+                        "models": {"custom-model": {"name": "Custom Local Model"}},
+                        "options": {"headers": {"X-Local": "1"}},
+                    }
+                },
+                "mcp": {},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(platform_base, "HOME", home_dir)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(opencode_platform, "GLOBAL_MD", repo_root / "instructions" / "global.md")
+    monkeypatch.setattr(opencode_platform, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(opencode_platform, "SKILLS_DIR", repo_root / "skills")
+    monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
+
+    policy = {
+        "local_llm_providers": {
+            "lmstudio": {
+                "name": "LM Studio (local)",
+                "base_url_env": "LM_STUDIO_API_BASE",
+                "default_base_url": "http://127.0.0.1:1234/v1",
+                "default_model": "local-model",
+                "opencode": {
+                    "npm": "@ai-sdk/openai-compatible",
+                    "models": {"local-model": {"name": "LM Studio Local Model"}},
+                },
+            }
+        }
+    }
+
+    adapter = opencode_platform.Adapter()
+    ctx = opencode_platform.SyncContext(apply=True)
+    adapter.sync_home(ctx, {"servers": {}}, policy, {"LM_STUDIO_API_BASE": "http://localhost:9999/v1"}, {})
+    payload = json.loads(config_path.read_text(encoding="utf-8"))
+
+    provider = payload["provider"]["lmstudio"]
+    assert provider["npm"] == "@ai-sdk/openai-compatible"
+    assert provider["name"] == "LM Studio (local)"
+    assert provider["options"]["baseURL"] == "http://localhost:9999/v1"
+    assert provider["options"]["headers"] == {"X-Local": "1"}
+    assert provider["models"]["local-model"] == {"name": "LM Studio Local Model"}
+    assert provider["models"]["custom-model"] == {"name": "Custom Local Model"}
+
+
 def test_merge_cherry_studio_config_no_op_when_missing(tmp_path, monkeypatch):
     home_dir = tmp_path / "home"
     cherry_dir = home_dir / "Library" / "Application Support" / "CherryStudio"
@@ -920,6 +1085,41 @@ def test_merge_copilot_config_preserves_camel_case_settings_keys(tmp_path, monke
     assert rendered["model"] == "gpt-5.4"
     assert rendered["effortLevel"] == "high"
     assert rendered["continueOnAutoMode"] is False
+
+
+def test_merge_copilot_config_creates_missing_settings_file(tmp_path, monkeypatch):
+    config_path = tmp_path / "settings.json"
+    monkeypatch.setattr(sync_agent_stack, "COPILOT_SETTINGS_PATH", config_path)
+    policy = {
+        "trusted_roots": ["/Users/ww/dev/projects"],
+        "docs_domains": ["docs.github.com", "modelcontextprotocol.io"],
+        "model_defaults": {
+            "copilot": {
+                "model": "gpt-5.4",
+                "effort_level": "high",
+                "continue_on_auto_mode": False,
+            }
+        },
+    }
+
+    ctx = SyncContext(apply=True)
+    merge_copilot_config(ctx, policy)
+
+    rendered = json.loads(config_path.read_text(encoding="utf-8"))
+    assert rendered == {
+        "model": "gpt-5.4",
+        "effortLevel": "high",
+        "continueOnAutoMode": False,
+        "trustedFolders": ["/Users/ww/dev/projects"],
+        "allowedUrls": ["https://docs.github.com", "https://modelcontextprotocol.io"],
+    }
+
+
+def test_load_json_raises_for_missing_required_file(tmp_path):
+    missing = tmp_path / "missing.json"
+
+    with pytest.raises(FileNotFoundError):
+        sync_agent_stack.load_json(missing)
 
 
 def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):
