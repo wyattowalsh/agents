@@ -7,6 +7,7 @@ import pytest
 from typer.testing import CliRunner
 
 from wagents.cli import app
+from wagents.installed_inventory import HarnessQueryResult, InstalledInventorySnapshot, InstalledSkillInventoryRow
 from wagents.parsing import parse_frontmatter
 
 runner = CliRunner()
@@ -428,3 +429,228 @@ class TestUpdate:
         result = runner.invoke(app, ["update"])
         assert result.exit_code == 1
         assert "npx not found" in result.output
+
+
+class TestSkillsSync:
+    def _snapshot(self):
+        return InstalledInventorySnapshot(
+            rows=(
+                InstalledSkillInventoryRow(
+                    name="repo-skill",
+                    path="/tmp/repo-skill",
+                    source_path="/tmp/repo-skill/SKILL.md",
+                    scope="global",
+                    description="Repo skill",
+                    license="",
+                    version="",
+                    author="",
+                    source="github:wyattowalsh/agents",
+                    install_source="github:wyattowalsh/agents",
+                    source_url="https://github.com/wyattowalsh/agents",
+                    install_command="npx skills add github:wyattowalsh/agents --skill repo-skill -y -g",
+                    provenance_status="repo-owned",
+                    trust_tier="repo",
+                    selector_mode="named",
+                    installed_agents=(),
+                    discovered_in=("codex",),
+                    target_agents=(),
+                ),
+                InstalledSkillInventoryRow(
+                    name="curated-skill",
+                    path="/tmp/curated-skill",
+                    source_path="/tmp/curated-skill/SKILL.md",
+                    scope="global",
+                    description="Curated skill",
+                    license="",
+                    version="",
+                    author="",
+                    source="vercel-labs/agent-skills",
+                    install_source="vercel-labs/agent-skills",
+                    source_url="https://github.com/vercel-labs/agent-skills",
+                    install_command="npx skills add vercel-labs/agent-skills --skill curated-skill -y -g",
+                    provenance_status="verified-curated-external",
+                    trust_tier="curated-trust-gated",
+                    selector_mode="named",
+                    installed_agents=("codex",),
+                    discovered_in=("codex",),
+                    target_agents=("codex",),
+                ),
+                InstalledSkillInventoryRow(
+                    name="docs-stripe",
+                    path="/tmp/docs-stripe",
+                    source_path="/tmp/docs-stripe/SKILL.md",
+                    scope="global",
+                    description="Needs verification",
+                    license="",
+                    version="",
+                    author="",
+                    source="docs.stripe.com",
+                    install_source="docs.stripe.com@stripe-best-practices",
+                    source_url="https://docs.stripe.com",
+                    install_command="",
+                    provenance_status="curated-unresolved",
+                    trust_tier="global-only-or-avoid",
+                    selector_mode="unresolved",
+                    installed_agents=(),
+                    discovered_in=("codex",),
+                    target_agents=("codex",),
+                    unresolved_reason="registry syntax and provenance still need verification.",
+                ),
+                InstalledSkillInventoryRow(
+                    name="one-off",
+                    path="/tmp/one-off",
+                    source_path="/tmp/one-off/SKILL.md",
+                    scope="global",
+                    description="Optional installed external skill",
+                    license="",
+                    version="",
+                    author="",
+                    source="example/skills",
+                    install_source="example/skills",
+                    source_url="https://github.com/example/skills",
+                    install_command="npx skills add example/skills --skill one-off -y -g",
+                    provenance_status="installed-external",
+                    trust_tier="github",
+                    selector_mode="named",
+                    installed_agents=(),
+                    discovered_in=("codex",),
+                    target_agents=(),
+                ),
+            ),
+            queries=(HarnessQueryResult(agent_id="codex", ok=True, entries=()),),
+        )
+
+    def test_sync_dry_run_reports_categories_and_commands(self, monkeypatch):
+        monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: self._snapshot())
+
+        result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+
+        assert result.exit_code == 0
+        assert "missing (1)" in result.output
+        assert "already-present (1)" in result.output
+        assert "unresolved (1)" in result.output
+        assert "skipped (1)" in result.output
+        assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a codex" in result.output
+
+    def test_sync_apply_executes_verified_commands_only(self, monkeypatch):
+        calls = []
+        monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: self._snapshot())
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+
+        result = runner.invoke(app, ["skills", "sync", "--agent", "codex", "--apply"])
+
+        assert result.exit_code == 0
+        assert calls == [
+            ["npx", "skills", "add", "github:wyattowalsh/agents", "--skill", "repo-skill", "-y", "-g", "-a", "codex"]
+        ]
+
+    def test_sync_reports_zero_install_copilot_truthfully(self, monkeypatch):
+        # Physically possible state: skill discovered in claude-code (installed
+        # there), but github-copilot query returned nothing — so the skill is
+        # genuinely missing from github-copilot.
+        snapshot = InstalledInventorySnapshot(
+            rows=(
+                InstalledSkillInventoryRow(
+                    name="repo-skill",
+                    path="/tmp/repo-skill",
+                    source_path="/tmp/repo-skill/SKILL.md",
+                    scope="global",
+                    description="Repo skill",
+                    license="",
+                    version="",
+                    author="",
+                    source="github:wyattowalsh/agents",
+                    install_source="github:wyattowalsh/agents",
+                    source_url="https://github.com/wyattowalsh/agents",
+                    install_command="npx skills add github:wyattowalsh/agents --skill repo-skill -y -g",
+                    provenance_status="repo-owned",
+                    trust_tier="repo",
+                    selector_mode="named",
+                    installed_agents=("claude-code",),
+                    discovered_in=("claude-code",),
+                    target_agents=(),
+                ),
+            ),
+            queries=(
+                HarnessQueryResult(agent_id="claude-code", ok=True, entries=()),
+                HarnessQueryResult(agent_id="github-copilot", ok=True, entries=()),
+            ),
+        )
+        monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: snapshot)
+
+        result = runner.invoke(app, ["skills", "sync", "--agent", "github-copilot"])
+
+        assert result.exit_code == 0
+        assert "[github-copilot]" in result.output
+        assert "already-present (0)" in result.output
+        assert "missing (1)" in result.output
+        assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a github-copilot" in result.output
+
+    def test_targeted_sync_uses_full_cross_harness_inventory(self, monkeypatch):
+        """Regression: --agent <id> must compare against the full inventory.
+
+        Before the fix _build_sync_report called collect_installed_inventory with
+        agent_ids=target_agents, so skills only visible in OTHER harnesses were
+        invisible and never flagged as missing.  After the fix the call has no
+        agent_ids filter; the full snapshot is returned and the cross-harness
+        skill is correctly reported as missing for the target.
+        """
+        # Verify the implementation does NOT filter the inventory call.
+        inventory_calls: list[dict] = []
+
+        def capture_inventory(**kwargs):
+            inventory_calls.append(kwargs)
+            # Return a full cross-harness snapshot: repo-skill is installed in
+            # claude-code but absent from codex.
+            return InstalledInventorySnapshot(
+                rows=(
+                    InstalledSkillInventoryRow(
+                        name="repo-skill",
+                        path="/tmp/repo-skill",
+                        source_path="/tmp/repo-skill/SKILL.md",
+                        scope="global",
+                        description="Repo skill",
+                        license="",
+                        version="",
+                        author="",
+                        source="github:wyattowalsh/agents",
+                        install_source="github:wyattowalsh/agents",
+                        source_url="https://github.com/wyattowalsh/agents",
+                        install_command="npx skills add github:wyattowalsh/agents --skill repo-skill -y -g",
+                        provenance_status="repo-owned",
+                        trust_tier="repo",
+                        selector_mode="named",
+                        installed_agents=("claude-code",),
+                        discovered_in=("claude-code",),
+                        target_agents=(),
+                    ),
+                ),
+                queries=(
+                    HarnessQueryResult(agent_id="claude-code", ok=True, entries=()),
+                    HarnessQueryResult(agent_id="codex", ok=True, entries=()),
+                ),
+            )
+
+        monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+        monkeypatch.setattr("wagents.cli.collect_installed_inventory", capture_inventory)
+
+        result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+
+        assert result.exit_code == 0
+        # collect_installed_inventory must have been called without agent_ids.
+        assert inventory_calls, "collect_installed_inventory was not called"
+        assert "agent_ids" not in inventory_calls[0], (
+            "_build_sync_report must not filter the inventory to target agents; "
+            "got kwargs: " + repr(inventory_calls[0])
+        )
+        # Cross-harness skill correctly reported as missing for the target.
+        assert "missing (1)" in result.output
+        assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a codex" in result.output
