@@ -122,3 +122,13 @@ Install agent name: `github-copilot`
 | global | Global OpenCode rules | blind-spot | A stable first-party global rules path is not verified in this plan |
 
 Install agent name: `opencode`
+
+## Cherry Studio
+
+| Scope | Surface | Role | Notes |
+|-------|---------|------|-------|
+| global | `~/Library/Application Support/CherryStudio/config.json` | authoritative | App settings (synced via `merge_cherry_studio_config()`) |
+| global | `~/Library/Application Support/CherryStudio/mcp-import/managed/*.json` | generated | MCP imports managed by `render_cherry_import_files()` |
+| global | `~/Library/Application Support/CherryStudio/mcp-import/managed/all.json` | generated | Aggregated MCP imports |
+
+Install agent name: N/A (desktop app)

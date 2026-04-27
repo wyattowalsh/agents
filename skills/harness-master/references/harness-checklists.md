@@ -81,3 +81,11 @@ Check:
 - global OpenCode skill-dir coverage and whether missing skill discovery is a real issue
 - any global OpenCode rules or rule-like surfaces that remain blind spots in the current session
 - whether repo-observed companion files such as `.opencode/ocx.jsonc` are relevant or accidental
+
+## Cherry Studio
+
+Check:
+
+- MCP import files freshness (`mcp-import/managed/`)
+- Whether generated MCP files match current registry
+- App settings alignment with repo policy

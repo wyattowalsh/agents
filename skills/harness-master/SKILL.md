@@ -4,7 +4,7 @@ description: >-
   Audit harness configs and apply fixes. Use when tuning Claude Code, Codex,
   Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents
   (agent-conventions) or MCP servers (mcp-creator).
-argument-hint: "[project|global|both] [claude-code|codex|cursor|gemini-cli|antigravity|github-copilot|opencode|all ...]"
+argument-hint: "[project|global|both] [claude-code|codex|cursor|gemini-cli|antigravity|github-copilot|opencode|cherry-studio|all ...]"
 model: opus
 license: MIT
 compatibility: >-
@@ -29,7 +29,7 @@ Audit AI harness configuration quality, then apply approved fixes in the same se
 |--------------|------|------------|
 | `Empty` | Intake | Ask for harnesses or `all`, then ask for `project`, `global`, or `both` |
 | `all` | Intake | Ask only for level |
-| `all <level>` / `<level> all` | Audit | Dry-run all 7 harnesses in deterministic order |
+| `all <level>` / `<level> all` | Audit | Dry-run all 8 harnesses in deterministic order |
 | `<harness...>` | Intake | Resolve one or more harnesses, then ask only for missing level |
 | `<level>` | Intake | Resolve level, then ask only for missing harnesses |
 | `<harness...> <level>` / `<level> <harness...>` | Audit | Run dry-run review for the selected harnesses and level |
@@ -51,7 +51,7 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `codex`, `cursor`, `gemini-cli`, `antigravity`, `github-copilot`, `opencode`
+- Supported harnesses: `claude-code`, `codex`, `cursor`, `gemini-cli`, `antigravity`, `github-copilot`, `opencode`, `cherry-studio`
 - Supported levels: `project`, `global`, `both`
 - Harness aliases:
   - `claude`, `claude-code` -> `claude-code`
@@ -61,13 +61,14 @@ If the user invokes `/harness-master` with no arguments:
   - `antigravity`, `google-antigravity` -> `antigravity`
   - `copilot`, `gh-copilot`, `github-copilot` -> `github-copilot`
   - `opencode`, `open-code` -> `opencode`
+  - `cherry`, `cherry-studio` -> `cherry-studio`
 - Level aliases:
   - `project`, `repo`, `local` -> `project`
   - `global`, `user` -> `global`
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `codex`, `cursor`, `gemini-cli`, `antigravity`, `github-copilot`, `opencode`
+- Deterministic `all` order: `claude-code`, `codex`, `cursor`, `gemini-cli`, `antigravity`, `github-copilot`, `opencode`, `cherry-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
 
 ## Classification Gate
