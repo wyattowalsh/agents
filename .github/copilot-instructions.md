@@ -74,6 +74,6 @@ Copilot-specific extension only. Keep shared cross-platform instructions in `glo
 
 ## Fleet Model Policy
 
-- Default to the globally managed stable profile: `gpt-5.4-mini`, low reasoning effort, `continueOnAutoMode`, `COPILOT_SUBAGENT_MAX_CONCURRENT=2`, and `COPILOT_SUBAGENT_MAX_DEPTH=1`.
-- Use heavier models only when explicitly requested or when a bounded plan identifies a concrete need for deeper reasoning.
-- Keep `/fleet` fan-out bounded. Prefer short, accountable waves over unbounded subagent trees; broad uncontrolled fan-out can trip Copilot API limits and transient backend retry loops.
+- Default to the globally managed profile: `gpt-5.4`, high reasoning effort, `continueOnAutoMode=false`, and no explicit `COPILOT_SUBAGENT_MAX_CONCURRENT` or `COPILOT_SUBAGENT_MAX_DEPTH` caps.
+- Use heavier or lighter models only when explicitly requested or when a bounded plan identifies a concrete need.
+- Keep `/fleet` dispatch accountable. Do not invent artificial fan-out limits in instructions unless the user asks for them.
