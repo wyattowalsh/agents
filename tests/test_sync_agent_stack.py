@@ -5,9 +5,12 @@ import json
 from scripts import sync_agent_stack
 from scripts.sync_agent_stack import (
     SyncContext,
+    generate_project_opencode_config,
+    merge_cherry_studio_config,
     merge_codex_config,
     merge_copilot_config,
     merge_opencode_config,
+    merge_opencode_tui_config,
     merge_server_root_config,
     render_cherry_import_files,
     render_cherry_server,
@@ -74,12 +77,12 @@ def test_render_opencode_mcp_renders_remote_servers():
     }
 
 
-def test_chrome_devtools_renderers_launch_isolated_browser():
+def test_chrome_devtools_renderers_disable_automation_detection():
     registry = {
         "servers": {
             "chrome-devtools": {
                 "command": "npx",
-                "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"],
+                "args": ["-y", "chrome-devtools-mcp@latest", "--chrome-arg", "--disable-blink-features=AutomationControlled"],
                 "enabled": True,
                 "startup_timeout_sec": 90,
                 "timeout_ms": 600000,
@@ -98,8 +101,8 @@ def test_chrome_devtools_renderers_launch_isolated_browser():
         }
     )
 
-    assert "--isolated=true" in rendered_text
-    assert "--isolated\"" not in rendered_text
+    assert "--isolated=true" not in rendered_text
+    assert "--disable-blink-features=AutomationControlled" in rendered_text
     assert "--autoConnect" not in rendered_text
 
 
@@ -590,6 +593,137 @@ def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_model
     assert provider["options"]["headers"] == {"X-Local": "1"}
     assert provider["models"]["local-model"] == {"name": "LM Studio Local Model"}
     assert provider["models"]["custom-model"] == {"name": "Custom Local Model"}
+
+
+def test_merge_opencode_config_syncs_model_defaults(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+
+    repo_root.mkdir(parents=True)
+    config_path.parent.mkdir(parents=True)
+    (repo_root / "instructions").mkdir()
+    (repo_root / "skills").mkdir()
+
+    config_path.write_text(
+        json.dumps(
+            {
+                "model": "openai/gpt-5.4",
+                "small_model": "openai/gpt-5.4",
+                "mode": {
+                    "build": {"model": "openai/gpt-5.4"},
+                    "plan": {"model": "openai/gpt-5.4"},
+                },
+                "agent": {
+                    "build": {"model": "openai/gpt-5.4"},
+                    "plan": {"model": "openai/gpt-5.4"},
+                },
+            }
+        )
+    )
+
+    monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
+    monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
+    monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+
+    policy = {"model_defaults": {"opencode": {"model": "opencode-go/kimi-k2.6", "small_model": "opencode-go/kimi-k2.6"}}}
+
+    ctx = SyncContext(apply=True)
+    merge_opencode_config(ctx, {"servers": {}}, {}, policy)
+    payload = json.loads(config_path.read_text())
+
+    assert payload["model"] == "opencode-go/kimi-k2.6"
+    assert payload["small_model"] == "opencode-go/kimi-k2.6"
+    assert payload["mode"]["build"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["mode"]["plan"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["agent"]["build"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["agent"]["plan"]["model"] == "opencode-go/kimi-k2.6"
+
+
+def test_merge_opencode_config_syncs_custom_agent_models(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+
+    repo_root.mkdir(parents=True)
+    config_path.parent.mkdir(parents=True)
+    (repo_root / "instructions").mkdir()
+    (repo_root / "skills").mkdir()
+
+    config_path.write_text(
+        json.dumps(
+            {
+                "agent": {
+                    "custom-agent-1": {"model": "openai/gpt-5.4"},
+                    "custom-agent-2": {"model": "openai/gpt-5.4", "other": "value"},
+                },
+            }
+        )
+    )
+
+    monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
+    monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
+    monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+
+    policy = {"model_defaults": {"opencode": {"model": "opencode-go/kimi-k2.6"}}}
+
+    ctx = SyncContext(apply=True)
+    merge_opencode_config(ctx, {"servers": {}}, {}, policy)
+    payload = json.loads(config_path.read_text())
+
+    assert payload["agent"]["custom-agent-1"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["agent"]["custom-agent-2"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["agent"]["custom-agent-2"]["other"] == "value"
+
+
+def test_merge_opencode_tui_config_sets_notification_method(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    tui_path = home_dir / ".config" / "opencode" / "tui.json"
+    tui_path.parent.mkdir(parents=True)
+
+    monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_TUI_CONFIG_PATH", tui_path)
+
+    ctx = SyncContext(apply=True)
+    merge_opencode_tui_config(ctx)
+    payload = json.loads(tui_path.read_text())
+
+    assert payload["notification_method"] == "auto"
+
+
+def test_generate_project_opencode_config_creates_file(tmp_path, monkeypatch):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    config_path = repo_root / "opencode.json"
+
+    monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_REPO_CONFIG_PATH", config_path)
+
+    ctx = SyncContext(apply=True)
+    generate_project_opencode_config(ctx)
+    payload = json.loads(config_path.read_text())
+
+    assert payload["$schema"] == "https://opencode.ai/config.json"
+    assert payload["instructions"] == ["AGENTS.md", "instructions/opencode-global.md"]
+    assert payload["skills"]["paths"] == ["skills"]
+
+
+def test_merge_cherry_studio_config_no_op_when_missing(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    cherry_dir = home_dir / "Library" / "Application Support" / "CherryStudio"
+
+    monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
+    monkeypatch.setattr(sync_agent_stack, "CHERRY_STUDIO_DIR", cherry_dir)
+
+    ctx = SyncContext(apply=True)
+    merge_cherry_studio_config(ctx)
+    assert not cherry_dir.exists()
 
 
 def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extras(tmp_path, monkeypatch):
