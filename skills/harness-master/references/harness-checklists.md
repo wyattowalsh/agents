@@ -67,7 +67,7 @@ Check:
 - `.github/copilot-instructions.md` freshness and generated-file status
 - `.github/instructions/**` and `.github/hooks/**` coherence
 - `.vscode/mcp.json` quality and project fit
-- global config placement in `~/.copilot/config.json` and MCP paths
+- global settings placement in `~/.copilot/settings.json`, subagent caps in `~/.config/copilot-subagents.env`, and MCP paths
 - whether built-in GitHub MCP is being duplicated unnecessarily
 
 ## OpenCode

@@ -74,7 +74,6 @@ Copilot-specific extension only. Keep shared cross-platform instructions in `glo
 
 ## Fleet Model Policy
 
-- For GitHub Copilot CLI `/fleet` work, use **Claude Opus 4.6 with max thinking** for every non-trivial subagent, teammate, wave, and `/fleet` member.
-- Use **Claude Sonnet 4.6 with max thinking** only for incredibly/extremely trivial `/fleet` subagents, such as deterministic single-file metadata edits, narrow read-only lookups, or obvious mechanical rewrites with no cross-file reasoning.
-- If there is any ambiguity about whether `/fleet` work is trivial, default to **Claude Opus 4.6 with max thinking**.
-- Never downgrade from Opus for cost or speed when the work requires judgment, debugging, architecture, cross-file reasoning, or multi-step synthesis.
+- Default to the globally managed stable profile: `gpt-5.4-mini`, low reasoning effort, `continueOnAutoMode`, `COPILOT_SUBAGENT_MAX_CONCURRENT=2`, and `COPILOT_SUBAGENT_MAX_DEPTH=1`.
+- Use heavier models only when explicitly requested or when a bounded plan identifies a concrete need for deeper reasoning.
+- Keep `/fleet` fan-out bounded. Prefer short, accountable waves over unbounded subagent trees; broad uncontrolled fan-out can trip Copilot API limits and transient backend retry loops.

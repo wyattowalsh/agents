@@ -78,6 +78,14 @@
       "mode": "generated"
     },
     {
+      "path": "/Users/ww/.copilot/settings.json",
+      "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.config/copilot-subagents.env",
+      "mode": "generated"
+    },
+    {
       "path": "/Users/ww/.codex/config.toml",
       "mode": "merged"
     },
