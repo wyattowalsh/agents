@@ -8,5 +8,16 @@
     "paths": [
       "skills"
     ]
+  },
+  "plugin": [
+    "opencode-handoff",
+    "open-plan-annotator",
+    "@mailshieldai/opencode-canvas",
+    "@kdcokenny/opencode-notify",
+    "@kdcokenny/opencode-background-agents",
+    "@slkiser/opencode-quota"
+  ],
+  "permission": {
+    "canvas_*": "allow"
   }
 }
