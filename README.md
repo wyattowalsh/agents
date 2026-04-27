@@ -30,7 +30,7 @@ This repo is packaged as one cross-agent bundle with native plugin adapters and 
 | ------ | ---- | --------------- |
 | Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | Git-hosted plugin updates resolve from the latest commit because the plugin version is intentionally unpinned |
 | Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | Codex can load the Git-backed plugin bundle and bundled skills from the repository root |
-| Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` / `npx skills update` refreshes installed skills from recorded sources |
+| Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` refreshes recorded sources, and `wagents skills sync` additively reconciles repo + curated external skills across harnesses |
 
 ## ✨ Why use this repository?
 
@@ -102,6 +102,7 @@ Reusable actions and knowledge bases for AI agents.
 | `wagents new mcp <name>` | Create a new MCP server |
 | `wagents doctor` | Check local environment and toolchain health |
 | `wagents validate` | Validate all skills and agents |
+| `wagents skills sync --dry-run` | Preview additive cross-harness skill sync from the normalized inventory |
 | `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |
 | `wagents skills context <query>` | Build a compact context packet for matching skills |
 | `make typecheck` | Run ty across `wagents/` and `scripts/` |
@@ -115,7 +116,7 @@ Reusable actions and knowledge bases for AI agents.
 | `wagents update` | Refresh installed skills from their recorded sources |
 | `wagents docs init` | One-time setup: install docs dependencies |
 | `wagents docs generate` | Generate MDX content pages from assets |
-| `wagents docs generate --include-installed` | Include installed skills discovered from local agent skill directories in generated docs |
+| `wagents docs generate --include-installed` | Include installed skills discovered from the normalized harness inventory in generated docs |
 | `wagents docs dev` | Generate + launch dev server |
 | `wagents docs build` | Generate + production build |
 | `wagents docs preview` | Generate + build + preview server |
