@@ -116,9 +116,11 @@ Install agent name: `github-copilot`
 | project | `opencode.json` | authoritative | Native config surface |
 | project | `.opencode/agents/*.md` | secondary | Repo-native OpenCode-specific agents |
 | project | `.opencode/ocx.jsonc` | repo-observed | Repo-local OpenCode companion config when present |
+| project | `platforms/opencode/plugins/*` | secondary | Repo-managed plugin sources synced to global plugins dir |
 | global | `~/.config/opencode/opencode.json` | authoritative | Global config |
 | global | `~/.config/opencode/AGENTS.md` | secondary | Global instruction surface when present |
 | global | `~/.config/opencode/skills` | secondary | Repo-observed global skills path from local OpenCode conventions |
+| global | `~/.config/opencode/plugins/*` | secondary | Global plugin files (e.g., `approval-notify.ts`) |
 | global | Global OpenCode rules | blind-spot | A stable first-party global rules path is not verified in this plan |
 
 Install agent name: `opencode`

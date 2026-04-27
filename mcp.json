@@ -24,7 +24,8 @@
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--isolated=true"
+        "--chrome-arg",
+        "--disable-blink-features=AutomationControlled"
       ],
       "timeout": 600000
     },

@@ -50,7 +50,8 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   position: relative;
-  max-width: 540px;
+  width: min(100%, 540px);
+  max-width: 100%;
   margin: 0 auto;
   box-shadow: var(--hero-panel-shadow);
   animation: softBreath 6s ease-in-out infinite;
@@ -106,6 +107,10 @@
   font-size: 0.75rem;
   color: var(--text-console-muted);
   font-family: var(--sl-font-mono);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .hero-terminal-body {
   padding: 16px 20px;
@@ -115,6 +120,7 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  min-width: 0;
 }
 .hero-terminal-prompt {
   color: var(--primary);
@@ -123,6 +129,7 @@
 .hero-terminal-cmd {
   color: var(--text-console);
   line-height: 1.55;
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 .hero-terminal-cursor {
@@ -216,8 +223,18 @@
 .stat-skill { border-color: oklch(0.5 0.15 285 / 0.5); color: var(--type-skill); }
 .stat-agent { border-color: oklch(0.5 0.1 200 / 0.5); color: var(--type-agent); }
 .stat-mcp { border-color: oklch(0.5 0.12 155 / 0.5); color: var(--type-mcp); }
+.stat-external { border-color: oklch(0.7 0.12 45 / 0.5); color: oklch(0.78 0.15 45); }
 
 @media (max-width: 50rem) {
+  [data-has-hero] .hero,
+  [data-has-hero] .sl-markdown-content {
+    padding-inline: 1rem;
+  }
+
+  .hero-terminal-body {
+    padding-inline: 14px;
+  }
+
   .hero-badge-row {
     gap: 0.5rem;
     margin-bottom: 1.5rem;

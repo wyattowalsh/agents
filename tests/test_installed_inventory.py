@@ -115,16 +115,16 @@ def test_curated_collision_prefers_verified_install_command(tmp_path):
     # would leave the unresolved entry in control.
     curated_entries = parse_external_skill_entries(
         """
-## Install Now After Trust Gate
+        ## Install Now After Trust Gate
 
-```bash
-npx skills add vercel-labs/agent-skills --skill stripe-best-practices -y -g -a claude-code
-```
+        ```bash
+        npx skills add stripe/ai --skill stripe-best-practices -y -g -a claude-code
+        ```
 
-## Avoid / Do Not Install
+        ## Keep Global Only Or Avoid
 
-> **stripe-best-practices** — conflicts with internal policy.
-"""
+        - `docs.stripe.com@stripe-best-practices`: registry syntax and provenance still need verification.
+        """
     )
 
     def runner(cmd, **kwargs):

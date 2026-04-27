@@ -20,6 +20,8 @@
 html,
 body {
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body.admin-app {
@@ -30,6 +32,12 @@ body.admin-app {
     radial-gradient(circle at bottom left, oklch(0.52 0.08 155 / 0.12), transparent 24%),
     oklch(0.1 0.015 220);
   font-family: var(--sl-font);
+}
+
+.admin-app *,
+.admin-app *::before,
+.admin-app *::after {
+  box-sizing: border-box;
 }
 
 [data-theme='light'] body.admin-app {
@@ -60,9 +68,9 @@ body.admin-app {
 }
 
 .admin-bg--orb {
-  inset: auto -10rem -8rem auto;
-  width: 28rem;
-  height: 28rem;
+  inset: auto 0 -8rem auto;
+  width: min(22rem, 70vw);
+  height: min(22rem, 70vw);
   border-radius: 999px;
   background: radial-gradient(circle, oklch(0.68 0.15 200 / 0.18), transparent 65%);
   filter: blur(28px);
@@ -256,6 +264,7 @@ body.admin-app {
 }
 
 .admin-card {
+  min-width: 0;
   padding: 1.15rem 1.2rem;
 }
 
@@ -320,6 +329,8 @@ body.admin-app {
 .admin-input,
 .admin-select,
 .admin-textarea {
+  min-width: 0;
+  max-width: 100%;
   width: 100%;
   padding: 0.78rem 0.9rem;
   color: inherit;
@@ -338,10 +349,14 @@ body.admin-app {
 }
 
 .admin-table-wrap {
+  max-width: 100%;
   overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
 }
 
 .admin-table {
+  min-width: 42rem;
   width: 100%;
 }
 
@@ -456,5 +471,10 @@ body.admin-app {
   .admin-card-grid,
   .admin-section-grid {
     grid-template-columns: 1fr;
+  }
+
+  .admin-button {
+    max-width: 100%;
+    white-space: normal;
   }
 }

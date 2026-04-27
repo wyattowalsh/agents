@@ -40,6 +40,8 @@ hero:
 ---
 
 import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import InstallCommand from '../../components/InstallCommand.astro';
+import { installCommands } from '../../generated-site-data.mjs';
 import catalogMeshArt from '../../assets/illustrations/catalog-mesh.webp';
 import mcpRoutingArt from '../../assets/illustrations/mcp-routing.webp';
 import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
@@ -47,6 +49,7 @@ import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 <div class="stats-bar">
   <span class="stat stat-skill">48 Custom Skills</span>
+  <span class="stat stat-external">64 Curated External</span>
   <span class="stat stat-mcp">30 MCP Tools Configured</span>
 </div>
 
@@ -61,17 +64,9 @@ import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 Install the catalog once, then call a focused specialist inside your agent. If you want the shortest guided path through setup, start with [Start Here](/start-here/).
 
-<div class="install-section">
+<InstallCommand command={installCommands.all} title="Install the full catalog" note="Globally installs repo skills across supported agent harnesses." />
 
-```bash
-# Install the full catalog
-npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
-
-# Or start with one focused skill
-npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
-```
-
-</div>
+<InstallCommand command={installCommands.starter} title="Install one starter skill" note="Use this when you want to test the workflow before installing everything." />
 
 Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent.
 

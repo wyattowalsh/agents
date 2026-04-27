@@ -146,7 +146,7 @@ wagents readme --check       # Exits 1 if README is stale
 # Documentation site
 wagents docs init                       # One-time: pnpm install in docs/
 wagents docs generate                   # Generate MDX content pages
-wagents docs generate --include-installed  # Opt in to installed skills from ~/.claude/skills/
+wagents docs generate --include-installed  # Opt in to installed skills from the normalized harness inventory
 wagents docs generate --include-drafts  # Include skills with TODO descriptions
 wagents docs dev                        # Generate + launch dev server
 wagents docs build                      # Generate + static build
@@ -167,6 +167,8 @@ wagents install -a cursor -a github-copilot  # All skills → Cursor + Copilot
 wagents install --list                       # List available skills
 wagents install --local                      # Project-local install
 wagents update                               # Refresh installed skills from recorded sources
+wagents skills sync --dry-run                # Preview additive repo + curated external sync across harnesses
+wagents skills sync --apply                  # Execute the verified additive sync commands
 
 # Or use make targets (see Makefile)
 make install                                 # All skills → all agents
@@ -231,3 +233,5 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | OpenCode | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
 | Cursor | `AGENTS.md` → `@instructions/global.md` | `AGENTS.md` |
 | GitHub Copilot | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | `.github/copilot-instructions.md` |
+
+GitHub Copilot stays in harness config and instruction sync, but installed-skill inventory should report only what the Skills CLI actually discovers. Do not fabricate skill rows from Copilot instruction or config files when the CLI reports zero installs.

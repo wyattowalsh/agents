@@ -1,0 +1,52 @@
+{
+  "name": "agents",
+  "displayName": "AI Agent Assets",
+  "description": "Portable AI agent skills, subagents, MCP configuration, and shared workflow guidance.",
+  "author": {
+    "name": "Wyatt Walsh",
+    "email": "wyattowalsh@gmail.com",
+    "url": "https://github.com/wyattowalsh"
+  },
+  "homepage": "https://agents.w4w.dev",
+  "repository": "https://github.com/wyattowalsh/agents",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "opencode",
+    "claude-code",
+    "codex",
+    "mcp",
+    "developer-tools"
+  ],
+  "entrypoint": ".",
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "mcpServers": "./mcp.json",
+  "capabilities": [
+    "skills",
+    "agents",
+    "mcp",
+    "workflow"
+  ],
+  "interface": {
+    "displayName": "AI Agent Assets",
+    "shortDescription": "Portable skills and MCP configuration for coding agents.",
+    "longDescription": "A cross-agent catalog of reusable skills, subagents, MCP configuration, and workflow guidance for coding agents. Designed to work seamlessly across OpenCode, Claude Code, Codex, and other agent platforms.",
+    "developerName": "Wyatt Walsh",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills",
+      "Agents",
+      "MCP",
+      "Workflow"
+    ],
+    "websiteURL": "https://agents.w4w.dev",
+    "privacyPolicyURL": "https://github.com/wyattowalsh/agents/blob/main/LICENSE",
+    "termsOfServiceURL": "https://github.com/wyattowalsh/agents/blob/main/LICENSE",
+    "brandColor": "#0F766E",
+    "logo": "./docs/src/assets/logo.webp",
+    "screenshots": [
+      "./docs/public/social-card.png"
+    ]
+  }
+}

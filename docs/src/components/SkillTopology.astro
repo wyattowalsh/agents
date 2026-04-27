@@ -1,0 +1,65 @@
+---
+import * as d3 from 'd3';
+
+type SkillRow = {
+  name: string;
+  sourceType: string;
+  trustTier: string;
+};
+
+interface Props {
+  skills: SkillRow[];
+}
+
+const { skills } = Astro.props;
+const visible = skills.slice(0, 96);
+const colorBySource = d3
+  .scaleOrdinal<string, string>()
+  .domain(['custom', 'installed', 'curated-external'])
+  .range(['#a78bfa', '#fbbf24', '#22d3ee']);
+const nodes = visible.map((skill, index) => {
+  const angle = (index / Math.max(visible.length, 1)) * Math.PI * 2 - Math.PI / 2;
+  const radius = 148;
+  return {
+    ...skill,
+    x: 190 + Math.cos(angle) * radius,
+    y: 190 + Math.sin(angle) * radius,
+    r: skill.sourceType === 'custom' ? 5.5 : 4.5,
+    color: colorBySource(skill.sourceType),
+  };
+});
+---
+
+{
+  skills.length > 0 && (
+    <figure class="skill-topology">
+      <svg viewBox="0 0 380 380" role="img" aria-label="Skill source topology">
+        <defs>
+          <radialGradient id="skill-topology-core">
+            <stop offset="0%" stop-color="currentColor" stop-opacity="0.55" />
+            <stop offset="100%" stop-color="currentColor" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <circle cx="190" cy="190" r="72" fill="url(#skill-topology-core)" class="skill-topology__core" />
+        <circle cx="190" cy="190" r="38" fill="none" stroke="currentColor" stroke-opacity="0.25" />
+        {nodes.map((node) => (
+          <line x1="190" y1="190" x2={node.x} y2={node.y} stroke={node.color} stroke-opacity="0.18" />
+        ))}
+        {nodes.map((node) => (
+          <g>
+            <circle cx={node.x} cy={node.y} r={node.r} fill={node.color} opacity="0.88" />
+            <title>
+              {node.name} · {node.sourceType} · {node.trustTier}
+            </title>
+          </g>
+        ))}
+        <text x="190" y="184" text-anchor="middle">skills</text>
+        <text x="190" y="204" text-anchor="middle" class="skill-topology__count">{skills.length} indexed</text>
+      </svg>
+      <figcaption>
+        <strong>Source topology</strong>
+        <span>Generated from the same custom, installed, and curated external skill index used by the catalog.</span>
+      </figcaption>
+    </figure>
+  )
+}

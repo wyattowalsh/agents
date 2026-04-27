@@ -9,6 +9,7 @@ from pathlib import Path
 import typer
 
 from wagents import KEBAB_CASE_PATTERN, ROOT
+from wagents.installed_inventory import collect_installed_inventory
 from wagents.parsing import parse_frontmatter, to_title
 
 LOCAL_MCP_DIR_NAMES = {"archives", "cache", "notes", "secrets", "servers"}
@@ -205,7 +206,59 @@ def collect_nodes() -> list[CatalogNode]:
 
 
 def collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
-    """Scan ~/.claude/skills/ for installed skills not in the repo."""
+    """Collect installed skills from the normalized harness inventory."""
+    snapshot = collect_installed_inventory()
+    if snapshot.rows:
+        return _catalog_nodes_from_inventory(snapshot.rows, existing_ids)
+    return _collect_legacy_installed_skills(existing_ids)
+
+
+def _catalog_nodes_from_inventory(rows, existing_ids: set[str]) -> list[CatalogNode]:
+    nodes: list[CatalogNode] = []
+    seen_ids: set[str] = set()
+    for row in rows:
+        if row.name in existing_ids or row.name in seen_ids:
+            continue
+        skill_file = Path(row.source_path)
+        if skill_file.is_dir():
+            skill_file = skill_file / "SKILL.md"
+        if not skill_file.exists():
+            continue
+        try:
+            fm, body = parse_frontmatter(skill_file.read_text(encoding="utf-8", errors="replace"))
+        except Exception as exc:
+            typer.echo(f"Warning: skipping installed skill {row.name}: {exc}", err=True)
+            continue
+        metadata = dict(fm)
+        if row.source:
+            metadata["_skills_source"] = row.source
+        if row.install_source:
+            metadata["_skills_install_source"] = row.install_source
+        metadata["_skills_install_command"] = row.install_command
+        metadata["_skills_provenance_status"] = row.provenance_status
+        metadata["_skills_trust_tier"] = row.trust_tier
+        metadata["_skills_installed_agents"] = list(row.installed_agents)
+        metadata["_skills_target_agents"] = list(row.target_agents)
+        if row.selector_mode:
+            metadata["_skills_selector_mode"] = row.selector_mode
+        seen_ids.add(row.name)
+        nodes.append(
+            CatalogNode(
+                kind="skill",
+                id=row.name,
+                title=to_title(row.name),
+                description=row.description or str(fm.get("description", f"Installed skill: {row.name}")),
+                metadata=metadata,
+                body=body,
+                source_path=str(skill_file),
+                source="installed",
+            )
+        )
+    return nodes
+
+
+def _collect_legacy_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
+    """Fallback scan for environments without `npx skills ls --json`."""
     nodes = []
     skills_dir = Path.home() / ".claude" / "skills"
     if not skills_dir.exists():
@@ -216,24 +269,20 @@ def collect_installed_skills(existing_ids: set[str]) -> list[CatalogNode]:
     for skill_dir in sorted(skills_dir.iterdir()):
         if not skill_dir.is_dir() and not skill_dir.is_symlink():
             continue
-        # Resolve symlinks
         resolved = skill_dir.resolve() if skill_dir.is_symlink() else skill_dir
         skill_file = resolved / "SKILL.md"
         if not skill_file.exists():
             continue
 
         dir_name = skill_dir.name
-        # Skip if already in custom skills
         if dir_name in existing_ids:
             continue
 
         try:
             content = skill_file.read_text()
             fm, body = parse_frontmatter(content)
-            # Graceful fallback: use directory name if 'name' field missing
             skill_name = fm.get("name", dir_name)
             resolved_id = skill_name if KEBAB_CASE_PATTERN.match(str(skill_name)) else dir_name
-            # Skip if resolved ID collides with existing or already-seen installed skill
             if resolved_id in existing_ids or resolved_id in seen_ids:
                 continue
             seen_ids.add(resolved_id)

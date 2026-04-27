@@ -179,11 +179,266 @@
 
 /* ===== INSTALL SECTION ===== */
 .install-section {
+  max-width: 100%;
   border: 1px solid oklch(0.32 0.03 210 / 0.28);
   border-radius: 12px;
   padding: 1.5rem;
   margin: 2rem 0;
   background: linear-gradient(180deg, oklch(0.13 0.015 210 / 0.18), oklch(0.12 0.01 160 / 0.14));
+  overflow: hidden;
+}
+
+.install-section pre,
+.sl-markdown-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.install-section pre code {
+  display: block;
+  min-width: max-content;
+  white-space: pre;
+}
+
+.install-command {
+  max-width: 100%;
+  margin: 1rem 0 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+.install-command__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border-panel);
+}
+
+.install-command__header p {
+  margin: 0;
+  color: var(--sl-color-white);
+  font-weight: 700;
+}
+
+.install-command__header span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.85rem;
+}
+
+.install-command__copy {
+  flex: 0 0 auto;
+  min-height: 2rem;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.7rem;
+  color: var(--sl-color-white);
+  background: oklch(0.22 0.03 210 / 0.72);
+  cursor: pointer;
+}
+
+.install-command pre {
+  max-width: 100%;
+  margin: 0;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.install-command code {
+  display: block;
+  min-width: max-content;
+  white-space: pre;
+}
+
+.skill-catalog {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.skill-catalog__filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 14rem) minmax(10rem, 14rem);
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+.skill-catalog__filters label {
+  min-width: 0;
+}
+
+.skill-catalog__filters span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--sl-color-gray-3);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.skill-catalog__filters input,
+.skill-catalog__filters select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-sm);
+  padding: 0.62rem 0.75rem;
+  color: var(--sl-color-white);
+  background: oklch(0.13 0.015 210 / 0.8);
+}
+
+.skill-catalog__count {
+  margin: 0;
+  color: var(--sl-color-gray-3);
+  font-size: 0.9rem;
+}
+
+.skill-catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+}
+
+.skill-catalog-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border-panel);
+  border-left: 3px solid var(--type-skill);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+.skill-catalog-card--installed {
+  border-left-color: oklch(0.7 0.15 45);
+}
+
+.skill-catalog-card--curated-external {
+  border-left-color: oklch(0.72 0.14 205);
+}
+
+.skill-catalog-card[hidden] {
+  display: none;
+}
+
+.skill-catalog-card__badges,
+.skill-catalog-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.skill-catalog-card__badges span,
+.skill-catalog-card__actions a {
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-pill);
+  padding: 0.18rem 0.55rem;
+  font-size: 0.75rem;
+}
+
+.skill-catalog-card h3 {
+  margin: 0.75rem 0 0.4rem;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.skill-catalog-card p,
+.skill-catalog-card dd {
+  overflow-wrap: anywhere;
+}
+
+.skill-catalog-card *,
+.external-skill-card * {
+  min-width: 0;
+}
+
+.skill-catalog-card dl {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.85rem 0;
+}
+
+.skill-catalog-card dt {
+  color: var(--sl-color-gray-3);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.skill-catalog-card dd {
+  margin: 0;
+  font-size: 0.86rem;
+}
+
+.skill-catalog-card pre {
+  max-width: 100%;
+  margin: 0.85rem 0 0;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  contain: inline-size;
+  padding: 0.75rem;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-sm);
+}
+
+.skill-catalog-card code {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.skill-topology {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+.skill-topology svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--primary);
+}
+
+.skill-topology text {
+  fill: currentColor;
+  font-family: var(--sl-font-mono);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.skill-topology__count {
+  font-size: 10px;
+  opacity: 0.68;
+}
+
+.skill-topology figcaption {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-top: 1px solid var(--border-panel);
+}
+
+@media (max-width: 50rem) {
+  .skill-catalog__filters {
+    grid-template-columns: 1fr;
+  }
+
+  .install-command__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
 
 /* ===== BADGE ENHANCEMENTS ===== */
@@ -226,6 +481,52 @@
 .catalog-installed .sl-link-card {
   border-left: 3px solid oklch(0.70 0.15 45);
   border-top: none;
+}
+
+.external-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 2rem;
+}
+
+.external-skill-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-md);
+  background: var(--surface-panel);
+}
+
+.external-skill-card header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.external-skill-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.external-skill-card p {
+  overflow-wrap: anywhere;
+}
+
+.external-skill-card pre {
+  max-width: 100%;
+  margin: 0.75rem 0 0;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  contain: inline-size;
+}
+
+.external-skill-card code {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 /* ===== SPLASH PAGE SECTION DIVIDERS ===== */

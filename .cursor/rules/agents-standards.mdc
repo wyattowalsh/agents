@@ -1,0 +1,44 @@
+---
+description: Rules for AGENTS.md asset formats (skills, agents, MCP servers, naming, frontmatter)
+globs:
+  - "skills/**/SKILL.md"
+  - "agents/*.md"
+  - "mcp/**"
+  - "AGENTS.md"
+---
+
+# Asset Format Standards
+
+This repo is a cross-platform AI agent asset bundle. All assets must conform to the formats defined in `AGENTS.md`.
+
+## Skills (`skills/<name>/SKILL.md`)
+
+- YAML frontmatter followed by markdown body.
+- Required frontmatter: `name` (kebab-case, max 64 chars, must match directory name), `description` (non-empty, max 1024 chars).
+- Optional cross-platform fields: `license`, `compatibility`, `allowed-tools`, `metadata.author`, `metadata.version`, `metadata.internal`.
+- Optional Claude Code extensions: `argument-hint`, `model`, `context`, `agent`, `user-invocable`, `disable-model-invocation`, `hooks`.
+- Body text must use imperative voice: "Check the logs" not "Checks the logs".
+- Supports substitutions: `$ARGUMENTS`, `$ARGUMENTS[N]`, `$N`, `${CLAUDE_SESSION_ID}`, `` !`command` ``.
+
+## Agents (`agents/<name>.md`)
+
+- YAML frontmatter followed by a markdown system prompt.
+- Required frontmatter: `name` (kebab-case, must match filename without `.md`), `description` (non-empty).
+- Optional fields: `tools`, `disallowedTools`, `model`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `memory`, `hooks`.
+
+## Naming Conventions
+
+- All names: kebab-case (`^[a-z0-9][a-z0-9-]*$`).
+- Skills: directory name matches frontmatter `name`.
+- Agents: filename (without `.md`) matches frontmatter `name`.
+- MCP servers: directory name matches package name (minus `mcp-` prefix).
+
+## Memory System (Agents)
+
+- `memory` scope options: `user` (cross-project, `~/.claude/agent-memory/`), `project` (`.claude/agent-memory/`, git-tracked), `local` (`.claude/agent-memory/`, gitignored).
+- Choose the narrowest scope. Keep memory files under 200 lines. Use `MEMORY.md` as entrypoint.
+
+## Validation
+
+- Run `wagents validate` after modifying skills or agents to check frontmatter.
+- Do not hand-edit `README.md` or generated docs pages; regenerate them via `wagents readme` and `wagents docs generate`.

@@ -1,0 +1,43 @@
+---
+description: Rules for the docs site (wagents docs generate, don't hand-edit generated MDX)
+globs:
+  - "docs/**"
+  - "README.md"
+---
+
+# Docs Site Rules
+
+The docs site is an Astro + Starlight project. Generated content pages are produced from repo assets; do not edit them by hand.
+
+## Generated Content
+
+- `wagents docs generate` — Generates MDX content pages from skills, agents, and MCP servers.
+- `wagents docs generate --include-installed` — Opts in to including installed skills from the normalized harness inventory.
+- `wagents docs generate --include-drafts` — Includes skills with TODO descriptions.
+- **Never hand-edit generated MDX files.** They are overwritten on the next generation run.
+
+## Workflow Commands
+
+```bash
+wagents docs init       # One-time: pnpm install in docs/
+wagents docs dev        # Generate + launch dev server
+wagents docs build      # Generate + static build
+wagents docs preview    # Generate + build + preview server
+wagents docs clean      # Remove generated content pages
+```
+
+## README
+
+- `README.md` is fully generated from repo contents via `wagents readme`.
+- `wagents readme --check` exits 1 if `README.md` is stale (use in CI).
+- Do not hand-edit `README.md`; modify the source assets and regenerate.
+
+## CI/CD
+
+- The `release-skills.yml` workflow validates assets on every PR.
+- It automatically packages and releases skills when a version tag (`v*.*.*`) is pushed.
+- Ensure `wagents validate` and `wagents readme --check` pass before merging.
+
+## Docs Steward
+
+- After changes to public APIs, file structure, agent definitions, or skill definitions, invoke the `docs-steward` skill if available to keep documentation in sync.

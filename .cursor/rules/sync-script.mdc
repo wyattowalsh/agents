@@ -1,0 +1,58 @@
+---
+description: Rules for modifying scripts/sync_agent_stack.py (platform paths, safe merging, idempotency)
+globs:
+  - "scripts/sync_agent_stack.py"
+---
+
+# Sync Script Rules
+
+`scripts/sync_agent_stack.py` syncs AI agent assets (instructions, MCP configs, hooks, rules) to multiple platforms. Changes must preserve idempotency and never overwrite user data.
+
+## Core Principles
+
+- **Idempotency**: Running the script multiple times with the same inputs must produce the same outputs. Use content comparisons before writing.
+- **Safe Merging**: Preserve user-owned config keys, tables, and entries that the script does not manage.
+- **Never overwrite user data**: Only mutate sections explicitly marked as managed (e.g., blocks between `BEGIN MANAGED BY sync_agent_stack.py` and `END MANAGED BY sync_agent_stack.py`).
+
+## Platform Paths
+
+Key destination paths the script writes to:
+- `~/.claude/settings.json` — Claude Code settings (merge hooks, permissions).
+- `~/.claude/CLAUDE.md` — Claude Code entrypoint (symlink to `instructions/claude-code-global.md`).
+- `~/.codex/config.toml` — Codex config (merge top-level keys, preserve unmanaged tables).
+- `~/.codex/AGENTS.md` — Codex entrypoint (symlink to `instructions/codex-global.md`).
+- `~/.copilot/copilot-instructions.md` — Copilot entrypoint.
+- `~/.cursor/mcp.json` — Cursor MCP servers.
+- `~/.gemini/settings.json` / `~/.gemini/GEMINI.md` — Gemini CLI.
+- `~/.config/opencode/opencode.json` — OpenCode config.
+- `.github/copilot-instructions.md` — Repo-level Copilot instructions.
+- `.github/instructions/` — Copilot rule instructions (generated from `.claude/rules/`).
+- `.github/hooks/policy.json` — Copilot hooks.
+- `mcp.json` / `.vscode/mcp.json` — Repo MCP configs.
+
+## MCP Registry
+
+- `config/mcp-registry.json` is the single source of truth for MCP server definitions.
+- `seed_registry_from_current_state()` bootstraps the registry from existing platform configs if the registry does not exist.
+- `enabled_registry_servers()` filters to servers where `enabled` is not `False`.
+- Env values in registry use placeholders (`${ENV_VAR}`); actual values are resolved at render time via `resolve_env_value()`.
+
+## Codex Config Merge Logic
+
+- `CODEX_OWNED_TOP_LEVEL_KEYS` and `CODEX_OWNED_TABLES` define what the script manages. Everything else is preserved.
+- `remove_managed_codex_block()` strips the old managed MCP block before re-rendering.
+- `render_codex_config()` renders base config + preserved chunks + new MCP block.
+- A sanitized copy without local extras is written to `config/codex-config.toml`.
+
+## Hooks
+
+- `config/hook-registry.json` defines hooks with `id`, `command`, `harnesses`, `logical_event`, `matcher`, `timeout`.
+- Generated hook entries contain `wagents-hook.py` in the command string; these are stripped during merge so stale entries are removed.
+- `merge_hook_groups()` combines existing (non-generated) hooks with newly rendered ones.
+
+## Adding New Platforms or Targets
+
+- Add new path constants near the top of the file with other `*_PATH` variables.
+- Use `write_text()` / `write_json()` helpers to ensure idempotency (they compare current content before writing).
+- Use `ensure_symlink()` for symlink targets; it safely handles existing directories by backing them up.
+- If merging configs, define owned keys/tables explicitly and strip managed blocks before re-rendering.

@@ -1,0 +1,140 @@
+---
+type SkillRow = {
+  name: string;
+  description: string;
+  sourceType: string;
+  sourceRoot: string;
+  sourceUrl?: string;
+  trustTier: string;
+  status?: string;
+  installCommand?: string;
+  knowledge?: {
+    references?: string[];
+    scripts?: string[];
+    evals?: string[];
+    wordCount?: number;
+  };
+};
+
+interface Props {
+  skills: SkillRow[];
+}
+
+const { skills } = Astro.props;
+const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).filter(Boolean))).sort();
+---
+
+<section class="skill-catalog" data-skill-catalog>
+  <div class="skill-catalog__filters">
+    <label>
+      <span>Search</span>
+      <input data-skill-search type="search" placeholder="Search skills, sources, references..." />
+    </label>
+    <label>
+      <span>Source</span>
+      <select data-skill-source>
+        <option value="all">All sources</option>
+        <option value="custom">Custom</option>
+        <option value="installed">Installed</option>
+        <option value="curated-external">Curated external</option>
+      </select>
+    </label>
+    <label>
+      <span>Trust</span>
+      <select data-skill-trust>
+        <option value="all">All trust tiers</option>
+        {trustTiers.map((tier) => <option value={tier}>{tier}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <p class="skill-catalog__count">
+    Showing <strong data-skill-visible>{skills.length}</strong> of {skills.length} indexed skills.
+  </p>
+
+  <div class="skill-catalog__grid">
+    {
+      skills.map((skill) => {
+        const knowledge = skill.knowledge ?? {};
+        const haystack = [
+          skill.name,
+          skill.description,
+          skill.sourceRoot,
+          skill.trustTier,
+          ...(knowledge.references ?? []),
+        ]
+          .join(' ')
+          .toLowerCase();
+        return (
+          <article
+            class:list={['skill-catalog-card', `skill-catalog-card--${skill.sourceType}`]}
+            data-skill-card
+            data-source={skill.sourceType}
+            data-trust={skill.trustTier}
+            data-haystack={haystack}
+          >
+            <div class="skill-catalog-card__badges">
+              <span>{skill.sourceType}</span>
+              <span>{skill.trustTier}</span>
+              {skill.status && <span>{skill.status}</span>}
+            </div>
+            <h3>{skill.name}</h3>
+            <p>{skill.description}</p>
+            <dl>
+              <div>
+                <dt>Source</dt>
+                <dd>{skill.sourceRoot}</dd>
+              </div>
+              <div>
+                <dt>Knowledge</dt>
+                <dd>
+                  {knowledge.wordCount ?? 0} words · {knowledge.references?.length ?? 0} refs ·{' '}
+                  {knowledge.scripts?.length ?? 0} scripts · {knowledge.evals?.length ?? 0} evals
+                </dd>
+              </div>
+            </dl>
+            <div class="skill-catalog-card__actions">
+              {skill.sourceType === 'custom' && <a href={`/skills/${skill.name}/`}>Details</a>}
+              {skill.sourceUrl && <a href={skill.sourceUrl}>Source</a>}
+            </div>
+            {
+              skill.installCommand && (
+                <pre class="agents-scrollbar"><code>{skill.installCommand}</code></pre>
+              )
+            }
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-skill-catalog]').forEach((catalog) => {
+    const search = catalog.querySelector<HTMLInputElement>('[data-skill-search]');
+    const source = catalog.querySelector<HTMLSelectElement>('[data-skill-source]');
+    const trust = catalog.querySelector<HTMLSelectElement>('[data-skill-trust]');
+    const count = catalog.querySelector('[data-skill-visible]');
+    const cards = Array.from(catalog.querySelectorAll('[data-skill-card]'));
+
+    const apply = () => {
+      const query = search?.value?.trim().toLowerCase() ?? '';
+      const sourceValue = source?.value ?? 'all';
+      const trustValue = trust?.value ?? 'all';
+      let visible = 0;
+      cards.forEach((card) => {
+        const matchesQuery = !query || card.getAttribute('data-haystack')?.includes(query);
+        const matchesSource = sourceValue === 'all' || card.getAttribute('data-source') === sourceValue;
+        const matchesTrust = trustValue === 'all' || card.getAttribute('data-trust') === trustValue;
+        const show = Boolean(matchesQuery && matchesSource && matchesTrust);
+        card.toggleAttribute('hidden', !show);
+        if (show) visible += 1;
+      });
+      if (count) count.textContent = String(visible);
+    };
+
+    search?.addEventListener('input', apply);
+    source?.addEventListener('change', apply);
+    trust?.addEventListener('change', apply);
+  });
+</script>

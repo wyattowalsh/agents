@@ -97,6 +97,12 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
             "kind": "config",
             "role": "repo-observed",
         },
+        {
+            "label": "repo-managed opencode plugins",
+            "path": "platforms/opencode/plugins/*",
+            "kind": "plugins",
+            "role": "secondary",
+        },
     ],
     "cherry-studio": [],
 }
@@ -177,6 +183,12 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "label": "global opencode skills",
             "path": "~/.config/opencode/skills",
             "kind": "skills",
+            "role": "secondary",
+        },
+        {
+            "label": "global opencode plugins",
+            "path": "~/.config/opencode/plugins/*",
+            "kind": "plugins",
             "role": "secondary",
         },
     ],

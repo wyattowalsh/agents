@@ -97,7 +97,7 @@ npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill se
 - `anthropics/skills`: inspect case-by-case; many skills duplicate local/system skills.
 - `huggingface/skills`: keep global unless ML workflows become frequent.
 - Community Better Auth, Clerk, Neon, and generic OpenAI Agent SDK skills: lower source confidence or duplicate local architecture coverage.
-- `docs.stripe.com` registry entries: avoid until source syntax and provenance are resolved.
+- `docs.stripe.com@stripe-best-practices`: registry syntax and provenance still need verification before automated sync/install.
 
 ## Validation After Install Or Promotion
 

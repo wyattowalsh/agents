@@ -1,100 +1,976 @@
 ---
 title: "External Skills"
-description: "Curated external Agent Skills approved for install, inspection, or global-only use with trust gates and exact npx commands."
+description: "Curated external Agent Skills with source, trust, install, and provenance metadata."
 ---
 
-import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, Badge } from '@astrojs/starlight/components';
+import SkillCatalog from '../../components/SkillCatalog.astro';
+import { skillIndex } from '../../generated-site-data.mjs';
+export const externalSkillIndex = skillIndex.filter((skill) => skill.sourceType === 'curated-external');
 
 # External Skills
 
-This page tracks the curated third-party Agent Skills selected for this repo's
-skill expansion. External skills are trust-bearing assets, not inert docs:
-inspect `SKILL.md`, hooks, scripts, commands, network calls, credential
-handling, and source provenance before repo promotion.
+This page is generated from `instructions/external-skills.md`. It indexes curated third-party skills by source, trust gate, install command, provenance state, and target agents.
 
 <Aside type="caution">
-Do not bulk-import entire external repositories. Install only the curated
-skills listed here, and run `external-skill-auditor` before repo promotion.
+Do not bulk-import entire external repositories. Install only curated skills, inspect source-list output, and run `external-skill-auditor` before repo promotion.
 </Aside>
 
-Target agents:
+<SkillCatalog skills={externalSkillIndex} />
 
-- `antigravity`
-- `claude-code`
-- `codex`
-- `gemini-cli`
-- `github-copilot`
-- `opencode`
+## Install Now After Trust Gate (24)
 
-## Install Now After Trust Gate
-
-<Tabs>
-  <TabItem label="Web Quality">
-
-```bash
+<div class="external-skill-grid">
+<article class="external-skill-card">
+  <header>
+    <h3><code>web-quality-audit</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/addyosmani/web-quality-skills"><code>addyosmani/web-quality-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
-```
-
-  </TabItem>
-  <TabItem label="Playwright">
-
-```bash
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>accessibility</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/addyosmani/web-quality-skills"><code>addyosmani/web-quality-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>seo</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/addyosmani/web-quality-skills"><code>addyosmani/web-quality-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>performance</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/addyosmani/web-quality-skills"><code>addyosmani/web-quality-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>core-web-vitals</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/addyosmani/web-quality-skills"><code>addyosmani/web-quality-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/addyosmani/web-quality-skills"><code>addyosmani/web-quality-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>playwright-best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/currents-dev/playwright-best-practices-skill"><code>currents-dev/playwright-best-practices-skill</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
-```
-
-  </TabItem>
-  <TabItem label="Vercel">
-
-```bash
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>vercel-react-best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/agent-skills"><code>vercel-labs/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>vercel-composition-patterns</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/agent-skills"><code>vercel-labs/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>vercel-react-view-transitions</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/agent-skills"><code>vercel-labs/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>web-design-guidelines</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/agent-skills"><code>vercel-labs/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>vercel-react-native-skills</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/agent-skills"><code>vercel-labs/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>next-best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/next-skills"><code>vercel-labs/next-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
-```
-
-  </TabItem>
-  <TabItem label="Vendors">
-
-```bash
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>next-cache-components</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/next-skills"><code>vercel-labs/next-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>next-upgrade</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/next-skills"><code>vercel-labs/next-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>cloudflare</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/cloudflare/skills"><code>cloudflare/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>wrangler</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/cloudflare/skills"><code>cloudflare/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>workers-best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/cloudflare/skills"><code>cloudflare/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>durable-objects</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/cloudflare/skills"><code>cloudflare/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>agents-sdk</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/cloudflare/skills"><code>cloudflare/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>supabase-postgres-best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/supabase/agent-skills"><code>supabase/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>supabase</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/supabase/agent-skills"><code>supabase/agent-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>stripe-best-practices</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/stripe/ai"><code>stripe/ai</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
-```
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>upgrade-stripe</code></h3>
+    <Badge text="curated-trust-gated" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/stripe/ai"><code>stripe/ai</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
 
-  </TabItem>
-</Tabs>
+</div>
 
-## Inspect Then Install
+## Inspect Then Install (35)
 
-Run these only after source-list, hook/script, credential, network, and dedupe
-review.
-
-```bash
+<div class="external-skill-grid">
+<article class="external-skill-card">
+  <header>
+    <h3><code>codeql</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/trailofbits/skills"><code>trailofbits/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>semgrep</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/trailofbits/skills"><code>trailofbits/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>property-based-testing</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/trailofbits/skills"><code>trailofbits/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>agent-governance</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>agent-supply-chain</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>agent-owasp-compliance</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>agentic-eval</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>framework-selection</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/langchain-ai/langchain-skills"><code>langchain-ai/langchain-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>langchain-fundamentals</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/langchain-ai/langchain-skills"><code>langchain-ai/langchain-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>langgraph-fundamentals</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/langchain-ai/langchain-skills"><code>langchain-ai/langchain-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>langgraph-human-in-the-loop</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/langchain-ai/langchain-skills"><code>langchain-ai/langchain-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>langgraph-persistence</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/langchain-ai/langchain-skills"><code>langchain-ai/langchain-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>langchain-rag</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/langchain-ai/langchain-skills"><code>langchain-ai/langchain-skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>building-native-ui</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/expo/skills"><code>expo/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>expo-dev-client</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/expo/skills"><code>expo/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>expo-deployment</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/expo/skills"><code>expo/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>expo-cicd-workflows</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/expo/skills"><code>expo/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>upgrading-expo</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/expo/skills"><code>expo/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>sentry-fix-issues</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/getsentry/sentry-for-ai"><code>getsentry/sentry-for-ai</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>sentry-setup-ai-monitoring</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/getsentry/sentry-for-ai"><code>getsentry/sentry-for-ai</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>sentry-sdk-setup</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/getsentry/sentry-for-ai"><code>getsentry/sentry-for-ai</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>phoenix-tracing</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>phoenix-evals</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>arize-instrumentation</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>arize-evaluator</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>arize-prompt-optimization</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/github/awesome-copilot"><code>github/awesome-copilot</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>building-pydantic-ai-agents</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/pydantic/skills"><code>pydantic/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>instrumentation</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/pydantic/skills"><code>pydantic/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>mcp-builder</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/mcp-use/skills"><code>mcp-use/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>chatgpt-app-builder</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/mcp-use/skills"><code>mcp-use/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>chatgpt-apps</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/openai/skills"><code>openai/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
 npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
-```
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>cli-creator</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/openai/skills"><code>openai/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>security-threat-model</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/openai/skills"><code>openai/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>security-best-practices</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/openai/skills"><code>openai/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>security-ownership-map</code></h3>
+    <Badge text="needs-inspection" variant="note" />
+    <Badge text="verified-install-command" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/openai/skills"><code>openai/skills</code></a></p>
+  <p>Curated third-party skill source. Run external-skill-auditor before repo promotion.</p>
+  <details>
+    <summary>Install command</summary>
+    <pre class="agents-scrollbar"><code>
+npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode
+    </code></pre>
+  </details>
+</article>
 
-## Keep Global Only Or Avoid
+</div>
 
-- `vercel-labs/skills@find-skills`: duplicate of `discover-skills`.
-- `vercel-labs/agent-browser`: broad operational scope; overlaps browser automation.
-- `anthropics/skills`: inspect case-by-case because many entries duplicate local or system skills.
-- `huggingface/skills`: keep global unless ML workflows become frequent.
-- Community Better Auth, Clerk, Neon, and generic OpenAI Agent SDK skills: lower source confidence or duplicate architecture coverage.
-- `docs.stripe.com` registry entries: avoid until source syntax and provenance are resolved.
+## Keep Global Only Or Avoid (5)
 
-## Local Custom Skills
+<div class="external-skill-grid">
+<article class="external-skill-card">
+  <header>
+    <h3><code>find-skills</code></h3>
+    <Badge text="global-only-or-avoid" variant="note" />
+    <Badge text="explicit-unresolved" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/skills"><code>vercel-labs/skills</code></a></p>
+  <p>duplicate of `discover-skills`.</p>
+  <p><strong>Unresolved:</strong> duplicate of `discover-skills`.</p>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>vercel-labs-agent-browser-all</code></h3>
+    <Badge text="global-only-or-avoid" variant="note" />
+    <Badge text="explicit-unresolved" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/vercel-labs/agent-browser"><code>vercel-labs/agent-browser</code></a></p>
+  <p>useful, but broad operational scope and overlaps browser automation.</p>
+  <p><strong>Unresolved:</strong> useful, but broad operational scope and overlaps browser automation.</p>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>anthropics-skills-all</code></h3>
+    <Badge text="global-only-or-avoid" variant="note" />
+    <Badge text="explicit-unresolved" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/anthropics/skills"><code>anthropics/skills</code></a></p>
+  <p>inspect case-by-case; many skills duplicate local/system skills.</p>
+  <p><strong>Unresolved:</strong> inspect case-by-case; many skills duplicate local/system skills.</p>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>huggingface-skills-all</code></h3>
+    <Badge text="global-only-or-avoid" variant="note" />
+    <Badge text="explicit-unresolved" variant="default" />
+  </header>
+  <p>Source: <a href="https://github.com/huggingface/skills"><code>huggingface/skills</code></a></p>
+  <p>keep global unless ML workflows become frequent.</p>
+  <p><strong>Unresolved:</strong> keep global unless ML workflows become frequent.</p>
+</article>
+<article class="external-skill-card">
+  <header>
+    <h3><code>stripe-best-practices</code></h3>
+    <Badge text="global-only-or-avoid" variant="note" />
+    <Badge text="explicit-unresolved" variant="default" />
+  </header>
+  <p>Source: <a href="https://docs.stripe.com"><code>docs.stripe.com</code></a></p>
+  <p>registry syntax and provenance still need verification before automated sync/install.</p>
+  <p><strong>Unresolved:</strong> registry syntax and provenance still need verification before automated sync/install.</p>
+</article>
 
-The repo-side custom additions are:
+</div>
 
-- `external-skill-auditor`
-- `i18n-localization`
-- `agent-runtime-governance`
+## Source Of Truth
 
-No `llms-context-maintainer` skill is planned. This repo already uses generated
-docs surfaces and `starlight-llms-txt`.
+Update `instructions/external-skills.md` first, then run `uv run wagents docs generate` so this page and the generated skill index stay synchronized.

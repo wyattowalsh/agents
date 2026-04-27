@@ -66,6 +66,10 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/platforms/opencode/plugins",
+      "mode": "canonical"
+    },
+    {
       "path": "/Users/ww/.codex/AGENTS.md",
       "mode": "symlink"
     },
@@ -146,8 +150,8 @@
       "mode": "merged"
     },
     {
-      "path": "/Users/ww/.config/opencode/tui.json",
-      "mode": "merged"
+      "path": "/Users/ww/.config/opencode/plugins/approval-notify.ts",
+      "mode": "generated"
     },
     {
       "path": "/Users/ww/.aitk/mcp.json",

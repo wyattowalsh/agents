@@ -79,6 +79,7 @@ Check:
 - `skills.paths` correctness and portability
 - repo-native `.opencode/agents/**` usage
 - global OpenCode skill-dir coverage and whether missing skill discovery is a real issue
+- global plugin files in `~/.config/opencode/plugins/` (e.g., `approval-notify.ts`) and whether they are up to date with repo-managed sources
 - any global OpenCode rules or rule-like surfaces that remain blind spots in the current session
 - whether repo-observed companion files such as `.opencode/ocx.jsonc` are relevant or accidental
 

@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@source not "../content/docs/**/*.mdx";
+
+@theme {
+  --font-sans: var(--sl-font);
+  --font-mono: var(--sl-font-mono);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --color-background: var(--sl-color-bg);
+  --color-foreground: var(--sl-color-white);
+  --color-muted: var(--sl-color-gray-6);
+  --color-muted-foreground: var(--sl-color-gray-3);
+  --color-border: var(--border-panel);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  .sl-markdown-content {
+    min-width: 0;
+  }
+}
+
+@layer utilities {
+  .agents-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--primary), transparent 45%) transparent;
+  }
+
+  .agents-scrollbar::-webkit-scrollbar {
+    height: 0.6rem;
+    width: 0.6rem;
+  }
+
+  .agents-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: color-mix(in oklch, var(--primary), transparent 45%);
+  }
+}

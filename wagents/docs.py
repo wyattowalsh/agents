@@ -10,6 +10,7 @@ from typer.models import OptionInfo
 
 from wagents import CONTENT_DIR, DOCS_DIR, ROOT
 from wagents.catalog import collect_edges, collect_installed_skills, collect_nodes
+from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import escape_attr, truncate_sentence
 from wagents.rendering import (
     read_raw_content,
@@ -53,12 +54,13 @@ def _has_repo_agents() -> bool:
     return any((ROOT / "agents").glob("*.md"))
 
 
-def write_site_data(nodes: list) -> None:
+def write_site_data(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
     """Write generated site data consumed by Astro components."""
     data = site_data(
         nodes,
         mcp_config_count=_count_mcp_servers_from_config(),
         has_mcp_overview=_has_mcp_overview_page(),
+        external_skills=external_entries or read_external_skill_entries(),
     )
     (DOCS_DIR / "src" / "generated-site-data.mjs").write_text(render_site_data_module(data), encoding="utf-8")
     (DOCS_DIR / "src" / "generated-visual-assets.css").write_text(render_visual_assets_css(), encoding="utf-8")
@@ -71,12 +73,14 @@ def _mdx_asset_import_path(src: str) -> str:
     return "../../assets/" + src.removeprefix("/src/assets/")
 
 
-def write_index_page(nodes: list) -> None:
+def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
     """Write the index.mdx splash page."""
+    external_entries = external_entries or read_external_skill_entries()
     data = site_data(
         nodes,
         mcp_config_count=_count_mcp_servers_from_config(),
         has_mcp_overview=_has_mcp_overview_page(),
+        external_skills=external_entries,
     )
     skills = [n for n in nodes if n.kind == "skill"]
     installed_skills = [n for n in skills if n.source != "custom"]
@@ -120,6 +124,8 @@ def write_index_page(nodes: list) -> None:
     parts.append("---")
     parts.append("")
     parts.append("import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';")
+    parts.append("import InstallCommand from '../../components/InstallCommand.astro';")
+    parts.append("import { installCommands } from '../../generated-site-data.mjs';")
     visual_imports = {
         "catalogMeshArt": VISUAL_ASSET_BY_ID["catalog-mesh"],
         "mcpRoutingArt": VISUAL_ASSET_BY_ID["mcp-routing"],
@@ -141,6 +147,8 @@ def write_index_page(nodes: list) -> None:
         stat_items.append(f'  <span class="stat stat-skill">{len(custom_skills)} Custom Skills</span>')
     if installed_skills:
         stat_items.append(f'  <span class="stat stat-installed">{len(installed_skills)} Installed Skills</span>')
+    if external_entries:
+        stat_items.append(f'  <span class="stat stat-external">{len(external_entries)} Curated External</span>')
     if agents:
         stat_items.append(f'  <span class="stat stat-agent">{len(agents)} Agents</span>')
     if mcps:
@@ -188,21 +196,15 @@ def write_index_page(nodes: list) -> None:
     )
     parts.append("")
 
-    parts.append('<div class="install-section">')
-    parts.append("")
-    parts.append("```bash")
-    parts.append("# Install the full catalog")
     parts.append(
-        build_install_command(all_skills=True)
+        '<InstallCommand command={installCommands.all} title="Install the full catalog" '
+        'note="Globally installs repo skills across supported agent harnesses." />'
     )
     parts.append("")
-    parts.append("# Or start with one focused skill")
     parts.append(
-        build_install_command(skill="honest-review")
+        '<InstallCommand command={installCommands.starter} title="Install one starter skill" '
+        'note="Use this when you want to test the workflow before installing everything." />'
     )
-    parts.append("```")
-    parts.append("")
-    parts.append("</div>")
     parts.append("")
     parts.append(
         "Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, "
@@ -486,7 +488,9 @@ def write_cli_page() -> None:
     parts.append("| `wagents readme` | Regenerate `README.md` or fail if it is stale |")
     parts.append("| `wagents install` | Install repo skills into supported agent platforms |")
     parts.append("| `wagents update` | Refresh installed skills from their recorded sources |")
-    parts.append("| `wagents skills <subcommand>` | Index, search, read, and diagnose local skills on demand |")
+    parts.append(
+        "| `wagents skills <subcommand>` | Inventory, sync, search, read, and diagnose local skills on demand |"
+    )
     parts.append("| `wagents package <name>` | Build portable ZIP packages for sharing or release |")
     parts.append("| `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |")
     parts.append("| `wagents hooks <subcommand>` | List and validate lifecycle hooks |")
@@ -762,15 +766,81 @@ def write_cli_page() -> None:
     parts.append("---")
     parts.append("")
 
+    # --- wagents skills sync ---
+    parts.append("### `wagents skills sync` -- Additive Cross-Harness Sync")
+    parts.append("")
+    parts.append(
+        "Build a normalized installed-skill inventory from `npx skills ls -g -a <agent> --json`, "
+        "then preview or apply additive installs for the desired sync set."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("# Default mode is dry-run across all supported harnesses")
+    parts.append("wagents skills sync")
+    parts.append("")
+    parts.append("# Target one harness")
+    parts.append("wagents skills sync --agent github-copilot")
+    parts.append("")
+    parts.append("# Include verified one-off installed external skills")
+    parts.append("wagents skills sync --include-installed")
+    parts.append("")
+    parts.append("# Execute the verified install commands")
+    parts.append("wagents skills sync --apply")
+    parts.append("```")
+    parts.append("")
+    parts.append("| Option | Default | Description |")
+    parts.append("|--------|---------|-------------|")
+    parts.append("| `-a`, `--agent` | all | Restrict sync to one or more harnesses |")
+    parts.append("| `--all-agents` | `false` | Explicitly target all supported harnesses |")
+    parts.append(
+        "| `--dry-run` | `true` | Preview missing, already-present, unresolved, "
+        "skipped rows, and exact install commands |"
+    )
+    parts.append("| `--apply` | `false` | Execute only the verified additive install commands |")
+    parts.append(
+        "| `--include-installed` | `false` | Include verified one-off installed "
+        "external skills outside the curated desired set |"
+    )
+    parts.append("")
+    parts.append('<Aside type="note" title="Desired sync set">')
+    parts.append(
+        "By default, sync targets repo-owned custom skills plus verified curated external skills. "
+        "It never removes user-installed skills."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append('<Aside type="caution" title="GitHub Copilot caveat">')
+    parts.append(
+        "GitHub Copilot remains part of config and instruction sync, but the skills inventory reports "
+        "only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
     # --- wagents skills ---
     parts.append("### `wagents skills` -- On-Demand Skill Index")
     parts.append("")
     parts.append(
-        "Index and search repository, installed, and plugin skills without loading every skill description "
-        "into startup context. Use this when local skill inventory exceeds an agent's context budget."
+        "Inspect repository, installed, curated, and plugin skills without loading every skill description "
+        "into startup context. Use this when local skill inventory exceeds an agent's context budget or when you "
+        "need additive sync diagnostics."
     )
     parts.append("")
     parts.append("<Tabs>")
+    parts.append('  <TabItem label="sync">')
+    parts.append("")
+    parts.append("Preview additive cross-harness installs from the normalized inventory:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents skills sync --dry-run")
+    parts.append("")
+    parts.append("# Narrow to one harness and include verified one-off installs")
+    parts.append("wagents skills sync --agent codex --include-installed")
+    parts.append("```")
+    parts.append("")
+    parts.append("  </TabItem>")
     parts.append('  <TabItem label="search">')
     parts.append("")
     parts.append("Search for matching skills with deterministic lexical ranking:")
@@ -1238,8 +1308,9 @@ def write_cli_page() -> None:
 # ---------------------------------------------------------------------------
 
 
-def write_skills_index(nodes: list) -> None:
+def write_skills_index(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
     """Write skills/index.mdx category page."""
+    external_entries = external_entries or read_external_skill_entries()
     custom = [n for n in nodes if n.source == "custom"]
     installed = [n for n in nodes if n.source != "custom"]
 
@@ -1250,6 +1321,10 @@ def write_skills_index(nodes: list) -> None:
     parts.append("---")
     parts.append("")
     parts.append("import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';")
+    parts.append("import InstallCommand from '../../../components/InstallCommand.astro';")
+    parts.append("import SkillCatalog from '../../../components/SkillCatalog.astro';")
+    parts.append("import SkillTopology from '../../../components/SkillTopology.astro';")
+    parts.append("import { installCommands, skillIndex } from '../../../generated-site-data.mjs';")
     parts.append("")
     parts.append(
         "Skills are portable prompt-and-workflow bundles for coding agents. "
@@ -1259,20 +1334,16 @@ def write_skills_index(nodes: list) -> None:
     parts.append("New here? Start with [Start Here](/start-here/) for the shortest setup path.")
     parts.append("")
 
-    # Install section
-    parts.append('<div class="install-section">')
+    parts.append("### Quick Install")
     parts.append("")
-    parts.append("### Quick Install All")
+    parts.append(
+        '<InstallCommand command={installCommands.all} title="Install this repository catalog" '
+        'note="Use the copy button or scroll horizontally inside the command area." />'
+    )
     parts.append("")
-    parts.append("```bash")
-    parts.append("# Install this repository's full catalog")
-    parts.append(build_install_command(all_skills=True))
-    parts.append("")
-    parts.append("# Install a focused starter skill")
-    parts.append(build_install_command(skill="honest-review"))
-    parts.append("```")
-    parts.append("")
-    parts.append("</div>")
+    parts.append(
+        '<InstallCommand command={installCommands.starter} title="Install a focused starter skill" />'
+    )
     parts.append("")
 
     parts.append('<Aside type="tip" title="How to use this page">')
@@ -1301,7 +1372,21 @@ def write_skills_index(nodes: list) -> None:
     parts.append(f'  <span class="stat stat-agent">{len(auto_invoke)} Convention Skills</span>')
     if installed:
         parts.append(f'  <span class="stat stat-installed">{len(installed)} Installed Skills</span>')
+    if external_entries:
+        parts.append(f'  <span class="stat stat-external">{len(external_entries)} Curated External</span>')
     parts.append("</div>")
+    parts.append("")
+
+    parts.append("## Complete Intelligence Index")
+    parts.append("")
+    parts.append(
+        "This generated index combines repo-owned custom skills, optional locally installed external skills, "
+        "and the curated third-party source list. Each row carries source, trust, install, and knowledge metadata."
+    )
+    parts.append("")
+    parts.append("<SkillCatalog skills={skillIndex} />")
+    parts.append("")
+    parts.append("<SkillTopology skills={skillIndex} />")
     parts.append("")
 
     parts.append("## Skill Lanes")
@@ -1438,12 +1523,15 @@ def write_installed_skills_page(nodes: list) -> None:
     parts.append("import { Badge, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';")
     parts.append("")
     parts.append(
-        f"> {len(nodes)} skills installed from external sources and discovered from local agent skill directories "
-        "like `~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
+        f"> {len(nodes)} skills installed from external sources and discovered from the normalized harness inventory "
+        "built with `npx skills ls -g -a <agent> --json` plus local skill metadata from directories like "
+        "`~/.config/opencode/skills/`, `~/.agents/skills/`, and `~/.claude/skills/`."
     )
     parts.append("")
 
     def install_command(node) -> str:
+        if isinstance(node.metadata, dict) and node.metadata.get("_skills_install_command"):
+            return str(node.metadata["_skills_install_command"])
         source = node.metadata.get("_skills_source") if isinstance(node.metadata, dict) else None
         if source:
             return f"npx skills add {source} --skill {node.id} -y -g"
@@ -1461,12 +1549,21 @@ def write_installed_skills_page(nodes: list) -> None:
         badges = [f'<Badge text="{escape_attr(n.id)}" variant="note" />']
         word_count = len(n.body.split()) if n.body else 0
         badges.append(f'<Badge text="{word_count} words" variant="default" />')
+        if isinstance(fm.get("_skills_provenance_status"), str):
+            badges.append(f'<Badge text="{escape_attr(str(fm["_skills_provenance_status"]))}" variant="tip" />')
         if fm.get("license"):
             badges.append(f'<Badge text="{escape_attr(fm["license"])}" variant="success" />')
         if meta.get("version"):
             badges.append(f'<Badge text="v{escape_attr(str(meta["version"]))}" variant="success" />')
         if meta.get("author"):
             badges.append(f'<Badge text="{escape_attr(meta["author"])}" variant="caution" />')
+        installed_agents = (
+            fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
+        )
+        if installed_agents:
+            badges.append(
+                f'<Badge text="{escape_attr(", ".join(str(agent) for agent in installed_agents))}" variant="default" />'
+            )
         if fm.get("model"):
             badges.append(f'<Badge text="{escape_attr(fm["model"])}" variant="tip" />')
         parts.append(" ".join(badges))
@@ -1502,6 +1599,95 @@ def write_installed_skills_page(nodes: list) -> None:
     out_dir = CONTENT_DIR / "skills"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "installed.mdx").write_text("\n".join(parts))
+
+
+def write_external_skills_page(entries: list[ExternalSkillEntry]) -> None:
+    """Write external-skills.mdx from the curated instruction source."""
+    groups = {
+        "install-now-after-trust-gate": "Install Now After Trust Gate",
+        "inspect-then-install": "Inspect Then Install",
+        "global-only-or-avoid": "Keep Global Only Or Avoid",
+    }
+    by_status = {status: [entry for entry in entries if entry.status == status] for status in groups}
+
+    parts = []
+    parts.append("---")
+    parts.append('title: "External Skills"')
+    parts.append(
+        'description: "Curated external Agent Skills with source, trust, install, and provenance metadata."'
+    )
+    parts.append("---")
+    parts.append("")
+    parts.append("import { Aside, Badge } from '@astrojs/starlight/components';")
+    parts.append("import SkillCatalog from '../../components/SkillCatalog.astro';")
+    parts.append("import { skillIndex } from '../../generated-site-data.mjs';")
+    parts.append(
+        "export const externalSkillIndex = skillIndex.filter((skill) => "
+        "skill.sourceType === 'curated-external');"
+    )
+    parts.append("")
+    parts.append("# External Skills")
+    parts.append("")
+    parts.append(
+        "This page is generated from `instructions/external-skills.md`. "
+        "It indexes curated third-party skills by source, trust gate, install command, "
+        "provenance state, and target agents."
+    )
+    parts.append("")
+    parts.append("<Aside type=\"caution\">")
+    parts.append(
+        "Do not bulk-import entire external repositories. Install only curated skills, inspect source-list output, "
+        "and run `external-skill-auditor` before repo promotion."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("<SkillCatalog skills={externalSkillIndex} />")
+    parts.append("")
+
+    for status, title in groups.items():
+        rows = by_status[status]
+        if not rows:
+            continue
+        parts.append(f"## {title} ({len(rows)})")
+        parts.append("")
+        parts.append('<div class="external-skill-grid">')
+        for entry in rows:
+            source = (
+                f'<a href="{escape_attr(entry.source_url)}"><code>{escape_attr(entry.source)}</code></a>'
+                if entry.source_url
+                else f"<code>{escape_attr(entry.source)}</code>"
+            )
+            parts.append('<article class="external-skill-card">')
+            parts.append("  <header>")
+            parts.append(f"    <h3><code>{escape_attr(entry.name)}</code></h3>")
+            parts.append(f'    <Badge text="{escape_attr(entry.trust_tier)}" variant="note" />')
+            parts.append(f'    <Badge text="{escape_attr(entry.provenance_status)}" variant="default" />')
+            parts.append("  </header>")
+            parts.append(f"  <p>Source: {source}</p>")
+            parts.append(f"  <p>{escape_attr(entry.notes)}</p>")
+            if entry.unresolved_reason:
+                parts.append(f"  <p><strong>Unresolved:</strong> {escape_attr(entry.unresolved_reason)}</p>")
+            if entry.install_command:
+                parts.append("  <details>")
+                parts.append("    <summary>Install command</summary>")
+                parts.append('    <pre class="agents-scrollbar"><code>')
+                parts.append(escape_attr(entry.install_command))
+                parts.append("    </code></pre>")
+                parts.append("  </details>")
+            parts.append("</article>")
+        parts.append("")
+        parts.append("</div>")
+        parts.append("")
+
+    parts.append("## Source Of Truth")
+    parts.append("")
+    parts.append(
+        "Update `instructions/external-skills.md` first, then run `uv run wagents docs generate` "
+        "so this page and the generated skill index stay synchronized."
+    )
+    parts.append("")
+
+    (CONTENT_DIR / "external-skills.mdx").write_text("\n".join(parts))
 
 
 def write_agents_index(nodes: list) -> None:
@@ -1583,6 +1769,7 @@ def write_sidebar(nodes: list) -> None:
     """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
     custom_skills = [n for n in nodes if n.kind == "skill" and n.source == "custom"]
     installed_skills = [n for n in nodes if n.kind == "skill" and n.source != "custom"]
+    external_entries = read_external_skill_entries()
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
     mcp_config_count = _count_mcp_servers_from_config()
@@ -1591,7 +1778,7 @@ def write_sidebar(nodes: list) -> None:
     lines = []
     lines.append("// Auto-generated by wagents docs generate — do not edit")
     lines.append("export const navLinks = [")
-    total_skills = len(custom_skills) + len(installed_skills)
+    total_skills = len(custom_skills) + len(installed_skills) + len(external_entries)
     nav_items = ["  { label: 'Start Here', link: '/start-here/' }"]
     skills_nav = "  { label: 'Skills', link: '/skills/'"
     if total_skills:
@@ -1636,6 +1823,9 @@ def write_sidebar(nodes: list) -> None:
     if installed_skills:
         lines.append(f"      {{ label: 'Installed ({len(installed_skills)})', slug: 'skills/installed' }},")
 
+    if external_entries:
+        lines.append(f"      {{ label: 'External Sources ({len(external_entries)})', slug: 'external-skills' }},")
+
     lines.append("    ],")
     lines.append("  },")
 
@@ -1674,6 +1864,7 @@ def write_sidebar(nodes: list) -> None:
 def regenerate_sidebar_and_indexes() -> None:
     """Regenerate sidebar and index pages from current nodes."""
     nodes = collect_nodes()
+    external_entries = read_external_skill_entries()
     # Also collect installed if content dir exists
     if CONTENT_DIR.exists():
         existing_ids = {n.id for n in nodes if n.kind == "skill"}
@@ -1685,7 +1876,8 @@ def regenerate_sidebar_and_indexes() -> None:
     mcps = [n for n in nodes if n.kind == "mcp"]
 
     write_sidebar(nodes)
-    write_skills_index(skills)
+    write_skills_index(skills, external_entries)
+    write_external_skills_page(external_entries)
     installed_skills = [n for n in skills if n.source != "custom"]
     if installed_skills:
         write_installed_skills_page(installed_skills)
@@ -1693,8 +1885,8 @@ def regenerate_sidebar_and_indexes() -> None:
         write_agents_index(agents_list)
     if mcps:
         write_mcp_index(mcps)
-    write_site_data(nodes)
-    write_index_page(nodes)
+    write_site_data(nodes, external_entries)
+    write_index_page(nodes, external_entries)
 
 
 # ---------------------------------------------------------------------------
@@ -1764,8 +1956,8 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     # Clean existing generated content (preserves hand-maintained files)
     for subdir in ["skills", "agents", "mcp"]:
         _clean_content_subdir(CONTENT_DIR / subdir)
-    # Remove generated index and cli pages
-    for f in ["index.mdx", "cli.mdx"]:
+    # Remove generated top-level pages
+    for f in ["index.mdx", "cli.mdx", "external-skills.mdx"]:
         p = CONTENT_DIR / f
         if p.exists():
             p.unlink()
@@ -1775,6 +1967,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
         sidebar_path.unlink()
 
     nodes = collect_nodes()
+    external_entries = read_external_skill_entries()
 
     # Collect installed skills
     if include_installed:
@@ -1815,8 +2008,10 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
 
-    write_skills_index(skills)
+    write_skills_index(skills, external_entries)
     typer.echo("  Generated skills/index.mdx")
+    write_external_skills_page(external_entries)
+    typer.echo("  Generated external-skills.mdx")
     installed_skills = [n for n in skills if n.source != "custom"]
     if installed_skills:
         write_installed_skills_page(installed_skills)
@@ -1829,8 +2024,8 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
         typer.echo("  Generated mcp/index.mdx")
 
     # Write main index and CLI pages
-    write_site_data(nodes)
-    write_index_page(nodes)
+    write_site_data(nodes, external_entries)
+    write_index_page(nodes, external_entries)
     typer.echo("  Generated index.mdx")
     write_cli_page()
     typer.echo("  Generated cli.mdx")

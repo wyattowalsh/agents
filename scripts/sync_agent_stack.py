@@ -60,13 +60,23 @@ GEMINI_EXTENSION_MCP_PATH = (
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
 GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
-OPENCODE_TUI_CONFIG_PATH = HOME / ".config" / "opencode" / "tui.json"
 OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
+OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
 CRUSH_CONFIG_PATH = HOME / ".config" / "crush" / "crush.json"
 CHERRY_STUDIO_DIR = HOME / "Library" / "Application Support" / "CherryStudio"
 CHERRY_STUDIO_IMPORT_DIR = CHERRY_STUDIO_DIR / "mcp-import"
 CHERRY_STUDIO_MANAGED_IMPORT_DIR = CHERRY_STUDIO_IMPORT_DIR / "managed"
+CURSOR_RULES_REPO_DIR = REPO_ROOT / ".cursor" / "rules"
+PERPLEXITY_SKILLS_REPO_DIR = REPO_ROOT / ".perplexity" / "skills"
+CHERRY_PRESETS_REPO_DIR = REPO_ROOT / ".cherry" / "presets"
+ANTIGRAVITY_RULES_REPO_DIR = REPO_ROOT / ".antigravity" / "rules"
+OPENCODE_PLUGIN_MANIFEST_REPO_PATH = REPO_ROOT / ".opencode-plugin" / "plugin.json"
+CURSOR_RULES_DIR = HOME / ".cursor" / "rules"
+PERPLEXITY_SKILLS_DIR = HOME / ".perplexity" / "skills"
+CHERRY_PRESETS_DIR = CHERRY_STUDIO_DIR / "presets"
+ANTIGRAVITY_RULES_DIR = HOME / ".gemini" / "antigravity" / "rules"
+OPENCODE_PLUGIN_MANIFEST_PATH = OPENCODE_PLUGINS_DIR / "agents" / "plugin.json"
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -274,6 +284,45 @@ def sync_generated_json_directory(ctx: SyncContext, path: Path, files: dict[str,
 
     for stale_name in sorted(existing - set(files)):
         stale_path = path / stale_name
+        ctx.note(f"remove {stale_path}")
+        if not ctx.apply:
+            continue
+        stale_path.unlink()
+
+
+def sync_directory_files(
+    ctx: SyncContext,
+    source_dir: Path,
+    target_dir: Path,
+    *,
+    suffix: str | None = None,
+) -> None:
+    if not source_dir.exists():
+        return
+    target_dir.mkdir(parents=True, exist_ok=True)
+    existing: set[str] = set()
+    if target_dir.exists() and target_dir.is_dir():
+        existing = {
+            child.name
+            for child in target_dir.iterdir()
+            if child.is_file() and (suffix is None or child.suffix == suffix)
+        }
+    source_files = {
+        f.name: f
+        for f in source_dir.iterdir()
+        if f.is_file() and (suffix is None or f.suffix == suffix)
+    }
+    for name, source_file in source_files.items():
+        target_file = target_dir / name
+        if target_file.exists():
+            if target_file.read_bytes() == source_file.read_bytes():
+                continue
+        ctx.note(f"copy {source_file} -> {target_file}")
+        if not ctx.apply:
+            continue
+        shutil.copy2(str(source_file), str(target_file))
+    for stale_name in sorted(existing - set(source_files)):
+        stale_path = target_dir / stale_name
         ctx.note(f"remove {stale_path}")
         if not ctx.apply:
             continue
@@ -1474,14 +1523,6 @@ def merge_opencode_config(
     write_json(ctx, OPENCODE_CONFIG_PATH, settings)
 
 
-def merge_opencode_tui_config(ctx: SyncContext) -> None:
-    settings: dict[str, Any] = {}
-    if OPENCODE_TUI_CONFIG_PATH.exists():
-        settings = load_json(OPENCODE_TUI_CONFIG_PATH)
-    settings.setdefault("notification_method", "auto")
-    write_json(ctx, OPENCODE_TUI_CONFIG_PATH, settings)
-
-
 def generate_project_opencode_config(ctx: SyncContext) -> None:
     config: dict[str, Any] = {
         "$schema": "https://opencode.ai/config.json",
@@ -1495,6 +1536,15 @@ def generate_project_opencode_config(ctx: SyncContext) -> None:
             existing.setdefault("skills", config["skills"])
             config = existing
     write_json(ctx, OPENCODE_REPO_CONFIG_PATH, config)
+
+
+def deploy_opencode_plugin(ctx: SyncContext, name: str) -> None:
+    source = REPO_ROOT / "platforms" / "opencode" / "plugins" / name
+    if not source.exists():
+        return
+    OPENCODE_PLUGINS_DIR.mkdir(parents=True, exist_ok=True)
+    dest = OPENCODE_PLUGINS_DIR / name
+    write_text(ctx, dest, source.read_text(encoding="utf-8"))
 
 
 def merge_cherry_studio_config(ctx: SyncContext) -> None:
@@ -1610,7 +1660,8 @@ def sync_home_targets(
         render_client_mcp(registry, fallbacks)["mcpServers"],
     )
     merge_opencode_config(ctx, registry, fallbacks, policy)
-    merge_opencode_tui_config(ctx)
+    deploy_opencode_plugin(ctx, "approval-notify.ts")
+    deploy_opencode_plugin(ctx, "credential-guard.ts")
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
@@ -1623,6 +1674,20 @@ def sync_home_targets(
     sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
     sync_skill_entries(ctx, GEMINI_SKILLS_DIR)
     sync_copilot_agents(ctx)
+    sync_directory_files(ctx, CURSOR_RULES_REPO_DIR, CURSOR_RULES_DIR, suffix=".mdc")
+    sync_directory_files(ctx, PERPLEXITY_SKILLS_REPO_DIR, PERPLEXITY_SKILLS_DIR, suffix=".md")
+    sync_directory_files(ctx, CHERRY_PRESETS_REPO_DIR, CHERRY_PRESETS_DIR, suffix=".json")
+    sync_directory_files(ctx, ANTIGRAVITY_RULES_REPO_DIR, ANTIGRAVITY_RULES_DIR, suffix=".md")
+    if OPENCODE_PLUGIN_MANIFEST_REPO_PATH.exists():
+        target_plugin_dir = OPENCODE_PLUGIN_MANIFEST_PATH.parent
+        target_plugin_dir.mkdir(parents=True, exist_ok=True)
+        if (
+            not OPENCODE_PLUGIN_MANIFEST_PATH.exists()
+            or OPENCODE_PLUGIN_MANIFEST_PATH.read_bytes() != OPENCODE_PLUGIN_MANIFEST_REPO_PATH.read_bytes()
+        ):
+            ctx.note(f"copy {OPENCODE_PLUGIN_MANIFEST_REPO_PATH} -> {OPENCODE_PLUGIN_MANIFEST_PATH}")
+            if ctx.apply:
+                shutil.copy2(str(OPENCODE_PLUGIN_MANIFEST_REPO_PATH), str(OPENCODE_PLUGIN_MANIFEST_PATH))
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:

@@ -136,6 +136,7 @@ class TestWriteCliPage:
         assert "wagents docs generate --no-installed" not in text
         assert "Bundle Manifest" in text
         assert "bundled agents are not published yet" in text
+        assert "wagents skills sync --apply" in text
         assert "wagents skills search" in text
         assert "On-Demand Skill Index" in text
 

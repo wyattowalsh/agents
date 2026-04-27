@@ -4,24 +4,20 @@ description: Browse all available AI agent skills
 ---
 
 import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';
+import InstallCommand from '../../../components/InstallCommand.astro';
+import SkillCatalog from '../../../components/SkillCatalog.astro';
+import SkillTopology from '../../../components/SkillTopology.astro';
+import { installCommands, skillIndex } from '../../../generated-site-data.mjs';
 
 Skills are portable prompt-and-workflow bundles for coding agents. Install them once, invoke them with `/skill-name`, and keep the behavior under version control.
 
 New here? Start with [Start Here](/start-here/) for the shortest setup path.
 
-<div class="install-section">
+### Quick Install
 
-### Quick Install All
+<InstallCommand command={installCommands.all} title="Install this repository catalog" note="Use the copy button or scroll horizontally inside the command area." />
 
-```bash
-# Install this repository's full catalog
-npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
-
-# Install a focused starter skill
-npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
-```
-
-</div>
+<InstallCommand command={installCommands.starter} title="Install a focused starter skill" />
 
 <Aside type="tip" title="How to use this page">
 Use the lane cards below when you want a fast starting point. Use the full catalog sections when you already know the exact skill you need.
@@ -34,7 +30,16 @@ Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-par
 <div class="stats-bar">
   <span class="stat stat-skill">44 User-Invocable</span>
   <span class="stat stat-agent">4 Convention Skills</span>
+  <span class="stat stat-external">64 Curated External</span>
 </div>
+
+## Complete Intelligence Index
+
+This generated index combines repo-owned custom skills, optional locally installed external skills, and the curated third-party source list. Each row carries source, trust, install, and knowledge metadata.
+
+<SkillCatalog skills={skillIndex} />
+
+<SkillTopology skills={skillIndex} />
 
 ## Skill Lanes
 

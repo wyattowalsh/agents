@@ -1,7 +1,9 @@
 import { defineConfig } from 'astro/config';
 import { fileURLToPath } from 'node:url';
+import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
 import starlight from '@astrojs/starlight';
+import tailwindcss from '@tailwindcss/vite';
 import starlightThemeBlack from 'starlight-theme-black';
 import starlightSiteGraph from 'starlight-site-graph';
 import starlightLinksValidator from 'starlight-links-validator';
@@ -18,10 +20,28 @@ const docsSrcAsset = (assetId) => `.${visualAssetById[assetId].src}`;
 
 export default defineConfig({
   adapter: vercel(),
+  devToolbar: { enabled: false },
   output: 'server',
   site: 'https://agents.w4w.dev',
   vite: {
+    build: {
+      chunkSizeWarningLimit: 900,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            const normalizedId = id.replaceAll('\\', '/');
+            if (normalizedId.includes('/starlight-site-graph/components/graph/pixi/')) {
+              return 'sitegraph-pixi';
+            }
+            if (normalizedId.includes('/node_modules/d3') || normalizedId.includes('/node_modules/.pnpm/d3-')) {
+              return 'vendor-d3';
+            }
+          },
+        },
+      },
+    },
     plugins: [
+      tailwindcss(),
       {
         name: 'starlight-site-graph-micromatch-shim',
         enforce: 'pre',
@@ -35,6 +55,7 @@ export default defineConfig({
     ],
     resolve: {
       alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
         'starlight-theme-black/overrides/PageSidebar.astro': fileURLToPath(
           new URL('./src/components/starlight/PageSidebarComposed.astro', import.meta.url)
         ),
@@ -48,6 +69,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    react(),
     starlight({
       title: 'wyattowalsh/agents | AI Agent Configs',
       description: 'AI agent skills, tools, and MCP servers for Claude Code, Gemini CLI, Codex, Cursor, and more',
@@ -80,6 +102,7 @@ export default defineConfig({
       ],
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/wyattowalsh/agents' }],
       customCss: [
+        './src/styles/tailwind.css',
         '@fontsource/geist-sans/400.css',
         '@fontsource/geist-sans/500.css',
         '@fontsource/geist-sans/600.css',
