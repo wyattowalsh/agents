@@ -1,4 +1,5 @@
 ---
+name: security-auditor
 description: Audit code and configuration for security risks without making changes.
 mode: subagent
 model: opencode-go/kimi-k2.6

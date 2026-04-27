@@ -1,4 +1,5 @@
 ---
+name: planner
 description: Create a codebase-grounded implementation plan before coding.
 mode: subagent
 model: opencode-go/kimi-k2.6

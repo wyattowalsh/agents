@@ -1,0 +1,27 @@
+---
+title: Agents
+description: Browse all available AI agent configurations
+---
+
+import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
+
+> Specialized agent configurations with tools, permissions, and system prompts for various AI coding assistants.
+
+<div class="stats-bar">
+  <span class="stat stat-agent">8 agents available</span>
+</div>
+
+## All Agents
+
+<div class="catalog-agent">
+<CardGrid>
+  <LinkCard title="code-reviewer" href="/agents/code-reviewer/" description="Review changes for correctness, risk, and maintainability without editing code." />
+  <LinkCard title="docs-writer" href="/agents/docs-writer/" description="Update or create technical documentation grounded in the current codebase." />
+  <LinkCard title="orchestrator" href="/agents/orchestrator/" description="Coordinate multi-step work by decomposing, delegating, and synthesizing results." />
+  <LinkCard title="performance-profiler" href="/agents/performance-profiler/" description="Investigate performance bottlenecks and recommend the highest-leverage fixes." />
+  <LinkCard title="planner" href="/agents/planner/" description="Create a codebase-grounded implementation plan before coding." />
+  <LinkCard title="release-manager" href="/agents/release-manager/" description="Prepare release notes, versioning, and ship-readiness checks with cautious permissions." />
+  <LinkCard title="researcher" href="/agents/researcher/" description="Investigate a technical question deeply and return a concise evidence-backed summary." />
+  <LinkCard title="security-auditor" href="/agents/security-auditor/" description="Audit code and configuration for security risks without making changes." />
+</CardGrid>
+</div>
