@@ -20,6 +20,7 @@ from scripts.sync_agent_stack import (
     render_repo_mcp,
     render_standard_hooks,
     sync_codex_entrypoint,
+    sync_copilot_subagent_env,
     sync_generated_json_directory,
 )
 
@@ -741,7 +742,7 @@ enabled = true
     assert 'env_vars = ["BRAVE_API_KEY"]' in repo_config
 
 
-def test_merge_copilot_config_preserves_camel_case_trusted_folders(tmp_path, monkeypatch):
+def test_merge_copilot_config_preserves_camel_case_settings_keys(tmp_path, monkeypatch):
     config_path = tmp_path / "config.json"
     config_path.write_text(
         json.dumps(
@@ -755,11 +756,17 @@ def test_merge_copilot_config_preserves_camel_case_trusted_folders(tmp_path, mon
         + "\n",
         encoding="utf-8",
     )
-    monkeypatch.setattr(sync_agent_stack, "COPILOT_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "COPILOT_SETTINGS_PATH", config_path)
     policy = {
         "trusted_roots": ["/Users/ww/dev/projects"],
         "docs_domains": ["docs.github.com", "modelcontextprotocol.io"],
-        "model_defaults": {"copilot": {"model": "claude-opus-4.6", "effort_level": "xhigh"}},
+        "model_defaults": {
+            "copilot": {
+                "model": "gpt-5.4-mini",
+                "effort_level": "low",
+                "continue_on_auto_mode": True,
+            }
+        },
     }
 
     ctx = SyncContext(apply=True)
@@ -768,9 +775,35 @@ def test_merge_copilot_config_preserves_camel_case_trusted_folders(tmp_path, mon
     rendered = json.loads(config_path.read_text(encoding="utf-8"))
     assert rendered["trustedFolders"] == ["/Users/ww", "/Users/ww/dev/projects"]
     assert "trusted_folders" not in rendered
-    assert rendered["allowed_urls"] == ["https://docs.github.com", "https://modelcontextprotocol.io"]
-    assert rendered["model"] == "claude-opus-4.6"
-    assert rendered["effortLevel"] == "xhigh"
+    assert "allowed_urls" not in rendered
+    assert rendered["allowedUrls"] == ["https://docs.github.com", "https://modelcontextprotocol.io"]
+    assert rendered["model"] == "gpt-5.4-mini"
+    assert rendered["effortLevel"] == "low"
+    assert rendered["continueOnAutoMode"] is True
+
+
+def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):
+    env_path = tmp_path / "copilot-subagents.env"
+    monkeypatch.setattr(sync_agent_stack, "COPILOT_SUBAGENTS_ENV_PATH", env_path)
+    policy = {
+        "model_defaults": {
+            "copilot": {
+                "subagent_limits": {
+                    "max_concurrent": 2,
+                    "max_depth": 1,
+                }
+            }
+        }
+    }
+
+    ctx = SyncContext(apply=True)
+    sync_copilot_subagent_env(ctx, policy)
+
+    assert env_path.read_text(encoding="utf-8") == (
+        "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+        'export COPILOT_SUBAGENT_MAX_CONCURRENT="2"\n'
+        'export COPILOT_SUBAGENT_MAX_DEPTH="1"\n'
+    )
 
 
 def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch):

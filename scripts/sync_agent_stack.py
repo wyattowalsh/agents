@@ -45,11 +45,12 @@ CODEX_CONFIG_PATH = HOME / ".codex" / "config.toml"
 CODEX_HOOKS_PATH = HOME / ".codex" / "hooks.json"
 CODEX_SKILLS_DIR = HOME / ".codex" / "skills"
 COPILOT_ENTRYPOINT_PATH = HOME / ".copilot" / "copilot-instructions.md"
-COPILOT_CONFIG_PATH = HOME / ".copilot" / "config.json"
 COPILOT_MCP_PATH = HOME / ".copilot" / "mcp-config.json"
 COPILOT_SHADOW_MCP_PATH = HOME / ".config" / ".copilot" / "mcp-config.json"
 COPILOT_AGENTS_HOME_DIR = HOME / ".copilot" / "agents"
 COPILOT_SKILLS_DIR = HOME / ".copilot" / "skills"
+COPILOT_SETTINGS_PATH = HOME / ".copilot" / "settings.json"
+COPILOT_SUBAGENTS_ENV_PATH = HOME / ".config" / "copilot-subagents.env"
 CURSOR_MCP_PATH = HOME / ".cursor" / "mcp.json"
 GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
 GEMINI_ANTIGRAVITY_MCP_PATH = HOME / ".gemini" / "antigravity" / "mcp_config.json"
@@ -1202,18 +1203,34 @@ def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registr
 
 
 def merge_copilot_config(ctx: SyncContext, policy: dict[str, Any]) -> None:
-    config = load_json(COPILOT_CONFIG_PATH)
+    config = load_json(COPILOT_SETTINGS_PATH)
     defaults = policy.get("model_defaults", {}).get("copilot", {})
     config["model"] = defaults.get("model", config.get("model"))
     config["effortLevel"] = defaults.get("effort_level", config.get("effortLevel"))
+    if "continue_on_auto_mode" in defaults:
+        config["continueOnAutoMode"] = defaults["continue_on_auto_mode"]
     trusted = set(config.get("trustedFolders", []))
     trusted.update(policy.get("trusted_roots", []))
     config["trustedFolders"] = sorted(trusted)
-    allowed = set(config.get("allowed_urls", []))
+    allowed = set(config.get("allowedUrls", config.get("allowed_urls", [])))
     for domain in policy.get("docs_domains", []):
         allowed.add(f"https://{domain}")
-    config["allowed_urls"] = sorted(allowed)
-    write_json(ctx, COPILOT_CONFIG_PATH, config)
+    config.pop("allowed_urls", None)
+    config["allowedUrls"] = sorted(allowed)
+    write_json(ctx, COPILOT_SETTINGS_PATH, config)
+
+
+def sync_copilot_subagent_env(ctx: SyncContext, policy: dict[str, Any]) -> None:
+    defaults = policy.get("model_defaults", {}).get("copilot", {})
+    limits = defaults.get("subagent_limits", {})
+    max_concurrent = int(limits.get("max_concurrent", 2))
+    max_depth = int(limits.get("max_depth", 1))
+    content = (
+        "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+        f'export COPILOT_SUBAGENT_MAX_CONCURRENT="{max_concurrent}"\n'
+        f'export COPILOT_SUBAGENT_MAX_DEPTH="{max_depth}"\n'
+    )
+    write_text(ctx, COPILOT_SUBAGENTS_ENV_PATH, content)
 
 
 def sync_copilot_agents(ctx: SyncContext) -> None:
@@ -1513,6 +1530,7 @@ def sync_home_targets(
     merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks)
     merge_client_mcp_config(ctx, CURSOR_MCP_PATH, registry, fallbacks)
     merge_copilot_config(ctx, policy)
+    sync_copilot_subagent_env(ctx, policy)
     merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
     write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CHATGPT_MCP_PATH, "mcpServers", render_client_mcp(registry, fallbacks)["mcpServers"])

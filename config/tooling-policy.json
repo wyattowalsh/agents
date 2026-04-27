@@ -8,8 +8,13 @@
       "personality": "pragmatic"
     },
     "copilot": {
-      "model": "claude-opus-4.6",
-      "effort_level": "xhigh"
+      "model": "gpt-5.4-mini",
+      "effort_level": "low",
+      "continue_on_auto_mode": true,
+      "subagent_limits": {
+        "max_concurrent": 2,
+        "max_depth": 1
+      }
     },
     "gemini": {
       "model": "gpt-5.4",

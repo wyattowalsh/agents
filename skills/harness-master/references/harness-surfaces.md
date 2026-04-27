@@ -100,7 +100,8 @@ Install agent name: `antigravity`
 | project | `platforms/copilot/agents/**` | secondary | Repo-managed auxiliary agent surfaces |
 | project | `AGENTS.md` | secondary | Shared repo guidance |
 | global | `~/.copilot/copilot-instructions.md` | authoritative | Global instructions |
-| global | `~/.copilot/config.json` | authoritative when present | Global config |
+| global | `~/.copilot/settings.json` | authoritative when present | Global settings |
+| global | `~/.config/copilot-subagents.env` | authoritative when sourced | Global subagent fan-out caps |
 | global | `~/.copilot/mcp-config.json` | authoritative when present | Global MCP config |
 | global | `~/.config/.copilot/mcp-config.json` | secondary | Alternate global MCP path |
 | global | `~/.copilot/agents` | secondary | Installed/linked agents |
