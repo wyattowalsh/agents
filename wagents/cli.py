@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -15,9 +16,9 @@ import typer
 from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import RELATED_SKILLS, CatalogNode
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
+from wagents.installed_inventory import InstalledSkillInventoryRow, collect_installed_inventory
 from wagents.parsing import parse_frontmatter, to_title
 from wagents.rendering import scaffold_doc_page
-from wagents.skill_index import collect_skill_records, doctor_report, read_skill, search_skills
 from wagents.site_model import (
     REPO_SOURCE,
     SUPPORTED_AGENT_IDS,
@@ -25,6 +26,7 @@ from wagents.site_model import (
     build_install_command,
     docs_asset_repo_path,
 )
+from wagents.skill_index import collect_skill_records, doctor_report, read_skill, search_skills
 
 # Typer apps
 app = typer.Typer(help="CLI for managing centralized AI agent assets")
@@ -1160,6 +1162,199 @@ def validate(
 SUPPORTED_AGENTS = list(SUPPORTED_AGENT_IDS)
 
 
+def _select_sync_agents(agent: list[str] | None, all_agents: bool) -> tuple[str, ...]:
+    """Resolve sync target agents."""
+    if agent and all_agents:
+        typer.echo("Error: use --agent or --all-agents, not both.", err=True)
+        raise typer.Exit(code=1)
+    if agent:
+        normalized: list[str] = []
+        for item in agent:
+            if item not in SUPPORTED_AGENTS:
+                typer.echo(
+                    f"Error: unknown agent '{item}'. Supported: {', '.join(SUPPORTED_AGENTS)}",
+                    err=True,
+                )
+                raise typer.Exit(code=1)
+            normalized.append(item)
+        return tuple(normalized)
+    if all_agents or not agent:
+        return tuple(SUPPORTED_AGENTS)
+    return tuple()
+
+
+def _row_targets_agent(row: InstalledSkillInventoryRow, agent_id: str) -> bool:
+    """Return whether a row should be considered for a target harness."""
+    return not row.target_agents or agent_id in row.target_agents
+
+
+def _command_text(argv: list[str]) -> str:
+    """Render a shell-safe command preview."""
+    rendered: list[str] = []
+    for part in argv:
+        if part == "*":
+            rendered.append('"*"')
+        else:
+            rendered.append(shlex.quote(part))
+    return " ".join(rendered)
+
+
+def _sync_command_groups(rows: list[InstalledSkillInventoryRow], agent_id: str) -> list[dict[str, object]]:
+    """Group missing skills into exact install commands for one harness."""
+    grouped_named: dict[str, list[str]] = {}
+    grouped_modes: dict[tuple[str, str], InstalledSkillInventoryRow] = {}
+    commands: list[dict[str, object]] = []
+    for row in rows:
+        if row.selector_mode == "named":
+            grouped_named.setdefault(row.install_source, []).append(row.name)
+            continue
+        grouped_modes[(row.install_source, row.selector_mode)] = row
+
+    for install_source, names in sorted(grouped_named.items()):
+        argv = ["npx", "skills", "add", install_source]
+        for name in sorted(set(names)):
+            argv.extend(["--skill", name])
+        argv.extend(["-y", "-g", "-a", agent_id])
+        commands.append({"argv": argv, "text": _command_text(argv)})
+
+    for (_, selector_mode), row in sorted(grouped_modes.items()):
+        argv = ["npx", "skills", "add", row.install_source]
+        if selector_mode == "wildcard":
+            argv.extend(["--skill", "*"])
+        argv.extend(["-y", "-g", "-a", agent_id])
+        commands.append({"argv": argv, "text": _command_text(argv)})
+
+    return commands
+
+
+def _sync_row_summary(row: InstalledSkillInventoryRow) -> str:
+    """Render a compact sync summary line."""
+    suffix = ""
+    has_unresolved_reason = (
+        row.provenance_status in {"curated-unresolved", "read-only-discovered"} and row.unresolved_reason
+    )
+    has_source_suffix = row.provenance_status in {"installed-external", "verified-curated-external"} and row.source
+    if has_unresolved_reason:
+        suffix = f" — {row.unresolved_reason}"
+    elif has_source_suffix:
+        suffix = f" — {row.source}"
+    return f"{row.name} [{row.provenance_status}]{suffix}"
+
+
+def _build_sync_report(
+    target_agents: tuple[str, ...],
+    *,
+    include_installed: bool,
+) -> dict[str, object]:
+    """Build dry-run/apply data for additive skill sync."""
+    # Always collect the full cross-harness inventory so a skill present in any
+    # harness is visible when checking what is missing in the requested targets.
+    snapshot = collect_installed_inventory()
+    report_agents: list[dict[str, object]] = []
+    query_by_agent = {query.agent_id: query for query in snapshot.queries}
+
+    verified_rows = [row for row in snapshot.rows if row.is_repo_owned() or row.is_verified_curated()]
+    optional_installed = [row for row in snapshot.rows if row.provenance_status == "installed-external"]
+    unresolved_rows = [
+        row for row in snapshot.rows if row.provenance_status in {"curated-unresolved", "read-only-discovered"}
+    ]
+
+    for agent_id in target_agents:
+        query = query_by_agent.get(agent_id)
+        if query is not None and not query.ok:
+            report_agents.append(
+                {
+                    "agent": agent_id,
+                    "error": query.error,
+                    "missing": [],
+                    "already_present": [],
+                    "unresolved": [],
+                    "skipped": [],
+                    "commands": [],
+                }
+            )
+            continue
+
+        missing: list[InstalledSkillInventoryRow] = []
+        already_present: list[InstalledSkillInventoryRow] = []
+        unresolved: list[InstalledSkillInventoryRow] = []
+        skipped: list[InstalledSkillInventoryRow] = []
+
+        for row in verified_rows:
+            if not _row_targets_agent(row, agent_id):
+                skipped.append(row)
+                continue
+            if agent_id in row.installed_agents:
+                already_present.append(row)
+            else:
+                missing.append(row)
+
+        for row in optional_installed:
+            if not include_installed:
+                skipped.append(row)
+                continue
+            if agent_id in row.installed_agents:
+                already_present.append(row)
+            elif row.is_installable():
+                missing.append(row)
+            else:
+                unresolved.append(row)
+
+        for row in unresolved_rows:
+            if include_installed or _row_targets_agent(row, agent_id):
+                unresolved.append(row)
+            else:
+                skipped.append(row)
+
+        command_groups = _sync_command_groups(missing, agent_id)
+        report_agents.append(
+            {
+                "agent": agent_id,
+                "error": "",
+                "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
+                "already_present": [
+                    _sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)
+                ],
+                "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
+                "skipped": [_sync_row_summary(row) for row in sorted(skipped, key=lambda item: item.name)],
+                "commands": [command["text"] for command in command_groups],
+                "_command_argvs": [command["argv"] for command in command_groups],
+            }
+        )
+
+    return {
+        "inventory_count": len(snapshot.rows),
+        "include_installed": include_installed,
+        "agents": report_agents,
+    }
+
+
+def _emit_sync_report(report: dict[str, object], *, dry_run: bool) -> None:
+    """Print a human-readable sync report."""
+    mode = "dry-run" if dry_run else "apply"
+    agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
+    typer.echo(f"wagents skills sync ({mode})")
+    typer.echo(f"Inventory rows: {report['inventory_count']}")
+    typer.echo("")
+    for agent_payload in agent_reports:
+        typer.echo(f"[{agent_payload['agent']}]")
+        error = str(agent_payload.get("error") or "")
+        if error:
+            typer.echo(f"  error: {error}")
+            typer.echo("")
+            continue
+        for key in ["missing", "already_present", "unresolved", "skipped"]:
+            rows = cast(list[str], agent_payload.get(key) or [])
+            typer.echo(f"  {key.replace('_', '-')} ({len(rows)})")
+            for row in rows:
+                typer.echo(f"    - {row}")
+        commands = cast(list[str], agent_payload.get("commands") or [])
+        typer.echo(f"  commands ({len(commands)})")
+        for command in commands:
+            typer.echo(f"    {command}")
+        typer.echo("")
+
+
 @app.command()
 def install(
     skills: Annotated[list[str] | None, typer.Argument(help="Skill name(s) to install (omit for all)")] = None,
@@ -1372,6 +1567,36 @@ def skills_doctor(
     )
 
 
+@skills_app.command("sync")
+def skills_sync(
+    agent: Annotated[list[str] | None, typer.Option("-a", "--agent", help="Target agent(s), repeatable")] = None,
+    all_agents: bool = typer.Option(False, "--all-agents", help="Target all supported agents"),
+    dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Preview or execute additive sync"),
+    include_installed: bool = typer.Option(
+        False,
+        "--include-installed",
+        help="Include verified one-off installed external skills outside the curated desired set",
+    ),
+):
+    """Additively sync repo and curated external skills across supported harnesses."""
+    if not shutil.which("npx"):
+        typer.echo("Error: npx not found. Install Node.js first.", err=True)
+        raise typer.Exit(code=1)
+
+    target_agents = _select_sync_agents(agent, all_agents)
+    report = _build_sync_report(target_agents, include_installed=include_installed)
+    agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
+    _emit_sync_report(report, dry_run=dry_run)
+    if dry_run:
+        return
+
+    for payload in agent_reports:
+        for argv in cast(list[list[str]], payload.get("_command_argvs") or []):
+            result = subprocess.run(argv, capture_output=False)
+            if result.returncode != 0:
+                raise typer.Exit(code=result.returncode)
+
+
 @app.command()
 def package(
     name: str = typer.Argument("", help="Skill name (omit for --all)"),
@@ -1531,7 +1756,8 @@ def readme(
         ),
         (
             "| Other agents | `npx skills add github:wyattowalsh/agents ...` | "
-            "`wagents update` / `npx skills update` refreshes installed skills from recorded sources |"
+            "`wagents update` refreshes recorded sources, and `wagents skills sync` "
+            "additively reconciles repo + curated external skills across harnesses |"
         ),
         "",
         "## ✨ Why use this repository?",
@@ -1603,6 +1829,10 @@ def readme(
             "| `wagents new mcp <name>` | Create a new MCP server |",
             "| `wagents doctor` | Check local environment and toolchain health |",
             "| `wagents validate` | Validate all skills and agents |",
+            (
+                "| `wagents skills sync --dry-run` | Preview additive cross-harness "
+                "skill sync from the normalized inventory |"
+            ),
             "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
             "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
             "| `make typecheck` | Run ty across `wagents/` and `scripts/` |",
@@ -1618,7 +1848,7 @@ def readme(
             "| `wagents docs generate` | Generate MDX content pages from assets |",
             (
                 "| `wagents docs generate --include-installed` | Include installed "
-                "skills discovered from local agent skill directories in generated docs |"
+                "skills discovered from the normalized harness inventory in generated docs |"
             ),
             "| `wagents docs dev` | Generate + launch dev server |",
             "| `wagents docs build` | Generate + production build |",
@@ -1773,20 +2003,21 @@ def hooks_validate(
             if not isinstance(hook, dict):
                 add_error(source, "hook entry must be a mapping")
                 continue
-            hook_id = hook.get("id")
+            hook_dict = cast(dict[str, object], hook)
+            hook_id = hook_dict.get("id")
             if not isinstance(hook_id, str) or not hook_id:
                 add_error(source, "hook id is required")
-            event = hook.get("logical_event")
+            event = hook_dict.get("logical_event")
             if event not in KNOWN_HOOK_EVENTS:
                 add_error(source, f"unknown logical_event '{event}'")
-            harnesses = hook.get("harnesses")
+            harnesses = hook_dict.get("harnesses")
             if not isinstance(harnesses, list) or not harnesses:
                 add_error(source, "harnesses must be a non-empty list")
             else:
                 unknown = sorted(set(harnesses) - supported_harnesses)
                 if unknown:
                     add_error(source, f"unsupported harnesses: {', '.join(str(item) for item in unknown)}")
-            command = hook.get("command")
+            command = hook_dict.get("command")
             if not isinstance(command, str) or not command:
                 add_error(source, "command is required")
             elif "hooks/wagents-hook.py" in command and not (ROOT / "hooks" / "wagents-hook.py").exists():
