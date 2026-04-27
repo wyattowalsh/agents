@@ -1222,9 +1222,17 @@ def merge_copilot_config(ctx: SyncContext, policy: dict[str, Any]) -> None:
 
 def sync_copilot_subagent_env(ctx: SyncContext, policy: dict[str, Any]) -> None:
     defaults = policy.get("model_defaults", {}).get("copilot", {})
-    limits = defaults.get("subagent_limits", {})
-    max_concurrent = int(limits.get("max_concurrent", 2))
-    max_depth = int(limits.get("max_depth", 1))
+    limits = defaults.get("subagent_limits")
+    if not limits:
+        content = (
+            "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+            "unset COPILOT_SUBAGENT_MAX_CONCURRENT\n"
+            "unset COPILOT_SUBAGENT_MAX_DEPTH\n"
+        )
+        write_text(ctx, COPILOT_SUBAGENTS_ENV_PATH, content)
+        return
+    max_concurrent = int(limits["max_concurrent"])
+    max_depth = int(limits["max_depth"])
     content = (
         "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
         f'export COPILOT_SUBAGENT_MAX_CONCURRENT="{max_concurrent}"\n'

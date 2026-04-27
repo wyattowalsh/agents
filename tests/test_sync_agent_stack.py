@@ -762,9 +762,9 @@ def test_merge_copilot_config_preserves_camel_case_settings_keys(tmp_path, monke
         "docs_domains": ["docs.github.com", "modelcontextprotocol.io"],
         "model_defaults": {
             "copilot": {
-                "model": "gpt-5.4-mini",
-                "effort_level": "low",
-                "continue_on_auto_mode": True,
+                "model": "gpt-5.4",
+                "effort_level": "high",
+                "continue_on_auto_mode": False,
             }
         },
     }
@@ -777,9 +777,9 @@ def test_merge_copilot_config_preserves_camel_case_settings_keys(tmp_path, monke
     assert "trusted_folders" not in rendered
     assert "allowed_urls" not in rendered
     assert rendered["allowedUrls"] == ["https://docs.github.com", "https://modelcontextprotocol.io"]
-    assert rendered["model"] == "gpt-5.4-mini"
-    assert rendered["effortLevel"] == "low"
-    assert rendered["continueOnAutoMode"] is True
+    assert rendered["model"] == "gpt-5.4"
+    assert rendered["effortLevel"] == "high"
+    assert rendered["continueOnAutoMode"] is False
 
 
 def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):
@@ -803,6 +803,21 @@ def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):
         "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
         'export COPILOT_SUBAGENT_MAX_CONCURRENT="2"\n'
         'export COPILOT_SUBAGENT_MAX_DEPTH="1"\n'
+    )
+
+
+def test_sync_copilot_subagent_env_unsets_limits_when_unbounded(tmp_path, monkeypatch):
+    env_path = tmp_path / "copilot-subagents.env"
+    monkeypatch.setattr(sync_agent_stack, "COPILOT_SUBAGENTS_ENV_PATH", env_path)
+    policy = {"model_defaults": {"copilot": {"model": "gpt-5.4"}}}
+
+    ctx = SyncContext(apply=True)
+    sync_copilot_subagent_env(ctx, policy)
+
+    assert env_path.read_text(encoding="utf-8") == (
+        "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+        "unset COPILOT_SUBAGENT_MAX_CONCURRENT\n"
+        "unset COPILOT_SUBAGENT_MAX_DEPTH\n"
     )
 
 
