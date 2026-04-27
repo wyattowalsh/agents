@@ -60,6 +60,8 @@ GEMINI_EXTENSION_MCP_PATH = (
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
 GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
+OPENCODE_TUI_CONFIG_PATH = HOME / ".config" / "opencode" / "tui.json"
+OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
 CRUSH_CONFIG_PATH = HOME / ".config" / "crush" / "crush.json"
 CHERRY_STUDIO_DIR = HOME / "Library" / "Application Support" / "CherryStudio"
@@ -177,7 +179,7 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
     },
     "chrome-devtools": {
         "command": "npx",
-        "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:9222"],
+        "args": ["-y", "chrome-devtools-mcp@latest", "--chrome-arg", "--disable-blink-features=AutomationControlled"],
     },
     "context7": {
         "command": "npx",
@@ -1263,6 +1265,7 @@ def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any], hook_registry:
     generate_copilot_repo_instructions(ctx)
     generate_copilot_rule_instructions(ctx)
     generate_copilot_hooks(ctx, hook_registry)
+    generate_project_opencode_config(ctx)
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
@@ -1448,7 +1451,59 @@ def merge_opencode_config(
         settings["skills"] = skills
     skills["paths"] = merge_unique_path_strings([render_home_path(SKILLS_DIR)], skills.get("paths"))
 
+    defaults = (policy or {}).get("model_defaults", {}).get("opencode", {})
+    if "model" in defaults:
+        settings["model"] = defaults["model"]
+    if "small_model" in defaults:
+        settings["small_model"] = defaults["small_model"]
+
+    def _update_nested_model(obj: Any, model: str) -> None:
+        if not isinstance(obj, dict):
+            return
+        for key, value in obj.items():
+            if isinstance(value, dict):
+                if "model" in value:
+                    value["model"] = model
+                _update_nested_model(value, model)
+
+    if "model" in defaults:
+        _update_nested_model(settings.get("mode"), defaults["model"])
+        _update_nested_model(settings.get("agent"), defaults["model"])
+
     write_json(ctx, OPENCODE_CONFIG_PATH, settings)
+
+
+def merge_opencode_tui_config(ctx: SyncContext) -> None:
+    settings: dict[str, Any] = {}
+    if OPENCODE_TUI_CONFIG_PATH.exists():
+        settings = load_json(OPENCODE_TUI_CONFIG_PATH)
+    settings["notification_method"] = "auto"
+    write_json(ctx, OPENCODE_TUI_CONFIG_PATH, settings)
+
+
+def generate_project_opencode_config(ctx: SyncContext) -> None:
+    config: dict[str, Any] = {
+        "$schema": "https://opencode.ai/config.json",
+        "instructions": ["AGENTS.md", "instructions/opencode-global.md"],
+        "skills": {"paths": ["skills"]},
+    }
+    if OPENCODE_REPO_CONFIG_PATH.exists():
+        existing = load_json(OPENCODE_REPO_CONFIG_PATH)
+        if isinstance(existing, dict):
+            existing.setdefault("instructions", config["instructions"])
+            existing.setdefault("skills", config["skills"])
+            config = existing
+    write_json(ctx, OPENCODE_REPO_CONFIG_PATH, config)
+
+
+def merge_cherry_studio_config(ctx: SyncContext) -> None:
+    if not CHERRY_STUDIO_DIR.exists():
+        return
+    config_path = CHERRY_STUDIO_DIR / "config.json"
+    settings: dict[str, Any] = {}
+    if config_path.exists():
+        settings = load_json(config_path)
+    write_json(ctx, config_path, settings)
 
 
 def merge_gemini_settings(
@@ -1556,6 +1611,7 @@ def sync_home_targets(
         render_client_mcp(registry, fallbacks)["mcpServers"],
     )
     merge_opencode_config(ctx, registry, fallbacks, policy)
+    merge_opencode_tui_config(ctx)
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
@@ -1563,6 +1619,7 @@ def sync_home_targets(
     sync_generated_json_directory(
         ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)
     )
+    merge_cherry_studio_config(ctx)
     sync_skill_entries(ctx, CODEX_SKILLS_DIR)
     sync_skill_entries(ctx, COPILOT_SKILLS_DIR)
     sync_skill_entries(ctx, GEMINI_SKILLS_DIR)
