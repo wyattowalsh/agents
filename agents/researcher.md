@@ -1,4 +1,5 @@
 ---
+name: researcher
 description: Investigate a technical question deeply and return a concise evidence-backed summary.
 mode: subagent
 model: opencode-go/kimi-k2.6

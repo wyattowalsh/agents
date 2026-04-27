@@ -1,4 +1,5 @@
 ---
+name: code-reviewer
 description: Review changes for correctness, risk, and maintainability without editing code.
 mode: subagent
 model: opencode-go/kimi-k2.6

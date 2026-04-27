@@ -24,7 +24,7 @@ npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent
 
 ## 📦 Distribution
 
-This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback. Today it primarily ships skills, MCP configuration, and shared instructions; the repo-level `agents/` directory is reserved for future bundled agent definitions.
+This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:
 
 | Target | Path | Update behavior |
 | ------ | ---- | --------------- |
@@ -92,6 +92,21 @@ Reusable actions and knowledge bases for AI agents.
 | tech-debt-analyzer | Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring. |
 | test-architect | Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (honest-review). |
 | wargame | Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty. NOT for simple pros/cons or code review. |
+
+## 🤖 Agents
+
+System prompts and context definitions for AI agents.
+
+| Name | Description |
+| ---- | ----------- |
+| code-reviewer | Review changes for correctness, risk, and maintainability without editing code. |
+| docs-writer | Update or create technical documentation grounded in the current codebase. |
+| orchestrator | Coordinate multi-step work by decomposing, delegating, and synthesizing results. |
+| performance-profiler | Investigate performance bottlenecks and recommend the highest-leverage fixes. |
+| planner | Create a codebase-grounded implementation plan before coding. |
+| release-manager | Prepare release notes, versioning, and ship-readiness checks with cautious permissions. |
+| researcher | Investigate a technical question deeply and return a concise evidence-backed summary. |
+| security-auditor | Audit code and configuration for security risks without making changes. |
 
 ## 🛠️ Development
 

@@ -2,6 +2,7 @@
 export const navLinks = [
   { label: 'Start Here', link: '/start-here/' },
   { label: 'Skills', link: '/skills/', badge: '112' },
+  { label: 'Agents', link: '/agents/' },
   { label: 'MCP', link: '/mcp/', badge: '30' },
   { label: 'CLI', link: '/cli/' }
 ];
@@ -71,6 +72,10 @@ export default [
       },
       { label: 'External Sources (64)', slug: 'external-skills' },
     ],
+  },
+  {
+    label: 'Agents',
+    autogenerate: { directory: 'agents' },
   },
   {
     label: 'MCP Servers',

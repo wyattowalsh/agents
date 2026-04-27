@@ -1,4 +1,5 @@
 ---
+name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
 mode: subagent
 model: opencode-go/kimi-k2.6
