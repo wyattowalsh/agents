@@ -228,6 +228,12 @@ class SyncContext:
     def note(self, message: str) -> None:
         self.changes.append(message)
 
+    def write_text(self, path: Path, content: str) -> None:
+        write_text(self, path, content)
+
+    def write_json(self, path: Path, data: Any) -> None:
+        write_json(self, path, data)
+
 
 def normalize_name(name: str) -> str:
     normalized = NAME_MAP.get(name)
@@ -1254,7 +1260,7 @@ def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registr
 
 
 def merge_copilot_config(ctx: SyncContext, policy: dict[str, Any]) -> None:
-    config = load_json(COPILOT_SETTINGS_PATH)
+    config = load_json(COPILOT_SETTINGS_PATH) if COPILOT_SETTINGS_PATH.exists() else {}
     defaults = policy.get("model_defaults", {}).get("copilot", {})
     config["model"] = defaults.get("model", config.get("model"))
     config["effortLevel"] = defaults.get("effort_level", config.get("effortLevel"))
@@ -1305,16 +1311,50 @@ def sync_copilot_agents(ctx: SyncContext) -> None:
     ensure_symlink(ctx, COPILOT_AGENTS_HOME_DIR, COPILOT_AGENTS_REPO_DIR)
 
 
-def sync_repo_targets(ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any]) -> None:
+def load_platform_adapter(name: str) -> Any:
+    repo_root = str(REPO_ROOT)
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from wagents.platforms import get_adapter
+
+    return get_adapter(name)
+
+
+def sync_platform_repo_target(
+    name: str,
+    ctx: SyncContext,
+    registry: dict[str, Any],
+    hook_registry: dict[str, Any],
+    policy: dict[str, Any],
+) -> None:
+    load_platform_adapter(name).sync_repo(ctx, registry, hook_registry, policy)
+
+
+def sync_platform_home_target(
+    name: str,
+    ctx: SyncContext,
+    registry: dict[str, Any],
+    policy: dict[str, Any],
+    fallbacks: dict[str, str],
+    hook_registry: dict[str, Any],
+) -> None:
+    load_platform_adapter(name).sync_home(ctx, registry, policy, fallbacks, hook_registry)
+
+
+def sync_repo_targets(
+    ctx: SyncContext,
+    registry: dict[str, Any],
+    hook_registry: dict[str, Any],
+    policy: dict[str, Any],
+) -> None:
     write_json(ctx, MCP_REGISTRY_PATH, registry)
-    write_json(ctx, REPO_MCP_PATH, render_repo_mcp(registry))
-    write_json(ctx, VSCODE_MCP_PATH, render_repo_mcp(registry))
+    sync_platform_repo_target("vscode", ctx, registry, hook_registry, policy)
     write_json(ctx, HOOK_REGISTRY_PATH, hook_registry)
     generate_codex_global_instructions(ctx)
     generate_copilot_repo_instructions(ctx)
     generate_copilot_rule_instructions(ctx)
     generate_copilot_hooks(ctx, hook_registry)
-    generate_project_opencode_config(ctx)
+    sync_platform_repo_target("opencode", ctx, registry, hook_registry, policy)
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
@@ -1640,7 +1680,7 @@ def sync_home_targets(
     merge_claude_settings(ctx, policy, hook_registry)
     merge_claude_settings_local(ctx, registry)
     merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks)
-    merge_client_mcp_config(ctx, CURSOR_MCP_PATH, registry, fallbacks)
+    sync_platform_home_target("cursor", ctx, registry, policy, fallbacks, hook_registry)
     merge_copilot_config(ctx, policy)
     sync_copilot_subagent_env(ctx, policy)
     merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
@@ -1659,9 +1699,7 @@ def sync_home_targets(
         "mcpServers",
         render_client_mcp(registry, fallbacks)["mcpServers"],
     )
-    merge_opencode_config(ctx, registry, fallbacks, policy)
-    deploy_opencode_plugin(ctx, "approval-notify.ts")
-    deploy_opencode_plugin(ctx, "credential-guard.ts")
+    sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
     merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
     merge_codex_config(ctx, registry, policy, fallbacks)
@@ -1710,7 +1748,7 @@ def main(argv: list[str] | None = None) -> int:
     fallbacks = load_current_secret_fallbacks()
     targets = {item.strip() for item in args.targets.split(",")} if args.targets != "all" else {"repo", "home"}
     if "repo" in targets:
-        sync_repo_targets(ctx, registry, hook_registry)
+        sync_repo_targets(ctx, registry, hook_registry, policy)
     if "home" in targets:
         sync_home_targets(ctx, registry, policy, fallbacks, hook_registry)
     if args.check:
