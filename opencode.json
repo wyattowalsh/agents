@@ -10,14 +10,14 @@
     ]
   },
   "plugin": [
-    "opencode-handoff",
-    "open-plan-annotator",
-    "@mailshieldai/opencode-canvas",
-    "@kdcokenny/opencode-notify",
-    "@kdcokenny/opencode-background-agents",
-    "@slkiser/opencode-quota"
+    "opencode-handoff@^0.5.0",
+    "open-plan-annotator@^1.3.0",
+    "@mailshieldai/opencode-canvas@^0.1.2",
+    "@kdcokenny/opencode-notify@^0.3.1",
+    "@kdcokenny/opencode-background-agents@^0.1.1",
+    "@slkiser/opencode-quota@^3.3.0"
   ],
   "permission": {
-    "canvas_*": "allow"
+    "canvas_*": "prompt"
   }
 }
