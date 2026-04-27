@@ -1464,7 +1464,8 @@ def merge_opencode_config(
             if isinstance(value, dict):
                 if "model" in value:
                     value["model"] = model
-                _update_nested_model(value, model)
+                if key in ("mode", "agent"):
+                    _update_nested_model(value, model)
 
     if "model" in defaults:
         _update_nested_model(settings.get("mode"), defaults["model"])
@@ -1477,7 +1478,7 @@ def merge_opencode_tui_config(ctx: SyncContext) -> None:
     settings: dict[str, Any] = {}
     if OPENCODE_TUI_CONFIG_PATH.exists():
         settings = load_json(OPENCODE_TUI_CONFIG_PATH)
-    settings["notification_method"] = "auto"
+    settings.setdefault("notification_method", "auto")
     write_json(ctx, OPENCODE_TUI_CONFIG_PATH, settings)
 
 
@@ -1500,10 +1501,8 @@ def merge_cherry_studio_config(ctx: SyncContext) -> None:
     if not CHERRY_STUDIO_DIR.exists():
         return
     config_path = CHERRY_STUDIO_DIR / "config.json"
-    settings: dict[str, Any] = {}
-    if config_path.exists():
-        settings = load_json(config_path)
-    write_json(ctx, config_path, settings)
+    if not config_path.exists():
+        write_json(ctx, config_path, {})
 
 
 def merge_gemini_settings(
