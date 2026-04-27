@@ -98,6 +98,7 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
             "role": "repo-observed",
         },
     ],
+    "cherry-studio": [],
 }
 
 
@@ -179,6 +180,20 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "role": "secondary",
         },
     ],
+    "cherry-studio": [
+        {
+            "label": "cherry studio config",
+            "path": "~/Library/Application Support/CherryStudio/config.json",
+            "kind": "config",
+            "role": "authoritative",
+        },
+        {
+            "label": "cherry studio mcp imports",
+            "path": "~/Library/Application Support/CherryStudio/mcp-import/managed",
+            "kind": "mcp",
+            "role": "generated",
+        },
+    ],
 }
 
 
@@ -209,6 +224,13 @@ BLIND_SPOTS: dict[str, list[tuple[str, str, str]]] = {
             "global",
             "Global OpenCode rules",
             "Rules may affect OpenCode behavior, but a stable first-party global rules path is not verified in this plan.",
+        ),
+    ],
+    "cherry-studio": [
+        (
+            "global",
+            "Cherry Studio UI settings",
+            "App settings such as default model and theme may only be observable through the UI.",
         ),
     ],
 }
@@ -360,7 +382,7 @@ def main() -> int:
         action="append",
         dest="harnesses",
         required=True,
-        choices=sorted(PROJECT_SURFACES),
+        choices=sorted({*PROJECT_SURFACES, *GLOBAL_SURFACES}),
         help="Canonical harness name. Repeat for multiple harnesses.",
     )
     parser.add_argument("--level", required=True, choices=["project", "global", "both"], help="Review level.")
