@@ -6,6 +6,7 @@ description: The shortest path through install, invocation, and the repo layout
 {/* HAND-MAINTAINED */}
 
 import { Aside, Badge, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+import InstallCommand from '../../components/InstallCommand.astro';
 import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 import { installCommands } from '../../generated-site-data.mjs';
 
@@ -25,13 +26,9 @@ Skills are portable prompt-and-workflow bundles for coding agents. Install them 
 
 ## 1. Install The Catalog
 
-<div class="install-section">
-  <pre><code>{`# Install the repository catalog globally
-${installCommands.all}
+<InstallCommand command={installCommands.all} title="Install the full catalog" note="Globally installs repo skills across supported agent harnesses." />
 
-# Or start with one focused skill
-${installCommands.starter}`}</code></pre>
-</div>
+<InstallCommand command={installCommands.starter} title="Install one starter skill" note="Use this when you want to test the workflow before installing everything." />
 
 ## 2. Choose The Packaging Path
 
@@ -41,7 +38,7 @@ ${installCommands.starter}`}</code></pre>
   <LinkCard title="Skills CLI" href="/cli/" description="Use npx skills add for Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents." />
 </CardGrid>
 
-Run `wagents update` or `npx skills update` after upstream changes to refresh installed skills from their recorded sources.
+Run `wagents update` or `npx skills update` after upstream changes to refresh recorded sources, and use `wagents skills sync --dry-run` before `--apply` when you want additive cross-harness reconciliation for repo + curated external skills.
 
 ## 3. Try A Starter Skill
 

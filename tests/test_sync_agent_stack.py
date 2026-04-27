@@ -5,12 +5,12 @@ import json
 from scripts import sync_agent_stack
 from scripts.sync_agent_stack import (
     SyncContext,
+    deploy_opencode_plugin,
     generate_project_opencode_config,
     merge_cherry_studio_config,
     merge_codex_config,
     merge_copilot_config,
     merge_opencode_config,
-    merge_opencode_tui_config,
     merge_server_root_config,
     render_cherry_import_files,
     render_cherry_server,
@@ -682,19 +682,25 @@ def test_merge_opencode_config_syncs_custom_agent_models(tmp_path, monkeypatch):
     assert payload["agent"]["custom-agent-2"]["other"] == "value"
 
 
-def test_merge_opencode_tui_config_sets_notification_method(tmp_path, monkeypatch):
-    home_dir = tmp_path / "home"
-    tui_path = home_dir / ".config" / "opencode" / "tui.json"
-    tui_path.parent.mkdir(parents=True)
+def test_deploy_opencode_plugin_copies_file(tmp_path, monkeypatch):
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    plugins_dir = repo_root / "platforms" / "opencode" / "plugins"
+    plugins_dir.mkdir(parents=True)
+    (plugins_dir / "approval-notify.ts").write_text("export const Plugin = {}", encoding="utf-8")
 
-    monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
-    monkeypatch.setattr(sync_agent_stack, "OPENCODE_TUI_CONFIG_PATH", tui_path)
+    home_dir = tmp_path / "home"
+    opencode_plugins = home_dir / ".config" / "opencode" / "plugins"
+
+    monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_PLUGINS_DIR", opencode_plugins)
 
     ctx = SyncContext(apply=True)
-    merge_opencode_tui_config(ctx)
-    payload = json.loads(tui_path.read_text())
+    deploy_opencode_plugin(ctx, "approval-notify.ts")
+    dest = opencode_plugins / "approval-notify.ts"
 
-    assert payload["notification_method"] == "auto"
+    assert dest.exists()
+    assert dest.read_text(encoding="utf-8") == "export const Plugin = {}"
 
 
 def test_generate_project_opencode_config_creates_file(tmp_path, monkeypatch):

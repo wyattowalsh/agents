@@ -22,10 +22,20 @@ export function isTrustedSameOriginRequest(request: Request): boolean {
   return false;
 }
 
-export function sanitizeAdminRedirect(rawValue: FormDataEntryValue | null | undefined): string {
+export function sanitizeAdminRedirect(
+  rawValue: FormDataEntryValue | null | undefined,
+  baseUrl = 'http://localhost'
+): string {
   const candidate = typeof rawValue === 'string' ? rawValue : '/admin';
-  if (!candidate.startsWith('/admin')) return '/admin';
-  return candidate;
+  // Normalize via URL resolution to collapse traversal sequences (e.g. /admin/../x → /x)
+  let normalized: string;
+  try {
+    normalized = new URL(candidate, baseUrl).pathname;
+  } catch {
+    return '/admin';
+  }
+  if (!normalized.startsWith('/admin')) return '/admin';
+  return normalized;
 }
 
 export function withSearchParams(
@@ -43,5 +53,10 @@ export function withSearchParams(
 }
 
 export function redirectResponse(request: Request, path: string, status = 303): Response {
-  return Response.redirect(new URL(path, request.url), status);
+  return new Response(null, {
+    status,
+    headers: {
+      Location: new URL(path, request.url).toString(),
+    },
+  });
 }

@@ -1,0 +1,184 @@
+---
+const { toc } = Astro.locals.starlightRoute;
+
+type TocItem = {
+  children: TocItem[];
+  slug: string;
+  text: string;
+};
+
+interface Props {
+  depth?: number;
+  items?: TocItem[];
+}
+
+const { depth = 0, items = toc?.items ?? [] } = Astro.props;
+const isNestedList = Boolean(Astro.props.items);
+---
+
+{
+  isNestedList ? (
+    <ul style={`--depth: ${depth}`}>
+      {items.map((heading) => (
+        <li>
+          <a href={'#' + heading.slug}>
+            <span>{heading.text}</span>
+          </a>
+          {heading.children.length > 0 && <Astro.self items={heading.children} depth={depth + 1} />}
+        </li>
+      ))}
+    </ul>
+  ) : toc && (
+    <starlight-toc data-min-h={toc.minHeadingLevel} data-max-h={toc.maxHeadingLevel}>
+      <nav aria-labelledby="starlight__on-this-page">
+        <p id="starlight__on-this-page">{Astro.locals.t('tableOfContents.onThisPage')}</p>
+        <Astro.self items={toc.items} />
+      </nav>
+    </starlight-toc>
+  )
+}
+
+<script is:inline>
+  (() => {
+    if (customElements.get('starlight-toc')) return;
+
+    const pageTitleId = '_top';
+
+    class StarlightTOC extends HTMLElement {
+      constructor() {
+        super();
+        this.currentLink = this.querySelector('a[aria-current="true"]');
+        this.minHeadingLevel = Number.parseInt(this.dataset.minH || '2', 10);
+        this.maxHeadingLevel = Number.parseInt(this.dataset.maxH || '3', 10);
+        this.tocHeadingSelector = [
+          `h1#${pageTitleId}`,
+          `:where(${Array.from(
+            { length: 1 + this.maxHeadingLevel - this.minHeadingLevel },
+            (_, index) => `h${this.minHeadingLevel + index}`
+          ).join(',')})[id]`,
+        ].join(',');
+
+        const onIdle = window.requestIdleCallback || ((callback) => setTimeout(callback, 1));
+        onIdle(() => this.init());
+      }
+
+      setCurrent(link) {
+        if (link === this.currentLink) return;
+        this.currentLink?.removeAttribute('aria-current');
+        link.setAttribute('aria-current', 'true');
+        this.currentLink = link;
+      }
+
+      init() {
+        const links = Array.from(this.querySelectorAll('a'));
+        const isHeading = (element) => element.matches(this.tocHeadingSelector);
+        const getElementHeading = (element) => {
+          if (!element) return null;
+          const origin = element;
+
+          while (element) {
+            if (element.matches('.sl-markdown-content, main > *')) {
+              return document.getElementById(pageTitleId);
+            }
+            if (isHeading(element)) return element;
+
+            const childHeading = element.querySelector(this.tocHeadingSelector);
+            if (childHeading) return childHeading;
+
+            element = element.previousElementSibling;
+            while (element?.lastElementChild) {
+              element = element.lastElementChild;
+            }
+
+            const heading = getElementHeading(element);
+            if (heading) return heading;
+          }
+
+          return getElementHeading(origin.parentElement);
+        };
+
+        const setCurrent = (entries) => {
+          for (const { isIntersecting, target } of entries) {
+            if (!isIntersecting) continue;
+            const heading = getElementHeading(target);
+            if (!heading) continue;
+
+            const link = links.find((candidate) => candidate.hash === `#${encodeURIComponent(heading.id)}`);
+            if (link) {
+              this.setCurrent(link);
+              break;
+            }
+          }
+        };
+
+        const toObserve = document.querySelectorAll(
+          [
+            `main :where(${this.tocHeadingSelector})`,
+            `main :where(${this.tocHeadingSelector}, .sl-heading-wrapper) ~ *:not(:has(${this.tocHeadingSelector}))`,
+            `main .sl-markdown-content > *:not(:has(${this.tocHeadingSelector}))`,
+            `main > *:not(:has(${this.tocHeadingSelector}))`,
+          ].join()
+        );
+
+        let observer;
+        const observe = () => {
+          if (observer) return;
+          observer = new IntersectionObserver(setCurrent, { rootMargin: this.getRootMargin() });
+          toObserve.forEach((element) => observer.observe(element));
+        };
+        observe();
+
+        let timeout;
+        const onIdle = window.requestIdleCallback || ((callback) => setTimeout(callback, 1));
+        window.addEventListener('resize', () => {
+          observer?.disconnect();
+          observer = undefined;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => onIdle(observe), 200);
+        });
+      }
+
+      getRootMargin() {
+        const navBarHeight = document.querySelector('header')?.getBoundingClientRect().height || 0;
+        const mobileTocHeight = this.querySelector('summary')?.getBoundingClientRect().height || 0;
+        const top = navBarHeight + mobileTocHeight + 32;
+        const bottom = top + 53;
+        const height = document.documentElement.clientHeight;
+        return `-${top}px 0% ${bottom - height}px`;
+      }
+    }
+
+    customElements.define('starlight-toc', StarlightTOC);
+  })();
+</script>
+
+<style>
+  starlight-toc {
+    scrollbar-width: none;
+    padding-bottom: 2.5rem;
+    overflow: auto;
+    height: 100%;
+  }
+
+  p {
+    font-weight: 500;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    --pad-inline: 0.5rem;
+    display: block;
+    border-radius: 0.25rem;
+    padding-block: 0.25rem;
+    padding-inline: calc(1rem * var(--depth) + var(--pad-inline)) var(--pad-inline);
+    line-height: 1.25;
+  }
+
+  a[aria-current='true'] {
+    color: var(--sl-color-text-accent);
+  }
+</style>

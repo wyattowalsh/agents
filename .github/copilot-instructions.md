@@ -8,7 +8,7 @@
 - Verify, validate, and debug your work before ending your response.
 - Use llms.txt, Context7, and relevant tools for up-to-date context; prefer latest dependency versions.
 - After changes to public APIs, file structure, agent definitions, or skill definitions, invoke `/docs-steward` if available.
-- When skills need installing, surface the command to the user: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+- When skills need installing, surface the command to the user: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`. When reconciling harness installs, prefer `uv run wagents skills sync --dry-run` before `--apply`.
 - For the curated third-party skill install set and trust-gated external sources, use `/Users/ww/dev/projects/agents/instructions/external-skills.md`.
 - Never sign or add self-attribution.
 - Use hooks for deterministic enforcement; reserve instructions for intent and heuristics that require judgment.

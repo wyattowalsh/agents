@@ -1,0 +1,52 @@
+---
+description: Rules for creating new skills, agents, and MCP servers (use wagents new, validate, naming)
+globs:
+  - "skills/**"
+  - "agents/**"
+  - "mcp/**"
+---
+
+# Creating New Assets
+
+Always use the CLI scaffolding commands and follow naming conventions. Do not create asset files manually from scratch.
+
+## CLI Commands
+
+```bash
+# Skills
+wagents new skill <name>            # → skills/<name>/SKILL.md
+wagents new skill <name> --no-docs  # Skip docs page scaffold
+
+# Agents
+wagents new agent <name>            # → agents/<name>.md
+
+# MCP Servers
+wagents new mcp <name>              # → mcp/<name>/ (server.py + pyproject.toml + fastmcp.json)
+```
+
+## Naming
+
+- All names must be kebab-case: `^[a-z0-9][a-z0-9-]*$`.
+- Skill directory name must match the frontmatter `name` field.
+- Agent filename (without `.md`) must match the frontmatter `name` field.
+- MCP server directory name should match the package name (minus `mcp-` prefix).
+
+## Validation
+
+- After creating or modifying skills/agents, run `wagents validate` to check frontmatter compliance.
+- After asset changes, regenerate derived artifacts:
+  - `wagents readme` — Regenerates `README.md` from repo contents.
+  - `wagents docs generate` — Regenerates MDX content pages for the docs site.
+
+## MCP Server Structure
+
+First-party MCP servers in `mcp/<name>/` must follow FastMCP v3 conventions:
+- Entry point: `server.py` with `mcp = FastMCP("Name")`.
+- Config: `fastmcp.json` pointing to `server.py` with `uv` environment.
+- Package: `pyproject.toml` with `fastmcp>=2` dependency.
+- Workspace: Root `pyproject.toml` must include the exact member path under `[tool.uv.workspace]`, e.g. `members = ["mcp/<name>"]`.
+
+## Bundle Root Policy
+
+- Do not duplicate `skills/`, `agents/`, `mcp/`, or `instructions/` into platform-specific plugin folders.
+- The repository root is the canonical bundle root.

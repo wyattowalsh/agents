@@ -1,0 +1,38 @@
+---
+interface Props {
+  command: string;
+  title?: string;
+  note?: string;
+}
+
+const { command, title = 'Install command', note } = Astro.props;
+const id = `install-${Math.random().toString(36).slice(2)}`;
+---
+
+<section class="install-command" data-install-command={id}>
+  <div class="install-command__header">
+    <div>
+      <p>{title}</p>
+      {note && <span>{note}</span>}
+    </div>
+    <button type="button" class="install-command__copy" data-copy-command={id}>Copy</button>
+  </div>
+  <pre class="agents-scrollbar"><code>{command}</code></pre>
+</section>
+
+<script>
+  document.querySelectorAll('[data-copy-command]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const id = button.getAttribute('data-copy-command');
+      const root = document.querySelector(`[data-install-command="${id}"]`);
+      const command = root?.querySelector('code')?.textContent ?? '';
+      if (!command) return;
+      await navigator.clipboard.writeText(command);
+      const previous = button.textContent;
+      button.textContent = 'Copied';
+      window.setTimeout(() => {
+        button.textContent = previous;
+      }, 1600);
+    });
+  });
+</script>

@@ -1,6 +1,5 @@
 """Tests for wagents.catalog — node collection, deduplication, and edge extraction."""
 
-import json
 from pathlib import Path
 
 from wagents.catalog import (
@@ -10,6 +9,7 @@ from wagents.catalog import (
     collect_installed_skills,
     collect_nodes,
 )
+from wagents.installed_inventory import HarnessQueryResult, InstalledInventorySnapshot, InstalledSkillInventoryRow
 
 # ---------------------------------------------------------------------------
 # collect_nodes
@@ -70,31 +70,37 @@ def test_collect_nodes_returns_all_kinds(tmp_repo):
 
 def test_collect_installed_skills_skips_existing(tmp_path, monkeypatch):
     """A skill whose ID is already in existing_ids is skipped."""
-    # Set up a fake ~/.claude/skills directory
-    installed_dir = tmp_path / "home_claude_skills"
-    skill_dir = installed_dir / "my-skill"
+    skill_dir = tmp_path / "my-skill"
     skill_dir.mkdir(parents=True)
     (skill_dir / "SKILL.md").write_text(
         "---\nname: my-skill\ndescription: An installed skill\n---\n\n# My Skill\n\nBody.\n"
     )
-
-    # Monkeypatch Path.home() so collect_installed_skills finds our directory
-    monkeypatch.setattr(
-        "wagents.catalog.Path.home",
-        staticmethod(lambda: tmp_path / "home_claude_skills" / ".."),
+    snapshot = InstalledInventorySnapshot(
+        rows=(
+            InstalledSkillInventoryRow(
+                name="my-skill",
+                path=str(skill_dir),
+                source_path=str(skill_dir / "SKILL.md"),
+                scope="global",
+                description="An installed skill",
+                license="",
+                version="",
+                author="",
+                source="example/skills",
+                install_source="example/skills",
+                source_url="https://github.com/example/skills",
+                install_command="npx skills add example/skills --skill my-skill -y -g",
+                provenance_status="installed-external",
+                trust_tier="github",
+                selector_mode="named",
+                installed_agents=("claude-code",),
+                discovered_in=("claude-code",),
+                target_agents=(),
+            ),
+        ),
+        queries=(HarnessQueryResult(agent_id="claude-code", ok=True, entries=()),),
     )
-
-    # Actually — collect_installed_skills reads Path.home() / ".claude" / "skills".
-    # So set up the correct structure:
-    real_installed = tmp_path / "home" / ".claude" / "skills"
-    real_installed.mkdir(parents=True)
-    skill_dir2 = real_installed / "my-skill"
-    skill_dir2.mkdir()
-    (skill_dir2 / "SKILL.md").write_text(
-        "---\nname: my-skill\ndescription: An installed skill\n---\n\n# My Skill\n\nBody.\n"
-    )
-
-    monkeypatch.setattr("wagents.catalog.Path.home", staticmethod(lambda: tmp_path / "home"))
+    monkeypatch.setattr("wagents.catalog.collect_installed_inventory", lambda **kwargs: snapshot)
 
     # When "my-skill" is in existing_ids, it should be skipped
     existing = {"my-skill"}
@@ -110,31 +116,37 @@ def test_collect_installed_skills_skips_existing(tmp_path, monkeypatch):
 
 def test_collect_installed_skills_includes_lock_source(tmp_path, monkeypatch):
     """Installed skills carry source metadata from the active skills lock file."""
-    real_installed = tmp_path / "home" / ".claude" / "skills"
-    real_installed.mkdir(parents=True)
-    skill_dir = real_installed / "my-skill"
+    skill_dir = tmp_path / "my-skill"
     skill_dir.mkdir()
     (skill_dir / "SKILL.md").write_text(
         "---\nname: my-skill\ndescription: An installed skill\n---\n\n# My Skill\n\nBody.\n"
     )
-
-    state_dir = tmp_path / "home" / ".local" / "state" / "skills"
-    state_dir.mkdir(parents=True)
-    (state_dir / ".skill-lock.json").write_text(
-        json.dumps(
-            {
-                "version": 3,
-                "skills": {
-                    "my-skill": {
-                        "source": "example/skills",
-                        "sourceType": "github",
-                    }
-                },
-            }
-        )
+    snapshot = InstalledInventorySnapshot(
+        rows=(
+            InstalledSkillInventoryRow(
+                name="my-skill",
+                path=str(skill_dir),
+                source_path=str(skill_dir / "SKILL.md"),
+                scope="global",
+                description="An installed skill",
+                license="",
+                version="",
+                author="",
+                source="example/skills",
+                install_source="example/skills",
+                source_url="https://github.com/example/skills",
+                install_command="npx skills add example/skills --skill my-skill -y -g",
+                provenance_status="installed-external",
+                trust_tier="github",
+                selector_mode="named",
+                installed_agents=("claude-code",),
+                discovered_in=("claude-code",),
+                target_agents=(),
+            ),
+        ),
+        queries=(HarnessQueryResult(agent_id="claude-code", ok=True, entries=()),),
     )
-
-    monkeypatch.setattr("wagents.catalog.Path.home", staticmethod(lambda: tmp_path / "home"))
+    monkeypatch.setattr("wagents.catalog.collect_installed_inventory", lambda **kwargs: snapshot)
 
     result = collect_installed_skills(set())
     assert len(result) == 1

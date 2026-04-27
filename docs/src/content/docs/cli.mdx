@@ -56,7 +56,7 @@ Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wa
 | `wagents readme` | Regenerate `README.md` or fail if it is stale |
 | `wagents install` | Install repo skills into supported agent platforms |
 | `wagents update` | Refresh installed skills from their recorded sources |
-| `wagents skills <subcommand>` | Index, search, read, and diagnose local skills on demand |
+| `wagents skills <subcommand>` | Inventory, sync, search, read, and diagnose local skills on demand |
 | `wagents package <name>` | Build portable ZIP packages for sharing or release |
 | `wagents docs <subcommand>` | Generate, serve, build, preview, or clean the docs site |
 | `wagents hooks <subcommand>` | List and validate lifecycle hooks |
@@ -275,11 +275,59 @@ npx skills update
 
 ---
 
+### `wagents skills sync` -- Additive Cross-Harness Sync
+
+Build a normalized installed-skill inventory from `npx skills ls -g -a <agent> --json`, then preview or apply additive installs for the desired sync set.
+
+```bash
+# Default mode is dry-run across all supported harnesses
+wagents skills sync
+
+# Target one harness
+wagents skills sync --agent github-copilot
+
+# Include verified one-off installed external skills
+wagents skills sync --include-installed
+
+# Execute the verified install commands
+wagents skills sync --apply
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `-a`, `--agent` | all | Restrict sync to one or more harnesses |
+| `--all-agents` | `false` | Explicitly target all supported harnesses |
+| `--dry-run` | `true` | Preview missing, already-present, unresolved, skipped rows, and exact install commands |
+| `--apply` | `false` | Execute only the verified additive install commands |
+| `--include-installed` | `false` | Include verified one-off installed external skills outside the curated desired set |
+
+<Aside type="note" title="Desired sync set">
+By default, sync targets repo-owned custom skills plus verified curated external skills. It never removes user-installed skills.
+</Aside>
+
+<Aside type="caution" title="GitHub Copilot caveat">
+GitHub Copilot remains part of config and instruction sync, but the skills inventory reports only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`.
+</Aside>
+
+---
+
 ### `wagents skills` -- On-Demand Skill Index
 
-Index and search repository, installed, and plugin skills without loading every skill description into startup context. Use this when local skill inventory exceeds an agent's context budget.
+Inspect repository, installed, curated, and plugin skills without loading every skill description into startup context. Use this when local skill inventory exceeds an agent's context budget or when you need additive sync diagnostics.
 
 <Tabs>
+  <TabItem label="sync">
+
+Preview additive cross-harness installs from the normalized inventory:
+
+```bash
+wagents skills sync --dry-run
+
+# Narrow to one harness and include verified one-off installs
+wagents skills sync --agent codex --include-installed
+```
+
+  </TabItem>
   <TabItem label="search">
 
 Search for matching skills with deterministic lexical ranking:

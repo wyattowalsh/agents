@@ -12,9 +12,20 @@ function isProtectedAdminPath(pathname: string): boolean {
   return false;
 }
 
+function isAdminSurfacePath(pathname: string): boolean {
+  return pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
   const requestId = randomUUID();
+
+  if (!isAdminSurfacePath(pathname)) {
+    const response = await next();
+    response.headers.set('x-request-id', requestId);
+    return response;
+  }
+
   const session = readAdminSessionFromCookies(context.cookies);
   const csrfToken = ensureCsrfToken(context.cookies);
   const featureOverrides = readFeatureOverridesFromCookies(context.cookies);
