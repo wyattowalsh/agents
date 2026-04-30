@@ -1,0 +1,280 @@
+{
+  "skill_name": "docs-steward",
+  "evals": [
+    {
+      "id": "explicit-auto-route",
+      "prompt": "/docs-steward auto",
+      "files": ["evals/explicit-auto.json"],
+      "expected_output": "Route to Mode A Auto, detect docs frameworks, ask for an explicit target when multiple frameworks are present, and keep all actions project-local.",
+      "assertions": [
+        "Mentions Mode A Auto or equivalent auto classification.",
+        "Uses framework detection before mutating files.",
+        "Asks for clarification when multiple frameworks are detected."
+      ]
+    },
+    {
+      "id": "explicit-sync-route",
+      "prompt": "/docs-steward sync",
+      "files": ["evals/explicit-sync-route.json"],
+      "expected_output": "Route to Mode C Sync, run framework-appropriate generation or sync checks, and report validation/build commands.",
+      "assertions": [
+        "Mentions Sync mode or framework-native sync/generation.",
+        "Includes validation or build verification after docs mutation.",
+        "Does not perform unrelated application implementation."
+      ]
+    },
+    {
+      "id": "explicit-maintain-route",
+      "prompt": "/docs-steward maintain",
+      "files": ["evals/explicit-maintain-route.json"],
+      "expected_output": "Route to Mode E Maintain and produce a read-only diagnostics report with severity levels and next commands.",
+      "assertions": [
+        "Treats Maintain as read-only.",
+        "Uses Critical, Warning, Suggestion, or equivalent severity labels.",
+        "Reports next commands without editing files."
+      ]
+    },
+    {
+      "id": "explicit-matrix-route",
+      "prompt": "/docs-steward matrix",
+      "files": ["evals/explicit-matrix-route.json"],
+      "expected_output": "Route to Mode G Matrix and inspect all detected docs frameworks in deterministic order.",
+      "assertions": [
+        "Mentions matrix or all-framework inspection.",
+        "Uses the deterministic framework order from the skill.",
+        "Separates findings by framework or docs root."
+      ]
+    },
+    {
+      "id": "framework-targeted-route",
+      "prompt": "/docs-steward framework docusaurus maintain",
+      "files": ["evals/framework-route.json"],
+      "expected_output": "Route to Mode B with Docusaurus as the explicit framework target and run the requested action only for that framework.",
+      "assertions": [
+        "Honors the explicit framework target.",
+        "Does not ask for framework selection when the target is explicit.",
+        "Uses the matching framework reference guidance."
+      ]
+    },
+    {
+      "id": "implicit-docs-trigger",
+      "prompt": "Please sync the docs after these documentation changes.",
+      "files": ["evals/implicit-trigger.json"],
+      "expected_output": "Infer docs-steward, classify the docs intent, and choose sync or enhance based on changed docs surfaces.",
+      "assertions": [
+        "Activates docs-steward behavior without an explicit slash command.",
+        "Classifies the docs intent before editing.",
+        "Keeps work scoped to documentation surfaces."
+      ]
+    },
+    {
+      "id": "implicit-init-sync-existing-codebase",
+      "prompt": "This repo has code but no docs site yet. Set up docs without destroying anything.",
+      "files": ["evals/implicit-init-sync-existing-codebase.json"],
+      "expected_output": "Route to Mode I Init or init-sync, perform a non-destructive preflight, and create only missing project-local docs scaffold files.",
+      "assertions": [
+        "Performs a preflight before creating files.",
+        "Preserves existing docs roots and content.",
+        "Keeps bootstrap project-local."
+      ]
+    },
+    {
+      "id": "explicit-init-route",
+      "prompt": "/docs-steward init",
+      "files": ["evals/explicit-init-route.json"],
+      "expected_output": "Route to Mode I Init and use the non-destructive docs bootstrap contract.",
+      "assertions": [
+        "Mentions Init mode or non-destructive bootstrap.",
+        "Checks for existing docs roots before creating files.",
+        "Reports created and skipped files."
+      ]
+    },
+    {
+      "id": "explicit-init-sync-route",
+      "prompt": "/docs-steward init-sync",
+      "files": ["evals/explicit-init-sync.json"],
+      "expected_output": "Route to Init followed by Sync, preserving the non-destructive bootstrap contract before running framework-native sync checks.",
+      "assertions": [
+        "Runs or describes Init before Sync.",
+        "Does not replace non-empty docs roots.",
+        "Includes follow-up validation commands."
+      ]
+    },
+    {
+      "id": "headless-ambiguous-routing",
+      "prompt": "CI headless run: /docs-steward auto on this monorepo with Docusaurus and MkDocs; prompts are disabled.",
+      "files": ["evals/headless-ambiguous-routing.json"],
+      "expected_output": "Apply the Headless Fallback Contract, run a read-only Maintain matrix in deterministic framework order, warn about fallback, and skip mutating modes until an explicit target is supplied.",
+      "assertions": [
+        "Detects headless ambiguity.",
+        "Downgrades to read-only Maintain or Matrix.",
+        "Does not run mutating sync, enhance, init, or migrate steps."
+      ]
+    },
+    {
+      "id": "autosync-headless-multiframe-safety",
+      "prompt": "Automatically sync all docs in CI for a repo with Starlight and Sphinx docs.",
+      "files": ["evals/autosync-headless-multiframe-safety.json"],
+      "expected_output": "Refuse unsafe multi-framework auto-sync in headless mode and produce a read-only matrix report with explicit next commands.",
+      "assertions": [
+        "Refuses or defers mutating auto-sync.",
+        "Explains the multi-framework headless safety rule.",
+        "Provides explicit framework-targeted next commands."
+      ]
+    },
+    {
+      "id": "autosync-structure-config-trigger",
+      "prompt": "The docs config and sidebar changed; sync the site structure.",
+      "files": ["evals/autosync-structure-config-trigger.json"],
+      "expected_output": "Classify structure/config changes and route to Sync plus Maintain verification.",
+      "assertions": [
+        "Classifies structure or config docs changes.",
+        "Routes to Sync before Maintain verification.",
+        "Includes framework-specific build or health checks."
+      ]
+    },
+    {
+      "id": "auto-dependency-version-trigger",
+      "prompt": "Docs dependencies are out of date; refresh to the latest supported framework versions.",
+      "files": ["evals/auto-dependency-version-trigger.json"],
+      "expected_output": "Classify dependency/version intent, require registry-backed research before claiming latest, then propose update and validation steps.",
+      "assertions": [
+        "Does not claim latest without evidence.",
+        "Routes through Research before Sync or updates.",
+        "Records source and date for version evidence."
+      ]
+    },
+    {
+      "id": "research-refresh",
+      "prompt": "/docs-steward research starlight latest",
+      "files": ["evals/research-refresh.json"],
+      "expected_output": "Route to Mode F Research, gather registry-backed framework evidence, refresh reference snapshots, and distinguish verified facts from recommendations.",
+      "assertions": [
+        "Uses authoritative version evidence.",
+        "Records source and date.",
+        "Separates facts from proposed updates."
+      ]
+    },
+    {
+      "id": "migrate-mode",
+      "prompt": "/docs-steward migrate sphinx -> mkdocs",
+      "files": ["evals/migrate-mode.json"],
+      "expected_output": "Route to Mode H Migrate, parse source and target frameworks, create phased reversible migration steps, and keep checkpoints explicit.",
+      "assertions": [
+        "Identifies source and target frameworks correctly.",
+        "Uses phased reversible checkpoints.",
+        "Includes validation and rollback criteria."
+      ]
+    },
+    {
+      "id": "malformed-migrate-syntax",
+      "prompt": "/docs-steward migrate docs please",
+      "files": ["evals/malformed-migrate-syntax.json"],
+      "expected_output": "Ask a clarifying question for missing source and target frameworks instead of guessing or mutating files.",
+      "assertions": [
+        "Does not guess the migration source or target.",
+        "Asks for source and target framework names.",
+        "Does not edit files before clarification."
+      ]
+    },
+    {
+      "id": "explicit-generate-api",
+      "prompt": "/docs-steward generate api for src/",
+      "files": ["evals/explicit-generate-api.json"],
+      "expected_output": "Route to Mode J Generate API, run or reference the API extraction and coverage scripts, produce source-traced API markdown, and flag undocumented public symbols.",
+      "assertions": [
+        "Mentions api-surface-extractor.py and doc-coverage-analyzer.py.",
+        "Preserves exact extracted signatures and docstrings.",
+        "Flags undocumented public symbols instead of fabricating docs."
+      ]
+    },
+    {
+      "id": "explicit-generate-adr",
+      "prompt": "/docs-steward generate adr 'Adopt Starlight for docs'",
+      "files": ["evals/explicit-generate-adr.json"],
+      "expected_output": "Route to Mode J Generate ADR, use the ADR scaffolder/template, ask for missing decision context when needed, and present the ADR before writing.",
+      "assertions": [
+        "Uses adr-scaffolder.py or data/adr-template.json.",
+        "Asks for missing context or decision details when needed.",
+        "Treats writing the ADR as approval-gated when output paths are involved."
+      ]
+    },
+    {
+      "id": "implicit-generate-trigger",
+      "prompt": "Create a runbook for the docs deployment flow from the existing repo scripts.",
+      "files": ["evals/implicit-generate-trigger.json"],
+      "expected_output": "Infer Mode J Generate Runbook, extract commands from repository evidence, and flag unknown operational details instead of inventing them.",
+      "assertions": [
+        "Routes to a generate runbook workflow.",
+        "Traces commands and procedures to repository evidence.",
+        "Flags missing evidence rather than fabricating operational steps."
+      ]
+    },
+    {
+      "id": "enhance-advanced-components",
+      "prompt": "/docs-steward enhance advanced components",
+      "files": ["evals/enhance-advanced-components.json"],
+      "expected_output": "Use the advanced components reference to choose framework-native components with accessible fallbacks and verify rendering/build behavior.",
+      "assertions": [
+        "Loads or follows references/advanced-components.md.",
+        "Uses framework-native components instead of generic decorative markup.",
+        "Includes accessibility and fallback checks."
+      ]
+    },
+    {
+      "id": "multi-framework-prompt",
+      "prompt": "Improve the docs in this repo; it has Docusaurus and MkDocs directories.",
+      "files": ["evals/multi-framework-prompt.json"],
+      "expected_output": "Detect multiple framework candidates and ask which docs root/framework to mutate, or fall back to read-only maintain in headless mode.",
+      "assertions": [
+        "Detects multiple docs frameworks.",
+        "Asks for target selection before mutating files.",
+        "Offers a read-only maintain fallback when prompting is unavailable."
+      ]
+    },
+    {
+      "id": "unknown-framework-input",
+      "prompt": "/docs-steward auto on a repo with no recognizable docs framework",
+      "files": ["evals/unknown-framework-input.json"],
+      "expected_output": "Return a read-only maintain-style report explaining that no supported docs framework was detected and ask for an explicit target before mutating.",
+      "assertions": [
+        "Does not assume a docs framework.",
+        "Returns a read-only report.",
+        "Asks for an explicit framework target or init instruction."
+      ]
+    },
+    {
+      "id": "negative-control-backend",
+      "prompt": "Build a FastAPI backend with JWT auth and Postgres migrations.",
+      "files": ["evals/negative-control.json"],
+      "expected_output": "Refuse or redirect as out of scope for docs-steward, explaining that backend/API implementation belongs to another skill.",
+      "assertions": [
+        "Does not implement backend code.",
+        "Explains docs-steward scope boundaries.",
+        "Redirects to an API/backend-oriented skill or workflow."
+      ]
+    },
+    {
+      "id": "readme-docs-surface",
+      "prompt": "Update the project README after the docs workflow changed, using clear advanced GitHub-flavored Markdown.",
+      "files": ["README.md", "skills/docs-steward/SKILL.md"],
+      "expected_output": "Classify the request as a docs-surface update, update only source-grounded README sections when docs behavior changed, and verify markdown links or relevant docs checks.",
+      "assertions": [
+        "Treats README as an in-scope docs-facing surface when documentation behavior changed.",
+        "Uses source-grounded content and advanced GFM where helpful.",
+        "Does not edit unrelated product or backend code."
+      ]
+    },
+    {
+      "id": "nested-agents-docs-surface",
+      "prompt": "Sync nested AGENTS.md instructions after changing docs stewardship behavior.",
+      "files": ["AGENTS.md", "docs/AGENTS.md", "skills/docs-steward/SKILL.md"],
+      "expected_output": "Classify nested AGENTS.md files as docs/instruction surfaces, update only relevant source-grounded guidance, and preserve skill-creator ownership of skill definition edits.",
+      "assertions": [
+        "Treats nested AGENTS.md files as in-scope documentation/instruction surfaces when docs behavior changed.",
+        "Keeps updates source-grounded and project-local.",
+        "Does not create or modify skill definitions unless routed to skill-creator."
+      ]
+    }
+  ]
+}

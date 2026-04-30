@@ -20,15 +20,15 @@ Technical documentation generation from source code. This reference provides det
 
 ### Procedure
 
-1. Run `scripts/api-surface-extractor.py <path>` to extract public API surface.
-2. Run `scripts/doc-coverage-analyzer.py <path>` to assess current coverage.
+1. From the skill root, run `uv run python scripts/api-surface-extractor.py <path>` to extract public API surface.
+2. From the skill root, run `uv run python scripts/doc-coverage-analyzer.py <path>` to assess current coverage.
 3. For each module in the extraction output:
    a. Group exports by type (classes, functions, constants, types).
    b. Format each export with: name, signature, docstring (if present), and source line.
    c. Flag undocumented exports with a "needs docs" marker.
 4. Choose docstring format from `data/docstring-formats.json` based on detected language and existing conventions.
 5. Generate markdown with:
-   - Module overview (from module docstring or inferred purpose)
+   - Module overview from module docstring, README/package metadata, or `Unknown: source summary unavailable`
    - Grouped export tables with signatures
    - Detailed sections per class/function with parameters, returns, examples
    - Coverage summary footer
@@ -76,9 +76,9 @@ Technical documentation generation from source code. This reference provides det
    - What problem does this solve?
    - What alternatives were considered?
    - What are the expected consequences?
-3. Run `scripts/adr-scaffolder.py "<title>"` with available arguments.
+3. Run `uv run python scripts/adr-scaffolder.py "<title>" --json` for inspection with available arguments.
 4. If an `docs/decisions/` or `docs/adr/` directory exists, auto-number based on existing ADRs.
-5. Present the generated ADR for review before writing to disk.
+5. Present the generated ADR for review before writing to disk; use `--output <path>` only after write-location approval.
 
 ### File placement
 
@@ -188,7 +188,7 @@ Links to deeper docs, team channels, design docs.
 
 | Term | Definition | Source |
 |------|-----------|--------|
-| **term** | Definition extracted or inferred | `path/to/source.py:42` |
+| **term** | Definition extracted from source/docs, or `Needs review: source unavailable` | `path/to/source.py:42` |
 ```
 
 4. Flag terms with unclear or missing definitions for manual review.
@@ -203,7 +203,7 @@ Links to deeper docs, team channels, design docs.
 | `scripts/api-surface-extractor.py` | Public API surface extraction | Directory or file path | `{modules: [{name, path, exports: [{name, type, signature, docstring}]}]}` |
 | `scripts/adr-scaffolder.py` | ADR generation in MADR format | Title + optional context args | MADR markdown or JSON |
 
-All scripts use stdlib only (ast, re, argparse, json). Run with `uv run python scripts/<name>.py`.
+All script paths are relative to the skill root. From the repository root, use `uv run python skills/docs-steward/scripts/<name>.py`. Structured data belongs on stdout; diagnostics and actionable errors belong on stderr. Use `adr-scaffolder.py --json` for inspection-only output, and treat `adr-scaffolder.py --output <path>` as a mutating, approval-gated operation.
 
 ---
 
