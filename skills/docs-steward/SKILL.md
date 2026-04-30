@@ -2,8 +2,9 @@
 name: docs-steward
 description: >-
   Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks,
-  migrations, ADRs, runbooks. Use when docs change. NOT for backend code, skills
-  (skill-creator), or MCP servers (mcp-creator).
+  migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT
+  for backend code, skill definition edits (skill-creator), or MCP servers
+  (mcp-creator).
 argument-hint: "[auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework <name> <action>]"
 license: MIT
 model: opus
@@ -21,6 +22,8 @@ Maintain docs quality, architecture, and framework currency in project-local rep
 ---
 
 ## Canonical Vocabulary
+
+Use these canonical terms exactly throughout docs-steward outputs.
 
 | Term | Meaning | NOT |
 |------|---------|-----|
@@ -67,9 +70,12 @@ Route `$ARGUMENTS` to mode:
 | Natural language: "docs are stale/broken/outdated" | **Maintain** | Mode E |
 | Natural language: "improve docs UX/content/nav" | **Enhance** | Mode D |
 | Natural language: "upgrade latest framework versions" | **Research** | Mode F |
+| Natural language: "update README", "sync AGENTS.md", "refresh docs instructions" | **Auto** | Mode A docs-surface route |
 | Requests to build app APIs, skills, or MCP servers | **Refuse** | Redirect |
 
-### Classification Gate
+### Classification-Gating Pattern
+
+Apply this classification-gating rubric before any mutating mode.
 
 1. Detect frameworks using `references/framework-detection.md`.
 2. If one framework is detected, continue with that framework.
@@ -111,6 +117,7 @@ Classify detected change signals before choosing a mode:
 - **Content-only:** page prose/examples/frontmatter edits without nav/config/build impact.
 - **Structure/config:** docs/framework/config/navigation/build-related changes (sidebar/nav trees, framework config, docs build wiring, generated docs artifacts).
 - **Dependency/version:** docs framework/theme/plugin dependency or lockfile/version changes.
+- **Docs-surface:** project README, nested `AGENTS.md`, generated docs indexes, or contributor-facing docs that must reflect a docs behavior change.
 
 ### A.2 Action path
 
@@ -120,6 +127,7 @@ Classify detected change signals before choosing a mode:
    - Content-only -> **Mode D (Enhance)**, then optional **Mode E (Maintain)** check.
    - Structure/config -> **Mode C (Sync)** + **Mode E (Maintain)**.
    - Dependency/version -> **Mode F (Research)** + **Mode C (Sync)** + **Mode E (Maintain)**.
+   - Docs-surface -> **Mode C (Sync)** when generation/wiring changed, otherwise **Mode D (Enhance)** + **Mode E (Maintain)**.
 4. If trigger category or intent is unclear, ask one focused clarifying question before edits.
 
 ### A.3 Auto-sync safety
@@ -327,13 +335,24 @@ Sub-modes:
 
 ## Scope Boundaries
 
-**In scope:** Docs framework operations, non-destructive docs bootstrap, version refresh, build/health diagnostics, quality enhancement, docs migrations, technical documentation generation from code.
+**In scope:** Docs framework operations, non-destructive docs bootstrap, version refresh, build/health diagnostics, quality enhancement, docs migrations, technical documentation generation from code, project README updates, and nested `AGENTS.md` instruction-doc updates when documentation behavior changed.
 
 **NOT for:**
 - Creating/editing unrelated product features or backend APIs
-- Creating new skills, agents, or MCP servers
+- Creating or changing skill definitions, agents, or MCP servers (route to `skill-creator`, `agent-conventions`, or `mcp-creator`)
 - CI/CD redesign outside docs pipeline needs
 - Non-docs frontend application implementation
+
+---
+
+## Scaling Strategy
+
+| Scope | Execution Strategy | Ownership Rule |
+|-------|--------------------|----------------|
+| 1 framework and 1-3 docs files | Edit inline, then run framework-specific validation | One agent owns all touched files |
+| 1 framework and 4-12 docs files | Batch by docs area: nav/config, generated references, prose pages, README/`AGENTS.md` | Never assign the same file to multiple workers |
+| 2-5 frameworks or 13+ docs files | Use matrix waves in deterministic framework order, then consolidate maintain report | One worker per framework or file batch; merge only after validation |
+| Any migration or version refresh | Plan checkpoint first, then phase edits with rollback notes | Keep source and target docs roots traceable until parity is verified |
 
 ---
 
@@ -356,6 +375,21 @@ Load references on demand; do not load all at once.
 | `references/generate-mode.md` | Generate sub-mode procedures, output formats, script usage | generate |
 | `data/docstring-formats.json` | Docstring format standards per language (Google, NumPy, Sphinx, JSDoc, TSDoc) | generate api |
 | `data/adr-template.json` | MADR v3 template structure and file naming conventions | generate adr |
+
+---
+
+## Validation Contract
+
+Completion criteria:
+
+1. Changed docs surfaces are source-grounded and project-local.
+2. Mutating modes run the relevant framework build, docs generation, or health check.
+3. Maintain mode remains read-only and reports next commands instead of editing.
+4. Skill changes pass these proof commands when applicable:
+   - `uv run wagents validate`
+   - `uv run wagents eval validate`
+   - Run `audit.py skills/docs-steward/` from the repository's `skill-creator` scripts directory
+   - `uv run wagents package docs-steward --dry-run` if packaging is supported in the repository
 
 ---
 
