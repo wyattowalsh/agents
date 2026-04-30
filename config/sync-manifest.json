@@ -14,6 +14,10 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/config/opencode-dcp.jsonc",
+      "mode": "canonical"
+    },
+    {
       "path": "/Users/ww/dev/projects/agents/config/sync-manifest.json",
       "mode": "canonical"
     },
@@ -150,7 +154,15 @@
       "mode": "merged"
     },
     {
+      "path": "/Users/ww/.config/opencode/dcp.jsonc",
+      "mode": "merged"
+    },
+    {
       "path": "/Users/ww/.config/opencode/plugins/approval-notify.ts",
+      "mode": "generated"
+    },
+    {
+      "path": "/Users/ww/.config/opencode/plugins/credential-guard.ts",
       "mode": "generated"
     },
     {

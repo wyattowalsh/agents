@@ -2,9 +2,7 @@
 name: performance-profiler
 description: Investigate performance bottlenecks and recommend the highest-leverage fixes.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.1
-steps: 20
 color: secondary
 permission:
   edit: deny

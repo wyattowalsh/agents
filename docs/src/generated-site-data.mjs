@@ -3523,7 +3523,7 @@ export const siteData = {
     {
       "argumentHint": "[auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework <name> <action>]",
       "author": "wyattowalsh",
-      "description": "Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks. Use when docs change. NOT for backend code, skills (skill-creator), or MCP servers (mcp-creator).",
+      "description": "Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator).",
       "installCommand": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "installSource": "github:wyattowalsh/agents",
       "installedAgents": [],
@@ -3537,6 +3537,7 @@ export const siteData = {
           "evals/autosync-headless-multiframe-safety.json",
           "evals/autosync-structure-config-trigger.json",
           "evals/enhance-advanced-components.json",
+          "evals/evals.json",
           "evals/explicit-auto.json",
           "evals/explicit-generate-adr.json",
           "evals/explicit-generate-api.json",
@@ -3561,7 +3562,7 @@ export const siteData = {
           "Docs Steward",
           "Canonical Vocabulary",
           "Dispatch Table",
-          "Classification Gate",
+          "Classification-Gating Pattern",
           "Headless Fallback Contract",
           "Live Version Research (Required for \"latest\")",
           "Mode A: Auto",
@@ -3603,7 +3604,7 @@ export const siteData = {
           "scripts/doc-coverage-analyzer.py"
         ],
         "templates": [],
-        "wordCount": 2447
+        "wordCount": 2745
       },
       "license": "MIT",
       "model": "opus",

@@ -11,7 +11,7 @@ Your OpenCode setup is already **exceptionally advanced** — you have 30+ MCP s
 ### What You Already Have (Impressive)
 - **Providers**: Anthropic, Google/Antigravity, OpenAI, LM Studio (local)
 - **MCP Servers**: 30+ including search (brave, duckduckgo, exa, g-search, web-search), thinking tools (cascade, sequential, structured, creative, shannon, deep-lucid-3d, atom-of-thoughts, crash, think-strategies), browsing (chrome-devtools, fetch, fetcher, trafilatura), research (arxiv, context7, deepwiki, wayback, wikipedia), media (ffmpeg, docling), communications (gmail, linkedin), productivity (things, desktop-commander), and custom (ronin)
-- **Agents**: `build` (full tool access, 35 steps) and `plan` (read-only, 20 steps)
+- **Agents**: Model- and step-cap-free subagents that inherit harness/runtime controls
 - **Skills**: Custom skill directory at `~/dev/projects/agents/skills`
 - **Tools**: `git-smart-status`, `git-worktree`, `workspace-summary`
 - **Commands**: `docs-sync`, `orchestrate-task`, `perf-audit`, `plan-impl`, `release-readiness`, `research-topic`, `review-pr`, `security-audit`

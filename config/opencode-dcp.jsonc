@@ -1,0 +1,86 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+  "enabled": true,
+  "debug": false,
+  "pruneNotification": "detailed",
+  "pruneNotificationType": "chat",
+  "commands": {
+    "enabled": true,
+    "protectedTools": [
+      "task",
+      "skill",
+      "todowrite",
+      "todoread",
+      "compress",
+      "plan_enter",
+      "plan_exit"
+    ]
+  },
+  "manualMode": {
+    "enabled": false,
+    "automaticStrategies": true
+  },
+  "turnProtection": {
+    "enabled": true,
+    "turns": 4
+  },
+  "experimental": {
+    "allowSubAgents": true,
+    "customPrompts": false
+  },
+  "protectedFilePatterns": [
+    ".env*",
+    "*.pem",
+    "*.p12",
+    "*.pfx",
+    "*.key",
+    "credentials.json",
+    "auth.json",
+    "secrets.toml",
+    "**/.ssh/**",
+    "**/.aws/**",
+    "**/.kube/**",
+    "**/.docker/**",
+    "**/.npmrc"
+  ],
+  "compress": {
+    "mode": "range",
+    "permission": "allow",
+    "showCompression": false,
+    "summaryBuffer": true,
+    "maxContextLimit": "85%",
+    "minContextLimit": "55%",
+    "nudgeFrequency": 4,
+    "iterationNudgeThreshold": 12,
+    "nudgeForce": "soft",
+    "protectedTools": [
+      "task",
+      "skill",
+      "todowrite",
+      "todoread",
+      "compress"
+    ],
+    "protectUserMessages": false
+  },
+  "strategies": {
+    "deduplication": {
+      "enabled": true,
+      "protectedTools": [
+        "task",
+        "skill",
+        "todowrite",
+        "todoread"
+      ]
+    },
+    "purgeErrors": {
+      "enabled": true,
+      "turns": 4,
+      "protectedTools": [
+        "task",
+        "skill",
+        "todowrite",
+        "todoread"
+      ]
+    }
+  }
+}

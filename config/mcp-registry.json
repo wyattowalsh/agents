@@ -46,8 +46,8 @@
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--chrome-arg",
-        "--disable-blink-features=AutomationControlled"
+        "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
+        "--headless=false"
       ],
       "env": {},
       "enabled": true,

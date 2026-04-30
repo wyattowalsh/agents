@@ -2,9 +2,7 @@
 name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.2
-steps: 18
 color: accent
 permission:
   bash:

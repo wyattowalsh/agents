@@ -16,10 +16,7 @@
       "model": "gpt-5.4",
       "effort_level": "xhigh"
     },
-    "opencode": {
-      "model": "opencode-go/kimi-k2.6",
-      "small_model": "opencode-go/kimi-k2.6"
-    }
+    "opencode": {}
   },
   "local_llm_providers": {
     "lmstudio": {
