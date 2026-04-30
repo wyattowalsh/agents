@@ -2,9 +2,7 @@
 name: release-manager
 description: Prepare release notes, versioning, and ship-readiness checks with cautious permissions.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.1
-steps: 18
 color: success
 permission:
   bash:

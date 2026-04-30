@@ -6,21 +6,50 @@
 
 ### Model Preference
 
-Use `opencode-go/kimi-k2.6` for all tasks, subagents, modes, and agents unless the user explicitly requests otherwise. This is the built-in provider/model pair for the OpenCode agent environment.
+Repo-managed OpenCode configuration and agent frontmatter must stay model-free. Do not add `model`, `small_model`, `mode.*.model`, or `agent.*.model` selectors to repo-managed OpenCode surfaces.
 
-When editing OpenCode configuration files, enforce:
-- `model`: `opencode-go/kimi-k2.6`
-- `small_model`: `opencode-go/kimi-k2.6`
-- `mode.*.model`: `opencode-go/kimi-k2.6`
-- `agent.*.model`: `opencode-go/kimi-k2.6`
+Repo-managed OpenCode agent frontmatter must also avoid `steps` caps. Optimize for frontier high-thinking execution through instructions, decomposition, verification, and low deterministic temperatures rather than model selectors or step limits.
+
+When merging live user-owned OpenCode config, preserve existing user model settings; do not introduce repo defaults for them.
 
 ### Notification Setup
 
 On macOS, ensure `notification_method` is set to `"auto"` in `~/.config/opencode/tui.json` to enable OSC terminal notifications and avoid osascript "Script Editor" popups.
 
+### Chrome DevTools MCP Auth Flows
+
+For OpenCode on this machine, prefer the local wrapper-based Chrome DevTools MCP launch instead of the generic shared repo default when Google sign-in or other sign-in-sensitive flows need a stable attached browser.
+
+The live OpenCode config should point `mcp.chrome-devtools.command` at:
+
+```json
+["bash", "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"]
+```
+
+That launcher currently:
+
+- starts or reuses a dedicated Chrome instance on `127.0.0.1:9333`
+- uses profile dir `/Users/ww/.cache/chrome-devtools-mcp-browser-url-profile`
+- verifies `http://127.0.0.1:9333/json/version` returns a real DevTools payload before continuing
+- then execs `npx -y chrome-devtools-mcp@latest --browserUrl http://127.0.0.1:9333`
+
+The current launcher path is:
+
+```bash
+/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh
+```
+
+Use this OpenCode-specific override only where needed. Keep the shared repo-managed MCP default on the generic headed persistent-profile launch shape documented in `AGENTS.md`.
+
 ### Subagent Delegation
 
-When using OpenCode subagents or modes (`build`, `plan`, etc.), always inherit the parent model settings unless a different model is explicitly required for the subtask.
+When using OpenCode subagents or modes (`build`, `plan`, etc.), inherit the invoking primary agent and harness runtime settings. Do not add repo-managed subagent or mode model overrides.
+
+### Dynamic Context Pruning
+
+The live DCP config at `~/.config/opencode/dcp.jsonc` is managed from repo canonical `config/opencode-dcp.jsonc`. It is tuned for long orchestration sessions with stable `range` compression and model-agnostic percentage thresholds.
+
+Keep DCP model-neutral: do not add `compress.modelMaxLimits` or `compress.modelMinLimits` unless the user explicitly requests per-model context limits.
 
 ## Security & Secret Handling
 

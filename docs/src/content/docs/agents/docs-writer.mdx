@@ -5,7 +5,7 @@ description: "Update or create technical documentation grounded in the current c
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
-<Badge text="Agent Config" variant="note" /> <Badge text="opencode-go/kimi-k2.6" variant="tip" />
+<Badge text="Agent Config" variant="note" />
 
 > Update or create technical documentation grounded in the current codebase.
 
@@ -18,7 +18,6 @@ This page is generated from the repository agent file `agents/docs-writer.md` by
 | Field | Value |
 | ----- | ----- |
 | Name | `docs-writer` |
-| Model | `opencode-go/kimi-k2.6` |
 
 ## System Prompt
 
@@ -61,9 +60,7 @@ Produce documentation that includes:
 name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.2
-steps: 18
 color: accent
 permission:
   bash:

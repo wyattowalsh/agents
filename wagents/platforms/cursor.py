@@ -19,14 +19,27 @@ class Adapter(PlatformAdapter):
     def home_config_paths(self) -> list[Path]:
         return [CURSOR_MCP_PATH]
 
-    def sync_repo(self, ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any], policy: dict[str, Any]) -> None:
+    def sync_repo(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        hook_registry: dict[str, Any],
+        policy: dict[str, Any],
+    ) -> None:
         pass
 
-    def sync_home(self, ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str], hook_registry: dict[str, Any]) -> None:
+    def sync_home(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        policy: dict[str, Any],
+        fallbacks: dict[str, str],
+        hook_registry: dict[str, Any],
+    ) -> None:
         if not CURSOR_MCP_PATH.exists():
             return
-        rendered = self.render_mcp(registry, fallbacks)["mcpServers"]
         data = load_json(CURSOR_MCP_PATH)
-        existing = data.get("mcpServers", {})
-        data["mcpServers"] = merge_server_maps(rendered, existing)
+        rendered = self.render_mcp(registry, fallbacks)["mcpServers"]
+        existing = data.get("mcpServers")
+        data["mcpServers"] = merge_server_maps(rendered, existing if isinstance(existing, dict) else {})
         ctx.write_json(CURSOR_MCP_PATH, data)

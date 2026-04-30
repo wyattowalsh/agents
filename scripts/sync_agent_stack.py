@@ -60,6 +60,8 @@ GEMINI_EXTENSION_MCP_PATH = (
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
 GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
+OPENCODE_DCP_CONFIG_PATH = HOME / ".config" / "opencode" / "dcp.jsonc"
+OPENCODE_DCP_TEMPLATE_PATH = CONFIG_DIR / "opencode-dcp.jsonc"
 OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
@@ -189,7 +191,12 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
     },
     "chrome-devtools": {
         "command": "npx",
-        "args": ["-y", "chrome-devtools-mcp@latest", "--chrome-arg", "--disable-blink-features=AutomationControlled"],
+        "args": [
+            "-y",
+            "chrome-devtools-mcp@latest",
+            "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
+            "--headless=false",
+        ],
     },
     "context7": {
         "command": "npx",
@@ -320,9 +327,8 @@ def sync_directory_files(
     }
     for name, source_file in source_files.items():
         target_file = target_dir / name
-        if target_file.exists():
-            if target_file.read_bytes() == source_file.read_bytes():
-                continue
+        if target_file.exists() and target_file.read_bytes() == source_file.read_bytes():
+            continue
         ctx.note(f"copy {source_file} -> {target_file}")
         if not ctx.apply:
             continue
@@ -1472,6 +1478,48 @@ def merge_opencode_provider_entry(existing: Any, rendered: dict[str, Any]) -> di
     return merged
 
 
+OPENCODE_DCP_MODEL_LIMIT_KEYS = {"modelMaxLimits", "modelMinLimits"}
+OPENCODE_MODEL_KEYS = {"model", "small_model", "mode", "agent"}
+
+
+def merge_dict_defaults(defaults: dict[str, Any], existing: dict[str, Any]) -> dict[str, Any]:
+    merged = dict(defaults)
+    for key, value in existing.items():
+        default_value = merged.get(key)
+        if isinstance(default_value, dict) and isinstance(value, dict):
+            merged[key] = merge_dict_defaults(default_value, value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def default_opencode_dcp_config() -> dict[str, Any]:
+    if not OPENCODE_DCP_TEMPLATE_PATH.exists():
+        return {}
+    template = load_json(OPENCODE_DCP_TEMPLATE_PATH)
+    return template if isinstance(template, dict) else {}
+
+
+def render_opencode_dcp_config(existing: dict[str, Any]) -> dict[str, Any]:
+    config = merge_dict_defaults(default_opencode_dcp_config(), existing)
+    for key in OPENCODE_MODEL_KEYS:
+        config.pop(key, None)
+    compress = config.get("compress")
+    if isinstance(compress, dict):
+        for key in OPENCODE_DCP_MODEL_LIMIT_KEYS:
+            compress.pop(key, None)
+    return config
+
+
+def merge_opencode_dcp_config(ctx: SyncContext) -> None:
+    existing: dict[str, Any] = {}
+    if OPENCODE_DCP_CONFIG_PATH.exists():
+        loaded = load_json(OPENCODE_DCP_CONFIG_PATH)
+        if isinstance(loaded, dict):
+            existing = loaded
+    write_json(ctx, OPENCODE_DCP_CONFIG_PATH, render_opencode_dcp_config(existing))
+
+
 def cherry_remote_transport(url: str) -> str:
     return "streamableHttp" if url.endswith("/mcp") else "sse"
 
@@ -1513,6 +1561,8 @@ def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, st
 def merge_opencode_config(
     ctx: SyncContext, registry: dict[str, Any], fallbacks: dict[str, str], policy: dict[str, Any] | None = None
 ) -> None:
+    merge_opencode_dcp_config(ctx)
+
     if not OPENCODE_CONFIG_PATH.exists():
         return
 
@@ -1539,26 +1589,6 @@ def merge_opencode_config(
         skills = {}
         settings["skills"] = skills
     skills["paths"] = merge_unique_path_strings([render_home_path(SKILLS_DIR)], skills.get("paths"))
-
-    defaults = (policy or {}).get("model_defaults", {}).get("opencode", {})
-    if "model" in defaults:
-        settings["model"] = defaults["model"]
-    if "small_model" in defaults:
-        settings["small_model"] = defaults["small_model"]
-
-    def _update_nested_model(obj: Any, model: str) -> None:
-        if not isinstance(obj, dict):
-            return
-        for key, value in obj.items():
-            if isinstance(value, dict):
-                if "model" in value:
-                    value["model"] = model
-                if key in ("mode", "agent"):
-                    _update_nested_model(value, model)
-
-    if "model" in defaults:
-        _update_nested_model(settings.get("mode"), defaults["model"])
-        _update_nested_model(settings.get("agent"), defaults["model"])
 
     write_json(ctx, OPENCODE_CONFIG_PATH, settings)
 

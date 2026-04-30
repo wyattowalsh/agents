@@ -84,12 +84,17 @@ def test_render_opencode_mcp_renders_remote_servers():
     }
 
 
-def test_chrome_devtools_renderers_disable_automation_detection():
+def test_chrome_devtools_renderers_use_generic_headed_persistent_profile():
     registry = {
         "servers": {
             "chrome-devtools": {
                 "command": "npx",
-                "args": ["-y", "chrome-devtools-mcp@latest", "--chrome-arg", "--disable-blink-features=AutomationControlled"],
+                "args": [
+                    "-y",
+                    "chrome-devtools-mcp@latest",
+                    "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
+                    "--headless=false",
+                ],
                 "enabled": True,
                 "startup_timeout_sec": 90,
                 "timeout_ms": 600000,
@@ -108,9 +113,15 @@ def test_chrome_devtools_renderers_disable_automation_detection():
         }
     )
 
-    assert "--isolated=true" not in rendered_text
-    assert "--disable-blink-features=AutomationControlled" in rendered_text
+    assert "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login" in rendered_text
+    assert "--headless=false" in rendered_text
+    assert "--browserUrl" not in rendered_text
+    assert "--browser-url" not in rendered_text
     assert "--autoConnect" not in rendered_text
+    assert "--auto-connect" not in rendered_text
+    assert "--wsEndpoint" not in rendered_text
+    assert "--ws-endpoint" not in rendered_text
+    assert "--isolated" not in rendered_text
 
 
 def test_docling_renderers_use_upstream_stdio_launch_shape():
@@ -602,7 +613,7 @@ def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_model
     assert provider["models"]["custom-model"] == {"name": "Custom Local Model"}
 
 
-def test_merge_opencode_config_syncs_model_defaults(tmp_path, monkeypatch):
+def test_merge_opencode_config_preserves_existing_model_settings(tmp_path, monkeypatch):
     home_dir = tmp_path / "home"
     repo_root = home_dir / "dev" / "projects" / "agents"
     config_path = home_dir / ".config" / "opencode" / "opencode.json"
@@ -615,15 +626,15 @@ def test_merge_opencode_config_syncs_model_defaults(tmp_path, monkeypatch):
     config_path.write_text(
         json.dumps(
             {
-                "model": "openai/gpt-5.4",
-                "small_model": "openai/gpt-5.4",
+                "model": "user/model",
+                "small_model": "user/small-model",
                 "mode": {
-                    "build": {"model": "openai/gpt-5.4"},
-                    "plan": {"model": "openai/gpt-5.4"},
+                    "build": {"model": "user/build-model"},
+                    "plan": {"model": "user/plan-model"},
                 },
                 "agent": {
-                    "build": {"model": "openai/gpt-5.4"},
-                    "plan": {"model": "openai/gpt-5.4"},
+                    "build": {"model": "user/agent-build-model"},
+                    "plan": {"model": "user/agent-plan-model"},
                 },
             }
         )
@@ -636,21 +647,28 @@ def test_merge_opencode_config_syncs_model_defaults(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
 
-    policy = {"model_defaults": {"opencode": {"model": "opencode-go/kimi-k2.6", "small_model": "opencode-go/kimi-k2.6"}}}
+    policy = {
+        "model_defaults": {
+            "opencode": {
+                "model": "repo/default-should-not-apply",
+                "small_model": "repo/small-default-should-not-apply",
+            }
+        }
+    }
 
     ctx = SyncContext(apply=True)
     merge_opencode_config(ctx, {"servers": {}}, {}, policy)
     payload = json.loads(config_path.read_text())
 
-    assert payload["model"] == "opencode-go/kimi-k2.6"
-    assert payload["small_model"] == "opencode-go/kimi-k2.6"
-    assert payload["mode"]["build"]["model"] == "opencode-go/kimi-k2.6"
-    assert payload["mode"]["plan"]["model"] == "opencode-go/kimi-k2.6"
-    assert payload["agent"]["build"]["model"] == "opencode-go/kimi-k2.6"
-    assert payload["agent"]["plan"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["model"] == "user/model"
+    assert payload["small_model"] == "user/small-model"
+    assert payload["mode"]["build"]["model"] == "user/build-model"
+    assert payload["mode"]["plan"]["model"] == "user/plan-model"
+    assert payload["agent"]["build"]["model"] == "user/agent-build-model"
+    assert payload["agent"]["plan"]["model"] == "user/agent-plan-model"
 
 
-def test_merge_opencode_config_syncs_custom_agent_models(tmp_path, monkeypatch):
+def test_merge_opencode_config_preserves_custom_agent_models(tmp_path, monkeypatch):
     home_dir = tmp_path / "home"
     repo_root = home_dir / "dev" / "projects" / "agents"
     config_path = home_dir / ".config" / "opencode" / "opencode.json"
@@ -664,8 +682,8 @@ def test_merge_opencode_config_syncs_custom_agent_models(tmp_path, monkeypatch):
         json.dumps(
             {
                 "agent": {
-                    "custom-agent-1": {"model": "openai/gpt-5.4"},
-                    "custom-agent-2": {"model": "openai/gpt-5.4", "other": "value"},
+                    "custom-agent-1": {"model": "user/custom-model"},
+                    "custom-agent-2": {"model": "user/another-model", "other": "value"},
                 },
             }
         )
@@ -678,15 +696,118 @@ def test_merge_opencode_config_syncs_custom_agent_models(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
 
-    policy = {"model_defaults": {"opencode": {"model": "opencode-go/kimi-k2.6"}}}
+    policy = {"model_defaults": {"opencode": {"model": "repo/default-should-not-apply"}}}
 
     ctx = SyncContext(apply=True)
     merge_opencode_config(ctx, {"servers": {}}, {}, policy)
     payload = json.loads(config_path.read_text())
 
-    assert payload["agent"]["custom-agent-1"]["model"] == "opencode-go/kimi-k2.6"
-    assert payload["agent"]["custom-agent-2"]["model"] == "opencode-go/kimi-k2.6"
+    assert payload["agent"]["custom-agent-1"]["model"] == "user/custom-model"
+    assert payload["agent"]["custom-agent-2"]["model"] == "user/another-model"
     assert payload["agent"]["custom-agent-2"]["other"] == "value"
+
+
+def test_merge_opencode_config_creates_model_neutral_dcp_config(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    dcp_path = home_dir / ".config" / "opencode" / "dcp.jsonc"
+    template_path = tmp_path / "opencode-dcp.jsonc"
+
+    dcp_path.parent.mkdir(parents=True)
+    template_path.write_text(
+        json.dumps(
+            {
+                "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+                "enabled": True,
+                "debug": False,
+                "compress": {
+                    "mode": "range",
+                    "maxContextLimit": "85%",
+                    "minContextLimit": "55%",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_DCP_CONFIG_PATH", dcp_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_DCP_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    merge_opencode_config(ctx, {"servers": {}}, {}, {"model_defaults": {"opencode": {"model": "ignored"}}})
+    payload = json.loads(dcp_path.read_text(encoding="utf-8"))
+
+    assert not config_path.exists()
+    assert payload["enabled"] is True
+    assert payload["compress"]["mode"] == "range"
+    assert payload["compress"]["maxContextLimit"] == "85%"
+    assert "modelMaxLimits" not in payload["compress"]
+    assert "modelMinLimits" not in payload["compress"]
+    assert "model" not in payload
+    assert "small_model" not in payload
+    assert "mode" not in payload
+    assert "agent" not in payload
+
+
+def test_merge_opencode_config_preserves_safe_dcp_overrides(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    dcp_path = home_dir / ".config" / "opencode" / "dcp.jsonc"
+    template_path = tmp_path / "opencode-dcp.jsonc"
+
+    dcp_path.parent.mkdir(parents=True)
+    template_path.write_text(
+        json.dumps(
+            {
+                "$schema": "schema",
+                "enabled": True,
+                "compress": {
+                    "mode": "range",
+                    "showCompression": False,
+                    "maxContextLimit": "85%",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    dcp_path.write_text(
+        json.dumps(
+            {
+                "$schema": "schema",
+                "enabled": False,
+                "customKey": "preserve",
+                "model": "remove-me",
+                "agent": {"custom": {"model": "remove-me"}},
+                "compress": {
+                    "showCompression": True,
+                    "modelMaxLimits": {"openai/gpt-5.5": 200000},
+                    "modelMinLimits": {"openai/gpt-5.5": 100000},
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_DCP_CONFIG_PATH", dcp_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_DCP_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    merge_opencode_config(ctx, {"servers": {}}, {}, {})
+    payload = json.loads(dcp_path.read_text(encoding="utf-8"))
+
+    assert payload["enabled"] is False
+    assert payload["customKey"] == "preserve"
+    assert payload["compress"]["mode"] == "range"
+    assert payload["compress"]["showCompression"] is True
+    assert "modelMaxLimits" not in payload["compress"]
+    assert "modelMinLimits" not in payload["compress"]
+    assert "model" not in payload
+    assert "agent" not in payload
 
 
 def test_deploy_opencode_plugin_copies_file(tmp_path, monkeypatch):
@@ -725,6 +846,22 @@ def test_generate_project_opencode_config_creates_file(tmp_path, monkeypatch):
     assert payload["$schema"] == "https://opencode.ai/config.json"
     assert payload["instructions"] == ["AGENTS.md", "instructions/opencode-global.md"]
     assert payload["skills"]["paths"] == ["skills"]
+    assert "model" not in payload
+    assert "small_model" not in payload
+    assert "mode" not in payload
+    assert "agent" not in payload
+    assert "steps" not in payload
+
+
+def test_opencode_agents_do_not_enforce_model_or_steps():
+    agents_dir = sync_agent_stack.REPO_ROOT / "agents"
+
+    for agent_path in sorted(agents_dir.glob("*.md")):
+        content = agent_path.read_text(encoding="utf-8")
+        frontmatter = content.split("---", 2)[1]
+
+        assert "model:" not in frontmatter, f"{agent_path.name} must inherit the runtime model"
+        assert "steps:" not in frontmatter, f"{agent_path.name} must not enforce a step cap"
 
 
 def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monkeypatch):
@@ -785,7 +922,7 @@ def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
     }
 
 
-def test_cursor_adapter_sync_home_replaces_existing_mcp_servers(tmp_path, monkeypatch):
+def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_path, monkeypatch):
     config_path = tmp_path / "mcp.json"
     config_path.write_text(
         json.dumps(
@@ -816,6 +953,9 @@ def test_cursor_adapter_sync_home_replaces_existing_mcp_servers(tmp_path, monkey
 
     assert payload["other"] is True
     assert payload["mcpServers"] == {
+        "custom": {
+            "command": "custom-mcp",
+        },
         "managed": {
             "command": "uvx",
             "args": ["managed-mcp"],
@@ -883,6 +1023,66 @@ def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_
     assert provider["options"]["headers"] == {"X-Local": "1"}
     assert provider["models"]["local-model"] == {"name": "LM Studio Local Model"}
     assert provider["models"]["custom-model"] == {"name": "Custom Local Model"}
+
+
+def test_opencode_adapter_sync_home_manages_dcp_config_without_model_limits(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    dcp_path = home_dir / ".config" / "opencode" / "dcp.jsonc"
+    template_path = repo_root / "config" / "opencode-dcp.jsonc"
+
+    repo_root.mkdir(parents=True)
+    config_path.parent.mkdir(parents=True)
+    template_path.parent.mkdir(parents=True)
+    config_path.write_text("{}\n", encoding="utf-8")
+    template_path.write_text(
+        json.dumps(
+            {
+                "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+                "enabled": True,
+                "compress": {
+                    "mode": "range",
+                    "maxContextLimit": "85%",
+                    "minContextLimit": "55%",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    dcp_path.write_text(
+        json.dumps(
+            {
+                "customKey": "preserve",
+                "small_model": "remove-me",
+                "compress": {
+                    "modelMaxLimits": {"openai/gpt-5.5": 200000},
+                    "modelMinLimits": {"openai/gpt-5.5": 100000},
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(opencode_platform, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_DCP_CONFIG_PATH", dcp_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_DCP_TEMPLATE_PATH", template_path)
+    monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
+
+    adapter = opencode_platform.Adapter()
+    ctx = opencode_platform.SyncContext(apply=True)
+    adapter.sync_home(ctx, {"servers": {}}, {}, {}, {})
+    payload = json.loads(dcp_path.read_text(encoding="utf-8"))
+
+    assert payload["enabled"] is True
+    assert payload["customKey"] == "preserve"
+    assert payload["compress"]["mode"] == "range"
+    assert payload["compress"]["maxContextLimit"] == "85%"
+    assert "modelMaxLimits" not in payload["compress"]
+    assert "modelMinLimits" not in payload["compress"]
+    assert "small_model" not in payload
 
 
 def test_merge_cherry_studio_config_no_op_when_missing(tmp_path, monkeypatch):

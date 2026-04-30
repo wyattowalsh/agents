@@ -10,7 +10,13 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from wagents.platforms.base import PlatformAdapter, SyncContext, dump_json, enabled_registry_servers, replace_arg_placeholders, resolve_env_value
+from wagents.platforms.base import (
+    PlatformAdapter,
+    SyncContext,
+    enabled_registry_servers,
+    env_placeholder,
+    replace_arg_placeholders,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -24,14 +30,27 @@ class Adapter(PlatformAdapter):
     def repo_config_paths(self) -> list[Path]:
         return [REPO_MCP_PATH, VSCODE_MCP_PATH]
 
-    def sync_repo(self, ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any], policy: dict[str, Any]) -> None:
+    def sync_repo(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        hook_registry: dict[str, Any],
+        policy: dict[str, Any],
+    ) -> None:
         """Write repo ``mcp.json`` and ``.vscode/mcp.json``."""
         mcp = self.render_mcp(registry, fallbacks={})
         # Repo configs use placeholder env vars, not resolved secrets
         for path in self.repo_config_paths():
             ctx.write_json(path, mcp)
 
-    def sync_home(self, ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str], hook_registry: dict[str, Any]) -> None:
+    def sync_home(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        policy: dict[str, Any],
+        fallbacks: dict[str, str],
+        hook_registry: dict[str, Any],
+    ) -> None:
         """VSCode has no home-target sync; user settings are managed manually."""
         pass
 
@@ -45,7 +64,7 @@ class Adapter(PlatformAdapter):
             }
             if entry.get("env"):
                 server["env"] = {
-                    key: resolve_env_value(value["env_var"], {})
+                    key: env_placeholder(value["env_var"])
                     for key, value in entry["env"].items()
                 }
             if entry.get("timeout_ms"):

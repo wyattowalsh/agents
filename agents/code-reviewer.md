@@ -2,9 +2,7 @@
 name: code-reviewer
 description: Review changes for correctness, risk, and maintainability without editing code.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.1
-steps: 22
 color: warning
 permission:
   edit: deny

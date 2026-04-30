@@ -115,6 +115,22 @@ The repository root is the canonical bundle root. Do not duplicate `skills/`, `a
 
 Plugin manifests intentionally omit fixed `version` fields while this repo is distributed from Git. That lets downstream update checks follow new commits rather than requiring a manifest version bump for every skill edit.
 
+## 2.2 OpenCode DCP Config
+
+`config/opencode-dcp.jsonc` is the canonical repo source for OpenCode Dynamic Context Pruning. The live global file `~/.config/opencode/dcp.jsonc` is a merged surface managed by OpenCode sync.
+
+Keep OpenCode DCP model-neutral by default. Do not add OpenCode model fields or DCP per-model limit maps (`compress.modelMaxLimits`, `compress.modelMinLimits`) unless the user explicitly requests per-model context limits.
+
+## 2.3 Chrome DevTools MCP
+
+For repo-managed harness configs, keep the `chrome-devtools` server on the generic headed launch shape:
+
+- `npx -y chrome-devtools-mcp@latest --user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login --headless=false`
+
+This is the shared default for managed surfaces in this repository across Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, Antigravity, OpenCode, and other harnesses that consume the normalized MCP registry.
+
+When a specific harness needs a local login-safe override, document that override in the platform-specific instruction layer instead of changing the shared repo default. For OpenCode on this machine, the working override is a local wrapper that starts or reuses a dedicated Chrome DevTools endpoint on `127.0.0.1:9333` and then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`.
+
 ---
 
 ## 3. Naming Conventions

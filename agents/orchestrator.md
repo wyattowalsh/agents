@@ -2,9 +2,7 @@
 name: orchestrator
 description: Coordinate multi-step work by decomposing, delegating, and synthesizing results.
 mode: subagent
-model: opencode-go/kimi-k2.6
 temperature: 0.1
-steps: 18
 color: primary
 permission:
   edit: deny

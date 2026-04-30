@@ -593,15 +593,17 @@ Since you're **excluding oh-my-opencode**, here's how to get its key features vi
 ```json
 {
   "agent": {
-    "build": { "model": "opencode-go/kimi-k2.6", "steps": 35 },
-    "plan": { "model": "opencode-go/kimi-k2.6", "steps": 20 },
-    "explore": { "model": "google/gemini-2.5-flash", "steps": 15 },
-    "review": { "model": "opencode-go/kimi-k2.6", "steps": 10, "permission": { "edit": "deny" } },
-    "architect": { "model": "anthropic/claude-opus-4", "steps": 20 },
-    "tester": { "model": "google/gemini-2.5-flash", "steps": 15 }
+    "build": { "description": "Full tool access implementation agent", "temperature": 0.1 },
+    "plan": { "description": "Read-only planning agent", "temperature": 0.1, "permission": { "edit": "deny" } },
+    "explore": { "description": "Read-only codebase exploration agent", "temperature": 0.1 },
+    "review": { "description": "Read-only code review agent", "temperature": 0.1, "permission": { "edit": "deny" } },
+    "architect": { "description": "Architecture and design analysis agent", "temperature": 0.1 },
+    "tester": { "description": "Test strategy and validation agent", "temperature": 0.1 }
   }
 }
 ```
+
+Repo-managed OpenCode agent examples intentionally omit `model` and `steps` so agents inherit harness/runtime controls without enforcing model routing or step caps.
 
 Create agent definitions in `~/.config/opencode/agents/` as markdown files with YAML frontmatter.
 
@@ -609,23 +611,21 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 
 ---
 
-### 4.3 Model Routing / Categorization
+### 4.3 Runtime Routing / Categorization
 
-**Native OpenCode supports this out of the box:**
+**Native OpenCode supports user-owned model and step overrides, but repo-managed agents omit them:**
 
 ```json
 {
   "agent": {
-    "plan": { "model": "google/gemini-2.5-flash" },
-    "build": { "model": "opencode-go/kimi-k2.6" },
-    "explore": { "model": "google/gemini-2.5-flash" },
-    "review": { "model": "anthropic/claude-sonnet-4" },
-    "deep-thinker": { "model": "anthropic/claude-opus-4", "options": { "reasoningEffort": "high" } }
+    "plan": { "description": "Read-only planning", "temperature": 0.1 },
+    "build": { "description": "Implementation", "temperature": 0.1 },
+    "review": { "description": "Read-only review", "temperature": 0.1, "permission": { "edit": "deny" } }
   }
 }
 ```
 
-**Per-agent overrides:** Each agent gets its own `model`, `temperature`, `steps`, and provider-specific options.
+**Repo-managed overrides:** Use model-neutral controls such as `description`, `temperature`, and permissions. Leave model routing, reasoning effort, and step budgets to user-owned OpenCode config or the invoking harness runtime.
 
 **If using micode:** Add per-agent config to `~/.config/opencode/micode.json`:
 
@@ -753,10 +753,10 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 
 ### Native Configuration Added
 
-- **`mode` section**: `build`, `plan` — minimal config (model only) that drives TUI shift+tab agent switching
-- **`agent` section**: `build`, `plan`, `explore`, `review`, `architect`, `tester` — full agent definitions with descriptions, steps, and permissions
-- **All agents use `opencode-go/kimi-k2.6`** per OpenCode global instructions
-- **Config structure**: Both `mode` and `agent` sections are required. `mode` populates the TUI agent switcher; `agent` provides the full configuration.
+- **`mode` section**: `build`, `plan` — repo-managed config avoids model selectors and step caps; runtime/harness settings drive execution
+- **`agent` section**: `build`, `plan`, `explore`, `review`, `architect`, `tester` — full agent definitions with descriptions, temperatures, and permissions
+- **Agents inherit harness/runtime controls** instead of enforcing a repo-managed model or step budget
+- **Config structure**: `mode` can populate the TUI agent switcher; `agent` provides full model-neutral agent configuration.
 
 ### ⚠️ Known Issues & Fixes
 
@@ -902,12 +902,12 @@ The `mode` option is deprecated; use `agent` configuration instead:
 ```json
 {
   "agent": {
-    "build": { "model": "opencode-go/kimi-k2.6", "steps": 35 },
-    "plan": { "model": "opencode-go/kimi-k2.6", "steps": 20, "permission": { "edit": "deny" } },
-    "explore": { "model": "google/gemini-2.5-flash", "steps": 15 },
-    "review": { "model": "anthropic/claude-sonnet-4", "steps": 10, "permission": { "edit": "deny" } },
-    "architect": { "model": "anthropic/claude-opus-4", "steps": 20 },
-    "tester": { "model": "google/gemini-2.5-flash", "steps": 15 }
+    "build": { "description": "Implementation", "temperature": 0.1 },
+    "plan": { "description": "Read-only planning", "temperature": 0.1, "permission": { "edit": "deny" } },
+    "explore": { "description": "Read-only exploration", "temperature": 0.1 },
+    "review": { "description": "Read-only review", "temperature": 0.1, "permission": { "edit": "deny" } },
+    "architect": { "description": "Architecture analysis", "temperature": 0.1 },
+    "tester": { "description": "Testing strategy", "temperature": 0.1 }
   }
 }
 ```
