@@ -1,6 +1,6 @@
 {
   "skills": ["harness-master"],
-  "query": "/harness-master global opencode github-copilot cursor",
+  "query": "/harness-master global opencode github-copilot-web github-copilot-cli cursor",
   "files": [],
   "expected_behavior": [
     "Agent parses the level and multiple harnesses regardless of order",

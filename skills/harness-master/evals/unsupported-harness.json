@@ -4,7 +4,7 @@
   "files": [],
   "expected_behavior": [
     "Agent refuses the unsupported harness cleanly",
-    "Agent lists the supported 7 harnesses",
+    "Agent lists the supported canonical harnesses",
     "Agent asks the user to choose from the supported set instead of guessing an adjacent harness"
   ]
 }

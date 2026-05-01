@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master cherrystudio global",
+  "files": [],
+  "expected_behavior": [
+    "Agent normalizes `cherrystudio` to `cherry-studio`",
+    "Agent audits Cherry Studio config, generated MCP import packs, and global presets",
+    "Agent distinguishes generated import files from direct app state and reports UI-only settings as blind spots"
+  ]
+}

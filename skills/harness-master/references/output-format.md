@@ -67,3 +67,9 @@ When 2+ harnesses are reviewed, add:
 5. `Suggested Cleanup Order`
 
 Keep cross-harness synthesis separate from the per-harness sections.
+
+## Facet Reporting
+
+- If an alias expands to multiple canonical harnesses, such as `github-copilot`, produce separate per-harness reports for each expanded target.
+- If a facet alias normalizes to one harness, such as `cursor-cli` or `cursor-cloud`, keep one `cursor` report and call out facet-specific files and blind spots inside that report.
+- Desktop or web UI-only harnesses may have empty file-reviewed lists for a scope; in that case, list the blind spots instead of inventing local surfaces.

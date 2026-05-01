@@ -15,6 +15,14 @@ Use exactly one of these tags on every finding:
 - Blind spots lower confidence.
 - Blind spots never justify invented behavior.
 - If a recommendation depends on a blind spot, either ask a focused follow-up question or keep the recommendation provisional.
+- Web, cloud, and desktop-app UI settings are blind spots unless the current session has a verified export or local config file.
+- Repo-observed filesystem conventions, such as `.perplexity/skills`, must not be upgraded to `verified-doc` without current first-party evidence.
+
+## Alias And Facet Rules
+
+- Alias normalization must preserve evidence boundaries. For example, `cursor-cli` and `cursor-cloud` normalize to `cursor`, but CLI and cloud blind spots still need explicit reporting.
+- Aggregate aliases must expand deterministically. `github-copilot` expands to `github-copilot-web` and `github-copilot-cli`; do not collapse their findings into one mixed section.
+- Desktop-app harnesses such as `claude-desktop`, `chatgpt`, `perplexity-desktop`, and `cherry-studio` can have no install agent name. Report them as config/app surfaces, not Skills CLI targets.
 
 ## Confidence Guidance
 

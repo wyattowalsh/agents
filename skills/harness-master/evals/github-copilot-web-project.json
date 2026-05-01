@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master copilot-web project",
+  "files": [],
+  "expected_behavior": [
+    "Agent normalizes `copilot-web` to `github-copilot-web`",
+    "Agent audits `.github/copilot-instructions.md`, `.github/instructions/**`, `.github/hooks/**`, `.vscode/mcp.json`, and repo Copilot agent surfaces",
+    "Agent notes GitHub.com settings as out of scope for project-file discovery"
+  ]
+}

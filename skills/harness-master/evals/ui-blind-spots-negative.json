@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master chatgpt perplexity-desktop cursor-cloud global",
+  "files": [],
+  "expected_behavior": [
+    "Agent does not fabricate local files for ChatGPT connector UI, Perplexity connector UI, or Cursor Cloud Agent settings",
+    "Agent uses `blind-spot` evidence for UI/cloud-only surfaces",
+    "Agent keeps any file-backed recommendations provisional when they depend on repo-observed rather than verified-doc evidence"
+  ]
+}

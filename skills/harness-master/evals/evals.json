@@ -1,0 +1,126 @@
+{
+  "skill_name": "harness-master",
+  "evals": [
+    {
+      "id": "implicit-trigger",
+      "prompt": "Can you review our Cursor, Copilot, and OpenCode setup at both the repo and user level, compare them to the latest official guidance, and tell me what should change before we touch anything?",
+      "files": ["evals/implicit-trigger.json"],
+      "expected_output": "Recognize the implicit harness-master request, default to dry-run review, audit each selected harness independently, and synthesize findings only after per-harness sections.",
+      "assertions": [
+        "Activates without an explicit slash command.",
+        "Does not edit on the first pass.",
+        "Reviews Cursor, Copilot facets, and OpenCode independently."
+      ]
+    },
+    {
+      "id": "negative-control",
+      "prompt": "Create a new MCP server that syncs our docs and add a Claude agent for it.",
+      "files": ["evals/negative-control.json"],
+      "expected_output": "Refuse to treat agent or MCP server creation as harness-master work and redirect to the proper specialized skills.",
+      "assertions": [
+        "Does not enter harness audit mode.",
+        "Redirects agent creation to agent-conventions.",
+        "Redirects MCP server creation to mcp-creator."
+      ]
+    },
+    {
+      "id": "all-both",
+      "prompt": "/harness-master all both",
+      "files": ["evals/all-both.json"],
+      "expected_output": "Treat `all` as the full supported canonical harness set, process harnesses in deterministic order, and produce dry-run per-harness reports plus synthesis.",
+      "assertions": [
+        "Uses deterministic all order.",
+        "Runs dry-run review first.",
+        "Keeps per-harness sections separate."
+      ]
+    },
+    {
+      "id": "unsupported-harness",
+      "prompt": "/harness-master windsurf project",
+      "files": ["evals/unsupported-harness.json"],
+      "expected_output": "Refuse the unsupported harness cleanly, list supported canonical harnesses, and ask the user to choose from the supported set.",
+      "assertions": [
+        "Does not guess an adjacent harness.",
+        "Lists supported harnesses.",
+        "Asks a focused clarification question."
+      ]
+    },
+    {
+      "id": "claude-desktop-global",
+      "prompt": "/harness-master claude-desktop global",
+      "files": ["evals/claude-desktop-global.json"],
+      "expected_output": "Resolve Claude Desktop separately from Claude Code and audit `claude_desktop_config.json` as the primary global surface.",
+      "assertions": [
+        "Uses canonical `claude-desktop`.",
+        "Reviews the Desktop MCP config path.",
+        "Does not merge the report into Claude Code."
+      ]
+    },
+    {
+      "id": "chatgpt-global",
+      "prompt": "/harness-master chatgpt global",
+      "files": ["evals/chatgpt-global.json"],
+      "expected_output": "Resolve ChatGPT, treat local MCP as repo-observed unless docs verify it, and report Apps/Connectors UI as a blind spot.",
+      "assertions": [
+        "Uses `repo-observed` for local ChatGPT MCP when appropriate.",
+        "Reports UI connector state as a blind spot.",
+        "Does not invent local ChatGPT connector paths."
+      ]
+    },
+    {
+      "id": "github-copilot-aggregate",
+      "prompt": "/harness-master github-copilot both",
+      "files": ["evals/github-copilot-aggregate.json"],
+      "expected_output": "Expand aggregate `github-copilot` to web and CLI facets and report each canonical harness separately.",
+      "assertions": [
+        "Expands to `github-copilot-web` and `github-copilot-cli`.",
+        "Keeps web and CLI sections separate.",
+        "Does not mix GitHub.com blind spots with CLI file findings."
+      ]
+    },
+    {
+      "id": "cursor-agent-alias",
+      "prompt": "/harness-master cursor-agent both",
+      "files": ["evals/cursor-agent-alias.json"],
+      "expected_output": "Normalize Cursor Agent aliases to `cursor` and include agent, CLI, cloud, skills, subagents, hooks, and MCP surfaces in one Cursor report.",
+      "assertions": [
+        "Normalizes to `cursor`.",
+        "Calls out facet-specific surfaces.",
+        "Reports Cloud Agent dashboard state as a blind spot."
+      ]
+    },
+    {
+      "id": "perplexity-desktop-both",
+      "prompt": "/harness-master perplexity both",
+      "files": ["evals/perplexity-desktop-both.json"],
+      "expected_output": "Normalize Perplexity aliases to `perplexity-desktop`, keep skills paths repo-observed, and report connector UI as a blind spot.",
+      "assertions": [
+        "Uses canonical `perplexity-desktop`.",
+        "Does not claim official filesystem skill loading without docs.",
+        "Reports Mac app connector UI as a blind spot."
+      ]
+    },
+    {
+      "id": "cherry-studio-global-expanded",
+      "prompt": "/harness-master cherrystudio global",
+      "files": ["evals/cherry-studio-global-expanded.json"],
+      "expected_output": "Normalize Cherry aliases to `cherry-studio` and audit config, generated MCP imports, presets, and UI blind spots.",
+      "assertions": [
+        "Normalizes to `cherry-studio`.",
+        "Distinguishes generated imports from app state.",
+        "Includes preset sync surfaces."
+      ]
+    },
+    {
+      "id": "ui-blind-spots-negative",
+      "prompt": "/harness-master chatgpt perplexity-desktop cursor-cloud global",
+      "files": ["evals/ui-blind-spots-negative.json"],
+      "expected_output": "Do not fabricate local files for UI/cloud-only surfaces; use blind-spot evidence and keep file-backed recommendations provisional when repo-observed.",
+      "assertions": [
+        "Uses `blind-spot` for UI/cloud-only surfaces.",
+        "Keeps repo-observed claims bounded.",
+        "Does not invent paths."
+      ]
+    }
+  ]
+}
