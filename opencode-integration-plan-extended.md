@@ -12,7 +12,7 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 
 **What changed since the original plan:**
 - ❌ **Removed:** `oh-my-opencode` / `oh-my-openagent` (user request)
-- ✅ **Added:** `opencode-morph-plugin` (10,500+ tok/s code editing), `opencode-snip` (60–97% token savings), `opencode-handoff` (session continuity), `opencode-plugin-otel` (observability), `open-plan-annotator` (plan review UI), `opencode-devcontainers` (branch isolation), `opencode-direnv` (env automation), `opencode-notify` (OS notifications)
+- ✅ **Added:** `opencode-morph-plugin` (10,500+ tok/s code editing), `opencode-snip` (60–97% token savings), `opencode-handoff` (session continuity), `opencode-plugin-otel` (observability), `@plannotator/opencode` (plan-agent-scoped review UI), `opencode-devcontainers` (branch isolation), `opencode-direnv` (env automation), `opencode-notify` (OS notifications)
 - ✅ **Added:** Decomposed oh-my-opencode features into standalone alternatives (`kdco/background-agents`, `micode`, `ast-grep-mcp`, native custom agents)
 
 ---
@@ -29,7 +29,7 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 | **Skills** | Custom skill directory at `~/dev/projects/agents/skills` |
 | **Tools** | `git-smart-status`, `git-worktree`, `workspace-summary` |
 | **Commands** | `docs-sync`, `orchestrate-task`, `perf-audit`, `plan-impl`, `release-readiness`, `research-topic`, `review-pr`, `security-audit` |
-| **Plugins** | `opencode-antigravity-auth`, `opencode-gemini-auth`, `cc-safety-net`, `opencode-agent-memory`, `envsitter-guard`, `@tarquinen/opencode-dcp`, `@morphllm/opencode-morph-plugin`, `opencode-handoff`, `opencode-agent-skills`, `@devtheops/opencode-plugin-otel`, `open-plan-annotator`, `@simonwjackson/opencode-direnv`, `opencode-background-agents`, `opencode-notify`, `opencode-devcontainers`, `@ramarivera/opencode-model-announcer`, `@mailshieldai/opencode-canvas`, `@slkiser/opencode-quota`, `credential-guard` (custom — blocks `.env`/credential access) |
+| **Plugins** | `opencode-antigravity-auth`, `opencode-gemini-auth`, `cc-safety-net`, `opencode-agent-memory`, `envsitter-guard`, `@tarquinen/opencode-dcp`, `@morphllm/opencode-morph-plugin`, `opencode-handoff`, `opencode-agent-skills`, `@devtheops/opencode-plugin-otel`, `@plannotator/opencode`, `@simonwjackson/opencode-direnv`, `opencode-background-agents`, `opencode-notify`, `opencode-devcontainers`, `@ramarivera/opencode-model-announcer`, `@mailshieldai/opencode-canvas`, `@slkiser/opencode-quota`, `credential-guard` (custom — blocks `.env`/credential access) |
 | **Theme** | `solstice-light` |
 
 ### Gaps Identified → RESOLVED
@@ -46,7 +46,7 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 | 8 | No fast code editing | ✅ | `@morphllm/opencode-morph-plugin@2.0.9` (Fast Apply) |
 | 9 | No session handoff | ✅ | `opencode-handoff@0.5.0` |
 | 10 | No observability | ✅ | `@devtheops/opencode-plugin-otel@0.9.0` |
-| 11 | No plan review UI | ✅ | `open-plan-annotator@1.4.2` |
+| 11 | No plan review UI | ✅ | `@plannotator/opencode@0.19.5` |
 
 **All 11 gaps resolved.** No remaining gaps from original plan.
 
@@ -460,15 +460,15 @@ bun i @morphllm/opencode-morph-plugin
 
 ---
 
-### 3.3 `open-plan-annotator` 🟡 Medium-High
+### 3.3 `@plannotator/opencode` 🟡 Medium-High
 
 | Field | Value |
 |-------|-------|
-| **Repo** | [github.com/ndom91/open-plan-annotator](https://github.com/ndom91/open-plan-annotator) |
-| **Package** | `open-plan-annotator@latest` |
-| **Why** | Browser-based annotation UI for reviewing AI-generated plans. Select text to strikethrough, replace, insert, or comment. Fully local. |
+| **Repo** | [github.com/backnotprop/plannotator](https://github.com/backnotprop/plannotator) |
+| **Package** | `@plannotator/opencode@latest` |
+| **Why** | Browser-based annotation UI for reviewing AI-generated plans, scoped by default to OpenCode planning agents. Select text to delete, replace, suggest, or comment. |
 
-**Why:** Your `plan` agent generates implementation plans, but there's no way to **collaboratively review** them before execution. This plugin intercepts plan mode and opens a Google Docs-style UI where you can annotate, approve, or request changes. After approval, it hands off to the `build` agent.
+**Why:** Your `plan` agent generates implementation plans, but there's no way to **collaboratively review** them before execution. Plannotator opens a browser review UI where you can annotate, approve, or request changes while keeping `submit_plan` scoped to the `plan` agent instead of build/default agents.
 
 **Installation:**
 
@@ -487,12 +487,15 @@ bun i @morphllm/opencode-morph-plugin
     "opencode-agent-skills",
     "envsitter-guard@latest",
     "@devtheops/opencode-plugin-otel",
-    "open-plan-annotator@latest"
+    ["@plannotator/opencode@latest", {
+      "workflow": "plan-agent",
+      "planningAgents": ["plan"]
+    }]
   ]
 }
 ```
 
-**Compatibility:** ✅ Integrates with your existing `plan` → `build` workflow.
+**Compatibility:** ✅ Integrates with your existing plan-review workflow while preserving a stricter plan/execution boundary.
 
 ---
 
@@ -523,7 +526,10 @@ bun i @morphllm/opencode-morph-plugin
     "opencode-agent-skills",
     "envsitter-guard@latest",
     "@devtheops/opencode-plugin-otel",
-    "open-plan-annotator@latest",
+    ["@plannotator/opencode@latest", {
+      "workflow": "plan-agent",
+      "planningAgents": ["plan"]
+    }],
     "@simonwjackson/opencode-direnv"
   ]
 }
@@ -708,7 +714,7 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 
 ## Installation Status: COMPLETED ✅
 
-**Active inventory repaired and extended on 2026-05-01.** The unresolved `opencode-shell-strategy` package was removed after npm returned 404 and OpenCode logged a plugin load failure for its empty cache directory. The latest batch adds scheduler, Claude credential reuse, Langfuse telemetry, and TUI subagent visibility. CodeMCP workflow plugins were removed from the active inventory by user request because they create additional local workflow state.
+**Active inventory repaired and extended on 2026-05-01.** The unresolved `opencode-shell-strategy` package was removed after npm returned 404 and OpenCode logged a plugin load failure for its empty cache directory. The latest batch adds scheduler, Claude credential reuse, Langfuse telemetry, TUI subagent visibility, and replaces `open-plan-annotator` with Plannotator's plan-agent-scoped OpenCode plugin. CodeMCP workflow plugins were removed from the active inventory by user request because they create additional local workflow state.
 
 ### `~/.config/opencode/opencode.json` — Plugin Section (Live)
 
@@ -725,7 +731,10 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
     "opencode-handoff@latest",
     "opencode-agent-skills@latest",
     "@devtheops/opencode-plugin-otel@latest",
-    "open-plan-annotator@latest",
+    ["@plannotator/opencode@latest", {
+      "workflow": "plan-agent",
+      "planningAgents": ["plan"]
+    }],
     "@simonwjackson/opencode-direnv@latest",
     "opencode-background-agents@latest",
     "opencode-notify@latest",
@@ -756,6 +765,7 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 
 - `opencode-scheduler@latest` is installed without scheduled jobs; recurring jobs require explicit approval.
 - `opencode-claude-auth@latest` is installed without optional 1M context or model/runtime overrides.
+- `@plannotator/opencode@latest` is configured with `workflow: "plan-agent"` and `planningAgents: ["plan"]` so `submit_plan` stays out of build/default agents.
 - `opencode-plugin-langfuse@latest` uses `experimental.openTelemetry`; `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and optional `LANGFUSE_BASEURL` stay user-owned environment variables.
 - `opencode-subagent-statusline@latest` is TUI-only and intentionally absent from repo `opencode.json`.
 - `@codemcp/workflows-opencode@latest` and `@codemcp/workflows-opencode-tui@latest` are deferred by user request.
@@ -771,7 +781,8 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 
 1. **Formatters not supported** — The `formatters` key is not recognized by OpenCode v1.14.28. Removed from config. Use editor formatters or pre-commit hooks instead.
 2. **`opencode-shell-strategy` unresolved** — npm returns 404 and OpenCode logs `failed to resolve plugin server entry`; keep it out of the active inventory unless a valid source is confirmed.
-3. `@simonwjackson/opencode-direnv@2025.1211.9` — Deprecated but functional. Consider native direnv integration.
+3. **`open-plan-annotator` replaced** — prefer `@plannotator/opencode` with `plan-agent` workflow; re-add the old package only if the user explicitly wants the broader workflow behavior.
+4. `@simonwjackson/opencode-direnv@2025.1211.9` — Deprecated but functional. Consider native direnv integration.
 
 ### Installation Verification
 
@@ -793,7 +804,7 @@ opencode stats
 | **1** | ✅ Complete | `cc-safety-net@0.8.2`, `opencode-agent-memory@0.2.0`, `envsitter-guard@0.0.4` |
 | **2** | ✅ Complete | `@tarquinen/opencode-dcp@3.1.9`, `opencode-snip@1.6.1`, `@morphllm/opencode-morph-plugin@2.0.9` |
 | **3** | ✅ Complete | `opencode-froggy@0.11.0`, `opencode-handoff@0.5.0`, `opencode-agent-skills@0.6.5` |
-| **4** | ✅ Complete | `@devtheops/opencode-plugin-otel@0.9.0`, `open-plan-annotator@1.4.2`, `@simonwjackson/opencode-direnv@2025.1211.9` |
+| **4** | ✅ Complete | `@devtheops/opencode-plugin-otel@0.9.0`, `@plannotator/opencode@0.19.5`, `@simonwjackson/opencode-direnv@2025.1211.9` |
 | **5** | ✅ Complete | Native custom agents (`explore`, `review`, `architect`, `tester`), formatters config |
 | **6** | ✅ Complete | `opencode-background-agents@0.1.1`, `micode@0.10.0` — Async delegation + 12-agent workflow |
 | **7** | ✅ Complete | `opencode-notify@0.3.1`, `opencode-devcontainers@0.3.3`, `@ramarivera/opencode-model-announcer@1.0.2` |
@@ -995,7 +1006,7 @@ Configure formatters per-language in `opencode.json`:
 | **1** | Safety & Memory | `cc-safety-net`, `opencode-agent-memory`, `envsitter-guard` |
 | **2** | Token Optimization | `@tarquinen/opencode-dcp`, `opencode-snip`, `@morphllm/opencode-morph-plugin` |
 | **3** | Agents & Workflow | `opencode-froggy`, `opencode-handoff`, `opencode-agent-skills` |
-| **4** | Observability & Review | `@devtheops/opencode-plugin-otel`, `open-plan-annotator`, `@simonwjackson/opencode-direnv` |
+| **4** | Observability & Review | `@devtheops/opencode-plugin-otel`, `@plannotator/opencode`, `@simonwjackson/opencode-direnv` |
 | **5** | Oh-my-opencode alternatives | `micode` OR `kdco/workspace`, native custom agents, ast-grep MCP |
 | **6** | Gap filling | Build custom tools for testing, security, docs, CI/CD (Phase 6) |
 | **7+** | Optional polish | `opencode-devcontainers`, `opencode-notify`, `opencode-model-announcer` |

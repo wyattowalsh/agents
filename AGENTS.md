@@ -154,6 +154,8 @@ Keep OpenCode runtime plugins in repo `opencode.json` and the live `~/.config/op
 
 Scheduler, auth, and telemetry plugins require extra caution: `opencode-scheduler@latest` must stay inert until the user explicitly asks for jobs, `opencode-claude-auth@latest` must not enable optional model/runtime behavior by default, and `opencode-plugin-langfuse@latest` must use user-owned environment variables rather than committed credentials. CodeMCP workflow plugins are intentionally deferred because they can create additional local workflow state and setup artifacts.
 
+Use `@plannotator/opencode@latest` as the repo-managed OpenCode plan-review plugin with `workflow: "plan-agent"` and `planningAgents: ["plan"]`. Do not re-add `open-plan-annotator@latest` unless the user explicitly requests the older broader workflow behavior.
+
 ---
 
 ## 3. Naming Conventions

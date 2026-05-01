@@ -10,6 +10,7 @@ from wagents.openspec import OPENSPEC_PACKAGE, OPENSPEC_TOOL_BY_AGENT, format_mi
 ROOT = Path(__file__).resolve().parents[1]
 
 OPENCODE_RUNTIME_PLUGINS = {
+    "@plannotator/opencode@latest",
     "opencode-scheduler@latest",
     "opencode-claude-auth@latest",
     "opencode-plugin-langfuse@latest",
@@ -24,9 +25,19 @@ OPENCODE_DEFERRED_WORKFLOW_PLUGINS = {
     "@codemcp/workflows-opencode-tui@latest",
 }
 
+OPENCODE_DEPRECATED_PLUGINS = {
+    "open-plan-annotator@latest",
+}
+
 
 def load_json(relative_path: str) -> dict:
     return json.loads((ROOT / relative_path).read_text())
+
+
+def opencode_plugin_name(plugin_spec: str | list) -> str:
+    if isinstance(plugin_spec, str):
+        return plugin_spec
+    return plugin_spec[0]
 
 
 def test_agent_bundle_points_to_canonical_sources():
@@ -93,33 +104,58 @@ def test_opencode_project_plugins_use_latest_dist_tag():
     config = load_json("opencode.json")
 
     for plugin_spec in config["plugin"]:
-        assert plugin_spec.endswith("@latest"), f"{plugin_spec} must use @latest"
+        plugin_name = opencode_plugin_name(plugin_spec)
+        assert plugin_name.endswith("@latest"), f"{plugin_name} must use @latest"
 
 
 def test_opencode_project_plugins_include_runtime_integrations():
     config = load_json("opencode.json")
+    plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
 
-    assert OPENCODE_RUNTIME_PLUGINS.issubset(config["plugin"])
+    assert OPENCODE_RUNTIME_PLUGINS.issubset(plugin_names)
+
+
+def test_opencode_plan_review_plugin_stays_plan_agent_scoped():
+    config = load_json("opencode.json")
+
+    [plugin_spec] = [
+        plugin_spec
+        for plugin_spec in config["plugin"]
+        if opencode_plugin_name(plugin_spec) == "@plannotator/opencode@latest"
+    ]
+
+    assert plugin_spec[1] == {"workflow": "plan-agent", "planningAgents": ["plan"]}
 
 
 def test_opencode_project_plugins_exclude_tui_only_plugins():
     config = load_json("opencode.json")
+    plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
 
     for plugin_spec in OPENCODE_TUI_ONLY_PLUGINS:
-        assert plugin_spec not in config["plugin"]
+        assert plugin_spec not in plugin_names
 
 
 def test_opencode_project_plugins_exclude_deferred_workflow_plugins():
     config = load_json("opencode.json")
+    plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
 
     for plugin_spec in OPENCODE_DEFERRED_WORKFLOW_PLUGINS:
-        assert plugin_spec not in config["plugin"]
+        assert plugin_spec not in plugin_names
+
+
+def test_opencode_project_plugins_exclude_deprecated_plan_plugins():
+    config = load_json("opencode.json")
+    plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
+
+    for plugin_spec in OPENCODE_DEPRECATED_PLUGINS:
+        assert plugin_spec not in plugin_names
 
 
 def test_opencode_project_plugins_exclude_known_unresolved_packages():
     config = load_json("opencode.json")
+    plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
 
-    assert all(not plugin_spec.startswith("opencode-shell-strategy") for plugin_spec in config["plugin"])
+    assert all(not plugin_spec.startswith("opencode-shell-strategy") for plugin_spec in plugin_names)
 
 
 def test_platform_overhaul_registries_validate_against_schemas():
@@ -278,3 +314,4 @@ def test_harness_fixture_support_covers_every_harness_without_tier_promotion():
         assert evidence["rollback_coverage"] in {"present", "planned", "not-applicable", "blocked"}
 
         if harness["support_tier"] != "validated":
+            assert evidence["promotion_blocker"]
