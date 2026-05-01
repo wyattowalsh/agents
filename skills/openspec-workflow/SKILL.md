@@ -1,6 +1,10 @@
 ---
 name: openspec-workflow
 description: Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills.
+license: MIT
+metadata:
+  author: Wyatt Walsh
+  version: 1.0.0
 ---
 
 # OpenSpec Workflow

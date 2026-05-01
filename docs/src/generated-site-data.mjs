@@ -5489,7 +5489,7 @@ export const siteData = {
           "Scaling Strategy",
           "Progressive Disclosure",
           "Scope Boundaries",
-          "Assets"
+          "Validation Contract"
         ],
         "references": [
           "references/edge-cases.md",
@@ -5565,7 +5565,7 @@ export const siteData = {
       "trustTier": "repo",
       "useCommand": "/learn",
       "userInvocable": true,
-      "version": ""
+      "version": "1.0.0"
     },
     {
       "argumentHint": "<service or API to integrate>",
@@ -5628,7 +5628,7 @@ export const siteData = {
         ],
         "wordCount": 2502
       },
-      "license": "",
+      "license": "MIT",
       "model": "opus",
       "name": "mcp-creator",
       "provenanceStatus": "repo-owned",
@@ -5725,14 +5725,16 @@ export const siteData = {
     {
       "argumentHint": "[create|ingest|enrich|audit|query|derive|improve|migrate] [topic|path]",
       "author": "wyattowalsh",
-      "description": "Create, repair, query, audit, and migrate Obsidian-native knowledge bases with layered raw/wiki structure, provenance, indexes, logs, and safe vault overhauls. Use for git-friendly KBs and persistent llm-wiki-style vaults. NOT for docs sites or generic notes.",
+      "description": "Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes.",
       "installCommand": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "installSource": "github:wyattowalsh/agents",
       "installedAgents": [],
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/adversarial-kb-content-query.json",
           "evals/audit-mode.json",
+          "evals/derive-generated-artifacts.json",
           "evals/derive-mode.json",
           "evals/empty-args-headless.json",
           "evals/enrich-mode.json",
@@ -5743,6 +5745,8 @@ export const siteData = {
           "evals/improve-mode.json",
           "evals/ingest-mode.json",
           "evals/large-source-stub-ingest.json",
+          "evals/local-ingest-source-map.json",
+          "evals/migrate-approval-token.json",
           "evals/migrate-safety.json",
           "evals/missing-reference-fallback.json",
           "evals/negative-control.json",
@@ -5750,7 +5754,10 @@ export const siteData = {
           "evals/obsidian-create-mode.json",
           "evals/obsidian-overhaul-first.json",
           "evals/obsidian-workspace-negative-control.json",
-          "evals/query-mode.json"
+          "evals/query-mode.json",
+          "evals/retrieval-provenance-query.json",
+          "evals/semantic-extra-missing.json",
+          "evals/watch-replay-safety.json"
         ],
         "headings": [
           "Nerdbot",
@@ -5780,20 +5787,34 @@ export const siteData = {
         ],
         "references": [
           "references/audit-checklist.md",
+          "references/cli.md",
+          "references/current-state-and-compatibility.md",
+          "references/graph.md",
+          "references/implementation-charter.md",
+          "references/ingestion-adapters.md",
           "references/kb-architecture.md",
           "references/kb-operations.md",
           "references/migration-playbooks.md",
           "references/obsidian-vaults.md",
-          "references/page-templates.md"
+          "references/oss-dependencies.md",
+          "references/page-templates.md",
+          "references/pipeline-contracts.md",
+          "references/recovery-replay.md",
+          "references/retrieval.md",
+          "references/schema-contracts.md",
+          "references/setup.md",
+          "references/source-acquisition.md",
+          "references/watch-mode.md"
         ],
         "resourceLinks": [],
         "scripts": [
           "scripts/kb_bootstrap.py",
           "scripts/kb_inventory.py",
-          "scripts/kb_lint.py"
+          "scripts/kb_lint.py",
+          "scripts/kb_path_policy.py"
         ],
         "templates": [],
-        "wordCount": 3406
+        "wordCount": 3986
       },
       "license": "MIT",
       "model": "opus",
@@ -5807,7 +5828,7 @@ export const siteData = {
       "trustTier": "repo",
       "useCommand": "/nerdbot",
       "userInvocable": true,
-      "version": "0.3.0"
+      "version": "0.1.0"
     },
     {
       "argumentHint": "<mode> [target]",
@@ -5871,7 +5892,7 @@ export const siteData = {
     },
     {
       "argumentHint": "",
-      "author": "",
+      "author": "Wyatt Walsh",
       "description": "Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills.",
       "installCommand": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "installSource": "github:wyattowalsh/agents",

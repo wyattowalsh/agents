@@ -42,7 +42,7 @@ Skills are portable prompt-and-workflow bundles for coding agents. Install them 
 Run `wagents update` or `npx skills update` after upstream changes to refresh recorded sources, and use `wagents skills sync --dry-run` before `--apply` when you want additive cross-harness reconciliation for repo + curated external skills.
 
 <Aside type="caution" title="OpenCode plugin boundary">
-OpenCode runtime plugins are tracked in repo `opencode.json`; TUI-only plugins live in `~/.config/opencode/tui.json`. Scheduler jobs, Claude credential reuse, Langfuse credentials, and local workflow-state plugins require explicit opt-in instead of being enabled by repo defaults.
+OpenCode runtime plugins are tracked in repo `opencode.json`; TUI-only plugins live in `~/.config/opencode/tui.json`. Plannotator stays scoped to the `plan` agent, while scheduler jobs, Claude credential reuse, Langfuse credentials, and local workflow-state plugins require explicit opt-in instead of being enabled by repo defaults.
 </Aside>
 
 ## 3. Try A Starter Skill
