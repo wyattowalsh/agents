@@ -8,6 +8,7 @@
 | Scope review | Lane-scoped review of C09 files | No blockers; forbidden surfaces excluded. |
 | Release readiness | `planning/95-migration/30-release-checklist.md` | Checklist covers pre-release, validation, docs, candidate, and post-merge gates. |
 | Archive readiness | `planning/95-migration/40-openspec-archive-checklist.md` | Archive evidence, order, and stop conditions are defined. |
+| Release evidence | `planning/95-migration/50-release-notes.md` | Notes identify child lanes, committed range, pending final evidence, exclusions, and known risks. |
 
 ## Deferred Validation
 

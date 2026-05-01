@@ -18,9 +18,11 @@ Use non-destructive `git revert` for committed overhaul lanes, in reverse releas
 
 | Commit | Scope |
 | --- | --- |
-| Final C09 readiness commit | Release/archive readiness docs and C09 OpenSpec artifacts. Revert this first once the commit hash exists. |
+| Post-`9ac8ab5` readiness evidence commits | Includes any C00/C01 artifact completion and release-note evidence updates. Revert these newest commits first, in reverse `git log` order. |
+| `9ac8ab5` | Baseline release/archive readiness docs and C09 OpenSpec artifacts. Revert after the final readiness evidence commit if the whole readiness lane must roll back. |
 | `fa20686` | Wave 2 planning lanes. |
 | `7a53fc3` | Wave 1 planning lanes. |
+| `6217274` | Cross-harness Chrome DevTools skills. |
 | `3e432a8` | Docs instruction planning lane. |
 | `9758f19` | External repository intake lane. |
 

@@ -10,7 +10,7 @@ Release deferrals are not archive deferrals. Any parent or child task deferred f
 
 - [ ] Parent change and all child changes show complete status.
 - [ ] `uv run wagents openspec validate` passes.
-- [ ] Release notes identify every child change and final commit range.
+- [ ] `planning/95-migration/50-release-notes.md` identifies every child change and final commit range.
 - [ ] Known deferred work has an owner, reason, and follow-up location.
 - [ ] Specs receiving archived deltas are reviewed for duplicate or conflicting requirements.
 - [ ] Generated artifacts are either committed intentionally or confirmed out of scope.

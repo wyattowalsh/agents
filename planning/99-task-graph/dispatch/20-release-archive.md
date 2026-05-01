@@ -6,7 +6,7 @@
 
 ## Mission
 
-Create migration, release, rollback, post-merge validation, and OpenSpec archive readiness plans after all earlier waves land.
+Create migration, release, rollback, post-merge validation, release-note evidence, and OpenSpec archive readiness plans after all earlier waves land.
 
 ## Allowed Files And Directories
 
@@ -33,6 +33,7 @@ Create migration, release, rollback, post-merge validation, and OpenSpec archive
 - rollback playbook
 - release checklist
 - archive checklist
+- release notes evidence
 
 ## Validation Commands
 
