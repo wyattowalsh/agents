@@ -87,7 +87,7 @@ uv run wagents openspec doctor
     <Badge text="native" variant="note" /> `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same `skills/` and `mcp.json` bundle for Codex.
   </Card>
   <Card title="OpenCode Project Config">
-    <Badge text="native" variant="note" /> `opencode.json` keeps repo-managed npm plugin specs on `@latest`; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.
+    <Badge text="native" variant="note" /> `opencode.json` keeps repo-managed npm plugin specs on `@latest` and scopes Plannotator to the `plan` agent; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.
   </Card>
   <Card title="Skills CLI">
     <Badge text="fallback" variant="success" /> `npx skills add github:wyattowalsh/agents ...` remains the portable install path for supported agents.
