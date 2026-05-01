@@ -2,7 +2,7 @@
 
 ## Scope
 
-This release note records the completed planning and control-plane waves for the agents platform overhaul. It is release evidence for readiness review; it does not perform OpenSpec archive, generated docs regeneration, or live harness config mutation.
+This release note records the completed planning and control-plane waves for the agents platform overhaul. It is release evidence for readiness review and the OpenSpec archive pass; it does not perform generated docs regeneration or live harness config mutation.
 
 ## Current Committed Range
 
@@ -15,15 +15,16 @@ This release note records the completed planning and control-plane waves for the
 | `fa20686` | Wave 2 planning lanes. |
 | `9ac8ab5` | Release/archive readiness lane. |
 
-The branch was ahead of `origin/main` by these six commits when this evidence was prepared. Additional readiness evidence may appear after `9ac8ab5`; use `git log --oneline 9ac8ab5..HEAD` during release review to identify the exact final evidence commits. No archive move has been performed in this release note.
+These six commits were the original planning/control-plane wave range. Additional readiness and archive evidence landed after `9ac8ab5`; use `git log --oneline 9ac8ab5..HEAD` during release review to identify the exact final evidence commits.
 
-## Pending Final Evidence
+## Final Evidence
 
 | Item | Status |
 | --- | --- |
 | C00/C01 required OpenSpec artifacts | Added as readiness evidence after baseline C09 readiness. |
 | Release-note evidence | Added as readiness evidence after baseline C09 readiness. |
-| Final rollback range | Use reverse `git log` order for any post-`9ac8ab5` readiness evidence commits. |
+| Final rollback range | Use reverse `git log` order for the committed archive/readiness evidence after `9ac8ab5`. |
+| OpenSpec archive | Applied through `uv run wagents openspec archive <change> --yes --apply` for all `agents-*` child changes and parent `agents-platform-overhaul`. |
 
 ## Child Change Coverage
 
@@ -38,7 +39,7 @@ The branch was ahead of `origin/main` by these six commits when this evidence wa
 | `agents-c06-config-safety` | Config transaction, rollback, and redaction contracts committed. |
 | `agents-c07-ci-evals-observability` | Quality gates, evals, and observability contracts committed. |
 | `agents-c08-docs-instructions` | Docs and instruction sync planning committed. |
-| `agents-c09-release-archive` | Release and archive readiness planning committed. |
+| `agents-c09-release-archive` | Release and archive readiness planning committed and archived. |
 | `agents-c10-external-repo-intake` | External repo intake planning committed. |
 | `agents-c11-knowledge-graph-context` | Knowledge graph context adoption planning committed. |
 | `agents-c12-session-telemetry` | Session telemetry contract planning committed. |
@@ -50,22 +51,21 @@ The branch was ahead of `origin/main` by these six commits when this evidence wa
 
 | Check | Result |
 | --- | --- |
-| `uv run wagents openspec validate` | Passed 29/29 items after the C00/C01 artifact and release evidence updates. |
-| `uv run wagents openspec status --change agents-c00-repo-sync --format json` | `isComplete: true` after adding required artifacts. |
-| `uv run wagents openspec status --change agents-c01-registry-core --format json` | `isComplete: true` after adding required artifacts. |
-| `uv run wagents openspec status --change agents-platform-overhaul --format json` | Parent change remains `isComplete: true`. |
-| Scoped dirty-worktree audit | Confirmed unrelated dirty files remain unstaged and must not be swept into release staging. |
+| `uv run wagents openspec validate` | Passed 29/29 items before and after archiving; after archive, 4 active changes and 25 specs validate. |
+| `uv run wagents openspec archive <change> --yes --apply` | Archived `agents-c00` through `agents-c15` and parent `agents-platform-overhaul`; spec deltas synced into `openspec/specs/`. |
+| `git status --short --branch` | Clean before archive; archive pass produced only intended OpenSpec moves/spec updates and release-evidence edits. |
+| Scoped review | Identified stale pre-archive evidence and plan-only blockers; release docs now distinguish archived planning work from follow-up runtime fixture validation. |
 
 ## Exclusions
 
 - No root `README.md` regeneration in this release unit.
 - No generated docs or support matrix regeneration in this release unit.
 - No live user config, desktop config, credential, or harness apply mutation.
-- No broad staging of unrelated dirty files.
-- No OpenSpec archive move until archive approval and post-release gates pass.
+- No broad staging of unrelated files.
+- No raw deletion of OpenSpec changes; archive was performed through the OpenSpec workflow.
 
 ## Known Risks
 
-- The worktree contains unrelated dirty tracked and untracked files, so every follow-up must stage explicit pathspecs only.
+- Runtime fixture execution remains a follow-up validation concern for harnesses that still carry `fixture-plan-only` or `docs-ledger-required` statuses.
 - Generated docs and instruction mirrors may need a separate docs-steward pass before public release.
-- OpenSpec archive remains blocked until final validation evidence is re-run and archive approval is explicit.
+- Future cleanup should preserve archived OpenSpec evidence under `openspec/changes/archive/` rather than deleting it as scratch material.
