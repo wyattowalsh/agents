@@ -1,0 +1,126 @@
+{
+  "version": 2,
+  "policy": {
+    "default_lane": "skill",
+    "mcp_only_for": [
+      "live external state",
+      "browser/runtime",
+      "authenticated SaaS",
+      "database/search/vector state",
+      "current docs/search",
+      "observability streams"
+    ],
+    "preferred_ephemeral_installs": [
+      "npx",
+      "uvx"
+    ],
+    "directories_are_not_trust": true
+  },
+  "skill_candidates": [
+    {
+      "id": "skills-sh",
+      "name": "skills.sh / skills CLI",
+      "lane": "skill-registry",
+      "action": "adopt-with-pinning",
+      "risk": "medium",
+      "notes": "Primary npx lifecycle lane; verify exact flags and telemetry policy."
+    },
+    {
+      "id": "microsoft-skills",
+      "name": "microsoft/skills",
+      "lane": "skill-reference",
+      "action": "reference/adapt",
+      "risk": "medium",
+      "notes": "Large skill/plugin/prompt/agent corpus with scenario harness patterns."
+    },
+    {
+      "id": "crewai-skills",
+      "name": "CrewAI skills",
+      "lane": "skill-pack",
+      "action": "watch/adapt",
+      "risk": "medium",
+      "notes": "Framework skill pack; validate dependency footprint."
+    },
+    {
+      "id": "tech-leads-agent-skills",
+      "name": "tech-leads-club/agent-skills",
+      "lane": "skill-registry-reference",
+      "action": "reference",
+      "risk": "medium",
+      "notes": "Lockfile/hash/path-isolation ideas."
+    },
+    {
+      "id": "pinecone-gemini-extension",
+      "name": "Pinecone Gemini extension",
+      "lane": "gemini-extension",
+      "action": "reference",
+      "risk": "medium",
+      "notes": "Shows extension+skills+MCP hybrid."
+    }
+  ],
+  "mcp_candidates": [
+    {
+      "id": "playwright-mcp",
+      "name": "Playwright MCP",
+      "domain": "browser automation",
+      "install": "npx @playwright/mcp@latest",
+      "action": "keep-mcp",
+      "risk": "high",
+      "notes": "Dynamic browser runtime justifies MCP; pin and sandbox."
+    },
+    {
+      "id": "chrome-devtools-mcp",
+      "name": "Chrome DevTools MCP",
+      "domain": "browser/devtools",
+      "install": "npx or official package",
+      "action": "keep-mcp",
+      "risk": "high",
+      "notes": "Live DevTools telemetry; strict sandbox."
+    },
+    {
+      "id": "github-mcp",
+      "name": "GitHub MCP Server",
+      "domain": "GitHub live state",
+      "install": "official server",
+      "action": "keep-mcp",
+      "risk": "high",
+      "notes": "Avoid duplicate config where Copilot has default."
+    },
+    {
+      "id": "openai-docs-mcp",
+      "name": "OpenAI Docs MCP",
+      "domain": "current docs",
+      "install": "remote URL/codex mcp add",
+      "action": "keep-mcp",
+      "risk": "medium",
+      "notes": "Useful for current docs; no secrets."
+    },
+    {
+      "id": "context7",
+      "name": "Context7",
+      "domain": "current library docs",
+      "install": "npx/remote",
+      "action": "keep-mcp",
+      "risk": "medium",
+      "notes": "Useful docs context; validate source."
+    },
+    {
+      "id": "filesystem-mcp",
+      "name": "Filesystem MCP",
+      "domain": "filesystem",
+      "install": "varies",
+      "action": "replace-with-skill-or-native-tool",
+      "risk": "high",
+      "notes": "Often redundant and broad; reject unless narrow sandbox."
+    },
+    {
+      "id": "git-mcp",
+      "name": "Git MCP",
+      "domain": "git",
+      "install": "varies",
+      "action": "replace-with-cli-skill",
+      "risk": "medium",
+      "notes": "Prefer git CLI skills unless MCP-specific behavior needed."
+    }
+  ]
+}

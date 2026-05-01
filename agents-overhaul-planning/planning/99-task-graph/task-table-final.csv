@@ -1,0 +1,855 @@
+id,cluster,title,owner_team,blocking_dependencies,risk_level,estimated_complexity,merge_risk_score,parallelizable_cluster
+C00-001,C00,Inventory latest repository tree and classify source/generated files,platform-core,,medium,S,2,C00
+C00-002,C00,"Parse pyproject, package metadata, Makefile, uv.lock, and CLI entrypoints",platform-core,,medium,S,2,C00
+C00-003,C00,Inventory skills directory and validate every SKILL.md candidate,platform-core,,medium,S,2,C00
+C00-004,C00,Inventory MCP configs and normalize current MCP server records,platform-core,,medium,S,2,C00
+C00-005,C00,Inventory harness-specific directories and claim support tiers,platform-core,,medium,S,2,C00
+C00-006,C00,Detect README/raw-rendered quickstart drift and command inconsistencies,platform-core,,medium,S,2,C00
+C00-007,C00,Inventory docs and AI instruction files,platform-core,,medium,S,2,C00
+C00-008,C00,Inventory tests/CI workflows/pre-commit quality gates,platform-core,,medium,S,2,C00
+C00-009,C00,Inventory existing OpenSpec assets without overwriting them,openspec-governance,,medium,S,2,C00
+C00-010,C00,Generate repo-sync inventory JSON,platform-core,,medium,S,2,C00
+C00-011,C00,Generate initial drift report between planning bundle and live repo,platform-core,,medium,S,2,C00
+C00-012,C00,Reconcile OpenSpec active changes with planning docs,openspec-governance,,medium,S,2,C00
+C00-013,C00,Create OpenSpec-to-task-graph mapping table,openspec-governance,,medium,S,2,C00
+C00-014,C00,Freeze support-tier vocabulary,platform-core,,medium,S,2,C00
+C00-015,C00,Publish repo-sync analysis doc,platform-core,,medium,S,2,C00
+C00-016,C00,Define branch/PR naming convention for overhaul work,platform-core,,medium,S,2,C00
+C00-017,C00,Create conflict-surface map for generated docs and harness configs,platform-core,,medium,S,2,C00
+C00-018,C00,Add repo-sync CI smoke test fixture,platform-core,,medium,S,2,C00
+C01-001,C01,Define canonical harness registry JSON/YAML schema,platform-core,C00-010,medium,M,3,C01
+C01-002,C01,Define canonical skill registry schema,platform-core,C00-010,medium,M,3,C01
+C01-003,C01,Define canonical MCP registry schema,platform-core,C00-010,medium,M,3,C01
+C01-004,C01,Define plugin/extension registry schema,platform-core,C00-010,medium,M,3,C01
+C01-005,C01,Define docs artifact registry schema,platform-core,C00-010,medium,M,3,C01
+C01-006,C01,Define external capability catalog schema,platform-core,C00-010,medium,M,3,C01
+C01-007,C01,Define support-tier validation rules,platform-core,C00-010,medium,M,3,C01
+C01-008,C01,Define capability graph model and edges,platform-core,C00-010,medium,M,3,C01
+C01-009,C01,Implement registry loader and resolver interface design,platform-core,C00-010,medium,M,3,C01
+C01-010,C01,Create generated harness support matrix,platform-core,C00-010,medium,M,3,C01
+C01-011,C01,Create generated skill support matrix,platform-core,C00-010,medium,M,3,C01
+C01-012,C01,Create generated MCP risk matrix,platform-core,C00-010,medium,M,3,C01
+C01-013,C01,Create registry schema tests,platform-core,C00-010,medium,M,3,C01
+C01-014,C01,Create registry golden fixture set,platform-core,C00-010,medium,M,3,C01
+C01-015,C01,Add registry docs generation plan,platform-core,C00-010,medium,M,3,C01
+C01-016,C01,Add registry drift-detection plan,platform-core,C00-010,medium,M,3,C01
+C01-017,C01,Add registry diff report UX spec,platform-core,C00-010,medium,M,3,C01
+C01-018,C01,Lock registry schema version v1,platform-core,C00-010,medium,M,3,C01
+C02-001,C02,Normalize all local skills to Agent Skills package model,skills-team,C01-002,medium,M,3,C02
+C02-002,C02,Validate required SKILL.md frontmatter fields,skills-team,C01-002,medium,M,3,C02
+C02-003,C02,Move heavy reference content into references/assets for progressive disclosure,skills-team,C01-002,medium,M,3,C02
+C02-004,C02,Inventory scripts and classify execution risk,skills-team,C01-002,medium,M,3,C02
+C02-005,C02,Add CLI conformance fixture for each script-backed skill,skills-team,C01-002,medium,M,3,C02
+C02-006,C02,Define skill lockfile schema with source/ref/checksum,skills-team,C01-002,medium,M,3,C02
+C02-007,C02,Design npx skills lifecycle wrapper commands,skills-team,C01-002,medium,M,3,C02
+C02-008,C02,Evaluate skills.sh registry metadata and trust fields,skills-team,C01-002,medium,M,3,C02
+C02-009,C02,Evaluate Microsoft skills repo for reusable patterns,skills-team,C01-002,medium,M,3,C02
+C02-010,C02,Evaluate GitHub Awesome Copilot skills and agents,skills-team,C01-002,medium,M,3,C02
+C02-011,C02,Evaluate CrewAI skills pack,skills-team,C01-002,medium,M,3,C02
+C02-012,C02,Evaluate tech-leads agent-skills lockfile/hash patterns,skills-team,C01-002,medium,M,3,C02
+C02-013,C02,Create external skill adoption rubric,skills-team,C01-002,medium,M,3,C02
+C02-014,C02,Create skill signing/provenance plan,skills-team,C01-002,high,M,3,C02
+C02-015,C02,Create skill update/rollback semantics,skills-team,C01-002,medium,M,3,C02
+C02-016,C02,Add skill install preview UX,skills-team,C01-002,medium,M,3,C02
+C02-017,C02,Add skill audit command spec,skills-team,C01-002,medium,M,3,C02
+C02-018,C02,Add skill docs generation spec,skills-team,C01-002,medium,M,3,C02
+C02-019,C02,Add skill security policy to AGENTS.md draft,skills-team,C01-002,high,M,3,C02
+C02-020,C02,Add skill-vs-MCP replacement report,skills-team,C01-002,medium,M,3,C02
+C02-021,C02,Add skill fixture mode guidance,skills-team,C01-002,medium,M,3,C02
+C02-022,C02,Add skill telemetry/redaction guidance,skills-team,C01-002,medium,M,3,C02
+C02-023,C02,Create skill inventory JSON generator task,skills-team,C01-002,medium,M,3,C02
+C02-024,C02,Create first cohort of high-value adopted/adapted skills,skills-team,C01-002,medium,M,3,C02
+C03-001,C03,Scan Glama MCP index for candidate live-systems servers,mcp-team,C01-003,medium,M,3,C03
+C03-002,C03,Scan PulseMCP index for candidate live-systems servers,mcp-team,C01-003,medium,M,3,C03
+C03-003,C03,Scan MCP.so for candidate live-systems servers,mcp-team,C01-003,medium,M,3,C03
+C03-004,C03,Scan Awesome MCP lists and extract high-signal upstream repos,mcp-team,C01-003,medium,M,3,C03
+C03-005,C03,Normalize current repo MCP inventory into MCP registry,mcp-team,C01-003,medium,M,3,C03
+C03-006,C03,Classify every MCP by domain and live-state necessity,mcp-team,C01-003,medium,M,3,C03
+C03-007,C03,"Classify transport: stdio, Streamable HTTP, deprecated SSE, other",mcp-team,C01-003,medium,M,3,C03
+C03-008,C03,Classify auth model and secret requirements,mcp-team,C01-003,high,M,3,C03
+C03-009,C03,Mark static/redundant MCPs for skill replacement,mcp-team,C01-003,medium,M,3,C03
+C03-010,C03,Promote browser automation MCP candidates for review,mcp-team,C01-003,medium,M,3,C03
+C03-011,C03,Promote docs/search MCP candidates for review,mcp-team,C01-003,medium,M,3,C03
+C03-012,C03,Promote GitHub/CI/cloud MCP candidates for review,mcp-team,C01-003,medium,M,3,C03
+C03-013,C03,Reject or quarantine broad filesystem MCPs unless narrowly justified,mcp-team,C01-003,high,M,3,C03
+C03-014,C03,Run mcp-scan or equivalent scanner on current MCP configs,mcp-team,C01-003,high,M,3,C03
+C03-015,C03,Define MCP sandbox policy,mcp-team,C01-003,high,M,3,C03
+C03-016,C03,Define MCP pinning and tool-description diff policy,mcp-team,C01-003,high,M,3,C03
+C03-017,C03,Create MCP smoke test harness,mcp-team,C01-003,medium,M,3,C03
+C03-018,C03,Create MCP risk matrix docs,mcp-team,C01-003,medium,M,3,C03
+C03-019,C03,Create MCP deprecation/rollback plan,mcp-team,C01-003,medium,M,3,C03
+C03-020,C03,Create MCP index refresh job spec,mcp-team,C01-003,high,M,3,C03
+C03-021,C03,Create MCP security exception template,mcp-team,C01-003,high,M,3,C03
+C03-022,C03,Create per-harness MCP projection fixtures,mcp-team,C01-003,medium,M,3,C03
+C03-023,C03,Add MCP audit docs to README/docs plan,mcp-team,C01-003,medium,M,3,C03
+C03-024,C03,Define uvx/npx install normalization for MCP servers,mcp-team,C01-003,medium,M,3,C03
+C04-001,C04,Claude Code: Validate repo artifacts and support tier,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-002,C04,Claude Code: Map official extension/plugin/config surfaces,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-003,C04,Claude Code: Define skill projection behavior,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-004,C04,Claude Code: Define MCP projection behavior and constraints,harness-claude,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-005,C04,Claude Code: Define instruction/rules/doc projection behavior,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-006,C04,Claude Code: Create golden config fixtures,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-007,C04,Claude Code: Create harness-specific setup docs,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-008,C04,Claude Code: Create drift detection and repair behavior,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-009,C04,Claude Code: Create rollback validation fixture,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-010,C04,Claude Desktop: Validate repo artifacts and support tier,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-011,C04,Claude Desktop: Map official extension/plugin/config surfaces,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-012,C04,Claude Desktop: Define skill projection behavior,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-013,C04,Claude Desktop: Define MCP projection behavior and constraints,harness-claude,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-014,C04,Claude Desktop: Define instruction/rules/doc projection behavior,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-015,C04,Claude Desktop: Create golden config fixtures,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-016,C04,Claude Desktop: Create harness-specific setup docs,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-017,C04,Claude Desktop: Create drift detection and repair behavior,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-018,C04,Claude Desktop: Create rollback validation fixture,harness-claude,C01-001;C02-001,medium,M,4,C04
+C04-019,C04,ChatGPT: Validate repo artifacts and support tier,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-020,C04,ChatGPT: Map official extension/plugin/config surfaces,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-021,C04,ChatGPT: Define skill projection behavior,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-022,C04,ChatGPT: Define MCP projection behavior and constraints,harness-openai,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-023,C04,ChatGPT: Define instruction/rules/doc projection behavior,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-024,C04,ChatGPT: Create golden config fixtures,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-025,C04,ChatGPT: Create harness-specific setup docs,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-026,C04,ChatGPT: Create drift detection and repair behavior,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-027,C04,ChatGPT: Create rollback validation fixture,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-028,C04,OpenAI Codex: Validate repo artifacts and support tier,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-029,C04,OpenAI Codex: Map official extension/plugin/config surfaces,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-030,C04,OpenAI Codex: Define skill projection behavior,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-031,C04,OpenAI Codex: Define MCP projection behavior and constraints,harness-openai,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-032,C04,OpenAI Codex: Define instruction/rules/doc projection behavior,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-033,C04,OpenAI Codex: Create golden config fixtures,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-034,C04,OpenAI Codex: Create harness-specific setup docs,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-035,C04,OpenAI Codex: Create drift detection and repair behavior,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-036,C04,OpenAI Codex: Create rollback validation fixture,harness-openai,C01-001;C02-001,medium,M,4,C04
+C04-037,C04,GitHub Copilot Web: Validate repo artifacts and support tier,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-038,C04,GitHub Copilot Web: Map official extension/plugin/config surfaces,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-039,C04,GitHub Copilot Web: Define skill projection behavior,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-040,C04,GitHub Copilot Web: Define MCP projection behavior and constraints,harness-copilot,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-041,C04,GitHub Copilot Web: Define instruction/rules/doc projection behavior,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-042,C04,GitHub Copilot Web: Create golden config fixtures,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-043,C04,GitHub Copilot Web: Create harness-specific setup docs,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-044,C04,GitHub Copilot Web: Create drift detection and repair behavior,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-045,C04,GitHub Copilot Web: Create rollback validation fixture,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-046,C04,GitHub Copilot CLI: Validate repo artifacts and support tier,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-047,C04,GitHub Copilot CLI: Map official extension/plugin/config surfaces,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-048,C04,GitHub Copilot CLI: Define skill projection behavior,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-049,C04,GitHub Copilot CLI: Define MCP projection behavior and constraints,harness-copilot,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-050,C04,GitHub Copilot CLI: Define instruction/rules/doc projection behavior,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-051,C04,GitHub Copilot CLI: Create golden config fixtures,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-052,C04,GitHub Copilot CLI: Create harness-specific setup docs,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-053,C04,GitHub Copilot CLI: Create drift detection and repair behavior,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-054,C04,GitHub Copilot CLI: Create rollback validation fixture,harness-copilot,C01-001;C02-001,medium,M,4,C04
+C04-055,C04,OpenCode: Validate repo artifacts and support tier,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-056,C04,OpenCode: Map official extension/plugin/config surfaces,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-057,C04,OpenCode: Define skill projection behavior,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-058,C04,OpenCode: Define MCP projection behavior and constraints,harness-opencode,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-059,C04,OpenCode: Define instruction/rules/doc projection behavior,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-060,C04,OpenCode: Create golden config fixtures,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-061,C04,OpenCode: Create harness-specific setup docs,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-062,C04,OpenCode: Create drift detection and repair behavior,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-063,C04,OpenCode: Create rollback validation fixture,harness-opencode,C01-001;C02-001,medium,M,4,C04
+C04-064,C04,Gemini CLI: Validate repo artifacts and support tier,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-065,C04,Gemini CLI: Map official extension/plugin/config surfaces,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-066,C04,Gemini CLI: Define skill projection behavior,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-067,C04,Gemini CLI: Define MCP projection behavior and constraints,harness-gemini,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-068,C04,Gemini CLI: Define instruction/rules/doc projection behavior,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-069,C04,Gemini CLI: Create golden config fixtures,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-070,C04,Gemini CLI: Create harness-specific setup docs,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-071,C04,Gemini CLI: Create drift detection and repair behavior,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-072,C04,Gemini CLI: Create rollback validation fixture,harness-gemini,C01-001;C02-001,medium,M,4,C04
+C04-073,C04,Cursor Editor: Validate repo artifacts and support tier,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-074,C04,Cursor Editor: Map official extension/plugin/config surfaces,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-075,C04,Cursor Editor: Define skill projection behavior,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-076,C04,Cursor Editor: Define MCP projection behavior and constraints,harness-cursor,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-077,C04,Cursor Editor: Define instruction/rules/doc projection behavior,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-078,C04,Cursor Editor: Create golden config fixtures,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-079,C04,Cursor Editor: Create harness-specific setup docs,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-080,C04,Cursor Editor: Create drift detection and repair behavior,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-081,C04,Cursor Editor: Create rollback validation fixture,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-082,C04,Cursor Agent CLI/Web: Validate repo artifacts and support tier,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-083,C04,Cursor Agent CLI/Web: Map official extension/plugin/config surfaces,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-084,C04,Cursor Agent CLI/Web: Define skill projection behavior,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-085,C04,Cursor Agent CLI/Web: Define MCP projection behavior and constraints,harness-cursor,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-086,C04,Cursor Agent CLI/Web: Define instruction/rules/doc projection behavior,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-087,C04,Cursor Agent CLI/Web: Create golden config fixtures,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-088,C04,Cursor Agent CLI/Web: Create harness-specific setup docs,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-089,C04,Cursor Agent CLI/Web: Create drift detection and repair behavior,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-090,C04,Cursor Agent CLI/Web: Create rollback validation fixture,harness-cursor,C01-001;C02-001,medium,M,4,C04
+C04-091,C04,Antigravity: Validate repo artifacts and support tier,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-092,C04,Antigravity: Map official extension/plugin/config surfaces,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-093,C04,Antigravity: Define skill projection behavior,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-094,C04,Antigravity: Define MCP projection behavior and constraints,harness-experimental,C01-001;C02-001;C03-005,high,M,4,C04
+C04-095,C04,Antigravity: Define instruction/rules/doc projection behavior,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-096,C04,Antigravity: Create golden config fixtures,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-097,C04,Antigravity: Create harness-specific setup docs,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-098,C04,Antigravity: Create drift detection and repair behavior,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-099,C04,Antigravity: Create rollback validation fixture,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-100,C04,Perplexity Desktop: Validate repo artifacts and support tier,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-101,C04,Perplexity Desktop: Map official extension/plugin/config surfaces,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-102,C04,Perplexity Desktop: Define skill projection behavior,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-103,C04,Perplexity Desktop: Define MCP projection behavior and constraints,harness-experimental,C01-001;C02-001;C03-005,high,M,4,C04
+C04-104,C04,Perplexity Desktop: Define instruction/rules/doc projection behavior,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-105,C04,Perplexity Desktop: Create golden config fixtures,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-106,C04,Perplexity Desktop: Create harness-specific setup docs,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-107,C04,Perplexity Desktop: Create drift detection and repair behavior,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-108,C04,Perplexity Desktop: Create rollback validation fixture,harness-experimental,C01-001;C02-001,high,M,4,C04
+C04-109,C04,Cherry Studio: Validate repo artifacts and support tier,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-110,C04,Cherry Studio: Map official extension/plugin/config surfaces,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-111,C04,Cherry Studio: Define skill projection behavior,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-112,C04,Cherry Studio: Define MCP projection behavior and constraints,harness-experimental,C01-001;C02-001;C03-005,medium,M,4,C04
+C04-113,C04,Cherry Studio: Define instruction/rules/doc projection behavior,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-114,C04,Cherry Studio: Create golden config fixtures,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-115,C04,Cherry Studio: Create harness-specific setup docs,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-116,C04,Cherry Studio: Create drift detection and repair behavior,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C04-117,C04,Cherry Studio: Create rollback validation fixture,harness-experimental,C01-001;C02-001,medium,M,4,C04
+C05-001,C05,Design wagents doctor output model,ux-cli,C01-009,medium,M,3,C05
+C05-002,C05,Implement doctor prerequisites and harness detection spec,ux-cli,C01-009,medium,M,3,C05
+C05-003,C05,Design catalog browse/explain UX,ux-cli,C01-009,medium,M,3,C05
+C05-004,C05,Design skill add preview/apply UX,ux-cli,C01-009,medium,M,3,C05
+C05-005,C05,Design MCP inspect/enable UX,ux-cli,C01-009,medium,M,3,C05
+C05-006,C05,Design sync preview UX,ux-cli,C01-009,medium,M,3,C05
+C05-007,C05,Design sync apply transaction UX,ux-cli,C01-009,medium,M,3,C05
+C05-008,C05,Design rollback UX,ux-cli,C01-009,medium,M,3,C05
+C05-009,C05,Design OpenSpec command group UX,ux-cli,C01-009,medium,M,3,C05
+C05-010,C05,Define machine-readable JSON output formats for automation,ux-cli,C01-009,medium,M,3,C05
+C05-011,C05,Define CLI error taxonomy and remediation hints,ux-cli,C01-009,medium,M,3,C05
+C05-012,C05,Define dashboard information architecture,ux-cli,C01-009,medium,M,3,C05
+C05-013,C05,Define skill catalog dashboard view,ux-cli,C01-009,medium,M,3,C05
+C05-014,C05,Define MCP audit dashboard view,ux-cli,C01-009,medium,M,3,C05
+C05-015,C05,Define config drift dashboard view,ux-cli,C01-009,medium,M,3,C05
+C05-016,C05,Define transaction history dashboard view,ux-cli,C01-009,medium,M,3,C05
+C05-017,C05,Define support matrix dashboard view,ux-cli,C01-009,medium,M,3,C05
+C05-018,C05,Define guided onboarding wizard,ux-cli,C01-009,medium,M,3,C05
+C05-019,C05,Create CLI golden snapshot tests,ux-cli,C01-009,medium,M,3,C05
+C05-020,C05,Create dashboard wireframe docs,ux-cli,C01-009,medium,M,3,C05
+C06-001,C06,Define transaction engine operation model,security,C01-001,high,M,3,C06
+C06-002,C06,Define backup snapshot format,security,C01-001,high,M,3,C06
+C06-003,C06,Define atomic file-write strategy,security,C01-001,high,M,3,C06
+C06-004,C06,Define rollback verification strategy,security,C01-001,high,M,3,C06
+C06-005,C06,Define secret redaction model,security,C01-001,high,M,3,C06
+C06-006,C06,Define environment overlay policy,security,C01-001,high,M,3,C06
+C06-007,C06,Define policy-as-code validation rules,security,C01-001,high,M,3,C06
+C06-008,C06,Define external skill source trust policy,security,C01-001,high,M,3,C06
+C06-009,C06,Define MCP source trust policy,security,C01-001,high,M,3,C06
+C06-010,C06,Define signing/checksum/provenance strategy,security,C01-001,high,M,3,C06
+C06-011,C06,Evaluate Sigstore/cosign for skill provenance,security,C01-001,high,M,3,C06
+C06-012,C06,Evaluate SBOM tooling for skill dependencies,security,C01-001,high,M,3,C06
+C06-013,C06,Evaluate OPA/Conftest for registry policy,security,C01-001,high,M,3,C06
+C06-014,C06,Define sandbox profiles for script-backed skills,security,C01-001,high,M,3,C06
+C06-015,C06,Define sandbox profiles for local MCP servers,security,C01-001,high,M,3,C06
+C06-016,C06,Define network access declaration schema,security,C01-001,high,M,3,C06
+C06-017,C06,Define prompt-injection and tool-poisoning mitigations,security,C01-001,high,M,3,C06
+C06-018,C06,Define security review checklist,security,C01-001,high,M,3,C06
+C06-019,C06,Create threat model docs,security,C01-001,high,M,3,C06
+C06-020,C06,Create security exception workflow,security,C01-001,high,M,3,C06
+C07-001,C07,Create registry schema validation CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-002,C07,Create skill validation CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-003,C07,Create skill CLI conformance CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-004,C07,Create MCP registry validation CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-005,C07,Create MCP smoke test CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-006,C07,Create MCP security scan CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-007,C07,Create adapter golden-fixture CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-008,C07,Create docs truth CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-009,C07,Create AI instruction truth CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-010,C07,Create OpenSpec validation CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-011,C07,Create transaction rollback CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-012,C07,Create repo-sync inventory CI gate,ci-evals,C01-013,medium,M,3,C07
+C07-013,C07,Create eval scenario schema,ci-evals,C01-013,medium,M,3,C07
+C07-014,C07,Create promptfoo/deepeval feasibility notes,ci-evals,C01-013,medium,M,3,C07
+C07-015,C07,Create Microsoft skills scenario-harness adaptation note,ci-evals,C01-013,medium,M,3,C07
+C07-016,C07,Create deterministic replay fixture design,ci-evals,C01-013,medium,M,3,C07
+C07-017,C07,Create local audit log schema,observability,C01-013,medium,M,3,C07
+C07-018,C07,Create OpenTelemetry instrumentation plan,observability,C01-013,medium,M,3,C07
+C07-019,C07,Create run graph visualization spec,observability,C01-013,medium,M,3,C07
+C07-020,C07,Create cost telemetry design,observability,C01-013,medium,M,3,C07
+C07-021,C07,Create CI report dashboard spec,observability,C01-013,medium,M,3,C07
+C07-022,C07,Create failure remediation docs,observability,C01-013,medium,M,3,C07
+C08-001,C08,Canonicalize README quickstart and supported agents section,docs-ai-instructions,C01-005,medium,S,5,C08
+C08-002,C08,Update README skill catalog section from skill inventory,docs-ai-instructions,C01-005,medium,S,5,C08
+C08-003,C08,Update README MCP policy section from MCP inventory,docs-ai-instructions,C01-005,medium,S,5,C08
+C08-004,C08,Update README OpenSpec governance section,docs-ai-instructions,C01-005,medium,S,5,C08
+C08-005,C08,Update AGENTS.md with skill-first decision tree,docs-ai-instructions,C01-005,medium,S,5,C08
+C08-006,C08,Update AGENTS.md with MCP safety policy,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-007,C08,Update CLAUDE.md with Claude Code skills/plugins/hooks/subagents guidance,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-008,C08,Update GEMINI.md with Gemini extension/MCP guidance,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-009,C08,Create .github/copilot-instructions.md projection,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-010,C08,Create .github/instructions scoped instruction docs,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-011,C08,Update Cursor rules docs and deprecate .cursorrules assumptions,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-012,C08,Update OpenCode setup docs,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-013,C08,Update Cherry Studio preset/setup docs,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-014,C08,Update Perplexity Desktop caveat docs,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-015,C08,Update Antigravity experimental caveat docs,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-016,C08,Create docs/skills.md from skill registry,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-017,C08,Create docs/mcp.md from MCP registry,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-018,C08,Create docs/harnesses index,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-019,C08,Create docs/security.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-020,C08,Create docs/config-transactions.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-021,C08,Create docs/openspec.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-022,C08,Create docs/external-capabilities.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-023,C08,Create docs/ui-ux.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-024,C08,Create docs/evals.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-025,C08,Create docs/observability.md,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-026,C08,Create docs/contributing.md overhaul section,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-027,C08,Create version/support matrix doc,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-028,C08,Create MCP audit report doc,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-029,C08,Create external skill audit report doc,docs-ai-instructions,C01-005,medium,S,3,C08
+C08-030,C08,Create docs generation/check command docs,docs-ai-instructions,C01-005,medium,S,3,C08
+C09-001,C09,Create phased rollout plan,release,C05-006;C07-008,medium,S,2,C09
+C09-002,C09,Create migration guide for existing users,release,C05-006;C07-008,medium,S,2,C09
+C09-003,C09,Create branch/PR integration policy,release,C05-006;C07-008,medium,S,2,C09
+C09-004,C09,Create support-tier changelog policy,release,C05-006;C07-008,medium,S,2,C09
+C09-005,C09,Create feature flag/preview policy,release,C05-006;C07-008,medium,S,2,C09
+C09-006,C09,Create backwards compatibility policy,release,C05-006;C07-008,medium,S,2,C09
+C09-007,C09,Create rollback playbook,release,C05-006;C07-008,medium,S,2,C09
+C09-008,C09,Create release checklist,release,C05-006;C07-008,medium,S,2,C09
+C09-009,C09,Create post-merge validation checklist,release,C05-006;C07-008,medium,S,2,C09
+C09-010,C09,Create OpenSpec archive checklist,release,C05-006;C07-008,medium,S,2,C09
+C09-011,C09,Create external dependency update cadence,release,C05-006;C07-008,medium,S,2,C09
+C09-012,C09,Create long-term maintenance backlog,release,C05-006;C07-008,medium,S,2,C09
+C10-001,C10,Implement progressive-disclosure-map planning artifact,docs-architecture,,low,S,1,C10
+C10-002,C10,Implement assumption-and-drift-ledger planning artifact,docs-architecture,,low,S,1,C10
+C10-003,C10,Implement change-portfolio planning artifact,docs-architecture,,low,S,1,C10
+C10-004,C10,Implement directory-readmes planning artifact,docs-architecture,,low,S,1,C10
+C10-005,C10,Implement docs-artifact-manifest planning artifact,docs-architecture,,low,S,1,C10
+C10-006,C10,Implement source-ledger-refresh planning artifact,docs-architecture,,low,S,1,C10
+C10-007,C10,Implement repo-sync-inventory planning artifact,docs-architecture,,low,S,1,C10
+C10-008,C10,Implement support-tier-policy-refresh planning artifact,docs-architecture,,low,S,1,C10
+C10-009,C10,Implement terminology-glossary planning artifact,docs-architecture,,low,S,1,C10
+C10-010,C10,Implement planning-doc-link-check planning artifact,docs-architecture,,low,S,1,C10
+C10-011,C10,Implement generated-vs-source-classifier planning artifact,docs-architecture,,low,S,1,C10
+C10-012,C10,Implement planning-doc-ownership-map planning artifact,docs-architecture,,low,S,1,C10
+C11-001,C11,Validate all local skill.md frontmatter,skills-platform,,low,M,2,C11
+C11-002,C11,Score local skills for progressive disclosure,skills-platform,C10-001,low,M,2,C11
+C11-003,C11,Extract skill script cli contracts,skills-platform,C10-001,low,M,2,C11
+C11-004,C11,Add json/dry-run/exit-code tests for scripts,skills-platform,C10-001,low,M,2,C11
+C11-005,C11,Build external skill intake manifest,skills-platform,C10-001,medium,M,2,C11
+C11-006,C11,Implement npx skills wrapper plan,skills-platform,C10-001,low,M,2,C11
+C11-007,C11,Implement gh skill preview/install audit lane,skills-platform,C10-001,low,M,2,C11
+C11-008,C11,Add skill provenance lockfile,skills-platform,C10-001,low,M,2,C11
+C11-009,C11,Add skill signing/checksum plan,skills-platform,C10-001,medium,M,2,C11
+C11-010,C11,Add skill activation fixtures,skills-platform,C10-001,low,M,2,C11
+C11-011,C11,Add skill non-activation fixtures,skills-platform,C10-001,low,M,2,C11
+C11-012,C11,Generate skill docs from registry,skills-platform,C10-001,low,M,2,C11
+C11-013,C11,Audit skills.sh candidates,skills-platform,C10-001,low,M,2,C11
+C11-014,C11,Audit awesome-copilot candidates,skills-platform,C10-001,low,M,2,C11
+C11-015,C11,Audit crewai skill pack as pattern,skills-platform,C10-001,low,M,2,C11
+C11-016,C11,Classify framework-specific skill packs,skills-platform,C10-001,low,M,2,C11
+C11-017,C11,Add skill replacement plan for reasoning mcps,skills-platform,C10-001,low,M,2,C11
+C11-018,C11,Draft external-skills instruction doc,skills-platform,C10-001,medium,M,2,C11
+C11-019,C11,Create skill install rollback tests,skills-platform,C10-001,low,M,2,C11
+C11-020,C11,Add skill version drift detector,skills-platform,C10-001,low,M,2,C11
+C12-001,C12,Audit MCP `brave-search`,mcp-curation,C10-002,medium,S,1,C12
+C12-002,C12,Audit MCP `cascade-thinking`,mcp-curation,C10-002,medium,S,1,C12
+C12-003,C12,Audit MCP `chrome-devtools`,mcp-curation,C10-002,medium,S,1,C12
+C12-004,C12,Audit MCP `context7`,mcp-curation,C10-002,medium,S,1,C12
+C12-005,C12,Audit MCP `deepwiki`,mcp-curation,C10-002,medium,S,1,C12
+C12-006,C12,Audit MCP `docling`,mcp-curation,C10-002,medium,S,1,C12
+C12-007,C12,Audit MCP `fetch`,mcp-curation,C10-002,medium,S,1,C12
+C12-008,C12,Audit MCP `fetcher`,mcp-curation,C10-002,medium,S,1,C12
+C12-009,C12,Audit MCP `package-version`,mcp-curation,C10-002,high,S,1,C12
+C12-010,C12,Audit MCP `repomix`,mcp-curation,C10-002,medium,S,1,C12
+C12-011,C12,Audit MCP `sequential-thinking`,mcp-curation,C10-002,medium,S,1,C12
+C12-012,C12,Audit MCP `structured-thinking`,mcp-curation,C10-002,medium,S,1,C12
+C12-013,C12,Audit MCP `tavily`,mcp-curation,C10-002,medium,S,1,C12
+C12-014,C12,Audit MCP `trafilatura`,mcp-curation,C10-002,high,S,1,C12
+C12-015,C12,Audit MCP `arxiv`,mcp-curation,C10-002,medium,S,1,C12
+C12-016,C12,Audit MCP `atom-of-thoughts`,mcp-curation,C10-002,high,S,1,C12
+C12-017,C12,Audit MCP `crash`,mcp-curation,C10-002,medium,S,1,C12
+C12-018,C12,Audit MCP `creative-thinking`,mcp-curation,C10-002,high,S,1,C12
+C12-019,C12,Audit MCP `deep-lucid-3d`,mcp-curation,C10-002,high,S,1,C12
+C12-020,C12,Audit MCP `duckduckgo-search`,mcp-curation,C10-002,medium,S,1,C12
+C12-021,C12,Audit MCP `exa`,mcp-curation,C10-002,medium,S,1,C12
+C12-022,C12,Audit MCP `ffmpeg`,mcp-curation,C10-002,high,S,1,C12
+C12-023,C12,Audit MCP `g-search`,mcp-curation,C10-002,medium,S,1,C12
+C12-024,C12,Audit MCP `gmail`,mcp-curation,C10-002,high,S,1,C12
+C12-025,C12,Audit MCP `linkedin`,mcp-curation,C10-002,high,S,1,C12
+C12-026,C12,Audit MCP `lotus-wisdom-mcp`,mcp-curation,C10-002,medium,S,1,C12
+C12-027,C12,Audit MCP `shannon-thinking`,mcp-curation,C10-002,medium,S,1,C12
+C12-028,C12,Audit MCP `think-strategies`,mcp-curation,C10-002,medium,S,1,C12
+C12-029,C12,Audit MCP `wayback`,mcp-curation,C10-002,medium,S,1,C12
+C12-030,C12,Audit MCP `wikipedia`,mcp-curation,C10-002,medium,S,1,C12
+C12-100,C12,Harvest official-mcp-registry candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-101,C12,Harvest glama-mcp-list candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-102,C12,Harvest mcp-so candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-103,C12,Harvest pulsemcp candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-104,C12,Harvest mcp-directory candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-105,C12,Harvest abordage-awesome-mcp candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-106,C12,Harvest ever-works-awesome-mcp candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-107,C12,Harvest mcp-awesome candidates,mcp-curation,C12-001,medium,M,1,C12
+C12-108,C12,Harvest context-awesome candidates,mcp-curation,C12-001,medium,M,1,C12
+C13-001,C13,Refine Claude Desktop harness projection,harness-projection,C10-002,medium,M,2,C13
+C13-002,C13,Refine Claude Code harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-003,C13,Refine ChatGPT harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-004,C13,Refine Codex harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-005,C13,Refine GitHub Copilot Web / Cloud Agent harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-006,C13,Refine GitHub Copilot CLI harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-007,C13,Refine OpenCode harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-008,C13,Refine Gemini CLI harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-009,C13,Refine Google Antigravity harness projection,harness-projection,C01-001,high,M,2,C13
+C13-010,C13,Refine Perplexity Desktop / Mac harness projection,harness-projection,C01-001,high,M,2,C13
+C13-011,C13,Refine Cherry Studio harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-012,C13,Refine Cursor Editor harness projection,harness-projection,C01-001,medium,M,2,C13
+C13-013,C13,Refine Cursor Agent CLI/Web harness projection,harness-projection,C01-001,medium,M,2,C13
+C14-001,C14,Claude plugin manifest reconciliation,plugin-packaging,C10-003,medium,M,2,C14
+C14-002,C14,Claude plugin marketplace doc,plugin-packaging,C10-003,medium,M,2,C14
+C14-003,C14,Codex plugin manifest reconciliation,plugin-packaging,C10-003,medium,M,2,C14
+C14-004,C14,Agents marketplace manifest validation,plugin-packaging,C10-003,medium,M,2,C14
+C14-005,C14,Opencode plugin/package validation,plugin-packaging,C10-003,medium,M,2,C14
+C14-006,C14,Gemini extension manifest generation,plugin-packaging,C10-003,medium,M,2,C14
+C14-007,C14,Cursor rules adapter fixtures,plugin-packaging,C10-003,medium,M,2,C14
+C14-008,C14,Chatgpt actions openapi adapter docs,plugin-packaging,C10-003,medium,M,2,C14
+C14-009,C14,Apps sdk preview caveat docs,plugin-packaging,C10-003,medium,M,2,C14
+C14-010,C14,Native plugin version pin policy,plugin-packaging,C10-003,medium,M,2,C14
+C14-011,C14,Plugin install smoke tests,plugin-packaging,C10-003,medium,M,2,C14
+C14-012,C14,Plugin docs generation,plugin-packaging,C10-003,medium,M,2,C14
+C15-001,C15,Doctor command ux spec,ux-automation,C10-001,medium,M,2,C15
+C15-002,C15,Catalog browser cli spec,ux-automation,C10-001,medium,M,2,C15
+C15-003,C15,Skill search and preview flow,ux-automation,C10-001,medium,M,2,C15
+C15-004,C15,Mcp inspector flow,ux-automation,C10-001,medium,M,2,C15
+C15-005,C15,Sync preview diff flow,ux-automation,C10-001,medium,M,2,C15
+C15-006,C15,Sync apply transaction flow,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-007,C15,Rollback ux flow,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-008,C15,Drift repair wizard,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-009,C15,Config wizard questions,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-010,C15,Dashboard overview panel,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-011,C15,Dashboard skill panel,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-012,C15,Dashboard mcp panel,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-013,C15,Dashboard harness panel,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-014,C15,Openspec status panel,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-015,C15,Machine-readable json output contract,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-016,C15,Guided remediation messages,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-017,C15,One-command bootstrap script,ux-automation,C10-001;C05-001,medium,M,2,C15
+C15-018,C15,Interactive/noninteractive parity tests,ux-automation,C10-001;C05-001,medium,M,2,C15
+C16-001,C16,Sync documentation artifact `README.md`,docs-truth,C10-005,low,S,3,C16
+C16-002,C16,Sync documentation artifact `AGENTS.md`,docs-truth,C10-005,medium,S,3,C16
+C16-003,C16,Sync documentation artifact `CLAUDE.md`,docs-truth,C10-005,medium,S,1,C16
+C16-004,C16,Sync documentation artifact `GEMINI.md`,docs-truth,C10-005,medium,S,1,C16
+C16-005,C16,Sync documentation artifact `.github/copilot-instructions.md`,docs-truth,C10-005,medium,S,1,C16
+C16-006,C16,Sync documentation artifact `.github/instructions/*.instructions.md`,docs-truth,C10-005,medium,S,1,C16
+C16-007,C16,Sync documentation artifact `.cursor/rules/**`,docs-truth,C10-005,medium,S,1,C16
+C16-008,C16,Sync documentation artifact `.claude/rules/**`,docs-truth,C10-005,medium,S,1,C16
+C16-009,C16,Sync documentation artifact `.antigravity/**`,docs-truth,C10-005,medium,S,1,C16
+C16-010,C16,Sync documentation artifact `.cherry/**`,docs-truth,C10-005,medium,S,1,C16
+C16-011,C16,Sync documentation artifact `.perplexity/**`,docs-truth,C10-005,medium,S,1,C16
+C16-012,C16,Sync documentation artifact `docs/skills.md`,docs-truth,C10-005,low,S,1,C16
+C16-013,C16,Sync documentation artifact `docs/mcp.md`,docs-truth,C10-005,low,S,1,C16
+C16-014,C16,Sync documentation artifact `docs/harnesses.md`,docs-truth,C10-005,low,S,1,C16
+C16-015,C16,Sync documentation artifact `docs/openspec.md`,docs-truth,C10-005,low,S,1,C16
+C16-016,C16,Sync documentation artifact `docs/security.md`,docs-truth,C10-005,low,S,1,C16
+C16-017,C16,Sync documentation artifact `docs/external-skills.md`,docs-truth,C10-005,low,S,1,C16
+C16-018,C16,Sync documentation artifact `docs/version-matrix.md`,docs-truth,C10-005,low,S,1,C16
+C16-019,C16,Sync documentation artifact `docs/support-tiers.md`,docs-truth,C10-005,low,S,1,C16
+C16-020,C16,Sync documentation artifact `docs/quickstart.md`,docs-truth,C10-005,low,S,1,C16
+C16-021,C16,Sync documentation artifact `raw README/rendered README drift`,docs-truth,C10-005,medium,S,1,C16
+C17-001,C17,Policy schema for validated support tier,security-supply-chain,C10-002,medium,M,2,C17
+C17-002,C17,Deny latest for validated mcp/plugin,security-supply-chain,C10-002,high,M,2,C17
+C17-003,C17,Deny absolute local path in portable profile,security-supply-chain,C10-002,high,M,2,C17
+C17-004,C17,Deny external skill without provenance,security-supply-chain,C10-002,high,M,2,C17
+C17-005,C17,Secret reference scanner,security-supply-chain,C10-002,high,M,2,C17
+C17-006,C17,Mcp-scan ci integration,security-supply-chain,C10-002,high,M,2,C17
+C17-007,C17,Skill script destructive command scanner,security-supply-chain,C10-002,high,M,2,C17
+C17-008,C17,Sbom generation for release bundle,security-supply-chain,C10-002,medium,M,2,C17
+C17-009,C17,Sigstore cosign plan,security-supply-chain,C10-002,medium,M,2,C17
+C17-010,C17,Slsa provenance plan,security-supply-chain,C10-002,medium,M,2,C17
+C17-011,C17,Security exception registry,security-supply-chain,C10-002,medium,M,2,C17
+C17-012,C17,Sandbox profile taxonomy,security-supply-chain,C10-002,medium,M,2,C17
+C17-013,C17,Least-privilege secret docs,security-supply-chain,C10-002,medium,M,2,C17
+C17-014,C17,Prompt injection guidance for skills,security-supply-chain,C10-002,medium,M,2,C17
+C17-015,C17,Mcp tool poisoning playbook,security-supply-chain,C10-002,medium,M,2,C17
+C17-016,C17,Supply-chain incident response runbook,security-supply-chain,C10-002,medium,M,2,C17
+C18-001,C18,Opentelemetry genai semconv watch task,evals-observability,C10-001,medium,M,1,C18
+C18-002,C18,Langfuse integration feasibility note,evals-observability,C10-001,medium,M,1,C18
+C18-003,C18,Phoenix integration feasibility note,evals-observability,C10-001,medium,M,1,C18
+C18-004,C18,Run graph json schema,evals-observability,C10-001,medium,M,1,C18
+C18-005,C18,Transaction audit event schema,evals-observability,C10-001,medium,M,1,C18
+C18-006,C18,Skill activation eval fixtures,evals-observability,C10-001,medium,M,1,C18
+C18-007,C18,Mcp tool snapshot eval fixtures,evals-observability,C10-001,medium,M,1,C18
+C18-008,C18,Harness projection eval fixtures,evals-observability,C10-001,medium,M,1,C18
+C18-009,C18,Cost telemetry placeholder fields,evals-observability,C10-001,medium,M,1,C18
+C18-010,C18,Dashboard run graph visualization,evals-observability,C10-001,medium,M,1,C18
+C18-011,C18,Ci artifact retention plan,evals-observability,C10-001,medium,M,1,C18
+C18-012,C18,Eval scorecard docs,evals-observability,C10-001,medium,M,1,C18
+C18-013,C18,Deterministic replay fixture docs,evals-observability,C10-001,medium,M,1,C18
+C18-014,C18,Agent task performance metrics,evals-observability,C10-001,medium,M,1,C18
+C19-001,C19,Inventory existing openspec tree,openspec-governance,,medium,M,2,C19
+C19-002,C19,Preserve existing active changes,openspec-governance,C10-002,medium,M,2,C19
+C19-003,C19,Map task graph ids to openspec tasks,openspec-governance,C10-002,medium,M,2,C19
+C19-004,C19,Add skills-first spec deltas,openspec-governance,C10-002,medium,M,2,C19
+C19-005,C19,Add mcp live-systems spec deltas,openspec-governance,C10-002,medium,M,2,C19
+C19-006,C19,Add documentation-truth spec deltas,openspec-governance,C10-002,medium,M,2,C19
+C19-007,C19,Add config-transaction spec deltas,openspec-governance,C10-002,medium,M,2,C19
+C19-008,C19,Add harness-registry spec deltas,openspec-governance,C10-002,medium,M,2,C19
+C19-009,C19,Add ui/ux automation spec deltas,openspec-governance,C10-002,medium,M,2,C19
+C19-010,C19,Validate openspec in ci,openspec-governance,C10-002,medium,M,2,C19
+C19-011,C19,Archive completed change protocol,openspec-governance,C10-002,medium,M,2,C19
+C19-012,C19,Openspec docs ux integration,openspec-governance,C10-002,medium,M,2,C19
+EXT-001-intake,C23,JuliusBrussee/caveman: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-001-architecture,C23,JuliusBrussee/caveman: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-001-security,C23,JuliusBrussee/caveman: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-001-integration,C23,JuliusBrussee/caveman: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-002-intake,C03,DeusData/codebase-memory-mcp: intake,mcp-team,C00-repo-sync,medium,S,1,C03-external-intake
+EXT-002-architecture,C03,DeusData/codebase-memory-mcp: architecture,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-002-security,C03,DeusData/codebase-memory-mcp: security,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-002-integration,C03,DeusData/codebase-memory-mcp: integration,mcp-team,C00-repo-sync;C01-registry-core,medium,S,2,C03-external-intake
+EXT-003-intake,C21,tirth8205/code-review-graph: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-003-architecture,C21,tirth8205/code-review-graph: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-003-security,C21,tirth8205/code-review-graph: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-003-integration,C21,tirth8205/code-review-graph: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-004-intake,C21,es617/claude-replay: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-004-architecture,C21,es617/claude-replay: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-004-security,C21,es617/claude-replay: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-004-integration,C21,es617/claude-replay: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-005-intake,C24,Th0rgal/open-ralph-wiggum: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-005-architecture,C24,Th0rgal/open-ralph-wiggum: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-005-security,C24,Th0rgal/open-ralph-wiggum: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-005-integration,C24,Th0rgal/open-ralph-wiggum: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-006-intake,C23,samber/cc-skills-golang: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-006-architecture,C23,samber/cc-skills-golang: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-006-security,C23,samber/cc-skills-golang: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-006-integration,C23,samber/cc-skills-golang: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-007-intake,C24,rivet-dev/sandbox-agent: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-007-architecture,C24,rivet-dev/sandbox-agent: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-007-security,C24,rivet-dev/sandbox-agent: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-007-integration,C24,rivet-dev/sandbox-agent: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-008-intake,C23,Prat011/awesome-llm-skills: intake,skill-registry,C00-repo-sync,low,S,1,C23-external-intake
+EXT-008-architecture,C23,Prat011/awesome-llm-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-008-security,C23,Prat011/awesome-llm-skills: security,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-008-integration,C23,Prat011/awesome-llm-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,low,S,2,C23-external-intake
+EXT-009-intake,C24,jhlee0409/claude-code-history-viewer: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-009-architecture,C24,jhlee0409/claude-code-history-viewer: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-009-security,C24,jhlee0409/claude-code-history-viewer: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-009-integration,C24,jhlee0409/claude-code-history-viewer: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-010-intake,C24,remorses/kimaki: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-010-architecture,C24,remorses/kimaki: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-010-security,C24,remorses/kimaki: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-010-integration,C24,remorses/kimaki: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-011-intake,C24,Soju06/codex-lb: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-011-architecture,C24,Soju06/codex-lb: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-011-security,C24,Soju06/codex-lb: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-011-integration,C24,Soju06/codex-lb: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-012-intake,C20,kbwo/ccmanager: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-012-architecture,C20,kbwo/ccmanager: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-012-security,C20,kbwo/ccmanager: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-012-integration,C20,kbwo/ccmanager: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-013-intake,C20,Ataraxy-Labs/opensessions: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-013-architecture,C20,Ataraxy-Labs/opensessions: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-013-security,C20,Ataraxy-Labs/opensessions: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-013-integration,C20,Ataraxy-Labs/opensessions: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-014-intake,C21,fynnfluegge/agtx: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-014-architecture,C21,fynnfluegge/agtx: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-014-security,C21,fynnfluegge/agtx: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-014-integration,C21,fynnfluegge/agtx: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-015-intake,C20,rynfar/meridian: intake,external-intake,C00-repo-sync,high,S,1,C20-external-intake
+EXT-015-architecture,C20,rynfar/meridian: architecture,external-intake,C00-repo-sync;C01-registry-core,high,M,2,C20-external-intake
+EXT-015-security,C20,rynfar/meridian: security,external-intake,C00-repo-sync;C01-registry-core,high,M,2,C20-external-intake
+EXT-015-integration,C20,rynfar/meridian: integration,external-intake,C00-repo-sync;C01-registry-core,high,S,2,C20-external-intake
+EXT-016-intake,C24,xintaofei/codeg: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-016-architecture,C24,xintaofei/codeg: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-016-security,C24,xintaofei/codeg: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-016-integration,C24,xintaofei/codeg: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-017-intake,C20,griffinmartin/opencode-claude-auth: intake,external-intake,C00-repo-sync,high,S,1,C20-external-intake
+EXT-017-architecture,C20,griffinmartin/opencode-claude-auth: architecture,external-intake,C00-repo-sync;C01-registry-core,high,M,2,C20-external-intake
+EXT-017-security,C20,griffinmartin/opencode-claude-auth: security,external-intake,C00-repo-sync;C01-registry-core,high,M,2,C20-external-intake
+EXT-017-integration,C20,griffinmartin/opencode-claude-auth: integration,external-intake,C00-repo-sync;C01-registry-core,high,S,2,C20-external-intake
+EXT-018-intake,C23,NeoLabHQ/context-engineering-kit: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-018-architecture,C23,NeoLabHQ/context-engineering-kit: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-018-security,C23,NeoLabHQ/context-engineering-kit: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-018-integration,C23,NeoLabHQ/context-engineering-kit: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-019-intake,C23,rohitg00/skillkit: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-019-architecture,C23,rohitg00/skillkit: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-019-security,C23,rohitg00/skillkit: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-019-integration,C23,rohitg00/skillkit: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-020-intake,C20,first-fluke/oh-my-agent: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-020-architecture,C20,first-fluke/oh-my-agent: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-020-security,C20,first-fluke/oh-my-agent: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-020-integration,C20,first-fluke/oh-my-agent: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-021-intake,C21,777genius/claude_agent_teams_ui: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-021-architecture,C21,777genius/claude_agent_teams_ui: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-021-security,C21,777genius/claude_agent_teams_ui: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-021-integration,C21,777genius/claude_agent_teams_ui: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-022-intake,C23,agent-sh/agentsys: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-022-architecture,C23,agent-sh/agentsys: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-022-security,C23,agent-sh/agentsys: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-022-integration,C23,agent-sh/agentsys: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-023-intake,C20,happier-dev/happier: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-023-architecture,C20,happier-dev/happier: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-023-security,C20,happier-dev/happier: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-023-integration,C20,happier-dev/happier: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-024-intake,C23,guanyang/antigravity-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-024-architecture,C23,guanyang/antigravity-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-024-security,C23,guanyang/antigravity-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-024-integration,C23,guanyang/antigravity-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-025-intake,C20,kdcokenny/ocx: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-025-architecture,C20,kdcokenny/ocx: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-025-security,C20,kdcokenny/ocx: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-025-integration,C20,kdcokenny/ocx: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-026-intake,C24,joelhooks/swarm-tools: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-026-architecture,C24,joelhooks/swarm-tools: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-026-security,C24,joelhooks/swarm-tools: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-026-integration,C24,joelhooks/swarm-tools: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-027-intake,C24,hosenur/portal: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-027-architecture,C24,hosenur/portal: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-027-security,C24,hosenur/portal: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-027-integration,C24,hosenur/portal: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-028-intake,C21,proxysoul/soulforge: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-028-architecture,C21,proxysoul/soulforge: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-028-security,C21,proxysoul/soulforge: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-028-integration,C21,proxysoul/soulforge: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-029-intake,C24,Human-Agent-Society/CORAL: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-029-architecture,C24,Human-Agent-Society/CORAL: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-029-security,C24,Human-Agent-Society/CORAL: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-029-integration,C24,Human-Agent-Society/CORAL: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-030-intake,C23,Weizhena/Deep-Research-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-030-architecture,C23,Weizhena/Deep-Research-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-030-security,C23,Weizhena/Deep-Research-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-030-integration,C23,Weizhena/Deep-Research-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-031-intake,C24,peters/horizon: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-031-architecture,C24,peters/horizon: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-031-security,C24,peters/horizon: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-031-integration,C24,peters/horizon: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-032-intake,C24,muxy-app/muxy: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-032-architecture,C24,muxy-app/muxy: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-032-security,C24,muxy-app/muxy: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-032-integration,C24,muxy-app/muxy: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-033-intake,C21,0xranx/OpenContext: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-033-architecture,C21,0xranx/OpenContext: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-033-security,C21,0xranx/OpenContext: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-033-integration,C21,0xranx/OpenContext: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-034-intake,C24,f/agentlytics: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-034-architecture,C24,f/agentlytics: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-034-security,C24,f/agentlytics: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-034-integration,C24,f/agentlytics: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-035-intake,C20,kdcokenny/opencode-worktree: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-035-architecture,C20,kdcokenny/opencode-worktree: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-035-security,C20,kdcokenny/opencode-worktree: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-035-integration,C20,kdcokenny/opencode-worktree: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-036-intake,C21,cortexkit/opencode-magic-context: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-036-architecture,C21,cortexkit/opencode-magic-context: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-036-security,C21,cortexkit/opencode-magic-context: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-036-integration,C21,cortexkit/opencode-magic-context: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-037-intake,C23,borski/travel-hacking-toolkit: intake,skill-registry,C00-repo-sync,low,S,1,C23-external-intake
+EXT-037-architecture,C23,borski/travel-hacking-toolkit: architecture,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-037-security,C23,borski/travel-hacking-toolkit: security,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-037-integration,C23,borski/travel-hacking-toolkit: integration,skill-registry,C00-repo-sync;C01-registry-core,low,S,2,C23-external-intake
+EXT-038-intake,C20,neiii/bridle: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-038-architecture,C20,neiii/bridle: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-038-security,C20,neiii/bridle: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-038-integration,C20,neiii/bridle: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-039-intake,C23,instavm/open-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-039-architecture,C23,instavm/open-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-039-security,C23,instavm/open-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-039-integration,C23,instavm/open-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-040-intake,C20,shekohex/opencode-pty: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-040-architecture,C20,shekohex/opencode-pty: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-040-security,C20,shekohex/opencode-pty: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-040-integration,C20,shekohex/opencode-pty: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-041-intake,C24,Microck/opencode-studio: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-041-architecture,C24,Microck/opencode-studio: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-041-security,C24,Microck/opencode-studio: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-041-integration,C24,Microck/opencode-studio: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-042-intake,C21,swarmclawai/swarmvault: intake,context-graph,C00-repo-sync,low,S,1,C21-external-intake
+EXT-042-architecture,C21,swarmclawai/swarmvault: architecture,context-graph,C00-repo-sync;C01-registry-core,low,M,2,C21-external-intake
+EXT-042-security,C21,swarmclawai/swarmvault: security,context-graph,C00-repo-sync;C01-registry-core,low,M,2,C21-external-intake
+EXT-042-integration,C21,swarmclawai/swarmvault: integration,context-graph,C00-repo-sync;C01-registry-core,low,S,2,C21-external-intake
+EXT-043-intake,C23,zenobi-us/opencode-skillful: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-043-architecture,C23,zenobi-us/opencode-skillful: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-043-security,C23,zenobi-us/opencode-skillful: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-043-integration,C23,zenobi-us/opencode-skillful: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-044-intake,C24,zaxbysauce/opencode-swarm: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-044-architecture,C24,zaxbysauce/opencode-swarm: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-044-security,C24,zaxbysauce/opencode-swarm: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-044-integration,C24,zaxbysauce/opencode-swarm: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-045-intake,C20,eqtylab/cupcake: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-045-architecture,C20,eqtylab/cupcake: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-045-security,C20,eqtylab/cupcake: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-045-integration,C20,eqtylab/cupcake: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-046-intake,C20,opgginc/opencode-bar: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-046-architecture,C20,opgginc/opencode-bar: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-046-security,C20,opgginc/opencode-bar: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-046-integration,C20,opgginc/opencode-bar: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-047-intake,C20,vivy-company/aizen: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-047-architecture,C20,vivy-company/aizen: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-047-security,C20,vivy-company/aizen: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-047-integration,C20,vivy-company/aizen: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-048-intake,C20,vbgate/opencode-mystatus: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-048-architecture,C20,vbgate/opencode-mystatus: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-048-security,C20,vbgate/opencode-mystatus: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-048-integration,C20,vbgate/opencode-mystatus: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-049-intake,C20,AkaraChen/aghub: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-049-architecture,C20,AkaraChen/aghub: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-049-security,C20,AkaraChen/aghub: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-049-integration,C20,AkaraChen/aghub: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-050-intake,C20,code-yeongyu/oh-my-openagent: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-050-architecture,C20,code-yeongyu/oh-my-openagent: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-050-security,C20,code-yeongyu/oh-my-openagent: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-050-integration,C20,code-yeongyu/oh-my-openagent: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-051-intake,C23,Yeachan-Heo/oh-my-claudecode: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-051-architecture,C23,Yeachan-Heo/oh-my-claudecode: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-051-security,C23,Yeachan-Heo/oh-my-claudecode: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-051-integration,C23,Yeachan-Heo/oh-my-claudecode: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-052-intake,C23,kepano/obsidian-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-052-architecture,C23,kepano/obsidian-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-052-security,C23,kepano/obsidian-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-052-integration,C23,kepano/obsidian-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-053-intake,C24,iOfficeAI/AionUi: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-053-architecture,C24,iOfficeAI/AionUi: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-053-security,C24,iOfficeAI/AionUi: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-053-integration,C24,iOfficeAI/AionUi: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-054-intake,C24,manaflow-ai/cmux: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-054-architecture,C24,manaflow-ai/cmux: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-054-security,C24,manaflow-ai/cmux: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-054-integration,C24,manaflow-ai/cmux: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-055-intake,C21,mksglu/context-mode: intake,context-graph,C00-repo-sync,medium,S,1,C21-external-intake
+EXT-055-architecture,C21,mksglu/context-mode: architecture,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-055-security,C21,mksglu/context-mode: security,context-graph,C00-repo-sync;C01-registry-core,medium,M,2,C21-external-intake
+EXT-055-integration,C21,mksglu/context-mode: integration,context-graph,C00-repo-sync;C01-registry-core,medium,S,2,C21-external-intake
+EXT-056-intake,C20,humanlayer/humanlayer: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-056-architecture,C20,humanlayer/humanlayer: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-056-security,C20,humanlayer/humanlayer: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-056-integration,C20,humanlayer/humanlayer: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-057-intake,C24,anomalyco/opentui: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-057-architecture,C24,anomalyco/opentui: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-057-security,C24,anomalyco/opentui: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-057-integration,C24,anomalyco/opentui: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-058-intake,C20,tiann/hapi: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-058-architecture,C20,tiann/hapi: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-058-security,C20,tiann/hapi: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-058-integration,C20,tiann/hapi: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-059-intake,C20,alvinunreal/oh-my-opencode-slim: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-059-architecture,C20,alvinunreal/oh-my-opencode-slim: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-059-security,C20,alvinunreal/oh-my-opencode-slim: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-059-integration,C20,alvinunreal/oh-my-opencode-slim: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-060-intake,C20,openchamber/openchamber: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-060-architecture,C20,openchamber/openchamber: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-060-security,C20,openchamber/openchamber: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-060-integration,C20,openchamber/openchamber: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-061-intake,C20,gotalab/cc-sdd: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-061-architecture,C20,gotalab/cc-sdd: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-061-security,C20,gotalab/cc-sdd: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-061-integration,C20,gotalab/cc-sdd: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-062-intake,C24,michaelshimeles/ralphy: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-062-architecture,C24,michaelshimeles/ralphy: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-062-security,C24,michaelshimeles/ralphy: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-062-integration,C24,michaelshimeles/ralphy: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-063-intake,C24,RunMaestro/Maestro: intake,ux-patterns,C00-repo-sync,medium,S,1,C24-external-intake
+EXT-063-architecture,C24,RunMaestro/Maestro: architecture,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-063-security,C24,RunMaestro/Maestro: security,ux-patterns,C00-repo-sync;C01-registry-core,medium,M,2,C24-external-intake
+EXT-063-integration,C24,RunMaestro/Maestro: integration,ux-patterns,C00-repo-sync;C01-registry-core,medium,S,2,C24-external-intake
+EXT-064-intake,C24,mikeyobrien/ralph-orchestrator: intake,ux-patterns,C00-repo-sync,low,S,1,C24-external-intake
+EXT-064-architecture,C24,mikeyobrien/ralph-orchestrator: architecture,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-064-security,C24,mikeyobrien/ralph-orchestrator: security,ux-patterns,C00-repo-sync;C01-registry-core,low,M,2,C24-external-intake
+EXT-064-integration,C24,mikeyobrien/ralph-orchestrator: integration,ux-patterns,C00-repo-sync;C01-registry-core,low,S,2,C24-external-intake
+EXT-065-intake,C20,ZSeven-W/openpencil: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-065-architecture,C20,ZSeven-W/openpencil: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-065-security,C20,ZSeven-W/openpencil: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-065-integration,C20,ZSeven-W/openpencil: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-066-intake,C20,junhoyeo/tokscale: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-066-architecture,C20,junhoyeo/tokscale: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-066-security,C20,junhoyeo/tokscale: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-066-integration,C20,junhoyeo/tokscale: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-067-intake,C20,RAIT-09/obsidian-agent-client: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-067-architecture,C20,RAIT-09/obsidian-agent-client: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-067-security,C20,RAIT-09/obsidian-agent-client: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-067-integration,C20,RAIT-09/obsidian-agent-client: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-068-intake,C23,safishamsi/graphify: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-068-architecture,C23,safishamsi/graphify: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-068-security,C23,safishamsi/graphify: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-068-integration,C23,safishamsi/graphify: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-069-intake,C23,VoltAgent/awesome-agent-skills: intake,skill-registry,C00-repo-sync,low,S,1,C23-external-intake
+EXT-069-architecture,C23,VoltAgent/awesome-agent-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-069-security,C23,VoltAgent/awesome-agent-skills: security,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-069-integration,C23,VoltAgent/awesome-agent-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,low,S,2,C23-external-intake
+EXT-070-intake,C23,nexu-io/open-design: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-070-architecture,C23,nexu-io/open-design: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-070-security,C23,nexu-io/open-design: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-070-integration,C23,nexu-io/open-design: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-071-intake,C23,Orchestra-Research/AI-Research-SKILLs: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-071-architecture,C23,Orchestra-Research/AI-Research-SKILLs: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-071-security,C23,Orchestra-Research/AI-Research-SKILLs: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-071-integration,C23,Orchestra-Research/AI-Research-SKILLs: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-072-intake,C23,refly-ai/refly: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-072-architecture,C23,refly-ai/refly: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-072-security,C23,refly-ai/refly: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-072-integration,C23,refly-ai/refly: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-073-intake,C23,google/skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-073-architecture,C23,google/skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-073-security,C23,google/skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-073-integration,C23,google/skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-074-intake,C23,antfu/skills: intake,skill-registry,C00-repo-sync,low,S,1,C23-external-intake
+EXT-074-architecture,C23,antfu/skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-074-security,C23,antfu/skills: security,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-074-integration,C23,antfu/skills: integration,skill-registry,C00-repo-sync;C01-registry-core,low,S,2,C23-external-intake
+EXT-075-intake,C03,antvis/mcp-server-chart: intake,mcp-team,C00-repo-sync,medium,S,1,C03-external-intake
+EXT-075-architecture,C03,antvis/mcp-server-chart: architecture,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-075-security,C03,antvis/mcp-server-chart: security,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-075-integration,C03,antvis/mcp-server-chart: integration,mcp-team,C00-repo-sync;C01-registry-core,medium,S,2,C03-external-intake
+EXT-076-intake,C23,tech-leads-club/agent-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-076-architecture,C23,tech-leads-club/agent-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-076-security,C23,tech-leads-club/agent-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-076-integration,C23,tech-leads-club/agent-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-077-intake,C23,iOfficeAI/OfficeCLI: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-077-architecture,C23,iOfficeAI/OfficeCLI: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-077-security,C23,iOfficeAI/OfficeCLI: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-077-integration,C23,iOfficeAI/OfficeCLI: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-078-intake,C03,microsoft/skills: intake,mcp-team,C00-repo-sync,medium,S,1,C03-external-intake
+EXT-078-architecture,C03,microsoft/skills: architecture,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-078-security,C03,microsoft/skills: security,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-078-integration,C03,microsoft/skills: integration,mcp-team,C00-repo-sync;C01-registry-core,medium,S,2,C03-external-intake
+EXT-079-intake,C20,jeremylongshore/claude-code-plugins-plus-skills: intake,external-intake,C00-repo-sync,low,S,1,C20-external-intake
+EXT-079-architecture,C20,jeremylongshore/claude-code-plugins-plus-skills: architecture,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-079-security,C20,jeremylongshore/claude-code-plugins-plus-skills: security,external-intake,C00-repo-sync;C01-registry-core,low,M,2,C20-external-intake
+EXT-079-integration,C20,jeremylongshore/claude-code-plugins-plus-skills: integration,external-intake,C00-repo-sync;C01-registry-core,low,S,2,C20-external-intake
+EXT-080-intake,C23,supabase/agent-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-080-architecture,C23,supabase/agent-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-080-security,C23,supabase/agent-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-080-integration,C23,supabase/agent-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-081-intake,C20,bergside/design-md-chrome: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-081-architecture,C20,bergside/design-md-chrome: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-081-security,C20,bergside/design-md-chrome: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-081-integration,C20,bergside/design-md-chrome: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-082-intake,C23,himself65/finance-skills: intake,skill-registry,C00-repo-sync,low,S,1,C23-external-intake
+EXT-082-architecture,C23,himself65/finance-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-082-security,C23,himself65/finance-skills: security,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-082-integration,C23,himself65/finance-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,low,S,2,C23-external-intake
+EXT-083-intake,C23,cloudflare/skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-083-architecture,C23,cloudflare/skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-083-security,C23,cloudflare/skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-083-integration,C23,cloudflare/skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-084-intake,C23,SnailSploit/Claude-Red: intake,skill-registry,C00-repo-sync,high,S,1,C23-external-intake
+EXT-084-architecture,C23,SnailSploit/Claude-Red: architecture,skill-registry,C00-repo-sync;C01-registry-core,high,M,2,C23-external-intake
+EXT-084-security,C23,SnailSploit/Claude-Red: security,skill-registry,C00-repo-sync;C01-registry-core,high,M,2,C23-external-intake
+EXT-084-integration,C23,SnailSploit/Claude-Red: integration,skill-registry,C00-repo-sync;C01-registry-core,high,S,2,C23-external-intake
+EXT-085-intake,C03,OpenCoworkAI/open-cowork: intake,mcp-team,C00-repo-sync,medium,S,1,C03-external-intake
+EXT-085-architecture,C03,OpenCoworkAI/open-cowork: architecture,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-085-security,C03,OpenCoworkAI/open-cowork: security,mcp-team,C00-repo-sync;C01-registry-core,medium,M,2,C03-external-intake
+EXT-085-integration,C03,OpenCoworkAI/open-cowork: integration,mcp-team,C00-repo-sync;C01-registry-core,medium,S,2,C03-external-intake
+EXT-086-intake,C23,conorluddy/ios-simulator-skill: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-086-architecture,C23,conorluddy/ios-simulator-skill: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-086-security,C23,conorluddy/ios-simulator-skill: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-086-integration,C23,conorluddy/ios-simulator-skill: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-087-intake,C23,imxv/Pretty-mermaid-skills: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-087-architecture,C23,imxv/Pretty-mermaid-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-087-security,C23,imxv/Pretty-mermaid-skills: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-087-integration,C23,imxv/Pretty-mermaid-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-088-intake,C07,agentscope-ai/OpenJudge: intake,ci-evals,C00-repo-sync,medium,S,1,C07-external-intake
+EXT-088-architecture,C07,agentscope-ai/OpenJudge: architecture,ci-evals,C00-repo-sync;C01-registry-core,medium,M,2,C07-external-intake
+EXT-088-security,C07,agentscope-ai/OpenJudge: security,ci-evals,C00-repo-sync;C01-registry-core,medium,M,2,C07-external-intake
+EXT-088-integration,C07,agentscope-ai/OpenJudge: integration,ci-evals,C00-repo-sync;C01-registry-core,medium,S,2,C07-external-intake
+EXT-089-intake,C23,skillmatic-ai/awesome-agent-skills: intake,skill-registry,C00-repo-sync,low,S,1,C23-external-intake
+EXT-089-architecture,C23,skillmatic-ai/awesome-agent-skills: architecture,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-089-security,C23,skillmatic-ai/awesome-agent-skills: security,skill-registry,C00-repo-sync;C01-registry-core,low,M,2,C23-external-intake
+EXT-089-integration,C23,skillmatic-ai/awesome-agent-skills: integration,skill-registry,C00-repo-sync;C01-registry-core,low,S,2,C23-external-intake
+EXT-090-intake,C20,enulus/OpenPackage: intake,external-intake,C00-repo-sync,medium,S,1,C20-external-intake
+EXT-090-architecture,C20,enulus/OpenPackage: architecture,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-090-security,C20,enulus/OpenPackage: security,external-intake,C00-repo-sync;C01-registry-core,medium,M,2,C20-external-intake
+EXT-090-integration,C20,enulus/OpenPackage: integration,external-intake,C00-repo-sync;C01-registry-core,medium,S,2,C20-external-intake
+EXT-091-intake,C23,millionco/react-doctor: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-091-architecture,C23,millionco/react-doctor: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-091-security,C23,millionco/react-doctor: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-091-integration,C23,millionco/react-doctor: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-092-intake,C23,uditgoenka/autoresearch: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-092-architecture,C23,uditgoenka/autoresearch: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-092-security,C23,uditgoenka/autoresearch: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-092-integration,C23,uditgoenka/autoresearch: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake
+EXT-093-intake,C23,meodai/skill.color-expert: intake,skill-registry,C00-repo-sync,medium,S,1,C23-external-intake
+EXT-093-architecture,C23,meodai/skill.color-expert: architecture,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-093-security,C23,meodai/skill.color-expert: security,skill-registry,C00-repo-sync;C01-registry-core,medium,M,2,C23-external-intake
+EXT-093-integration,C23,meodai/skill.color-expert: integration,skill-registry,C00-repo-sync;C01-registry-core,medium,S,2,C23-external-intake

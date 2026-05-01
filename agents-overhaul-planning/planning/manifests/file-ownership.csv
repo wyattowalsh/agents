@@ -1,0 +1,9 @@
+team,primary_paths,avoid_overlap_with
+Platform Core,config/registry/**; wagents/platforms/base.py,Harness adapter implementations until schema merged
+OpenSpec Team,openspec/**; planning/10-architecture/10.7-openspec-integration.md,Docs team during archive/sync
+Skills Team,skills/**; wagents/skill_index.py; wagents/external_skills.py,MCP registry changes
+MCP Team,config/registry/mcps.yaml; config/mcp-registry.json; mcp/**,Skills registry changes
+Harness Teams,wagents/platforms/<harness>.py; tests/fixtures/<harness>/**,Core schema changes
+Docs Team,README.md; AGENTS.md; instructions/**; docs/**,Generated docs core during schema churn
+UX Team,wagents/cli.py; wagents/doctor.py; wagents/sync.py,Adapter internals
+CI Team,.github/workflows/**; tests/**,Fixture producers until expected outputs stable

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "tools": [
+    {
+      "name": "Agent Skills spec",
+      "category": "skills",
+      "maturity": "stable-ish spec",
+      "integration_value": "canonical packaging and progressive disclosure",
+      "lane": "primary"
+    },
+    {
+      "name": "skills.sh",
+      "category": "skills registry",
+      "maturity": "active ecosystem",
+      "integration_value": "discover skills; npx skills add flows; verify before install",
+      "lane": "primary"
+    },
+    {
+      "name": "GitHub gh skill",
+      "category": "skills CLI",
+      "maturity": "public preview",
+      "integration_value": "preview/install/update/publish; pin versions; source metadata",
+      "lane": "primary"
+    },
+    {
+      "name": "Awesome GitHub Copilot",
+      "category": "skills/agents/instructions",
+      "maturity": "active community",
+      "integration_value": "harvest skills and docs patterns; not a trust root",
+      "lane": "primary"
+    },
+    {
+      "name": "CrewAI skills",
+      "category": "skills pack",
+      "maturity": "official framework pack",
+      "integration_value": "pattern for framework-specific skill packs",
+      "lane": "primary"
+    },
+    {
+      "name": "Official MCP Registry",
+      "category": "MCP registry",
+      "maturity": "preview",
+      "integration_value": "discovery only; manifest format and namespace ownership",
+      "lane": "secondary"
+    },
+    {
+      "name": "PulseMCP",
+      "category": "MCP index",
+      "maturity": "active community",
+      "integration_value": "trend discovery and candidate sourcing",
+      "lane": "secondary"
+    },
+    {
+      "name": "MCP.Directory",
+      "category": "MCP directory",
+      "maturity": "active community",
+      "integration_value": "category discovery and gap checks",
+      "lane": "secondary"
+    },
+    {
+      "name": "abordage/awesome-mcp",
+      "category": "awesome list",
+      "maturity": "automated daily",
+      "integration_value": "cross-check maintained MCP candidates",
+      "lane": "secondary"
+    },
+    {
+      "name": "mcp-scan",
+      "category": "MCP security",
+      "maturity": "active",
+      "integration_value": "CI gate for prompt injection/tool poisoning/rug pull/tool shadowing",
+      "lane": "required"
+    },
+    {
+      "name": "Langfuse",
+      "category": "observability",
+      "maturity": "production OSS/SaaS",
+      "integration_value": "agent trace/cost/prompt/eval dashboard candidate",
+      "lane": "optional"
+    },
+    {
+      "name": "Arize Phoenix",
+      "category": "observability/evals",
+      "maturity": "production OSS/SaaS",
+      "integration_value": "OTel/OpenInference tracing + eval + prompt playground",
+      "lane": "optional"
+    },
+    {
+      "name": "OpenTelemetry GenAI SemConv",
+      "category": "telemetry spec",
+      "maturity": "development",
+      "integration_value": "future-proof metrics/spans/events but mark experimental",
+      "lane": "required"
+    },
+    {
+      "name": "OpenSpec",
+      "category": "spec governance",
+      "maturity": "active",
+      "integration_value": "change proposal/design/tasks/spec deltas",
+      "lane": "required"
+    }
+  ]
+}

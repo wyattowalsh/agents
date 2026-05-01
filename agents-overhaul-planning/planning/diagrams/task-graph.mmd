@@ -1,0 +1,13 @@
+flowchart TD
+  CORE[Platform Core] --> OPS[OpenSpec]
+  CORE --> SKILLS[Skills Team]
+  CORE --> MCP[MCP Team]
+  CORE --> HAR[Harness Teams]
+  CORE --> UX[UX Team]
+  CORE --> CI[CI Team]
+  OPS --> DOCS[Docs Team]
+  SKILLS --> CI
+  MCP --> CI
+  HAR --> CI
+  UX --> DOCS
+  CI --> RELEASE[Release/Rollout]

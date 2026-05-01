@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "servers": [
+    {
+      "id": "brave-search",
+      "domain": "search",
+      "install_style": "npx",
+      "auth_model": "env:BRAVE_API_KEY",
+      "dynamic_state_rationale": "live web search",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "cascade-thinking",
+      "domain": "reasoning",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "structured reasoning",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "chrome-devtools",
+      "domain": "browser",
+      "install_style": "npx",
+      "auth_model": "browser local",
+      "dynamic_state_rationale": "live browser/runtime debugging",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "context7",
+      "domain": "docs",
+      "install_style": "npx",
+      "auth_model": "env:CONTEXT7_API_KEY",
+      "dynamic_state_rationale": "current docs lookup",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "deepwiki",
+      "domain": "docs/repo knowledge",
+      "install_style": "npx mcp-remote",
+      "auth_model": "remote http",
+      "dynamic_state_rationale": "live repo docs",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "docling",
+      "domain": "documents",
+      "install_style": "uvx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "document processing",
+      "replacement_assessment": "hybrid-skill-wrapper",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "fetch",
+      "domain": "web",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "live URL fetch",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "fetcher",
+      "domain": "web",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "live URL fetch overlap",
+      "replacement_assessment": "dedupe-review",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "package-version",
+      "domain": "package metadata",
+      "install_style": "absolute local path",
+      "auth_model": "local binary",
+      "dynamic_state_rationale": "package version lookup",
+      "replacement_assessment": "replace-or-portable-uvx",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "repomix",
+      "domain": "repo packaging",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "repo context packing",
+      "replacement_assessment": "hybrid-skill-wrapper",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "sequential-thinking",
+      "domain": "reasoning",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "sequential reasoning",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "structured-thinking",
+      "domain": "reasoning",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "structured thinking",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "tavily",
+      "domain": "search",
+      "install_style": "npx",
+      "auth_model": "env:TAVILY_API_KEY",
+      "dynamic_state_rationale": "live web search",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "trafilatura",
+      "domain": "web extraction",
+      "install_style": "absolute local path",
+      "auth_model": "local source path",
+      "dynamic_state_rationale": "article extraction",
+      "replacement_assessment": "replace-with-uvx-or-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "arxiv",
+      "domain": "research",
+      "install_style": "uvx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "live paper lookup",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "atom-of-thoughts",
+      "domain": "reasoning",
+      "install_style": "absolute local path",
+      "auth_model": "local source path",
+      "dynamic_state_rationale": "reasoning",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "crash",
+      "domain": "debugging",
+      "install_style": "npx",
+      "auth_model": "env vars",
+      "dynamic_state_rationale": "debug/reasoning",
+      "replacement_assessment": "review",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "creative-thinking",
+      "domain": "reasoning",
+      "install_style": "absolute local path",
+      "auth_model": "local source path",
+      "dynamic_state_rationale": "creative reasoning",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "deep-lucid-3d",
+      "domain": "3d/generation",
+      "install_style": "absolute local path",
+      "auth_model": "local source path",
+      "dynamic_state_rationale": "specialized dynamic generation",
+      "replacement_assessment": "review",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "duckduckgo-search",
+      "domain": "search",
+      "install_style": "uvx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "live web search",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "exa",
+      "domain": "search",
+      "install_style": "npx",
+      "auth_model": "env:EXA_API_KEY",
+      "dynamic_state_rationale": "live neural search",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "ffmpeg",
+      "domain": "media",
+      "install_style": "absolute local path",
+      "auth_model": "local source path",
+      "dynamic_state_rationale": "media manipulation",
+      "replacement_assessment": "hybrid-skill-wrapper",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "g-search",
+      "domain": "search",
+      "install_style": "npx",
+      "auth_model": "unknown",
+      "dynamic_state_rationale": "live search",
+      "replacement_assessment": "dedupe-review",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "gmail",
+      "domain": "email",
+      "install_style": "npx",
+      "auth_model": "oauth/local auth",
+      "dynamic_state_rationale": "authenticated SaaS",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "linkedin",
+      "domain": "web/social",
+      "install_style": "uvx",
+      "auth_model": "browser/no-headless",
+      "dynamic_state_rationale": "live SaaS/browser",
+      "replacement_assessment": "keep-mcp-high-risk",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "lotus-wisdom-mcp",
+      "domain": "reasoning",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "reasoning/wisdom",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "shannon-thinking",
+      "domain": "reasoning",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "reasoning",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "think-strategies",
+      "domain": "reasoning",
+      "install_style": "npx github",
+      "auth_model": "none",
+      "dynamic_state_rationale": "strategy reasoning",
+      "replacement_assessment": "replace-with-skill",
+      "support_tier": "experimental",
+      "requires_scan": true
+    },
+    {
+      "id": "wayback",
+      "domain": "web archive",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "live archive lookup",
+      "replacement_assessment": "keep-mcp",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    },
+    {
+      "id": "wikipedia",
+      "domain": "knowledge",
+      "install_style": "npx",
+      "auth_model": "none",
+      "dynamic_state_rationale": "live encyclopedia lookup",
+      "replacement_assessment": "keep-mcp-or-skill-index",
+      "support_tier": "repo-present-validation-required",
+      "requires_scan": true
+    }
+  ]
+}

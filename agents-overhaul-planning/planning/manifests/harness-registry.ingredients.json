@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "harnesses": [
+    {
+      "id": "claude-desktop",
+      "name": "Claude Desktop",
+      "support_tier": "planned-research-backed",
+      "surfaces": [
+        "mcp",
+        "instructions",
+        "plugin-adjacent"
+      ],
+      "summary": "MCP/local connectors; plugin parity not fully assumed"
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "support_tier": "validated-target",
+      "surfaces": [
+        "skills",
+        "plugins",
+        "hooks",
+        "mcp",
+        "agents"
+      ],
+      "summary": "Skills, plugins, hooks, subagents, MCP, settings scopes"
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "support_tier": "planned-research-backed",
+      "surfaces": [
+        "apps-sdk",
+        "actions",
+        "openapi",
+        "mcp-preview"
+      ],
+      "summary": "Custom GPT Actions and Apps SDK/MCP preview; workspace developer mode constraints"
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "support_tier": "repo-present-validation-required",
+      "surfaces": [
+        "agents-md",
+        "mcp",
+        "cli",
+        "sandbox"
+      ],
+      "summary": "AGENTS.md, Codex CLI MCP, cloud sandbox tasks"
+    },
+    {
+      "id": "github-copilot-web",
+      "name": "GitHub Copilot Web / Cloud Agent",
+      "support_tier": "planned-research-backed",
+      "surfaces": [
+        "skills",
+        "custom-agents",
+        "mcp",
+        "instructions"
+      ],
+      "summary": "Agent skills, custom agents, repository MCP config, instructions, Agent HQ preview"
+    },
+    {
+      "id": "github-copilot-cli",
+      "name": "GitHub Copilot CLI",
+      "support_tier": "planned-research-backed",
+      "surfaces": [
+        "skills",
+        "cli",
+        "agents",
+        "instructions"
+      ],
+      "summary": "Skills, custom instructions, custom agents, /skills commands"
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "support_tier": "repo-present-validation-required",
+      "surfaces": [
+        "skills",
+        "agents",
+        "plugins",
+        "mcp",
+        "config"
+      ],
+      "summary": "Native skill discovery across .opencode/.claude/.agents plus agents/plugins/MCP"
+    },
+    {
+      "id": "gemini-cli",
+      "name": "Gemini CLI",
+      "support_tier": "repo-present-validation-required",
+      "surfaces": [
+        "extensions",
+        "gemini-md",
+        "mcp",
+        "custom-commands"
+      ],
+      "summary": "Extensions package prompts, MCP servers, commands, context files"
+    },
+    {
+      "id": "antigravity",
+      "name": "Google Antigravity",
+      "support_tier": "experimental",
+      "surfaces": [
+        "rules",
+        "agents",
+        "browser",
+        "terminal",
+        "artifacts"
+      ],
+      "summary": "Agent-first IDE with Editor/Manager, artifacts, editor/terminal/browser surfaces"
+    },
+    {
+      "id": "perplexity-desktop",
+      "name": "Perplexity Desktop / Mac",
+      "support_tier": "experimental",
+      "surfaces": [
+        "local-mcp",
+        "helper-app"
+      ],
+      "summary": "Local MCP on macOS helper; remote MCP coming soon"
+    },
+    {
+      "id": "cherry-studio",
+      "name": "Cherry Studio",
+      "support_tier": "planned-research-backed",
+      "surfaces": [
+        "mcp",
+        "built-in-uv-bun",
+        "presets"
+      ],
+      "summary": "MCP UI, built-in uv/bun, auto-install beta, presets"
+    },
+    {
+      "id": "cursor-editor",
+      "name": "Cursor Editor",
+      "support_tier": "repo-present-validation-required",
+      "surfaces": [
+        "rules",
+        "mcp",
+        "background-agents"
+      ],
+      "summary": "Rules, AGENTS/CLAUDE, MCP, background agents, environment.json"
+    },
+    {
+      "id": "cursor-agent",
+      "name": "Cursor Agent CLI/Web",
+      "support_tier": "planned-research-backed",
+      "surfaces": [
+        "cli",
+        "mcp",
+        "web-agent",
+        "api"
+      ],
+      "summary": "CLI JSON/text output, MCP manager, background/web/mobile/API"
+    }
+  ]
+}

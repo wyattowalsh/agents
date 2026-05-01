@@ -1,0 +1,9 @@
+id,source_family,category,tier_target,preferred_install,risk_notes
+openspec-planner,internal,openspec,first_class,copy+npx skills,must not overwrite existing OpenSpec assets
+openspec-design-reviewer,internal,openspec,first_class,copy+npx skills,needs stable spec terminology
+spec-delta-reviewer,internal,openspec,first_class,copy+npx skills,should avoid blocking small iterative changes
+external-skill-auditor,internal,security,first_class,repo skill,already appears in repo README; strengthen provenance checks
+harness-master,internal,harness,first_class,repo skill,should incorporate support-tier matrix
+docs-steward,internal,docs,first_class,repo skill,should enforce generated docs truth
+opencode-primitives,external,harness,curated_review,manual,verify source and license before promotion
+pactflow-contract-testing,external,contracts,curated_review,copy,verify compatibility paths

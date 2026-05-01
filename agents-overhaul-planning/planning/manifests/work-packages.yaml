@@ -1,0 +1,56 @@
+version: 2026-05-01
+work_packages:
+  - id: WP-CI
+    cluster: ci
+    owner_team: CI/Conformance Team
+    task_count: 10
+    parallelization: high
+    tasks: ['CI-001', 'CI-002', 'CI-003', 'CI-004', 'CI-005', 'CI-006', 'CI-007', 'CI-008', 'CI-009', 'CI-010']
+  - id: WP-DOCS
+    cluster: docs
+    owner_team: Docs & AI Instructions Team
+    task_count: 10
+    parallelization: high
+    tasks: ['DOC-001', 'DOC-002', 'DOC-003', 'DOC-004', 'DOC-005', 'DOC-006', 'DOC-007', 'DOC-008', 'DOC-009', 'DOC-010']
+  - id: WP-FOUNDATION
+    cluster: foundation
+    owner_team: Platform Core
+    task_count: 5
+    parallelization: medium
+    tasks: ['CORE-001', 'CORE-002', 'CORE-003', 'CORE-004', 'CORE-005']
+  - id: WP-HARNESSES
+    cluster: harnesses
+    owner_team: Harness Adapter Teams
+    task_count: 65
+    parallelization: high
+    tasks: ['HAR-CLAUDE_DESKTOP-001', 'HAR-CLAUDE_DESKTOP-002', 'HAR-CLAUDE_DESKTOP-003', 'HAR-CLAUDE_DESKTOP-004', 'HAR-CLAUDE_DESKTOP-005', 'HAR-CLAUDE_CODE-001', 'HAR-CLAUDE_CODE-002', 'HAR-CLAUDE_CODE-003', 'HAR-CLAUDE_CODE-004', 'HAR-CLAUDE_CODE-005', 'HAR-CHATGPT-001', 'HAR-CHATGPT-002', 'HAR-CHATGPT-003', 'HAR-CHATGPT-004', 'HAR-CHATGPT-005', 'HAR-CODEX-001', 'HAR-CODEX-002', 'HAR-CODEX-003', 'HAR-CODEX-004', 'HAR-CODEX-005', 'HAR-GITHUB_COPILOT_WEB-001', 'HAR-GITHUB_COPILOT_WEB-002', 'HAR-GITHUB_COPILOT_WEB-003', 'HAR-GITHUB_COPILOT_WEB-004', 'HAR-GITHUB_COPILOT_WEB-005', 'HAR-GITHUB_COPILOT_CLI-001', 'HAR-GITHUB_COPILOT_CLI-002', 'HAR-GITHUB_COPILOT_CLI-003', 'HAR-GITHUB_COPILOT_CLI-004', 'HAR-GITHUB_COPILOT_CLI-005', 'HAR-OPENCODE-001', 'HAR-OPENCODE-002', 'HAR-OPENCODE-003', 'HAR-OPENCODE-004', 'HAR-OPENCODE-005', 'HAR-GEMINI_CLI-001', 'HAR-GEMINI_CLI-002', 'HAR-GEMINI_CLI-003', 'HAR-GEMINI_CLI-004', 'HAR-GEMINI_CLI-005', 'HAR-ANTIGRAVITY-001', 'HAR-ANTIGRAVITY-002', 'HAR-ANTIGRAVITY-003', 'HAR-ANTIGRAVITY-004', 'HAR-ANTIGRAVITY-005', 'HAR-PERPLEXITY_DESKTOP-001', 'HAR-PERPLEXITY_DESKTOP-002', 'HAR-PERPLEXITY_DESKTOP-003', 'HAR-PERPLEXITY_DESKTOP-004', 'HAR-PERPLEXITY_DESKTOP-005', 'HAR-CHERRY_STUDIO-001', 'HAR-CHERRY_STUDIO-002', 'HAR-CHERRY_STUDIO-003', 'HAR-CHERRY_STUDIO-004', 'HAR-CHERRY_STUDIO-005', 'HAR-CURSOR_EDITOR-001', 'HAR-CURSOR_EDITOR-002', 'HAR-CURSOR_EDITOR-003', 'HAR-CURSOR_EDITOR-004', 'HAR-CURSOR_EDITOR-005', 'HAR-CURSOR_AGENT-001', 'HAR-CURSOR_AGENT-002', 'HAR-CURSOR_AGENT-003', 'HAR-CURSOR_AGENT-004', 'HAR-CURSOR_AGENT-005']
+  - id: WP-MCP
+    cluster: mcp
+    owner_team: MCP Team
+    task_count: 10
+    parallelization: high
+    tasks: ['MCP-001', 'MCP-002', 'MCP-003', 'MCP-004', 'MCP-005', 'MCP-006', 'MCP-007', 'MCP-008', 'MCP-009', 'MCP-010']
+  - id: WP-OPENSPEC
+    cluster: openspec
+    owner_team: OpenSpec Team
+    task_count: 8
+    parallelization: high
+    tasks: ['OPS-001', 'OPS-002', 'OPS-003', 'OPS-004', 'OPS-005', 'OPS-006', 'OPS-007', 'OPS-008']
+  - id: WP-SECURITY
+    cluster: security
+    owner_team: Security/Supply Chain Team
+    task_count: 8
+    parallelization: high
+    tasks: ['SEC-001', 'SEC-002', 'SEC-003', 'SEC-004', 'SEC-005', 'SEC-006', 'SEC-007', 'SEC-008']
+  - id: WP-SKILLS
+    cluster: skills
+    owner_team: Skills Team
+    task_count: 10
+    parallelization: high
+    tasks: ['SKILL-001', 'SKILL-002', 'SKILL-003', 'SKILL-004', 'SKILL-005', 'SKILL-006', 'SKILL-007', 'SKILL-008', 'SKILL-009', 'SKILL-010']
+  - id: WP-UX
+    cluster: ux
+    owner_team: UX/CLI Team
+    task_count: 10
+    parallelization: high
+    tasks: ['UX-001', 'UX-002', 'UX-003', 'UX-004', 'UX-005', 'UX-006', 'UX-007', 'UX-008', 'UX-009', 'UX-010']

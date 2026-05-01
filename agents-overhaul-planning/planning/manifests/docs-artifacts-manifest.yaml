@@ -1,0 +1,34 @@
+version: 2
+docs_artifacts:
+  - path: README.md
+    owner_team: docs-ai-instructions
+    generated_from: [harness-registry, skill-inventory, mcp-inventory, cli-command-fixtures]
+    ci_gate: docs-truth
+  - path: AGENTS.md
+    owner_team: docs-ai-instructions
+    generated_from: [global-agent-policy, skill-vs-mcp-decision-tree]
+    ci_gate: ai-instructions-truth
+  - path: CLAUDE.md
+    owner_team: claude-team
+    generated_from: [claude-harness-registry, skills-policy]
+    ci_gate: ai-instructions-truth
+  - path: GEMINI.md
+    owner_team: gemini-team
+    generated_from: [gemini-harness-registry, extension-policy]
+    ci_gate: ai-instructions-truth
+  - path: .github/copilot-instructions.md
+    owner_team: copilot-team
+    generated_from: [copilot-harness-registry, repo-policy]
+    ci_gate: ai-instructions-truth
+  - path: docs/harnesses/*.md
+    owner_team: docs-ai-instructions
+    generated_from: [harness-registry]
+    ci_gate: docs-truth
+  - path: docs/skills.md
+    owner_team: skills-team
+    generated_from: [skill-inventory]
+    ci_gate: docs-truth
+  - path: docs/mcp.md
+    owner_team: mcp-team
+    generated_from: [mcp-inventory]
+    ci_gate: docs-truth

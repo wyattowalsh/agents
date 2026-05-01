@@ -1,0 +1,483 @@
+id,cluster,title,owner_team,blocking_dependencies,parallelizable_cluster,estimated_complexity,risk_level,merge_risk_score,ci_gates,produced_artifacts
+C00-001,C00,Inventory latest repository tree and classify source/generated files,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-001.md
+C00-002,C00,"Parse pyproject, package metadata, Makefile, uv.lock, and CLI entrypoints",platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-002.md
+C00-003,C00,Inventory skills directory and validate every SKILL.md candidate,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-003.md
+C00-004,C00,Inventory MCP configs and normalize current MCP server records,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-004.md
+C00-005,C00,Inventory harness-specific directories and claim support tiers,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-005.md
+C00-006,C00,Detect README/raw-rendered quickstart drift and command inconsistencies,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-006.md
+C00-007,C00,Inventory docs and AI instruction files,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-007.md
+C00-008,C00,Inventory tests/CI workflows/pre-commit quality gates,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-008.md
+C00-009,C00,Inventory existing OpenSpec assets without overwriting them,openspec-governance,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-009.md
+C00-010,C00,Generate repo-sync inventory JSON,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-010.md
+C00-011,C00,Generate initial drift report between planning bundle and live repo,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-011.md
+C00-012,C00,Reconcile OpenSpec active changes with planning docs,openspec-governance,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-012.md
+C00-013,C00,Create OpenSpec-to-task-graph mapping table,openspec-governance,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-013.md
+C00-014,C00,Freeze support-tier vocabulary,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-014.md
+C00-015,C00,Publish repo-sync analysis doc,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-015.md
+C00-016,C00,Define branch/PR naming convention for overhaul work,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-016.md
+C00-017,C00,Create conflict-surface map for generated docs and harness configs,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-017.md
+C00-018,C00,Add repo-sync CI smoke test fixture,platform-core,,C00,S,medium,2,schema;docs-truth,planning/artifacts/C00-018.md
+C01-001,C01,Define canonical harness registry JSON/YAML schema,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-001.md
+C01-002,C01,Define canonical skill registry schema,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-002.md
+C01-003,C01,Define canonical MCP registry schema,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-003.md
+C01-004,C01,Define plugin/extension registry schema,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-004.md
+C01-005,C01,Define docs artifact registry schema,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-005.md
+C01-006,C01,Define external capability catalog schema,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-006.md
+C01-007,C01,Define support-tier validation rules,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-007.md
+C01-008,C01,Define capability graph model and edges,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-008.md
+C01-009,C01,Implement registry loader and resolver interface design,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-009.md
+C01-010,C01,Create generated harness support matrix,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-010.md
+C01-011,C01,Create generated skill support matrix,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-011.md
+C01-012,C01,Create generated MCP risk matrix,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-012.md
+C01-013,C01,Create registry schema tests,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-013.md
+C01-014,C01,Create registry golden fixture set,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-014.md
+C01-015,C01,Add registry docs generation plan,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-015.md
+C01-016,C01,Add registry drift-detection plan,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-016.md
+C01-017,C01,Add registry diff report UX spec,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-017.md
+C01-018,C01,Lock registry schema version v1,platform-core,C00-010,C01,M,medium,3,schema;golden-fixtures,planning/artifacts/C01-018.md
+C02-001,C02,Normalize all local skills to Agent Skills package model,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-001.md
+C02-002,C02,Validate required SKILL.md frontmatter fields,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-002.md
+C02-003,C02,Move heavy reference content into references/assets for progressive disclosure,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-003.md
+C02-004,C02,Inventory scripts and classify execution risk,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-004.md
+C02-005,C02,Add CLI conformance fixture for each script-backed skill,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-005.md
+C02-006,C02,Define skill lockfile schema with source/ref/checksum,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-006.md
+C02-007,C02,Design npx skills lifecycle wrapper commands,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-007.md
+C02-008,C02,Evaluate skills.sh registry metadata and trust fields,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-008.md
+C02-009,C02,Evaluate Microsoft skills repo for reusable patterns,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-009.md
+C02-010,C02,Evaluate GitHub Awesome Copilot skills and agents,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-010.md
+C02-011,C02,Evaluate CrewAI skills pack,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-011.md
+C02-012,C02,Evaluate tech-leads agent-skills lockfile/hash patterns,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-012.md
+C02-013,C02,Create external skill adoption rubric,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-013.md
+C02-014,C02,Create skill signing/provenance plan,skills-team,C01-002,C02,M,high,3,skill-validation;cli-conformance,planning/artifacts/C02-014.md
+C02-015,C02,Create skill update/rollback semantics,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-015.md
+C02-016,C02,Add skill install preview UX,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-016.md
+C02-017,C02,Add skill audit command spec,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-017.md
+C02-018,C02,Add skill docs generation spec,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-018.md
+C02-019,C02,Add skill security policy to AGENTS.md draft,skills-team,C01-002,C02,M,high,3,skill-validation;cli-conformance,planning/artifacts/C02-019.md
+C02-020,C02,Add skill-vs-MCP replacement report,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-020.md
+C02-021,C02,Add skill fixture mode guidance,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-021.md
+C02-022,C02,Add skill telemetry/redaction guidance,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-022.md
+C02-023,C02,Create skill inventory JSON generator task,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-023.md
+C02-024,C02,Create first cohort of high-value adopted/adapted skills,skills-team,C01-002,C02,M,medium,3,skill-validation;cli-conformance,planning/artifacts/C02-024.md
+C03-001,C03,Scan Glama MCP index for candidate live-systems servers,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-001.md
+C03-002,C03,Scan PulseMCP index for candidate live-systems servers,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-002.md
+C03-003,C03,Scan MCP.so for candidate live-systems servers,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-003.md
+C03-004,C03,Scan Awesome MCP lists and extract high-signal upstream repos,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-004.md
+C03-005,C03,Normalize current repo MCP inventory into MCP registry,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-005.md
+C03-006,C03,Classify every MCP by domain and live-state necessity,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-006.md
+C03-007,C03,"Classify transport: stdio, Streamable HTTP, deprecated SSE, other",mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-007.md
+C03-008,C03,Classify auth model and secret requirements,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-008.md
+C03-009,C03,Mark static/redundant MCPs for skill replacement,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-009.md
+C03-010,C03,Promote browser automation MCP candidates for review,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-010.md
+C03-011,C03,Promote docs/search MCP candidates for review,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-011.md
+C03-012,C03,Promote GitHub/CI/cloud MCP candidates for review,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-012.md
+C03-013,C03,Reject or quarantine broad filesystem MCPs unless narrowly justified,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-013.md
+C03-014,C03,Run mcp-scan or equivalent scanner on current MCP configs,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-014.md
+C03-015,C03,Define MCP sandbox policy,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-015.md
+C03-016,C03,Define MCP pinning and tool-description diff policy,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-016.md
+C03-017,C03,Create MCP smoke test harness,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-017.md
+C03-018,C03,Create MCP risk matrix docs,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-018.md
+C03-019,C03,Create MCP deprecation/rollback plan,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-019.md
+C03-020,C03,Create MCP index refresh job spec,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-020.md
+C03-021,C03,Create MCP security exception template,mcp-team,C01-003,C03,M,high,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-021.md
+C03-022,C03,Create per-harness MCP projection fixtures,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-022.md
+C03-023,C03,Add MCP audit docs to README/docs plan,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-023.md
+C03-024,C03,Define uvx/npx install normalization for MCP servers,mcp-team,C01-003,C03,M,medium,3,mcp-schema;mcp-smoke;security-scan,planning/artifacts/C03-024.md
+C04-001,C04,Claude Code: Validate repo artifacts and support tier,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-002,C04,Claude Code: Map official extension/plugin/config surfaces,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-003,C04,Claude Code: Define skill projection behavior,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-004,C04,Claude Code: Define MCP projection behavior and constraints,harness-claude,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-005,C04,Claude Code: Define instruction/rules/doc projection behavior,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-006,C04,Claude Code: Create golden config fixtures,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-007,C04,Claude Code: Create harness-specific setup docs,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-008,C04,Claude Code: Create drift detection and repair behavior,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-009,C04,Claude Code: Create rollback validation fixture,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-code.md;tests/fixtures/harnesses/claude-code/
+C04-010,C04,Claude Desktop: Validate repo artifacts and support tier,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-011,C04,Claude Desktop: Map official extension/plugin/config surfaces,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-012,C04,Claude Desktop: Define skill projection behavior,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-013,C04,Claude Desktop: Define MCP projection behavior and constraints,harness-claude,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-014,C04,Claude Desktop: Define instruction/rules/doc projection behavior,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-015,C04,Claude Desktop: Create golden config fixtures,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-016,C04,Claude Desktop: Create harness-specific setup docs,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-017,C04,Claude Desktop: Create drift detection and repair behavior,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-018,C04,Claude Desktop: Create rollback validation fixture,harness-claude,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/claude-desktop.md;tests/fixtures/harnesses/claude-desktop/
+C04-019,C04,ChatGPT: Validate repo artifacts and support tier,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-020,C04,ChatGPT: Map official extension/plugin/config surfaces,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-021,C04,ChatGPT: Define skill projection behavior,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-022,C04,ChatGPT: Define MCP projection behavior and constraints,harness-openai,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-023,C04,ChatGPT: Define instruction/rules/doc projection behavior,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-024,C04,ChatGPT: Create golden config fixtures,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-025,C04,ChatGPT: Create harness-specific setup docs,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-026,C04,ChatGPT: Create drift detection and repair behavior,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-027,C04,ChatGPT: Create rollback validation fixture,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/chatgpt.md;tests/fixtures/harnesses/chatgpt/
+C04-028,C04,OpenAI Codex: Validate repo artifacts and support tier,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-029,C04,OpenAI Codex: Map official extension/plugin/config surfaces,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-030,C04,OpenAI Codex: Define skill projection behavior,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-031,C04,OpenAI Codex: Define MCP projection behavior and constraints,harness-openai,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-032,C04,OpenAI Codex: Define instruction/rules/doc projection behavior,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-033,C04,OpenAI Codex: Create golden config fixtures,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-034,C04,OpenAI Codex: Create harness-specific setup docs,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-035,C04,OpenAI Codex: Create drift detection and repair behavior,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-036,C04,OpenAI Codex: Create rollback validation fixture,harness-openai,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/codex.md;tests/fixtures/harnesses/codex/
+C04-037,C04,GitHub Copilot Web: Validate repo artifacts and support tier,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-038,C04,GitHub Copilot Web: Map official extension/plugin/config surfaces,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-039,C04,GitHub Copilot Web: Define skill projection behavior,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-040,C04,GitHub Copilot Web: Define MCP projection behavior and constraints,harness-copilot,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-041,C04,GitHub Copilot Web: Define instruction/rules/doc projection behavior,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-042,C04,GitHub Copilot Web: Create golden config fixtures,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-043,C04,GitHub Copilot Web: Create harness-specific setup docs,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-044,C04,GitHub Copilot Web: Create drift detection and repair behavior,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-045,C04,GitHub Copilot Web: Create rollback validation fixture,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-web.md;tests/fixtures/harnesses/github-copilot-web/
+C04-046,C04,GitHub Copilot CLI: Validate repo artifacts and support tier,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-047,C04,GitHub Copilot CLI: Map official extension/plugin/config surfaces,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-048,C04,GitHub Copilot CLI: Define skill projection behavior,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-049,C04,GitHub Copilot CLI: Define MCP projection behavior and constraints,harness-copilot,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-050,C04,GitHub Copilot CLI: Define instruction/rules/doc projection behavior,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-051,C04,GitHub Copilot CLI: Create golden config fixtures,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-052,C04,GitHub Copilot CLI: Create harness-specific setup docs,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-053,C04,GitHub Copilot CLI: Create drift detection and repair behavior,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-054,C04,GitHub Copilot CLI: Create rollback validation fixture,harness-copilot,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/github-copilot-cli.md;tests/fixtures/harnesses/github-copilot-cli/
+C04-055,C04,OpenCode: Validate repo artifacts and support tier,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-056,C04,OpenCode: Map official extension/plugin/config surfaces,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-057,C04,OpenCode: Define skill projection behavior,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-058,C04,OpenCode: Define MCP projection behavior and constraints,harness-opencode,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-059,C04,OpenCode: Define instruction/rules/doc projection behavior,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-060,C04,OpenCode: Create golden config fixtures,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-061,C04,OpenCode: Create harness-specific setup docs,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-062,C04,OpenCode: Create drift detection and repair behavior,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-063,C04,OpenCode: Create rollback validation fixture,harness-opencode,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/opencode.md;tests/fixtures/harnesses/opencode/
+C04-064,C04,Gemini CLI: Validate repo artifacts and support tier,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-065,C04,Gemini CLI: Map official extension/plugin/config surfaces,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-066,C04,Gemini CLI: Define skill projection behavior,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-067,C04,Gemini CLI: Define MCP projection behavior and constraints,harness-gemini,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-068,C04,Gemini CLI: Define instruction/rules/doc projection behavior,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-069,C04,Gemini CLI: Create golden config fixtures,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-070,C04,Gemini CLI: Create harness-specific setup docs,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-071,C04,Gemini CLI: Create drift detection and repair behavior,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-072,C04,Gemini CLI: Create rollback validation fixture,harness-gemini,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/gemini-cli.md;tests/fixtures/harnesses/gemini-cli/
+C04-073,C04,Cursor Editor: Validate repo artifacts and support tier,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-074,C04,Cursor Editor: Map official extension/plugin/config surfaces,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-075,C04,Cursor Editor: Define skill projection behavior,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-076,C04,Cursor Editor: Define MCP projection behavior and constraints,harness-cursor,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-077,C04,Cursor Editor: Define instruction/rules/doc projection behavior,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-078,C04,Cursor Editor: Create golden config fixtures,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-079,C04,Cursor Editor: Create harness-specific setup docs,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-080,C04,Cursor Editor: Create drift detection and repair behavior,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-081,C04,Cursor Editor: Create rollback validation fixture,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-editor.md;tests/fixtures/harnesses/cursor-editor/
+C04-082,C04,Cursor Agent CLI/Web: Validate repo artifacts and support tier,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-083,C04,Cursor Agent CLI/Web: Map official extension/plugin/config surfaces,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-084,C04,Cursor Agent CLI/Web: Define skill projection behavior,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-085,C04,Cursor Agent CLI/Web: Define MCP projection behavior and constraints,harness-cursor,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-086,C04,Cursor Agent CLI/Web: Define instruction/rules/doc projection behavior,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-087,C04,Cursor Agent CLI/Web: Create golden config fixtures,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-088,C04,Cursor Agent CLI/Web: Create harness-specific setup docs,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-089,C04,Cursor Agent CLI/Web: Create drift detection and repair behavior,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-090,C04,Cursor Agent CLI/Web: Create rollback validation fixture,harness-cursor,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cursor-agent.md;tests/fixtures/harnesses/cursor-agent/
+C04-091,C04,Antigravity: Validate repo artifacts and support tier,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-092,C04,Antigravity: Map official extension/plugin/config surfaces,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-093,C04,Antigravity: Define skill projection behavior,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-094,C04,Antigravity: Define MCP projection behavior and constraints,harness-experimental,C01-001;C02-001;C03-005,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-095,C04,Antigravity: Define instruction/rules/doc projection behavior,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-096,C04,Antigravity: Create golden config fixtures,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-097,C04,Antigravity: Create harness-specific setup docs,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-098,C04,Antigravity: Create drift detection and repair behavior,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-099,C04,Antigravity: Create rollback validation fixture,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/antigravity.md;tests/fixtures/harnesses/antigravity/
+C04-100,C04,Perplexity Desktop: Validate repo artifacts and support tier,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-101,C04,Perplexity Desktop: Map official extension/plugin/config surfaces,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-102,C04,Perplexity Desktop: Define skill projection behavior,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-103,C04,Perplexity Desktop: Define MCP projection behavior and constraints,harness-experimental,C01-001;C02-001;C03-005,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-104,C04,Perplexity Desktop: Define instruction/rules/doc projection behavior,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-105,C04,Perplexity Desktop: Create golden config fixtures,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-106,C04,Perplexity Desktop: Create harness-specific setup docs,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-107,C04,Perplexity Desktop: Create drift detection and repair behavior,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-108,C04,Perplexity Desktop: Create rollback validation fixture,harness-experimental,C01-001;C02-001,C04,M,high,4,harness-fixtures;docs-truth,planning/20-harness-registry/perplexity-desktop.md;tests/fixtures/harnesses/perplexity-desktop/
+C04-109,C04,Cherry Studio: Validate repo artifacts and support tier,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-110,C04,Cherry Studio: Map official extension/plugin/config surfaces,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-111,C04,Cherry Studio: Define skill projection behavior,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-112,C04,Cherry Studio: Define MCP projection behavior and constraints,harness-experimental,C01-001;C02-001;C03-005,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-113,C04,Cherry Studio: Define instruction/rules/doc projection behavior,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-114,C04,Cherry Studio: Create golden config fixtures,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-115,C04,Cherry Studio: Create harness-specific setup docs,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-116,C04,Cherry Studio: Create drift detection and repair behavior,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C04-117,C04,Cherry Studio: Create rollback validation fixture,harness-experimental,C01-001;C02-001,C04,M,medium,4,harness-fixtures;docs-truth,planning/20-harness-registry/cherry-studio.md;tests/fixtures/harnesses/cherry-studio/
+C05-001,C05,Design wagents doctor output model,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-001.md
+C05-002,C05,Implement doctor prerequisites and harness detection spec,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-002.md
+C05-003,C05,Design catalog browse/explain UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-003.md
+C05-004,C05,Design skill add preview/apply UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-004.md
+C05-005,C05,Design MCP inspect/enable UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-005.md
+C05-006,C05,Design sync preview UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-006.md
+C05-007,C05,Design sync apply transaction UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-007.md
+C05-008,C05,Design rollback UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-008.md
+C05-009,C05,Design OpenSpec command group UX,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-009.md
+C05-010,C05,Define machine-readable JSON output formats for automation,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-010.md
+C05-011,C05,Define CLI error taxonomy and remediation hints,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-011.md
+C05-012,C05,Define dashboard information architecture,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-012.md
+C05-013,C05,Define skill catalog dashboard view,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-013.md
+C05-014,C05,Define MCP audit dashboard view,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-014.md
+C05-015,C05,Define config drift dashboard view,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-015.md
+C05-016,C05,Define transaction history dashboard view,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-016.md
+C05-017,C05,Define support matrix dashboard view,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-017.md
+C05-018,C05,Define guided onboarding wizard,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-018.md
+C05-019,C05,Create CLI golden snapshot tests,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-019.md
+C05-020,C05,Create dashboard wireframe docs,ux-cli,C01-009,C05,M,medium,3,cli-snapshots;docs-truth,planning/artifacts/C05-020.md
+C06-001,C06,Define transaction engine operation model,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-001.md
+C06-002,C06,Define backup snapshot format,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-002.md
+C06-003,C06,Define atomic file-write strategy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-003.md
+C06-004,C06,Define rollback verification strategy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-004.md
+C06-005,C06,Define secret redaction model,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-005.md
+C06-006,C06,Define environment overlay policy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-006.md
+C06-007,C06,Define policy-as-code validation rules,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-007.md
+C06-008,C06,Define external skill source trust policy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-008.md
+C06-009,C06,Define MCP source trust policy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-009.md
+C06-010,C06,Define signing/checksum/provenance strategy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-010.md
+C06-011,C06,Evaluate Sigstore/cosign for skill provenance,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-011.md
+C06-012,C06,Evaluate SBOM tooling for skill dependencies,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-012.md
+C06-013,C06,Evaluate OPA/Conftest for registry policy,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-013.md
+C06-014,C06,Define sandbox profiles for script-backed skills,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-014.md
+C06-015,C06,Define sandbox profiles for local MCP servers,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-015.md
+C06-016,C06,Define network access declaration schema,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-016.md
+C06-017,C06,Define prompt-injection and tool-poisoning mitigations,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-017.md
+C06-018,C06,Define security review checklist,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-018.md
+C06-019,C06,Create threat model docs,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-019.md
+C06-020,C06,Create security exception workflow,security,C01-001,C06,M,high,3,security-review;policy-tests,planning/artifacts/C06-020.md
+C07-001,C07,Create registry schema validation CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-001.md
+C07-002,C07,Create skill validation CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-002.md
+C07-003,C07,Create skill CLI conformance CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-003.md
+C07-004,C07,Create MCP registry validation CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-004.md
+C07-005,C07,Create MCP smoke test CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-005.md
+C07-006,C07,Create MCP security scan CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-006.md
+C07-007,C07,Create adapter golden-fixture CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-007.md
+C07-008,C07,Create docs truth CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-008.md
+C07-009,C07,Create AI instruction truth CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-009.md
+C07-010,C07,Create OpenSpec validation CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-010.md
+C07-011,C07,Create transaction rollback CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-011.md
+C07-012,C07,Create repo-sync inventory CI gate,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-012.md
+C07-013,C07,Create eval scenario schema,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-013.md
+C07-014,C07,Create promptfoo/deepeval feasibility notes,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-014.md
+C07-015,C07,Create Microsoft skills scenario-harness adaptation note,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-015.md
+C07-016,C07,Create deterministic replay fixture design,ci-evals,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-016.md
+C07-017,C07,Create local audit log schema,observability,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-017.md
+C07-018,C07,Create OpenTelemetry instrumentation plan,observability,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-018.md
+C07-019,C07,Create run graph visualization spec,observability,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-019.md
+C07-020,C07,Create cost telemetry design,observability,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-020.md
+C07-021,C07,Create CI report dashboard spec,observability,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-021.md
+C07-022,C07,Create failure remediation docs,observability,C01-013,C07,M,medium,3,ci,planning/artifacts/C07-022.md
+C08-001,C08,Canonicalize README quickstart and supported agents section,docs-ai-instructions,C01-005,C08,S,medium,5,docs-truth;ai-instructions-truth,planning/artifacts/C08-001.md
+C08-002,C08,Update README skill catalog section from skill inventory,docs-ai-instructions,C01-005,C08,S,medium,5,docs-truth;ai-instructions-truth,planning/artifacts/C08-002.md
+C08-003,C08,Update README MCP policy section from MCP inventory,docs-ai-instructions,C01-005,C08,S,medium,5,docs-truth;ai-instructions-truth,planning/artifacts/C08-003.md
+C08-004,C08,Update README OpenSpec governance section,docs-ai-instructions,C01-005,C08,S,medium,5,docs-truth;ai-instructions-truth,planning/artifacts/C08-004.md
+C08-005,C08,Update AGENTS.md with skill-first decision tree,docs-ai-instructions,C01-005,C08,S,medium,5,docs-truth;ai-instructions-truth,planning/artifacts/C08-005.md
+C08-006,C08,Update AGENTS.md with MCP safety policy,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-006.md
+C08-007,C08,Update CLAUDE.md with Claude Code skills/plugins/hooks/subagents guidance,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-007.md
+C08-008,C08,Update GEMINI.md with Gemini extension/MCP guidance,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-008.md
+C08-009,C08,Create .github/copilot-instructions.md projection,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-009.md
+C08-010,C08,Create .github/instructions scoped instruction docs,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-010.md
+C08-011,C08,Update Cursor rules docs and deprecate .cursorrules assumptions,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-011.md
+C08-012,C08,Update OpenCode setup docs,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-012.md
+C08-013,C08,Update Cherry Studio preset/setup docs,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-013.md
+C08-014,C08,Update Perplexity Desktop caveat docs,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-014.md
+C08-015,C08,Update Antigravity experimental caveat docs,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-015.md
+C08-016,C08,Create docs/skills.md from skill registry,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-016.md
+C08-017,C08,Create docs/mcp.md from MCP registry,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-017.md
+C08-018,C08,Create docs/harnesses index,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-018.md
+C08-019,C08,Create docs/security.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-019.md
+C08-020,C08,Create docs/config-transactions.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-020.md
+C08-021,C08,Create docs/openspec.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-021.md
+C08-022,C08,Create docs/external-capabilities.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-022.md
+C08-023,C08,Create docs/ui-ux.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-023.md
+C08-024,C08,Create docs/evals.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-024.md
+C08-025,C08,Create docs/observability.md,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-025.md
+C08-026,C08,Create docs/contributing.md overhaul section,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-026.md
+C08-027,C08,Create version/support matrix doc,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-027.md
+C08-028,C08,Create MCP audit report doc,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-028.md
+C08-029,C08,Create external skill audit report doc,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-029.md
+C08-030,C08,Create docs generation/check command docs,docs-ai-instructions,C01-005,C08,S,medium,3,docs-truth;ai-instructions-truth,planning/artifacts/C08-030.md
+C09-001,C09,Create phased rollout plan,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-001.md
+C09-002,C09,Create migration guide for existing users,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-002.md
+C09-003,C09,Create branch/PR integration policy,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-003.md
+C09-004,C09,Create support-tier changelog policy,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-004.md
+C09-005,C09,Create feature flag/preview policy,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-005.md
+C09-006,C09,Create backwards compatibility policy,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-006.md
+C09-007,C09,Create rollback playbook,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-007.md
+C09-008,C09,Create release checklist,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-008.md
+C09-009,C09,Create post-merge validation checklist,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-009.md
+C09-010,C09,Create OpenSpec archive checklist,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-010.md
+C09-011,C09,Create external dependency update cadence,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-011.md
+C09-012,C09,Create long-term maintenance backlog,release,C05-006;C07-008,C09,S,medium,2,release-readiness,planning/artifacts/C09-012.md
+C10-001,C10,Implement progressive-disclosure-map planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/progressive-disclosure-map.md
+C10-002,C10,Implement assumption-and-drift-ledger planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/assumption-and-drift-ledger.md
+C10-003,C10,Implement change-portfolio planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/change-portfolio.md
+C10-004,C10,Implement directory-readmes planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/directory-readmes.md
+C10-005,C10,Implement docs-artifact-manifest planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/docs-artifact-manifest.md
+C10-006,C10,Implement source-ledger-refresh planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/source-ledger-refresh.md
+C10-007,C10,Implement repo-sync-inventory planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/repo-sync-inventory.md
+C10-008,C10,Implement support-tier-policy-refresh planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/support-tier-policy-refresh.md
+C10-009,C10,Implement terminology-glossary planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/terminology-glossary.md
+C10-010,C10,Implement planning-doc-link-check planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/planning-doc-link-check.md
+C10-011,C10,Implement generated-vs-source-classifier planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/generated-vs-source-classifier.md
+C10-012,C10,Implement planning-doc-ownership-map planning artifact,docs-architecture,,C10,S,low,1,docs-truth;linkcheck,planning/artifacts/planning-doc-ownership-map.md
+C11-001,C11,Validate all local skill.md frontmatter,skills-platform,,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/001-validate-all-local-SKILL.md-frontmatter.md
+C11-002,C11,Score local skills for progressive disclosure,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/002-score-local-skills-for-progressive-disclosure.md
+C11-003,C11,Extract skill script cli contracts,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/003-extract-skill-script-CLI-contracts.md
+C11-004,C11,Add json/dry-run/exit-code tests for scripts,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/004-add-JSON/dry-run/exit-code-tests-for-scripts.md
+C11-005,C11,Build external skill intake manifest,skills-platform,C10-001,C11,M,medium,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/005-build-external-skill-intake-manifest.md
+C11-006,C11,Implement npx skills wrapper plan,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/006-implement-npx-skills-wrapper-plan.md
+C11-007,C11,Implement gh skill preview/install audit lane,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/007-implement-gh-skill-preview/install-audit-lane.md
+C11-008,C11,Add skill provenance lockfile,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/008-add-skill-provenance-lockfile.md
+C11-009,C11,Add skill signing/checksum plan,skills-platform,C10-001,C11,M,medium,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/009-add-skill-signing/checksum-plan.md
+C11-010,C11,Add skill activation fixtures,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/010-add-skill-activation-fixtures.md
+C11-011,C11,Add skill non-activation fixtures,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/011-add-skill-non-activation-fixtures.md
+C11-012,C11,Generate skill docs from registry,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/012-generate-skill-docs-from-registry.md
+C11-013,C11,Audit skills.sh candidates,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/013-audit-skills.sh-candidates.md
+C11-014,C11,Audit awesome-copilot candidates,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/014-audit-awesome-copilot-candidates.md
+C11-015,C11,Audit crewai skill pack as pattern,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/015-audit-CrewAI-skill-pack-as-pattern.md
+C11-016,C11,Classify framework-specific skill packs,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/016-classify-framework-specific-skill-packs.md
+C11-017,C11,Add skill replacement plan for reasoning mcps,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/017-add-skill-replacement-plan-for-reasoning-MCPs.md
+C11-018,C11,Draft external-skills instruction doc,skills-platform,C10-001,C11,M,medium,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/018-draft-external-skills-instruction-doc.md
+C11-019,C11,Create skill install rollback tests,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/019-create-skill-install-rollback-tests.md
+C11-020,C11,Add skill version drift detector,skills-platform,C10-001,C11,M,low,2,skill-spec;script-contract;docs-truth,planning/artifacts/skills/020-add-skill-version-drift-detector.md
+C12-001,C12,Audit MCP `brave-search`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/brave-search.md
+C12-002,C12,Audit MCP `cascade-thinking`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/cascade-thinking.md
+C12-003,C12,Audit MCP `chrome-devtools`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/chrome-devtools.md
+C12-004,C12,Audit MCP `context7`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/context7.md
+C12-005,C12,Audit MCP `deepwiki`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/deepwiki.md
+C12-006,C12,Audit MCP `docling`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/docling.md
+C12-007,C12,Audit MCP `fetch`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/fetch.md
+C12-008,C12,Audit MCP `fetcher`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/fetcher.md
+C12-009,C12,Audit MCP `package-version`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/package-version.md
+C12-010,C12,Audit MCP `repomix`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/repomix.md
+C12-011,C12,Audit MCP `sequential-thinking`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/sequential-thinking.md
+C12-012,C12,Audit MCP `structured-thinking`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/structured-thinking.md
+C12-013,C12,Audit MCP `tavily`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/tavily.md
+C12-014,C12,Audit MCP `trafilatura`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/trafilatura.md
+C12-015,C12,Audit MCP `arxiv`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/arxiv.md
+C12-016,C12,Audit MCP `atom-of-thoughts`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/atom-of-thoughts.md
+C12-017,C12,Audit MCP `crash`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/crash.md
+C12-018,C12,Audit MCP `creative-thinking`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/creative-thinking.md
+C12-019,C12,Audit MCP `deep-lucid-3d`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/deep-lucid-3d.md
+C12-020,C12,Audit MCP `duckduckgo-search`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/duckduckgo-search.md
+C12-021,C12,Audit MCP `exa`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/exa.md
+C12-022,C12,Audit MCP `ffmpeg`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/ffmpeg.md
+C12-023,C12,Audit MCP `g-search`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/g-search.md
+C12-024,C12,Audit MCP `gmail`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/gmail.md
+C12-025,C12,Audit MCP `linkedin`,mcp-curation,C10-002,C12,S,high,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/linkedin.md
+C12-026,C12,Audit MCP `lotus-wisdom-mcp`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/lotus-wisdom-mcp.md
+C12-027,C12,Audit MCP `shannon-thinking`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/shannon-thinking.md
+C12-028,C12,Audit MCP `think-strategies`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/think-strategies.md
+C12-029,C12,Audit MCP `wayback`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/wayback.md
+C12-030,C12,Audit MCP `wikipedia`,mcp-curation,C10-002,C12,S,medium,1,mcp-schema;mcp-scan;docs-truth,planning/artifacts/mcp/wikipedia.md
+C12-100,C12,Harvest official-mcp-registry candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/official-mcp-registry.md
+C12-101,C12,Harvest glama-mcp-list candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/glama-mcp-list.md
+C12-102,C12,Harvest mcp-so candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/mcp-so.md
+C12-103,C12,Harvest pulsemcp candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/pulsemcp.md
+C12-104,C12,Harvest mcp-directory candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/mcp-directory.md
+C12-105,C12,Harvest abordage-awesome-mcp candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/abordage-awesome-mcp.md
+C12-106,C12,Harvest ever-works-awesome-mcp candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/ever-works-awesome-mcp.md
+C12-107,C12,Harvest mcp-awesome candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/mcp-awesome.md
+C12-108,C12,Harvest context-awesome candidates,mcp-curation,C12-001,C12,M,medium,1,source-ledger;mcp-schema,planning/artifacts/mcp-indexes/context-awesome.md
+C13-001,C13,Refine Claude Desktop harness projection,harness-projection,C10-002,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/claude-desktop.md;planning/artifacts/harness/claude-desktop.md
+C13-002,C13,Refine Claude Code harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/claude-code.md;planning/artifacts/harness/claude-code.md
+C13-003,C13,Refine ChatGPT harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/chatgpt.md;planning/artifacts/harness/chatgpt.md
+C13-004,C13,Refine Codex harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/codex.md;planning/artifacts/harness/codex.md
+C13-005,C13,Refine GitHub Copilot Web / Cloud Agent harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/github-copilot-web.md;planning/artifacts/harness/github-copilot-web.md
+C13-006,C13,Refine GitHub Copilot CLI harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/github-copilot-cli.md;planning/artifacts/harness/github-copilot-cli.md
+C13-007,C13,Refine OpenCode harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/opencode.md;planning/artifacts/harness/opencode.md
+C13-008,C13,Refine Gemini CLI harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/gemini-cli.md;planning/artifacts/harness/gemini-cli.md
+C13-009,C13,Refine Google Antigravity harness projection,harness-projection,C01-001,C13,M,high,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/antigravity.md;planning/artifacts/harness/antigravity.md
+C13-010,C13,Refine Perplexity Desktop / Mac harness projection,harness-projection,C01-001,C13,M,high,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/perplexity-desktop.md;planning/artifacts/harness/perplexity-desktop.md
+C13-011,C13,Refine Cherry Studio harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/cherry-studio.md;planning/artifacts/harness/cherry-studio.md
+C13-012,C13,Refine Cursor Editor harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/cursor-editor.md;planning/artifacts/harness/cursor-editor.md
+C13-013,C13,Refine Cursor Agent CLI/Web harness projection,harness-projection,C01-001,C13,M,medium,2,harness-fixture;docs-truth;support-tier-check,planning/20-harness-registry/cursor-agent.md;planning/artifacts/harness/cursor-agent.md
+C14-001,C14,Claude plugin manifest reconciliation,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/001-claude-plugin-manifest-reconciliation.md
+C14-002,C14,Claude plugin marketplace doc,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/002-claude-plugin-marketplace-doc.md
+C14-003,C14,Codex plugin manifest reconciliation,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/003-codex-plugin-manifest-reconciliation.md
+C14-004,C14,Agents marketplace manifest validation,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/004-agents-marketplace-manifest-validation.md
+C14-005,C14,Opencode plugin/package validation,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/005-opencode-plugin/package-validation.md
+C14-006,C14,Gemini extension manifest generation,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/006-gemini-extension-manifest-generation.md
+C14-007,C14,Cursor rules adapter fixtures,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/007-cursor-rules-adapter-fixtures.md
+C14-008,C14,Chatgpt actions openapi adapter docs,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/008-chatgpt-actions-OpenAPI-adapter-docs.md
+C14-009,C14,Apps sdk preview caveat docs,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/009-apps-SDK-preview-caveat-docs.md
+C14-010,C14,Native plugin version pin policy,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/010-native-plugin-version-pin-policy.md
+C14-011,C14,Plugin install smoke tests,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/011-plugin-install-smoke-tests.md
+C14-012,C14,Plugin docs generation,plugin-packaging,C10-003,C14,M,medium,2,plugin-schema;harness-fixture;docs-truth,planning/artifacts/plugins/012-plugin-docs-generation.md
+C15-001,C15,Doctor command ux spec,ux-automation,C10-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/001-doctor-command-UX-spec.md
+C15-002,C15,Catalog browser cli spec,ux-automation,C10-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/002-catalog-browser-CLI-spec.md
+C15-003,C15,Skill search and preview flow,ux-automation,C10-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/003-skill-search-and-preview-flow.md
+C15-004,C15,Mcp inspector flow,ux-automation,C10-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/004-mcp-inspector-flow.md
+C15-005,C15,Sync preview diff flow,ux-automation,C10-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/005-sync-preview-diff-flow.md
+C15-006,C15,Sync apply transaction flow,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/006-sync-apply-transaction-flow.md
+C15-007,C15,Rollback ux flow,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/007-rollback-UX-flow.md
+C15-008,C15,Drift repair wizard,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/008-drift-repair-wizard.md
+C15-009,C15,Config wizard questions,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/009-config-wizard-questions.md
+C15-010,C15,Dashboard overview panel,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/010-dashboard-overview-panel.md
+C15-011,C15,Dashboard skill panel,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/011-dashboard-skill-panel.md
+C15-012,C15,Dashboard mcp panel,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/012-dashboard-MCP-panel.md
+C15-013,C15,Dashboard harness panel,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/013-dashboard-harness-panel.md
+C15-014,C15,Openspec status panel,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/014-OpenSpec-status-panel.md
+C15-015,C15,Machine-readable json output contract,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/015-machine-readable-JSON-output-contract.md
+C15-016,C15,Guided remediation messages,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/016-guided-remediation-messages.md
+C15-017,C15,One-command bootstrap script,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/017-one-command-bootstrap-script.md
+C15-018,C15,Interactive/noninteractive parity tests,ux-automation,C10-001;C05-001,C15,M,medium,2,cli-fixture;docs-truth,planning/artifacts/ux/018-interactive/noninteractive-parity-tests.md
+C16-001,C16,Sync documentation artifact `README.md`,docs-truth,C10-005,C16,S,low,3,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/READMEdotmd.md
+C16-002,C16,Sync documentation artifact `AGENTS.md`,docs-truth,C10-005,C16,S,medium,3,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/AGENTSdotmd.md
+C16-003,C16,Sync documentation artifact `CLAUDE.md`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/CLAUDEdotmd.md
+C16-004,C16,Sync documentation artifact `GEMINI.md`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/GEMINIdotmd.md
+C16-005,C16,Sync documentation artifact `.github/copilot-instructions.md`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotgithub-copilot-instructionsdotmd.md
+C16-006,C16,Sync documentation artifact `.github/instructions/*.instructions.md`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotgithub-instructions-stardotinstructionsdotmd.md
+C16-007,C16,Sync documentation artifact `.cursor/rules/**`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotcursor-rules-starstar.md
+C16-008,C16,Sync documentation artifact `.claude/rules/**`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotclaude-rules-starstar.md
+C16-009,C16,Sync documentation artifact `.antigravity/**`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotantigravity-starstar.md
+C16-010,C16,Sync documentation artifact `.cherry/**`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotcherry-starstar.md
+C16-011,C16,Sync documentation artifact `.perplexity/**`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/dotperplexity-starstar.md
+C16-012,C16,Sync documentation artifact `docs/skills.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-skillsdotmd.md
+C16-013,C16,Sync documentation artifact `docs/mcp.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-mcpdotmd.md
+C16-014,C16,Sync documentation artifact `docs/harnesses.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-harnessesdotmd.md
+C16-015,C16,Sync documentation artifact `docs/openspec.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-openspecdotmd.md
+C16-016,C16,Sync documentation artifact `docs/security.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-securitydotmd.md
+C16-017,C16,Sync documentation artifact `docs/external-skills.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-external-skillsdotmd.md
+C16-018,C16,Sync documentation artifact `docs/version-matrix.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-version-matrixdotmd.md
+C16-019,C16,Sync documentation artifact `docs/support-tiers.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-support-tiersdotmd.md
+C16-020,C16,Sync documentation artifact `docs/quickstart.md`,docs-truth,C10-005,C16,S,low,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/docs-quickstartdotmd.md
+C16-021,C16,Sync documentation artifact `raw README/rendered README drift`,docs-truth,C10-005,C16,S,medium,1,docs-truth;linkcheck;support-tier-check,planning/artifacts/docs/raw-README-rendered-README-drift.md
+C17-001,C17,Policy schema for validated support tier,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/001-policy-schema-for-validated-support-tier.md
+C17-002,C17,Deny latest for validated mcp/plugin,security-supply-chain,C10-002,C17,M,high,2,policy;security-scan;docs-truth,planning/artifacts/security/002-deny-latest-for-validated-MCP/plugin.md
+C17-003,C17,Deny absolute local path in portable profile,security-supply-chain,C10-002,C17,M,high,2,policy;security-scan;docs-truth,planning/artifacts/security/003-deny-absolute-local-path-in-portable-profile.md
+C17-004,C17,Deny external skill without provenance,security-supply-chain,C10-002,C17,M,high,2,policy;security-scan;docs-truth,planning/artifacts/security/004-deny-external-skill-without-provenance.md
+C17-005,C17,Secret reference scanner,security-supply-chain,C10-002,C17,M,high,2,policy;security-scan;docs-truth,planning/artifacts/security/005-secret-reference-scanner.md
+C17-006,C17,Mcp-scan ci integration,security-supply-chain,C10-002,C17,M,high,2,policy;security-scan;docs-truth,planning/artifacts/security/006-mcp-scan-CI-integration.md
+C17-007,C17,Skill script destructive command scanner,security-supply-chain,C10-002,C17,M,high,2,policy;security-scan;docs-truth,planning/artifacts/security/007-skill-script-destructive-command-scanner.md
+C17-008,C17,Sbom generation for release bundle,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/008-SBOM-generation-for-release-bundle.md
+C17-009,C17,Sigstore cosign plan,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/009-Sigstore-cosign-plan.md
+C17-010,C17,Slsa provenance plan,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/010-SLSA-provenance-plan.md
+C17-011,C17,Security exception registry,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/011-security-exception-registry.md
+C17-012,C17,Sandbox profile taxonomy,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/012-sandbox-profile-taxonomy.md
+C17-013,C17,Least-privilege secret docs,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/013-least-privilege-secret-docs.md
+C17-014,C17,Prompt injection guidance for skills,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/014-prompt-injection-guidance-for-skills.md
+C17-015,C17,Mcp tool poisoning playbook,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/015-MCP-tool-poisoning-playbook.md
+C17-016,C17,Supply-chain incident response runbook,security-supply-chain,C10-002,C17,M,medium,2,policy;security-scan;docs-truth,planning/artifacts/security/016-supply-chain-incident-response-runbook.md
+C18-001,C18,Opentelemetry genai semconv watch task,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/001-OpenTelemetry-GenAI-semconv-watch-task.md
+C18-002,C18,Langfuse integration feasibility note,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/002-Langfuse-integration-feasibility-note.md
+C18-003,C18,Phoenix integration feasibility note,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/003-Phoenix-integration-feasibility-note.md
+C18-004,C18,Run graph json schema,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/004-run-graph-JSON-schema.md
+C18-005,C18,Transaction audit event schema,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/005-transaction-audit-event-schema.md
+C18-006,C18,Skill activation eval fixtures,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/006-skill-activation-eval-fixtures.md
+C18-007,C18,Mcp tool snapshot eval fixtures,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/007-MCP-tool-snapshot-eval-fixtures.md
+C18-008,C18,Harness projection eval fixtures,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/008-harness-projection-eval-fixtures.md
+C18-009,C18,Cost telemetry placeholder fields,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/009-cost-telemetry-placeholder-fields.md
+C18-010,C18,Dashboard run graph visualization,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/010-dashboard-run-graph-visualization.md
+C18-011,C18,Ci artifact retention plan,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/011-CI-artifact-retention-plan.md
+C18-012,C18,Eval scorecard docs,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/012-eval-scorecard-docs.md
+C18-013,C18,Deterministic replay fixture docs,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/013-deterministic-replay-fixture-docs.md
+C18-014,C18,Agent task performance metrics,evals-observability,C10-001,C18,M,medium,1,schema;eval-fixture;docs-truth,planning/artifacts/observability/014-agent-task-performance-metrics.md
+C19-001,C19,Inventory existing openspec tree,openspec-governance,,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/001-inventory-existing-openspec-tree.md
+C19-002,C19,Preserve existing active changes,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/002-preserve-existing-active-changes.md
+C19-003,C19,Map task graph ids to openspec tasks,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/003-map-task-graph-IDs-to-OpenSpec-tasks.md
+C19-004,C19,Add skills-first spec deltas,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/004-add-skills-first-spec-deltas.md
+C19-005,C19,Add mcp live-systems spec deltas,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/005-add-MCP-live-systems-spec-deltas.md
+C19-006,C19,Add documentation-truth spec deltas,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/006-add-documentation-truth-spec-deltas.md
+C19-007,C19,Add config-transaction spec deltas,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/007-add-config-transaction-spec-deltas.md
+C19-008,C19,Add harness-registry spec deltas,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/008-add-harness-registry-spec-deltas.md
+C19-009,C19,Add ui/ux automation spec deltas,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/009-add-UI/UX-automation-spec-deltas.md
+C19-010,C19,Validate openspec in ci,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/010-validate-OpenSpec-in-CI.md
+C19-011,C19,Archive completed change protocol,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/011-archive-completed-change-protocol.md
+C19-012,C19,Openspec docs ux integration,openspec-governance,C10-002,C19,M,medium,2,openspec-validate;docs-truth,planning/artifacts/openspec/012-OpenSpec-docs-UX-integration.md

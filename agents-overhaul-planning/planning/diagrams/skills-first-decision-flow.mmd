@@ -1,0 +1,8 @@
+flowchart TD
+  A[Need a capability] --> B{Can it be reusable instructions/resources/scripts?}
+  B -- yes --> C[Create or curate Agent Skill]
+  B -- no --> D{Harness-native plugin better?}
+  D -- yes --> E[Use plugin/extension]
+  D -- no --> F{Requires live external state?}
+  F -- yes --> G[Use MCP with promotion gates]
+  F -- no --> H[Use canonical instructions/internal helper]

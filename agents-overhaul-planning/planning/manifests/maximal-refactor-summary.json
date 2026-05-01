@@ -1,0 +1,18 @@
+{
+  "generated_at": "2026-05-01T07:19:13Z",
+  "base_zip": "agents-overhaul-planning-docs-refactored.zip",
+  "new_or_refactored_focus": [
+    "progressive disclosure docs",
+    "source ledger",
+    "repo drift ledger",
+    "skills-first audit",
+    "MCP audit",
+    "plugin ecosystem",
+    "docs/instructions truth",
+    "UI/UX CLI flows",
+    "expanded task graph"
+  ],
+  "total_files": 213,
+  "task_count": 482,
+  "new_task_count": 177
+}
