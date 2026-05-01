@@ -1,7 +1,7 @@
 # Tasks
 
-- [ ] Create phased rollout plan.
-- [ ] Create migration guide.
-- [ ] Create rollback playbook.
-- [ ] Create release checklist.
-- [ ] Create OpenSpec archive checklist.
+- [x] Create phased rollout plan.
+- [x] Create migration guide.
+- [x] Create rollback playbook.
+- [x] Create release checklist.
+- [x] Create OpenSpec archive checklist.
