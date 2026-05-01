@@ -81,25 +81,27 @@ Required coverage:
 - Experimental harnesses clearly labeled and never presented as validated.
 - UX groups surfaces by user intent: coding harness, desktop app, web/cloud agent, terminal CLI, plugin/extension, MCP/live state.
 
-## Per-Harness Required Additions
+## Original Per-Harness Gap Closure Requirements
 
-| Harness Surface | Missing Plan Detail | Required Addition |
+These were the planning gaps closed by the archived harness registry control-plane artifacts. Current follow-up work is runtime fixture validation, tracked below.
+
+| Harness Surface | Original Gap | Archived Closure Artifact |
 |---|---|---|
-| Claude Code | Plugin, skills, hooks, MCP, OpenSpec artifacts are present but need unified fixture contract. | Add Claude Code fixture matrix and rollback note. |
-| Claude Desktop | Desktop MCP merge exists but support is not separated from Claude Code. | Add Claude Desktop MCP-first fragment and no-skill-projection caveat. |
-| ChatGPT | App/desktop/MCP connector behavior is under-specified. | Add ChatGPT connector/app surface research checklist and Apps SDK boundary. |
-| Codex | Plugin and config surfaces exist; ChatGPT relation needs boundary. | Split Codex plugin/config from ChatGPT app/connector support. |
-| Copilot Web | Web/coding-agent surface needs no-fabricated-skills caveat. | Add support-tier caveats and prompt/instruction fixture. |
-| Copilot CLI | CLI config and skills/MCP behavior need separate verification. | Add CLI-specific config/MCP fixture and blind spots. |
-| OpenCode | Strong surface coverage but plugin/DCP/model-neutral rules need central fixture. | Add OpenCode policy fixture and plugin placement tests. |
-| Gemini CLI | Needs explicit bridge from `GEMINI.md` and generated artifacts. | Add Gemini projection fragment and OpenSpec wrapper fixture. |
-| Antigravity | Needs first-party-vs-repo-observed separation. | Add Antigravity caveat fragment and docs/source requirement. |
-| Cursor Editor | Needs explicit editor rules/skills/MCP fixture. | Add Cursor Editor fragment. |
-| Cursor Agent Web | Currently blind-spot. | Add planned-research-backed fragment, no install claims. |
-| Cursor Agent CLI | Currently blind-spot. | Add planned-research-backed fragment, no install claims. |
-| Perplexity Desktop | Requested but unverified. | Add experimental fragment and docs/source lookup task. |
-| Cherry Studio | Config/import surfaces exist but not planned in detail. | Add experimental MCP import/export fragment. |
-| Crush | Present in sync manifest and bundle but not user-highlighted. | Decide retain, experimental, or unsupported in registry core. |
+| Claude Code | Plugin, skills, hooks, MCP, OpenSpec artifacts were present but needed a unified fixture contract. | Claude Code fixture matrix and rollback note. |
+| Claude Desktop | Desktop MCP merge existed but support was not separated from Claude Code. | Claude Desktop MCP-first fragment and no-skill-projection caveat. |
+| ChatGPT | App/desktop/MCP connector behavior was under-specified. | ChatGPT connector/app surface research checklist and Apps SDK boundary. |
+| Codex | Plugin and config surfaces existed; ChatGPT relation needed a boundary. | Codex plugin/config split from ChatGPT app/connector support. |
+| Copilot Web | Web/coding-agent surface needed a no-fabricated-skills caveat. | Support-tier caveats and prompt/instruction fixture. |
+| Copilot CLI | CLI config and skills/MCP behavior needed separate verification. | CLI-specific config/MCP fixture and blind spots. |
+| OpenCode | Strong surface coverage existed, but plugin/DCP/model-neutral rules needed a central fixture. | OpenCode policy fixture and plugin placement tests. |
+| Gemini CLI | Explicit bridge from `GEMINI.md` and generated artifacts was needed. | Gemini projection fragment and OpenSpec wrapper fixture. |
+| Antigravity | First-party-vs-repo-observed separation was needed. | Antigravity caveat fragment and docs/source requirement. |
+| Cursor Editor | Explicit editor rules/skills/MCP fixture was needed. | Cursor Editor fragment. |
+| Cursor Agent Web | Surface was a blind spot. | Planned-research-backed fragment with no install claims. |
+| Cursor Agent CLI | Surface was a blind spot. | Planned-research-backed fragment with no install claims. |
+| Perplexity Desktop | Requested but unverified. | Experimental fragment and docs/source lookup task. |
+| Cherry Studio | Config/import surfaces existed but were not planned in detail. | Experimental MCP import/export fragment. |
+| Crush | Present in sync manifest and bundle but not user-highlighted. | Retain/experimental/unsupported decision in registry core. |
 
 ## Plan Gaps Now Filled By Markdown Artifacts
 

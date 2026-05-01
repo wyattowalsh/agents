@@ -30,7 +30,7 @@ source_count: 16
 | Sync rollback completeness | Gap | Sync transaction safety is documented but full rollback coverage is not proven for every path. | Use [[sync-transaction-safety]] and run targeted tests before claiming rollback guarantees. |
 | Harness fixture coverage | Gap | Fixture/support-tier coverage is not proven for every harness projection. | Use [[harness-fixture-gaps]] before changing sync support tiers. |
 | Planning ledger freshness | Partial | Planning manifests record drift and fixture requirements, but they are snapshots and do not prove the current worktree or live config still matches. | Re-run targeted distribution metadata tests before promoting planning claims into support guarantees. |
-| OpenSpec changes task-complete but not archived | Gap | Active change tasks may be checked, but archive readiness still needs validation/status evidence and archive checklist closure. | Use [[openspec-change-archive-status]] before any archive or release-readiness claim. |
+| OpenSpec archive state can drift from task state | Gap | Active change tasks may be checked before archive readiness evidence and archive execution are complete. | Use [[openspec-change-archive-status]] before any archive or release-readiness claim. |
 | Risk-adjusted skill eval adequacy | Gap | Eval presence is uneven, and some higher-risk integration skills lack eval coverage by current research. | Use [[skill-catalog-risk-and-eval-coverage]] before treating eval counts as sufficient. |
 | Agent publication drift | Gap | Bundle metadata, generated docs, plugin manifests, docs artifact registry, and platform-specific agent corpora do not fully agree. | Use [[agent-publication-and-drift-coverage]] before changing agent publication behavior. |
 
@@ -42,7 +42,7 @@ source_count: 16
 4. Expand harness fixtures/support-tier validation before changing projection ownership or generated config behavior.
 5. Re-run README/docs freshness checks before making public docs claims, and add a docs generation check mode if docs freshness becomes release-blocking.
 6. Keep [[planning-corpus-and-drift-ledgers]] updated when sync manifests, harness fixtures, or drift ledgers change.
-7. Decide whether OpenSpec task-complete changes should be archived only after checklist evidence and validation/status commands pass.
+7. Archive OpenSpec task-complete changes only after checklist evidence and validation/status commands pass.
 8. Add eval coverage for higher-risk skills before raising confidence in risk-adjusted coverage.
 
 ## Evidence
@@ -56,7 +56,7 @@ source_count: 16
 | External upstream docs are captured as contextual source notes, not authoritative repo policy. | `kb/raw/sources/external-agent-skill-docs.md`; `kb/raw/sources/external-harness-docs.md`; `kb/raw/sources/external-tooling-docs.md`; `kb/raw/sources/external-obsidian-markdown-docs.md` | external source notes | Context-only. |
 | Sync rollback, generated-surface ownership, and harness fixture coverage remain explicit gaps. | `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/tests-and-validation.md`; `kb/raw/sources/opencode-policy-and-runtime-plugins.md` | raw source notes | Follow-up queue. |
 | Planning manifests capture sync inventory, drift state, fixture blockers, and support promotion constraints. | `kb/raw/sources/planning-corpus-drift-source.md` | raw source note | Snapshot evidence, not a live support guarantee. |
-| Active OpenSpec changes require archive-readiness evidence beyond checked task boxes. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Validation not rerun in this batch. |
+| Active OpenSpec changes require archive-readiness evidence beyond checked task boxes before archive execution. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Agents-platform archive completed later in `841b9b1`. |
 | Agent publication drift spans bundle metadata, generated docs, plugin manifests, and platform-specific agent corpora. | `kb/raw/sources/agent-publication-drift-coverage.md` | raw source note | Drift map. |
 | Skill eval coverage should be interpreted relative to skill risk. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Eval adequacy gap. |
 | Docs artifact freshness includes registry coverage gaps and stale hand-maintained derived counts. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | Docs health remains partial. |

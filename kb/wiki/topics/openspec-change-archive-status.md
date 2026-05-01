@@ -21,17 +21,17 @@ This page captures the observed active-change/archive-readiness state. It is not
 
 ## Summary
 
-The active OpenSpec change set appears task-complete but not archived. Read-only research found active change task files with checked task boxes and no archive directory in common archive locations, while the release archive checklist still records required evidence before archive readiness can be claimed.
+The agents-platform OpenSpec change set was archived in `841b9b1 docs(openspec): archive agents platform overhaul`. The completed `agents-*` child changes and parent `agents-platform-overhaul` now live under `openspec/changes/archive/2026-05-01-*`, and their durable requirements were synced into `openspec/specs/*`.
 
-Treat task-complete, validation-passing, and archive-ready as separate states. A future archive pass should rerun OpenSpec validation/status commands and confirm the worktree state before moving or archiving change material.
+Treat task-complete, validation-passing, archive-ready, and archived as separate states. A future archive pass should rerun OpenSpec validation/status commands and confirm the worktree state before moving or archiving change material.
 
 ## Evidence
 
 | Claim | Source | Type | Notes |
 |-------|--------|------|-------|
-| Active OpenSpec changes remain present under `openspec/changes/`. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Pointer summary of active change inventory. |
-| Task-complete does not equal archive-ready. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Release archive and planning checklist evidence. |
-| Wrapper code and tests define local OpenSpec CLI integration, but validation was not rerun in this KB batch. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Confidence boundary. |
+| Agents-platform changes are archived under `openspec/changes/archive/2026-05-01-*`. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Current archive inventory after `841b9b1`. |
+| Task-complete does not equal archive-ready or archived. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Preserved workflow distinction for future changes. |
+| Wrapper code and tests define local OpenSpec CLI integration. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Validation should still be rerun for each future archive pass. |
 
 ## Related
 

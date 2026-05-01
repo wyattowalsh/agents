@@ -2,7 +2,9 @@
 
 This directory contains child-agent execution prompts for the agents platform overhaul.
 
-## Global Rules
+> Historical snapshot: the agents-platform overhaul changes were archived in `841b9b1`. Do not execute or continue these dispatches. Treat every child prompt in this directory as execution evidence, not active instructions. For current state, use durable specs under `openspec/specs/` and archived change records under `openspec/changes/archive/2026-05-01-*`.
+
+## Historical Global Rules Captured In Snapshot
 
 - Parent OpenSpec change: `agents-platform-overhaul`.
 - Child agents must edit only their allowed paths.
