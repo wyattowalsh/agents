@@ -15,7 +15,7 @@ This release note records the completed planning and control-plane waves for the
 | `fa20686` | Wave 2 planning lanes. |
 | `9ac8ab5` | Release/archive readiness lane. |
 
-These six commits were the original planning/control-plane wave range. Additional readiness and archive evidence landed after `9ac8ab5`; use `git log --oneline 9ac8ab5..HEAD` during release review to identify the exact final evidence commits.
+These six commits were the original planning/control-plane wave range. Additional readiness and archive evidence landed after `9ac8ab5`; do not use a broad range from `9ac8ab5` to the current `HEAD` as release evidence because unrelated commits also landed before archive execution.
 
 ## Final Evidence
 
@@ -23,8 +23,10 @@ These six commits were the original planning/control-plane wave range. Additiona
 | --- | --- |
 | C00/C01 required OpenSpec artifacts | Added as readiness evidence after baseline C09 readiness. |
 | Release-note evidence | Added as readiness evidence after baseline C09 readiness. |
-| Final rollback range | Use reverse `git log` order for the committed archive/readiness evidence after `9ac8ab5`. |
-| OpenSpec archive | Applied through `uv run wagents openspec archive <change> --yes --apply` for all `agents-*` child changes and parent `agents-platform-overhaul`. |
+| Final readiness evidence commit | `6e29385 docs(openspec): complete platform readiness evidence`. |
+| Archive execution commit | `841b9b1 docs(openspec): archive agents platform overhaul`. |
+| Final rollback evidence | Revert `841b9b1` before `6e29385` when rolling back archive/readiness evidence; unrelated commits between `9ac8ab5` and `841b9b1` are not part of this release evidence set. |
+| OpenSpec archive | Applied in `841b9b1` through `uv run wagents openspec archive <change> --yes --apply` for all `agents-*` child changes and parent `agents-platform-overhaul`. |
 
 ## Child Change Coverage
 

@@ -39,7 +39,7 @@ Use OpenSpec for non-trivial changes to public asset formats, downstream agent t
 
 ## Active Change And Archive Readiness
 
-Task-complete, validation-passing, and archive-ready are separate states. Read-only research found active OpenSpec change files with checked task boxes, but archive readiness still depends on validation/status evidence and the release archive checklist. Use [[openspec-change-archive-status]] before claiming active changes are ready to archive or release.
+Task-complete, validation-passing, archive-ready, and archived are separate states. The agents-platform overhaul demonstrates the full progression: checked task boxes and passing validation came first, then the archive gate, then `841b9b1` moved completed changes to `openspec/changes/archive/2026-05-01-*` and synced durable specs. Use [[openspec-change-archive-status]] before claiming active changes are ready to archive or release.
 
 ## Related Pages
 
@@ -60,4 +60,4 @@ Task-complete, validation-passing, and archive-ready are separate states. Read-o
 | OpenSpec wrapper commands should use `uv run wagents openspec ...` for automation. | `kb/raw/sources/openspec-config.md` | raw source note | Derived from OpenSpec config. |
 | Generated public surfaces include README and docs catalog pages. | `kb/raw/sources/openspec-config.md` | raw source note | Derived from OpenSpec config. |
 | `wagents` implements OpenSpec wrapper command families alongside docs, package, hooks, and eval commands. | `kb/raw/sources/wagents-internals.md` | raw source note | CLI implementation source. |
-| Active-change archive readiness is distinct from checked task boxes. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Archive status evidence. |
+| Active-change archive readiness is distinct from checked task boxes and from completed archive execution. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Archive status evidence. |
