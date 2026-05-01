@@ -23,3 +23,9 @@ The repository SHALL keep repo-managed OpenCode runtime plugin specs in `opencod
 - **WHEN** an OpenCode telemetry plugin needs credential values
 - **THEN** repo-managed configuration SHALL document the required environment variable names without committing credential values
 - **AND** startup validation SHALL distinguish missing user credentials from plugin load failures.
+
+#### Scenario: Configuring OpenCode plan-review plugins
+
+- **WHEN** the repo-managed OpenCode config includes a plugin that exposes a `submit_plan` tool
+- **THEN** the plugin SHALL be configured so only the built-in `plan` agent sees the tool by default
+- **AND** validation SHALL assert deprecated broader plan-review plugins are absent from repo `opencode.json`.

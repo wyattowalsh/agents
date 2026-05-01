@@ -23,7 +23,15 @@
     "opencode-handoff@latest",
     "opencode-agent-skills@latest",
     "@devtheops/opencode-plugin-otel@latest",
-    "open-plan-annotator@latest",
+    [
+      "@plannotator/opencode@latest",
+      {
+        "workflow": "plan-agent",
+        "planningAgents": [
+          "plan"
+        ]
+      }
+    ],
     "@simonwjackson/opencode-direnv@latest",
     "opencode-background-agents@latest",
     "opencode-notify@latest",

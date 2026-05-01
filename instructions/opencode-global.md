@@ -40,6 +40,12 @@ CodeMCP workflow plugins are intentionally deferred. Do not add `@codemcp/workfl
 
 Treat missing Langfuse environment variables as setup warnings unless OpenCode reports a plugin load failure. Keep `@devtheops/opencode-plugin-otel@latest` until startup validation proves a concrete conflict.
 
+### Plan Review Plugin
+
+Use `@plannotator/opencode@latest` for OpenCode plan review and keep it scoped to the built-in `plan` agent with `workflow: "plan-agent"` and `planningAgents: ["plan"]`. This keeps `submit_plan` out of build/default agents while preserving visual plan annotation.
+
+Do not re-add `open-plan-annotator@latest` by default. It injects a broader plan workflow and is no longer the preferred repo-managed plan review plugin for this machine.
+
 ### Chrome DevTools MCP Auth Flows
 
 For OpenCode on this machine, prefer the local wrapper-based Chrome DevTools MCP launch instead of the generic shared repo default when Google sign-in or other sign-in-sensitive flows need a stable attached browser.

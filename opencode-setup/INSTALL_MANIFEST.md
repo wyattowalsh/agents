@@ -20,7 +20,7 @@ The active runtime npm plugin list is configured as `@latest` in `~/.config/open
 8. `opencode-handoff@latest`
 9. `opencode-agent-skills@latest`
 10. `@devtheops/opencode-plugin-otel@latest`
-11. `open-plan-annotator@latest`
+11. `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
 12. `@simonwjackson/opencode-direnv@latest`
 13. `opencode-background-agents@latest`
 14. `opencode-notify@latest`
@@ -36,6 +36,8 @@ Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale ins
 
 `opencode-shell-strategy` was removed from the requested inventory because npm returned 404 for that package and OpenCode logged `failed to resolve plugin server entry` for its empty cache directory. Re-add it only if a valid install source is confirmed.
 
+`open-plan-annotator@latest` was replaced by `@plannotator/opencode@latest` because Plannotator's default plan-agent workflow scopes `submit_plan` to planning agents instead of exposing the older broader plan workflow to primary execution agents.
+
 ## TUI Plugin Inventory
 
 TUI-only plugins belong in `~/.config/opencode/tui.json`, not in the repo runtime mirror, unless a repo-managed TUI source file is introduced:
@@ -50,6 +52,7 @@ Preserve `notification_method: "auto"` in `~/.config/opencode/tui.json` so OpenC
 - `opencode-scheduler@latest` is installed but intentionally has no scheduled jobs configured. Create jobs only on explicit request, prefer read-only jobs first, set `timeoutSeconds`, and inspect scheduler `job_logs` before trusting recurring automation.
 - `opencode-claude-auth@latest` can reuse Claude Code credentials. Claude Code must be authenticated first; prefer macOS Keychain-backed credentials and use redacted debug logs only. Do not enable optional 1M context or model/runtime overrides by default.
 - `opencode-plugin-langfuse@latest` requires OpenTelemetry and user-owned environment variables. The config enables `experimental.openTelemetry`; do not commit credential values. Required keys are `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY`; `LANGFUSE_BASEURL` is optional.
+- `@plannotator/opencode@latest` must stay configured as `workflow: "plan-agent"` with `planningAgents: ["plan"]`; use `manual` mode only if the user wants command-only reviews.
 
 ## Deferred UI And Control Plugins
 

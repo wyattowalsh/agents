@@ -12,7 +12,7 @@ These remain declared in `../opencode.json` and are expected to auto-install whe
 | Plugin | Version | Purpose |
 |--------|---------|---------|
 | `opencode-handoff` | `^0.5.0` | Cross-session context transfer via `/handoff` |
-| `open-plan-annotator` | `^1.3.0` | Browser-based plan annotation UI |
+| `@plannotator/opencode` | `@latest` | Browser-based plan annotation UI scoped to the `plan` agent |
 | `@mailshieldai/opencode-canvas` | `^0.1.2` | Interactive terminal canvases in tmux panes |
 | `@slkiser/opencode-quota` | `^3.3.0` | Real-time token quota tracking |
 

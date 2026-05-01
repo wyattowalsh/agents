@@ -6,6 +6,7 @@
 | Distribution tests | `uv run pytest tests/test_distribution_metadata.py` | Pass | Covers runtime plugin inventory and TUI-only exclusion rules. |
 | Agent assets | `uv run wagents validate` | Pass | Ensures changed instructions/docs did not break asset validation. |
 | OpenSpec | `uv run wagents openspec validate` | Pass | Ensures this change is structurally valid. |
+| README | `uv run wagents readme --check` | Pass | Ensures generated README reflects the distribution text source. |
 | Whitespace | `git diff --check` | Pass | Catches trailing whitespace and patch issues. |
 | OpenCode startup | `opencode --print-logs --log-level DEBUG models anthropic` | No plugin load failures | Langfuse env warnings may be expected if keys are unset. |
 
@@ -17,3 +18,4 @@
 
 - Do not create scheduler jobs during validation.
 - Do not add CodeMCP workflow plugins or run broad CodeMCP setup unless the user explicitly re-approves local workflow-state artifacts.
+- Do not run the Plannotator install script unless the user explicitly wants slash-command installation beyond npm plugin loading.

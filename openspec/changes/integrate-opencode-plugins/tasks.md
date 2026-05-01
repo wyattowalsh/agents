@@ -4,6 +4,7 @@
 
 - [x] Add OpenSpec artifacts for this change.
 - [x] Add requested runtime plugins to repo and live OpenCode runtime configs.
+- [x] Replace OpenCode plan review with Plannotator scoped to the `plan` agent.
 - [x] Add requested TUI plugins to live TUI config only.
 - [x] Enable OpenTelemetry support needed by Langfuse without committing credentials.
 
@@ -17,4 +18,5 @@
 ## Verification
 
 - [x] Update distribution metadata tests for runtime plugin presence and TUI-only exclusions.
+- [x] Update distribution metadata tests for plan-review plugin scope and deprecated plugin exclusion.
 - [x] Run the validation matrix commands.
