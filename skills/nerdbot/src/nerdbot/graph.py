@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
+from itertools import groupby
 from pathlib import Path, PurePosixPath
 
 from nerdbot.contracts import GRAPH_EDGE_FIELDS
@@ -69,6 +70,32 @@ def split_obsidian_reference(value: str) -> str:
     return target.strip()
 
 
+def markdown_code(value: object) -> str:
+    """Render untrusted graph values as Markdown code spans."""
+    text = value if isinstance(value, str) else repr(value)
+    longest = max((len("".join(group)) for char, group in groupby(text) if char == "`"), default=0)
+    fence = "`" * (longest + 1)
+    return f"{fence}{text}{fence}"
+
+
+def normalize_relative_target(source_path: str, target: str) -> str:
+    """Normalize a relative markdown link target against the source document."""
+    path_part, *suffix = target.split("#", 1)
+    if not path_part or path_part.startswith("/"):
+        return target
+    parts: list[str] = []
+    for part in (PurePosixPath(source_path).parent / path_part).parts:
+        if part in {"", "."}:
+            continue
+        if part == "..":
+            if parts:
+                parts.pop()
+            continue
+        parts.append(part)
+    normalized = PurePosixPath(*parts).as_posix() if parts else path_part
+    return normalized + (f"#{suffix[0]}" if suffix else "")
+
+
 def parse_obsidian_reference(value: str, *, embedded: bool = False) -> ObsidianReference:
     """Parse Obsidian link syntax while preserving alias, heading, and block refs."""
     if "|" in value:
@@ -112,7 +139,14 @@ def extract_edges(source_path: str, text: str) -> list[GraphEdge]:
     for target in MARKDOWN_LINK_PATTERN.findall(text):
         cleaned = target.strip()
         if cleaned and not re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", cleaned):
-            edges.append(GraphEdge(source=source_path, target=cleaned, edge_type="links_to", evidence_path=source_path))
+            edges.append(
+                GraphEdge(
+                    source=source_path,
+                    target=normalize_relative_target(source_path, cleaned),
+                    edge_type="links_to",
+                    evidence_path=source_path,
+                )
+            )
     return edges
 
 
@@ -254,7 +288,9 @@ def build_graph(root: Path, *, include_unlayered: bool = False) -> GraphBuildRes
         sorted(
             page
             for page in source_pages
-            if inbound.get(page, 0) == 0 and inbound.get(PurePosixPath(page).with_suffix("").as_posix(), 0) == 0
+            if inbound.get(page, 0) == 0
+            and inbound.get(PurePosixPath(page).with_suffix("").as_posix(), 0) == 0
+            and inbound.get(PurePosixPath(page).stem, 0) == 0
         )
     )
     edge_counts = Counter(edge.edge_type for edge in edges)
@@ -288,15 +324,15 @@ def render_graph_report(result: GraphBuildResult) -> str:
     """Render a human-readable graph analytics report."""
     lines = ["# Nerdbot Graph Report", "", "## Metrics"]
     for key, value in result.metrics.items():
-        lines.append(f"- {key}: {value}")
+        lines.append(f"- {markdown_code(key)}: {markdown_code(value)}")
     lines.extend(["", "## Broken Targets"])
     if result.broken_targets:
-        lines.extend(f"- {target}" for target in result.broken_targets)
+        lines.extend(f"- {markdown_code(target)}" for target in result.broken_targets)
     else:
         lines.append("- none")
     lines.extend(["", "## Orphan Pages"])
     if result.orphan_pages:
-        lines.extend(f"- {path}" for path in result.orphan_pages)
+        lines.extend(f"- {markdown_code(path)}" for path in result.orphan_pages)
     else:
         lines.append("- none")
     return "\n".join(lines) + "\n"

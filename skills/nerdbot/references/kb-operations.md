@@ -50,9 +50,9 @@ Use Create when the KB does not exist yet or when the safe path is to add a new 
 Use Ingest when evidence already exists and the KB needs trustworthy `raw` capture.
 
 ### Ingest checklist
-- [ ] Copy the original into `raw/sources/`.
+- [ ] Copy the original into `raw/sources/` only when the source is vault-contained, non-secret-looking, non-symlinked, readable, and within copy-size limits.
 - [ ] Route downloaded or clipped local assets into `raw/assets/` when they materially support the source.
-- [ ] For sources over `50 MB`, prefer a `raw/` pointer/stub that records checksum, size, original location or URI, and import notes when vendoring the binary is impractical.
+- [ ] For outside-root, symlinked, secret-looking, unreadable, or over-`50 MB` sources, prefer a `raw/` pointer/stub that records checksum, size, original location or URI, and import notes when available.
 - [ ] Add supporting captures or extracts in `raw/captures/` or `raw/extracts/` without modifying the original.
 - [ ] Create or refresh a source summary page.
 - [ ] Add or update the matching row in `indexes/source-map.md`.

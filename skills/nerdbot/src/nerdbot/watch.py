@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
@@ -102,8 +103,15 @@ def classify_watch_events(events: Iterable[tuple[str, str]], *, stable_paths: se
 
 def review_item_for_watch_event(decision: WatchEventDecision) -> ReviewItem:
     """Convert a queued/quarantined watch decision into a review item."""
+    digest = hashlib.sha256(
+        json.dumps(
+            [decision.path, decision.event_type, decision.action],
+            ensure_ascii=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()[:12]
     return ReviewItem(
-        item_id=f"watch-{abs(hash((decision.path, decision.event_type, decision.action))) % 10_000_000}",
+        item_id=f"watch-{digest}",
         mode="audit",
         target=decision.path,
         risk=decision.risk,

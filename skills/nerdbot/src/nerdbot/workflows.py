@@ -149,7 +149,12 @@ def build_ingest_result(args: Any) -> tuple[int, dict[str, object]]:
     plan = (
         plan_text_source("inline:text", args.text, capture_method=args.capture_method)
         if args.text is not None
-        else plan_local_file_source(Path(args.source), vault_root=root, max_copy_bytes=args.max_copy_bytes)
+        else plan_local_file_source(
+            Path(args.source),
+            vault_root=root,
+            max_copy_bytes=args.max_copy_bytes,
+            copy_outside_root=args.copy_outside_root,
+        )
     )
     rel_paths = [plan.record.raw_path, "indexes/source-map.md"]
     operation = operation_preview(

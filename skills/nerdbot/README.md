@@ -2,7 +2,7 @@
 
 Nerdbot creates, audits, queries, and maintains Obsidian-native, git-friendly knowledge bases with separated evidence and synthesis layers.
 
-The current package keeps the original helper scripts available while adding an installable CLI surface, structured contract modules, review queues, dependency-light lexical retrieval, SQLite FTS5/BM25 retrieval, Markdown/Obsidian graph extraction, generated graph artifacts, safe source capture, and watch/replay policy helpers. Full acquisition adapters and optional semantic/VLM parsing remain planned lanes unless a later implementation and tests add them.
+The current package keeps the original helper scripts available while adding an installable CLI surface, structured contract modules, review queues, dependency-light lexical retrieval, SQLite FTS5/BM25 retrieval, Markdown/Obsidian graph extraction, generated graph artifacts, safe source capture with pointer-stub guardrails, and watch/replay policy helpers. Full acquisition adapters and optional semantic/VLM parsing remain planned lanes unless a later implementation and tests add them.
 
 ## Core Contract
 
@@ -54,15 +54,17 @@ uv run --project skills/nerdbot nerdbot plan --mode ingest --target ./incoming/s
 
 Safe/read-only commands include `bootstrap --dry-run`, `inventory`, `lint`, `modes`, `plan`, `audit`, `query`, `replay`, and `watch-classify`. Mutating workflow commands stay dry-run until `--apply`; migration apply also requires `--approval-token APPROVE-MIGRATION` and still writes only an additive migration plan.
 
+Local-file ingest copies only vault-contained, non-secret-looking files by default. External files, symlinks, oversized files, unreadable files, and secret-looking paths are represented as pointer stubs that preserve the original location plus size/checksum metadata when available. Use `--copy-outside-root` only when an outside-vault source has been intentionally reviewed and is safe to vendor into `raw/`.
+
 ## Optional Lanes
 
 Nerdbot keeps advanced dependencies optional so the safe baseline remains fast and local. Implemented generated lanes include SQLite FTS5/BM25 and Markdown/Obsidian graph reports. Planned optional lanes include Crawl4AI, Crawlee, Docling Slim, Granite VLM through the separate `vlm` extra, OpenDataLoader PDF, MarkItDown fallback conversion, and optional local semantic embeddings.
 
 ## Durable Contracts
 
-- `nerdbot.sources` defines source records, deterministic source IDs, checksums, raw paths, and pointer-stub text.
+- `nerdbot.sources` defines source records, deterministic source IDs, checksums, raw paths, outside-root copy gates, and pointer-stub text.
 - `nerdbot.evidence` defines evidence-ledger claims, review-queue items, freshness classes, review statuses, and confidence caps.
 - `nerdbot.operations` defines append-friendly, unique operation journal entries for replayable mutating work.
 - `nerdbot.retrieval` implements dependency-light lexical search and SQLite FTS5/BM25 search across `wiki/` and `indexes/`.
-- `nerdbot.graph` extracts rebuildable graph edges from Markdown links, Obsidian wikilinks, embeds, aliases, and source citations.
+- `nerdbot.graph` extracts rebuildable graph edges from Markdown links, Obsidian wikilinks, embeds, aliases, and source citations, then renders generated reports with untrusted targets quoted as Markdown code.
 - `nerdbot.watch`, `nerdbot.replay`, and `nerdbot.research` provide non-mutating policy helpers for watch classification, dry-run replay, and autoresearcher save-back gates.

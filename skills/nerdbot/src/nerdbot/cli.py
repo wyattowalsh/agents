@@ -68,8 +68,9 @@ def add_common_json_flag(parser: argparse.ArgumentParser) -> None:
 
 def add_dry_run_apply_flags(parser: argparse.ArgumentParser) -> None:
     """Add the shared dry-run/apply approval flags."""
-    parser.add_argument("--apply", action="store_true", help="Apply the planned additive changes")
-    parser.add_argument("--dry-run", action="store_true", help="Preview changes without writing files")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--apply", action="store_true", help="Apply the planned additive changes")
+    group.add_argument("--dry-run", action="store_true", help="Preview changes without writing files")
 
 
 def add_root_flag(parser: argparse.ArgumentParser) -> None:
@@ -139,6 +140,11 @@ def build_parser() -> argparse.ArgumentParser:
     ingest.add_argument("--text", help="Inline text to capture as a source")
     ingest.add_argument("--capture-method", default="local-file", help="Capture method stored in source records")
     ingest.add_argument("--max-copy-bytes", type=int, default=50_000_000, help="Maximum local-file bytes to copy")
+    ingest.add_argument(
+        "--copy-outside-root",
+        action="store_true",
+        help="Intentionally copy a non-secret source from outside --root instead of writing a pointer stub",
+    )
     add_dry_run_apply_flags(ingest)
     add_common_json_flag(ingest)
 

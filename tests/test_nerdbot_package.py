@@ -35,12 +35,12 @@ from nerdbot.contracts import (  # noqa: E402
     WATCH_EVENT_FIELDS,
 )
 from nerdbot.evidence import ClaimRecord, ReviewItem, apply_confidence_cap  # noqa: E402
-from nerdbot.graph import extract_edges  # noqa: E402
+from nerdbot.graph import build_graph, extract_edges, render_graph_report  # noqa: E402
 from nerdbot.replay import dry_run_replay  # noqa: E402
 from nerdbot.research import ResearchJournalEntry, should_ingest_from_research  # noqa: E402
 from nerdbot.retrieval import query_lexical  # noqa: E402
-from nerdbot.sources import build_source_record, pointer_stub_text  # noqa: E402
-from nerdbot.watch import classify_watch_event  # noqa: E402
+from nerdbot.sources import build_source_record, plan_local_file_source, pointer_stub_text  # noqa: E402
+from nerdbot.watch import classify_watch_event, review_item_for_watch_event  # noqa: E402
 
 
 def _venv_executable(venv_dir: Path, name: str) -> Path:
@@ -136,6 +136,21 @@ def test_all_modes_are_available_to_argparse() -> None:
         assert parsed.mode == mode
 
 
+@pytest.mark.parametrize("command", ["create", "ingest", "enrich", "derive", "improve", "migrate"])
+def test_apply_and_dry_run_are_mutually_exclusive(command: str) -> None:
+    parser = build_parser()
+    argv = [command, "--apply", "--dry-run"]
+    if command == "ingest":
+        argv.extend(["--text", "hello"])
+    if command == "enrich":
+        argv.extend(["--target", "raw/sources/a.md"])
+    if command == "migrate":
+        argv.extend(["--target", "wiki/a.md"])
+
+    with pytest.raises(SystemExit):
+        parser.parse_args(argv)
+
+
 def test_cli_error_paths_emit_json_objects(capsys) -> None:  # type: ignore[no-untyped-def]
     exit_code = main(["inventory", "--root", str(NERDBOT_ROOT / "missing-kb"), "--compact"])
 
@@ -198,6 +213,39 @@ def test_source_record_contract_and_pointer_stub() -> None:
     assert "Pointer reason: private source" in stub
 
 
+def test_local_file_source_defaults_external_and_secret_paths_to_pointer_stubs(tmp_path: Path) -> None:
+    vault_root = tmp_path / "kb"
+    vault_root.mkdir()
+    outside = tmp_path / "incoming.md"
+    outside.write_text("outside", encoding="utf-8")
+    secret = vault_root / ".env"
+    secret.write_text("TOKEN=value", encoding="utf-8")
+
+    outside_plan = plan_local_file_source(outside, vault_root=vault_root)
+    copied_plan = plan_local_file_source(outside, vault_root=vault_root, copy_outside_root=True)
+    secret_plan = plan_local_file_source(secret, vault_root=vault_root, copy_outside_root=True)
+
+    assert outside_plan.writes_pointer_stub is True
+    assert outside_plan.record.size_bytes == len("outside")
+    assert outside_plan.record.checksum
+    assert copied_plan.writes_pointer_stub is False
+    assert secret_plan.writes_pointer_stub is True
+    assert secret_plan.pointer_reason == "source path looks secret-bearing"
+
+
+def test_oversized_local_file_pointer_preserves_metadata(tmp_path: Path) -> None:
+    vault_root = tmp_path / "kb"
+    vault_root.mkdir()
+    source = vault_root / "large.md"
+    source.write_text("large source", encoding="utf-8")
+
+    plan = plan_local_file_source(source, vault_root=vault_root, max_copy_bytes=1)
+
+    assert plan.writes_pointer_stub is True
+    assert plan.record.size_bytes == len("large source")
+    assert plan.record.checksum
+
+
 def test_evidence_review_and_confidence_contracts() -> None:
     claim = ClaimRecord(
         claim_id="claim-1",
@@ -239,6 +287,42 @@ def test_retrieval_graph_watch_replay_and_research_contracts(tmp_path: Path) -> 
     assert OPERATION_JOURNAL_PATH == "activity/operations.jsonl"
     assert REVIEW_QUEUE_PATH == "indexes/review-queue.md"
     assert GENERATED_ARTIFACTS["fts_index"].startswith("indexes/generated/")
+
+
+def test_graph_resolves_relative_markdown_and_bare_wikilinks(tmp_path: Path) -> None:
+    (tmp_path / "wiki").mkdir()
+    (tmp_path / "indexes").mkdir()
+    (tmp_path / "wiki" / "index.md").write_text(
+        "# Alpha\n\nSee [[beta]] and [source](../indexes/source-map.md).\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "wiki" / "beta.md").write_text("# Beta\n", encoding="utf-8")
+    (tmp_path / "indexes" / "source-map.md").write_text("# Source Map\n", encoding="utf-8")
+
+    graph = build_graph(tmp_path)
+
+    assert "../indexes/source-map.md" not in graph.broken_targets
+    assert "indexes/source-map.md" not in graph.broken_targets
+    assert "wiki/beta.md" not in graph.orphan_pages
+
+
+def test_graph_report_renders_untrusted_values_as_code(tmp_path: Path) -> None:
+    (tmp_path / "wiki").mkdir()
+    (tmp_path / "wiki" / "index.md").write_text("# Alpha\n\nSee [[<script>alert(1)</script>]].\n", encoding="utf-8")
+
+    report = render_graph_report(build_graph(tmp_path))
+
+    assert "- `<script>alert(1)</script>`" in report
+
+
+def test_watch_review_item_id_is_stable() -> None:
+    decision = classify_watch_event("wiki/index.md", "modified")
+
+    first = review_item_for_watch_event(decision)
+    second = review_item_for_watch_event(decision)
+
+    assert first.item_id == second.item_id
+    assert first.item_id.startswith("watch-")
 
 
 def test_installed_wheel_smoke_exposes_console_and_legacy_scripts(tmp_path: Path) -> None:
