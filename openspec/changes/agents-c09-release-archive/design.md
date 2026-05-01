@@ -13,6 +13,7 @@ The release/archive lane turns completed child-lane planning into a safe release
 | Rollback playbook | Defines non-destructive rollback paths for commits, config transactions, generated artifacts, and archive moves. |
 | Release checklist | Captures pre-release, validation, docs, candidate, and post-merge gates. |
 | Archive checklist | Defines evidence, order, and stop conditions for OpenSpec archive. |
+| Release notes | Records child lane coverage, commit range evidence, validation evidence, exclusions, and known risks. |
 
 ## Safety Boundaries
 
@@ -24,4 +25,4 @@ The release/archive lane turns completed child-lane planning into a safe release
 
 ## Completion Criteria
 
-The lane is complete when all five planning artifacts exist, C09 tasks are checked, OpenSpec validation passes, and a scoped review finds no blockers.
+The lane is complete when all six planning artifacts exist, C09 tasks are checked, OpenSpec validation passes, release evidence is current, and a scoped review finds no blockers.

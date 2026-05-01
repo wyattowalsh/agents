@@ -25,7 +25,7 @@ This checklist gates release readiness for the agents platform overhaul planning
 
 - [ ] Decide whether generated docs are regenerated now or deferred.
 - [ ] If regenerated, review generated docs separately from planning changes.
-- [ ] Ensure release notes list child lanes, commits, validation commands, exclusions, and known risks.
+- [ ] Ensure `planning/95-migration/50-release-notes.md` lists child lanes, commits, validation commands, exclusions, and known risks.
 
 ## Release Candidate
 

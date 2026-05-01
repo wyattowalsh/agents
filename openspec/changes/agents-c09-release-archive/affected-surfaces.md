@@ -7,8 +7,11 @@
 - `planning/95-migration/20-rollback-playbook.md`
 - `planning/95-migration/30-release-checklist.md`
 - `planning/95-migration/40-openspec-archive-checklist.md`
+- `planning/95-migration/50-release-notes.md`
+- `openspec/changes/agents-c09-release-archive/proposal.md`
 - `openspec/changes/agents-c09-release-archive/affected-surfaces.md`
 - `openspec/changes/agents-c09-release-archive/design.md`
+- `openspec/changes/agents-c09-release-archive/specs/release-archive/spec.md`
 - `openspec/changes/agents-c09-release-archive/validation-matrix.md`
 - `openspec/changes/agents-c09-release-archive/tasks.md`
 
