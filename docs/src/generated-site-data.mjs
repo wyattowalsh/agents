@@ -2,7 +2,7 @@
 export const siteData = {
   "counts": {
     "agents": 8,
-    "customSkills": 48,
+    "customSkills": 49,
     "installedSkills": 0,
     "mcpServers": 30
   },
@@ -20,10 +20,22 @@ export const siteData = {
       "title": "Codex Plugin"
     },
     {
+      "badge_text": "native",
+      "badge_variant": "note",
+      "body": "`opencode.json` keeps repo-managed npm plugin specs on `@latest`; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.",
+      "title": "OpenCode Project Config"
+    },
+    {
       "badge_text": "fallback",
       "badge_variant": "success",
       "body": "`npx skills add github:wyattowalsh/agents ...` remains the portable install path for supported agents.",
       "title": "Skills CLI"
+    },
+    {
+      "badge_text": "workflow",
+      "badge_variant": "caution",
+      "body": "`openspec/` and `uv run wagents openspec ...` provide a spec/change workflow plus local materialization of upstream OpenSpec skills and commands for downstream AI tools.",
+      "title": "OpenSpec"
     }
   ],
   "featureCards": [
@@ -64,6 +76,11 @@ export const siteData = {
       "description": "Get multiple expert perspectives in one session when the problem has real trade-offs.",
       "href": "/skills/host-panel/",
       "title": "Host Expert Panels"
+    },
+    {
+      "description": "Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands.",
+      "href": "/skills/openspec-workflow/",
+      "title": "Run Spec Workflows"
     },
     {
       "description": "Build a production-ready FastMCP server with design, testing, and deployment guidance.",
@@ -3431,7 +3448,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/journal-store.cpython-313.pyc",
           "scripts/journal-store.py"
         ],
         "templates": [],
@@ -3498,8 +3514,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/check-env.cpython-313.pyc",
-          "scripts/__pycache__/lint-template.cpython-313.pyc",
           "scripts/check-env.py",
           "scripts/lint-template.py"
         ],
@@ -3733,9 +3747,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/constants.cpython-313.pyc",
-          "scripts/__pycache__/inbox_snapshot.cpython-313.pyc",
-          "scripts/__pycache__/memory.cpython-313.pyc",
           "scripts/constants.py",
           "scripts/inbox_snapshot.py",
           "scripts/memory.py",
@@ -3994,7 +4005,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/scan_frontend.cpython-313.pyc",
           "scripts/scan_frontend.py"
         ],
         "templates": [],
@@ -4081,9 +4091,9 @@ export const siteData = {
       "version": "1.0.0"
     },
     {
-      "argumentHint": "[project|global|both] [claude-code|codex|cursor|gemini-cli|antigravity|github-copilot|opencode|cherry-studio|all ...]",
+      "argumentHint": "[project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|opencode|perplexity-desktop|cherry-studio|all ...]",
       "author": "wyattowalsh",
-      "description": "Audit harness configs and apply fixes. Use when tuning Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents (agent-conventions) or MCP servers (mcp-creator).",
+      "description": "Audit harness configs and apply fixes. Use when tuning Claude Code, Claude Desktop, ChatGPT, Codex, GitHub Copilot Web/CLI, Cursor, Gemini CLI, Antigravity, OpenCode, Perplexity Desktop, or Cherry Studio. NOT for agents (agent-conventions) or MCP servers (mcp-creator).",
       "installCommand": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "installSource": "github:wyattowalsh/agents",
       "installedAgents": [],
@@ -4096,15 +4106,25 @@ export const siteData = {
           "evals/antigravity-project-evidence-boundary.json",
           "evals/apply-approved.json",
           "evals/apply-without-review.json",
+          "evals/chatgpt-global.json",
+          "evals/cherry-studio-global-expanded.json",
+          "evals/claude-desktop-global.json",
+          "evals/cursor-agent-alias.json",
           "evals/cursor-project.json",
           "evals/degraded-docs.json",
           "evals/empty-invocation.json",
+          "evals/evals.json",
+          "evals/github-copilot-aggregate.json",
+          "evals/github-copilot-cli-global.json",
+          "evals/github-copilot-web-project.json",
           "evals/harness-only.json",
           "evals/implicit-trigger.json",
           "evals/install-guidance.json",
           "evals/level-only.json",
           "evals/multi-harness-mixed-order.json",
           "evals/negative-control.json",
+          "evals/perplexity-desktop-both.json",
+          "evals/ui-blind-spots-negative.json",
           "evals/unsupported-harness.json"
         ],
         "headings": [
@@ -4120,6 +4140,7 @@ export const siteData = {
           "Latest-Doc Lookup Policy",
           "Per-Harness Review Contract",
           "Install Guidance Contract",
+          "Validation Contract",
           "Cross-Harness Synthesis Contract",
           "Output Contract",
           "Reference File Index",
@@ -4140,7 +4161,7 @@ export const siteData = {
           "scripts/discover_surfaces.py"
         ],
         "templates": [],
-        "wordCount": 1823
+        "wordCount": 1965
       },
       "license": "MIT",
       "model": "opus",
@@ -4235,11 +4256,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/finding-formatter.cpython-313.pyc",
-          "scripts/__pycache__/learnings-store.cpython-313.pyc",
-          "scripts/__pycache__/project-scanner.cpython-313.pyc",
-          "scripts/__pycache__/review-store.cpython-313.pyc",
-          "scripts/__pycache__/sarif-uploader.cpython-313.pyc",
           "scripts/finding-formatter.py",
           "scripts/learnings-store.py",
           "scripts/project-scanner.py",
@@ -4829,10 +4845,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/kb_bootstrap.cpython-313.pyc",
-          "scripts/__pycache__/kb_inventory.cpython-313.pyc",
-          "scripts/__pycache__/kb_inventory.cpython-314.pyc",
-          "scripts/__pycache__/kb_lint.cpython-313.pyc",
           "scripts/kb_bootstrap.py",
           "scripts/kb_inventory.py",
           "scripts/kb_lint.py"
@@ -4913,6 +4925,45 @@ export const siteData = {
       "useCommand": "/observability-advisor",
       "userInvocable": true,
       "version": "1.0.0"
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "OpenSpec Workflow",
+          "Dispatch",
+          "Quick Path",
+          "When To Use OpenSpec",
+          "Downstream Tooling",
+          "Artifact Order",
+          "Validation Contract"
+        ],
+        "references": [],
+        "resourceLinks": [],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 538
+      },
+      "license": "",
+      "model": "",
+      "name": "openspec-workflow",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/openspec-workflow/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/openspec-workflow/SKILL.md",
+      "title": "Openspec Workflow",
+      "trustTier": "repo",
+      "useCommand": "/openspec-workflow",
+      "userInvocable": true,
+      "version": ""
     },
     {
       "argumentHint": "",
@@ -5224,7 +5275,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/problem-classifier.cpython-313.pyc",
           "scripts/problem-classifier.py"
         ],
         "templates": [],
@@ -5354,11 +5404,6 @@ export const siteData = {
           "https://..."
         ],
         "scripts": [
-          "scripts/__pycache__/finding-formatter.cpython-313.pyc",
-          "scripts/__pycache__/journal-store.cpython-313.pyc",
-          "scripts/__pycache__/research-scanner.cpython-313.pyc",
-          "scripts/__pycache__/source-deduplicator.cpython-313.pyc",
-          "scripts/__pycache__/verify.cpython-313.pyc",
           "scripts/finding-formatter.py",
           "scripts/journal-store.py",
           "scripts/research-scanner.py",
@@ -5753,11 +5798,6 @@ export const siteData = {
         ],
         "resourceLinks": [],
         "scripts": [
-          "scripts/__pycache__/_shared.cpython-313.pyc",
-          "scripts/__pycache__/audit.cpython-313.pyc",
-          "scripts/__pycache__/package.cpython-313.pyc",
-          "scripts/__pycache__/progress.cpython-313.pyc",
-          "scripts/__pycache__/verify.cpython-313.pyc",
           "scripts/_shared.py",
           "scripts/audit.py",
           "scripts/package.py",

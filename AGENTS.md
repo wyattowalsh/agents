@@ -112,16 +112,27 @@ The repository root is the canonical bundle root. Do not duplicate `skills/`, `a
 | Claude Code plugin | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Native Claude Code marketplace/plugin adapter for the repo root |
 | Codex plugin | `.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json` | Native Codex plugin and repo marketplace adapter for the repo root |
 | Skills CLI fallback | `npx skills add github:wyattowalsh/agents ...` | Portable install path for supported agents without native plugin marketplaces |
+| OpenSpec | `openspec/`, `uv run wagents openspec ...` | Spec/change workflow and downstream AI tool artifact materialization |
 
 Plugin manifests intentionally omit fixed `version` fields while this repo is distributed from Git. That lets downstream update checks follow new commits rather than requiring a manifest version bump for every skill edit.
 
-## 2.2 OpenCode DCP Config
+## 2.2 OpenSpec Workflow
+
+OpenSpec is the repository spec/change workflow for non-trivial changes to public asset formats, downstream agent tooling, generated docs, sync behavior, validation behavior, or multiple coordinated surfaces.
+
+- **Tracked source:** Keep durable project state in `openspec/config.yaml`, `openspec/specs/`, `openspec/changes/`, and project-local schemas under `openspec/schemas/`.
+- **AI-readable wrappers:** Prefer `uv run wagents openspec status --change <name> --format json`, `uv run wagents openspec instructions <artifact> --change <name> --format json`, and `uv run wagents openspec validate` for agent automation.
+- **Downstream setup:** Use `uv run wagents openspec init --apply` or `uv run wagents openspec update --apply` to materialize local OpenSpec skills/commands for supported tools.
+- **Generated artifacts:** Do not commit generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts unless a specific artifact is explicitly promoted to repo-owned source.
+- **Telemetry:** Repo wrapper commands set `OPENSPEC_TELEMETRY=0` for automation unless the user opts in.
+
+## 2.3 OpenCode DCP Config
 
 `config/opencode-dcp.jsonc` is the canonical repo source for OpenCode Dynamic Context Pruning. The live global file `~/.config/opencode/dcp.jsonc` is a merged surface managed by OpenCode sync.
 
 Keep OpenCode DCP model-neutral by default. Do not add OpenCode model fields or DCP per-model limit maps (`compress.modelMaxLimits`, `compress.modelMinLimits`) unless the user explicitly requests per-model context limits.
 
-## 2.3 Chrome DevTools MCP
+## 2.4 Chrome DevTools MCP
 
 For repo-managed harness configs, keep the `chrome-devtools` server on the generic headed launch shape:
 
@@ -130,6 +141,12 @@ For repo-managed harness configs, keep the `chrome-devtools` server on the gener
 This is the shared default for managed surfaces in this repository across Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, Antigravity, OpenCode, and other harnesses that consume the normalized MCP registry.
 
 When a specific harness needs a local login-safe override, document that override in the platform-specific instruction layer instead of changing the shared repo default. For OpenCode on this machine, the working override is a local wrapper that starts or reuses a dedicated Chrome DevTools endpoint on `127.0.0.1:9333` and then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`.
+
+## 2.5 OpenCode Project Plugins
+
+`opencode.json` is the canonical repo source for project-level OpenCode configuration. Keep npm plugin entries in its `plugin` array pinned to the moving `@latest` dist-tag rather than semver ranges so OpenCode and Bun resolve the newest published plugin on install refresh.
+
+If OpenCode reports a stale plugin version, refresh the relevant package under `~/.cache/opencode/packages/` with Bun or restart OpenCode to let its automatic plugin installer rebuild the cache. Do not replace `@latest` entries with fixed or ranged versions unless the user explicitly requests a temporary rollback.
 
 ---
 

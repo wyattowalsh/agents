@@ -810,6 +810,20 @@ def test_merge_opencode_config_preserves_safe_dcp_overrides(tmp_path, monkeypatc
     assert "agent" not in payload
 
 
+def test_repo_opencode_dcp_config_uses_proactive_thresholds():
+    payload = json.loads(sync_agent_stack.OPENCODE_DCP_TEMPLATE_PATH.read_text(encoding="utf-8"))
+
+    compress = payload["compress"]
+    assert compress["mode"] == "range"
+    assert compress["maxContextLimit"] == "75%"
+    assert compress["minContextLimit"] == "45%"
+    assert compress["nudgeFrequency"] == 2
+    assert compress["iterationNudgeThreshold"] == 8
+    assert compress["nudgeForce"] == "soft"
+    assert "modelMaxLimits" not in compress
+    assert "modelMinLimits" not in compress
+
+
 def test_deploy_opencode_plugin_copies_file(tmp_path, monkeypatch):
     repo_root = tmp_path / "repo"
     repo_root.mkdir()

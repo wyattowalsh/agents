@@ -68,6 +68,15 @@ audit:                    ## Audit all skill quality scores
 package:                  ## Package all skills (dry-run)
 	uv run wagents package --all --dry-run
 
+openspec-doctor:          ## Diagnose OpenSpec tooling and project state
+	uv run wagents openspec doctor
+
+openspec-validate:        ## Validate OpenSpec specs and changes
+	uv run wagents openspec validate
+
+openspec-update:          ## Print OpenSpec update command for downstream tool artifacts
+	uv run wagents openspec update
+
 readme:                   ## Regenerate README.md
 	uv run wagents readme
 
@@ -80,4 +89,5 @@ help:                     ## Show this help
 .PHONY: install install-agent install-skill list update help \
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
-        validate test lint typecheck audit package readme
+        validate test lint typecheck audit package openspec-doctor \
+        openspec-validate openspec-update readme

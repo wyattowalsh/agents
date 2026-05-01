@@ -100,10 +100,24 @@ DISTRIBUTION_PATHS: tuple[DistributionPath, ...] = (
         "`skills/` and `mcp.json` bundle for Codex.",
     ),
     DistributionPath(
+        "OpenCode Project Config",
+        "native",
+        "note",
+        "`opencode.json` keeps repo-managed npm plugin specs on `@latest`; restart OpenCode "
+        "or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.",
+    ),
+    DistributionPath(
         "Skills CLI",
         "fallback",
         "success",
         f"`npx skills add {REPO_SOURCE} ...` remains the portable install path for supported agents.",
+    ),
+    DistributionPath(
+        "OpenSpec",
+        "workflow",
+        "caution",
+        "`openspec/` and `uv run wagents openspec ...` provide a spec/change workflow plus local "
+        "materialization of upstream OpenSpec skills and commands for downstream AI tools.",
     ),
 )
 
@@ -243,6 +257,11 @@ FEATURED_SKILLS: tuple[FeaturedSkill, ...] = (
         "Host Expert Panels",
         "/skills/host-panel/",
         "Get multiple expert perspectives in one session when the problem has real trade-offs.",
+    ),
+    FeaturedSkill(
+        "Run Spec Workflows",
+        "/skills/openspec-workflow/",
+        "Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands.",
     ),
     FeaturedSkill(
         "Create MCP Servers",
@@ -481,6 +500,8 @@ def _relative_children(skill_dir: Path | None, child_name: str) -> list[str]:
         return []
     items = []
     for path in sorted(p for p in child.rglob("*") if p.is_file()):
+        if "__pycache__" in path.parts or path.suffix == ".pyc" or path.name == ".DS_Store":
+            continue
         try:
             items.append(str(path.relative_to(skill_dir)))
         except ValueError:

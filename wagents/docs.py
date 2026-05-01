@@ -192,6 +192,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     parts.append("")
     parts.append(
         "Install the catalog once, then call a focused specialist inside your agent. "
+        "Use OpenSpec for non-trivial repo changes that need a durable proposal, tasks, and validation trail. "
         "If you want the shortest guided path through setup, start with [Start Here](/start-here/)."
     )
     parts.append("")
@@ -210,6 +211,12 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         "Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, "
         "Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent."
     )
+    parts.append("")
+    parts.append("Check OpenSpec workflow health when a change affects public asset formats or downstream tooling:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("uv run wagents openspec doctor")
+    parts.append("```")
     parts.append("")
     parts.append("## Distribution Paths")
     parts.append("")
@@ -301,6 +308,11 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         ' description="Commands for scaffolding, validation, packaging,'
         ' installation, and docs generation workflows." />'
     )
+    parts.append(
+        '  <LinkCard title="OpenSpec Workflow" href="/skills/openspec-workflow/"'
+        ' description="Use spec/change artifacts and JSON wrappers for non-trivial repo and downstream-tooling'
+        ' changes." />'
+    )
     parts.append("</CardGrid>")
     parts.append("")
     # Supported Agents
@@ -360,7 +372,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     elif has_mcp_overview and not mcps and mcp_config_count:
         parts.append(
             "Most pages in this site are generated from repository assets "
-            "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. "
+            "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`, while OpenSpec state lives in `openspec/`. "
             "Repo workflow and policy truth lives in `AGENTS.md`, the public "
             "README is regenerated with `wagents readme`, the top-level "
             "navigation stays concise, curated onboarding pages stay "
@@ -377,7 +389,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     else:
         parts.append(
             "Most pages in this site are generated from repository assets "
-            "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. "
+            "(`skills/`, `agents/`, `mcp/`) via `wagents docs generate`, while OpenSpec state lives in `openspec/`. "
             "Repo workflow and policy truth lives in `AGENTS.md`, the public "
             "README is regenerated with `wagents readme`, curated onboarding "
             "pages stay hand-maintained, and generated catalogs keep the docs "
@@ -486,6 +498,10 @@ def write_cli_page() -> None:
     parts.append("| `wagents validate` | Check frontmatter, naming, hooks, and related-skill integrity |")
     parts.append("| `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |")
     parts.append("| `wagents readme` | Regenerate `README.md` or fail if it is stale |")
+    parts.append(
+        "| `wagents openspec <subcommand>` | Inspect, validate, and materialize OpenSpec workflows for "
+        "downstream AI tools |"
+    )
     parts.append("| `wagents install` | Install repo skills into supported agent platforms |")
     parts.append("| `wagents update` | Refresh installed skills from their recorded sources |")
     parts.append(
@@ -587,6 +603,44 @@ def write_cli_page() -> None:
         "All asset names must be kebab-case (`^[a-z0-9][a-z0-9-]*$`) "
         "and at most 64 characters. The name must match the directory name "
         "(for skills and MCP servers) or filename (for agents)."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents openspec ---
+    parts.append("### `wagents openspec` -- Spec Workflow Control")
+    parts.append("")
+    parts.append(
+        "Wrap OpenSpec CLI commands with repo defaults, downstream tool mappings, and `OPENSPEC_TELEMETRY=0` "
+        "for automation. Use these wrappers when AI agents need JSON status or instructions."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents openspec doctor")
+    parts.append("wagents openspec init --apply")
+    parts.append("wagents openspec status --change add-feature --format json")
+    parts.append("wagents openspec instructions design --change add-feature --format json")
+    parts.append("wagents openspec validate")
+    parts.append("```")
+    parts.append("")
+    parts.append("**Subcommands:**")
+    parts.append("")
+    parts.append("| Command | Purpose |")
+    parts.append("|---------|---------|")
+    parts.append("| `doctor` | Check Node, npx, OpenSpec project files, generated artifacts, and tool mapping |")
+    parts.append("| `init` | Print or run `openspec init` for repo-supported downstream tools |")
+    parts.append("| `update` | Print or run `openspec update` after CLI/profile changes |")
+    parts.append("| `validate` | Run `openspec validate --all --strict --json` |")
+    parts.append("| `status` | Return artifact state for one change as JSON-compatible output |")
+    parts.append("| `instructions` | Return artifact or apply instructions as JSON-compatible output |")
+    parts.append("| `schemas` | List available OpenSpec schemas |")
+    parts.append("")
+    parts.append('<Aside type="note" title="Generated OpenSpec artifacts">')
+    parts.append(
+        "OpenSpec-generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, "
+        "and `.gemini` artifacts are local/generated unless a specific file is promoted to repo-owned source."
     )
     parts.append("</Aside>")
     parts.append("")

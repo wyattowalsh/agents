@@ -48,7 +48,7 @@ import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
 import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 <div class="stats-bar">
-  <span class="stat stat-skill">48 Custom Skills</span>
+  <span class="stat stat-skill">49 Custom Skills</span>
   <span class="stat stat-external">64 Curated External</span>
   <span class="stat stat-agent">8 Agents</span>
   <span class="stat stat-mcp">30 MCP Tools Configured</span>
@@ -63,13 +63,19 @@ import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 ## Start Here
 
-Install the catalog once, then call a focused specialist inside your agent. If you want the shortest guided path through setup, start with [Start Here](/start-here/).
+Install the catalog once, then call a focused specialist inside your agent. Use OpenSpec for non-trivial repo changes that need a durable proposal, tasks, and validation trail. If you want the shortest guided path through setup, start with [Start Here](/start-here/).
 
 <InstallCommand command={installCommands.all} title="Install the full catalog" note="Globally installs repo skills across supported agent harnesses." />
 
 <InstallCommand command={installCommands.starter} title="Install one starter skill" note="Use this when you want to test the workflow before installing everything." />
 
 Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent.
+
+Check OpenSpec workflow health when a change affects public asset formats or downstream tooling:
+
+```bash
+uv run wagents openspec doctor
+```
 
 ## Distribution Paths
 
@@ -80,8 +86,14 @@ Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gem
   <Card title="Codex Plugin">
     <Badge text="native" variant="note" /> `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same `skills/` and `mcp.json` bundle for Codex.
   </Card>
+  <Card title="OpenCode Project Config">
+    <Badge text="native" variant="note" /> `opencode.json` keeps repo-managed npm plugin specs on `@latest`; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.
+  </Card>
   <Card title="Skills CLI">
     <Badge text="fallback" variant="success" /> `npx skills add github:wyattowalsh/agents ...` remains the portable install path for supported agents.
+  </Card>
+  <Card title="OpenSpec">
+    <Badge text="workflow" variant="caution" /> `openspec/` and `uv run wagents openspec ...` provide a spec/change workflow plus local materialization of upstream OpenSpec skills and commands for downstream AI tools.
   </Card>
 </CardGrid>
 
@@ -147,6 +159,7 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
   <LinkCard title="Enhance Code Reviews" href="/skills/honest-review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
   <LinkCard title="Strategic Decision Analysis" href="/skills/wargame/" description="Pressure-test a product or engineering decision before you commit to it." />
   <LinkCard title="Host Expert Panels" href="/skills/host-panel/" description="Get multiple expert perspectives in one session when the problem has real trade-offs." />
+  <LinkCard title="Run Spec Workflows" href="/skills/openspec-workflow/" description="Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands." />
   <LinkCard title="Create MCP Servers" href="/skills/mcp-creator/" description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />
 </CardGrid>
 
@@ -157,6 +170,7 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
   <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills with install commands, generated detail pages, and convention-skill context." />
   <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 30 configured MCP servers from `mcp.json`, including repo-local and external servers." />
   <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
+  <LinkCard title="OpenSpec Workflow" href="/skills/openspec-workflow/" description="Use spec/change artifacts and JSON wrappers for non-trivial repo and downstream-tooling changes." />
 </CardGrid>
 
 ## Supported Agents
@@ -175,7 +189,7 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
 ## How These Docs Work
 
 <Aside type="note" title="Generated pages, curated framing">
-Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`. Repo workflow and policy truth lives in `AGENTS.md`, the public README is regenerated with `wagents readme`, the top-level navigation stays concise, curated onboarding pages stay hand-maintained, and the MCP overview is currently a hand-maintained summary of 30 servers from `mcp.json`.
+Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`, while OpenSpec state lives in `openspec/`. Repo workflow and policy truth lives in `AGENTS.md`, the public README is regenerated with `wagents readme`, the top-level navigation stays concise, curated onboarding pages stay hand-maintained, and the MCP overview is currently a hand-maintained summary of 30 servers from `mcp.json`.
 </Aside>
 
 ## Resources

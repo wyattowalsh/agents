@@ -63,6 +63,8 @@ class TestWriteIndexPage:
         assert 'title="Start Here"' in text
         assert "npx skills add github:wyattowalsh/agents --all -y -g" in text
         assert "OpenCode" in text
+        assert "OpenSpec Workflow" in text
+        assert "uv run wagents openspec doctor" in text
 
     def test_no_skills_no_featured_section(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -138,6 +140,8 @@ class TestWriteCliPage:
         assert "bundled agents are not published yet" in text
         assert "wagents skills sync --apply" in text
         assert "wagents skills search" in text
+        assert "wagents openspec doctor" in text
+        assert "OPENSPEC_TELEMETRY=0" in text
         assert "On-Demand Skill Index" in text
 
 

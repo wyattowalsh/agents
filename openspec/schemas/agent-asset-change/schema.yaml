@@ -1,0 +1,50 @@
+name: agent-asset-change
+version: 1
+description: Repo workflow for changes to portable agent assets, downstream tooling, docs, and validation.
+artifacts:
+  - id: proposal
+    generates: proposal.md
+    description: Problem, intent, scope, and why OpenSpec is warranted.
+    template: proposal.md
+    instruction: |
+      Create a concise proposal for a repository agent-asset change. Focus on why the change is needed, affected users and tools, scope boundaries, and generated surfaces.
+    requires: []
+  - id: affected-surfaces
+    generates: affected-surfaces.md
+    description: Tracked, generated, and downstream surfaces affected by the change.
+    template: affected-surfaces.md
+    instruction: |
+      Enumerate all source-of-truth files, generated docs, downstream tool artifacts, tests, and validation commands affected by this change.
+    requires:
+      - proposal
+  - id: design
+    generates: design.md
+    description: Technical design and integration approach.
+    template: design.md
+    instruction: |
+      Create the smallest correct implementation design. Reuse existing wagents abstractions and document alternatives rejected.
+    requires:
+      - proposal
+      - affected-surfaces
+  - id: validation-matrix
+    generates: validation-matrix.md
+    description: Verification plan and expected commands.
+    template: validation-matrix.md
+    instruction: |
+      Create a validation matrix that maps each affected surface to commands, expected results, and known blockers.
+    requires:
+      - affected-surfaces
+      - design
+  - id: tasks
+    generates: tasks.md
+    description: Dependency-ordered implementation checklist.
+    template: tasks.md
+    instruction: |
+      Create actionable implementation tasks in dependency order. Mark independent tasks with [P] and include docs-sync and verification tasks.
+    requires:
+      - design
+      - validation-matrix
+apply:
+  requires:
+    - tasks
+  tracks: tasks.md

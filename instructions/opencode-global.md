@@ -16,6 +16,10 @@ When merging live user-owned OpenCode config, preserve existing user model setti
 
 On macOS, ensure `notification_method` is set to `"auto"` in `~/.config/opencode/tui.json` to enable OSC terminal notifications and avoid osascript "Script Editor" popups.
 
+### Plugin Versioning
+
+Repo-managed OpenCode npm plugin specs in `opencode.json` must use `@latest` so OpenCode's Bun-backed installer resolves the newest published plugin during install refreshes. If a plugin warns that an update is available, refresh the matching package under `~/.cache/opencode/packages/` or restart OpenCode; do not pin or range the repo-managed spec unless the user explicitly requests a rollback.
+
 ### Chrome DevTools MCP Auth Flows
 
 For OpenCode on this machine, prefer the local wrapper-based Chrome DevTools MCP launch instead of the generic shared repo default when Google sign-in or other sign-in-sensitive flows need a stable attached browser.

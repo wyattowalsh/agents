@@ -10,7 +10,7 @@ import InstallCommand from '../../components/InstallCommand.astro';
 import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 import { installCommands } from '../../generated-site-data.mjs';
 
-This is the shortest guided path through the repo. Install the catalog, try one skill, then branch into the docs sections that matter for your workflow.
+This is the shortest guided path through the repo. Install the catalog, try one skill, then use OpenSpec when a change needs a durable proposal, task list, and validation trail.
 
 <Aside type="tip" title="What a skill is">
 Skills are portable prompt-and-workflow bundles for coding agents. Install them once, then call them with `/skill-name` inside Claude Code, Gemini CLI, OpenCode, Cursor, GitHub Copilot, Codex, and other [agentskills.io](https://agentskills.io)-compatible agents.
@@ -49,7 +49,23 @@ Run `wagents update` or `npx skills update` after upstream changes to refresh re
   <LinkCard title="frontend-designer" href="/skills/frontend-designer/" description="Use this when the work is user-facing and you need stronger UI implementation decisions." />
 </CardGrid>
 
-## 4. Invoke It Inside Your Agent
+## 4. Use OpenSpec For Non-Trivial Changes
+
+Run the repo wrapper before changing public asset formats, downstream tooling, generated docs, validation behavior, or multiple coordinated surfaces:
+
+```bash
+uv run wagents openspec doctor
+```
+
+To materialize upstream OpenSpec skills and commands for supported downstream tools, run:
+
+```bash
+uv run wagents openspec init --apply
+```
+
+Generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, and `.gemini` OpenSpec artifacts are local/generated unless a specific file is promoted to repo-owned source.
+
+## 5. Invoke It Inside Your Agent
 
 <Steps>
 
@@ -65,17 +81,18 @@ Run `wagents update` or `npx skills update` after upstream changes to refresh re
 
 </Steps>
 
-## 5. Use The Right Docs Path
+## 6. Use The Right Docs Path
 
 <CardGrid>
   <LinkCard title="Skills" href="/skills/" description="Browse the catalog when you know the kind of specialist you need but not the exact skill name." />
+  <LinkCard title="OpenSpec Workflow" href="/skills/openspec-workflow/" description="Use this when repo or downstream-tooling work needs a spec/change workflow." />
   <LinkCard title="CLI Reference" href="/cli/" description="Use the wagents CLI to scaffold assets, validate the repo, package skills, and regenerate docs." />
   <LinkCard title="MCP Overview" href="/mcp/" description="Use this when you need the configured MCP landscape, client sync coverage, or example client snippets." />
   <LinkCard title="GitHub" href="https://github.com/wyattowalsh/agents" description="Use the repo directly when you want the raw source, issues, or contribution flow." />
 </CardGrid>
 
-## 6. Know What Is Generated
+## 7. Know What Is Generated
 
 <Aside type="note" title="Generated vs curated docs">
-Most pages in this site are generated from repository assets via `wagents docs generate`. This page is hand-maintained on purpose so the onboarding path stays short, stable, and easier to refine than the generated catalogs.
+Most pages in this site are generated from repository assets via `wagents docs generate`. OpenSpec project state lives under `openspec/`. This page is hand-maintained on purpose so the onboarding path stays short, stable, and easier to refine than the generated catalogs.
 </Aside>

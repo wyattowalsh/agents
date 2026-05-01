@@ -10,30 +10,33 @@ This manifest records the OpenCode plugin inventory requested for this machine a
 
 The requested npm plugin list is configured as `@latest` in `~/.config/opencode/opencode.json` and mirrored in repo `opencode.json`:
 
-1. `opencode-shell-strategy@latest`
-2. `opencode-antigravity-auth@latest`
-3. `opencode-gemini-auth@latest`
-4. `cc-safety-net@latest`
-5. `opencode-agent-memory@latest`
-6. `envsitter-guard@latest`
-7. `@tarquinen/opencode-dcp@latest`
-8. `@morphllm/opencode-morph-plugin@latest`
-9. `opencode-handoff@latest`
-10. `opencode-agent-skills@latest`
-11. `@devtheops/opencode-plugin-otel@latest`
-12. `open-plan-annotator@latest`
-13. `@simonwjackson/opencode-direnv@latest`
-14. `opencode-background-agents@latest`
-15. `opencode-notify@latest`
-16. `opencode-devcontainers@latest`
-17. `@ramarivera/opencode-model-announcer@latest`
+1. `opencode-antigravity-auth@latest`
+2. `opencode-gemini-auth@latest`
+3. `cc-safety-net@latest`
+4. `opencode-agent-memory@latest`
+5. `envsitter-guard@latest`
+6. `@tarquinen/opencode-dcp@latest`
+7. `@morphllm/opencode-morph-plugin@latest`
+8. `opencode-handoff@latest`
+9. `opencode-agent-skills@latest`
+10. `@devtheops/opencode-plugin-otel@latest`
+11. `open-plan-annotator@latest`
+12. `@simonwjackson/opencode-direnv@latest`
+13. `opencode-background-agents@latest`
+14. `opencode-notify@latest`
+15. `opencode-devcontainers@latest`
+16. `@ramarivera/opencode-model-announcer@latest`
 
 ## Repo-Local Project Plugins
 
 The repo-level `opencode.json` also keeps these existing project plugins because they were already present before the requested inventory was mirrored:
 
-- `@mailshieldai/opencode-canvas@^0.1.2`
-- `@slkiser/opencode-quota@^3.3.0`
+- `@mailshieldai/opencode-canvas@latest`
+- `@slkiser/opencode-quota@latest`
+
+Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale installed plugin, refresh the matching package under `~/.cache/opencode/packages/` with Bun or restart OpenCode so its automatic installer rebuilds the cache.
+
+`opencode-shell-strategy` was removed from the requested inventory because npm returned 404 for that package and OpenCode logged `failed to resolve plugin server entry` for its empty cache directory. Re-add it only if a valid install source is confirmed.
 
 ## Local TypeScript Plugins
 
@@ -72,7 +75,7 @@ cmp -s platforms/opencode/plugins/credential-guard.ts ~/.config/opencode/plugins
 cmp -s config/opencode-dcp.jsonc ~/.config/opencode/dcp.jsonc
 ```
 
-Package registry resolution is not a complete installation check. A public npm lookup on 2026-04-30 failed immediately for `opencode-shell-strategy@latest` with a 404, so that package is configured locally but was not resolvable from the public npm registry by that exact spec during audit.
+Package registry resolution is not a complete installation check, but every npm plugin spec in the active inventory should resolve and have a package entry under `~/.cache/opencode/packages/`.
 
 ## Related Config Paths
 
@@ -80,6 +83,7 @@ Package registry resolution is not a complete installation check. A public npm l
 - Project config mirror: `opencode.json`
 - TUI config: `~/.config/opencode/tui.json`
 - Local plugin files: `~/.config/opencode/plugins/`
+- npm plugin cache: `~/.cache/opencode/packages/`
 - Repo-managed local plugin sources: `platforms/opencode/plugins/`
 - Agent memory data: `~/.config/opencode/memory/`
 - DCP config: `~/.config/opencode/dcp.jsonc`
