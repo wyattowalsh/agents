@@ -180,8 +180,10 @@ def collect_installed_inventory(
         fm, file_meta = _read_skill_metadata(skill_dir)
         lock_meta = lock_sources.get(name) or lock_sources.get(skill_dir.name) or {}
         curated_entry = curated_by_name.get(name)
-        installed_agents = tuple(sorted(_normalize_agents(cast_set(raw["raw_agents"]))))
         discovered_in = tuple(sorted(cast_set(raw["discovered_in"])))
+        installed_agent_ids = _normalize_agents(cast_set(raw["raw_agents"]))
+        installed_agent_ids.update(discovered_in)
+        installed_agents = tuple(sorted(installed_agent_ids))
         source_path = str((resolved_dir / "SKILL.md") if (resolved_dir / "SKILL.md").exists() else skill_dir)
 
         repo_owned = _is_repo_owned_skill(resolved_dir, repo_root, name)
