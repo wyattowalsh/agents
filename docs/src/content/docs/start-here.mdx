@@ -35,10 +35,15 @@ Skills are portable prompt-and-workflow bundles for coding agents. Install them 
 <CardGrid>
   <LinkCard title="Claude Code Plugin" href="https://code.claude.com/docs/en/plugin-marketplaces" description="Use the native .claude-plugin marketplace when you want Claude Code to install and update the whole repo bundle." />
   <LinkCard title="Codex Plugin" href="https://developers.openai.com/codex/plugins/build" description="Use the native .codex-plugin manifest and repo marketplace when you want Codex to load bundled skills and MCP config." />
+  <LinkCard title="OpenCode Project Config" href="https://opencode.ai/" description="Use repo opencode.json for runtime plugins; keep TUI-only plugins in your live tui.json surface." />
   <LinkCard title="Skills CLI" href="/cli/" description="Use npx skills add for Gemini CLI, Antigravity, Copilot, OpenCode, Cursor, Crush, and other agents." />
 </CardGrid>
 
 Run `wagents update` or `npx skills update` after upstream changes to refresh recorded sources, and use `wagents skills sync --dry-run` before `--apply` when you want additive cross-harness reconciliation for repo + curated external skills.
+
+<Aside type="caution" title="OpenCode plugin boundary">
+OpenCode runtime plugins are tracked in repo `opencode.json`; TUI-only plugins live in `~/.config/opencode/tui.json`. Scheduler jobs, Claude credential reuse, Langfuse credentials, and local workflow-state plugins require explicit opt-in instead of being enabled by repo defaults.
+</Aside>
 
 ## 3. Try A Starter Skill
 

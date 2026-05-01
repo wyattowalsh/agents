@@ -1,14 +1,14 @@
 # OpenCode Plugin Installation Manifest
 
-**Last verified:** 2026-04-30
+**Last verified:** 2026-05-01
 **Primary config:** `~/.config/opencode/opencode.json`
 **Project mirror:** `opencode.json`
 
 This manifest records the OpenCode plugin inventory requested for this machine and mirrored into the repo-level OpenCode config. The live OpenCode config is the installation surface; the repo config mirrors the requested npm plugin specs so future sync/review work can detect drift.
 
-## Requested Plugin Inventory
+## Runtime Plugin Inventory
 
-The requested npm plugin list is configured as `@latest` in `~/.config/opencode/opencode.json` and mirrored in repo `opencode.json`:
+The active runtime npm plugin list is configured as `@latest` in `~/.config/opencode/opencode.json` and mirrored in repo `opencode.json`:
 
 1. `opencode-antigravity-auth@latest`
 2. `opencode-gemini-auth@latest`
@@ -26,17 +26,39 @@ The requested npm plugin list is configured as `@latest` in `~/.config/opencode/
 14. `opencode-notify@latest`
 15. `opencode-devcontainers@latest`
 16. `@ramarivera/opencode-model-announcer@latest`
-
-## Repo-Local Project Plugins
-
-The repo-level `opencode.json` also keeps these existing project plugins because they were already present before the requested inventory was mirrored:
-
-- `@mailshieldai/opencode-canvas@latest`
-- `@slkiser/opencode-quota@latest`
+17. `@mailshieldai/opencode-canvas@latest`
+18. `@slkiser/opencode-quota@latest`
+19. `opencode-scheduler@latest`
+20. `opencode-claude-auth@latest`
+21. `opencode-plugin-langfuse@latest`
 
 Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale installed plugin, refresh the matching package under `~/.cache/opencode/packages/` with Bun or restart OpenCode so its automatic installer rebuilds the cache.
 
 `opencode-shell-strategy` was removed from the requested inventory because npm returned 404 for that package and OpenCode logged `failed to resolve plugin server entry` for its empty cache directory. Re-add it only if a valid install source is confirmed.
+
+## TUI Plugin Inventory
+
+TUI-only plugins belong in `~/.config/opencode/tui.json`, not in the repo runtime mirror, unless a repo-managed TUI source file is introduced:
+
+1. `@slkiser/opencode-quota@latest`
+2. `opencode-subagent-statusline@latest`
+
+Preserve `notification_method: "auto"` in `~/.config/opencode/tui.json` so OpenCode uses terminal notifications without macOS Script Editor popups.
+
+## Runtime Plugin Guardrails
+
+- `opencode-scheduler@latest` is installed but intentionally has no scheduled jobs configured. Create jobs only on explicit request, prefer read-only jobs first, set `timeoutSeconds`, and inspect scheduler `job_logs` before trusting recurring automation.
+- `opencode-claude-auth@latest` can reuse Claude Code credentials. Claude Code must be authenticated first; prefer macOS Keychain-backed credentials and use redacted debug logs only. Do not enable optional 1M context or model/runtime overrides by default.
+- `opencode-plugin-langfuse@latest` requires OpenTelemetry and user-owned environment variables. The config enables `experimental.openTelemetry`; do not commit credential values. Required keys are `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY`; `LANGFUSE_BASEURL` is optional.
+
+## Deferred UI And Control Plugins
+
+The UI research pass found additional candidates that are not installed in this batch:
+
+- Optional local experiments: `opencode-workspaces@latest`, `opencode-bytheway@latest`, `@leo000001/opencode-quota-sidebar@latest`, `@ramtinj95/opencode-tokenscope@latest`.
+- Security-review first: `@lesquel/opencode-pilot@latest`, `@different-ai/opencode-browser`, `@igovet/opencode-tui-tunnel`, `@actualyze/opencode-monitor`, checkpoint/session-control plugins.
+- Local workflow-state plugins deferred by user request: `@codemcp/workflows-opencode@latest` and `@codemcp/workflows-opencode-tui@latest`.
+- Broad orchestration bundles deferred by policy: `opencode-nexus`, `opencode-swarm`, `oh-my-opencode`, and `oh-my-opencode-slim`.
 
 ## Local TypeScript Plugins
 

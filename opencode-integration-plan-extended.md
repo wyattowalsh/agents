@@ -29,7 +29,7 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 | **Skills** | Custom skill directory at `~/dev/projects/agents/skills` |
 | **Tools** | `git-smart-status`, `git-worktree`, `workspace-summary` |
 | **Commands** | `docs-sync`, `orchestrate-task`, `perf-audit`, `plan-impl`, `release-readiness`, `research-topic`, `review-pr`, `security-audit` |
-| **Plugins** | `opencode-shell-strategy`, `opencode-antigravity-auth`, `opencode-gemini-auth`, `credential-guard` (custom — blocks `.env`/credential access) |
+| **Plugins** | `opencode-antigravity-auth`, `opencode-gemini-auth`, `cc-safety-net`, `opencode-agent-memory`, `envsitter-guard`, `@tarquinen/opencode-dcp`, `@morphllm/opencode-morph-plugin`, `opencode-handoff`, `opencode-agent-skills`, `@devtheops/opencode-plugin-otel`, `open-plan-annotator`, `@simonwjackson/opencode-direnv`, `opencode-background-agents`, `opencode-notify`, `opencode-devcontainers`, `@ramarivera/opencode-model-announcer`, `@mailshieldai/opencode-canvas`, `@slkiser/opencode-quota`, `credential-guard` (custom — blocks `.env`/credential access) |
 | **Theme** | `solstice-light` |
 
 ### Gaps Identified → RESOLVED
@@ -45,8 +45,8 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 | 7 | No specialized sub-agents | ✅ | `micode@0.10.0` (12 agents) + `opencode-froggy@0.11.0` (6 agents) + native custom agents |
 | 8 | No fast code editing | ✅ | `@morphllm/opencode-morph-plugin@2.0.9` (Fast Apply) |
 | 9 | No session handoff | ✅ | `opencode-handoff@0.5.0` |
-| 10 | No observability | ✅ | `@devtheops/opencode-plugin-otel@0.8.0` |
-| 11 | No plan review UI | ✅ | `open-plan-annotator@1.3.0` |
+| 10 | No observability | ✅ | `@devtheops/opencode-plugin-otel@0.9.0` |
+| 11 | No plan review UI | ✅ | `open-plan-annotator@1.4.2` |
 
 **All 11 gaps resolved.** No remaining gaps from original plan.
 
@@ -76,7 +76,6 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net"
@@ -109,7 +108,6 @@ Your OpenCode setup is already **exceptionally advanced** — 30+ MCP servers, c
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -157,7 +155,6 @@ opencode plugin @tarquinen/opencode-dcp@latest --global
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -201,7 +198,6 @@ brew install edouard-claude/tap/snip
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -239,7 +235,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -282,7 +277,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -330,7 +324,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -367,7 +360,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -409,7 +401,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -447,7 +438,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -485,7 +475,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -522,7 +511,6 @@ bun i @morphllm/opencode-morph-plugin
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net",
@@ -720,36 +708,57 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 
 ## Installation Status: COMPLETED ✅
 
-**All 20 plugins installed on 2026-04-27.** Zero remaining from the plan.
+**Active inventory repaired and extended on 2026-05-01.** The unresolved `opencode-shell-strategy` package was removed after npm returned 404 and OpenCode logged a plugin load failure for its empty cache directory. The latest batch adds scheduler, Claude credential reuse, Langfuse telemetry, and TUI subagent visibility. CodeMCP workflow plugins were removed from the active inventory by user request because they create additional local workflow state.
 
 ### `~/.config/opencode/opencode.json` — Plugin Section (Live)
 
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
-    "cc-safety-net@0.8.2",
-    "opencode-agent-memory@0.2.0",
-    "envsitter-guard@0.0.4",
-    "@tarquinen/opencode-dcp@3.1.9",
-    "opencode-snip@1.6.1",
-    "@morphllm/opencode-morph-plugin@2.0.9",
-    "opencode-froggy@0.11.0",
-    "opencode-handoff@0.5.0",
-    "opencode-agent-skills@0.6.5",
-    "@devtheops/opencode-plugin-otel@0.8.0",
-    "open-plan-annotator@1.3.0",
-    "@simonwjackson/opencode-direnv@2025.1211.9",
-    "opencode-background-agents@0.1.1",
-    "micode@0.10.0",
-    "opencode-notify@0.3.1",
-    "opencode-devcontainers@0.3.3",
-    "@ramarivera/opencode-model-announcer@1.0.2"
+    "cc-safety-net@latest",
+    "opencode-agent-memory@latest",
+    "envsitter-guard@latest",
+    "@tarquinen/opencode-dcp@latest",
+    "@morphllm/opencode-morph-plugin@latest",
+    "opencode-handoff@latest",
+    "opencode-agent-skills@latest",
+    "@devtheops/opencode-plugin-otel@latest",
+    "open-plan-annotator@latest",
+    "@simonwjackson/opencode-direnv@latest",
+    "opencode-background-agents@latest",
+    "opencode-notify@latest",
+    "opencode-devcontainers@latest",
+    "@ramarivera/opencode-model-announcer@latest",
+    "@mailshieldai/opencode-canvas@latest",
+    "@slkiser/opencode-quota@latest",
+    "opencode-scheduler@latest",
+    "opencode-claude-auth@latest",
+    "opencode-plugin-langfuse@latest"
   ]
 }
 ```
+
+### `~/.config/opencode/tui.json` — TUI Plugin Section (Live)
+
+```json
+{
+  "notification_method": "auto",
+  "plugin": [
+    "@slkiser/opencode-quota@latest",
+    "opencode-subagent-statusline@latest"
+  ]
+}
+```
+
+### Latest Batch Guardrails
+
+- `opencode-scheduler@latest` is installed without scheduled jobs; recurring jobs require explicit approval.
+- `opencode-claude-auth@latest` is installed without optional 1M context or model/runtime overrides.
+- `opencode-plugin-langfuse@latest` uses `experimental.openTelemetry`; `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and optional `LANGFUSE_BASEURL` stay user-owned environment variables.
+- `opencode-subagent-statusline@latest` is TUI-only and intentionally absent from repo `opencode.json`.
+- `@codemcp/workflows-opencode@latest` and `@codemcp/workflows-opencode-tui@latest` are deferred by user request.
 
 ### Native Configuration Added
 
@@ -761,17 +770,15 @@ Create agent definitions in `~/.config/opencode/agents/` as markdown files with 
 ### ⚠️ Known Issues & Fixes
 
 1. **Formatters not supported** — The `formatters` key is not recognized by OpenCode v1.14.28. Removed from config. Use editor formatters or pre-commit hooks instead.
-2. `@simonwjackson/opencode-direnv@2025.1211.9` — Deprecated but functional. Consider native direnv integration.
+2. **`opencode-shell-strategy` unresolved** — npm returns 404 and OpenCode logs `failed to resolve plugin server entry`; keep it out of the active inventory unless a valid source is confirmed.
+3. `@simonwjackson/opencode-direnv@2025.1211.9` — Deprecated but functional. Consider native direnv integration.
 
 ### Installation Verification
 
 Run these commands to verify all plugins load:
 ```bash
-# List all plugins with versions
-opencode plugin list
-
-# Check detailed info
-opencode plugin list --json
+# Load config and plugins with debug logs
+opencode --print-logs --log-level DEBUG models anthropic
 
 # View telemetry (requires otel collector)
 opencode stats
@@ -786,14 +793,16 @@ opencode stats
 | **1** | ✅ Complete | `cc-safety-net@0.8.2`, `opencode-agent-memory@0.2.0`, `envsitter-guard@0.0.4` |
 | **2** | ✅ Complete | `@tarquinen/opencode-dcp@3.1.9`, `opencode-snip@1.6.1`, `@morphllm/opencode-morph-plugin@2.0.9` |
 | **3** | ✅ Complete | `opencode-froggy@0.11.0`, `opencode-handoff@0.5.0`, `opencode-agent-skills@0.6.5` |
-| **4** | ✅ Complete | `@devtheops/opencode-plugin-otel@0.8.0`, `open-plan-annotator@1.3.0`, `@simonwjackson/opencode-direnv@2025.1211.9` |
+| **4** | ✅ Complete | `@devtheops/opencode-plugin-otel@0.9.0`, `open-plan-annotator@1.4.2`, `@simonwjackson/opencode-direnv@2025.1211.9` |
 | **5** | ✅ Complete | Native custom agents (`explore`, `review`, `architect`, `tester`), formatters config |
 | **6** | ✅ Complete | `opencode-background-agents@0.1.1`, `micode@0.10.0` — Async delegation + 12-agent workflow |
 | **7** | ✅ Complete | `opencode-notify@0.3.1`, `opencode-devcontainers@0.3.3`, `@ramarivera/opencode-model-announcer@1.0.2` |
-| **8** | 📋 Future | Custom tools for ecosystem gaps (test-runner, ci-reviewer, doc-sync, mcp-health, cost-tracker, agent-router) |
+| **8** | ✅ Complete | `opencode-scheduler`, `opencode-claude-auth`, Langfuse, subagent TUI plugin |
+| **9** | 📋 Future | Custom tools for ecosystem gaps (test-runner, ci-reviewer, doc-sync, mcp-health, cost-tracker, agent-router) |
 
-**Installation date:** 2026-04-27  
-**Total plugins installed:** 17 new (+3 pre-existing = 20 total)  
+**Installation date:** 2026-04-27; repaired 2026-05-01
+**Total active runtime npm plugins:** 21
+**Total active TUI npm plugins:** 2
 **Config backup:** `~/.config/opencode/opencode.json.backup-*`  
 **Installation manifest:** `~/dev/projects/agents/opencode-setup/INSTALL_MANIFEST.md`
 
@@ -809,6 +818,10 @@ opencode stats
 | `opencode-agent-memory` | Memory bloat if unchecked | Set block size limits; periodically review memory files |
 | `envsitter-guard` | May block legitimate `.env` edits | Use `envsitter_*` tools for safe mutations |
 | `micode` | Too opinionated for free-form workflows | Try native custom agents first; add micode only if workflow enforcement is desired |
+| `opencode-scheduler` | Recurring jobs can mutate host state | Do not create jobs without explicit user approval; start read-only |
+| `opencode-claude-auth` | Could change auth/model behavior | Reuse existing credentials only; do not enable 1M context by default |
+| `opencode-plugin-langfuse` | Requires telemetry credentials and may overlap OTEL | Keep credentials in env vars; validate coexistence with OTEL startup logs |
+| CodeMCP workflows | Setup commands may create additional artifacts | Deferred by user request; add only after explicit approval |
 
 ---
 
@@ -872,9 +885,8 @@ The Wave 2 research confirmed that **no plugins currently exist** in several cat
 ### 6.5 Shell / Terminal Enhancements — Partial Gap
 
 **Existing:**
-- `opencode-shell-strategy` — command interception and shell integration
 - `opencode-direnv` — `.envrc` auto-loading
-- `opencode-snip` — output filtering
+- `opencode-shell-aware` exists on npm as a possible shell-context plugin, but it is not installed in the active inventory.
 
 **Missing:** No dedicated zsh/fish completion plugin, no tmux session manager plugin.
 

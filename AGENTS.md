@@ -148,6 +148,10 @@ When a specific harness needs a local login-safe override, document that overrid
 
 If OpenCode reports a stale plugin version, refresh the relevant package under `~/.cache/opencode/packages/` with Bun or restart OpenCode to let its automatic plugin installer rebuild the cache. Do not replace `@latest` entries with fixed or ranged versions unless the user explicitly requests a temporary rollback.
 
+Keep OpenCode runtime plugins in repo `opencode.json` and the live `~/.config/opencode/opencode.json` `plugin` array. Keep TUI-only plugins in `~/.config/opencode/tui.json` unless this repo later introduces a tracked TUI config source file.
+
+Scheduler, auth, and telemetry plugins require extra caution: `opencode-scheduler@latest` must stay inert until the user explicitly asks for jobs, `opencode-claude-auth@latest` must not enable optional model/runtime behavior by default, and `opencode-plugin-langfuse@latest` must use user-owned environment variables rather than committed credentials. CodeMCP workflow plugins are intentionally deferred because they can create additional local workflow state and setup artifacts.
+
 ---
 
 ## 3. Naming Conventions

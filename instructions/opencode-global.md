@@ -20,6 +20,26 @@ On macOS, ensure `notification_method` is set to `"auto"` in `~/.config/opencode
 
 Repo-managed OpenCode npm plugin specs in `opencode.json` must use `@latest` so OpenCode's Bun-backed installer resolves the newest published plugin during install refreshes. If a plugin warns that an update is available, refresh the matching package under `~/.cache/opencode/packages/` or restart OpenCode; do not pin or range the repo-managed spec unless the user explicitly requests a rollback.
 
+### Plugin Placement
+
+Keep OpenCode runtime plugins in `opencode.json` and the live `~/.config/opencode/opencode.json` `plugin` array. Keep TUI-only plugins in `~/.config/opencode/tui.json` instead of the repo runtime mirror unless a repo-managed TUI source file is explicitly introduced.
+
+Current TUI-only additions on this machine are `opencode-subagent-statusline@latest` and `@slkiser/opencode-quota@latest`. Preserve `notification_method: "auto"` when editing `tui.json`.
+
+### Scheduler And Auth Plugins
+
+`opencode-scheduler@latest` is installed only as an inert scheduler plugin by default. Do not create, enable, or mutate scheduled jobs unless the user explicitly asks for scheduler job changes; start with read-only jobs and explicit timeouts when jobs are requested.
+
+`opencode-claude-auth@latest` may reuse Claude Code credentials for Anthropic auth. Do not enable optional 1M context behavior or other model/runtime overrides by default; preserve the repo-managed model-neutral policy.
+
+CodeMCP workflow plugins are intentionally deferred. Do not add `@codemcp/workflows-opencode@latest`, `@codemcp/workflows-opencode-tui@latest`, or run broad CodeMCP setup commands unless the user explicitly requests local workflow-state management and accepts the additional artifacts those plugins can create.
+
+### Langfuse Telemetry
+
+`opencode-plugin-langfuse@latest` requires OpenTelemetry support and user-owned environment variables. It is safe for repo config to enable `experimental.openTelemetry`; never commit Langfuse credential values. Required environment keys are `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY`; `LANGFUSE_BASEURL` is optional for non-default endpoints.
+
+Treat missing Langfuse environment variables as setup warnings unless OpenCode reports a plugin load failure. Keep `@devtheops/opencode-plugin-otel@latest` until startup validation proves a concrete conflict.
+
 ### Chrome DevTools MCP Auth Flows
 
 For OpenCode on this machine, prefer the local wrapper-based Chrome DevTools MCP launch instead of the generic shared repo default when Google sign-in or other sign-in-sensitive flows need a stable attached browser.

@@ -15,7 +15,7 @@ Your OpenCode setup is already **exceptionally advanced** — you have 30+ MCP s
 - **Skills**: Custom skill directory at `~/dev/projects/agents/skills`
 - **Tools**: `git-smart-status`, `git-worktree`, `workspace-summary`
 - **Commands**: `docs-sync`, `orchestrate-task`, `perf-audit`, `plan-impl`, `release-readiness`, `research-topic`, `review-pr`, `security-audit`
-- **Plugins**: `opencode-shell-strategy`, `opencode-antigravity-auth`, `opencode-gemini-auth`
+- **Plugins**: `opencode-antigravity-auth`, `opencode-gemini-auth`, `cc-safety-net`, `opencode-agent-memory`, `envsitter-guard`, `@tarquinen/opencode-dcp`, `@morphllm/opencode-morph-plugin`, `opencode-handoff`, `opencode-agent-skills`, `@devtheops/opencode-plugin-otel`, `open-plan-annotator`, `@simonwjackson/opencode-direnv`, `opencode-background-agents`, `opencode-notify`, `opencode-devcontainers`, `@ramarivera/opencode-model-announcer`, `@mailshieldai/opencode-canvas`, `@slkiser/opencode-quota`, `opencode-scheduler`, `opencode-claude-auth`, `opencode-plugin-langfuse`
 - **Theme**: `solstice-light`
 
 ### Gaps Identified
@@ -141,7 +141,6 @@ git clone https://github.com/kdcokenny/opencode-background-agents ~/.config/open
 // Add to ~/.config/opencode/opencode.json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "opencode-agent-memory"
@@ -195,7 +194,6 @@ git clone https://github.com/kenryu42/claude-code-safety-net ~/.config/opencode/
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "opencode-agent-memory",
@@ -469,7 +467,6 @@ export const MCPOrchestratorPlugin: Plugin = async (ctx) => {
 ```json
 {
   "plugin": [
-    "opencode-shell-strategy",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "opencode-agent-memory",
