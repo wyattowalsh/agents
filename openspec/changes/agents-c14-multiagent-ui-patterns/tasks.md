@@ -1,6 +1,6 @@
 # Tasks
 
-- [ ] Extract UX pattern ledger.
-- [ ] Record adoption risks.
-- [ ] Recommend dashboard abstractions.
-- [ ] Coordinate with UX/CLI lane.
+- [x] Extract UX pattern ledger.
+- [x] Record adoption risks.
+- [x] Recommend dashboard abstractions.
+- [x] Coordinate with UX/CLI lane.
