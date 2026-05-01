@@ -648,8 +648,7 @@ class TestSkillsSync:
         # collect_installed_inventory must have been called without agent_ids.
         assert inventory_calls, "collect_installed_inventory was not called"
         assert "agent_ids" not in inventory_calls[0], (
-            "_build_sync_report must not filter the inventory to target agents; "
-            "got kwargs: " + repr(inventory_calls[0])
+            "_build_sync_report must not filter the inventory to target agents; got kwargs: " + repr(inventory_calls[0])
         )
         # Cross-harness skill correctly reported as missing for the target.
         assert "missing (1)" in result.output

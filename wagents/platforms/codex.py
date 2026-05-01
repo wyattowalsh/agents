@@ -24,10 +24,23 @@ class Adapter(PlatformAdapter):
     def home_config_paths(self) -> list[Path]:
         return [CODEX_CONFIG_PATH]
 
-    def sync_repo(self, ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any], policy: dict[str, Any]) -> None:
+    def sync_repo(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        hook_registry: dict[str, Any],
+        policy: dict[str, Any],
+    ) -> None:
         """TODO: generate ``instructions/codex-global.md`` and repo config copy."""
         pass
 
-    def sync_home(self, ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str], hook_registry: dict[str, Any]) -> None:
+    def sync_home(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        policy: dict[str, Any],
+        fallbacks: dict[str, str],
+        hook_registry: dict[str, Any],
+    ) -> None:
         """TODO: merge TOML config with preserved user sections and managed MCP block."""
         pass

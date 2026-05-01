@@ -103,7 +103,8 @@ DISTRIBUTION_PATHS: tuple[DistributionPath, ...] = (
         "OpenCode Project Config",
         "native",
         "note",
-        "`opencode.json` keeps repo-managed npm plugin specs on `@latest`; restart OpenCode "
+        "`opencode.json` keeps repo-managed npm plugin specs on `@latest` and scopes "
+        "Plannotator to the `plan` agent; restart OpenCode "
         "or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.",
     ),
     DistributionPath(
@@ -384,23 +385,17 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
     meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
     source_type = "custom" if node.source == "custom" else "installed"
     source_root = REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_source") or node.source_path)
-    install_source = (
-        REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_install_source") or source_root)
-    )
+    install_source = REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_install_source") or source_root)
     install_command = (
         build_install_command(skill=node.id)
         if source_type == "custom"
-        else str(
-            fm.get("_skills_install_command") or f"npx skills add {install_source} --skill {node.id} -y -g"
-        )
+        else str(fm.get("_skills_install_command") or f"npx skills add {install_source} --skill {node.id} -y -g")
     )
     installed_agents = (
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
     )
     provenance_status = (
-        "repo-owned"
-        if source_type == "custom"
-        else str(fm.get("_skills_provenance_status") or "installed-external")
+        "repo-owned" if source_type == "custom" else str(fm.get("_skills_provenance_status") or "installed-external")
     )
     return {
         "name": node.id,
@@ -468,9 +463,9 @@ def _knowledge_inventory(node: CatalogNode) -> dict[str, Any]:
     skill_dir = skill_file.parent if skill_file else None
     body = node.body or ""
     return {
-        "headings": [
-            match.group(1).strip() for match in re.finditer(r"^#{1,6}\s+(.+)$", body, flags=re.MULTILINE)
-        ][:24],
+        "headings": [match.group(1).strip() for match in re.finditer(r"^#{1,6}\s+(.+)$", body, flags=re.MULTILINE)][
+            :24
+        ],
         "references": _relative_children(skill_dir, "references"),
         "scripts": _relative_children(skill_dir, "scripts"),
         "templates": _relative_children(skill_dir, "templates"),

@@ -165,8 +165,7 @@ def test_standard_hook_renderers_use_harness_specific_events():
                 "logical_event": "PreToolUse",
                 "matcher": "Write|Edit",
                 "command": (
-                    "python3 {repo_root}/hooks/wagents-hook.py "
-                    "research-readonly-write-guard --harness {harness}"
+                    "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}"
                 ),
                 "timeout": 5,
                 "harnesses": ["codex", "gemini-cli"],
@@ -204,8 +203,7 @@ def test_merge_codex_hooks_preserves_local_and_replaces_generated(tmp_path, monk
                 "logical_event": "PreToolUse",
                 "matcher": "Write|Edit",
                 "command": (
-                    "python3 {repo_root}/hooks/wagents-hook.py "
-                    "research-readonly-write-guard --harness {harness}"
+                    "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}"
                 ),
                 "timeout": 5,
                 "harnesses": ["codex"],
@@ -324,8 +322,7 @@ def test_hook_registry_renders_research_hooks_for_supported_harnesses():
                 "logical_event": "PreToolUse",
                 "matcher": "Write|Edit|MultiEdit",
                 "command": (
-                    "python3 {repo_root}/hooks/wagents-hook.py "
-                    "research-readonly-write-guard --harness {harness}"
+                    "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}"
                 ),
                 "timeout": 5,
                 "description": "Block research writes.",
@@ -973,7 +970,7 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
         "managed": {
             "command": "uvx",
             "args": ["managed-mcp"],
-        }
+        },
     }
 
 

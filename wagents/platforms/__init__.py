@@ -35,7 +35,7 @@ def _load_adapter(name: str) -> PlatformAdapter:
     module_name = _BUILT_IN_ADAPTERS[name]
     module = importlib.import_module(module_name)
     # Each adapter module exports an `Adapter` class inheriting from PlatformAdapter
-    adapter_cls = getattr(module, "Adapter")
+    adapter_cls = module.Adapter
     return adapter_cls()
 
 

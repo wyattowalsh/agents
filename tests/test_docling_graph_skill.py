@@ -6,7 +6,6 @@ import sys
 from argparse import Namespace
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIR = ROOT / "skills" / "docling-graph"
 
@@ -61,7 +60,7 @@ class FilingGraph(BaseModel):
 def test_lint_template_flags_contract_risks(tmp_path: Path) -> None:
     template = tmp_path / "template.py"
     template.write_text(
-        '''
+        """
 from typing import Any
 from pydantic import BaseModel, Field
 
@@ -73,7 +72,7 @@ class Company(BaseModel):
 
 class RootGraph(BaseModel):
     items: list[list[Company]] = Field(description="Nested observed companies")
-''',
+""",
         encoding="utf-8",
     )
 
