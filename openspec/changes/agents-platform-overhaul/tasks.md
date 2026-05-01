@@ -10,7 +10,7 @@
 - [x] Create non-Markdown registry schemas and support-tier manifest.
 - [x] Copy/normalize external repo evaluation manifest into root `planning/manifests/`.
 - [x] Validate root OpenSpec after non-Markdown artifacts are added.
-- [ ] Commit foundation changes.
+- [x] Commit foundation changes.
 
 ## Child Change Governance
 
