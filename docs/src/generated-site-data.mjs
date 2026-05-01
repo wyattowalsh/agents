@@ -22,7 +22,7 @@ export const siteData = {
     {
       "badge_text": "native",
       "badge_variant": "note",
-      "body": "`opencode.json` keeps repo-managed npm plugin specs on `@latest`; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.",
+      "body": "`opencode.json` keeps repo-managed npm plugin specs on `@latest` and scopes Plannotator to the `plan` agent; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.",
       "title": "OpenCode Project Config"
     },
     {
@@ -98,7 +98,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "addyosmani/web-quality-skills",
       "knowledge": {
         "data": [],
@@ -126,6 +126,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -141,7 +142,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -169,6 +170,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -184,7 +186,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -212,6 +214,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -227,7 +230,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -255,6 +258,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -270,7 +274,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -298,6 +302,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -313,7 +318,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "cloudflare/skills",
       "knowledge": {
         "data": [],
@@ -341,6 +346,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -392,7 +398,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -420,6 +426,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -435,7 +442,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -463,6 +470,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -478,7 +486,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -506,6 +514,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -521,7 +530,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "addyosmani/web-quality-skills",
       "knowledge": {
         "data": [],
@@ -549,6 +558,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -564,7 +574,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "expo/skills",
       "knowledge": {
         "data": [],
@@ -592,6 +602,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -607,7 +618,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "pydantic/skills",
       "knowledge": {
         "data": [],
@@ -635,6 +646,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -650,7 +662,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "mcp-use/skills",
       "knowledge": {
         "data": [],
@@ -678,6 +690,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -693,7 +706,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "openai/skills",
       "knowledge": {
         "data": [],
@@ -721,6 +734,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -735,8 +749,44 @@ export const siteData = {
     {
       "argumentHint": "",
       "author": "",
+      "description": "avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.",
+      "installCommand": "",
+      "installSource": "nextlevelbuilder/ui-ux-pro-max-skill@ckm:*",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ckm:*",
+      "provenanceStatus": "explicit-unresolved",
+      "selectorMode": "unresolved",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "status": "global-only-or-avoid",
+      "targetAgents": [],
+      "title": "Ckm:*",
+      "trustTier": "global-only-or-avoid",
+      "unresolvedReason": "avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.",
+      "useCommand": "/ckm:*",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "openai/skills",
       "knowledge": {
         "data": [],
@@ -764,6 +814,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -779,7 +830,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "cloudflare/skills",
       "knowledge": {
         "data": [],
@@ -807,6 +858,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -822,7 +874,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "trailofbits/skills",
       "knowledge": {
         "data": [],
@@ -850,6 +902,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -865,7 +918,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "addyosmani/web-quality-skills",
       "knowledge": {
         "data": [],
@@ -893,6 +946,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -908,7 +962,491 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-ai-ml",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Ai Ml",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-ai-ml",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-crypto",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Crypto",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-crypto",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-forensics",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Forensics",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-forensics",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-malware",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Malware",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-malware",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-misc",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Misc",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-misc",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-osint",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Osint",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-osint",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-pwn",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Pwn",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-pwn",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-reverse",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Reverse",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-reverse",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-web",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Web",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-web",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ctf-writeup",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ctf Writeup",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ctf-writeup",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "Leonxlnx/taste-skill",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/Leonxlnx/taste-skill"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "design-taste-frontend",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "Leonxlnx/taste-skill",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/Leonxlnx/taste-skill",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Design Taste Frontend",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/design-taste-frontend",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "cloudflare/skills",
       "knowledge": {
         "data": [],
@@ -936,6 +1474,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -951,7 +1490,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "expo/skills",
       "knowledge": {
         "data": [],
@@ -979,6 +1518,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -994,7 +1534,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "expo/skills",
       "knowledge": {
         "data": [],
@@ -1022,6 +1562,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1037,7 +1578,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "expo/skills",
       "knowledge": {
         "data": [],
@@ -1065,6 +1606,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1116,7 +1658,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "langchain-ai/langchain-skills",
       "knowledge": {
         "data": [],
@@ -1144,6 +1686,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1195,7 +1738,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "pydantic/skills",
       "knowledge": {
         "data": [],
@@ -1223,6 +1766,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1238,7 +1782,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "langchain-ai/langchain-skills",
       "knowledge": {
         "data": [],
@@ -1266,6 +1810,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1281,7 +1826,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "langchain-ai/langchain-skills",
       "knowledge": {
         "data": [],
@@ -1309,6 +1854,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1324,7 +1870,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "langchain-ai/langchain-skills",
       "knowledge": {
         "data": [],
@@ -1352,6 +1898,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1367,7 +1914,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "langchain-ai/langchain-skills",
       "knowledge": {
         "data": [],
@@ -1395,6 +1942,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1410,7 +1958,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "langchain-ai/langchain-skills",
       "knowledge": {
         "data": [],
@@ -1438,6 +1986,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1453,7 +2002,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "mcp-use/skills",
       "knowledge": {
         "data": [],
@@ -1481,6 +2030,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1496,7 +2046,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/next-skills",
       "knowledge": {
         "data": [],
@@ -1524,6 +2074,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1539,7 +2090,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/next-skills",
       "knowledge": {
         "data": [],
@@ -1567,6 +2118,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1582,7 +2134,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/next-skills",
       "knowledge": {
         "data": [],
@@ -1610,6 +2162,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1625,7 +2178,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "addyosmani/web-quality-skills",
       "knowledge": {
         "data": [],
@@ -1653,6 +2206,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1668,7 +2222,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -1696,6 +2250,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1711,7 +2266,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "github/awesome-copilot",
       "knowledge": {
         "data": [],
@@ -1739,6 +2294,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1754,7 +2310,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "currents-dev/playwright-best-practices-skill",
       "knowledge": {
         "data": [],
@@ -1782,6 +2338,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1797,7 +2354,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "trailofbits/skills",
       "knowledge": {
         "data": [],
@@ -1825,6 +2382,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1840,7 +2398,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "openai/skills",
       "knowledge": {
         "data": [],
@@ -1868,6 +2426,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1883,7 +2442,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "openai/skills",
       "knowledge": {
         "data": [],
@@ -1911,6 +2470,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1926,7 +2486,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "openai/skills",
       "knowledge": {
         "data": [],
@@ -1954,6 +2514,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -1969,7 +2530,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "trailofbits/skills",
       "knowledge": {
         "data": [],
@@ -1997,6 +2558,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2012,7 +2574,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "getsentry/sentry-for-ai",
       "knowledge": {
         "data": [],
@@ -2040,6 +2602,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2055,7 +2618,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "getsentry/sentry-for-ai",
       "knowledge": {
         "data": [],
@@ -2083,6 +2646,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2098,7 +2662,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "getsentry/sentry-for-ai",
       "knowledge": {
         "data": [],
@@ -2126,6 +2690,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2141,7 +2706,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "addyosmani/web-quality-skills",
       "knowledge": {
         "data": [],
@@ -2169,6 +2734,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2184,7 +2750,51 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "ljagiello/ctf-skills",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/ljagiello/ctf-skills"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "solve-challenge",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Solve Challenge",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/solve-challenge",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "stripe/ai",
       "knowledge": {
         "data": [],
@@ -2212,6 +2822,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2263,7 +2874,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "supabase/agent-skills",
       "knowledge": {
         "data": [],
@@ -2291,6 +2902,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2306,7 +2918,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "supabase/agent-skills",
       "knowledge": {
         "data": [],
@@ -2334,6 +2946,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2349,7 +2962,51 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
+      "installSource": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [],
+        "references": [],
+        "resourceLinks": [
+          "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 0
+      },
+      "license": "",
+      "model": "",
+      "name": "ui-ux-pro-max",
+      "provenanceStatus": "verified-install-command",
+      "selectorMode": "named",
+      "sourcePath": "instructions/external-skills.md",
+      "sourceRoot": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "curated-external",
+      "sourceUrl": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "status": "inspect-then-install",
+      "targetAgents": [
+        "antigravity",
+        "claude-code",
+        "codex",
+        "cursor",
+        "gemini-cli",
+        "github-copilot",
+        "opencode"
+      ],
+      "title": "Ui Ux Pro Max",
+      "trustTier": "needs-inspection",
+      "unresolvedReason": "",
+      "useCommand": "/ui-ux-pro-max",
+      "userInvocable": true,
+      "version": ""
+    },
+    {
+      "argumentHint": "",
+      "author": "",
+      "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
+      "installCommand": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "stripe/ai",
       "knowledge": {
         "data": [],
@@ -2377,6 +3034,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2392,7 +3050,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "expo/skills",
       "knowledge": {
         "data": [],
@@ -2420,6 +3078,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2435,7 +3094,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/agent-skills",
       "knowledge": {
         "data": [],
@@ -2463,6 +3122,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2514,7 +3174,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/agent-skills",
       "knowledge": {
         "data": [],
@@ -2542,6 +3202,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2557,7 +3218,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/agent-skills",
       "knowledge": {
         "data": [],
@@ -2585,6 +3246,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2600,7 +3262,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/agent-skills",
       "knowledge": {
         "data": [],
@@ -2628,6 +3290,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2643,7 +3306,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "vercel-labs/agent-skills",
       "knowledge": {
         "data": [],
@@ -2671,6 +3334,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2686,7 +3350,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "addyosmani/web-quality-skills",
       "knowledge": {
         "data": [],
@@ -2714,6 +3378,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2729,7 +3394,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "cloudflare/skills",
       "knowledge": {
         "data": [],
@@ -2757,6 +3422,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
@@ -2772,7 +3438,7 @@ export const siteData = {
       "argumentHint": "",
       "author": "",
       "description": "Curated third-party skill source. Run external-skill-auditor before repo promotion.",
-      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex gemini-cli github-copilot opencode",
+      "installCommand": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex cursor gemini-cli github-copilot opencode",
       "installSource": "cloudflare/skills",
       "knowledge": {
         "data": [],
@@ -2800,6 +3466,7 @@ export const siteData = {
         "antigravity",
         "claude-code",
         "codex",
+        "cursor",
         "gemini-cli",
         "github-copilot",
         "opencode"
