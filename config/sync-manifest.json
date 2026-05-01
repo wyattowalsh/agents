@@ -14,6 +14,50 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/config/support-tier-registry.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/harness-surface-registry.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/config-transaction-registry.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/docs-artifact-registry.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/skill-registry-policy.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/plugin-extension-registry.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/config/schemas",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/planning/manifests/repo-sync-inventory.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/planning/manifests/repo-drift-ledger.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/planning/manifests/harness-fixture-support.json",
+      "mode": "canonical"
+    },
+    {
+      "path": "/Users/ww/dev/projects/agents/planning/00-overview/12-repo-sync-and-drift-ledger.md",
+      "mode": "canonical"
+    },
+    {
       "path": "/Users/ww/dev/projects/agents/config/opencode-dcp.jsonc",
       "mode": "canonical"
     },

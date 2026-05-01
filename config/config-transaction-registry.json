@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "modes": {
+    "canonical": "Repo-owned source file. Edit directly through normal repo review.",
+    "generated": "Derived output. Regenerate from canonical sources instead of hand-editing.",
+    "merged": "Live or global user config. Use preview, backup, redaction, explicit approval, apply, and rollback.",
+    "symlink": "Pointer to canonical repo source. Verify target and do not overwrite unrelated user files.",
+    "symlinked-entries": "Directory with repo-managed symlink entries. Preserve unrelated user-owned entries."
+  },
+  "global_config_rules": [
+    "Never mutate live global config during planning or dry-run.",
+    "Before apply, produce a preview that redacts secrets and private token values.",
+    "Before apply, create a backup snapshot outside generated repo outputs.",
+    "After apply, run a targeted validation or smoke check for the touched harness.",
+    "Rollback must restore the pre-apply snapshot without touching unrelated user-owned entries."
+  ],
+  "redaction_rules": [
+    "Never print secret values from .env files or global app configs.",
+    "Render credential references as environment variable names or deterministic fingerprints only.",
+    "Redact auth tokens, cookies, API keys, OAuth refresh tokens, private keys, and browser profile secrets.",
+    "Treat desktop app configs as sensitive even when they are JSON."
+  ],
+  "fixture_classes": [
+    "preview",
+    "idempotent-rerun",
+    "global-merge",
+    "rollback",
+    "redaction",
+    "generated-source-trace",
+    "no-fabricated-skill-claim"
+  ]
+}

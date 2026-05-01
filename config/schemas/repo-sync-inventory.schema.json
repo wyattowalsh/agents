@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RepoSyncInventory",
+  "type": "object",
+  "required": ["version", "source_ref", "records"],
+  "properties": {
+    "version": {"const": 1},
+    "source_ref": {"const": "config/sync-manifest.json"},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "mode",
+          "location_class",
+          "source_tier",
+          "owner_change",
+          "drift_policy",
+          "validation_evidence",
+          "secret_handling"
+        ],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "mode": {"enum": ["canonical", "generated", "merged", "symlink", "symlinked-entries"]},
+          "location_class": {"enum": ["repo", "home", "application-support", "cache", "unknown"]},
+          "source_tier": {
+            "enum": ["canonical-source", "generated-output", "merged-live-config", "symlink-target", "local-runtime"]
+          },
+          "owner_change": {"type": "string", "pattern": "^(agents-c[0-9]{2}-.+|agents-platform-overhaul)$"},
+          "drift_policy": {"enum": ["canonical", "generated", "merged", "symlink", "symlinked-entries"]},
+          "validation_evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "secret_handling": {"enum": ["not-secret-bearing", "path-only", "redacted", "unknown"]},
+          "notes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "registry_source": "config/mcp-registry.json",
+  "owner_change": "agents-c03-mcp-audit",
+  "status": "requirements-only",
+  "required_fields": {
+    "transport_model": {
+      "description": "How the MCP server connects to the harness.",
+      "allowed_values": ["stdio", "http", "sse", "websocket", "remote-wrapper", "unknown"]
+    },
+    "auth_model": {
+      "description": "How authentication is supplied, if any.",
+      "allowed_values": ["none", "environment-variable", "oauth", "browser-profile", "local-config", "remote-service", "unknown"]
+    },
+    "secrets_model": {
+      "description": "How secrets are referenced and redacted.",
+      "allowed_values": ["none", "env-ref-only", "credential-file", "browser-profile", "unknown"]
+    },
+    "sandbox_model": {
+      "description": "What runtime and filesystem boundary contains the MCP server.",
+      "allowed_values": ["repo-local", "user-global", "container", "browser-profile", "remote-service", "unknown"]
+    },
+    "smoke_fixture": {
+      "description": "A safe non-mutating command/tool call that proves startup and basic behavior.",
+      "required": true
+    },
+    "skill_replacement_fit": {
+      "description": "Whether static behavior should move to a deterministic skill instead of MCP.",
+      "allowed_values": ["keep-mcp", "prefer-skill", "split-skill-and-mcp", "unknown"]
+    }
+  },
+  "classification_rules": [
+    "Use MCP only for live external state, authenticated SaaS, browser/runtime state, telemetry streams, current docs/search, or persistent query services.",
+    "Prefer skills for deterministic static transformations, docs generation, local file analysis, and CLI-backed workflows.",
+    "Every credentialed MCP must use env references or redacted fingerprints in generated output.",
+    "Every remote MCP must document transport, auth, timeout, retry, and failure behavior before validation."
+  ],
+  "validation_commands": [
+    "uv run wagents openspec validate",
+    "uv run pytest tests/test_distribution_metadata.py"
+  ]
+}

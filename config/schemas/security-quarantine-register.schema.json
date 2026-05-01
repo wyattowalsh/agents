@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SecurityQuarantineRegister",
+  "type": "object",
+  "required": ["version", "owner_change", "status", "quarantine_triggers", "external_repo_records", "exception_workflow"],
+  "properties": {
+    "version": {"const": 1},
+    "owner_change": {"const": "agents-c15-security-quarantine"},
+    "status": {"const": "deny-by-default"},
+    "quarantine_triggers": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "external_repo_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "repo", "trigger", "default_action", "required_review"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^EXT-[0-9]{3}$"},
+          "repo": {"type": "string", "minLength": 1},
+          "trigger": {"type": "string", "minLength": 1},
+          "default_action": {"type": "string", "minLength": 1},
+          "required_review": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "exception_workflow": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

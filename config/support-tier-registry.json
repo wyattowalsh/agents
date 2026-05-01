@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "tiers": {
+    "validated": {
+      "description": "Repo has observed surface evidence, fixture coverage, rollback notes, and validation command coverage.",
+      "docs_label": "Validated",
+      "promotion_allowed": true
+    },
+    "repo-present-validation-required": {
+      "description": "Repo has paths, manifests, generated artifacts, or sync entries, but needs fixture-backed validation before support is presented as complete.",
+      "docs_label": "Repo-present, validation required",
+      "promotion_allowed": false
+    },
+    "planned-research-backed": {
+      "description": "Surface is backed by user intent, planning research, or external evidence, but local support is not verified.",
+      "docs_label": "Planned, research-backed",
+      "promotion_allowed": false
+    },
+    "experimental": {
+      "description": "Surface exists or is requested, but behavior is unstable, incomplete, or mostly a blind spot.",
+      "docs_label": "Experimental",
+      "promotion_allowed": false
+    },
+    "unverified": {
+      "description": "Surface is mentioned but not yet grounded in repo files, first-party docs, or fixtures.",
+      "docs_label": "Unverified",
+      "promotion_allowed": false
+    },
+    "unsupported": {
+      "description": "Surface is intentionally not projected by this repository.",
+      "docs_label": "Unsupported",
+      "promotion_allowed": false
+    },
+    "quarantine": {
+      "description": "Surface touches credential reuse, auth bridging, proxying, offensive tooling, or other high-risk behavior requiring security-lane approval.",
+      "docs_label": "Quarantine",
+      "promotion_allowed": false
+    }
+  },
+  "rules": [
+    "A surface cannot be marked validated without fixture evidence and rollback coverage.",
+    "Experimental and planned surfaces must not appear as supported in generated install commands.",
+    "Quarantine surfaces require security-lane approval before any promotion or default enablement.",
+    "Generated docs must preserve the exact tier vocabulary from this registry."
+  ]
+}

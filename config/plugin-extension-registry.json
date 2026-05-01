@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "support_tiers_ref": "config/support-tier-registry.json",
+  "plugins": [
+    {
+      "id": "claude-code-plugin",
+      "harness": "claude-code",
+      "kind": "native-plugin-manifest",
+      "source_paths": [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"],
+      "support_tier": "repo-present-validation-required",
+      "owner_change": "agents-c04-claude-harness",
+      "validation_requirements": ["manifest schema", "marketplace fixture", "rollback notes"]
+    },
+    {
+      "id": "codex-plugin",
+      "harness": "codex",
+      "kind": "native-plugin-manifest",
+      "source_paths": [".codex-plugin/plugin.json", ".agents/plugins/marketplace.json"],
+      "support_tier": "repo-present-validation-required",
+      "owner_change": "agents-c04-openai-harness",
+      "validation_requirements": ["manifest schema", "marketplace fixture", "rollback notes"]
+    },
+    {
+      "id": "opencode-runtime-plugins",
+      "harness": "opencode",
+      "kind": "runtime-plugin-array",
+      "source_paths": ["opencode.json", ".opencode-plugin/"],
+      "support_tier": "repo-present-validation-required",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "validation_requirements": ["@latest dist-tag check", "plugin placement fixture", "model-neutral policy fixture"]
+    },
+    {
+      "id": "cherry-studio-mcp-import",
+      "harness": "cherry-studio",
+      "kind": "desktop-mcp-import",
+      "source_paths": ["config/sync-manifest.json"],
+      "support_tier": "experimental",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "validation_requirements": ["MCP import fixture", "global config rollback fixture"]
+    }
+  ],
+  "rules": [
+    "Plugins are native projections of canonical repo assets, not independent sources of truth.",
+    "Runtime plugin arrays must preserve user-owned local settings when merged.",
+    "Desktop app import surfaces remain experimental until fixture-backed."
+  ]
+}

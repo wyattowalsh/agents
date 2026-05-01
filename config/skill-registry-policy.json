@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "support_tiers_ref": "config/support-tier-registry.json",
+  "canonical_sources": [
+    "skills/",
+    "agents-overhaul-planning/planning/manifests/external-repo-evaluation-final.json",
+    "planning/manifests/external-repo-evaluation-summary.json"
+  ],
+  "source_classes": {
+    "repo-owned": {
+      "description": "Tracked skills under skills/ with validated frontmatter and package dry-run coverage.",
+      "default_tier": "validated"
+    },
+    "official-vendor-external": {
+      "description": "External vendor-owned skills, such as Google, Microsoft, Supabase, or Cloudflare packs.",
+      "default_tier": "repo-present-validation-required"
+    },
+    "community-external": {
+      "description": "Community skills and awesome lists used as discovery input.",
+      "default_tier": "planned-research-backed"
+    },
+    "quarantine-external": {
+      "description": "External skills touching offensive security, credentials, proxies, or other high-risk behavior.",
+      "default_tier": "quarantine"
+    }
+  },
+  "promotion_gates": [
+    "source-list evidence",
+    "pinned revision",
+    "license compatibility",
+    "maintainer/activity review",
+    "executable-surface review",
+    "credential/network/filesystem behavior review",
+    "fixture coverage",
+    "rollback plan",
+    "OpenSpec mapping",
+    "docs/instruction sync plan"
+  ],
+  "script_requirements": [
+    "--help",
+    "--json",
+    "--dry-run or documented exception"
+  ]
+}

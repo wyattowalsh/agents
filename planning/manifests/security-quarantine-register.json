@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "owner_change": "agents-c15-security-quarantine",
+  "status": "deny-by-default",
+  "quarantine_triggers": [
+    "auth-bridging",
+    "credential-sharing",
+    "account proxying",
+    "browser profile credential access",
+    "offensive security workflows",
+    "opaque remote execution",
+    "unreviewed telemetry upload"
+  ],
+  "external_repo_records": [
+    {
+      "id": "EXT-011",
+      "repo": "Soju06/codex-lb",
+      "trigger": "account proxying",
+      "default_action": "quarantine-reference",
+      "required_review": ["threat model", "credential behavior", "network egress", "legal/terms risk"]
+    },
+    {
+      "id": "EXT-015",
+      "repo": "rynfar/meridian",
+      "trigger": "auth-bridging",
+      "default_action": "quarantine-reference",
+      "required_review": ["threat model", "credential behavior", "account sharing risk"]
+    },
+    {
+      "id": "EXT-017",
+      "repo": "griffinmartin/opencode-claude-auth",
+      "trigger": "credential reuse",
+      "default_action": "local-user-owned-reference-only",
+      "required_review": ["threat model", "local config boundary", "no repo default enablement"]
+    },
+    {
+      "id": "EXT-084",
+      "repo": "SnailSploit/Claude-Red",
+      "trigger": "offensive security workflows",
+      "default_action": "quarantine",
+      "required_review": ["red-team scope", "safe-use policy", "separate install profile", "explicit user approval"]
+    }
+  ],
+  "exception_workflow": [
+    "Create or reference an OpenSpec change owned by agents-c15-security-quarantine.",
+    "Record pinned source, license, maintainer posture, executable surface, and credential behavior.",
+    "Write a threat model covering assets, actors, abuse paths, containment, rollback, and audit logs.",
+    "Require explicit user approval before install, promotion, or default enablement.",
+    "Keep any approved use out of default install commands unless a later release explicitly promotes it."
+  ]
+}

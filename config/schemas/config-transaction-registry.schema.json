@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ConfigTransactionRegistry",
+  "type": "object",
+  "required": ["version", "modes", "global_config_rules", "redaction_rules", "fixture_classes"],
+  "properties": {
+    "version": {"const": 1},
+    "modes": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
+    "global_config_rules": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "redaction_rules": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "fixture_classes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PluginExtensionRegistry",
+  "type": "object",
+  "required": ["version", "support_tiers_ref", "plugins", "rules"],
+  "properties": {
+    "version": {"const": 1},
+    "support_tiers_ref": {"const": "config/support-tier-registry.json"},
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "harness", "kind", "source_paths", "support_tier", "owner_change", "validation_requirements"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "harness": {"type": "string", "minLength": 1},
+          "kind": {"type": "string", "minLength": 1},
+          "source_paths": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "support_tier": {"type": "string", "minLength": 1},
+          "owner_change": {"type": "string", "pattern": "^agents-c[0-9]{2}-.+"},
+          "validation_requirements": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    },
+    "rules": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}
