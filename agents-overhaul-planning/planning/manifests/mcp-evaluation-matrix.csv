@@ -1,0 +1,9 @@
+id,category,tier_target,why_mcp_not_skill,preferred_install,risk_notes
+context7,dynamic-docs,validated,current docs change over time,npx/remote,verify source and auth requirements
+chrome-devtools,browser-runtime,validated,requires live browser runtime,npx,browser profile isolation
+playwright,browser-runtime,validated,requires browser control,npx,avoid production credentials
+perplexity,research,validated,requires live web/search/reasoning API,npx,API key handling
+notion,workspace-state,validated,requires authenticated workspace state,remote/http,OAuth and least privilege
+linear,issue-tracker,validated,requires live issue state,remote/http,OAuth and project scope
+atlassian,work-management,validated,requires Jira/Confluence state,remote/http,OAuth and enterprise admin controls
+cherry-fetch,web-fetch,experimental,desktop-specific built-in MCP,uvx,Cherry auto-install beta

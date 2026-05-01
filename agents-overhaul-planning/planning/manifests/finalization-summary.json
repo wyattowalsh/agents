@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-05-01T10:44:04.042207+00:00",
+  "base_zip": "agents-overhaul-planning-docs-maximal.zip",
+  "final_file_count": 245,
+  "external_repo_count": 93,
+  "final_task_count": 854,
+  "new_external_task_count": 372,
+  "codex_master_prompt": "planning/99-task-graph/codex-master-orchestration-prompt.md"
+}

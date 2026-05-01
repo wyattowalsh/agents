@@ -1,0 +1,248 @@
+version: 2
+status: draft
+harnesses:
+  - id: claude-code
+    display: "Claude Code"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "Agent Skills + Claude Code plugin"
+    secondary_lane: "MCP for live systems"
+    install_preference: "npx skills add github:wyattowalsh/agents ...; plugin marketplace/package flow when stable"
+    stability: "official-docs-backed"
+    repo_artifacts:
+      - ".claude/"
+      - ".claude-plugin/"
+      - "CLAUDE.md"
+      - "skills/"
+      - "instructions/"
+    official_surfaces:
+      - "skills"
+      - "plugins"
+      - "subagents"
+      - "hooks"
+      - "MCP"
+      - "settings scopes"
+      - "memory"
+    idiosyncrasies:
+      - "Subagents must explicitly receive/preload skills; do not rely on inherited parent skill context."
+      - "Plugin subagents have constraints that differ from user/project subagents."
+      - "Hooks are powerful and require explicit safety review."
+  - id: claude-desktop
+    display: "Claude Desktop"
+    support_tier: "planned-from-shared-artifacts"
+    preferred_extension_lane: "Agent Skills where surfaced by client; otherwise Desktop Extensions/MCP"
+    secondary_lane: "local MCP Desktop Extensions"
+    install_preference: "prefer packaged extension where available; otherwise explicit stdio MCP config with pinned commands"
+    stability: "official-docs-backed-partial"
+    repo_artifacts:
+      - "mcp/"
+      - "config/"
+      - "skills/"
+    official_surfaces:
+      - "MCP"
+      - "Desktop Extensions"
+    idiosyncrasies:
+      - "Desktop extension packaging is separate from Claude Code plugin packaging."
+      - "Skill support depends on client surface; do not assume parity with Claude Code."
+  - id: chatgpt
+    display: "ChatGPT"
+    support_tier: "planned-research-backed"
+    preferred_extension_lane: "Custom GPT instructions + Actions/OpenAPI; Apps SDK where preview accepted"
+    secondary_lane: "MCP via Apps SDK developer mode / app model"
+    install_preference: "generated OpenAPI/action schema and hosted docs; no repo-local npx projection unless wrapper exposes API"
+    stability: "official-docs-backed-preview-for-apps"
+    repo_artifacts:
+      - "AGENTS.md"
+      - "docs/"
+      - "instructions/"
+    official_surfaces:
+      - "Custom GPTs"
+      - "Actions"
+      - "Apps SDK"
+      - "tools"
+      - "knowledge"
+    idiosyncrasies:
+      - "GPT can use either apps or actions but not both at the same time."
+      - "Public GPTs with actions require privacy policy URL."
+      - "Apps SDK is preview; treat as experimental."
+  - id: codex
+    display: "OpenAI Codex"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "AGENTS.md + skill-compatible docs/scripts + optional MCP docs server"
+    secondary_lane: "MCP for developer docs/live APIs"
+    install_preference: "repo-native AGENTS.md plus codex mcp add for official docs MCP where needed"
+    stability: "official-docs-backed-partial"
+    repo_artifacts:
+      - "AGENTS.md"
+      - ".codex-plugin/"
+      - "instructions/"
+    official_surfaces:
+      - "AGENTS.md"
+      - "sandboxed tasks"
+      - "MCP config"
+    idiosyncrasies:
+      - "Codex task evidence should include terminal logs/test outputs."
+      - "Agent changes require human review before merge."
+  - id: github-copilot-web
+    display: "GitHub Copilot Web"
+    support_tier: "planned-research-backed"
+    preferred_extension_lane: "repository instructions + AGENTS.md + skills/custom agents where available"
+    secondary_lane: "GitHub MCP / Actions / Apps integration"
+    install_preference: "repo-local .github instructions and generated skill folders"
+    stability: "official-docs-backed"
+    repo_artifacts:
+      - ".github/"
+      - "AGENTS.md"
+      - "instructions/"
+    official_surfaces:
+      - "repository instructions"
+      - "AGENTS.md"
+      - "custom instructions"
+      - "MCP"
+      - "agents/skills in Copilot ecosystem"
+    idiosyncrasies:
+      - "Nearest AGENTS.md precedence matters for nested docs."
+      - "Instructions are always-on; skills should remain task-scoped."
+  - id: github-copilot-cli
+    display: "GitHub Copilot CLI"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "Copilot CLI skills"
+    secondary_lane: "MCP for live GitHub/stateful systems"
+    install_preference: "project skills in .github/skills, .claude/skills, or .agents/skills; npx skills add external skills"
+    stability: "official-docs-backed"
+    repo_artifacts:
+      - ".agents/plugins"
+      - ".github/"
+      - "skills/"
+    official_surfaces:
+      - "skills"
+      - "custom agents"
+      - "MCP"
+      - "slash commands"
+    idiosyncrasies:
+      - "GitHub MCP may be configured by default; avoid duplicating unsafe GitHub MCP entries."
+      - "Personal and project skill directories can collide."
+  - id: opencode
+    display: "OpenCode"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "OpenCode skills + plugins + instructions"
+    secondary_lane: "MCP for live systems"
+    install_preference: "project .opencode directories, opencode.json, and npx/uvx MCP commands"
+    stability: "official-docs-backed"
+    repo_artifacts:
+      - ".opencode/"
+      - ".opencode-plugin/"
+      - "opencode.json"
+      - "opencode-setup/"
+    official_surfaces:
+      - "skills"
+      - "agents"
+      - "plugins"
+      - "MCP"
+      - "config scopes"
+      - "instructions"
+    idiosyncrasies:
+      - "OpenCode discovers .claude/skills and .agents/skills in addition to .opencode/skills."
+      - "Config precedence/merge order must be tested with fixtures."
+  - id: gemini-cli
+    display: "Gemini CLI"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "Gemini extensions + commands + context files; skill wrapper scripts where possible"
+    secondary_lane: "MCP servers in gemini-extension.json/settings"
+    install_preference: "extension manifest with mcpServers and context/commands; uvx for Python MCP/skills if applicable"
+    stability: "official/open-source-docs-backed"
+    repo_artifacts:
+      - "GEMINI.md"
+      - "instructions/"
+      - "skills/"
+    official_surfaces:
+      - "extensions"
+      - "custom commands"
+      - "context files"
+      - "MCP"
+      - "settings"
+    idiosyncrasies:
+      - "Tool collision prefixes and include/exclude merging must be modeled."
+      - "Extension configs can be overridden by workspace/user settings."
+  - id: cursor-editor
+    display: "Cursor Editor"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "rules + AGENTS.md + skill-compatible CLI/docs"
+    secondary_lane: "MCP configured project/global/nested"
+    install_preference: "generated .cursor/rules and shared skill docs; cursor-agent MCP config for live systems"
+    stability: "official-docs-backed"
+    repo_artifacts:
+      - ".cursor/rules"
+      - "AGENTS.md"
+      - "mcp/"
+      - "skills/"
+    official_surfaces:
+      - "rules"
+      - "memories"
+      - "AGENTS.md"
+      - "MCP"
+      - "background agents"
+    idiosyncrasies:
+      - ".cursorrules is deprecated."
+      - "Background agents run remote isolated environments and require secret/prompt-injection safeguards."
+  - id: cursor-agent
+    display: "Cursor Agent CLI/Web"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "non-interactive CLI + JSON/stream-json + rules/AGENTS.md"
+    secondary_lane: "MCP with shared editor config"
+    install_preference: "cursor-agent commands in docs and CI smoke tests; no unpinned remote tool writes"
+    stability: "official-docs-backed"
+    repo_artifacts:
+      - ".cursor/rules"
+      - "AGENTS.md"
+      - "mcp/"
+    official_surfaces:
+      - "CLI"
+      - "JSON output"
+      - "MCP"
+      - "web/mobile agents"
+      - "background agents"
+    idiosyncrasies:
+      - "Use JSON/stream-json for deterministic automation."
+      - "MCP config precedence is project/global/nested."
+  - id: antigravity
+    display: "Antigravity"
+    support_tier: "repo-present-experimental-contracts-unverified"
+    preferred_extension_lane: "rules/instructions only until official stable extension docs are verified"
+    secondary_lane: "none until authoritative MCP/skills/plugin contract confirmed"
+    install_preference: "copy/generate rules only; do not assume plugin/MCP support"
+    stability: "experimental/unverified"
+    repo_artifacts:
+      - ".antigravity/rules"
+    official_surfaces:
+      - "rules/instructions: validation required"
+    idiosyncrasies:
+      - "Official stable extension/plugin contracts were not verified in this research pass."
+  - id: perplexity-desktop
+    display: "Perplexity Desktop"
+    support_tier: "repo-present-experimental-contracts-unverified"
+    preferred_extension_lane: "skill-like docs/instructions if client supports them; otherwise no generated config writes"
+    secondary_lane: "Perplexity MCP server as service integration, not Desktop extension contract"
+    install_preference: "do not auto-write Desktop config until official contract exists"
+    stability: "partial/unverified-desktop"
+    repo_artifacts:
+      - ".perplexity/skills"
+    official_surfaces:
+      - "Perplexity MCP service docs; Desktop extension contract not verified"
+    idiosyncrasies:
+      - "Distinguish Perplexity API/MCP integration from Perplexity Desktop extension capability."
+  - id: cherry-studio
+    display: "Cherry Studio"
+    support_tier: "repo-present-validation-required"
+    preferred_extension_lane: "presets/assistants + MCP UI presets; skill-like prompts where possible"
+    secondary_lane: "MCP through Cherry Studio UI/built-in uv/bun"
+    install_preference: "uvx/npx command snippets and preset docs; avoid opaque auto-install without audit"
+    stability: "official/community-docs-backed"
+    repo_artifacts:
+      - ".cherry/presets"
+    official_surfaces:
+      - "MCP UI"
+      - "assistant/agent presets"
+      - "built-in MCP environment"
+    idiosyncrasies:
+      - "Cherry Studio may use built-in uv/bun rather than system uv/bun."
+      - "Auto-install MCP is beta and should require explicit consent."

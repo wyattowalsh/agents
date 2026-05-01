@@ -1,0 +1,11 @@
+id,change,priority,owner_cluster,primary_docs,acceptance_gate
+PC-001,Repo sync and OpenSpec reconciliation,P0,C00,planning/00-overview/05-repo-sync-analysis.md,repo-sync inventory exists
+PC-002,Canonical registries,P0,C01,planning/manifests/harness-registry.yaml,schema/golden tests pass
+PC-003,Skills-first packaging/lifecycle,P0,C02,planning/40-skills-ecosystem/00-skill-first-operating-model.md,skill validation passes
+PC-004,MCP live-systems curation,P1,C03,planning/15-ecosystem-research/mcp-registry-gapfill-watchlist.md,MCP audit complete
+PC-005,Harness projections,P1,C04,planning/20-harness-registry/00-capability-matrix.md,golden fixtures pass
+PC-006,Streamlined UX,P1,C05,planning/90-ui-ux/00-streamlined-ux.md,CLI snapshots pass
+PC-007,Transaction safety and supply chain,P0,C06,planning/50-config-safety/00-config-transaction-blueprint.md,rollback/security tests pass
+PC-008,CI/evals/observability,P1,C07,planning/60-ci-cd/00-quality-gates.md,CI gates pass
+PC-009,Docs and AI instructions as first-class artifacts,P0,C08,planning/60-ci-cd/docs-and-ai-instructions-ci.md,docs truth passes
+PC-010,Migration/release/archive,P2,C09,planning/95-migration/00-parallel-migration-plan.md,release checklist passes

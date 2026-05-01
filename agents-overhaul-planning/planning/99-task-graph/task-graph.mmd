@@ -1,0 +1,23 @@
+flowchart LR
+  C00[C00: Repo Sync and OpenSpec Reconciliation]
+  C01[C01: Canonical Registry Core]
+  C02[C02: Skills-First Packaging and Lifecycle]
+  C03[C03: MCP Curation and Live-Systems Layer]
+  C04[C04: Harness-Specific Projections]
+  C05[C05: CLI/UI Automation]
+  C06[C06: Config Safety and Supply Chain]
+  C07[C07: CI/CD, Evals, and Observability]
+  C08[C08: Docs and AI Instructions]
+  C09[C09: Migration and Release]
+  C00 --> C01
+  C01 --> C02
+  C01 --> C03
+  C02 --> C04
+  C03 --> C04
+  C01 --> C05
+  C01 --> C06
+  C01 --> C07
+  C01 --> C08
+  C05 --> C09
+  C07 --> C09
+  C08 --> C09

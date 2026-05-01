@@ -1,0 +1,217 @@
+{
+  "agentskills_spec": {
+    "title": "Agent Skills Specification",
+    "url": "https://agentskills.io/specification",
+    "notes": "Defines SKILL.md, frontmatter, scripts/references/assets, progressive disclosure, validation."
+  },
+  "skills_sh": {
+    "title": "skills.sh documentation",
+    "url": "https://skills.sh/docs",
+    "notes": "Documents npx skills add, leaderboard, telemetry, security caveats."
+  },
+  "github_copilot_skills": {
+    "title": "GitHub Copilot agent skills docs",
+    "url": "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-skills",
+    "notes": "Defines project/personal skill locations, gh skill preview/install/update/publish, pinning, warning about unverified skills."
+  },
+  "github_copilot_custom_agents": {
+    "title": "GitHub Copilot custom agents docs",
+    "url": "https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-custom-agents",
+    "notes": "Defines repo and org/enterprise custom agent profile locations and cross-surface usage."
+  },
+  "github_copilot_agent_config": {
+    "title": "GitHub custom agents configuration reference",
+    "url": "https://docs.github.com/en/copilot/reference/custom-agents-configuration",
+    "notes": "Documents YAML frontmatter, tool selection, MCP server config, secret syntax, public-preview caveats."
+  },
+  "claude_code_skills": {
+    "title": "Claude Code skills",
+    "url": "https://docs.claude.com/en/docs/claude-code/skills",
+    "notes": "Defines personal/project/plugin skills, model invocation, allowed-tools, team sharing."
+  },
+  "claude_code_plugins": {
+    "title": "Claude Code plugins",
+    "url": "https://code.claude.com/docs/en/plugins",
+    "notes": "Plugins bundle commands, agents, hooks, skills, MCP servers, LSP servers, monitors."
+  },
+  "claude_code_hooks": {
+    "title": "Claude Code hooks",
+    "url": "https://code.claude.com/docs/en/hooks",
+    "notes": "Documents hook event types and command/http/mcp_tool/prompt/agent hook behavior."
+  },
+  "openai_apps_sdk": {
+    "title": "OpenAI Apps SDK help",
+    "url": "https://help.openai.com/en/articles/12515353-build-with-the-apps-sdk",
+    "notes": "Apps SDK is preview, built on MCP, enables ChatGPT app UI and logic."
+  },
+  "openai_gpt_actions": {
+    "title": "OpenAI GPT Actions configuration",
+    "url": "https://help.openai.com/en/articles/9442513-configuring-actions-in-gpts",
+    "notes": "Actions use OpenAPI schema and auth modes none/API key/OAuth; GPTs use apps or actions but not both."
+  },
+  "openai_docs_mcp": {
+    "title": "OpenAI Docs MCP",
+    "url": "https://platform.openai.com/docs/docs-mcp",
+    "notes": "Documents public OpenAI developer docs MCP server and Codex/Cursor/VS Code installation examples."
+  },
+  "codex_launch": {
+    "title": "OpenAI Codex launch",
+    "url": "https://openai.com/index/introducing-codex/",
+    "notes": "Codex runs tasks in cloud sandbox environments and can perform many tasks in parallel."
+  },
+  "openai_agents_sdk": {
+    "title": "OpenAI Agents SDK",
+    "url": "https://platform.openai.com/docs/guides/agents-sdk/",
+    "notes": "Agents SDK supports tools, handoffs, streaming, and tracing."
+  },
+  "cursor_cli": {
+    "title": "Cursor CLI docs",
+    "url": "https://docs.cursor.com/en/cli",
+    "notes": "Cursor CLI supports interactive and non-interactive terminal agents."
+  },
+  "cursor_cli_using": {
+    "title": "Cursor CLI usage",
+    "url": "https://docs.cursor.com/en/cli/using",
+    "notes": "CLI reads MCP config, rules, AGENTS.md and CLAUDE.md, supports --output-format json/text."
+  },
+  "cursor_mcp_cli": {
+    "title": "Cursor CLI MCP",
+    "url": "https://docs.cursor.com/cli/mcp",
+    "notes": "cursor-agent mcp list/list-tools/login/disable and shared editor/CLI config."
+  },
+  "cursor_background": {
+    "title": "Cursor background agents",
+    "url": "https://docs.cursor.com/en/background-agents",
+    "notes": "Background agents run in isolated Ubuntu machines, use GitHub integration, environment.json, encrypted secrets, and auto-run commands."
+  },
+  "cursor_background_api": {
+    "title": "Cursor Background Agents API",
+    "url": "https://docs.cursor.com/background-agent/api/overview",
+    "notes": "Beta API for programmatically creating/managing background agents; up to 256 active agents per API key."
+  },
+  "opencode_skills": {
+    "title": "OpenCode skills",
+    "url": "https://opencode.ai/docs/skills",
+    "notes": "OpenCode discovers .opencode/skills, .claude/skills, .agents/skills, global config equivalents."
+  },
+  "gemini_extensions": {
+    "title": "Gemini CLI extensions",
+    "url": "https://google-gemini.github.io/gemini-cli/docs/extensions/",
+    "notes": "Gemini extensions package prompts, MCP servers, custom commands; workspace config takes precedence."
+  },
+  "gemini_extensions_getting_started": {
+    "title": "Gemini CLI extension getting started",
+    "url": "https://google-gemini.github.io/gemini-cli/docs/extensions/getting-started-extensions.html",
+    "notes": "gemini extensions new/install/update flows and gemini-extension.json structure."
+  },
+  "gemini_mcp_config": {
+    "title": "Gemini CLI MCP configuration",
+    "url": "https://gemini-cli.xyz/docs/en/get-started/configuration",
+    "notes": "mcpServers support command/url/httpUrl precedence and tool name conflict prefixing."
+  },
+  "cherry_mcp_config": {
+    "title": "Cherry Studio MCP config",
+    "url": "https://docs.cherry-ai.com/docs/en-us/advanced-basic/mcp/config",
+    "notes": "Cherry MCP UI can configure stdio servers with command uvx and args."
+  },
+  "cherry_mcp_install": {
+    "title": "Cherry Studio MCP environment install",
+    "url": "https://docs.cherry-ai.com/docs/en-us/advanced-basic/mcp/install",
+    "notes": "Cherry uses built-in uv and bun in ~/.cherrystudio/bin rather than system installs."
+  },
+  "cherry_mcp_auto": {
+    "title": "Cherry Studio automatic MCP install",
+    "url": "https://docs.cherry-ai.com/docs/en-us/advanced-basic/mcp/auto-install",
+    "notes": "Auto-install requires v1.1.18+ and is currently testing-phase."
+  },
+  "perplexity_local_mcp": {
+    "title": "Perplexity local and remote MCPs",
+    "url": "https://www.perplexity.ai/help-center/en/articles/11502712-local-and-remote-mcps-for-perplexity",
+    "notes": "Local MCP available for macOS Mac App Store app; remote MCP coming soon; helper app required."
+  },
+  "perplexity_mcp_server": {
+    "title": "Perplexity MCP server",
+    "url": "https://docs.perplexity.ai/guides/mcp-server",
+    "notes": "Perplexity MCP server offers one-click Cursor/VS Code install and manual API-key setup."
+  },
+  "antigravity_google_blog": {
+    "title": "Google Developers Blog: Antigravity",
+    "url": "https://developers.googleblog.com/en/build-with-google-antigravity-our-new-agentic-development-platform/",
+    "notes": "Antigravity combines Editor View and Manager surface; agents operate across editor, terminal, browser and produce artifacts."
+  },
+  "google_gemini3_antigravity": {
+    "title": "Google Gemini 3 launch with Antigravity",
+    "url": "https://blog.google/products-and-platforms/products/gemini/gemini-3/",
+    "notes": "Gemini 3 announcement states Antigravity gives agents direct access to editor, terminal, browser and task-oriented operation."
+  },
+  "mcp_transports": {
+    "title": "MCP transports",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+    "notes": "MCP uses JSON-RPC over stdio and Streamable HTTP; clients should support stdio where possible; Streamable HTTP security warnings."
+  },
+  "mcp_authorization": {
+    "title": "MCP authorization",
+    "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+    "notes": "HTTP authorization is optional but OAuth 2.1-based when supported; stdio should retrieve credentials from environment."
+  },
+  "mcp_registry": {
+    "title": "Official MCP Registry",
+    "url": "https://modelcontextprotocol.io/registry/about",
+    "notes": "Official registry preview; breaking changes/data resets possible; server.json metadata, namespace verification."
+  },
+  "mcp_scan": {
+    "title": "Invariant MCP-Scan",
+    "url": "https://explorer.invariantlabs.ai/docs/mcp-scan/",
+    "notes": "Scans MCP configs for prompt injection, tool poisoning, rug pulls, cross-origin escalation; quickstart uvx mcp-scan@latest."
+  },
+  "pulsemcp": {
+    "title": "PulseMCP server directory",
+    "url": "https://www.pulsemcp.com/servers",
+    "notes": "Large MCP server directory with filters/classifications and usage-signal estimates."
+  },
+  "mcp_directory": {
+    "title": "MCP.Directory awesome MCP servers",
+    "url": "https://mcp.directory/awesome-mcp-servers",
+    "notes": "Curated category directory for browser, DB, search, developer tools, cloud, security, productivity."
+  },
+  "awesome_mcp_abordage": {
+    "title": "abordage/awesome-mcp",
+    "url": "https://github.com/abordage/awesome-mcp",
+    "notes": "Automated, curated, ranked MCP list updated daily with GitHub activity metrics."
+  },
+  "awesome_copilot": {
+    "title": "Awesome GitHub Copilot skills",
+    "url": "https://awesome-copilot.github.com/skills/",
+    "notes": "Community-created catalog with hundreds of Copilot agent skills."
+  },
+  "awesome_agent_skills": {
+    "title": "skillmatic-ai/awesome-agent-skills",
+    "url": "https://github.com/skillmatic-ai/awesome-agent-skills",
+    "notes": "Curated resources for Agent Skills."
+  },
+  "crewai_skills": {
+    "title": "CrewAI Skills",
+    "url": "https://docs.crewai.com/en/skills",
+    "notes": "CrewAI publishes official skill pack on skills.sh and installs via npx skills add crewaiinc/skills."
+  },
+  "openspec": {
+    "title": "OpenSpec official site",
+    "url": "https://openspec.dev/",
+    "notes": "OpenSpec organizes changes as proposal.md, design.md, tasks.md, specs/ deltas."
+  },
+  "otel_genai": {
+    "title": "OpenTelemetry GenAI semantic conventions",
+    "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+    "notes": "GenAI semantic conventions are development status; include metrics/spans/events and MCP semconv links."
+  },
+  "langfuse": {
+    "title": "Langfuse observability docs",
+    "url": "https://langfuse.com/docs/observability/overview",
+    "notes": "LLM tracing captures prompts, responses, token usage, latency, tools, retrieval steps; async SDK export."
+  },
+  "phoenix": {
+    "title": "Arize Phoenix docs",
+    "url": "https://arize.com/docs/phoenix",
+    "notes": "Phoenix provides tracing, evaluation, prompt engineering, datasets/experiments on OpenTelemetry/OpenInference."
+  }
+}

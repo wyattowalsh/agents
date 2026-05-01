@@ -1,0 +1,12 @@
+flowchart TD
+  OpenSpec[OpenSpec specs and changes] --> Registry[Canonical registries]
+  Instructions[Canonical instructions] --> Registry
+  Skills[Skills catalog] --> Registry
+  Plugins[Plugin catalog] --> Registry
+  MCP[MCP catalog] --> Registry
+  Registry --> Adapters[Harness adapters]
+  Adapters --> Configs[Harness configs]
+  Registry --> Docs[Generated docs]
+  Registry --> CI[Conformance CI]
+  CLI[wagents CLI] --> Registry
+  CLI --> Adapters

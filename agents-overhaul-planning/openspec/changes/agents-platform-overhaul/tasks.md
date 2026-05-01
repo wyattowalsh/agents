@@ -1,0 +1,339 @@
+# Tasks
+
+## Repo sync and governance
+- [ ] C00-001 Inventory latest repository tree and classify source/generated files
+- [ ] C00-002 Parse pyproject, package metadata, Makefile, uv.lock, and CLI entrypoints
+- [ ] C00-003 Inventory skills directory and validate every SKILL.md candidate
+- [ ] C00-004 Inventory MCP configs and normalize current MCP server records
+- [ ] C00-005 Inventory harness-specific directories and claim support tiers
+- [ ] C00-006 Detect README/raw-rendered quickstart drift and command inconsistencies
+- [ ] C00-007 Inventory docs and AI instruction files
+- [ ] C00-008 Inventory tests/CI workflows/pre-commit quality gates
+- [ ] C00-009 Inventory existing OpenSpec assets without overwriting them
+- [ ] C00-010 Generate repo-sync inventory JSON
+- [ ] C00-011 Generate initial drift report between planning bundle and live repo
+- [ ] C00-012 Reconcile OpenSpec active changes with planning docs
+- [ ] C00-013 Create OpenSpec-to-task-graph mapping table
+- [ ] C00-014 Freeze support-tier vocabulary
+- [ ] C00-015 Publish repo-sync analysis doc
+- [ ] C00-016 Define branch/PR naming convention for overhaul work
+- [ ] C00-017 Create conflict-surface map for generated docs and harness configs
+- [ ] C00-018 Add repo-sync CI smoke test fixture
+
+## Registry and extension model
+- [ ] C01-001 Define canonical harness registry JSON/YAML schema
+- [ ] C01-002 Define canonical skill registry schema
+- [ ] C01-003 Define canonical MCP registry schema
+- [ ] C01-004 Define plugin/extension registry schema
+- [ ] C01-005 Define docs artifact registry schema
+- [ ] C01-006 Define external capability catalog schema
+- [ ] C01-007 Define support-tier validation rules
+- [ ] C01-008 Define capability graph model and edges
+- [ ] C01-009 Implement registry loader and resolver interface design
+- [ ] C01-010 Create generated harness support matrix
+- [ ] C01-011 Create generated skill support matrix
+- [ ] C01-012 Create generated MCP risk matrix
+- [ ] C01-013 Create registry schema tests
+- [ ] C01-014 Create registry golden fixture set
+- [ ] C01-015 Add registry docs generation plan
+- [ ] C01-016 Add registry drift-detection plan
+- [ ] C01-017 Add registry diff report UX spec
+- [ ] C01-018 Lock registry schema version v1
+- [ ] C02-001 Normalize all local skills to Agent Skills package model
+- [ ] C02-002 Validate required SKILL.md frontmatter fields
+- [ ] C02-003 Move heavy reference content into references/assets for progressive disclosure
+- [ ] C02-004 Inventory scripts and classify execution risk
+- [ ] C02-005 Add CLI conformance fixture for each script-backed skill
+- [ ] C02-006 Define skill lockfile schema with source/ref/checksum
+- [ ] C02-007 Design npx skills lifecycle wrapper commands
+- [ ] C02-008 Evaluate skills.sh registry metadata and trust fields
+- [ ] C02-009 Evaluate Microsoft skills repo for reusable patterns
+- [ ] C02-010 Evaluate GitHub Awesome Copilot skills and agents
+- [ ] C02-011 Evaluate CrewAI skills pack
+- [ ] C02-012 Evaluate tech-leads agent-skills lockfile/hash patterns
+- [ ] C02-013 Create external skill adoption rubric
+- [ ] C02-014 Create skill signing/provenance plan
+- [ ] C02-015 Create skill update/rollback semantics
+- [ ] C02-016 Add skill install preview UX
+- [ ] C02-017 Add skill audit command spec
+- [ ] C02-018 Add skill docs generation spec
+- [ ] C02-019 Add skill security policy to AGENTS.md draft
+- [ ] C02-020 Add skill-vs-MCP replacement report
+- [ ] C02-021 Add skill fixture mode guidance
+- [ ] C02-022 Add skill telemetry/redaction guidance
+- [ ] C02-023 Create skill inventory JSON generator task
+- [ ] C02-024 Create first cohort of high-value adopted/adapted skills
+- [ ] C03-001 Scan Glama MCP index for candidate live-systems servers
+- [ ] C03-002 Scan PulseMCP index for candidate live-systems servers
+- [ ] C03-003 Scan MCP.so for candidate live-systems servers
+- [ ] C03-004 Scan Awesome MCP lists and extract high-signal upstream repos
+- [ ] C03-005 Normalize current repo MCP inventory into MCP registry
+- [ ] C03-006 Classify every MCP by domain and live-state necessity
+- [ ] C03-007 Classify transport: stdio, Streamable HTTP, deprecated SSE, other
+- [ ] C03-008 Classify auth model and secret requirements
+- [ ] C03-009 Mark static/redundant MCPs for skill replacement
+- [ ] C03-010 Promote browser automation MCP candidates for review
+- [ ] C03-011 Promote docs/search MCP candidates for review
+- [ ] C03-012 Promote GitHub/CI/cloud MCP candidates for review
+- [ ] C03-013 Reject or quarantine broad filesystem MCPs unless narrowly justified
+- [ ] C03-014 Run mcp-scan or equivalent scanner on current MCP configs
+- [ ] C03-015 Define MCP sandbox policy
+- [ ] C03-016 Define MCP pinning and tool-description diff policy
+- [ ] C03-017 Create MCP smoke test harness
+- [ ] C03-018 Create MCP risk matrix docs
+- [ ] C03-019 Create MCP deprecation/rollback plan
+- [ ] C03-020 Create MCP index refresh job spec
+- [ ] C03-021 Create MCP security exception template
+- [ ] C03-022 Create per-harness MCP projection fixtures
+- [ ] C03-023 Add MCP audit docs to README/docs plan
+- [ ] C03-024 Define uvx/npx install normalization for MCP servers
+
+## Harnesses
+- [ ] C04-001 Claude Code: Validate repo artifacts and support tier
+- [ ] C04-002 Claude Code: Map official extension/plugin/config surfaces
+- [ ] C04-003 Claude Code: Define skill projection behavior
+- [ ] C04-004 Claude Code: Define MCP projection behavior and constraints
+- [ ] C04-005 Claude Code: Define instruction/rules/doc projection behavior
+- [ ] C04-006 Claude Code: Create golden config fixtures
+- [ ] C04-007 Claude Code: Create harness-specific setup docs
+- [ ] C04-008 Claude Code: Create drift detection and repair behavior
+- [ ] C04-009 Claude Code: Create rollback validation fixture
+- [ ] C04-010 Claude Desktop: Validate repo artifacts and support tier
+- [ ] C04-011 Claude Desktop: Map official extension/plugin/config surfaces
+- [ ] C04-012 Claude Desktop: Define skill projection behavior
+- [ ] C04-013 Claude Desktop: Define MCP projection behavior and constraints
+- [ ] C04-014 Claude Desktop: Define instruction/rules/doc projection behavior
+- [ ] C04-015 Claude Desktop: Create golden config fixtures
+- [ ] C04-016 Claude Desktop: Create harness-specific setup docs
+- [ ] C04-017 Claude Desktop: Create drift detection and repair behavior
+- [ ] C04-018 Claude Desktop: Create rollback validation fixture
+- [ ] C04-019 ChatGPT: Validate repo artifacts and support tier
+- [ ] C04-020 ChatGPT: Map official extension/plugin/config surfaces
+- [ ] C04-021 ChatGPT: Define skill projection behavior
+- [ ] C04-022 ChatGPT: Define MCP projection behavior and constraints
+- [ ] C04-023 ChatGPT: Define instruction/rules/doc projection behavior
+- [ ] C04-024 ChatGPT: Create golden config fixtures
+- [ ] C04-025 ChatGPT: Create harness-specific setup docs
+- [ ] C04-026 ChatGPT: Create drift detection and repair behavior
+- [ ] C04-027 ChatGPT: Create rollback validation fixture
+- [ ] C04-028 OpenAI Codex: Validate repo artifacts and support tier
+- [ ] C04-029 OpenAI Codex: Map official extension/plugin/config surfaces
+- [ ] C04-030 OpenAI Codex: Define skill projection behavior
+- [ ] C04-031 OpenAI Codex: Define MCP projection behavior and constraints
+- [ ] C04-032 OpenAI Codex: Define instruction/rules/doc projection behavior
+- [ ] C04-033 OpenAI Codex: Create golden config fixtures
+- [ ] C04-034 OpenAI Codex: Create harness-specific setup docs
+- [ ] C04-035 OpenAI Codex: Create drift detection and repair behavior
+- [ ] C04-036 OpenAI Codex: Create rollback validation fixture
+- [ ] C04-037 GitHub Copilot Web: Validate repo artifacts and support tier
+- [ ] C04-038 GitHub Copilot Web: Map official extension/plugin/config surfaces
+- [ ] C04-039 GitHub Copilot Web: Define skill projection behavior
+- [ ] C04-040 GitHub Copilot Web: Define MCP projection behavior and constraints
+- [ ] C04-041 GitHub Copilot Web: Define instruction/rules/doc projection behavior
+- [ ] C04-042 GitHub Copilot Web: Create golden config fixtures
+- [ ] C04-043 GitHub Copilot Web: Create harness-specific setup docs
+- [ ] C04-044 GitHub Copilot Web: Create drift detection and repair behavior
+- [ ] C04-045 GitHub Copilot Web: Create rollback validation fixture
+- [ ] C04-046 GitHub Copilot CLI: Validate repo artifacts and support tier
+- [ ] C04-047 GitHub Copilot CLI: Map official extension/plugin/config surfaces
+- [ ] C04-048 GitHub Copilot CLI: Define skill projection behavior
+- [ ] C04-049 GitHub Copilot CLI: Define MCP projection behavior and constraints
+- [ ] C04-050 GitHub Copilot CLI: Define instruction/rules/doc projection behavior
+- [ ] C04-051 GitHub Copilot CLI: Create golden config fixtures
+- [ ] C04-052 GitHub Copilot CLI: Create harness-specific setup docs
+- [ ] C04-053 GitHub Copilot CLI: Create drift detection and repair behavior
+- [ ] C04-054 GitHub Copilot CLI: Create rollback validation fixture
+- [ ] C04-055 OpenCode: Validate repo artifacts and support tier
+- [ ] C04-056 OpenCode: Map official extension/plugin/config surfaces
+- [ ] C04-057 OpenCode: Define skill projection behavior
+- [ ] C04-058 OpenCode: Define MCP projection behavior and constraints
+- [ ] C04-059 OpenCode: Define instruction/rules/doc projection behavior
+- [ ] C04-060 OpenCode: Create golden config fixtures
+- [ ] C04-061 OpenCode: Create harness-specific setup docs
+- [ ] C04-062 OpenCode: Create drift detection and repair behavior
+- [ ] C04-063 OpenCode: Create rollback validation fixture
+- [ ] C04-064 Gemini CLI: Validate repo artifacts and support tier
+- [ ] C04-065 Gemini CLI: Map official extension/plugin/config surfaces
+- [ ] C04-066 Gemini CLI: Define skill projection behavior
+- [ ] C04-067 Gemini CLI: Define MCP projection behavior and constraints
+- [ ] C04-068 Gemini CLI: Define instruction/rules/doc projection behavior
+- [ ] C04-069 Gemini CLI: Create golden config fixtures
+- [ ] C04-070 Gemini CLI: Create harness-specific setup docs
+- [ ] C04-071 Gemini CLI: Create drift detection and repair behavior
+- [ ] C04-072 Gemini CLI: Create rollback validation fixture
+- [ ] C04-073 Cursor Editor: Validate repo artifacts and support tier
+- [ ] C04-074 Cursor Editor: Map official extension/plugin/config surfaces
+- [ ] C04-075 Cursor Editor: Define skill projection behavior
+- [ ] C04-076 Cursor Editor: Define MCP projection behavior and constraints
+- [ ] C04-077 Cursor Editor: Define instruction/rules/doc projection behavior
+- [ ] C04-078 Cursor Editor: Create golden config fixtures
+- [ ] C04-079 Cursor Editor: Create harness-specific setup docs
+- [ ] C04-080 Cursor Editor: Create drift detection and repair behavior
+- [ ] C04-081 Cursor Editor: Create rollback validation fixture
+- [ ] C04-082 Cursor Agent CLI/Web: Validate repo artifacts and support tier
+- [ ] C04-083 Cursor Agent CLI/Web: Map official extension/plugin/config surfaces
+- [ ] C04-084 Cursor Agent CLI/Web: Define skill projection behavior
+- [ ] C04-085 Cursor Agent CLI/Web: Define MCP projection behavior and constraints
+- [ ] C04-086 Cursor Agent CLI/Web: Define instruction/rules/doc projection behavior
+- [ ] C04-087 Cursor Agent CLI/Web: Create golden config fixtures
+- [ ] C04-088 Cursor Agent CLI/Web: Create harness-specific setup docs
+- [ ] C04-089 Cursor Agent CLI/Web: Create drift detection and repair behavior
+- [ ] C04-090 Cursor Agent CLI/Web: Create rollback validation fixture
+- [ ] C04-091 Antigravity: Validate repo artifacts and support tier
+- [ ] C04-092 Antigravity: Map official extension/plugin/config surfaces
+- [ ] C04-093 Antigravity: Define skill projection behavior
+- [ ] C04-094 Antigravity: Define MCP projection behavior and constraints
+- [ ] C04-095 Antigravity: Define instruction/rules/doc projection behavior
+- [ ] C04-096 Antigravity: Create golden config fixtures
+- [ ] C04-097 Antigravity: Create harness-specific setup docs
+- [ ] C04-098 Antigravity: Create drift detection and repair behavior
+- [ ] C04-099 Antigravity: Create rollback validation fixture
+- [ ] C04-100 Perplexity Desktop: Validate repo artifacts and support tier
+- [ ] C04-101 Perplexity Desktop: Map official extension/plugin/config surfaces
+- [ ] C04-102 Perplexity Desktop: Define skill projection behavior
+- [ ] C04-103 Perplexity Desktop: Define MCP projection behavior and constraints
+- [ ] C04-104 Perplexity Desktop: Define instruction/rules/doc projection behavior
+- [ ] C04-105 Perplexity Desktop: Create golden config fixtures
+- [ ] C04-106 Perplexity Desktop: Create harness-specific setup docs
+- [ ] C04-107 Perplexity Desktop: Create drift detection and repair behavior
+- [ ] C04-108 Perplexity Desktop: Create rollback validation fixture
+- [ ] C04-109 Cherry Studio: Validate repo artifacts and support tier
+- [ ] C04-110 Cherry Studio: Map official extension/plugin/config surfaces
+- [ ] C04-111 Cherry Studio: Define skill projection behavior
+- [ ] C04-112 Cherry Studio: Define MCP projection behavior and constraints
+- [ ] C04-113 Cherry Studio: Define instruction/rules/doc projection behavior
+- [ ] C04-114 Cherry Studio: Create golden config fixtures
+- [ ] C04-115 Cherry Studio: Create harness-specific setup docs
+- [ ] C04-116 Cherry Studio: Create drift detection and repair behavior
+- [ ] C04-117 Cherry Studio: Create rollback validation fixture
+
+## UX, safety, CI, docs, release
+- [ ] C05-001 Design wagents doctor output model
+- [ ] C05-002 Implement doctor prerequisites and harness detection spec
+- [ ] C05-003 Design catalog browse/explain UX
+- [ ] C05-004 Design skill add preview/apply UX
+- [ ] C05-005 Design MCP inspect/enable UX
+- [ ] C05-006 Design sync preview UX
+- [ ] C05-007 Design sync apply transaction UX
+- [ ] C05-008 Design rollback UX
+- [ ] C05-009 Design OpenSpec command group UX
+- [ ] C05-010 Define machine-readable JSON output formats for automation
+- [ ] C05-011 Define CLI error taxonomy and remediation hints
+- [ ] C05-012 Define dashboard information architecture
+- [ ] C05-013 Define skill catalog dashboard view
+- [ ] C05-014 Define MCP audit dashboard view
+- [ ] C05-015 Define config drift dashboard view
+- [ ] C05-016 Define transaction history dashboard view
+- [ ] C05-017 Define support matrix dashboard view
+- [ ] C05-018 Define guided onboarding wizard
+- [ ] C05-019 Create CLI golden snapshot tests
+- [ ] C05-020 Create dashboard wireframe docs
+- [ ] C06-001 Define transaction engine operation model
+- [ ] C06-002 Define backup snapshot format
+- [ ] C06-003 Define atomic file-write strategy
+- [ ] C06-004 Define rollback verification strategy
+- [ ] C06-005 Define secret redaction model
+- [ ] C06-006 Define environment overlay policy
+- [ ] C06-007 Define policy-as-code validation rules
+- [ ] C06-008 Define external skill source trust policy
+- [ ] C06-009 Define MCP source trust policy
+- [ ] C06-010 Define signing/checksum/provenance strategy
+- [ ] C06-011 Evaluate Sigstore/cosign for skill provenance
+- [ ] C06-012 Evaluate SBOM tooling for skill dependencies
+- [ ] C06-013 Evaluate OPA/Conftest for registry policy
+- [ ] C06-014 Define sandbox profiles for script-backed skills
+- [ ] C06-015 Define sandbox profiles for local MCP servers
+- [ ] C06-016 Define network access declaration schema
+- [ ] C06-017 Define prompt-injection and tool-poisoning mitigations
+- [ ] C06-018 Define security review checklist
+- [ ] C06-019 Create threat model docs
+- [ ] C06-020 Create security exception workflow
+- [ ] C07-001 Create registry schema validation CI gate
+- [ ] C07-002 Create skill validation CI gate
+- [ ] C07-003 Create skill CLI conformance CI gate
+- [ ] C07-004 Create MCP registry validation CI gate
+- [ ] C07-005 Create MCP smoke test CI gate
+- [ ] C07-006 Create MCP security scan CI gate
+- [ ] C07-007 Create adapter golden-fixture CI gate
+- [ ] C07-008 Create docs truth CI gate
+- [ ] C07-009 Create AI instruction truth CI gate
+- [ ] C07-010 Create OpenSpec validation CI gate
+- [ ] C07-011 Create transaction rollback CI gate
+- [ ] C07-012 Create repo-sync inventory CI gate
+- [ ] C07-013 Create eval scenario schema
+- [ ] C07-014 Create promptfoo/deepeval feasibility notes
+- [ ] C07-015 Create Microsoft skills scenario-harness adaptation note
+- [ ] C07-016 Create deterministic replay fixture design
+- [ ] C07-017 Create local audit log schema
+- [ ] C07-018 Create OpenTelemetry instrumentation plan
+- [ ] C07-019 Create run graph visualization spec
+- [ ] C07-020 Create cost telemetry design
+- [ ] C07-021 Create CI report dashboard spec
+- [ ] C07-022 Create failure remediation docs
+- [ ] C08-001 Canonicalize README quickstart and supported agents section
+- [ ] C08-002 Update README skill catalog section from skill inventory
+- [ ] C08-003 Update README MCP policy section from MCP inventory
+- [ ] C08-004 Update README OpenSpec governance section
+- [ ] C08-005 Update AGENTS.md with skill-first decision tree
+- [ ] C08-006 Update AGENTS.md with MCP safety policy
+- [ ] C08-007 Update CLAUDE.md with Claude Code skills/plugins/hooks/subagents guidance
+- [ ] C08-008 Update GEMINI.md with Gemini extension/MCP guidance
+- [ ] C08-009 Create .github/copilot-instructions.md projection
+- [ ] C08-010 Create .github/instructions scoped instruction docs
+- [ ] C08-011 Update Cursor rules docs and deprecate .cursorrules assumptions
+- [ ] C08-012 Update OpenCode setup docs
+- [ ] C08-013 Update Cherry Studio preset/setup docs
+- [ ] C08-014 Update Perplexity Desktop caveat docs
+- [ ] C08-015 Update Antigravity experimental caveat docs
+- [ ] C08-016 Create docs/skills.md from skill registry
+- [ ] C08-017 Create docs/mcp.md from MCP registry
+- [ ] C08-018 Create docs/harnesses index
+- [ ] C08-019 Create docs/security.md
+- [ ] C08-020 Create docs/config-transactions.md
+- [ ] C08-021 Create docs/openspec.md
+- [ ] C08-022 Create docs/external-capabilities.md
+- [ ] C08-023 Create docs/ui-ux.md
+- [ ] C08-024 Create docs/evals.md
+- [ ] C08-025 Create docs/observability.md
+- [ ] C08-026 Create docs/contributing.md overhaul section
+- [ ] C08-027 Create version/support matrix doc
+- [ ] C08-028 Create MCP audit report doc
+- [ ] C08-029 Create external skill audit report doc
+- [ ] C08-030 Create docs generation/check command docs
+- [ ] C09-001 Create phased rollout plan
+- [ ] C09-002 Create migration guide for existing users
+- [ ] C09-003 Create branch/PR integration policy
+- [ ] C09-004 Create support-tier changelog policy
+- [ ] C09-005 Create feature flag/preview policy
+- [ ] C09-006 Create backwards compatibility policy
+- [ ] C09-007 Create rollback playbook
+- [ ] C09-008 Create release checklist
+- [ ] C09-009 Create post-merge validation checklist
+- [ ] C09-010 Create OpenSpec archive checklist
+- [ ] C09-011 Create external dependency update cadence
+- [ ] C09-012 Create long-term maintenance backlog
+
+## Maximal planning-doc refactor addendum
+
+- [ ] Inventory latest repo paths and reconcile with planning docs before implementation.
+- [ ] Add skills-first registry and audit requirements.
+- [ ] Add MCP live-systems/replacement-by-skill requirements.
+- [ ] Add documentation-truth requirements for README, AGENTS.md, CLAUDE.md, GEMINI.md, Copilot instructions, docs, and generated matrices.
+- [ ] Add config transaction requirements for preview, backup, apply, validate, rollback.
+- [ ] Add harness-specific support-tier matrix requirements.
+- [ ] Add CI gates for skill spec, MCP scan, docs truth, OpenSpec validation, and task graph validation.
+- [ ] Add UI/UX requirements for doctor, catalog, sync, rollback, audit, skill, mcp, and openspec commands.
+
+
+
+## Final External Ecosystem and Codex Dispatch Additions
+
+Generated: `2026-05-01T10:44:04.042207+00:00`
+
+- [ ] Reconcile `planning/manifests/external-repo-evaluation-final.json` with local repo inventory.
+- [ ] Validate every external repo at pinned revision before promotion.
+- [ ] Run license/security/provenance review for all `adopt-candidates`, `adapt`, and `wrap` rows.
+- [ ] Add conformance fixtures before installing or wrapping any external skill/MCP/tool.
+- [ ] Quarantine auth-bridging, proxying, credential-sharing, and offensive-security repos.
+- [ ] Use child OpenSpec changes for each integration lane.
+- [ ] Generate docs and AI-instruction updates from manifests after schema freeze.

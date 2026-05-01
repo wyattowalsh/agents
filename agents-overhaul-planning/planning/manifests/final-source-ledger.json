@@ -1,0 +1,796 @@
+{
+  "generated_at": "2026-05-01T10:44:04.042207+00:00",
+  "sources": [
+    {
+      "id": "repo-agents-github",
+      "url": "https://github.com/wyattowalsh/agents",
+      "type": "repo",
+      "authority": "repo-source",
+      "notes": "Current public repo tree and README."
+    },
+    {
+      "id": "repo-agents-readme",
+      "url": "https://raw.githubusercontent.com/wyattowalsh/agents/main/README.md",
+      "type": "raw",
+      "authority": "repo-source",
+      "notes": "Quickstart, supported agents, wagents commands."
+    },
+    {
+      "id": "repo-agents-agentsmd",
+      "url": "https://raw.githubusercontent.com/wyattowalsh/agents/main/AGENTS.md",
+      "type": "raw",
+      "authority": "repo-source",
+      "notes": "Skill/MCP/instruction conventions."
+    },
+    {
+      "id": "repo-agents-pyproject",
+      "url": "https://raw.githubusercontent.com/wyattowalsh/agents/main/pyproject.toml",
+      "type": "raw",
+      "authority": "repo-source",
+      "notes": "wagents CLI and Python config."
+    },
+    {
+      "id": "repo-agents-mcp-json",
+      "url": "https://raw.githubusercontent.com/wyattowalsh/agents/main/mcp.json",
+      "type": "raw",
+      "authority": "repo-source",
+      "notes": "Current MCP config inventory."
+    },
+    {
+      "id": "agentskills-spec",
+      "url": "https://agentskills.io/specification",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "Agent Skills spec."
+    },
+    {
+      "id": "github-agent-skills",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/about-agent-skills",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "GitHub Agent Skills and Copilot surfaces."
+    },
+    {
+      "id": "mcp-spec",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "MCP protocol spec."
+    },
+    {
+      "id": "mcp-transports",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/transports",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "MCP stdio and Streamable HTTP transport rules."
+    },
+    {
+      "id": "mcp-auth",
+      "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "MCP auth guidance for HTTP transports and env credentials for stdio."
+    },
+    {
+      "id": "mcp-registry",
+      "url": "https://modelcontextprotocol.io/registry/about",
+      "type": "official-preview",
+      "authority": "official-preview",
+      "notes": "Official MCP Registry preview."
+    },
+    {
+      "id": "openspec",
+      "url": "https://openspec.dev/",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "OpenSpec workflow."
+    },
+    {
+      "id": "claude-code-skills",
+      "url": "https://docs.claude.com/en/docs/claude-code/skills",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "Claude Code skills."
+    },
+    {
+      "id": "codex-cli",
+      "url": "https://help.openai.com/en/articles/11096431-openai-codex-cli-getting-started",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "Codex CLI."
+    },
+    {
+      "id": "gemini-cli-extensions",
+      "url": "https://google-gemini.github.io/gemini-cli/docs/extensions/",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "Gemini CLI extensions."
+    },
+    {
+      "id": "opencode-skills",
+      "url": "https://opencode.ai/docs/skills",
+      "type": "official-doc",
+      "authority": "official",
+      "notes": "OpenCode skills."
+    },
+    {
+      "id": "mcp-glama",
+      "url": "https://glama.ai/mcp/servers",
+      "type": "index",
+      "authority": "community-index",
+      "notes": "MCP discovery input."
+    },
+    {
+      "id": "mcp-so",
+      "url": "https://mcp.so/",
+      "type": "index",
+      "authority": "community-index",
+      "notes": "MCP discovery input."
+    },
+    {
+      "id": "pulsemcp",
+      "url": "https://www.pulsemcp.com/servers",
+      "type": "index",
+      "authority": "community-index",
+      "notes": "MCP discovery input."
+    },
+    {
+      "id": "awesome-mcp-servers",
+      "url": "https://github.com/punkpeye/awesome-mcp-servers",
+      "type": "awesome-list",
+      "authority": "community-index",
+      "notes": "MCP discovery input."
+    },
+    {
+      "id": "ext-001",
+      "url": "https://github.com/JuliusBrussee/caveman",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "token-economy skill/plugin; action=adapt"
+    },
+    {
+      "id": "ext-002",
+      "url": "https://github.com/DeusData/codebase-memory-mcp",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "codebase memory MCP; action=wrap"
+    },
+    {
+      "id": "ext-003",
+      "url": "https://github.com/tirth8205/code-review-graph",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "code-review knowledge graph; action=adapt"
+    },
+    {
+      "id": "ext-004",
+      "url": "https://github.com/es617/claude-replay",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "session replay exporter; action=adapt"
+    },
+    {
+      "id": "ext-005",
+      "url": "https://github.com/Th0rgal/open-ralph-wiggum",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "ralph loop orchestrator; action=reference-only"
+    },
+    {
+      "id": "ext-006",
+      "url": "https://github.com/samber/cc-skills-golang",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "language skill pack; action=adapt"
+    },
+    {
+      "id": "ext-007",
+      "url": "https://github.com/rivet-dev/sandbox-agent",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "sandbox runtime/control API; action=adapt"
+    },
+    {
+      "id": "ext-008",
+      "url": "https://github.com/Prat011/awesome-llm-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "awesome skill list; action=reference-only"
+    },
+    {
+      "id": "ext-009",
+      "url": "https://github.com/jhlee0409/claude-code-history-viewer",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Claude history desktop viewer; action=adapt"
+    },
+    {
+      "id": "ext-010",
+      "url": "https://github.com/remorses/kimaki",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode Discord UI; action=reference-only"
+    },
+    {
+      "id": "ext-011",
+      "url": "https://github.com/Soju06/codex-lb",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Codex/ChatGPT account LB dashboard; action=reference-only"
+    },
+    {
+      "id": "ext-012",
+      "url": "https://github.com/kbwo/ccmanager",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "multi-agent session manager; action=adapt"
+    },
+    {
+      "id": "ext-013",
+      "url": "https://github.com/Ataraxy-Labs/opensessions",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "tmux agent session sidebar; action=adapt"
+    },
+    {
+      "id": "ext-014",
+      "url": "https://github.com/fynnfluegge/agtx",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "blackboard/task coordination; action=adapt"
+    },
+    {
+      "id": "ext-015",
+      "url": "https://github.com/rynfar/meridian",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Claude Max bridge/proxy; action=reference-only"
+    },
+    {
+      "id": "ext-016",
+      "url": "https://github.com/xintaofei/codeg",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent session aggregator; action=adapt"
+    },
+    {
+      "id": "ext-017",
+      "url": "https://github.com/griffinmartin/opencode-claude-auth",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode Claude auth plugin; action=reference-only"
+    },
+    {
+      "id": "ext-018",
+      "url": "https://github.com/NeoLabHQ/context-engineering-kit",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "context engineering skills; action=adopt-candidates"
+    },
+    {
+      "id": "ext-019",
+      "url": "https://github.com/rohitg00/skillkit",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "portable skill installer/translator; action=adapt"
+    },
+    {
+      "id": "ext-020",
+      "url": "https://github.com/first-fluke/oh-my-agent",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "portable .agents harness; action=adapt"
+    },
+    {
+      "id": "ext-021",
+      "url": "https://github.com/777genius/claude_agent_teams_ui",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "multi-agent kanban/control plane; action=adapt"
+    },
+    {
+      "id": "ext-022",
+      "url": "https://github.com/agent-sh/agentsys",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent package system; action=adapt"
+    },
+    {
+      "id": "ext-023",
+      "url": "https://github.com/happier-dev/happier",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "encrypted multi-agent client; action=reference-only"
+    },
+    {
+      "id": "ext-024",
+      "url": "https://github.com/guanyang/antigravity-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Antigravity skill pack; action=adapt"
+    },
+    {
+      "id": "ext-025",
+      "url": "https://github.com/kdcokenny/ocx",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode extension manager; action=adapt"
+    },
+    {
+      "id": "ext-026",
+      "url": "https://github.com/joelhooks/swarm-tools",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode swarm coordination; action=adapt"
+    },
+    {
+      "id": "ext-027",
+      "url": "https://github.com/hosenur/portal",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode web UI; action=adapt"
+    },
+    {
+      "id": "ext-028",
+      "url": "https://github.com/proxysoul/soulforge",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "graph-powered code intelligence; action=adapt"
+    },
+    {
+      "id": "ext-029",
+      "url": "https://github.com/Human-Agent-Society/CORAL",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "multi-agent self-evolution research infra; action=reference-only"
+    },
+    {
+      "id": "ext-030",
+      "url": "https://github.com/Weizhena/Deep-Research-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "deep research skill; action=adapt"
+    },
+    {
+      "id": "ext-031",
+      "url": "https://github.com/peters/horizon",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "terminal board/canvas; action=reference-only"
+    },
+    {
+      "id": "ext-032",
+      "url": "https://github.com/muxy-app/muxy",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "terminal runtime; action=reference-only"
+    },
+    {
+      "id": "ext-033",
+      "url": "https://github.com/0xranx/OpenContext",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "personal context store; action=adapt"
+    },
+    {
+      "id": "ext-034",
+      "url": "https://github.com/f/agentlytics",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent analytics dashboard; action=adapt"
+    },
+    {
+      "id": "ext-035",
+      "url": "https://github.com/kdcokenny/opencode-worktree",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode worktree manager; action=adapt"
+    },
+    {
+      "id": "ext-036",
+      "url": "https://github.com/cortexkit/opencode-magic-context",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode context optimizer; action=adapt"
+    },
+    {
+      "id": "ext-037",
+      "url": "https://github.com/borski/travel-hacking-toolkit",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "domain skill/toolkit; action=reference-only"
+    },
+    {
+      "id": "ext-038",
+      "url": "https://github.com/neiii/bridle",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "unknown/agent adjacent; action=intake-required"
+    },
+    {
+      "id": "ext-039",
+      "url": "https://github.com/instavm/open-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "open skills registry; action=adapt"
+    },
+    {
+      "id": "ext-040",
+      "url": "https://github.com/shekohex/opencode-pty",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode PTY integration; action=adapt"
+    },
+    {
+      "id": "ext-041",
+      "url": "https://github.com/Microck/opencode-studio",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode studio UI; action=adapt"
+    },
+    {
+      "id": "ext-042",
+      "url": "https://github.com/swarmclawai/swarmvault",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "swarm memory/vault; action=intake-required"
+    },
+    {
+      "id": "ext-043",
+      "url": "https://github.com/zenobi-us/opencode-skillful",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode skill integration; action=adapt"
+    },
+    {
+      "id": "ext-044",
+      "url": "https://github.com/zaxbysauce/opencode-swarm",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode swarm; action=adapt"
+    },
+    {
+      "id": "ext-045",
+      "url": "https://github.com/eqtylab/cupcake",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "provenance/verifiable AI artifacts; action=adapt"
+    },
+    {
+      "id": "ext-046",
+      "url": "https://github.com/opgginc/opencode-bar",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode status bar; action=adapt"
+    },
+    {
+      "id": "ext-047",
+      "url": "https://github.com/vivy-company/aizen",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent tool/UX; action=intake-required"
+    },
+    {
+      "id": "ext-048",
+      "url": "https://github.com/vbgate/opencode-mystatus",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode status plugin; action=adapt"
+    },
+    {
+      "id": "ext-049",
+      "url": "https://github.com/AkaraChen/aghub",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent hub/catalog; action=adapt"
+    },
+    {
+      "id": "ext-050",
+      "url": "https://github.com/code-yeongyu/oh-my-openagent",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent profile bundle; action=adapt"
+    },
+    {
+      "id": "ext-051",
+      "url": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Claude Code bundle; action=adapt"
+    },
+    {
+      "id": "ext-052",
+      "url": "https://github.com/kepano/obsidian-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Obsidian skill pack; action=adapt"
+    },
+    {
+      "id": "ext-053",
+      "url": "https://github.com/iOfficeAI/AionUi",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent UI/control plane; action=adapt"
+    },
+    {
+      "id": "ext-054",
+      "url": "https://github.com/manaflow-ai/cmux",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "multi-agent tmux/control; action=adapt"
+    },
+    {
+      "id": "ext-055",
+      "url": "https://github.com/mksglu/context-mode",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "context reduction/runtime; action=adapt"
+    },
+    {
+      "id": "ext-056",
+      "url": "https://github.com/humanlayer/humanlayer",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "human-in-the-loop approval; action=adapt"
+    },
+    {
+      "id": "ext-057",
+      "url": "https://github.com/anomalyco/opentui",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "terminal UI framework; action=adapt"
+    },
+    {
+      "id": "ext-058",
+      "url": "https://github.com/tiann/hapi",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent/api platform; action=intake-required"
+    },
+    {
+      "id": "ext-059",
+      "url": "https://github.com/alvinunreal/oh-my-opencode-slim",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "OpenCode slim bundle; action=adapt"
+    },
+    {
+      "id": "ext-060",
+      "url": "https://github.com/openchamber/openchamber",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "open agent chamber; action=intake-required"
+    },
+    {
+      "id": "ext-061",
+      "url": "https://github.com/gotalab/cc-sdd",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "spec-driven dev for Claude Code; action=adapt"
+    },
+    {
+      "id": "ext-062",
+      "url": "https://github.com/michaelshimeles/ralphy",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "ralph loop; action=reference-only"
+    },
+    {
+      "id": "ext-063",
+      "url": "https://github.com/RunMaestro/Maestro",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "agent orchestration/control; action=adapt"
+    },
+    {
+      "id": "ext-064",
+      "url": "https://github.com/mikeyobrien/ralph-orchestrator",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "ralph orchestrator; action=reference-only"
+    },
+    {
+      "id": "ext-065",
+      "url": "https://github.com/ZSeven-W/openpencil",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "design/writing assistant; action=intake-required"
+    },
+    {
+      "id": "ext-066",
+      "url": "https://github.com/junhoyeo/tokscale",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "token scaling/telemetry; action=adapt"
+    },
+    {
+      "id": "ext-067",
+      "url": "https://github.com/RAIT-09/obsidian-agent-client",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Obsidian agent client; action=adapt"
+    },
+    {
+      "id": "ext-068",
+      "url": "https://github.com/safishamsi/graphify",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "knowledge graph skill; action=adopt-candidates"
+    },
+    {
+      "id": "ext-069",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "awesome skill list; action=reference-only"
+    },
+    {
+      "id": "ext-070",
+      "url": "https://github.com/nexu-io/open-design",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "local-first design skill suite; action=adapt"
+    },
+    {
+      "id": "ext-071",
+      "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "research skill suite; action=adapt"
+    },
+    {
+      "id": "ext-072",
+      "url": "https://github.com/refly-ai/refly",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "skill builder/platform; action=adapt"
+    },
+    {
+      "id": "ext-073",
+      "url": "https://github.com/google/skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "official Google skill pack; action=adopt-candidates"
+    },
+    {
+      "id": "ext-074",
+      "url": "https://github.com/antfu/skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "curated personal skill pack; action=reference-only"
+    },
+    {
+      "id": "ext-075",
+      "url": "https://github.com/antvis/mcp-server-chart",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "chart MCP+skills; action=wrap"
+    },
+    {
+      "id": "ext-076",
+      "url": "https://github.com/tech-leads-club/agent-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "validated skill registry; action=adapt"
+    },
+    {
+      "id": "ext-077",
+      "url": "https://github.com/iOfficeAI/OfficeCLI",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "office document CLI; action=adopt-candidates"
+    },
+    {
+      "id": "ext-078",
+      "url": "https://github.com/microsoft/skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "official Microsoft skills/MCP/agents; action=adopt-candidates"
+    },
+    {
+      "id": "ext-079",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "large Claude marketplace; action=reference-only"
+    },
+    {
+      "id": "ext-080",
+      "url": "https://github.com/supabase/agent-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "official Supabase skills; action=adopt-candidates"
+    },
+    {
+      "id": "ext-081",
+      "url": "https://github.com/bergside/design-md-chrome",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "design extraction browser extension; action=adapt"
+    },
+    {
+      "id": "ext-082",
+      "url": "https://github.com/himself65/finance-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "finance skill pack; action=reference-only"
+    },
+    {
+      "id": "ext-083",
+      "url": "https://github.com/cloudflare/skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "official Cloudflare skills; action=adopt-candidates"
+    },
+    {
+      "id": "ext-084",
+      "url": "https://github.com/SnailSploit/Claude-Red",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "offensive security skills; action=quarantine"
+    },
+    {
+      "id": "ext-085",
+      "url": "https://github.com/OpenCoworkAI/open-cowork",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "desktop app/control plane; action=adapt"
+    },
+    {
+      "id": "ext-086",
+      "url": "https://github.com/conorluddy/ios-simulator-skill",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "iOS simulator skill; action=adapt"
+    },
+    {
+      "id": "ext-087",
+      "url": "https://github.com/imxv/Pretty-mermaid-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "Mermaid rendering skill; action=adopt-candidates"
+    },
+    {
+      "id": "ext-088",
+      "url": "https://github.com/agentscope-ai/OpenJudge",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "evaluation framework; action=adapt"
+    },
+    {
+      "id": "ext-089",
+      "url": "https://github.com/skillmatic-ai/awesome-agent-skills",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "awesome skill list; action=reference-only"
+    },
+    {
+      "id": "ext-090",
+      "url": "https://github.com/enulus/OpenPackage",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "universal package manager; action=adapt"
+    },
+    {
+      "id": "ext-091",
+      "url": "https://github.com/millionco/react-doctor",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "React diagnostic tool; action=adapt"
+    },
+    {
+      "id": "ext-092",
+      "url": "https://github.com/uditgoenka/autoresearch",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "autoresearch skill; action=adapt"
+    },
+    {
+      "id": "ext-093",
+      "url": "https://github.com/meodai/skill.color-expert",
+      "type": "external-repo",
+      "authority": "community-or-vendor-repo",
+      "notes": "color design skill; action=adopt-candidates"
+    }
+  ]
+}

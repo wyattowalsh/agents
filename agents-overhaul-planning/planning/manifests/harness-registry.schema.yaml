@@ -1,0 +1,23 @@
+type: object
+required: [version, harnesses]
+properties:
+  version:
+    type: string
+  harnesses:
+    type: array
+    items:
+      type: object
+      required: [id, display_name, support_tier, config_paths, sources]
+      properties:
+        id: {type: string}
+        display_name: {type: string}
+        support_tier: {enum: [first_class, validated, curated_review, experimental, watchlist, unsupported]}
+        skills: {type: string}
+        mcp: {type: string}
+        plugins: {type: string}
+        config_paths:
+          type: array
+          items: {type: string}
+        sources:
+          type: array
+          items: {type: string}
