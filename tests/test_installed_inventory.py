@@ -63,19 +63,24 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
                 "scope": "global",
                 "agents": ["Claude Code"],
             },
-            {
-                "name": "curated-skill",
-                "path": str(curated_skill_dir),
-                "scope": "global",
-                "agents": ["Codex", "Claude Code"],
-            },
+        ]
+        if agent == "claude-code":
+            payload.append(
+                {
+                    "name": "curated-skill",
+                    "path": str(curated_skill_dir),
+                    "scope": "global",
+                    "agents": ["Codex", "Claude Code"],
+                }
+            )
+        payload.append(
             {
                 "name": "lock-skill",
                 "path": str(lock_skill_dir),
                 "scope": "global",
                 "agents": ["Antigravity"] if agent == "antigravity" else [],
             },
-        ]
+        )
         return _completed(cmd, payload)
 
     snapshot = collect_installed_inventory(
@@ -107,9 +112,7 @@ def test_curated_collision_prefers_verified_install_command(tmp_path):
     home = tmp_path / "home"
     skill_dir = home / ".agents" / "skills" / "stripe-best-practices"
     skill_dir.mkdir(parents=True)
-    (skill_dir / "SKILL.md").write_text(
-        "---\nname: stripe-best-practices\ndescription: Stripe\n---\n"
-    )
+    (skill_dir / "SKILL.md").write_text("---\nname: stripe-best-practices\ndescription: Stripe\n---\n")
 
     # Verified install entry first, unresolved avoid entry second — last-write-wins
     # would leave the unresolved entry in control.
@@ -171,3 +174,45 @@ def test_collect_installed_inventory_reports_query_errors(tmp_path):
 
     errors = {query.agent_id: query.error for query in snapshot.queries if not query.ok}
     assert errors["github-copilot"] == "Invalid agents: github-copilot"
+
+
+def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label(tmp_path):
+    root = tmp_path / "repo"
+    home = tmp_path / "home"
+    skill_dir = home / ".agents" / "skills" / "ui-ux-pro-max"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "SKILL.md").write_text("---\nname: ui-ux-pro-max\ndescription: UI UX\n---\n")
+
+    curated_entries = parse_external_skill_entries(
+        """
+        ## Install Now After Trust Gate
+
+        ```bash
+        npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a opencode
+        ```
+        """
+    )
+
+    def runner(cmd, **kwargs):
+        return _completed(
+            cmd,
+            [
+                {
+                    "name": "ui-ux-pro-max",
+                    "path": str(skill_dir),
+                    "scope": "global",
+                    "agents": ["Claude Code"],
+                }
+            ],
+        )
+
+    snapshot = collect_installed_inventory(
+        agent_ids=("opencode",),
+        root=root,
+        home=home,
+        runner=runner,
+        external_entries=curated_entries,
+    )
+
+    by_name = {row.name: row for row in snapshot.rows}
+    assert by_name["ui-ux-pro-max"].installed_agents == ("claude-code", "opencode")
