@@ -23,6 +23,33 @@
         "additionalProperties": false
       }
     },
+    "mcp_ownership": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["server", "source", "version", "harnesses"],
+        "properties": {
+          "server": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "minLength": 1},
+          "version": {"type": "string", "minLength": 1},
+          "harnesses": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "object",
+              "required": ["owner"],
+              "properties": {
+                "owner": {"type": "string", "minLength": 1},
+                "install": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "repo_mcp_projection": {"type": "string", "minLength": 1}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "rules": {"type": "array", "items": {"type": "string", "minLength": 1}}
   },
   "additionalProperties": false

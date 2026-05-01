@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "candidate": "ChromeDevTools/chrome-devtools-mcp",
+  "source": "https://github.com/ChromeDevTools/chrome-devtools-mcp/tree/main/skills",
+  "commit": "a90378adf3226e8b27a05cdcfdd801c199acaa93",
+  "access_date": "2026-05-01",
+  "source_class": "official-vendor-external",
+  "package": {
+    "name": "chrome-devtools-mcp",
+    "version": "0.23.0",
+    "mcp_name": "io.github.ChromeDevTools/chrome-devtools-mcp",
+    "author": "Google LLC",
+    "license": "Apache-2.0",
+    "node_engine": "^20.19.0 || ^22.12.0 || >=23"
+  },
+  "source_list_evidence": {
+    "command": "npx skills add github:ChromeDevTools/chrome-devtools-mcp --list",
+    "skills": [
+      "a11y-debugging",
+      "chrome-devtools",
+      "chrome-devtools-cli",
+      "debug-optimize-lcp",
+      "memory-leak-debugging",
+      "troubleshooting"
+    ]
+  },
+  "promotion": {
+    "outcome": "promote-adapted-skills",
+    "repo_skill_names": [
+      "chrome-devtools",
+      "chrome-devtools-cli",
+      "chrome-devtools-a11y-debugging",
+      "chrome-devtools-debug-optimize-lcp",
+      "chrome-devtools-memory-leak-debugging",
+      "chrome-devtools-troubleshooting"
+    ],
+    "executable_surface": "No promoted skill has hooks or automatic command substitutions. Upstream CLI examples are retained as user-approved commands. The upstream memory fallback script was not vendored.",
+    "credential_behavior": "No credentials are requested by the skills. MCP server browser artifacts, traces, screenshots, Lighthouse reports, and heap snapshots must be kept out of version control.",
+    "network_behavior": "MCP browser navigation and performance tooling can contact target pages; repo MCP config disables usage statistics and update checks. CrUX is disabled in repo-managed MCP config unless explicitly re-enabled."
+  }
+}

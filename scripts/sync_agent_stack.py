@@ -79,6 +79,7 @@ PERPLEXITY_SKILLS_DIR = HOME / ".perplexity" / "skills"
 CHERRY_PRESETS_DIR = CHERRY_STUDIO_DIR / "presets"
 ANTIGRAVITY_RULES_DIR = HOME / ".gemini" / "antigravity" / "rules"
 OPENCODE_PLUGIN_MANIFEST_PATH = OPENCODE_PLUGINS_DIR / "agents" / "plugin.json"
+CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -196,7 +197,13 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
             "chrome-devtools-mcp@latest",
             "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
             "--headless=false",
+            "--no-usage-statistics",
+            "--no-performance-crux",
         ],
+        "env": {
+            "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": {"value": "1"},
+            "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": {"value": "1"},
+        },
     },
     "context7": {
         "command": "npx",
@@ -262,9 +269,7 @@ def load_json(path: Path) -> dict[str, Any]:
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        without_line_comments = "\n".join(
-            line for line in text.splitlines() if not line.lstrip().startswith("//")
-        )
+        without_line_comments = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("//"))
         return json.loads(without_line_comments)
 
 
@@ -320,11 +325,7 @@ def sync_directory_files(
             for child in target_dir.iterdir()
             if child.is_file() and (suffix is None or child.suffix == suffix)
         }
-    source_files = {
-        f.name: f
-        for f in source_dir.iterdir()
-        if f.is_file() and (suffix is None or f.suffix == suffix)
-    }
+    source_files = {f.name: f for f in source_dir.iterdir() if f.is_file() and (suffix is None or f.suffix == suffix)}
     for name, source_file in source_files.items():
         target_file = target_dir / name
         if target_file.exists() and target_file.read_bytes() == source_file.read_bytes():
@@ -456,6 +457,13 @@ def resolve_env_value(name: str, fallbacks: dict[str, str]) -> str:
     return os.environ.get(name) or fallbacks.get(name) or env_placeholder(name)
 
 
+def render_env_value(value: dict[str, Any], fallbacks: dict[str, str], *, local_values: bool) -> str:
+    if "value" in value:
+        return str(value["value"])
+    env_var = value["env_var"]
+    return resolve_env_value(env_var, fallbacks) if local_values else env_placeholder(env_var)
+
+
 def local_llm_provider(policy: dict[str, Any], provider: str) -> dict[str, Any] | None:
     providers = policy.get("local_llm_providers")
     if not isinstance(providers, dict):
@@ -494,7 +502,8 @@ def render_codex_lmstudio_blocks(
     provider = local_llm_provider(policy, "lmstudio")
     if not provider:
         return []
-    codex = provider.get("codex") if isinstance(provider.get("codex"), dict) else {}
+    codex_raw = provider.get("codex")
+    codex: dict[str, Any] = codex_raw if isinstance(codex_raw, dict) else {}
     provider_id = str(codex.get("provider_id", "local-lmstudio"))
     profile = str(codex.get("profile", provider_id))
     return [
@@ -632,28 +641,44 @@ def load_hook_registry() -> dict[str, Any]:
     return load_json(HOOK_REGISTRY_PATH)
 
 
-def enabled_registry_servers(registry: dict[str, Any]) -> dict[str, Any]:
-    return {name: entry for name, entry in registry["servers"].items() if entry.get("enabled") is not False}
+def server_enabled_for_harness(entry: dict[str, Any], harness: str | None) -> bool:
+    if entry.get("enabled") is False:
+        return False
+    if harness and harness in set(entry.get("exclude_from_harnesses", [])):
+        return False
+    return True
+
+
+def enabled_registry_servers(registry: dict[str, Any], harness: str | None = None) -> dict[str, Any]:
+    return {
+        name: entry
+        for name, entry in registry["servers"].items()
+        if server_enabled_for_harness(entry, harness)
+    }
 
 
 def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry).items():
+    for name, entry in enabled_registry_servers(registry, "repo-mcp").items():
         server: dict[str, Any] = {
             "command": entry["command"],
             "args": replace_arg_placeholders(entry.get("args", []), {}, local_values=False),
         }
         if entry.get("env"):
-            server["env"] = {key: env_placeholder(value["env_var"]) for key, value in entry["env"].items()}
+            server["env"] = {key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()}
         if entry.get("timeout_ms"):
             server["timeout"] = entry["timeout_ms"]
         servers[name] = server
     return {"mcpServers": servers}
 
 
-def render_copilot_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+def render_copilot_mcp(
+    registry: dict[str, Any],
+    fallbacks: dict[str, str],
+    harness: str = "github-copilot-cli",
+) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry).items():
+    for name, entry in enabled_registry_servers(registry, harness).items():
         server: dict[str, Any] = {
             "tools": entry.get("tools", ["*"]),
             "type": entry.get("transport", "stdio"),
@@ -661,7 +686,7 @@ def render_copilot_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> d
             "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
         }
         if entry.get("env"):
-            server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+            server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
         servers[name] = server
     return {"mcpServers": servers}
 
@@ -692,7 +717,7 @@ def render_toml_block(header: str | None, values: dict[str, Any]) -> list[str]:
 
 def render_codex_args(entry: dict[str, Any]) -> list[Any]:
     args = list(entry.get("args", []))
-    env_names = {value["env_var"] for value in entry.get("env", {}).values()}
+    env_names = {value["env_var"] for value in entry.get("env", {}).values() if "env_var" in value}
     rendered: list[Any] = []
     idx = 0
     while idx < len(args):
@@ -718,7 +743,7 @@ def render_codex_args(entry: dict[str, Any]) -> list[Any]:
 
 def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     lines = [CODEX_MCP_BEGIN]
-    for name, entry in enabled_registry_servers(registry).items():
+    for name, entry in enabled_registry_servers(registry, "codex").items():
         lines.append("")
         lines.append(f"[mcp_servers.{name}]")
         lines.append(f"args = {toml_value(render_codex_args(entry))}")
@@ -729,8 +754,9 @@ def render_codex_mcp_block(registry: dict[str, Any]) -> str:
         if entry.get("tools") and entry.get("tools") != ["*"]:
             lines.append(f"enabled_tools = {toml_value(entry['tools'])}")
         if entry.get("env"):
-            env_vars = [value["env_var"] for value in entry["env"].values()]
-            lines.append(f"env_vars = {toml_value(env_vars)}")
+            env_vars = [value["env_var"] for value in entry["env"].values() if "env_var" in value]
+            if env_vars:
+                lines.append(f"env_vars = {toml_value(env_vars)}")
     lines.append("")
     lines.append(CODEX_MCP_END)
     return "\n".join(lines) + "\n"
@@ -862,7 +888,8 @@ def merge_codex_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
     existing: dict[str, Any] = {}
     if CODEX_HOOKS_PATH.exists():
         existing = load_json(CODEX_HOOKS_PATH)
-    existing_hooks = existing.get("hooks") if isinstance(existing.get("hooks"), dict) else {}
+    existing_hooks_raw = existing.get("hooks")
+    existing_hooks: dict[str, Any] = existing_hooks_raw if isinstance(existing_hooks_raw, dict) else {}
     existing["hooks"] = merge_hook_groups(existing_hooks, render_standard_hooks(hook_registry, "codex"))
     write_json(ctx, CODEX_HOOKS_PATH, existing)
 
@@ -1365,29 +1392,33 @@ def sync_repo_targets(
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry).items():
+    for name, entry in enabled_registry_servers(registry, "gemini-cli").items():
         server: dict[str, Any] = {
             "type": entry.get("transport", "stdio"),
             "command": entry["command"],
             "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
         }
         if entry.get("env"):
-            server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+            server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
         if entry.get("tools") and entry.get("tools") != ["*"]:
             server["includeTools"] = entry["tools"]
         servers[name] = server
     return servers
 
 
-def render_client_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+def render_client_mcp(
+    registry: dict[str, Any],
+    fallbacks: dict[str, str],
+    harness: str | None = None,
+) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry).items():
+    for name, entry in enabled_registry_servers(registry, harness).items():
         server: dict[str, Any] = {
             "command": entry["command"],
             "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
         }
         if entry.get("env"):
-            server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+            server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
         servers[name] = server
     return {"mcpServers": servers}
 
@@ -1416,7 +1447,7 @@ def merge_server_root_config(ctx: SyncContext, path: Path, root_key: str, render
 
 
 def render_shadow_copilot_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
-    servers = render_copilot_mcp(registry, fallbacks)["mcpServers"]
+    servers = render_copilot_mcp(registry, fallbacks, "github-copilot-cli")["mcpServers"]
     for server in servers.values():
         server["source"] = "user"
     return servers
@@ -1433,7 +1464,7 @@ def extract_remote_url(command: str, args: list[Any]) -> str | None:
 
 def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
     servers: dict[str, Any] = {}
-    for name, entry in enabled_registry_servers(registry).items():
+    for name, entry in enabled_registry_servers(registry, "opencode").items():
         args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
         remote_url = extract_remote_url(entry["command"], args)
         server: dict[str, Any]
@@ -1443,18 +1474,29 @@ def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> 
             server = {"type": "local", "command": [entry["command"], *args], "enabled": True}
         if entry.get("env"):
             server["environment"] = {
-                key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()
+                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
             }
         servers[name] = server
     return servers
+
+
+def preserve_opencode_chrome_devtools_wrapper(rendered: dict[str, Any], existing: dict[str, Any]) -> None:
+    current = existing.get("chrome-devtools")
+    if not isinstance(current, dict):
+        return
+    command = current.get("command")
+    if isinstance(command, list) and CHROME_DEVTOOLS_OPENCODE_LAUNCHER in command:
+        rendered["chrome-devtools"] = current
 
 
 def render_opencode_lmstudio_provider(policy: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any] | None:
     provider = local_llm_provider(policy, "lmstudio")
     if not provider:
         return None
-    opencode = provider.get("opencode") if isinstance(provider.get("opencode"), dict) else {}
-    models = opencode.get("models") if isinstance(opencode.get("models"), dict) else {}
+    opencode_raw = provider.get("opencode")
+    opencode: dict[str, Any] = opencode_raw if isinstance(opencode_raw, dict) else {}
+    models_raw = opencode.get("models")
+    models: dict[str, Any] = models_raw if isinstance(models_raw, dict) else {}
     return {
         "npm": opencode.get("npm", "@ai-sdk/openai-compatible"),
         "name": provider.get("name", "LM Studio (local)"),
@@ -1471,9 +1513,11 @@ def merge_opencode_provider_entry(existing: Any, rendered: dict[str, Any]) -> di
     merged = dict(existing)
     merged["npm"] = rendered["npm"]
     merged["name"] = rendered["name"]
-    existing_options = existing.get("options") if isinstance(existing.get("options"), dict) else {}
+    existing_options_raw = existing.get("options")
+    existing_options: dict[str, Any] = existing_options_raw if isinstance(existing_options_raw, dict) else {}
     merged["options"] = {**existing_options, **rendered["options"]}
-    existing_models = existing.get("models") if isinstance(existing.get("models"), dict) else {}
+    existing_models_raw = existing.get("models")
+    existing_models: dict[str, Any] = existing_models_raw if isinstance(existing_models_raw, dict) else {}
     merged["models"] = {**rendered["models"], **existing_models}
     return merged
 
@@ -1541,14 +1585,15 @@ def render_cherry_server(name: str, entry: dict[str, Any], fallbacks: dict[str, 
         }
 
     if entry.get("env"):
-        server["env"] = {key: resolve_env_value(value["env_var"], fallbacks) for key, value in entry["env"].items()}
+        server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
 
     return server
 
 
 def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
     servers = {
-        name: render_cherry_server(name, entry, fallbacks) for name, entry in enabled_registry_servers(registry).items()
+        name: render_cherry_server(name, entry, fallbacks)
+        for name, entry in enabled_registry_servers(registry, "cherry-studio").items()
     }
     files: dict[str, Any] = {"all.json": {"mcpServers": servers}}
 
@@ -1576,9 +1621,10 @@ def merge_opencode_config(
         providers["lmstudio"] = merge_opencode_provider_entry(providers.get("lmstudio"), lmstudio_provider)
 
     existing_mcp = settings.get("mcp")
-    settings["mcp"] = merge_server_maps(
-        render_opencode_mcp(registry, fallbacks), existing_mcp if isinstance(existing_mcp, dict) else {}
-    )
+    rendered_mcp = render_opencode_mcp(registry, fallbacks)
+    if isinstance(existing_mcp, dict):
+        preserve_opencode_chrome_devtools_wrapper(rendered_mcp, existing_mcp)
+    settings["mcp"] = merge_server_maps(rendered_mcp, existing_mcp if isinstance(existing_mcp, dict) else {})
     settings["instructions"] = merge_unique_path_strings(
         [render_home_path(GLOBAL_MD), render_home_path(OPENCODE_GLOBAL_MD)],
         settings.get("instructions"),
@@ -1664,11 +1710,17 @@ def merge_gemini_settings(
     write_json(ctx, GEMINI_SETTINGS_PATH, settings)
 
 
-def merge_client_mcp_config(ctx: SyncContext, path: Path, registry: dict[str, Any], fallbacks: dict[str, str]) -> None:
+def merge_client_mcp_config(
+    ctx: SyncContext,
+    path: Path,
+    registry: dict[str, Any],
+    fallbacks: dict[str, str],
+    harness: str | None = None,
+) -> None:
     if not path.exists():
         return
     settings = load_json(path)
-    settings["mcpServers"] = render_client_mcp(registry, fallbacks)["mcpServers"]
+    settings["mcpServers"] = render_client_mcp(registry, fallbacks, harness)["mcpServers"]
     write_json(ctx, path, settings)
 
 
@@ -1679,7 +1731,7 @@ def merge_claude_settings_local(ctx: SyncContext, registry: dict[str, Any]) -> N
     enabled = settings.get("enabledMcpjsonServers")
     if not isinstance(enabled, list):
         return
-    valid_names = set(enabled_registry_servers(registry))
+    valid_names = set(enabled_registry_servers(registry, "claude-code"))
     filtered: list[str] = []
     for name in enabled:
         if isinstance(name, str) and name in valid_names and name not in filtered:
@@ -1709,25 +1761,30 @@ def sync_home_targets(
     )
     merge_claude_settings(ctx, policy, hook_registry)
     merge_claude_settings_local(ctx, registry)
-    merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks)
+    merge_client_mcp_config(ctx, CLAUDE_DESKTOP_CONFIG_PATH, registry, fallbacks, "claude-desktop")
     sync_platform_home_target("cursor", ctx, registry, policy, fallbacks, hook_registry)
     merge_copilot_config(ctx, policy)
     sync_copilot_subagent_env(ctx, policy)
     merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
-    write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks))
-    merge_server_root_config(ctx, CHATGPT_MCP_PATH, "mcpServers", render_client_mcp(registry, fallbacks)["mcpServers"])
+    write_json(ctx, COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks, "github-copilot-cli"))
+    merge_server_root_config(
+        ctx,
+        CHATGPT_MCP_PATH,
+        "mcpServers",
+        render_client_mcp(registry, fallbacks, "chatgpt")["mcpServers"],
+    )
     merge_server_root_config(ctx, COPILOT_SHADOW_MCP_PATH, "mcpServers", render_shadow_copilot_mcp(registry, fallbacks))
     merge_server_root_config(
         ctx,
         GEMINI_ANTIGRAVITY_MCP_PATH,
         "mcpServers",
-        render_client_mcp(registry, fallbacks)["mcpServers"],
+        render_client_mcp(registry, fallbacks, "antigravity")["mcpServers"],
     )
     merge_server_root_config(
         ctx,
         GEMINI_EXTENSION_MCP_PATH,
         "mcpServers",
-        render_client_mcp(registry, fallbacks)["mcpServers"],
+        render_client_mcp(registry, fallbacks, "antigravity-extension")["mcpServers"],
     )
     sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
     merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))

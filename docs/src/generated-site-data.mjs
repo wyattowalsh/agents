@@ -2,7 +2,7 @@
 export const siteData = {
   "counts": {
     "agents": 8,
-    "customSkills": 49,
+    "customSkills": 55,
     "installedSkills": 0,
     "mcpServers": 30
   },
@@ -3794,6 +3794,282 @@ export const siteData = {
       "version": "1.0.0"
     },
     {
+      "argumentHint": "",
+      "author": "Google LLC",
+      "description": "Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions. NOT for CLI-only automation, a11y audits, LCP deep dives, memory leaks, or MCP setup troubleshooting.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "Chrome DevTools MCP",
+          "Dispatch",
+          "Core Concepts",
+          "General Workflow",
+          "Efficient Retrieval",
+          "Extension Checks",
+          "Reference File Index",
+          "Critical Rules",
+          "Canonical Vocabulary",
+          "Validation Contract"
+        ],
+        "references": [
+          "references/provenance.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 611
+      },
+      "license": "Apache-2.0",
+      "model": "",
+      "name": "chrome-devtools",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/chrome-devtools/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/chrome-devtools/SKILL.md",
+      "title": "Chrome Devtools",
+      "trustTier": "repo",
+      "useCommand": "/chrome-devtools",
+      "userInvocable": true,
+      "version": "0.23.0"
+    },
+    {
+      "argumentHint": "",
+      "author": "Google LLC",
+      "description": "Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "Chrome DevTools Accessibility Debugging",
+          "Dispatch",
+          "Core Concepts",
+          "Workflow",
+          "Large Report Handling",
+          "Reference File Index",
+          "Critical Rules",
+          "Canonical Vocabulary",
+          "Validation Contract"
+        ],
+        "references": [
+          "references/a11y-snippets.md",
+          "references/provenance.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 529
+      },
+      "license": "Apache-2.0",
+      "model": "",
+      "name": "chrome-devtools-a11y-debugging",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/chrome-devtools-a11y-debugging/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/chrome-devtools-a11y-debugging/SKILL.md",
+      "title": "Chrome Devtools A11Y Debugging",
+      "trustTier": "repo",
+      "useCommand": "/chrome-devtools-a11y-debugging",
+      "userInvocable": true,
+      "version": "0.23.0"
+    },
+    {
+      "argumentHint": "",
+      "author": "Google LLC",
+      "description": "Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "Chrome DevTools CLI",
+          "Dispatch",
+          "Guardrails",
+          "Command Shape",
+          "Common Commands",
+          "Workflow",
+          "Reference File Index",
+          "Critical Rules",
+          "Canonical Vocabulary",
+          "Validation Contract"
+        ],
+        "references": [
+          "references/installation.md",
+          "references/provenance.md"
+        ],
+        "resourceLinks": [
+          "https://example.com"
+        ],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 521
+      },
+      "license": "Apache-2.0",
+      "model": "",
+      "name": "chrome-devtools-cli",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/chrome-devtools-cli/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/chrome-devtools-cli/SKILL.md",
+      "title": "Chrome Devtools Cli",
+      "trustTier": "repo",
+      "useCommand": "/chrome-devtools-cli",
+      "userInvocable": true,
+      "version": "0.23.0"
+    },
+    {
+      "argumentHint": "",
+      "author": "Google LLC",
+      "description": "Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification. NOT for non-LCP performance work, generic browser automation, or SEO copy advice.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "Chrome DevTools LCP Debugging",
+          "Dispatch",
+          "LCP Targets",
+          "Debugging Workflow",
+          "Optimization Order",
+          "Privacy Note",
+          "Reference File Index",
+          "Critical Rules",
+          "Canonical Vocabulary",
+          "Validation Contract"
+        ],
+        "references": [
+          "references/elements-and-size.md",
+          "references/lcp-breakdown.md",
+          "references/lcp-fixes.md",
+          "references/lcp-snippets.md",
+          "references/provenance.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 596
+      },
+      "license": "Apache-2.0",
+      "model": "",
+      "name": "chrome-devtools-debug-optimize-lcp",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/chrome-devtools-debug-optimize-lcp/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/chrome-devtools-debug-optimize-lcp/SKILL.md",
+      "title": "Chrome Devtools Debug Optimize Lcp",
+      "trustTier": "repo",
+      "useCommand": "/chrome-devtools-debug-optimize-lcp",
+      "userInvocable": true,
+      "version": "0.23.0"
+    },
+    {
+      "argumentHint": "",
+      "author": "Google LLC",
+      "description": "Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "Chrome DevTools Memory Leak Debugging",
+          "Dispatch",
+          "Core Principles",
+          "Browser Workflow",
+          "Common Leak Patterns",
+          "Reference File Index",
+          "Critical Rules",
+          "Canonical Vocabulary",
+          "Validation Contract"
+        ],
+        "references": [
+          "references/common-leaks.md",
+          "references/memlab.md",
+          "references/provenance.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 559
+      },
+      "license": "Apache-2.0",
+      "model": "",
+      "name": "chrome-devtools-memory-leak-debugging",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/chrome-devtools-memory-leak-debugging/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/chrome-devtools-memory-leak-debugging/SKILL.md",
+      "title": "Chrome Devtools Memory Leak Debugging",
+      "trustTier": "repo",
+      "useCommand": "/chrome-devtools-memory-leak-debugging",
+      "userInvocable": true,
+      "version": "0.23.0"
+    },
+    {
+      "argumentHint": "",
+      "author": "Google LLC",
+      "description": "Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile. NOT for application debugging after MCP is healthy or unrelated browser automation.",
+      "installCommand": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "installSource": "github:wyattowalsh/agents",
+      "installedAgents": [],
+      "knowledge": {
+        "data": [],
+        "evals": [],
+        "headings": [
+          "Chrome DevTools MCP Troubleshooting",
+          "Dispatch",
+          "Step 1: Find Configuration",
+          "Step 2: Triage Known Symptoms",
+          "`Could not find DevToolsActivePort`",
+          "Empty Profile Or No Pages",
+          "Missing Tools",
+          "Extension Issues",
+          "Step 3: Diagnostics",
+          "Step 4: Formulate Fix",
+          "Reference File Index",
+          "Critical Rules",
+          "Canonical Vocabulary",
+          "Validation Contract"
+        ],
+        "references": [
+          "references/provenance.md"
+        ],
+        "resourceLinks": [],
+        "scripts": [],
+        "templates": [],
+        "wordCount": 608
+      },
+      "license": "Apache-2.0",
+      "model": "",
+      "name": "chrome-devtools-troubleshooting",
+      "provenanceStatus": "repo-owned",
+      "sourcePath": "skills/chrome-devtools-troubleshooting/SKILL.md",
+      "sourceRoot": "github:wyattowalsh/agents",
+      "sourceType": "custom",
+      "sourceUrl": "https://github.com/wyattowalsh/agents/blob/main/skills/chrome-devtools-troubleshooting/SKILL.md",
+      "title": "Chrome Devtools Troubleshooting",
+      "trustTier": "repo",
+      "useCommand": "/chrome-devtools-troubleshooting",
+      "userInvocable": true,
+      "version": "0.23.0"
+    },
+    {
       "argumentHint": "<mode> [pipeline]",
       "author": "wyattowalsh",
       "description": "Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design.",
@@ -5213,7 +5489,7 @@ export const siteData = {
           "Scaling Strategy",
           "Progressive Disclosure",
           "Scope Boundaries",
-          "Validation Contract"
+          "Assets"
         ],
         "references": [
           "references/edge-cases.md",
@@ -5289,7 +5565,7 @@ export const siteData = {
       "trustTier": "repo",
       "useCommand": "/learn",
       "userInvocable": true,
-      "version": "1.0.0"
+      "version": ""
     },
     {
       "argumentHint": "<service or API to integrate>",
@@ -5352,7 +5628,7 @@ export const siteData = {
         ],
         "wordCount": 2502
       },
-      "license": "MIT",
+      "license": "",
       "model": "opus",
       "name": "mcp-creator",
       "provenanceStatus": "repo-owned",
@@ -5500,7 +5776,7 @@ export const siteData = {
           "Reference File Index",
           "References",
           "Scripts",
-          "Assets"
+          "Validation Contract"
         ],
         "references": [
           "references/audit-checklist.md",
@@ -5618,7 +5894,7 @@ export const siteData = {
         "templates": [],
         "wordCount": 538
       },
-      "license": "",
+      "license": "MIT",
       "model": "",
       "name": "openspec-workflow",
       "provenanceStatus": "repo-owned",
@@ -5630,7 +5906,7 @@ export const siteData = {
       "trustTier": "repo",
       "useCommand": "/openspec-workflow",
       "userInvocable": true,
-      "version": ""
+      "version": "1.0.0"
     },
     {
       "argumentHint": "",

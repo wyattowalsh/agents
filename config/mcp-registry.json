@@ -47,9 +47,18 @@
         "-y",
         "chrome-devtools-mcp@latest",
         "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
-        "--headless=false"
+        "--headless=false",
+        "--no-usage-statistics",
+        "--no-performance-crux"
       ],
-      "env": {},
+      "env": {
+        "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": {
+          "value": "1"
+        },
+        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": {
+          "value": "1"
+        }
+      },
       "enabled": true,
       "startup_timeout_sec": 90,
       "timeout_ms": 600000,
@@ -57,7 +66,34 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "exclude_from_harnesses": [
+        "claude-code",
+        "gemini-cli",
+        "github-copilot-web",
+        "vscode"
+      ],
+      "ownership": {
+        "plugin": [
+          "claude-code",
+          "github-copilot-web",
+          "vscode"
+        ],
+        "extension": [
+          "gemini-cli"
+        ],
+        "repo_mcp": [
+          "claude-desktop",
+          "chatgpt",
+          "codex",
+          "github-copilot-cli",
+          "opencode",
+          "cursor",
+          "antigravity",
+          "perplexity-desktop",
+          "cherry-studio"
+        ]
+      }
     },
     "context7": {
       "transport": "stdio",
