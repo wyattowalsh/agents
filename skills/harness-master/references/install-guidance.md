@@ -37,6 +37,17 @@ npx skills add <source> --skill harness-master -y -g --agent github-copilot
 npx skills add <source> --skill harness-master -y -g --agent opencode
 ```
 
+No Skills CLI install command is available for these config-only or UI-managed harnesses:
+
+- `claude-desktop`
+- `chatgpt`
+- `github-copilot-web` as distinct from the `github-copilot` install target
+- `github-copilot-cli` as distinct from the `github-copilot` install target
+- `perplexity-desktop`
+- `cherry-studio`
+
+If the user asks to install for `github-copilot-web`, `github-copilot-cli`, or the aggregate `github-copilot`, use the single `--agent github-copilot` target and explain that the skill audits the web and CLI facets separately.
+
 For this repository's published collection, the likely source is:
 
 ```bash

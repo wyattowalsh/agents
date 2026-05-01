@@ -1,13 +1,13 @@
 ---
 title: "harness-master"
-description: "Audit harness configs and apply fixes. Use when tuning Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents (agent-conventions) or MCP servers (mcp-creator)."
+description: "Audit harness configs and apply fixes."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="harness-master" variant="note" /> <Badge text="1823 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="harness-master" variant="note" /> <Badge text="1965 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
-> Audit harness configs and apply fixes. Use when tuning Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents (agent-conventions) or MCP servers (mcp-creator).
+> Audit harness configs and apply fixes. Use when tuning Claude Code, Claude Desktop, ChatGPT, Codex, GitHub Copilot Web/CLI, Cursor, Gemini CLI, Antigravity, OpenCode, Perplexity Desktop, or Cherry Studio. NOT for agents (agent-conventions) or MCP servers (mcp-creator).
 
 <div class="quick-start">
 
@@ -18,7 +18,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
-**Use:** `/harness-master` `[project|global|both] [claude-code|codex|cursor|gemini-cli|antigravity|github-copilot|opencode|cherry-studio|all ...]`
+**Use:** `/harness-master` `[project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|opencode|perplexity-desktop|cherry-studio|all ...]`
 
 </div>
 
@@ -38,7 +38,7 @@ Audit AI harness configuration quality, then apply approved fixes in the same se
 |--------------|------|------------|
 | `Empty` | Intake | Ask for harnesses or `all`, then ask for `project`, `global`, or `both` |
 | `all` | Intake | Ask only for level |
-| `all <level>` / `<level> all` | Audit | Dry-run all 8 harnesses in deterministic order |
+| `all <level>` / `<level> all` | Audit | Dry-run all supported harnesses in deterministic order |
 | `<harness...>` | Intake | Resolve one or more harnesses, then ask only for missing level |
 | `<level>` | Intake | Resolve level, then ask only for missing harnesses |
 | `<harness...> <level>` / `<level> <harness...>` | Audit | Run dry-run review for the selected harnesses and level |
@@ -78,7 +78,7 @@ Audit AI harness configuration quality, then apply approved fixes in the same se
 | Field | Value |
 | ----- | ----- |
 | Model | `opus` |
-| Argument Hint | `[project|global|both] [claude-code|codex|cursor|gemini-cli|antigravity|github-copilot|opencode|cherry-studio|all ...]` |
+| Argument Hint | `[project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|opencode|perplexity-desktop|cherry-studio|all ...]` |
   </TabItem>
   <TabItem label="Compatibility">
 | Field | Value |
@@ -94,10 +94,11 @@ Audit AI harness configuration quality, then apply approved fixes in the same se
 ---
 name: harness-master
 description: >-
-  Audit harness configs and apply fixes. Use when tuning Claude Code, Codex,
-  Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents
+  Audit harness configs and apply fixes. Use when tuning Claude Code, Claude
+  Desktop, ChatGPT, Codex, GitHub Copilot Web/CLI, Cursor, Gemini CLI,
+  Antigravity, OpenCode, Perplexity Desktop, or Cherry Studio. NOT for agents
   (agent-conventions) or MCP servers (mcp-creator).
-argument-hint: "[project|global|both] [claude-code|codex|cursor|gemini-cli|antigravity|github-copilot|opencode|cherry-studio|all ...]"
+argument-hint: "[project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|opencode|perplexity-desktop|cherry-studio|all ...]"
 model: opus
 license: MIT
 compatibility: >-
@@ -122,7 +123,7 @@ Audit AI harness configuration quality, then apply approved fixes in the same se
 |--------------|------|------------|
 | `Empty` | Intake | Ask for harnesses or `all`, then ask for `project`, `global`, or `both` |
 | `all` | Intake | Ask only for level |
-| `all <level>` / `<level> all` | Audit | Dry-run all 8 harnesses in deterministic order |
+| `all <level>` / `<level> all` | Audit | Dry-run all supported harnesses in deterministic order |
 | `<harness...>` | Intake | Resolve one or more harnesses, then ask only for missing level |
 | `<level>` | Intake | Resolve level, then ask only for missing harnesses |
 | `<harness...> <level>` / `<level> <harness...>` | Audit | Run dry-run review for the selected harnesses and level |
@@ -144,24 +145,29 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `codex`, `cursor`, `gemini-cli`, `antigravity`, `github-copilot`, `opencode`, `cherry-studio`
+- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `opencode`, `perplexity-desktop`, `cherry-studio`
 - Supported levels: `project`, `global`, `both`
 - Harness aliases:
   - `claude`, `claude-code` -> `claude-code`
+  - `claude-desktop` -> `claude-desktop`
+  - `chatgpt`, `chatgpt-desktop`, `openai-chatgpt` -> `chatgpt`
   - `codex` -> `codex`
-  - `cursor` -> `cursor`
+  - `cursor`, `cursor-agent`, `cursor-editor`, `cursor-desktop`, `cursor-cli`, `agent-cli`, `cursor-cloud`, `cursor-cloud-agent`, `cursor-background-agent`, `cursor-web` -> `cursor`
   - `gemini`, `gemini-cli` -> `gemini-cli`
   - `antigravity`, `google-antigravity` -> `antigravity`
-  - `copilot`, `gh-copilot`, `github-copilot` -> `github-copilot`
+  - `github-copilot`, `copilot`, `gh-copilot` -> expand to `github-copilot-web` and `github-copilot-cli`
+  - `github-copilot-web`, `copilot-web`, `copilot-cloud`, `copilot-coding-agent` -> `github-copilot-web`
+  - `github-copilot-cli`, `copilot-cli` -> `github-copilot-cli`
   - `opencode`, `open-code` -> `opencode`
-  - `cherry`, `cherry-studio` -> `cherry-studio`
+  - `perplexity`, `perplexity-desktop`, `perplexity-mac` -> `perplexity-desktop`
+  - `cherry`, `cherrystudio`, `cherry-ai`, `cherry-studio` -> `cherry-studio`
 - Level aliases:
   - `project`, `repo`, `local` -> `project`
   - `global`, `user` -> `global`
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `codex`, `cursor`, `gemini-cli`, `antigravity`, `github-copilot`, `opencode`, `cherry-studio`
+- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `opencode`, `perplexity-desktop`, `cherry-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
 
 ## Classification Gate
@@ -224,7 +230,7 @@ If the user invokes `/harness-master` with no arguments:
 |-------|----------|
 | 1 harness, 1 level | Inline review with one per-harness report |
 | 2-3 harnesses or `both` on 1 harness | Review each harness independently, then add a short synthesis |
-| 4-7 harnesses or `all` | Keep per-harness sections strict, batch discovery/research where possible, then finish with a cross-harness synthesis and ranked cleanup order |
+| 4+ harnesses or `all` | Keep per-harness sections strict, batch discovery/research where possible, then finish with a cross-harness synthesis and ranked cleanup order |
 
 ## Latest-Doc Lookup Policy
 
@@ -255,6 +261,26 @@ Never claim `latest` without evidence from a current source.
   ```
 - Do not recommend install commands for native config problems.
 - Do not suggest project-local install by default. Mention `wagents install --local` only if the user explicitly asks for project-local installation.
+
+## Validation Contract
+
+After changing this skill, run:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+AUDIT_DIR=skills/skill-creator/scripts
+uv run python "$AUDIT_DIR"/audit.py skills/harness-master/
+uv run wagents package harness-master --dry-run
+uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
+```
+
+Completion criteria:
+
+- metadata and eval manifests validate
+- packaging remains portable
+- surface discovery smoke-check accepts every canonical harness
+- dry-run/apply behavior still requires approval before edits
 
 ## Cross-Harness Synthesis Contract
 

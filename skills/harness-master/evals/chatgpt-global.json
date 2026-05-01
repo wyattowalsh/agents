@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master chatgpt global",
+  "files": [],
+  "expected_behavior": [
+    "Agent resolves `chatgpt` as a supported canonical harness",
+    "Agent treats the local ChatGPT MCP file as `repo-observed` unless current docs verify it",
+    "Agent reports ChatGPT Apps and Connectors UI state as a blind spot instead of inventing local paths"
+  ]
+}

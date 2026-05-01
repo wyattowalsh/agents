@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master perplexity both",
+  "files": [],
+  "expected_behavior": [
+    "Agent normalizes `perplexity` to `perplexity-desktop`",
+    "Agent treats `.perplexity/skills` and `~/.perplexity/skills` as repo-observed surfaces",
+    "Agent reports Perplexity Mac app connector UI as a blind spot and does not claim an official local config path"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master cursor-agent both",
+  "files": [],
+  "expected_behavior": [
+    "Agent normalizes `cursor-agent` to the canonical `cursor` harness",
+    "Agent includes Cursor Agent, CLI, Cloud, skills, subagents, hooks, and MCP surfaces inside one Cursor report",
+    "Agent reports Cloud Agent settings, secrets, MCP dropdowns, and API state as blind spots"
+  ]
+}

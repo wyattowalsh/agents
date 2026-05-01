@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master copilot-cli global",
+  "files": [],
+  "expected_behavior": [
+    "Agent normalizes `copilot-cli` to `github-copilot-cli`",
+    "Agent audits `~/.copilot/settings.json`, `~/.copilot/mcp-config.json`, and related CLI global surfaces",
+    "Agent preserves dry-run behavior and does not apply config changes without approval"
+  ]
+}

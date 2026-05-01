@@ -1,0 +1,10 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master github-copilot both",
+  "files": [],
+  "expected_behavior": [
+    "Agent expands aggregate alias `github-copilot` to `github-copilot-web` and `github-copilot-cli`",
+    "Agent produces separate per-harness sections for the web and CLI facets",
+    "Agent does not collapse GitHub.com blind spots and CLI config files into one mixed finding"
+  ]
+}
