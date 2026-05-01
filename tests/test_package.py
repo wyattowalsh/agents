@@ -117,6 +117,49 @@ class TestZipValidity:
             assert "test-pkg/assets/logo.txt" in names
             assert "test-pkg/notes.md" in names
 
+    def test_zip_excludes_configured_directories_and_files(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path)
+        excluded_dirs = [
+            ".venv",
+            ".ruff_cache",
+            "node_modules",
+            "dist",
+            "build",
+            "__pycache__",
+            ".pytest_cache",
+            ".mypy_cache",
+            ".ty",
+        ]
+        for dirname in excluded_dirs:
+            nested_dir = skill_dir / dirname / "nested"
+            nested_dir.mkdir(parents=True)
+            (nested_dir / "ignored.txt").write_text("local artifact")
+        for filename in [".DS_Store", "manifest.json", "cache.pyc", "scratch.tmp"]:
+            (skill_dir / filename).write_text("ignored file")
+        (skill_dir / "keep.txt").write_text("pack me")
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir)
+        zip_path = Path(result["output_path"])
+
+        assert set(excluded_dirs).issubset(result["files_excluded"])
+        assert {".DS_Store", "manifest.json", "cache.pyc", "scratch.tmp"}.issubset(result["files_excluded"])
+        for dirname in excluded_dirs:
+            assert f"{dirname}/nested/ignored.txt" not in result["files_excluded"]
+            assert f"{dirname}/nested/ignored.txt" not in result["files_included"]
+        assert "keep.txt" in result["files_included"]
+        with zipfile.ZipFile(zip_path) as zf:
+            names = set(zf.namelist())
+            manifest = json.loads(zf.read("test-pkg/manifest.json"))
+            assert "test-pkg/keep.txt" in names
+            for dirname in excluded_dirs:
+                assert f"test-pkg/{dirname}/nested/ignored.txt" not in names
+                assert dirname not in manifest["files"]
+            for filename in [".DS_Store", "cache.pyc", "scratch.tmp"]:
+                assert f"test-pkg/{filename}" not in names
+                assert filename not in manifest["files"]
+            assert "manifest.json" not in manifest["files"]
+
     def test_reports_files_excluded_by_default(self, tmp_path: Path):
         skill_dir = _make_skill(tmp_path)
         (skill_dir / "reports").mkdir()
@@ -133,6 +176,18 @@ class TestZipValidity:
             manifest = json.loads(zf.read("test-pkg/manifest.json"))
             assert "test-pkg/reports/audit.md" not in names
             assert "reports/audit.md" not in manifest["files"]
+
+    def test_cross_skill_tooling_references_are_not_packaged_resources(self, tmp_path: Path):
+        skill_md = VALID_SKILL_MD.replace(
+            "Body content here.",
+            "Run `uv run python skills/skill-creator/scripts/audit.py skills/test-pkg/ --format json`.",
+        )
+        skill_dir = _make_skill(tmp_path, skill_md)
+
+        result = check_referenced_files(skill_dir, skill_md.split("---", 2)[2])
+
+        assert result["passed"] is True
+        assert result["details"] == "No packaged resource mentions found in body"
 
     def test_explicitly_referenced_reports_file_is_included(self, tmp_path: Path):
         skill_md = VALID_SKILL_MD.replace(
@@ -195,6 +250,20 @@ class TestDryRun:
 
         assert "reports/audit.md" in result["files_excluded"]
         assert "reports/audit.md" in table
+
+    def test_dry_run_compacts_excluded_directory_reporting(self, tmp_path: Path):
+        skill_dir = _make_skill(tmp_path)
+        (skill_dir / ".venv" / "bin").mkdir(parents=True)
+        (skill_dir / ".venv" / "bin" / "python").write_text("local env")
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, dry_run=True)
+        table = format_table(result)
+
+        assert ".venv" in result["files_excluded"]
+        assert ".venv/bin/python" not in result["files_excluded"]
+        assert "  - .venv/" in table
+        assert ".venv/bin/python" not in table
 
     def test_package_all_dry_run_manifest_reports_no_emitted_archives(self, tmp_path: Path):
         skills_dir = tmp_path / "skills"

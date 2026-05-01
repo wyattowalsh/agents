@@ -22,7 +22,19 @@ from _shared import parse_frontmatter
 # ---------------------------------------------------------------------------
 
 EXCLUDE_PATTERNS = {"__pycache__", ".DS_Store", ".git", "*.pyc", "*.tmp"}
-EXCLUDE_DIRS = {"__pycache__", ".git"}
+EXCLUDE_DIRS = {
+    "__pycache__",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".ty",
+    ".venv",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+}
 EXCLUDE_EXTENSIONS = {".pyc", ".tmp"}
 EXCLUDE_NAMES = {".DS_Store", "manifest.json"}
 
@@ -62,6 +74,10 @@ def _mentioned_resource_paths(skill_dir: Path, body: str) -> set[str]:
         raw_path = match.group(1).rstrip("`.,:;)]}")
         if raw_path.startswith(skill_prefix):
             raw_path = raw_path[len(skill_prefix) :]
+        elif raw_path.startswith("skills/"):
+            # Cross-skill repo tooling references are validation commands, not
+            # resources that must be bundled inside the current skill archive.
+            continue
         mentioned.add(raw_path)
     return mentioned
 
@@ -83,6 +99,11 @@ def _should_exclude(path: Path, referenced_report_files: set[Path] | None = None
     return _is_reports_file(path) and path not in (referenced_report_files or set())
 
 
+def _should_prune_dir(path: Path) -> bool:
+    """Return True if directory traversal should not descend into path."""
+    return any(part in EXCLUDE_DIRS for part in path.parts)
+
+
 def _collect_files(
     skill_dir: Path,
     referenced_report_files: set[Path] | None = None,
@@ -93,14 +114,24 @@ def _collect_files(
     """
     included: list[Path] = []
     excluded: list[Path] = []
-    for file_path in sorted(skill_dir.rglob("*")):
-        if not file_path.is_file():
-            continue
-        rel = file_path.relative_to(skill_dir)
-        if _should_exclude(rel, referenced_report_files=referenced_report_files):
-            excluded.append(rel)
-        else:
-            included.append(rel)
+
+    def walk(directory: Path) -> None:
+        for path in sorted(directory.iterdir()):
+            rel = path.relative_to(skill_dir)
+            if path.is_dir():
+                if _should_prune_dir(rel):
+                    excluded.append(rel)
+                    continue
+                walk(path)
+                continue
+            if not path.is_file():
+                continue
+            if _should_exclude(rel, referenced_report_files=referenced_report_files):
+                excluded.append(rel)
+            else:
+                included.append(rel)
+
+    walk(skill_dir)
 
     return included, excluded
 
@@ -437,12 +468,30 @@ def package_all(skills_dir: Path, output_dir: Path, dry_run: bool = False, force
 # ---------------------------------------------------------------------------
 
 
+def _format_human_path(path_value: str) -> str:
+    """Render absolute paths relative to cwd when possible for human output."""
+    try:
+        path = Path(path_value)
+        if path.is_absolute():
+            return str(path.resolve().relative_to(Path.cwd().resolve()))
+    except (OSError, ValueError):
+        pass
+    return path_value
+
+
+def _format_excluded_path(path_value: str) -> str:
+    path = Path(path_value)
+    if path.name in EXCLUDE_DIRS:
+        return f"{path_value}/"
+    return path_value
+
+
 def format_table(result: dict) -> str:
     """Format a single skill package result as a human-readable table."""
     out = [f"Package: {result['skill']}", "=" * 40]
     out.append(f"Version: {result['version']}")
     if result["output_path"]:
-        out.append(f"Output:  {result['output_path']}")
+        out.append(f"Output:  {_format_human_path(result['output_path'])}")
     out.append("")
 
     out.append(f"{'Check':<28} {'Result':>6}  Details")
@@ -458,7 +507,7 @@ def format_table(result: dict) -> str:
     if excluded_files:
         out.append("files_excluded:")
         for file_path in excluded_files:
-            out.append(f"  - {file_path}")
+            out.append(f"  - {_format_excluded_path(file_path)}")
     out.append(f"Portable: {'yes' if result.get('portable', True) else 'no'}")
     if result.get("blocked"):
         out.append("Blocked:  portability failures (use --force to override)")

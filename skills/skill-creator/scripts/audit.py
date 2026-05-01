@@ -196,6 +196,10 @@ def _mentioned_resource_paths(skill_dir: Path, body: str) -> set[str]:
         raw_path = match.group(1).rstrip("`.,:;)]}")
         if raw_path.startswith(skill_prefix):
             raw_path = raw_path[len(skill_prefix) :]
+        elif raw_path.startswith("skills/"):
+            # Cross-skill repo tooling references are validation commands, not
+            # resources that must be bundled inside the audited skill archive.
+            continue
         mentioned.add(raw_path)
     return mentioned
 
