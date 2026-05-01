@@ -37,11 +37,66 @@
       "support_tier": "experimental",
       "owner_change": "agents-c04-experimental-harnesses",
       "validation_requirements": ["MCP import fixture", "global config rollback fixture"]
+    },
+    {
+      "id": "chrome-devtools-upstream-plugin",
+      "harness": "multi-harness",
+      "kind": "upstream-mcp-skills-plugin",
+      "source_paths": ["https://github.com/ChromeDevTools/chrome-devtools-mcp"],
+      "support_tier": "repo-present-validation-required",
+      "owner_change": "agents-c10-external-repo-intake",
+      "validation_requirements": [
+        "source-list evidence",
+        "one active MCP owner per harness",
+        "plugin or extension install command recorded",
+        "repo MCP fallback fixture"
+      ]
+    }
+  ],
+  "mcp_ownership": [
+    {
+      "server": "chrome-devtools",
+      "source": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+      "version": "0.23.0",
+      "harnesses": {
+        "claude-code": {
+          "owner": "plugin",
+          "install": [
+            "/plugin marketplace add ChromeDevTools/chrome-devtools-mcp",
+            "/plugin install chrome-devtools-mcp"
+          ],
+          "repo_mcp_projection": "suppressed"
+        },
+        "gemini-cli": {
+          "owner": "extension",
+          "install": [
+            "gemini extensions install --auto-update https://github.com/ChromeDevTools/chrome-devtools-mcp"
+          ],
+          "repo_mcp_projection": "suppressed"
+        },
+        "github-copilot-web": {
+          "owner": "plugin",
+          "install": [
+            "Install the source plugin from https://github.com/ChromeDevTools/chrome-devtools-mcp where the VS Code or Copilot surface supports source plugins."
+          ],
+          "repo_mcp_projection": "suppressed-for-vscode"
+        },
+        "github-copilot-cli": {"owner": "repo-mcp"},
+        "claude-desktop": {"owner": "repo-mcp"},
+        "chatgpt": {"owner": "manual-ui-or-repo-mcp"},
+        "codex": {"owner": "repo-mcp"},
+        "opencode": {"owner": "repo-mcp"},
+        "cursor": {"owner": "repo-mcp"},
+        "antigravity": {"owner": "repo-mcp"},
+        "perplexity-desktop": {"owner": "manual-ui-or-repo-mcp"},
+        "cherry-studio": {"owner": "repo-mcp"}
+      }
     }
   ],
   "rules": [
     "Plugins are native projections of canonical repo assets, not independent sources of truth.",
     "Runtime plugin arrays must preserve user-owned local settings when merged.",
-    "Desktop app import surfaces remain experimental until fixture-backed."
+    "Desktop app import surfaces remain experimental until fixture-backed.",
+    "A harness must have exactly one active MCP owner for a given server; plugin and extension owners suppress duplicate standalone repo MCP projection for that harness."
   ]
 }

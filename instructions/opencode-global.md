@@ -65,6 +65,8 @@ The current launcher path is:
 
 Use this OpenCode-specific override only where needed. Keep the shared repo-managed MCP default on the generic headed persistent-profile launch shape documented in `AGENTS.md`.
 
+OpenCode remains a repo-MCP owner for Chrome DevTools. Do not install an additional OpenCode Chrome DevTools plugin or second `mcp.chrome-devtools` entry unless the existing repo-managed entry is disabled or replaced in the same change.
+
 ### Subagent Delegation
 
 When using OpenCode subagents or modes (`build`, `plan`, etc.), inherit the invoking primary agent and harness runtime settings. Do not add repo-managed subagent or mode model overrides.

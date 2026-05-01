@@ -25,8 +25,14 @@
         "-y",
         "chrome-devtools-mcp@latest",
         "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
-        "--headless=false"
+        "--headless=false",
+        "--no-usage-statistics",
+        "--no-performance-crux"
       ],
+      "env": {
+        "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": "1",
+        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1"
+      },
       "timeout": 600000
     },
     "context7": {

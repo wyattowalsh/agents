@@ -21,9 +21,9 @@ from wagents.platforms.base import (
     load_json,
     merge_server_maps,
     merge_unique_path_strings,
+    render_env_value,
     render_home_path,
     replace_arg_placeholders,
-    resolve_env_value,
 )
 
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
@@ -33,6 +33,7 @@ OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
+CHROME_DEVTOOLS_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"
 SKILLS_DIR = REPO_ROOT / "skills"
 
 _DCP_MODEL_LIMIT_KEYS = {"modelMaxLimits", "modelMinLimits"}
@@ -66,8 +67,10 @@ def _render_lmstudio_provider(policy: dict[str, Any], fallbacks: dict[str, str])
     provider = _local_llm_provider(policy, "lmstudio")
     if not provider:
         return None
-    opencode = provider.get("opencode") if isinstance(provider.get("opencode"), dict) else {}
-    models = opencode.get("models") if isinstance(opencode.get("models"), dict) else {}
+    opencode_raw = provider.get("opencode")
+    opencode: dict[str, Any] = opencode_raw if isinstance(opencode_raw, dict) else {}
+    models_raw = opencode.get("models")
+    models: dict[str, Any] = models_raw if isinstance(models_raw, dict) else {}
     return {
         "npm": opencode.get("npm", "@ai-sdk/openai-compatible"),
         "name": provider.get("name", "LM Studio (local)"),
@@ -84,9 +87,11 @@ def _merge_provider_entry(existing: Any, rendered: dict[str, Any]) -> dict[str, 
     merged = dict(existing)
     merged["npm"] = rendered["npm"]
     merged["name"] = rendered["name"]
-    existing_options = existing.get("options") if isinstance(existing.get("options"), dict) else {}
+    existing_options_raw = existing.get("options")
+    existing_options: dict[str, Any] = existing_options_raw if isinstance(existing_options_raw, dict) else {}
     merged["options"] = {**existing_options, **rendered["options"]}
-    existing_models = existing.get("models") if isinstance(existing.get("models"), dict) else {}
+    existing_models_raw = existing.get("models")
+    existing_models: dict[str, Any] = existing_models_raw if isinstance(existing_models_raw, dict) else {}
     merged["models"] = {**rendered["models"], **existing_models}
     return merged
 
@@ -126,10 +131,15 @@ class Adapter(PlatformAdapter):
     def home_config_paths(self) -> list[Path]:
         return [OPENCODE_CONFIG_PATH, OPENCODE_DCP_CONFIG_PATH]
 
-    def render_mcp(self, registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    def render_mcp(
+        self,
+        registry: dict[str, Any],
+        fallbacks: dict[str, str],
+        harness: str | None = None,
+    ) -> dict[str, Any]:
         """OpenCode uses ``type: local|remote`` with ``command`` arrays or ``url``."""
         servers: dict[str, Any] = {}
-        for name, entry in enabled_registry_servers(registry).items():
+        for name, entry in enabled_registry_servers(registry, harness or self.name).items():
             args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
             remote_url = self._extract_remote_url(entry["command"], args)
             server: dict[str, Any]
@@ -139,8 +149,7 @@ class Adapter(PlatformAdapter):
                 server = {"type": "local", "command": [entry["command"], *args], "enabled": True}
             if entry.get("env"):
                 server["environment"] = {
-                    key: resolve_env_value(value["env_var"], fallbacks)
-                    for key, value in entry["env"].items()
+                    key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
                 }
             servers[name] = server
         return servers  # note: OpenCode nests under "mcp", not "mcpServers"
@@ -189,11 +198,11 @@ class Adapter(PlatformAdapter):
             providers["lmstudio"] = _merge_provider_entry(providers.get("lmstudio"), lmstudio_provider)
 
         # -- MCP merge (OpenCode uses root key "mcp", not "mcpServers") --
-        rendered_mcp = self.render_mcp(registry, fallbacks)
         existing_mcp = settings.get("mcp")
-        settings["mcp"] = merge_server_maps(
-            rendered_mcp, existing_mcp if isinstance(existing_mcp, dict) else {}
-        )
+        rendered_mcp = self.render_mcp(registry, fallbacks)
+        if isinstance(existing_mcp, dict):
+            self._preserve_chrome_devtools_wrapper(rendered_mcp, existing_mcp)
+        settings["mcp"] = merge_server_maps(rendered_mcp, existing_mcp if isinstance(existing_mcp, dict) else {})
 
         # -- Instructions paths --
         settings["instructions"] = merge_unique_path_strings(
@@ -220,6 +229,15 @@ class Adapter(PlatformAdapter):
             if isinstance(loaded, dict):
                 existing = loaded
         ctx.write_json(OPENCODE_DCP_CONFIG_PATH, _render_dcp_config(existing))
+
+    @staticmethod
+    def _preserve_chrome_devtools_wrapper(rendered: dict[str, Any], existing: dict[str, Any]) -> None:
+        current = existing.get("chrome-devtools")
+        if not isinstance(current, dict):
+            return
+        command = current.get("command")
+        if isinstance(command, list) and CHROME_DEVTOOLS_LAUNCHER in command:
+            rendered["chrome-devtools"] = current
 
     @staticmethod
     def _extract_remote_url(command: str, args: list[Any]) -> str | None:

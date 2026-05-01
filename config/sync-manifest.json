@@ -54,6 +54,10 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/planning/manifests/external-skills/chrome-devtools-mcp.json",
+      "mode": "canonical"
+    },
+    {
       "path": "/Users/ww/dev/projects/agents/planning/00-overview/12-repo-sync-and-drift-ledger.md",
       "mode": "canonical"
     },

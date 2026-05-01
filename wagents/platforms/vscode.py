@@ -14,7 +14,7 @@ from wagents.platforms.base import (
     PlatformAdapter,
     SyncContext,
     enabled_registry_servers,
-    env_placeholder,
+    render_env_value,
     replace_arg_placeholders,
 )
 
@@ -38,10 +38,11 @@ class Adapter(PlatformAdapter):
         policy: dict[str, Any],
     ) -> None:
         """Write repo ``mcp.json`` and ``.vscode/mcp.json``."""
-        mcp = self.render_mcp(registry, fallbacks={})
-        # Repo configs use placeholder env vars, not resolved secrets
-        for path in self.repo_config_paths():
-            ctx.write_json(path, mcp)
+        # Repo configs use placeholder env vars, not resolved secrets. Keep
+        # generic mcp.json complete while allowing .vscode to suppress servers
+        # owned by native VS Code/Copilot plugins.
+        ctx.write_json(REPO_MCP_PATH, self.render_mcp(registry, fallbacks={}, harness="repo-mcp"))
+        ctx.write_json(VSCODE_MCP_PATH, self.render_mcp(registry, fallbacks={}, harness="vscode"))
 
     def sync_home(
         self,
@@ -54,18 +55,22 @@ class Adapter(PlatformAdapter):
         """VSCode has no home-target sync; user settings are managed manually."""
         pass
 
-    def render_mcp(self, registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    def render_mcp(
+        self,
+        registry: dict[str, Any],
+        fallbacks: dict[str, str],
+        harness: str | None = None,
+    ) -> dict[str, Any]:
         """Return standard mcpServers with env placeholders (no secret resolution)."""
         servers: dict[str, Any] = {}
-        for name, entry in enabled_registry_servers(registry).items():
+        for name, entry in enabled_registry_servers(registry, harness or self.name).items():
             server: dict[str, Any] = {
                 "command": entry["command"],
                 "args": replace_arg_placeholders(entry.get("args", []), {}, local_values=False),
             }
             if entry.get("env"):
                 server["env"] = {
-                    key: env_placeholder(value["env_var"])
-                    for key, value in entry["env"].items()
+                    key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()
                 }
             if entry.get("timeout_ms"):
                 server["timeout"] = entry["timeout_ms"]

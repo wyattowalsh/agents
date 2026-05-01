@@ -10,8 +10,8 @@ from __future__ import annotations
 
 import json
 import os
-import re
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -58,6 +58,13 @@ def resolve_env_value(name: str, fallbacks: dict[str, str]) -> str:
     return os.environ.get(name) or fallbacks.get(name) or env_placeholder(name)
 
 
+def render_env_value(value: dict[str, Any], fallbacks: dict[str, str], *, local_values: bool) -> str:
+    if "value" in value:
+        return str(value["value"])
+    env_var = value["env_var"]
+    return resolve_env_value(env_var, fallbacks) if local_values else env_placeholder(env_var)
+
+
 def replace_arg_placeholders(args: list[Any], fallbacks: dict[str, str], *, local_values: bool) -> list[Any]:
     rendered: list[Any] = []
     for item in args:
@@ -74,9 +81,7 @@ def load_json(path: Path) -> dict[str, Any]:
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        without_line_comments = "\n".join(
-            line for line in text.splitlines() if not line.lstrip().startswith("//")
-        )
+        without_line_comments = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("//"))
         return json.loads(without_line_comments)
 
 
@@ -202,11 +207,15 @@ def merge_unique_path_strings(managed: list[str], existing: Any) -> list[str]:
     return merged
 
 
-def enabled_registry_servers(registry: dict[str, Any]) -> dict[str, Any]:
+def server_enabled_for_harness(entry: dict[str, Any], harness: str | None) -> bool:
+    if entry.get("enabled") is False:
+        return False
+    return not (harness and harness in set(entry.get("exclude_from_harnesses", [])))
+
+
+def enabled_registry_servers(registry: dict[str, Any], harness: str | None = None) -> dict[str, Any]:
     return {
-        name: entry
-        for name, entry in registry.get("servers", {}).items()
-        if entry.get("enabled") is not False
+        name: entry for name, entry in registry.get("servers", {}).items() if server_enabled_for_harness(entry, harness)
     }
 
 
@@ -242,7 +251,12 @@ class PlatformAdapter(ABC):
 
     # -- Pure renderers ------------------------------------------------
 
-    def render_mcp(self, registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    def render_mcp(
+        self,
+        registry: dict[str, Any],
+        fallbacks: dict[str, str],
+        harness: str | None = None,
+    ) -> dict[str, Any]:
         """Render MCP server config in this platform's native format.
 
         Default returns a generic ``{mcpServers: {...}}`` structure.
@@ -250,15 +264,14 @@ class PlatformAdapter(ABC):
         should override.
         """
         servers: dict[str, Any] = {}
-        for name, entry in enabled_registry_servers(registry).items():
+        for name, entry in enabled_registry_servers(registry, harness or self.name).items():
             server: dict[str, Any] = {
                 "command": entry["command"],
                 "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
             }
             if entry.get("env"):
                 server["env"] = {
-                    key: resolve_env_value(value["env_var"], fallbacks)
-                    for key, value in entry["env"].items()
+                    key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
                 }
             servers[name] = server
         return {"mcpServers": servers}
@@ -279,12 +292,25 @@ class PlatformAdapter(ABC):
     # -- Impure sync entrypoints ---------------------------------------
 
     @abstractmethod
-    def sync_repo(self, ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any], policy: dict[str, Any]) -> None:
+    def sync_repo(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        hook_registry: dict[str, Any],
+        policy: dict[str, Any],
+    ) -> None:
         """Sync repo-local generated targets for this platform."""
         raise NotImplementedError
 
     @abstractmethod
-    def sync_home(self, ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str], hook_registry: dict[str, Any]) -> None:
+    def sync_home(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        policy: dict[str, Any],
+        fallbacks: dict[str, str],
+        hook_registry: dict[str, Any],
+    ) -> None:
         """Sync user home targets for this platform."""
         raise NotImplementedError
 
@@ -310,9 +336,7 @@ class PlatformAdapter(ABC):
                 continue
             config: dict[str, Any] = {
                 "type": "command",
-                "command": str(hook["command"]).format(
-                    repo_root=str(REPO_ROOT), harness=self.name
-                ),
+                "command": str(hook["command"]).format(repo_root=str(REPO_ROOT), harness=self.name),
             }
             group: dict[str, Any] = {"hooks": [config]}
             if hook.get("matcher"):
@@ -320,7 +344,7 @@ class PlatformAdapter(ABC):
             rendered.setdefault(event, []).append(group)
         return {"hooks": rendered} if rendered else None
 
-    def _merge_json_config(self, ctx: SyncContext, path: Path, updater: callable) -> None:
+    def _merge_json_config(self, ctx: SyncContext, path: Path, updater: Callable[[dict[str, Any]], None]) -> None:
         """Load JSON at *path*, apply *updater*(data), and write back."""
         if not path.exists():
             return

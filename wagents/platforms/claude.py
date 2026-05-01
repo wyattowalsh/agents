@@ -21,14 +21,11 @@ from wagents.platforms.base import (
     load_json,
     merge_hook_groups,
     merge_server_maps,
-    normalize_name,
 )
 
 CLAUDE_SETTINGS_PATH = HOME / ".claude" / "settings.json"
 CLAUDE_SETTINGS_LOCAL_PATH = HOME / ".claude" / "settings.local.json"
-CLAUDE_DESKTOP_CONFIG_PATH = (
-    HOME / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
-)
+CLAUDE_DESKTOP_CONFIG_PATH = HOME / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
 CLAUDE_ENTRYPOINT_PATH = HOME / ".claude" / "CLAUDE.md"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
 HOOK_COMMAND_MARKER = "wagents-hook.py"
@@ -49,11 +46,24 @@ class Adapter(PlatformAdapter):
         }
         return self._render_standard_hooks(hook_registry, event_map)
 
-    def sync_repo(self, ctx: SyncContext, registry: dict[str, Any], hook_registry: dict[str, Any], policy: dict[str, Any]) -> None:
+    def sync_repo(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        hook_registry: dict[str, Any],
+        policy: dict[str, Any],
+    ) -> None:
         """Claude has no repo-local config files beyond the root entrypoint."""
         pass
 
-    def sync_home(self, ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str], hook_registry: dict[str, Any]) -> None:
+    def sync_home(
+        self,
+        ctx: SyncContext,
+        registry: dict[str, Any],
+        policy: dict[str, Any],
+        fallbacks: dict[str, str],
+        hook_registry: dict[str, Any],
+    ) -> None:
         self._sync_entrypoint(ctx)
         self._merge_settings(ctx, policy, hook_registry)
         self._merge_settings_local(ctx, registry)
@@ -103,7 +113,7 @@ class Adapter(PlatformAdapter):
         enabled = settings.get("enabledMcpjsonServers")
         if not isinstance(enabled, list):
             return
-        valid = set(enabled_registry_servers(registry))
+        valid = set(enabled_registry_servers(registry, "claude-code"))
         filtered = [name for name in enabled if isinstance(name, str) and name in valid]
         # Preserve order, dedupe
         seen: set[str] = set()
@@ -118,7 +128,7 @@ class Adapter(PlatformAdapter):
     def _merge_desktop_mcp(self, ctx: SyncContext, registry: dict[str, Any], fallbacks: dict[str, str]) -> None:
         if not CLAUDE_DESKTOP_CONFIG_PATH.exists():
             return
-        rendered = self.render_mcp(registry, fallbacks)["mcpServers"]
+        rendered = self.render_mcp(registry, fallbacks, harness="claude-desktop")["mcpServers"]
         data = load_json(CLAUDE_DESKTOP_CONFIG_PATH)
         existing = data.get("mcpServers", {})
         data["mcpServers"] = merge_server_maps(rendered, existing)
