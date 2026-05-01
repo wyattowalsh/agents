@@ -9,6 +9,9 @@
       "skills"
     ]
   },
+  "experimental": {
+    "openTelemetry": true
+  },
   "plugin": [
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
@@ -27,7 +30,10 @@
     "opencode-devcontainers@latest",
     "@ramarivera/opencode-model-announcer@latest",
     "@mailshieldai/opencode-canvas@latest",
-    "@slkiser/opencode-quota@latest"
+    "@slkiser/opencode-quota@latest",
+    "opencode-scheduler@latest",
+    "opencode-claude-auth@latest",
+    "opencode-plugin-langfuse@latest"
   ],
   "permission": {
     "canvas_*": "allow"

@@ -7,6 +7,21 @@ from wagents.openspec import OPENSPEC_PACKAGE, OPENSPEC_TOOL_BY_AGENT, format_mi
 
 ROOT = Path(__file__).resolve().parents[1]
 
+OPENCODE_RUNTIME_PLUGINS = {
+    "opencode-scheduler@latest",
+    "opencode-claude-auth@latest",
+    "opencode-plugin-langfuse@latest",
+}
+
+OPENCODE_TUI_ONLY_PLUGINS = {
+    "opencode-subagent-statusline@latest",
+}
+
+OPENCODE_DEFERRED_WORKFLOW_PLUGINS = {
+    "@codemcp/workflows-opencode@latest",
+    "@codemcp/workflows-opencode-tui@latest",
+}
+
 
 def load_json(relative_path: str) -> dict:
     return json.loads((ROOT / relative_path).read_text())
@@ -77,3 +92,29 @@ def test_opencode_project_plugins_use_latest_dist_tag():
 
     for plugin_spec in config["plugin"]:
         assert plugin_spec.endswith("@latest"), f"{plugin_spec} must use @latest"
+
+
+def test_opencode_project_plugins_include_runtime_integrations():
+    config = load_json("opencode.json")
+
+    assert OPENCODE_RUNTIME_PLUGINS.issubset(config["plugin"])
+
+
+def test_opencode_project_plugins_exclude_tui_only_plugins():
+    config = load_json("opencode.json")
+
+    for plugin_spec in OPENCODE_TUI_ONLY_PLUGINS:
+        assert plugin_spec not in config["plugin"]
+
+
+def test_opencode_project_plugins_exclude_deferred_workflow_plugins():
+    config = load_json("opencode.json")
+
+    for plugin_spec in OPENCODE_DEFERRED_WORKFLOW_PLUGINS:
+        assert plugin_spec not in config["plugin"]
+
+
+def test_opencode_project_plugins_exclude_known_unresolved_packages():
+    config = load_json("opencode.json")
+
+    assert all(not plugin_spec.startswith("opencode-shell-strategy") for plugin_spec in config["plugin"])
