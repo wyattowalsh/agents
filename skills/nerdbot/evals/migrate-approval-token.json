@@ -1,0 +1,15 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot migrate --root ./knowledge-base --target wiki/topics/vendor.md --apply",
+  "files": [
+    "knowledge-base/wiki/topics/vendor.md",
+    "knowledge-base/config/migrations/vendor-plan.md"
+  ],
+  "expected_behavior": [
+    "Agent dispatches to Migration and treats migration as high-impact",
+    "Agent requires --approval-token APPROVE-MIGRATION before applied migration-plan writes",
+    "Agent writes only additive config/migrations plan files when approved",
+    "Agent does not move, delete, rename, or rewrite canonical wiki files",
+    "Agent records any approved additive plan write in activity/operations.jsonl"
+  ]
+}

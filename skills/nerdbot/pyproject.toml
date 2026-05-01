@@ -1,0 +1,64 @@
+[project]
+name = "nerdbot"
+version = "0.1.0"
+description = "Local-first Obsidian-compatible knowledge-base toolkit"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = []
+
+[project.scripts]
+nerdbot = "nerdbot.cli:main"
+
+[project.optional-dependencies]
+crawl = [
+    "crawl4ai>=0.8.6",
+    "crawlee>=0.4.0b3",
+    "trafilatura>=2.0.0",
+    "selectolax>=0.4.7",
+]
+docs = [
+    "docling-slim>=2.92.0",
+    "markitdown>=0.1.5",
+    "opendataloader-pdf>=2.4.1",
+]
+semantic = [
+    "sqlite-vec>=0.1.9",
+]
+vlm = [
+    "docling>=2.92.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.9",
+    "ty==0.0.29",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nerdbot"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"assets" = "nerdbot/assets"
+"references" = "nerdbot/references"
+"scripts/kb_bootstrap.py" = "nerdbot/scripts/kb_bootstrap.py"
+"scripts/kb_inventory.py" = "nerdbot/scripts/kb_inventory.py"
+"scripts/kb_lint.py" = "nerdbot/scripts/kb_lint.py"
+"scripts/kb_path_policy.py" = "nerdbot/scripts/kb_path_policy.py"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ty.environment]
+python-version = "3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

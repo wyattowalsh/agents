@@ -24,6 +24,19 @@ source_count: 1
 | Status | [queued / in review / synthesized] |
 | Canonical material impacted | [none / path list] |
 
+## Machine source record
+| Field | Value |
+|-------|-------|
+| `source_id` | `[source-id]` |
+| `original_location` | [URL, citation, local path, or external pointer] |
+| `raw_path` | `raw/sources/[file]` |
+| `capture_method` | [import / capture / extract / pointer] |
+| `captured_at` | [YYYY-MM-DD] |
+| `size_bytes` | [bytes or unknown] |
+| `checksum` | [checksum or pending] |
+| `license_or_access_notes` | [license, access terms, or private-use note] |
+| `intended_wiki_coverage` | `wiki/topics/[page].md` |
+
 ## Summary
 [Short factual summary grounded in the source.]
 
