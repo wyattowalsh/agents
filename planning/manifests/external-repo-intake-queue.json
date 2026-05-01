@@ -1,0 +1,1619 @@
+{
+  "version": 1,
+  "source_manifest": "planning/manifests/external-repo-intake-ledger.json",
+  "status": "pending-review",
+  "summary": {
+    "total": 93,
+    "by_lane": {
+      "docs-instructions": 2,
+      "external-intake": 18,
+      "harness-adapters": 9,
+      "knowledge-graph-context": 9,
+      "mcp-audit": 2,
+      "multiagent-ui-patterns": 14,
+      "security-quarantine": 4,
+      "session-telemetry": 2,
+      "skills-lifecycle": 33
+    },
+    "by_status": {
+      "adapt-after-gates": 57,
+      "adopt-candidate-after-gates": 9,
+      "intake-required": 6,
+      "quarantine-reference": 4,
+      "reference-only-after-verification": 15,
+      "wrap-candidate-after-gates": 2
+    },
+    "by_cluster": {
+      "context-memory": 9,
+      "evals": 1,
+      "external": 27,
+      "mcp": 4,
+      "orchestration": 6,
+      "skills": 32,
+      "ui": 14
+    }
+  },
+  "items": [
+    {
+      "id": "EXT-001",
+      "repo": "JuliusBrussee/caveman",
+      "url": "https://github.com/JuliusBrussee/caveman",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-001-source-verification",
+        "EXT-001-license-review",
+        "EXT-001-maintainer-activity-review",
+        "EXT-001-executable-surface-review",
+        "EXT-001-security-provenance-review",
+        "EXT-001-conformance-fixture-review",
+        "EXT-001-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-002",
+      "repo": "DeusData/codebase-memory-mcp",
+      "url": "https://github.com/DeusData/codebase-memory-mcp",
+      "target_lane": "mcp-audit",
+      "intake_status": "wrap-candidate-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-002-source-verification",
+        "EXT-002-license-review",
+        "EXT-002-maintainer-activity-review",
+        "EXT-002-executable-surface-review",
+        "EXT-002-security-provenance-review",
+        "EXT-002-conformance-fixture-review",
+        "EXT-002-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-003",
+      "repo": "tirth8205/code-review-graph",
+      "url": "https://github.com/tirth8205/code-review-graph",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-003-source-verification",
+        "EXT-003-license-review",
+        "EXT-003-maintainer-activity-review",
+        "EXT-003-executable-surface-review",
+        "EXT-003-security-provenance-review",
+        "EXT-003-conformance-fixture-review",
+        "EXT-003-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-004",
+      "repo": "es617/claude-replay",
+      "url": "https://github.com/es617/claude-replay",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-004-source-verification",
+        "EXT-004-license-review",
+        "EXT-004-maintainer-activity-review",
+        "EXT-004-executable-surface-review",
+        "EXT-004-security-provenance-review",
+        "EXT-004-conformance-fixture-review",
+        "EXT-004-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-005",
+      "repo": "Th0rgal/open-ralph-wiggum",
+      "url": "https://github.com/Th0rgal/open-ralph-wiggum",
+      "target_lane": "external-intake",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-005-source-verification",
+        "EXT-005-license-review",
+        "EXT-005-maintainer-activity-review",
+        "EXT-005-executable-surface-review",
+        "EXT-005-security-provenance-review",
+        "EXT-005-conformance-fixture-review",
+        "EXT-005-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-006",
+      "repo": "samber/cc-skills-golang",
+      "url": "https://github.com/samber/cc-skills-golang",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-006-source-verification",
+        "EXT-006-license-review",
+        "EXT-006-maintainer-activity-review",
+        "EXT-006-executable-surface-review",
+        "EXT-006-security-provenance-review",
+        "EXT-006-conformance-fixture-review",
+        "EXT-006-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-007",
+      "repo": "rivet-dev/sandbox-agent",
+      "url": "https://github.com/rivet-dev/sandbox-agent",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-007-source-verification",
+        "EXT-007-license-review",
+        "EXT-007-maintainer-activity-review",
+        "EXT-007-executable-surface-review",
+        "EXT-007-security-provenance-review",
+        "EXT-007-conformance-fixture-review",
+        "EXT-007-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-008",
+      "repo": "Prat011/awesome-llm-skills",
+      "url": "https://github.com/Prat011/awesome-llm-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-008-source-verification",
+        "EXT-008-license-review",
+        "EXT-008-maintainer-activity-review",
+        "EXT-008-executable-surface-review",
+        "EXT-008-security-provenance-review",
+        "EXT-008-conformance-fixture-review",
+        "EXT-008-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-009",
+      "repo": "jhlee0409/claude-code-history-viewer",
+      "url": "https://github.com/jhlee0409/claude-code-history-viewer",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-009-source-verification",
+        "EXT-009-license-review",
+        "EXT-009-maintainer-activity-review",
+        "EXT-009-executable-surface-review",
+        "EXT-009-security-provenance-review",
+        "EXT-009-conformance-fixture-review",
+        "EXT-009-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-010",
+      "repo": "remorses/kimaki",
+      "url": "https://github.com/remorses/kimaki",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-010-source-verification",
+        "EXT-010-license-review",
+        "EXT-010-maintainer-activity-review",
+        "EXT-010-executable-surface-review",
+        "EXT-010-security-provenance-review",
+        "EXT-010-conformance-fixture-review",
+        "EXT-010-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-011",
+      "repo": "Soju06/codex-lb",
+      "url": "https://github.com/Soju06/codex-lb",
+      "target_lane": "security-quarantine",
+      "intake_status": "quarantine-reference",
+      "priority": "quarantine",
+      "required_review_task_ids": [
+        "EXT-011-source-verification",
+        "EXT-011-license-review",
+        "EXT-011-maintainer-activity-review",
+        "EXT-011-executable-surface-review",
+        "EXT-011-security-provenance-review",
+        "EXT-011-conformance-fixture-review",
+        "EXT-011-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-012",
+      "repo": "kbwo/ccmanager",
+      "url": "https://github.com/kbwo/ccmanager",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-012-source-verification",
+        "EXT-012-license-review",
+        "EXT-012-maintainer-activity-review",
+        "EXT-012-executable-surface-review",
+        "EXT-012-security-provenance-review",
+        "EXT-012-conformance-fixture-review",
+        "EXT-012-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-013",
+      "repo": "Ataraxy-Labs/opensessions",
+      "url": "https://github.com/Ataraxy-Labs/opensessions",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-013-source-verification",
+        "EXT-013-license-review",
+        "EXT-013-maintainer-activity-review",
+        "EXT-013-executable-surface-review",
+        "EXT-013-security-provenance-review",
+        "EXT-013-conformance-fixture-review",
+        "EXT-013-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-014",
+      "repo": "fynnfluegge/agtx",
+      "url": "https://github.com/fynnfluegge/agtx",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-014-source-verification",
+        "EXT-014-license-review",
+        "EXT-014-maintainer-activity-review",
+        "EXT-014-executable-surface-review",
+        "EXT-014-security-provenance-review",
+        "EXT-014-conformance-fixture-review",
+        "EXT-014-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-015",
+      "repo": "rynfar/meridian",
+      "url": "https://github.com/rynfar/meridian",
+      "target_lane": "security-quarantine",
+      "intake_status": "quarantine-reference",
+      "priority": "quarantine",
+      "required_review_task_ids": [
+        "EXT-015-source-verification",
+        "EXT-015-license-review",
+        "EXT-015-maintainer-activity-review",
+        "EXT-015-executable-surface-review",
+        "EXT-015-security-provenance-review",
+        "EXT-015-conformance-fixture-review",
+        "EXT-015-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-016",
+      "repo": "xintaofei/codeg",
+      "url": "https://github.com/xintaofei/codeg",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-016-source-verification",
+        "EXT-016-license-review",
+        "EXT-016-maintainer-activity-review",
+        "EXT-016-executable-surface-review",
+        "EXT-016-security-provenance-review",
+        "EXT-016-conformance-fixture-review",
+        "EXT-016-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-017",
+      "repo": "griffinmartin/opencode-claude-auth",
+      "url": "https://github.com/griffinmartin/opencode-claude-auth",
+      "target_lane": "security-quarantine",
+      "intake_status": "quarantine-reference",
+      "priority": "quarantine",
+      "required_review_task_ids": [
+        "EXT-017-source-verification",
+        "EXT-017-license-review",
+        "EXT-017-maintainer-activity-review",
+        "EXT-017-executable-surface-review",
+        "EXT-017-security-provenance-review",
+        "EXT-017-conformance-fixture-review",
+        "EXT-017-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-018",
+      "repo": "NeoLabHQ/context-engineering-kit",
+      "url": "https://github.com/NeoLabHQ/context-engineering-kit",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-018-source-verification",
+        "EXT-018-license-review",
+        "EXT-018-maintainer-activity-review",
+        "EXT-018-executable-surface-review",
+        "EXT-018-security-provenance-review",
+        "EXT-018-conformance-fixture-review",
+        "EXT-018-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-019",
+      "repo": "rohitg00/skillkit",
+      "url": "https://github.com/rohitg00/skillkit",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-019-source-verification",
+        "EXT-019-license-review",
+        "EXT-019-maintainer-activity-review",
+        "EXT-019-executable-surface-review",
+        "EXT-019-security-provenance-review",
+        "EXT-019-conformance-fixture-review",
+        "EXT-019-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-020",
+      "repo": "first-fluke/oh-my-agent",
+      "url": "https://github.com/first-fluke/oh-my-agent",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-020-source-verification",
+        "EXT-020-license-review",
+        "EXT-020-maintainer-activity-review",
+        "EXT-020-executable-surface-review",
+        "EXT-020-security-provenance-review",
+        "EXT-020-conformance-fixture-review",
+        "EXT-020-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-021",
+      "repo": "777genius/claude_agent_teams_ui",
+      "url": "https://github.com/777genius/claude_agent_teams_ui",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-021-source-verification",
+        "EXT-021-license-review",
+        "EXT-021-maintainer-activity-review",
+        "EXT-021-executable-surface-review",
+        "EXT-021-security-provenance-review",
+        "EXT-021-conformance-fixture-review",
+        "EXT-021-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-022",
+      "repo": "agent-sh/agentsys",
+      "url": "https://github.com/agent-sh/agentsys",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-022-source-verification",
+        "EXT-022-license-review",
+        "EXT-022-maintainer-activity-review",
+        "EXT-022-executable-surface-review",
+        "EXT-022-security-provenance-review",
+        "EXT-022-conformance-fixture-review",
+        "EXT-022-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-023",
+      "repo": "happier-dev/happier",
+      "url": "https://github.com/happier-dev/happier",
+      "target_lane": "external-intake",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-023-source-verification",
+        "EXT-023-license-review",
+        "EXT-023-maintainer-activity-review",
+        "EXT-023-executable-surface-review",
+        "EXT-023-security-provenance-review",
+        "EXT-023-conformance-fixture-review",
+        "EXT-023-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-024",
+      "repo": "guanyang/antigravity-skills",
+      "url": "https://github.com/guanyang/antigravity-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-024-source-verification",
+        "EXT-024-license-review",
+        "EXT-024-maintainer-activity-review",
+        "EXT-024-executable-surface-review",
+        "EXT-024-security-provenance-review",
+        "EXT-024-conformance-fixture-review",
+        "EXT-024-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-025",
+      "repo": "kdcokenny/ocx",
+      "url": "https://github.com/kdcokenny/ocx",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-025-source-verification",
+        "EXT-025-license-review",
+        "EXT-025-maintainer-activity-review",
+        "EXT-025-executable-surface-review",
+        "EXT-025-security-provenance-review",
+        "EXT-025-conformance-fixture-review",
+        "EXT-025-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-026",
+      "repo": "joelhooks/swarm-tools",
+      "url": "https://github.com/joelhooks/swarm-tools",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-026-source-verification",
+        "EXT-026-license-review",
+        "EXT-026-maintainer-activity-review",
+        "EXT-026-executable-surface-review",
+        "EXT-026-security-provenance-review",
+        "EXT-026-conformance-fixture-review",
+        "EXT-026-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-027",
+      "repo": "hosenur/portal",
+      "url": "https://github.com/hosenur/portal",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-027-source-verification",
+        "EXT-027-license-review",
+        "EXT-027-maintainer-activity-review",
+        "EXT-027-executable-surface-review",
+        "EXT-027-security-provenance-review",
+        "EXT-027-conformance-fixture-review",
+        "EXT-027-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-028",
+      "repo": "proxysoul/soulforge",
+      "url": "https://github.com/proxysoul/soulforge",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-028-source-verification",
+        "EXT-028-license-review",
+        "EXT-028-maintainer-activity-review",
+        "EXT-028-executable-surface-review",
+        "EXT-028-security-provenance-review",
+        "EXT-028-conformance-fixture-review",
+        "EXT-028-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-029",
+      "repo": "Human-Agent-Society/CORAL",
+      "url": "https://github.com/Human-Agent-Society/CORAL",
+      "target_lane": "external-intake",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-029-source-verification",
+        "EXT-029-license-review",
+        "EXT-029-maintainer-activity-review",
+        "EXT-029-executable-surface-review",
+        "EXT-029-security-provenance-review",
+        "EXT-029-conformance-fixture-review",
+        "EXT-029-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-030",
+      "repo": "Weizhena/Deep-Research-skills",
+      "url": "https://github.com/Weizhena/Deep-Research-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-030-source-verification",
+        "EXT-030-license-review",
+        "EXT-030-maintainer-activity-review",
+        "EXT-030-executable-surface-review",
+        "EXT-030-security-provenance-review",
+        "EXT-030-conformance-fixture-review",
+        "EXT-030-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-031",
+      "repo": "peters/horizon",
+      "url": "https://github.com/peters/horizon",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-031-source-verification",
+        "EXT-031-license-review",
+        "EXT-031-maintainer-activity-review",
+        "EXT-031-executable-surface-review",
+        "EXT-031-security-provenance-review",
+        "EXT-031-conformance-fixture-review",
+        "EXT-031-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-032",
+      "repo": "muxy-app/muxy",
+      "url": "https://github.com/muxy-app/muxy",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-032-source-verification",
+        "EXT-032-license-review",
+        "EXT-032-maintainer-activity-review",
+        "EXT-032-executable-surface-review",
+        "EXT-032-security-provenance-review",
+        "EXT-032-conformance-fixture-review",
+        "EXT-032-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-033",
+      "repo": "0xranx/OpenContext",
+      "url": "https://github.com/0xranx/OpenContext",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-033-source-verification",
+        "EXT-033-license-review",
+        "EXT-033-maintainer-activity-review",
+        "EXT-033-executable-surface-review",
+        "EXT-033-security-provenance-review",
+        "EXT-033-conformance-fixture-review",
+        "EXT-033-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-034",
+      "repo": "f/agentlytics",
+      "url": "https://github.com/f/agentlytics",
+      "target_lane": "session-telemetry",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-034-source-verification",
+        "EXT-034-license-review",
+        "EXT-034-maintainer-activity-review",
+        "EXT-034-executable-surface-review",
+        "EXT-034-security-provenance-review",
+        "EXT-034-conformance-fixture-review",
+        "EXT-034-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-035",
+      "repo": "kdcokenny/opencode-worktree",
+      "url": "https://github.com/kdcokenny/opencode-worktree",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-035-source-verification",
+        "EXT-035-license-review",
+        "EXT-035-maintainer-activity-review",
+        "EXT-035-executable-surface-review",
+        "EXT-035-security-provenance-review",
+        "EXT-035-conformance-fixture-review",
+        "EXT-035-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-036",
+      "repo": "cortexkit/opencode-magic-context",
+      "url": "https://github.com/cortexkit/opencode-magic-context",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-036-source-verification",
+        "EXT-036-license-review",
+        "EXT-036-maintainer-activity-review",
+        "EXT-036-executable-surface-review",
+        "EXT-036-security-provenance-review",
+        "EXT-036-conformance-fixture-review",
+        "EXT-036-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-037",
+      "repo": "borski/travel-hacking-toolkit",
+      "url": "https://github.com/borski/travel-hacking-toolkit",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-037-source-verification",
+        "EXT-037-license-review",
+        "EXT-037-maintainer-activity-review",
+        "EXT-037-executable-surface-review",
+        "EXT-037-security-provenance-review",
+        "EXT-037-conformance-fixture-review",
+        "EXT-037-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-038",
+      "repo": "neiii/bridle",
+      "url": "https://github.com/neiii/bridle",
+      "target_lane": "external-intake",
+      "intake_status": "intake-required",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-038-source-verification",
+        "EXT-038-license-review",
+        "EXT-038-maintainer-activity-review",
+        "EXT-038-executable-surface-review",
+        "EXT-038-security-provenance-review",
+        "EXT-038-conformance-fixture-review",
+        "EXT-038-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-039",
+      "repo": "instavm/open-skills",
+      "url": "https://github.com/instavm/open-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-039-source-verification",
+        "EXT-039-license-review",
+        "EXT-039-maintainer-activity-review",
+        "EXT-039-executable-surface-review",
+        "EXT-039-security-provenance-review",
+        "EXT-039-conformance-fixture-review",
+        "EXT-039-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-040",
+      "repo": "shekohex/opencode-pty",
+      "url": "https://github.com/shekohex/opencode-pty",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-040-source-verification",
+        "EXT-040-license-review",
+        "EXT-040-maintainer-activity-review",
+        "EXT-040-executable-surface-review",
+        "EXT-040-security-provenance-review",
+        "EXT-040-conformance-fixture-review",
+        "EXT-040-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-041",
+      "repo": "Microck/opencode-studio",
+      "url": "https://github.com/Microck/opencode-studio",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-041-source-verification",
+        "EXT-041-license-review",
+        "EXT-041-maintainer-activity-review",
+        "EXT-041-executable-surface-review",
+        "EXT-041-security-provenance-review",
+        "EXT-041-conformance-fixture-review",
+        "EXT-041-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-042",
+      "repo": "swarmclawai/swarmvault",
+      "url": "https://github.com/swarmclawai/swarmvault",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "intake-required",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-042-source-verification",
+        "EXT-042-license-review",
+        "EXT-042-maintainer-activity-review",
+        "EXT-042-executable-surface-review",
+        "EXT-042-security-provenance-review",
+        "EXT-042-conformance-fixture-review",
+        "EXT-042-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-043",
+      "repo": "zenobi-us/opencode-skillful",
+      "url": "https://github.com/zenobi-us/opencode-skillful",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-043-source-verification",
+        "EXT-043-license-review",
+        "EXT-043-maintainer-activity-review",
+        "EXT-043-executable-surface-review",
+        "EXT-043-security-provenance-review",
+        "EXT-043-conformance-fixture-review",
+        "EXT-043-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-044",
+      "repo": "zaxbysauce/opencode-swarm",
+      "url": "https://github.com/zaxbysauce/opencode-swarm",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-044-source-verification",
+        "EXT-044-license-review",
+        "EXT-044-maintainer-activity-review",
+        "EXT-044-executable-surface-review",
+        "EXT-044-security-provenance-review",
+        "EXT-044-conformance-fixture-review",
+        "EXT-044-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-045",
+      "repo": "eqtylab/cupcake",
+      "url": "https://github.com/eqtylab/cupcake",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-045-source-verification",
+        "EXT-045-license-review",
+        "EXT-045-maintainer-activity-review",
+        "EXT-045-executable-surface-review",
+        "EXT-045-security-provenance-review",
+        "EXT-045-conformance-fixture-review",
+        "EXT-045-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-046",
+      "repo": "opgginc/opencode-bar",
+      "url": "https://github.com/opgginc/opencode-bar",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-046-source-verification",
+        "EXT-046-license-review",
+        "EXT-046-maintainer-activity-review",
+        "EXT-046-executable-surface-review",
+        "EXT-046-security-provenance-review",
+        "EXT-046-conformance-fixture-review",
+        "EXT-046-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-047",
+      "repo": "vivy-company/aizen",
+      "url": "https://github.com/vivy-company/aizen",
+      "target_lane": "external-intake",
+      "intake_status": "intake-required",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-047-source-verification",
+        "EXT-047-license-review",
+        "EXT-047-maintainer-activity-review",
+        "EXT-047-executable-surface-review",
+        "EXT-047-security-provenance-review",
+        "EXT-047-conformance-fixture-review",
+        "EXT-047-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-048",
+      "repo": "vbgate/opencode-mystatus",
+      "url": "https://github.com/vbgate/opencode-mystatus",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-048-source-verification",
+        "EXT-048-license-review",
+        "EXT-048-maintainer-activity-review",
+        "EXT-048-executable-surface-review",
+        "EXT-048-security-provenance-review",
+        "EXT-048-conformance-fixture-review",
+        "EXT-048-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-049",
+      "repo": "AkaraChen/aghub",
+      "url": "https://github.com/AkaraChen/aghub",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-049-source-verification",
+        "EXT-049-license-review",
+        "EXT-049-maintainer-activity-review",
+        "EXT-049-executable-surface-review",
+        "EXT-049-security-provenance-review",
+        "EXT-049-conformance-fixture-review",
+        "EXT-049-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-050",
+      "repo": "code-yeongyu/oh-my-openagent",
+      "url": "https://github.com/code-yeongyu/oh-my-openagent",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-050-source-verification",
+        "EXT-050-license-review",
+        "EXT-050-maintainer-activity-review",
+        "EXT-050-executable-surface-review",
+        "EXT-050-security-provenance-review",
+        "EXT-050-conformance-fixture-review",
+        "EXT-050-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-051",
+      "repo": "Yeachan-Heo/oh-my-claudecode",
+      "url": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-051-source-verification",
+        "EXT-051-license-review",
+        "EXT-051-maintainer-activity-review",
+        "EXT-051-executable-surface-review",
+        "EXT-051-security-provenance-review",
+        "EXT-051-conformance-fixture-review",
+        "EXT-051-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-052",
+      "repo": "kepano/obsidian-skills",
+      "url": "https://github.com/kepano/obsidian-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-052-source-verification",
+        "EXT-052-license-review",
+        "EXT-052-maintainer-activity-review",
+        "EXT-052-executable-surface-review",
+        "EXT-052-security-provenance-review",
+        "EXT-052-conformance-fixture-review",
+        "EXT-052-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-053",
+      "repo": "iOfficeAI/AionUi",
+      "url": "https://github.com/iOfficeAI/AionUi",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-053-source-verification",
+        "EXT-053-license-review",
+        "EXT-053-maintainer-activity-review",
+        "EXT-053-executable-surface-review",
+        "EXT-053-security-provenance-review",
+        "EXT-053-conformance-fixture-review",
+        "EXT-053-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-054",
+      "repo": "manaflow-ai/cmux",
+      "url": "https://github.com/manaflow-ai/cmux",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-054-source-verification",
+        "EXT-054-license-review",
+        "EXT-054-maintainer-activity-review",
+        "EXT-054-executable-surface-review",
+        "EXT-054-security-provenance-review",
+        "EXT-054-conformance-fixture-review",
+        "EXT-054-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-055",
+      "repo": "mksglu/context-mode",
+      "url": "https://github.com/mksglu/context-mode",
+      "target_lane": "knowledge-graph-context",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-055-source-verification",
+        "EXT-055-license-review",
+        "EXT-055-maintainer-activity-review",
+        "EXT-055-executable-surface-review",
+        "EXT-055-security-provenance-review",
+        "EXT-055-conformance-fixture-review",
+        "EXT-055-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-056",
+      "repo": "humanlayer/humanlayer",
+      "url": "https://github.com/humanlayer/humanlayer",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-056-source-verification",
+        "EXT-056-license-review",
+        "EXT-056-maintainer-activity-review",
+        "EXT-056-executable-surface-review",
+        "EXT-056-security-provenance-review",
+        "EXT-056-conformance-fixture-review",
+        "EXT-056-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-057",
+      "repo": "anomalyco/opentui",
+      "url": "https://github.com/anomalyco/opentui",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-057-source-verification",
+        "EXT-057-license-review",
+        "EXT-057-maintainer-activity-review",
+        "EXT-057-executable-surface-review",
+        "EXT-057-security-provenance-review",
+        "EXT-057-conformance-fixture-review",
+        "EXT-057-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-058",
+      "repo": "tiann/hapi",
+      "url": "https://github.com/tiann/hapi",
+      "target_lane": "external-intake",
+      "intake_status": "intake-required",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-058-source-verification",
+        "EXT-058-license-review",
+        "EXT-058-maintainer-activity-review",
+        "EXT-058-executable-surface-review",
+        "EXT-058-security-provenance-review",
+        "EXT-058-conformance-fixture-review",
+        "EXT-058-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-059",
+      "repo": "alvinunreal/oh-my-opencode-slim",
+      "url": "https://github.com/alvinunreal/oh-my-opencode-slim",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-059-source-verification",
+        "EXT-059-license-review",
+        "EXT-059-maintainer-activity-review",
+        "EXT-059-executable-surface-review",
+        "EXT-059-security-provenance-review",
+        "EXT-059-conformance-fixture-review",
+        "EXT-059-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-060",
+      "repo": "openchamber/openchamber",
+      "url": "https://github.com/openchamber/openchamber",
+      "target_lane": "external-intake",
+      "intake_status": "intake-required",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-060-source-verification",
+        "EXT-060-license-review",
+        "EXT-060-maintainer-activity-review",
+        "EXT-060-executable-surface-review",
+        "EXT-060-security-provenance-review",
+        "EXT-060-conformance-fixture-review",
+        "EXT-060-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-061",
+      "repo": "gotalab/cc-sdd",
+      "url": "https://github.com/gotalab/cc-sdd",
+      "target_lane": "harness-adapters",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-061-source-verification",
+        "EXT-061-license-review",
+        "EXT-061-maintainer-activity-review",
+        "EXT-061-executable-surface-review",
+        "EXT-061-security-provenance-review",
+        "EXT-061-conformance-fixture-review",
+        "EXT-061-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-062",
+      "repo": "michaelshimeles/ralphy",
+      "url": "https://github.com/michaelshimeles/ralphy",
+      "target_lane": "external-intake",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-062-source-verification",
+        "EXT-062-license-review",
+        "EXT-062-maintainer-activity-review",
+        "EXT-062-executable-surface-review",
+        "EXT-062-security-provenance-review",
+        "EXT-062-conformance-fixture-review",
+        "EXT-062-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-063",
+      "repo": "RunMaestro/Maestro",
+      "url": "https://github.com/RunMaestro/Maestro",
+      "target_lane": "multiagent-ui-patterns",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-063-source-verification",
+        "EXT-063-license-review",
+        "EXT-063-maintainer-activity-review",
+        "EXT-063-executable-surface-review",
+        "EXT-063-security-provenance-review",
+        "EXT-063-conformance-fixture-review",
+        "EXT-063-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-064",
+      "repo": "mikeyobrien/ralph-orchestrator",
+      "url": "https://github.com/mikeyobrien/ralph-orchestrator",
+      "target_lane": "external-intake",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-064-source-verification",
+        "EXT-064-license-review",
+        "EXT-064-maintainer-activity-review",
+        "EXT-064-executable-surface-review",
+        "EXT-064-security-provenance-review",
+        "EXT-064-conformance-fixture-review",
+        "EXT-064-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-065",
+      "repo": "ZSeven-W/openpencil",
+      "url": "https://github.com/ZSeven-W/openpencil",
+      "target_lane": "docs-instructions",
+      "intake_status": "intake-required",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-065-source-verification",
+        "EXT-065-license-review",
+        "EXT-065-maintainer-activity-review",
+        "EXT-065-executable-surface-review",
+        "EXT-065-security-provenance-review",
+        "EXT-065-conformance-fixture-review",
+        "EXT-065-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-066",
+      "repo": "junhoyeo/tokscale",
+      "url": "https://github.com/junhoyeo/tokscale",
+      "target_lane": "session-telemetry",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-066-source-verification",
+        "EXT-066-license-review",
+        "EXT-066-maintainer-activity-review",
+        "EXT-066-executable-surface-review",
+        "EXT-066-security-provenance-review",
+        "EXT-066-conformance-fixture-review",
+        "EXT-066-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-067",
+      "repo": "RAIT-09/obsidian-agent-client",
+      "url": "https://github.com/RAIT-09/obsidian-agent-client",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-067-source-verification",
+        "EXT-067-license-review",
+        "EXT-067-maintainer-activity-review",
+        "EXT-067-executable-surface-review",
+        "EXT-067-security-provenance-review",
+        "EXT-067-conformance-fixture-review",
+        "EXT-067-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-068",
+      "repo": "safishamsi/graphify",
+      "url": "https://github.com/safishamsi/graphify",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-068-source-verification",
+        "EXT-068-license-review",
+        "EXT-068-maintainer-activity-review",
+        "EXT-068-executable-surface-review",
+        "EXT-068-security-provenance-review",
+        "EXT-068-conformance-fixture-review",
+        "EXT-068-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-069",
+      "repo": "VoltAgent/awesome-agent-skills",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-069-source-verification",
+        "EXT-069-license-review",
+        "EXT-069-maintainer-activity-review",
+        "EXT-069-executable-surface-review",
+        "EXT-069-security-provenance-review",
+        "EXT-069-conformance-fixture-review",
+        "EXT-069-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-070",
+      "repo": "nexu-io/open-design",
+      "url": "https://github.com/nexu-io/open-design",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-070-source-verification",
+        "EXT-070-license-review",
+        "EXT-070-maintainer-activity-review",
+        "EXT-070-executable-surface-review",
+        "EXT-070-security-provenance-review",
+        "EXT-070-conformance-fixture-review",
+        "EXT-070-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-071",
+      "repo": "Orchestra-Research/AI-Research-SKILLs",
+      "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-071-source-verification",
+        "EXT-071-license-review",
+        "EXT-071-maintainer-activity-review",
+        "EXT-071-executable-surface-review",
+        "EXT-071-security-provenance-review",
+        "EXT-071-conformance-fixture-review",
+        "EXT-071-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-072",
+      "repo": "refly-ai/refly",
+      "url": "https://github.com/refly-ai/refly",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-072-source-verification",
+        "EXT-072-license-review",
+        "EXT-072-maintainer-activity-review",
+        "EXT-072-executable-surface-review",
+        "EXT-072-security-provenance-review",
+        "EXT-072-conformance-fixture-review",
+        "EXT-072-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-073",
+      "repo": "google/skills",
+      "url": "https://github.com/google/skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-073-source-verification",
+        "EXT-073-license-review",
+        "EXT-073-maintainer-activity-review",
+        "EXT-073-executable-surface-review",
+        "EXT-073-security-provenance-review",
+        "EXT-073-conformance-fixture-review",
+        "EXT-073-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-074",
+      "repo": "antfu/skills",
+      "url": "https://github.com/antfu/skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-074-source-verification",
+        "EXT-074-license-review",
+        "EXT-074-maintainer-activity-review",
+        "EXT-074-executable-surface-review",
+        "EXT-074-security-provenance-review",
+        "EXT-074-conformance-fixture-review",
+        "EXT-074-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-075",
+      "repo": "antvis/mcp-server-chart",
+      "url": "https://github.com/antvis/mcp-server-chart",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "wrap-candidate-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-075-source-verification",
+        "EXT-075-license-review",
+        "EXT-075-maintainer-activity-review",
+        "EXT-075-executable-surface-review",
+        "EXT-075-security-provenance-review",
+        "EXT-075-conformance-fixture-review",
+        "EXT-075-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-076",
+      "repo": "tech-leads-club/agent-skills",
+      "url": "https://github.com/tech-leads-club/agent-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-076-source-verification",
+        "EXT-076-license-review",
+        "EXT-076-maintainer-activity-review",
+        "EXT-076-executable-surface-review",
+        "EXT-076-security-provenance-review",
+        "EXT-076-conformance-fixture-review",
+        "EXT-076-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-077",
+      "repo": "iOfficeAI/OfficeCLI",
+      "url": "https://github.com/iOfficeAI/OfficeCLI",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-077-source-verification",
+        "EXT-077-license-review",
+        "EXT-077-maintainer-activity-review",
+        "EXT-077-executable-surface-review",
+        "EXT-077-security-provenance-review",
+        "EXT-077-conformance-fixture-review",
+        "EXT-077-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-078",
+      "repo": "microsoft/skills",
+      "url": "https://github.com/microsoft/skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-078-source-verification",
+        "EXT-078-license-review",
+        "EXT-078-maintainer-activity-review",
+        "EXT-078-executable-surface-review",
+        "EXT-078-security-provenance-review",
+        "EXT-078-conformance-fixture-review",
+        "EXT-078-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-079",
+      "repo": "jeremylongshore/claude-code-plugins-plus-skills",
+      "url": "https://github.com/jeremylongshore/claude-code-plugins-plus-skills",
+      "target_lane": "harness-adapters",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-079-source-verification",
+        "EXT-079-license-review",
+        "EXT-079-maintainer-activity-review",
+        "EXT-079-executable-surface-review",
+        "EXT-079-security-provenance-review",
+        "EXT-079-conformance-fixture-review",
+        "EXT-079-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-080",
+      "repo": "supabase/agent-skills",
+      "url": "https://github.com/supabase/agent-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-080-source-verification",
+        "EXT-080-license-review",
+        "EXT-080-maintainer-activity-review",
+        "EXT-080-executable-surface-review",
+        "EXT-080-security-provenance-review",
+        "EXT-080-conformance-fixture-review",
+        "EXT-080-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-081",
+      "repo": "bergside/design-md-chrome",
+      "url": "https://github.com/bergside/design-md-chrome",
+      "target_lane": "docs-instructions",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-081-source-verification",
+        "EXT-081-license-review",
+        "EXT-081-maintainer-activity-review",
+        "EXT-081-executable-surface-review",
+        "EXT-081-security-provenance-review",
+        "EXT-081-conformance-fixture-review",
+        "EXT-081-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-082",
+      "repo": "himself65/finance-skills",
+      "url": "https://github.com/himself65/finance-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-082-source-verification",
+        "EXT-082-license-review",
+        "EXT-082-maintainer-activity-review",
+        "EXT-082-executable-surface-review",
+        "EXT-082-security-provenance-review",
+        "EXT-082-conformance-fixture-review",
+        "EXT-082-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-083",
+      "repo": "cloudflare/skills",
+      "url": "https://github.com/cloudflare/skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-083-source-verification",
+        "EXT-083-license-review",
+        "EXT-083-maintainer-activity-review",
+        "EXT-083-executable-surface-review",
+        "EXT-083-security-provenance-review",
+        "EXT-083-conformance-fixture-review",
+        "EXT-083-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-084",
+      "repo": "SnailSploit/Claude-Red",
+      "url": "https://github.com/SnailSploit/Claude-Red",
+      "target_lane": "security-quarantine",
+      "intake_status": "quarantine-reference",
+      "priority": "quarantine",
+      "required_review_task_ids": [
+        "EXT-084-source-verification",
+        "EXT-084-license-review",
+        "EXT-084-maintainer-activity-review",
+        "EXT-084-executable-surface-review",
+        "EXT-084-security-provenance-review",
+        "EXT-084-conformance-fixture-review",
+        "EXT-084-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-085",
+      "repo": "OpenCoworkAI/open-cowork",
+      "url": "https://github.com/OpenCoworkAI/open-cowork",
+      "target_lane": "mcp-audit",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-085-source-verification",
+        "EXT-085-license-review",
+        "EXT-085-maintainer-activity-review",
+        "EXT-085-executable-surface-review",
+        "EXT-085-security-provenance-review",
+        "EXT-085-conformance-fixture-review",
+        "EXT-085-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-086",
+      "repo": "conorluddy/ios-simulator-skill",
+      "url": "https://github.com/conorluddy/ios-simulator-skill",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-086-source-verification",
+        "EXT-086-license-review",
+        "EXT-086-maintainer-activity-review",
+        "EXT-086-executable-surface-review",
+        "EXT-086-security-provenance-review",
+        "EXT-086-conformance-fixture-review",
+        "EXT-086-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-087",
+      "repo": "imxv/Pretty-mermaid-skills",
+      "url": "https://github.com/imxv/Pretty-mermaid-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-087-source-verification",
+        "EXT-087-license-review",
+        "EXT-087-maintainer-activity-review",
+        "EXT-087-executable-surface-review",
+        "EXT-087-security-provenance-review",
+        "EXT-087-conformance-fixture-review",
+        "EXT-087-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-088",
+      "repo": "agentscope-ai/OpenJudge",
+      "url": "https://github.com/agentscope-ai/OpenJudge",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-088-source-verification",
+        "EXT-088-license-review",
+        "EXT-088-maintainer-activity-review",
+        "EXT-088-executable-surface-review",
+        "EXT-088-security-provenance-review",
+        "EXT-088-conformance-fixture-review",
+        "EXT-088-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-089",
+      "repo": "skillmatic-ai/awesome-agent-skills",
+      "url": "https://github.com/skillmatic-ai/awesome-agent-skills",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "reference-only-after-verification",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-089-source-verification",
+        "EXT-089-license-review",
+        "EXT-089-maintainer-activity-review",
+        "EXT-089-executable-surface-review",
+        "EXT-089-security-provenance-review",
+        "EXT-089-conformance-fixture-review",
+        "EXT-089-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-090",
+      "repo": "enulus/OpenPackage",
+      "url": "https://github.com/enulus/OpenPackage",
+      "target_lane": "external-intake",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-090-source-verification",
+        "EXT-090-license-review",
+        "EXT-090-maintainer-activity-review",
+        "EXT-090-executable-surface-review",
+        "EXT-090-security-provenance-review",
+        "EXT-090-conformance-fixture-review",
+        "EXT-090-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-091",
+      "repo": "millionco/react-doctor",
+      "url": "https://github.com/millionco/react-doctor",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-091-source-verification",
+        "EXT-091-license-review",
+        "EXT-091-maintainer-activity-review",
+        "EXT-091-executable-surface-review",
+        "EXT-091-security-provenance-review",
+        "EXT-091-conformance-fixture-review",
+        "EXT-091-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-092",
+      "repo": "uditgoenka/autoresearch",
+      "url": "https://github.com/uditgoenka/autoresearch",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adapt-after-gates",
+      "priority": "normal",
+      "required_review_task_ids": [
+        "EXT-092-source-verification",
+        "EXT-092-license-review",
+        "EXT-092-maintainer-activity-review",
+        "EXT-092-executable-surface-review",
+        "EXT-092-security-provenance-review",
+        "EXT-092-conformance-fixture-review",
+        "EXT-092-rollback-docs-sync-review"
+      ]
+    },
+    {
+      "id": "EXT-093",
+      "repo": "meodai/skill.color-expert",
+      "url": "https://github.com/meodai/skill.color-expert",
+      "target_lane": "skills-lifecycle",
+      "intake_status": "adopt-candidate-after-gates",
+      "priority": "high",
+      "required_review_task_ids": [
+        "EXT-093-source-verification",
+        "EXT-093-license-review",
+        "EXT-093-maintainer-activity-review",
+        "EXT-093-executable-surface-review",
+        "EXT-093-security-provenance-review",
+        "EXT-093-conformance-fixture-review",
+        "EXT-093-rollback-docs-sync-review"
+      ]
+    }
+  ]
+}

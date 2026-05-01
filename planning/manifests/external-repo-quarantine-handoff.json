@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "source_manifest": "planning/manifests/external-repo-intake-ledger.json",
+  "handoff_lane": "agents-c15-security-quarantine",
+  "status": "pending-security-review",
+  "items": [
+    {
+      "id": "EXT-011",
+      "repo": "Soju06/codex-lb",
+      "url": "https://github.com/Soju06/codex-lb",
+      "handoff_lane": "agents-c15-security-quarantine",
+      "status": "quarantine-reference",
+      "reason": "OpenAI proxy/load-balancer surface can mediate credentials, requests, or account-sharing behavior.",
+      "required_policy": "deny-by-default; no install, credential bridge, proxy, offensive workflow, or default harness behavior without explicit security approval",
+      "source_record": "planning/manifests/external-repo-intake-ledger.json#EXT-011"
+    },
+    {
+      "id": "EXT-015",
+      "repo": "rynfar/meridian",
+      "url": "https://github.com/rynfar/meridian",
+      "handoff_lane": "agents-c15-security-quarantine",
+      "status": "quarantine-reference",
+      "reason": "Claude auth bridge/proxy concept can alter credential boundaries and account-sharing behavior.",
+      "required_policy": "deny-by-default; no install, credential bridge, proxy, offensive workflow, or default harness behavior without explicit security approval",
+      "source_record": "planning/manifests/external-repo-intake-ledger.json#EXT-015"
+    },
+    {
+      "id": "EXT-017",
+      "repo": "griffinmartin/opencode-claude-auth",
+      "url": "https://github.com/griffinmartin/opencode-claude-auth",
+      "handoff_lane": "agents-c15-security-quarantine",
+      "status": "quarantine-reference",
+      "reason": "OpenCode Claude auth bridge is a user-owned local auth override, not a repo default.",
+      "required_policy": "deny-by-default; no install, credential bridge, proxy, offensive workflow, or default harness behavior without explicit security approval",
+      "source_record": "planning/manifests/external-repo-intake-ledger.json#EXT-017"
+    },
+    {
+      "id": "EXT-084",
+      "repo": "SnailSploit/Claude-Red",
+      "url": "https://github.com/SnailSploit/Claude-Red",
+      "handoff_lane": "agents-c15-security-quarantine",
+      "status": "quarantine-reference",
+      "reason": "Offensive security/red-team skill source must remain denied-by-default.",
+      "required_policy": "deny-by-default; no install, credential bridge, proxy, offensive workflow, or default harness behavior without explicit security approval",
+      "source_record": "planning/manifests/external-repo-intake-ledger.json#EXT-084"
+    }
+  ]
+}

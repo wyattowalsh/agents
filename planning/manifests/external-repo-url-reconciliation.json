@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "source_manifest": "planning/manifests/external-repo-evaluation-final.json",
+  "source_count_declared": 93,
+  "source_count_observed": 93,
+  "normalized_count": 93,
+  "current_url_set_source": "planning/manifests/external-repo-evaluation-final.json",
+  "current_url_set_count": 93,
+  "duplicate_ids": [],
+  "duplicate_repos": [],
+  "duplicate_urls": [],
+  "missing_expected_ids": [],
+  "unexpected_ids": [],
+  "additions": [],
+  "removals": [],
+  "notes": [
+    "No separate pasted URL artifact was available in the repository at implementation time.",
+    "The source ledger is treated as the current URL set and reconciles to 93 contiguous records.",
+    "Future pasted URL deltas must update this manifest with explicit additions and removals."
+  ]
+}
