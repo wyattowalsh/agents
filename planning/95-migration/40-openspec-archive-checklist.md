@@ -8,12 +8,12 @@ Release deferrals are not archive deferrals. Any parent or child task deferred f
 
 ## Required Evidence
 
-- [ ] Parent change and all child changes show complete status.
-- [ ] `uv run wagents openspec validate` passes.
-- [ ] `planning/95-migration/50-release-notes.md` identifies every child change and final commit range.
-- [ ] Known deferred work has an owner, reason, and follow-up location.
-- [ ] Specs receiving archived deltas are reviewed for duplicate or conflicting requirements.
-- [ ] Generated artifacts are either committed intentionally or confirmed out of scope.
+- [x] Parent change and all child changes show complete status.
+- [x] `uv run wagents openspec validate` passes.
+- [x] `planning/95-migration/50-release-notes.md` identifies every child change and final commit range.
+- [x] Known deferred work has an owner, reason, and follow-up location.
+- [x] Specs receiving archived deltas are reviewed for duplicate or conflicting requirements.
+- [x] Generated artifacts are either committed intentionally or confirmed out of scope.
 
 ## Archive Order
 
@@ -36,9 +36,9 @@ Release deferrals are not archive deferrals. Any parent or child task deferred f
 | `agents-c06-config-safety` | Config transaction safety contracts committed. |
 | `agents-c07-ci-evals-observability` | Quality gates and observability contracts committed. |
 | `agents-c08-docs-instructions` | Docs instruction planning committed. |
-| `agents-c09-release-archive` | This readiness lane committed and validated. |
+| `agents-c09-release-archive` | This readiness lane committed, validated, and archived. |
 | `agents-c10-external-repo-intake` | External intake planning committed. |
-| `agents-c11` to `agents-c15` | Research and control-plane planning committed. |
+| `agents-c11` to `agents-c15` | Research and control-plane planning committed and archived. |
 
 ## Stop Conditions
 

@@ -107,12 +107,11 @@ Required coverage:
 - `planning/20-harness-registry/01-harness-projection-contract.md` defines how canonical assets project to harness surfaces.
 - `planning/20-harness-registry/02-harness-gap-closure-plan.md` defines closure waves and per-harness missing details.
 
-## Remaining Non-Markdown Work
+## Follow-Up Runtime Validation Work
 
-These remain blocked while plan mode is active:
+The planning/control-plane artifacts for the harness registry are complete and archived. The remaining work below is runtime validation evidence, not unfinished planning work:
 
-- Registry schema updates for distinct Cursor Agent Web/CLI and ChatGPT surfaces.
-- JSON support-tier fragments.
-- Fixture files and code-backed validation.
-- Docs generation and README regeneration.
-- Commit creation.
+- Promote a harness from `repo-present-validation-required`, `planned-research-backed`, or `experimental` only after executable fixtures prove the claim.
+- Keep `planning/manifests/harness-fixture-support.json` as the follow-up owner map for fixture classes, validation commands, rollback coverage, and promotion blockers.
+- Regenerate docs and README only through the documented `wagents`/docs-steward workflows when public docs need to reflect a promotion.
+- Track any future fixture implementation as a new OpenSpec change rather than reopening the archived planning lanes.
