@@ -1106,9 +1106,7 @@ def write_cli_page() -> None:
     parts.append("wagents hooks list --format json")
     parts.append("```")
     parts.append("")
-    parts.append(
-        "Shows source, event, matcher, harness support, handler type, and command/prompt for each hook."
-    )
+    parts.append("Shows source, event, matcher, harness support, handler type, and command/prompt for each hook.")
     parts.append("")
     parts.append("  </TabItem>")
     parts.append('  <TabItem label="validate">')
@@ -1395,9 +1393,7 @@ def write_skills_index(nodes: list, external_entries: list[ExternalSkillEntry] |
         'note="Use the copy button or scroll horizontally inside the command area." />'
     )
     parts.append("")
-    parts.append(
-        '<InstallCommand command={installCommands.starter} title="Install a focused starter skill" />'
-    )
+    parts.append('<InstallCommand command={installCommands.starter} title="Install a focused starter skill" />')
     parts.append("")
 
     parts.append('<Aside type="tip" title="How to use this page">')
@@ -1667,17 +1663,14 @@ def write_external_skills_page(entries: list[ExternalSkillEntry]) -> None:
     parts = []
     parts.append("---")
     parts.append('title: "External Skills"')
-    parts.append(
-        'description: "Curated external Agent Skills with source, trust, install, and provenance metadata."'
-    )
+    parts.append('description: "Curated external Agent Skills with source, trust, install, and provenance metadata."')
     parts.append("---")
     parts.append("")
     parts.append("import { Aside, Badge } from '@astrojs/starlight/components';")
     parts.append("import SkillCatalog from '../../components/SkillCatalog.astro';")
     parts.append("import { skillIndex } from '../../generated-site-data.mjs';")
     parts.append(
-        "export const externalSkillIndex = skillIndex.filter((skill) => "
-        "skill.sourceType === 'curated-external');"
+        "export const externalSkillIndex = skillIndex.filter((skill) => skill.sourceType === 'curated-external');"
     )
     parts.append("")
     parts.append("# External Skills")
@@ -1688,7 +1681,7 @@ def write_external_skills_page(entries: list[ExternalSkillEntry]) -> None:
         "provenance state, and target agents."
     )
     parts.append("")
-    parts.append("<Aside type=\"caution\">")
+    parts.append('<Aside type="caution">')
     parts.append(
         "Do not bulk-import entire external repositories. Install only curated skills, inspect source-list output, "
         "and run `external-skill-auditor` before repo promotion."

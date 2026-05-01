@@ -180,8 +180,7 @@ def main() -> int:
                             reduced_status = reduced_response.status if reduced_response else 0
                             if reduced_status == 404 and route.optional:
                                 print(
-                                    f"[skip] {route.path} returned 404 in reduced-motion"
-                                    " (optional generated route)",
+                                    f"[skip] {route.path} returned 404 in reduced-motion (optional generated route)",
                                     flush=True,
                                 )
                                 continue

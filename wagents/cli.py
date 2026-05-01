@@ -2206,8 +2206,7 @@ def hooks_list(
         matcher = row["matcher"] or "(all)"
         harnesses = ",".join(row.get("harness_support") or []) or "(native)"
         text_lines.append(
-            f"{row['source']:<35} {row['event']:<20} {matcher:<15} {harnesses:<28} "
-            f"{row['handler_type']:<10} {value}"
+            f"{row['source']:<35} {row['event']:<20} {matcher:<15} {harnesses:<28} {row['handler_type']:<10} {value}"
         )
 
     _emit_structured_output(
