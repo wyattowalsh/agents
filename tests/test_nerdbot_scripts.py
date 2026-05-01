@@ -5,6 +5,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pytest
+
 SCRIPT_DIR = Path(__file__).resolve().parents[1] / "skills" / "nerdbot" / "scripts"
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -284,6 +286,163 @@ def test_scaffold_dry_run_writes_nothing_to_disk(tmp_path: Path) -> None:
     assert result["root_created"] is True  # would have been created
     assert len(result["created_directories"]) == len(kb_inventory.DEFAULT_DIRECTORIES)
     assert len(result["created_files"]) == len(_all_starter_rel_paths())
+
+
+def test_scaffold_dry_run_rejects_broken_symlink_directory(tmp_path: Path) -> None:
+    """Dry-run preflight rejects broken symlink directory components."""
+    root = tmp_path / "kb"
+    root.mkdir()
+    broken_raw = root / "raw"
+    try:
+        broken_raw.symlink_to(root / "missing-target", target_is_directory=True)
+    except OSError as exc:
+        pytest.skip(f"symlinks are not available: {exc}")
+
+    with pytest.raises(RuntimeError, match="symlinked"):
+        kb_bootstrap.scaffold(root, force=False, dry_run=True)
+
+
+def test_scaffold_rejects_broken_symlink_directory_before_mutation(tmp_path: Path) -> None:
+    """Real preflight catches broken symlink directories before creating siblings."""
+    root = tmp_path / "kb"
+    root.mkdir()
+    broken_raw = root / "raw"
+    try:
+        broken_raw.symlink_to(root / "missing-target", target_is_directory=True)
+    except OSError as exc:
+        pytest.skip(f"symlinks are not available: {exc}")
+
+    with pytest.raises(RuntimeError, match="symlinked"):
+        kb_bootstrap.scaffold(root, force=False, dry_run=False)
+
+    assert not (root / ".obsidian").exists()
+
+
+def test_scaffold_dry_run_rejects_broken_symlink_starter_file(tmp_path: Path) -> None:
+    """Dry-run reports unsafe broken symlink starter targets."""
+    root = tmp_path / "kb"
+    (root / "wiki").mkdir(parents=True)
+    target = root / STARTER_FILES["wiki_index"]
+    try:
+        target.symlink_to(root / "missing-target.md")
+    except OSError as exc:
+        pytest.skip(f"symlinks are not available: {exc}")
+
+    with pytest.raises(RuntimeError, match="symlinked"):
+        kb_bootstrap.scaffold(root, force=False, dry_run=True)
+
+
+def test_scaffold_rejects_existing_starter_path_as_directory(tmp_path: Path) -> None:
+    """Starter file paths cannot already be directories."""
+    root = tmp_path / "kb"
+    (root / STARTER_FILES["wiki_index"]).mkdir(parents=True)
+
+    with pytest.raises(IsADirectoryError, match="Expected file but found directory"):
+        kb_bootstrap.scaffold(root, force=False, dry_run=False)
+
+    assert not (root / "indexes").exists()
+
+
+def test_scaffold_rejects_default_directory_path_as_file(tmp_path: Path) -> None:
+    """Default directory paths cannot already be files."""
+    root = tmp_path / "kb"
+    root.mkdir()
+    (root / "raw").write_text("not a directory", encoding="utf-8")
+
+    with pytest.raises(NotADirectoryError, match="Expected directory but found file"):
+        kb_bootstrap.scaffold(root, force=False, dry_run=False)
+
+    assert not (root / ".obsidian").exists()
+
+
+def test_scaffold_force_write_failure_rolls_back_all_starter_files(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A forced overwrite failure does not leave earlier starter files changed."""
+    root = tmp_path / "kb"
+    kb_bootstrap.scaffold(root, force=False, dry_run=False)
+    sentinel = "# USER CONTENT\n"
+    original_content: dict[str, str] = {}
+    for rel_path in _all_starter_rel_paths():
+        content = sentinel + rel_path
+        (root / rel_path).write_text(content, encoding="utf-8")
+        original_content[rel_path] = content
+
+    real_write_text_safely = kb_bootstrap.write_text_safely
+
+    def fail_after_first_write(path: Path, content: str, *, overwrite: bool) -> None:
+        if path == root / STARTER_FILES["coverage_index"]:
+            raise RuntimeError("simulated write failure")
+        real_write_text_safely(path, content, overwrite=overwrite)
+
+    monkeypatch.setattr(kb_bootstrap, "write_text_safely", fail_after_first_write)
+
+    with pytest.raises(RuntimeError, match="simulated write failure"):
+        kb_bootstrap.scaffold(root, force=True, dry_run=False)
+
+    for rel_path, content in original_content.items():
+        assert (root / rel_path).read_text(encoding="utf-8") == content
+
+
+def test_normalize_root_rejects_symlinked_root(tmp_path: Path, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    target = tmp_path / "real-kb"
+    target.mkdir()
+    link = tmp_path / "linked-kb"
+    try:
+        link.symlink_to(target, target_is_directory=True)
+    except OSError as exc:
+        pytest.skip(f"symlinks are not available: {exc}")
+
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(RuntimeError, match="symlinked path component"):
+        kb_bootstrap.normalize_root("linked-kb")
+
+
+def test_normalize_root_rejects_broken_symlinked_root(tmp_path: Path, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    link = tmp_path / "broken-kb"
+    try:
+        link.symlink_to(tmp_path / "missing-target", target_is_directory=True)
+    except OSError as exc:
+        pytest.skip(f"symlinks are not available: {exc}")
+
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(RuntimeError, match="symlinked path component"):
+        kb_bootstrap.normalize_root("broken-kb")
+
+
+def test_scaffold_rejects_symlinked_starter_file(tmp_path: Path) -> None:
+    root = tmp_path / "kb"
+    kb_bootstrap.scaffold(root, force=False, dry_run=False)
+    target = root / STARTER_FILES["wiki_index"]
+    target.unlink()
+    try:
+        target.symlink_to(tmp_path / "outside.md")
+    except OSError as exc:
+        pytest.skip(f"symlinks are not available: {exc}")
+
+    with pytest.raises(RuntimeError, match="symlinked"):
+        kb_bootstrap.scaffold(root, force=True, dry_run=False)
+
+
+def test_scaffold_force_rejects_hardlinked_starter_file(tmp_path: Path) -> None:
+    root = tmp_path / "kb"
+    kb_bootstrap.scaffold(root, force=False, dry_run=False)
+    outside = tmp_path / "outside.md"
+    outside.write_text("outside", encoding="utf-8")
+    target = root / STARTER_FILES["wiki_index"]
+    target.unlink()
+    try:
+        target.hardlink_to(outside)
+    except OSError as exc:
+        pytest.skip(f"hardlinks are not available: {exc}")
+
+    with pytest.raises(RuntimeError, match="hardlinked file"):
+        kb_bootstrap.scaffold(root, force=True, dry_run=False)
+
+    assert outside.read_text(encoding="utf-8") == "outside"
 
 
 def test_should_fail_respects_severity_thresholds() -> None:

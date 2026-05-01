@@ -11,6 +11,19 @@ from pathlib import Path, PurePosixPath
 from nerdbot.contracts import SOURCE_RECORD_FIELDS
 from nerdbot.safety import normalize_vault_relative_path
 
+SECRET_FILENAMES = {
+    ".env",
+    ".env.local",
+    ".env.production",
+    "credentials.json",
+    "secrets.toml",
+    "id_rsa",
+    "id_dsa",
+    "id_ecdsa",
+    "id_ed25519",
+}
+SECRET_SUFFIXES = {".key", ".pem", ".p12", ".pfx"}
+
 
 @dataclass(frozen=True, slots=True)
 class SourceRecord:
@@ -78,6 +91,15 @@ def checksum_bytes(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
+def checksum_file(path: Path) -> str:
+    """Return a SHA-256 checksum without loading the whole file into memory."""
+    digest = hashlib.sha256()
+    with path.open("rb") as file:
+        for chunk in iter(lambda: file.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def raw_source_path(source_id: str, original_location: str) -> str:
     """Choose a safe raw/sources path for a local capture or pointer stub."""
     suffix = PurePosixPath(original_location.split("?", 1)[0]).suffix.lower() or ".md"
@@ -91,6 +113,8 @@ def build_source_record(
     *,
     capture_method: str,
     content: bytes | None = None,
+    size_bytes: int | None = None,
+    checksum: str | None = None,
     raw_path: str | None = None,
     captured_at: str | None = None,
     license_or_access_notes: str = "unknown",
@@ -106,8 +130,8 @@ def build_source_record(
         else raw_source_path(source_id, original_location),
         capture_method=capture_method,
         captured_at=captured_at or datetime.now(UTC).replace(microsecond=0).isoformat(),
-        size_bytes=None if content is None else len(content),
-        checksum=None if content is None else checksum_bytes(content),
+        size_bytes=len(content) if content is not None else size_bytes,
+        checksum=checksum_bytes(content) if content is not None else checksum,
         license_or_access_notes=license_or_access_notes,
         intended_wiki_coverage=intended_wiki_coverage,
     )
@@ -129,6 +153,8 @@ def pointer_stub_text(record: SourceRecord, reason: str) -> str:
         f"# Source pointer: {record.source_id}\n\n"
         f"- Original location: {original_location}\n"
         f"- Capture method: {capture_method}\n"
+        f"- Size bytes: {record.size_bytes if record.size_bytes is not None else ''}\n"
+        f"- Checksum: {record.checksum or ''}\n"
         f"- Access notes: {access_notes}\n"
         f"- Pointer reason: {pointer_reason}\n"
         f"- Intended wiki coverage: {coverage}\n"
@@ -143,16 +169,25 @@ def plan_text_source(original_location: str, content: str | bytes, *, capture_me
 
 
 def plan_local_file_source(
-    original_path: Path, *, vault_root: Path, max_copy_bytes: int = 50_000_000
+    original_path: Path,
+    *,
+    vault_root: Path,
+    max_copy_bytes: int = 50_000_000,
+    copy_outside_root: bool = False,
 ) -> SourceIngestPlan:
     """Plan local-file ingestion, using pointer stubs for oversized or unreadable files."""
-    resolved = original_path.expanduser().resolve(strict=False)
+    expanded = original_path.expanduser()
+    resolved = expanded.resolve(strict=False)
     location = resolved.as_posix()
+    vault_root_resolved = vault_root.resolve(strict=False)
     try:
         size_bytes = resolved.stat().st_size
     except OSError:
         record = build_source_record(location, capture_method="pointer-stub")
         return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source is not readable")
+    if expanded.is_symlink():
+        record = build_source_record(location, capture_method="pointer-stub", size_bytes=size_bytes)
+        return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source is a symlink")
     if resolved.is_dir():
         entries = []
         for child in sorted(resolved.rglob("*"))[:200]:
@@ -166,10 +201,41 @@ def plan_local_file_source(
             raw_path=f"raw/sources/{stable_source_id(location)}.md",
         )
         return SourceIngestPlan(record=record, raw_content=manifest.encode("utf-8"))
+    checksum = checksum_file(resolved)
+    name = resolved.name.lower()
+    if name in SECRET_FILENAMES or resolved.suffix.lower() in SECRET_SUFFIXES:
+        record = build_source_record(
+            location,
+            capture_method="pointer-stub",
+            size_bytes=size_bytes,
+            checksum=checksum,
+            raw_path=f"raw/sources/{stable_source_id(location)}.md",
+        )
+        return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source path looks secret-bearing")
+    try:
+        resolved.relative_to(vault_root_resolved)
+        outside_vault_root = False
+    except ValueError:
+        outside_vault_root = True
+    if outside_vault_root and not copy_outside_root:
+        record = build_source_record(
+            location,
+            capture_method="pointer-stub",
+            size_bytes=size_bytes,
+            checksum=checksum,
+            raw_path=f"raw/sources/{stable_source_id(location)}.md",
+        )
+        return SourceIngestPlan(
+            record=record,
+            raw_content=None,
+            pointer_reason="source is outside vault root; pass --copy-outside-root to copy intentionally",
+        )
     if size_bytes > max_copy_bytes:
         record = build_source_record(
             location,
             capture_method="pointer-stub",
+            size_bytes=size_bytes,
+            checksum=checksum,
             raw_path=f"raw/sources/{stable_source_id(location)}.md",
         )
         return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source exceeds max_copy_bytes")
@@ -178,10 +244,7 @@ def plan_local_file_source(
     except OSError:
         record = build_source_record(location, capture_method="pointer-stub")
         return SourceIngestPlan(record=record, raw_content=None, pointer_reason="source could not be read")
-    try:
-        rel_location = resolved.relative_to(vault_root.resolve(strict=False)).as_posix()
-    except ValueError:
-        rel_location = location
+    rel_location = location if outside_vault_root else resolved.relative_to(vault_root_resolved).as_posix()
     record = build_source_record(rel_location, capture_method="local-file", content=content)
     return SourceIngestPlan(record=record, raw_content=content)
 

@@ -9,7 +9,7 @@ Current edge extraction reads:
 - Markdown links
 - Aliases, source ID citations, heading links, and block references through the derived graph builder
 
-The package exposes `nerdbot.graph.extract_edges()` for the stable baseline link surface and `nerdbot.graph.build_graph()` for rebuildable derived analytics. `nerdbot derive --artifact graph --apply` writes `indexes/generated/graph-edges.jsonl` and `indexes/generated/graph-report.md`.
+The package exposes `nerdbot.graph.extract_edges()` for the stable baseline link surface and `nerdbot.graph.build_graph()` for rebuildable derived analytics. Relative Markdown links are normalized against the source page for broken-link checks, and bare wikilinks can satisfy orphan detection through basename matching. `nerdbot derive --artifact graph --apply` writes `indexes/generated/graph-edges.jsonl` and `indexes/generated/graph-report.md`.
 
 ## Analytics
 
@@ -19,4 +19,4 @@ Every edge includes `source`, `target`, `edge_type`, `evidence_path`, and `confi
 
 ## Safety
 
-Graph commands are read-only unless the user explicitly asks to enqueue review items or approve a migration batch.
+Graph commands are read-only unless the user explicitly asks to enqueue review items or approve a migration batch. Generated Markdown reports render untrusted targets and metrics as code spans so malicious note/link text is displayed as data rather than interpreted as report structure.

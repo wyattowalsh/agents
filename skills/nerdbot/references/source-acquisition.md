@@ -6,8 +6,8 @@ The package implements dependency-light local source planning and source-record 
 
 - `nerdbot.sources.build_source_record()` builds the source record shape without writing files.
 - `nerdbot.sources.plan_text_source()` plans inline text capture under `raw/`.
-- `nerdbot.sources.plan_local_file_source()` plans local-file capture and uses pointer stubs for oversized or unreadable sources.
-- `nerdbot.sources.pointer_stub_text()` records inaccessible, private, remote-only, or oversized sources while preserving a stable source ID and access notes.
+- `nerdbot.sources.plan_local_file_source()` plans local-file capture and uses pointer stubs for outside-root, symlinked, secret-looking, oversized, or unreadable sources.
+- `nerdbot.sources.pointer_stub_text()` records inaccessible, private, remote-only, outside-root, or oversized sources while preserving a stable source ID, access notes, and size/checksum metadata when available.
 - `nerdbot ingest --source ... --apply` writes the planned raw capture or pointer stub and appends `indexes/source-map.md`.
 
 These helpers do not crawl or fetch remote content by themselves. Mutating writes happen only through explicit `--apply` workflows.
@@ -27,8 +27,9 @@ Every acquisition provider should return a source record with:
 
 ## Source Policy
 
-- Preserve originals under `raw/` whenever access and size make that safe.
-- Use pointer stubs for private URLs, credentialed sources, remote-only systems, oversized binaries, or sources whose license/access status is unclear.
+- Preserve originals under `raw/` whenever access, location, path shape, and size make that safe.
+- Use pointer stubs for private URLs, credentialed sources, remote-only systems, outside-vault files, symlinks, oversized binaries, secret-looking paths, or sources whose license/access status is unclear.
+- Require `--copy-outside-root` before copying an outside-vault local file into `raw/`; the default is a pointer stub.
 - Do not crawl private or authenticated content unless the user explicitly authorizes the source and scope.
 - Record license or access notes when known; use `unknown` rather than inventing rights.
 - Normalize provider warnings into review items instead of silently promoting uncertain claims.

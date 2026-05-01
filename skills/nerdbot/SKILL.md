@@ -163,7 +163,7 @@ Use when the user wants a new KB for a topic or scope.
 
 Use when sources already exist and the KB needs trustworthy evidence capture.
 
-1. Preserve originals in `raw/`; add normalized extracts beside them, not instead of them. For sources over `50 MB`, a `raw/` pointer or stub that records checksum, size, original location, and import notes is acceptable when vendoring the binary into git is impractical.
+1. Preserve originals in `raw/`; add normalized extracts beside them, not instead of them. Use provenance-rich pointer stubs for outside-root, symlinked, secret-looking, unreadable, or over-`50 MB` sources unless the user explicitly approves a safe outside-root copy gate.
 2. Preserve or establish the vault attachment convention in `raw/assets/` when local files or clipped media support the source.
 3. Keep source notes and summary notes Obsidian-addressable with stable note names, frontmatter, and shared-template coverage.
 4. Update indexes to show source status, intended wiki coverage, and unresolved gaps.
@@ -393,7 +393,7 @@ Expected flow:
 3. Prefer additive repair over migration, but default existing repos toward an Obsidian-native overhaul before deeper expansion or refinement.
 4. Query is read-only by default; answer from the maintained KB unless the user explicitly asks for follow-on mutation.
 5. Never synthesize `wiki/` content without provenance to `raw/` or declared canonical material.
-6. Keep `raw/` append-only; preserve originals and store normalization as separate artifacts, or use a provenance-rich pointer/stub for sources over `50 MB` when vendoring the binary is impractical.
+6. Keep `raw/` append-only; preserve originals and store normalization as separate artifacts, or use a provenance-rich pointer/stub for outside-root, symlinked, secret-looking, unreadable, or over-`50 MB` sources when vendoring bytes is unsafe or impractical.
 7. Prefer `wiki/` + `indexes/` before mining `raw/`; use `raw/` to verify citations or confirm gaps, not to bypass missing synthesis.
 8. Update related `indexes/` and the `activity log` in the same batch as content or structure changes.
 9. If the KB cannot answer confidently during query, state the gap and recommend `enrich`, `ingest`, or `derive` instead of mutating content in place.
