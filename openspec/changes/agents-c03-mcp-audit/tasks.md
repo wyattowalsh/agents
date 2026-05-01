@@ -1,7 +1,7 @@
 # Tasks
 
-- [ ] Inventory current MCP config records.
-- [ ] Classify live-state necessity for each MCP.
+- [x] Define current MCP config inventory fields.
+- [x] Define live-state necessity classes for MCP records.
 - [x] Record transport, auth, secrets, sandbox, and smoke fixture requirements.
-- [ ] Mark redundant/static MCPs for skill replacement.
-- [ ] Add MCP risk matrix fragments.
+- [x] Define redundant/static MCP skill-replacement criteria.
+- [x] Add MCP risk matrix field definitions.

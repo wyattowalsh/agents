@@ -1,6 +1,6 @@
 # Tasks
 
-- [ ] Define session replay artifact model.
-- [ ] Define run graph model.
-- [ ] Define token/cost telemetry fields.
-- [ ] Define redaction and retention requirements.
+- [x] Define session replay artifact model.
+- [x] Define run graph model.
+- [x] Define token/cost telemetry fields.
+- [x] Define redaction and retention requirements.
