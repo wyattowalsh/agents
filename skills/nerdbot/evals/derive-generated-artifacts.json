@@ -1,0 +1,17 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot derive --root ./knowledge-base --artifact all --apply",
+  "files": [
+    "knowledge-base/wiki/index.md",
+    "knowledge-base/indexes/generated/nerdbot-fts.sqlite3",
+    "knowledge-base/indexes/generated/graph-edges.jsonl",
+    "knowledge-base/indexes/generated/graph-report.md"
+  ],
+  "expected_behavior": [
+    "Agent defaults to dry-run unless --apply is present",
+    "Agent writes generated artifacts only under indexes/generated/",
+    "Agent keeps generated artifacts rebuildable and non-canonical",
+    "Agent graph output includes links, embeds, aliases, citations, and analytics",
+    "Agent records changed generated paths in activity/operations.jsonl"
+  ]
+}

@@ -22,6 +22,8 @@ from collections.abc import Iterator
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from kb_path_policy import normalize_requested_root
+
 DEFAULT_LAYER_PATHS: dict[str, str] = {
     "raw": "raw",
     "wiki": "wiki",
@@ -164,21 +166,6 @@ OBSIDIAN_REFERENCE_PATTERN = re.compile(r"(?P<embed>!)?\[\[([^\[\]\n]+)\]\]")
 def warn(message: str) -> None:
     """Emit a human-readable warning to stderr."""
     print(f"warning: {message}", file=sys.stderr)
-
-
-def normalize_requested_root(root_arg: str) -> Path:
-    """Resolve a root path while rejecting symlinked roots or ancestors.
-
-    Examples:
-        >>> normalize_requested_root('.')  # doctest: +ELLIPSIS
-        PosixPath('...')
-    """
-    supplied = Path(root_arg).expanduser()
-    candidate = supplied if supplied.is_absolute() else Path.cwd() / supplied
-    for ancestor in (candidate, *candidate.parents):
-        if ancestor.exists() and ancestor.is_symlink():
-            raise RuntimeError(f"Refusing to use symlinked root path: {ancestor}")
-    return candidate.resolve()
 
 
 def resolve_existing_root(root_arg: str) -> Path:
@@ -786,11 +773,13 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
         classification_counts.get("unlayered_markdown") or classification_counts.get("wiki_page")
     ):
         suggested_next_actions.append(
-            "Plan an Obsidian-native overhaul before expansion or refinement: normalize frontmatter, note names, aliases, and link style first."
+            "Plan an Obsidian-native overhaul before expansion or refinement: normalize frontmatter, "
+            "note names, aliases, and link style first."
         )
     if vault_mode == "mixed_vault":
         suggested_next_actions.append(
-            "Normalize shared `.obsidian/` surfaces, note metadata, and link style before deeper synthesis or migration work."
+            "Normalize shared `.obsidian/` surfaces, note metadata, and link style before deeper synthesis "
+            "or migration work."
         )
     if classification_counts.get("unlayered_markdown"):
         suggested_next_actions.append(
@@ -807,7 +796,8 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
         suggested_next_actions.append("Add activity/log.md and append every mutating batch to it.")
     if vault_detected and not vault_surface["shared_config_paths"]:
         suggested_next_actions.append(
-            "Add `.obsidian/templates/` and `.obsidian/snippets/` or document why the vault intentionally omits shared surfaces."
+            "Add `.obsidian/templates/` and `.obsidian/snippets/` or document why the vault intentionally "
+            "omits shared surfaces."
         )
     if vault_surface["volatile_paths"]:
         suggested_next_actions.append(
@@ -815,7 +805,8 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
         )
     if obsidian_embed_count and "raw/assets" not in attachment_directories:
         suggested_next_actions.append(
-            "Standardize local supporting assets under `raw/assets/` unless the repo already has an approved attachment convention."
+            "Standardize local supporting assets under `raw/assets/` unless the repo already has an approved "
+            "attachment convention."
         )
     if risky_paths:
         suggested_next_actions.append("Inspect risky paths before any rename, cutover, or bulk rewrite.")

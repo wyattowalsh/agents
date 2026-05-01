@@ -17,9 +17,11 @@ import argparse
 import json
 import os
 from collections.abc import Callable
+from contextlib import suppress
 from datetime import date
 from functools import lru_cache
 from pathlib import Path
+from typing import NamedTuple, TypedDict
 
 from kb_inventory import (
     DEFAULT_DIRECTORIES,
@@ -28,8 +30,41 @@ from kb_inventory import (
     normalize_requested_root,
     warn,
 )
+from kb_path_policy import (
+    ensure_safe_target,
+    fsync_parent_directory,
+    open_text_no_follow,
+    reject_hardlinked_overwrite,
+    write_bytes_atomic_no_follow,
+)
 
 TemplateFactory = Callable[[Path], str]
+
+
+class ScaffoldResult(TypedDict):
+    """Structured scaffold result returned by the legacy script and package CLI."""
+
+    root: str
+    root_created: bool
+    dry_run: bool
+    force: bool
+    created_directories: list[str]
+    skipped_directories: list[str]
+    created_files: list[str]
+    overwritten_files: list[str]
+    skipped_existing: list[str]
+    suggested_next_actions: list[str]
+
+
+class StagedStarterFile(NamedTuple):
+    """Rendered starter-file write decision staged before mutation."""
+
+    rel_path: str
+    target_file: Path
+    content: str
+    action: str
+
+
 ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
 KB_BOOTSTRAP_TEMPLATE_PATH = ASSETS_DIR / "kb-bootstrap-template.md"
 ACTIVITY_LOG_TEMPLATE_PATH = ASSETS_DIR / "activity-log-template.md"
@@ -250,23 +285,6 @@ def normalize_root(root_arg: str) -> Path:
     return normalize_requested_root(root_arg)
 
 
-def ensure_safe_target(root: Path, target: Path) -> None:
-    """Reject writes that would follow symlinks or escape the requested root.
-
-    Examples:
-        >>> ensure_safe_target(Path('/repo'), Path('/repo/wiki/index.md'))
-    """
-    try:
-        relative = target.relative_to(root)
-    except ValueError as exc:
-        raise ValueError(f"Target escapes requested root: {target}") from exc
-    current = root
-    for part in relative.parts:
-        current = current / part
-        if current.is_symlink():
-            raise RuntimeError(f"Refusing to follow symlinked path component: {current}")
-
-
 def write_text_safely(path: Path, content: str, *, overwrite: bool) -> None:
     """Write text without following a symlink at the final path component.
 
@@ -274,13 +292,14 @@ def write_text_safely(path: Path, content: str, *, overwrite: bool) -> None:
         >>> # write_text_safely(Path('/repo/file.txt'), 'x', overwrite=False)  # doctest: +SKIP
         ... # doctest: +SKIP
     """
-    flags = os.O_WRONLY | os.O_CREAT
-    if hasattr(os, "O_NOFOLLOW"):
-        flags |= os.O_NOFOLLOW
-    flags |= os.O_TRUNC if overwrite else os.O_EXCL
-    fd = os.open(path, flags, 0o644)
-    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+    if overwrite:
+        write_bytes_atomic_no_follow(path, content.encode("utf-8"))
+        return
+    with open_text_no_follow(path, overwrite=False) as handle:
         handle.write(content)
+        handle.flush()
+        os.fsync(handle.fileno())
+    fsync_parent_directory(path)
 
 
 def preflight_validate_targets(root: Path, *, force: bool) -> None:
@@ -304,11 +323,65 @@ def preflight_validate_targets(root: Path, *, force: bool) -> None:
             raise RuntimeError(f"Refusing to write through symlinked file: {target_file}")
         if target_file.exists() and target_file.is_dir():
             raise IsADirectoryError(f"Expected file but found directory: {target_file}")
+        if force and target_file.exists() and rel_path not in APPEND_ONLY_STARTER_FILES:
+            reject_hardlinked_overwrite(target_file)
         if target_file.exists() and not force:
             continue
 
 
-def scaffold(root: Path, *, force: bool, dry_run: bool) -> dict[str, object]:
+def stage_starter_files(root: Path, *, force: bool) -> list[StagedStarterFile]:
+    """Render and classify all starter files before filesystem mutation."""
+    staged: list[StagedStarterFile] = []
+    for rel_path, factory in STARTER_TEMPLATES.items():
+        target_file = root / rel_path
+        ensure_safe_target(root, target_file)
+        content = factory(root)
+        if target_file.is_symlink():
+            raise RuntimeError(f"Refusing to write through symlinked file: {target_file}")
+        if target_file.exists() and target_file.is_dir():
+            raise IsADirectoryError(f"Expected file but found directory: {target_file}")
+        if target_file.exists() and rel_path in APPEND_ONLY_STARTER_FILES:
+            staged.append(StagedStarterFile(rel_path, target_file, content, "skip_append_only"))
+        elif target_file.exists() and not force:
+            staged.append(StagedStarterFile(rel_path, target_file, content, "skip_existing"))
+        elif target_file.exists():
+            staged.append(StagedStarterFile(rel_path, target_file, content, "overwrite"))
+        else:
+            staged.append(StagedStarterFile(rel_path, target_file, content, "create"))
+    return staged
+
+
+def apply_staged_starter_files(root: Path, staged: list[StagedStarterFile]) -> None:
+    """Apply staged starter-file writes with rollback on failure."""
+    backups: list[tuple[Path, bytes]] = []
+    created: list[Path] = []
+    try:
+        for item in staged:
+            if item.action == "skip_append_only":
+                warn(f"Preserving append-only starter file: {item.target_file}")
+                continue
+            if item.action == "skip_existing":
+                warn(f"Skipping existing file: {item.target_file}")
+                continue
+            item.target_file.parent.mkdir(parents=True, exist_ok=True)
+            ensure_safe_target(root, item.target_file)
+            if item.action == "overwrite":
+                backups.append((item.target_file, item.target_file.read_bytes()))
+                warn(f"Overwriting starter file due to --force: {item.target_file}")
+                write_text_safely(item.target_file, item.content, overwrite=True)
+                continue
+            created.append(item.target_file)
+            write_text_safely(item.target_file, item.content, overwrite=False)
+    except Exception:
+        for path in reversed(created):
+            with suppress(FileNotFoundError):
+                path.unlink()
+        for path, content in reversed(backups):
+            write_bytes_atomic_no_follow(path, content)
+        raise
+
+
+def scaffold(root: Path, *, force: bool, dry_run: bool) -> ScaffoldResult:
     """Create the default KB directories and starter files safely.
 
     Examples:
@@ -321,11 +394,14 @@ def scaffold(root: Path, *, force: bool, dry_run: bool) -> dict[str, object]:
     if not root.exists() and not root.parent.exists():
         raise FileNotFoundError(f"Parent directory does not exist: {root.parent}")
     preflight_validate_targets(root, force=force)
+    staged_starters = stage_starter_files(root, force=force)
     created_directories: list[str] = []
     skipped_directories: list[str] = []
-    created_files: list[str] = []
-    overwritten_files: list[str] = []
-    skipped_existing: list[str] = []
+    created_files = [item.rel_path for item in staged_starters if item.action == "create"]
+    overwritten_files = [item.rel_path for item in staged_starters if item.action == "overwrite"]
+    skipped_existing = [
+        item.rel_path for item in staged_starters if item.action in {"skip_append_only", "skip_existing"}
+    ]
     root_created = False
     if not root.exists():
         root_created = True
@@ -344,35 +420,15 @@ def scaffold(root: Path, *, force: bool, dry_run: bool) -> dict[str, object]:
         created_directories.append(rel_dir)
         if not dry_run:
             target_dir.mkdir(parents=True, exist_ok=True)
-    for rel_path, factory in STARTER_TEMPLATES.items():
-        target_file = root / rel_path
-        ensure_safe_target(root, target_file)
-        content = factory(root)
-        if target_file.is_symlink():
-            raise RuntimeError(f"Refusing to write through symlinked file: {target_file}")
-        if target_file.exists() and target_file.is_dir():
-            raise IsADirectoryError(f"Expected file but found directory: {target_file}")
-        if target_file.exists() and rel_path in APPEND_ONLY_STARTER_FILES:
-            skipped_existing.append(rel_path)
-            warn(f"Preserving append-only starter file: {target_file}")
-            continue
-        if target_file.exists() and not force:
-            skipped_existing.append(rel_path)
-            warn(f"Skipping existing file: {target_file}")
-            continue
-        if target_file.exists() and force:
-            overwritten_files.append(rel_path)
-            warn(f"Overwriting starter file due to --force: {target_file}")
-        else:
-            created_files.append(rel_path)
-        if not dry_run:
-            target_file.parent.mkdir(parents=True, exist_ok=True)
-            ensure_safe_target(root, target_file)
-            write_text_safely(target_file, content, overwrite=force)
+    if not dry_run:
+        apply_staged_starter_files(root, staged_starters)
     next_actions = [
-        "Add source captures under raw/sources/, raw/captures/, or raw/extracts/, and place local supporting assets under raw/assets/.",
-        "Create synthesized pages under wiki/topics/ with explicit provenance back to raw evidence and Obsidian-native frontmatter.",
-        "Refresh indexes/coverage.md, indexes/source-map.md, activity/log.md, and config/obsidian-vault.md in the same batch as content changes.",
+        "Add source captures under raw/sources/, raw/captures/, or raw/extracts/, "
+        "and place local supporting assets under raw/assets/.",
+        "Create synthesized pages under wiki/topics/ with explicit provenance back to raw evidence "
+        "and Obsidian-native frontmatter.",
+        "Refresh indexes/coverage.md, indexes/source-map.md, activity/log.md, and config/obsidian-vault.md "
+        "in the same batch as content changes.",
     ]
     if skipped_existing and not force:
         next_actions.append("Re-run with --force only if you explicitly want to overwrite the known starter files.")

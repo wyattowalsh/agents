@@ -37,8 +37,6 @@ from kb_inventory import (
     extract_frontmatter_block,
     extract_frontmatter_keys,
     extract_headings,
-    extract_markdown_links,
-    extract_obsidian_references,
     is_index_like_path,
     iter_repo_files,
     normalize_anchor,
@@ -148,7 +146,7 @@ def markdown_to_plain_text(text: str, *, max_words: int = 400) -> str:
     without_links = re.sub(r"(?<!!)\[([^\]]+)\]\([^)]+\)", r"\1", without_inline_code)
     without_obsidian_links = re.sub(
         r"!?\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|([^\]]+))?\]\]",
-        lambda match: (match.group(2) or Path(match.group(1)).stem),
+        lambda match: match.group(2) or Path(match.group(1)).stem,
         without_links,
     )
     normalized = re.sub(r"[^a-zA-Z0-9\s]+", " ", without_obsidian_links).lower()
@@ -511,10 +509,7 @@ def resolve_path_like_target(
         path_part, anchor = link_target.split("#", 1)
     else:
         path_part, anchor = link_target, None
-    if root is not None:
-        candidate = (root / path_part).resolve()
-    else:
-        candidate = (source_page.path.parent / path_part).resolve()
+    candidate = (root / path_part).resolve() if root is not None else (source_page.path.parent / path_part).resolve()
     candidates = []
     if candidate.suffix:
         candidates.append(candidate)
@@ -950,7 +945,8 @@ def lint_obsidian_vault(root: Path, pages: dict[str, MarkdownPage]) -> list[dict
                     "missing_vault_frontmatter",
                     "suggestion",
                     rel_path,
-                    "Wiki page is missing frontmatter even though the repo is using Obsidian-native metadata elsewhere.",
+                    "Wiki page is missing frontmatter even though the repo is using "
+                    "Obsidian-native metadata elsewhere.",
                 )
             )
     return issues
@@ -1150,7 +1146,8 @@ def summarize_actions(issues: list[dict[str, Any]]) -> list[str]:
         "duplicate_obsidian_alias",
     } & rules:
         actions.append(
-            "Normalize the Obsidian vault surface: keep shared `.obsidian/` config project-safe, add frontmatter where expected, and resolve alias collisions."
+            "Normalize the Obsidian vault surface: keep shared `.obsidian/` config project-safe, "
+            "add frontmatter where expected, and resolve alias collisions."
         )
     if {
         "weak_wiki_index_coverage",

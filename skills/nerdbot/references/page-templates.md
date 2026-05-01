@@ -49,7 +49,7 @@ Recommended entry shape:
 
 ```md
 ### [YYYY-MM-DD HH:MM] [Batch label]
-- Mode: [create|ingest|enrich|derive|improve|migration]
+- Mode: [create|ingest|enrich|derive|improve|migrate]
 - Summary: [what changed]
 - `raw`: [files]
 - `wiki`: [files]
@@ -82,7 +82,7 @@ Keep source summary pages compact and directly tied to `raw`.
 
 | Section | What to capture |
 |---------|-----------------|
-| Source record | Source ID, `raw` paths, import date, and status |
+| Source record | Human-friendly source subset plus the full machine keys: `source_id`, `original_location`, `raw_path`, `capture_method`, `captured_at`, `size_bytes`, `checksum`, `license_or_access_notes`, and `intended_wiki_coverage` |
 | Summary | What the source says without rewriting it into `wiki` prose |
 | Provenance | The claim-to-source map |
 | Planned wiki coverage | Where the evidence should appear in `wiki` |

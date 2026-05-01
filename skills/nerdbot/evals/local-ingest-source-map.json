@@ -1,0 +1,16 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot ingest --root ./knowledge-base --source ./incoming/vendor-brief.md --apply",
+  "files": [
+    "incoming/vendor-brief.md",
+    "knowledge-base/indexes/source-map.md",
+    "knowledge-base/activity/operations.jsonl"
+  ],
+  "expected_behavior": [
+    "Agent defaults to dry-run unless --apply is present",
+    "Agent stores source bytes or a pointer stub under raw/sources with a stable source ID",
+    "Agent appends a source-map row with capture method, raw path, provenance status, and status",
+    "Agent appends an operation journal entry with changed paths and no destructive rewrite",
+    "Agent does not promote source claims into wiki pages during ingest"
+  ]
+}

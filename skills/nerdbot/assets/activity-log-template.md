@@ -11,7 +11,7 @@
 ## Entry template
 
 ### [YYYY-MM-DD HH:MM] [Batch label]
-- Mode: [create|ingest|enrich|derive|improve|migration]
+- Mode: [create|ingest|enrich|derive|improve|migrate]
 - Summary: [one sentence]
 - `raw`: [files added or updated]
 - `wiki`: [files added or updated]

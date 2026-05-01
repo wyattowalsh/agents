@@ -1,0 +1,14 @@
+{
+  "skills": ["nerdbot"],
+  "query": "/nerdbot query --semantic \"vendor pricing risk\"",
+  "files": [
+    "knowledge-base/wiki/index.md"
+  ],
+  "expected_behavior": [
+    "Agent keeps query read-only",
+    "Agent reports that semantic retrieval requires the optional nerdbot[semantic] extra when the dependency is not installed",
+    "Agent gives an actionable fallback to rerun without --semantic for lexical or FTS retrieval",
+    "Agent does not import optional semantic dependencies in the baseline path",
+    "Agent does not fabricate semantic retrieval results when the optional extra is unavailable"
+  ]
+}
