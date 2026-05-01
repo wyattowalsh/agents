@@ -1,5 +1,3 @@
-import os
-
 #!/usr/bin/env python3
 """Inject JSON data into the dashboard HTML template and optionally open it."""
 
@@ -7,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
@@ -51,6 +50,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Path to the HTML template (default: ../templates/dashboard.html)",
     )
+    parser.add_argument(
+        "--progress",
+        default=None,
+        help="Optional progress JSON path to embed for live-refresh dashboards",
+    )
     return parser.parse_args(argv)
 
 
@@ -78,6 +82,12 @@ def render_data_script(data: object) -> str:
         .replace("\u2029", "\\u2029")
     )
     return f'<script id="data" type="application/json">{safe_json}</script>'
+
+
+def render_progress_script(progress_path: str | None) -> str:
+    payload = {"progress_path": str(Path(progress_path).expanduser())} if progress_path else {}
+    safe_json = json.dumps(payload).replace("&", "\\u0026").replace("<", "\\u003c").replace(">", "\\u003e")
+    return f'<script id="progress-config" type="application/json">{safe_json}</script>'
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -111,6 +121,9 @@ def main(argv: list[str] | None = None) -> None:
         placeholder,
         render_data_script(data),
     )
+    progress_placeholder = '<script id="progress-config" type="application/json">{}</script>'
+    if progress_placeholder in rendered:
+        rendered = rendered.replace(progress_placeholder, render_progress_script(args.progress))
 
     # --- write ---
     output_path = resolve_output(args.output)

@@ -1,14 +1,36 @@
 # Duplicate Detection Reference
 
-Rules for `clean` mode. Combine `fclones` for true duplicate groups, `rmlint` for filesystem lint, and `rclone dedupe --dry-run` for cloud remotes that allow duplicate names.
+Rules for `dedupe`, `clean`, and `cleanup-plan` modes. Combine `fclones` for true duplicate groups, `rmlint` for filesystem lint, `czkawka_cli` for broad media/similarity detection, and `rclone dedupe --dry-run` for cloud remotes that allow duplicate names.
+
+## Engine Policy
+
+| Engine | Use For | Safe Default | Never Do |
+|--------|---------|--------------|----------|
+| `fclones` | Fast exact duplicates by content hash | `fclones group --format json <path>` | Run remove/link/dedupe without approved plan |
+| `rmlint` | Exact duplicates plus empty files/dirs, broken links, bad IDs | `rmlint -o json:<file> <path>` | Execute generated shell script blindly |
+| `czkawka_cli dup` | Exact duplicates when user wants Czkawka reports/cache | `czkawka_cli dup -d <path> --json-pretty` | Use delete methods before approval |
+| `czkawka_cli image/video/music` | Similar images, videos, and music | report file only | Treat perceptual matches as safe duplicates |
+| `rclone dedupe` | Duplicate names and remote hash checks | `--dry-run --dedupe-mode list` | Let default interactive/delete behavior run unattended |
+| dupeGuru / Video Duplicate Finder | GUI or specialist review queue | export/report only | Automate deletions from fuzzy groups |
+| `imagededup` | Advanced image near-duplicate analysis | report hashes/clusters | Auto-trash similar images |
+| `jdupes` / `rdfind` / `duff` | Fallback exact duplicate tools | report/list only | `jdupes --quick`, partial-only checks, or shell piping to delete |
 
 ## Local Duplicate Workflow
 
 1. Run `fclones group --format json <path>` to discover content-identical files.
 2. Run `rmlint -o json:<file> <path>` to find empty files, empty dirs, broken links, and duplicate metadata.
-3. Normalize both outputs into one report grouped by issue type.
-4. Present reclaimable bytes and suggested keepers before any trash action.
-5. Only trash after confirmation. Never pipe directly into a delete command.
+3. Optionally run `czkawka_cli dup` when Czkawka is installed and the user wants a second exact engine.
+4. Normalize outputs into one report grouped by issue type.
+5. Present reclaimable bytes, keeper rationale, dependency impact, and restore path before any trash action.
+6. Only trash after confirmation. Never pipe directly into a delete command.
+
+## Similar Media Workflow
+
+1. Use `czkawka_cli image`, `czkawka_cli video`, or `czkawka_cli music` for perceptual candidate groups.
+2. Treat every group as **review only**. Similar does not mean duplicate.
+3. Preserve originals by default. Suggested keepers may consider resolution, bitrate, duration, path intent, and edit metadata.
+4. Produce contact-sheet paths or report files when practical; ask the user to choose keepers.
+5. Never mix similar-media reclaimable bytes into exact-duplicate savings without a separate label.
 
 ## fclones Group Parsing
 
@@ -48,7 +70,7 @@ Use `rmlint` for lint reporting, not blind execution. Review the JSON output rat
 Google Drive-style remotes can contain files with the same name in one directory. Use:
 
 ```bash
-rclone dedupe --dry-run remote:path
+rclone dedupe --dry-run --dedupe-mode list remote:path
 ```
 
 Recommended modes:
@@ -56,6 +78,7 @@ Recommended modes:
 - `list` / dry-run first for inspection
 - `rename` when the user wants to preserve all variants
 - `newest`, `oldest`, `largest`, `smallest` only after explicit confirmation
+- `--by-hash` only when the backend supports reliable hashes and the user approved hash-based remote review
 
 ## Edge Cases
 
@@ -66,6 +89,8 @@ Recommended modes:
 | Case-insensitive volumes | `Photo.jpg` vs `photo.jpg` may collide on move | Check rename plan before execution |
 | Evicted cloud files | Placeholder size/hash data can be wrong | Materialize before hash-based comparison |
 | Hardlinks | Look like duplicates by path count | Compare inode and link count before trashing |
+| Similar media | Looks redundant but may differ in quality or edits | Review queue only, no auto-trash |
+| Package bundles | Directory looks like a file in Finder | Treat as app-managed until dependency owner is clear |
 
 ## Presentation Shape
 
@@ -77,3 +102,5 @@ Show duplicate groups as:
 - paths in the group
 
 Then show lint issues (`emptydir`, `badlink`, `emptyfile`) in a separate section so the user can confirm them independently.
+
+Exact duplicate groups and similar-media groups must be rendered in separate dashboard sections and require separate approvals.

@@ -25,10 +25,7 @@ if cloud_storage.exists():
         # match provider by prefix
 ```
 
-### Linux
-
-- rclone mounts: `mount | grep "fuse.rclone"`
-- GNOME Online Accounts: GVfs mounts
+files-buddy is macOS-only. Non-macOS cloud mount notes are intentionally out of scope.
 
 ---
 
@@ -61,6 +58,7 @@ if cloud_storage.exists():
 ## Google Drive Specifics
 
 - Stream mode: files fetched on demand, standard tools trigger download
+- Mirror mode: files are intentionally stored locally; offload recommendations should suggest changing Drive settings or using provider UI rather than deleting mirrored data
 - Duplicate filenames: GDrive allows identical names in same folder
 - `rclone dedupe gdrive:path` modes: newest, oldest, largest, smallest, rename, list
 - `rclone lsjson gdrive:path` for structured listing
@@ -77,6 +75,8 @@ if cloud_storage.exists():
 5. Detect conflict copies: patterns `(1)`, `(conflict)`, ` 2.txt`
 6. Cloud ops always at least Medium friction tier
 7. After batch ops, suggest waiting for sync: `brctl status` / `rclone check`
+8. Offload is local-byte eviction only; if the action removes cloud copies, classify it as deletion/cleanup, not offload
+9. Verify enough local free space before materializing placeholders for hashing
 
 ---
 
@@ -90,3 +90,4 @@ if cloud_storage.exists():
 | Deletion syncs | File lost on all devices | Local staging first |
 | Sync lag | Changes not immediate | Wait + verify |
 | xattr stripping | iCloud strips non-syncable xattrs | Don't rely on xattrs |
+| Drive Stream vs Mirror | Same path shape can mean different local-byte behavior | Detect/report mode; ask user if ambiguous |

@@ -3869,48 +3869,47 @@ export const siteData = {
       "version": "1.0.0"
     },
     {
-      "argumentHint": "<mode> <path> [options]",
+      "argumentHint": "<mode> <path-or-all-local> [options]",
       "author": "wyattowalsh",
-      "description": "Safe filesystem organization, deduplication, renaming, and cleanup with cloud drive support. Delegates to best-in-class CLI tools. Use for file management. NOT for shell scripts (shell-scripter).",
+      "description": "Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup.",
       "installCommand": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
       "installSource": "github:wyattowalsh/agents",
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Files Buddy",
           "Canonical Vocabulary",
           "Dispatch",
           "Auto-Detection Heuristic",
+          "Execution Ladder",
+          "State Management",
+          "Progressive Disclosure",
           "Structural Constraints",
-          "Escalated-Confirmation Paths",
-          "Tiered Friction Model",
           "Pre-Flight Checks",
-          "Mode: organize",
-          "Mode: clean",
-          "Mode: audit",
-          "Mode: rename",
-          "Mode: flatten",
-          "Mode: archive",
-          "Mode: sanitize",
-          "Mode: find",
-          "Mode: watch",
-          "Mode: undo",
-          "Mode: dashboard",
-          "Dry-Run Preview Protocol",
-          "Execution Protocol",
+          "Recommendation Contract",
+          "Dashboard Requirements",
           "Scaling Strategy",
           "Reference Files",
+          "Validation Contract",
           "Critical Rules"
         ],
         "references": [
           "references/cloud-drives.md",
+          "references/dashboard-app.md",
+          "references/dependency-impact.md",
           "references/duplicate-detection.md",
+          "references/macos-storage-map.md",
+          "references/offload-recommendations.md",
           "references/organization-strategies.md",
+          "references/progress-reporting.md",
           "references/protected-paths.md",
           "references/rename-patterns.md",
           "references/safety-workflow.md",
+          "references/scan-performance.md",
           "references/tool-integrations.md"
         ],
         "resourceLinks": [],
@@ -3921,7 +3920,7 @@ export const siteData = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 2458
+        "wordCount": 2019
       },
       "license": "MIT",
       "model": "sonnet",
@@ -3935,7 +3934,7 @@ export const siteData = {
       "trustTier": "repo",
       "useCommand": "/files-buddy",
       "userInvocable": true,
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "argumentHint": "<mode> [target]",
