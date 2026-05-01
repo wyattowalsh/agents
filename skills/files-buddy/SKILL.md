@@ -1,282 +1,165 @@
 ---
 name: files-buddy
 description: >-
-  Safe filesystem organization, deduplication, renaming, and cleanup with
-  cloud drive support. Delegates to best-in-class CLI tools. Use for file
-  management. NOT for shell scripts (shell-scripter).
-argument-hint: "<mode> <path> [options]"
+  Use when safely auditing, organizing, deduplicating, renaming, archiving,
+  offloading, or reclaiming storage on macOS file systems and cloud-drive
+  folders. NOT for shell script generation, CI/CD, databases, or non-macOS
+  platform cleanup.
+argument-hint: "<mode> <path-or-all-local> [options]"
 model: sonnet
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Files Buddy
 
-Safe filesystem organization and cleanup. Delegates to best-in-class CLI tools for
-deduplication, renaming, archiving, and analysis. Cloud drives (iCloud, Google Drive,
-Dropbox, OneDrive) are first-class citizens with auto-detection and adjusted safety.
+Mac storage command center for safe filesystem organization, duplicate review,
+cache analysis, cloud offload planning, and cleanup execution. It delegates to
+free/OSS CLI tools and treats iCloud Drive, Google Drive, developer caches,
+AI/model caches, containers, VMs, backups, and app-managed libraries as first-class
+storage surfaces.
 
-**Scope:** File organization, cleanup, renaming, deduplication, archiving, and analysis.
-NOT for shell script generation (shell-scripter), CI/CD pipelines (devops-engineer),
-or database work (database-architect).
+**Scope:** macOS file management, storage audits, cleanup/offload plans, exact and
+similar duplicate review, progress dashboards, manifest-backed execution, and undo.
+NOT for shell scripts (shell-scripter), CI/CD (devops-engineer), database work
+(database-architect), or Linux/Windows cleanup.
 
 ## Canonical Vocabulary
 
+**Canonical terms:** use these terms exactly in plans, reports, manifests, and dashboard labels.
+
 | Term | Definition |
-|------|-----------|
-| **dry-run** | Preview via tool's native mode (fclones group, f2 default, organize sim, detox -n) |
-| **manifest** | JSON log at `~/.files-buddy/manifests/` enabling undo and discovery |
-| **blast radius** | Total file count and size affected by an operation |
-| **protected path** | Hard-blocked (system) or escalated-confirmation directory |
-| **trash** | Reversible deletion via gomi / OS trash / `.files-buddy-trash/` |
-| **scope pin** | Hard boundary = user-referenced directory only |
-| **material drift** | Filesystem changed >10% between preview and execution |
-| **batch** | Non-overlapping operations; rollback unit |
-| **intent contract** | User-confirmed description (not individual file list) |
-| **hardlink cluster** | Files sharing same inode — NOT duplicates |
-| **tool delegation** | Invoking CLI tool via subprocess; prefer over reimplementation |
-| **fallback** | Python stdlib when CLI tool is not installed |
-| **evicted file** | Cloud placeholder; must materialize before size/hash analysis |
-| **cloud-safe** | Operations adjusted for sync implications |
-| **conflict copy** | Duplicate from sync conflict (e.g., `file (1).txt`) |
-| **dashboard** | Self-contained HTML visualization opened in browser |
+|------|------------|
+| **all-local** | Whole-Mac audit scope: home folders, cloud roots, `/Volumes/*`, caches, dev/AI stores, containers, VMs, and report-only app libraries |
+| **dry-run** | Tool-native preview or read-only simulation before any mutation |
+| **approved plan** | User-confirmed plan naming exact operation classes, paths, savings, risks, and restore path |
+| **manifest** | JSON operation log under `~/.files-buddy/manifests/` used for undo and verification |
+| **progress snapshot** | Live JSON at `~/.files-buddy/runs/{run-id}/progress.json` |
+| **blast radius** | File count, local bytes, cloud bytes, directories, and operation classes affected |
+| **protected path** | Hard-blocked or escalated-confirmation path from `references/protected-paths.md` |
+| **offload candidate** | File or directory that can free local bytes while preserving recoverability elsewhere |
+| **repercussion** | Concrete consequence: re-download, rebuild, re-index, app breakage, sync delete, quota impact, or lost snapshot |
+| **dependency evidence** | Git refs, process refs, app library ownership, package/cache ownership, cloud state, or model/runtime references |
+| **exact duplicate** | Same content hash and distinct inode/link identity |
+| **similar-media group** | Perceptual image/video/audio candidates; never auto-trash |
+| **cloud-safe** | No automatic synced deletion; materialize only with approval; verify provider sync state |
+| **dashboard** | Static report plus optional live-refresh progress view built from the shadcn/ui + Tailwind v4 + Recharts source contract |
 
 ## Dispatch
 
-| $ARGUMENTS | Mode | Destructive? |
-|------------|------|-------------|
-| `organize <path>` | organize | Yes (moves) |
-| `clean <path>` | clean | Yes (trash) |
-| `audit <path>` | audit | No (read-only) |
-| `rename <path> <pattern>` | rename | Yes (renames) |
-| `flatten <path>` | flatten | Yes (moves) |
-| `archive <path>` | archive | Yes (moves) |
-| `sanitize <path>` | sanitize | Yes (renames) |
-| `find <path> <query>` | find | No (read-only) |
-| `watch <path> [rules]` | watch | Yes (moves) |
-| `undo <manifest>` | undo | Yes (restores) |
-| `dashboard [path]` | dashboard | No (writes report) |
-| Empty or unrecognized | — | Show mode menu |
+| `$ARGUMENTS` | Mode | Destructive? | Primary reference |
+|--------------|------|--------------|-------------------|
+| `storage-audit all-local` | Whole-Mac storage audit | No | `macos-storage-map.md` |
+| `storage-audit <path>` / `audit <path>` | Scoped storage audit | No | `scan-performance.md` |
+| `cleanup-plan <path-or-all-local>` / `clean <path>` | Ranked cleanup plan | No | `dependency-impact.md` |
+| `offload-plan <path-or-all-local> --to <icloud-or-gdrive-or-rclone-remote>` | Local-byte offload plan | No | `offload-recommendations.md` |
+| `dedupe <path> --exact` | Exact duplicate plan | No | `duplicate-detection.md` |
+| `dedupe <path> --similar-media` | Similar image/video/audio review | No | `duplicate-detection.md` |
+| `cache-audit [all-local|dev|ai|containers|xcode]` | Cache dependency/savings report | No | `macos-storage-map.md` |
+| `organize <path>` | Organize plan/execution | Yes after approval | `organization-strategies.md` |
+| `rename <path> <pattern>` | Batch rename plan/execution | Yes after approval | `rename-patterns.md` |
+| `archive <path>` | Archive plan/execution | Yes after approval | `dependency-impact.md` |
+| `sanitize <path>` | Filename cleanup plan/execution | Yes after approval | `tool-integrations.md` |
+| `find <path> <query>` | Read-only search | No | `tool-integrations.md` |
+| `watch <path> [rules]` | Auto-organize watcher | Yes after approval | `organization-strategies.md` |
+| `progress <run-id-or-progress-json>` | Show run progress | No | `progress-reporting.md` |
+| `dashboard <progress-or-report-json>` | Render dashboard | No writes report | `dashboard-app.md` |
+| `execute <approved-plan>` | Execute previously approved plan | Yes | `safety-workflow.md` |
+| `undo <manifest>` | Reverse manifest operations | Yes restores | `safety-workflow.md` |
+| Empty or unrecognized | Gallery and mode menu | No | — |
 
 ### Auto-Detection Heuristic
 
-1. "sort", "organize", "tidy" + path -> **organize**
-2. "duplicates", "clean", "dedup", "lint" + path -> **clean**
-3. "how big", "usage", "analyze", "scan" + path -> **audit**
-4. "rename", "batch rename" + pattern -> **rename**
-5. "flatten", "collapse" + path -> **flatten**
-6. "archive", "compress", "old files" + path -> **archive**
-7. "fix names", "sanitize", "encoding" + path -> **sanitize**
-8. "find", "search", "where is" + query -> **find**
-9. "watch", "auto-organize", "monitor" + path -> **watch**
-10. "undo", "reverse", "restore" + manifest -> **undo**
-11. "dashboard", "visualize", "report" -> **dashboard**
-12. Ambiguous -> ask which mode
+1. "free space", "storage", "what can I delete", "whole Mac" -> **storage-audit** or **cleanup-plan**
+2. "offload", "iCloud", "Google Drive", "cloud only", "stream" -> **offload-plan**
+3. "duplicates", "dedupe", "same files" -> **dedupe --exact**
+4. "similar photos", "similar videos", "same music" -> **dedupe --similar-media**
+5. "cache", "Xcode", "Docker", "node_modules", "Hugging Face", "Ollama" -> **cache-audit**
+6. "dashboard", "visualize", "progress", "report" -> **dashboard** or **progress**
+7. "sort", "organize", "rename", "archive", "sanitize", "find", "watch", "undo" -> matching mode
+8. Ambiguous mutation request -> produce read-only plan and ask for explicit approval before execution
+
+## Execution Ladder
+
+Every storage-saving workflow follows this order:
+
+1. **Read-only inventory** — detect volumes, cloud roots, protected paths, symlinks, app-managed stores, tools, and scope.
+2. **Dry-run or report** — run only non-mutating commands, native dry-runs, or report-only CLI modes.
+3. **Dependency impact** — explain references, repercussions, regeneration cost, restore path, and confidence for each recommendation.
+4. **Ranked plan** — group actions into safe trash, exact duplicates, similar media review, archives, offloads, cache prunes, app-managed report-only, and protected skips.
+5. **Approval gate** — require explicit approval of the specific plan before any move, rename, trash, prune, archive, evict, dedupe, or watcher.
+6. **Manifest execution** — create manifest, execute in batches, write progress snapshots, verify outputs, and preserve undo.
+7. **Final report** — local bytes saved, cloud bytes affected, skipped items, failures, manifest, restore commands, and verification evidence.
+
+### State Management
+
+Persistent run state lives under `~/.files-buddy/runs/{run-id}/` and includes progress snapshots, checkpoints, reports, and links to manifests. Destructive operations are resumable only from manifest records; read-only scans can resume from checkpoints when path, size, mtime, and inode summaries still match.
+
+### Progressive Disclosure
+
+Keep the main response focused on ranked recommendations and approval gates. Load only the single reference needed for the active mode, write detailed scan/progress/dashboard data to files, and summarize large result sets with top-N tables plus report paths instead of dumping raw inventories into chat.
 
 ## Structural Constraints
 
-1. **Operation whitelist:** move, rename, copy, trash, mkdir. NEVER `rm`, `chmod`, `chown`.
-2. **Scope pinning:** boundary = user-referenced directory only.
-3. **Hard-blocked paths:** never operate on filesystem roots or OS-managed system directories; use `references/protected-paths.md` as the canonical path list and validation source
-4. **Symlink resolution:** `os.path.realpath()` before plan gen. Cycles detected (max 40 hops).
-5. **`.git/` always excluded.**
-6. **Cloud-safe:** NEVER auto-delete cloud files. Materialize evicted files before analysis.
-
-## Escalated-Confirmation Paths
-
-`~/.ssh`, `~/.gnupg`, `~/.aws`, `~/.config`, `~/.kube`, `~/.local/share/keyrings`, any directory containing `.env`
-
-Require full preview + explicit path naming + warning before any operation.
-
-## Tiered Friction Model
-
-| Tier | Trigger | Friction |
-|------|---------|----------|
-| **Low** | Rename, move within parent, <10 files | Inline plan, `[y/N]` |
-| **Medium** | Cross-dir move, 10-100 files, archive | Summary preview, confirmation |
-| **High** | Any trash, recursive, 100+ files, 1 GB+ | Full preview, blast radius, type "yes" |
-| **Critical** | Escalated paths, cloud directories | Full preview + path naming + warning |
-
-AI-initiated ops bias one tier higher. Cloud ops always at least Medium.
+1. **macOS-only:** refuse Linux/Windows cleanup except to explain scope.
+2. **Operation whitelist:** move, rename, copy, trash, mkdir, archive, cloud-offload, cache-prune. NEVER use `rm`, `chmod`, `chown`, or force deletion.
+3. **Scope pinning:** default boundary is the user-referenced path. `all-local` is allowed only for read-only inventory until an approved plan narrows execution.
+4. **Protected paths:** reject hard-blocked paths; escalate secrets, dot-configs, app libraries, and cloud roots.
+5. **Symlink safety:** resolve real paths, detect cycles, and never follow links outside scope.
+6. **Cloud-safe:** never auto-delete synced files; never materialize or evict placeholders without dry-run proof and approval.
+7. **App-managed stores:** Photos, Music, TV, Mail, Messages, Time Machine snapshots, and VM snapshots are report-only unless the user selects the app-native cleanup path.
+8. **Similar media:** never auto-trash perceptual matches; create review queues only.
+9. **Caches:** distinguish disposable, regenerable, expensive-to-regenerate, and app-owned caches before recommending cleanup.
 
 ## Pre-Flight Checks
 
 Run before every mode:
 
-1. **Path resolution** — reject hard-blocked and escalated paths (or escalate friction)
-2. **Scope boundary** — confirm scope pin to user-referenced directory
-3. **Cloud detection** — check `~/Library/CloudStorage/*`, `~/Library/Mobile Documents/com~apple~CloudDocs`; tag cloud-synced dirs, adjust behavior
-4. **Symlink inventory** — flag escapes outside scope, detect cycles
-5. **Tool availability** — `command -v fd fclones rmlint f2 dust erd gomi ouch zstd b3sum detox convmv rclone pueue bat watchexec organize 2>/dev/null`; report missing, suggest install
-6. **Permission check** — flag restricted files (`stat` for read/write access)
-7. **Disk space** — verify free space >= estimated operation size
-8. **Git awareness** — detect `.gitignore`, warn before moving tracked files
-9. **Case sensitivity** — detect APFS case-insensitive volumes, flag rename collisions
-10. **Eviction check** — materialize placeholder files before analysis (`brctl download` for iCloud, access for GDrive stream)
+1. Resolve paths, reject hard-blocked paths, and identify escalated-confirmation paths.
+2. Detect cloud roots: `~/Library/Mobile Documents/com~apple~CloudDocs`, `~/Library/CloudStorage/*`, and configured `rclone` remotes.
+3. Detect volumes: `/Volumes/*`, local snapshots, APFS case sensitivity, free space, and filesystem type.
+4. Inventory symlinks, `.git/`, `.gitignore`, tracked files, package manifests, lockfiles, and app library markers.
+5. Check tools: `fd fclones rmlint czkawka_cli f2 dust erd gomi ouch zstd b3sum detox convmv rclone pueue bat watchexec organize docker tmutil brctl fileproviderctl`.
+6. For scans above 10k files, load `references/scan-performance.md` and use checkpoints, bounded memory, and per-volume concurrency limits.
+7. For dashboards, load `references/progress-reporting.md` and `references/dashboard-app.md`.
 
-## Mode: organize
+## Recommendation Contract
 
-Sort files by type, date, project, or custom rules using organize-tool.
+Each cleanup/offload recommendation must include:
 
-1. Generate organize-tool YAML config from user intent. Read `references/organization-strategies.md`
-2. Run `organize sim <config>` (dry-run) — parse output, present preview
-3. Show blast radius: file count, size, destination structure as tree
-4. On confirmation, run `organize run <config>` with manifest logging
-5. Report: operations completed, manifest path, `open <dest>` to verify
-6. **Fallback:** `shutil.move` with manual rule matching if organize-tool not installed
+| Field | Requirement |
+|-------|-------------|
+| Action | `trash`, `offload`, `archive`, `dedupe`, `cache-prune`, `review`, or `skip` |
+| Local bytes | Estimated bytes freed on this Mac |
+| Cloud bytes | Estimated cloud quota impact or `0` |
+| Confidence | High/medium/low with evidence |
+| Dependency evidence | Repos, package managers, running processes, app owners, cloud state, or model references |
+| Repercussions | What breaks, rebuilds, redownloads, re-syncs, or becomes slower |
+| Restore path | Undo command, app-native restore, cloud restore, or reinstall command |
+| Dry-run proof | Command output or report that proves no mutation occurred |
+| Approval tier | Low, Medium, High, or Critical |
 
-## Mode: clean
+## Dashboard Requirements
 
-Remove duplicates, lint filesystem, trash temp files.
+Dashboard mode renders a static report and can refresh from `progress.json` during long runs.
 
-1. Read `references/duplicate-detection.md`. Run `fclones group --format json <path>` for duplicates
-2. Run `rmlint -o json:<tmpfile> <path>` for empty dirs, broken symlinks, orphan files
-3. For cloud dirs: use `rclone dedupe --dry-run <remote>:path` (Google Drive duplicate filenames)
-4. Present grouped findings: duplicates (with sizes), lint issues, reclaimable space
-5. On confirmation, trash selected items via `gomi` (never `rm`). Log to manifest
-6. **Fallback:** `hashlib` + `os.walk` for dedup; `os.listdir` for empty dirs
-
-## Mode: audit
-
-Analyze disk usage and find issues. Strictly read-only.
-
-1. Run `dust -j <path>` for disk usage summary (JSON output)
-2. Run `erd -l -s rsize <path>` for directory tree with sizes
-3. Run `rmlint -o json:<tmpfile> <path>` for lint issues (empty dirs, broken symlinks)
-4. For cloud dirs: `rclone size <remote>:path` + `rclone lsjson` (materialize evicted files first)
-5. Present: top space consumers, file type distribution, stale files (>1yr untouched), issues
-6. Offer transitions: "Clean duplicates?" / "Archive old files?"
-7. **Fallback:** `os.stat` + `os.walk` for sizes; `pathlib` for file listing
-
-## Mode: rename
-
-Batch rename with regex, EXIF, ID3 templates using f2.
-
-1. Read `references/rename-patterns.md`. Construct `f2` command from user pattern
-2. Run `f2 <flags> <path>` (dry-run by default) — parse rename table
-3. Present before/after diff:
-   ```diff
-   - old-ugly-name_FINAL_v2.pdf
-   + 2024-01-project-report.pdf
-   ```
-4. On confirmation, run `f2 -x <flags>` (execute). Log to manifest
-5. For undo: `f2 -u` using f2's native undo support
-6. **Fallback:** `re.sub` + `os.rename` with collision detection
-
-## Mode: flatten
-
-Collapse nested directories to a single level.
-
-1. Inventory target dir — build tree, count files, detect naming collisions
-2. Plan flat destination with collision resolution (append `-1`, `-2`, etc.)
-3. Present preview: tree before vs flat list after, collision resolutions
-4. On confirmation, `shutil.move` each file. Log to manifest
-5. Clean up empty directories (bottom-up traversal)
-6. No CLI tool dependency — Python stdlib only
-
-## Mode: archive
-
-Compress old or unused files.
-
-1. Identify candidates: files untouched >N days (user-specified or default 365)
-2. Group by directory or type for archive bundles
-3. Run `ouch compress <files> <archive.tar.zst>` (or `zstd` for single files)
-4. Present preview: files to archive, compressed size estimate, destination
-5. On confirmation, compress and optionally move originals to trash. Log to manifest
-6. For cloud: `rclone move <local> <remote>:archive/` for cloud archiving
-7. **Fallback:** `tarfile` + `gzip` from Python stdlib
-
-## Mode: sanitize
-
-Fix filenames: remove special characters, fix encoding, normalize Unicode.
-
-1. Run `detox -n <path>` (dry-run) for character cleanup preview
-2. Run `convmv -f <from> -t utf-8 --nfc <path>` for encoding normalization preview
-3. Present before/after rename table with changes highlighted
-4. On confirmation, run `detox <path>` and `convmv --notest -f <from> -t utf-8 --nfc <path>`. Log to manifest
-5. **Fallback:** `re.sub` for character cleanup; `unicodedata.normalize` for NFC/NFD
-
-## Mode: find
-
-Smart file search with rich output. Strictly read-only.
-
-1. Translate natural language to `fd` flags: "large PDFs" -> `fd -e pdf --size +10m <path>`
-2. Run `fd` command, pipe matches through `bat` for syntax-highlighted preview
-3. Present results as markdown table: name, size, modified date, path
-4. Offer transitions: "Found 42 PDFs -> organize them?" / "Found duplicates -> clean them?"
-5. For cloud dirs: `rclone lsjson <remote>:path --recursive` with `--include`/`--exclude`
-6. **Fallback:** `os.walk` with `fnmatch` filtering
-
-## Mode: watch
-
-Auto-organize files on creation using watchexec + organize-tool.
-
-1. Generate organize-tool YAML config from user rules. Read `references/organization-strategies.md`
-2. Start watcher: `watchexec -e jpg,png,pdf -- organize run <config>` (background)
-3. Register in `~/.files-buddy/watchers.json` for persistence
-4. Log all auto-organized files to manifest
-5. Subcommands: `watch start <path>`, `watch stop <id>`, `watch list`, `watch status`
-6. **Requires:** watchexec + organize-tool (no fallback — notify user to install)
-
-## Mode: undo
-
-Reverse a previous operation using manifest records.
-
-1. If no manifest specified, run `manifest-manager.py list` — show recent operations
-2. Load manifest, validate paths are within `~/.files-buddy/manifests/`
-3. Verify completed file ops include recorded BLAKE3 hashes and that current files match manifest records — abort on mismatch or missing integrity metadata
-4. Reverse operations in reverse order. Restore cloud-tagged manifests from `.files-buddy-trash/`; otherwise restore from gomi / OS trash or `.files-buddy-trash/` fallback
-5. Mark manifest status = `undone`. Report restored files
-6. **Fallback:** `mv` from `.files-buddy-trash/` if gomi unavailable
-
-## Mode: dashboard
-
-Open a visual HTML dashboard. Analysis stays read-only, but rendering writes a local report file.
-
-1. Run audit analysis (dust, rmlint, fd) to collect data for target path
-2. Generate JSON: disk usage treemap, file type distribution, duplicates, large files, stale files, operation history from manifests
-3. Run `uv run python skills/files-buddy/scripts/dashboard-renderer.py --data <json-file|-> --output <path> --open`
-4. Default dashboard path is `~/.{gemini|copilot|codex|claude}/files-buddy/{YYYY-MM-DD}-dashboard.html` unless `--output` is provided
-5. Opens in default browser. Includes a self-contained treemap, sortable tables, dark/light theme
-6. **Fallback:** Print summary tables in terminal if browser unavailable
-
-## Dry-Run Preview Protocol
-
-Every destructive mode produces a preview before execution:
-
-1. **Tool native dry-run:** `fclones group` (no `--delete`), `f2` (default), `organize sim`, `detox -n`, `ouch compress --dry-run`
-2. **Preview table:** Source, destination, operation type, size
-3. **Blast radius summary:** Total files, total size, directories affected
-4. **Risk indicators:** `🔴` Critical, `🟠` High, `🟡` Medium, `🟢` Low
-5. **Confirmation gate:** Tier-appropriate friction (see Tiered Friction Model)
-
-## Execution Protocol
-
-Transaction-batched execution for all destructive modes:
-
-1. **Manifest** — atomic write (`.tmp` -> `os.rename()`) at `~/.files-buddy/manifests/{ts}-{uuid8}-{mode}.json` via `manifest-manager.py create`
-2. **Batches** — dirs (parallel) -> files (parallel non-overlapping, `pueue` for cloud) -> empty dir cleanup (sequential)
-3. **TOCTOU check** — if material drift >10% between preview and execution, halt and re-preview
-4. **State tracking** — runtime may track preview / in-progress state internally, but manifest rows are appended once per finalized operation: `completed` or `failed`
-5. **Trash** — local paths: gomi -> OS trash -> `.files-buddy-trash/`; cloud-tagged paths: `.files-buddy-trash/` only. NEVER `rm`
-6. **Metadata** — finalized file ops record: source, dest, type, timestamp, BLAKE3 hash (b3sum), size, st_mode, st_ino
-7. **Cloud batch** — `pueue` with `parallel 2` + delays to avoid API rate limiting
-8. **Failure** — roll back current batch, preserve prior completed batches, manifest status = `partial`
-9. **Report** — operations completed, manifest path, undo command
-10. **Notify** — desktop notification on completion if operation took >10s (`osascript` / `notify-send`)
+1. Source contract: React + shadcn/ui component patterns + Tailwind CSS v4 tokens + Recharts visualizations. Read `references/dashboard-app.md`.
+2. Packaged fallback: `templates/dashboard.html` must stay self-contained and must not require a CDN or network.
+3. Required panels: run status hero, savings funnel, reclaimable-by-category chart, risk matrix, treemap, duplicate clusters, recommendation cards, cache impact, cloud offload board, progress timeline, manifest explorer.
+4. Accessibility: semantic headings, keyboard-friendly tables, chart text fallbacks, high contrast, reduced-motion compatibility.
+5. Data compatibility: support legacy keys (`files`, `duplicates`, `directories`, `operations`, `cloud`, `summary`) and v1.1 keys from `progress-reporting.md`.
 
 ## Scaling Strategy
 
 | Scope | Strategy |
 |-------|----------|
-| <100 files | Direct operation, full preview |
-| 100-1,000 files | Batched preview (summary + sample), pueue for parallelism |
-| 1,000-10,000 files | Sampling preview (10%), batched execution, progress tracking |
-| 10,000+ files | Sampling preview (1%), pueue queued batches, parallel subagents |
-
-Cloud directories: halve the parallelism, double the batch delays.
+| <100 files | Full preview and direct read-only report |
+| 100-1,000 files | Full inventory, grouped recommendations, simple progress |
+| 1,000-10,000 files | Checkpoints, sampled preview, top-N memory caps, pueue batches |
+| 10,000+ files | Per-volume phases, size-first pruning, partial-hash then full-hash, resumable progress snapshots |
+| Cloud roots | Half local parallelism, avoid placeholder materialization unless approved, verify sync state |
 
 ## Reference Files
 
@@ -284,44 +167,63 @@ Load ONE reference at a time. Do not preload all references into context.
 
 | File | Content | Read When |
 |------|---------|-----------|
-| `references/tool-integrations.md` | CLI interfaces for 20+ tools: fd, fclones, rmlint, f2, dust, erdtree, gomi, ouch, zstd, b3sum, detox, convmv, rclone, pueue, bat, watchexec, organize-tool, czkawka_cli. Install commands per platform. Output parsing. | Pre-flight tool detection |
-| `references/cloud-drives.md` | Detection paths (macOS CloudStorage, iCloud Mobile Documents), brctl/fileproviderctl, evicted file handling, rclone backends, Google Drive dedupe, conflict copies, rate limiting | Pre-flight cloud detection |
-| `references/organization-strategies.md` | organize-tool YAML templates, extension-to-category mapping, date grouping, project detection, collision handling | Organize mode, watch mode |
-| `references/protected-paths.md` | Hard-blocked paths (macOS + Linux), escalated paths, validation algorithm, `.git/` exclusion | Pre-flight checks |
-| `references/duplicate-detection.md` | fclones JSON parsing, rmlint lint types, rclone dedupe modes, hardlink detection, zero-byte exclusion, NFC/NFD gotchas | Clean mode |
-| `references/rename-patterns.md` | f2 patterns (regex, EXIF `{xt.make}`, ID3 `{id3.artist}`, hash `{hash.blake3}`), CSV batch, conflicts, f2 undo | Rename mode |
-| `references/safety-workflow.md` | Manifest schema, atomic writes, trash hierarchy, TOCTOU drift, cloud safety rules, permission restoration, corruption recovery | Undo mode, execution protocol |
+| `references/macos-storage-map.md` | Whole-Mac storage surfaces, dev/AI caches, app-managed stores, backups, scan commands, action class, repercussions | `storage-audit all-local`, `cache-audit` |
+| `references/dependency-impact.md` | Dependency evidence, repercussions, regeneration cost, restore path, confidence, do-not-proceed checks | `cleanup-plan`, `archive`, `execute` |
+| `references/offload-recommendations.md` | iCloud, Google Drive Stream/Mirror, rclone offload scoring and verification | `offload-plan` |
+| `references/scan-performance.md` | Large-scan phases, pruning, NUL-safe paths, checkpoints, concurrency, cloud limits | Any large scan |
+| `references/progress-reporting.md` | `progress.json` schema, phase events, savings model, live refresh contract | `progress`, `dashboard`, long execution |
+| `references/dashboard-app.md` | shadcn/ui + Tailwind v4 + Recharts dashboard architecture and component contract | `dashboard` |
+| `references/tool-integrations.md` | Free/OSS CLI matrix, install commands, dry-run flags, output parsing | Pre-flight tools |
+| `references/cloud-drives.md` | macOS cloud roots, iCloud/File Provider commands, Google Drive/rclone gotchas | Cloud detection and offload |
+| `references/organization-strategies.md` | organize-tool YAML templates, project detection, collision handling | Organize/watch |
+| `references/protected-paths.md` | Hard-blocked and escalated paths, validation algorithm, `.git/` exclusion | Pre-flight safety |
+| `references/duplicate-detection.md` | fclones/rmlint/czkawka/rclone/dupeGuru/imagededup policies, keeper rules, media review | Deduplication |
+| `references/rename-patterns.md` | f2 patterns, EXIF/ID3/hash variables, CSV batch, conflicts, undo | Rename |
+| `references/safety-workflow.md` | Manifest schema, atomic writes, trash hierarchy, TOCTOU, undo, cloud safety | Execution and undo |
 
 | Script | When to Run |
 |--------|-------------|
-| `scripts/manifest-manager.py` | Create, list, search, validate, and close manifests — all destructive modes |
-| `scripts/dashboard-renderer.py` | Inject JSON data into HTML template, open browser — dashboard mode |
+| `scripts/manifest-manager.py` | Create, list, search, validate, append, close, and undo manifests |
+| `scripts/dashboard-renderer.py` | Inject report/progress JSON into dashboard template and optionally open browser |
 
 | Template | When to Render |
 |----------|----------------|
-| `templates/dashboard.html` | After audit analysis — inject data JSON into `<script id="data">` tag |
+| `templates/dashboard.html` | Self-contained dashboard artifact for report and progress visualization |
+
+## Validation Contract
+
+Before declaring this skill complete after edits, run:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python -m py_compile skills/files-buddy/scripts/*.py
+uv run python path/to/audit.py skills/files-buddy/
+uv run wagents package files-buddy --dry-run
+uv run python skills/files-buddy/scripts/dashboard-renderer.py --data <sample.json> --output <tmp.html>
+```
+
+Completion criteria: validations pass, dashboard smoke writes HTML, invalid JSON returns JSON error, audit grade is A or remaining gaps are explicitly reported.
 
 ## Critical Rules
 
-1. Never delete without confirmation — tier determines friction level
-2. Never use `rm` — local paths go to gomi / OS trash or `.files-buddy-trash/` fallback; cloud-tagged paths stage only to `.files-buddy-trash/`
-3. Never operate outside scope-pinned directory
-4. Never modify hard-blocked paths
-5. Never follow symlinks outside operation boundary
-6. Always create manifest (atomic write) before first operation
-7. Always show blast radius before destructive operations
-8. Respect `.gitignore` — never move tracked files without confirmation
-9. Audit and find modes are strictly read-only; dashboard only writes a local report file
-10. Prefer CLI tool delegation over reimplementation
-11. Exclude dotfiles by default; `.git/` always excluded
-12. Warn about restricted-permission files
-13. Undo must verify BLAKE3 hashes for completed file ops — abort on mismatch or missing hash metadata
-14. Load ONE reference at a time — do not preload all references
-15. Operation whitelist: move, rename, copy, trash, mkdir
-16. TOCTOU: re-validate filesystem state before each batch
-17. Record st_mode and st_ino in manifest metadata
-18. Validate manifest paths on undo — reject paths outside `~/.files-buddy/manifests/`
-19. Check tool availability at mode start — fall back to Python, report install command
-20. NEVER auto-delete cloud-synced files — deletion syncs to all devices
-21. Materialize evicted files before size or hash analysis
-22. Rate-limit cloud batch ops — use pueue with throttled parallelism
+1. Never delete, trash, prune, evict, move, archive, rename, or dedupe without explicit approval of a specific dry-run plan.
+2. Never use `rm` or pipe finder output into deletion commands.
+3. Never operate outside the approved scope pin.
+4. Never modify hard-blocked paths.
+5. Never follow symlinks outside scope.
+6. Always show blast radius and repercussions before destructive operations.
+7. Always create a manifest before the first approved operation.
+8. Always record progress snapshots for long-running scans/executions.
+9. Always separate exact duplicates from similar-media groups.
+10. Always treat cloud synced deletion as Critical because it can sync loss to every device.
+11. Always materialize cloud placeholders only after explaining local-space impact and receiving approval.
+12. Always label Photos/Music/TV/Mail/Messages/Time Machine/VM snapshot recommendations as app-native or report-only unless explicitly approved.
+13. Always include restore path and regeneration cost for cache cleanup recommendations.
+14. Always verify BLAKE3 hashes, size, `st_mode`, and `st_ino` for finalized file operations when possible.
+15. Always validate manifests stay under `~/.files-buddy/manifests/`.
+16. Always preserve `.git/` and warn before touching tracked files.
+17. Always load only the reference needed for the active mode.
+18. Always report missing tools with free/OSS install commands and safe fallbacks.
+19. Always use bounded-memory, checkpointed scans for huge trees.
+20. Always run the validation contract before claiming the skill is complete.

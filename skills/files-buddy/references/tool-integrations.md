@@ -18,6 +18,8 @@ go install github.com/ayoisaiah/f2/v2/cmd/f2@latest
 cargo install czkawka_cli
 ```
 
+Optional free/OSS helpers: dupeGuru (GUI duplicate review), Video Duplicate Finder (similar videos), `imagededup` (Python image similarity), `jdupes`, `rdfind`, `duff`, Docker/Colima/OrbStack CLIs, `tmutil`, Xcode `xcrun`, `brctl`, and `fileproviderctl`.
+
 ## Tool Reference
 
 ### File Finding
@@ -34,9 +36,12 @@ fd output is one path per line. Use `fd --format '{}'` for custom templates or `
 |------|---------|-------------|---------|---------------|
 | **fclones** | Fast duplicate finder | `fclones group <path>`, `fclones remove`, `fclones link`, `fclones dedupe` | `fclones remove --dry-run < dups.txt` | `--format json` |
 | **rmlint** | Lint + dedup | `rmlint <path>`, `rmlint -T duplicates,emptyfiles,emptydirs` | Generates `rmlint.sh` (review before running) | `-o json:<file>` |
-| **czkawka_cli** | Multi-mode cleaner | `czkawka_cli dup -d /path -s hash` | `--delete-method none` (report only) | stdout table |
+| **czkawka_cli** | Multi-mode cleaner and media similarity | `czkawka_cli dup -d /path`, `czkawka_cli image -d /path`, `czkawka_cli video -d /path`, `czkawka_cli music -d /path` | Report mode only; no delete method unless approved | stdout / JSON flags where supported |
+| **dupeGuru** | GUI duplicate and fuzzy media review | Launch/import paths, export results | Review-only GUI | App export |
+| **Video Duplicate Finder** | Specialist similar-video review | GUI/project report | Review-only | App export |
+| **imagededup** | Python image near-duplicate clustering | library/scripted reports | Read-only report | JSON/custom |
 
-**czkawka_cli modes:** `dup`, `empty-folders`, `empty-files`, `big`, `temp`, `music`, `symlinks`, `similar_images`, `broken_files`
+**czkawka_cli modes:** `dup`, `empty-folders`, `empty-files`, `big`, `temp`, `image`, `video`, `music`, `symlinks`, `broken`, `ext`. Use delete options only after explicit approved plan.
 
 **rmlint lint types for `-T`:** `duplicates`, `emptyfiles`, `emptydirs`, `nonstripped`, `badids`, `badlinks`
 
@@ -75,6 +80,17 @@ Conflict resolution: `--fix-conflicts-pattern` auto-appends `(1)`, `(2)`, etc.
 | **dust** | Disk usage treemap | `dust`, `dust -F` (files only), `dust -t` (by type) | `-j` for JSON |
 | **erdtree** | Directory tree + sizes | `erd -l -s rsize` (long, sort by real size) | `--layout flat` or pipe to JSON |
 
+### macOS Storage and Cache Inventory
+
+| Tool | Purpose | Safe Command | Mutating Command Requires Approval |
+|------|---------|--------------|------------------------------------|
+| **tmutil** | Time Machine local snapshots | `tmutil listlocalsnapshots /` | Snapshot deletion |
+| **docker** | Container/images/cache usage | `docker system df -v` | `docker system prune` / volume prune |
+| **xcrun simctl** | Xcode simulator inventory | `xcrun simctl list devices`, `xcrun simctl list runtimes` | deleting unavailable simulators |
+| **brctl** | iCloud status/materialize/evict | `brctl status`, `brctl quota` | `download`, `evict` |
+| **fileproviderctl** | File Provider materialize/evict | provider status/list where available | `materialize`, `evict` |
+| **lsof** | Process references | `lsof +D <path>` on small scopes | N/A |
+
 ### Safe Delete
 
 | Tool | Purpose | Key Commands | Restore |
@@ -111,7 +127,16 @@ BLAKE3 is faster than SHA-256 on multi-core systems. Use `--num-threads 0` for m
 |------|---------|-------------|---------------|
 | **rclone** | Cloud storage Swiss army knife | `rclone lsjson remote:path`, `rclone dedupe remote:path`, `rclone size remote:path`, `rclone mount remote:path /mnt` | `lsjson` returns JSON array |
 
-Use `rclone --dry-run` on any mutating command. `rclone dedupe` supports `--dedupe-mode`: `interactive`, `skip`, `first`, `newest`, `oldest`, `largest`, `smallest`, `rename`.
+Use `rclone --dry-run` on any mutating command. `rclone dedupe` supports `--dedupe-mode`: `interactive`, `skip`, `first`, `newest`, `oldest`, `largest`, `smallest`, `rename`, `list`. Prefer `list` and `rename` before destructive modes.
+
+### Dashboard Build Source
+
+| Tool | Purpose | Command |
+|------|---------|---------|
+| **Node/pnpm** | Optional dashboard source build | `pnpm install && pnpm build` inside a future dashboard source dir |
+| **React** | Source component model | shadcn-style components documented in `dashboard-app.md` |
+| **Tailwind CSS v4** | CSS-first design tokens | `@import "tailwindcss"` + `@theme` |
+| **Recharts** | Source charts | Funnel, bar, pie, treemap, scatter; static template keeps accessible fallback |
 
 ### Batch Processing
 
