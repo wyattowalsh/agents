@@ -1,5 +1,7 @@
 """Tests for shared docs site data."""
 
+from pathlib import Path
+
 from wagents.catalog import CatalogNode
 from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
@@ -37,6 +39,24 @@ def test_site_data_derives_counts_from_catalog_nodes():
         "agents": 1,
         "mcpServers": 30,
     }
+
+
+def test_site_data_filters_generated_skill_inventory_artifacts(tmp_path):
+    skill_dir = tmp_path / "skills" / "demo"
+    scripts_dir = skill_dir / "scripts"
+    cache_dir = scripts_dir / "__pycache__"
+    scripts_dir.mkdir(parents=True)
+    cache_dir.mkdir()
+    (skill_dir / "SKILL.md").write_text("---\nname: demo\ndescription: Demo\n---\n\n# Demo\n")
+    (scripts_dir / "run.py").write_text("print('ok')\n")
+    (scripts_dir / ".DS_Store").write_text("")
+    (cache_dir / "run.cpython-313.pyc").write_bytes(b"cache")
+    node = CatalogNode("skill", "demo", "Demo", "Demo", {}, "", str(skill_dir / "SKILL.md"))
+
+    data = site_data([node])
+    scripts = data["skillIndex"][0]["knowledge"]["scripts"]
+
+    assert scripts == [str(Path("scripts") / "run.py")]
 
 
 def test_render_site_data_module_exports_runtime_constants():

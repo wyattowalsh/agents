@@ -11,6 +11,7 @@
 - For the curated third-party skill install set and trust-gated external sources, use `/Users/ww/dev/projects/agents/instructions/external-skills.md`.
 - Never sign or add self-attribution.
 - Use hooks for deterministic enforcement; reserve instructions for intent and heuristics that require judgment.
+- Use OpenSpec for non-trivial changes to repo workflows, public asset formats, downstream agent tooling, docs generation, or validation behavior. Prefer `uv run wagents openspec ... --format json` when AI tools need machine-readable OpenSpec state.
 - **Precedence**: explicit user instructions override all rules → Clarification Gate governs ambiguous decisions → platform bridge files override global.md on the same topic.
 
 ## Clarification Gate

@@ -38,6 +38,8 @@ def test_readme_contains_skills_table(tmp_repo):
     assert "normalized harness inventory" in readme_text
     assert "wagents skills sync --dry-run" in readme_text
     assert "wagents skills search <query>" in readme_text
+    assert "wagents openspec doctor" in readme_text
+    assert "wagents openspec validate" in readme_text
     assert "https://github.com/anomalyco/opencode" in readme_text
 
 

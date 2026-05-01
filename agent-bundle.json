@@ -13,7 +13,8 @@
     "skills": "./skills/",
     "agents": "./agents/",
     "mcpServers": "./mcp.json",
-    "instructions": "./instructions/"
+    "instructions": "./instructions/",
+    "openspec": "./openspec/"
   },
   "adapters": {
     "claude-code": {
@@ -42,6 +43,25 @@
         "github-copilot",
         "opencode"
       ]
+    },
+    "openspec": {
+      "package": "@fission-ai/openspec@latest",
+      "minimumNode": "20.19.0",
+      "doctor": "uv run wagents openspec doctor",
+      "validate": "uv run wagents openspec validate",
+      "init": "uv run wagents openspec init --apply",
+      "update": "uv run wagents openspec update --apply",
+      "telemetry": "Wrapper commands set OPENSPEC_TELEMETRY=0 unless the user opts in.",
+      "toolMapping": {
+        "antigravity": "antigravity",
+        "claude-code": "claude",
+        "codex": "codex",
+        "crush": "crush",
+        "cursor": "cursor",
+        "gemini-cli": "gemini",
+        "github-copilot": "github-copilot",
+        "opencode": "opencode"
+      }
     }
   }
 }

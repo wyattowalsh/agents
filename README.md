@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-48-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-49-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -22,6 +22,12 @@ Install all skills globally into your favorite agents:
 npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
+For non-trivial repository changes, check the OpenSpec workflow state:
+
+```bash
+uv run wagents openspec doctor
+```
+
 ## 📦 Distribution
 
 This repo is packaged as one cross-agent bundle with native plugin adapters and a skills CLI fallback:
@@ -30,7 +36,9 @@ This repo is packaged as one cross-agent bundle with native plugin adapters and 
 | ------ | ---- | --------------- |
 | Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | Git-hosted plugin updates resolve from the latest commit because the plugin version is intentionally unpinned |
 | Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | Codex can load the Git-backed plugin bundle and bundled skills from the repository root |
+| OpenCode | `opencode.json` | Repo-managed npm plugin specs use `@latest`; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |
 | Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` refreshes recorded sources, and `wagents skills sync` additively reconciles repo + curated external skills across harnesses |
+| OpenSpec | `openspec/` + `uv run wagents openspec ...` | Spec/change workflow with JSON wrappers and local downstream AI tool artifact generation |
 
 ## ✨ Why use this repository?
 
@@ -63,7 +71,7 @@ Reusable actions and knowledge bases for AI agents.
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | frontend-designer | Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI. NOT for backend, tests, state, routing, or DevOps. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
-| harness-master | Audit harness configs and apply fixes. Use when tuning Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Copilot, or OpenCode. NOT for agents (agent-conventions) or MCP servers (mcp-creator). |
+| harness-master | Audit harness configs and apply fixes. Use when tuning Claude Code, Claude Desktop, ChatGPT, Codex, GitHub Copilot Web/CLI, Cursor, Gemini CLI, Antigravity, OpenCode, Perplexity Desktop, or Cherry Studio. NOT for agents (agent-conventions) or MCP servers (mcp-creator). |
 | honest-review | Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality. NOT for feature work or benchmarking. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
 | i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |
@@ -75,6 +83,7 @@ Reusable actions and knowledge bases for AI agents.
 | namer | Name anything: projects, products, companies, packages. Generates creative names across linguistic archetypes, checks handle/username availability across platforms, checks domain availability with pricing, and ranks options with scored rationales. Use when naming projects, products, startups, packages, or brands. NOT for domain management (infrastructure-coder) or branding strategy beyond naming (host-panel). |
 | nerdbot | Create, repair, query, audit, and migrate Obsidian-native knowledge bases with layered raw/wiki structure, provenance, indexes, logs, and safe vault overhauls. Use for git-friendly KBs and persistent llm-wiki-style vaults. NOT for docs sites or generic notes. |
 | observability-advisor | Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup. |
+| openspec-workflow | Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills. |
 | orchestrator | Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks. |
 | performance-profiler | Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance. NOT for running profilers, load tests, or monitoring. |
 | prompt-engineer | Prompt engineering. Craft, analyze, harden, convert, design tool prompts, and build PromptOps/eval plans. Use for system, agent, tool, RAG prompts. NOT for running prompts or building agents. |
@@ -117,6 +126,8 @@ System prompts and context definitions for AI agents.
 | `wagents new mcp <name>` | Create a new MCP server |
 | `wagents doctor` | Check local environment and toolchain health |
 | `wagents validate` | Validate all skills and agents |
+| `wagents openspec doctor` | Diagnose OpenSpec tooling, project state, and downstream tool mapping |
+| `wagents openspec validate` | Validate OpenSpec specs and changes with JSON-backed output |
 | `wagents skills sync --dry-run` | Preview additive cross-harness skill sync from the normalized inventory |
 | `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |
 | `wagents skills context <query>` | Build a compact context packet for matching skills |

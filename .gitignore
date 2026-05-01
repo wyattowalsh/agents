@@ -31,6 +31,20 @@ docs/src/generated-sidebar.mjs
 !.agents/plugins/marketplace.json
 skills-lock.json
 
+# Generated OpenSpec downstream tool artifacts (materialize locally with wagents openspec init/update)
+.agent/
+.claude/commands/
+.codex/
+.crush/
+.cursor/commands/
+.cursor/skills/
+.gemini/commands/
+.gemini/skills/
+.github/prompts/
+.github/skills/
+.opencode/commands/
+.opencode/skills/
+
 # Prospector webapp frontend build artifacts
 skills/prospector/webapp/frontend/node_modules/
 skills/prospector/webapp/frontend/dist/

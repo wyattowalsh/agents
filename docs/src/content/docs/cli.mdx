@@ -54,6 +54,7 @@ Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wa
 | `wagents validate` | Check frontmatter, naming, hooks, and related-skill integrity |
 | `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |
 | `wagents readme` | Regenerate `README.md` or fail if it is stale |
+| `wagents openspec <subcommand>` | Inspect, validate, and materialize OpenSpec workflows for downstream AI tools |
 | `wagents install` | Install repo skills into supported agent platforms |
 | `wagents update` | Refresh installed skills from their recorded sources |
 | `wagents skills <subcommand>` | Inventory, sync, search, read, and diagnose local skills on demand |
@@ -136,6 +137,36 @@ wagents new mcp my-server --no-docs
 
 <Aside type="note" title="Naming rules">
 All asset names must be kebab-case (`^[a-z0-9][a-z0-9-]*$`) and at most 64 characters. The name must match the directory name (for skills and MCP servers) or filename (for agents).
+</Aside>
+
+---
+
+### `wagents openspec` -- Spec Workflow Control
+
+Wrap OpenSpec CLI commands with repo defaults, downstream tool mappings, and `OPENSPEC_TELEMETRY=0` for automation. Use these wrappers when AI agents need JSON status or instructions.
+
+```bash
+wagents openspec doctor
+wagents openspec init --apply
+wagents openspec status --change add-feature --format json
+wagents openspec instructions design --change add-feature --format json
+wagents openspec validate
+```
+
+**Subcommands:**
+
+| Command | Purpose |
+|---------|---------|
+| `doctor` | Check Node, npx, OpenSpec project files, generated artifacts, and tool mapping |
+| `init` | Print or run `openspec init` for repo-supported downstream tools |
+| `update` | Print or run `openspec update` after CLI/profile changes |
+| `validate` | Run `openspec validate --all --strict --json` |
+| `status` | Return artifact state for one change as JSON-compatible output |
+| `instructions` | Return artifact or apply instructions as JSON-compatible output |
+| `schemas` | List available OpenSpec schemas |
+
+<Aside type="note" title="Generated OpenSpec artifacts">
+OpenSpec-generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, and `.gemini` artifacts are local/generated unless a specific file is promoted to repo-owned source.
 </Aside>
 
 ---

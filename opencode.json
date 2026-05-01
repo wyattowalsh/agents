@@ -10,7 +10,6 @@
     ]
   },
   "plugin": [
-    "opencode-shell-strategy@latest",
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net@latest",
@@ -27,8 +26,8 @@
     "opencode-notify@latest",
     "opencode-devcontainers@latest",
     "@ramarivera/opencode-model-announcer@latest",
-    "@mailshieldai/opencode-canvas@^0.1.2",
-    "@slkiser/opencode-quota@^3.3.0"
+    "@mailshieldai/opencode-canvas@latest",
+    "@slkiser/opencode-quota@latest"
   ],
   "permission": {
     "canvas_*": "allow"

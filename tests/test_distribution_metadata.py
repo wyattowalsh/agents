@@ -3,6 +3,8 @@
 import json
 from pathlib import Path
 
+from wagents.openspec import OPENSPEC_PACKAGE, OPENSPEC_TOOL_BY_AGENT, format_min_node_version
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -18,8 +20,12 @@ def test_agent_bundle_points_to_canonical_sources():
     assert bundle["source"]["repository"] == "wyattowalsh/agents"
     assert bundle["source"]["skillsSource"] == "github:wyattowalsh/agents"
     assert bundle["components"]["skills"] == "./skills/"
+    assert bundle["components"]["openspec"] == "./openspec/"
     assert bundle["adapters"]["claude-code"]["pluginManifest"] == "./.claude-plugin/plugin.json"
     assert bundle["adapters"]["codex"]["pluginManifest"] == "./.codex-plugin/plugin.json"
+    assert bundle["adapters"]["openspec"]["package"] == OPENSPEC_PACKAGE
+    assert bundle["adapters"]["openspec"]["minimumNode"] == format_min_node_version()
+    assert bundle["adapters"]["openspec"]["toolMapping"] == OPENSPEC_TOOL_BY_AGENT
 
 
 def test_claude_plugin_manifest_uses_repo_root_components():
@@ -64,3 +70,10 @@ def test_codex_plugin_manifest_and_marketplace_are_git_backed():
         "ref": "main",
     }
     assert plugin["policy"]["installation"] == "AVAILABLE"
+
+
+def test_opencode_project_plugins_use_latest_dist_tag():
+    config = load_json("opencode.json")
+
+    for plugin_spec in config["plugin"]:
+        assert plugin_spec.endswith("@latest"), f"{plugin_spec} must use @latest"

@@ -17,6 +17,14 @@ from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import RELATED_SKILLS, CatalogNode
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 from wagents.installed_inventory import InstalledSkillInventoryRow, collect_installed_inventory
+from wagents.openspec import (
+    OPENSPEC_PACKAGE,
+    OPENSPEC_TOOL_BY_AGENT,
+    build_doctor_report,
+    build_openspec_argv,
+    run_openspec,
+    select_openspec_tools,
+)
 from wagents.parsing import parse_frontmatter, to_title
 from wagents.rendering import scaffold_doc_page
 from wagents.site_model import (
@@ -39,6 +47,8 @@ eval_app = typer.Typer(help="Manage and validate skill evals")
 app.add_typer(eval_app, name="eval")
 skills_app = typer.Typer(help="Index and search local skills")
 app.add_typer(skills_app, name="skills")
+openspec_app = typer.Typer(help="Manage OpenSpec workflows and downstream AI tool setup")
+app.add_typer(openspec_app, name="openspec")
 
 OUTPUT_FORMATS = ("text", "json", "jsonl")
 SKILL_SOURCES = (
@@ -1597,6 +1607,226 @@ def skills_sync(
                 raise typer.Exit(code=result.returncode)
 
 
+def _emit_openspec_command_result(result, format_: str, *, success_message: str) -> None:
+    """Emit an OpenSpec subprocess result and preserve its exit status."""
+    try:
+        parsed_stdout = result.json_stdout()
+    except json.JSONDecodeError:
+        parsed_stdout = None
+
+    payload: dict[str, object] = {
+        "argv": result.argv,
+        "returncode": result.returncode,
+        "stdout": parsed_stdout if parsed_stdout is not None else result.stdout.strip(),
+        "stderr": result.stderr.strip(),
+    }
+    text_lines = [success_message, f"command: {shlex.join(result.argv)}", f"exit: {result.returncode}"]
+    if result.stdout.strip():
+        text_lines.extend(["stdout:", result.stdout.strip()])
+    if result.stderr.strip():
+        text_lines.extend(["stderr:", result.stderr.strip()])
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=payload,
+        jsonl_records=[{"type": "openspec-result", **payload}],
+    )
+    if result.returncode != 0:
+        raise typer.Exit(code=result.returncode)
+
+
+def _emit_openspec_dry_run(argv: list[str], format_: str) -> None:
+    """Print an OpenSpec command without executing it."""
+    command = shlex.join(argv)
+    _emit_structured_output(
+        format_,
+        text_lines=[command],
+        json_data={"argv": argv, "command": command},
+        jsonl_records=[{"type": "openspec-command", "argv": argv, "command": command}],
+    )
+
+
+@openspec_app.command("doctor")
+def openspec_doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+    check_cli: bool = typer.Option(False, "--check-cli", help="Run `openspec --version` through npx"),
+    validate: bool = typer.Option(False, "--validate", help="Run `openspec validate --all --json`"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+):
+    """Diagnose OpenSpec tooling, project state, and downstream tool mapping."""
+    report = build_doctor_report(root=ROOT, package=package, check_cli=check_cli, validate=validate)
+    node = cast(dict[str, object], report["node"])
+    npx = cast(dict[str, object], report["npx"])
+    project = cast(dict[str, object], report["project"])
+    text_lines = [
+        f"OpenSpec package: {report['package']}",
+        f"Node: {node.get('version') or 'missing'} supported={node.get('supported')}",
+        f"npx: {npx.get('version') or 'missing'}",
+        f"config: {project['configExists']} {project['config']}",
+        f"specs: {project['specsExists']}",
+        f"changes: {project['changesExists']}",
+        f"schemas: {project['schemasExists']}",
+        "tool mapping:",
+    ]
+    text_lines.extend(f"  {agent} -> {tool}" for agent, tool in sorted(OPENSPEC_TOOL_BY_AGENT.items()))
+    generated = cast(list[str], report.get("generatedArtifacts") or [])
+    if generated:
+        text_lines.append("generated artifacts present:")
+        text_lines.extend(f"  {path}" for path in generated)
+    checks = cast(list[dict[str, object]], report.get("checks") or [])
+    for check in checks:
+        text_lines.append(f"check {check.get('name')}: exit={check.get('returncode')}")
+    _emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=report,
+        jsonl_records=[{"type": "openspec-doctor", **report}],
+    )
+
+
+@openspec_app.command("init")
+def openspec_init(
+    path: Annotated[Path | None, typer.Option("--path", help="Target directory, defaults to repo root")] = None,
+    agent: Annotated[list[str] | None, typer.Option("-a", "--agent", help="Repo agent ID to configure")] = None,
+    tool: Annotated[list[str] | None, typer.Option("--tool", help="Raw OpenSpec tool ID to configure")] = None,
+    all_tools: bool = typer.Option(False, "--all-tools", help="Pass `--tools all` to OpenSpec"),
+    profile: str = typer.Option("core", "--profile", help="OpenSpec profile: core or custom"),
+    force: bool = typer.Option(False, "--force", help="Pass `--force` to OpenSpec"),
+    dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Print or execute the command"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Initialize OpenSpec and selected downstream AI tool artifacts."""
+    args = ["init"]
+    if path is not None:
+        args.append(str(path))
+    if all_tools:
+        tools_arg = "all"
+    else:
+        default_agents = tuple(OPENSPEC_TOOL_BY_AGENT) if agent is None and tool is None else agent
+        try:
+            selected = select_openspec_tools(agents=default_agents, tools=tool)
+        except ValueError as exc:
+            typer.echo(str(exc), err=True)
+            raise typer.Exit(code=1) from exc
+        tools_arg = ",".join(selected) if selected else "none"
+    args.extend(["--tools", tools_arg, "--profile", profile])
+    if force:
+        args.append("--force")
+    argv = build_openspec_argv(args, package=package)
+    if dry_run:
+        _emit_openspec_dry_run(argv, format_)
+        return
+    result = run_openspec(args, cwd=ROOT, package=package, capture=False)
+    raise typer.Exit(code=result.returncode)
+
+
+@openspec_app.command("update")
+def openspec_update(
+    path: Annotated[Path | None, typer.Option("--path", help="Target directory, defaults to repo root")] = None,
+    force: bool = typer.Option(False, "--force", help="Pass `--force` to OpenSpec"),
+    dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Print or execute the command"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Refresh generated OpenSpec AI tool artifacts after CLI/profile changes."""
+    args = ["update"]
+    if path is not None:
+        args.append(str(path))
+    if force:
+        args.append("--force")
+    argv = build_openspec_argv(args, package=package)
+    if dry_run:
+        _emit_openspec_dry_run(argv, format_)
+        return
+    result = run_openspec(args, cwd=ROOT, package=package, capture=False)
+    raise typer.Exit(code=result.returncode)
+
+
+@openspec_app.command("validate")
+def openspec_validate(
+    strict: bool = typer.Option(True, "--strict/--no-strict", help="Run strict OpenSpec validation"),
+    concurrency: int | None = typer.Option(None, "--concurrency", min=1, help="Validation concurrency"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Validate all OpenSpec changes and specs with JSON output."""
+    args = ["validate", "--all", "--json"]
+    if strict:
+        args.append("--strict")
+    if concurrency is not None:
+        args.extend(["--concurrency", str(concurrency)])
+    result = run_openspec(args, cwd=ROOT, package=package)
+    _emit_openspec_command_result(result, format_, success_message="OpenSpec validation")
+
+
+@openspec_app.command("status")
+def openspec_status(
+    change: str = typer.Option(..., "--change", help="OpenSpec change name"),
+    schema: str | None = typer.Option(None, "--schema", help="Schema override"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Return JSON artifact status for one OpenSpec change."""
+    args = ["status", "--change", change, "--json"]
+    if schema:
+        args.extend(["--schema", schema])
+    result = run_openspec(args, cwd=ROOT, package=package)
+    _emit_openspec_command_result(result, format_, success_message=f"OpenSpec status for {change}")
+
+
+@openspec_app.command("instructions")
+def openspec_instructions(
+    artifact: str = typer.Argument("apply", help="Artifact ID, or `apply` for implementation instructions"),
+    change: str = typer.Option(..., "--change", help="OpenSpec change name"),
+    schema: str | None = typer.Option(None, "--schema", help="Schema override"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Return JSON OpenSpec instructions for an artifact or apply step."""
+    args = ["instructions", artifact, "--change", change, "--json"]
+    if schema:
+        args.extend(["--schema", schema])
+    result = run_openspec(args, cwd=ROOT, package=package)
+    _emit_openspec_command_result(result, format_, success_message=f"OpenSpec instructions for {artifact}")
+
+
+@openspec_app.command("schemas")
+def openspec_schemas(
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """List OpenSpec schemas in JSON-compatible form."""
+    result = run_openspec(["schemas", "--json"], cwd=ROOT, package=package)
+    _emit_openspec_command_result(result, format_, success_message="OpenSpec schemas")
+
+
+@openspec_app.command("archive")
+def openspec_archive(
+    change: str = typer.Argument(..., help="OpenSpec change name to archive"),
+    yes: bool = typer.Option(False, "--yes", "-y", help="Skip OpenSpec confirmation prompts"),
+    skip_specs: bool = typer.Option(False, "--skip-specs", help="Skip spec update operations"),
+    validate: bool = typer.Option(True, "--validate/--no-validate", help="Run OpenSpec validation before archive"),
+    dry_run: bool = typer.Option(True, "--dry-run/--apply", help="Print or execute the command"),
+    package: str = typer.Option(OPENSPEC_PACKAGE, "--package", help="OpenSpec npm package spec"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Archive a completed OpenSpec change after validation."""
+    args = ["archive", change]
+    if yes:
+        args.append("--yes")
+    if skip_specs:
+        args.append("--skip-specs")
+    if not validate:
+        args.append("--no-validate")
+    argv = build_openspec_argv(args, package=package)
+    if dry_run:
+        _emit_openspec_dry_run(argv, format_)
+        return
+    result = run_openspec(args, cwd=ROOT, package=package, capture=False)
+    raise typer.Exit(code=result.returncode)
+
+
 @app.command()
 def package(
     name: str = typer.Argument("", help="Skill name (omit for --all)"),
@@ -1731,6 +1961,12 @@ def readme(
         build_install_command(all_skills=True),
         "```",
         "",
+        "For non-trivial repository changes, check the OpenSpec workflow state:",
+        "",
+        "```bash",
+        "uv run wagents openspec doctor",
+        "```",
+        "",
         "## 📦 Distribution",
         "",
         (
@@ -1755,9 +1991,17 @@ def readme(
             "Codex can load the Git-backed plugin bundle and bundled skills from the repository root |"
         ),
         (
+            "| OpenCode | `opencode.json` | Repo-managed npm plugin specs use `@latest`; "
+            "restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |"
+        ),
+        (
             "| Other agents | `npx skills add github:wyattowalsh/agents ...` | "
             "`wagents update` refreshes recorded sources, and `wagents skills sync` "
             "additively reconciles repo + curated external skills across harnesses |"
+        ),
+        (
+            "| OpenSpec | `openspec/` + `uv run wagents openspec ...` | "
+            "Spec/change workflow with JSON wrappers and local downstream AI tool artifact generation |"
         ),
         "",
         "## ✨ Why use this repository?",
@@ -1829,6 +2073,8 @@ def readme(
             "| `wagents new mcp <name>` | Create a new MCP server |",
             "| `wagents doctor` | Check local environment and toolchain health |",
             "| `wagents validate` | Validate all skills and agents |",
+            "| `wagents openspec doctor` | Diagnose OpenSpec tooling, project state, and downstream tool mapping |",
+            "| `wagents openspec validate` | Validate OpenSpec specs and changes with JSON-backed output |",
             (
                 "| `wagents skills sync --dry-run` | Preview additive cross-harness "
                 "skill sync from the normalized inventory |"
