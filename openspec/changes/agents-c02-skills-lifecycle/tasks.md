@@ -1,8 +1,8 @@
 # Tasks
 
-- [ ] Inventory local skills and script-backed capabilities.
-- [ ] Classify skill execution risk.
-- [ ] Define CLI conformance requirements.
-- [ ] Define skill lockfile/provenance requirements.
-- [ ] Create external skill adoption rubric.
-- [ ] Add validation fixtures before any promotion.
+- [x] Define local skill and script-backed capability inventory model.
+- [x] Define skill execution risk classes.
+- [x] Define CLI conformance requirements.
+- [x] Define skill lockfile/provenance requirements.
+- [x] Create external skill adoption rubric.
+- [x] Define validation fixture requirements before any promotion.
