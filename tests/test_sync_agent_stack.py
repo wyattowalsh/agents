@@ -815,11 +815,11 @@ def test_repo_opencode_dcp_config_uses_proactive_thresholds():
 
     compress = payload["compress"]
     assert compress["mode"] == "range"
-    assert compress["maxContextLimit"] == "75%"
-    assert compress["minContextLimit"] == "45%"
+    assert compress["maxContextLimit"] == "70%"
+    assert compress["minContextLimit"] == "40%"
     assert compress["nudgeFrequency"] == 2
     assert compress["iterationNudgeThreshold"] == 8
-    assert compress["nudgeForce"] == "soft"
+    assert compress["nudgeForce"] == "strong"
     assert "modelMaxLimits" not in compress
     assert "modelMinLimits" not in compress
 
