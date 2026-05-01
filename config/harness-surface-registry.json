@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "support_tiers_ref": "config/support-tier-registry.json",
+  "source_notes": [
+    "Generated from planning/20-harness-registry/00-expanded-harness-surface-map.md and planning/20-harness-registry/01-harness-projection-contract.md.",
+    "This registry records planning/support posture only. It is not an install manifest.",
+    "Desktop, web/cloud, CLI, and editor variants are separate surfaces unless fixtures prove shared behavior."
+  ],
+  "harnesses": [
+    {
+      "id": "claude-code",
+      "label": "Claude Code",
+      "brand": "Claude",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-claude-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [".claude-plugin/", "CLAUDE.md", "skills/", "openspec/"],
+      "projection_surfaces": ["instructions", "skills", "agents", "mcp", "plugins", "hooks"],
+      "validation_requirements": ["plugin fixture", "skills fixture", "MCP fixture", "rollback fixture"]
+    },
+    {
+      "id": "claude-desktop",
+      "label": "Claude Desktop",
+      "brand": "Claude",
+      "surface_kind": "desktop-app",
+      "owner_change": "agents-c04-claude-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": ["config/sync-manifest.json:Claude Desktop global MCP config"],
+      "projection_surfaces": ["mcp"],
+      "validation_requirements": ["global config merge fixture", "secret redaction fixture", "rollback fixture"],
+      "caveats": ["No default skill projection claim until verified."]
+    },
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT",
+      "brand": "OpenAI",
+      "surface_kind": "desktop-or-web-app",
+      "owner_change": "agents-c04-openai-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": ["config/sync-manifest.json:ChatGPT MCP path"],
+      "projection_surfaces": ["mcp", "plugins"],
+      "validation_requirements": ["MCP connector docs ledger", "app/widget boundary fixture", "rollback fixture"],
+      "caveats": ["Do not treat ChatGPT app behavior as Codex plugin behavior.", "No default skill projection claim until verified."]
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "brand": "OpenAI",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-openai-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [".codex-plugin/", ".agents/plugins/", "config/codex-config.toml", "agent-bundle.json"],
+      "projection_surfaces": ["instructions", "skills", "mcp", "plugins", "hooks"],
+      "validation_requirements": ["plugin fixture", "config merge fixture", "skills fixture", "rollback fixture"]
+    },
+    {
+      "id": "github-copilot-web",
+      "label": "GitHub Copilot Web and Coding Agent",
+      "brand": "GitHub Copilot",
+      "surface_kind": "web-cloud-agent",
+      "owner_change": "agents-c04-copilot-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [".github/copilot-instructions.md", ".github/prompts/", ".github/instructions/"],
+      "projection_surfaces": ["instructions", "agents", "mcp"],
+      "validation_requirements": ["prompt fixture", "instruction fixture", "no fabricated installed-skill inventory fixture"],
+      "caveats": ["Installed skills must reflect actual discovery, not generated instruction files."]
+    },
+    {
+      "id": "github-copilot-cli",
+      "label": "GitHub Copilot CLI",
+      "brand": "GitHub Copilot",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-copilot-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": ["config/sync-manifest.json:Copilot global config", "platforms/copilot/agents"],
+      "projection_surfaces": ["instructions", "skills", "agents", "mcp", "hooks"],
+      "validation_requirements": ["CLI config fixture", "MCP fixture", "no fabricated installed-skill inventory fixture"]
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "brand": "OpenCode",
+      "surface_kind": "cli-tui",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": ["opencode.json", ".opencode/", ".opencode-plugin/", "config/opencode-dcp.jsonc", "instructions/opencode-global.md"],
+      "projection_surfaces": ["instructions", "skills", "agents", "mcp", "plugins", "hooks", "telemetry"],
+      "validation_requirements": ["model-neutral policy fixture", "plugin placement fixture", "DCP fixture", "credential guard fixture", "rollback fixture"]
+    },
+    {
+      "id": "gemini-cli",
+      "label": "Gemini CLI",
+      "brand": "Gemini",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": ["GEMINI.md", ".gemini/", "config/sync-manifest.json:Gemini global settings"],
+      "projection_surfaces": ["instructions", "skills", "mcp", "plugins"],
+      "validation_requirements": ["instruction fixture", "skills fixture", "MCP fixture", "OpenSpec wrapper fixture"]
+    },
+    {
+      "id": "antigravity",
+      "label": "Antigravity",
+      "brand": "Google Antigravity",
+      "surface_kind": "desktop-or-cli-agent",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [".antigravity/", "config/sync-manifest.json:Antigravity MCP paths"],
+      "projection_surfaces": ["instructions", "skills", "mcp"],
+      "validation_requirements": ["first-party docs ledger", "Gemini-compatibility caveat fixture", "MCP merge fixture"]
+    },
+    {
+      "id": "cursor-editor",
+      "label": "Cursor Editor",
+      "brand": "Cursor",
+      "surface_kind": "editor",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [".cursor/", "config/sync-manifest.json:Cursor MCP config"],
+      "projection_surfaces": ["instructions", "skills", "agents", "mcp", "plugins"],
+      "validation_requirements": ["rules fixture", "skills fixture", "MCP fixture", "rollback fixture"]
+    },
+    {
+      "id": "cursor-agent-web",
+      "label": "Cursor Agent Web",
+      "brand": "Cursor",
+      "surface_kind": "web-cloud-agent",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "planned-research-backed",
+      "repo_evidence": [],
+      "projection_surfaces": [],
+      "validation_requirements": ["first-party docs ledger", "cloud agent config fixture before claims"],
+      "caveats": ["Blind spot until verified; do not inherit Cursor Editor behavior by default."]
+    },
+    {
+      "id": "cursor-agent-cli",
+      "label": "Cursor Agent CLI",
+      "brand": "Cursor",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "planned-research-backed",
+      "repo_evidence": [],
+      "projection_surfaces": [],
+      "validation_requirements": ["first-party docs ledger", "CLI config fixture before claims"],
+      "caveats": ["Blind spot until verified; do not inherit Cursor Editor behavior by default."]
+    },
+    {
+      "id": "perplexity-desktop",
+      "label": "Perplexity Desktop",
+      "brand": "Perplexity",
+      "surface_kind": "desktop-app",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "support_tier": "experimental",
+      "repo_evidence": [".perplexity/"],
+      "projection_surfaces": [],
+      "validation_requirements": ["first-party docs ledger", "local config discovery", "rollback fixture before claims"],
+      "caveats": ["No default skill or MCP projection claim until verified."]
+    },
+    {
+      "id": "cherry-studio",
+      "label": "Cherry Studio",
+      "brand": "Cherry Studio",
+      "surface_kind": "desktop-app",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "support_tier": "experimental",
+      "repo_evidence": ["config/sync-manifest.json:CherryStudio config", "config/sync-manifest.json:CherryStudio MCP import path"],
+      "projection_surfaces": ["mcp"],
+      "validation_requirements": ["MCP import fixture", "global config merge fixture", "rollback fixture"],
+      "caveats": ["No default skill projection claim until verified."]
+    },
+    {
+      "id": "crush",
+      "label": "Crush",
+      "brand": "Crush",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": ["config/sync-manifest.json:Crush config", "agent-bundle.json:Skills CLI support"],
+      "projection_surfaces": ["instructions", "skills", "mcp"],
+      "validation_requirements": ["retain-vs-experimental decision", "config fixture", "skills fixture"]
+    }
+  ]
+}

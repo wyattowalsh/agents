@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HarnessFixtureSupport",
+  "type": "object",
+  "required": ["version", "harness_registry_ref", "support_tiers_ref", "records"],
+  "properties": {
+    "version": {"const": 1},
+    "harness_registry_ref": {"const": "config/harness-surface-registry.json"},
+    "support_tiers_ref": {"const": "config/support-tier-registry.json"},
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "harness_id",
+          "owner_change",
+          "current_support_tier",
+          "fixture_status",
+          "fixture_classes",
+          "validation_commands",
+          "rollback_coverage",
+          "promotion_blocker"
+        ],
+        "properties": {
+          "harness_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "owner_change": {"type": "string", "pattern": "^agents-c[0-9]{2}-.+"},
+          "current_support_tier": {
+            "enum": [
+              "validated",
+              "repo-present-validation-required",
+              "planned-research-backed",
+              "experimental",
+              "unverified",
+              "unsupported",
+              "quarantine"
+            ]
+          },
+          "fixture_status": {"enum": ["fixture-backed", "fixture-plan-only", "docs-ledger-required", "blocked"]},
+          "fixture_classes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "validation_commands": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "rollback_coverage": {"enum": ["present", "planned", "not-applicable", "blocked"]},
+          "promotion_blocker": {"type": "string"},
+          "notes": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

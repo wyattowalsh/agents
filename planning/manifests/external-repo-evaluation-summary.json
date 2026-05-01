@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "source_manifest": "agents-overhaul-planning/planning/manifests/external-repo-evaluation-final.json",
+  "source_count": 93,
+  "status": "discovery-only",
+  "promotion_boundary": "No external repository may be installed, vendored, or promoted without pinned source, license review, maintainer/activity review, security/provenance review, conformance fixtures, rollback plan, OpenSpec mapping, and docs/instruction sync plan.",
+  "coverage_docs": [
+    "planning/15-ecosystem-research/22-feature-domain-coverage.md",
+    "planning/15-ecosystem-research/23-external-repo-coverage-backlog.md"
+  ],
+  "priority_waves": {
+    "official_high_trust_skill_sources": [
+      "google/skills",
+      "microsoft/skills",
+      "supabase/agent-skills",
+      "cloudflare/skills",
+      "tech-leads-club/agent-skills"
+    ],
+    "repo_native_capability_gaps": [
+      "graph/context",
+      "session replay",
+      "telemetry",
+      "opencode adapters",
+      "skill lifecycle",
+      "design/artifact generation"
+    ],
+    "ui_control_plane_borrowing": [
+      "team dashboards",
+      "opencode UIs",
+      "tmux/session UIs",
+      "status bars",
+      "terminal UI frameworks"
+    ],
+    "quarantine_and_threat_modeling": [
+      "auth bridges",
+      "proxy/account-sharing",
+      "offensive security",
+      "credential or remote execution behavior"
+    ]
+  },
+  "repo_ids": [
+    "EXT-001", "EXT-002", "EXT-003", "EXT-004", "EXT-005", "EXT-006", "EXT-007", "EXT-008", "EXT-009", "EXT-010",
+    "EXT-011", "EXT-012", "EXT-013", "EXT-014", "EXT-015", "EXT-016", "EXT-017", "EXT-018", "EXT-019", "EXT-020",
+    "EXT-021", "EXT-022", "EXT-023", "EXT-024", "EXT-025", "EXT-026", "EXT-027", "EXT-028", "EXT-029", "EXT-030",
+    "EXT-031", "EXT-032", "EXT-033", "EXT-034", "EXT-035", "EXT-036", "EXT-037", "EXT-038", "EXT-039", "EXT-040",
+    "EXT-041", "EXT-042", "EXT-043", "EXT-044", "EXT-045", "EXT-046", "EXT-047", "EXT-048", "EXT-049", "EXT-050",
+    "EXT-051", "EXT-052", "EXT-053", "EXT-054", "EXT-055", "EXT-056", "EXT-057", "EXT-058", "EXT-059", "EXT-060",
+    "EXT-061", "EXT-062", "EXT-063", "EXT-064", "EXT-065", "EXT-066", "EXT-067", "EXT-068", "EXT-069", "EXT-070",
+    "EXT-071", "EXT-072", "EXT-073", "EXT-074", "EXT-075", "EXT-076", "EXT-077", "EXT-078", "EXT-079", "EXT-080",
+    "EXT-081", "EXT-082", "EXT-083", "EXT-084", "EXT-085", "EXT-086", "EXT-087", "EXT-088", "EXT-089", "EXT-090",
+    "EXT-091", "EXT-092", "EXT-093"
+  ]
+}

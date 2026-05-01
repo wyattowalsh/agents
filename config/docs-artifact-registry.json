@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source_registries": [
+    "config/support-tier-registry.json",
+    "config/harness-surface-registry.json",
+    "config/mcp-registry.json",
+    "config/hook-registry.json",
+    "config/sync-manifest.json",
+    "agent-bundle.json"
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents readme --check"
+    },
+    {
+      "path": "docs/src/generated-site-data.mjs",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate"
+    },
+    {
+      "path": "docs/src/generated-sidebar.mjs",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate"
+    },
+    {
+      "path": "docs/src/content/docs/skills/",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate"
+    }
+  ],
+  "docs_truth_rules": [
+    "Support matrices must distinguish desktop, web/cloud, CLI, editor, and experimental surfaces.",
+    "Generated docs must label blind spots and experimental support explicitly.",
+    "Install commands must be generated only from supported adapter records.",
+    "External repositories must not appear as promoted capabilities until intake gates pass."
+  ]
+}

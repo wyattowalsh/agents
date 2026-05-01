@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "harness_registry_ref": "config/harness-surface-registry.json",
+  "support_tiers_ref": "config/support-tier-registry.json",
+  "records": [
+    {
+      "harness_id": "claude-code",
+      "owner_change": "agents-c04-claude-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["plugin-fixture", "skills-fixture", "mcp-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run wagents validate", "uv run wagents package --dry-run"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires executable plugin, skills, MCP, and rollback fixtures before validated Claude Code support claims."
+    },
+    {
+      "harness_id": "claude-desktop",
+      "owner_change": "agents-c04-claude-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["global-config-merge-fixture", "secret-redaction-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires global MCP config merge, redaction, and rollback fixtures; no default skill projection claim is made."
+    },
+    {
+      "harness_id": "chatgpt",
+      "owner_change": "agents-c04-openai-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "docs-ledger-required",
+      "fixture_classes": ["mcp-connector-docs-ledger", "app-widget-boundary-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires first-party ChatGPT MCP/app connector evidence and local fixture coverage before support claims."
+    },
+    {
+      "harness_id": "codex",
+      "owner_change": "agents-c04-openai-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["plugin-fixture", "config-merge-fixture", "skills-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run pytest tests/test_distribution_metadata.py", "uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires executable Codex plugin, config, skills, and rollback fixtures before validated support claims."
+    },
+    {
+      "harness_id": "github-copilot-web",
+      "owner_change": "agents-c04-copilot-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["prompt-fixture", "instruction-fixture", "no-fabricated-installed-skill-inventory-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "not-applicable",
+      "promotion_blocker": "Requires web/coding-agent fixture evidence and proof that installed-skill inventory is discovered, not inferred."
+    },
+    {
+      "harness_id": "github-copilot-cli",
+      "owner_change": "agents-c04-copilot-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["cli-config-fixture", "mcp-fixture", "no-fabricated-installed-skill-inventory-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires CLI config, MCP, and installed-skill inventory fixtures before validated support claims."
+    },
+    {
+      "harness_id": "opencode",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["model-neutral-policy-fixture", "plugin-placement-fixture", "dcp-fixture", "credential-guard-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run pytest tests/test_distribution_metadata.py", "uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires executable model-neutral, plugin placement, DCP, credential guard, and rollback fixtures before validated support claims."
+    },
+    {
+      "harness_id": "gemini-cli",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["instruction-fixture", "skills-fixture", "mcp-fixture", "openspec-wrapper-fixture"],
+      "validation_commands": ["uv run wagents validate", "uv run wagents openspec validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires Gemini CLI instruction, skills, MCP, and OpenSpec wrapper fixtures before validated support claims."
+    },
+    {
+      "harness_id": "antigravity",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "docs-ledger-required",
+      "fixture_classes": ["first-party-docs-ledger", "gemini-compatibility-caveat-fixture", "mcp-merge-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires first-party Antigravity evidence and separate MCP merge fixtures before validated support claims."
+    },
+    {
+      "harness_id": "cursor-editor",
+      "owner_change": "agents-c04-cursor-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["rules-fixture", "skills-fixture", "mcp-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires Cursor editor rules, skills, MCP, and rollback fixtures before validated support claims."
+    },
+    {
+      "harness_id": "cursor-agent-web",
+      "owner_change": "agents-c04-cursor-harness",
+      "current_support_tier": "planned-research-backed",
+      "fixture_status": "docs-ledger-required",
+      "fixture_classes": ["first-party-docs-ledger", "cloud-agent-config-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "not-applicable",
+      "promotion_blocker": "Requires first-party Cursor Agent Web evidence and cloud-agent fixture coverage; do not inherit Cursor Editor behavior by default."
+    },
+    {
+      "harness_id": "cursor-agent-cli",
+      "owner_change": "agents-c04-cursor-harness",
+      "current_support_tier": "planned-research-backed",
+      "fixture_status": "docs-ledger-required",
+      "fixture_classes": ["first-party-docs-ledger", "cli-config-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires first-party Cursor Agent CLI evidence and CLI config fixture coverage; do not inherit Cursor Editor behavior by default."
+    },
+    {
+      "harness_id": "perplexity-desktop",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "current_support_tier": "experimental",
+      "fixture_status": "docs-ledger-required",
+      "fixture_classes": ["first-party-docs-ledger", "local-config-discovery", "rollback-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires first-party Perplexity Desktop evidence and local config discovery before any skill or MCP projection claim."
+    },
+    {
+      "harness_id": "cherry-studio",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "current_support_tier": "experimental",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["mcp-import-fixture", "global-config-merge-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires Cherry Studio MCP import, global config merge, and rollback fixtures before validated support claims."
+    },
+    {
+      "harness_id": "crush",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["retain-vs-experimental-decision", "config-fixture", "skills-fixture"],
+      "validation_commands": ["uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires an explicit retain-vs-experimental decision plus config and skills fixtures before validated support claims."
+    }
+  ]
+}

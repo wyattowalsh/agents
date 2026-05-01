@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HarnessSurfaceRegistry",
+  "type": "object",
+  "required": ["version", "support_tiers_ref", "source_notes", "harnesses"],
+  "properties": {
+    "version": {"const": 1},
+    "support_tiers_ref": {"const": "config/support-tier-registry.json"},
+    "source_notes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "harnesses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "brand",
+          "surface_kind",
+          "owner_change",
+          "support_tier",
+          "repo_evidence",
+          "projection_surfaces",
+          "validation_requirements"
+        ],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "label": {"type": "string", "minLength": 1},
+          "brand": {"type": "string", "minLength": 1},
+          "surface_kind": {"type": "string", "minLength": 1},
+          "owner_change": {"type": "string", "pattern": "^agents-c[0-9]{2}-.+"},
+          "support_tier": {
+            "enum": [
+              "validated",
+              "repo-present-validation-required",
+              "planned-research-backed",
+              "experimental",
+              "unverified",
+              "unsupported",
+              "quarantine"
+            ]
+          },
+          "repo_evidence": {"type": "array", "items": {"type": "string"}},
+          "projection_surfaces": {"type": "array", "items": {"type": "string"}},
+          "validation_requirements": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "caveats": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

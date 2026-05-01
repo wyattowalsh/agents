@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SkillRegistryPolicy",
+  "type": "object",
+  "required": ["version", "support_tiers_ref", "canonical_sources", "source_classes", "promotion_gates", "script_requirements"],
+  "properties": {
+    "version": {"const": 1},
+    "support_tiers_ref": {"const": "config/support-tier-registry.json"},
+    "canonical_sources": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "source_classes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "default_tier"],
+        "properties": {
+          "description": {"type": "string", "minLength": 1},
+          "default_tier": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "promotion_gates": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "script_requirements": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

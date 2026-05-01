@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SupportTierRegistry",
+  "type": "object",
+  "required": ["version", "tiers", "rules"],
+  "properties": {
+    "version": {"const": 1},
+    "tiers": {
+      "type": "object",
+      "required": [
+        "validated",
+        "repo-present-validation-required",
+        "planned-research-backed",
+        "experimental",
+        "unverified",
+        "unsupported",
+        "quarantine"
+      ],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["description", "docs_label", "promotion_allowed"],
+        "properties": {
+          "description": {"type": "string", "minLength": 1},
+          "docs_label": {"type": "string", "minLength": 1},
+          "promotion_allowed": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "rules": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

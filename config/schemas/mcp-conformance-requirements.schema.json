@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "McpConformanceRequirements",
+  "type": "object",
+  "required": ["version", "registry_source", "owner_change", "status", "required_fields", "classification_rules", "validation_commands"],
+  "properties": {
+    "version": {"const": 1},
+    "registry_source": {"const": "config/mcp-registry.json"},
+    "owner_change": {"const": "agents-c03-mcp-audit"},
+    "status": {"const": "requirements-only"},
+    "required_fields": {"type": "object", "minProperties": 1},
+    "classification_rules": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "validation_commands": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

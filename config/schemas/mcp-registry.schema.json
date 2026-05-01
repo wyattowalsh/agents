@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "McpRegistry",
+  "type": "object",
+  "required": ["version", "instruction_source", "servers"],
+  "properties": {
+    "version": {"const": 1},
+    "instruction_source": {"type": "string", "minLength": 1},
+    "servers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["transport", "command", "args", "env", "enabled", "startup_timeout_sec", "timeout_ms", "tools", "tool_approvals", "platform_overrides"],
+        "properties": {
+          "transport": {"type": "string", "minLength": 1},
+          "command": {"type": "string", "minLength": 1},
+          "args": {"type": "array", "items": {"type": "string"}},
+          "env": {"type": "object"},
+          "enabled": {"type": "boolean"},
+          "startup_timeout_sec": {"type": "integer", "minimum": 1},
+          "timeout_ms": {"type": "integer", "minimum": 1},
+          "tools": {"type": "array", "items": {"type": "string"}},
+          "tool_approvals": {"type": "object"},
+          "platform_overrides": {"type": "object"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}
