@@ -315,6 +315,51 @@ def test_evaluation_and_validation_dimensions_score_real_contracts(tmp_path: Pat
     assert _dimension(result, "validation-contract")["score"] >= 9
 
 
+def test_cross_skill_tooling_references_do_not_reduce_portability_score(tmp_path: Path):
+    skill_dir = _write_skill(
+        tmp_path,
+        "cross-tooling-skill",
+        """
+        # Cross Tooling Skill
+
+        ## Dispatch
+
+        | $ARGUMENTS | Action |
+        |------------|--------|
+        | `audit` | Audit |
+        | Empty | Show help |
+
+        ## Validation Contract
+
+        Run `uv run python skills/skill-creator/scripts/audit.py skills/cross-tooling-skill/ --format json`.
+
+        ## Critical Rules
+
+        1. Always validate before exit
+        2. Never modify unrelated files
+        3. Always report command failures
+        4. Never invent missing tool output
+        5. Keep packaging portable
+        """,
+        frontmatter="""\
+        ---
+        name: cross-tooling-skill
+        description: Audit cross-tooling skill work. Use when checking skill quality. NOT for agents.
+        license: MIT
+        metadata:
+          author: tester
+          version: "1.0.0"
+        ---
+        """,
+    )
+
+    result = audit_skill(str(skill_dir))
+
+    portability = _dimension(result, "portability")
+    assert portability["score"] == portability["max"]
+    assert not any("skill-creator/scripts/audit.py" in finding for finding in portability["findings"])
+
+
 def test_audit_table_never_reports_legacy_103_scale(tmp_path: Path):
     skill_dir = _write_skill(
         tmp_path,
