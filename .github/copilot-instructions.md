@@ -15,6 +15,14 @@
 - Use OpenSpec for non-trivial changes to repo workflows, public asset formats, downstream agent tooling, docs generation, or validation behavior. Prefer `uv run wagents openspec ... --format json` when AI tools need machine-readable OpenSpec state.
 - **Precedence**: explicit user instructions override all rules → Clarification Gate governs ambiguous decisions → platform bridge files override global.md on the same topic.
 
+## Search & Match Discipline
+
+- Start with the narrowest exact scope available: a known file, directory, symbol, literal string, or path-specific include.
+- Avoid broad globs, broad regexes, and repo-wide matches by default; broaden only after narrow searches fail or evidence shows the wider scope is needed.
+- Inspect returned matches before editing, especially before batch edits or automated replacements.
+- Exclude generated, dependency, build, cache, vendored, and lock files unless the task explicitly targets them.
+- When searches are noisy, refine the literal, regex, path include, directory, or result limit instead of broadening the query.
+
 ## Clarification Gate
 
 Act on evidence, not belief. Every decision about intent, scope, constraints, approach, and success must trace to the codebase, user's words, or verified conventions. What traces only to inference or defaults is an assumption — and every assumption becomes a question.
