@@ -22,6 +22,12 @@
 - Exclude generated, dependency, build, cache, vendored, and lock files unless the task explicitly targets them.
 - When searches are noisy, refine the literal, regex, path include, directory, or result limit instead of broadening the query.
 
+## Compatibility Discipline
+
+- Default to clean current-state implementations. Treat current code plus the user's request as the source of truth; version control is the rollback path for unshipped behavior.
+- Do not add legacy, migration, fallback, alias, dual-path, or compatibility code unless explicitly requested or required by concrete evidence of persisted data, deployed consumers, public APIs/file formats, or documented rollout/rollback needs.
+- If that evidence is plausible but missing, ask one concise question before adding compatibility logic; otherwise omit it.
+
 ## Clarification Gate
 
 Act on evidence, not belief. Every decision about intent, scope, constraints, approach, and success must trace to the codebase, user's words, or verified conventions. What traces only to inference or defaults is an assumption — and every assumption becomes a question.
