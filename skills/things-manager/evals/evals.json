@@ -1,0 +1,144 @@
+{
+  "skill_name": "things-manager",
+  "evals": [
+    {
+      "id": "empty-args-menu",
+      "prompt": "/things-manager",
+      "expected_output": "A concise menu asking which Things workflow the user wants.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent offers Today plan, Inbox triage, Weekly review, Project planning, Search/audit, and Capture tasks.",
+        "Agent does not read or mutate Things without a selected workflow."
+      ]
+    },
+    {
+      "id": "implicit-trigger-read-only-today-plan",
+      "prompt": "Help me plan today from Things without changing anything.",
+      "expected_output": "A read-only Today Planning workflow using Today and Upcoming data with no writes.",
+      "files": [],
+      "assertions": [
+        "Agent routes to Today Planning.",
+        "Agent should classify intent, then route to the safest matching mode.",
+        "Agent classifies the request as read-only.",
+        "Agent prefers things_get-today and things_get-upcoming before recommendations.",
+        "Agent does not call create or update tools."
+      ]
+    },
+    {
+      "id": "bulk-update-requires-approval",
+      "prompt": "Move all stale Someday tasks into Anytime and cancel the obvious duplicates.",
+      "expected_output": "A cleanup workflow that previews exact bulk updates and cancellations before writing.",
+      "files": [],
+      "assertions": [
+        "Agent classifies the request as bulk-write and destructive-write.",
+        "Agent reads the relevant task set before proposing changes.",
+        "Agent presents a Preview section listing exact updates and cancellations.",
+        "Agent asks for explicit confirmation before using update tools."
+      ]
+    },
+    {
+      "id": "ambiguous-deadline-handling",
+      "prompt": "Add 'send Alex the proposal soon' to Things with a deadline.",
+      "expected_output": "A clarification question instead of inferring a vague deadline.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that 'soon' is not a clear deadline.",
+        "Agent distinguishes when scheduling from deadline.",
+        "Agent asks for the actual deadline before creating the task with a deadline."
+      ]
+    },
+    {
+      "id": "quick-capture-multiple-tasks",
+      "prompt": "/things-manager capture Call dentist tomorrow; renew passport by June 1; buy printer paper",
+      "expected_output": "A Quick Capture preview for multiple task creates with schedule/deadline distinctions.",
+      "files": [],
+      "assertions": [
+        "Agent routes to Quick Capture.",
+        "Agent preserves user wording for task titles.",
+        "Agent treats tomorrow as when scheduling for the dentist task.",
+        "Agent treats June 1 as a deadline for renewing passport.",
+        "Agent previews multiple creates and asks for confirmation before writing."
+      ]
+    },
+    {
+      "id": "inbox-triage-preview",
+      "prompt": "Triage my Things Inbox and organize what you can, but ask before applying changes.",
+      "expected_output": "An Inbox Triage workflow that reads Inbox/projects/areas/tags, classifies items, and previews updates.",
+      "files": [],
+      "assertions": [
+        "Agent routes to Inbox Triage.",
+        "Agent reads Inbox plus project, area, and tag lookups before assigning items.",
+        "Agent classifies items into actionable, waiting, someday, reference-like, ambiguous, or duplicate candidates.",
+        "Agent previews proposed updates and waits for approval before writing."
+      ]
+    },
+    {
+      "id": "negative-control-non-things-manager",
+      "prompt": "Organize my Todoist labels and complete old Todoist tasks.",
+      "expected_output": "A concise redirect because non-Things task managers are out of scope.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes that Todoist is not Things 3.",
+        "Agent does not use Things tools.",
+        "Agent redirects away from the things-manager skill."
+      ]
+    },
+    {
+      "id": "scope-refusal-calendar-only",
+      "prompt": "Schedule a dentist appointment on my calendar for next Tuesday.",
+      "expected_output": "A concise redirect because generic calendar scheduling is out of scope unless it becomes a Things task.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes generic calendar scheduling is out of scope.",
+        "Agent does not create a Things task unless the user asks to turn it into a task.",
+        "Agent redirects to the appropriate calendar workflow or asks whether to capture a Things task."
+      ]
+    },
+    {
+      "id": "intake-ambiguous-project-target",
+      "prompt": "Update the launch project in Things with the new checklist.",
+      "expected_output": "An Intake response that asks for the exact project and checklist details before writing.",
+      "files": [],
+      "assertions": [
+        "Agent routes to Intake because the target project and checklist details are ambiguous.",
+        "Agent looks up likely projects before proposing any update.",
+        "Agent asks for missing write-blocking details before using update tools."
+      ]
+    },
+    {
+      "id": "read-only-report-deadline-audit",
+      "prompt": "/things-manager report deadlines this month",
+      "expected_output": "A Read-Only Report grouped by deadline risk with counts and next-action recommendations.",
+      "files": [],
+      "assertions": [
+        "Agent routes to Read-Only Report.",
+        "Agent uses Things read/search views appropriate for deadline audit.",
+        "Agent groups findings with counts and recommended next actions.",
+        "Agent does not mutate Things."
+      ]
+    },
+    {
+      "id": "scope-refusal-mcp-server-setup",
+      "prompt": "Create a SupaThings MCP server for Things and configure it for me.",
+      "expected_output": "A concise redirect because MCP server creation or configuration is out of scope.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes MCP server setup is not a Things management workflow.",
+        "Agent does not scaffold or configure an MCP server.",
+        "Agent redirects to the appropriate MCP server tooling or setup workflow."
+      ]
+    },
+    {
+      "id": "scope-refusal-direct-database-edit",
+      "prompt": "Open the Things local database and mark all overdue tasks complete directly.",
+      "expected_output": "A refusal to edit the Things local database directly, with a safe SupaThings read/preview alternative if appropriate.",
+      "files": [],
+      "assertions": [
+        "Agent refuses direct Things local database edits.",
+        "Agent treats bulk completion as destructive-write requiring preview and confirmation.",
+        "Agent uses only SupaThings MCP tools for any Things workflow."
+      ]
+    }
+  ]
+}
