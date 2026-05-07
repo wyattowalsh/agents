@@ -11,6 +11,7 @@ Integrate the requested OpenCode plugins with the smallest safe config changes, 
 ## Scope
 
 - Add requested runtime plugin specs to `opencode.json` and `~/.config/opencode/opencode.json`.
+- Add requested OCX/KDCO component setup for worktree support without creating worktrees.
 - Add requested TUI plugin specs to `~/.config/opencode/tui.json` only.
 - Replace `open-plan-annotator@latest` with `@plannotator/opencode@latest` scoped to the `plan` agent.
 - Enable OpenTelemetry support needed by the Langfuse plugin without storing Langfuse credentials.
@@ -20,10 +21,12 @@ Integrate the requested OpenCode plugins with the smallest safe config changes, 
 ## Out Of Scope
 
 - Creating `opencode-scheduler` jobs.
+- Creating, switching, deleting, or auto-committing git worktrees.
 - Enabling optional Claude Auth 1M context beta behavior.
 - Re-adding `open-plan-annotator@latest` unless the user explicitly requests the older broader workflow.
 - Adding CodeMCP workflow plugins or running setup that writes additional workflow artifacts without explicit approval.
 - Installing remote dashboard, browser-control, tunnel, checkpoint, or orchestration-bundle plugins.
+- Storing WakaTime, Langfuse, or other telemetry credentials in repo-managed files.
 - Committing generated downstream OpenSpec tool artifacts.
 
 ## Affected Users And Tools
@@ -31,7 +34,7 @@ Integrate the requested OpenCode plugins with the smallest safe config changes, 
 - OpenCode users on this machine using the live global config.
 - Repo maintainers reviewing `opencode.json` as the OpenCode runtime plugin mirror.
 - Future sync and validation workflows that enforce plugin inventory conventions.
-- Docs readers using the OpenCode integration plan and install manifest.
+- Docs readers using the OpenCode install manifest and repository instructions.
 
 ## Generated Surfaces To Refresh
 

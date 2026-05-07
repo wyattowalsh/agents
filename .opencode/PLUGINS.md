@@ -11,19 +11,36 @@ These remain declared in `../opencode.json` and are expected to auto-install whe
 
 | Plugin | Version | Purpose |
 |--------|---------|---------|
-| `opencode-handoff` | `^0.5.0` | Cross-session context transfer via `/handoff` |
+| `opencode-antigravity-auth` | `@latest` | Antigravity authentication bridge |
+| `opencode-gemini-auth` | `@latest` | Gemini authentication bridge |
+| `cc-safety-net` | `@latest` | Safety checks for Claude-style workflows |
+| `envsitter-guard` | `@latest` | Secret-safe dotenv inspection and mutation guardrails |
+| `@tarquinen/opencode-dcp` | `@latest` | Dynamic context pruning and compression |
+| `@morphllm/opencode-morph-plugin` | `@latest` | Morph code editing/search integration when credentials are present |
+| `opencode-handoff` | `@latest` | Cross-session context transfer via `/handoff` |
+| `opencode-agent-skills` | `@latest` | Agent Skill discovery and invocation support |
+| `@devtheops/opencode-plugin-otel` | `@latest` | OpenTelemetry support for runtime telemetry |
 | `@plannotator/opencode` | `@latest` | Browser-based plan annotation UI scoped to the `plan` agent |
-| `@mailshieldai/opencode-canvas` | `^0.1.2` | Interactive terminal canvases in tmux panes |
-| `@slkiser/opencode-quota` | `^3.3.0` | Real-time token quota tracking |
+| `@simonwjackson/opencode-direnv` | `@latest` | direnv environment loading for OpenCode |
+| `opencode-pty` | `@latest` | Interactive PTY sessions for long-running commands and dev servers |
+| `opencode-wakatime` | `@latest` | WakaTime AI coding activity tracking via `~/.wakatime.cfg` |
+| `octto` | `@latest` | Branch-based idea/design exploration workflows |
+| `@mohak34/opencode-notifier` | `@latest` | OpenCode notifications |
+| `opencode-devcontainers` | `@latest` | Devcontainer workspace support |
+| `@ramarivera/opencode-model-announcer` | `@latest` | Model announcement/status plugin |
+| `@mailshieldai/opencode-canvas` | `@latest` | Interactive terminal canvases in tmux panes |
+| `opencode-scheduler` | `@latest` | Inert scheduled-job support until explicitly configured |
+| `opencode-claude-auth` | `@latest` | Claude credential reuse without optional model/runtime overrides |
+| `opencode-plugin-langfuse` | `@latest` | Langfuse telemetry via user-owned environment variables |
 
-To update: edit versions in `../opencode.json` and restart OpenCode.
+To update: keep plugin specs in `../opencode.json` on `@latest` and restart OpenCode so its installer refreshes the cache.
 
 ## Vendored Local Plugins
 
 ### Background Agents
 
 **Source:** `kdcokenny/opencode-background-agents`
-**Why vendored:** Upstream is not installable from npm, and this repo needs a local `delegate` / `delegation_read` / `delegation_list` tool surface instead of a broken npm entry.
+**Why vendored:** The documented upstream is not the npm package named `opencode-background-agents`, and this repo needs a local `delegate` / `delegation_read` / `delegation_list` tool surface instead of an ambiguous runtime npm entry.
 
 **Files:**
 - `plugin/background-agents.ts` — local vendored fallback plugin
@@ -54,6 +71,28 @@ To update: edit versions in `../opencode.json` and restart OpenCode.
   - `npm install js-tiktoken@latest @huggingface/transformers@^3.3.3 --prefix .opencode/plugin/vendor`
 
 ## External / Manual Plugins
+
+### Worktree
+
+**Source:** `kdcokenny/opencode-worktree`
+**Why OCX-managed:** Upstream recommends installing the KDCO registry component instead of adding a bare npm runtime plugin. The component can create branch-backed worktrees and spawn OpenCode sessions, so it is intentionally installed through OCX when requested.
+
+**Canonical install:**
+- `ocx add kdco/worktree --from https://registry.kdco.dev`
+
+**Important:**
+- Do not add `opencode-worktree@latest` to `../opencode.json` unless the user explicitly chooses npm-package installation over the KDCO component path.
+- Do not create or delete worktrees during plugin setup.
+- Repo-sourced worktree hooks are disabled unless `hooks.allowRepoCommands` is explicitly enabled.
+- Worktree cleanup aborts when uncommitted changes are present or removal fails, preserving retry state instead of auto-committing or dropping the session.
+
+### OCX
+
+**Source:** `kdcokenny/ocx`
+**Why CLI-only:** OCX is an OpenCode extension manager, not a runtime plugin loaded by OpenCode.
+
+**Canonical install:**
+- `npm install -g ocx`
 
 ### Notify
 

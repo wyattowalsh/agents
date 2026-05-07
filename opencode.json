@@ -16,7 +16,6 @@
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
     "cc-safety-net@latest",
-    "opencode-agent-memory@latest",
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
     "@morphllm/opencode-morph-plugin@latest",
@@ -33,12 +32,13 @@
       }
     ],
     "@simonwjackson/opencode-direnv@latest",
-    "opencode-background-agents@latest",
+    "opencode-pty@latest",
+    "opencode-wakatime@latest",
+    "octto@latest",
     "@mohak34/opencode-notifier@latest",
     "opencode-devcontainers@latest",
     "@ramarivera/opencode-model-announcer@latest",
     "@mailshieldai/opencode-canvas@latest",
-    "@slkiser/opencode-quota@latest",
     "opencode-scheduler@latest",
     "opencode-claude-auth@latest",
     "opencode-plugin-langfuse@latest"

@@ -1,6 +1,9 @@
 """Tests for cross-agent bundle and plugin distribution metadata."""
 
+import hashlib
 import json
+import re
+import subprocess
 from pathlib import Path
 
 import jsonschema
@@ -8,16 +11,27 @@ import jsonschema
 from wagents.openspec import OPENSPEC_PACKAGE, OPENSPEC_TOOL_BY_AGENT, format_min_node_version
 
 ROOT = Path(__file__).resolve().parents[1]
+OWNER_CHANGE_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 OPENCODE_RUNTIME_PLUGINS = {
     "@plannotator/opencode@latest",
+    "opencode-pty@latest",
+    "opencode-wakatime@latest",
     "opencode-scheduler@latest",
     "opencode-claude-auth@latest",
     "opencode-plugin-langfuse@latest",
+    "octto@latest",
 }
 
 OPENCODE_TUI_ONLY_PLUGINS = {
+    "@slkiser/opencode-quota@latest",
     "opencode-subagent-statusline@latest",
+}
+
+OPENCODE_OCX_SURFACE_FILES = {
+    ".opencode/ocx.jsonc",
+    ".ocx/receipt.jsonc",
+    ".opencode/package.json",
 }
 
 OPENCODE_DEFERRED_WORKFLOW_PLUGINS = {
@@ -38,6 +52,16 @@ def opencode_plugin_name(plugin_spec: str | list) -> str:
     if isinstance(plugin_spec, str):
         return plugin_spec
     return plugin_spec[0]
+
+
+def assert_git_tracked(relative_path: str) -> None:
+    subprocess.run(
+        ["git", "ls-files", "--error-unmatch", relative_path],
+        cwd=ROOT,
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 def test_agent_bundle_points_to_canonical_sources():
@@ -156,6 +180,63 @@ def test_opencode_project_plugins_exclude_known_unresolved_packages():
     plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
 
     assert all(not plugin_spec.startswith("opencode-shell-strategy") for plugin_spec in plugin_names)
+
+
+def test_opencode_project_plugins_exclude_ocx_component_plugins():
+    config = load_json("opencode.json")
+    plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
+
+    assert "opencode-worktree@latest" not in plugin_names
+    assert "opencode-background-agents@latest" not in plugin_names
+
+
+def test_opencode_ocx_worktree_component_files_are_tracked_surfaces():
+    receipt = load_json(".ocx/receipt.jsonc")
+    assert not Path(receipt["root"]).is_absolute()
+
+    component_files = {
+        component_file["path"]: component_file["hash"]
+        for component in receipt["installed"].values()
+        for component_file in component["files"]
+    }
+
+    for component_file in OPENCODE_OCX_SURFACE_FILES | set(component_files):
+        assert (ROOT / component_file).is_file()
+        assert_git_tracked(component_file)
+
+    for component_file, expected_hash in component_files.items():
+        digest = hashlib.sha256((ROOT / component_file).read_bytes()).hexdigest()
+        assert digest == expected_hash
+
+
+def test_opencode_worktree_config_template_avoids_secret_copy_examples():
+    worktree_source = (ROOT / ".opencode/plugin/worktree.ts").read_text()
+
+    assert 'Example: [".env"' not in worktree_source
+    assert "allowRepoCommands" in worktree_source
+    assert "isSensitiveSyncPath" in worktree_source
+    assert "normalizedLower" in worktree_source
+    assert 'basename === ".env"' in worktree_source
+    assert '".npmrc"' in worktree_source
+    assert '".ssh"' in worktree_source
+    assert '".docker/config.json"' in worktree_source
+    assert '".docker"' in worktree_source
+    assert '".cargo"' in worktree_source
+    assert '".envrc"' in worktree_source
+    assert '".direnv"' in worktree_source
+    assert "isSafeSyncSource" in worktree_source
+    assert "prepareSafeDestinationParent" in worktree_source
+    assert "Refusing to overwrite symlink destination" in worktree_source
+    assert worktree_source.index("Refusing to overwrite symlink destination") < worktree_source.index("await Bun.write(targetPath")
+    assert "isSymbolicLink" in worktree_source
+    assert "cleanupForkContext" in worktree_source
+    assert "safeStateSubdir" in worktree_source
+    assert "resolveSafeStateSubdir" in worktree_source
+    assert 'stdout: "pipe"' in worktree_source
+    assert '"--force"' not in worktree_source
+    assert "Patterns to exclude from copying" not in worktree_source
+    assert "Reserved for future use; sync exclusions are not currently enforced" in worktree_source
+    assert "profile check exited" in worktree_source
 
 
 def test_platform_overhaul_registries_validate_against_schemas():
@@ -286,7 +367,7 @@ def test_repo_sync_inventory_covers_sync_manifest_paths():
     sync_modes_by_path = {record["path"]: record["mode"] for record in sync_manifest["managed"]}
     for record in inventory["records"]:
         assert record["mode"] == sync_modes_by_path[record["path"]]
-        assert record["owner_change"].startswith("agents-c") or record["owner_change"] == "agents-platform-overhaul"
+        assert OWNER_CHANGE_RE.fullmatch(record["owner_change"])
         assert record["secret_handling"] in {"not-secret-bearing", "path-only", "redacted", "unknown"}
         assert record["drift_policy"] in {"canonical", "generated", "merged", "symlink", "symlinked-entries"}
 

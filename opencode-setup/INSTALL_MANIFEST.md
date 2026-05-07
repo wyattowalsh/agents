@@ -1,6 +1,6 @@
 # OpenCode Plugin Installation Manifest
 
-**Last verified:** 2026-05-01
+**Last verified:** 2026-05-07
 **Primary config:** `~/.config/opencode/opencode.json`
 **Project mirror:** `opencode.json`
 
@@ -13,21 +13,21 @@ The active runtime npm plugin list is configured as `@latest` in `~/.config/open
 1. `opencode-antigravity-auth@latest`
 2. `opencode-gemini-auth@latest`
 3. `cc-safety-net@latest`
-4. `opencode-agent-memory@latest`
-5. `envsitter-guard@latest`
-6. `@tarquinen/opencode-dcp@latest`
-7. `@morphllm/opencode-morph-plugin@latest`
-8. `opencode-handoff@latest`
-9. `opencode-agent-skills@latest`
-10. `@devtheops/opencode-plugin-otel@latest`
-11. `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
-12. `@simonwjackson/opencode-direnv@latest`
-13. `opencode-background-agents@latest`
-14. `@mohak34/opencode-notifier@latest`
-15. `opencode-devcontainers@latest`
-16. `@ramarivera/opencode-model-announcer@latest`
-17. `@mailshieldai/opencode-canvas@latest`
-18. `@slkiser/opencode-quota@latest`
+4. `envsitter-guard@latest`
+5. `@tarquinen/opencode-dcp@latest`
+6. `@morphllm/opencode-morph-plugin@latest`
+7. `opencode-handoff@latest`
+8. `opencode-agent-skills@latest`
+9. `@devtheops/opencode-plugin-otel@latest`
+10. `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
+11. `@simonwjackson/opencode-direnv@latest`
+12. `opencode-pty@latest`
+13. `opencode-wakatime@latest`
+14. `octto@latest`
+15. `@mohak34/opencode-notifier@latest`
+16. `opencode-devcontainers@latest`
+17. `@ramarivera/opencode-model-announcer@latest`
+18. `@mailshieldai/opencode-canvas@latest`
 19. `opencode-scheduler@latest`
 20. `opencode-claude-auth@latest`
 21. `opencode-plugin-langfuse@latest`
@@ -40,6 +40,8 @@ Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale ins
 
 `@mohak34/opencode-notifier@latest` is the active npm notifier package. `config/opencode-notifier.json` is the repo-owned source for `~/.config/opencode/opencode-notifier.json` and intentionally uses `notificationSystem: "ghostty"` for reliable Ghostty notifications. In that mode the package sends OSC 9 terminal notifications and does not use `customIconPath`, so custom icon settings are intentionally disabled unless a separate opt-in terminal-notifier experiment is introduced.
 
+`opencode-background-agents@latest` is intentionally excluded from the runtime plugin inventory because its npm package provenance does not match the documented `kdcokenny/opencode-background-agents` source. Use the repo-local vendored fallback in `.opencode/plugin/background-agents.ts` unless a trusted package source is explicitly approved.
+
 ## TUI Plugin Inventory
 
 TUI-only plugins belong in `~/.config/opencode/tui.json`, not in the repo runtime mirror, unless a repo-managed TUI source file is introduced:
@@ -47,14 +49,28 @@ TUI-only plugins belong in `~/.config/opencode/tui.json`, not in the repo runtim
 1. `@slkiser/opencode-quota@latest`
 2. `opencode-subagent-statusline@latest`
 
-Preserve `notification_method: "auto"` in `~/.config/opencode/tui.json` so OpenCode uses terminal notifications without macOS Script Editor popups.
+Do not add `notification_method` to `~/.config/opencode/tui.json`; current OpenCode TUI schema rejects that key and logs `ConfigInvalidError`.
 
 ## Runtime Plugin Guardrails
 
 - `opencode-scheduler@latest` is installed but intentionally has no scheduled jobs configured. Create jobs only on explicit request, prefer read-only jobs first, set `timeoutSeconds`, and inspect scheduler `job_logs` before trusting recurring automation.
+- `opencode-pty@latest` can start long-running interactive PTY sessions. Prefer explicit `timeoutSeconds`, use `notifyOnExit` for long commands, and clean up sessions when finished.
+- `opencode-wakatime@latest` reads credentials from `~/.wakatime.cfg` or `$WAKATIME_HOME/.wakatime.cfg`. Never store WakaTime API keys in repo config, docs, tests, or OpenCode plugin arrays.
+- `octto@latest` explores ideas through branch-based workflows. Do not let it create branches or worktrees unless the user explicitly requests that workflow.
 - `opencode-claude-auth@latest` can reuse Claude Code credentials. Claude Code must be authenticated first; prefer macOS Keychain-backed credentials and use redacted debug logs only. Do not enable optional 1M context or model/runtime overrides by default.
 - `opencode-plugin-langfuse@latest` requires OpenTelemetry and user-owned environment variables. The config enables `experimental.openTelemetry`; do not commit credential values. Required keys are `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY`; `LANGFUSE_BASEURL` is optional.
 - `@plannotator/opencode@latest` must stay configured as `workflow: "plan-agent"` with `planningAgents: ["plan"]`; use `manual` mode only if the user wants command-only reviews.
+
+## OCX-Managed Components
+
+`ocx` is a CLI/extension manager, not an OpenCode runtime plugin. Install it as a local CLI and use it to add KDCO registry components when requested:
+
+```bash
+npm install -g ocx
+ocx add kdco/worktree --from https://registry.kdco.dev
+```
+
+`opencode-worktree` is managed through the KDCO/OCX component path for this setup rather than the repo runtime `plugin` array. It can create branch-backed worktrees and spawn OpenCode sessions, so use it only when isolated workflow automation is explicitly intended. Repo-sourced worktree hooks are disabled unless `hooks.allowRepoCommands` is explicitly enabled, and cleanup aborts when uncommitted worktree changes are present or removal fails instead of auto-committing work or dropping retry state.
 
 ## Deferred UI And Control Plugins
 
@@ -105,6 +121,7 @@ cmp -s config/opencode-dcp.jsonc ~/.config/opencode/dcp.jsonc
 
 # Confirm the repo-managed notifier config was synced.
 cmp -s config/opencode-notifier.json ~/.config/opencode/opencode-notifier.json
+
 ```
 
 Package registry resolution is not a complete installation check, but every npm plugin spec in the active inventory should resolve and have a package entry under `~/.cache/opencode/packages/`.
@@ -117,7 +134,6 @@ Package registry resolution is not a complete installation check, but every npm 
 - Local plugin files: `~/.config/opencode/plugins/`
 - npm plugin cache: `~/.cache/opencode/packages/`
 - Repo-managed local plugin sources: `platforms/opencode/plugins/`
-- Agent memory data: `~/.config/opencode/memory/`
 - DCP config: `~/.config/opencode/dcp.jsonc`
 - Repo-managed DCP source: `config/opencode-dcp.jsonc`
 - Notifier config: `~/.config/opencode/opencode-notifier.json`

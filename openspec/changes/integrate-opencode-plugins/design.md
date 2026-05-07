@@ -8,7 +8,9 @@ Use the existing split between repo-managed runtime config and live user TUI con
 
 - Repo `opencode.json` mirrors the runtime plugin specs that OpenCode can install with Bun.
 - Live `~/.config/opencode/opencode.json` carries the same runtime plugin inventory plus user-owned providers, MCP servers, permissions, and secrets.
-- Live `~/.config/opencode/tui.json` carries UI/TUI behavior, including `notification_method` and TUI plugin specs.
+- Live `~/.config/opencode/tui.json` carries UI/TUI plugin specs and other schema-valid TUI behavior.
+- OCX-managed components live under `.opencode/` with a `.ocx/receipt.jsonc` integrity receipt and are not added to the OpenCode runtime `plugin` array.
+- WakaTime credentials live in `~/.wakatime.cfg` or `$WAKATIME_HOME/.wakatime.cfg`, not in repo-managed OpenCode config.
 - Langfuse uses OpenTelemetry activation plus environment variables supplied outside version control.
 - Plannotator registers `submit_plan` only for configured planning agents so build/default agents do not see the plan-review tool.
 
@@ -16,11 +18,17 @@ Use the existing split between repo-managed runtime config and live user TUI con
 
 - Runtime plugins:
   - `opencode-scheduler@latest`
+  - `opencode-pty@latest`
+  - `opencode-wakatime@latest`
+  - `octto@latest`
   - `opencode-claude-auth@latest`
   - `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
   - `opencode-plugin-langfuse@latest`
 - TUI plugins:
+  - `@slkiser/opencode-quota@latest`
   - `opencode-subagent-statusline@latest`
+- OCX/KDCO components:
+  - `kdco/worktree`
 - Existing runtime plugins remain unchanged, including `@devtheops/opencode-plugin-otel@latest` until validation shows a concrete conflict.
 
 ## Alternatives Rejected
@@ -29,6 +37,8 @@ Use the existing split between repo-managed runtime config and live user TUI con
 - Put TUI plugins in repo `opencode.json`: rejected because live `tui.json` is the observed TUI plugin surface and repo `opencode.json` is the runtime mirror.
 - Keep `open-plan-annotator@latest`: rejected because Plannotator's plan-agent workflow better preserves the plan/execution boundary.
 - Add CodeMCP workflow plugins automatically: rejected by user request because the workflow plugins can create local workflow state and setup artifacts.
+- Add `opencode-worktree@latest` as a bare runtime plugin: rejected because the requested KDCO repository documents OCX component installation as the canonical path.
+- Add `opencode-background-agents@latest` as a runtime npm plugin: rejected because the npm package provenance does not match the documented `kdcokenny/opencode-background-agents` source used by this repo's local fallback.
 - Enable Claude Auth 1M context by default: rejected because it changes model/runtime behavior and conflicts with repo-managed model-neutral policy.
 
 ## Migration Or Compatibility Notes
@@ -36,4 +46,9 @@ Use the existing split between repo-managed runtime config and live user TUI con
 - Missing Langfuse environment variables should be documented as setup warnings, not treated as secret values to commit.
 - Plannotator should remain configured with an option tuple rather than a bare string so the intended workflow stays explicit in review.
 - Scheduler is installed but inert until a user creates jobs.
+- PTY sessions should use explicit timeouts and cleanup.
+- Worktree tooling is installed but must not create or delete worktrees unless explicitly requested.
+- Repo-sourced worktree hook commands require explicit `hooks.allowRepoCommands` opt-in.
+- Worktree deletion cleanup aborts on uncommitted changes or removal failures instead of auto-committing session snapshots or dropping retry state.
+- WakaTime is configured through the user-owned WakaTime config file with restrictive file permissions.
 - Future repo-managed TUI source files can add tests for TUI inventory; this pass only updates the live TUI config and docs it in the manifest.
