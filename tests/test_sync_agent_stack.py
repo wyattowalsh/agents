@@ -27,6 +27,7 @@ from scripts.sync_agent_stack import (
     sync_codex_entrypoint,
     sync_copilot_subagent_env,
     sync_generated_json_directory,
+    sync_opencode_notifier_config,
     sync_repo_targets,
 )
 from wagents.platforms import base as platform_base
@@ -819,6 +820,28 @@ def test_repo_opencode_dcp_config_uses_proactive_thresholds():
     assert compress["nudgeForce"] == "strong"
     assert "modelMaxLimits" not in compress
     assert "modelMinLimits" not in compress
+
+
+def test_sync_opencode_notifier_config_copies_template(tmp_path, monkeypatch):
+    template_path = tmp_path / "repo" / "config" / "opencode-notifier.json"
+    notifier_path = tmp_path / "home" / ".config" / "opencode" / "opencode-notifier.json"
+    expected = {
+        "notificationSystem": "ghostty",
+        "showProjectName": False,
+        "showIcon": False,
+        "customIconPath": None,
+    }
+    template_path.parent.mkdir(parents=True)
+    notifier_path.parent.mkdir(parents=True)
+    template_path.write_text(json.dumps(expected) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_NOTIFIER_CONFIG_PATH", notifier_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_NOTIFIER_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    sync_opencode_notifier_config(ctx)
+
+    assert json.loads(notifier_path.read_text(encoding="utf-8")) == expected
 
 
 def test_deploy_opencode_plugin_copies_file(tmp_path, monkeypatch):

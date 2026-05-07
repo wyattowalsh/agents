@@ -23,7 +23,7 @@ The active runtime npm plugin list is configured as `@latest` in `~/.config/open
 11. `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
 12. `@simonwjackson/opencode-direnv@latest`
 13. `opencode-background-agents@latest`
-14. `opencode-notify@latest`
+14. `@mohak34/opencode-notifier@latest`
 15. `opencode-devcontainers@latest`
 16. `@ramarivera/opencode-model-announcer@latest`
 17. `@mailshieldai/opencode-canvas@latest`
@@ -37,6 +37,8 @@ Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale ins
 `opencode-shell-strategy` was removed from the requested inventory because npm returned 404 for that package and OpenCode logged `failed to resolve plugin server entry` for its empty cache directory. Re-add it only if a valid install source is confirmed.
 
 `open-plan-annotator@latest` was replaced by `@plannotator/opencode@latest` because Plannotator's default plan-agent workflow scopes `submit_plan` to planning agents instead of exposing the older broader plan workflow to primary execution agents.
+
+`@mohak34/opencode-notifier@latest` is the active npm notifier package. `config/opencode-notifier.json` is the repo-owned source for `~/.config/opencode/opencode-notifier.json` and intentionally uses `notificationSystem: "ghostty"` for reliable Ghostty notifications. In that mode the package sends OSC 9 terminal notifications and does not use `customIconPath`, so custom icon settings are intentionally disabled unless a separate opt-in terminal-notifier experiment is introduced.
 
 ## TUI Plugin Inventory
 
@@ -80,6 +82,8 @@ When merging live user-owned OpenCode config, preserve existing user model setti
 
 The DCP config follows the same model-neutral policy. `config/opencode-dcp.jsonc` is the repo-owned source for `~/.config/opencode/dcp.jsonc`; sync merges it without adding OpenCode model fields, agent step caps, or DCP per-model limit maps.
 
+The notifier config follows the Ghostty-first notification policy. `config/opencode-notifier.json` is copied to `~/.config/opencode/opencode-notifier.json` so concise approval/completion wording and the intentional no-custom-icon Ghostty behavior persist across machines.
+
 ## Dynamic Context Pruning Config
 
 `@tarquinen/opencode-dcp@latest` is configured by `~/.config/opencode/dcp.jsonc`, which is managed from `config/opencode-dcp.jsonc`. The managed config uses stable range compression, model-agnostic percentage thresholds, protected secret file patterns, and subagent-friendly tool protection for long orchestration sessions.
@@ -98,6 +102,9 @@ cmp -s platforms/opencode/plugins/credential-guard.ts ~/.config/opencode/plugins
 
 # Confirm the repo-managed DCP config was synced.
 cmp -s config/opencode-dcp.jsonc ~/.config/opencode/dcp.jsonc
+
+# Confirm the repo-managed notifier config was synced.
+cmp -s config/opencode-notifier.json ~/.config/opencode/opencode-notifier.json
 ```
 
 Package registry resolution is not a complete installation check, but every npm plugin spec in the active inventory should resolve and have a package entry under `~/.cache/opencode/packages/`.
@@ -113,4 +120,6 @@ Package registry resolution is not a complete installation check, but every npm 
 - Agent memory data: `~/.config/opencode/memory/`
 - DCP config: `~/.config/opencode/dcp.jsonc`
 - Repo-managed DCP source: `config/opencode-dcp.jsonc`
+- Notifier config: `~/.config/opencode/opencode-notifier.json`
+- Repo-managed notifier source: `config/opencode-notifier.json`
 - Devcontainers config: `~/.config/opencode/devcontainers.json`

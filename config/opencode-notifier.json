@@ -1,0 +1,129 @@
+{
+  "sound": true,
+  "notification": true,
+  "bell": false,
+  "timeout": 8,
+  "showProjectName": false,
+  "showSessionTitle": true,
+  "showIcon": false,
+  "customIconPath": null,
+  "suppressWhenFocused": true,
+  "enableOnDesktop": false,
+  "notificationSystem": "ghostty",
+  "minDuration": 8,
+  "linux": {
+    "grouping": false
+  },
+  "command": {
+    "enabled": false,
+    "path": "",
+    "minDuration": 0
+  },
+  "events": {
+    "permission": {
+      "sound": true,
+      "notification": true,
+      "command": false,
+      "bell": true
+    },
+    "complete": {
+      "sound": true,
+      "notification": true,
+      "command": false,
+      "bell": false
+    },
+    "subagent_complete": {
+      "sound": false,
+      "notification": false,
+      "command": false,
+      "bell": false
+    },
+    "error": {
+      "sound": true,
+      "notification": true,
+      "command": false,
+      "bell": true
+    },
+    "question": {
+      "sound": true,
+      "notification": true,
+      "command": false,
+      "bell": true
+    },
+    "interrupted": {
+      "sound": true,
+      "notification": true,
+      "command": false,
+      "bell": false
+    },
+    "user_cancelled": {
+      "sound": false,
+      "notification": false,
+      "command": false,
+      "bell": false
+    },
+    "plan_exit": {
+      "sound": true,
+      "notification": true,
+      "command": false,
+      "bell": true
+    },
+    "session_started": {
+      "sound": false,
+      "notification": false,
+      "command": false,
+      "bell": false
+    },
+    "user_message": {
+      "sound": false,
+      "notification": false,
+      "command": false,
+      "bell": false
+    },
+    "client_connected": {
+      "sound": false,
+      "notification": false,
+      "command": false,
+      "bell": false
+    }
+  },
+  "messages": {
+    "permission": "Needs approval: {sessionTitle}",
+    "complete": "Finished: {sessionTitle}",
+    "subagent_complete": "Subagent finished: {sessionTitle}",
+    "error": "Error: {sessionTitle}",
+    "question": "Question waiting: {sessionTitle}",
+    "interrupted": "Interrupted: {sessionTitle}",
+    "user_cancelled": "Cancelled: {sessionTitle}",
+    "plan_exit": "Plan ready: {sessionTitle}",
+    "session_started": "Session started: {sessionTitle}",
+    "user_message": "Prompt received: {sessionTitle}",
+    "client_connected": "OpenCode connected"
+  },
+  "sounds": {
+    "permission": null,
+    "complete": null,
+    "subagent_complete": null,
+    "error": null,
+    "question": null,
+    "interrupted": null,
+    "user_cancelled": null,
+    "plan_exit": null,
+    "session_started": null,
+    "user_message": null,
+    "client_connected": null
+  },
+  "volumes": {
+    "permission": 0.75,
+    "complete": 0.55,
+    "subagent_complete": 0.4,
+    "error": 0.85,
+    "question": 0.75,
+    "interrupted": 0.55,
+    "user_cancelled": 0.4,
+    "plan_exit": 0.7,
+    "session_started": 0.4,
+    "user_message": 0.4,
+    "client_connected": 0.4
+  }
+}

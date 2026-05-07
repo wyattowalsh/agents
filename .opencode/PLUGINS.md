@@ -69,6 +69,8 @@ To update: edit versions in `../opencode.json` and restart OpenCode.
 **Important:**
 - This plugin was intentionally removed from `../opencode.json` because leaving it there makes OpenCode try to install a package that does not exist on npm.
 
+This is distinct from the active npm notifier package `@mohak34/opencode-notifier@latest`, which is mirrored in `../opencode.json` and configured by `~/.config/opencode/opencode-notifier.json`.
+
 ## Installed
 
 - Initial plugin set installed: 2026-04-27

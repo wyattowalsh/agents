@@ -62,6 +62,8 @@ GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
 OPENCODE_DCP_CONFIG_PATH = HOME / ".config" / "opencode" / "dcp.jsonc"
 OPENCODE_DCP_TEMPLATE_PATH = CONFIG_DIR / "opencode-dcp.jsonc"
+OPENCODE_NOTIFIER_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode-notifier.json"
+OPENCODE_NOTIFIER_TEMPLATE_PATH = CONFIG_DIR / "opencode-notifier.json"
 OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
@@ -1564,6 +1566,12 @@ def merge_opencode_dcp_config(ctx: SyncContext) -> None:
     write_json(ctx, OPENCODE_DCP_CONFIG_PATH, render_opencode_dcp_config(existing))
 
 
+def sync_opencode_notifier_config(ctx: SyncContext) -> None:
+    if not OPENCODE_NOTIFIER_TEMPLATE_PATH.exists():
+        return
+    write_json(ctx, OPENCODE_NOTIFIER_CONFIG_PATH, load_json(OPENCODE_NOTIFIER_TEMPLATE_PATH))
+
+
 def cherry_remote_transport(url: str) -> str:
     return "streamableHttp" if url.endswith("/mcp") else "sse"
 
@@ -1607,6 +1615,7 @@ def merge_opencode_config(
     ctx: SyncContext, registry: dict[str, Any], fallbacks: dict[str, str], policy: dict[str, Any] | None = None
 ) -> None:
     merge_opencode_dcp_config(ctx)
+    sync_opencode_notifier_config(ctx)
 
     if not OPENCODE_CONFIG_PATH.exists():
         return

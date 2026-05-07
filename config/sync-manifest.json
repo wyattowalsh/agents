@@ -66,6 +66,10 @@
       "mode": "canonical"
     },
     {
+      "path": "/Users/ww/dev/projects/agents/config/opencode-notifier.json",
+      "mode": "canonical"
+    },
+    {
       "path": "/Users/ww/dev/projects/agents/config/sync-manifest.json",
       "mode": "canonical"
     },
@@ -204,6 +208,10 @@
     {
       "path": "/Users/ww/.config/opencode/dcp.jsonc",
       "mode": "merged"
+    },
+    {
+      "path": "/Users/ww/.config/opencode/opencode-notifier.json",
+      "mode": "generated"
     },
     {
       "path": "/Users/ww/.config/opencode/plugins/approval-notify.ts",

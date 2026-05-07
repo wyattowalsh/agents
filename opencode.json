@@ -34,7 +34,7 @@
     ],
     "@simonwjackson/opencode-direnv@latest",
     "opencode-background-agents@latest",
-    "opencode-notify@latest",
+    "@mohak34/opencode-notifier@latest",
     "opencode-devcontainers@latest",
     "@ramarivera/opencode-model-announcer@latest",
     "@mailshieldai/opencode-canvas@latest",
