@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-55-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-56-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -106,6 +106,7 @@ Reusable actions and knowledge bases for AI agents.
 | skill-router | Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows. |
 | tech-debt-analyzer | Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring. |
 | test-architect | Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (honest-review). |
+| things-manager | Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD. NOT for calendars, Gmail, database edits, MCP setup, or secrets. |
 | wargame | Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty. NOT for simple pros/cons or code review. |
 
 ## 🤖 Agents
