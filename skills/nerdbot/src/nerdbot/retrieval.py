@@ -6,6 +6,7 @@ import os
 import re
 import sqlite3
 import tempfile
+from contextlib import closing
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -253,7 +254,7 @@ def build_fts_index(root: Path, *, index_path: Path | None = None) -> FtsBuildRe
     temp_path = Path(temp_name)
     temp_path.unlink()
     try:
-        with _connect_fts(temp_path) as connection:
+        with closing(_connect_fts(temp_path)) as connection:
             _populate_fts(connection, documents)
         ensure_safe_target(root, resolved_index_path)
         temp_path.replace(resolved_index_path)
@@ -301,10 +302,10 @@ def query_fts(root: Path, query_text: str, *, limit: int = 5, index_path: Path |
         return []
     resolved_index_path, _rel_index_path = _safe_fts_index_path(root, index_path)
     if resolved_index_path.exists():
-        with _connect_fts(resolved_index_path) as connection:
+        with closing(_connect_fts(resolved_index_path)) as connection:
             return _query_connection(connection, query_text, limit=limit)
     documents = iter_search_documents(root)
-    with _connect_fts(None) as connection:
+    with closing(_connect_fts(None)) as connection:
         _populate_fts(connection, documents)
         return _query_connection(connection, query_text, limit=limit)
 
