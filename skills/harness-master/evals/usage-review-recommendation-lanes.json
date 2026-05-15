@@ -1,0 +1,16 @@
+{
+	"skills": ["harness-master"],
+	"query": "/harness-master usage all both 30 days, then rank what to tune",
+	"files": [
+		"SKILL.md",
+		"references/usage-review.md",
+		"references/output-format.md",
+		"scripts/usage_probe.py"
+	],
+	"expected_behavior": [
+		"Agent expands all supported harnesses in deterministic order",
+		"Agent uses a 30-day usage window",
+		"Agent ranks findings with the canonical Usage Review recommendation lanes",
+		"Agent stops before config edits, installs, or docs generation"
+	]
+}

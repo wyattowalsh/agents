@@ -1,0 +1,16 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master research opencode plugin GitHub candidates with GraphQL enrichment",
+  "files": [
+    "references/ecosystem-research.md",
+    "references/source-profiles.md",
+    "data/research-sources.json",
+    "scripts/source_probe.py"
+  ],
+  "expected_behavior": [
+    "Agent uses GitHub REST/search for broad discovery and code/file lookup",
+    "Agent uses GitHub GraphQL only after candidate discovery for batched repository enrichment",
+    "Agent requires GITHUB_TOKEN only for live GraphQL execution and marks missing tokens as degraded",
+    "Agent captures stars, forks, releases, topics, license, activity, issues, pull requests, and maintainer signals"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master apply the OpenCode plugin from the research report",
+  "files": [
+    "SKILL.md",
+    "references/workflow.md",
+    "references/ecosystem-research.md",
+    "references/output-format.md"
+  ],
+  "expected_behavior": [
+    "Agent blocks apply because research reports are advisory",
+    "Agent states that a matching dry-run audit for the exact harness, level, and change surface is required",
+    "Agent requires explicit user approval after that dry-run audit",
+    "Agent does not edit files or run install commands"
+  ]
+}

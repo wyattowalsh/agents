@@ -1,0 +1,317 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "official-docs-llms",
+      "category": "official-docs",
+      "authority_tier": "primary",
+      "access_method": "http-fetch",
+      "base_url_or_command": "{docs_url}/llms.txt",
+      "auth_env": [],
+      "rate_limit_notes": "Depends on vendor hosting; 404 is expected for products without llms.txt.",
+      "query_templates": {
+        "llms": ["{docs_url}/llms.txt", "{docs_url}/llms-full.txt"],
+        "web": ["{docs_url}", "https://docs.{domain}/llms.txt", "https://{domain}/docs/llms.txt"]
+      },
+      "evidence_fields": ["config semantics", "supported surfaces", "deprecations", "versioned docs", "permission model"],
+      "confidence_role": "Highest authority for current harness semantics when available.",
+      "failure_mode": "If unavailable, fall back to first-party docs or canonical vendor repositories and lower latest-doc confidence."
+    },
+    {
+      "id": "local-harness-registries",
+      "category": "local-registry",
+      "authority_tier": "primary",
+      "access_method": "local-file",
+      "base_url_or_command": "config/harness-surface-registry.json config/plugin-extension-registry.json config/mcp-registry.json config/external-skills.md",
+      "auth_env": [],
+      "rate_limit_notes": "Local filesystem only.",
+      "query_templates": {
+        "files": [
+          "config/harness-surface-registry.json",
+          "config/plugin-extension-registry.json",
+          "config/mcp-registry.json",
+          "config/external-skills.md"
+        ]
+      },
+      "evidence_fields": ["canonical home", "support tier", "owner surface", "generated output", "known local policy"],
+      "confidence_role": "Canonical repo fit, overlap, ownership, and support-tier context.",
+      "failure_mode": "Missing local registry evidence blocks local-fit claims but not external discovery."
+    },
+    {
+      "id": "github-rest-search",
+      "category": "github",
+      "authority_tier": "enrichment",
+      "access_method": "http-api",
+      "base_url_or_command": "https://api.github.com/search/repositories?q={query}",
+      "auth_env": ["GITHUB_TOKEN"],
+      "rate_limit_notes": "Unauthenticated REST search is rate limited; token recommended for repeated searches.",
+      "query_templates": {
+        "repositories": "https://api.github.com/search/repositories?q={query}+topic:{category}+pushed:>={year}-01-01",
+        "code": "https://api.github.com/search/code?q={query}+in:file",
+        "issues": "https://api.github.com/search/issues?q={query}+is:issue"
+      },
+      "evidence_fields": ["repo identity", "stars", "forks", "pushed_at", "license", "topics", "readme match"],
+      "confidence_role": "Broad discovery using topic, stars, pushed, license, in:readme, org/user, issue, and code/file searches.",
+      "failure_mode": "Rate limits or missing token reduce breadth; do not treat absence of results as absence of ecosystem activity."
+    },
+    {
+      "id": "github-graphql",
+      "category": "github",
+      "authority_tier": "enrichment",
+      "access_method": "graphql-api",
+      "base_url_or_command": "https://api.github.com/graphql",
+      "auth_env": ["GITHUB_TOKEN"],
+      "rate_limit_notes": "Token required for live GraphQL calls; batching still consumes GraphQL points.",
+      "query_templates": {
+        "repository": "query($owner:String!,$name:String!){ repository(owner:$owner,name:$name){ nameWithOwner stargazerCount forkCount isArchived pushedAt updatedAt licenseInfo { spdxId } repositoryTopics(first:20){ nodes{ topic{ name } } } releases(first:5,orderBy:{field:CREATED_AT,direction:DESC}){ nodes{ tagName publishedAt isPrerelease } } issues(states:OPEN){ totalCount } pullRequests(states:OPEN){ totalCount } } }"
+      },
+      "evidence_fields": ["stars", "forks", "releases", "topics", "license", "activity", "issues", "pull requests", "archive status"],
+      "confidence_role": "Batched enrichment for known candidate repositories after REST/search discovery.",
+      "failure_mode": "Missing GITHUB_TOKEN blocks live enrichment; use REST/public metadata or mark candidate enrichment incomplete."
+    },
+    {
+      "id": "github-community-signals",
+      "category": "github",
+      "authority_tier": "enrichment",
+      "access_method": "http-api",
+      "base_url_or_command": "https://api.github.com/repos/{owner}/{repo}/issues",
+      "auth_env": ["GITHUB_TOKEN"],
+      "rate_limit_notes": "Token optional but recommended; discussions API may require GraphQL and repository support.",
+      "query_templates": {
+        "issues": "https://api.github.com/repos/{owner}/{repo}/issues?state=all&per_page=20",
+        "releases": "https://api.github.com/repos/{owner}/{repo}/releases?per_page=10",
+        "changelog": "https://api.github.com/repos/{owner}/{repo}/contents/CHANGELOG.md"
+      },
+      "evidence_fields": ["known failures", "release cadence", "breaking changes", "maintainer response", "compatibility pain"],
+      "confidence_role": "Community compatibility and failure context; never sole adoption evidence.",
+      "failure_mode": "Missing issue/release data lowers maintenance confidence but should not override official evidence by itself."
+    },
+    {
+      "id": "official-mcp-registry",
+      "category": "mcp",
+      "authority_tier": "registry",
+      "access_method": "http-api",
+      "base_url_or_command": "https://registry.modelcontextprotocol.io/v0.1/servers",
+      "auth_env": [],
+      "rate_limit_notes": "Public registry API; handle endpoint drift with degraded status.",
+      "query_templates": {
+        "servers": "https://registry.modelcontextprotocol.io/v0.1/servers?limit=100",
+        "versions": "https://registry.modelcontextprotocol.io/v0.1/servers/{candidate_encoded}/versions",
+        "latest": "https://registry.modelcontextprotocol.io/v0.1/servers/{candidate_encoded}/versions/latest"
+      },
+      "evidence_fields": ["server identity", "packages", "repository", "description", "version", "remote status"],
+      "confidence_role": "Vendor-neutral MCP metadata and canonical server lookup.",
+      "failure_mode": "If unavailable, cross-check Glama, PulseMCP, Smithery, Docker Catalog, and package registries."
+    },
+    {
+      "id": "glama-mcp",
+      "category": "mcp",
+      "authority_tier": "registry",
+      "access_method": "openapi",
+      "base_url_or_command": "https://glama.ai/api/mcp/openapi.json",
+      "auth_env": [],
+      "rate_limit_notes": "Public OpenAPI document; endpoint-specific rate limits may apply.",
+      "query_templates": {
+        "openapi": "https://glama.ai/api/mcp/openapi.json",
+        "search": "https://glama.ai/api/mcp/v1/servers?query={query}"
+      },
+      "evidence_fields": ["server metadata", "tool schemas", "attributes", "quality signals", "safety metadata"],
+      "confidence_role": "MCP server and tool-schema search with quality/safety attributes when exposed.",
+      "failure_mode": "If OpenAPI shape drifts, mark schema evidence blocked and use registry/package corroboration."
+    },
+    {
+      "id": "pulsemcp",
+      "category": "mcp",
+      "authority_tier": "registry",
+      "access_method": "http-api",
+      "base_url_or_command": "https://www.pulsemcp.com/api/docs/v0.1",
+      "auth_env": ["PULSEMCP_API_KEY", "PULSEMCP_TENANT"],
+      "rate_limit_notes": "API key and tenant may be required for live API access.",
+      "query_templates": {
+        "docs": "https://www.pulsemcp.com/api/docs/v0.1",
+        "search": "https://www.pulsemcp.com/api/v0.1/servers?query={query}"
+      },
+      "evidence_fields": ["official status", "popularity", "auth", "tools", "lifecycle status"],
+      "confidence_role": "Enriched MCP metadata and lifecycle/popularity signals.",
+      "failure_mode": "Missing credentials lower confidence but do not block MCP cross-source comparison."
+    },
+    {
+      "id": "smithery",
+      "category": "mcp",
+      "authority_tier": "registry",
+      "access_method": "http-api",
+      "base_url_or_command": "https://smithery.ai/docs/concepts/registry_search_servers",
+      "auth_env": ["SMITHERY_API_KEY"],
+      "rate_limit_notes": "API key required for some registry calls.",
+      "query_templates": {
+        "docs": "https://smithery.ai/docs/concepts/registry_search_servers",
+        "search": "https://server.smithery.ai/registry/search?q={query}"
+      },
+      "evidence_fields": ["verified status", "use count", "remote availability", "deployed status", "server metadata"],
+      "confidence_role": "MCP registry search with verified, use-count, remote, and deployed signals.",
+      "failure_mode": "Missing API key degrades verified/use-count enrichment."
+    },
+    {
+      "id": "docker-mcp-catalog",
+      "category": "mcp",
+      "authority_tier": "registry",
+      "access_method": "command",
+      "base_url_or_command": "docker mcp catalog search {query}",
+      "auth_env": [],
+      "rate_limit_notes": "Requires Docker Desktop/CLI with MCP Catalog support installed locally.",
+      "query_templates": {
+        "search": "docker mcp catalog search {query}",
+        "inspect": "docker mcp catalog inspect {candidate}"
+      },
+      "evidence_fields": ["verified container", "provenance", "SBOM", "isolation", "profile workflow", "image reference"],
+      "confidence_role": "Containerized MCP candidates with provenance and isolation evidence.",
+      "failure_mode": "Missing Docker CLI or catalog support makes this source unavailable, not a candidate failure."
+    },
+    {
+      "id": "skills-sh-api",
+      "category": "skill",
+      "authority_tier": "registry",
+      "access_method": "http-api",
+      "base_url_or_command": "https://skills.sh/api/v1",
+      "auth_env": [],
+      "rate_limit_notes": "Unauthenticated API has stricter rate limits.",
+      "query_templates": {
+        "leaderboard": "https://skills.sh/api/v1/skills?view=trending&per_page=100",
+        "search": "https://skills.sh/api/v1/skills/search?q={query}&limit=50",
+        "details": "https://skills.sh/api/v1/skills/{candidate}",
+        "audit": "https://skills.sh/api/v1/skills/audit/{candidate}",
+        "docs": "https://skills.sh/docs/api"
+      },
+      "evidence_fields": ["leaderboard rank", "search result", "first-party status", "details", "file tree", "audit metadata"],
+      "confidence_role": "Agent Skill leaderboard, search, curated first-party skills, details, file tree, and audits.",
+      "failure_mode": "Rate limits lower breadth; use `npx skills add --list` and local policy for adoption routing."
+    },
+    {
+      "id": "skills-cli-list",
+      "category": "skill",
+      "authority_tier": "primary",
+      "access_method": "command",
+      "base_url_or_command": "npx skills add {source} --list",
+      "auth_env": [],
+      "rate_limit_notes": "May download npm package metadata; source-dependent network behavior.",
+      "query_templates": {
+        "list": "npx skills add {candidate} --list"
+      },
+      "evidence_fields": ["source-list truth", "available skill names", "installable paths", "source resolution"],
+      "confidence_role": "Truth source before installing or auditing external skills.",
+      "failure_mode": "If the source cannot list skills, route through external-skill-auditor or keep candidate inspect-only."
+    },
+    {
+      "id": "npm-registry",
+      "category": "package",
+      "authority_tier": "enrichment",
+      "access_method": "http-api",
+      "base_url_or_command": "https://registry.npmjs.org/-/v1/search?text={query}",
+      "auth_env": [],
+      "rate_limit_notes": "Public registry rate limits apply.",
+      "query_templates": {
+        "search": "https://registry.npmjs.org/-/v1/search?text={query}",
+        "package": "https://registry.npmjs.org/{candidate_encoded}"
+      },
+      "evidence_fields": ["package name", "dist-tags", "versions", "maintainers", "license", "downloads proxy", "install scripts"],
+      "confidence_role": "OpenCode plugins, JavaScript MCP packages, install scripts, maintainers, and dist-tags.",
+      "failure_mode": "Package metadata alone cannot prove harness compatibility."
+    },
+    {
+      "id": "pypi-json",
+      "category": "package",
+      "authority_tier": "enrichment",
+      "access_method": "http-api",
+      "base_url_or_command": "https://pypi.org/pypi/{candidate}/json",
+      "auth_env": [],
+      "rate_limit_notes": "Public API; avoid high-volume polling.",
+      "query_templates": {
+        "package": "https://pypi.org/pypi/{candidate_encoded}/json",
+        "simple": "https://pypi.org/simple/{candidate_encoded}/"
+      },
+      "evidence_fields": ["releases", "metadata", "requires_python", "project_urls", "license", "file hashes", "yanked status"],
+      "confidence_role": "Python MCP packages, release metadata, vulnerabilities, and file hashes.",
+      "failure_mode": "Name mismatch is common; corroborate with repository and MCP registry identity."
+    },
+    {
+      "id": "open-vsx",
+      "category": "extension",
+      "authority_tier": "registry",
+      "access_method": "http-api",
+      "base_url_or_command": "https://open-vsx.org/api/-/search?query={query}",
+      "auth_env": [],
+      "rate_limit_notes": "Public API/wiki with package mirrors; endpoint shape can drift.",
+      "query_templates": {
+        "search": "https://open-vsx.org/api/-/search?query={query}",
+        "extension": "https://open-vsx.org/api/{namespace}/{extension}"
+      },
+      "evidence_fields": ["namespace", "extension name", "versions", "downloads", "license", "repository", "engines"],
+      "confidence_role": "VS Code-compatible extension discovery for Cursor and Antigravity-style surfaces.",
+      "failure_mode": "Open VSX availability does not prove Cursor/Antigravity runtime compatibility."
+    },
+    {
+      "id": "docker-hub-oci",
+      "category": "package",
+      "authority_tier": "enrichment",
+      "access_method": "http-api",
+      "base_url_or_command": "https://hub.docker.com/v2/repositories/{namespace}/{repository}/tags",
+      "auth_env": [],
+      "rate_limit_notes": "Docker Hub API and anonymous pull limits apply.",
+      "query_templates": {
+        "tags": "https://hub.docker.com/v2/repositories/{namespace}/{repository}/tags",
+        "repository": "https://hub.docker.com/v2/repositories/{namespace}/{repository}"
+      },
+      "evidence_fields": ["image tags", "last updated", "digest", "publisher", "pulls", "description"],
+      "confidence_role": "Container image provenance and update signals for Docker-packaged MCP servers.",
+      "failure_mode": "Image metadata should be cross-checked with source repository and security feeds."
+    },
+    {
+      "id": "osv",
+      "category": "security",
+      "authority_tier": "security",
+      "access_method": "http-api",
+      "base_url_or_command": "https://api.osv.dev/v1/query",
+      "auth_env": [],
+      "rate_limit_notes": "Public API; batch queries are available for multiple packages.",
+      "query_templates": {
+        "query": "POST https://api.osv.dev/v1/query",
+        "querybatch": "POST https://api.osv.dev/v1/querybatch"
+      },
+      "evidence_fields": ["vulnerability ids", "affected packages", "affected ranges", "aliases", "severity", "references"],
+      "confidence_role": "Open vulnerability checks for npm, PyPI, Go, crates, containers, and commits.",
+      "failure_mode": "No OSV finding is not a full security audit; still review permissions and credential behavior."
+    },
+    {
+      "id": "socket-snyk",
+      "category": "security",
+      "authority_tier": "security",
+      "access_method": "http-api",
+      "base_url_or_command": "Socket/Snyk package risk APIs",
+      "auth_env": ["SOCKET_API_KEY", "SNYK_TOKEN"],
+      "rate_limit_notes": "Credentialed and service-dependent; optional enrichment only.",
+      "query_templates": {
+        "socket": "https://api.socket.dev/v0/npm/package/{candidate_encoded}",
+        "snyk": "https://api.snyk.io/rest"
+      },
+      "evidence_fields": ["supply-chain risk", "maintainer risk", "malware flags", "known vulnerabilities", "license policy"],
+      "confidence_role": "Optional supply-chain scoring; never required for baseline mode.",
+      "failure_mode": "Missing credentials keep baseline OSV/package checks as the security floor."
+    },
+    {
+      "id": "community-web",
+      "category": "community",
+      "authority_tier": "community",
+      "access_method": "web-search",
+      "base_url_or_command": "web search for Reddit, HN, blogs, vendor forums, and papers",
+      "auth_env": [],
+      "rate_limit_notes": "Search engine and site-specific limits apply.",
+      "query_templates": {
+        "sentiment": "{query} compatibility failure review",
+        "papers": "{query} MCP plugin security paper"
+      },
+      "evidence_fields": ["failure reports", "sentiment", "risk models", "workarounds", "unverified adoption stories"],
+      "confidence_role": "Advisory sentiment and failure reports; low-confidence unless corroborated.",
+      "failure_mode": "Community-only evidence cannot justify adoption, install, or apply."
+    }
+  ]
+}

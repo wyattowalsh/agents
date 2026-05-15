@@ -1,0 +1,17 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master compare filesystem-mcp github-mcp memory-mcp for codex opencode",
+  "files": [
+    "references/ecosystem-research.md",
+    "references/source-profiles.md",
+    "references/output-format.md",
+    "data/research-sources.json",
+    "scripts/candidate_score.py"
+  ],
+  "expected_behavior": [
+    "Agent enters Candidate Compare mode and ranks candidates for Codex and OpenCode",
+    "Agent compares Official MCP Registry, Glama, PulseMCP, Smithery, Docker MCP Catalog, package, local registry, and security evidence",
+    "Agent reviews one-owner-per-MCP rules, credential exposure, sandboxing, validation readiness, and rollback",
+    "Agent does not recommend adoption from a single registry alone when stronger corroboration is available"
+  ]
+}

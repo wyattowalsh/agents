@@ -1,0 +1,15 @@
+{
+	"skills": ["harness-master"],
+	"query": "/harness-master usage chatgpt cursor global for connector and cloud-agent usage",
+	"files": [
+		"SKILL.md",
+		"references/workflow.md",
+		"references/evidence-boundaries.md",
+		"references/usage-review.md"
+	],
+	"expected_behavior": [
+		"Agent marks connector and cloud-agent usage as manual-only or blind-spot evidence unless a sanitized export exists",
+		"Agent does not invent local usage metrics for UI-only or cloud-only surfaces",
+		"Agent recommends instrumentation or manual export when evidence is blocked"
+	]
+}

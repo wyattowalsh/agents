@@ -8,8 +8,10 @@
 4. [Gate 3: Per-Harness Audit](#gate-3-per-harness-audit)
 5. [Gate 4: Dry-Run Report](#gate-4-dry-run-report)
 6. [Gate 5: Apply Approved](#gate-5-apply-approved)
-7. [Precedence And Conflict Rules](#precedence-and-conflict-rules)
-8. [Degraded Mode](#degraded-mode)
+7. [Mode C: Ecosystem Research](#mode-c-ecosystem-research)
+8. [Mode D: Usage Review](#mode-d-usage-review)
+9. [Precedence And Conflict Rules](#precedence-and-conflict-rules)
+10. [Degraded Mode](#degraded-mode)
 
 ## Gate 0: Discover Surfaces
 
@@ -124,6 +126,78 @@ After edits:
 2. rerun targeted dry-run checks
 3. summarize what changed and what remains
 
+## Mode C: Ecosystem Research
+
+Use this mode for current ecosystem discovery and candidate comparison across harness configs, plugins, extensions, MCP servers, and Agent Skills. It is always advisory and read-only.
+
+Supported forms:
+
+- `research <harness|all> <config|plugin|extension|mcp|skill|all> [goal]`
+- `candidate <source-or-url> <harness|all> [level]`
+- `compare <candidate...> for <harness|all>`
+- `sources [category]`
+
+Research gates:
+
+1. Normalize the harness set, category, depth, and goal.
+2. Run `discover_surfaces.py` when local fit, canonical ownership, or overlap checks matter.
+3. Load local registries before external sources: `config/harness-surface-registry.json`, `config/plugin-extension-registry.json`, `config/mcp-registry.json`, and `config/external-skills.md`.
+4. Build a source plan with `source_probe.py --dry-run --json`.
+5. Execute only low-risk read-only source calls when the user or runtime mode permits live research. Missing optional credentials create degraded evidence, not a hard failure.
+6. Dispatch read-only source-family scouts when subagents or teams are available. Resolve or explicitly skip every scout before synthesis.
+7. Normalize evidence into candidate dossiers.
+8. Score candidates with `candidate_score.py`.
+9. Produce the `Ecosystem Research Report` from `references/output-format.md`.
+10. Stop before installs, config edits, docs generation, or generated artifact updates.
+
+Apply boundary:
+
+- A research report is not an approval gate.
+- If the user asks to apply a research finding, rerun or produce a matching dry-run audit for the exact harness/level/change surface first.
+- Apply only after explicit approval of that dry-run audit.
+
+Candidate support tiers:
+
+- `validated`: fixture evidence and rollback coverage exist.
+- `repo-present-validation-required`: repo source exists but fixtures or rollback checks are missing.
+- `planned-research-backed`: external evidence is strong but no local support exists yet.
+- `experimental`: UI, cloud, desktop, or runtime behavior is still mostly blind.
+- `quarantine`: credential bridging, auth proxying, offensive behavior, broad destructive tools, or broad permission risk requires isolation before adoption.
+
+## Mode D: Usage Review
+
+Use this mode for read-only review of harness token use, quota posture, cost posture, tool friction, MCP usage, skill usage, plugin usage, context health, approval safety, and telemetry coverage.
+
+Supported forms:
+
+- `usage <harness|all> [project|global|both] [days]`
+- `usage <harness|all> [level] days=<N>`
+- natural-language requests such as “review OpenCode usage”, “why are tokens high”, “which MCPs are used”, or “audit tool friction”
+
+Usage gates:
+
+1. **U0 Scope Intake** — Normalize harnesses, level, and day window. Ask only for missing harnesses or level. Default day window to `14` when absent.
+2. **U1 Surface Discovery** — Run `discover_surfaces.py` for selected harnesses and level to understand observable config ownership and blind spots.
+3. **U2 Usage Source Plan** — Load `references/usage-review.md` and choose only sources allowed by privacy class. Prefer aggregate summaries and sanitized exports.
+4. **U3 Safe Collection** — Run `usage_probe.py` and optional runtime tools only when they do not expose secrets, raw prompts, raw traces, raw session bodies, or raw message-table rows.
+5. **U4 Normalize And Score** — Convert evidence into `UsageSignal` and `UsageFinding` records, then score the Usage Review scorecard.
+6. **U5 Recommendation Routing** — Put each recommendation in one lane: `keep`, `tune-config`, `tune-skill`, `tune-mcp`, `tune-plugin`, `tune-workflow`, `instrument`, `defer`, or `do-not-change`.
+7. **U6 Report** — Produce the Usage Review Report from `references/output-format.md` and state the apply boundary.
+
+Safe collection rules:
+
+- Prefer `token_stats`, `token_history`, `token_export`, `insights_collect`, `insights_generate`, `agent_attribution`, `quota_status`, `gemini_quota`, `workspace-summary`, and `git-smart-status` over direct database reads.
+- Use `opencode stats`, `opencode session list`, `opencode export --sanitize`, and `opencode db path` only as command shapes or sanitized commands unless the user explicitly asks to execute them.
+- Do not query OpenCode raw message tables, raw prompts, raw traces, or encrypted reasoning content.
+- Do not print values from env vars, auth files, WakaTime keys, Langfuse keys, provider credentials, or `.env*` files.
+- Treat missing telemetry sources as `observability-gap`, not as proof of low usage.
+
+Apply boundary:
+
+- A Usage Review report is not an approval gate for edits.
+- If the user asks to apply a Usage Review recommendation, rerun or produce a matching dry-run Audit for the exact harness, level, and config surface first.
+- Apply only after explicit approval of that dry-run Audit.
+
 ## Precedence And Conflict Rules
 
 Use these precedence rules when `level` is `both`:
@@ -141,6 +215,9 @@ Enter degraded mode when:
 - official docs cannot be fetched
 - the discovery script cannot run and manual discovery is incomplete
 - the relevant global surfaces are inaccessible from the current session
+- credentialed ecosystem sources are missing optional environment variables
+- source APIs rate-limit, omit expected evidence fields, or expose only web/UI access
+- aggregate usage sources are absent, disabled, or only available through raw-sensitive stores
 
 Degraded mode rules:
 
@@ -148,3 +225,6 @@ Degraded mode rules:
 - keep findings grounded in observable files
 - avoid “latest” claims without current evidence
 - prefer patch previews only for issues directly supported by codebase evidence
+- never promote candidates from community-only evidence
+- list blocked evidence and the exact source or credential needed to raise confidence
+- separate “not observed” from “not used” for usage and telemetry signals

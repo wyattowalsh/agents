@@ -1,0 +1,10 @@
+{
+	"skills": ["harness-master"],
+	"query": "Design production SLOs and traces for our web app latency and database errors.",
+	"files": ["SKILL.md"],
+	"expected_behavior": [
+		"Agent does not route generic application observability work to harness-master",
+		"Agent explains that Usage Review is for harness usage posture, not app telemetry strategy",
+		"Agent redirects to observability-advisor or instrumentation as appropriate"
+	]
+}

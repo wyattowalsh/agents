@@ -1,0 +1,16 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master research all mcp because Reddit says this new MCP is amazing",
+  "files": [
+    "SKILL.md",
+    "references/ecosystem-research.md",
+    "references/source-profiles.md",
+    "references/output-format.md"
+  ],
+  "expected_behavior": [
+    "Agent treats community praise as low-confidence advisory evidence",
+    "Agent refuses adoption, install, or apply recommendations from community-only evidence",
+    "Agent requires official, local, registry, package, or security corroboration before promotion",
+    "Agent may recommend inspect/further research only"
+  ]
+}

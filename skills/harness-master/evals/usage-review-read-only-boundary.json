@@ -1,0 +1,10 @@
+{
+	"skills": ["harness-master"],
+	"query": "/harness-master usage opencode both and apply the recommended plugin changes",
+	"files": ["SKILL.md", "references/workflow.md", "references/usage-review.md"],
+	"expected_behavior": [
+		"Agent states that Usage Review is advisory and read-only",
+		"Agent does not apply plugin, MCP, skill, or config changes from usage findings",
+		"Agent requires a matching dry-run Audit and explicit approval before any apply phase"
+	]
+}

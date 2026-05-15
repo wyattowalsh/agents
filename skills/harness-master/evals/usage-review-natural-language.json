@@ -1,0 +1,15 @@
+{
+	"skills": ["harness-master"],
+	"query": "Can you review our OpenCode token usage, tool friction, MCP usage, and plugin fit for the last two weeks without changing anything?",
+	"files": [
+		"SKILL.md",
+		"references/usage-review.md",
+		"references/output-format.md"
+	],
+	"expected_behavior": [
+		"Agent recognizes token usage, tool friction, MCP usage, and plugin fit as Usage Review signals",
+		"Agent defaults the usage window to 14 days",
+		"Agent uses safe aggregate or metadata sources only",
+		"Agent reports recommendation lanes instead of patch previews"
+	]
+}

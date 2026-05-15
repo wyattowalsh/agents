@@ -1,0 +1,18 @@
+{
+  "skills": ["harness-master"],
+  "query": "/harness-master research opencode plugin latest runtime progress and rules plugins",
+  "files": [
+    "SKILL.md",
+    "references/ecosystem-research.md",
+    "references/source-profiles.md",
+    "data/research-sources.json",
+    "scripts/source_probe.py",
+    "scripts/candidate_score.py"
+  ],
+  "expected_behavior": [
+    "Agent enters Ecosystem Research mode rather than audit or apply mode",
+    "Agent runs or plans source discovery read-only before recommending candidates",
+    "Agent uses local plugin registry and OpenCode surfaces as fit and ownership context",
+    "Agent does not edit configs, install plugins, or generate docs from the research report"
+  ]
+}

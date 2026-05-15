@@ -65,3 +65,25 @@ When a generated or merged surface is wrong, recommend changing the canonical so
 - no unresolved blind spot makes the change unsafe
 
 If those conditions are not met, rerun audit first.
+
+## Usage Privacy Classes
+
+Use these classes when collecting or reporting usage evidence:
+
+- `aggregate-safe` — totals, counts, rates, status, or score summaries that cannot expose prompts, secrets, or raw traces
+- `metadata-safe` — file presence, top-level keys, command availability, plugin names, timestamps, sizes, and non-secret identifiers
+- `sanitized-export` — exported data explicitly sanitized by the source tool before the agent sees it
+- `credential-presence` — boolean presence or absence of required environment variables or auth files; never print values
+- `raw-sensitive` — raw prompts, raw completions, traces, reasoning parts, session bodies, database message rows, or unsanitized logs
+- `secret-file` — `.env*`, auth databases, keys, tokens, credential JSON, WakaTime keys, Langfuse keys, provider credentials, and similar secrets
+- `manual-only` — UI/cloud/dashboard evidence that the user must inspect or export manually before it is usable
+
+Usage Review can collect `aggregate-safe`, `metadata-safe`, `sanitized-export`, and `credential-presence` evidence. `raw-sensitive` and `secret-file` sources are out of scope. `manual-only` sources may be listed as blocked evidence but must not be invented.
+
+## Usage Evidence Boundaries
+
+- Absence of telemetry is an `observability-gap`, not proof of low usage.
+- Aggregate token or cost spikes can justify `instrument`, `tune-workflow`, or a later dry-run Audit, but not immediate edits.
+- Tool, MCP, skill, and plugin recommendations must identify whether evidence came from actual usage, configuration presence, or only command availability.
+- Never include raw transcript snippets, raw prompts, raw tool inputs, raw traces, or credential values in Usage Review output.
+- Direct database reads are allowed only for schema or path discovery. Raw message, prompt, completion, trace, or reasoning rows are not allowed.
