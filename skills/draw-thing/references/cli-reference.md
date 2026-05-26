@@ -1,268 +1,215 @@
-# Draw Things CLI — Flag Reference
+# Draw Things CLI Reference
 
-Primary parameter reference for `draw-things-cli generate`. Load this file when building non-trivial commands or when the user asks about specific flags.
+Current reference for `draw-things-cli` as used by this skill. Load when building non-trivial commands or checking whether a flag is supported.
 
-> **Verify uncertain flags.** This reference is based on known CLI design patterns and community documentation. If any flag behaves unexpectedly, run `draw-things-cli generate --help` for the authoritative list on your installed version.
-
----
-
-## Core Flags
-
-| Flag | Type | Default | Range / Notes |
-|------|------|---------|---------------|
-| `--model` | string | — | Path or filename of checkpoint. Required. |
-| `--prompt` | string | — | Generation prompt. Required. |
-| `--negative-prompt` | string | `""` | What to exclude. **Omit entirely for Flux.** |
-| `--width` | int | model default | Pixels. Use model-native resolution. |
-| `--height` | int | model default | Pixels. Use model-native resolution. |
-| `--steps` | int | 25 | Diffusion steps. Flux Schnell: 4, Flux Dev: 30, SDXL/SD 1.5: 20–30. |
-| `--guidance-scale` | float | 7.0 | CFG scale. Flux: 1.0, SDXL: 7.0, SD 1.5: 7.5. Higher = more literal. |
-| `--sampler` | string | `"DPM++ 2M Karras"` | See sampler list below. |
-| `--seed` | int | -1 | `-1` = random. Fixed value = reproducible output. |
-| `--batch-count` | int | 1 | Number of images to generate (sequential, incrementing seeds). |
-| `--batch-size` | int | 1 | Images per batch pass (parallel, same seed). Verify with `--help`. |
+> Trust the installed CLI first. If this file and `draw-things-cli generate --help` disagree, use the installed help and update the skill later.
 
 ---
 
-## img2img Flags
+## Commands
 
-| Flag | Type | Default | Range / Notes |
-|------|------|---------|---------------|
-| `--image` | path | — | Input image for img2img, inpaint, and ControlNet. Verify exact flag name with `--help`. |
-| `--strength` | float | 0.75 | Denoising strength. 0.0 = no change, 1.0 = full redraw. |
-| `--image-guidance` | float | — | IP-Adapter or image guidance scale. Verify with `--help`. |
-
-**Denoising strength guide:**
-
-| Use case | `--strength` |
-|----------|-------------|
-| Subtle style transfer | 0.2–0.35 |
-| Moderate edit | 0.5 |
-| Significant change | 0.75 |
-| Near-complete redraw | 0.9+ |
-| Upscaling (preserve detail) | 0.2–0.4 |
-| Inpainting | 0.6–0.85 |
+| Command                                         | Purpose                                        | Typical use                |
+| ----------------------------------------------- | ---------------------------------------------- | -------------------------- |
+| `draw-things-cli generate`                      | Run local inference and save an image or video | Generation, img2img, media |
+| `draw-things-cli models list`                   | List official and community catalog entries    | Model discovery            |
+| `draw-things-cli models list --downloaded-only` | List local downloads                           | Inventory                  |
+| `draw-things-cli models ensure --model <id>`    | Download/resolve a model and dependencies      | Setup                      |
+| `draw-things-cli models import <path-or-url>`   | Import external model/LoRA/control assets      | Imports                    |
+| `draw-things-cli train lora`                    | LoRA training entrypoint                       | Training workflows         |
+| `draw-things-cli completion`                    | Shell completion                               | User setup                 |
 
 ---
 
-## Upscaler Flags
+## Generate Flags Exposed By Current Help
 
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--upscaler` | string | — | Upscaler model filename. |
-| `--upscaler-scale` | int | 2 | `2` or `4`. |
-
-See SKILL.md Mode: Upscale section for available upscalers and filenames.
-
----
-
-## Inpainting Flags
-
-| Flag | Type | Default | Range / Notes |
-|------|------|---------|---------------|
-| `--mask` | path | — | Mask image. White = repaint, black = keep. Verify exact flag name with `--help`. |
-| `--mask-blur` | int | 4 | Feather mask edges. Range: 0–25. Increase if seams are visible. |
-| `--mask-blur-outset` | int | 0 | Extend mask boundary. Range: −100 to 1000. |
-| `--preserve-original-after-inpaint` | bool | `true` | Composites result back onto original outside mask. |
-
----
-
-## ControlNet Flags
-
-| Flag | Type | Notes |
-|------|------|-------|
-| `--controls` | JSON array | One or more ControlNet config objects. Single-quote on the shell. |
-
-### ControlNet (`--controls`)
-
-JSON array of control configurations. See `references/controlnet-guide.md` for the complete JSON schema, control modes, preprocessor types, and weight recommendations.
-
-**Step scheduling tips:**
-
-| Module | Guidance start | Guidance end | Rationale |
-|--------|---------------|-------------|-----------|
-| Pose | 0.0 | 0.5 | Structure set early; free later steps for detail |
-| Canny / Depth | 0.0 | 1.0 | Edge/depth guidance needed throughout |
-| Tile | 0.0 | 1.0 | Texture guidance for full duration |
-
-**Multi-ControlNet:** sum of all weights should total ~0.8–1.0 to avoid over-constrained outputs.
+| Flag                                           | Type   | Notes                                                                              |
+| ---------------------------------------------- | ------ | ---------------------------------------------------------------------------------- |
+| `--models-dir`                                 | path   | Override Draw Things models directory.                                             |
+| `-m`, `--model`                                | string | Model file id, display name, `hf://owner/repo`, `owner/repo`, or Hugging Face URL. |
+| `-p`, `--prompt`                               | string | Inline prompt.                                                                     |
+| `--prompt-file`                                | path   | Read prompt from a file.                                                           |
+| `--negative-prompt`                            | string | Inline negative prompt when model supports it.                                     |
+| `--negative-prompt-file`                       | path   | Read negative prompt from a file.                                                  |
+| `--steps`                                      | int    | Inference steps. Use recommended defaults per model.                               |
+| `--cfg`                                        | float  | Guidance. Replaces old `--guidance-scale` examples.                                |
+| `--width`                                      | int    | Output width. Use model-appropriate dimensions.                                    |
+| `--height`                                     | int    | Output height. Use model-appropriate dimensions.                                   |
+| `--frames`                                     | int    | Media/video frame count. For LTX, use divisible by 8 plus 1.                       |
+| `--strength`                                   | float  | Img2img change amount.                                                             |
+| `-s`, `--seed`                                 | int    | Reproducibility seed.                                                              |
+| `--config-json`                                | JSON   | Override settings with JSON. Verify schema before use.                             |
+| `--config-file`                                | path   | Override settings from JSON file. Best path for advanced app settings.             |
+| `--image`                                      | path   | Input image for img2img/image-conditioned workflows.                               |
+| `-o`, `--output`                               | path   | Output image/video file. Always set this explicitly.                               |
+| `--video-format`                               | string | Video format when output path does not imply it.                                   |
+| `--terminal-image`                             | bool   | Preview image in terminal where supported. Not a file output substitute.           |
+| `--terminal-image-protocol`                    | string | Terminal image protocol.                                                           |
+| `--download-missing` / `--no-download-missing` | bool   | Whether missing model assets may be downloaded.                                    |
+| `--offline`                                    | bool   | Disable network access.                                                            |
 
 ---
 
-## LoRA Flags
+## Removed Or Unexposed Old Flags
 
-| Flag | Type | Notes |
-|------|------|-------|
-| `--loras` | JSON array | One or more LoRA config objects. Single-quote on the shell. |
+These flags appeared in older examples but are not exposed by current `generate --help` in this environment:
 
-### LoRA JSON Schema
+| Old flag                         | Current action                                                 |
+| -------------------------------- | -------------------------------------------------------------- |
+| `--guidance-scale`               | Use `--cfg`.                                                   |
+| `--sampler`                      | Do not pass directly unless help later exposes it.             |
+| `--batch-count`, `--batch-size`  | Use a shell loop with explicit seeds/output names.             |
+| `--upscaler`, `--upscaler-scale` | Use app/config-file workflow only after schema verification.   |
+| `--mask`, `--mask-blur`          | Use app/config-file workflow only after schema verification.   |
+| `--controls`                     | Use app/config-file workflow only after schema verification.   |
+| `--loras`                        | Use app/import/config workflow only after schema verification. |
+| `--hires-fix` and related flags  | Use app/config-file workflow only after schema verification.   |
 
-```json
-[
-  {
-    "file": "<lora_filename>",
-    "weight": 0.8,
-    "mode": "All"
-  }
-]
+Never copy old direct-flag examples into live commands without rechecking help.
+
+---
+
+## Output Semantics
+
+Always pass `--output <file>`.
+
+If `--output` is omitted, current CLI behavior may be terminal preview only. Agent workflows need a durable path for follow-up edits, comparison, and user reporting.
+
+Recommended output directory:
+
+```bash
+mkdir -p "$HOME/Pictures/draw-thing"
 ```
 
-**Fields:**
+Use descriptive names with model role and seed, for example:
 
-| Field | Type | Default | Range / Values |
-|-------|------|---------|----------------|
-| `file` | string | — | LoRA filename (relative to models dir) |
-| `weight` | float | 0.6 | −1.5 to 2.5. Typical: 0.5–1.0. |
-| `mode` | string | `"All"` | `"All"`, `"Base"`, `"Refiner"` |
-
-Multiple LoRAs: add additional objects to the array.
-
-```json
-[
-  {"file": "style_lora.safetensors", "weight": 0.7, "mode": "All"},
-  {"file": "character_lora.safetensors", "weight": 0.6, "mode": "All"}
-]
+```text
+$HOME/Pictures/draw-thing/qwen2512-poster-seed-1234.png
+$HOME/Pictures/draw-thing/ltx-boat-seed-1234.mov
 ```
 
 ---
 
-## Hi-Res Fix Flags
+## Model Setup Commands
 
-Two-pass generation: generate at native resolution, then upscale with denoising.
+List all catalog entries:
 
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--hires-fix` | bool | `false` | Enable hi-res fix. |
-| `--hires-fix-width` | int | — | Target width for hi-res pass. |
-| `--hires-fix-height` | int | — | Target height for hi-res pass. |
-| `--hires-fix-strength` | float | 0.7 | Denoising for hi-res pass. Lower = preserve more. |
+```bash
+draw-things-cli models list
+```
 
-Verify exact flag names with `draw-things-cli generate --help`.
+List local downloads only:
 
----
+```bash
+draw-things-cli models list --downloaded-only
+```
 
-## Refiner / SDXL Stage-2 Flags
+Ensure a model and dependencies:
 
-Used for SDXL's two-stage pipeline (base → refiner).
+```bash
+draw-things-cli models ensure --model qwen_image_layered_1.0_bf16_q8p.ckpt
+```
 
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--stage-2-steps` | int | — | Steps for refiner pass. |
-| `--stage-2-guidance` | float | — | CFG for refiner pass. |
-| `--stage-2-shift` | float | — | Noise schedule shift for refiner. |
+Use `--offline` to verify local availability without downloading:
 
-Verify with `draw-things-cli generate --help`.
-
----
-
-## Advanced SDXL Flags
-
-Conditioning flags for SDXL aesthetic quality improvement.
-
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--clip-skip` | int | 1 | Layers to skip in CLIP. SD 1.5 anime: 2. |
-| `--clip-weight` | float | 1.0 | CLIP encoder weight. |
-| `--original-width` | int | — | Training-time original width conditioning. |
-| `--original-height` | int | — | Training-time original height conditioning. |
-| `--crop-top` | int | 0 | Crop offset top conditioning. |
-| `--crop-left` | int | 0 | Crop offset left conditioning. |
-| `--target-width` | int | — | Target width conditioning. |
-| `--target-height` | int | — | Target height conditioning. |
-
-Verify with `draw-things-cli generate --help`.
+```bash
+draw-things-cli models ensure --model qwen_image_2512_q8p.ckpt --offline
+```
 
 ---
 
-## Tiling Flags
+## Import Workflow
 
-For seamless textures or processing images larger than VRAM allows.
+Use Draw Things optimized assets when available. For external models, LoRAs, and controls, prefer local files over URL imports when possible:
 
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--tiled-decoding` | bool | `false` | Decode VAE in tiles (reduces VRAM). |
-| `--tiled-diffusion` | bool | `false` | Run diffusion in tiles (enables huge canvases). |
-| `--decoding-tile-overlap` | int | — | Pixel overlap between decoding tiles. |
-| `--decoding-tile-width` | int | — | Width of each decoding tile. |
-| `--decoding-tile-height` | int | — | Height of each decoding tile. |
+```bash
+draw-things-cli models import /path/to/model-or-lora.safetensors
+```
 
-Diffusion tiling uses `--diffusion-tile-width`, `--diffusion-tile-height`, `--diffusion-tile-overlap`.
+For a URL or Hugging Face model reference, verify licensing and compatibility first:
 
-Verify exact flag names with `draw-things-cli generate --help`.
+```bash
+draw-things-cli models import hf://owner/repo
+```
 
 ---
 
-## Performance / Caching Flags
+## Command Templates
 
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--tea-cache` | bool | `false` | Enable TEA-Cache for faster inference on supported models. |
-| `--causal-inference` | bool | `false` | Causal attention optimization (Flux). |
-| `--cfg-zero-init-steps` | int | 0 | CFG zero-init steps for conditioning warm-up. |
+### Fast Image
 
-Verify with `draw-things-cli generate --help`.
+```bash
+draw-things-cli generate \
+  --model z_image_turbo_1.0_q8p.ckpt \
+  --prompt "a small brass robot reading a field guide, cinematic light" \
+  --steps 8 \
+  --cfg 0 \
+  --width 1024 \
+  --height 1024 \
+  --seed 1234 \
+  --output /tmp/draw-thing-smoke.png
+```
+
+### Text/Layout Quality
+
+```bash
+draw-things-cli generate \
+  --model qwen_image_2512_q8p.ckpt \
+  --prompt "a clean editorial poster reading 'LOCAL MODELS 2026', precise typography, polished studio lighting" \
+  --steps 40 \
+  --cfg 4 \
+  --width 1328 \
+  --height 1328 \
+  --seed 1234 \
+  --output /tmp/draw-thing-qwen-smoke.png
+```
+
+### Img2img Edit
+
+```bash
+draw-things-cli generate \
+  --model qwen_image_edit_2511_q8p.ckpt \
+  --image /path/to/input.png \
+  --prompt "change the jacket to deep emerald velvet while preserving face identity and background" \
+  --strength 0.55 \
+  --steps 30 \
+  --cfg 4 \
+  --seed 1234 \
+  --output /tmp/draw-thing-edit.png
+```
+
+### Short Media
+
+```bash
+draw-things-cli generate \
+  --model ltx_2.3_22b_distilled_q6p.ckpt \
+  --prompt "a paper boat drifting across a moonlit pond, slow camera push, rippling reflections" \
+  --frames 49 \
+  --width 768 \
+  --height 512 \
+  --seed 1234 \
+  --output /tmp/draw-thing-smoke.mov
+```
+
+### Variations With Shell Loop
+
+```bash
+for seed in 2201 2202 2203 2204; do
+  draw-things-cli generate \
+    --model z_image_turbo_1.0_q8p.ckpt \
+    --prompt "four ceramic birds on a blue kitchen table, morning light" \
+    --steps 8 \
+    --cfg 0 \
+    --width 1024 \
+    --height 1024 \
+    --seed "$seed" \
+    --output "$HOME/Pictures/draw-thing/birds-$seed.png"
+done
+```
 
 ---
 
-## Output Flags
+## Advanced Config Caveat
 
-| Flag | Type | Default | Notes |
-|------|------|---------|-------|
-| `--output` | path | — | Output directory or file path. Verify exact behaviour with `--help`. |
+`--config-json` and `--config-file` apply Draw Things configuration overrides after model recommendations and before explicit flags. Use them for advanced settings only when you have verified the schema from a known-good Draw Things export or current docs.
 
-Default output directory (skill convention): `~/Pictures/draw-thing/`
-
----
-
-## Samplers
-
-19 sampler types. Use the exact string shown below for `--sampler`.
-
-| Sampler | Notes |
-|---------|-------|
-| `"Euler a"` | Default for Flux. Fast, good quality. |
-| `"Euler A Substep"` | Substep variant of Euler a. |
-| `"Euler A Trailing"` | Trailing schedule variant. |
-| `"Euler A AYS"` | AYS (Align Your Steps) schedule. |
-| `"DPM++ 2M Karras"` | Default for SD 1.5 and SDXL. Excellent quality/speed. |
-| `"DPM++ 2M AYS"` | AYS schedule variant. Flux Klein default. |
-| `"DPM++ 2M Trailing"` | Trailing schedule variant. |
-| `"DPM++ SDE Karras"` | Stochastic; richer details, slower. |
-| `"DPM++ SDE AYS"` | AYS schedule for SDE variant. |
-| `"DPM++ SDE Substep"` | Substep variant of SDE. |
-| `"DPM++ SDE Trailing"` | Trailing schedule for SDE variant. |
-| `"DDIM"` | Classic; good for inpainting. Deterministic. |
-| `"DDIM Trailing"` | Trailing schedule variant of DDIM. |
-| `"PLMS"` | Pseudo-linear multistep. |
-| `"UniPC"` | Unified Predictor-Corrector. |
-| `"UniPC Trailing"` | Trailing schedule variant. |
-| `"UniPC AYS"` | AYS schedule variant. |
-| `"LCM"` | Latent Consistency Model. Very fast (4-8 steps). |
-| `"TCD"` | Trajectory Consistency Distillation. |
-
-> Verify exact strings with `draw-things-cli generate --help` if a sampler is rejected.
-
----
-
-## Seed Modes
-
-| Mode | `--seed-mode` value | Behaviour |
-|------|---------------------|-----------|
-| Legacy | `"Legacy"` | Original Draw Things seed handling. |
-| Torch CPU Compatible | `"TorchCpuCompatible"` | Matches PyTorch CPU seed output. |
-| Scale-Alike | `"ScaleAlike"` | Consistent across different output resolutions. |
-| NVIDIA GPU Compatible | `"NvidiaGpuCompatible"` | Matches NVIDIA CUDA seed output. |
-
-Default mode is `"Legacy"`. Use `"ScaleAlike"` when generating the same composition at multiple resolutions. Verify flag name with `--help`.
-
----
-
-## Shell Quoting Rules
-
-- **Always single-quote** JSON values for `--loras` and `--controls` to prevent shell expansion:
-  ```bash
-  --loras '[{"file": "my_lora.safetensors", "weight": 0.8}]'
-  ```
-- Use double-quotes for `--prompt` and `--negative-prompt`.
-- Escape internal double-quotes in prompts with `\"` if using double-quote wrappers, or switch to single-quote wrappers.
-
+Do not invent JSON keys for ControlNet, LoRA, inpaint, upscale, tiling, samplers, or refiner settings.

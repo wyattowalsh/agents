@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>new-project blueprint</title>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        margin: 0;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 32px 20px;
+      }
+      h1 {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        margin: 0 0 8px;
+      }
+      section {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 20px;
+        margin: 16px 0;
+      }
+      code {
+        background: #e2e8f0;
+        border-radius: 6px;
+        padding: 2px 6px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .pill {
+        display: inline-block;
+        margin: 4px 6px 4px 0;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #dbeafe;
+        color: #1e3a8a;
+        font-size: 0.9rem;
+      }
+      .risk {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>new-project Blueprint</h1>
+      <p>
+        Render this template with report JSON from
+        <code>scripts/render_report.py</code>.
+      </p>
+      <section>
+        <h2>Approvals</h2>
+        <p>
+          List file, install, and external side-effect gates before applying
+          anything.
+        </p>
+      </section>
+      <section class="grid">
+        <div>
+          <h2>Files</h2>
+          <p>Created and skipped artifacts.</p>
+        </div>
+        <div>
+          <h2>Commands</h2>
+          <p>Commands proposed by capability.</p>
+        </div>
+        <div>
+          <h2>Validation</h2>
+          <p>Proof commands to run after apply.</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

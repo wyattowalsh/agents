@@ -41,6 +41,10 @@ class TestEscapeMdxLine:
         result = escape_mdx_line("{a} `{b}` {c}")
         assert result == "\\{a\\} `{b}` \\{c\\}"
 
+    def test_inline_placeholder_code_is_mdx_safe_inside_tables(self):
+        result = escape_mdx_line("| `research <harness|all>` | Ecosystem Research |")
+        assert result == "| `research &lt;harness\\|all&gt;` | Ecosystem Research |"
+
 
 # ---------------------------------------------------------------------------
 # escape_mdx (full body with fenced code blocks)

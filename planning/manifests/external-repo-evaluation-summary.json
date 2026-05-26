@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "source_manifest": "agents-overhaul-planning/planning/manifests/external-repo-evaluation-final.json",
+  "source_manifest": "planning/manifests/external-repo-evaluation-final.json",
   "source_count": 93,
   "status": "discovery-only",
   "promotion_boundary": "No external repository may be installed, vendored, or promoted without pinned source, license review, maintainer/activity review, security/provenance review, conformance fixtures, rollback plan, OpenSpec mapping, and docs/instruction sync plan.",
   "coverage_docs": [
-    "planning/15-ecosystem-research/22-feature-domain-coverage.md",
-    "planning/15-ecosystem-research/23-external-repo-coverage-backlog.md"
+    "openspec/changes/archive/2026-05-01-agents-c10-external-repo-intake/affected-surfaces.md",
+    "openspec/changes/archive/2026-05-01-agents-c10-external-repo-intake/validation-matrix.md"
   ],
   "priority_waves": {
     "official_high_trust_skill_sources": [

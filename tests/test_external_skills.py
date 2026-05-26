@@ -90,3 +90,51 @@ def test_parse_external_skill_entries_keeps_explicit_unresolved_rows():
     assert entry.source == "docs.stripe.com"
     assert entry.provenance_status == "explicit-unresolved"
     assert entry.unresolved_reason == "registry syntax and provenance still need verification."
+
+
+def test_parse_external_skill_entries_dedupes_by_source_and_name_preferring_verified():
+    entries = parse_external_skill_entries(
+        """
+## Install Now After Trust Gate
+
+```bash
+npx skills add example/skills --skill demo -y -g -a codex
+```
+
+## Keep Global Only Or Avoid
+
+- `example/skills@demo`: duplicate note.
+"""
+    )
+
+    assert len(entries) == 1
+    assert entries[0].name == "demo"
+    assert entries[0].provenance_status == "verified-install-command"
+
+
+def test_parse_external_skill_entries_flags_unsupported_target_agents():
+    entries = parse_external_skill_entries(
+        """
+## Install Now After Trust Gate
+
+```bash
+npx skills add example/skills --skill demo -y -g -a codex made-up-agent
+```
+"""
+    )
+
+    assert entries[0].unsupported_target_agents == ("made-up-agent",)
+
+
+def test_parse_external_skill_entries_accepts_current_skills_cli_target_agents():
+    entries = parse_external_skill_entries(
+        """
+## Install Now After Trust Gate
+
+```bash
+npx skills add example/skills --skill demo -y -g -a codex windsurf augment openhands
+```
+"""
+    )
+
+    assert entries[0].unsupported_target_agents == ()

@@ -3,7 +3,6 @@ export const ADMIN_CSRF_COOKIE = 'agents_docs_admin_csrf';
 export const ADMIN_FEATURE_OVERRIDE_COOKIE = 'agents_docs_admin_flags';
 export const ADMIN_SESSION_TTL_SECONDS = 60 * 60 * 12;
 export const ADMIN_CSRF_TTL_SECONDS = 60 * 60 * 6;
-export const DEV_ADMIN_PASSWORD = '***REMOVED***';
 
 export type AdminFeatureDefinition = {
   defaultEnabled: boolean;
@@ -52,7 +51,7 @@ export const ADMIN_FEATURES: AdminFeatureDefinition[] = [
 ];
 
 export function getConfiguredAdminPassword(): string {
-  return import.meta.env.DOCS_ADMIN_PASSWORD ?? (import.meta.env.DEV ? DEV_ADMIN_PASSWORD : '');
+  return import.meta.env.DOCS_ADMIN_PASSWORD ?? '';
 }
 
 export function getAdminSessionSecret(): string {
@@ -88,7 +87,6 @@ export function isPostHogQueryConfigured(): boolean {
 }
 
 export function getAdminConfigSnapshot() {
-  const usingDevelopmentPasswordFallback = !import.meta.env.DOCS_ADMIN_PASSWORD && import.meta.env.DEV;
   const explicitSessionSecret = Boolean(import.meta.env.DOCS_ADMIN_SESSION_SECRET);
 
   return {
@@ -98,6 +96,6 @@ export function getAdminConfigSnapshot() {
     posthogQueryConfigured: isPostHogQueryConfigured(),
     publicTelemetryConfigured: isPublicTelemetryConfigured(),
     usingDerivedSessionSecret: !explicitSessionSecret && Boolean(getConfiguredAdminPassword()),
-    usingDevelopmentPasswordFallback,
+    usingDevelopmentPasswordFallback: false,
   };
 }

@@ -42,14 +42,14 @@ Systematic skill discovery engine. Audits your existing skill collection, identi
 | `ideate` | **Ideate only**: propose custom skills from prior audit/research |
 | `resume [N or keyword]` | **Resume**: continue a saved discovery session |
 | `list` | **List**: show saved discovery sessions |
-| `install <owner/repo@skill>` | **Install**: install a previously discovered skill with confirmation |
+| `install &lt;owner/repo@skill&gt;` | **Install**: install a previously discovered skill with confirmation |
 
 ## Critical Rules
 
 1. **Never install without confirmation** — always present the report and wait for user selection
 2. **Audit before research** — gap report drives query targeting; skip only if mode is `research [focus]`
 3. **Deduplicate against inventory** — never recommend skills that duplicate existing coverage
-4. **Full install command** — always include: `npx skills add <source> -s <name> -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
+4. **Full install command** — always include: `npx skills add &lt;source&gt; -s &lt;name&gt; -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
 5. **NOT-for exclusions** — custom skill proposals must name existing skills they do NOT replace
 6. **Save after each wave** — enables resume on interruption
 7. **Accounting Rule** — N dispatched = N resolved before advancing to next wave

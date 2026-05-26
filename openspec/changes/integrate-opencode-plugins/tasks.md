@@ -9,6 +9,8 @@
 - [x] Verify WakaTime credential config exists without committing or printing the API key.
 - [x] Replace OpenCode plan review with Plannotator scoped to the `plan` agent.
 - [x] Add requested TUI plugins to live TUI config only.
+- [x] Disable TUI plugin specs that fail current OpenCode startup with `OTUI_TREE_SITTER_WORKER_PATH` conflicts.
+- [x] Scope the local context-cache `promptCacheKey` injection to OpenAI providers.
 - [x] Enable OpenTelemetry support needed by Langfuse without committing credentials.
 
 ## Documentation

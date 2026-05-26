@@ -12,14 +12,16 @@
 
 ## Curated External Skills
 
-- [x] Update `instructions/external-skills.md` with the audited `ctf-skills` command and responsible-use notes.
-- [x] Update `instructions/external-skills.md` with the audited `ui-ux-pro-max` command and `ckm:*` avoid note.
-- [x] Update `instructions/external-skills.md` with the audited `taste-skill` main-skill command and bundle avoid note.
+- [x] Update `config/external-skills.md` with the audited `ctf-skills` command and responsible-use notes.
+- [x] Update `config/external-skills.md` with the audited `ui-ux-pro-max` command and `ckm:*` avoid note.
+- [x] Update `config/external-skills.md` with the audited `taste-skill` main-skill command and bundle avoid note.
+- [x] Update `config/external-skills.md` with the audited `shieldcn-badges` command and local-adapter coverage note.
 - [x] Update docs/source wording for expanded target coverage where supported.
 
 ## Installation
 
 - [x] Install selected external skills across every supported requested harness.
+- [x] Install `shieldcn-badges` across supported local Skills CLI adapters with an explicit `-a ...` list instead of `--all`; current CLI resolves those adapters through the universal `~/.agents/skills/shieldcn-badges` root and symlinks Crush.
 - [x] Run `ctf-skills` installer dry-run from the audited source.
 - [x] Run `ctf-skills` installer if dry-run does not reveal a blocker.
 - [x] Reconcile supported harness installs with `uv run wagents skills sync --dry-run` and `--apply` when scoped to approved missing curated skills.
@@ -32,6 +34,7 @@
 
 ## Verification And Review
 
+- [x] Fix installed-inventory capture for large `skills ls --json` output and verify `wagents skills sync --dry-run` no longer reports truncated JSON.
 - [x] Run `uv run wagents validate`.
 - [x] Run `uv run wagents openspec validate`.
 - [x] Build docs with `cd docs && pnpm build`.

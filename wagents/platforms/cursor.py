@@ -8,7 +8,14 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from wagents.platforms.base import HOME, PlatformAdapter, SyncContext, load_json, merge_server_maps
+from wagents.platforms.base import (
+    HOME,
+    PlatformAdapter,
+    SyncContext,
+    load_json,
+    managed_registry_server_names,
+    merge_server_maps,
+)
 
 CURSOR_MCP_PATH = HOME / ".cursor" / "mcp.json"
 
@@ -41,5 +48,9 @@ class Adapter(PlatformAdapter):
         data = load_json(CURSOR_MCP_PATH)
         rendered = self.render_mcp(registry, fallbacks)["mcpServers"]
         existing = data.get("mcpServers")
-        data["mcpServers"] = merge_server_maps(rendered, existing if isinstance(existing, dict) else {})
+        data["mcpServers"] = merge_server_maps(
+            rendered,
+            existing if isinstance(existing, dict) else {},
+            managed_registry_server_names(registry, self.name),
+        )
         ctx.write_json(CURSOR_MCP_PATH, data)

@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from wagents.catalog import CatalogNode
+from wagents.external_skills import parse_external_skill_entries
 from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
     VISUAL_ASSET_BY_ID,
@@ -63,9 +64,10 @@ def test_render_site_data_module_exports_runtime_constants():
     rendered = render_site_data_module(site_data([]))
 
     assert "export const siteData =" in rendered
-    assert "export const supportedAgents = siteData.supportedAgents;" in rendered
-    assert "export const installCommands = siteData.installCommands;" in rendered
-    assert "export const visualAssets = siteData.visualAssets;" in rendered
+    assert "export const supportedAgents = baseSiteData.supportedAgents;" in rendered
+    assert "export const installCommands = baseSiteData.installCommands;" in rendered
+    assert "export const visualAssets = baseSiteData.visualAssets;" in rendered
+    assert "export const skillIndexModule = './generated-skill-indexes.mjs';" in rendered
 
 
 def test_visual_assets_are_manifest_backed():
@@ -85,3 +87,82 @@ def test_render_visual_assets_css_exports_src_asset_variables():
 
     assert "--agents-asset-control-plane-hero: url('./assets/brand/control-plane-hero.webp');" in rendered
     assert "--agents-asset-social-card" not in rendered
+
+
+def test_site_data_splits_custom_curated_installed_and_all_indexes():
+    curated = parse_external_skill_entries(
+        """
+## Install Now After Trust Gate
+
+```bash
+npx skills add example/skills --skill external-one -y -g -a codex
+```
+"""
+    )
+    nodes = [
+        CatalogNode("skill", "custom-one", "Custom One", "Custom", {}, "", "skills/custom-one/SKILL.md"),
+        CatalogNode(
+            "skill",
+            "installed-one",
+            "Installed One",
+            "Installed",
+            {
+                "_skills_source": "other/skills",
+                "_skills_install_command": "npx skills add other/skills --skill installed-one -y -g",
+            },
+            "",
+            "/tmp/installed-one/SKILL.md",
+            source="installed",
+        ),
+    ]
+
+    data = site_data(nodes, external_skills=curated)
+
+    assert [row["name"] for row in data["customSkillIndex"]] == ["custom-one"]
+    assert [row["name"] for row in data["curatedExternalSkillIndex"]] == ["external-one"]
+    assert [row["name"] for row in data["installedSkillIndex"]] == ["installed-one"]
+    assert {row["name"] for row in data["allSkillIndex"]} == {"custom-one", "external-one", "installed-one"}
+    assert data["skillIndex"] == data["allSkillIndex"]
+
+
+def test_site_data_excludes_installed_rows_that_match_custom_and_merges_curated_matches():
+    curated = parse_external_skill_entries(
+        """
+## Install Now After Trust Gate
+
+```bash
+npx skills add example/skills --skill external-one -y -g -a codex
+```
+"""
+    )
+    nodes = [
+        CatalogNode("skill", "custom-one", "Custom One", "Custom", {}, "", "skills/custom-one/SKILL.md"),
+        CatalogNode(
+            "skill",
+            "custom-one",
+            "Custom One Installed",
+            "Installed duplicate",
+            {"_skills_source": "example/skills", "_skills_installed_agents": ["codex"]},
+            "",
+            "/tmp/custom-one/SKILL.md",
+            source="installed",
+        ),
+        CatalogNode(
+            "skill",
+            "external-one",
+            "External One Installed",
+            "Installed curated duplicate",
+            {"_skills_source": "example/skills", "_skills_installed_agents": ["codex"]},
+            "",
+            "/tmp/external-one/SKILL.md",
+            source="installed",
+        ),
+    ]
+
+    data = site_data(nodes, external_skills=curated)
+    rows = {row["name"]: row for row in data["allSkillIndex"]}
+
+    assert set(rows) == {"custom-one", "external-one"}
+    assert rows["external-one"]["sourceType"] == "curated-external"
+    assert rows["external-one"]["installedAgents"] == ["codex"]
+    assert [row["name"] for row in data["installedSkillIndex"]] == ["external-one"]

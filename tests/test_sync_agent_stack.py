@@ -1,10 +1,12 @@
 """Tests for sync_agent_stack rendering and merge helpers."""
 
 import json
+import tomllib
 
 import pytest
 
 from scripts import sync_agent_stack
+from scripts.mcphub.validate_settings import validate_settings
 from scripts.sync_agent_stack import (
     SyncContext,
     deploy_opencode_plugin,
@@ -13,9 +15,11 @@ from scripts.sync_agent_stack import (
     merge_codex_config,
     merge_copilot_config,
     merge_opencode_config,
+    merge_server_maps,
     merge_server_root_config,
     render_cherry_import_files,
     render_cherry_server,
+    render_client_mcp,
     render_codex_config,
     render_codex_mcp_block,
     render_copilot_hooks,
@@ -24,6 +28,7 @@ from scripts.sync_agent_stack import (
     render_opencode_mcp,
     render_repo_mcp,
     render_standard_hooks,
+    strip_managed_opencode_mcphub_entries,
     sync_codex_entrypoint,
     sync_copilot_subagent_env,
     sync_generated_json_directory,
@@ -34,6 +39,76 @@ from wagents.platforms import base as platform_base
 from wagents.platforms import cursor as cursor_platform
 from wagents.platforms import opencode as opencode_platform
 from wagents.platforms import vscode as vscode_platform
+
+
+def assert_opencode_model_matrix(payload: dict) -> None:
+    assert payload["model"] == "openai/gpt-5.5"
+    assert payload["small_model"] == "openai/gpt-5.4-mini"
+    assert payload["agent"]["build"]["model"] == "openai/gpt-5.5"
+    assert payload["agent"]["build"]["variant"] == "high"
+    assert payload["agent"]["plan"]["model"] == "openai/gpt-5.5"
+    assert payload["agent"]["plan"]["variant"] == "xhigh"
+    assert payload["agent"]["explore"] == {"model": "openai/gpt-5.5", "variant": "high"}
+    assert payload["agent"]["general"] == {"model": "openai/gpt-5.5", "variant": "high"}
+
+    providers = payload.get("provider", {})
+    assert set(providers).isdisjoint({"vercel", "opencode-go", "kimi-for-coding"})
+    openai = providers["openai"]
+    assert openai["options"]["websearch_cited"] == {"model": "gpt-5.5"}
+    assert set(openai["models"]) == {"gpt-5.5", "gpt-5.4-mini", "gpt-5.3-codex-spark"}
+    for model in openai["models"].values():
+        assert model["variants"]["high"] == {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "high",
+            "reasoningSummary": None,
+            "textVerbosity": "low",
+        }
+        assert model["variants"]["xhigh"] == {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "xhigh",
+            "reasoningSummary": None,
+            "textVerbosity": "low",
+        }
+        assert model["variants"]["medium"] == {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "medium",
+            "reasoningSummary": None,
+        }
+        assert '"reasoningSummary": "auto"' not in json.dumps(model)
+
+
+def mcphub_registry():
+    return {
+        "mcphub": {
+            "enabled": True,
+            "base_url": "http://127.0.0.1:46683",
+            "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
+            "startup_timeout_sec": 20,
+            "tool_timeout_sec": 90,
+            "smart_routing": {"path": "$smart"},
+            "groups": {
+                "code": {"enabled": True, "servers": ["foo"]},
+                "research": {"enabled": True, "servers": ["bar"]},
+            },
+            "clients": {
+                "codex": {
+                    "included_endpoint_kinds": ["all"],
+                    "enabled_endpoint_kinds": ["all"],
+                    "enable_server_endpoints": False,
+                },
+                "opencode": {
+                    "included_endpoint_kinds": ["all"],
+                    "enabled_endpoint_kinds": ["all"],
+                    "enable_server_endpoints": False,
+                    "server_endpoint_name_style": "base",
+                },
+            },
+        },
+        "servers": {
+            "foo": {"command": "uvx", "args": ["foo-mcp"], "enabled": True, "env": {}},
+            "bar": {"command": "uvx", "args": ["bar-mcp"], "enabled": True, "env": {}},
+        },
+    }
 
 
 def test_render_opencode_mcp_renders_local_servers():
@@ -61,6 +136,263 @@ def test_render_opencode_mcp_renders_local_servers():
             "environment": {"FOO_TOKEN": "secret"},
         }
     }
+
+
+def test_render_codex_mcp_block_projects_mcphub_http_endpoints():
+    rendered = render_codex_mcp_block(mcphub_registry())
+
+    assert "[mcp_servers.mcphub_all]" in rendered
+    assert 'url = "http://127.0.0.1:46683/mcp"' in rendered
+    assert 'bearer_token_env_var = "MCPHUB_BEARER_TOKEN"' in rendered
+    assert "startup_timeout_sec = 20" in rendered
+    assert "tool_timeout_sec = 90" in rendered
+    assert "[mcp_servers.mcphub_group_code]" not in rendered
+    assert "[mcp_servers.mcphub_smart_group_code]" not in rendered
+    assert "enabled = true" in rendered
+
+
+def test_render_client_mcp_projects_remote_stdio_bridge_for_stdio_clients(monkeypatch):
+    monkeypatch.delenv("MCPHUB_BEARER_TOKEN", raising=False)
+    rendered = render_client_mcp(mcphub_registry(), {}, "claude-desktop")["mcpServers"]
+
+    assert rendered["mcphub_all"]["command"].endswith("scripts/mcphub/remote-stdio.sh")
+    assert rendered["mcphub_all"]["args"] == ["http://127.0.0.1:46683/mcp"]
+    assert rendered["mcphub_all"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+    assert rendered["mcphub_smart_all"]["disabled"] is True
+
+
+def test_vscode_repo_mcp_keeps_mcphub_token_placeholder(monkeypatch):
+    monkeypatch.setenv("MCPHUB_BEARER_TOKEN", "local-secret")
+
+    rendered = vscode_platform.Adapter().render_mcp(mcphub_registry(), {}, harness="repo-mcp")["mcpServers"]
+
+    assert rendered["mcphub_all"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+    assert "local-secret" not in json.dumps(rendered)
+
+
+def test_render_client_mcp_can_project_public_mcphub_url_for_chatgpt(monkeypatch):
+    monkeypatch.delenv("MCPHUB_BEARER_TOKEN", raising=False)
+    registry = mcphub_registry()
+    registry["mcphub"]["public_url"] = "https://mcp.w4w.dev/mcp"
+    registry["mcphub"]["clients"]["chatgpt"] = {
+        "url_source": "public",
+        "included_endpoint_kinds": ["all"],
+        "enabled_endpoint_kinds": ["all"],
+        "enable_server_endpoints": False,
+    }
+
+    rendered = render_client_mcp(registry, {}, "chatgpt")["mcpServers"]
+
+    assert list(rendered) == ["mcphub_all"]
+    assert rendered["mcphub_all"]["args"] == ["https://mcp.w4w.dev/mcp"]
+    assert rendered["mcphub_all"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
+
+
+def test_render_opencode_mcp_projects_remote_mcphub_entries(monkeypatch):
+    monkeypatch.delenv("MCPHUB_BEARER_TOKEN", raising=False)
+    rendered = render_opencode_mcp(mcphub_registry(), {})
+
+    assert list(rendered) == ["mcphub_all"]
+    assert rendered["mcphub_all"] == {
+        "type": "remote",
+        "url": "http://127.0.0.1:46683/mcp",
+        "enabled": True,
+        "oauth": False,
+        "headers": {"Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"},
+    }
+
+
+def test_render_opencode_mcp_keeps_bearer_token_as_file_placeholder_for_home_config():
+    rendered = render_opencode_mcp(mcphub_registry(), {"MCPHUB_BEARER_TOKEN": "local-token"})
+
+    assert rendered["mcphub_all"]["headers"] == {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+    }
+    assert "local-token" not in json.dumps(rendered)
+
+
+def test_opencode_adapter_keeps_bearer_token_as_file_placeholder_for_home_config():
+    rendered = opencode_platform.Adapter().render_mcp(mcphub_registry(), {"MCPHUB_BEARER_TOKEN": "local-token"})
+
+    assert rendered["mcphub_all"]["headers"] == {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+    }
+    assert "local-token" not in json.dumps(rendered)
+
+
+def test_repo_opencode_mcp_projects_safe_group_enabled_and_individual_servers_disabled():
+    registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
+    rendered = render_opencode_mcp(registry, {})
+    server_names = sorted(registry["mcphub"]["groups"]["harness-safe"]["servers"])
+
+    assert list(name for name in rendered if name.startswith("mcphub")) == ["mcphub_group_harness-safe"]
+    assert rendered["mcphub_group_harness-safe"]["enabled"] is True
+    assert rendered["mcphub_group_harness-safe"]["url"] == "http://127.0.0.1:46683/mcp/harness-safe"
+    assert all(name in rendered for name in server_names)
+    assert all(rendered[name]["enabled"] is False for name in server_names)
+
+
+def test_repo_mcphub_projects_harness_safe_group_to_managed_harnesses():
+    registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
+    server_names = sorted(registry["mcphub"]["groups"]["harness-safe"]["servers"])
+    prefixed_server_names = [f"mcphub_server_{name}" for name in server_names]
+
+    codex = render_codex_mcp_block(registry)
+    codex_payload = tomllib.loads(codex)
+    assert "[mcp_servers.mcphub_group_harness-safe]" in codex
+    assert 'url = "http://127.0.0.1:46683/mcp/harness-safe"' in codex
+    assert "[mcp_servers.mcphub_all]" not in codex
+    assert sorted(name for name in codex_payload["mcp_servers"] if name.startswith("mcphub_server_")) == sorted(
+        prefixed_server_names
+    )
+    assert codex_payload["mcp_servers"]["mcphub_group_harness-safe"]["enabled"] is True
+    assert all(codex_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
+
+    claude = render_client_mcp(registry, {}, "claude-desktop")["mcpServers"]
+    assert list(claude) == ["mcphub_group_harness-safe", *prefixed_server_names]
+    assert claude["mcphub_group_harness-safe"]["args"] == ["http://127.0.0.1:46683/mcp/harness-safe"]
+    assert claude["mcphub_group_harness-safe"]["disabled"] is False
+    assert all(claude[name]["disabled"] is True for name in prefixed_server_names)
+
+    chatgpt = render_client_mcp(registry, {}, "chatgpt")["mcpServers"]
+    assert list(chatgpt) == ["mcphub_group_harness-safe", *prefixed_server_names]
+    assert chatgpt["mcphub_group_harness-safe"]["args"] == ["https://mcp.w4w.dev/mcp/harness-safe"]
+    assert chatgpt["mcphub_group_harness-safe"]["disabled"] is False
+    assert chatgpt["mcphub_server_fetch"]["args"] == ["https://mcp.w4w.dev/mcp/fetch"]
+    assert all(chatgpt[name]["disabled"] is True for name in prefixed_server_names)
+
+
+def test_repo_harness_safe_group_contains_approved_servers():
+    registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
+
+    assert registry["mcphub"]["groups"]["harness-safe"]["servers"] == [
+        "brave-search",
+        "chrome-devtools",
+        "context7",
+        "deepwiki",
+        "fetch",
+        "fetcher",
+        "package-version",
+        "repomix",
+        "supathings",
+        "tavily",
+        "trafilatura",
+        "duckduckgo-search",
+        "gmail",
+    ]
+    assert registry["mcphub"]["clients"]["default"]["included_endpoint_kinds"] == ["group", "server"]
+    assert registry["mcphub"]["clients"]["default"]["included_groups"] == ["harness-safe"]
+    assert (
+        registry["mcphub"]["clients"]["default"]["included_servers"]
+        == registry["mcphub"]["groups"]["harness-safe"]["servers"]
+    )
+    assert registry["mcphub"]["clients"]["default"]["enabled_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["default"]["enable_server_endpoints"] is True
+    assert registry["mcphub"]["clients"]["codex"]["included_endpoint_kinds"] == ["group", "server"]
+    assert registry["mcphub"]["clients"]["codex"]["included_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["chatgpt"]["included_endpoint_kinds"] == ["group", "server"]
+    assert registry["mcphub"]["clients"]["chatgpt"]["included_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["opencode"]["included_endpoint_kinds"] == ["group", "server"]
+    assert registry["mcphub"]["clients"]["opencode"]["included_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["opencode"]["enabled_groups"] == ["harness-safe"]
+
+
+def test_opencode_adapter_group_only_mcphub_projection_excludes_all_and_smart():
+    registry = mcphub_registry()
+    registry["mcphub"]["clients"]["opencode"] = {
+        "included_endpoint_kinds": ["group"],
+        "enabled_endpoint_kinds": ["group"],
+        "enabled_groups": ["code"],
+        "enable_server_endpoints": False,
+    }
+
+    rendered = opencode_platform.Adapter().render_mcp(registry, {})
+
+    assert set(rendered) == {"mcphub_group_code", "mcphub_group_research"}
+    assert rendered["mcphub_group_code"]["enabled"] is True
+    assert rendered["mcphub_group_research"]["enabled"] is False
+
+
+def test_strip_managed_opencode_mcphub_entries_preserves_unrelated_mcp():
+    existing = {
+        "mcphub_group_code": {"type": "remote"},
+        "mcphub_server_fetch": {"type": "remote"},
+        "custom-local": {"type": "local"},
+    }
+
+    assert strip_managed_opencode_mcphub_entries(existing) == {"custom-local": {"type": "local"}}
+
+
+def test_merge_server_maps_strips_stale_mcphub_namespace_entries():
+    rendered = {"mcphub_group_harness-safe": {"type": "remote"}}
+    existing = {
+        "mcphub_all": {"type": "remote"},
+        "mcphub_group_code": {"type": "remote"},
+        "mcphub_server_fetch": {"type": "remote"},
+        "custom-local": {"type": "local"},
+    }
+    known = set(rendered)
+
+    merged = merge_server_maps(rendered, existing, known)
+    platform_merged = platform_base.merge_server_maps(rendered, existing, known)
+
+    for payload in (merged, platform_merged):
+        assert list(name for name in payload if name.startswith("mcphub")) == ["mcphub_group_harness-safe"]
+        assert payload["custom-local"] == {"type": "local"}
+
+
+def test_render_opencode_mcp_can_use_base_names_for_server_endpoint_templates():
+    registry = mcphub_registry()
+    registry["mcphub"]["clients"]["opencode"] = {
+        "included_endpoint_kinds": ["server"],
+        "enabled_endpoint_kinds": [],
+        "server_endpoint_name_style": "base",
+    }
+
+    rendered = render_opencode_mcp(registry, {})
+
+    assert set(rendered) == {"foo", "bar"}
+    assert rendered["foo"]["url"].endswith("/mcp/foo")
+
+
+def test_render_cherry_import_files_include_mcphub_all_group_and_server_entries():
+    rendered = render_cherry_import_files(mcphub_registry(), {})
+
+    assert "all.json" in rendered
+    assert "group-code.json" in rendered
+    assert "server-foo.json" in rendered
+    assert "smart-code.json" in rendered
+    assert rendered["all.json"]["mcpServers"]["mcphub_all"]["baseUrl"] == "http://127.0.0.1:46683/mcp"
+    assert rendered["group-code.json"]["mcpServers"]["mcphub_group_code"]["baseUrl"].endswith("/mcp/code")
+    assert rendered["server-foo.json"]["mcpServers"]["mcphub_server_foo"]["baseUrl"].endswith("/mcp/foo")
+
+
+def test_validate_settings_catches_unknown_group_servers_and_real_looking_secrets():
+    settings = {
+        "mcpServers": {
+            "foo": {
+                "command": "uvx",
+                "args": ["foo-mcp"],
+                "env": {"FOO_API_KEY": "sk-real-looking"},
+            }
+        },
+        "groups": {"bad": {"servers": ["missing"]}},
+        "systemConfig": {
+            "routing": {
+                "enableGlobalRoute": True,
+                "enableGroupNameRoute": True,
+                "enableBearerAuth": True,
+                "bearerAuthHeaderName": "Authorization",
+                "jsonBodyLimit": "5mb",
+                "skipAuth": False,
+            }
+        },
+    }
+
+    errors = validate_settings(settings, {"servers": {"foo": {}}})
+
+    assert "group bad references unknown server missing" in errors
+    assert any("FOO_API_KEY" in error for error in errors)
 
 
 def test_render_opencode_mcp_renders_remote_servers():
@@ -364,7 +696,8 @@ def test_render_codex_config_enables_hooks_feature():
     rendered = render_codex_config("", registry, policy, include_local_extras=False)
 
     assert "\n[features]\n" in rendered
-    assert "codex_hooks = true" in rendered
+    assert "hooks = true" in rendered
+    assert "codex_hooks" not in rendered
 
 
 def test_render_codex_config_adds_lmstudio_provider_profile():
@@ -540,14 +873,8 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
 
     ctx = SyncContext(apply=True)
-    merge_opencode_config(ctx, {"servers": {}}, {})
-    payload = json.loads(config_path.read_text())
-
-    assert payload["instructions"] == [
-        "~/dev/projects/agents/instructions/global.md",
-        "~/dev/projects/agents/instructions/opencode-global.md",
-    ]
-    assert payload["skills"]["paths"] == ["~/dev/projects/agents/skills"]
+    with pytest.raises(platform_base.ConfigDropError, match="sync would remove local config entries"):
+        merge_opencode_config(ctx, {"servers": {}}, {})
 
 
 def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_models(tmp_path, monkeypatch):
@@ -611,7 +938,7 @@ def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_model
     assert provider["models"]["custom-model"] == {"name": "Custom Local Model"}
 
 
-def test_merge_opencode_config_preserves_existing_model_settings(tmp_path, monkeypatch):
+def test_merge_opencode_config_enforces_requested_model_matrix(tmp_path, monkeypatch):
     home_dir = tmp_path / "home"
     repo_root = home_dir / "dev" / "projects" / "agents"
     config_path = home_dir / ".config" / "opencode" / "opencode.json"
@@ -631,8 +958,8 @@ def test_merge_opencode_config_preserves_existing_model_settings(tmp_path, monke
                     "plan": {"model": "user/plan-model"},
                 },
                 "agent": {
-                    "build": {"model": "user/agent-build-model"},
-                    "plan": {"model": "user/agent-plan-model"},
+                    "build": {"model": "user/agent-build-model", "description": "keep build description"},
+                    "plan": {"model": "user/agent-plan-model", "description": "keep plan description"},
                 },
             }
         )
@@ -644,12 +971,12 @@ def test_merge_opencode_config_preserves_existing_model_settings(tmp_path, monke
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_REPO_CONFIG_PATH", repo_root / "opencode.json")
 
     policy = {
         "model_defaults": {
             "opencode": {
-                "model": "repo/default-should-not-apply",
-                "small_model": "repo/small-default-should-not-apply",
+                "provider_model": "openai/gpt-5.5",
             }
         }
     }
@@ -658,12 +985,32 @@ def test_merge_opencode_config_preserves_existing_model_settings(tmp_path, monke
     merge_opencode_config(ctx, {"servers": {}}, {}, policy)
     payload = json.loads(config_path.read_text())
 
-    assert payload["model"] == "user/model"
-    assert payload["small_model"] == "user/small-model"
+    assert_opencode_model_matrix(payload)
+    assert payload["autoupdate"] == "notify"
+    assert payload["provider"]["openai"]["models"]["gpt-5.3-codex-spark"]["variants"]["high"] == {
+        "include": ["reasoning.encrypted_content"],
+        "reasoningEffort": "high",
+        "reasoningSummary": None,
+        "textVerbosity": "low",
+    }
+    assert set(payload["formatter"]) == {"biome", "prettier", "ruff", "shell", "toml", "just", "gofmt", "rustfmt"}
+    assert payload["formatter"]["ruff"]["command"] == ["ruff", "format", "$FILE"]
+    assert payload["lsp"]["ruff"]["command"] == ["ruff", "server"]
+    assert payload["lsp"]["ty"]["command"] == ["ty", "server"]
+    assert payload["watcher"]["ignore"] == sync_agent_stack.OPENCODE_DEFAULT_WATCHER_IGNORES
+    assert payload["tool_output"] == {"max_lines": 4000, "max_bytes": 120000}
+    assert payload["experimental"] == {
+        "disable_paste_summary": False,
+        "batch_tool": True,
+        "openTelemetry": True,
+        "continue_loop_on_deny": True,
+        "mcp_timeout": 120000,
+    }
+    assert payload["permission"]["lsp"] == "allow"
     assert payload["mode"]["build"]["model"] == "user/build-model"
     assert payload["mode"]["plan"]["model"] == "user/plan-model"
-    assert payload["agent"]["build"]["model"] == "user/agent-build-model"
-    assert payload["agent"]["plan"]["model"] == "user/agent-plan-model"
+    assert payload["agent"]["build"]["description"] == "keep build description"
+    assert payload["agent"]["plan"]["description"] == "keep plan description"
 
 
 def test_merge_opencode_config_preserves_custom_agent_models(tmp_path, monkeypatch):
@@ -693,8 +1040,9 @@ def test_merge_opencode_config_preserves_custom_agent_models(tmp_path, monkeypat
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_REPO_CONFIG_PATH", repo_root / "opencode.json")
 
-    policy = {"model_defaults": {"opencode": {"model": "repo/default-should-not-apply"}}}
+    policy = {"model_defaults": {"opencode": {"provider_model": "openai/gpt-5.5"}}}
 
     ctx = SyncContext(apply=True)
     merge_opencode_config(ctx, {"servers": {}}, {}, policy)
@@ -777,12 +1125,8 @@ def test_merge_opencode_config_preserves_safe_dcp_overrides(tmp_path, monkeypatc
                 "$schema": "schema",
                 "enabled": False,
                 "customKey": "preserve",
-                "model": "remove-me",
-                "agent": {"custom": {"model": "remove-me"}},
                 "compress": {
                     "showCompression": True,
-                    "modelMaxLimits": {"openai/gpt-5.5": 200000},
-                    "modelMinLimits": {"openai/gpt-5.5": 100000},
                 },
             }
         )
@@ -802,10 +1146,38 @@ def test_merge_opencode_config_preserves_safe_dcp_overrides(tmp_path, monkeypatc
     assert payload["customKey"] == "preserve"
     assert payload["compress"]["mode"] == "range"
     assert payload["compress"]["showCompression"] is True
-    assert "modelMaxLimits" not in payload["compress"]
-    assert "modelMinLimits" not in payload["compress"]
     assert "model" not in payload
     assert "agent" not in payload
+
+
+def test_merge_opencode_config_errors_before_dropping_dcp_entries(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    dcp_path = home_dir / ".config" / "opencode" / "dcp.jsonc"
+    template_path = tmp_path / "opencode-dcp.jsonc"
+
+    dcp_path.parent.mkdir(parents=True)
+    template_path.write_text(json.dumps({"compress": {"mode": "range"}}) + "\n", encoding="utf-8")
+    dcp_path.write_text(
+        json.dumps(
+            {
+                "small_model": "local/model",
+                "compress": {
+                    "modelMaxLimits": {"openai/gpt-5.5": 200000},
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_DCP_CONFIG_PATH", dcp_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_DCP_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    with pytest.raises(platform_base.ConfigDropError, match=r"\$\.small_model"):
+        merge_opencode_config(ctx, {"servers": {}}, {}, {})
 
 
 def test_repo_opencode_dcp_config_uses_proactive_thresholds():
@@ -844,6 +1216,48 @@ def test_sync_opencode_notifier_config_copies_template(tmp_path, monkeypatch):
     assert json.loads(notifier_path.read_text(encoding="utf-8")) == expected
 
 
+def test_sync_opencode_notifier_config_errors_before_dropping_local_entries(tmp_path, monkeypatch):
+    template_path = tmp_path / "repo" / "config" / "opencode-notifier.json"
+    notifier_path = tmp_path / "home" / ".config" / "opencode" / "opencode-notifier.json"
+    template_path.parent.mkdir(parents=True)
+    notifier_path.parent.mkdir(parents=True)
+    template_path.write_text(json.dumps({"showIcon": False}) + "\n", encoding="utf-8")
+    notifier_path.write_text(json.dumps({"showIcon": True, "localOnly": True}) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_NOTIFIER_CONFIG_PATH", notifier_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_NOTIFIER_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    with pytest.raises(platform_base.ConfigDropError, match=r"\$\.localOnly"):
+        sync_opencode_notifier_config(ctx)
+
+    assert json.loads(notifier_path.read_text(encoding="utf-8"))["localOnly"] is True
+
+
+def test_sync_opencode_octto_config_copies_template(tmp_path, monkeypatch):
+    template_path = tmp_path / "repo" / "config" / "opencode-octto.json"
+    octto_path = tmp_path / "home" / ".config" / "opencode" / "octto.json"
+    expected = {
+        "port": 3765,
+        "agents": {
+            "octto": {"variant": "xhigh"},
+            "bootstrapper": {"model": "openai/gpt-5.5", "variant": "high"},
+            "probe": {"model": "openai/gpt-5.5", "variant": "high"},
+        },
+    }
+    template_path.parent.mkdir(parents=True)
+    octto_path.parent.mkdir(parents=True)
+    template_path.write_text(json.dumps(expected) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_OCTTO_CONFIG_PATH", octto_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_OCTTO_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    sync_agent_stack.sync_opencode_octto_config(ctx)
+
+    assert json.loads(octto_path.read_text(encoding="utf-8")) == expected
+
+
 def test_deploy_opencode_plugin_copies_file(tmp_path, monkeypatch):
     repo_root = tmp_path / "repo"
     repo_root.mkdir()
@@ -880,10 +1294,21 @@ def test_generate_project_opencode_config_creates_file(tmp_path, monkeypatch):
     assert payload["$schema"] == "https://opencode.ai/config.json"
     assert payload["instructions"] == ["AGENTS.md", "instructions/opencode-global.md"]
     assert payload["skills"]["paths"] == ["skills"]
-    assert "model" not in payload
-    assert "small_model" not in payload
+    assert_opencode_model_matrix(payload)
+    assert set(payload["formatter"]) == {"biome", "prettier", "ruff", "shell", "toml", "just", "gofmt", "rustfmt"}
+    assert payload["formatter"]["ruff"]["command"] == ["ruff", "format", "$FILE"]
+    assert payload["formatter"]["ruff"]["extensions"] == [".py", ".pyi"]
+    assert payload["lsp"]["ruff"]["command"] == ["ruff", "server"]
+    assert payload["lsp"]["ty"]["command"] == ["ty", "server"]
+    assert payload["experimental"] == {
+        "disable_paste_summary": False,
+        "batch_tool": True,
+        "openTelemetry": True,
+        "continue_loop_on_deny": True,
+        "mcp_timeout": 120000,
+    }
+    assert payload["permission"] == {"lsp": "allow"}
     assert "mode" not in payload
-    assert "agent" not in payload
     assert "steps" not in payload
 
 
@@ -956,6 +1381,47 @@ def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
     }
 
 
+def test_vscode_adapter_render_mcphub_mcp_preserves_env_placeholders(monkeypatch):
+    monkeypatch.setenv("MCPHUB_BEARER_TOKEN", "real-secret")
+    adapter = vscode_platform.Adapter()
+    registry = {
+        "servers": {
+            "example": {
+                "command": "uvx",
+                "args": ["example-mcp"],
+                "enabled": True,
+            }
+        },
+        "mcphub": {
+            "enabled": True,
+            "base_url": "http://127.0.0.1:46683",
+            "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
+            "clients": {
+                "default": {
+                    "included_endpoint_kinds": ["group"],
+                    "included_groups": ["safe"],
+                    "enabled_endpoint_kinds": ["group"],
+                    "enabled_groups": ["safe"],
+                }
+            },
+            "groups": {
+                "safe": {
+                    "enabled": True,
+                    "servers": ["example"],
+                }
+            },
+        },
+    }
+
+    rendered = adapter.render_mcp(registry, {}, harness="repo-mcp")
+    payload = json.dumps(rendered)
+
+    assert "real-secret" not in payload
+    assert rendered["mcpServers"]["mcphub_group_safe"]["env"] == {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+    }
+
+
 def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_path, monkeypatch):
     config_path = tmp_path / "mcp.json"
     config_path.write_text(
@@ -1014,7 +1480,10 @@ def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_
                     "lmstudio": {
                         "models": {"custom-model": {"name": "Custom Local Model"}},
                         "options": {"headers": {"X-Local": "1"}},
-                    }
+                    },
+                },
+                "agent": {
+                    "plan": {"model": "openai/gpt-5.5", "variant": "xhigh"},
                 },
                 "mcp": {},
             }
@@ -1050,6 +1519,8 @@ def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_
     adapter.sync_home(ctx, {"servers": {}}, policy, {"LM_STUDIO_API_BASE": "http://localhost:9999/v1"}, {})
     payload = json.loads(config_path.read_text(encoding="utf-8"))
 
+    assert_opencode_model_matrix(payload)
+    assert payload["agent"]["plan"]["variant"] == "xhigh"
     provider = payload["provider"]["lmstudio"]
     assert provider["npm"] == "@ai-sdk/openai-compatible"
     assert provider["name"] == "LM Studio (local)"
@@ -1089,10 +1560,8 @@ def test_opencode_adapter_sync_home_manages_dcp_config_without_model_limits(tmp_
         json.dumps(
             {
                 "customKey": "preserve",
-                "small_model": "remove-me",
                 "compress": {
-                    "modelMaxLimits": {"openai/gpt-5.5": 200000},
-                    "modelMinLimits": {"openai/gpt-5.5": 100000},
+                    "showCompression": True,
                 },
             }
         )
@@ -1114,9 +1583,261 @@ def test_opencode_adapter_sync_home_manages_dcp_config_without_model_limits(tmp_
     assert payload["customKey"] == "preserve"
     assert payload["compress"]["mode"] == "range"
     assert payload["compress"]["maxContextLimit"] == "85%"
-    assert "modelMaxLimits" not in payload["compress"]
-    assert "modelMinLimits" not in payload["compress"]
-    assert "small_model" not in payload
+    assert payload["compress"]["showCompression"] is True
+
+
+def test_opencode_adapter_sync_home_errors_before_dropping_dcp_entries(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    dcp_path = home_dir / ".config" / "opencode" / "dcp.jsonc"
+    template_path = repo_root / "config" / "opencode-dcp.jsonc"
+
+    config_path.parent.mkdir(parents=True)
+    template_path.parent.mkdir(parents=True)
+    config_path.write_text("{}\n", encoding="utf-8")
+    template_path.write_text(json.dumps({"compress": {"mode": "range"}}) + "\n", encoding="utf-8")
+    dcp_path.write_text(json.dumps({"small_model": "remove-me"}) + "\n", encoding="utf-8")
+
+    monkeypatch.setattr(opencode_platform, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_DCP_CONFIG_PATH", dcp_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_DCP_TEMPLATE_PATH", template_path)
+    monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
+
+    adapter = opencode_platform.Adapter()
+    ctx = opencode_platform.SyncContext(apply=True)
+    with pytest.raises(platform_base.ConfigDropError, match=r"\$\.small_model"):
+        adapter.sync_home(ctx, {"servers": {}}, {}, {}, {})
+
+
+def test_opencode_adapter_sync_home_merges_repo_runtime_plugins(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    dcp_path = home_dir / ".config" / "opencode" / "dcp.jsonc"
+    image_optimizer_path = home_dir / ".config" / "opencode" / "large-image-optimizer.json"
+    octto_path = home_dir / ".config" / "opencode" / "octto.json"
+    repo_config_path = repo_root / "opencode.json"
+    image_optimizer_template_path = repo_root / "config" / "opencode-large-image-optimizer.json"
+    octto_template_path = repo_root / "config" / "opencode-octto.json"
+
+    repo_root.mkdir(parents=True)
+    config_path.parent.mkdir(parents=True)
+    image_optimizer_template_path.parent.mkdir(parents=True)
+    (repo_root / "instructions").mkdir()
+    (repo_root / "skills").mkdir()
+    image_optimizer_template_path.write_text(
+        json.dumps({"providers": {"anthropic": True, "google": True, "openai": True}, "defaultPolicy": True}) + "\n",
+        encoding="utf-8",
+    )
+    octto_template_path.write_text(
+        json.dumps(
+            {
+                "port": 3765,
+                "agents": {
+                    "octto": {"variant": "xhigh"},
+                    "bootstrapper": {"model": "openai/gpt-5.5", "variant": "high"},
+                    "probe": {"model": "openai/gpt-5.5", "variant": "high"},
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    repo_config_path.write_text(
+        json.dumps(
+            {
+                "plugin": [
+                    "@tarquinen/opencode-dcp@latest",
+                    [
+                        "@plannotator/opencode@latest",
+                        {"workflow": "plan-agent", "planningAgents": ["plan"]},
+                    ],
+                ]
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    config_path.write_text(
+        json.dumps(
+            {
+                "plugin": [
+                    "user-plugin@latest",
+                    "custom-runtime-plugin@latest",
+                ],
+                "mcp": {
+                    "custom-local": {
+                        "type": "local",
+                        "command": ["custom-mcp"],
+                        "enabled": True,
+                    },
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(opencode_platform, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_DCP_CONFIG_PATH", dcp_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_LARGE_IMAGE_OPTIMIZER_CONFIG_PATH", image_optimizer_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_OCTTO_CONFIG_PATH", octto_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_DCP_TEMPLATE_PATH", repo_root / "config" / "opencode-dcp.jsonc")
+    monkeypatch.setattr(
+        opencode_platform,
+        "OPENCODE_LARGE_IMAGE_OPTIMIZER_TEMPLATE_PATH",
+        image_optimizer_template_path,
+    )
+    monkeypatch.setattr(opencode_platform, "OPENCODE_OCTTO_TEMPLATE_PATH", octto_template_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_REPO_CONFIG_PATH", repo_config_path)
+    monkeypatch.setattr(opencode_platform, "GLOBAL_MD", repo_root / "instructions" / "global.md")
+    monkeypatch.setattr(opencode_platform, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(opencode_platform, "SKILLS_DIR", repo_root / "skills")
+    monkeypatch.setattr(opencode_platform.Adapter, "_sync_dcp_config", lambda self, ctx: None)
+    monkeypatch.setattr(opencode_platform.Adapter, "_sync_large_image_optimizer_config", lambda self, ctx: None)
+    monkeypatch.setattr(
+        opencode_platform.Adapter, "_sync_json_template", lambda self, ctx, template_path, target_path: None
+    )
+    monkeypatch.setattr(opencode_platform.Adapter, "_sync_tui_config", lambda self, ctx: None)
+    monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
+
+    adapter = opencode_platform.Adapter()
+    ctx = opencode_platform.SyncContext(apply=True)
+    adapter.sync_home(ctx, mcphub_registry(), {}, {"MCPHUB_BEARER_TOKEN": "local-token"}, {})
+    payload = json.loads(config_path.read_text(encoding="utf-8"))
+    plugins = payload["plugin"]
+    plugin_names = [plugin_spec if isinstance(plugin_spec, str) else plugin_spec[0] for plugin_spec in plugins]
+
+    assert plugin_names == [
+        "@tarquinen/opencode-dcp@latest",
+        "@plannotator/opencode@latest",
+        "./plugins/opencode-context-cache.mjs",
+        "./plugins/octto-primary-inherit.mjs",
+        "./plugins/opencode-incomplete-resume.mjs",
+        "user-plugin@latest",
+        "custom-runtime-plugin@latest",
+    ]
+    assert plugins[1] == ["@plannotator/opencode@latest", {"workflow": "plan-agent", "planningAgents": ["plan"]}]
+    assert "local-token" not in json.dumps(payload)
+    assert payload["mcp"]["mcphub_all"]["headers"] == {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+    }
+    assert payload["mcp"]["custom-local"] == {
+        "type": "local",
+        "command": ["custom-mcp"],
+        "enabled": True,
+    }
+
+
+def test_opencode_adapter_sync_tui_preserves_existing_managed_plugin_options(tmp_path, monkeypatch):
+    tui_config_path = tmp_path / "home" / ".config" / "opencode" / "tui.json"
+    template_path = tmp_path / "repo" / "config" / "opencode-tui-plugins.json"
+    tui_config_path.parent.mkdir(parents=True)
+    template_path.parent.mkdir(parents=True)
+    tui_config_path.write_text(
+        json.dumps(
+            {
+                "keybinds": {"command_list": "ctrl+p"},
+                "plugin": [
+                    ["@slkiser/opencode-quota@latest", {"custom": True}],
+                ],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    template_path.write_text(json.dumps(["@slkiser/opencode-quota@latest"]) + "\n")
+
+    monkeypatch.setattr(opencode_platform, "OPENCODE_TUI_CONFIG_PATH", tui_config_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_TUI_PLUGINS_TEMPLATE_PATH", template_path)
+
+    ctx = opencode_platform.SyncContext(apply=True)
+    opencode_platform.Adapter._sync_tui_config(ctx)
+
+    payload = json.loads(tui_config_path.read_text(encoding="utf-8"))
+    assert payload["plugin"] == [
+        ["@slkiser/opencode-quota@latest", {"custom": True}],
+    ]
+    assert payload["keybinds"] == {"command_list": "ctrl+p"}
+
+
+def test_opencode_adapter_sync_home_errors_before_dropping_runtime_entries(tmp_path, monkeypatch):
+    home_dir = tmp_path / "home"
+    repo_root = home_dir / "dev" / "projects" / "agents"
+    config_path = home_dir / ".config" / "opencode" / "opencode.json"
+    repo_config_path = repo_root / "opencode.json"
+
+    config_path.parent.mkdir(parents=True)
+    repo_config_path.parent.mkdir(parents=True)
+    (repo_root / "instructions").mkdir()
+    (repo_root / "skills").mkdir()
+    repo_config_path.write_text(json.dumps({"plugin": ["managed@latest"]}) + "\n", encoding="utf-8")
+    config_path.write_text(
+        json.dumps(
+            {
+                "plugin": ["opencode-auto-resume@latest"],
+                "mcp": {"mcphub_group_all": {"type": "remote", "url": "http://127.0.0.1:46683/mcp/group/all"}},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(opencode_platform, "OPENCODE_CONFIG_PATH", config_path)
+    monkeypatch.setattr(opencode_platform, "OPENCODE_REPO_CONFIG_PATH", repo_config_path)
+    monkeypatch.setattr(opencode_platform, "GLOBAL_MD", repo_root / "instructions" / "global.md")
+    monkeypatch.setattr(opencode_platform, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(opencode_platform, "SKILLS_DIR", repo_root / "skills")
+    monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
+
+    adapter = opencode_platform.Adapter()
+    ctx = opencode_platform.SyncContext(apply=True)
+    with pytest.raises(platform_base.ConfigDropError, match=r"\$\.plugin\[0\]"):
+        adapter.sync_home(ctx, mcphub_registry(), {}, {}, {})
+
+
+def test_legacy_opencode_tui_merge_preserves_existing_managed_plugin_options(tmp_path, monkeypatch):
+    tui_config_path = tmp_path / "home" / ".config" / "opencode" / "tui.json"
+    template_path = tmp_path / "repo" / "config" / "opencode-tui-plugins.json"
+    tui_config_path.parent.mkdir(parents=True)
+    template_path.parent.mkdir(parents=True)
+    tui_config_path.write_text(
+        json.dumps(
+            {
+                "keymap": {
+                    "leader": "ctrl+x",
+                    "sections": {
+                        "global": {
+                            "command.palette.show": "ctrl+p",
+                            "model.list": "<leader>m",
+                        },
+                    },
+                },
+                "keybinds": {
+                    "command_list": "ctrl+shift+p",
+                },
+                "plugin": [
+                    ["@slkiser/opencode-quota@latest", {"custom": True}],
+                    "opencode-subagent-statusline@latest",
+                    "@thiagos1lva/opencode-token-usage-chart@latest",
+                ],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    template_path.write_text(json.dumps(["@slkiser/opencode-quota@latest"]) + "\n")
+
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_TUI_CONFIG_PATH", tui_config_path)
+    monkeypatch.setattr(sync_agent_stack, "OPENCODE_TUI_PLUGINS_TEMPLATE_PATH", template_path)
+
+    ctx = SyncContext(apply=True)
+    with pytest.raises(platform_base.ConfigDropError, match=r"\$\.keymap"):
+        sync_agent_stack.merge_opencode_tui_config(ctx)
+
+    payload = json.loads(tui_config_path.read_text(encoding="utf-8"))
+    assert "keymap" in payload
 
 
 def test_merge_cherry_studio_config_no_op_when_missing(tmp_path, monkeypatch):
@@ -1247,8 +1968,8 @@ enabled = true
 
     assert home_config.startswith("#:schema https://developers.openai.com/codex/config-schema.json")
     assert 'approvals_reviewer = "guardian_subagent"' in home_config
-    assert "[features.multi_agent_v2]" in home_config
-    assert "\n[features.multi_agent_v2]\nenabled = true\n" in home_config
+    assert "multi_agent_v2 = true" in home_config
+    assert "[features.multi_agent_v2]" not in home_config
     assert "[agents]" not in home_config
     assert "max_depth" not in home_config
     assert "max_threads" not in home_config
@@ -1354,6 +2075,18 @@ def test_load_json_raises_for_missing_required_file(tmp_path):
 
     with pytest.raises(FileNotFoundError):
         sync_agent_stack.load_json(missing)
+
+
+def test_merge_claude_settings_creates_missing_settings_file(tmp_path, monkeypatch):
+    settings_path = tmp_path / ".claude" / "settings.json"
+    monkeypatch.setattr(sync_agent_stack, "CLAUDE_SETTINGS_PATH", settings_path)
+
+    ctx = SyncContext(apply=True)
+    sync_agent_stack.merge_claude_settings(ctx, {"docs_domains": ["docs.example.com"]}, {"hooks": []})
+
+    rendered = json.loads(settings_path.read_text(encoding="utf-8"))
+    assert rendered["permissions"]["allow"] == ["WebFetch(domain:docs.example.com)"]
+    assert rendered["hooks"] == {}
 
 
 def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):

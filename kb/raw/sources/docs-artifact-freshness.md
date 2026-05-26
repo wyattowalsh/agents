@@ -21,13 +21,13 @@ source_count: 1
 | Field | Value |
 |-------|-------|
 | source_id | `docs-artifact-freshness` |
-| original_location | `config/docs-artifact-registry.json`; `config/schemas/docs-artifact-registry.schema.json`; `wagents/docs.py`; `wagents/cli.py`; `wagents/site_model.py`; `tests/test_docs.py`; `tests/test_readme.py`; `docs/src/content/docs/`; `docs/src/generated-site-data.mjs`; `docs/src/generated-sidebar.mjs`; `planning/65-docs-and-instructions/`; `openspec/changes/agents-c08-docs-instructions/validation-matrix.md` |
+| original_location | `config/docs-artifact-registry.json`; `config/schemas/docs-artifact-registry.schema.json`; `wagents/docs.py`; `wagents/cli.py`; `wagents/site_model.py`; `tests/test_docs.py`; `tests/test_readme.py`; `docs/src/content/docs/`; `docs/src/generated-site-data.mjs`; `docs/src/generated-sidebar.mjs`; `openspec/changes/archive/2026-05-01-agents-c08-docs-instructions/validation-matrix.md` |
 | raw_path | `kb/raw/sources/docs-artifact-freshness.md` |
 | capture_method | repo-local pointer summary from read-only research with non-mutating freshness checks reported by subagent |
 | captured_at | 2026-05-01 |
 | size_bytes | pointer summary only |
 | checksum | not captured |
-| license_or_access_notes | repo-local docs, registry, tests, and planning material |
+| license_or_access_notes | repo-local docs, registry, tests, and archived OpenSpec material |
 | intended_wiki_coverage | [[docs-generation-and-site]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] |
 
 ## Summary

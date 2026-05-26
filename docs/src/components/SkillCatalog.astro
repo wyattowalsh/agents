@@ -7,6 +7,9 @@ type SkillRow = {
   sourceUrl?: string;
   trustTier: string;
   status?: string;
+  provenanceStatus?: string;
+  reviewStatus?: string;
+  installedAgents?: string[];
   installCommand?: string;
   knowledge?: {
     references?: string[];
@@ -17,14 +20,18 @@ type SkillRow = {
 };
 
 interface Props {
-  skills: SkillRow[];
+  skills?: SkillRow[];
+  src?: string;
 }
 
-const { skills } = Astro.props;
+const { skills = [], src } = Astro.props;
 const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).filter(Boolean))).sort();
+const statuses = Array.from(
+  new Set(skills.map((skill) => skill.status || skill.provenanceStatus || '').filter(Boolean))
+).sort();
 ---
 
-<section class="skill-catalog" data-skill-catalog>
+<section class="skill-catalog" data-skill-catalog data-skill-src={src}>
   <div class="skill-catalog__filters">
     <label>
       <span>Search</span>
@@ -46,13 +53,20 @@ const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).fil
         {trustTiers.map((tier) => <option value={tier}>{tier}</option>)}
       </select>
     </label>
+    <label>
+      <span>Status</span>
+      <select data-skill-status>
+        <option value="all">All statuses</option>
+        {statuses.map((status) => <option value={status}>{status}</option>)}
+      </select>
+    </label>
   </div>
 
   <p class="skill-catalog__count">
-    Showing <strong data-skill-visible>{skills.length}</strong> of {skills.length} indexed skills.
+    Showing <strong data-skill-visible>{skills.length}</strong> of <span data-skill-total>{skills.length}</span> indexed skills.
   </p>
 
-  <div class="skill-catalog__grid">
+  <div class="skill-catalog__grid" data-skill-grid>
     {
       skills.map((skill) => {
         const knowledge = skill.knowledge ?? {};
@@ -61,6 +75,9 @@ const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).fil
           skill.description,
           skill.sourceRoot,
           skill.trustTier,
+          skill.status ?? '',
+          skill.provenanceStatus ?? '',
+          skill.reviewStatus ?? '',
           ...(knowledge.references ?? []),
         ]
           .join(' ')
@@ -71,12 +88,14 @@ const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).fil
             data-skill-card
             data-source={skill.sourceType}
             data-trust={skill.trustTier}
+            data-status={skill.status || skill.provenanceStatus || ''}
             data-haystack={haystack}
           >
             <div class="skill-catalog-card__badges">
               <span>{skill.sourceType}</span>
               <span>{skill.trustTier}</span>
               {skill.status && <span>{skill.status}</span>}
+              {skill.reviewStatus && <span>{skill.reviewStatus}</span>}
             </div>
             <h3>{skill.name}</h3>
             <p>{skill.description}</p>
@@ -92,6 +111,14 @@ const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).fil
                   {knowledge.scripts?.length ?? 0} scripts · {knowledge.evals?.length ?? 0} evals
                 </dd>
               </div>
+              {
+                skill.installedAgents?.length ? (
+                  <div>
+                    <dt>Installed</dt>
+                    <dd>{skill.installedAgents.join(', ')}</dd>
+                  </div>
+                ) : null
+              }
             </dl>
             <div class="skill-catalog-card__actions">
               {skill.sourceType === 'custom' && <a href={`/skills/${skill.name}/`}>Details</a>}
@@ -114,27 +141,120 @@ const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).fil
     const search = catalog.querySelector<HTMLInputElement>('[data-skill-search]');
     const source = catalog.querySelector<HTMLSelectElement>('[data-skill-source]');
     const trust = catalog.querySelector<HTMLSelectElement>('[data-skill-trust]');
+    const status = catalog.querySelector<HTMLSelectElement>('[data-skill-status]');
     const count = catalog.querySelector('[data-skill-visible]');
-    const cards = Array.from(catalog.querySelectorAll('[data-skill-card]'));
+    const total = catalog.querySelector('[data-skill-total]');
+    const grid = catalog.querySelector<HTMLElement>('[data-skill-grid]');
+    const src = catalog.getAttribute('data-skill-src');
+
+    const escapeHtml = (value: unknown) =>
+      String(value ?? '').replace(/[&<>"']/g, (char) => {
+        const escapes: Record<string, string> = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+        };
+        return escapes[char] ?? char;
+      });
+
+    const renderSkill = (skill: any) => {
+      const knowledge = skill.knowledge ?? {};
+      const references = Array.isArray(knowledge.references) ? knowledge.references : [];
+      const scripts = Array.isArray(knowledge.scripts) ? knowledge.scripts : [];
+      const evals = Array.isArray(knowledge.evals) ? knowledge.evals : [];
+      const installedAgents = Array.isArray(skill.installedAgents) ? skill.installedAgents : [];
+      const haystack = [
+        skill.name,
+        skill.description,
+        skill.sourceRoot,
+        skill.trustTier,
+        skill.status ?? '',
+        skill.provenanceStatus ?? '',
+        skill.reviewStatus ?? '',
+        ...references,
+      ]
+        .join(' ')
+        .toLowerCase();
+      const badges = [skill.sourceType, skill.trustTier, skill.status, skill.reviewStatus]
+        .filter(Boolean)
+        .map((badge) => `<span>${escapeHtml(badge)}</span>`)
+        .join('');
+      const installed = installedAgents.length
+        ? `<div><dt>Installed</dt><dd>${escapeHtml(installedAgents.join(', '))}</dd></div>`
+        : '';
+      const actions = [
+        skill.sourceType === 'custom' ? `<a href="/skills/${encodeURIComponent(skill.name)}/">Details</a>` : '',
+        skill.sourceUrl ? `<a href="${escapeHtml(skill.sourceUrl)}">Source</a>` : '',
+      ].join('');
+      const command = skill.installCommand
+        ? `<pre class="agents-scrollbar"><code>${escapeHtml(skill.installCommand)}</code></pre>`
+        : '';
+      return `<article class="skill-catalog-card skill-catalog-card--${escapeHtml(skill.sourceType)}" data-skill-card data-source="${escapeHtml(skill.sourceType)}" data-trust="${escapeHtml(skill.trustTier)}" data-status="${escapeHtml(skill.status || skill.provenanceStatus || '')}" data-haystack="${escapeHtml(haystack)}">
+        <div class="skill-catalog-card__badges">${badges}</div>
+        <h3>${escapeHtml(skill.name)}</h3>
+        <p>${escapeHtml(skill.description)}</p>
+        <dl>
+          <div><dt>Source</dt><dd>${escapeHtml(skill.sourceRoot)}</dd></div>
+          <div><dt>Knowledge</dt><dd>${Number(knowledge.wordCount ?? 0)} words · ${references.length} refs · ${scripts.length} scripts · ${evals.length} evals</dd></div>
+          ${installed}
+        </dl>
+        <div class="skill-catalog-card__actions">${actions}</div>
+        ${command}
+      </article>`;
+    };
+
+    const populateSelect = (select: HTMLSelectElement | null, values: string[], allLabel: string) => {
+      if (!select) return;
+      select.innerHTML = [`<option value="all">${escapeHtml(allLabel)}</option>`]
+        .concat(values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`))
+        .join('');
+    };
+
+    let cards = Array.from(catalog.querySelectorAll('[data-skill-card]'));
 
     const apply = () => {
       const query = search?.value?.trim().toLowerCase() ?? '';
       const sourceValue = source?.value ?? 'all';
       const trustValue = trust?.value ?? 'all';
+      const statusValue = status?.value ?? 'all';
       let visible = 0;
       cards.forEach((card) => {
         const matchesQuery = !query || card.getAttribute('data-haystack')?.includes(query);
         const matchesSource = sourceValue === 'all' || card.getAttribute('data-source') === sourceValue;
         const matchesTrust = trustValue === 'all' || card.getAttribute('data-trust') === trustValue;
-        const show = Boolean(matchesQuery && matchesSource && matchesTrust);
+        const matchesStatus = statusValue === 'all' || card.getAttribute('data-status') === statusValue;
+        const show = Boolean(matchesQuery && matchesSource && matchesTrust && matchesStatus);
         card.toggleAttribute('hidden', !show);
         if (show) visible += 1;
       });
       if (count) count.textContent = String(visible);
     };
 
+    const hydrate = async () => {
+      if (!src || !grid) return;
+      const response = await fetch(src);
+      const skills = await response.json();
+      const rows = Array.isArray(skills) ? skills : [];
+      const trustValues = Array.from(new Set(rows.map((skill) => String(skill.trustTier || '')).filter(Boolean))).sort();
+      const statusValues = Array.from(
+        new Set(rows.map((skill) => String(skill.status || skill.provenanceStatus || '')).filter(Boolean))
+      ).sort();
+      populateSelect(trust, trustValues, 'All trust tiers');
+      populateSelect(status, statusValues, 'All statuses');
+      grid.innerHTML = rows.map(renderSkill).join('');
+      cards = Array.from(catalog.querySelectorAll('[data-skill-card]'));
+      if (total) total.textContent = String(cards.length);
+      apply();
+    };
+
     search?.addEventListener('input', apply);
     source?.addEventListener('change', apply);
     trust?.addEventListener('change', apply);
+    status?.addEventListener('change', apply);
+    hydrate().catch(() => {
+      if (grid) grid.innerHTML = '<p class="skill-catalog__count">Unable to load the generated skill index.</p>';
+    });
   });
 </script>

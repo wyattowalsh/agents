@@ -1,0 +1,119 @@
+---
+title: "mcphub"
+description: "MCPHub control-plane metadata MCP server"
+---
+
+import { Badge, Tabs, TabItem, Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="FastMCP" variant="success" /> <Badge text="1 deps" variant="default" />
+
+> MCPHub control-plane metadata MCP server
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository MCP server directory `mcp/mcphub/` (source file `mcp/mcphub/server.py`).
+</Aside>
+
+<Aside type="tip" title="Usage">
+Add to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "mcphub": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "mcp/mcphub",
+        "python",
+        "server.py"
+      ]
+    }
+  }
+}
+```
+</Aside>
+
+<Tabs>
+  <TabItem label="Package">
+| Field | Value |
+| ----- | ----- |
+| Name | `mcp-mcphub` |
+| Version | 0.1.0 |
+| Python | `>=3.13` |
+  </TabItem>
+  <TabItem label="Dependencies">
+<Badge text="fastmcp&gt;=2" variant="note" />
+  </TabItem>
+  <TabItem label="FastMCP Config">
+```json
+{
+  "$schema": "https://gofastmcp.com/public/schemas/fastmcp.json/v1.json",
+  "source": {
+    "path": "server.py",
+    "entrypoint": "mcp"
+  },
+  "environment": {
+    "type": "uv"
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+## Server Source
+
+<div class="server-source">
+
+```python title="mcp/mcphub/server.py"
+"""MCPHub control-plane metadata MCP server."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+from fastmcp import FastMCP
+
+mcp = FastMCP("MCPHub")
+
+ROOT = Path(__file__).resolve().parents[2]
+SETTINGS_PATH = ROOT / "mcp" / "mcphub" / "mcp_settings.json"
+
+
+@mcp.tool(
+    annotations={
+        "readOnlyHint": True,
+        "destructiveHint": False,
+        "idempotentHint": True,
+        "openWorldHint": False,
+    },
+)
+def mcphub_status() -> dict[str, str | bool]:
+    """Return local MCPHub scaffold status and config location.
+
+    Use this tool when checking whether the repo-owned MCPHub scaffold is
+    present and where its generated settings file lives. It does not start,
+    stop, mutate, or validate the running MCPHub process. It returns static
+    local paths and endpoint metadata that clients can use for follow-up checks.
+    """
+    return {
+        "name": "mcphub",
+        "description": "Local MCP control-plane configuration scaffold.",
+        "settings_path": str(SETTINGS_PATH),
+        "settings_exists": SETTINGS_PATH.exists(),
+        "managed_url": "http://127.0.0.1:46683",
+        "mcp_endpoint": "http://127.0.0.1:46683/mcp",
+    }
+
+```
+
+</div>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP documentation in this site." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Scaffold new MCP servers with wagents." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/mcp/mcphub/server.py)

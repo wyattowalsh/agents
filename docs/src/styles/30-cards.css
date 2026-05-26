@@ -265,7 +265,7 @@
 
 .skill-catalog__filters {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(10rem, 14rem) minmax(10rem, 14rem);
+  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(10rem, 14rem));
   gap: 0.8rem;
   padding: 1rem;
   border: 1px solid var(--border-panel);
@@ -339,10 +339,12 @@
 
 .skill-catalog-card__badges span,
 .skill-catalog-card__actions a {
+  max-width: 100%;
   border: 1px solid var(--border-panel);
   border-radius: var(--radius-pill);
   padding: 0.18rem 0.55rem;
   font-size: 0.75rem;
+  overflow-wrap: anywhere;
 }
 
 .skill-catalog-card h3 {

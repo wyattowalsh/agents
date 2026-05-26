@@ -12,6 +12,12 @@ The repository SHALL maintain a deterministic mapping from repo-supported agent 
 - **THEN** the command SHALL use only Skills CLI target IDs supported by the repo install/sync tooling
 - **AND** desktop, cloud, or app UI harness facets without direct Skills CLI target IDs SHALL be reported as config or blind-spot surfaces rather than invented install adapters.
 
+#### Scenario: Installing a user-requested local harness rollout
+
+- **WHEN** a user explicitly requests installation across every locally installed client that supports Skills CLI adapters
+- **THEN** the rollout command SHALL enumerate the current Skills CLI target IDs with observed local skill roots instead of using `--all`
+- **AND** repo-managed sync MAY continue to target only the repository-supported agent set.
+
 #### Scenario: Mapping split GitHub Copilot facets
 
 - **WHEN** a user requests installation for GitHub Copilot web, CLI, or aggregate Copilot surfaces

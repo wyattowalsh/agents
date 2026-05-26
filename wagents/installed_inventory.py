@@ -3,7 +3,11 @@
 from __future__ import annotations
 
 import json
+import os
+import signal
 import subprocess
+import tempfile
+from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
@@ -11,6 +15,8 @@ from typing import Any, cast
 from wagents import ROOT
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import parse_frontmatter
+
+DEFAULT_HARNESS_QUERY_TIMEOUT_SEC = 60
 
 AGENT_LABEL_TO_ID = {
     "Antigravity": "antigravity",
@@ -124,11 +130,12 @@ def query_harness_skills(
     *,
     agent_ids: tuple[str, ...] | None = None,
     runner: Any = subprocess.run,
+    timeout_sec: int = DEFAULT_HARNESS_QUERY_TIMEOUT_SEC,
 ) -> tuple[HarnessQueryResult, ...]:
     """Enumerate `npx skills ls -g -a <agent> --json` for each supported harness."""
     results: list[HarnessQueryResult] = []
     for agent_id in agent_ids or supported_agent_ids():
-        results.append(_query_one_harness(agent_id, runner=runner))
+        results.append(_query_one_harness(agent_id, runner=runner, timeout_sec=timeout_sec))
     return tuple(results)
 
 
@@ -138,6 +145,7 @@ def collect_installed_inventory(
     root: Path | None = None,
     home: Path | None = None,
     runner: Any = subprocess.run,
+    query_timeout_sec: int = DEFAULT_HARNESS_QUERY_TIMEOUT_SEC,
     external_entries: list[ExternalSkillEntry] | None = None,
 ) -> InstalledInventorySnapshot:
     """Build one normalized installed-skill inventory snapshot."""
@@ -150,7 +158,7 @@ def collect_installed_inventory(
         if existing is None or entry.provenance_status == "verified-install-command":
             curated_by_name[entry.name] = entry
     lock_sources = _load_installed_skill_sources(home=home_dir)
-    queries = query_harness_skills(agent_ids=agent_ids, runner=runner)
+    queries = query_harness_skills(agent_ids=agent_ids, runner=runner, timeout_sec=query_timeout_sec)
 
     aggregated: dict[str, dict[str, object]] = {}
     for query in queries:
@@ -256,10 +264,17 @@ def collect_installed_inventory(
     return InstalledInventorySnapshot(rows=tuple(rows), queries=queries)
 
 
-def _query_one_harness(agent_id: str, *, runner: Any) -> HarnessQueryResult:
+def _query_one_harness(agent_id: str, *, runner: Any, timeout_sec: int) -> HarnessQueryResult:
     command = ["npx", "-y", "skills", "ls", "-g", "-a", agent_id, "--json"]
     try:
-        result = runner(command, capture_output=True, text=True, check=False)
+        result = _run_harness_command(command, runner=runner, timeout_sec=timeout_sec)
+    except subprocess.TimeoutExpired:
+        return HarnessQueryResult(
+            agent_id=agent_id,
+            ok=False,
+            entries=(),
+            error=f"Timed out after {timeout_sec}s: {' '.join(command)}",
+        )
     except OSError as exc:
         return HarnessQueryResult(agent_id=agent_id, ok=False, entries=(), error=str(exc))
     if result.returncode != 0:
@@ -288,6 +303,44 @@ def _query_one_harness(agent_id: str, *, runner: Any) -> HarnessQueryResult:
                 )
             )
     return HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries))
+
+
+def _run_harness_command(command: list[str], *, runner: Any, timeout_sec: int) -> subprocess.CompletedProcess[str]:
+    if runner is not subprocess.run:
+        return runner(command, capture_output=True, text=True, check=False, timeout=timeout_sec)
+
+    with tempfile.TemporaryDirectory(prefix="wagents-skills-ls-") as tmpdir:
+        stdout_path = Path(tmpdir) / "stdout.json"
+        stderr_path = Path(tmpdir) / "stderr.txt"
+        timed_out = False
+        with stdout_path.open("w", encoding="utf-8") as stdout_file, stderr_path.open(
+            "w", encoding="utf-8"
+        ) as stderr_file:
+            process = subprocess.Popen(
+                command,
+                stdout=stdout_file,
+                stderr=stderr_file,
+                text=True,
+                start_new_session=True,
+            )
+            try:
+                process.wait(timeout=timeout_sec)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                with suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGTERM)
+                try:
+                    process.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    with suppress(ProcessLookupError):
+                        os.killpg(process.pid, signal.SIGKILL)
+                    process.wait()
+
+        stdout = stdout_path.read_text(encoding="utf-8", errors="replace")
+        stderr = stderr_path.read_text(encoding="utf-8", errors="replace")
+        if timed_out:
+            raise subprocess.TimeoutExpired(command, timeout_sec, output=stdout, stderr=stderr)
+        return subprocess.CompletedProcess(command, process.returncode, stdout=stdout, stderr=stderr)
 
 
 def _read_skill_metadata(skill_dir: Path) -> tuple[dict[str, object], dict[str, object]]:

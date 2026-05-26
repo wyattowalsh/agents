@@ -1,0 +1,62 @@
+default_profile: core
+
+profiles:
+  core:
+    - brave-search
+    - context7
+    - deepwiki
+    - docling
+    - fetch
+    - package-version
+    - repomix
+    - tavily
+    - duckduckgo-search
+    - exa
+
+  web:
+    - brave-search
+    - tavily
+    - duckduckgo-search
+    - exa
+    - fetch
+    - fetcher
+    - g-search
+
+  docs:
+    - context7
+    - deepwiki
+    - docling
+    - package-version
+
+  browser:
+    - chrome-devtools
+
+  media:
+    - ffmpeg
+
+  private:
+    - gmail
+
+  full:
+    - brave-search
+    - chrome-devtools
+    - context7
+    - deepwiki
+    - docling
+    - fetch
+    - fetcher
+    - package-version
+    - repomix
+    - tavily
+    - duckduckgo-search
+    - exa
+    - ffmpeg
+    - g-search
+    - gmail
+
+disabled_by_default:
+  - chrome-devtools
+  - fetcher
+  - ffmpeg
+  - g-search
+  - gmail

@@ -1,0 +1,24 @@
+---
+title: All Skills
+description: Giant deduped index of custom, curated external, and installed external skills
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import SkillCatalog from '../../../components/SkillCatalog.astro';
+
+# All Skills
+
+This generated index combines repo-owned custom skills, curated external skills, and installed-only external skills. Installed rows whose names already exist under `./skills/` are excluded, and installed rows that match curated external entries are folded into the curated row.
+
+<div class="stats-bar">
+  <span class="stat stat-skill">58 Custom</span>
+  <span class="stat stat-external">299 External</span>
+  <span class="stat stat-installed">292 Installed External</span>
+  <span class="stat stat-agent">357 Total Rows</span>
+</div>
+
+<Aside type="note" title="Installed skills are external">
+Local installed skills appear here as external skills unless they are already custom repo skills. Regenerate with `uv run wagents docs generate` to refresh the installed inventory from local harnesses.
+</Aside>
+
+<SkillCatalog src="/generated-skill-indexes/all.json" />

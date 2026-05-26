@@ -48,10 +48,11 @@ import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
 import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 <div class="stats-bar">
-  <span class="stat stat-skill">55 Custom Skills</span>
-  <span class="stat stat-external">78 Curated External</span>
+  <span class="stat stat-skill">58 Custom Skills</span>
+  <span class="stat stat-installed">292 Installed Skills</span>
+  <span class="stat stat-external">80 Curated External</span>
   <span class="stat stat-agent">8 Agents</span>
-  <span class="stat stat-mcp">30 MCP Tools Configured</span>
+  <span class="stat stat-mcp">1 MCP Servers</span>
 </div>
 
 <div class="hero-badge-row">
@@ -167,8 +168,8 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
 
 <CardGrid>
   <LinkCard title="Start Here" href="/start-here/" description="The shortest guided path: install the catalog, pick a starter skill, and understand the repo layout." />
-  <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills with install commands, generated detail pages, and convention-skill context." />
-  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 30 configured MCP servers from `mcp.json`, including repo-local and external servers." />
+  <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills plus optional installed external skills from local agent directories." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 14 configured MCP servers from `mcp.json`, including repo-local and external servers." />
   <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
   <LinkCard title="OpenSpec Workflow" href="/skills/openspec-workflow/" description="Use spec/change artifacts and JSON wrappers for non-trivial repo and downstream-tooling changes." />
 </CardGrid>
@@ -189,7 +190,7 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
 ## How These Docs Work
 
 <Aside type="note" title="Generated pages, curated framing">
-Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`, while OpenSpec state lives in `openspec/`. Repo workflow and policy truth lives in `AGENTS.md`, the public README is regenerated with `wagents readme`, the top-level navigation stays concise, curated onboarding pages stay hand-maintained, and the MCP overview is currently a hand-maintained summary of 30 servers from `mcp.json`.
+Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`, while OpenSpec state lives in `openspec/`. Repo workflow and policy truth lives in `AGENTS.md`, the public README is regenerated with `wagents readme`, curated onboarding pages stay hand-maintained, and generated catalogs keep the docs in sync with the repo.
 </Aside>
 
 ## Resources

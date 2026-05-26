@@ -4,11 +4,14 @@ from wagents.catalog import CatalogNode
 from wagents.docs import (
     docs_generate,
     write_agents_index,
+    write_all_skills_index,
     write_cli_page,
+    write_external_skills_page,
     write_index_page,
     write_installed_skills_page,
     write_mcp_index,
     write_sidebar,
+    write_skill_install_scripts_page,
     write_skills_index,
 )
 
@@ -73,7 +76,7 @@ class TestWriteIndexPage:
         text = (content_dir / "index.mdx").read_text()
         assert "## Popular Starting Points" in text
         assert "## How These Docs Work" in text
-        assert "repo-level `agents/` directory is currently empty" in text
+        assert "No bundled agent definitions were discovered" in text
 
     def test_stats_bar_with_installed(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -137,7 +140,7 @@ class TestWriteCliPage:
         assert "~/.config/opencode/skills/" in text
         assert "wagents docs generate --no-installed" not in text
         assert "Bundle Manifest" in text
-        assert "bundled agents are not published yet" in text
+        assert "current bundle surface and generated docs inputs" in text
         assert "wagents skills sync --apply" in text
         assert "wagents skills search" in text
         assert "wagents openspec doctor" in text
@@ -161,9 +164,10 @@ class TestWriteSkillsIndex:
         text = idx.read_text()
         assert "User-Invocable Skills (1)" in text
         assert "## Skill Lanes" in text
+        assert '<SkillCatalog src="/generated-skill-indexes/custom.json" />' in text
         assert "npx skills add github:wyattowalsh/agents --skill honest-review -y -g" in text
 
-    def test_installed_skills_section(self, tmp_repo):
+    def test_skills_index_is_custom_only(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
         content_dir.mkdir(parents=True, exist_ok=True)
         nodes = [
@@ -172,20 +176,50 @@ class TestWriteSkillsIndex:
         ]
         write_skills_index(nodes)
         text = (content_dir / "skills" / "index.mdx").read_text()
-        assert "Installed Skills (1)" in text
-        assert "~/.config/opencode/skills/" in text
+        assert "Installed Skills (" not in text
+        assert "ext-skill" not in text
 
-    def test_skips_installed_category_row_when_none_are_present(self, tmp_repo):
+    def test_all_skills_index_combines_custom_and_external(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
         content_dir.mkdir(parents=True, exist_ok=True)
-        write_skills_index([_make_node("skill")])
-        text = (content_dir / "skills" / "index.mdx").read_text()
-        assert "## Skill Lanes" in text
-        assert "Installed Skills (" not in text
+        nodes = [_make_node("skill"), _make_node("skill", id_suffix="ext", source="installed")]
+        write_all_skills_index(nodes, [])
+        text = (content_dir / "skills" / "all.mdx").read_text()
+        assert '<SkillCatalog src="/generated-skill-indexes/all.json" />' in text
+        assert "Installed skills are external" in text
+
+    def test_install_scripts_page_groups_commands(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_skill_install_scripts_page([_make_node("skill")], [])
+        text = (content_dir / "skills" / "install.mdx").read_text()
+        assert "Skill Install Scripts" in text
+        assert "canonical portable install path is `npx skills add`" in text
+        assert '<InstallScripts src="/generated-skill-indexes/install-scripts.json" />' in text
+
+    def test_external_skills_page_includes_installed_external(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_external_skills_page(
+            [],
+            [
+                _make_node(
+                    "skill",
+                    id_suffix="ext",
+                    description="Installed external line one.\nLine two stays in the same MDX paragraph.",
+                    source="installed",
+                )
+            ],
+        )
+        text = (content_dir / "external-skills.mdx").read_text()
+        assert "Installed External" in text
+        assert '<SkillCatalog src="/generated-skill-indexes/external.json" />' in text
+        assert "## Source Groups" in text
+        assert "`ext-skill`" in text
 
 
 class TestDocsGenerate:
-    def test_excludes_installed_skills_by_default(self, tmp_repo, monkeypatch):
+    def test_includes_installed_skills_as_external_by_default(self, tmp_repo, monkeypatch):
         calls = []
 
         monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
@@ -200,11 +234,13 @@ class TestDocsGenerate:
 
         docs_generate()
 
-        assert calls == []
+        assert calls == [{"test-skill"}]
         assert (tmp_repo / "docs" / "src" / "generated-visual-assets.css").exists()
-        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "all.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "install.mdx").exists()
 
-    def test_can_include_installed_skills_explicitly(self, tmp_repo, monkeypatch):
+    def test_can_exclude_installed_skills_explicitly(self, tmp_repo, monkeypatch):
         calls = []
 
         monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
@@ -217,10 +253,10 @@ class TestDocsGenerate:
 
         monkeypatch.setattr("wagents.docs.collect_installed_skills", _collect_installed)
 
-        docs_generate(include_installed=True)
+        docs_generate(include_installed=False)
 
-        assert calls == [{"test-skill"}]
-        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+        assert calls == []
+        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
 
     def test_preserves_hand_maintained_skill_page(self, tmp_repo, monkeypatch):
         monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
@@ -232,7 +268,7 @@ class TestDocsGenerate:
         preserved = "---\ntitle: Curated\n---\n\n{/* HAND-MAINTAINED */}\n\nCurated page.\n"
         skill_page.write_text(preserved)
 
-        docs_generate()
+        docs_generate(include_installed=False)
 
         assert skill_page.read_text() == preserved
 
@@ -255,8 +291,9 @@ class TestWriteInstalledSkillsPage:
         ]
         write_installed_skills_page(nodes)
         text = (content_dir / "skills" / "installed.mdx").read_text()
-        assert "npx skills add example/skills --skill ext-skill -y -g" in text
-        assert "~/.config/opencode/skills/" in text
+        assert "Installed Skills (1)" in text
+        assert "installed skills are treated as external catalog rows" in text
+        assert '<SkillCatalog src="/generated-skill-indexes/installed.json" />' in text
 
 
 # ---------------------------------------------------------------------------

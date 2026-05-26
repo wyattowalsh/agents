@@ -24,6 +24,10 @@ This page is **hand-maintained** and currently summarizes the MCP server entries
 Edit `config/mcp-registry.json`, then preview local drift with `uv run python scripts/sync_agent_stack.py --targets home --check`. Apply repo and home updates with `uv run python scripts/sync_agent_stack.py --targets repo,home --apply`.
 </Aside>
 
+<Aside type="note" title="MCPHub local control plane">
+MCPHub is now the preferred local MCP control plane. When `mcphub.enabled` is true in `config/mcp-registry.json`, clients receive MCPHub all, group, server, and disabled Smart Routing endpoints rooted at `http://127.0.0.1:46683`. Start it locally with `make mcphub-up`; Docker is not used for the managed launch path. ChatGPT remote MCP access uses the opt-in Cloudflare Tunnel URL from `.env.mcphub`.
+</Aside>
+
 <Aside type="note" title="Exact vs merge behavior">
 `ChatGPT Desktop`, the GitHub Copilot shadow config, `Gemini antigravity`, the Gemini extension config, `OpenCode`, `AITK`, and `Crush` all receive the canonical baseline **and** preserve non-canonical extras already present in those files. `Claude Desktop`, `Cursor`, `Gemini CLI`, `GitHub Copilot CLI`, and `Codex` are rewritten to the exact canonical baseline. `Cherry Studio` receives a generated import pack in a tool-owned subdirectory instead of direct config mutation so unmanaged local MCP entries and ad hoc import bundles in the parent directory stay untouched.
 </Aside>

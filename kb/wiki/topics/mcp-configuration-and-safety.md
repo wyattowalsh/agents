@@ -8,8 +8,8 @@ aliases:
   - MCP safety
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 2
+updated: 2026-05-07
+source_count: 3
 ---
 
 # MCP Configuration And Safety
@@ -26,6 +26,8 @@ The official MCP spec defines hosts, clients, and servers communicating through 
 
 OpenCode docs add repo-relevant details: OpenCode supports local and remote MCP servers, remote OAuth, tool disabling, per-agent enablement, and context-size caveats. In this repo, plugin/MCP ownership rules decide which harness owns Chrome DevTools and other shared servers.
 
+Two registry-managed npx MCPs require specific safety framing. `ossinsight` calls the upstream OSSInsight public API and may be constrained by public IP-based rate limits. `supathings` is local to macOS Things 3 and can read local task data and create or update Things items, so it should be treated as a local personal-data and write-capable MCP even though it does not require committed secrets.
+
 ## Evidence
 
 | Claim | Source | Type | Notes |
@@ -34,6 +36,7 @@ OpenCode docs add repo-relevant details: OpenCode supports local and remote MCP 
 | MCP defines hosts, clients, servers, tools, resources, and prompts. | `kb/raw/sources/mcp-surfaces.md` | external source note | Official MCP spec. |
 | MCP safety requires consent and care around arbitrary tool execution. | `kb/raw/sources/mcp-surfaces.md` | external source note | Official MCP security section. |
 | OpenCode supports local and remote MCP config. | `kb/raw/sources/mcp-surfaces.md`; `kb/raw/sources/external-harness-docs.md` | external source notes | Verified OpenCode docs. |
+| OSSInsight and SupaThings are registry-managed npx MCPs with different safety profiles. | `kb/raw/sources/mcp-surfaces.md`; `config/mcp-registry.json` | raw source note and canonical config | OSSInsight is public API/rate-limit sensitive; SupaThings is local Things 3 data/write sensitive. |
 
 ## Related
 

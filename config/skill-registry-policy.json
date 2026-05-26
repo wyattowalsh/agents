@@ -3,7 +3,8 @@
   "support_tiers_ref": "config/support-tier-registry.json",
   "canonical_sources": [
     "skills/",
-    "agents-overhaul-planning/planning/manifests/external-repo-evaluation-final.json",
+    "config/external-skills.md",
+    "planning/manifests/external-repo-evaluation-final.json",
     "planning/manifests/external-repo-evaluation-summary.json",
     "planning/manifests/external-skills/"
   ],

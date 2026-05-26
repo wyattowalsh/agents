@@ -2,7 +2,7 @@
 
 ## Source Of Truth
 
-- `instructions/external-skills.md` — canonical curated external skill install set and target suffix guidance.
+- `config/external-skills.md` — canonical curated external skill install set and target suffix guidance.
 - `wagents/external_skills.py` — parser for curated external skill commands and selected skill names.
 - `wagents/cli.py` — `wagents skills sync` command generation and target-agent behavior.
 - `wagents/installed_inventory.py` — normalized installed/repo/curated inventory rows.
@@ -27,6 +27,7 @@
 
 - `https://github.com/ljagiello/ctf-skills` at audited HEAD `ed2a356db92b078d52b4590c2ebbbf2e6641a7ee`.
 - `https://github.com/nextlevelbuilder/ui-ux-pro-max-skill` at audited HEAD `b7e3af80f6e331f6fb456667b82b12cade7c9d35`.
+- `https://github.com/jal-co/shieldcn` at audited HEAD `0de7510cfcc994d2a928c5255480280e82eaebd4`.
 - `https://github.com/Leonxlnx/taste-skill` at audited HEAD `60c2de19766019297287bd26a260275e499789a9`.
 
 ## Validation Commands

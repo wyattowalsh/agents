@@ -1,13 +1,13 @@
 ---
 title: "draw-thing"
-description: "Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS. NOT for UI implementation (frontend-designer)."
+description: "Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="draw-thing" variant="note" /> <Badge text="2140 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
+<Badge text="draw-thing" variant="note" /> <Badge text="2115 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Custom" variant="tip" />
 
-> Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS. NOT for UI implementation (frontend-designer).
+> Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research).
 
 <div class="quick-start">
 
@@ -18,7 +18,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
 ```
 
-**Use:** `/draw-thing` `<mode> [prompt or path] [--model flux|sdxl|sd15]`
+**Use:** `/draw-thing` `<mode> [prompt or path] [--model qwen|z-image|flux2|video]`
 
 </div>
 
@@ -30,40 +30,41 @@ This page is generated from the repository file `skills/draw-thing/SKILL.md` by 
 
 ## What It Does
 
-Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Things inference stack for txt2img, img2img, upscaling, inpainting, ControlNet, LoRA, batch generation, and hi-res fix on macOS.
+Local AI image and media generation through `draw-things-cli`. Use the current Draw Things command surface: `generate`, `models list`, `models ensure`, `models import`, and `train lora`.
 
 ## Modes
 
-| `$ARGUMENTS` | Mode | Action |
-|--------------|------|--------|
-| `generate <prompt>` / `create <prompt>` | **Generate** | txt2img via CLI |
-| `edit <path> <prompt>` / `transform <path>` | **Edit** | img2img with `--strength` |
-| `upscale <path>` / `enhance <path>` / `superres <path>` | **Upscale** | `--upscaler` + `--upscaler-scale` |
-| `inpaint <path> <mask> <prompt>` | **Inpaint** | img2img with mask input |
-| `controlnet <control_path> <prompt>` / `cn <path> <prompt>` | **ControlNet** | `--controls` JSON |
-| `lora <prompt> --lora <name>` | **LoRA** | `--loras` JSON |
-| `batch <prompt>` / `variations <prompt>` | **Batch** | `--batch-count` variations |
-| `model <name>` | **Model info** | Show recommended settings |
-| `refine` / `iterate` | **Refine** | Re-run with adjusted params, locked seed |
-| `gallery` / `recent` | **Gallery** | List recent outputs |
-| _(empty)_ | **Help** | Verify CLI, show modes, examples |
-| Natural language image description | Auto: **Generate** | Detect prompt intent |
-| Path to image + modification intent | Auto: **Edit/Upscale** | Detect intent from context |
+| `$ARGUMENTS`                                             | Mode               | Action                                              |
+| -------------------------------------------------------- | ------------------ | --------------------------------------------------- |
+| `generate &lt;prompt&gt;` / `create &lt;prompt&gt;`                  | **Generate**       | txt2img with best current image defaults            |
+| Natural language image description                       | Auto: **Generate** | Detect prompt intent and choose a model             |
+| `edit &lt;path&gt; &lt;prompt&gt;` / `transform &lt;path&gt;`              | **Edit**           | img2img with `--image` and `--strength`             |
+| Path to image + modification intent                      | Auto: **Edit**     | Preserve original, write a new output file          |
+| `video &lt;prompt&gt;` / `media &lt;prompt&gt;` / `animate &lt;prompt&gt;` | **Media**          | Generate short local media with `--frames`          |
+| `setup` / `download models` / `best models`              | **Setup**          | Inventory rig and ensure recommended pack           |
+| `inventory` / `models` / `model status`                  | **Inventory**      | Run model inventory helper and summarize gaps       |
+| `import &lt;path-or-url&gt;`                                   | **Import**         | Use `draw-things-cli models import`                 |
+| `model &lt;name&gt;`                                           | **Model info**     | Show current role, settings, and status             |
+| `batch &lt;prompt&gt;` / `variations &lt;prompt&gt;`                 | **Batch**          | Use a shell loop with multiple seeds and outputs    |
+| `refine` / `iterate`                                     | **Refine**         | Re-run with a locked seed and one changed parameter |
+| `upscale &lt;path&gt;` / `controlnet ...` / `lora ...`         | **Advanced**       | Verify config-file workflow before running          |
+| _(empty)_                                                | **Help**           | Verify CLI, show modes and examples                 |
 
 ## Critical Rules
 
-1. **Always check CLI** before any operation — `command -v draw-things-cli`
-2. **Always report the seed** so results are reproducible
-3. **Model-appropriate dimensions**: SD 1.5 -> 512x512, SDXL -> 1024x1024, Flux -> 1024x1024
-4. **Flux has NO negative prompt** — omit `--negative-prompt` entirely; use detailed positive descriptions
-5. **Prompt style must match model**: Flux = natural language, SD 1.5 = comma tags, SDXL = hybrid
-6. **Upscale preserves originals** — always output to a new file, never overwrite
-7. **Default output**: `~/Pictures/draw-thing/` with descriptive filenames
-8. **Show the full CLI command** before running — transparency enables learning and debugging
-9. **Upscaling denoising 0.2-0.4** — higher values alter the image instead of enhancing
-10. **Single-quote JSON** for `--loras` and `--controls` to prevent shell expansion
-11. **Refuse video requests** — out of scope for v1.0; Draw Things supports it but workflows differ
-12. **Verify unknown flags** — if unsure about a flag, run `draw-things-cli generate --help` first
+1. Always check `command -v draw-things-cli` before generation or model mutation.
+2. Always use `draw-things-cli generate --help` as the source of truth for direct flags.
+3. Always pass `--output`; preview-only output is not enough for agent workflows.
+4. Use `--cfg`, not stale `--guidance-scale`.
+5. Do not use stale direct flags: `--sampler`, `--batch-count`, `--upscaler`, `--mask`, `--controls`, or `--loras` unless current help/config schema proves support.
+6. Prefer the recommended 2026 rig pack over legacy SDXL, SD1.5, SD2.x, SVD, FLUX.1, Qwen 1.0, Qwen Edit 2509, Wan 2.1, or old community checkpoints.
+7. Never delete or prune models without separate explicit user approval.
+8. Show the full command before running it.
+9. Preserve source images; write new output files.
+10. Report seed, model id, output path, dimensions, steps, and cfg.
+11. For video, keep dimensions moderate and frame count divisible by 8 plus 1.
+12. For advanced ControlNet/LoRA/inpaint/upscale workflows, verify `--config-json` or `--config-file` schema before execution.
+13. Do not treat auxiliary text/VLM files, sidecars, or incomplete `.part` downloads as recommended generation/media models.
 
 <Tabs>
   <TabItem label="General">
@@ -71,14 +72,14 @@ Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Thin
 | ----- | ----- |
 | Name | `draw-thing` |
 | License | MIT |
-| Version | 1.0.0 |
+| Version | 1.1.0 |
 | Author | wyattowalsh |
   </TabItem>
   <TabItem label="Claude Code">
 | Field | Value |
 | ----- | ----- |
 | Model | `opus` |
-| Argument Hint | `[mode] [prompt or path] [--model flux|sdxl|sd15]` |
+| Argument Hint | `[mode] [prompt or path] [--model qwen|z-image|flux2|video]` |
   </TabItem>
   <TabItem label="Compatibility">
 | Field | Value |
@@ -94,116 +95,115 @@ Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Thin
 ---
 name: draw-thing
 description: >-
-  Local AI image generation via Draw Things CLI. txt2img, img2img, upscale,
-  inpaint, ControlNet, LoRA, batch. Use when you need local image work on
-  macOS. NOT for UI implementation (frontend-designer).
-argument-hint: "<mode> [prompt or path] [--model flux|sdxl|sd15]"
+  Generate local AI images and short media with Draw Things CLI on macOS. Use
+  when you need local txt2img, img2img, model setup, imports, prompt refinement,
+  or rig-aware best-model selection. NOT for UI implementation
+  (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool
+  research (research).
+argument-hint: "<mode> [prompt or path] [--model qwen|z-image|flux2|video]"
 model: opus
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.1.0"
 allowed-tools: Bash Read Glob
 ---
 
 # Draw Thing
 
-Local AI image generation and editing via `draw-things-cli`. Wraps the Draw Things inference stack for txt2img, img2img, upscaling, inpainting, ControlNet, LoRA, batch generation, and hi-res fix on macOS.
+Local AI image and media generation through `draw-things-cli`. Use the current Draw Things command surface: `generate`, `models list`, `models ensure`, `models import`, and `train lora`.
 
-**Scope:** Local Draw Things image generation and editing only. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research).
+**Scope:** Local Draw Things image generation, image editing, model setup, model inventory, imports, and short local media generation. NOT for UI implementation (frontend-designer), ad creative strategy (ad-creative), cloud image APIs, or general AI-model market research.
 
 ---
 
 ## Canonical Vocabulary
 
-| Term | Meaning | NOT |
-|------|---------|-----|
-| **txt2img** | Text-to-image generation: prompt in, image out | img2img |
-| **img2img** | Image-to-image: input image + prompt, modified image out | txt2img |
-| **upscale** | Increase resolution while preserving/enhancing detail | img2img with high strength |
-| **inpaint** | Replace content within a masked region | img2img (full image) |
-| **ControlNet** | Structural guidance from a control image (edges, depth, pose) | LoRA (style/subject) |
-| **LoRA** | Low-Rank Adaptation: small model add-on for style/subject | ControlNet (structure) |
-| **negative prompt** | Text describing what to exclude; essential for SD 1.5, minimal for SDXL, **unused for Flux** | positive prompt |
-| **cfg_scale** | Guidance scale: how literally the model follows the prompt | denoising strength |
-| **denoising strength** | How much to change an input image (0.0 = none, 1.0 = complete redraw) | cfg_scale |
-| **sampler** | Diffusion algorithm (DPM++ 2M Karras, Euler a, DDIM, etc.) | model |
-| **seed** | Random number determining exact output; same seed = same image | prompt |
-| **batch** | Generate multiple images in one run with different seeds | sequential runs |
-| **hi-res fix** | Two-pass: generate at low res, then upscale with denoising | standalone upscaler |
+| Term                 | Meaning                                                             | NOT                    |
+| -------------------- | ------------------------------------------------------------------- | ---------------------- |
+| **txt2img**          | Text-to-image generation: prompt in, image file out                 | img2img                |
+| **img2img**          | Image-to-image generation: input image plus prompt                  | txt2img                |
+| **media**            | Video or audio-video generation with `--frames` and video output    | UI animation           |
+| **model id**         | Draw Things model filename or model reference accepted by `--model` | display name guess     |
+| **recommended pack** | Current rig-aware model set approved for this Mac                   | every installed model  |
+| **legacy model**     | Older model kept for compatibility, not recommended by default      | deletion target        |
+| **cfg**              | Current CLI guidance flag: `--cfg`                                  | old `--guidance-scale` |
+| **strength**         | Img2img change amount: lower preserves, higher redraws              | output scale           |
+| **seed**             | Reproducibility value for identical prompts/settings                | model selection        |
+| **config file**      | JSON file passed with `--config-file` for advanced app settings     | direct CLI flag        |
 
 ---
 
 ## Dispatch
 
-| `$ARGUMENTS` | Mode | Action |
-|--------------|------|--------|
-| `generate <prompt>` / `create <prompt>` | **Generate** | txt2img via CLI |
-| `edit <path> <prompt>` / `transform <path>` | **Edit** | img2img with `--strength` |
-| `upscale <path>` / `enhance <path>` / `superres <path>` | **Upscale** | `--upscaler` + `--upscaler-scale` |
-| `inpaint <path> <mask> <prompt>` | **Inpaint** | img2img with mask input |
-| `controlnet <control_path> <prompt>` / `cn <path> <prompt>` | **ControlNet** | `--controls` JSON |
-| `lora <prompt> --lora <name>` | **LoRA** | `--loras` JSON |
-| `batch <prompt>` / `variations <prompt>` | **Batch** | `--batch-count` variations |
-| `model <name>` | **Model info** | Show recommended settings |
-| `refine` / `iterate` | **Refine** | Re-run with adjusted params, locked seed |
-| `gallery` / `recent` | **Gallery** | List recent outputs |
-| _(empty)_ | **Help** | Verify CLI, show modes, examples |
-| Natural language image description | Auto: **Generate** | Detect prompt intent |
-| Path to image + modification intent | Auto: **Edit/Upscale** | Detect intent from context |
+| `$ARGUMENTS`                                             | Mode               | Action                                              |
+| -------------------------------------------------------- | ------------------ | --------------------------------------------------- |
+| `generate <prompt>` / `create <prompt>`                  | **Generate**       | txt2img with best current image defaults            |
+| Natural language image description                       | Auto: **Generate** | Detect prompt intent and choose a model             |
+| `edit <path> <prompt>` / `transform <path>`              | **Edit**           | img2img with `--image` and `--strength`             |
+| Path to image + modification intent                      | Auto: **Edit**     | Preserve original, write a new output file          |
+| `video <prompt>` / `media <prompt>` / `animate <prompt>` | **Media**          | Generate short local media with `--frames`          |
+| `setup` / `download models` / `best models`              | **Setup**          | Inventory rig and ensure recommended pack           |
+| `inventory` / `models` / `model status`                  | **Inventory**      | Run model inventory helper and summarize gaps       |
+| `import <path-or-url>`                                   | **Import**         | Use `draw-things-cli models import`                 |
+| `model <name>`                                           | **Model info**     | Show current role, settings, and status             |
+| `batch <prompt>` / `variations <prompt>`                 | **Batch**          | Use a shell loop with multiple seeds and outputs    |
+| `refine` / `iterate`                                     | **Refine**         | Re-run with a locked seed and one changed parameter |
+| `upscale <path>` / `controlnet ...` / `lora ...`         | **Advanced**       | Verify config-file workflow before running          |
+| _(empty)_                                                | **Help**           | Verify CLI, show modes and examples                 |
 
 ### Auto-Detection Heuristic
 
-1. Keywords: animate, video, motion, gif, mp4 -> **Refuse**: out of scope for v1.0
-2. File path + "upscale/enhance/bigger/higher res/superres" -> **Upscale**
-3. File path + mask path + descriptive prompt -> **Inpaint**
-4. File path + "inpaint" keyword but NO mask path -> inform user a mask is required; offer to create one via ImageMagick or suggest Edit mode
-5. File path + modification verb (change, edit, transform, restyle) -> **Edit**
-6. Descriptive text with no file path -> **Generate**
-7. Ambiguous -> ask which mode
+1. Prompt asks to install, download, configure, or choose best models -> **Setup**.
+2. Prompt asks for model list, current downloads, or missing models -> **Inventory**.
+3. Prompt asks for video, motion, mp4, mov, frames, or animation -> **Media**.
+4. Existing file path plus edit/restyle/change/transform -> **Edit**.
+5. Existing file path plus upscale/control/lora/inpaint -> **Advanced**, then verify current CLI/config support before running.
+6. Descriptive text with no file path -> **Generate**.
+7. Ambiguous -> ask which mode and state the tradeoff.
 
 ---
 
 ## Prerequisite Protocol
 
-Run this before any generation operation:
+Run before any generation or model mutation:
 
-1. Check CLI: `command -v draw-things-cli`
-2. If NOT found, show install command and STOP:
-   ```
-   brew tap drawthingsai/draw-things
-   brew install --HEAD drawthingsai/draw-things/draw-things-cli
-   ```
-3. If found, verify: `draw-things-cli generate --help`
-4. Detect model directory:
-   - Default: `~/Library/Containers/com.liuliu.draw-things/Data/Documents/Models`
-   - Override: `$DRAWTHINGS_MODELS_DIR`
-5. List available models if user needs guidance:
+1. Check CLI: `command -v draw-things-cli`.
+2. If missing, show install command and stop:
    ```bash
-   ls "${DRAWTHINGS_MODELS_DIR:-$HOME/Library/Containers/com.liuliu.draw-things/Data/Documents/Models}"/*.{ckpt,safetensors} 2>/dev/null
+   brew install drawthingsai/draw-things/draw-things-cli
    ```
+3. Verify installed command surface: `draw-things-cli generate --help`.
+4. For setup/inventory, prefer:
+   ```bash
+   uv run python skills/draw-thing/scripts/model_inventory.py --format json
+   ```
+5. Always pass `--output`; without it, the current CLI may only preview in supported terminals instead of writing a file.
 
 ---
 
-## Model Quick-Reference
+## Current Best Model Policy
 
-| Family | `--model` | Dims | Steps | CFG | Sampler | Prompt Style |
-|--------|-----------|------|-------|-----|---------|-------------|
-| **Flux Schnell** | `flux_1_schnell_q5p.ckpt` | 1024x1024 | 4 | 1.0 | `"Euler a"` | Natural language |
-| **Flux Dev** | `flux_1_dev_q6p.ckpt` | 1024x1024 | 30 | 1.0 | `"Euler a"` | Natural language |
-| **Flux Klein** | `flux_2_klein_4b_q6p.ckpt` | 1024x1024 | 4 | 1.0 | `"DPM++ 2M AYS"` | Natural language |
-| **Flux Klein 9B** | `flux_2_klein_9b_q6p.ckpt` | 1024x1024 | 8 | 1.0 | `"DPM++ 2M AYS"` | Natural language |
-| **SDXL** | `sd_xl_base_1.0.safetensors` | 1024x1024 | 25 | 7.0 | `"DPM++ 2M Karras"` | Tags + sentences |
-| **SD 1.5** | `v1-5-pruned-emaonly.ckpt` | 512x512 | 25 | 7.5 | `"DPM++ 2M Karras"` | Comma-separated tags |
+As of 2026-05-15, this Mac is Apple M1 Pro, arm64, macOS 26.5, 32 GiB unified memory. Use current Draw Things optimized checkpoints and do not recommend legacy SDXL/SD1.5/FLUX.1 families unless the user explicitly asks for compatibility.
 
-**Decision guide:**
-- Need fast prototyping? -> Flux Schnell or Klein (4 steps, ~1-2s)
-- Need best quality? -> Flux Dev (30 steps) or SDXL (Juggernaut XL)
-- Need huge LoRA library? -> SD 1.5 (most mature ecosystem)
-- Need text in images? -> Flux (dramatically better text rendering)
-- Low VRAM / fastest? -> SD 1.5 (4-6 GB)
+| Role                             | Model id                         | Status               | Default use                          |
+| -------------------------------- | -------------------------------- | -------------------- | ------------------------------------ |
+| Fast image default               | `z_image_turbo_1.0_q8p.ckpt`     | recommended          | Fast drafts, 8 steps, `--cfg 0`      |
+| Best text/layout/realism         | `qwen_image_2512_q8p.ckpt`       | recommended          | Posters, typography, polished images |
+| Creative base                    | `z_image_1.0_q8p.ckpt`           | recommended          | General creative exploration         |
+| High-end FLUX/reference/edit     | `flux_2_dev_q6p.ckpt`            | recommended          | FLUX.2 workflows on 32 GiB           |
+| Instruction image edit           | `qwen_image_edit_2511_q8p.ckpt`  | recommended          | Img2img/edit prompts                 |
+| Art/prompt-following alternative | `hidream_i1_full_q5p.ckpt`       | recommended download | Highest-quality art alternative      |
+| Fast local media                 | `ltx_2.3_22b_distilled_q6p.ckpt` | recommended download | Short text/video generation          |
+| Rig-fit Wan media                | `wan_v2.2_5b_ti2v_q8p.ckpt`      | recommended download | Current Wan video on 32 GiB          |
 
-For full model catalog with checkpoints, quantization guide, and SDXL resolutions, load `references/model-catalog.md`.
+Legacy/redundant downloaded models are not deletion targets without approval: `flux_1_schnell_q8p.ckpt`, `flux_1_fill_dev_q8p.ckpt`, and `flux_2_klein_4b_q6p.ckpt`.
+
+Auxiliary text/VLM files and incomplete partials are not recommended generation models. For example, `llama_3.1_8b_instruct_q8p.ckpt.part` is an incomplete stale auxiliary artifact, not a mid-May 2026 best-pack model.
+
+Qwen Layered remains a current optional workflow target, but not a guaranteed best-pack install on this rig: `qwen_image_layered_1.0_bf16_q6p.ckpt` failed verification with a checksum mismatch, and `qwen_image_layered_1.0_bf16_q8p.ckpt` repeatedly stalled during CLI download. Use `qwen_image_edit_2511_q8p.ckpt` for reliable local editing unless the user explicitly asks to keep retrying Layered.
+
+For exact install commands, current/legacy distinctions, and quantization rules, load `references/model-catalog.md`.
 
 ---
 
@@ -211,246 +211,218 @@ For full model catalog with checkpoints, quantization guide, and SDXL resolution
 
 Every mode follows this pattern:
 
-1. **Validate** — file exists? CLI available? model downloaded?
-2. **Select defaults** — from model quick-ref table (user overrides take precedence)
-3. **Build CLI command** — assemble all flags
-4. **Show command** — display the full command to user before running
-5. **Execute** — run via Bash, capture output
-6. **Report** — image path, seed used, dimensions
+1. **Validate**: CLI exists, input files exist, model is downloaded or `--download-missing` is intentional.
+2. **Select defaults**: choose a current model by role unless the user provided `--model`.
+3. **Build command**: use only flags shown by `draw-things-cli generate --help`, or use `--config-file` for advanced app settings.
+4. **Show command**: display the full command before running.
+5. **Execute**: run through Bash and capture output.
+6. **Report**: output path, seed, model id, dimensions, steps, and cfg.
 
-**Flag verification note:** The examples below reflect the approved research plan. If your local CLI help differs — especially around `--image`, `--mask`, `--upscaler`, or output-path flags — trust `draw-things-cli generate --help` over this file and adapt the command.
+### Mode: Generate
 
-### Mode: Generate (txt2img)
-
-Build the command using model-appropriate defaults:
+Fast draft default:
 
 ```bash
 draw-things-cli generate \
-  --model <model> \
+  --model z_image_turbo_1.0_q8p.ckpt \
   --prompt "<prompt>" \
-  --negative-prompt "<negative>" \
-  --width <W> --height <H> \
-  --steps <N> \
-  --guidance-scale <cfg> \
-  --sampler "<sampler>" \
-  --seed <seed or -1>
+  --steps 8 \
+  --cfg 0 \
+  --width 1024 \
+  --height 1024 \
+  --seed <seed> \
+  --output <output.png>
 ```
 
-- For **Flux**: omit `--negative-prompt` entirely (not supported). Write detailed natural language prompts.
-- For **SD 1.5**: include aggressive negative prompt. Use comma-separated tags. Load `references/prompt-patterns.md` for templates.
-- For **SDXL**: include short targeted negative prompt. Use descriptive sentences.
-
-### Mode: Edit (img2img)
+Quality/text default:
 
 ```bash
 draw-things-cli generate \
-  --model <model> \
-  --image <input_path> \
-  --prompt "<what to change>" \
-  --strength 0.75 \
-  --steps <N> --guidance-scale <cfg>
-```
-
-- `--strength` controls how much to change: 0.3 = subtle, 0.5 = moderate, 0.75 = significant, 0.9 = near-complete redraw
-- If width/height not specified, preserve input image dimensions
-
-### Mode: Upscale
-
-```bash
-draw-things-cli generate \
-  --model <model> \
-  --image <input_path> \
-  --upscaler <upscaler_filename> \
-  --upscaler-scale <2 or 4> \
-  --strength 0.2 \
-  --steps 30
-```
-
-Available upscalers:
-
-| Upscaler | Filename | Scale |
-|----------|----------|-------|
-| Real-ESRGAN X2+ | `realesrgan_x2plus_f16.ckpt` | 2x |
-| Real-ESRGAN X4+ | `realesrgan_x4plus_f16.ckpt` | 4x |
-| Real-ESRGAN X4+ Anime | `realesrgan_x4plus_anime_6b_f16.ckpt` | 4x |
-| Remacri | `remacri_4x_f16.ckpt` | 4x |
-| 4x UltraSharp | `4x_ultrasharp_f16.ckpt` | 4x |
-
-- Default upscaler: `realesrgan_x4plus_f16.ckpt`
-- Use `--strength 0.2-0.4` for upscaling (preserve detail). Higher values alter the image.
-
-### Mode: Inpaint
-
-```bash
-draw-things-cli generate \
-  --model <model> \
-  --image <input_path> \
-  --mask <mask_path> \
-  --prompt "<what to paint in masked area>" \
-  --strength 0.75 \
-  --mask-blur 4 \
-  --preserve-original-after-inpaint true
-```
-
-- Mask: white = area to repaint, black = keep original
-- Prompt should describe ONLY what goes in the masked area, not the full image
-- `--mask-blur 4` default; increase if seams are visible
-
-### Mode: ControlNet
-
-Load `references/controlnet-guide.md` for module details and weight recommendations.
-
-```bash
-draw-things-cli generate \
-  --model <model> \
-  --image <control_image_path> \
+  --model qwen_image_2512_q8p.ckpt \
   --prompt "<prompt>" \
-  --controls '[{"file": "<controlnet_model>", "weight": 0.6, "guidanceStart": 0.0, "guidanceEnd": 1.0, "controlMode": "Balanced"}]' \
-  --width <W> --height <H>
+  --steps 40 \
+  --cfg 4 \
+  --width 1328 \
+  --height 1328 \
+  --seed <seed> \
+  --output <output.png>
 ```
 
-Common modules: Canny (edges), Depth (spatial layout), Pose (human skeleton), Scribble (sketches), Tile (upscaling).
-
-### Mode: LoRA
+### Mode: Edit
 
 ```bash
 draw-things-cli generate \
-  --model <model> \
-  --prompt "<prompt>" \
-  --loras '[{"file": "<lora_filename>", "weight": 0.8}]' \
-  --width <W> --height <H>
+  --model qwen_image_edit_2511_q8p.ckpt \
+  --image <input.png> \
+  --prompt "<edit instruction>" \
+  --strength 0.55 \
+  --steps 30 \
+  --cfg 4 \
+  --seed <seed> \
+  --output <output.png>
 ```
 
-- Default weight: 0.6. Range: -1.5 to 2.5. Typical: 0.5-1.0.
-- Multiple LoRAs: add objects to the JSON array
-- Modes: `"All"` (default), `"Base"`, `"Refiner"`
+Use `--strength 0.25-0.4` for subtle edits, `0.5-0.65` for visible edits, and `0.75+` for heavy redraws.
+
+### Mode: Media
+
+```bash
+draw-things-cli generate \
+  --model ltx_2.3_22b_distilled_q6p.ckpt \
+  --prompt "<motion prompt>" \
+  --frames 49 \
+  --width 768 \
+  --height 512 \
+  --seed <seed> \
+  --output <output.mov>
+```
+
+Use LTX distilled first for this rig. Keep width/height divisible by 32 and frames divisible by 8 plus 1.
+
+### Mode: Setup
+
+Run inventory first:
+
+```bash
+uv run python skills/draw-thing/scripts/model_inventory.py --recommended-pack all --format json
+```
+
+Then run missing `ensure_command` entries after showing them to the user. Do not delete legacy models unless the user separately approves a prune operation.
+
+### Mode: Inventory
+
+```bash
+uv run python skills/draw-thing/scripts/model_inventory.py --format json
+```
+
+Summarize installed, missing recommended models, and redundant legacy downloads.
+Report `incomplete_downloads` and `auxiliary_or_dependency_files` separately so helper files or stale `.part` files are not mistaken for current best models.
 
 ### Mode: Batch
 
-```bash
-draw-things-cli generate \
-  --model <model> \
-  --prompt "<prompt>" \
-  --batch-count <N> \
-  --seed <start_seed> \
-  --width <W> --height <H>
-```
-
-- `--batch-count 4` generates 4 images with incrementing seeds
-- Use to explore variations, then pick the best seed for refinement
-
-### Mode: Refine
-
-Re-run the previous generation with adjustments:
-
-1. Lock the seed from the previous generation
-2. Adjust one parameter at a time (prompt, cfg, steps, strength)
-3. Compare results
-
-Example — previous SDXL generate used seed 42, now increase guidance:
+The current CLI does not expose `--batch-count`. Use a shell loop and explicit output names:
 
 ```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "same prompt as before" \
-  --seed 42 \
-  --guidance-scale 9.0 \
-  --steps 25 \
-  --sampler "DPM++ 2M Karras" \
-  --width 1024 --height 1024
+for seed in 1201 1202 1203 1204; do
+  draw-things-cli generate \
+    --model z_image_turbo_1.0_q8p.ckpt \
+    --prompt "<prompt>" \
+    --steps 8 \
+    --cfg 0 \
+    --width 1024 \
+    --height 1024 \
+    --seed "$seed" \
+    --output "$HOME/Pictures/draw-thing/run-$seed.png"
+done
 ```
 
-If the previous generation is not visible in the current conversation, ask the user for: the seed, the prompt, and the model used.
+### Mode: Advanced
 
-### Mode: Gallery
+The current `generate --help` does not expose old direct flags such as `--controls`, `--loras`, `--mask`, `--upscaler`, `--batch-count`, `--sampler`, or `--guidance-scale`. For ControlNet, LoRA, inpaint, upscale, tiling, and other app-level settings:
 
-```bash
-ls -lt "${DRAWTHINGS_OUTPUT_DIR:-$HOME/Pictures/draw-thing}/" | head -20
-```
-
-### Mode: Model info
-
-Load `references/model-catalog.md`. Display the requested model's recommended settings (dimensions, steps, CFG, sampler, prompt style). If the model name is not recognized, list available model families.
+1. Re-check `draw-things-cli generate --help`.
+2. Use Draw Things app-managed settings or `--config-json` / `--config-file` only when the schema is verified.
+3. Never invent direct flags from older examples.
 
 ---
 
-## Prompt Engineering Quick-Reference
+## Prompt Quick-Reference
 
-| Model | Style | Example |
-|-------|-------|---------|
-| **Flux** | Natural language sentences, subject-first, camera/lens terms | `"Portrait of a woman with auburn hair, studio headshot, 85mm lens, f/1.8, soft diffused light, neutral backdrop"` |
-| **SDXL** | Descriptive sentences, Subject-Action-Location-Style | `"A majestic castle on a cliff overlooking the sea, golden hour lighting, dramatic clouds, highly detailed, masterpiece"` |
-| **SD 1.5** | Comma-separated tags, most important first | `"castle, cliff, ocean, golden hour, dramatic sky, highly detailed, masterpiece, best quality, 8k"` |
+| Model family       | Style                                                             | Negative prompt                              |
+| ------------------ | ----------------------------------------------------------------- | -------------------------------------------- |
+| Z Image Turbo/Base | Direct natural-language instructions; concise composition details | Supported when useful, keep short            |
+| Qwen Image 2512    | Explicit layout, typography, exact text, editorial language       | Supported, keep targeted                     |
+| Qwen Edit/Layered  | Imperative edit instructions and preservation constraints         | Use only for what to avoid changing          |
+| FLUX.2             | Natural language, reference/edit details, precise scene intent    | Verify per model; do not assume FLUX.1 rules |
+| HiDream I1 Full    | Rich art direction, style, medium, lighting, composition          | Short targeted negatives if used             |
+| LTX/Wan media      | Describe motion over time, camera movement, temporal continuity   | Avoid still-image-only tag lists             |
 
-**Flux has NO negative prompt support.** Frame exclusions positively: "perfect hands with five fingers" not "no extra fingers".
-
-For advanced prompt patterns, quality boosters, negative prompt templates, and weighting syntax, load `references/prompt-patterns.md`.
+For templates and troubleshooting, load `references/prompt-patterns.md`.
 
 ---
 
-## Iterative Refinement Workflow
+## Scaling Strategy
 
-1. **Generate** with a starting prompt and note the seed
-2. **Evaluate** the result — what's good? what needs changing?
-3. **Lock seed** (`--seed <value>`) to isolate the effect of parameter changes
-4. **Adjust one thing** at a time:
-   - Prompt wording -> changes content/composition
-   - `--guidance-scale` -> higher = more literal, lower = more creative
-   - `--steps` -> more steps = more detail (diminishing returns past 30-40)
-   - `--strength` (img2img) -> how much to change
-5. **Unlock seed** when satisfied with parameters, generate variations with `--seed -1`
+| Request size               | Strategy                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Single image               | Use `z_image_turbo_1.0_q8p.ckpt` unless quality/text needs Qwen 2512                                         |
+| Text/layout critical       | Use `qwen_image_2512_q8p.ckpt` and explicit text/layout prompt                                               |
+| Edit existing image        | Use `qwen_image_edit_2511_q8p.ckpt` with conservative strength first                                         |
+| Layer/editability workflow | Use Qwen Layered only if already installed; otherwise explain prior install failures and ask before retrying |
+| Heavy art quality          | Try `hidream_i1_full_q5p.ckpt`; fall back if memory pressure appears                                         |
+| Short video                | Use LTX distilled q6p first; keep dimensions moderate                                                        |
+| Many variations            | Use shell loops, fixed output paths, and modest seed batches                                                 |
 
 ---
 
 ## Output Handling
 
-- Default output directory: `~/Pictures/draw-thing/`
-- Create it if it doesn't exist: `mkdir -p ~/Pictures/draw-thing`
-- PNG files include embedded metadata (prompt, seed, model, parameters)
-- If `draw-things-cli` outputs to a different location, move/copy to the standard directory
-- Always report the output file path and seed to the user
+- Default skill output directory: `~/Pictures/draw-thing/`.
+- Create it before generation: `mkdir -p "$HOME/Pictures/draw-thing"`.
+- Always pass `--output <file>`; do not rely on implicit output behavior.
+- Never overwrite source images; use descriptive new filenames.
+- Always report output file, seed, model, steps, cfg, dimensions, and whether the model was downloaded during the run.
 
 ---
 
 ## Error Recovery
 
-| Error | Likely Cause | Action |
-|-------|-------------|--------|
-| Model file not found | Wrong filename or missing download | List models dir, suggest correct name from model quick-ref |
-| Process killed / OOM | Model too large for available memory | Suggest smaller model or quantized variant (e.g., q5p/q6p) |
-| Unknown flag error | CLI version mismatch with this skill | Run `draw-things-cli generate --help`, adapt command |
-| No output file | Silent failure or wrong output path | Check CLI stderr, verify output location |
+| Error           | Likely cause                                     | Action                                                              |
+| --------------- | ------------------------------------------------ | ------------------------------------------------------------------- |
+| `unknown flag`  | Old guidance or CLI mismatch                     | Run `draw-things-cli generate --help`; remove stale direct flag     |
+| model not found | Wrong id or not downloaded                       | Run `draw-things-cli models list`; use `models ensure --model <id>` |
+| no output file  | Missing `--output` or preview-only terminal mode | Re-run with explicit file path                                      |
+| killed/OOM      | Model too large or dimensions too high           | Lower dimensions, use q6p/q5p, or switch to faster model            |
+| poor text       | Wrong model/prompt for typography                | Use Qwen Image 2512 with exact quoted text                          |
+| video fails     | Model missing or memory pressure                 | Ensure LTX q6p, reduce dimensions/frames                            |
 
 ---
 
 ## Reference Files
 
-Load ONE reference at a time. Do not preload all references into context.
+Load ONE reference at a time.
 
-| File | Content | Load When |
-|------|---------|-----------|
-| `references/cli-reference.md` | Complete flag tables: 60+ flags, 19 samplers, 4 seed modes, JSON schemas | Building non-trivial commands, user asks about flags |
-| `references/model-catalog.md` | Model variants, checkpoints, SDXL resolutions, quantization guide | User asks about models, `model` mode |
-| `references/prompt-patterns.md` | Prompt engineering, quality boosters, negative templates, weighting | Complex prompts, quality issues |
-| `references/controlnet-guide.md` | Modules, weights, scheduling, multi-ControlNet, JSON format | ControlNet mode |
-| `references/workflow-recipes.md` | Multi-step recipes: character design, photo restoration, style transfer | Complex creative goals |
+| File                             | Content                                                                 | Load When                          |
+| -------------------------------- | ----------------------------------------------------------------------- | ---------------------------------- |
+| `references/cli-reference.md`    | Current command surface, flags, models subcommands, config caveats      | Building non-trivial commands      |
+| `references/model-catalog.md`    | 2026-05-15 current best model pack, exact ensure commands, legacy notes | Choosing/downloading models        |
+| `references/prompt-patterns.md`  | Prompt patterns for Qwen, Z Image, FLUX.2, HiDream, LTX/Wan             | Complex prompts or quality issues  |
+| `references/controlnet-guide.md` | Advanced controls/import/config guidance with stale-flag warnings       | ControlNet, LoRA, inpaint, upscale |
+| `references/workflow-recipes.md` | Current recipes using exposed flags and shell loops                     | Multi-step creative workflows      |
+
+---
+
+## Validation Contract
+
+Before declaring this skill complete after edits, run:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python skills/skill-creator/scripts/audit.py skills/draw-thing/
+wagents package draw-thing --dry-run
+uv run python skills/draw-thing/scripts/model_inventory.py --format json
+```
+
+Completion criteria: validation commands pass, audit score is A-range or any remaining gap is explained, model inventory identifies recommended-pack status, and no command examples use stale direct flags unsupported by current `generate --help`.
 
 ---
 
 ## Critical Rules
 
-1. **Always check CLI** before any operation — `command -v draw-things-cli`
-2. **Always report the seed** so results are reproducible
-3. **Model-appropriate dimensions**: SD 1.5 -> 512x512, SDXL -> 1024x1024, Flux -> 1024x1024
-4. **Flux has NO negative prompt** — omit `--negative-prompt` entirely; use detailed positive descriptions
-5. **Prompt style must match model**: Flux = natural language, SD 1.5 = comma tags, SDXL = hybrid
-6. **Upscale preserves originals** — always output to a new file, never overwrite
-7. **Default output**: `~/Pictures/draw-thing/` with descriptive filenames
-8. **Show the full CLI command** before running — transparency enables learning and debugging
-9. **Upscaling denoising 0.2-0.4** — higher values alter the image instead of enhancing
-10. **Single-quote JSON** for `--loras` and `--controls` to prevent shell expansion
-11. **Refuse video requests** — out of scope for v1.0; Draw Things supports it but workflows differ
-12. **Verify unknown flags** — if unsure about a flag, run `draw-things-cli generate --help` first
+1. Always check `command -v draw-things-cli` before generation or model mutation.
+2. Always use `draw-things-cli generate --help` as the source of truth for direct flags.
+3. Always pass `--output`; preview-only output is not enough for agent workflows.
+4. Use `--cfg`, not stale `--guidance-scale`.
+5. Do not use stale direct flags: `--sampler`, `--batch-count`, `--upscaler`, `--mask`, `--controls`, or `--loras` unless current help/config schema proves support.
+6. Prefer the recommended 2026 rig pack over legacy SDXL, SD1.5, SD2.x, SVD, FLUX.1, Qwen 1.0, Qwen Edit 2509, Wan 2.1, or old community checkpoints.
+7. Never delete or prune models without separate explicit user approval.
+8. Show the full command before running it.
+9. Preserve source images; write new output files.
+10. Report seed, model id, output path, dimensions, steps, and cfg.
+11. For video, keep dimensions moderate and frame count divisible by 8 plus 1.
+12. For advanced ControlNet/LoRA/inpaint/upscale workflows, verify `--config-json` or `--config-file` schema before execution.
+13. Do not treat auxiliary text/VLM files, sidecars, or incomplete `.part` downloads as recommended generation/media models.
 
 ````
 

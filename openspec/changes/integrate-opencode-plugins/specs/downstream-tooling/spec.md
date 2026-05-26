@@ -18,6 +18,18 @@ The repository SHALL keep repo-managed OpenCode runtime plugin specs in `opencod
 - **THEN** the plugin SHALL be added to `~/.config/opencode/tui.json` instead of repo `opencode.json`
 - **AND** validation SHALL assert known TUI-only plugin specs are absent from repo `opencode.json`.
 
+#### Scenario: Disabling incompatible TUI plugin specs
+
+- **WHEN** a TUI-only plugin fails OpenCode startup or plugin loading with a concrete schema or environment-registration error
+- **THEN** sync SHALL omit that plugin from live `~/.config/opencode/tui.json`
+- **AND** sync SHALL also remove stale copies of the plugin from live runtime `~/.config/opencode/opencode.json`.
+
+#### Scenario: Provider-scoping OpenCode context cache fields
+
+- **WHEN** the local context-cache plugin prepares chat parameters for a non-OpenAI provider
+- **THEN** it SHALL NOT add `promptCacheKey` to provider input
+- **AND** non-OpenAI providers that reject extra fields SHALL continue without prompt-cache parameters.
+
 #### Scenario: Adding OpenCode telemetry plugins
 
 - **WHEN** an OpenCode telemetry plugin needs credential values

@@ -1,17 +1,16 @@
 ---
-title: Skills
-description: Browse all available AI agent skills
+title: Custom Skills
+description: Browse repo-owned AI agent skills
 ---
 
 import { Card, CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';
 import InstallCommand from '../../../components/InstallCommand.astro';
 import SkillCatalog from '../../../components/SkillCatalog.astro';
-import SkillTopology from '../../../components/SkillTopology.astro';
-import { installCommands, skillIndex } from '../../../generated-site-data.mjs';
+import { installCommands } from '../../../generated-site-data.mjs';
 
-Skills are portable prompt-and-workflow bundles for coding agents. Install them once, invoke them with `/skill-name`, and keep the behavior under version control.
+These are the repo-owned skills in `./skills/`. External and installed-only skills are kept out of this custom catalog so coverage is easy to audit against the repository tree.
 
-New here? Start with [Start Here](/start-here/) for the shortest setup path.
+Use [All Skills](/skills/all/) for the combined custom plus external index.
 
 ### Quick Install
 
@@ -20,26 +19,20 @@ New here? Start with [Start Here](/start-here/) for the shortest setup path.
 <InstallCommand command={installCommands.starter} title="Install a focused starter skill" />
 
 <Aside type="tip" title="How to use this page">
-Use the lane cards below when you want a fast starting point. Use the full catalog sections when you already know the exact skill you need.
-</Aside>
-
-<Aside type="note" title="Installed external skills">
-Use `npx skills add <source> --skill <name> -y -g --agent <agent>` for third-party collections or curated subsets. See [External Skills](/external-skills/) for the curated install set and trust gates. Run `wagents docs generate --include-installed` when you want those locally installed skills included in a docs build.
+This page is intentionally custom-only. Every card here should correspond to one tracked `skills/<name>/SKILL.md` file.
 </Aside>
 
 <div class="stats-bar">
-  <span class="stat stat-skill">51 User-Invocable</span>
+  <span class="stat stat-skill">58 Custom Skills</span>
+  <span class="stat stat-installed">54 User-Invocable</span>
   <span class="stat stat-agent">4 Convention Skills</span>
-  <span class="stat stat-external">78 Curated External</span>
 </div>
 
-## Complete Intelligence Index
+## Custom Skill Index
 
-This generated index combines repo-owned custom skills, optional locally installed external skills, and the curated third-party source list. Each row carries source, trust, install, and knowledge metadata.
+Search, filter, and inspect only the skills owned by this repository.
 
-<SkillCatalog skills={skillIndex} />
-
-<SkillTopology skills={skillIndex} />
+<SkillCatalog src="/generated-skill-indexes/custom.json" />
 
 ## Skill Lanes
 
@@ -50,7 +43,7 @@ This generated index combines repo-owned custom skills, optional locally install
   <LinkCard title="Workflow & Utility" href="/skills/orchestrator/" description="Use these to coordinate work, simplify code, manage git flow, package releases, or handle local file tasks." />
 </CardGrid>
 
-## User-Invocable Skills (51)
+## User-Invocable Skills (54)
 
 <Badge text="Manual invocation" variant="tip" /> Call these when you want a specialist on demand. They appear in the autocomplete menu.
 
@@ -75,14 +68,14 @@ These are the main building blocks in the catalog: focused specialists for revie
   <LinkCard title="discover-skills" href="/skills/discover-skills/" description="Discover AI agent skills via gap analysis, registry search, and ideation. Use when expanding your collection systematically." />
   <LinkCard title="docling-graph" href="/skills/docling-graph/" description="Use when designing/reviewing Docling Graph knowledge-graph workflows: templates, contracts, CLI/API configs, inspect reports, exports, traces." />
   <LinkCard title="docs-steward" href="/skills/docs-steward/" description="Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change." />
-  <LinkCard title="draw-thing" href="/skills/draw-thing/" description="Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS." />
+  <LinkCard title="draw-thing" href="/skills/draw-thing/" description="Generate local AI images and short media with Draw Things CLI on macOS." />
   <LinkCard title="email-whiz" href="/skills/email-whiz/" description="Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail." />
   <LinkCard title="event-driven-architect" href="/skills/event-driven-architect/" description="Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines." />
   <LinkCard title="external-skill-auditor" href="/skills/external-skill-auditor/" description="Audit third-party Agent Skills before install or repo promotion." />
   <LinkCard title="files-buddy" href="/skills/files-buddy/" description="Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders." />
   <LinkCard title="frontend-designer" href="/skills/frontend-designer/" description="Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI." />
   <LinkCard title="git-workflow" href="/skills/git-workflow/" description="Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks." />
-  <LinkCard title="harness-master" href="/skills/harness-master/" description="Audit harness configs and apply fixes." />
+  <LinkCard title="harness-master" href="/skills/harness-master/" description="Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements." />
   <LinkCard title="honest-review" href="/skills/honest-review/" description="Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality." />
   <LinkCard title="host-panel" href="/skills/host-panel/" description="Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles." />
   <LinkCard title="i18n-localization" href="/skills/i18n-localization/" description="Plan and review localization changes across app, docs, and web surfaces." />
@@ -92,7 +85,9 @@ These are the main building blocks in the catalog: focused specialists for revie
   <LinkCard title="mcp-creator" href="/skills/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
   <LinkCard title="namer" href="/skills/namer/" description="Name anything: projects, products, companies, packages." />
   <LinkCard title="nerdbot" href="/skills/nerdbot/" description="Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes." />
+  <LinkCard title="new-project" href="/skills/new-project/" description="Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines." />
   <LinkCard title="observability-advisor" href="/skills/observability-advisor/" description="Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps." />
+  <LinkCard title="opencode-ensemble" href="/skills/opencode-ensemble/" description="Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves." />
   <LinkCard title="openspec-workflow" href="/skills/openspec-workflow/" description="Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions." />
   <LinkCard title="orchestrator" href="/skills/orchestrator/" description="Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination." />
   <LinkCard title="performance-profiler" href="/skills/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
@@ -108,6 +103,7 @@ These are the main building blocks in the catalog: focused specialists for revie
   <LinkCard title="skill-router" href="/skills/skill-router/" description="Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet." />
   <LinkCard title="tech-debt-analyzer" href="/skills/tech-debt-analyzer/" description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time." />
   <LinkCard title="test-architect" href="/skills/test-architect/" description="Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites." />
+  <LinkCard title="things-manager" href="/skills/things-manager/" description="Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD." />
   <LinkCard title="wargame" href="/skills/wargame/" description="Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty." />
 </CardGrid>
 </div>

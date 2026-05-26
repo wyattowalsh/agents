@@ -1,0 +1,21 @@
+{
+	"schema_version": 1,
+	"aliases": {
+		"vercel-ai-sdk": {
+			"package": "ai",
+			"notes": "The Vercel AI SDK package is `ai`, not `@vercel/ai`."
+		},
+		"guardrails-ai": {
+			"package": null,
+			"notes": "Verify current package name before install."
+		},
+		"shadcn-ui": {
+			"package": "shadcn",
+			"notes": "Use `pnpm dlx shadcn@latest` for one-off CLI commands."
+		},
+		"starlight": {
+			"package": "@astrojs/starlight",
+			"notes": "Use Astro project scaffolding for docs roots."
+		}
+	}
+}

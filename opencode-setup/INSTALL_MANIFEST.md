@@ -17,24 +17,25 @@ The active runtime npm plugin list is configured as `@latest` in `~/.config/open
 5. `@tarquinen/opencode-dcp@latest`
 6. `@morphllm/opencode-morph-plugin@latest`
 7. `opencode-handoff@latest`
-8. `opencode-agent-skills@latest`
-9. `@devtheops/opencode-plugin-otel@latest`
-10. `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
-11. `@simonwjackson/opencode-direnv@latest`
-12. `opencode-pty@latest`
-13. `opencode-wakatime@latest`
-14. `octto@latest`
-15. `@mohak34/opencode-notifier@latest`
-16. `opencode-devcontainers@latest`
-17. `@ramarivera/opencode-model-announcer@latest`
-18. `@mailshieldai/opencode-canvas@latest`
-19. `opencode-scheduler@latest`
-20. `opencode-claude-auth@latest`
-21. `opencode-plugin-langfuse@latest`
+8. `@devtheops/opencode-plugin-otel@latest`
+9. `@plannotator/opencode@latest` with `workflow: "plan-agent"` and `planningAgents: ["plan"]`
+10. `@simonwjackson/opencode-direnv@latest`
+11. `opencode-pty@latest`
+12. `opencode-wakatime@latest`
+13. `octto@latest`
+14. `@mohak34/opencode-notifier@latest`
+15. `opencode-devcontainers@latest`
+16. `@ramarivera/opencode-model-announcer@latest`
+17. `@mailshieldai/opencode-canvas@latest`
+18. `opencode-scheduler@latest`
+19. `opencode-claude-auth@latest`
+20. `opencode-plugin-langfuse@latest`
 
 Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale installed plugin, refresh the matching package under `~/.cache/opencode/packages/` with Bun or restart OpenCode so its automatic installer rebuilds the cache.
 
 `opencode-shell-strategy` was removed from the requested inventory because npm returned 404 for that package and OpenCode logged `failed to resolve plugin server entry` for its empty cache directory. Re-add it only if a valid install source is confirmed.
+
+`opencode-agent-skills@latest` was removed from the requested inventory because its semantic matching path pulled in the native ONNX runtime through `@huggingface/transformers`, which was unstable on this macOS setup.
 
 `open-plan-annotator@latest` was replaced by `@plannotator/opencode@latest` because Plannotator's default plan-agent workflow scopes `submit_plan` to planning agents instead of exposing the older broader plan workflow to primary execution agents.
 
@@ -47,7 +48,9 @@ Keep repo-managed npm plugin specs on `@latest`. If OpenCode reports a stale ins
 TUI-only plugins belong in `~/.config/opencode/tui.json`, not in the repo runtime mirror, unless a repo-managed TUI source file is introduced:
 
 1. `@slkiser/opencode-quota@latest`
-2. `opencode-subagent-statusline@latest`
+2. `@ishaksebsib/opencode-tree@latest`
+
+`opencode-subagent-statusline@latest` and `@thiagos1lva/opencode-token-usage-chart@latest` are disabled on OpenCode 1.14.50 because they fail plugin load with an `OTUI_TREE_SITTER_WORKER_PATH` registration conflict.
 
 Do not add `notification_method` to `~/.config/opencode/tui.json`; current OpenCode TUI schema rejects that key and logs `ConfigInvalidError`.
 
@@ -55,6 +58,7 @@ Do not add `notification_method` to `~/.config/opencode/tui.json`; current OpenC
 
 - `opencode-scheduler@latest` is installed but intentionally has no scheduled jobs configured. Create jobs only on explicit request, prefer read-only jobs first, set `timeoutSeconds`, and inspect scheduler `job_logs` before trusting recurring automation.
 - `opencode-pty@latest` can start long-running interactive PTY sessions. Prefer explicit `timeoutSeconds`, use `notifyOnExit` for long commands, and clean up sessions when finished.
+- `opencode-incomplete-resume.mjs` is deployed as a tuned local copy of `ilgizar-valiullin/opencode-incomplete-resume-plugin` because upstream is source-only. It keeps upstream control flow, resumes only on explicit `TASK_STATUS: INCOMPLETE`, stops on `TASK_STATUS: COMPLETE` / `TASK_STATUS: BLOCKED`, and tunes only the hardcoded constants to `MAX_CONTINUES = 3` and `COOLDOWN_MS = 2000`.
 - `opencode-wakatime@latest` reads credentials from `~/.wakatime.cfg` or `$WAKATIME_HOME/.wakatime.cfg`. Never store WakaTime API keys in repo config, docs, tests, or OpenCode plugin arrays.
 - `octto@latest` explores ideas through branch-based workflows. Do not let it create branches or worktrees unless the user explicitly requests that workflow.
 - `opencode-claude-auth@latest` can reuse Claude Code credentials. Claude Code must be authenticated first; prefer macOS Keychain-backed credentials and use redacted debug logs only. Do not enable optional 1M context or model/runtime overrides by default.
@@ -87,6 +91,7 @@ Repo-managed local plugins are deployed from `platforms/opencode/plugins/` to `~
 
 - `approval-notify.ts`
 - `credential-guard.ts`
+- `opencode-incomplete-resume.mjs`
 
 The live directory also contains `compaction-context.ts`. It is currently treated as local machine state, not repo-managed inventory, unless it is explicitly promoted into `platforms/opencode/plugins/`.
 

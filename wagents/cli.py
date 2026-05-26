@@ -17,6 +17,12 @@ from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import RELATED_SKILLS, CatalogNode
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 from wagents.installed_inventory import InstalledSkillInventoryRow, collect_installed_inventory
+from wagents.opencode_sessions import (
+    DEFAULT_OPENCODE_DB_PATH,
+    DEFAULT_OPENCODE_LOG_DIR,
+    diagnose_session,
+    redact_report_for_text,
+)
 from wagents.openspec import (
     OPENSPEC_PACKAGE,
     OPENSPEC_TOOL_BY_AGENT,
@@ -49,6 +55,8 @@ skills_app = typer.Typer(help="Index and search local skills")
 app.add_typer(skills_app, name="skills")
 openspec_app = typer.Typer(help="Manage OpenSpec workflows and downstream AI tool setup")
 app.add_typer(openspec_app, name="openspec")
+opencode_app = typer.Typer(help="Diagnose OpenCode runtime state")
+app.add_typer(opencode_app, name="opencode")
 
 OUTPUT_FORMATS = ("text", "json", "jsonl")
 SKILL_SOURCES = (
@@ -1827,6 +1835,94 @@ def openspec_archive(
     raise typer.Exit(code=result.returncode)
 
 
+def _format_opencode_session_report(report: dict[str, Any]) -> list[str]:
+    """Render a compact OpenCode session diagnosis."""
+    summary = cast(dict[str, Any], report.get("summary") or {})
+    lines = [
+        f"db: {report.get('db_path')}",
+        f"logs: {report.get('log_dir')}",
+        f"server_error events: {summary.get('event_count', 0)}",
+    ]
+    request_ids = cast(list[str], summary.get("request_ids") or [])
+    if request_ids:
+        lines.append("request IDs:")
+        lines.extend(f"  {request_id}" for request_id in request_ids)
+    sessions = cast(dict[str, int], summary.get("sessions") or {})
+    if sessions:
+        lines.append("sessions:")
+        lines.extend(f"  {session_id}: {count} event(s)" for session_id, count in sorted(sessions.items()))
+    if summary.get("first_timestamp") or summary.get("last_timestamp"):
+        lines.append(f"window: {summary.get('first_timestamp')} .. {summary.get('last_timestamp')}")
+
+    session_reports = cast(dict[str, dict[str, Any]], report.get("sessions") or {})
+    for session_id, session_report in sorted(session_reports.items()):
+        lines.append(f"session {session_id}:")
+        if not session_report.get("exists"):
+            lines.append("  not found in opencode.db")
+            continue
+        session = cast(dict[str, Any], session_report.get("session") or {})
+        lines.append(f"  title: {session.get('title')}")
+        lines.append(f"  directory: {session.get('directory')}")
+        lines.append(f"  archived: {session.get('time_archived')}")
+        lines.append(f"  assistant messages: {session_report.get('assistant_message_count')}")
+        lines.append(f"  incomplete assistant messages: {session_report.get('incomplete_assistant_message_count')}")
+        lines.append(f"  encrypted reasoning parts: {session_report.get('encrypted_reasoning_part_count')}")
+        lines.append(f"  error parts: {session_report.get('error_part_count')}")
+
+    quarantine = cast(dict[str, Any], report.get("quarantine") or {})
+    if quarantine.get("requested"):
+        mode = "applied" if quarantine.get("applied") else "dry-run"
+        lines.append(f"quarantine: {mode}")
+        archived_sessions = cast(list[str], quarantine.get("archived_sessions") or [])
+        if archived_sessions:
+            lines.extend(f"  archive session: {session_id}" for session_id in archived_sessions)
+        if quarantine.get("backup_path"):
+            lines.append(f"  backup: {quarantine.get('backup_path')}")
+    return lines
+
+
+@opencode_app.command("diagnose-session")
+def opencode_diagnose_session(
+    request_id: Annotated[str | None, typer.Option("--request-id", help="OpenAI request ID from a retry error")] = None,
+    session_id: Annotated[
+        list[str] | None,
+        typer.Option("--session-id", help="OpenCode session ID to inspect; may be repeated"),
+    ] = None,
+    db_path: Annotated[Path, typer.Option("--db-path", help="Path to opencode.db")] = DEFAULT_OPENCODE_DB_PATH,
+    log_dir: Annotated[
+        Path,
+        typer.Option("--log-dir", help="Path to OpenCode log directory"),
+    ] = DEFAULT_OPENCODE_LOG_DIR,
+    quarantine: bool = typer.Option(False, "--quarantine", help="Plan or apply archive quarantine for target sessions"),
+    apply: bool = typer.Option(False, "--apply", help="Apply quarantine after backing up opencode.db"),
+    backup_dir: Annotated[Path | None, typer.Option("--backup-dir", help="Directory for DB backups")] = None,
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Diagnose OpenCode session-local server_error loops without mutating by default."""
+    normalized_format = _normalize_output_format(format_)
+    try:
+        report = diagnose_session(
+            request_id=request_id,
+            session_ids=session_id,
+            db_path=db_path,
+            log_dir=log_dir,
+            quarantine=quarantine,
+            apply=apply,
+            backup_dir=backup_dir,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        typer.echo(f"Error: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+
+    text_report = redact_report_for_text(report)
+    _emit_structured_output(
+        normalized_format,
+        text_lines=_format_opencode_session_report(text_report),
+        json_data=report,
+        jsonl_records=[{"type": "opencode-session-diagnosis", **report}],
+    )
+
+
 @app.command()
 def package(
     name: str = typer.Argument("", help="Skill name (omit for --all)"),
@@ -1991,7 +2087,8 @@ def readme(
             "Codex can load the Git-backed plugin bundle and bundled skills from the repository root |"
         ),
         (
-            "| OpenCode | `opencode.json` | Repo-managed npm plugin specs use `@latest`; "
+            "| OpenCode | `opencode.json` + `.opencode/` | Repo-managed npm runtime plugin specs use "
+            "`@latest`; OCX-managed components stay copied under `.opencode/` with `.ocx/` receipts; "
             "restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |"
         ),
         (

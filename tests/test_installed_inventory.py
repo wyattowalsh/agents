@@ -1,8 +1,9 @@
 import json
 import subprocess
+import sys
 
 from wagents.external_skills import parse_external_skill_entries
-from wagents.installed_inventory import collect_installed_inventory
+from wagents.installed_inventory import _run_harness_command, collect_installed_inventory, query_harness_skills
 
 
 def _completed(cmd, payload):
@@ -174,6 +175,34 @@ def test_collect_installed_inventory_reports_query_errors(tmp_path):
 
     errors = {query.agent_id: query.error for query in snapshot.queries if not query.ok}
     assert errors["github-copilot"] == "Invalid agents: github-copilot"
+
+
+def test_query_harness_skills_reports_timeout():
+    def runner(cmd, **kwargs):
+        raise subprocess.TimeoutExpired(cmd, kwargs["timeout"])
+
+    (result,) = query_harness_skills(agent_ids=("claude-code",), runner=runner, timeout_sec=3)
+
+    assert not result.ok
+    assert result.error.startswith("Timed out after 3s:")
+
+
+def test_run_harness_command_captures_large_stdout():
+    script = (
+        "import json; "
+        "print(json.dumps([{'name': str(i), 'path': 'x' * 80, 'scope': 'global', "
+        "'agents': ['Codex']} for i in range(2000)]))"
+    )
+
+    result = _run_harness_command(
+        [sys.executable, "-c", script],
+        runner=subprocess.run,
+        timeout_sec=10,
+    )
+
+    assert result.returncode == 0
+    assert len(result.stdout) > 65536
+    assert json.loads(result.stdout)[0]["agents"] == ["Codex"]
 
 
 def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label(tmp_path):

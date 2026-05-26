@@ -66,7 +66,14 @@ def escape_mdx_line(line: str) -> str:
     i = 0
     while i < len(line):
         if in_code(i):
-            out.append(line[i])
+            if line[i] == "|":
+                out.append("\\|")
+            elif line[i] == "<":
+                out.append("&lt;")
+            elif line[i] == ">":
+                out.append("&gt;")
+            else:
+                out.append(line[i])
             i += 1
             continue
         if line[i : i + 4] == "<!--":

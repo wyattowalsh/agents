@@ -11,6 +11,8 @@ import tomllib
 from pathlib import Path
 from typing import Any
 
+from wagents.platforms.base import assert_no_config_drops
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
@@ -60,10 +62,22 @@ GEMINI_EXTENSION_MCP_PATH = (
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
 GEMINI_SKILLS_DIR = HOME / ".gemini" / "skills"
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
+OPENCODE_TUI_CONFIG_PATH = HOME / ".config" / "opencode" / "tui.json"
+OPENCODE_TUI_PLUGINS_TEMPLATE_PATH = CONFIG_DIR / "opencode-tui-plugins.json"
 OPENCODE_DCP_CONFIG_PATH = HOME / ".config" / "opencode" / "dcp.jsonc"
 OPENCODE_DCP_TEMPLATE_PATH = CONFIG_DIR / "opencode-dcp.jsonc"
+OPENCODE_LARGE_IMAGE_OPTIMIZER_CONFIG_PATH = HOME / ".config" / "opencode" / "large-image-optimizer.json"
+OPENCODE_LARGE_IMAGE_OPTIMIZER_TEMPLATE_PATH = CONFIG_DIR / "opencode-large-image-optimizer.json"
 OPENCODE_NOTIFIER_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode-notifier.json"
 OPENCODE_NOTIFIER_TEMPLATE_PATH = CONFIG_DIR / "opencode-notifier.json"
+OPENCODE_QUOTA_TOAST_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode-quota" / "quota-toast.json"
+OPENCODE_QUOTA_TOAST_TEMPLATE_PATH = CONFIG_DIR / "opencode-quota-toast.json"
+OPENCODE_TOKEN_MONITOR_CONFIG_PATH = HOME / ".config" / "opencode" / "token-monitor.json"
+OPENCODE_TOKEN_MONITOR_TEMPLATE_PATH = CONFIG_DIR / "opencode-token-monitor.json"
+OPENCODE_ENSEMBLE_CONFIG_PATH = HOME / ".config" / "opencode" / "ensemble.json"
+OPENCODE_ENSEMBLE_TEMPLATE_PATH = CONFIG_DIR / "opencode-ensemble.json"
+OPENCODE_OCTTO_CONFIG_PATH = HOME / ".config" / "opencode" / "octto.json"
+OPENCODE_OCTTO_TEMPLATE_PATH = CONFIG_DIR / "opencode-octto.json"
 OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 AITK_MCP_PATH = HOME / ".aitk" / "mcp.json"
@@ -82,6 +96,26 @@ CHERRY_PRESETS_DIR = CHERRY_STUDIO_DIR / "presets"
 ANTIGRAVITY_RULES_DIR = HOME / ".gemini" / "antigravity" / "rules"
 OPENCODE_PLUGIN_MANIFEST_PATH = OPENCODE_PLUGINS_DIR / "agents" / "plugin.json"
 CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"
+MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
+MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
+MCPHUB_REMOTE_STDIO = REPO_ROOT / "scripts" / "mcphub" / "remote-stdio.sh"
+OPENCODE_LOCAL_PLUGIN_SPECS = [
+    "./plugins/opencode-context-cache.mjs",
+    "./plugins/octto-primary-inherit.mjs",
+    "./plugins/opencode-incomplete-resume.mjs",
+]
+OPENCODE_TUI_ONLY_PLUGIN_KEYS = {
+    "@ishaksebsib/opencode-tree",
+    "@thiagos1lva/opencode-token-usage-chart",
+    "opencode-subagent-statusline",
+}
+OPENCODE_DISABLED_TUI_PLUGIN_KEYS = {
+    "@thiagos1lva/opencode-token-usage-chart",
+    "opencode-subagent-statusline",
+}
+OPENCODE_DEPRECATED_RUNTIME_PLUGIN_KEYS = {
+    "opencode-auto-resume",
+}
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -120,7 +154,6 @@ CODEX_OWNED_TABLES = {
     "apps._default",
     "auto_review",
     "features",
-    "features.multi_agent_v2",
     "feedback",
     "history",
     "memories",
@@ -147,11 +180,6 @@ CODEX_AUTO_REVIEW_POLICY = "\n".join(
         "requested.",
     ]
 )
-CODEX_MULTI_AGENT_USAGE_HINT = (
-    "Use dynamic subagents for bounded parallel exploration, tests, and sidecar implementation. "
-    "Do not hardcode static teams; keep the main thread responsible for integration and final judgment."
-)
-
 NAME_MAP = {
     "atom of thoughts": "atom-of-thoughts",
     "apple_mail": "apple-mail",
@@ -197,7 +225,7 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
         "args": [
             "-y",
             "chrome-devtools-mcp@latest",
-            "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
+            "--isolated=true",
             "--headless=false",
             "--no-usage-statistics",
             "--no-performance-crux",
@@ -294,6 +322,14 @@ def write_json(ctx: SyncContext, path: Path, data: Any) -> None:
     write_text(ctx, path, dump_json(data))
 
 
+def write_local_json_config(ctx: SyncContext, path: Path, data: Any, *, current: Any | None = None) -> None:
+    if current is None and path.exists():
+        current = load_json(path)
+    if current is not None:
+        assert_no_config_drops(path, current, data)
+    write_json(ctx, path, data)
+
+
 def sync_generated_json_directory(ctx: SyncContext, path: Path, files: dict[str, Any]) -> None:
     existing: set[str] = set()
     if path.exists() and path.is_dir():
@@ -383,6 +419,16 @@ def load_codex_config() -> dict[str, Any]:
 
 def load_current_secret_fallbacks() -> dict[str, str]:
     fallbacks: dict[str, str] = {}
+    mcphub_env = REPO_ROOT / ".env.mcphub"
+    if mcphub_env.exists():
+        for raw_line in mcphub_env.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            value = value.strip().strip("'\"")
+            if key and value and "replace-with" not in value:
+                fallbacks.setdefault(key, value)
     if GEMINI_SETTINGS_PATH.exists():
         for server in load_json(GEMINI_SETTINGS_PATH).get("mcpServers", {}).values():
             for key, value in server.get("env", {}).items():
@@ -646,20 +692,249 @@ def load_hook_registry() -> dict[str, Any]:
 def server_enabled_for_harness(entry: dict[str, Any], harness: str | None) -> bool:
     if entry.get("enabled") is False:
         return False
-    if harness and harness in set(entry.get("exclude_from_harnesses", [])):
-        return False
-    return True
+    return not (harness and harness in set(entry.get("exclude_from_harnesses", [])))
 
 
 def enabled_registry_servers(registry: dict[str, Any], harness: str | None = None) -> dict[str, Any]:
+    return {name: entry for name, entry in registry["servers"].items() if server_enabled_for_harness(entry, harness)}
+
+
+def managed_registry_server_names(registry: dict[str, Any], harness: str | None = None) -> set[str]:
+    names = set(enabled_registry_servers(registry, harness))
+    if mcphub_enabled(registry):
+        names.update(spec["name"] for spec in mcphub_endpoint_specs(registry, harness))
+        names.update(spec["name"] for spec in mcphub_endpoint_specs(registry, None))
+    names.update(normalize_name(name) for name in list(names))
+    return names
+
+
+def mcphub_config(registry: dict[str, Any]) -> dict[str, Any]:
+    config = registry.get("mcphub")
+    return config if isinstance(config, dict) else {}
+
+
+def mcphub_enabled(registry: dict[str, Any]) -> bool:
+    return mcphub_config(registry).get("enabled") is True
+
+
+def mcphub_mcp_url(raw_url: str) -> str:
+    url = raw_url.rstrip("/")
+    return url if url.endswith("/mcp") else f"{url}/mcp"
+
+
+def mcphub_url(registry: dict[str, Any], harness: str | None = None) -> str:
+    config = mcphub_config(registry)
+    client = mcphub_client_config(registry, harness)
+    client_url = client.get("url") if isinstance(client, dict) else None
+    if isinstance(client_url, str) and client_url:
+        return mcphub_mcp_url(client_url)
+    if client.get("url_source") == "public":
+        public_url = config.get("public_url")
+        if isinstance(public_url, str) and public_url:
+            return mcphub_mcp_url(public_url)
+    raw_url = config.get("url")
+    if isinstance(raw_url, str) and raw_url:
+        return mcphub_mcp_url(raw_url)
+    base_url = str(config.get("base_url", MCPHUB_DEFAULT_URL.removesuffix("/mcp"))).rstrip("/")
+    return mcphub_mcp_url(base_url)
+
+
+def mcphub_projection_mode(registry: dict[str, Any], harness: str | None, default: str) -> str:
+    config = mcphub_config(registry)
+    adapters = config.get("projection_adapters")
+    raw_mode = adapters.get(harness) if isinstance(adapters, dict) and harness else None
+    if raw_mode is None:
+        raw_mode = config.get("mode", default)
+    mode = str(raw_mode)
+    return mode if mode in MCPHUB_PROJECTION_MODES else default
+
+
+def mcphub_bearer_env_var(registry: dict[str, Any]) -> str:
+    return str(mcphub_config(registry).get("bearer_token_env_var", "MCPHUB_BEARER_TOKEN"))
+
+
+def mcphub_client_config(registry: dict[str, Any], harness: str | None) -> dict[str, Any]:
+    clients = mcphub_config(registry).get("clients")
+    if not isinstance(clients, dict):
+        return {}
+    default = clients.get("default")
+    config = clients.get(harness) if harness else None
+    merged: dict[str, Any] = default.copy() if isinstance(default, dict) else {}
+    if isinstance(config, dict):
+        merged.update(config)
+    return merged
+
+
+def mcphub_endpoint_name(registry: dict[str, Any], harness: str | None, kind: str, name: str = "") -> str:
+    client = mcphub_client_config(registry, harness)
+    if kind == "server" and client.get("server_endpoint_name_style") == "base":
+        return name
+    if kind == "group":
+        return f"mcphub_group_{name}"
+    if kind == "server":
+        return f"mcphub_server_{name}"
+    if kind == "smart":
+        return f"mcphub_smart_group_{name}" if name else "mcphub_smart_all"
+    return "mcphub_all"
+
+
+def mcphub_spec_enabled_for_harness(registry: dict[str, Any], harness: str | None, spec: dict[str, Any]) -> bool:
+    if harness != "opencode":
+        return bool(spec["enabled"])
+    client = mcphub_client_config(registry, harness)
+    endpoint_kinds = client.get("enabled_endpoint_kinds")
+    enabled_kinds = set(endpoint_kinds) if isinstance(endpoint_kinds, list) else {"all", "group"}
+    kind = str(spec.get("kind", ""))
+    if kind == "server" and client.get("enable_server_endpoints") is False:
+        return False
+    if kind == "group":
+        enabled_groups_raw = client.get("enabled_groups")
+        enabled_groups = set(enabled_groups_raw) if isinstance(enabled_groups_raw, list) else set()
+        if enabled_groups and spec.get("group") not in enabled_groups:
+            return False
+    return bool(spec["enabled"]) and kind in enabled_kinds
+
+
+def mcphub_endpoint_enabled(registry: dict[str, Any], harness: str | None, kind: str, name: str = "") -> bool:
+    client = mcphub_client_config(registry, harness)
+    enabled_raw = client.get("enabled_endpoint_kinds")
+    enabled_kinds = set(enabled_raw) if isinstance(enabled_raw, list) else {"all", "group"}
+    if kind not in enabled_kinds:
+        return False
+    if kind == "server" and client.get("enable_server_endpoints") is False:
+        return False
+    if kind == "group":
+        enabled_groups_raw = client.get("enabled_groups")
+        enabled_groups = set(enabled_groups_raw) if isinstance(enabled_groups_raw, list) else set()
+        if enabled_groups and name not in enabled_groups:
+            return False
+    return True
+
+
+def mcphub_groups(registry: dict[str, Any], harness: str | None = None) -> dict[str, dict[str, Any]]:
+    groups = mcphub_config(registry).get("groups", {})
+    if not isinstance(groups, dict):
+        return {}
+    enabled_servers = set(enabled_registry_servers(registry, harness))
+    rendered: dict[str, dict[str, Any]] = {}
+    for name, group in groups.items():
+        if not isinstance(group, dict) or group.get("enabled") is False:
+            continue
+        servers = [server for server in group.get("servers", []) if server in enabled_servers]
+        if not servers:
+            continue
+        rendered[str(name)] = {**group, "servers": servers}
+    return rendered
+
+
+def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) -> list[dict[str, Any]]:
+    if not mcphub_enabled(registry):
+        return []
+    client = mcphub_client_config(registry, harness)
+    included_raw = client.get("included_endpoint_kinds")
+    included = set(included_raw) if isinstance(included_raw, list) else None
+
+    def should_include(kind: str) -> bool:
+        return included is None or kind in included
+
+    hub_url = mcphub_url(registry, harness)
+    included_groups_raw = client.get("included_groups")
+    included_groups = set(included_groups_raw) if isinstance(included_groups_raw, list) else None
+    included_servers_raw = client.get("included_servers")
+    included_servers = set(included_servers_raw) if isinstance(included_servers_raw, list) else None
+    specs: list[dict[str, Any]] = []
+    if should_include("all"):
+        specs.append(
+            {
+                "name": mcphub_endpoint_name(registry, harness, "all"),
+                "url": hub_url,
+                "enabled": mcphub_endpoint_enabled(registry, harness, "all"),
+                "kind": "all",
+            }
+        )
+    for group in sorted(mcphub_groups(registry, harness)):
+        if not should_include("group"):
+            continue
+        if included_groups is not None and group not in included_groups:
+            continue
+        specs.append(
+            {
+                "name": mcphub_endpoint_name(registry, harness, "group", group),
+                "url": f"{hub_url}/{group}",
+                "enabled": mcphub_endpoint_enabled(registry, harness, "group", group),
+                "kind": "group",
+                "group": group,
+            }
+        )
+    for server in sorted(enabled_registry_servers(registry, harness)):
+        if not should_include("server"):
+            continue
+        if included_servers is not None and server not in included_servers:
+            continue
+        specs.append(
+            {
+                "name": mcphub_endpoint_name(registry, harness, "server", server),
+                "url": f"{hub_url}/{server}",
+                "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
+                "kind": "server",
+                "server": server,
+            }
+        )
+    smart = mcphub_config(registry).get("smart_routing", {})
+    if isinstance(smart, dict):
+        smart_path = str(smart.get("path", smart.get("base_path", "$smart"))).strip("/")
+        if smart_path.startswith("mcp/"):
+            smart_path = smart_path.removeprefix("mcp/")
+    else:
+        smart_path = "$smart"
+    if should_include("smart"):
+        specs.append(
+            {
+                "name": mcphub_endpoint_name(registry, harness, "smart"),
+                "url": f"{hub_url}/{smart_path}",
+                "enabled": mcphub_endpoint_enabled(registry, harness, "smart"),
+                "kind": "smart",
+            }
+        )
+    for group in sorted(mcphub_groups(registry, harness)):
+        if not should_include("smart"):
+            continue
+        specs.append(
+            {
+                "name": mcphub_endpoint_name(registry, harness, "smart", group),
+                "url": f"{hub_url}/{smart_path}/{group}",
+                "enabled": mcphub_endpoint_enabled(registry, harness, "smart", group),
+                "kind": "smart",
+                "group": group,
+            }
+        )
+    return specs
+
+
+def render_mcphub_stdio_server(registry: dict[str, Any], url: str, *, enabled: bool = True) -> dict[str, Any]:
+    token_env = mcphub_bearer_env_var(registry)
     return {
-        name: entry
-        for name, entry in registry["servers"].items()
-        if server_enabled_for_harness(entry, harness)
+        "command": str(MCPHUB_REMOTE_STDIO),
+        "args": [url],
+        "env": {token_env: "${" + token_env + "}"},
+        "disabled": not enabled,
     }
 
 
 def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, "repo-mcp", "remote-stdio")
+        return {
+            "mcpServers": {
+                spec["name"]: (
+                    {"type": "http", "url": spec["url"], "disabled": not bool(spec["enabled"])}
+                    if mode == "http"
+                    else render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                )
+                for spec in mcphub_endpoint_specs(registry, "repo-mcp")
+            }
+        }
+
     servers: dict[str, Any] = {}
     for name, entry in enabled_registry_servers(registry, "repo-mcp").items():
         server: dict[str, Any] = {
@@ -667,7 +942,9 @@ def render_repo_mcp(registry: dict[str, Any]) -> dict[str, Any]:
             "args": replace_arg_placeholders(entry.get("args", []), {}, local_values=False),
         }
         if entry.get("env"):
-            server["env"] = {key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()}
+            server["env"] = {
+                key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()
+            }
         if entry.get("timeout_ms"):
             server["timeout"] = entry["timeout_ms"]
         servers[name] = server
@@ -679,6 +956,27 @@ def render_copilot_mcp(
     fallbacks: dict[str, str],
     harness: str = "github-copilot-cli",
 ) -> dict[str, Any]:
+    if mcphub_enabled(registry):
+        servers: dict[str, Any] = {}
+        mode = mcphub_projection_mode(registry, harness, "remote-stdio")
+        token_env = mcphub_bearer_env_var(registry)
+        for spec in mcphub_endpoint_specs(registry, harness):
+            if mode == "http":
+                server = {
+                    "tools": ["*"],
+                    "type": "http",
+                    "url": spec["url"],
+                    "enabled": bool(spec["enabled"]),
+                    "headers": {"Authorization": f"Bearer ${{{token_env}}}"},
+                }
+            else:
+                server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                server["type"] = "stdio"
+                server["tools"] = ["*"]
+                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+            servers[spec["name"]] = server
+        return {"mcpServers": servers}
+
     servers: dict[str, Any] = {}
     for name, entry in enabled_registry_servers(registry, harness).items():
         server: dict[str, Any] = {
@@ -688,7 +986,9 @@ def render_copilot_mcp(
             "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
         }
         if entry.get("env"):
-            server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
+            server["env"] = {
+                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+            }
         servers[name] = server
     return {"mcpServers": servers}
 
@@ -745,6 +1045,29 @@ def render_codex_args(entry: dict[str, Any]) -> list[Any]:
 
 def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     lines = [CODEX_MCP_BEGIN]
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, "codex", "http")
+        token_env = mcphub_bearer_env_var(registry)
+        for spec in mcphub_endpoint_specs(registry, "codex"):
+            lines.append("")
+            lines.append(f"[mcp_servers.{spec['name']}]")
+            if mode == "http":
+                lines.append(f"url = {toml_value(spec['url'])}")
+                lines.append(f"bearer_token_env_var = {toml_value(token_env)}")
+            else:
+                entry = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                lines.append(f"args = {toml_value(render_codex_args(entry))}")
+                lines.append(f"command = {toml_value(entry['command'])}")
+                lines.append(f"env_vars = {toml_value([token_env])}")
+            startup_timeout_sec = int(mcphub_config(registry).get("startup_timeout_sec", 20))
+            tool_timeout_sec = int(mcphub_config(registry).get("tool_timeout_sec", 90))
+            lines.append(f"startup_timeout_sec = {toml_value(startup_timeout_sec)}")
+            lines.append(f"tool_timeout_sec = {toml_value(tool_timeout_sec)}")
+            lines.append(f"enabled = {toml_value(bool(spec['enabled']))}")
+        lines.append("")
+        lines.append(CODEX_MCP_END)
+        return "\n".join(lines) + "\n"
+
     for name, entry in enabled_registry_servers(registry, "codex").items():
         lines.append("")
         lines.append(f"[mcp_servers.{name}]")
@@ -961,14 +1284,14 @@ def render_codex_base_config(
             "features",
             {
                 "apps": True,
-                "codex_hooks": True,
+                "hooks": True,
                 "enable_request_compression": True,
                 "fast_mode": True,
-                "general_analytics": True,
                 "guardian_approval": True,
                 "image_generation": True,
                 "memories": True,
                 "multi_agent": True,
+                "multi_agent_v2": True,
                 "personality": True,
                 "plugins": True,
                 "prevent_idle_sleep": True,
@@ -981,14 +1304,6 @@ def render_codex_base_config(
                 "undo": True,
                 "unified_exec": True,
                 "workspace_dependencies": True,
-            },
-        ),
-        render_toml_block(
-            "features.multi_agent_v2",
-            {
-                "enabled": True,
-                "usage_hint_enabled": True,
-                "usage_hint_text": CODEX_MULTI_AGENT_USAGE_HINT,
             },
         ),
         render_toml_block(
@@ -1272,7 +1587,7 @@ def generate_copilot_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> N
 
 
 def merge_claude_settings(ctx: SyncContext, policy: dict[str, Any], hook_registry: dict[str, Any]) -> None:
-    settings = load_json(CLAUDE_SETTINGS_PATH)
+    settings = load_json(CLAUDE_SETTINGS_PATH) if CLAUDE_SETTINGS_PATH.exists() else {}
     allow = settings.setdefault("permissions", {}).setdefault("allow", [])
     for domain in policy.get("docs_domains", []):
         token = f"WebFetch(domain:{domain})"
@@ -1393,6 +1708,25 @@ def sync_repo_targets(
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, "gemini-cli", "remote-stdio")
+        token_env = mcphub_bearer_env_var(registry)
+        servers: dict[str, Any] = {}
+        for spec in mcphub_endpoint_specs(registry, "gemini-cli"):
+            if mode == "http":
+                server = {
+                    "type": "http",
+                    "url": spec["url"],
+                    "enabled": bool(spec["enabled"]),
+                    "headers": {"Authorization": f"Bearer ${{{token_env}}}"},
+                }
+            else:
+                server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                server["type"] = "stdio"
+                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+            servers[spec["name"]] = server
+        return servers
+
     servers: dict[str, Any] = {}
     for name, entry in enabled_registry_servers(registry, "gemini-cli").items():
         server: dict[str, Any] = {
@@ -1401,7 +1735,9 @@ def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> di
             "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
         }
         if entry.get("env"):
-            server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
+            server["env"] = {
+                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+            }
         if entry.get("tools") and entry.get("tools") != ["*"]:
             server["includeTools"] = entry["tools"]
         servers[name] = server
@@ -1413,6 +1749,24 @@ def render_client_mcp(
     fallbacks: dict[str, str],
     harness: str | None = None,
 ) -> dict[str, Any]:
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, harness, "remote-stdio")
+        token_env = mcphub_bearer_env_var(registry)
+        servers: dict[str, Any] = {}
+        for spec in mcphub_endpoint_specs(registry, harness):
+            if mode == "http":
+                server = {
+                    "type": "http",
+                    "url": spec["url"],
+                    "enabled": bool(spec["enabled"]),
+                    "headers": {"Authorization": f"Bearer ${{{token_env}}}"},
+                }
+            else:
+                server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+            servers[spec["name"]] = server
+        return {"mcpServers": servers}
+
     servers: dict[str, Any] = {}
     for name, entry in enabled_registry_servers(registry, harness).items():
         server: dict[str, Any] = {
@@ -1420,31 +1774,48 @@ def render_client_mcp(
             "args": replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True),
         }
         if entry.get("env"):
-            server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
+            server["env"] = {
+                key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+            }
         servers[name] = server
     return {"mcpServers": servers}
 
 
-def merge_server_maps(rendered: dict[str, Any], existing: dict[str, Any]) -> dict[str, Any]:
+def merge_server_maps(
+    rendered: dict[str, Any],
+    existing: dict[str, Any],
+    known_names: set[str] | None = None,
+) -> dict[str, Any]:
     merged = dict(rendered)
-    known_names = set(rendered)
+    known_names = known_names or set(rendered)
+    owns_mcphub_namespace = any(name.startswith("mcphub") for name in known_names)
     for name, entry in existing.items():
         normalized = normalize_existing_server_name(name, known_names)
-        if normalized in known_names or normalized in REMOVED_MCP_SERVERS:
+        if (
+            normalized in known_names
+            or normalized in REMOVED_MCP_SERVERS
+            or (owns_mcphub_namespace and normalized.startswith("mcphub"))
+        ):
             continue
         if name not in merged:
             merged[name] = entry
     return merged
 
 
-def merge_server_root_config(ctx: SyncContext, path: Path, root_key: str, rendered: dict[str, Any]) -> None:
+def merge_server_root_config(
+    ctx: SyncContext,
+    path: Path,
+    root_key: str,
+    rendered: dict[str, Any],
+    known_names: set[str] | None = None,
+) -> None:
     if not path.exists():
         return
     settings = load_json(path)
     existing = settings.get(root_key)
     if not isinstance(existing, dict):
         return
-    settings[root_key] = merge_server_maps(rendered, existing)
+    settings[root_key] = merge_server_maps(rendered, existing, known_names)
     write_json(ctx, path, settings)
 
 
@@ -1465,6 +1836,33 @@ def extract_remote_url(command: str, args: list[Any]) -> str | None:
 
 
 def render_opencode_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, "opencode", "http")
+        token_env = mcphub_bearer_env_var(registry)
+        auth_header = opencode_mcphub_bearer_auth_header(token_env)
+        servers: dict[str, Any] = {}
+        for spec in mcphub_endpoint_specs(registry, "opencode"):
+            enabled = mcphub_spec_enabled_for_harness(registry, "opencode", spec)
+            if mode == "http":
+                servers[spec["name"]] = {
+                    "type": "remote",
+                    "url": spec["url"],
+                    "enabled": enabled,
+                    "oauth": False,
+                    "headers": {
+                        "Authorization": auth_header,
+                    },
+                }
+            else:
+                entry = render_mcphub_stdio_server(registry, spec["url"], enabled=enabled)
+                servers[spec["name"]] = {
+                    "type": "local",
+                    "command": [entry["command"], *entry["args"]],
+                    "enabled": enabled,
+                    "environment": {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)},
+                }
+        return servers
+
     servers: dict[str, Any] = {}
     for name, entry in enabled_registry_servers(registry, "opencode").items():
         args = replace_arg_placeholders(entry.get("args", []), fallbacks, local_values=True)
@@ -1489,6 +1887,10 @@ def preserve_opencode_chrome_devtools_wrapper(rendered: dict[str, Any], existing
     command = current.get("command")
     if isinstance(command, list) and CHROME_DEVTOOLS_OPENCODE_LAUNCHER in command:
         rendered["chrome-devtools"] = current
+
+
+def strip_managed_opencode_mcphub_entries(existing: dict[str, Any]) -> dict[str, Any]:
+    return {name: entry for name, entry in existing.items() if not str(name).startswith("mcphub")}
 
 
 def render_opencode_lmstudio_provider(policy: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any] | None:
@@ -1526,6 +1928,31 @@ def merge_opencode_provider_entry(existing: Any, rendered: dict[str, Any]) -> di
 
 OPENCODE_DCP_MODEL_LIMIT_KEYS = {"modelMaxLimits", "modelMinLimits"}
 OPENCODE_MODEL_KEYS = {"model", "small_model", "mode", "agent"}
+OPENCODE_RUNTIME_DEFAULT_KEYS = {
+    "model",
+    "small_model",
+    "agent",
+    "autoupdate",
+    "formatter",
+    "lsp",
+    "watcher",
+    "tool_output",
+    "experimental",
+    "permission",
+}
+OPENCODE_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding"}
+OPENCODE_PYTHON_EXTENSIONS = [".py", ".pyi"]
+OPENCODE_DEFAULT_WATCHER_IGNORES = [
+    ".git/**",
+    ".mypy_cache/**",
+    ".pytest_cache/**",
+    ".ruff_cache/**",
+    ".ty/**",
+    ".venv/**",
+    "dist/**",
+    "docs/dist/**",
+    "node_modules/**",
+]
 
 
 def merge_dict_defaults(defaults: dict[str, Any], existing: dict[str, Any]) -> dict[str, Any]:
@@ -1537,6 +1964,239 @@ def merge_dict_defaults(defaults: dict[str, Any], existing: dict[str, Any]) -> d
         else:
             merged[key] = value
     return merged
+
+
+def merge_enforced_defaults(defaults: Any, existing: Any) -> Any:
+    if isinstance(defaults, dict) and isinstance(existing, dict):
+        merged = json.loads(json.dumps(existing))
+        for key, value in defaults.items():
+            merged[key] = merge_enforced_defaults(value, merged.get(key))
+        return merged
+    return json.loads(json.dumps(defaults))
+
+
+def opencode_openai_provider_defaults() -> dict[str, Any]:
+    effort_variants = {
+        "none": {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "none",
+            "reasoningSummary": None,
+        },
+        "low": {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "low",
+            "reasoningSummary": None,
+        },
+        "medium": {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "medium",
+            "reasoningSummary": None,
+        },
+        "high": {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "high",
+            "reasoningSummary": None,
+            "textVerbosity": "low",
+        },
+        "xhigh": {
+            "include": ["reasoning.encrypted_content"],
+            "reasoningEffort": "xhigh",
+            "reasoningSummary": None,
+            "textVerbosity": "low",
+        },
+    }
+    return {
+        "options": {
+            "timeout": 600000,
+            "chunkTimeout": 180000,
+            "setCacheKey": True,
+            "websearch_cited": {"model": "gpt-5.5"},
+        },
+        "models": {
+            "gpt-5.5": {"variants": json.loads(json.dumps(effort_variants))},
+            "gpt-5.4-mini": {"variants": json.loads(json.dumps(effort_variants))},
+            "gpt-5.3-codex-spark": {"variants": json.loads(json.dumps(effort_variants))},
+        },
+    }
+
+
+def opencode_runtime_defaults(policy: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "model": "openai/gpt-5.5",
+        "small_model": "openai/gpt-5.4-mini",
+        "provider": {"openai": opencode_openai_provider_defaults()},
+        "agent": {
+            "build": {
+                "model": "openai/gpt-5.5",
+                "variant": "high",
+            },
+            "plan": {
+                "model": "openai/gpt-5.5",
+                "variant": "xhigh",
+            },
+            "explore": {
+                "model": "openai/gpt-5.5",
+                "variant": "high",
+            },
+            "general": {
+                "model": "openai/gpt-5.5",
+                "variant": "high",
+            },
+        },
+        "autoupdate": "notify",
+        "formatter": {
+            "biome": {
+                "command": ["npx", "-y", "@biomejs/biome@latest", "format", "--write", "$FILE"],
+                "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".jsonc"],
+            },
+            "prettier": {
+                "command": ["npx", "-y", "prettier@latest", "--write", "$FILE"],
+                "extensions": [
+                    ".astro",
+                    ".css",
+                    ".graphql",
+                    ".gql",
+                    ".html",
+                    ".md",
+                    ".mdx",
+                    ".scss",
+                    ".svelte",
+                    ".vue",
+                    ".yaml",
+                    ".yml",
+                ],
+            },
+            "ruff": {
+                "command": ["ruff", "format", "$FILE"],
+                "extensions": OPENCODE_PYTHON_EXTENSIONS,
+            },
+            "shell": {
+                "command": [
+                    "npx",
+                    "-y",
+                    "-p",
+                    "prettier@latest",
+                    "-p",
+                    "prettier-plugin-sh@latest",
+                    "prettier",
+                    "--plugin",
+                    "prettier-plugin-sh",
+                    "--write",
+                    "$FILE",
+                ],
+                "extensions": [".bash", ".bats", ".env", ".sh", ".zsh"],
+            },
+            "toml": {
+                "command": ["npx", "-y", "@taplo/cli@latest", "format", "$FILE"],
+                "extensions": [".toml"],
+            },
+            "just": {
+                "command": ["just", "--justfile", "$FILE", "--fmt"],
+                "extensions": [".just", ".justfile", "Justfile", "justfile"],
+            },
+            "gofmt": {
+                "command": ["gofmt", "-w", "$FILE"],
+                "extensions": [".go"],
+            },
+            "rustfmt": {
+                "command": ["rustfmt", "$FILE"],
+                "extensions": [".rs"],
+            },
+        },
+        "lsp": {
+            "ruff": {
+                "command": ["ruff", "server"],
+                "extensions": OPENCODE_PYTHON_EXTENSIONS,
+            },
+            "ty": {
+                "command": ["ty", "server"],
+                "extensions": OPENCODE_PYTHON_EXTENSIONS,
+            },
+        },
+        "watcher": {
+            "ignore": OPENCODE_DEFAULT_WATCHER_IGNORES,
+        },
+        "tool_output": {
+            "max_lines": 4000,
+            "max_bytes": 120000,
+        },
+        "experimental": {
+            "disable_paste_summary": False,
+            "batch_tool": True,
+            "openTelemetry": True,
+            "continue_loop_on_deny": True,
+            "mcp_timeout": 120000,
+        },
+        "permission": {
+            "lsp": "allow",
+        },
+    }
+
+
+def load_repo_opencode_runtime_defaults(policy: dict[str, Any]) -> dict[str, Any]:
+    if not OPENCODE_REPO_CONFIG_PATH.exists():
+        return opencode_runtime_defaults(policy)
+    repo_config = load_json(OPENCODE_REPO_CONFIG_PATH)
+    if not isinstance(repo_config, dict):
+        return opencode_runtime_defaults(policy)
+    repo_defaults = {
+        key: json.loads(json.dumps(repo_config[key])) for key in OPENCODE_RUNTIME_DEFAULT_KEYS if key in repo_config
+    }
+    return merge_enforced_defaults(opencode_runtime_defaults(policy), repo_defaults)
+
+
+def drop_unmanaged_opencode_provider_models(settings: dict[str, Any], defaults: dict[str, Any]) -> None:
+    providers = settings.get("provider")
+    default_providers = defaults.get("provider")
+    if not isinstance(providers, dict) or not isinstance(default_providers, dict):
+        return
+    for provider_id, provider_defaults in default_providers.items():
+        provider = providers.get(provider_id)
+        if not isinstance(provider, dict) or not isinstance(provider_defaults, dict):
+            continue
+        provider_default_models = provider_defaults.get("models")
+        if "models" not in provider_defaults:
+            provider.pop("models", None)
+            continue
+        provider_models = provider.get("models")
+        if not isinstance(provider_default_models, dict) or not isinstance(provider_models, dict):
+            continue
+        provider["models"] = {
+            model_id: json.loads(json.dumps(model_defaults))
+            for model_id, model_defaults in provider_default_models.items()
+            if isinstance(model_defaults, dict)
+        }
+
+
+def drop_unmanaged_opencode_provider_options(settings: dict[str, Any], defaults: dict[str, Any]) -> None:
+    providers = settings.get("provider")
+    default_providers = defaults.get("provider")
+    if not isinstance(providers, dict) or not isinstance(default_providers, dict):
+        return
+    for provider_id, provider_defaults in default_providers.items():
+        provider = providers.get(provider_id)
+        if not isinstance(provider, dict) or not isinstance(provider_defaults, dict):
+            continue
+        provider_default_options = provider_defaults.get("options")
+        if "options" not in provider_defaults:
+            provider.pop("options", None)
+            continue
+        if isinstance(provider_default_options, dict):
+            provider_options = provider.get("options")
+            if not isinstance(provider_options, dict):
+                provider_options = {}
+            provider_options.update(json.loads(json.dumps(provider_default_options)))
+            provider["options"] = provider_options
+
+
+def remove_repo_managed_opencode_providers(settings: dict[str, Any]) -> None:
+    providers = settings.get("provider")
+    if not isinstance(providers, dict):
+        return
+    for provider_id in OPENCODE_MANAGED_PROVIDER_IDS:
+        providers.pop(provider_id, None)
+    if not providers:
+        settings.pop("provider", None)
 
 
 def default_opencode_dcp_config() -> dict[str, Any]:
@@ -1563,13 +2223,227 @@ def merge_opencode_dcp_config(ctx: SyncContext) -> None:
         loaded = load_json(OPENCODE_DCP_CONFIG_PATH)
         if isinstance(loaded, dict):
             existing = loaded
-    write_json(ctx, OPENCODE_DCP_CONFIG_PATH, render_opencode_dcp_config(existing))
+    rendered = render_opencode_dcp_config(existing)
+    write_local_json_config(ctx, OPENCODE_DCP_CONFIG_PATH, rendered, current=existing)
 
 
 def sync_opencode_notifier_config(ctx: SyncContext) -> None:
     if not OPENCODE_NOTIFIER_TEMPLATE_PATH.exists():
         return
-    write_json(ctx, OPENCODE_NOTIFIER_CONFIG_PATH, load_json(OPENCODE_NOTIFIER_TEMPLATE_PATH))
+    write_local_json_config(ctx, OPENCODE_NOTIFIER_CONFIG_PATH, load_json(OPENCODE_NOTIFIER_TEMPLATE_PATH))
+
+
+def sync_opencode_large_image_optimizer_config(ctx: SyncContext) -> None:
+    if not OPENCODE_LARGE_IMAGE_OPTIMIZER_TEMPLATE_PATH.exists():
+        return
+    write_local_json_config(
+        ctx,
+        OPENCODE_LARGE_IMAGE_OPTIMIZER_CONFIG_PATH,
+        load_json(OPENCODE_LARGE_IMAGE_OPTIMIZER_TEMPLATE_PATH),
+    )
+
+
+def sync_opencode_quota_toast_config(ctx: SyncContext) -> None:
+    if not OPENCODE_QUOTA_TOAST_TEMPLATE_PATH.exists():
+        return
+    write_local_json_config(ctx, OPENCODE_QUOTA_TOAST_CONFIG_PATH, load_json(OPENCODE_QUOTA_TOAST_TEMPLATE_PATH))
+
+
+def sync_opencode_token_monitor_config(ctx: SyncContext) -> None:
+    if not OPENCODE_TOKEN_MONITOR_TEMPLATE_PATH.exists():
+        return
+    write_local_json_config(ctx, OPENCODE_TOKEN_MONITOR_CONFIG_PATH, load_json(OPENCODE_TOKEN_MONITOR_TEMPLATE_PATH))
+
+
+def sync_opencode_ensemble_config(ctx: SyncContext) -> None:
+    if not OPENCODE_ENSEMBLE_TEMPLATE_PATH.exists():
+        return
+    write_local_json_config(ctx, OPENCODE_ENSEMBLE_CONFIG_PATH, load_json(OPENCODE_ENSEMBLE_TEMPLATE_PATH))
+
+
+def sync_opencode_octto_config(ctx: SyncContext) -> None:
+    if not OPENCODE_OCTTO_TEMPLATE_PATH.exists():
+        return
+    write_local_json_config(ctx, OPENCODE_OCTTO_CONFIG_PATH, load_json(OPENCODE_OCTTO_TEMPLATE_PATH))
+
+
+def opencode_plugin_name(plugin_spec: Any) -> str | None:
+    if isinstance(plugin_spec, str):
+        return plugin_spec
+    if isinstance(plugin_spec, list) and plugin_spec and isinstance(plugin_spec[0], str):
+        return plugin_spec[0]
+    return None
+
+
+def opencode_plugin_key(plugin_spec: Any) -> str | None:
+    name = opencode_plugin_name(plugin_spec)
+    if not name:
+        return None
+    version_index = name.rfind("@")
+    if version_index > 0:
+        return name[:version_index]
+    return name
+
+
+def opencode_mcphub_bearer_auth_header(token_env: str) -> str:
+    return "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+
+
+def sanitize_opencode_mcphub_auth_headers(mcp_servers: dict[str, Any], token_env: str) -> None:
+    placeholder = opencode_mcphub_bearer_auth_header(token_env)
+    for name, server in mcp_servers.items():
+        if not isinstance(name, str) or not name.startswith("mcphub") or not isinstance(server, dict):
+            continue
+        headers = server.get("headers")
+        if isinstance(headers, dict) and "Authorization" in headers:
+            headers["Authorization"] = placeholder
+
+
+def load_repo_opencode_plugin_specs() -> list[Any]:
+    if not OPENCODE_REPO_CONFIG_PATH.exists():
+        return []
+    repo_config = load_json(OPENCODE_REPO_CONFIG_PATH)
+    plugins = repo_config.get("plugin") if isinstance(repo_config, dict) else None
+    return plugins if isinstance(plugins, list) else []
+
+
+def merge_opencode_plugin_specs(
+    managed: list[Any], existing: Any, *, preserve_existing_options: bool = False
+) -> list[Any]:
+    existing_specs = existing if isinstance(existing, list) else []
+    existing_by_key = {
+        key: plugin_spec for plugin_spec in existing_specs if (key := opencode_plugin_key(plugin_spec)) is not None
+    }
+    merged: list[Any] = []
+    seen: set[str] = set()
+
+    for plugin_spec in managed:
+        key = opencode_plugin_key(plugin_spec)
+        if key is None or key in seen:
+            continue
+        seen.add(key)
+        existing_spec = existing_by_key.get(key)
+        if (
+            preserve_existing_options
+            and isinstance(plugin_spec, str)
+            and isinstance(existing_spec, list)
+            and existing_spec
+            and isinstance(existing_spec[0], str)
+            and len(existing_spec) > 1
+        ):
+            merged.append([plugin_spec, *json.loads(json.dumps(existing_spec[1:]))])
+        else:
+            merged.append(json.loads(json.dumps(plugin_spec)))
+
+    for plugin_spec in existing_specs:
+        key = opencode_plugin_key(plugin_spec)
+        if key is None:
+            merged.append(json.loads(json.dumps(plugin_spec)))
+            continue
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(json.loads(json.dumps(plugin_spec)))
+
+    return merged
+
+
+def filter_opencode_runtime_plugin_specs(existing: Any) -> Any:
+    if not isinstance(existing, list):
+        return existing
+    return [
+        plugin_spec
+        for plugin_spec in existing
+        if opencode_plugin_key(plugin_spec)
+        not in OPENCODE_TUI_ONLY_PLUGIN_KEYS | OPENCODE_DEPRECATED_RUNTIME_PLUGIN_KEYS
+    ]
+
+
+def filter_opencode_tui_plugin_specs(existing: Any) -> Any:
+    if not isinstance(existing, list):
+        return existing
+    return [
+        plugin_spec
+        for plugin_spec in existing
+        if opencode_plugin_key(plugin_spec) not in OPENCODE_DISABLED_TUI_PLUGIN_KEYS
+    ]
+
+
+OPENCODE_TUI_KEYMAP_BINDING_NAMES = {
+    "agent.list": "agent_list",
+    "command.palette.show": "command_list",
+    "docs.open": "docs_open",
+    "messages.copy": "messages_copy",
+    "model.list": "model_list",
+    "opencode.status": "status_view",
+    "plugin.dialog.install": "dialog.plugins.install",
+    "plugins.list": "plugin_manager",
+    "session.compact": "session_compact",
+    "session.export": "session_export",
+    "session.list": "session_list",
+    "session.new": "session_new",
+    "session.sidebar.toggle": "sidebar_toggle",
+    "session.toggle.scrollbar": "scrollbar_toggle",
+    "session.toggle.thinking": "display_thinking",
+    "theme.switch": "theme_switch_mode",
+    "variant.list": "variant_list",
+}
+
+
+def normalize_opencode_tui_config(settings: dict[str, Any]) -> dict[str, Any]:
+    keymap = settings.pop("keymap", None)
+    if not isinstance(keymap, dict):
+        return settings
+
+    converted: dict[str, Any] = {}
+    leader = keymap.get("leader")
+    if leader is not None:
+        converted["leader"] = json.loads(json.dumps(leader))
+    if "leader_timeout" not in settings and keymap.get("leader_timeout") is not None:
+        settings["leader_timeout"] = json.loads(json.dumps(keymap["leader_timeout"]))
+
+    sections = keymap.get("sections")
+    if isinstance(sections, dict):
+        for bindings in sections.values():
+            if not isinstance(bindings, dict):
+                continue
+            for old_name, binding in bindings.items():
+                new_name = OPENCODE_TUI_KEYMAP_BINDING_NAMES.get(str(old_name))
+                if new_name:
+                    converted[new_name] = json.loads(json.dumps(binding))
+
+    existing_keybinds = settings.get("keybinds")
+    if isinstance(existing_keybinds, dict):
+        converted.update(existing_keybinds)
+    if converted:
+        settings["keybinds"] = converted
+
+    plugin_enabled = settings.get("plugin_enabled")
+    if isinstance(plugin_enabled, dict):
+        settings["plugin_enabled"] = {
+            name: enabled
+            for name, enabled in plugin_enabled.items()
+            if opencode_plugin_key(name) not in OPENCODE_DISABLED_TUI_PLUGIN_KEYS
+        }
+    return settings
+
+
+def merge_opencode_tui_config(ctx: SyncContext) -> None:
+    if not OPENCODE_TUI_CONFIG_PATH.exists() or not OPENCODE_TUI_PLUGINS_TEMPLATE_PATH.exists():
+        return
+    settings = load_json(OPENCODE_TUI_CONFIG_PATH)
+    if not isinstance(settings, dict):
+        return
+    managed_plugins = load_json(OPENCODE_TUI_PLUGINS_TEMPLATE_PATH)
+    if not isinstance(managed_plugins, list):
+        return
+    settings["plugin"] = merge_opencode_plugin_specs(
+        managed_plugins,
+        filter_opencode_tui_plugin_specs(settings.get("plugin")),
+        preserve_existing_options=True,
+    )
+    normalize_opencode_tui_config(settings)
+    write_local_json_config(ctx, OPENCODE_TUI_CONFIG_PATH, settings)
 
 
 def cherry_remote_transport(url: str) -> str:
@@ -1593,12 +2467,42 @@ def render_cherry_server(name: str, entry: dict[str, Any], fallbacks: dict[str, 
         }
 
     if entry.get("env"):
-        server["env"] = {key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()}
+        server["env"] = {
+            key: render_env_value(value, fallbacks, local_values=True) for key, value in entry["env"].items()
+        }
 
     return server
 
 
 def render_cherry_import_files(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, "cherry-studio", "http")
+        token_env = mcphub_bearer_env_var(registry)
+        files: dict[str, Any] = {}
+        all_servers: dict[str, Any] = {}
+        for spec in mcphub_endpoint_specs(registry, "cherry-studio"):
+            if mode == "http":
+                server = {
+                    "type": cherry_remote_transport(spec["url"]),
+                    "baseUrl": spec["url"],
+                    "headers": {"Authorization": "Bearer ${" + token_env + "}"},
+                    "disabled": not bool(spec["enabled"]),
+                }
+            else:
+                server = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                server["type"] = "stdio"
+                server["env"] = {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=True)}
+            all_servers[spec["name"]] = server
+            if spec["kind"] == "group":
+                files[f"group-{spec['group']}.json"] = {"mcpServers": {spec["name"]: server}}
+            elif spec["kind"] == "server":
+                files[f"server-{spec['server']}.json"] = {"mcpServers": {spec["name"]: server}}
+            elif spec["kind"] == "smart":
+                suffix = spec.get("group", "all")
+                files[f"smart-{suffix}.json"] = {"mcpServers": {spec["name"]: server}}
+        files["all.json"] = {"mcpServers": all_servers}
+        return dict(sorted(files.items()))
+
     servers = {
         name: render_cherry_server(name, entry, fallbacks)
         for name, entry in enabled_registry_servers(registry, "cherry-studio").items()
@@ -1616,11 +2520,22 @@ def merge_opencode_config(
 ) -> None:
     merge_opencode_dcp_config(ctx)
     sync_opencode_notifier_config(ctx)
+    sync_opencode_large_image_optimizer_config(ctx)
+    sync_opencode_quota_toast_config(ctx)
+    sync_opencode_token_monitor_config(ctx)
+    sync_opencode_ensemble_config(ctx)
+    sync_opencode_octto_config(ctx)
+    merge_opencode_tui_config(ctx)
 
     if not OPENCODE_CONFIG_PATH.exists():
         return
 
     settings = load_json(OPENCODE_CONFIG_PATH)
+    defaults = load_repo_opencode_runtime_defaults(policy or {})
+    settings = merge_enforced_defaults(defaults, settings)
+    drop_unmanaged_opencode_provider_options(settings, defaults)
+    drop_unmanaged_opencode_provider_models(settings, defaults)
+    remove_repo_managed_opencode_providers(settings)
     lmstudio_provider = render_opencode_lmstudio_provider(policy or {}, fallbacks)
     if lmstudio_provider:
         providers = settings.get("provider")
@@ -1631,9 +2546,16 @@ def merge_opencode_config(
 
     existing_mcp = settings.get("mcp")
     rendered_mcp = render_opencode_mcp(registry, fallbacks)
-    if isinstance(existing_mcp, dict):
+    if isinstance(existing_mcp, dict) and mcphub_enabled(registry):
+        sanitize_opencode_mcphub_auth_headers(existing_mcp, mcphub_bearer_env_var(registry))
+        existing_mcp = strip_managed_opencode_mcphub_entries(existing_mcp)
+    if isinstance(existing_mcp, dict) and not mcphub_enabled(registry):
         preserve_opencode_chrome_devtools_wrapper(rendered_mcp, existing_mcp)
-    settings["mcp"] = merge_server_maps(rendered_mcp, existing_mcp if isinstance(existing_mcp, dict) else {})
+    settings["mcp"] = merge_server_maps(
+        rendered_mcp,
+        existing_mcp if isinstance(existing_mcp, dict) else {},
+        managed_registry_server_names(registry, "opencode"),
+    )
     settings["instructions"] = merge_unique_path_strings(
         [render_home_path(GLOBAL_MD), render_home_path(OPENCODE_GLOBAL_MD)],
         settings.get("instructions"),
@@ -1645,7 +2567,12 @@ def merge_opencode_config(
         settings["skills"] = skills
     skills["paths"] = merge_unique_path_strings([render_home_path(SKILLS_DIR)], skills.get("paths"))
 
-    write_json(ctx, OPENCODE_CONFIG_PATH, settings)
+    settings["plugin"] = merge_opencode_plugin_specs(
+        load_repo_opencode_plugin_specs() + OPENCODE_LOCAL_PLUGIN_SPECS,
+        filter_opencode_runtime_plugin_specs(settings.get("plugin")),
+    )
+
+    write_local_json_config(ctx, OPENCODE_CONFIG_PATH, settings)
 
 
 def generate_project_opencode_config(ctx: SyncContext) -> None:
@@ -1660,6 +2587,12 @@ def generate_project_opencode_config(ctx: SyncContext) -> None:
             existing.setdefault("instructions", config["instructions"])
             existing.setdefault("skills", config["skills"])
             config = existing
+    policy = load_json(TOOLING_POLICY_PATH) if TOOLING_POLICY_PATH.exists() else {}
+    defaults = opencode_runtime_defaults(policy)
+    config = merge_enforced_defaults(defaults, config)
+    drop_unmanaged_opencode_provider_options(config, defaults)
+    drop_unmanaged_opencode_provider_models(config, defaults)
+    remove_repo_managed_opencode_providers(config)
     write_json(ctx, OPENCODE_REPO_CONFIG_PATH, config)
 
 
@@ -1740,7 +2673,10 @@ def merge_claude_settings_local(ctx: SyncContext, registry: dict[str, Any]) -> N
     enabled = settings.get("enabledMcpjsonServers")
     if not isinstance(enabled, list):
         return
-    valid_names = set(enabled_registry_servers(registry, "claude-code"))
+    if mcphub_enabled(registry):
+        valid_names = {spec["name"] for spec in mcphub_endpoint_specs(registry, "claude-code") if spec["enabled"]}
+    else:
+        valid_names = set(enabled_registry_servers(registry, "claude-code"))
     filtered: list[str] = []
     for name in enabled:
         if isinstance(name, str) and name in valid_names and name not in filtered:
@@ -1781,23 +2717,36 @@ def sync_home_targets(
         CHATGPT_MCP_PATH,
         "mcpServers",
         render_client_mcp(registry, fallbacks, "chatgpt")["mcpServers"],
+        managed_registry_server_names(registry, "chatgpt"),
     )
-    merge_server_root_config(ctx, COPILOT_SHADOW_MCP_PATH, "mcpServers", render_shadow_copilot_mcp(registry, fallbacks))
+    merge_server_root_config(
+        ctx,
+        COPILOT_SHADOW_MCP_PATH,
+        "mcpServers",
+        render_shadow_copilot_mcp(registry, fallbacks),
+        managed_registry_server_names(registry, "github-copilot-cli"),
+    )
     merge_server_root_config(
         ctx,
         GEMINI_ANTIGRAVITY_MCP_PATH,
         "mcpServers",
         render_client_mcp(registry, fallbacks, "antigravity")["mcpServers"],
+        managed_registry_server_names(registry, "antigravity"),
     )
     merge_server_root_config(
         ctx,
         GEMINI_EXTENSION_MCP_PATH,
         "mcpServers",
         render_client_mcp(registry, fallbacks, "antigravity-extension")["mcpServers"],
+        managed_registry_server_names(registry, "antigravity-extension"),
     )
     sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
-    merge_server_root_config(ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks))
-    merge_server_root_config(ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks))
+    merge_server_root_config(
+        ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
+    )
+    merge_server_root_config(
+        ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
+    )
     merge_codex_config(ctx, registry, policy, fallbacks)
     merge_codex_hooks(ctx, hook_registry)
     sync_generated_json_directory(

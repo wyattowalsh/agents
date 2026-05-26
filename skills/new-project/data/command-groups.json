@@ -1,0 +1,45 @@
+{
+	"schema_version": 1,
+	"groups": {
+		"read_only": [
+			"test",
+			"uv run",
+			"pnpm --version",
+			"pnpm exec",
+			"docker compose config",
+			"terraform validate"
+		],
+		"file_mutation": [
+			"uv init",
+			"pnpm create",
+			"pnpm dlx",
+			"npx",
+			"supabase init",
+			"docker compose up",
+			"kaggle kernels init",
+			"kaggle datasets init"
+		],
+		"package_install": [
+			"uv add",
+			"uvx",
+			"pnpm add",
+			"pnpm install",
+			"astro add",
+			"npx"
+		],
+		"external_side_effect": [
+			"vercel deploy",
+			"gh release create",
+			"terraform apply",
+			"agentcore deploy",
+			"kaggle kernels push",
+			"kaggle datasets create"
+		],
+		"blocked_destructive": [
+			"rm -rf",
+			"git clean",
+			"git reset --hard",
+			"docker compose down -v"
+		]
+	}
+}

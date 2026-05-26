@@ -80,6 +80,38 @@ openspec-update:          ## Print OpenSpec update command for downstream tool a
 readme:                   ## Regenerate README.md
 	uv run wagents readme
 
+mcphub-up:                ## Start local MCPHub control plane with npx
+	scripts/mcphub/up.sh
+
+mcphub-down:              ## Stop local MCPHub control plane
+	scripts/mcphub/down.sh
+
+mcphub-logs:              ## Tail local MCPHub logs
+	scripts/mcphub/logs.sh
+
+mcphub-doctor:            ## Check local MCPHub prerequisites and health
+	scripts/mcphub/doctor.sh
+
+mcphub-validate:          ## Validate tracked MCPHub settings
+	scripts/mcphub/validate-settings.sh
+
+mcphub-openapi:           ## Export MCPHub OpenAPI spec
+	scripts/mcphub/export-openapi.sh
+
+mcphub-smoke:             ## Run MCPHub health and tools/list smoke test
+	scripts/mcphub/smoke.sh
+
+mcphub-install-launch-agent: ## Install local LaunchAgent template
+	mkdir -p "$$HOME/Library/LaunchAgents"
+	cp config/launchd/com.wyattowalsh.mcphub.plist "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
+	-launchctl bootout "gui/$$(id -u)" "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist" >/dev/null 2>&1
+	launchctl bootstrap "gui/$$(id -u)" "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
+	launchctl kickstart -k "gui/$$(id -u)/com.wyattowalsh.mcphub"
+
+mcphub-uninstall-launch-agent: ## Uninstall local LaunchAgent
+	-launchctl bootout "gui/$$(id -u)" "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
+	rm -f "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
+
 help:                     ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}'
@@ -90,4 +122,7 @@ help:                     ## Show this help
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
         validate test lint typecheck audit package openspec-doctor \
-        openspec-validate openspec-update readme
+        openspec-validate openspec-update readme \
+        mcphub-up mcphub-down mcphub-logs mcphub-doctor mcphub-validate \
+        mcphub-openapi mcphub-smoke mcphub-install-launch-agent \
+        mcphub-uninstall-launch-agent

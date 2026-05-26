@@ -20,6 +20,7 @@ const SESSION_ID_HEADER_NAMES = [
 const PROMPT_CACHE_KEY_ENV_VAR = "OPENCODE_PROMPT_CACHE_KEY";
 const STICKY_SESSION_ID_ENV_VAR = "OPENCODE_STICKY_SESSION_ID";
 const CACHE_DEBUG_ENV_VAR = "OPENCODE_CONTEXT_CACHE_DEBUG";
+const PROMPT_CACHE_PROVIDER_IDS = new Set(["openai"]);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -213,6 +214,38 @@ class CacheKeyApplier {
     this.logger = logger;
   }
 
+  getProviderID(input) {
+    const candidates = [
+      input?.providerID,
+      input?.provider?.id,
+      input?.provider?.providerID,
+      input?.provider?.name,
+      input?.model?.providerID,
+      input?.model?.provider,
+    ];
+
+    return candidates.find(
+      (candidate) => typeof candidate === "string" && candidate.trim(),
+    )?.trim?.();
+  }
+
+  supportsPromptCache(input) {
+    const providerID = this.getProviderID(input);
+    if (!providerID) {
+      this.logger.log("Skipping prompt cache because provider ID is unknown");
+      return false;
+    }
+
+    const normalizedProviderID = providerID.toLowerCase();
+    const supported = PROMPT_CACHE_PROVIDER_IDS.has(normalizedProviderID);
+    if (!supported) {
+      this.logger.log(
+        `Skipping prompt cache for provider ${normalizedProviderID}`,
+      );
+    }
+    return supported;
+  }
+
   applyPromptCacheKey(output, cacheKey) {
     const existingOutputOptions =
       output?.options && typeof output.options === "object"
@@ -248,6 +281,7 @@ class CacheKeyApplier {
   }
 
   apply(input, output, cacheKey) {
+    if (!this.supportsPromptCache(input)) return;
     this.applyPromptCacheKey(output, cacheKey);
     this.applySessionHeaders(input, cacheKey);
   }

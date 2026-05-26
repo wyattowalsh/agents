@@ -1,253 +1,301 @@
 {
-  "version": 1,
-  "managed": [
-    {
-      "path": "/Users/ww/dev/projects/agents/config/mcp-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/hook-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/tooling-policy.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/support-tier-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/harness-surface-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/config-transaction-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/docs-artifact-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/skill-registry-policy.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/external-skills.md",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/plugin-extension-registry.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/schemas",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/planning/manifests/repo-sync-inventory.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/planning/manifests/repo-drift-ledger.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/planning/manifests/harness-fixture-support.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/planning/manifests/external-skills/chrome-devtools-mcp.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/opencode-dcp.jsonc",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/opencode-notifier.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/sync-manifest.json",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/instructions/copilot-global.md",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/instructions/codex-global.md",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/instructions/opencode-global.md",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/opencode.json",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/mcp.json",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/.vscode/mcp.json",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/.github/copilot-instructions.md",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/.github/instructions",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/.github/hooks",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/hooks",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/platforms/copilot/agents",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/dev/projects/agents/platforms/opencode/plugins",
-      "mode": "canonical"
-    },
-    {
-      "path": "/Users/ww/.codex/AGENTS.md",
-      "mode": "symlink"
-    },
-    {
-      "path": "/Users/ww/.claude/CLAUDE.md",
-      "mode": "symlink"
-    },
-    {
-      "path": "/Users/ww/.copilot/copilot-instructions.md",
-      "mode": "symlink"
-    },
-    {
-      "path": "/Users/ww/.copilot/agents",
-      "mode": "symlink"
-    },
-    {
-      "path": "/Users/ww/.copilot/mcp-config.json",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/.copilot/settings.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.config/copilot-subagents.env",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/.codex/config.toml",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.codex/hooks.json",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/.claude/settings.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.claude/settings.local.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/Library/Application Support/Claude/claude_desktop_config.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.cursor/mcp.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.gemini/settings.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.gemini/GEMINI.md",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/Library/Application Support/ChatGPT/mcp.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.config/.copilot/mcp-config.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.gemini/antigravity/mcp_config.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.config/opencode/opencode.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.config/opencode/dcp.jsonc",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.config/opencode/opencode-notifier.json",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/.config/opencode/plugins/approval-notify.ts",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/.config/opencode/plugins/credential-guard.ts",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/.aitk/mcp.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.config/crush/crush.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/Library/Application Support/CherryStudio/mcp-import/managed",
-      "mode": "generated"
-    },
-    {
-      "path": "/Users/ww/Library/Application Support/CherryStudio/config.json",
-      "mode": "merged"
-    },
-    {
-      "path": "/Users/ww/.codex/skills",
-      "mode": "symlinked-entries"
-    },
-    {
-      "path": "/Users/ww/.copilot/skills",
-      "mode": "symlinked-entries"
-    },
-    {
-      "path": "/Users/ww/.gemini/skills",
-      "mode": "symlinked-entries"
-    }
-  ]
+	"version": 1,
+	"managed": [
+		{
+			"path": "/Users/ww/dev/projects/agents/config/mcp-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/hook-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/tooling-policy.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/support-tier-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/harness-surface-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/config-transaction-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/docs-artifact-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/skill-registry-policy.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/external-skills.md",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/plugin-extension-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/schemas",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/planning/manifests/repo-sync-inventory.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/planning/manifests/repo-drift-ledger.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/planning/manifests/harness-fixture-support.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/planning/manifests/external-skills/chrome-devtools-mcp.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-dcp.jsonc",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-notifier.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-large-image-optimizer.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-tui-plugins.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-quota-toast.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-token-monitor.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-ensemble.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/opencode-octto.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/sync-manifest.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/instructions/copilot-global.md",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/instructions/codex-global.md",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/instructions/opencode-global.md",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/opencode.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/mcp.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/.vscode/mcp.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/.github/copilot-instructions.md",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/.github/instructions",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/.github/hooks",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/hooks",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/platforms/copilot/agents",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/platforms/opencode/plugins",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/.codex/AGENTS.md",
+			"mode": "symlink"
+		},
+		{
+			"path": "/Users/ww/.claude/CLAUDE.md",
+			"mode": "symlink"
+		},
+		{
+			"path": "/Users/ww/.copilot/copilot-instructions.md",
+			"mode": "symlink"
+		},
+		{
+			"path": "/Users/ww/.copilot/agents",
+			"mode": "symlink"
+		},
+		{
+			"path": "/Users/ww/.copilot/mcp-config.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.copilot/settings.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/copilot-subagents.env",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.codex/config.toml",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.codex/hooks.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.claude/settings.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.claude/settings.local.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/Library/Application Support/Claude/claude_desktop_config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.cursor/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.gemini/settings.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.gemini/GEMINI.md",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/Library/Application Support/ChatGPT/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/.copilot/mcp-config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.gemini/antigravity/mcp_config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/opencode.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/tui.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/dcp.jsonc",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/large-image-optimizer.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/opencode-quota/quota-toast.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/token-monitor.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/ensemble.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/octto.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/opencode-notifier.json",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/plugins/approval-notify.ts",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.config/opencode/plugins/credential-guard.ts",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/.aitk/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.config/crush/crush.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/Library/Application Support/CherryStudio/mcp-import/managed",
+			"mode": "generated"
+		},
+		{
+			"path": "/Users/ww/Library/Application Support/CherryStudio/config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.codex/skills",
+			"mode": "symlinked-entries"
+		},
+		{
+			"path": "/Users/ww/.copilot/skills",
+			"mode": "symlinked-entries"
+		},
+		{
+			"path": "/Users/ww/.gemini/skills",
+			"mode": "symlinked-entries"
+		}
+	]
 }

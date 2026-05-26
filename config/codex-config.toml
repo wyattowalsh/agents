@@ -26,14 +26,14 @@ requested."""
 
 [features]
 apps = true
-codex_hooks = true
+hooks = true
 enable_request_compression = true
 fast_mode = true
-general_analytics = true
 guardian_approval = true
 image_generation = true
 memories = true
 multi_agent = true
+multi_agent_v2 = true
 personality = true
 plugins = true
 prevent_idle_sleep = true
@@ -46,11 +46,6 @@ tool_suggest = true
 undo = true
 unified_exec = true
 workspace_dependencies = true
-
-[features.multi_agent_v2]
-enabled = true
-usage_hint_enabled = true
-usage_hint_text = "Use dynamic subagents for bounded parallel exploration, tests, and sidecar implementation. Do not hardcode static teams; keep the main thread responsible for integration and final judgment."
 
 [profiles.deep]
 approval_policy = "on-request"
@@ -155,190 +150,102 @@ terminal_title = ["spinner", "project"]
 
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
-[mcp_servers.brave-search]
-args = ["-y", "@brave/brave-search-mcp-server"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-env_vars = ["BRAVE_API_KEY"]
+[mcp_servers.mcphub_group_harness-safe]
+url = "http://127.0.0.1:46683/mcp/harness-safe"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = true
 
-[mcp_servers.cascade-thinking]
-args = ["-y", "cascade-thinking-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_brave-search]
+url = "http://127.0.0.1:46683/mcp/brave-search"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.chrome-devtools]
-args = ["-y", "chrome-devtools-mcp@latest", "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login", "--headless=false", "--no-usage-statistics", "--no-performance-crux"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_chrome-devtools]
+url = "http://127.0.0.1:46683/mcp/chrome-devtools"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.context7]
-args = ["-y", "@upstash/context7-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-env_vars = ["CONTEXT7_API_KEY"]
+[mcp_servers.mcphub_server_context7]
+url = "http://127.0.0.1:46683/mcp/context7"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.deepwiki]
-args = ["-y", "mcp-remote", "https://mcp.deepwiki.com/mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_deepwiki]
+url = "http://127.0.0.1:46683/mcp/deepwiki"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.docling]
-args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]
-command = "uvx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_duckduckgo-search]
+url = "http://127.0.0.1:46683/mcp/duckduckgo-search"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.fetch]
-args = ["-y", "mcp-fetch-server"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_fetch]
+url = "http://127.0.0.1:46683/mcp/fetch"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.fetcher]
-args = ["-y", "fetcher-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_fetcher]
+url = "http://127.0.0.1:46683/mcp/fetcher"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.package-version]
-args = []
-command = "/Users/ww/go/bin/mcp-package-version"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-enabled_tools = ["check_docker_tags", "check_github_actions", "check_go_versions", "check_npm_versions", "check_pyproject_versions", "check_python_versions"]
+[mcp_servers.mcphub_server_gmail]
+url = "http://127.0.0.1:46683/mcp/gmail"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.repomix]
-args = ["-y", "repomix", "--mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_package-version]
+url = "http://127.0.0.1:46683/mcp/package-version"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.sequential-thinking]
-args = ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_repomix]
+url = "http://127.0.0.1:46683/mcp/repomix"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.structured-thinking]
-args = ["-y", "structured-thinking"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_supathings]
+url = "http://127.0.0.1:46683/mcp/supathings"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.tavily]
-args = ["-y", "tavily-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-env_vars = ["TAVILY_API_KEY"]
+[mcp_servers.mcphub_server_tavily]
+url = "http://127.0.0.1:46683/mcp/tavily"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
-[mcp_servers.trafilatura]
-args = ["--directory", "/Users/ww/dev/projects/agents/mcp/servers/trafilatura_mcp", "run", "python3", "trafilatura_mcp.py"]
-command = "uv"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.arxiv]
-args = ["-lc", "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"]
-command = "bash"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.atom-of-thoughts]
-args = ["/Users/ww/dev/projects/agents/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"]
-command = "node"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.crash]
-args = ["-y", "crash-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-env_vars = ["CRASH_STRICT_MODE", "MAX_HISTORY_SIZE"]
-
-[mcp_servers.creative-thinking]
-args = []
-command = "/Users/ww/dev/projects/agents/scripts/mcp_tools/run_mcp_thinking.sh"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.deep-lucid-3d]
-args = ["-y", "github:mushroomfleet/deeplucid3d-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.duckduckgo-search]
-args = ["duckduckgo-mcp-server"]
-command = "uvx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.exa]
-args = ["-y", "exa-mcp-server"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-env_vars = ["EXA_API_KEY"]
-
-[mcp_servers.ffmpeg]
-args = ["--directory", "/Users/ww/dev/projects/agents/mcp/servers/ffmpeg-mcp", "run", "ffmpeg-mcp"]
-command = "uv"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.g-search]
-args = ["-y", "g-search-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.gmail]
-args = ["-y", "@gongrzhe/server-gmail-autoauth-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.linkedin]
-args = ["linkedin-scraper-mcp", "--no-headless"]
-command = "uvx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.lotus-wisdom-mcp]
-args = ["/Users/ww/dev/projects/agents/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"]
-command = "node"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.shannon-thinking]
-args = ["-y", "server-shannon-thinking@latest"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.think-strategies]
-args = ["-y", "github:aaronsb/think-strategies"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.wayback]
-args = ["-y", "--prefer-offline", "mcp-wayback-machine"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
-
-[mcp_servers.wikipedia]
-args = ["-y", "--prefer-offline", "wikipedia-mcp"]
-command = "npx"
-startup_timeout_sec = 90
-tool_timeout_sec = 600
+[mcp_servers.mcphub_server_trafilatura]
+url = "http://127.0.0.1:46683/mcp/trafilatura"
+bearer_token_env_var = "MCPHUB_BEARER_TOKEN"
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
 
 # END MANAGED BY sync_agent_stack.py: MCP_SERVERS

@@ -1,0 +1,13 @@
+{
+	"enableToast": true,
+	"showSessionTokens": true,
+	"enabledProviders": ["openai"],
+	"formatStyle": "allWindows",
+	"percentDisplayMode": "remaining",
+	"tuiSidebarPanel": {
+		"enabled": true
+	},
+	"tuiCompactStatus": {
+		"enabled": false
+	}
+}

@@ -1,468 +1,237 @@
 # Workflow Recipes
 
-Multi-step creative workflows for Draw Things CLI. Each recipe is a complete pipeline with numbered steps and real CLI commands. Load when the user has a complex creative goal that goes beyond a single generation.
+Current Draw Things CLI recipes using exposed flags only. Load when the user asks for a multi-step workflow beyond a single generation.
 
 ---
 
 ## Recipe Index
 
-1. [Quick Prototype → Best Seed Selection](#1-quick-prototype--best-seed-selection)
-2. [Character Design Pipeline](#2-character-design-pipeline)
-3. [Photo Restoration](#3-photo-restoration)
-4. [Style Transfer](#4-style-transfer)
-5. [Concept Art Iteration](#5-concept-art-iteration)
-6. [Pose-Guided Character Generation](#6-pose-guided-character-generation)
-7. [Edge-Guided Redesign (Canny)](#7-edge-guided-redesign-canny)
-8. [Hi-Res from Scratch](#8-hi-res-from-scratch)
-9. [Inpainting Workflow](#9-inpainting-workflow)
+1. [Setup The Current Recommended Pack](#1-setup-the-current-recommended-pack)
+2. [Fast Draft To Quality Final](#2-fast-draft-to-quality-final)
+3. [Typography Poster With Qwen 2512](#3-typography-poster-with-qwen-2512)
+4. [Instruction Image Edit](#4-instruction-image-edit)
+5. [Layered Editable Artwork](#5-layered-editable-artwork)
+6. [HiDream Art Alternative](#6-hidream-art-alternative)
+7. [Short Media Smoke Test](#7-short-media-smoke-test)
+8. [Seed Variation Loop](#8-seed-variation-loop)
+9. [Advanced Control Escalation](#9-advanced-control-escalation)
 
 ---
 
-## 1. Quick Prototype → Best Seed Selection
+## 1. Setup The Current Recommended Pack
 
-**Goal:** Fast exploration to find a composition worth developing.  
-**Model:** Flux Schnell or Klein (4 steps, ~1-2s per image)  
-**Time:** < 60 seconds for 8 variations
+**Goal:** Ensure only the approved current pack is missing/downloaded, without deleting legacy models.
 
-### Steps
-
-**Step 1: Generate 4–8 fast variations**
 ```bash
-draw-things-cli generate \
-  --model flux_1_schnell_q5p.ckpt \
-  --prompt "A lone lighthouse on a rocky coast, stormy sky, crashing waves, cinematic" \
-  --width 1024 --height 1024 \
-  --steps 4 --guidance-scale 1.0 \
-  --sampler "Euler a" \
-  --batch-count 4 \
-  --seed -1
+uv run python skills/draw-thing/scripts/model_inventory.py --recommended-pack all --format json
 ```
 
-**Step 2: Note the seed of the best result** (reported in CLI output)
+Run only missing `ensure_command` values from the JSON. Approved pack commands:
 
-**Step 3: Lock seed, refine the prompt**
 ```bash
-draw-things-cli generate \
-  --model flux_1_schnell_q5p.ckpt \
-  --prompt "A lone lighthouse on a rocky coast, stormy Atlantic sky, waves crashing on boulders, lighthouse beam cutting through rain, cinematic, wide angle" \
-  --width 1024 --height 1024 \
-  --steps 4 --guidance-scale 1.0 \
-  --sampler "Euler a" \
-  --seed 12345
+draw-things-cli models ensure --model hidream_i1_full_q5p.ckpt
+draw-things-cli models ensure --model ltx_2.3_22b_distilled_q6p.ckpt
+draw-things-cli models ensure --model wan_v2.2_5b_ti2v_q8p.ckpt
 ```
 
-**Step 4: Switch to Flux Dev for final quality**
-```bash
-draw-things-cli generate \
-  --model flux_1_dev_q6p.ckpt \
-  --prompt "<same refined prompt>" \
-  --width 1024 --height 1024 \
-  --steps 30 --guidance-scale 1.0 \
-  --sampler "Euler a" \
-  --seed 12345
-```
+Qwen Layered is optional on this rig until a clean install succeeds. Do not retry its q6p or q8p artifacts automatically; both have failed or stalled through the CLI.
 
-> Schnell and Dev share the same latent space, so the same seed often produces similar compositions across them — useful for fast → quality transitions.
+Do not prune legacy models without separate approval.
 
 ---
 
-## 2. Character Design Pipeline
+## 2. Fast Draft To Quality Final
 
-**Goal:** Consistent, detailed character at multiple angles and expressions.  
-**Model:** SDXL (Juggernaut XL recommended) or Flux Dev
+**Goal:** Explore quickly with Z Image Turbo, then rebuild the selected idea with Qwen 2512.
 
-### Steps
+**Step 1: Fast draft**
 
-**Step 1: Establish the base character (front view)**
 ```bash
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "character design, young female knight, silver armor with blue trim, short brown hair, green eyes, neutral expression, white background, highly detailed, masterpiece, character sheet" \
-  --negative-prompt "ugly, deformed, bad anatomy, blurry, watermark" \
-  --width 1024 --height 1024 \
-  --steps 25 --guidance-scale 7.5 \
-  --seed -1
+  --model z_image_turbo_1.0_q8p.ckpt \
+  --prompt "a lighthouse library built into black sea cliffs, storm clouds, warm windows, cinematic" \
+  --steps 8 \
+  --cfg 0 \
+  --width 1024 \
+  --height 1024 \
+  --seed 4101 \
+  --output "$HOME/Pictures/draw-thing/lighthouse-draft-4101.png"
 ```
 
-**Step 2: Note the seed. Lock it for all subsequent variations.**
+**Step 2: Quality final with same seed**
 
-**Step 3: Generate 3/4 view (prompt-only variation)**
 ```bash
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "character design, young female knight, silver armor with blue trim, short brown hair, green eyes, 3/4 view, white background, highly detailed, masterpiece" \
-  --negative-prompt "ugly, deformed, bad anatomy, blurry, watermark" \
-  --width 1024 --height 1024 \
-  --steps 25 --guidance-scale 7.5 \
-  --seed 12345
-```
-
-**Step 4: Generate action pose (use img2img from step 1 at low strength OR ControlNet pose)**
-```bash
-# img2img approach: preserves character traits, changes pose loosely
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/character-base.png \
-  --prompt "female knight, dynamic battle pose, sword raised, silver armor, dramatic lighting" \
-  --negative-prompt "ugly, deformed, bad anatomy, blurry" \
-  --strength 0.65 \
-  --steps 25 --guidance-scale 7.5 \
-  --seed 12345
-```
-
-**Step 5: Upscale the hero shot**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/character-final.png \
-  --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale 4 \
-  --strength 0.25 \
-  --steps 30
+  --model qwen_image_2512_q8p.ckpt \
+  --prompt "a lighthouse library built into black sea cliffs, storm clouds, warm glowing windows, cinematic editorial illustration, detailed stone texture, dramatic coastal atmosphere" \
+  --steps 40 \
+  --cfg 4 \
+  --width 1328 \
+  --height 1328 \
+  --seed 4101 \
+  --output "$HOME/Pictures/draw-thing/lighthouse-final-4101.png"
 ```
 
 ---
 
-## 3. Photo Restoration
+## 3. Typography Poster With Qwen 2512
 
-**Goal:** Improve a degraded, damaged, or low-quality photo.  
-**Model:** SDXL or SD 1.5 (Realistic Vision recommended for SD 1.5)
+**Goal:** Generate legible text and clean layout.
 
-### Steps
-
-**Step 1: Light img2img pass to restore overall quality**
 ```bash
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/old-photo.png \
-  --prompt "high quality photo, sharp details, natural lighting, photorealistic" \
-  --negative-prompt "damaged, scratched, low quality, blurry, faded, sepia, noise" \
-  --strength 0.35 \
-  --steps 30 --guidance-scale 7.0
-```
-> Keep `--strength` low (0.2–0.4) to preserve original composition while improving quality.
-
-**Step 2: Inpaint specific damaged areas**
-
-Create a mask (white = repaint, black = preserve) in any image editor, then:
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/restored-pass1.png \
-  --mask ~/Pictures/damage-mask.png \
-  --prompt "intact photo surface, no scratches, sharp detail" \
-  --negative-prompt "damaged, scratched, noise" \
-  --strength 0.75 \
-  --mask-blur 4 \
-  --steps 30 --guidance-scale 7.0
+  --model qwen_image_2512_q8p.ckpt \
+  --prompt "a clean editorial poster reading 'LOCAL MODELS 2026' in precise bold sans-serif typography, centered grid layout, silver studio background, polished product lighting, high realism" \
+  --steps 40 \
+  --cfg 4 \
+  --width 1328 \
+  --height 1328 \
+  --seed 1234 \
+  --output "$HOME/Pictures/draw-thing/local-models-2026-1234.png"
 ```
 
-**Step 3: Upscale the restored result**
+If text is wrong, keep the seed and rewrite only the text/layout portion of the prompt.
+
+---
+
+## 4. Instruction Image Edit
+
+**Goal:** Modify an existing image while preserving identity/composition.
+
 ```bash
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/restored-inpainted.png \
-  --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale 4 \
-  --strength 0.2 \
-  --steps 30
+  --model qwen_image_edit_2511_q8p.ckpt \
+  --image "$HOME/Pictures/source-portrait.png" \
+  --prompt "Change the jacket to deep emerald velvet. Preserve the person's face, pose, lighting, and background." \
+  --strength 0.55 \
+  --steps 30 \
+  --cfg 4 \
+  --seed 2401 \
+  --output "$HOME/Pictures/draw-thing/portrait-emerald-2401.png"
+```
+
+Use lower strength for identity preservation. Increase in 0.1 increments only when the edit is too weak.
+
+---
+
+## 5. Layered Editable Artwork
+
+**Goal:** Create artwork intended for later layer manipulation.
+
+```bash
+draw-things-cli generate \
+  --model qwen_image_layered_1.0_bf16_q8p.ckpt \
+  --prompt "Create a layered product poster with separate perfume bottle foreground, headline text reading 'NIGHT GARDEN', dark botanical background, and mist effects, luxury editorial layout" \
+  --steps 35 \
+  --cfg 4 \
+  --width 1328 \
+  --height 1328 \
+  --seed 3301 \
+  --output "$HOME/Pictures/draw-thing/night-garden-layered-3301.png"
+```
+
+If Qwen Layered is missing, do not auto-download it. Explain the prior install failures and ask before retrying either optional artifact:
+
+```bash
+draw-things-cli models ensure --model qwen_image_layered_1.0_bf16_q6p.ckpt
+draw-things-cli models ensure --model qwen_image_layered_1.0_bf16_q8p.ckpt
 ```
 
 ---
 
-## 4. Style Transfer
+## 6. HiDream Art Alternative
 
-**Goal:** Apply the visual style of a reference artwork or description to an existing image.  
-**Model:** SDXL or SD 1.5
-
-### Approach A: Prompt-driven (no reference image needed)
+**Goal:** Try a high-quality art/prompt-following alternative.
 
 ```bash
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/source-photo.png \
-  --prompt "oil painting, impressionist style, thick brushstrokes, vibrant colors, painted texture" \
-  --negative-prompt "photograph, photorealistic, digital art" \
-  --strength 0.75 \
-  --steps 25 --guidance-scale 7.0
+  --model hidream_i1_full_q5p.ckpt \
+  --prompt "a botanist mapping glowing fungi in an underground cathedral, oil-painted fantasy realism, low-angle composition, emerald bioluminescence and candlelight, intricate stone textures" \
+  --steps 35 \
+  --cfg 4 \
+  --width 1024 \
+  --height 1280 \
+  --seed 5101 \
+  --output "$HOME/Pictures/draw-thing/fungi-cathedral-5101.png"
 ```
 
-**Adjust `--strength` by target:**
-- 0.4–0.5: Light stylization, preserve most content
-- 0.65–0.75: Clear style shift, content still recognizable
-- 0.85+: Heavy transformation, loose content preservation
-
-### Approach B: Style + LoRA
-
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/source-photo.png \
-  --prompt "studio ghibli style, anime, painterly, detailed landscape" \
-  --negative-prompt "photorealistic, photograph" \
-  --loras '[{"file": "ghibli_style_xl.safetensors", "weight": 0.7}]' \
-  --strength 0.7 \
-  --steps 25 --guidance-scale 7.0
-```
-
-> LoRA weight 0.7 is a good starting point. Raise to 0.9 for stronger style influence, lower to 0.5 if the LoRA overwhelms the content.
-
-### Approach C: IP-Adapter (style from reference image)
-
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/source-photo.png \
-  --prompt "high quality, detailed" \
-  --controls '[{"file": "ip_adapter_xl.safetensors", "weight": 0.6, "guidanceStart": 0.0, "guidanceEnd": 1.0, "controlMode": "Balanced"}]' \
-  --strength 0.6 \
-  --steps 25 --guidance-scale 6.0
-```
-
-> Verify IP-Adapter flag syntax with `draw-things-cli generate --help` — it may require different parameters than standard ControlNet.
+If memory pressure appears, reduce dimensions before switching to HiDream Dev/Fast.
 
 ---
 
-## 5. Concept Art Iteration
+## 7. Short Media Smoke Test
 
-**Goal:** Explore multiple design directions, then converge on the best one.  
-**Model:** SDXL or Flux Dev
+**Goal:** Verify local media generation with LTX 2.3 distilled.
 
-### Steps
-
-**Step 1: Generate batch of divergent variations (unlock seed)**
 ```bash
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "futuristic vehicle concept, sleek aerodynamic design, carbon fiber panels, LED accents, side view, white background, concept art, product design" \
-  --negative-prompt "ugly, deformed, low quality" \
-  --width 1216 --height 832 \
-  --steps 25 --guidance-scale 7.0 \
-  --batch-count 6 \
-  --seed -1
+  --model ltx_2.3_22b_distilled_q6p.ckpt \
+  --prompt "a paper boat drifting across a moonlit pond, slow camera push, ripples spreading outward, silver reflections, calm continuous motion" \
+  --frames 49 \
+  --width 768 \
+  --height 512 \
+  --seed 1234 \
+  --output "$HOME/Pictures/draw-thing/paper-boat-1234.mov"
 ```
 
-**Step 2: Identify the 1–2 best candidates. Note their seeds.**
-
-**Step 3: Refine each candidate independently (locked seed, prompt adjustments)**
-```bash
-# Refining candidate A
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "futuristic vehicle concept, sleek aerodynamic design, matte black carbon fiber, electric blue LED accents, racing stance, side view, studio lighting, product visualization" \
-  --negative-prompt "ugly, deformed, low quality, background elements" \
-  --width 1216 --height 832 \
-  --steps 25 --guidance-scale 7.5 \
-  --seed 11111
-```
-
-**Step 4: Run img2img on the best result to push further**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/vehicle-candidate-A.png \
-  --prompt "photorealistic 3D render, studio lighting, highly detailed surface, perfect reflections" \
-  --negative-prompt "concept art, sketch, painterly" \
-  --strength 0.45 \
-  --steps 30 --guidance-scale 7.0
-```
-
-**Step 5: Upscale the selected final**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/vehicle-final.png \
-  --upscaler 4x_ultrasharp_f16.ckpt \
-  --upscaler-scale 4 \
-  --strength 0.3 \
-  --steps 30
-```
+Keep width and height divisible by 32. Keep frames divisible by 8 plus 1.
 
 ---
 
-## 6. Pose-Guided Character Generation
+## 8. Seed Variation Loop
 
-**Goal:** Generate a character in a specific body position from a pose reference.  
-**Model:** SDXL (requires SDXL OpenPose ControlNet)
+**Goal:** Replace old `--batch-count` with explicit shell loops.
 
-### Steps
-
-**Step 1: Source or create a pose image**
-- Use a photo, 3D mannequin render, or pose extracted from another image
-- The pose image should be the same dimensions as your target output
-
-**Step 2: Generate with Pose ControlNet**
 ```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/pose-reference.png \
-  --prompt "powerful male wizard, flowing dark robes, casting a spell, dramatic purple energy, stone castle background, dramatic lighting, highly detailed" \
-  --negative-prompt "ugly, deformed, bad anatomy, extra limbs" \
-  --controls '[{"file": "control_openpose_xl.safetensors", "weight": 0.75, "guidanceStart": 0.0, "guidanceEnd": 0.6, "controlMode": "Balanced"}]' \
-  --width 1024 --height 1536 \
-  --steps 25 --guidance-scale 7.0 \
-  --seed -1
+mkdir -p "$HOME/Pictures/draw-thing"
+for seed in 7001 7002 7003 7004; do
+  draw-things-cli generate \
+    --model z_image_turbo_1.0_q8p.ckpt \
+    --prompt "four ceramic birds on a blue kitchen table, morning light, soft shadows" \
+    --steps 8 \
+    --cfg 0 \
+    --width 1024 \
+    --height 1024 \
+    --seed "$seed" \
+    --output "$HOME/Pictures/draw-thing/ceramic-birds-$seed.png"
+done
 ```
 
-**Step 3: Iterate with locked seed if pose is good**
-- If pose is correct but details are off: lock seed, adjust prompt
-- If pose is wrong: try a different pose image or raise ControlNet weight to 0.85
-
-**Step 4: Upscale**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/wizard-final.png \
-  --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale 4 \
-  --strength 0.25 \
-  --steps 30
-```
+Pick the strongest seed, then rerun with Qwen 2512 or Z Image Base for final quality.
 
 ---
 
-## 7. Edge-Guided Redesign (Canny)
+## 9. Advanced Control Escalation
 
-**Goal:** Keep the exact composition and silhouette of a source image but apply a completely different style or content.  
-**Model:** SDXL
+**Goal:** Handle a user request for ControlNet, LoRA, inpaint, or upscale without using stale direct flags.
 
-### Steps
+1. Try current img2img first if the request is an edit:
+   ```bash
+   draw-things-cli generate \
+     --model qwen_image_edit_2511_q8p.ckpt \
+     --image "$HOME/Pictures/input.png" \
+     --prompt "<edit instruction>. Preserve <important details>." \
+     --strength 0.55 \
+     --steps 30 \
+     --cfg 4 \
+     --seed 1234 \
+     --output "$HOME/Pictures/draw-thing/edit-1234.png"
+   ```
+2. If strict controls are needed, import required assets:
+   ```bash
+   draw-things-cli models import /path/to/control-or-lora.safetensors
+   ```
+3. Ask for or create a verified Draw Things config file.
+4. Run with `--config-file`; do not invent `--controls`, `--loras`, `--mask`, or `--upscaler` flags.
 
-**Step 1: Use your source image as the Canny control input**
-Draw Things will extract the edge map automatically if you provide the raw image. If you need to pre-extract, use an external tool (ImageMagick, Photoshop, etc.).
-
-**Step 2: Generate with Canny ControlNet**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/source-building.png \
-  --prompt "fantasy castle, magical glowing windows, ivy-covered stone walls, misty forest background, dramatic lighting, highly detailed" \
-  --negative-prompt "modern, ugly, low quality" \
-  --controls '[{"file": "control_canny_xl.safetensors", "weight": 0.7, "guidanceStart": 0.0, "guidanceEnd": 1.0, "controlMode": "Balanced"}]' \
-  --width 1024 --height 1024 \
-  --steps 25 --guidance-scale 7.0
-```
-
-**Step 3: Tune the Canny weight**
-- Output too rigid / looks like a traced image: lower weight to 0.5
-- Composition drifting from original: raise weight to 0.8–0.9
-- Try `controlMode: "Prompt"` for more creative freedom while maintaining rough structure
-
-**Step 4: Inpaint any areas that need attention**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/redesign-v1.png \
-  --mask ~/Pictures/sky-mask.png \
-  --prompt "dramatic sunset sky, orange and purple clouds, epic atmosphere" \
-  --strength 0.75 \
-  --mask-blur 6 \
-  --steps 25
-```
-
----
-
-## 8. Hi-Res from Scratch
-
-**Goal:** Generate a high-resolution image in a single pipeline using hi-res fix, then push further with an upscaler.  
-**Model:** SDXL or SD 1.5
-
-### Steps
-
-**Step 1: Generate at model-native resolution with hi-res fix**
-
-> **Verify hi-res fix flags** with `draw-things-cli generate --help` — exact flag names (`--hires-fix`, `--hires-fix-width`, `--hires-fix-strength`) should be confirmed before use.
+Template:
 
 ```bash
-# SDXL: native 1024×1024, hi-res fix to 2048×2048
 draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "ancient library with towering bookshelves, dramatic shafts of light, floating magical books, detailed architecture, masterpiece" \
-  --negative-prompt "ugly, blurry, low quality" \
-  --width 1024 --height 1024 \
-  --steps 25 --guidance-scale 7.0 \
-  --hires-fix \
-  --hires-fix-width 2048 --hires-fix-height 2048 \
-  --hires-fix-strength 0.7 \
-  --seed -1
-```
-
-**Step 2: Upscale further with Real-ESRGAN for pixel-level sharpness**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/library-hires.png \
-  --upscaler 4x_ultrasharp_f16.ckpt \
-  --upscaler-scale 4 \
-  --strength 0.2 \
-  --steps 30
-```
-
-**Alternative for SD 1.5 (512 → 1024 hi-res fix):**
-```bash
-draw-things-cli generate \
-  --model v1-5-pruned-emaonly.ckpt \
-  --prompt "masterpiece, best quality, ancient library, magical, detailed" \
-  --negative-prompt "(worst quality:2), (low quality:2), blurry" \
-  --width 512 --height 512 \
-  --steps 25 --guidance-scale 7.5 \
-  --hires-fix \
-  --hires-fix-width 1024 --hires-fix-height 1024 \
-  --hires-fix-strength 0.7
-```
-
----
-
-## 9. Inpainting Workflow
-
-**Goal:** Replace a specific region of an image while blending naturally with surroundings.  
-**Model:** SDXL or SD 1.5
-
-### Steps
-
-**Step 1: Generate or select a base image**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --prompt "portrait of a woman, outdoor park setting, sunny day" \
-  --width 1024 --height 1024 \
-  --steps 25 --guidance-scale 7.0 \
-  --seed 99999
-```
-
-**Step 2: Create a mask**
-- White pixels = area to repaint
-- Black pixels = area to preserve
-- Use any image editor: Preview, Photoshop, GIMP, Pixelmator
-- Save as PNG, same dimensions as the source image
-
-**Step 3: Inpaint the masked region**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/portrait-base.png \
-  --mask ~/Pictures/background-mask.png \
-  --prompt "busy city street background, tall buildings, afternoon light, bokeh" \
-  --negative-prompt "ugly, low quality, blurry" \
-  --strength 0.75 \
-  --mask-blur 4 \
-  --steps 30 --guidance-scale 7.0
-```
-
-> **Prompt tip:** Describe only what goes in the masked area — not the full image. The model knows the surrounding context.
-
-**Step 4: Tune if seams are visible**
-- Visible hard edge: increase `--mask-blur` to 8–12
-- New content looks disconnected: lower `--strength` to 0.6 and increase steps
-- New content too similar to original: raise `--strength` to 0.85
-
-**Step 5: Upscale if needed**
-```bash
-draw-things-cli generate \
-  --model sd_xl_base_1.0.safetensors \
-  --image ~/Pictures/draw-thing/portrait-inpainted.png \
-  --upscaler realesrgan_x4plus_f16.ckpt \
-  --upscaler-scale 2 \
-  --strength 0.2 \
-  --steps 30
+  --model <compatible-model-id> \
+  --prompt "<prompt>" \
+  --image <input.png> \
+  --config-file <verified-config.json> \
+  --seed 1234 \
+  --output <output.png>
 ```

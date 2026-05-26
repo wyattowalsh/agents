@@ -305,6 +305,10 @@ def test_package_dry_run_real_repo():
 # ---------------------------------------------------------------------------
 
 
+def _mock_npx_available(monkeypatch):
+    monkeypatch.setattr("shutil.which", lambda tool: "/usr/bin/npx" if tool == "npx" else None)
+
+
 class TestInstall:
     def test_install_list_constructs_correct_command(self, monkeypatch):
         """Install --list should pass --list to npx skills add."""
@@ -316,6 +320,7 @@ class TestInstall:
             calls.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
+        _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
         result = runner.invoke(app, ["install", "--list"])
         assert result.exit_code == 0
@@ -333,6 +338,7 @@ class TestInstall:
             calls.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
+        _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
         result = runner.invoke(app, ["install", "-y"])
         assert result.exit_code == 0
@@ -352,6 +358,7 @@ class TestInstall:
             calls.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
+        _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
         result = runner.invoke(app, ["install", "honest-review", "wargame", "-y"])
         assert result.exit_code == 0
@@ -373,6 +380,7 @@ class TestInstall:
             calls.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
+        _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
         result = runner.invoke(app, ["install", "-a", "claude-code", "-y"])
         assert result.exit_code == 0
@@ -392,6 +400,7 @@ class TestInstall:
             calls.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
+        _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
         result = runner.invoke(app, ["install", "--local", "-y"])
         assert result.exit_code == 0
@@ -417,6 +426,7 @@ class TestUpdate:
             calls.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
+        _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
         result = runner.invoke(app, ["update"])
         assert result.exit_code == 0

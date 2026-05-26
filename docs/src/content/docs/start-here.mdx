@@ -42,7 +42,11 @@ Skills are portable prompt-and-workflow bundles for coding agents. Install them 
 Run `wagents update` or `npx skills update` after upstream changes to refresh recorded sources, and use `wagents skills sync --dry-run` before `--apply` when you want additive cross-harness reconciliation for repo + curated external skills.
 
 <Aside type="caution" title="OpenCode plugin boundary">
-OpenCode runtime plugins are tracked in repo `opencode.json`; TUI-only plugins live in `~/.config/opencode/tui.json`. Plannotator stays scoped to the `plan` agent, while scheduler jobs, Claude credential reuse, Langfuse credentials, and local workflow-state plugins require explicit opt-in instead of being enabled by repo defaults.
+OpenCode runtime plugins are tracked in repo `opencode.json`; TUI-only plugins and shortcuts live in `~/.config/opencode/tui.json`. Current OpenCode shortcut config uses `keybinds`, not stale `keymap.sections`. Plannotator stays scoped to the `plan` agent, while scheduler jobs, Claude credential reuse, Langfuse credentials, and local workflow-state plugins require explicit opt-in instead of being enabled by repo defaults.
+</Aside>
+
+<Aside type="caution" title="OpenCode session recovery">
+When one OpenCode session loops on OpenAI `server_error` but fresh `openai/gpt-5.5` pure and plugin-loaded runs succeed, diagnose the session before changing model defaults. Preserve request IDs, inspect the session DB for incomplete assistant turns and encrypted reasoning parts, back up `~/.local/share/opencode/opencode.db`, and archive the affected session instead of repeatedly resuming it.
 </Aside>
 
 ## 3. Try A Starter Skill

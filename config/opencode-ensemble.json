@@ -1,0 +1,16 @@
+{
+	"mergeOnCleanup": false,
+	"stallThresholdMs": 300000,
+	"stallMinSteps": 5,
+	"stallTokenThreshold": 200,
+	"timeoutMs": 3600000,
+	"rateLimitCapacity": 10,
+	"dashboardPort": 4747,
+	"peerMessageLimit": 10,
+	"peerMessageWindowMs": 300000,
+	"defaultModel": "",
+	"modelsByAgent": {},
+	"modelPool": [],
+	"modelAssignment": "default",
+	"promptForModels": false
+}

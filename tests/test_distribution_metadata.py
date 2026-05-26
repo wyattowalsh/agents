@@ -15,16 +15,29 @@ OWNER_CHANGE_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 OPENCODE_RUNTIME_PLUGINS = {
     "@plannotator/opencode@latest",
+    "@slkiser/opencode-quota@latest",
+    "@gotgenes/opencode-agent-identity@latest",
+    "@hueyexe/opencode-ensemble@latest",
+    "btw-opencode@latest",
+    "opencode-adaptive-thinking@latest",
+    "opencode-history-search@latest",
+    "opencode-ignore@latest",
+    "opencode-large-image-optimizer@latest",
+    "opencode-lmstudio@latest",
     "opencode-pty@latest",
+    "opencode-token-monitor@latest",
     "opencode-wakatime@latest",
     "opencode-scheduler@latest",
     "opencode-claude-auth@latest",
     "opencode-plugin-langfuse@latest",
+    "opencode-rules@latest",
+    "opencode-terminal-progress@latest",
     "octto@latest",
 }
 
 OPENCODE_TUI_ONLY_PLUGINS = {
-    "@slkiser/opencode-quota@latest",
+    "@ishaksebsib/opencode-tree@latest",
+    "@thiagos1lva/opencode-token-usage-chart@latest",
     "opencode-subagent-statusline@latest",
 }
 
@@ -41,6 +54,7 @@ OPENCODE_DEFERRED_WORKFLOW_PLUGINS = {
 
 OPENCODE_DEPRECATED_PLUGINS = {
     "open-plan-annotator@latest",
+    "opencode-auto-resume@latest",
 }
 
 
@@ -68,7 +82,7 @@ def test_agent_bundle_points_to_canonical_sources():
     bundle = load_json("agent-bundle.json")
 
     assert bundle["name"] == "agents"
-    assert "reserved for future bundled agent definitions" in bundle["description"]
+    assert "bundled agent definitions" in bundle["description"]
     assert bundle["source"]["repository"] == "wyattowalsh/agents"
     assert bundle["source"]["skillsSource"] == "github:wyattowalsh/agents"
     assert bundle["components"]["skills"] == "./skills/"
@@ -139,6 +153,37 @@ def test_opencode_project_plugins_include_runtime_integrations():
     assert OPENCODE_RUNTIME_PLUGINS.issubset(plugin_names)
 
 
+def test_opencode_project_config_enforces_openai_and_tooling_defaults():
+    config = load_json("opencode.json")
+
+    assert config["model"] == "openai/gpt-5.5"
+    assert config["small_model"] == "openai/gpt-5.4-mini"
+    assert config["autoupdate"] == "notify"
+    assert config["agent"]["build"] == {"model": "openai/gpt-5.5", "variant": "high"}
+    assert config["agent"]["plan"] == {"model": "openai/gpt-5.5", "variant": "xhigh"}
+    assert config["agent"]["explore"] == {"model": "openai/gpt-5.5", "variant": "high"}
+    assert config["agent"]["general"] == {"model": "openai/gpt-5.5", "variant": "high"}
+
+    openai = config["provider"]["openai"]
+    assert openai["options"]["websearch_cited"] == {"model": "gpt-5.5"}
+    assert set(openai["models"]) == {"gpt-5.5", "gpt-5.4-mini", "gpt-5.3-codex-spark"}
+    assert '"reasoningSummary": "auto"' not in json.dumps(openai)
+
+    assert set(config["formatter"]) == {"biome", "prettier", "ruff", "shell", "toml", "just", "gofmt", "rustfmt"}
+    assert config["formatter"]["ruff"]["command"] == ["ruff", "format", "$FILE"]
+    assert config["lsp"]["ruff"]["command"] == ["ruff", "server"]
+    assert config["lsp"]["ty"]["command"] == ["ty", "server"]
+    assert config["experimental"] == {
+        "disable_paste_summary": False,
+        "batch_tool": True,
+        "openTelemetry": True,
+        "continue_loop_on_deny": True,
+        "mcp_timeout": 120000,
+    }
+    assert config["permission"]["lsp"] == "allow"
+    assert config["tool_output"] == {"max_lines": 4000, "max_bytes": 120000}
+
+
 def test_opencode_plan_review_plugin_stays_plan_agent_scoped():
     config = load_json("opencode.json")
 
@@ -149,6 +194,64 @@ def test_opencode_plan_review_plugin_stays_plan_agent_scoped():
     ]
 
     assert plugin_spec[1] == {"workflow": "plan-agent", "planningAgents": ["plan"]}
+
+
+def test_opencode_large_image_optimizer_config_enables_openai():
+    config = load_json("config/opencode-large-image-optimizer.json")
+
+    assert config == {
+        "providers": {
+            "anthropic": True,
+            "google": True,
+            "openai": True,
+        },
+        "defaultPolicy": True,
+    }
+
+
+def test_opencode_ignore_patterns_cover_secret_and_generated_paths():
+    ignore_text = (ROOT / ".ignore").read_text(encoding="utf-8")
+
+    assert ".env*" in ignore_text
+    assert "!.env.example" in ignore_text
+    assert "mcp/secrets/**" in ignore_text
+    assert ".opencode/skills/**" in ignore_text
+    assert "node_modules/**" in ignore_text
+
+
+def test_context_cache_plugin_is_vendored_without_raw_key_logging():
+    plugin_source = (ROOT / "platforms/opencode/plugins/opencode-context-cache.mjs").read_text(encoding="utf-8")
+
+    assert "promptCacheKey" in plugin_source
+    assert 'PROMPT_CACHE_PROVIDER_IDS = new Set(["openai"])' in plugin_source
+    assert "Skipping prompt cache for provider" in plugin_source
+    assert "x-session-id" in plugin_source
+    assert "OPENCODE_PROMPT_CACHE_KEY" in plugin_source
+    assert "Raw:" not in plugin_source
+
+
+def test_octto_primary_inherit_plugin_removes_only_primary_model_pin():
+    plugin_source = (ROOT / "platforms/opencode/plugins/octto-primary-inherit.mjs").read_text(encoding="utf-8")
+
+    assert "config?.agent?.octto" in plugin_source
+    assert "delete octtoAgent.model" in plugin_source
+    assert "bootstrapper" in plugin_source
+    assert "probe" in plugin_source
+
+
+def test_incomplete_resume_plugin_uses_conservative_explicit_trigger():
+    plugin_source = (ROOT / "platforms/opencode/plugins/opencode-incomplete-resume.mjs").read_text(encoding="utf-8")
+
+    assert "MAX_CONTINUES = 3" in plugin_source
+    assert "COOLDOWN_MS = 2000" in plugin_source
+    assert "TASK_STATUS:\\s*INCOMPLETE" in plugin_source
+    assert "const TRIGGER_PHRASES = [/TASK_STATUS:\\s*INCOMPLETE/i]" in plugin_source
+    assert "continue\\s*working" not in plugin_source
+    assert "resume\\s*task" not in plugin_source
+    assert "next\\s*step" not in plugin_source
+    assert "client.app.log" not in plugin_source
+    assert 'event.type !== "session.idle" && event.type !== "message.updated"' in plugin_source
+    assert "sessionIdFromEvent" not in plugin_source
 
 
 def test_opencode_project_plugins_exclude_tui_only_plugins():
@@ -186,6 +289,7 @@ def test_opencode_project_plugins_exclude_ocx_component_plugins():
     config = load_json("opencode.json")
     plugin_names = {opencode_plugin_name(plugin_spec) for plugin_spec in config["plugin"]}
 
+    assert "ocx@latest" not in plugin_names
     assert "opencode-worktree@latest" not in plugin_names
     assert "opencode-background-agents@latest" not in plugin_names
 
@@ -227,7 +331,9 @@ def test_opencode_worktree_config_template_avoids_secret_copy_examples():
     assert "isSafeSyncSource" in worktree_source
     assert "prepareSafeDestinationParent" in worktree_source
     assert "Refusing to overwrite symlink destination" in worktree_source
-    assert worktree_source.index("Refusing to overwrite symlink destination") < worktree_source.index("await Bun.write(targetPath")
+    assert worktree_source.index("Refusing to overwrite symlink destination") < worktree_source.index(
+        "await Bun.write(targetPath"
+    )
     assert "isSymbolicLink" in worktree_source
     assert "cleanupForkContext" in worktree_source
     assert "safeStateSubdir" in worktree_source
@@ -356,11 +462,30 @@ def test_repo_sync_inventory_covers_sync_manifest_paths():
     sync_manifest = load_json("config/sync-manifest.json")
     inventory = load_json("planning/manifests/repo-sync-inventory.json")
     drift_ledger = load_json("planning/manifests/repo-drift-ledger.json")
+    known_opencode_sync_paths = {
+        "/Users/ww/dev/projects/agents/config/opencode-dcp.jsonc",
+        "/Users/ww/dev/projects/agents/config/opencode-large-image-optimizer.json",
+        "/Users/ww/dev/projects/agents/config/opencode-notifier.json",
+        "/Users/ww/dev/projects/agents/config/opencode-tui-plugins.json",
+        "/Users/ww/dev/projects/agents/config/opencode-quota-toast.json",
+        "/Users/ww/dev/projects/agents/config/opencode-token-monitor.json",
+        "/Users/ww/dev/projects/agents/config/opencode-ensemble.json",
+        "/Users/ww/dev/projects/agents/config/opencode-octto.json",
+        "/Users/ww/.config/opencode/dcp.jsonc",
+        "/Users/ww/.config/opencode/large-image-optimizer.json",
+        "/Users/ww/.config/opencode/opencode-notifier.json",
+        "/Users/ww/.config/opencode/tui.json",
+        "/Users/ww/.config/opencode/opencode-quota/quota-toast.json",
+        "/Users/ww/.config/opencode/token-monitor.json",
+        "/Users/ww/.config/opencode/ensemble.json",
+        "/Users/ww/.config/opencode/octto.json",
+    }
 
     sync_paths = {record["path"] for record in sync_manifest["managed"]}
     inventory_paths = {record["path"] for record in inventory["records"]}
     drift_paths = {record["path"] for record in drift_ledger["records"]}
 
+    assert known_opencode_sync_paths <= sync_paths
     assert sync_paths <= inventory_paths
     assert inventory_paths <= drift_paths
 

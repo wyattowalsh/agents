@@ -9,18 +9,184 @@
       "skills"
     ]
   },
+  "autoupdate": "notify",
+  "formatter": {
+    "biome": {
+      "command": [
+        "npx",
+        "-y",
+        "@biomejs/biome@latest",
+        "format",
+        "--write",
+        "$FILE"
+      ],
+      "extensions": [
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".json",
+        ".jsonc"
+      ]
+    },
+    "prettier": {
+      "command": [
+        "npx",
+        "-y",
+        "prettier@latest",
+        "--write",
+        "$FILE"
+      ],
+      "extensions": [
+        ".astro",
+        ".css",
+        ".graphql",
+        ".gql",
+        ".html",
+        ".md",
+        ".mdx",
+        ".scss",
+        ".svelte",
+        ".vue",
+        ".yaml",
+        ".yml"
+      ]
+    },
+    "ruff": {
+      "command": [
+        "ruff",
+        "format",
+        "$FILE"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    },
+    "shell": {
+      "command": [
+        "npx",
+        "-y",
+        "-p",
+        "prettier@latest",
+        "-p",
+        "prettier-plugin-sh@latest",
+        "prettier",
+        "--plugin",
+        "prettier-plugin-sh",
+        "--write",
+        "$FILE"
+      ],
+      "extensions": [
+        ".bash",
+        ".bats",
+        ".env",
+        ".sh",
+        ".zsh"
+      ]
+    },
+    "toml": {
+      "command": [
+        "npx",
+        "-y",
+        "@taplo/cli@latest",
+        "format",
+        "$FILE"
+      ],
+      "extensions": [
+        ".toml"
+      ]
+    },
+    "just": {
+      "command": [
+        "just",
+        "--justfile",
+        "$FILE",
+        "--fmt"
+      ],
+      "extensions": [
+        ".just",
+        ".justfile",
+        "Justfile",
+        "justfile"
+      ]
+    },
+    "gofmt": {
+      "command": [
+        "gofmt",
+        "-w",
+        "$FILE"
+      ],
+      "extensions": [
+        ".go"
+      ]
+    },
+    "rustfmt": {
+      "command": [
+        "rustfmt",
+        "$FILE"
+      ],
+      "extensions": [
+        ".rs"
+      ]
+    }
+  },
+  "lsp": {
+    "ruff": {
+      "command": [
+        "ruff",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    },
+    "ty": {
+      "command": [
+        "ty",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    }
+  },
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      ".mypy_cache/**",
+      ".pytest_cache/**",
+      ".ruff_cache/**",
+      ".ty/**",
+      ".venv/**",
+      "dist/**",
+      "docs/dist/**",
+      "node_modules/**"
+    ]
+  },
+  "tool_output": {
+    "max_lines": 4000,
+    "max_bytes": 120000
+  },
   "experimental": {
-    "openTelemetry": true
+    "disable_paste_summary": false,
+    "batch_tool": true,
+    "openTelemetry": true,
+    "continue_loop_on_deny": true,
+    "mcp_timeout": 120000
   },
   "plugin": [
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
+    "@slkiser/opencode-quota@latest",
     "cc-safety-net@latest",
     "envsitter-guard@latest",
     "@tarquinen/opencode-dcp@latest",
     "@morphllm/opencode-morph-plugin@latest",
     "opencode-handoff@latest",
-    "opencode-agent-skills@latest",
+    "opencode-rules@latest",
     "@devtheops/opencode-plugin-otel@latest",
     [
       "@plannotator/opencode@latest",
@@ -33,17 +199,212 @@
     ],
     "@simonwjackson/opencode-direnv@latest",
     "opencode-pty@latest",
+    "btw-opencode@latest",
+    "opencode-large-image-optimizer@latest",
+    "opencode-ignore@latest",
+    "opencode-token-monitor@latest",
+    "opencode-history-search@latest",
+    "opencode-lmstudio@latest",
     "opencode-wakatime@latest",
     "octto@latest",
+    "@hueyexe/opencode-ensemble@latest",
+    "@json9512/opm@latest",
     "@mohak34/opencode-notifier@latest",
+    "opencode-terminal-progress@latest",
     "opencode-devcontainers@latest",
+    "@gotgenes/opencode-agent-identity@latest",
     "@ramarivera/opencode-model-announcer@latest",
+    [
+      "opencode-adaptive-thinking@latest",
+      {
+        "enabled": true,
+        "quiet": false,
+        "toolName": "set_reasoning_effort",
+        "toolDescription": "Set the current session reasoning effort when the active model exposes effort variants.",
+        "systemPrompt": "Use the lowest reasoning effort that can safely complete the task. Raise effort for ambiguity, debugging, risky changes, multi-step synthesis, or explicit user requests; lower it again when the task becomes mechanical."
+      }
+    ],
     "@mailshieldai/opencode-canvas@latest",
     "opencode-scheduler@latest",
     "opencode-claude-auth@latest",
-    "opencode-plugin-langfuse@latest"
+    "opencode-plugin-langfuse@latest",
+    "opencode-betterglob@latest",
+    "opencode-bettergrep@latest",
+    "opencode-plugin-ast-lsp@latest",
+    "opencode-plugin-notebooklm@latest",
+    "opencode-insights@latest",
+    "opencode-mermaid-renderer@latest",
+    "opencode-websearch-cited@latest"
   ],
   "permission": {
-    "canvas_*": "allow"
+    "canvas_*": "allow",
+    "bash": {
+      "*": "ask",
+      "pnpm dev -- --host 127.0.0.1 --port *": "allow",
+      "env NODE_ENV=development pnpm exec vite --host 127.0.0.1 --port *": "allow",
+      "rtk pnpm dev*": "allow",
+      "uv run openopps*": "allow"
+    },
+    "external_directory": {
+      "~/.local/share/opencode/worktree/**": "allow"
+    },
+    "lsp": "allow"
+  },
+  "provider": {
+    "openai": {
+      "options": {
+        "timeout": 600000,
+        "chunkTimeout": 180000,
+        "setCacheKey": true,
+        "websearch_cited": {
+          "model": "gpt-5.5"
+        }
+      },
+      "models": {
+        "gpt-5.5": {
+          "variants": {
+            "none": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "none",
+              "reasoningSummary": null
+            },
+            "low": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "low",
+              "reasoningSummary": null
+            },
+            "medium": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "medium",
+              "reasoningSummary": null
+            },
+            "high": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "high",
+              "reasoningSummary": null,
+              "textVerbosity": "low"
+            },
+            "xhigh": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": null,
+              "textVerbosity": "low"
+            }
+          }
+        },
+        "gpt-5.4-mini": {
+          "variants": {
+            "none": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "none",
+              "reasoningSummary": null
+            },
+            "low": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "low",
+              "reasoningSummary": null
+            },
+            "medium": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "medium",
+              "reasoningSummary": null
+            },
+            "high": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "high",
+              "reasoningSummary": null,
+              "textVerbosity": "low"
+            },
+            "xhigh": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": null,
+              "textVerbosity": "low"
+            }
+          }
+        },
+        "gpt-5.3-codex-spark": {
+          "variants": {
+            "none": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "none",
+              "reasoningSummary": null
+            },
+            "low": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "low",
+              "reasoningSummary": null
+            },
+            "medium": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "medium",
+              "reasoningSummary": null
+            },
+            "high": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "high",
+              "reasoningSummary": null,
+              "textVerbosity": "low"
+            },
+            "xhigh": {
+              "include": [
+                "reasoning.encrypted_content"
+              ],
+              "reasoningEffort": "xhigh",
+              "reasoningSummary": null,
+              "textVerbosity": "low"
+            }
+          }
+        }
+      }
+    }
+  },
+  "model": "openai/gpt-5.5",
+  "small_model": "openai/gpt-5.4-mini",
+  "agent": {
+    "build": {
+      "model": "openai/gpt-5.5",
+      "variant": "high"
+    },
+    "plan": {
+      "model": "openai/gpt-5.5",
+      "variant": "xhigh"
+    },
+    "explore": {
+      "model": "openai/gpt-5.5",
+      "variant": "high"
+    },
+    "general": {
+      "model": "openai/gpt-5.5",
+      "variant": "high"
+    }
   }
 }

@@ -37,14 +37,14 @@ Build, query, and maintain Obsidian-native, git-friendly, agent-managed knowledg
 | `$ARGUMENTS` | Workflow | First move |
 |--------------|----------|------------|
 | (empty) | Interview | Show mode menu; if headless, run inventory-only planning and do not mutate files |
-| `create <topic>` | Create | Establish an Obsidian-native KB root, layered structure, shared vault surfaces, starter indexes, and activity log |
-| `ingest <source-or-path>` | Ingest | Add sources to `raw/`, preserve originals, then update indexes and provenance stubs |
-| `enrich <page-or-topic>` | Enrich | Improve `wiki/` pages from raw or canonical inputs with traceable synthesis |
+| `create &lt;topic&gt;` | Create | Establish an Obsidian-native KB root, layered structure, shared vault surfaces, starter indexes, and activity log |
+| `ingest &lt;source-or-path&gt;` | Ingest | Add sources to `raw/`, preserve originals, then update indexes and provenance stubs |
+| `enrich &lt;page-or-topic&gt;` | Enrich | Improve `wiki/` pages from raw or canonical inputs with traceable synthesis |
 | `audit [path]` | Audit | Run inventory + lint read-only; report structure, provenance, and drift findings |
-| `query <question-or-topic>` | Query | Answer from `wiki/` + `indexes/` first, inspect `raw/` only to verify citations or confirm gaps, and stay read-only |
-| `derive <artifact-or-target>` | Derive | Generate reproducible outputs from the current KB without replacing canonical material |
-| `improve <path>` | Existing repo | Start with inventory-first, Obsidian-native overhaul planning before any expansion or refinement |
-| `migrate <path-or-scope>` | Migration | Run the risky-change interview + inversion before any move, rename, cutover, or replacement |
+| `query &lt;question-or-topic&gt;` | Query | Answer from `wiki/` + `indexes/` first, inspect `raw/` only to verify citations or confirm gaps, and stay read-only |
+| `derive &lt;artifact-or-target&gt;` | Derive | Generate reproducible outputs from the current KB without replacing canonical material |
+| `improve &lt;path&gt;` | Existing repo | Start with inventory-first, Obsidian-native overhaul planning before any expansion or refinement |
+| `migrate &lt;path-or-scope&gt;` | Migration | Run the risky-change interview + inversion before any move, rename, cutover, or replacement |
 | Natural language: "create a knowledge base / vault for ..." | Create | Treat the remainder as topic and scope; default to an Obsidian-native vault |
 | Natural language: "ingest/import these sources" | Ingest | Route sources into `raw/` and update indexes |
 | Natural language: "improve/fix this knowledge base/repo/vault" | Existing repo | Start with a read-only inventory, vault classification, and additive-first repair plan |

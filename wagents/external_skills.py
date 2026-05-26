@@ -24,13 +24,15 @@ class ExternalSkillEntry:
     target_agents: tuple[str, ...]
     source_url: str
     notes: str
-    source_path: str = "instructions/external-skills.md"
+    source_path: str = "config/external-skills.md"
     selector_mode: str = "named"
     unresolved_reason: str = ""
+    unsupported_target_agents: tuple[str, ...] = ()
 
     def public_dict(self) -> dict[str, object]:
         data = asdict(self)
         data["target_agents"] = list(self.target_agents)
+        data["unsupported_target_agents"] = list(self.unsupported_target_agents)
         return data
 
 
@@ -40,10 +42,68 @@ SECTION_TO_STATUS = {
     "keep global only or avoid": ("global-only-or-avoid", "global-only-or-avoid"),
 }
 
+SUPPORTED_TARGET_AGENTS = (
+    "adal",
+    "aider-desk",
+    "amp",
+    "antigravity",
+    "augment",
+    "bob",
+    "claude-code",
+    "cline",
+    "codearts-agent",
+    "codebuddy",
+    "codemaker",
+    "codestudio",
+    "codex",
+    "command-code",
+    "continue",
+    "cortex",
+    "crush",
+    "cursor",
+    "deepagents",
+    "devin",
+    "dexto",
+    "droid",
+    "firebender",
+    "forgecode",
+    "gemini-cli",
+    "github-copilot",
+    "goose",
+    "hermes-agent",
+    "iflow-cli",
+    "junie",
+    "kilo",
+    "kimi-cli",
+    "kiro-cli",
+    "kode",
+    "mcpjam",
+    "mistral-vibe",
+    "mux",
+    "neovate",
+    "opencode",
+    "openclaw",
+    "openhands",
+    "pi",
+    "pochi",
+    "qoder",
+    "qwen-code",
+    "replit",
+    "roo",
+    "rovodev",
+    "tabnine-cli",
+    "trae",
+    "trae-cn",
+    "universal",
+    "warp",
+    "windsurf",
+    "zencoder",
+)
+
 
 def read_external_skill_entries(path: Path | None = None) -> list[ExternalSkillEntry]:
-    """Read curated external skill entries from the repo instruction source."""
-    source_path = path or wagents.ROOT / "instructions" / "external-skills.md"
+    """Read curated external skill entries from the repo config source."""
+    source_path = path or wagents.ROOT / "config" / "external-skills.md"
     if not source_path.exists():
         return []
     return parse_external_skill_entries(source_path.read_text(encoding="utf-8"))
@@ -143,6 +203,8 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
             continue
         idx += 1
 
+    unsupported_target_agents = tuple(agent for agent in target_agents if agent not in SUPPORTED_TARGET_AGENTS)
+
     selector_mode = "named"
     if not skills and embedded_skill:
         skills = [embedded_skill]
@@ -166,6 +228,7 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
                 notes="Curated source is present, but no installable skill selector was captured.",
                 selector_mode="unresolved",
                 unresolved_reason="Missing `--skill` selector or source-embedded skill name.",
+                unsupported_target_agents=unsupported_target_agents,
             )
         ]
 
@@ -182,6 +245,7 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
             source_url=_source_url(source),
             notes=_command_note(selector_mode),
             selector_mode=selector_mode,
+            unsupported_target_agents=unsupported_target_agents,
         )
         for skill in skills
     ]
@@ -245,12 +309,30 @@ def _wildcard_name(source: str) -> str:
 
 
 def _dedupe_external_entries(entries: list[ExternalSkillEntry]) -> list[ExternalSkillEntry]:
-    seen: set[tuple[str, str, str, str]] = set()
-    deduped: list[ExternalSkillEntry] = []
+    deduped_by_key: dict[tuple[str, str], ExternalSkillEntry] = {}
     for entry in entries:
-        key = (entry.name, entry.source, entry.install_source, entry.status)
-        if key in seen:
+        key = (entry.name.lower(), entry.source.removeprefix("github:").lower())
+        existing = deduped_by_key.get(key)
+        if existing is None or _entry_priority(entry) > _entry_priority(existing):
+            deduped_by_key[key] = entry
+    return list(deduped_by_key.values())
+
+
+def _entry_priority(entry: ExternalSkillEntry) -> int:
+    if entry.provenance_status == "verified-install-command":
+        return 3
+    if entry.install_command:
+        return 2
+    if entry.status != "global-only-or-avoid":
+        return 1
+    return 0
+
+
+def unsupported_target_agents(entries: list[ExternalSkillEntry]) -> dict[str, tuple[str, ...]]:
+    """Return unsupported target-agent IDs keyed by source/name."""
+    unsupported: dict[str, tuple[str, ...]] = {}
+    for entry in entries:
+        if not entry.unsupported_target_agents:
             continue
-        seen.add(key)
-        deduped.append(entry)
-    return deduped
+        unsupported[f"{entry.source}@{entry.name}"] = entry.unsupported_target_agents
+    return unsupported

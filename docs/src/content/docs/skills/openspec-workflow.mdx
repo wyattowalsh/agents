@@ -5,7 +5,7 @@ description: "Use when planning, applying, validating, or archiving OpenSpec cha
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="openspec-workflow" variant="note" /> <Badge text="538 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="Wyatt Walsh" variant="caution" /> <Badge text="Custom" variant="tip" />
+<Badge text="openspec-workflow" variant="note" /> <Badge text="866 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="Wyatt Walsh" variant="caution" /> <Badge text="Custom" variant="tip" />
 
 > Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills.
 
@@ -34,16 +34,26 @@ Use OpenSpec as the spec/change control plane for non-trivial changes to this re
 
 ## Modes
 
-| `$ARGUMENTS` | Action |
-|---|---|
-| Empty | Show the repo OpenSpec quick path |
-| `doctor` | Diagnose OpenSpec toolchain and project state |
-| `init [tools]` | Materialize downstream OpenSpec skills/commands locally |
-| `status <change>` | Read change artifact status as JSON |
-| `instructions <artifact> <change>` | Get AI-readable next-step instructions |
-| `validate` | Validate all OpenSpec specs and changes |
-| `archive <change>` | Validate and archive a completed change |
-| Natural language change request | Decide whether OpenSpec is warranted, then create or continue a change |
+| `$ARGUMENTS`                       | Action                                                                 |
+| ---------------------------------- | ---------------------------------------------------------------------- |
+| Empty                              | Show the repo OpenSpec quick path                                      |
+| `doctor`                           | Diagnose OpenSpec toolchain and project state                          |
+| `init [tools]`                     | Materialize downstream OpenSpec skills/commands locally                |
+| `status &lt;change&gt;`                  | Read change artifact status as JSON                                    |
+| `instructions &lt;artifact&gt; &lt;change&gt;` | Get AI-readable next-step instructions                                 |
+| `validate`                         | Validate all OpenSpec specs and changes                                |
+| `archive &lt;change&gt;`                 | Validate and archive a completed change                                |
+| Natural language change request    | Decide whether OpenSpec is warranted, then create or continue a change |
+
+## Critical Rules
+
+1. Use OpenSpec for non-trivial changes to public asset formats, downstream tooling, docs generation, hooks, bundle metadata, or validation behavior.
+2. Do not use OpenSpec for isolated typo fixes or single-file local edits where repo conventions fully determine the outcome.
+3. Prefer `uv run wagents openspec ... --format json` when another AI tool needs machine-readable state or instructions.
+4. Do not commit generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts unless explicitly promoted.
+5. Validate before archive; never archive a change that has unresolved task, spec, or validation gaps.
+6. Keep downstream generated skills and commands local by default.
+7. Report missing OpenSpec or Node tooling as blockers with the exact command to retry after setup.
 
 ### General
 
@@ -73,16 +83,16 @@ Use OpenSpec as the spec/change control plane for non-trivial changes to this re
 
 ## Dispatch
 
-| `$ARGUMENTS` | Action |
-|---|---|
-| Empty | Show the repo OpenSpec quick path |
-| `doctor` | Diagnose OpenSpec toolchain and project state |
-| `init [tools]` | Materialize downstream OpenSpec skills/commands locally |
-| `status <change>` | Read change artifact status as JSON |
-| `instructions <artifact> <change>` | Get AI-readable next-step instructions |
-| `validate` | Validate all OpenSpec specs and changes |
-| `archive <change>` | Validate and archive a completed change |
-| Natural language change request | Decide whether OpenSpec is warranted, then create or continue a change |
+| `$ARGUMENTS`                       | Action                                                                 |
+| ---------------------------------- | ---------------------------------------------------------------------- |
+| Empty                              | Show the repo OpenSpec quick path                                      |
+| `doctor`                           | Diagnose OpenSpec toolchain and project state                          |
+| `init [tools]`                     | Materialize downstream OpenSpec skills/commands locally                |
+| `status <change>`                  | Read change artifact status as JSON                                    |
+| `instructions <artifact> <change>` | Get AI-readable next-step instructions                                 |
+| `validate`                         | Validate all OpenSpec specs and changes                                |
+| `archive <change>`                 | Validate and archive a completed change                                |
+| Natural language change request    | Decide whether OpenSpec is warranted, then create or continue a change |
 
 ## Quick Path
 
@@ -130,20 +140,22 @@ uv run wagents openspec update --apply
 
 The default repo mapping is:
 
-| Repo agent | OpenSpec tool |
-|---|---|
-| `antigravity` | `antigravity` |
-| `claude-code` | `claude` |
-| `codex` | `codex` |
-| `crush` | `crush` |
-| `cursor` | `cursor` |
-| `gemini-cli` | `gemini` |
+| Repo agent       | OpenSpec tool    |
+| ---------------- | ---------------- |
+| `antigravity`    | `antigravity`    |
+| `claude-code`    | `claude`         |
+| `codex`          | `codex`          |
+| `crush`          | `crush`          |
+| `cursor`         | `cursor`         |
+| `gemini-cli`     | `gemini`         |
 | `github-copilot` | `github-copilot` |
-| `opencode` | `opencode` |
+| `opencode`       | `opencode`       |
 
 Do not commit generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts unless the user explicitly promotes a specific artifact to repo-owned source.
 
 ## Artifact Order
+
+### Agent Asset Changes
 
 For this repo's custom `agent-asset-change` schema, create artifacts in this order:
 
@@ -155,6 +167,22 @@ For this repo's custom `agent-asset-change` schema, create artifacts in this ord
 
 Use `openspec status --json` to confirm which artifact is ready before asking the AI to create it.
 
+### Archive Readiness
+
+Archive only after implementation and validation are complete. Keep proposal, affected surfaces, design, validation matrix, and tasks aligned with the final shipped state.
+
+## Canonical Vocabulary
+
+Use these canonical terms exactly:
+
+| Term                  | Meaning                                                                        |
+| --------------------- | ------------------------------------------------------------------------------ |
+| OpenSpec change       | A proposed repo behavior or asset change tracked under `openspec/changes/`     |
+| Artifact              | A proposal, design, task list, spec delta, or AI-readable instruction document |
+| Downstream tool setup | Generated local skills, commands, or config for external agent harnesses       |
+| Archive               | Finalize and move a completed change into the durable spec history             |
+| Validation matrix     | The artifact that maps affected surfaces to required proof commands            |
+
 ## Validation Contract
 
 Before claiming OpenSpec work is complete, run the relevant commands:
@@ -163,8 +191,27 @@ Before claiming OpenSpec work is complete, run the relevant commands:
 - `uv run wagents validate` for skill, agent, MCP, and hook changes
 - `uv run wagents readme --check` when README generation or skill descriptions changed
 - `uv run wagents docs generate` or docs tests when docs generation changed
+- `uv run python skills/skill-creator/scripts/audit.py skills/openspec-workflow/ --format json` when this skill changes
+- `uv run wagents package openspec-workflow --dry-run` when distributable skill packaging could be affected
 
 If a command is blocked by missing Node/OpenSpec tooling, report the blocker and the exact command that should be run after installing Node `>=20.19.0`.
+
+Completion criteria:
+
+- The OpenSpec decision is grounded in repo policy and the actual affected files.
+- Required artifacts exist or are explicitly skipped with a reason.
+- Validation commands pass, or blockers include exact follow-up commands.
+- Generated downstream artifacts are not committed unless explicitly promoted.
+
+## Critical Rules
+
+1. Use OpenSpec for non-trivial changes to public asset formats, downstream tooling, docs generation, hooks, bundle metadata, or validation behavior.
+2. Do not use OpenSpec for isolated typo fixes or single-file local edits where repo conventions fully determine the outcome.
+3. Prefer `uv run wagents openspec ... --format json` when another AI tool needs machine-readable state or instructions.
+4. Do not commit generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts unless explicitly promoted.
+5. Validate before archive; never archive a change that has unresolved task, spec, or validation gaps.
+6. Keep downstream generated skills and commands local by default.
+7. Report missing OpenSpec or Node tooling as blockers with the exact command to retry after setup.
 
 ````
 

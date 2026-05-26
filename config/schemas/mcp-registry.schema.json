@@ -25,6 +25,92 @@
         },
         "additionalProperties": true
       }
+    },
+    "mcphub": {
+      "type": "object",
+      "required": ["enabled", "base_url", "bearer_token_env_var", "groups"],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "base_url": {"type": "string", "pattern": "^https?://"},
+        "public_url": {"type": "string", "pattern": "^https?://"},
+        "bearer_token_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
+        "startup_timeout_sec": {"type": "integer", "minimum": 1},
+        "tool_timeout_sec": {"type": "integer", "minimum": 1},
+        "settings_path": {"type": "string", "minLength": 1},
+        "openapi_export_path": {"type": "string", "minLength": 1},
+        "smart_routing": {
+          "type": "object",
+          "properties": {
+            "enabled_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
+            "default_enabled": {"type": "boolean"},
+            "base_path": {"type": "string", "pattern": "^/"},
+            "database_url_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
+            "embedding_provider_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
+            "embedding_model_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"}
+          },
+          "additionalProperties": true
+        },
+        "groups": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["enabled", "servers"],
+            "properties": {
+              "description": {"type": "string"},
+              "enabled": {"type": "boolean"},
+              "servers": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+                "uniqueItems": true
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "clients": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "transport": {"type": "string"},
+              "auth": {"type": "string"},
+              "command": {"type": "string"},
+              "url": {"type": "string", "pattern": "^https?://"},
+              "url_source": {"enum": ["local", "public"]},
+              "clients": {"type": "array", "items": {"type": "string"}},
+              "included_endpoint_kinds": {
+                "type": "array",
+                "items": {"enum": ["all", "group", "server", "smart"]},
+                "uniqueItems": true
+              },
+              "enabled_endpoint_kinds": {
+                "type": "array",
+                "items": {"enum": ["all", "group", "server", "smart"]},
+                "uniqueItems": true
+              },
+              "enabled_groups": {
+                "type": "array",
+                "items": {"type": "string"},
+                "uniqueItems": true
+              },
+              "included_groups": {
+                "type": "array",
+                "items": {"type": "string"},
+                "uniqueItems": true
+              },
+              "included_servers": {
+                "type": "array",
+                "items": {"type": "string"},
+                "uniqueItems": true
+              },
+              "enable_server_endpoints": {"type": "boolean"},
+              "server_endpoint_name_style": {"enum": ["prefixed", "base"]}
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": false

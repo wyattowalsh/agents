@@ -1,0 +1,2456 @@
+{
+  "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+  "customIndividual": [
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "add-badges"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "agent-conventions"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "agent-runtime-governance"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "api-designer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "changelog-writer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "chrome-devtools"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "chrome-devtools-a11y-debugging"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "chrome-devtools-cli"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "chrome-devtools-debug-optimize-lcp"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "chrome-devtools-memory-leak-debugging"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "chrome-devtools-troubleshooting"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "data-pipeline-architect"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "data-wizard"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "database-architect"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "devops-engineer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill discover-skills -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "discover-skills"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "docling-graph"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "docs-steward"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "draw-thing"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "email-whiz"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "event-driven-architect"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "external-skill-auditor"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "files-buddy"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill frontend-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "frontend-designer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "git-workflow"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "harness-master"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "honest-review"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "host-panel"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "i18n-localization"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "incident-response-engineer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "infrastructure-coder"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "javascript-conventions"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "learn"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "mcp-creator"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "namer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "nerdbot"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "new-project"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "observability-advisor"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "opencode-ensemble"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "openspec-workflow"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "orchestrator"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "performance-profiler"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "prompt-engineer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "python-conventions"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "reasoning-router"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "release-pipeline-architect"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "research"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "schema-evolution-planner"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "security-scanner"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "shell-conventions"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "shell-scripter"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "simplify"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "skill-creator"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "skill-router"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "tech-debt-analyzer"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "test-architect"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "things-manager"
+    },
+    {
+      "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+      "name": "wargame"
+    }
+  ],
+  "externalCommands": [
+    {
+      "command": "npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "design-taste-frontend"
+      ],
+      "source": "Leonxlnx/taste-skill",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "accessibility",
+        "best-practices",
+        "core-web-vitals",
+        "performance",
+        "seo",
+        "web-quality-audit"
+      ],
+      "source": "addyosmani/web-quality-skills",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "agents-sdk",
+        "cloudflare",
+        "durable-objects",
+        "workers-best-practices",
+        "wrangler"
+      ],
+      "source": "cloudflare/skills",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "playwright-best-practices"
+      ],
+      "source": "currents-dev/playwright-best-practices-skill",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "building-native-ui",
+        "expo-cicd-workflows",
+        "expo-deployment",
+        "expo-dev-client",
+        "upgrading-expo"
+      ],
+      "source": "expo/skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "sentry-fix-issues",
+        "sentry-sdk-setup",
+        "sentry-setup-ai-monitoring"
+      ],
+      "source": "getsentry/sentry-for-ai",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "agent-governance",
+        "agent-owasp-compliance",
+        "agent-supply-chain",
+        "agentic-eval"
+      ],
+      "source": "github/awesome-copilot",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "arize-evaluator",
+        "arize-instrumentation",
+        "arize-prompt-optimization",
+        "phoenix-evals",
+        "phoenix-tracing"
+      ],
+      "source": "github/awesome-copilot",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add hueyexe/opencode-ensemble --skill opencode-ensemble -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "opencode-ensemble"
+      ],
+      "source": "hueyexe/opencode-ensemble",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder",
+      "skills": [
+        "shieldcn-badges"
+      ],
+      "source": "jal-co/shieldcn",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "framework-selection",
+        "langchain-fundamentals",
+        "langchain-rag",
+        "langgraph-fundamentals",
+        "langgraph-human-in-the-loop",
+        "langgraph-persistence"
+      ],
+      "source": "langchain-ai/langchain-skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "ctf-ai-ml",
+        "ctf-crypto",
+        "ctf-forensics",
+        "ctf-malware",
+        "ctf-misc",
+        "ctf-osint",
+        "ctf-pwn",
+        "ctf-reverse",
+        "ctf-web",
+        "ctf-writeup",
+        "solve-challenge"
+      ],
+      "source": "ljagiello/ctf-skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "chatgpt-app-builder",
+        "mcp-builder"
+      ],
+      "source": "mcp-use/skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "ui-ux-pro-max"
+      ],
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "chatgpt-apps",
+        "cli-creator",
+        "security-best-practices",
+        "security-ownership-map",
+        "security-threat-model"
+      ],
+      "source": "openai/skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "building-pydantic-ai-agents",
+        "instrumentation"
+      ],
+      "source": "pydantic/skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "stripe-best-practices",
+        "upgrade-stripe"
+      ],
+      "source": "stripe/ai",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "supabase",
+        "supabase-postgres-best-practices"
+      ],
+      "source": "supabase/agent-skills",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "codeql",
+        "property-based-testing",
+        "semgrep"
+      ],
+      "source": "trailofbits/skills",
+      "status": "inspect-then-install",
+      "trustTier": "needs-inspection"
+    },
+    {
+      "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "vercel-composition-patterns",
+        "vercel-react-best-practices",
+        "vercel-react-native-skills",
+        "vercel-react-view-transitions",
+        "web-design-guidelines"
+      ],
+      "source": "vercel-labs/agent-skills",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+      "skills": [
+        "next-best-practices",
+        "next-cache-components",
+        "next-upgrade"
+      ],
+      "source": "vercel-labs/next-skills",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    }
+  ],
+  "installedCommands": [
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/autoplan --skill autoplan -y -g",
+      "skills": [
+        "autoplan"
+      ],
+      "source": "/Users/ww/.agents/skills/autoplan",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/benchmark --skill benchmark -y -g",
+      "skills": [
+        "benchmark"
+      ],
+      "source": "/Users/ww/.agents/skills/benchmark",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/browse --skill browse -y -g",
+      "skills": [
+        "browse"
+      ],
+      "source": "/Users/ww/.agents/skills/browse",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/canary --skill canary -y -g",
+      "skills": [
+        "canary"
+      ],
+      "source": "/Users/ww/.agents/skills/canary",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/careful --skill careful -y -g",
+      "skills": [
+        "careful"
+      ],
+      "source": "/Users/ww/.agents/skills/careful",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/codex --skill codex -y -g",
+      "skills": [
+        "codex"
+      ],
+      "source": "/Users/ww/.agents/skills/codex",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/connect-chrome --skill connect-chrome -y -g",
+      "skills": [
+        "connect-chrome"
+      ],
+      "source": "/Users/ww/.agents/skills/connect-chrome",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/cso --skill cso -y -g",
+      "skills": [
+        "cso"
+      ],
+      "source": "/Users/ww/.agents/skills/cso",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/design-consultation --skill design-consultation -y -g",
+      "skills": [
+        "design-consultation"
+      ],
+      "source": "/Users/ww/.agents/skills/design-consultation",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/design-review --skill design-review -y -g",
+      "skills": [
+        "design-review"
+      ],
+      "source": "/Users/ww/.agents/skills/design-review",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/design-shotgun --skill design-shotgun -y -g",
+      "skills": [
+        "design-shotgun"
+      ],
+      "source": "/Users/ww/.agents/skills/design-shotgun",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/document-release --skill document-release -y -g",
+      "skills": [
+        "document-release"
+      ],
+      "source": "/Users/ww/.agents/skills/document-release",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/freeze --skill freeze -y -g",
+      "skills": [
+        "freeze"
+      ],
+      "source": "/Users/ww/.agents/skills/freeze",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/gstack --skill gstack -y -g",
+      "skills": [
+        "gstack"
+      ],
+      "source": "/Users/ww/.agents/skills/gstack",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/gstack-upgrade --skill gstack-upgrade -y -g",
+      "skills": [
+        "gstack-upgrade"
+      ],
+      "source": "/Users/ww/.agents/skills/gstack-upgrade",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/guard --skill guard -y -g",
+      "skills": [
+        "guard"
+      ],
+      "source": "/Users/ww/.agents/skills/guard",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/investigate --skill investigate -y -g",
+      "skills": [
+        "investigate"
+      ],
+      "source": "/Users/ww/.agents/skills/investigate",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/land-and-deploy --skill land-and-deploy -y -g",
+      "skills": [
+        "land-and-deploy"
+      ],
+      "source": "/Users/ww/.agents/skills/land-and-deploy",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/office-hours --skill office-hours -y -g",
+      "skills": [
+        "office-hours"
+      ],
+      "source": "/Users/ww/.agents/skills/office-hours",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/plan-ceo-review --skill plan-ceo-review -y -g",
+      "skills": [
+        "plan-ceo-review"
+      ],
+      "source": "/Users/ww/.agents/skills/plan-ceo-review",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/plan-design-review --skill plan-design-review -y -g",
+      "skills": [
+        "plan-design-review"
+      ],
+      "source": "/Users/ww/.agents/skills/plan-design-review",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/plan-eng-review --skill plan-eng-review -y -g",
+      "skills": [
+        "plan-eng-review"
+      ],
+      "source": "/Users/ww/.agents/skills/plan-eng-review",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/plannotator-compound --skill plannotator-compound -y -g",
+      "skills": [
+        "plannotator-compound"
+      ],
+      "source": "/Users/ww/.agents/skills/plannotator-compound",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/plannotator-setup-goal --skill plannotator-setup-goal -y -g",
+      "skills": [
+        "plannotator-setup-goal"
+      ],
+      "source": "/Users/ww/.agents/skills/plannotator-setup-goal",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/plannotator-visual-explainer --skill plannotator-visual-explainer -y -g",
+      "skills": [
+        "plannotator-visual-explainer"
+      ],
+      "source": "/Users/ww/.agents/skills/plannotator-visual-explainer",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/qa --skill qa -y -g",
+      "skills": [
+        "qa"
+      ],
+      "source": "/Users/ww/.agents/skills/qa",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/qa-only --skill qa-only -y -g",
+      "skills": [
+        "qa-only"
+      ],
+      "source": "/Users/ww/.agents/skills/qa-only",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/retro --skill retro -y -g",
+      "skills": [
+        "retro"
+      ],
+      "source": "/Users/ww/.agents/skills/retro",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/review --skill review -y -g",
+      "skills": [
+        "review"
+      ],
+      "source": "/Users/ww/.agents/skills/review",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-chat-with-data --skill ronin-chat-with-data -y -g",
+      "skills": [
+        "ronin-chat-with-data"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-chat-with-data",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-discovery --skill ronin-discovery -y -g",
+      "skills": [
+        "ronin-discovery"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-discovery",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-email-monitor --skill ronin-email-monitor -y -g",
+      "skills": [
+        "ronin-email-monitor"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-email-monitor",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-interview-prep --skill ronin-interview-prep -y -g",
+      "skills": [
+        "ronin-interview-prep"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-interview-prep",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-materials --skill ronin-materials -y -g",
+      "skills": [
+        "ronin-materials"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-materials",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-networking --skill ronin-networking -y -g",
+      "skills": [
+        "ronin-networking"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-networking",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-offer-negotiation --skill ronin-offer-negotiation -y -g",
+      "skills": [
+        "ronin-offer-negotiation"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-offer-negotiation",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-pipeline-analytics --skill ronin-pipeline-analytics -y -g",
+      "skills": [
+        "ronin-pipeline-analytics"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-pipeline-analytics",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-pipeline-manager --skill ronin-pipeline-manager -y -g",
+      "skills": [
+        "ronin-pipeline-manager"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-pipeline-manager",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-profile-builder --skill ronin-profile-builder -y -g",
+      "skills": [
+        "ronin-profile-builder"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-profile-builder",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-research --skill ronin-research -y -g",
+      "skills": [
+        "ronin-research"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-research",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ronin-search-strategy --skill ronin-search-strategy -y -g",
+      "skills": [
+        "ronin-search-strategy"
+      ],
+      "source": "/Users/ww/.agents/skills/ronin-search-strategy",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/setup-browser-cookies --skill setup-browser-cookies -y -g",
+      "skills": [
+        "setup-browser-cookies"
+      ],
+      "source": "/Users/ww/.agents/skills/setup-browser-cookies",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/setup-deploy --skill setup-deploy -y -g",
+      "skills": [
+        "setup-deploy"
+      ],
+      "source": "/Users/ww/.agents/skills/setup-deploy",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/ship --skill ship -y -g",
+      "skills": [
+        "ship"
+      ],
+      "source": "/Users/ww/.agents/skills/ship",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.agents/skills/unfreeze --skill unfreeze -y -g",
+      "skills": [
+        "unfreeze"
+      ],
+      "source": "/Users/ww/.agents/skills/unfreeze",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.codex/skills/hatch-pet --skill hatch-pet -y -g",
+      "skills": [
+        "hatch-pet"
+      ],
+      "source": "/Users/ww/.codex/skills/hatch-pet",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.codex/skills/plannotator-annotate --skill plannotator-annotate -y -g",
+      "skills": [
+        "plannotator-annotate"
+      ],
+      "source": "/Users/ww/.codex/skills/plannotator-annotate",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.codex/skills/plannotator-last --skill plannotator-last -y -g",
+      "skills": [
+        "plannotator-last"
+      ],
+      "source": "/Users/ww/.codex/skills/plannotator-last",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.codex/skills/plannotator-review --skill plannotator-review -y -g",
+      "skills": [
+        "plannotator-review"
+      ],
+      "source": "/Users/ww/.codex/skills/plannotator-review",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add /Users/ww/.config/opencode/skills/project-context --skill project-context -y -g",
+      "skills": [
+        "project-context"
+      ],
+      "source": "/Users/ww/.config/opencode/skills/project-context",
+      "status": "installed-external",
+      "trustTier": "read-only-discovered"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill docx -y -g",
+      "skills": [
+        "docx"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill frontend-design -y -g",
+      "skills": [
+        "frontend-design"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill pdf -y -g",
+      "skills": [
+        "pdf"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill pptx -y -g",
+      "skills": [
+        "pptx"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill web-artifacts-builder -y -g",
+      "skills": [
+        "web-artifacts-builder"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill webapp-testing -y -g",
+      "skills": [
+        "webapp-testing"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add anthropics/skills --skill xlsx -y -g",
+      "skills": [
+        "xlsx"
+      ],
+      "source": "anthropics/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-client -y -g",
+      "skills": [
+        "apollo-client"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-connectors -y -g",
+      "skills": [
+        "apollo-connectors"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-federation -y -g",
+      "skills": [
+        "apollo-federation"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-kotlin -y -g",
+      "skills": [
+        "apollo-kotlin"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-mcp-server -y -g",
+      "skills": [
+        "apollo-mcp-server"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-router -y -g",
+      "skills": [
+        "apollo-router"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-router-plugin-creator -y -g",
+      "skills": [
+        "apollo-router-plugin-creator"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill apollo-server -y -g",
+      "skills": [
+        "apollo-server"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill graphql-operations -y -g",
+      "skills": [
+        "graphql-operations"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill graphql-schema -y -g",
+      "skills": [
+        "graphql-schema"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill rover -y -g",
+      "skills": [
+        "rover"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add apollographql/skills --skill rust-best-practices -y -g",
+      "skills": [
+        "rust-best-practices"
+      ],
+      "source": "apollographql/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g",
+      "skills": [
+        "swiftui-expert-skill"
+      ],
+      "source": "avdlee/swiftui-agent-skill",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g",
+      "skills": [
+        "better-auth-best-practices"
+      ],
+      "source": "better-auth/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add callstackincubator/agent-skills --skill react-native-best-practices -y -g",
+      "skills": [
+        "react-native-best-practices"
+      ],
+      "source": "callstackincubator/agent-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add clerk/skills --skill clerk-nextjs-patterns -y -g",
+      "skills": [
+        "clerk-nextjs-patterns"
+      ],
+      "source": "clerk/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add cloudflare/skills --skill building-ai-agent-on-cloudflare -y -g",
+      "skills": [
+        "building-ai-agent-on-cloudflare"
+      ],
+      "source": "cloudflare/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add cloudflare/skills --skill building-mcp-server-on-cloudflare -y -g",
+      "skills": [
+        "building-mcp-server-on-cloudflare"
+      ],
+      "source": "cloudflare/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add cloudflare/skills --skill sandbox-sdk -y -g",
+      "skills": [
+        "sandbox-sdk"
+      ],
+      "source": "cloudflare/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add cloudflare/skills --skill web-perf -y -g",
+      "skills": [
+        "web-perf"
+      ],
+      "source": "cloudflare/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coderabbitai/skills --skill autofix -y -g",
+      "skills": [
+        "autofix"
+      ],
+      "source": "coderabbitai/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill ab-test-setup -y -g",
+      "skills": [
+        "ab-test-setup"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill ad-creative -y -g",
+      "skills": [
+        "ad-creative"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo -y -g",
+      "skills": [
+        "ai-seo"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill analytics-tracking -y -g",
+      "skills": [
+        "analytics-tracking"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill churn-prevention -y -g",
+      "skills": [
+        "churn-prevention"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill cold-email -y -g",
+      "skills": [
+        "cold-email"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill competitor-alternatives -y -g",
+      "skills": [
+        "competitor-alternatives"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill content-strategy -y -g",
+      "skills": [
+        "content-strategy"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill copy-editing -y -g",
+      "skills": [
+        "copy-editing"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill copywriting -y -g",
+      "skills": [
+        "copywriting"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill email-sequence -y -g",
+      "skills": [
+        "email-sequence"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill form-cro -y -g",
+      "skills": [
+        "form-cro"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill free-tool-strategy -y -g",
+      "skills": [
+        "free-tool-strategy"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill launch-strategy -y -g",
+      "skills": [
+        "launch-strategy"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill lead-magnets -y -g",
+      "skills": [
+        "lead-magnets"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill marketing-ideas -y -g",
+      "skills": [
+        "marketing-ideas"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill marketing-psychology -y -g",
+      "skills": [
+        "marketing-psychology"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill onboarding-cro -y -g",
+      "skills": [
+        "onboarding-cro"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill page-cro -y -g",
+      "skills": [
+        "page-cro"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill paid-ads -y -g",
+      "skills": [
+        "paid-ads"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill paywall-upgrade-cro -y -g",
+      "skills": [
+        "paywall-upgrade-cro"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill popup-cro -y -g",
+      "skills": [
+        "popup-cro"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill pricing-strategy -y -g",
+      "skills": [
+        "pricing-strategy"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill product-marketing-context -y -g",
+      "skills": [
+        "product-marketing-context"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill programmatic-seo -y -g",
+      "skills": [
+        "programmatic-seo"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill referral-program -y -g",
+      "skills": [
+        "referral-program"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill revops -y -g",
+      "skills": [
+        "revops"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill sales-enablement -y -g",
+      "skills": [
+        "sales-enablement"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill schema-markup -y -g",
+      "skills": [
+        "schema-markup"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill seo-audit -y -g",
+      "skills": [
+        "seo-audit"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill signup-flow-cro -y -g",
+      "skills": [
+        "signup-flow-cro"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill site-architecture -y -g",
+      "skills": [
+        "site-architecture"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add coreyhaines31/marketingskills --skill social-content -y -g",
+      "skills": [
+        "social-content"
+      ],
+      "source": "coreyhaines31/marketingskills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add expo/skills --skill expo-api-routes -y -g",
+      "skills": [
+        "expo-api-routes"
+      ],
+      "source": "expo/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add expo/skills --skill expo-tailwind-setup -y -g",
+      "skills": [
+        "expo-tailwind-setup"
+      ],
+      "source": "expo/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add expo/skills --skill native-data-fetching -y -g",
+      "skills": [
+        "native-data-fetching"
+      ],
+      "source": "expo/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add expo/skills --skill use-dom -y -g",
+      "skills": [
+        "use-dom"
+      ],
+      "source": "expo/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add firecrawl/cli --skill firecrawl -y -g",
+      "skills": [
+        "firecrawl"
+      ],
+      "source": "firecrawl/cli",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-adding-home-screen-widgets -y -g",
+      "skills": [
+        "flutter-adding-home-screen-widgets"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-animating-apps -y -g",
+      "skills": [
+        "flutter-animating-apps"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-architecting-apps -y -g",
+      "skills": [
+        "flutter-architecting-apps"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-building-forms -y -g",
+      "skills": [
+        "flutter-building-forms"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-building-layouts -y -g",
+      "skills": [
+        "flutter-building-layouts"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-building-plugins -y -g",
+      "skills": [
+        "flutter-building-plugins"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-caching-data -y -g",
+      "skills": [
+        "flutter-caching-data"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-embedding-native-views -y -g",
+      "skills": [
+        "flutter-embedding-native-views"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-handling-concurrency -y -g",
+      "skills": [
+        "flutter-handling-concurrency"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-handling-http-and-json -y -g",
+      "skills": [
+        "flutter-handling-http-and-json"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-implementing-navigation-and-routing -y -g",
+      "skills": [
+        "flutter-implementing-navigation-and-routing"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-improving-accessibility -y -g",
+      "skills": [
+        "flutter-improving-accessibility"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-interoperating-with-native-apis -y -g",
+      "skills": [
+        "flutter-interoperating-with-native-apis"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-localizing-apps -y -g",
+      "skills": [
+        "flutter-localizing-apps"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-managing-state -y -g",
+      "skills": [
+        "flutter-managing-state"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-reducing-app-size -y -g",
+      "skills": [
+        "flutter-reducing-app-size"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-setting-up-on-linux -y -g",
+      "skills": [
+        "flutter-setting-up-on-linux"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-setting-up-on-macos -y -g",
+      "skills": [
+        "flutter-setting-up-on-macos"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-setting-up-on-windows -y -g",
+      "skills": [
+        "flutter-setting-up-on-windows"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-testing-apps -y -g",
+      "skills": [
+        "flutter-testing-apps"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-theming-apps -y -g",
+      "skills": [
+        "flutter-theming-apps"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add flutter/skills --skill flutter-working-with-databases -y -g",
+      "skills": [
+        "flutter-working-with-databases"
+      ],
+      "source": "flutter/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill defuddle -y -g",
+      "skills": [
+        "defuddle"
+      ],
+      "source": "git@github.com:kepano/obsidian-skills.git",
+      "status": "installed-external",
+      "trustTier": "git"
+    },
+    {
+      "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill json-canvas -y -g",
+      "skills": [
+        "json-canvas"
+      ],
+      "source": "git@github.com:kepano/obsidian-skills.git",
+      "status": "installed-external",
+      "trustTier": "git"
+    },
+    {
+      "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill obsidian-bases -y -g",
+      "skills": [
+        "obsidian-bases"
+      ],
+      "source": "git@github.com:kepano/obsidian-skills.git",
+      "status": "installed-external",
+      "trustTier": "git"
+    },
+    {
+      "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill obsidian-cli -y -g",
+      "skills": [
+        "obsidian-cli"
+      ],
+      "source": "git@github.com:kepano/obsidian-skills.git",
+      "status": "installed-external",
+      "trustTier": "git"
+    },
+    {
+      "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill obsidian-markdown -y -g",
+      "skills": [
+        "obsidian-markdown"
+      ],
+      "source": "git@github.com:kepano/obsidian-skills.git",
+      "status": "installed-external",
+      "trustTier": "git"
+    },
+    {
+      "command": "npx skills add hashicorp/agent-skills --skill terraform-style-guide -y -g",
+      "skills": [
+        "terraform-style-guide"
+      ],
+      "source": "hashicorp/agent-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add heredotnow/skill --skill here-now -y -g",
+      "skills": [
+        "here-now"
+      ],
+      "source": "heredotnow/skill",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill hf-cli -y -g",
+      "skills": [
+        "hf-cli"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-community-evals -y -g",
+      "skills": [
+        "huggingface-community-evals"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-datasets -y -g",
+      "skills": [
+        "huggingface-datasets"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-gradio -y -g",
+      "skills": [
+        "huggingface-gradio"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-jobs -y -g",
+      "skills": [
+        "huggingface-jobs"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-llm-trainer -y -g",
+      "skills": [
+        "huggingface-llm-trainer"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-paper-publisher -y -g",
+      "skills": [
+        "huggingface-paper-publisher"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-papers -y -g",
+      "skills": [
+        "huggingface-papers"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-trackio -y -g",
+      "skills": [
+        "huggingface-trackio"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill huggingface-vision-trainer -y -g",
+      "skills": [
+        "huggingface-vision-trainer"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add huggingface/skills --skill transformers-js -y -g",
+      "skills": [
+        "transformers-js"
+      ],
+      "source": "huggingface/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add ibelick/ui-skills --skill baseline-ui -y -g",
+      "skills": [
+        "baseline-ui"
+      ],
+      "source": "ibelick/ui-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add ibelick/ui-skills --skill fixing-accessibility -y -g",
+      "skills": [
+        "fixing-accessibility"
+      ],
+      "source": "ibelick/ui-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add ibelick/ui-skills --skill fixing-metadata -y -g",
+      "skills": [
+        "fixing-metadata"
+      ],
+      "source": "ibelick/ui-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -y -g",
+      "skills": [
+        "fixing-motion-performance"
+      ],
+      "source": "ibelick/ui-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add itsmostafa/aws-agent-skills --skill cloudwatch -y -g",
+      "skills": [
+        "cloudwatch"
+      ],
+      "source": "itsmostafa/aws-agent-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add langchain-ai/langchain-skills --skill deep-agents-core -y -g",
+      "skills": [
+        "deep-agents-core"
+      ],
+      "source": "langchain-ai/langchain-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add langchain-ai/langchain-skills --skill deep-agents-memory -y -g",
+      "skills": [
+        "deep-agents-memory"
+      ],
+      "source": "langchain-ai/langchain-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add langchain-ai/langchain-skills --skill deep-agents-orchestration -y -g",
+      "skills": [
+        "deep-agents-orchestration"
+      ],
+      "source": "langchain-ai/langchain-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add langchain-ai/langchain-skills --skill langchain-dependencies -y -g",
+      "skills": [
+        "langchain-dependencies"
+      ],
+      "source": "langchain-ai/langchain-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add langchain-ai/langchain-skills --skill langchain-middleware -y -g",
+      "skills": [
+        "langchain-middleware"
+      ],
+      "source": "langchain-ai/langchain-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add leonardomso/rust-skills --skill rust-skills -y -g",
+      "skills": [
+        "rust-skills"
+      ],
+      "source": "leonardomso/rust-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add muratcankoylan/Agent-Skills-for-Context-Engineering --skill context-engineering-collection -y -g",
+      "skills": [
+        "context-engineering-collection"
+      ],
+      "source": "muratcankoylan/Agent-Skills-for-Context-Engineering",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add neondatabase/agent-skills --skill neon-postgres -y -g",
+      "skills": [
+        "neon-postgres"
+      ],
+      "source": "neondatabase/agent-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add nghyane/opencode-plugin-notebooklm --skill nlm-index -y -g",
+      "skills": [
+        "nlm-index"
+      ],
+      "source": "nghyane/opencode-plugin-notebooklm",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add prisma/skills --skill prisma-database-setup -y -g",
+      "skills": [
+        "prisma-database-setup"
+      ],
+      "source": "prisma/skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-benchmark -y -g",
+      "skills": [
+        "golang-benchmark"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-cli -y -g",
+      "skills": [
+        "golang-cli"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-code-style -y -g",
+      "skills": [
+        "golang-code-style"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-concurrency -y -g",
+      "skills": [
+        "golang-concurrency"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-context -y -g",
+      "skills": [
+        "golang-context"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-continuous-integration -y -g",
+      "skills": [
+        "golang-continuous-integration"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-data-structures -y -g",
+      "skills": [
+        "golang-data-structures"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-database -y -g",
+      "skills": [
+        "golang-database"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-dependency-injection -y -g",
+      "skills": [
+        "golang-dependency-injection"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-dependency-management -y -g",
+      "skills": [
+        "golang-dependency-management"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-design-patterns -y -g",
+      "skills": [
+        "golang-design-patterns"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-documentation -y -g",
+      "skills": [
+        "golang-documentation"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-error-handling -y -g",
+      "skills": [
+        "golang-error-handling"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-google-wire -y -g",
+      "skills": [
+        "golang-google-wire"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-graphql -y -g",
+      "skills": [
+        "golang-graphql"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-grpc -y -g",
+      "skills": [
+        "golang-grpc"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-lint -y -g",
+      "skills": [
+        "golang-lint"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-modernize -y -g",
+      "skills": [
+        "golang-modernize"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-naming -y -g",
+      "skills": [
+        "golang-naming"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-observability -y -g",
+      "skills": [
+        "golang-observability"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-performance -y -g",
+      "skills": [
+        "golang-performance"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-popular-libraries -y -g",
+      "skills": [
+        "golang-popular-libraries"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-project-layout -y -g",
+      "skills": [
+        "golang-project-layout"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-safety -y -g",
+      "skills": [
+        "golang-safety"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-do -y -g",
+      "skills": [
+        "golang-samber-do"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-hot -y -g",
+      "skills": [
+        "golang-samber-hot"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-lo -y -g",
+      "skills": [
+        "golang-samber-lo"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-mo -y -g",
+      "skills": [
+        "golang-samber-mo"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-oops -y -g",
+      "skills": [
+        "golang-samber-oops"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-ro -y -g",
+      "skills": [
+        "golang-samber-ro"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-samber-slog -y -g",
+      "skills": [
+        "golang-samber-slog"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-security -y -g",
+      "skills": [
+        "golang-security"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-spf13-cobra -y -g",
+      "skills": [
+        "golang-spf13-cobra"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-spf13-viper -y -g",
+      "skills": [
+        "golang-spf13-viper"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-stay-updated -y -g",
+      "skills": [
+        "golang-stay-updated"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-stretchr-testify -y -g",
+      "skills": [
+        "golang-stretchr-testify"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-structs-interfaces -y -g",
+      "skills": [
+        "golang-structs-interfaces"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-swagger -y -g",
+      "skills": [
+        "golang-swagger"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-testing -y -g",
+      "skills": [
+        "golang-testing"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-troubleshooting -y -g",
+      "skills": [
+        "golang-troubleshooting"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-uber-dig -y -g",
+      "skills": [
+        "golang-uber-dig"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add samber/cc-skills-golang --skill golang-uber-fx -y -g",
+      "skills": [
+        "golang-uber-fx"
+      ],
+      "source": "samber/cc-skills-golang",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g",
+      "skills": [
+        "sleek-design-mobile-apps"
+      ],
+      "source": "sleekdotdesign/agent-skills",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add slidevjs/slidev --skill slidev -y -g",
+      "skills": [
+        "slidev"
+      ],
+      "source": "slidevjs/slidev",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add sveltejs/ai-tools --skill svelte-code-writer -y -g",
+      "skills": [
+        "svelte-code-writer"
+      ],
+      "source": "sveltejs/ai-tools",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add vercel-labs/agent-browser --skill electron -y -g",
+      "skills": [
+        "electron"
+      ],
+      "source": "vercel-labs/agent-browser",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add wshobson/agents --skill nextjs-app-router-patterns -y -g",
+      "skills": [
+        "nextjs-app-router-patterns"
+      ],
+      "source": "wshobson/agents",
+      "status": "installed-external",
+      "trustTier": "github"
+    },
+    {
+      "command": "npx skills add wshobson/agents --skill tailwind-design-system -y -g",
+      "skills": [
+        "tailwind-design-system"
+      ],
+      "source": "wshobson/agents",
+      "status": "installed-external",
+      "trustTier": "github"
+    }
+  ],
+  "syncApply": "uv run wagents skills sync --apply",
+  "syncDryRun": "uv run wagents skills sync --dry-run"
+}

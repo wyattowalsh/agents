@@ -1,0 +1,20 @@
+{
+	"schema_version": 1,
+	"conflicts": [
+		{
+			"id": "docs.same-root-starlight-fumadocs",
+			"capabilities": ["docs.starlight", "docs.fumadocs"],
+			"resolution": "Use separate roots or choose one docs stack."
+		},
+		{
+			"id": "node.package-manager-primary",
+			"capabilities": ["node.pnpm", "node.npm-npx"],
+			"resolution": "Preserve detected package manager or approve migration."
+		},
+		{
+			"id": "data.primary-store",
+			"capabilities": ["data.sqlite", "data.supabase-local"],
+			"resolution": "Choose local embedded DB or Supabase/Postgres as primary."
+		}
+	]
+}

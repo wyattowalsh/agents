@@ -14,7 +14,12 @@ from wagents.platforms.base import (
     PlatformAdapter,
     SyncContext,
     enabled_registry_servers,
+    mcphub_bearer_env_var,
+    mcphub_enabled,
+    mcphub_endpoint_specs,
+    mcphub_projection_mode,
     render_env_value,
+    render_mcphub_stdio_server,
     replace_arg_placeholders,
 )
 
@@ -62,6 +67,31 @@ class Adapter(PlatformAdapter):
         harness: str | None = None,
     ) -> dict[str, Any]:
         """Return standard mcpServers with env placeholders (no secret resolution)."""
+        if mcphub_enabled(registry):
+            mode = mcphub_projection_mode(registry, harness or self.name, "remote-stdio")
+            token_env = mcphub_bearer_env_var(registry)
+            return {
+                "mcpServers": {
+                    spec["name"]: (
+                        {
+                            "type": "http",
+                            "url": spec["url"],
+                            "enabled": bool(spec["enabled"]),
+                            "headers": {"Authorization": f"Bearer ${{{token_env}}}"},
+                        }
+                        if mode == "http"
+                        else render_mcphub_stdio_server(
+                            registry,
+                            spec["url"],
+                            fallbacks,
+                            bool(spec["enabled"]),
+                            local_values=False,
+                        )
+                    )
+                    for spec in mcphub_endpoint_specs(registry, harness or self.name)
+                }
+            }
+
         servers: dict[str, Any] = {}
         for name, entry in enabled_registry_servers(registry, harness or self.name).items():
             server: dict[str, Any] = {

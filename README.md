@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-56-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/"><img src="https://img.shields.io/badge/skills-58-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -36,7 +36,7 @@ This repo is packaged as one cross-agent bundle with native plugin adapters and 
 | ------ | ---- | --------------- |
 | Claude Code | `.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json` | Git-hosted plugin updates resolve from the latest commit because the plugin version is intentionally unpinned |
 | Codex | `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json` | Codex can load the Git-backed plugin bundle and bundled skills from the repository root |
-| OpenCode | `opencode.json` | Repo-managed npm plugin specs use `@latest`; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |
+| OpenCode | `opencode.json` + `.opencode/` | Repo-managed npm runtime plugin specs use `@latest`; OCX-managed components stay copied under `.opencode/` with `.ocx/` receipts; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale |
 | Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` refreshes recorded sources, and `wagents skills sync` additively reconciles repo + curated external skills across harnesses |
 | OpenSpec | `openspec/` + `uv run wagents openspec ...` | Spec/change workflow with JSON wrappers and local downstream AI tool artifact generation |
 
@@ -70,14 +70,14 @@ Reusable actions and knowledge bases for AI agents.
 | discover-skills | Discover AI agent skills via gap analysis, registry search, and ideation. Use when expanding your collection systematically. NOT for creating skills (skill-creator) or ad-hoc search (find-skills). |
 | docling-graph | Use when designing/reviewing Docling Graph knowledge-graph workflows: templates, contracts, CLI/API configs, inspect reports, exports, traces. NOT for generic Docling parsing, vector-only RAG, graph DB admin, or ontology-only work. |
 | docs-steward | Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator). |
-| draw-thing | Local AI image generation via Draw Things CLI. txt2img, img2img, upscale, inpaint, ControlNet, LoRA, batch. Use when you need local image work on macOS. NOT for UI implementation (frontend-designer). |
+| draw-thing | Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research). |
 | email-whiz | Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail. |
 | event-driven-architect | Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines. |
 | external-skill-auditor | Audit third-party Agent Skills before install or repo promotion. Use when evaluating external skill sources, hooks, scripts, provenance, credentials, network behavior, or destructive commands. NOT for creating skills, code review, or appsec scans. |
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | frontend-designer | Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI. NOT for backend, tests, state, routing, or DevOps. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
-| harness-master | Audit harness configs and apply fixes. Use when tuning Claude Code, Claude Desktop, ChatGPT, Codex, GitHub Copilot Web/CLI, Cursor, Gemini CLI, Antigravity, OpenCode, Perplexity Desktop, or Cherry Studio. NOT for agents (agent-conventions) or MCP servers (mcp-creator). |
+| harness-master | Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor, Gemini, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry. |
 | honest-review | Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality. NOT for feature work or benchmarking. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
 | i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |
@@ -88,7 +88,9 @@ Reusable actions and knowledge bases for AI agents.
 | mcp-creator | Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP. NOT for REST APIs, CLI tools, or non-MCP integrations. |
 | namer | Name anything: projects, products, companies, packages. Generates creative names across linguistic archetypes, checks handle/username availability across platforms, checks domain availability with pricing, and ranks options with scored rationales. Use when naming projects, products, startups, packages, or brands. NOT for domain management (infrastructure-coder) or branding strategy beyond naming (host-panel). |
 | nerdbot | Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes. |
+| new-project | Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions. NOT for product features, agents, MCP servers, cloud provisioning, or destructive migrations. |
 | observability-advisor | Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps. NOT for live incident command or vendor-specific setup. |
+| opencode-ensemble | Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves. NOT for single-agent tasks, nested team-of-teams, or teammate subagents using team tools. |
 | openspec-workflow | Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills. |
 | orchestrator | Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination. NOT for single-action tasks. |
 | performance-profiler | Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance. NOT for running profilers, load tests, or monitoring. |
@@ -123,6 +125,14 @@ System prompts and context definitions for AI agents.
 | release-manager | Prepare release notes, versioning, and ship-readiness checks with cautious permissions. |
 | researcher | Investigate a technical question deeply and return a concise evidence-backed summary. |
 | security-auditor | Audit code and configuration for security risks without making changes. |
+
+## 🔌 MCP Servers
+
+Model Context Protocol servers for interacting with external tools.
+
+| Name | Description |
+| ---- | ----------- |
+| mcp-mcphub | MCPHub control-plane metadata MCP server |
 
 ## 🛠️ Development
 

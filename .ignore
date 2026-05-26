@@ -9,6 +9,7 @@
 __pycache__/**
 dist/**
 build/**
+skills/*.zip
 docs/dist/**
 docs/.astro/**
 node_modules/**
@@ -30,6 +31,7 @@ docs/node_modules/**
 .opencode/skills/**
 .opencode/opencode-tree/**
 .mcphub/**
+.ralph/**
 
 # Secrets and machine-local credential material.
 .env*

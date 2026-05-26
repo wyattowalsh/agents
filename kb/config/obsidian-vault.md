@@ -20,11 +20,11 @@ source_count: 2
 
 ## Shared `.obsidian` Surfaces
 
-| Path | Status | Rule |
-|------|--------|------|
-| `.obsidian/templates/` | active | Markdown templates are shared project assets. |
-| `.obsidian/snippets/` | documented | CSS snippets were not created in this Markdown-only batch. |
-| Workspace/session files | out of scope | Do not add volatile local Obsidian state by default. |
+| Path                    | Status       | Rule                                                       |
+| ----------------------- | ------------ | ---------------------------------------------------------- |
+| `.obsidian/templates/`  | active       | Markdown templates are shared project assets.              |
+| `.obsidian/snippets/`   | documented   | CSS snippets were not created in this Markdown-only batch. |
+| Workspace/session files | out of scope | Do not add volatile local Obsidian state by default.       |
 
 ## Attachment Path
 
@@ -32,7 +32,7 @@ Use `raw/assets/` for local supporting assets when they are safe to vendor and m
 
 ## Template Usage
 
-Start new wiki pages from `.obsidian/templates/wiki-page.md` and then update `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` in the same batch.
+Start new wiki pages from `.obsidian/templates/wiki-note-template.md` and then update `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` in the same batch.
 
 ## Dataview Metadata Contract
 
@@ -50,8 +50,8 @@ Do not commit Obsidian workspace panes, recent files, hotkeys, machine-personal 
 
 ## Evidence
 
-| Claim | Source | Type | Notes |
-|-------|--------|------|-------|
-| Obsidian-native KBs should remain plain Markdown and use Obsidian double-bracket links. | `kb/raw/sources/nerdbot-skill-contract.md` | raw source note | Derived from Obsidian vault guidance. |
-| Shared `.obsidian/templates/` and `.obsidian/snippets/` are project-safe surfaces, while volatile workspace state is out of scope. | `kb/raw/sources/nerdbot-skill-contract.md` | raw source note | Derived from Obsidian vault guidance. |
-| External Obsidian and Markdown docs provide syntax context for vault conventions. | `kb/raw/sources/external-obsidian-markdown-docs.md` | external source note | Context only. |
+| Claim                                                                                                                              | Source                                              | Type                 | Notes                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | -------------------- | ------------------------------------- |
+| Obsidian-native KBs should remain plain Markdown and use Obsidian double-bracket links.                                            | `kb/raw/sources/nerdbot-skill-contract.md`          | raw source note      | Derived from Obsidian vault guidance. |
+| Shared `.obsidian/templates/` and `.obsidian/snippets/` are project-safe surfaces, while volatile workspace state is out of scope. | `kb/raw/sources/nerdbot-skill-contract.md`          | raw source note      | Derived from Obsidian vault guidance. |
+| External Obsidian and Markdown docs provide syntax context for vault conventions.                                                  | `kb/raw/sources/external-obsidian-markdown-docs.md` | external source note | Context only.                         |

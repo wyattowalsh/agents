@@ -36,18 +36,18 @@ CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: g
 
 | $ARGUMENTS | Mode |
 |------------|------|
-| `pipeline <requirements>` | Generate: new CI/CD workflow from requirements |
-| `action <description>` | Action: GitHub Action step/job generation |
-| `optimize <workflow>` | Optimize: pipeline build time optimization |
-| `deploy <strategy>` | Deploy: deployment strategy design |
-| `review <workflow>` | Review: audit existing pipeline |
-| `debug <logs>` | Debug: analyze CI failure logs |
+| `pipeline &lt;requirements&gt;` | Generate: new CI/CD workflow from requirements |
+| `action &lt;description&gt;` | Action: GitHub Action step/job generation |
+| `optimize &lt;workflow&gt;` | Optimize: pipeline build time optimization |
+| `deploy &lt;strategy&gt;` | Deploy: deployment strategy design |
+| `review &lt;workflow&gt;` | Review: audit existing pipeline |
+| `debug &lt;logs&gt;` | Debug: analyze CI failure logs |
 | Natural language about CI/CD | Auto-detect appropriate mode |
 | Empty | Show mode menu with examples |
 
 ## Critical Rules
 
-1. Never generate workflows with unpinned third-party actions -- always use full SHA pins (`uses: actions/checkout@<sha>`)
+1. Never generate workflows with unpinned third-party actions -- always use full SHA pins (`uses: actions/checkout@&lt;sha&gt;`)
 2. Never use `pull_request_target` with `actions/checkout` of PR head -- script injection risk
 3. Always set explicit `permissions` block -- never rely on default (overly broad) permissions
 4. Never hardcode secrets in workflow files -- use `${{ secrets.NAME }}` or environment variables

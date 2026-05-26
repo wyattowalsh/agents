@@ -46,7 +46,7 @@
       "args": [
         "-y",
         "chrome-devtools-mcp@latest",
-        "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
+        "--isolated=true",
         "--headless=false",
         "--no-usage-statistics",
         "--no-performance-crux"
@@ -138,14 +138,8 @@
     },
     "docling": {
       "transport": "stdio",
-      "command": "uvx",
-      "args": [
-        "--from",
-        "docling-mcp",
-        "docling-mcp-server",
-        "--transport",
-        "stdio"
-      ],
+      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/docling-stdio.sh",
+      "args": [],
       "env": {},
       "enabled": true,
       "startup_timeout_sec": 90,
@@ -179,6 +173,23 @@
       "args": [
         "-y",
         "fetcher-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "ossinsight": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "ossinsight-mcp"
       ],
       "env": {},
       "enabled": true,
@@ -250,6 +261,23 @@
       "args": [
         "-y",
         "structured-thinking"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "supathings": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "supathings-mcp"
       ],
       "env": {},
       "enabled": true,
@@ -582,6 +610,296 @@
       ],
       "tool_approvals": {},
       "platform_overrides": {}
+    }
+  },
+  "mcphub": {
+    "enabled": true,
+    "base_url": "http://127.0.0.1:46683",
+    "public_url": "https://mcp.w4w.dev/mcp",
+    "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
+    "startup_timeout_sec": 20,
+    "tool_timeout_sec": 90,
+    "projection_adapters": {
+      "opencode": "http"
+    },
+    "settings_path": "mcp/mcphub/mcp_settings.json",
+    "openapi_export_path": "mcp/mcphub/openapi.json",
+    "smart_routing": {
+      "enabled_env_var": "SMART_ROUTING_ENABLED",
+      "default_enabled": false,
+      "base_path": "/mcp/$smart",
+      "database_url_env_var": "DB_URL",
+      "embedding_provider_env_var": "SMART_ROUTING_EMBEDDING_PROVIDER",
+      "embedding_model_env_var": "SMART_ROUTING_EMBEDDING_MODEL"
+    },
+    "groups": {
+      "all-managed": {
+        "description": "All enabled servers managed by the repository MCP registry.",
+        "enabled": true,
+        "servers": [
+          "arxiv",
+          "atom-of-thoughts",
+          "brave-search",
+          "cascade-thinking",
+          "chrome-devtools",
+          "context7",
+          "crash",
+          "creative-thinking",
+          "deep-lucid-3d",
+          "deepwiki",
+          "docling",
+          "duckduckgo-search",
+          "exa",
+          "fetch",
+          "fetcher",
+          "ffmpeg",
+          "g-search",
+          "gmail",
+          "linkedin",
+          "lotus-wisdom-mcp",
+          "ossinsight",
+          "package-version",
+          "repomix",
+          "sequential-thinking",
+          "shannon-thinking",
+          "structured-thinking",
+          "supathings",
+          "tavily",
+          "think-strategies",
+          "trafilatura",
+          "wayback",
+          "wikipedia"
+        ]
+      },
+      "code": {
+        "description": "Code intelligence, repository inspection, docs lookup, and browser automation servers.",
+        "enabled": true,
+        "servers": [
+          "chrome-devtools",
+          "context7",
+          "deepwiki",
+          "docling",
+          "fetch",
+          "fetcher",
+          "ossinsight",
+          "package-version",
+          "repomix",
+          "supathings",
+          "trafilatura"
+        ]
+      },
+      "harness-safe": {
+        "description": "Safe shared harness MCP surface for search, docs, browser inspection, package metadata, repo packing, fetch, and Gmail.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "chrome-devtools",
+          "context7",
+          "deepwiki",
+          "fetch",
+          "fetcher",
+          "package-version",
+          "repomix",
+          "supathings",
+          "tavily",
+          "trafilatura",
+          "duckduckgo-search",
+          "gmail"
+        ]
+      },
+      "research": {
+        "description": "Search, retrieval, reference, and source inspection servers.",
+        "enabled": true,
+        "servers": [
+          "arxiv",
+          "brave-search",
+          "context7",
+          "deepwiki",
+          "duckduckgo-search",
+          "exa",
+          "fetch",
+          "g-search",
+          "ossinsight",
+          "tavily",
+          "trafilatura",
+          "wayback",
+          "wikipedia"
+        ]
+      },
+      "reasoning": {
+        "description": "Structured thinking and planning servers.",
+        "enabled": true,
+        "servers": [
+          "atom-of-thoughts",
+          "cascade-thinking",
+          "crash",
+          "creative-thinking",
+          "lotus-wisdom-mcp",
+          "sequential-thinking",
+          "shannon-thinking",
+          "structured-thinking",
+          "think-strategies"
+        ]
+      },
+      "browser": {
+        "description": "Browser and web UI automation servers.",
+        "enabled": true,
+        "servers": [
+          "chrome-devtools"
+        ]
+      },
+      "data": {
+        "description": "Data extraction, package metadata, and transform servers.",
+        "enabled": true,
+        "servers": [
+          "docling",
+          "ffmpeg",
+          "ossinsight",
+          "package-version",
+          "supathings",
+          "trafilatura"
+        ]
+      },
+      "media": {
+        "description": "Media, document, and 3D asset processing servers.",
+        "enabled": true,
+        "servers": [
+          "deep-lucid-3d",
+          "docling",
+          "ffmpeg"
+        ]
+      },
+      "personal": {
+        "description": "Personal-account connectors; treat as sensitive.",
+        "enabled": true,
+        "servers": [
+          "gmail",
+          "linkedin"
+        ]
+      },
+      "local-ai": {
+        "description": "Local AI helper and context-prep servers.",
+        "enabled": true,
+        "servers": [
+          "context7",
+          "package-version",
+          "repomix"
+        ]
+      },
+      "experimental": {
+        "description": "Newer or less-proven servers kept behind explicit group targeting.",
+        "enabled": true,
+        "servers": [
+          "crash",
+          "deep-lucid-3d",
+          "g-search",
+          "lotus-wisdom-mcp",
+          "supathings",
+          "think-strategies"
+        ]
+      }
+    },
+    "clients": {
+      "default": {
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "included_servers": [
+          "brave-search",
+          "chrome-devtools",
+          "context7",
+          "deepwiki",
+          "fetch",
+          "fetcher",
+          "package-version",
+          "repomix",
+          "supathings",
+          "tavily",
+          "trafilatura",
+          "duckduckgo-search",
+          "gmail"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "codex": {
+        "transport": "streamable-http",
+        "auth": "bearer_token_env_var",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "opencode": {
+        "transport": "remote-http",
+        "auth": "authorization-header-env-template",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true,
+        "server_endpoint_name_style": "base"
+      },
+      "chatgpt": {
+        "transport": "remote-http",
+        "auth": "bearer_token_env_var",
+        "url_source": "public",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "stdio_bridge": {
+        "transport": "stdio",
+        "command": "scripts/mcphub/remote-stdio.sh",
+        "clients": [
+          "claude-desktop",
+          "cursor",
+          "gemini-cli",
+          "antigravity",
+          "github-copilot-cli",
+          "crush",
+          "chatgpt"
+        ]
+      }
     }
   }
 }

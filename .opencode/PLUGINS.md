@@ -14,6 +14,7 @@ These remain declared in `../opencode.json` and are expected to auto-install whe
 | ------------------------------------------- | --------- | ---------------------------------------------------------------------- |
 | `opencode-antigravity-auth`                 | `@latest` | Antigravity authentication bridge                                      |
 | `opencode-gemini-auth`                      | `@latest` | Gemini authentication bridge                                           |
+| `@slkiser/opencode-quota`                   | `@latest` | Server-side quota tools paired with the TUI sidebar plugin             |
 | `cc-safety-net`                             | `@latest` | Safety checks for Claude-style workflows                               |
 | `envsitter-guard`                           | `@latest` | Secret-safe dotenv inspection and mutation guardrails                  |
 | `@tarquinen/opencode-dcp`                   | `@latest` | Dynamic context pruning and compression                                |
@@ -25,16 +26,22 @@ These remain declared in `../opencode.json` and are expected to auto-install whe
 | `@plannotator/opencode`                     | `@latest` | Browser-based plan annotation UI scoped to the `plan` agent            |
 | `@simonwjackson/opencode-direnv`            | `@latest` | direnv environment loading for OpenCode                                |
 | `opencode-pty`                              | `@latest` | Interactive PTY sessions for long-running commands and dev servers     |
-| `opencode-auto-resume`                      | `@latest` | Session auto-resume support after interrupted OpenCode turns           |
+| `btw-opencode`                              | `@latest` | `/btw` background side-session prompts                                 |
 | `opencode-large-image-optimizer`            | `@latest` | Crop/compress oversized image payloads before provider requests        |
 | `opencode-ignore`                           | `@latest` | Enforce project `.ignore` access restrictions for native file tools    |
+| `opencode-token-monitor`                    | `@latest` | Token usage, cost, budget, history, and export tools                   |
+| `opencode-history-search`                   | `@latest` | Search OpenCode SQLite/legacy session history                          |
+| `opencode-lmstudio`                         | `@latest` | Local LM Studio provider discovery and health checks                   |
 | `opencode-wakatime`                         | `@latest` | WakaTime AI coding activity tracking via `~/.wakatime.cfg`             |
 | `octto`                                     | `@latest` | Branch-based idea/design exploration workflows                         |
+| `@hueyexe/opencode-ensemble`                | `@latest` | Parallel teammate sessions with dashboard and task board               |
 | `@json9512/opm`                             | `@latest` | Runtime plugin management commands such as `/opm list`                 |
 | `@mohak34/opencode-notifier`                | `@latest` | OpenCode notifications                                                 |
 | `opencode-terminal-progress`                | `@latest` | Terminal tab progress reporting via OSC 9;4 when supported             |
 | `opencode-devcontainers`                    | `@latest` | Devcontainer workspace support                                         |
+| `@gotgenes/opencode-agent-identity`         | `@latest` | Agent identity prompt injection and attribution tool                   |
 | `@ramarivera/opencode-model-announcer`      | `@latest` | Model announcement/status plugin                                       |
+| `opencode-adaptive-thinking`                | `@latest` | Reasoning-effort adjustment tool and prompt guidance                   |
 | `@mailshieldai/opencode-canvas`             | `@latest` | Interactive terminal canvases in tmux panes                            |
 | `opencode-scheduler`                        | `@latest` | Inert scheduled-job support until explicitly configured                |
 | `opencode-claude-auth`                      | `@latest` | Claude credential reuse without optional model/runtime overrides       |
@@ -43,7 +50,73 @@ These remain declared in `../opencode.json` and are expected to auto-install whe
 | `opencode-bettergrep`                       | `@latest` | Enhanced grep/content search tools                                     |
 | `opencode-plugin-ast-lsp`                   | `@latest` | AST and LSP-backed code navigation tools                               |
 
-To update: keep plugin specs in `../opencode.json` on `@latest` and restart OpenCode so its installer refreshes the cache. `opencode-terminal-progress` can be disabled per user/session with `OPENCODE_TERMINAL_PROGRESS=0` when terminal progress control sequences are not wanted.
+Local OpenCode plugins are deployed from `../platforms/opencode/plugins/` to `~/.config/opencode/plugins/` during sync. `octto-primary-inherit.mjs` runs after `octto@latest` and removes the upstream primary `octto` agent's hardcoded model pin so it inherits the active OpenCode model; it intentionally leaves Octto's `bootstrapper` and `probe` agent defaults untouched. `opencode-incomplete-resume.mjs` is a tuned local copy of `ilgizar-valiullin/opencode-incomplete-resume-plugin` because upstream is source-only. Its local constant changes are: explicit `TASK_STATUS: INCOMPLETE` trigger only, `MAX_CONTINUES = 3`, and `COOLDOWN_MS = 2000`.
+
+To update: keep plugin specs in `../opencode.json` on `@latest` and restart OpenCode so its installer refreshes the cache. `opencode-terminal-progress` can be disabled per user/session with `OPENCODE_TERMINAL_PROGRESS=0` when terminal progress control sequences are not wanted. If an `@latest` plugin remains stale because of OpenCode's package cache, remove only that plugin's directory under `~/.cache/opencode/packages/` and restart OpenCode; do not replace repo-managed plugin specs with semver pins unless the user explicitly asks for a rollback.
+
+### Quota Sidebar
+
+**Package:** `@slkiser/opencode-quota@latest`
+**Source:** `slkiser/opencode-quota`
+**Config:** `../config/opencode-quota-toast.json` is synced to `~/.config/opencode/opencode-quota/quota-toast.json`.
+
+This plugin is loaded in both runtime OpenCode (`../opencode.json`) and TUI OpenCode (`~/.config/opencode/tui.json`). The TUI plugin list is merged from `../config/opencode-tui-plugins.json`, preserving user-owned TUI plugins while ensuring the quota sidebar stays installed. The sidecar enables the sidebar panel, OpenAI quota display, session token display, and remaining-percent display.
+
+### Token Monitor
+
+**Package:** `opencode-token-monitor@latest`
+**Source:** `Ainsley0917/opencode-token-monitor`
+**Config:** `../config/opencode-token-monitor.json` is synced to `~/.config/opencode/token-monitor.json`.
+
+Use quota for live provider quota/sidebar status and token monitor for analytics, cost history, project-scoped reporting, and JSON/CSV/Markdown exports. The configured budget thresholds are warning thresholds only; they are intentionally high enough for GPT-5.5 work to avoid noisy duplicate alerts.
+
+### LM Studio
+
+**Package:** `opencode-lmstudio@latest`
+**Source:** `agustif/opencode-lmstudio`
+
+The global OpenCode sync logic already renders a `lmstudio` provider from `../config/tooling-policy.json`, defaulting to `http://127.0.0.1:1234/v1` and `local-model`. The plugin adds local server discovery, model listing, health checks, and provider merging. OpenAI remains the default model; select local models explicitly with `--model lmstudio/<model>`.
+
+### History Search
+
+**Package:** `opencode-history-search@latest`
+**Source:** `joeyism/opencode-history-search`
+
+Searches OpenCode session history from the SQLite store at `~/.local/share/opencode/opencode.db` and older JSON storage when present. Use it for keyword, regex, fuzzy, date, role, title, message, tool, and file-path history lookups.
+
+### Agent Identity
+
+**Package:** `@gotgenes/opencode-agent-identity@latest`
+**Source:** `gotgenes/opencode-agent-identity`
+
+Injects the active agent identity into the system prompt and exposes an `agent_attribution` tool for retrospective attribution. This complements `@ramarivera/opencode-model-announcer`; monitor prompt size if adding more identity/status plugins.
+
+### Adaptive Thinking
+
+**Package:** `opencode-adaptive-thinking@latest`
+**Source:** `ian-pascoe/opencode-adaptive-thinking`
+
+Configured inline in `../opencode.json` with tool name `set_reasoning_effort`. The prompt asks agents to lower effort for mechanical work and raise it for ambiguity, debugging, risky changes, multi-step synthesis, or explicit user requests. It relies on the active model exposing OpenCode reasoning-effort variants.
+
+### Ensemble
+
+**Package:** `@hueyexe/opencode-ensemble@latest`
+**Source:** `hueyexe/opencode-ensemble`
+**Config:** `../config/opencode-ensemble.json` is synced to `~/.config/opencode/ensemble.json`.
+**Skill:** `../skills/opencode-ensemble/` vendors upstream tag `v0.14.2` / commit `b6bc7f706c13aa42d32e836ea647677d0b14c2f7`.
+
+The repo grants Ensemble access to `~/.local/share/opencode/worktree/**` because the plugin uses isolated worktrees for teammate sessions. The managed config sets `mergeOnCleanup: false` so teammate work is not automatically merged; use `team_merge` only after reviewing changes. Dashboard port stays `4747`. `rateLimitCapacity: 10`, `timeoutMs: 3600000`, and `peerMessageLimit: 10` are tuned for this 10-core / 32 GiB workstation and substantial parallel work.
+
+Ensemble model fields intentionally stay empty in `../config/opencode-ensemble.json`. The plugin only passes `provider/model` strings to OpenCode, while this repo expresses thinking levels through OpenCode agent variants: `plan` uses `variant: "xhigh"`, and `build`, `explore`, and `general` use `variant: "high"`. Avoid explicit `team_spawn.model` values unless a task deliberately needs to override the configured agent default.
+
+If OpenCode resolves `@hueyexe/opencode-ensemble@latest` to a stale package, remove only `~/.cache/opencode/packages/@hueyexe/opencode-ensemble@latest`, restart OpenCode, and verify the cache package version from `node_modules/@hueyexe/opencode-ensemble/package.json`.
+
+### BTW Background Sessions
+
+**Package:** `btw-opencode@latest`
+**Source:** `aptdnfapt/btw-opencode`
+
+Adds `/btw <prompt>` for forked background side sessions. Treat `/btw` as a read-only/background research lane unless the prompt explicitly asks it to edit files.
 
 ### Rule Injection Caution
 
@@ -65,20 +138,18 @@ The repo-managed config enables Anthropic, Google, and OpenAI because this OpenC
 
 The project `.ignore` blocks generated directories, local harness artifacts, secrets, credential files, and high-noise dependency/build outputs while preserving common example dotenv files. This complements, but does not replace, the global `credential-guard.ts` plugin because shell commands and MCP tools can still have separate access paths.
 
-### Agent Skills Plugin
-
-**Package:** `opencode-agent-skills@latest`
-**Runtime status:** Disabled from OpenCode startup. The current package imports `@huggingface/transformers` for semantic skill matching, which loads `onnxruntime-node`; recent macOS crash reports show `onnxruntime_binding.node` / `InferenceSessionWrap` failures while this plugin is active. Keep the plugin out of `../opencode.json` until skill matching can run without the native ONNX runtime or that runtime is proven stable on this machine.
-
 ## TUI Plugins
 
 These belong in the user-owned OpenCode TUI config (`~/.config/opencode/tui.json`), not repo runtime `../opencode.json`:
 
-| Plugin                         | Version   | Purpose                                   |
-| ------------------------------ | --------- | ----------------------------------------- |
-| `@ishaksebsib/opencode-tree`   | `@latest` | PI-style `/tree` conversation branch view |
-| `@slkiser/opencode-quota`      | `@latest` | Quota/status display                      |
-| `opencode-subagent-statusline` | `@latest` | Subagent statusline display               |
+| Plugin                       | Version   | Purpose                                   |
+| ---------------------------- | --------- | ----------------------------------------- |
+| `@ishaksebsib/opencode-tree` | `@latest` | PI-style `/tree` conversation branch view |
+| `@slkiser/opencode-quota`    | `@latest` | Quota/status sidebar panel                |
+
+`opencode-subagent-statusline@latest` and `@thiagos1lva/opencode-token-usage-chart@latest` are disabled on OpenCode 1.14.50 because they fail plugin load with an `OTUI_TREE_SITTER_WORKER_PATH` registration conflict.
+
+TUI shortcuts must use the current `keybinds` shape in `~/.config/opencode/tui.json`. Do not add stale `keymap.sections` entries.
 
 ### Tree Plugin
 
@@ -108,25 +179,24 @@ These belong in the user-owned OpenCode TUI config (`~/.config/opencode/tui.json
 - exposes the same high-level tool names as upstream
 - intentionally does **not** pretend to provide the full upstream async worker/event pipeline unless the upstream registry plugin is installed separately
 
-### Context Analysis Plugin
+### Incomplete Resume
 
-**Source:** `IgorWarzocha/Opencode-Context-Analysis-Plugin`
-**Why vendored/manual:** Not published to npm; copied from upstream into this repo.
-**Runtime status:** Disabled from OpenCode startup. Recent macOS crash reports show `onnxruntime_binding.node` / `InferenceSessionWrap` failures while this plugin's tokenizer dependency path is available, so the plugin and `/context` command stay quarantined outside OpenCode's auto-loaded directories until the native tokenizer runtime is replaced or proven stable.
+**Source:** `ilgizar-valiullin/opencode-incomplete-resume-plugin`
+**Why vendored:** Upstream is a source-only plugin with hardcoded configuration constants. This repo keeps a local copy of the upstream plugin shape and tunes only the conservative constants needed for this environment. The unrelated npm `opencode-auto-resume@latest` loop produced aggressive resume behavior and malformed session IDs in logs, so sync filters it out to avoid running both continuation plugins.
 
 **Files:**
 
-- `command-disabled/context.md` — quarantined `/context` command definition
-- `plugin-disabled/context-usage.ts` — quarantined core plugin logic
-- `plugin/tokenizer-aliases.json` — model-to-tokenizer mappings
-- `plugin/tokenizer-registry.d.ts` — type declarations
-- `plugin/tokenizer-registry.mjs` — tokenizer resolution logic
+- `../platforms/opencode/plugins/opencode-incomplete-resume.mjs` — tuned local copy of upstream `auto-continue.ts`
 
-**Tokenizer dependency layout:**
+**Behavior in this repo:**
 
-- upstream expects tokenizer/runtime dependencies under `plugin/vendor/node_modules`
-- install with:
-  - `npm install js-tiktoken@latest @huggingface/transformers@^3.3.3 --prefix .opencode/plugin/vendor`
+- keeps upstream event handling for `session.idle` and `message.updated`
+- resumes only when the last assistant message contains `TASK_STATUS: INCOMPLETE`
+- stops when the last assistant message contains `TASK_STATUS: COMPLETE` or `TASK_STATUS: BLOCKED`
+- uses `MAX_CONTINUES = 3` and `COOLDOWN_MS = 2000`
+- removes upstream broad phrase triggers such as `continue working`, `resume task`, and `next step`
+
+`opencode-auto-resume@latest` is intentionally filtered out of live runtime config during sync and should not be re-added unless a safer upstream release is explicitly approved.
 
 ### Context Cache
 
@@ -173,6 +243,34 @@ These belong in the user-owned OpenCode TUI config (`~/.config/opencode/tui.json
 
 - Destructive `projects delete` and `sessions delete` commands require confirmation or `--yes`.
 - Use `--dry-run` and `--backup-dir` for pruning workflows.
+
+### Ralph Wiggum
+
+**Source:** `Th0rgal/open-ralph-wiggum`
+**Package:** `@th0rgal/ralph-wiggum`
+**Why CLI-only:** Ralph Wiggum is an iterative CLI wrapper around OpenCode and other coding agents. Its README explicitly says not to load it as an OpenCode plugin.
+
+**Canonical install:**
+
+- `npm install -g @th0rgal/ralph-wiggum@latest`
+
+**Usage:**
+
+- `ralph "<verifiable task>" --agent opencode --max-iterations <n>`
+- Use `--no-commit` when you want to preserve this repo's atomic/manual commit discipline.
+- Use `--no-plugins` when debugging OpenCode plugin startup separately from Ralph's loop.
+
+**State:**
+
+- Ralph writes `.ralph/`; this repo ignores it in both `.gitignore` and `.ignore`.
+
+### Subtask2
+
+**Source:** `spoons-and-mirrors/subtask2`
+**Package:** `@spoons-and-mirrors/subtask2`
+**Status:** intentionally not installed.
+
+The user explicitly excluded Subtask2 during the 2026-05-09 OpenCode plugin expansion. It also carries `PolyForm-Noncommercial-1.0.0` licensing and adds command/subtask loop behavior, so revisit licensing and loop guardrails before adding it later.
 
 ### RTK
 

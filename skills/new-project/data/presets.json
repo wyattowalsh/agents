@@ -1,0 +1,335 @@
+{
+	"schema_version": 1,
+	"presets": [
+		{
+			"id": "minimal",
+			"label": "Minimal repo hygiene",
+			"description": "Small repository baseline with docs and agent guidance.",
+			"capabilities": [
+				"repo.readme",
+				"repo.gitignore-editorconfig",
+				"ai.agents-md"
+			],
+			"optional_capabilities": ["repo.justfile"],
+			"approval_notes": []
+		},
+		{
+			"id": "recommended",
+			"label": "Recommended default",
+			"description": "Balanced local-first setup with quality gates, lightweight docs planning, and AI instructions.",
+			"capabilities": [
+				"repo.readme",
+				"repo.gitignore-editorconfig",
+				"repo.justfile",
+				"repo.pre-commit",
+				"repo.conventional-commits",
+				"ai.agents-md",
+				"ai.claude-code",
+				"governance.openspec",
+				"github.actions-ci",
+				"docs.starlight"
+			],
+			"optional_capabilities": ["design.design-md", "ai.opencode", "ai.codex"],
+			"approval_notes": [
+				"Docs root creation and package installs require approval."
+			]
+		},
+		{
+			"id": "python-lib",
+			"label": "Python library",
+			"description": "Python package/library using uv and pytest.",
+			"capabilities": [
+				"python.uv",
+				"python.pyproject",
+				"python.pytest",
+				"repo.pre-commit",
+				"github.actions-ci"
+			],
+			"optional_capabilities": ["repo.conventional-commits", "repo.changesets"],
+			"approval_notes": []
+		},
+		{
+			"id": "python-api",
+			"label": "Python API",
+			"description": "FastAPI backend with typed settings and tests.",
+			"capabilities": [
+				"python.uv",
+				"python.fastapi",
+				"python.pydantic-settings",
+				"python.httpx",
+				"python.tenacity",
+				"python.pytest",
+				"repo.pre-commit",
+				"github.actions-ci"
+			],
+			"optional_capabilities": [
+				"python.sqlalchemy",
+				"python.sqlmodel",
+				"data.supabase-local",
+				"cloud.docker-compose-local"
+			],
+			"approval_notes": ["Database choice must be confirmed."]
+		},
+		{
+			"id": "python-cli",
+			"label": "Python CLI/TUI",
+			"description": "Python CLI or TUI with Typer/Textual options.",
+			"capabilities": [
+				"python.uv",
+				"python.typer",
+				"python.pytest",
+				"repo.justfile"
+			],
+			"optional_capabilities": ["python.textual", "python.loguru"],
+			"approval_notes": []
+		},
+		{
+			"id": "node-package",
+			"label": "Node package",
+			"description": "TypeScript package using pnpm.",
+			"capabilities": ["node.pnpm", "node.typescript", "github.actions-ci"],
+			"optional_capabilities": ["repo.changesets", "repo.conventional-commits"],
+			"approval_notes": []
+		},
+		{
+			"id": "web-app",
+			"label": "Modern web app",
+			"description": "Next.js/React/TypeScript web app with mobile-first design guidance.",
+			"capabilities": [
+				"node.pnpm",
+				"node.next",
+				"node.typescript",
+				"node.react",
+				"design.design-md",
+				"github.actions-ci"
+			],
+			"optional_capabilities": [
+				"node.tailwind-v4",
+				"node.shadcn",
+				"node.ai-sdk",
+				"cloud.vercel"
+			],
+			"approval_notes": ["Tailwind, shadcn, and Vercel are opt-in modules."]
+		},
+		{
+			"id": "docs-lite",
+			"label": "Lightweight docs",
+			"description": "Astro Starlight Markdown-first docs.",
+			"capabilities": ["node.pnpm", "docs.starlight"],
+			"optional_capabilities": ["design.design-md"],
+			"approval_notes": ["Reuse existing docs roots when present."]
+		},
+		{
+			"id": "docs-themed",
+			"label": "Themed Starlight docs",
+			"description": "Astro Starlight with theme tokens or Tailwind.",
+			"capabilities": [
+				"node.pnpm",
+				"docs.starlight",
+				"docs.starlight-tailwind",
+				"design.design-md"
+			],
+			"optional_capabilities": [],
+			"approval_notes": [
+				"Tailwind is intentionally opt-in outside this profile."
+			]
+		},
+		{
+			"id": "docs-interactive",
+			"label": "Interactive Starlight docs",
+			"description": "Starlight docs with React islands for demos and widgets.",
+			"capabilities": [
+				"node.pnpm",
+				"docs.starlight",
+				"docs.starlight-react",
+				"design.design-md"
+			],
+			"optional_capabilities": ["node.shadcn"],
+			"approval_notes": [
+				"React islands must have concrete interactivity needs."
+			]
+		},
+		{
+			"id": "docs-product",
+			"label": "Product/API docs",
+			"description": "Next.js plus Fumadocs for richer product or API docs.",
+			"capabilities": [
+				"node.pnpm",
+				"node.next",
+				"docs.fumadocs",
+				"design.design-md"
+			],
+			"optional_capabilities": [
+				"docs.fumadocs-openapi",
+				"docs.fumadocs-twoslash",
+				"node.shadcn"
+			],
+			"approval_notes": ["Use only when Starlight is insufficient."]
+		},
+		{
+			"id": "data-local",
+			"label": "Local data app",
+			"description": "Embedded SQLite/DuckDB data stack.",
+			"capabilities": [
+				"python.uv",
+				"data.sqlite",
+				"data.duckdb",
+				"data.polars",
+				"python.pytest"
+			],
+			"optional_capabilities": ["data.pandas", "notebook.jupyter"],
+			"approval_notes": ["Choose transactional versus analytics primary store."]
+		},
+		{
+			"id": "data-platform",
+			"label": "Supabase data platform",
+			"description": "Supabase local dev with migrations and app database tooling.",
+			"capabilities": [
+				"data.supabase-local",
+				"cloud.docker-compose-local",
+				"python.sqlalchemy",
+				"python.alembic",
+				"github.actions-ci"
+			],
+			"optional_capabilities": ["python.sqlmodel"],
+			"approval_notes": ["Supabase cloud setup and secrets are not automatic."]
+		},
+		{
+			"id": "ml-notebooks",
+			"label": "Notebook and dataset workflow",
+			"description": "Jupyter, Colab guidance, Kaggle metadata, and local analytics.",
+			"capabilities": [
+				"python.uv",
+				"notebook.jupyter",
+				"notebook.colab",
+				"data.duckdb",
+				"data.polars"
+			],
+			"optional_capabilities": [
+				"notebook.kaggle",
+				"data.pandas",
+				"data.pyspark"
+			],
+			"approval_notes": [
+				"Kaggle auth and publishing are external side effects."
+			]
+		},
+		{
+			"id": "ai-app-python",
+			"label": "Python AI app",
+			"description": "Python LLM app with Pydantic AI or LangGraph and observability options.",
+			"capabilities": [
+				"python.uv",
+				"python.pydantic-ai",
+				"python.langgraph",
+				"python.pydantic-settings",
+				"python.httpx",
+				"python.tenacity"
+			],
+			"optional_capabilities": [
+				"observability.langsmith",
+				"observability.langfuse",
+				"python.guardrails-ai"
+			],
+			"approval_notes": [
+				"Observability providers require user-owned env vars only."
+			]
+		},
+		{
+			"id": "ai-app-ts",
+			"label": "TypeScript AI app",
+			"description": "TypeScript AI app using the Vercel AI SDK package `ai`.",
+			"capabilities": [
+				"node.pnpm",
+				"node.next",
+				"node.ai-sdk",
+				"node.typescript",
+				"design.design-md"
+			],
+			"optional_capabilities": ["cloud.vercel", "observability.langfuse"],
+			"approval_notes": ["Provider API keys stay in env examples only."]
+		},
+		{
+			"id": "aws-agent",
+			"label": "AWS Bedrock and AgentCore",
+			"description": "Planning profile for Bedrock and AgentCore runtimes.",
+			"capabilities": ["cloud.aws-bedrock", "cloud.aws-agentcore"],
+			"optional_capabilities": [
+				"github.actions-ci",
+				"cloud.docker-compose-local"
+			],
+			"approval_notes": [
+				"Deploy, account, ECR, IAM, and runtime mutations require separate approval."
+			]
+		},
+		{
+			"id": "github-ready",
+			"label": "GitHub-ready open source repo",
+			"description": "GitHub CI, templates, release planning, and security-aware defaults.",
+			"capabilities": [
+				"github.actions-ci",
+				"repo.conventional-commits",
+				"repo.pre-commit",
+				"ai.agents-md"
+			],
+			"optional_capabilities": ["github.releases", "repo.changesets"],
+			"approval_notes": [
+				"Release automation requires versioning strategy approval."
+			]
+		},
+		{
+			"id": "monorepo",
+			"label": "Monorepo",
+			"description": "pnpm workspace with optional uv workspace and Nx orchestration.",
+			"capabilities": [
+				"node.pnpm",
+				"monorepo.pnpm-workspace",
+				"ai.nested-agents-md",
+				"github.actions-ci"
+			],
+			"optional_capabilities": [
+				"python.workspace",
+				"monorepo.nx",
+				"repo.changesets"
+			],
+			"approval_notes": ["Nx is opt-in unless orchestration needs are clear."]
+		},
+		{
+			"id": "max-free",
+			"label": "Max free blueprint",
+			"description": "Comprehensive free/open-source setup blueprint applied module-by-module.",
+			"capabilities": [
+				"repo.readme",
+				"repo.gitignore-editorconfig",
+				"repo.justfile",
+				"repo.pre-commit",
+				"repo.conventional-commits",
+				"ai.agents-md",
+				"ai.claude-code",
+				"ai.opencode",
+				"ai.codex",
+				"governance.openspec",
+				"design.design-md",
+				"github.actions-ci",
+				"docs.starlight"
+			],
+			"optional_capabilities": [
+				"docs.starlight-react",
+				"docs.fumadocs",
+				"node.shadcn",
+				"data.supabase-local",
+				"data.duckdb",
+				"notebook.kaggle",
+				"cloud.vercel",
+				"cloud.cloudflare-dns",
+				"github.releases",
+				"repo.changesets",
+				"monorepo.nx",
+				"cloud.aws-agentcore"
+			],
+			"approval_notes": [
+				"Default output is a blueprint only; apply each module separately."
+			]
+		}
+	]
+}

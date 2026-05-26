@@ -1,0 +1,1233 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATE_DIR="${OC_STATE_DIR:-$HOME/.local/state/opencode-oc}"
+GLOBAL_CREDENTIALS_FILE="$STATE_DIR/.env"
+LEGACY_CREDENTIALS_FILE="$STATE_DIR/env"
+if [ -n "${OPENCODE_OC_ENV:-}" ]; then
+  CREDENTIALS_FILE="$OPENCODE_OC_ENV"
+elif [ -f "$GLOBAL_CREDENTIALS_FILE" ]; then
+  CREDENTIALS_FILE="$GLOBAL_CREDENTIALS_FILE"
+elif [ -f "$LEGACY_CREDENTIALS_FILE" ]; then
+  CREDENTIALS_FILE="$LEGACY_CREDENTIALS_FILE"
+else
+  CREDENTIALS_FILE="$GLOBAL_CREDENTIALS_FILE"
+fi
+PID_FILE="$STATE_DIR/server.pid"
+LOCK_DIR="$STATE_DIR/server.lock"
+LOCK_PID_FILE="$LOCK_DIR/pid"
+SERVER_LOG="$STATE_DIR/server.log"
+WRAPPER_LOG="$STATE_DIR/wrapper.log"
+LAUNCH_SCRIPT="$STATE_DIR/launch-server.sh"
+TAILSCALE_METADATA="$STATE_DIR/tailscale-serve.json"
+DEFAULT_SERVER_URL="http://127.0.0.1:4096"
+SERVER_CWD="${OPENCODE_OC_SERVER_CWD:-$STATE_DIR/server-cwd}"
+USE_LAUNCHD="${OPENCODE_OC_USE_LAUNCHD:-0}"
+LAUNCHD_LABEL="${OC_LAUNCHD_LABEL:-com.wyatt.opencode-oc}"
+TAILSCALE_ENABLED="${OPENCODE_OC_TAILSCALE:-1}"
+TAILSCALE_HTTPS_PORT="${OPENCODE_OC_TAILSCALE_HTTPS_PORT:-443}"
+SERVER_LOCK_HELD="0"
+
+mkdir -p "$STATE_DIR" "$SERVER_CWD"
+if [ -f "$CREDENTIALS_FILE" ]; then
+  # shellcheck source=/dev/null
+  . "$CREDENTIALS_FILE"
+fi
+SERVER_URL="${OPENCODE_SERVER_URL:-$DEFAULT_SERVER_URL}"
+SERVER_PASSWORD="${OPENCODE_SERVER_PASSWORD:-}"
+SERVER_USERNAME="${OPENCODE_SERVER_USERNAME:-opencode}"
+
+usage() {
+  cat <<'EOF'
+oc "prompt text"          start a new headless OpenCode chat
+oc                        show status and ensure server is running
+oc status                 show status
+oc attach <session_id>    attach TUI to one session
+oc logs                   show recent logs
+oc logs <session_id>      show logs for one session
+oc ios                    show LAN and Tailscale connection info
+oc ios status             show LAN/Tailscale server status
+oc ios credentials        show preferred URL, username, and password
+oc ios stop-serve         stop wrapper-owned Tailscale Serve mapping
+oc sessions               list recent OpenCode sessions without the server API
+oc serve                  ensure iOS/LAN server is running
+oc restart                restart wrapper-started server
+oc stop                   stop wrapper-started server
+
+Options for prompt runs:
+  --dir <path>             directory for the OpenCode session (default: cwd)
+  --title <title>          session title (default: prompt-derived title)
+
+Environment:
+  OPENCODE_SERVER_URL       default: http://127.0.0.1:4096
+  OPENCODE_SERVER_USERNAME  default: opencode; can be set in ~/.local/state/opencode-oc/.env
+  OPENCODE_SERVER_PASSWORD  required, or set in ~/.local/state/opencode-oc/.env
+  OPENCODE_OC_ENV           optional path to local credential env file
+  OPENCODE_OC_SERVER_CWD    server process cwd (default: state dir)
+  OPENCODE_OC_USE_LAUNCHD   use launchctl instead of a background process (default: 0)
+  OPENCODE_OC_TAILSCALE     set to 0 to disable Tailscale integration
+  OPENCODE_OC_TAILSCALE_HTTPS_PORT  Tailscale Serve HTTPS port (default: 443)
+  OC_LAUNCHD_LABEL          macOS launchctl label for wrapper server
+  OPENCODE_BIN              optional path to opencode binary
+  TAILSCALE_BIN             optional path to tailscale CLI
+
+This wrapper defaults to a shared LAN-capable OpenCode server for trusted
+local-network and iOS use. Do not expose it to the public internet.
+EOF
+}
+
+log() {
+  printf '%s %s\n' "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$(printf '%s' "$*" | redact)" >>"$WRAPPER_LOG"
+}
+
+redact() {
+  local sed_args
+  sed_args=(
+    -e 's/(Authorization:[[:space:]]*Basic[[:space:]]+)[A-Za-z0-9+\/=._-]+/\1[REDACTED]/Ig'
+    -e 's/(Authorization:[[:space:]]*Bearer[[:space:]]+)[A-Za-z0-9+\/=._-]+/\1[REDACTED]/Ig'
+    -e 's/((password|token|api[_-]?key|cookie)[[:space:]]*[:=][[:space:]]*)[^[:space:]",]+/\1[REDACTED]/Ig'
+  )
+  if [ -n "$SERVER_PASSWORD" ]; then
+    sed_args+=(-e "s/${SERVER_PASSWORD//\//\\/}/[REDACTED]/g")
+  fi
+  sed -E "${sed_args[@]}"
+}
+
+need() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    case "$1" in
+      jq)
+        printf 'oc: jq is required. Install it with: brew install jq\n' >&2
+        ;;
+      *)
+        printf 'oc: %s is required but was not found on PATH\n' "$1" >&2
+        ;;
+    esac
+    exit 1
+  fi
+}
+
+need_core() {
+  need curl
+  need jq
+}
+
+require_credentials() {
+  if [ -n "$SERVER_PASSWORD" ]; then
+    return 0
+  fi
+  cat >&2 <<EOF
+oc: OpenCode server credentials are required.
+
+Set OPENCODE_SERVER_PASSWORD, or create:
+  $CREDENTIALS_FILE
+
+Example:
+  umask 077
+  mkdir -p "$STATE_DIR"
+  printf '%s\n' 'OPENCODE_SERVER_PASSWORD=<password>' > "$CREDENTIALS_FILE"
+EOF
+  exit 1
+}
+
+opencode_bin() {
+  if [ -n "${OPENCODE_BIN:-}" ]; then
+    printf '%s\n' "$OPENCODE_BIN"
+    return
+  fi
+  if command -v opencode >/dev/null 2>&1; then
+    command -v opencode
+    return
+  fi
+  if [ -x "$HOME/.opencode/bin/opencode" ]; then
+    printf '%s\n' "$HOME/.opencode/bin/opencode"
+    return
+  fi
+  printf 'oc: opencode was not found. Put it on PATH or set OPENCODE_BIN.\n' >&2
+  exit 1
+}
+
+urlencode() {
+  jq -rn --arg value "$1" '$value | @uri'
+}
+
+server_port() {
+  local without_scheme hostport port
+  without_scheme="${SERVER_URL#*://}"
+  hostport="${without_scheme%%/*}"
+  if [[ "$hostport" =~ :([0-9]+)$ ]]; then
+    port="${BASH_REMATCH[1]}"
+  elif [[ "$SERVER_URL" == https://* ]]; then
+    port="443"
+  else
+    port="80"
+  fi
+  printf '%s\n' "$port"
+}
+
+listener_pid() {
+  local port
+  port="$(server_port)"
+  lsof -nP -iTCP:"$port" -sTCP:LISTEN -Fp 2>/dev/null | sed -n 's/^p//p' | head -1
+}
+
+lan_listener_ok() {
+  local port lan address
+  port="$(server_port)"
+  lan="$(lan_ip || true)"
+  while IFS= read -r address; do
+    case "$address" in
+      "*:${port}"|"0.0.0.0:${port}"|"[::]:${port}"|"::":"${port}")
+        return 0
+        ;;
+      "${lan}:${port}")
+        [ -n "$lan" ] && return 0
+        ;;
+    esac
+  done < <(lsof -nP -iTCP:"$port" -sTCP:LISTEN 2>/dev/null | awk 'NR>1 {print $9}')
+  return 1
+}
+
+pid_lan_listener_ok() {
+  local pid port lan address
+  pid="$1"
+  port="$(server_port)"
+  lan="$(lan_ip || true)"
+  while IFS= read -r address; do
+    case "$address" in
+      "*:${port}"|"0.0.0.0:${port}"|"[::]:${port}"|"::":"${port}")
+        return 0
+        ;;
+      "${lan}:${port}")
+        [ -n "$lan" ] && return 0
+        ;;
+    esac
+  done < <(lsof -nP -a -p "$pid" -iTCP:"$port" -sTCP:LISTEN 2>/dev/null | awk 'NR>1 {print $9}')
+  return 1
+}
+
+default_route_iface() {
+  route get default 2>/dev/null | awk '/interface:/{print $2; exit}'
+}
+
+lan_ip() {
+  local iface ip
+  iface="$(default_route_iface || true)"
+  if [ -n "$iface" ] && [[ "$iface" != utun* ]]; then
+    ip="$(ipconfig getifaddr "$iface" 2>/dev/null || true)"
+    if [ -n "$ip" ]; then
+      printf '%s\n' "$ip"
+      return
+    fi
+  fi
+  ifconfig 2>/dev/null | awk '
+    /^[a-z0-9]+:/{iface=$1; sub(":", "", iface)}
+    /inet / && $2 !~ /^127\./ && $2 !~ /^169\.254\./ && iface !~ /^(utun|awdl|llw|bridge|gif|stf)/ {
+      print $2
+      exit
+    }'
+}
+
+lan_ips() {
+  ifconfig 2>/dev/null | awk '
+    /^[a-z0-9]+:/{iface=$1; sub(":", "", iface)}
+    /inet / && $2 !~ /^127\./ && $2 !~ /^169\.254\./ && iface !~ /^(utun|awdl|llw|bridge|gif|stf)/ {
+      if (!seen[$2]++) print $2
+    }'
+}
+
+lan_url() {
+  local ip port
+  ip="$(lan_ip || true)"
+  port="$(server_port)"
+  if [ -n "$ip" ]; then
+    printf 'http://%s:%s\n' "$ip" "$port"
+  fi
+}
+
+lan_urls() {
+  local port
+  port="$(server_port)"
+  lan_ips | while IFS= read -r ip; do
+    [ -n "$ip" ] && printf 'http://%s:%s\n' "$ip" "$port"
+  done
+}
+
+mdns_url() {
+  printf 'http://opencode.local:%s\n' "$(server_port)"
+}
+
+tailscale_enabled() {
+  [ "$TAILSCALE_ENABLED" != "0" ]
+}
+
+tailscale_bin() {
+  if [ -n "${TAILSCALE_BIN:-}" ]; then
+    if [ -x "$TAILSCALE_BIN" ] || command -v "$TAILSCALE_BIN" >/dev/null 2>&1; then
+      printf '%s\n' "$TAILSCALE_BIN"
+      return 0
+    fi
+    return 1
+  fi
+  if command -v tailscale >/dev/null 2>&1; then
+    command -v tailscale
+    return 0
+  fi
+  if [ -x "/Applications/Tailscale.app/Contents/MacOS/Tailscale" ]; then
+    printf '%s\n' "/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+    return 0
+  fi
+  if [ -x "/Applications/Tailscale.app/Contents/MacOS/tailscale" ]; then
+    printf '%s\n' "/Applications/Tailscale.app/Contents/MacOS/tailscale"
+    return 0
+  fi
+  return 1
+}
+
+tailscale_cli() {
+  local bin
+  bin="$(tailscale_bin)" || return 127
+  TAILSCALE_BE_CLI=1 "$bin" "$@"
+}
+
+tailscale_status_json() {
+  tailscale_enabled || return 1
+  tailscale_cli status --json
+}
+
+tailscale_status_ok() {
+  local status_file
+  status_file="$1"
+  jq -e '(.BackendState == "Running") and (.Self.Online != false)' "$status_file" >/dev/null 2>&1
+}
+
+tailscale_dns_name() {
+  local status_file
+  status_file="$1"
+  jq -r '.Self.DNSName // empty | sub("[.]$"; "")' "$status_file"
+}
+
+tailscale_ipv4() {
+  local status_file
+  status_file="$1"
+  jq -r '(.Self.TailscaleIPs // []) | map(select(test("^100[.]"))) | .[0] // empty' "$status_file"
+}
+
+tailscale_raw_url() {
+  local status_file ip
+  status_file="$1"
+  ip="$(tailscale_ipv4 "$status_file")"
+  [ -n "$ip" ] && printf 'http://%s:%s\n' "$ip" "$(server_port)"
+}
+
+tailscale_serve_url_for_dns() {
+  local dns
+  dns="$1"
+  if [ -z "$dns" ]; then
+    return 1
+  fi
+  if [ "$TAILSCALE_HTTPS_PORT" = "443" ]; then
+    printf 'https://%s\n' "$dns"
+  else
+    printf 'https://%s:%s\n' "$dns" "$TAILSCALE_HTTPS_PORT"
+  fi
+}
+
+tailscale_serve_target() {
+  printf 'http://127.0.0.1:%s\n' "$(server_port)"
+}
+
+metadata_value() {
+  local key
+  key="$1"
+  if [ -f "$TAILSCALE_METADATA" ]; then
+    jq -r --arg key "$key" '.[$key] // empty' "$TAILSCALE_METADATA" 2>/dev/null || true
+  fi
+}
+
+record_tailscale_serve() {
+  local serve_url raw_url dns target
+  serve_url="$1"
+  raw_url="$2"
+  dns="$3"
+  target="$4"
+  jq -cn \
+    --arg mode "tailscale-serve" \
+    --arg serve_url "$serve_url" \
+    --arg raw_url "$raw_url" \
+    --arg dns_name "$dns" \
+    --arg https_port "$TAILSCALE_HTTPS_PORT" \
+    --arg target "$target" \
+    --arg updated_at "$(date '+%Y-%m-%dT%H:%M:%S%z')" \
+    '{mode:$mode, serve_url:$serve_url, raw_url:$raw_url, dns_name:$dns_name, https_port:$https_port, target:$target, updated_at:$updated_at}' \
+    >"$TAILSCALE_METADATA"
+}
+
+ensure_tailscale_serve() {
+  local status_file serve_out dns serve_url raw_url target
+  tailscale_enabled || return 0
+  if ! tailscale_bin >/dev/null 2>&1; then
+    return 0
+  fi
+
+  status_file="$(mktemp "$STATE_DIR/tailscale-status.XXXXXX")"
+  if ! tailscale_status_json >"$status_file" 2>/dev/null || ! tailscale_status_ok "$status_file"; then
+    rm -f "$status_file"
+    return 0
+  fi
+
+  dns="$(tailscale_dns_name "$status_file")"
+  raw_url="$(tailscale_raw_url "$status_file" || true)"
+  serve_url="$(tailscale_serve_url_for_dns "$dns" || true)"
+  target="$(tailscale_serve_target)"
+  rm -f "$status_file"
+  if [ -z "$serve_url" ]; then
+    return 0
+  fi
+
+  serve_out="$(mktemp "$STATE_DIR/tailscale-serve.XXXXXX")"
+  if tailscale_cli serve --bg --https="$TAILSCALE_HTTPS_PORT" "$target" >"$serve_out" 2>&1; then
+    record_tailscale_serve "$serve_url" "$raw_url" "$dns" "$target"
+    log "tailscale serve ready url=${serve_url} target=${target}"
+  else
+    printf 'Tailscale Serve: setup needed or failed.\n' >&2
+    printf 'Run after enabling Tailscale Serve/HTTPS/MagicDNS if prompted:\n' >&2
+    printf '  TAILSCALE_BE_CLI=1 %s serve --bg --https=%s %s\n' "$(tailscale_bin)" "$TAILSCALE_HTTPS_PORT" "$target" >&2
+    tail -n 20 "$serve_out" 2>/dev/null | redact >&2 || true
+  fi
+  rm -f "$serve_out"
+}
+
+print_tailscale_lines() {
+  local status_file serve_url raw_url dns status_text
+  if ! tailscale_enabled; then
+    printf 'Tailscale: disabled (OPENCODE_OC_TAILSCALE=0)\n'
+    return 0
+  fi
+  if ! tailscale_bin >/dev/null 2>&1; then
+    printf 'Tailscale: unavailable (CLI not found; set TAILSCALE_BIN or install macOS CLI integration)\n'
+    printf 'Tailscale Serve URL: unavailable\n'
+    printf 'Tailnet fallback URL: unavailable\n'
+    return 0
+  fi
+
+  serve_url="$(metadata_value serve_url)"
+  status_file="$(mktemp "$STATE_DIR/tailscale-status.XXXXXX")"
+  if tailscale_status_json >"$status_file" 2>/dev/null; then
+    status_text="$(jq -r '.BackendState // "unknown"' "$status_file")"
+    dns="$(tailscale_dns_name "$status_file")"
+    raw_url="$(tailscale_raw_url "$status_file" || true)"
+    if [ -z "$serve_url" ]; then
+      serve_url="$(tailscale_serve_url_for_dns "$dns" || true)"
+      if [ -n "$serve_url" ] && [ ! -f "$TAILSCALE_METADATA" ]; then
+        serve_url=""
+      fi
+    fi
+    printf 'Tailscale: %s\n' "$status_text"
+  else
+    raw_url="$(metadata_value raw_url)"
+    printf 'Tailscale: unavailable (status failed)\n'
+  fi
+  rm -f "$status_file"
+
+  if [ -n "$serve_url" ]; then
+    printf 'Preferred away-from-home URL: %s\n' "$serve_url"
+  else
+    printf 'Tailscale Serve URL: not configured (run oc ios)\n'
+  fi
+  if [ -n "$raw_url" ]; then
+    printf 'Tailnet fallback URL: %s\n' "$raw_url"
+  else
+    printf 'Tailnet fallback URL: unavailable\n'
+  fi
+}
+
+preferred_connection_url() {
+  local status_file serve_url raw_url lan
+  if tailscale_enabled && tailscale_bin >/dev/null 2>&1; then
+    serve_url="$(metadata_value serve_url)"
+    if [ -n "$serve_url" ]; then
+      printf '%s\n' "$serve_url"
+      return 0
+    fi
+    status_file="$(mktemp "$STATE_DIR/tailscale-status.XXXXXX")"
+    if tailscale_status_json >"$status_file" 2>/dev/null; then
+      raw_url="$(tailscale_raw_url "$status_file" || true)"
+    fi
+    rm -f "$status_file"
+    if [ -n "${raw_url:-}" ]; then
+      printf '%s\n' "$raw_url"
+      return 0
+    fi
+  fi
+  lan="$(lan_url || true)"
+  printf '%s\n' "${lan:-$SERVER_URL}"
+}
+
+print_lan_url_lines() {
+  local primary_label alternate_label unavailable_label lan first_lan printed
+  primary_label="$1"
+  alternate_label="$2"
+  unavailable_label="$3"
+  first_lan="$(lan_url || true)"
+  printed="0"
+  while IFS= read -r lan; do
+    if [ "$printed" = "0" ]; then
+      printf '%s: %s\n' "$primary_label" "$lan"
+    else
+      printf '%s: %s\n' "$alternate_label" "$lan"
+    fi
+    printed="1"
+  done < <(lan_urls)
+  if [ "$printed" = "0" ] && [ -n "$first_lan" ]; then
+    printf '%s: %s\n' "$primary_label" "$first_lan"
+  elif [ "$printed" = "0" ]; then
+    printf '%s: %s\n' "$primary_label" "$unavailable_label"
+  fi
+}
+
+print_ios_summary() {
+  print_tailscale_lines
+  printf 'OpenCode Mac-only URL: %s\n' "$SERVER_URL"
+  print_lan_url_lines \
+    "OpenCode iOS URL" \
+    "OpenCode alternate iOS URL" \
+    "unavailable (could not detect Mac LAN IP)"
+  printf 'OpenCode mDNS URL: %s\n' "$(mdns_url)"
+  printf 'Username: %s\n' "$SERVER_USERNAME"
+  printf "Password: run \`oc ios credentials\`\n"
+}
+
+http_request() {
+  local method path directory body out err code url query max_time
+  require_credentials
+  method="$1"
+  path="$2"
+  directory="$3"
+  body="$4"
+  out="$5"
+  max_time="${6:-10}"
+  err="$(mktemp "$STATE_DIR/curl-err.XXXXXX")"
+  url="${SERVER_URL%/}${path}"
+  if [ -n "$directory" ]; then
+    query="directory=$(urlencode "$directory")"
+    url="${url}?${query}"
+  fi
+
+  local args=(-sS -o "$out" -w "%{http_code}" --connect-timeout 2 --max-time "$max_time" -u "$SERVER_USERNAME:$SERVER_PASSWORD")
+  if [ "$method" != "GET" ]; then
+    args+=(-X "$method")
+  fi
+  if [ -n "$body" ]; then
+    args+=(-H "content-type: application/json" --data "$body")
+  fi
+
+  if ! code="$(curl "${args[@]}" "$url" 2>"$err")"; then
+    code="000"
+    cat "$err" | redact >"$out"
+  fi
+  rm -f "$err"
+  printf '%s\n' "$code"
+}
+
+url_health_ok() {
+  local base_url out err code
+  require_credentials
+  base_url="$1"
+  out="$(mktemp "$STATE_DIR/url-health.XXXXXX")"
+  err="$(mktemp "$STATE_DIR/url-health-err.XXXXXX")"
+  if ! code="$(curl -sS -o "$out" -w "%{http_code}" --connect-timeout 2 --max-time 5 \
+    -u "$SERVER_USERNAME:$SERVER_PASSWORD" "${base_url%/}/global/health" 2>"$err")"; then
+    rm -f "$out" "$err"
+    return 1
+  fi
+  rm -f "$err"
+  if [ "$code" = "200" ] && jq -e '.healthy == true' "$out" >/dev/null 2>&1; then
+    rm -f "$out"
+    return 0
+  fi
+  rm -f "$out"
+  return 1
+}
+
+health_ok() {
+  local out code
+  out="$(mktemp "$STATE_DIR/health.XXXXXX")"
+  code="$(http_request GET "/global/health" "" "" "$out" 3)"
+  if [ "$code" = "200" ] && jq -e '.healthy == true' "$out" >/dev/null 2>&1; then
+    rm -f "$out"
+    return 0
+  fi
+  rm -f "$out"
+  return 1
+}
+
+server_ready_ok() {
+  health_ok && lan_listener_ok
+}
+
+serve_help_has() {
+  local flag bin
+  flag="$1"
+  bin="$(opencode_bin)"
+  "$bin" serve --help 2>&1 | grep -q -- "$flag"
+}
+
+pid_alive() {
+  local pid="$1"
+  [ -n "$pid" ] && kill -0 "$pid" >/dev/null 2>&1
+}
+
+path_mtime() {
+  local path mtime
+  path="$1"
+  mtime="$(stat -c '%Y' "$path" 2>/dev/null || stat -f '%m' "$path" 2>/dev/null || printf '0')"
+  case "$mtime" in
+    ''|*[!0-9]*)
+      printf '0\n'
+      ;;
+    *)
+      printf '%s\n' "$mtime"
+      ;;
+  esac
+}
+
+acquire_server_lock() {
+  local waited lock_mtime now lock_pid
+  waited=0
+  while ! mkdir "$LOCK_DIR" 2>/dev/null; do
+    lock_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+    if [ -n "$lock_pid" ] && ! pid_alive "$lock_pid"; then
+      rm -f "$LOCK_PID_FILE"
+      rmdir "$LOCK_DIR" 2>/dev/null || true
+      continue
+    fi
+    lock_mtime="$(path_mtime "$LOCK_DIR")"
+    now="$(date +%s)"
+    if [ "$lock_mtime" -gt 0 ] && [ $((now - lock_mtime)) -gt 20 ]; then
+      if [ -z "$lock_pid" ]; then
+        rm -f "$LOCK_PID_FILE"
+        rmdir "$LOCK_DIR" 2>/dev/null || true
+        continue
+      fi
+    fi
+    if [ "$lock_mtime" -gt 0 ] && [ -z "$lock_pid" ] && [ $((now - lock_mtime)) -gt 5 ]; then
+      rmdir "$LOCK_DIR" 2>/dev/null || true
+      continue
+    fi
+    if [ "$waited" -ge 150 ]; then
+      if [ -n "$lock_pid" ]; then
+        printf 'oc: timed out waiting for server startup lock held by pid %s: %s\n' "$lock_pid" "$LOCK_DIR" >&2
+      else
+        printf 'oc: timed out waiting for server startup lock: %s\n' "$LOCK_DIR" >&2
+      fi
+      return 1
+    fi
+    sleep 0.2
+    waited=$((waited + 1))
+  done
+  printf '%s\n' "$$" >"$LOCK_PID_FILE"
+  SERVER_LOCK_HELD="1"
+  trap release_server_lock EXIT
+}
+
+release_server_lock() {
+  local lock_pid
+  lock_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+  if [ "$SERVER_LOCK_HELD" = "1" ] && [ "$lock_pid" = "$$" ]; then
+    rm -f "$LOCK_PID_FILE"
+    rmdir "$LOCK_DIR" 2>/dev/null || true
+    SERVER_LOCK_HELD="0"
+  fi
+}
+
+terminate_pid() {
+  local pid="$1"
+  pid_alive "$pid" || return 0
+  kill "$pid" >/dev/null 2>&1 || true
+  for _ in 1 2 3 4 5; do
+    sleep 0.2
+    pid_alive "$pid" || return 0
+  done
+  kill -9 "$pid" >/dev/null 2>&1 || true
+}
+
+launchctl_supported() {
+  [ "$USE_LAUNCHD" = "1" ] && command -v launchctl >/dev/null 2>&1 && /usr/bin/env -C "$SERVER_CWD" true >/dev/null 2>&1
+}
+
+remove_launchd_job() {
+  if command -v launchctl >/dev/null 2>&1; then
+    launchctl remove "$LAUNCHD_LABEL" >/dev/null 2>&1 || true
+  fi
+}
+
+write_launch_script() {
+  umask 077
+  cat >"$LAUNCH_SCRIPT" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+credentials_file="$1"
+home_dir="$2"
+server_cwd="$3"
+shift 3
+
+export HOME="$home_dir"
+export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH:-/usr/bin:/bin:/usr/sbin:/sbin}"
+
+if [ -f "$credentials_file" ]; then
+  set -a
+  # shellcheck source=/dev/null
+  . "$credentials_file"
+  set +a
+fi
+
+exec /usr/bin/env -C "$server_cwd" "$@"
+EOF
+  chmod 700 "$LAUNCH_SCRIPT"
+}
+
+ensure_server() {
+  local bin port pid flags current_pid
+  acquire_server_lock
+  if health_ok; then
+    if lan_listener_ok; then
+      pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+      if [ -n "$pid" ] && pid_alive "$pid" && ! pid_lan_listener_ok "$pid"; then
+        log "stopping stale localhost-only wrapper-started server pid=${pid}"
+        terminate_pid "$pid"
+        remove_launchd_job
+        rm -f "$PID_FILE"
+      fi
+      release_server_lock
+      return 0
+    fi
+    current_pid="$(listener_pid || true)"
+    pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+    if [ -n "$pid" ] && [ "$pid" = "$current_pid" ] && pid_alive "$pid"; then
+      log "restarting localhost-only wrapper-started server pid=${pid}"
+      terminate_pid "$pid"
+      remove_launchd_job
+      rm -f "$PID_FILE"
+    else
+      printf 'oc: OpenCode is healthy but is only reachable from this Mac, not the LAN.\n' >&2
+      printf 'oc: stop the localhost-only server or restart it with: opencode serve --hostname 0.0.0.0 --port %s --mdns\n' "$port" >&2
+      release_server_lock
+      return 1
+    fi
+  fi
+
+  bin="$(opencode_bin)"
+  port="$(server_port)"
+  flags=(serve)
+  if serve_help_has "--hostname"; then
+    flags+=(--hostname 0.0.0.0)
+  fi
+  if serve_help_has "--port"; then
+    flags+=(--port "$port")
+  fi
+  if serve_help_has "--mdns"; then
+    flags+=(--mdns)
+  fi
+
+  if [ -f "$PID_FILE" ]; then
+    pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+    if pid_alive "$pid"; then
+      log "restarting unhealthy wrapper-started server pid=${pid}"
+      terminate_pid "$pid"
+      remove_launchd_job
+    fi
+    rm -f "$PID_FILE"
+  fi
+
+  : >"$SERVER_LOG"
+  log "starting opencode server on 0.0.0.0:${port} with mdns cwd=${SERVER_CWD}"
+  write_launch_script
+  if launchctl_supported; then
+    remove_launchd_job
+    launchctl submit -l "$LAUNCHD_LABEL" -o "$SERVER_LOG" -e "$SERVER_LOG" -- \
+      "$LAUNCH_SCRIPT" "$CREDENTIALS_FILE" "$HOME" "$SERVER_CWD" "$bin" "${flags[@]}"
+    pid=""
+  else
+    nohup "$LAUNCH_SCRIPT" "$CREDENTIALS_FILE" "$HOME" "$SERVER_CWD" "$bin" "${flags[@]}" >>"$SERVER_LOG" 2>&1 < /dev/null &
+    pid="$!"
+    disown "$pid" 2>/dev/null || true
+    printf '%s\n' "$pid" >"$PID_FILE"
+  fi
+
+  for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24; do
+    sleep 0.5
+    if server_ready_ok; then
+      pid="$(listener_pid || true)"
+      if [ -n "$pid" ]; then
+        printf '%s\n' "$pid" >"$PID_FILE"
+      fi
+      log "server ready pid=${pid:-unknown}"
+      release_server_lock
+      return 0
+    fi
+    if [ -n "$pid" ] && ! pid_alive "$pid"; then
+      printf 'oc: OpenCode server failed to start. Log: %s\n' "$SERVER_LOG" >&2
+      tail -n 40 "$SERVER_LOG" 2>/dev/null | redact >&2 || true
+      rm -f "$PID_FILE"
+      remove_launchd_job
+      release_server_lock
+      return 1
+    fi
+  done
+
+  printf 'oc: OpenCode server did not become healthy and LAN-reachable. Log: %s\n' "$SERVER_LOG" >&2
+  tail -n 40 "$SERVER_LOG" 2>/dev/null | redact >&2 || true
+  if [ -n "$pid" ]; then
+    terminate_pid "$pid"
+  fi
+  rm -f "$PID_FILE"
+  remove_launchd_job
+  release_server_lock
+  return 1
+}
+
+safe_title() {
+  local prompt stamp title
+  prompt="$1"
+  stamp="$(date '+%Y%m%d-%H%M%S')"
+  title="$(printf '%s' "$prompt" | tr '\n' ' ' | sed -E 's/[^[:alnum:] _.-]+//g; s/[[:space:]]+/ /g; s/^ //; s/ $//' | cut -c 1-60)"
+  if [ -z "$title" ]; then
+    title="opencode chat"
+  fi
+  printf '%s - %s\n' "$title" "$stamp"
+}
+
+print_attach_info() {
+  local session_id title log_path
+  session_id="$1"
+  title="$2"
+  log_path="$3"
+  printf 'Session: %s\n' "${session_id:-unknown}"
+  printf 'Title: %s\n' "$title"
+  printf 'Log: %s\n' "$log_path"
+  if [ -n "$session_id" ]; then
+    printf 'Attach: oc attach %s\n' "$session_id"
+  else
+    printf 'Attach: session id unavailable; check the log for emitted JSON events\n'
+  fi
+  print_ios_summary
+}
+
+run_prompt_api() {
+  local prompt dir title create_body create_out create_code session_id prompt_body prompt_out prompt_code meta_path
+  prompt="$1"
+  dir="$2"
+  title="$3"
+
+  create_body="$(jq -cn --arg title "$title" '{title: $title}')"
+  create_out="$(mktemp "$STATE_DIR/session-create.XXXXXX")"
+  create_code="$(http_request POST "/session" "$dir" "$create_body" "$create_out" 15)"
+  if [ "$create_code" != "200" ]; then
+    rm -f "$create_out"
+    return 1
+  fi
+
+  session_id="$(jq -r '.id // empty' "$create_out")"
+  if [ -z "$session_id" ]; then
+    rm -f "$create_out"
+    return 1
+  fi
+
+  prompt_body="$(jq -cn --arg text "$prompt" '{parts: [{type: "text", text: $text}]}')"
+  prompt_out="$(mktemp "$STATE_DIR/prompt-async.XXXXXX")"
+  prompt_code="$(http_request POST "/session/${session_id}/prompt_async" "$dir" "$prompt_body" "$prompt_out" 15)"
+  if [ "$prompt_code" != "204" ] && [ "$prompt_code" != "200" ]; then
+    rm -f "$create_out" "$prompt_out"
+    return 1
+  fi
+
+  meta_path="$STATE_DIR/meta-${session_id}.json"
+  jq -cn \
+    --arg mode "api" \
+    --arg session_id "$session_id" \
+    --arg title "$title" \
+    --arg dir "$dir" \
+    --arg server_url "$SERVER_URL" \
+    --arg created_at "$(date '+%Y-%m-%dT%H:%M:%S%z')" \
+    '{mode:$mode, session_id:$session_id, title:$title, dir:$dir, server_url:$server_url, created_at:$created_at}' \
+    >"$meta_path"
+  log "created async session id=${session_id} title=${title}"
+  rm -f "$create_out" "$prompt_out"
+  printf '%s\n' "$session_id"
+}
+
+run_prompt_fallback() {
+  local prompt dir title bin run_log run_pid
+  prompt="$1"
+  dir="$2"
+  title="$3"
+  bin="$(opencode_bin)"
+  run_log="$STATE_DIR/run-$(date '+%Y%m%d-%H%M%S').ndjson"
+  (
+    env OPENCODE_SERVER_PASSWORD="$SERVER_PASSWORD" OPENCODE_SERVER_USERNAME="$SERVER_USERNAME" \
+      "$bin" run --attach "$SERVER_URL" --format json --dir "$dir" --title "$title" "$prompt" 2>&1 | redact
+  ) >"$run_log" &
+  run_pid="$!"
+  log "started fallback opencode run pid=${run_pid} title=${title} log=${run_log}"
+  printf 'Fallback run pid: %s\n' "$run_pid"
+  print_attach_info "" "$title" "$run_log"
+}
+
+cmd_run() {
+  local dir title prompt session_id meta_path
+  dir="$PWD"
+  title=""
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --dir)
+        [ "$#" -ge 2 ] || { printf 'oc: --dir requires a path\n' >&2; exit 2; }
+        dir="$2"
+        shift 2
+        ;;
+      --title)
+        [ "$#" -ge 2 ] || { printf 'oc: --title requires a title\n' >&2; exit 2; }
+        title="$2"
+        shift 2
+        ;;
+      --help|-h)
+        usage
+        return 0
+        ;;
+      --)
+        shift
+        break
+        ;;
+      -*)
+        printf 'oc: unknown run option: %s\n' "$1" >&2
+        exit 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+
+  [ "$#" -gt 0 ] || { printf 'oc: prompt text is required\n' >&2; exit 2; }
+  prompt="$*"
+  if [ -z "$title" ]; then
+    title="$(safe_title "$prompt")"
+  fi
+  dir="$(cd "$dir" && pwd)"
+
+  ensure_server
+  if session_id="$(run_prompt_api "$prompt" "$dir" "$title")"; then
+    meta_path="$STATE_DIR/meta-${session_id}.json"
+    print_attach_info "$session_id" "$title" "$meta_path"
+  else
+    printf 'oc: API async prompt failed; using opencode run --attach fallback.\n' >&2
+    run_prompt_fallback "$prompt" "$dir" "$title"
+  fi
+}
+
+cmd_status() {
+  local no_start dir mdns
+  no_start="0"
+  dir="$PWD"
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --no-start)
+        no_start="1"
+        shift
+        ;;
+      --dir)
+        [ "$#" -ge 2 ] || { printf 'oc: --dir requires a path\n' >&2; exit 2; }
+        dir="$2"
+        shift 2
+        ;;
+      *)
+        printf 'oc: unknown status option: %s\n' "$1" >&2
+        exit 2
+        ;;
+    esac
+  done
+  dir="$(cd "$dir" && pwd)"
+
+  if [ "$no_start" = "0" ]; then
+    ensure_server
+  elif ! health_ok; then
+    printf 'OpenCode server: unavailable\n'
+    printf 'Local URL: %s\n' "$SERVER_URL"
+    return 1
+  fi
+
+  printf 'OpenCode server: healthy\n'
+  printf 'Mac-only URL: %s\n' "$SERVER_URL"
+  print_lan_url_lines \
+    "iOS URL" \
+    "Alternate iOS URL" \
+    "unavailable (could not detect Mac LAN IP)"
+  mdns="$(mdns_url)"
+  printf 'mDNS URL: %s\n' "$mdns"
+  printf 'Username: %s\n' "$SERVER_USERNAME"
+  printf "Password: run \`oc ios credentials\`\n"
+  printf '\n'
+
+  printf 'Sessions: run oc sessions for recent local sessions.\n'
+}
+
+cmd_attach() {
+  local session_id bin
+  [ "$#" -eq 1 ] || { printf 'oc: usage: oc attach <session_id>\n' >&2; exit 2; }
+  session_id="$1"
+  ensure_server
+  bin="$(opencode_bin)"
+  exec env OPENCODE_SERVER_PASSWORD="$SERVER_PASSWORD" OPENCODE_SERVER_USERNAME="$SERVER_USERNAME" \
+    "$bin" attach "$SERVER_URL" --session "$session_id"
+}
+
+cmd_ios() {
+  local sub lan url port target stop_out
+  sub="${1:-}"
+  case "$sub" in
+    "")
+      ensure_server
+      ensure_tailscale_serve
+      print_ios_summary
+      printf '\nEnter the preferred away-from-home URL or a LAN URL in the OpenCode iOS app with the username above.\n'
+      printf "Use \`oc ios credentials\` only when you need to reveal the password.\n"
+      printf 'This is for trusted local LAN and private tailnet use only; do not expose it publicly.\n'
+      ;;
+    status)
+      ensure_server
+      printf 'OpenCode iOS/LAN/Tailscale server: healthy\n'
+      print_ios_summary
+      ;;
+    credentials)
+      ensure_server
+      url="$(preferred_connection_url)"
+      printf 'Server URL: %s\n' "$url"
+      while IFS= read -r lan; do
+        [ -n "$lan" ] && printf 'Alternate Server URL: %s\n' "$lan"
+      done < <(lan_urls | grep -Fvx -- "$url")
+      printf 'Username: %s\n' "$SERVER_USERNAME"
+      printf 'Password: %s\n' "$SERVER_PASSWORD"
+      ;;
+    stop-serve)
+      if ! tailscale_enabled; then
+        printf 'oc: Tailscale integration is disabled; no wrapper-owned Serve mapping stopped.\n'
+        return 0
+      fi
+      if ! tailscale_bin >/dev/null 2>&1; then
+        printf 'oc: tailscale CLI not found; cannot stop wrapper-owned Serve mapping.\n' >&2
+        return 1
+      fi
+      if [ ! -f "$TAILSCALE_METADATA" ]; then
+        printf 'oc: no wrapper-owned Tailscale Serve metadata exists; refusing to reset unrelated Serve config.\n'
+        return 0
+      fi
+      port="$(metadata_value https_port)"
+      target="$(metadata_value target)"
+      if [ -z "$port" ] || [ -z "$target" ]; then
+        printf 'oc: wrapper-owned Tailscale Serve metadata is incomplete; refusing to reset unrelated Serve config.\n' >&2
+        return 1
+      fi
+      stop_out="$(mktemp "$STATE_DIR/tailscale-stop.XXXXXX")"
+      if tailscale_cli serve --https="$port" "$target" off >"$stop_out" 2>&1; then
+        rm -f "$TAILSCALE_METADATA" "$stop_out"
+        printf 'oc: stopped wrapper-owned Tailscale Serve mapping on HTTPS port %s.\n' "$port"
+      else
+        printf 'oc: failed to stop wrapper-owned Tailscale Serve mapping.\n' >&2
+        tail -n 20 "$stop_out" 2>/dev/null | redact >&2 || true
+        rm -f "$stop_out"
+        return 1
+      fi
+      ;;
+    *)
+      printf 'oc: unknown ios command: %s\n' "$sub" >&2
+      exit 2
+      ;;
+  esac
+}
+
+cmd_logs() {
+  local session_id found
+  session_id="${1:-}"
+  if [ -z "$session_id" ]; then
+    printf 'Recent oc logs under %s:\n' "$STATE_DIR"
+    find "$STATE_DIR" -maxdepth 1 -type f \( -name '*.log' -o -name 'run-*.ndjson' -o -name 'meta-*.json' \) -print0 2>/dev/null |
+      xargs -0 ls -t 2>/dev/null |
+      head -20
+    printf '\nWrapper log tail:\n'
+    tail -n 40 "$WRAPPER_LOG" 2>/dev/null | redact || true
+    printf '\nServer log tail:\n'
+    tail -n 40 "$SERVER_LOG" 2>/dev/null | redact || true
+    return 0
+  fi
+
+  found="0"
+  while IFS= read -r file; do
+    found="1"
+    printf '\n==> %s <==\n' "$file"
+    tail -n 120 "$file" 2>/dev/null | redact || true
+  done < <(
+    find "$STATE_DIR" -maxdepth 1 -type f \( -name '*.log' -o -name 'run-*.ndjson' -o -name 'meta-*.json' \) -print 2>/dev/null |
+      while IFS= read -r file; do
+        if basename "$file" | grep -Fq -- "$session_id"; then
+          printf '%s\n' "$file"
+        else
+          grep -l -- "$session_id" "$file" 2>/dev/null || true
+        fi
+      done |
+      awk '!seen[$0]++'
+  )
+
+  if [ "$found" = "0" ]; then
+    printf 'oc: no local logs found for session %s under %s\n' "$session_id" "$STATE_DIR"
+  fi
+}
+
+cmd_sessions() {
+  local max_count format bin raw json
+  max_count="30"
+  format="table"
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      -n|--max-count)
+        [ "$#" -ge 2 ] || { printf 'oc: --max-count requires a number\n' >&2; exit 2; }
+        max_count="$2"
+        shift 2
+        ;;
+      --json)
+        format="json"
+        shift
+        ;;
+      --format)
+        [ "$#" -ge 2 ] || { printf 'oc: --format requires table or json\n' >&2; exit 2; }
+        format="$2"
+        shift 2
+        ;;
+      *)
+        printf 'oc: unknown sessions option: %s\n' "$1" >&2
+        exit 2
+        ;;
+    esac
+  done
+  bin="$(opencode_bin)"
+  raw="$(mktemp "$STATE_DIR/sessions-raw.XXXXXX")"
+  json="$(mktemp "$STATE_DIR/sessions-json.XXXXXX")"
+  if ! "$bin" session list --format json --max-count "$max_count" >"$raw" 2>&1; then
+    cat "$raw" | redact >&2
+    rm -f "$raw" "$json"
+    return 1
+  fi
+  awk 'found || $0 == "[" {found=1; print}' "$raw" >"$json"
+  if ! jq -e 'type == "array"' "$json" >/dev/null 2>&1; then
+    printf 'oc: could not parse session list output\n' >&2
+    tail -n 40 "$raw" | redact >&2
+    rm -f "$raw" "$json"
+    return 1
+  fi
+  if [ "$format" = "json" ]; then
+    cat "$json"
+  else
+    jq -r '
+        (["UPDATED","SESSION","DIRECTORY","TITLE"] | @tsv),
+        (.[] | [
+          ((.updated // .created // 0) / 1000 | strftime("%Y-%m-%d %H:%M")),
+          .id,
+          .directory,
+          .title
+        ] | @tsv)
+      ' "$json"
+  fi
+  rm -f "$raw" "$json"
+}
+
+cmd_stop() {
+  local pid
+  if [ ! -f "$PID_FILE" ]; then
+    remove_launchd_job
+    printf 'oc: no wrapper-started OpenCode server pid file exists.\n'
+    return 0
+  fi
+  pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+  remove_launchd_job
+  if ! pid_alive "$pid"; then
+    printf 'oc: wrapper-started server pid is not running; removing stale pid file.\n'
+    rm -f "$PID_FILE"
+    return 0
+  fi
+  terminate_pid "$pid"
+  rm -f "$PID_FILE"
+  log "stopped wrapper-started server pid=${pid}"
+  printf 'oc: stopped wrapper-started OpenCode server pid %s.\n' "$pid"
+}
+
+cmd_restart() {
+  cmd_stop >/dev/null 2>&1 || true
+  ensure_server
+  print_ios_summary
+}
+
+main() {
+  case "${1:-}" in
+    ""|status)
+      [ "${1:-}" = "status" ] && shift || true
+      need_core
+      cmd_status "$@"
+      ;;
+    help|--help|-h)
+      usage
+      ;;
+    run)
+      shift
+      need_core
+      cmd_run "$@"
+      ;;
+    attach)
+      shift
+      need_core
+      cmd_attach "$@"
+      ;;
+    logs)
+      shift
+      cmd_logs "$@"
+      ;;
+    sessions)
+      shift
+      need jq
+      cmd_sessions "$@"
+      ;;
+    ios)
+      shift
+      need_core
+      cmd_ios "$@"
+      ;;
+    serve)
+      shift
+      need_core
+      ensure_server
+      print_ios_summary
+      ;;
+    restart)
+      shift
+      need_core
+      cmd_restart
+      ;;
+    stop)
+      shift
+      cmd_stop "$@"
+      ;;
+    --dir|--title)
+      need_core
+      cmd_run "$@"
+      ;;
+    --*)
+      printf 'oc: unknown option: %s\n' "$1" >&2
+      exit 2
+      ;;
+    *)
+      need_core
+      cmd_run "$@"
+      ;;
+  esac
+}
+
+main "$@"

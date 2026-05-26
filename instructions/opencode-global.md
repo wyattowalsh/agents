@@ -6,29 +6,59 @@
 
 ### Model Preference
 
-Repo-managed OpenCode configuration and agent frontmatter must stay model-free. Do not add `model`, `small_model`, `mode.*.model`, or `agent.*.model` selectors to repo-managed OpenCode surfaces.
+OpenCode model defaults are repo-managed. Repo and live OpenCode config set root `model: "openai/gpt-5.5"`, root `small_model: "openai/gpt-5.4-mini"`, built-in agent `plan` to `openai/gpt-5.5` with variant `xhigh`, and built-in agents `build`, `explore`, and `general` to `openai/gpt-5.5` with variant `high`. Use the `model` plus `variant` fields for high-level thinking; do not invent composite model IDs such as `openai/gpt-5.5-high` unless the provider metadata defines that exact model. Do not generate OpenAI, Vercel, Kimi, or other remote provider blocks unless a concrete runtime need is verified; OpenCode's built-in provider registry should own the normal OpenAI model definitions. Preserve explicit local provider blocks such as LM Studio only when rendered from local provider policy. Do not define duplicate `gpt-5.5-fast` entries unless concrete runtime evidence requires them. Do not silently fall back to another OpenAI model when CLI/TUI runs warn or retry; compare `--pure`, plugin-loaded, TUI, and desktop paths first and keep exact request IDs from any `server_error` lines.
 
-Repo-managed OpenCode agent frontmatter must also avoid `steps` caps. Optimize for frontier high-thinking execution through instructions, decomposition, verification, and low deterministic temperatures rather than model selectors or step limits.
+Repo-managed OpenCode agent frontmatter must avoid `model`, `small_model`, `mode.*.model`, `agent.*.model`, and `steps` caps. Model selection belongs in config, not agent frontmatter.
 
-When merging live user-owned OpenCode config, preserve existing user model settings; do not introduce repo defaults for them.
+When merging live user-owned OpenCode config, preserve unrelated user settings while enforcing repo-managed model, plugin, and tooling defaults.
+
+### Formatter And LSP Setup
+
+Enable OpenCode formatters and LSP for repo work. Keep the formatter matrix broad enough for Python, JS/TS, Markdown/MDX, YAML, TOML, shell/zsh, Just, Go, and Rust. Prefer local binaries for installed tools such as `ruff`, `ty`, `just`, `gofmt`, and `rustfmt`; use `npx -y` for portable Node-backed formatters when global installs are unavailable.
 
 ### Notification Setup
 
-On macOS, ensure `notification_method` is set to `"auto"` in `~/.config/opencode/tui.json` to enable OSC terminal notifications and avoid osascript "Script Editor" popups.
+Do not add root `notification_method` to `~/.config/opencode/tui.json`; current OpenCode TUI schema rejects that key and logs `ConfigInvalidError`.
+
+Use current TUI `keybinds`, not stale `keymap.sections`, for shortcut customization. Keep TUI-only plugins and keybind preferences in the user-owned live `~/.config/opencode/tui.json` surface unless this repo later adds a tracked TUI config source.
 
 ### Plugin Versioning
 
 Repo-managed OpenCode npm plugin specs in `opencode.json` must use `@latest` so OpenCode's Bun-backed installer resolves the newest published plugin during install refreshes. If a plugin warns that an update is available, refresh the matching package under `~/.cache/opencode/packages/` or restart OpenCode; do not pin or range the repo-managed spec unless the user explicitly requests a rollback.
 
+`@hueyexe/opencode-ensemble@latest` is the repo-managed OpenCode team orchestration plugin. Keep its npm spec on `@latest`; when OpenCode's package cache resolves it to an older package, remove only `~/.cache/opencode/packages/@hueyexe/opencode-ensemble@latest` and restart OpenCode so the installer resolves the current dist-tag. Keep `config/opencode-ensemble.json` tuned for this 10-core / 32 GiB workstation with `mergeOnCleanup: false`, `rateLimitCapacity: 10`, `timeoutMs: 3600000`, `peerMessageLimit: 10`, and empty Ensemble model fields so teammates inherit OpenCode's per-agent variants.
+
 ### Plugin Placement
 
 Keep OpenCode runtime plugins in `opencode.json` and the live `~/.config/opencode/opencode.json` `plugin` array. Keep TUI-only plugins in `~/.config/opencode/tui.json` instead of the repo runtime mirror unless a repo-managed TUI source file is explicitly introduced.
 
-Current TUI-only additions on this machine are `opencode-subagent-statusline@latest` and `@slkiser/opencode-quota@latest`. Preserve `notification_method: "auto"` when editing `tui.json`.
+Current TUI-only additions on this machine are `@slkiser/opencode-quota@latest` and `@ishaksebsib/opencode-tree@latest`. `opencode-subagent-statusline@latest` and `@thiagos1lva/opencode-token-usage-chart@latest` are disabled because OpenCode 1.14.50 reports an `OTUI_TREE_SITTER_WORKER_PATH` registration conflict when they load.
+
+### Session Poisoning Recovery
+
+If a `Retry Error` or OpenAI `server_error` loops on one OpenCode session while fresh `openai/gpt-5.5` `--pure` and plugin-loaded smoke tests succeed, treat it as session-local poisoning before changing model defaults. The observed failure mode was stale OpenAI encrypted reasoning parts plus retry-written incomplete turns in `~/.local/share/opencode/opencode.db`; reopening the same session replayed that state and produced new request IDs. Preserve request IDs, stop only processes attached to the affected session, back up the DB, remove poisoned rows only after inspection, and quarantine/archive the old session rather than repeatedly resuming it.
+
+### Rule Injection Plugin
+
+`opencode-rules@latest` is enabled for conditional markdown rule injection. Do not create broad unconditional repo rules that duplicate `AGENTS.md` or `instructions/opencode-global.md`; use `.opencode/rules/*.md` or `.opencode/rules/*.mdc` only for guidance that benefits from conditional matching by globs, keywords, tools, commands, project type, branch, OS, or CI state.
+
+### Terminal Progress Plugin
+
+`opencode-terminal-progress@latest` is enabled for terminal tab progress reporting in supported terminals. Do not set a repo-wide opt-out by default; users can disable it with `OPENCODE_TERMINAL_PROGRESS=0` in their own environment.
 
 ### Scheduler And Auth Plugins
 
 `opencode-scheduler@latest` is installed only as an inert scheduler plugin by default. Do not create, enable, or mutate scheduled jobs unless the user explicitly asks for scheduler job changes; start with read-only jobs and explicit timeouts when jobs are requested.
+
+`opencode-pty@latest` may run long-lived interactive sessions. Prefer explicit `timeoutSeconds`, `notifyOnExit`, and cleanup. Do not use PTY sessions to bypass normal command safety or secret-handling rules.
+
+`opencode-incomplete-resume.mjs` is the repo-managed tuned local copy of `ilgizar-valiullin/opencode-incomplete-resume-plugin` because upstream is source-only. Keep the local file structurally close to upstream `auto-continue.ts`; only tune the hardcoded constants. Current required constants: `MAX_CONTINUES = 3`, `COOLDOWN_MS = 2000`, and explicit-only `TRIGGER_PHRASES = [/TASK_STATUS:\s*INCOMPLETE/i]`. Do not add generic phrase triggers such as `next step`, `resume task`, or `continue working`.
+
+`octto@latest` and OCX/KDCO worktree components support branch/worktree-based exploration. Do not create, switch, delete, or auto-commit branches/worktrees unless the user explicitly asks for that workflow.
+
+OCX is a CLI/component manager, not an OpenCode runtime plugin. Do not add `ocx@latest` to repo-managed plugin arrays; use `ocx verify` for copied component integrity checks and keep profile creation or `ocx oc -p ...` launches behind explicit user intent.
+
+`opencode-wakatime@latest` reads credentials from `~/.wakatime.cfg` or `$WAKATIME_HOME/.wakatime.cfg`. Never commit or print WakaTime API keys, and do not place them in OpenCode config files.
 
 `opencode-claude-auth@latest` may reuse Claude Code credentials for Anthropic auth. Do not enable optional 1M context behavior or other model/runtime overrides by default; preserve the repo-managed model-neutral policy.
 
@@ -75,7 +105,7 @@ OpenCode remains a repo-MCP owner for Chrome DevTools. Do not install an additio
 
 ### Subagent Delegation
 
-When using OpenCode subagents or modes (`build`, `plan`, etc.), inherit the invoking primary agent and harness runtime settings. Do not add repo-managed subagent or mode model overrides.
+When using OpenCode subagents or modes, inherit the invoking primary agent and harness runtime settings. Do not add subagent or mode model overrides unless the user explicitly asks for that workflow.
 
 ### Dynamic Context Pruning
 
@@ -90,32 +120,36 @@ Keep DCP model-neutral: do not add `compress.modelMaxLimits` or `compress.modelM
 A custom `credential-guard.ts` plugin is deployed via `sync_agent_stack.py` to `~/.config/opencode/plugins/`. It blocks AI tools from accessing sensitive files and commands:
 
 **Blocked file patterns:**
+
 - `.env*` files (except `.env.example`, `.env.sample`, `.env.template`, `.env.test`)
 - `.pem`, `.p12`, `.pfx`, `.key` files
 - `credentials.json`, `auth.json`, `secrets.toml`
 - AWS, Docker, K8s, npm, SSH credential files
 
 **Blocked bash commands:**
+
 - File readers (`cat`, `less`, `head`, `tail`, etc.) on sensitive paths
 - Password extractors (`security find-password`, `gh auth token`, `gcloud auth print-access-token`, etc.)
 - Raw kubectl config dumps with `--raw`
 
-### Bypass for Legitimate Use
+### Scoped Bypass For Legitimate Use
 
-Set the environment variable to intentionally bypass the guard:
+Set the environment variable only for the specific command or short-lived shell that needs secret access:
 
 ```bash
-export OPENCODE_ALLOW_SECRET_FILES=1
+OPENCODE_ALLOW_SECRET_FILES=1 opencode
 ```
 
 **When to use:**
-- Secret rotation or `.env` file editing
-- Debugging credential-related issues
-- Working with test/sample credentials only
 
-**Add to your shell profile for persistence:**
+- Secret rotation or `.env` file editing requested by the user
+- Debugging credential-related issues with explicit user approval
+- Working with test/sample credentials that are safe to inspect
+
+**Cleanup:**
+
 ```bash
-echo 'export OPENCODE_ALLOW_SECRET_FILES=1' >> ~/.zshrc
+unset OPENCODE_ALLOW_SECRET_FILES
 ```
 
-> ⚠️ **Warning:** Only enable this when actively working with secrets. The guard exists to prevent accidental credential exposure in AI context windows.
+Do not add `OPENCODE_ALLOW_SECRET_FILES` to shell profiles, repo config, or committed files. The guard exists to prevent accidental credential exposure in AI context windows.

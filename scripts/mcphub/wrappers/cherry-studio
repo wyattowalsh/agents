@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+"${SCRIPT_DIR}/ensure-running.sh"
+if command -v cherry-studio >/dev/null 2>&1; then
+  exec "${MCPHUB_WRAPPED_CHERRY_STUDIO:-cherry-studio}" "$@"
+fi
+exec open -a "Cherry Studio" --args "$@"

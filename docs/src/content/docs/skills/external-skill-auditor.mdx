@@ -37,17 +37,17 @@ Audit third-party Agent Skills as trust-bearing assets before installing them gl
 | `$ARGUMENTS` | Mode | Action |
 |---|---|---|
 | Empty | `menu` | Show audit modes, required evidence, and outcome categories |
-| `triage <source>` | `triage` | Classify source reputation, registry signal, install syntax, and dedupe risk |
-| `inspect <path>` | `inspect` | Review local staged skill files for frontmatter, hooks, scripts, and command risk |
-| `commands <path>` | `commands` | Extract and classify shell commands, package-manager calls, and network operations |
-| `provenance <source>` | `provenance` | Check source URL, owner, license, commit/hash, and registry/source-list consistency |
-| `decision <source-or-path>` | `decision` | Produce install-now / inspect / keep-global / build-local / avoid recommendation |
-| `scan <path>` | `scan` | Run the local static scanner and interpret its JSON output |
+| `triage &lt;source&gt;` | `triage` | Classify source reputation, registry signal, install syntax, and dedupe risk |
+| `inspect &lt;path&gt;` | `inspect` | Review local staged skill files for frontmatter, hooks, scripts, and command risk |
+| `commands &lt;path&gt;` | `commands` | Extract and classify shell commands, package-manager calls, and network operations |
+| `provenance &lt;source&gt;` | `provenance` | Check source URL, owner, license, commit/hash, and registry/source-list consistency |
+| `decision &lt;source-or-path&gt;` | `decision` | Produce install-now / inspect / keep-global / build-local / avoid recommendation |
+| `scan &lt;path&gt;` | `scan` | Run the local static scanner and interpret its JSON output |
 | Natural language about external skills, registries, hooks, scripts, or importing | Auto-detect the closest mode |
 
 ## Critical Rules
 
-1. Require `npx skills add <source> --list` evidence before any install decision.
+1. Require `npx skills add &lt;source&gt; --list` evidence before any install decision.
 2. Inspect hooks, scripts, binaries, and command substitutions before approving promotion.
 3. Block source conflicts where registry metadata and source-list behavior disagree.
 4. Redact secret values while reporting credential-handling issues.

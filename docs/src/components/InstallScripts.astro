@@ -1,0 +1,96 @@
+---
+interface Props {
+  src: string;
+}
+
+const { src } = Astro.props;
+---
+
+<section class="install-scripts" data-install-scripts data-install-scripts-src={src}>
+  <p class="skill-catalog__count" data-install-scripts-status>Loading install scripts...</p>
+  <div data-install-scripts-root></div>
+</section>
+
+<script>
+  document.querySelectorAll('[data-install-scripts]').forEach((catalog) => {
+    const src = catalog.getAttribute('data-install-scripts-src');
+    const status = catalog.querySelector('[data-install-scripts-status]');
+    const root = catalog.querySelector<HTMLElement>('[data-install-scripts-root]');
+
+    const escapeHtml = (value: unknown) =>
+      String(value ?? '').replace(/[&<>"']/g, (char) => {
+        const escapes: Record<string, string> = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+        };
+        return escapes[char] ?? char;
+      });
+
+    const commandBlock = (command: string, title: string, note = '') => `
+      <section class="install-command">
+        <div class="install-command__header">
+          <div>
+            <p>${escapeHtml(title)}</p>
+            ${note ? `<span>${escapeHtml(note)}</span>` : ''}
+          </div>
+          <button type="button" class="install-command__copy">Copy</button>
+        </div>
+        <pre class="agents-scrollbar"><code>${escapeHtml(command)}</code></pre>
+      </section>`;
+
+    const groupedCommands = (title: string, commands: any[]) => {
+      if (!commands?.length) return '';
+      const body = commands
+        .map((item) => {
+          const skills = Array.isArray(item.skills) ? item.skills.slice().sort().join(', ') : '';
+          const note = [item.status, item.trustTier, skills ? `Installs: ${skills}` : ''].filter(Boolean).join(' | ');
+          return commandBlock(String(item.command ?? ''), String(item.source ?? title), note);
+        })
+        .join('');
+      return `<h2>${escapeHtml(title)}</h2>${body}`;
+    };
+
+    const hydrate = async () => {
+      if (!src || !root) return;
+      const response = await fetch(src);
+      const scripts = await response.json();
+      const customCommands = Array.isArray(scripts.customIndividual)
+        ? scripts.customIndividual.map((item: any) => item.command).filter(Boolean).join('\n')
+        : '';
+      root.innerHTML = [
+        '<h2>Custom Skills</h2>',
+        commandBlock(String(scripts.customAll ?? ''), 'Install all custom skills'),
+        '<h2>Reconcile Repo + Curated External Skills</h2>',
+        commandBlock([scripts.syncDryRun, scripts.syncApply].filter(Boolean).join('\n'), 'Preview or apply repo reconciliation'),
+        groupedCommands('Curated External Source Commands', scripts.externalCommands ?? []),
+        groupedCommands('Installed External Skill Commands', scripts.installedCommands ?? []),
+        '<h2>Individual Custom Skills</h2>',
+        commandBlock(customCommands, 'Install individual custom skills'),
+      ].join('');
+      if (status) status.textContent = 'Install scripts loaded.';
+      root.querySelectorAll<HTMLButtonElement>('.install-command__copy').forEach((button) => {
+        button.addEventListener('click', async () => {
+          const command = button.closest('.install-command')?.querySelector('code')?.textContent ?? '';
+          if (!command) return;
+          const previous = button.textContent;
+          try {
+            await navigator.clipboard.writeText(command);
+            button.textContent = 'Copied';
+          } catch {
+            button.textContent = 'Copy failed';
+          }
+          window.setTimeout(() => {
+            button.textContent = previous;
+          }, 1600);
+        });
+      });
+    };
+
+    hydrate().catch(() => {
+      if (status) status.textContent = 'Unable to load install scripts.';
+    });
+  });
+</script>

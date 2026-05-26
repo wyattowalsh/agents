@@ -1,0 +1,125 @@
+{
+	"skill_name": "draw-thing",
+	"evals": [
+		{
+			"id": "explicit-generate-current-cli",
+			"prompt": "/draw-thing generate a brass robot reading a field guide in cinematic light",
+			"expected_output": "Builds a current draw-things-cli generate command using the recommended Z Image Turbo or Qwen model, --cfg, an explicit --output path, and no stale direct flags.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/cli-reference.md"
+			],
+			"assertions": [
+				"Agent checks command -v draw-things-cli before generation.",
+				"Agent uses --cfg rather than --guidance-scale.",
+				"Agent includes an explicit --output file path.",
+				"Agent does not use unsupported stale flags such as --sampler or --batch-count.",
+				"Agent reports seed, model id, dimensions, steps, cfg, and output path."
+			]
+		},
+		{
+			"id": "implicit-natural-image-request",
+			"prompt": "Make me a clean poster that says LOCAL MODELS 2026",
+			"expected_output": "Auto-detects Generate mode and selects Qwen Image 2512 for text/layout quality with explicit quoted text in the prompt.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/prompt-patterns.md"
+			],
+			"assertions": [
+				"Agent routes a natural-language image description to Generate mode.",
+				"Agent selects qwen_image_2512_q8p.ckpt or explains why another current model is better.",
+				"Agent quotes the exact text LOCAL MODELS 2026 in the prompt.",
+				"Agent uses current prompt guidance rather than SDXL or SD1.5 legacy defaults."
+			]
+		},
+		{
+			"id": "setup-best-models",
+			"prompt": "/draw-thing setup best models for this Mac",
+			"expected_output": "Runs the model inventory helper, reports missing recommended pack models, and uses draw-things-cli models ensure commands without pruning legacy downloads.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/model-catalog.md",
+				"skills/draw-thing/scripts/model_inventory.py"
+			],
+			"assertions": [
+				"Agent runs uv run python skills/draw-thing/scripts/model_inventory.py --format json or equivalent.",
+				"Agent recommends only the approved current pack for the 32 GiB Apple Silicon rig.",
+				"Agent includes ensure commands for missing recommended models.",
+				"Agent distinguishes auxiliary text/VLM files and .part files from recommended generation models.",
+				"Agent does not delete or prune flux_1_schnell_q8p.ckpt, flux_1_fill_dev_q8p.ckpt, or flux_2_klein_4b_q6p.ckpt without approval."
+			]
+		},
+		{
+			"id": "stale-helper-partial-guard",
+			"prompt": "/draw-thing model llama_3.1_8b_instruct_q8p.ckpt.part should we use this as the best current model?",
+			"expected_output": "Explains that llama_3.1_8b_instruct_q8p.ckpt.part is an incomplete stale auxiliary artifact, not a current recommended Draw Things generation/media model for mid-May 2026.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/model-catalog.md",
+				"skills/draw-thing/scripts/model_inventory.py"
+			],
+			"assertions": [
+				"Agent does not recommend Llama 3.1 8B as a current best generation model.",
+				"Agent identifies the .part suffix as an incomplete download, not an installed model.",
+				"Agent keeps the recommended pack focused on Qwen Image 2512/Edit/Layered, Z Image, FLUX.2, HiDream, LTX 2.3, and Wan 2.2 as appropriate.",
+				"Agent does not delete the partial file without separate explicit approval."
+			]
+		},
+		{
+			"id": "edit-image-current-model",
+			"prompt": "/draw-thing edit ~/Pictures/portrait.png change the jacket to emerald velvet but preserve the face",
+			"expected_output": "Routes to Edit mode and builds an img2img command with Qwen Image Edit 2511, --image, --strength, --cfg, and --output.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/prompt-patterns.md"
+			],
+			"assertions": [
+				"Agent routes file path plus modification intent to Edit mode.",
+				"Agent selects qwen_image_edit_2511_q8p.ckpt by default.",
+				"Agent includes preservation constraints in the prompt.",
+				"Agent uses a conservative starting --strength and writes to a new output file."
+			]
+		},
+		{
+			"id": "media-current-scope",
+			"prompt": "/draw-thing video a paper boat drifting across a moonlit pond",
+			"expected_output": "Routes to Media mode and builds a short local media command using LTX 2.3 distilled q6p with --frames and an explicit video output path.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/workflow-recipes.md"
+			],
+			"assertions": [
+				"Agent no longer refuses video solely because it is video.",
+				"Agent selects ltx_2.3_22b_distilled_q6p.ckpt for first media attempts on this rig.",
+				"Agent keeps dimensions divisible by 32 and frame count divisible by 8 plus 1.",
+				"Agent includes an explicit .mov or .mp4 output path."
+			]
+		},
+		{
+			"id": "negative-control-ui-work",
+			"prompt": "/draw-thing design a React landing page UI for this product",
+			"expected_output": "Refuses or redirects because UI implementation belongs to frontend-designer, not draw-thing.",
+			"files": ["skills/draw-thing/SKILL.md"],
+			"assertions": [
+				"Agent does not generate UI implementation code under draw-thing.",
+				"Agent cites the NOT for UI implementation scope boundary.",
+				"Agent redirects to frontend-designer or asks whether the user wants an image mockup instead."
+			]
+		},
+		{
+			"id": "unsupported-flag-guard",
+			"prompt": "/draw-thing controlnet ~/Pictures/pose.png a knight in gold armor",
+			"expected_output": "Routes to Advanced mode, verifies current CLI support, and does not use stale --controls unless a verified config-file workflow is available.",
+			"files": [
+				"skills/draw-thing/SKILL.md",
+				"skills/draw-thing/references/controlnet-guide.md"
+			],
+			"assertions": [
+				"Agent recognizes ControlNet as an advanced workflow.",
+				"Agent checks draw-things-cli generate --help or cites the current CLI boundary.",
+				"Agent does not construct a command with unverified --controls JSON.",
+				"Agent asks for a verified config file or suggests app/import workflow if needed."
+			]
+		}
+	]
+}

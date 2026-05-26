@@ -19,6 +19,7 @@ from wagents.platforms.base import (
     SyncContext,
     enabled_registry_servers,
     load_json,
+    managed_registry_server_names,
     merge_hook_groups,
     merge_server_maps,
 )
@@ -131,5 +132,9 @@ class Adapter(PlatformAdapter):
         rendered = self.render_mcp(registry, fallbacks, harness="claude-desktop")["mcpServers"]
         data = load_json(CLAUDE_DESKTOP_CONFIG_PATH)
         existing = data.get("mcpServers", {})
-        data["mcpServers"] = merge_server_maps(rendered, existing)
+        data["mcpServers"] = merge_server_maps(
+            rendered,
+            existing,
+            managed_registry_server_names(registry, "claude-desktop"),
+        )
         ctx.write_json(CLAUDE_DESKTOP_CONFIG_PATH, data)

@@ -1,49 +1,42 @@
 {
-  "name": "agents",
-  "description": "Portable AI agent skills, subagents, MCP configuration, and shared instructions for coding agents.",
-  "author": {
-    "name": "Wyatt Walsh",
-    "email": "wyattowalsh@gmail.com",
-    "url": "https://github.com/wyattowalsh"
-  },
-  "homepage": "https://agents.w4w.dev",
-  "repository": "https://github.com/wyattowalsh/agents",
-  "license": "MIT",
-  "keywords": [
-    "agent-skills",
-    "ai-agents",
-    "agents",
-    "claude-code",
-    "codex",
-    "instructions",
-    "mcp",
-    "developer-tools"
-  ],
-  "skills": "./skills/",
-  "mcpServers": "./mcp.json",
-  "interface": {
-    "displayName": "Agents",
-    "shortDescription": "Portable skills, MCP configuration, and agent definitions for coding agents.",
-    "longDescription": "A cross-agent catalog of reusable skills, subagents, MCP configuration, shared instructions, and workflow guidance for coding agents.",
-    "developerName": "Wyatt Walsh",
-    "category": "Productivity",
-    "capabilities": [
-      "Skills",
-      "Agents",
-      "MCP",
-      "Workflow"
-    ],
-    "websiteURL": "https://agents.w4w.dev",
-    "privacyPolicyURL": "https://github.com/wyattowalsh/agents/blob/main/LICENSE",
-    "termsOfServiceURL": "https://github.com/wyattowalsh/agents/blob/main/LICENSE",
-    "defaultPrompt": [
-      "Use the Agents plugin to pick the right repo skill for this task.",
-      "Use an Agents skill to review this change for correctness and regressions."
-    ],
-    "brandColor": "#0F766E",
-    "logo": "./docs/src/assets/logo.webp",
-    "screenshots": [
-      "./docs/public/social-card.png"
-    ]
-  }
+	"name": "agents",
+	"description": "Portable AI agent skills, subagents, MCP configuration, and shared instructions for coding agents.",
+	"author": {
+		"name": "Wyatt Walsh",
+		"email": "wyattowalsh@gmail.com",
+		"url": "https://github.com/wyattowalsh"
+	},
+	"homepage": "https://agents.w4w.dev",
+	"repository": "https://github.com/wyattowalsh/agents",
+	"license": "MIT",
+	"keywords": [
+		"agent-skills",
+		"ai-agents",
+		"agents",
+		"claude-code",
+		"codex",
+		"instructions",
+		"mcp",
+		"developer-tools"
+	],
+	"skills": "./skills/",
+	"mcpServers": "./mcp.json",
+	"interface": {
+		"displayName": "Agents",
+		"shortDescription": "Portable skills, MCP configuration, and agent definitions for coding agents.",
+		"longDescription": "A cross-agent catalog of reusable skills, subagents, MCP configuration, shared instructions, and workflow guidance for coding agents.",
+		"developerName": "Wyatt Walsh",
+		"category": "Productivity",
+		"capabilities": ["Skills", "Agents", "MCP", "Workflow"],
+		"websiteURL": "https://agents.w4w.dev",
+		"privacyPolicyURL": "https://github.com/wyattowalsh/agents/blob/main/LICENSE",
+		"termsOfServiceURL": "https://github.com/wyattowalsh/agents/blob/main/LICENSE",
+		"defaultPrompt": [
+			"Use the Agents plugin to pick the right repo skill for this task.",
+			"Use an Agents skill to review this change for correctness and regressions."
+		],
+		"brandColor": "#0F766E",
+		"logo": "./docs/src/assets/brand/logo.webp",
+		"screenshots": ["./docs/public/social-card.png"]
+	}
 }

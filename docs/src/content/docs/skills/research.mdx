@@ -38,14 +38,14 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 |---|---|
 | Question or topic text (has verb or `?`) | **Investigate** — classify complexity, execute wave pipeline |
 | Vague input (\<5 words, no verb, no `?`) | **Intake** — ask 2-3 clarifying questions, then classify |
-| `check <claim>` or `verify <claim>` | **Fact-check** — verify claim against 3+ search engines |
-| `compare <A> vs <B> [vs <C>...]` | **Compare** — structured comparison with decision matrix output |
-| `survey <field or topic>` | **Survey** — landscape mapping, annotated bibliography |
-| `track <topic>` | **Track** — load prior journal, search for updates since last session |
+| `check &lt;claim&gt;` or `verify &lt;claim&gt;` | **Fact-check** — verify claim against 3+ search engines |
+| `compare &lt;A&gt; vs &lt;B&gt; [vs &lt;C&gt;...]` | **Compare** — structured comparison with decision matrix output |
+| `survey &lt;field or topic&gt;` | **Survey** — landscape mapping, annotated bibliography |
+| `track &lt;topic&gt;` | **Track** — load prior journal, search for updates since last session |
 | `resume [number or keyword]` | **Resume** — resume a saved research session |
-| `list [active\|domain\|tier]` | **List** — show journal metadata table |
+| `list [active\\|domain\\|tier]` | **List** — show journal metadata table |
 | `archive` | **Archive** — move journals older than 90 days |
-| `delete <N>` | **Delete** — delete journal N with confirmation |
+| `delete &lt;N&gt;` | **Delete** — delete journal N with confirmation |
 | `export [N]` | **Export** — render HTML dashboard for journal N (default: current) |
 | Empty | **Gallery** — show topic examples + "ask me anything" prompt |
 
@@ -65,7 +65,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 12. **Load ONE reference file at a time** — do not preload all references into context
 13. **Track mode must load prior journal before searching** — avoid re-researching what is already known
 14. **The synthesis is not a summary** — it must integrate findings into novel analysis, identify patterns across sources, and surface emergent insights not present in any single source
-15. **PreToolUse write guard is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`
+15. **PreToolUse write guard is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini\|copilot\|codex\|claude}/research/`
 16. **Stop hook must pass** — `verify.py stop` confirms the skill did not leave tracked research-source files dirty
 17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape
 
