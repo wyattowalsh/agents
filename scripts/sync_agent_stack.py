@@ -99,6 +99,7 @@ CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-dev
 MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
 MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
 MCPHUB_REMOTE_STDIO = REPO_ROOT / "scripts" / "mcphub" / "remote-stdio.sh"
+MCPHUB_CHROME_DEVTOOLS_LAUNCHER = REPO_ROOT / "scripts" / "mcphub" / "chrome-devtools-browser-url.sh"
 OPENCODE_LOCAL_PLUGIN_SPECS = [
     "./plugins/opencode-context-cache.mjs",
     "./plugins/octto-primary-inherit.mjs",
@@ -221,15 +222,8 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
         "args": ["-y", "@brave/brave-search-mcp-server"],
     },
     "chrome-devtools": {
-        "command": "npx",
-        "args": [
-            "-y",
-            "chrome-devtools-mcp@latest",
-            "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
-            "--headless=false",
-            "--no-usage-statistics",
-            "--no-performance-crux",
-        ],
+        "command": "bash",
+        "args": [str(MCPHUB_CHROME_DEVTOOLS_LAUNCHER)],
         "env": {
             "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": {"value": "1"},
             "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": {"value": "1"},

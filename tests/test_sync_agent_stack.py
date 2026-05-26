@@ -417,17 +417,12 @@ def test_render_opencode_mcp_renders_remote_servers():
     }
 
 
-def test_chrome_devtools_renderers_use_generic_headed_persistent_profile():
+def test_chrome_devtools_renderers_use_attached_browser_launcher():
     registry = {
         "servers": {
             "chrome-devtools": {
-                "command": "npx",
-                "args": [
-                    "-y",
-                    "chrome-devtools-mcp@latest",
-                    "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
-                    "--headless=false",
-                ],
+                "command": "bash",
+                "args": ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"],
                 "enabled": True,
                 "startup_timeout_sec": 90,
                 "timeout_ms": 600000,
@@ -446,14 +441,15 @@ def test_chrome_devtools_renderers_use_generic_headed_persistent_profile():
         }
     )
 
-    assert "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login" in rendered_text
-    assert "--headless=false" in rendered_text
+    assert "/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh" in rendered_text
     assert "--browserUrl" not in rendered_text
     assert "--browser-url" not in rendered_text
     assert "--autoConnect" not in rendered_text
     assert "--auto-connect" not in rendered_text
     assert "--wsEndpoint" not in rendered_text
     assert "--ws-endpoint" not in rendered_text
+    assert "--user-data-dir" not in rendered_text
+    assert "--headless" not in rendered_text
     assert "--isolated" not in rendered_text
 
 

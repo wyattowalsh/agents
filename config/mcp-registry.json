@@ -42,14 +42,9 @@
     },
     "chrome-devtools": {
       "transport": "stdio",
-      "command": "npx",
+      "command": "bash",
       "args": [
-        "-y",
-        "chrome-devtools-mcp@latest",
-        "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
-        "--headless=false",
-        "--no-usage-statistics",
-        "--no-performance-crux"
+        "/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"
       ],
       "env": {
         "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": {
