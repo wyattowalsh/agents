@@ -225,7 +225,7 @@ NORMALIZED_BASES: dict[str, dict[str, Any]] = {
         "args": [
             "-y",
             "chrome-devtools-mcp@latest",
-            "--isolated=true",
+            "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login",
             "--headless=false",
             "--no-usage-statistics",
             "--no-performance-crux",

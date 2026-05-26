@@ -181,15 +181,48 @@ mcphub_tunnel_enabled() {
   esac
 }
 
+mcphub_descendant_pids() {
+  local root_pid="$1"
+  [[ "${root_pid}" =~ ^[0-9]+$ ]] || return 0
+  ps -axo pid=,ppid= | awk -v root="${root_pid}" -v self="$$" -v shell_pid="${BASHPID}" '
+    {
+      pid[NR] = $1
+      ppid[NR] = $2
+    }
+    END {
+      seen[root] = 1
+      changed = 1
+      while (changed) {
+        changed = 0
+        for (i = 1; i <= NR; i++) {
+          if (seen[ppid[i]] && !seen[pid[i]]) {
+            seen[pid[i]] = 1
+            changed = 1
+          }
+        }
+      }
+      for (i = 1; i <= NR; i++) {
+        if (seen[pid[i]] && pid[i] != root && pid[i] != self && pid[i] != shell_pid) {
+          print pid[i]
+        }
+      }
+    }
+  '
+}
+
 mcphub_signal_process_tree() {
   local signal="$1"
   local root_pid="$2"
-  [[ -n "${root_pid}" ]] || return 0
-  local child_pid
-  while IFS= read -r child_pid; do
-    [[ -n "${child_pid}" ]] || continue
-    mcphub_signal_process_tree "${signal}" "${child_pid}"
-  done < <(pgrep -P "${root_pid}" 2>/dev/null || true)
+  [[ "${root_pid}" =~ ^[0-9]+$ ]] || return 0
+  if [[ "${root_pid}" == "$$" || "${root_pid}" == "${BASHPID}" ]]; then
+    return 0
+  fi
+  local descendants
+  descendants="$(mcphub_descendant_pids "${root_pid}")"
+  if [[ -n "${descendants}" ]]; then
+    # shellcheck disable=SC2086
+    kill "-${signal}" ${descendants} >/dev/null 2>&1 || true
+  fi
   kill "-${signal}" "${root_pid}" >/dev/null 2>&1 || true
 }
 

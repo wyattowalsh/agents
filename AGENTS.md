@@ -136,15 +136,15 @@ Keep OpenCode DCP model-neutral by default. Do not add OpenCode model fields or 
 
 ## 2.4 Chrome DevTools MCP
 
-For repo-managed harness configs, keep the `chrome-devtools` server on the generic isolated headed launch shape:
+For repo-managed harness configs, keep the `chrome-devtools` server on the generic headed persistent-profile launch shape:
 
-- `npx -y chrome-devtools-mcp@latest --isolated=true --headless=false --no-usage-statistics --no-performance-crux`
+- `npx -y chrome-devtools-mcp@latest --user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login --headless=false --no-usage-statistics --no-performance-crux`
 
-This is the shared default for managed surfaces in this repository across Codex, Cursor, GitHub Copilot CLI, Antigravity, OpenCode, Cherry Studio, and other MCP-only harnesses that consume the normalized MCP registry. It lets Chrome DevTools MCP launch a separate visible Chrome with a temporary non-default user data directory, rather than attaching to the user's normal Chrome profile or reusing a long-lived login profile. The managed config also sets `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1` and `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1` where the target config format supports fixed environment values.
+This is the shared default for managed surfaces in this repository across Codex, Cursor, GitHub Copilot CLI, Antigravity, OpenCode, Cherry Studio, and other MCP-only harnesses that consume the normalized MCP registry. It lets Chrome DevTools MCP launch a separate visible Chrome with a long-lived non-default user data directory, rather than attaching to the user's normal Chrome profile or using a temporary isolated profile that loses login state. The managed config also sets `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1` and `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1` where the target config format supports fixed environment values.
 
 Chrome DevTools has a one-owner-per-harness rule. Claude Code uses the upstream `ChromeDevTools/chrome-devtools-mcp` plugin when installed, Gemini CLI uses the upstream extension when installed, and VS Code/GitHub Copilot plugin-capable surfaces use the upstream source plugin where supported. Those plugin/extension owners suppress duplicate standalone `chrome-devtools` MCP projection for their harness-specific config. Repo MCP remains the fallback owner for MCP-only or UI-only harnesses.
 
-When a specific harness needs a local login-safe override, document that override in the platform-specific instruction layer instead of changing the shared repo default. Current Chrome remote-debugging-port guidance requires a non-default user data directory when launching such a browser, for example a local wrapper that starts a dedicated Chrome DevTools endpoint on `127.0.0.1:9333` with its own `--user-data-dir` and then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`.
+When a specific harness needs a local attached-browser override, document that override in the platform-specific instruction layer instead of changing the shared repo default. Current Chrome remote-debugging-port guidance requires a non-default user data directory when launching such a browser, for example a local wrapper that starts a dedicated Chrome DevTools endpoint on `127.0.0.1:9333` with its own `--user-data-dir` and then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`.
 
 ## 2.5 OpenCode Project Plugins
 

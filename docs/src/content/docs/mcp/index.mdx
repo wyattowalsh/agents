@@ -147,7 +147,7 @@ args = ["duckduckgo-mcp-server"]
 
 ## Chrome DevTools setup (representative client snippets)
 
-Use server key `chrome-devtools` with `chrome-devtools-mcp@latest`. The managed baseline passes `--isolated=true` so the MCP server launches Chrome with a temporary user data directory instead of attaching to the user's normal Chrome profile. Chrome opens lazily when the client invokes a browser-backed tool such as `list_pages`, `navigate_page`, or `take_screenshot`; restart the MCP client after config changes so it does not keep using an already-started server process.
+Use server key `chrome-devtools` with `chrome-devtools-mcp@latest`. The managed baseline passes a dedicated `--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login` so the MCP server launches Chrome with a persistent non-default profile instead of attaching to the user's normal Chrome profile or wiping login state with an isolated temporary profile. Chrome opens lazily when the client invokes a browser-backed tool such as `list_pages`, `navigate_page`, or `take_screenshot`; restart the MCP client after config changes so it does not keep using an already-started server process.
 
 #### Standard JSON clients (`mcpServers`)
 
@@ -158,7 +158,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
   "mcpServers": {
     "chrome-devtools": {
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login"]
     }
   }
 }
@@ -169,7 +169,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 ```toml
 [mcp_servers.chrome-devtools]
 command = "npx"
-args = ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
+args = ["-y", "chrome-devtools-mcp@latest", "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login"]
 ```
 
 #### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
@@ -180,7 +180,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"],
+      "args": ["-y", "chrome-devtools-mcp@latest", "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login"],
       "tools": ["*"]
     }
   }
@@ -194,7 +194,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--isolated=true"],
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest", "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login"],
       "enabled": true
     }
   }
@@ -209,7 +209,7 @@ args = ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--isolated=true"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--user-data-dir=/Users/ww/.cache/chrome-devtools-mcp-login"]
     }
   }
 }
