@@ -3,7 +3,7 @@ const baseSiteData = {
   "counts": {
     "agents": 8,
     "customSkills": 58,
-    "installedSkills": 293,
+    "installedSkills": 294,
     "mcpServers": 1
   },
   "distributionPaths": [
@@ -46,6 +46,13 @@ const baseSiteData = {
           "design-taste-frontend"
         ],
         "source": "Leonxlnx/taste-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "cli-just"
+        ],
+        "source": "PaulRBerg/agent-skills"
       },
       {
         "count": 6,
@@ -715,11 +722,12 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 25,
+        "count": 26,
         "skills": [
           "accessibility",
           "agents-sdk",
           "best-practices",
+          "cli-just",
           "cloudflare",
           "core-web-vitals",
           "durable-objects",
@@ -1278,6 +1286,15 @@ const baseSiteData = {
         "source": "Leonxlnx/taste-skill",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "skills": [
+          "cli-just"
+        ],
+        "source": "PaulRBerg/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",

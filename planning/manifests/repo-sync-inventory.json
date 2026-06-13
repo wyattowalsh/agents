@@ -330,6 +330,18 @@
 			"secret_handling": "not-secret-bearing"
 		},
 		{
+			"path": "/Users/ww/dev/projects/agents/.grok/config.toml",
+			"mode": "generated",
+			"location_class": "repo",
+			"source_tier": "generated-output",
+			"owner_change": "agents-c04-grok-harness",
+			"drift_policy": "generated",
+			"validation_evidence": [
+				"uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+			],
+			"secret_handling": "path-only"
+		},
+		{
 			"path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
 			"mode": "generated",
 			"location_class": "repo",
@@ -497,6 +509,18 @@
 			"owner_change": "agents-c04-openai-harness",
 			"drift_policy": "merged",
 			"validation_evidence": ["uv run wagents validate"],
+			"secret_handling": "path-only"
+		},
+		{
+			"path": "/Users/ww/.grok/config.toml",
+			"mode": "merged",
+			"location_class": "home",
+			"source_tier": "merged-live-config",
+			"owner_change": "agents-c04-grok-harness",
+			"drift_policy": "merged",
+			"validation_evidence": [
+				"uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+			],
 			"secret_handling": "path-only"
 		},
 		{

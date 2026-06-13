@@ -23,6 +23,7 @@ _BUILT_IN_ADAPTERS: dict[str, str] = {
     "copilot": "wagents.platforms.copilot",
     "cursor": "wagents.platforms.cursor",
     "gemini-cli": "wagents.platforms.gemini",
+    "grok": "wagents.platforms.grok",
     "github-copilot": "wagents.platforms.copilot",
     "opencode": "wagents.platforms.opencode",
     "vscode": "wagents.platforms.vscode",

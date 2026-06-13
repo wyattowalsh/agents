@@ -34,6 +34,12 @@ npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity
 Install `shieldcn-badges` from `jal-co/shieldcn` for local badge-generation workflows. The source at audited HEAD `55daa08d15c92dab7f443facd55a91b8c914c78d` exposes one skill, has MIT licensing, and no observed hooks, command substitutions, `allowed-tools`, or skill-local scripts; keep usage scoped to README/docs badge generation. Dynamic JSON badge patterns can embed arbitrary external JSON endpoints in documentation, so avoid adding badges for private or secret-bearing URLs. The command intentionally enumerates observed local Skills CLI adapters instead of using `--all`; current Skills CLI installs these adapters through the universal `~/.agents/skills/shieldcn-badges` root and symlinks Crush.
 
 ```bash
+npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
+```
+
+Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them.
+
+```bash
 npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
 ```
 

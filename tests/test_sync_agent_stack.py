@@ -26,6 +26,7 @@ from scripts.sync_agent_stack import (
     render_copilot_hooks,
     render_copilot_mcp,
     render_gemini_mcp,
+    render_grok_mcp_block,
     render_opencode_mcp,
     render_repo_mcp,
     render_standard_hooks,
@@ -52,7 +53,7 @@ def assert_opencode_model_matrix(payload: dict) -> None:
         assert agent["options"] == {"reasoningEffort": "xhigh"}
 
     providers = payload.get("provider", {})
-    assert set(providers).isdisjoint({"vercel", "opencode-go", "kimi-for-coding", "xai"})
+    assert set(providers).isdisjoint({"vercel", "opencode-go", "kimi-for-coding"})
     openai = providers["openai"]
     assert openai["options"]["reasoningEffort"] == "xhigh"
     assert openai["options"]["websearch_cited"] == {"model": "gpt-5.5"}
@@ -266,6 +267,18 @@ def test_repo_mcphub_projects_harness_safe_group_to_managed_harnesses():
     assert chatgpt["mcphub_server_fetch"]["args"] == ["https://mcp.w4w.dev/mcp/fetch"]
     assert all(chatgpt[name]["disabled"] is True for name in prefixed_server_names)
 
+    grok = render_grok_mcp_block(registry)
+    grok_payload = tomllib.loads(grok)
+    assert "[mcp_servers.mcphub_group_harness-safe]" in grok
+    assert 'url = "http://127.0.0.1:46683/mcp/harness-safe"' in grok
+    assert '"Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}"' in grok
+    assert "[mcp_servers.mcphub_all]" not in grok
+    assert sorted(name for name in grok_payload["mcp_servers"] if name.startswith("mcphub_server_")) == sorted(
+        prefixed_server_names
+    )
+    assert grok_payload["mcp_servers"]["mcphub_group_harness-safe"]["enabled"] is True
+    assert all(grok_payload["mcp_servers"][name]["enabled"] is False for name in prefixed_server_names)
+
 
 def test_repo_harness_safe_group_contains_approved_servers():
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
@@ -298,6 +311,8 @@ def test_repo_harness_safe_group_contains_approved_servers():
     assert registry["mcphub"]["clients"]["codex"]["included_groups"] == ["harness-safe"]
     assert registry["mcphub"]["clients"]["chatgpt"]["included_endpoint_kinds"] == ["group", "server"]
     assert registry["mcphub"]["clients"]["chatgpt"]["included_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["grok"]["included_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["grok"]["enabled_groups"] == ["harness-safe"]
     assert registry["mcphub"]["clients"]["opencode"]["included_endpoint_kinds"] == ["group", "server"]
     assert registry["mcphub"]["clients"]["opencode"]["included_groups"] == sorted(registry["mcphub"]["groups"])
     assert registry["mcphub"]["clients"]["opencode"]["enabled_groups"] == sorted(registry["mcphub"]["groups"])

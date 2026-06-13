@@ -150,7 +150,7 @@ When a specific harness needs a different local attached-browser override, docum
 
 `opencode.json` is the canonical repo source for project-level OpenCode configuration. Keep npm plugin entries in its `plugin` array pinned to the moving `@latest` dist-tag rather than semver ranges so OpenCode and Bun resolve the newest published plugin on install refresh.
 
-Keep OpenCode model defaults repo-managed: repo and live OpenCode config set root `model: "openai/gpt-5.5"`, root `small_model: "openai/gpt-5.4-mini"`, and built-in agents `build`, `plan`, `explore`, and `general` to `openai/gpt-5.5` with variant `xhigh`. Use the `model` plus `variant` fields for high-level thinking; do not invent composite model IDs such as `openai/gpt-5.5-high` unless the provider metadata defines that exact model. Do not generate OpenAI, Vercel, Kimi, xai, or other remote provider blocks unless a concrete runtime need is verified; OpenCode's built-in provider registry should own the normal model definitions (including Grok 4.3 / xai routes). The tooling strips vercel/opencode-go/kimi-for-coding/xai on every sync of opencode.json and ~/.config/opencode/opencode.json so that auto-written blocks with incompatible options do not persist. Preserve explicit local provider blocks such as LM Studio only when rendered from local provider policy. Do not define duplicate `gpt-5.5-fast` entries unless concrete runtime evidence requires them.
+Keep OpenCode model defaults repo-managed: repo and live OpenCode config set root `model: "openai/gpt-5.5"`, root `small_model: "openai/gpt-5.4-mini"`, and built-in agents `build`, `plan`, `explore`, and `general` to `openai/gpt-5.5` with variant `xhigh`. Use the `model` plus `variant` fields for high-level thinking; do not invent composite model IDs such as `openai/gpt-5.5-high` unless the provider metadata defines that exact model. Do not generate OpenAI, Vercel, Kimi, or other remote provider blocks unless a concrete runtime need is verified. OpenCode's built-in provider registry should own normal model definitions; the only repo-managed exception is a minimal `xai` provider block with empty `options` so the desktop model picker can select Grok routes without inheriting incompatible OpenAI options. The tooling strips vercel/opencode-go/kimi-for-coding on every sync of opencode.json and ~/.config/opencode/opencode.json, and sanitizes any `xai.options` back to `{}`. Preserve explicit local provider blocks such as LM Studio only when rendered from local provider policy. Do not define duplicate `gpt-5.5-fast` entries unless concrete runtime evidence requires them.
 
 If OpenCode reports a stale plugin version, refresh the relevant package under `~/.cache/opencode/packages/` with Bun or restart OpenCode to let its automatic plugin installer rebuild the cache. Do not replace `@latest` entries with fixed or ranged versions unless the user explicitly requests a temporary rollback.
 
@@ -253,6 +253,10 @@ make help                                    # Show all make targets
 ```
 
 > **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
+
+Curated third-party skills are tracked in `config/external-skills.md`. Add only
+reviewed `npx skills add <source> --skill <name> ...` commands there, then
+regenerate the public docs and README from source.
 
 ---
 

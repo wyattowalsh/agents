@@ -118,6 +118,10 @@
 			"mode": "generated"
 		},
 		{
+			"path": "/Users/ww/dev/projects/agents/.grok/config.toml",
+			"mode": "generated"
+		},
+		{
 			"path": "/Users/ww/dev/projects/agents/mcp.json",
 			"mode": "generated"
 		},
@@ -179,6 +183,10 @@
 		},
 		{
 			"path": "/Users/ww/.codex/config.toml",
+			"mode": "merged"
+		},
+		{
+			"path": "/Users/ww/.grok/config.toml",
 			"mode": "merged"
 		},
 		{

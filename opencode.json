@@ -784,6 +784,9 @@
           }
         }
       }
+    },
+    "xai": {
+      "options": {}
     }
   },
   "model": "openai/gpt-5.5",

@@ -262,6 +262,15 @@
 			"validation_command": "uv run pytest tests/test_distribution_metadata.py"
 		},
 		{
+			"path": "/Users/ww/dev/projects/agents/.grok/config.toml",
+			"expected_mode": "generated",
+			"current_state": "tracked-dirty",
+			"drift_risk": "medium",
+			"owner_change": "agents-c04-grok-harness",
+			"next_action": "regenerate-from-canonical-source",
+			"validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+		},
+		{
 			"path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
 			"expected_mode": "generated",
 			"current_state": "generated-live",
@@ -413,6 +422,15 @@
 			"owner_change": "agents-c04-openai-harness",
 			"next_action": "merge-with-redaction",
 			"validation_command": "uv run wagents validate"
+		},
+		{
+			"path": "/Users/ww/.grok/config.toml",
+			"expected_mode": "merged",
+			"current_state": "external-live",
+			"drift_risk": "high",
+			"owner_change": "agents-c04-grok-harness",
+			"next_action": "merge-with-redaction",
+			"validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
 		},
 		{
 			"path": "/Users/ww/.codex/hooks.json",

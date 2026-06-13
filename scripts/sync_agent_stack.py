@@ -44,6 +44,8 @@ CHATGPT_MCP_PATH = HOME / "Library" / "Application Support" / "ChatGPT" / "mcp.j
 CLAUDE_ENTRYPOINT_PATH = HOME / ".claude" / "CLAUDE.md"
 CODEX_ENTRYPOINT_PATH = HOME / ".codex" / "AGENTS.md"
 CODEX_CONFIG_PATH = HOME / ".codex" / "config.toml"
+GROK_CONFIG_PATH = HOME / ".grok" / "config.toml"
+GROK_CONFIG_REPO_PATH = REPO_ROOT / ".grok" / "config.toml"
 CODEX_HOOKS_PATH = HOME / ".codex" / "hooks.json"
 CODEX_SKILLS_DIR = HOME / ".codex" / "skills"
 COPILOT_ENTRYPOINT_PATH = HOME / ".copilot" / "copilot-instructions.md"
@@ -120,6 +122,8 @@ OPENCODE_DEPRECATED_RUNTIME_PLUGIN_KEYS = {
 
 CODEX_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 CODEX_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
+GROK_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
+GROK_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 HOOK_COMMAND_MARKER = "wagents-hook.py"
 MANAGED_HEADER = "<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->\n"
 TOML_TABLE_RE = re.compile(r"^\[(?P<header>[^\]]+)\]\s*$")
@@ -1081,6 +1085,84 @@ def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_grok_mcp_block(registry: dict[str, Any]) -> str:
+    lines = [GROK_MCP_BEGIN]
+    if mcphub_enabled(registry):
+        mode = mcphub_projection_mode(registry, "grok", "http")
+        token_env = mcphub_bearer_env_var(registry)
+        auth_header = f"Bearer ${{{token_env}}}"
+        for spec in mcphub_endpoint_specs(registry, "grok"):
+            lines.append("")
+            lines.append(f"[mcp_servers.{spec['name']}]")
+            if mode == "http":
+                lines.append(f"url = {toml_value(spec['url'])}")
+                lines.append(f'headers = {{ "Authorization" = {toml_value(auth_header)} }}')
+            else:
+                entry = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
+                lines.append(f"command = {toml_value(entry['command'])}")
+                lines.append(f"args = {toml_value(entry['args'])}")
+                lines.append(f"env = {toml_value(entry['env'])}")
+            startup_timeout_sec = int(mcphub_config(registry).get("startup_timeout_sec", 20))
+            tool_timeout_sec = int(mcphub_config(registry).get("tool_timeout_sec", 90))
+            lines.append(f"startup_timeout_sec = {toml_value(startup_timeout_sec)}")
+            lines.append(f"tool_timeout_sec = {toml_value(tool_timeout_sec)}")
+            lines.append(f"enabled = {toml_value(bool(spec['enabled']))}")
+        lines.append("")
+        lines.append(GROK_MCP_END)
+        return "\n".join(lines) + "\n"
+
+    for name, entry in enabled_registry_servers(registry, "grok").items():
+        lines.append("")
+        lines.append(f"[mcp_servers.{name}]")
+        lines.append(f"command = {toml_value(entry['command'])}")
+        lines.append(f"args = {toml_value(render_codex_args(entry))}")
+        lines.append(f"startup_timeout_sec = {toml_value(entry.get('startup_timeout_sec', 90))}")
+        if entry.get("timeout_ms"):
+            lines.append(f"tool_timeout_sec = {toml_value(max(1, int(entry['timeout_ms']) // 1000))}")
+        if entry.get("env"):
+            env_map = {key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()}
+            lines.append(f"env = {toml_value(env_map)}")
+    lines.append("")
+    lines.append(GROK_MCP_END)
+    return "\n".join(lines) + "\n"
+
+
+def remove_managed_grok_block(text: str) -> str:
+    begin = text.find(GROK_MCP_BEGIN)
+    if begin == -1:
+        return text
+    end = text.find(GROK_MCP_END, begin)
+    if end == -1:
+        return text[:begin]
+    end += len(GROK_MCP_END)
+    while end < len(text) and text[end] == "\n":
+        end += 1
+    prefix = text[:begin].rstrip("\n")
+    suffix = text[end:].lstrip("\n")
+    if prefix and suffix:
+        return prefix + "\n\n" + suffix
+    if prefix:
+        return prefix + "\n"
+    return suffix
+
+
+def render_grok_config(current: str, registry: dict[str, Any], *, repo_only: bool) -> str:
+    preserved = remove_managed_grok_block(current).rstrip()
+    managed = render_grok_mcp_block(registry).rstrip()
+    if repo_only:
+        return managed + "\n"
+    if preserved:
+        return preserved + "\n\n" + managed + "\n"
+    return managed + "\n"
+
+
+def merge_grok_config(ctx: SyncContext, registry: dict[str, Any]) -> None:
+    managed = render_grok_mcp_block(registry).rstrip() + "\n"
+    write_text(ctx, GROK_CONFIG_REPO_PATH, managed)
+    current = GROK_CONFIG_PATH.read_text(encoding="utf-8") if GROK_CONFIG_PATH.exists() else ""
+    write_text(ctx, GROK_CONFIG_PATH, render_grok_config(current, registry, repo_only=False))
+
+
 def render_hook_command(entry: dict[str, Any], harness: str, *, repo_relative: bool) -> str:
     repo_root = "." if repo_relative else str(REPO_ROOT)
     return str(entry["command"]).format(repo_root=repo_root, harness=harness)
@@ -1734,6 +1816,7 @@ def sync_repo_targets(
     generate_copilot_rule_instructions(ctx)
     generate_copilot_hooks(ctx, hook_registry)
     sync_platform_repo_target("opencode", ctx, registry, hook_registry, policy)
+    merge_grok_config(ctx, registry)
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
@@ -1969,7 +2052,7 @@ OPENCODE_RUNTIME_DEFAULT_KEYS = {
     "experimental",
     "permission",
 }
-OPENCODE_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding", "xai"}
+OPENCODE_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding"}
 OPENCODE_PYTHON_EXTENSIONS = [".py", ".pyi"]
 OPENCODE_DEFAULT_WATCHER_IGNORES = [
     ".git/**",
@@ -2054,7 +2137,7 @@ def opencode_runtime_defaults(policy: dict[str, Any]) -> dict[str, Any]:
     return {
         "model": "openai/gpt-5.5",
         "small_model": "openai/gpt-5.4-mini",
-        "provider": {"openai": opencode_openai_provider_defaults()},
+        "provider": {"openai": opencode_openai_provider_defaults(), "xai": {"options": {}}},
         "agent": {
             "build": {
                 "model": "openai/gpt-5.5",
@@ -2229,18 +2312,18 @@ def remove_repo_managed_opencode_providers(settings: dict[str, Any]) -> None:
         return
     for provider_id in OPENCODE_MANAGED_PROVIDER_IDS:
         providers.pop(provider_id, None)
-    # Aggressively keep *only* the providers we explicitly manage (openai) or
-    # explicitly add later (lmstudio in home sync). Any others (xai, opencode-go,
-    # vercel, future picker auto-entries for grok etc.) are fully stripped so their
-    # options cannot inherit websearch_cited/setCacheKey/reasoning* etc. and cause
-    # "invalid <provider> provider options".
+    # Aggressively keep only providers we explicitly manage or preserve: openai,
+    # lmstudio, and a minimal xai picker-support block. Any others are stripped so
+    # their options cannot inherit websearch_cited/setCacheKey/reasoning* etc. and
+    # cause "invalid <provider> provider options".
     for pid in list(providers.keys()):
-        if pid not in ("openai", "lmstudio"):
+        if pid not in ("openai", "lmstudio", "xai"):
             providers.pop(pid, None)
-    # Always ensure no "xai" provider block remains (desktop can auto-write one with
-    # copied openai options like websearch_cited/setCacheKey etc. when switching models
-    # to grok 4.3, causing "invalid xai provider options"). Strip it so built-in registry owns it.
-    providers.pop("xai", None)
+    # Sanitize xai if present (from desktop auto-write or other) to keep options clean.
+    # The clean xai block is now intentionally present in project and global configs to
+    # support desktop model picker for grok 4.3 without invalid options errors.
+    if "xai" in providers and isinstance(providers["xai"], dict):
+        providers["xai"]["options"] = {}
     if not providers:
         settings.pop("provider", None)
 
@@ -2794,6 +2877,7 @@ def sync_home_targets(
         ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
     )
     merge_codex_config(ctx, registry, policy, fallbacks)
+    merge_grok_config(ctx, registry)
     merge_codex_hooks(ctx, hook_registry)
     sync_generated_json_directory(
         ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)

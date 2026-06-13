@@ -84,6 +84,7 @@
           "github-copilot-cli",
           "opencode",
           "cursor",
+          "grok",
           "antigravity",
           "perplexity-desktop",
           "cherry-studio"
@@ -637,6 +638,7 @@
     "startup_timeout_sec": 20,
     "tool_timeout_sec": 90,
     "projection_adapters": {
+      "grok": "http",
       "opencode": "http"
     },
     "settings_path": "mcp/mcphub/mcp_settings.json",
@@ -854,6 +856,24 @@
       "codex": {
         "transport": "streamable-http",
         "auth": "bearer_token_env_var",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "grok": {
+        "transport": "http",
+        "auth": "authorization-header-env-template",
         "included_endpoint_kinds": [
           "group",
           "server"

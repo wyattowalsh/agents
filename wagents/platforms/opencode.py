@@ -88,7 +88,7 @@ _RUNTIME_DEFAULT_KEYS = {
     "experimental",
     "permission",
 }
-_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding", "xai"}
+_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding"}
 _PYTHON_EXTENSIONS = [".py", ".pyi"]
 _FORMATTER_DEFAULTS = {
     "biome": {
@@ -288,7 +288,7 @@ def _runtime_defaults(policy: dict[str, Any]) -> dict[str, Any]:
     return {
         "model": "openai/gpt-5.5",
         "small_model": "openai/gpt-5.4-mini",
-        "provider": {"openai": _openai_provider_defaults()},
+        "provider": {"openai": _openai_provider_defaults(), "xai": {"options": {}}},
         "agent": {
             "build": {
                 "model": "openai/gpt-5.5",
@@ -396,18 +396,18 @@ def _remove_repo_managed_providers(settings: dict[str, Any]) -> None:
         return
     for provider_id in _MANAGED_PROVIDER_IDS:
         providers.pop(provider_id, None)
-    # Aggressively keep *only* the providers we explicitly manage (openai) or
-    # explicitly add later (lmstudio in home sync). Any others (xai, opencode-go,
-    # vercel, future picker auto-entries for grok etc.) are fully stripped so their
-    # options cannot inherit websearch_cited/setCacheKey/reasoning* etc. and cause
-    # "invalid <provider> provider options".
+    # Aggressively keep only providers we explicitly manage or preserve: openai,
+    # lmstudio, and a minimal xai picker-support block. Any others are stripped so
+    # their options cannot inherit websearch_cited/setCacheKey/reasoning* etc. and
+    # cause "invalid <provider> provider options".
     for pid in list(providers.keys()):
-        if pid not in ("openai", "lmstudio"):
+        if pid not in ("openai", "lmstudio", "xai"):
             providers.pop(pid, None)
-    # Always ensure no "xai" provider block remains (desktop can auto-write one with
-    # copied openai options like websearch_cited/setCacheKey etc. when switching models
-    # to grok 4.3, causing "invalid xai provider options"). Strip it so built-in registry owns it.
-    providers.pop("xai", None)
+    # Sanitize xai if present (from desktop auto-write or other) to keep options clean.
+    # The clean xai block is now intentionally present in project and global configs to
+    # support desktop model picker for grok 4.3 without invalid options errors.
+    if "xai" in providers and isinstance(providers["xai"], dict):
+        providers["xai"]["options"] = {}
     if not providers:
         settings.pop("provider", None)
 

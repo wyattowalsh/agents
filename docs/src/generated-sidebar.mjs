@@ -2,7 +2,7 @@
 export const navLinks = [
   { label: 'Start Here', link: '/start-here/' },
   { label: 'Contributing', link: '/contributing/' },
-  { label: 'Skills', link: '/skills/', badge: '357' },
+  { label: 'Skills', link: '/skills/', badge: '358' },
   { label: 'Agents', link: '/agents/' },
   { label: 'MCP', link: '/mcp/', badge: '15' },
   { label: 'CLI', link: '/cli/' }
@@ -14,11 +14,11 @@ export default [
   { slug: 'contributing', label: 'Contributing' },
   {
     label: 'Skills',
-    badge: { text: '357', variant: 'tip' },
+    badge: { text: '358', variant: 'tip' },
     collapsed: true,
     items: [
       { slug: 'skills', label: 'Custom Skills (58)' },
-      { slug: 'skills/all', label: 'All Skills (357)' },
+      { slug: 'skills/all', label: 'All Skills (358)' },
       { slug: 'skills/install', label: 'Install Scripts' },
       {
         label: 'Custom (58)',
@@ -84,8 +84,8 @@ export default [
           { slug: 'skills/wargame' },
         ],
       },
-      { label: 'External Sources (299)', slug: 'external-skills' },
-      { label: 'Installed Raw (293)', slug: 'skills/installed' },
+      { label: 'External Sources (300)', slug: 'external-skills' },
+      { label: 'Installed Raw (294)', slug: 'skills/installed' },
     ],
   },
   {
