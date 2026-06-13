@@ -5,10 +5,12 @@ import argparse
 import hashlib
 import json
 import os
+import py_compile
 import re
 import shlex
 import subprocess
 import sys
+import tomllib
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -29,6 +31,48 @@ WRITE_TOOL_NAMES = {
 SHELL_TOOL_NAMES = {"bash", "run_shell_command", "shell", "terminal"}
 RESEARCH_PROMPT_RE = re.compile(r"(?i)(^|\s)(/research|agents:research|deep research|research skill)\b")
 URL_RE = re.compile(r"https?://[^\s\"'<>)]{6,}")
+PATH_KEY_NAMES = {
+    "file",
+    "file_path",
+    "filepath",
+    "filename",
+    "path",
+    "target",
+    "target_file",
+}
+PATH_LIST_KEY_NAMES = {"files", "file_paths", "filepaths", "paths", "target_files"}
+SECRET_BASENAMES = {
+    ".env",
+    ".env.local",
+    ".env.production",
+    ".env.staging",
+    ".env.development",
+    ".env.test",
+    "credentials.json",
+    "secrets.json",
+    "service-account.json",
+    "token.pickle",
+}
+PRIVATE_KEY_BASENAMES = {"id_rsa", "id_ed25519", "id_ecdsa", "id_dsa"}
+PRIVATE_KEY_SUFFIXES = {".pem", ".key", ".p12", ".pfx"}
+LOCKFILE_RE = re.compile(
+    r"(?i)(^|/)(package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lockb|uv\.lock|poetry\.lock|cargo\.lock|gemfile\.lock)$"
+)
+STRONG_CODE_WORK_CLAIM_RE = re.compile(
+    r"(?i)\b(implemented|fixed|refactored|patched|wired|ran|validated|verified|tests?\s+pass(?:ed)?)\b"
+)
+GENERIC_CHANGE_CLAIM_RE = re.compile(r"(?i)\b(updated|modified|changed|added|removed|created)\b")
+CODE_CONTEXT_RE = re.compile(
+    r"(?i)(`[^`]+`|(?:^|\s)[\w./-]+\.(?:py|json|toml|md|yaml|yml|js|jsx|ts|tsx|sh|rs|go|rb|java|kt|swift|lock)\b|\b(code|repo|repository|file|files|path|paths|diff|hook|hooks|config|script|test|tests|docs?|readme|openspec|registry|lockfile)\b)"
+)
+VALIDATION_EVIDENCE_RE = re.compile(
+    r"(?i)\b(test(?:ed|s)?|pytest|unittest|vitest|npm\s+test|pnpm\s+test|uv\s+run|validate(?:d|ion)?|lint(?:ed)?|typecheck|mypy|ruff|py_compile|build|git\s+diff\s+--check|not\s+run|not\s+executed|could\s+not\s+run|couldn't\s+run|unable\s+to\s+run|skipped)\b"
+)
+TRUTH_GATE_SKIP_RE = re.compile(
+    r"(?i)\b(blocked|not\s+complete|not\s+completed|unable\s+to\s+complete|no\s+code\s+changes)\b"
+)
+QUALITY_FILE_LIMIT = 1_000_000
+QUALITY_PATH_LIMIT = 8
 
 
 @dataclass
@@ -84,12 +128,22 @@ def _detect_harness(payload: dict[str, Any], requested: str) -> str:
 def _normalize(payload: dict[str, Any], harness: str) -> NormalizedPayload:
     tool_args = _loads_object(payload.get("toolArgs"))
     tool_input = _loads_object(payload.get("tool_input")) or tool_args
-    tool_name = str(payload.get("tool_name") or payload.get("toolName") or payload.get("original_request_name") or "")
+    tool_name = str(
+        payload.get("tool_name")
+        or payload.get("toolName")
+        or payload.get("original_request_name")
+        or payload.get("tool")
+        or payload.get("request_tool_name")
+        or ""
+    )
     command = str(
         tool_input.get("command")
         or tool_input.get("cmd")
         or tool_input.get("shell_command")
         or tool_args.get("command")
+        or payload.get("command")
+        or payload.get("cmd")
+        or payload.get("shell_command")
         or ""
     )
     file_path = str(
@@ -99,6 +153,9 @@ def _normalize(payload: dict[str, Any], harness: str) -> NormalizedPayload:
         or tool_input.get("target_file")
         or tool_args.get("file_path")
         or tool_args.get("path")
+        or payload.get("file_path")
+        or payload.get("filePath")
+        or payload.get("path")
         or ""
     )
     return NormalizedPayload(
@@ -197,18 +254,20 @@ def _emit_json(data: dict[str, Any]) -> int:
     return 0
 
 
-def _additional_context(payload: NormalizedPayload, message: str) -> int:
+def _additional_context(
+    payload: NormalizedPayload, message: str, policy_id: str = "research-prompt-triage-context"
+) -> int:
     if payload.harness == "github-copilot":
         return 0
-    _record_decision(payload, "research-prompt-triage-context", "context", message)
+    _record_decision(payload, policy_id, "context", message)
     if payload.harness == "gemini-cli":
         return _emit_json({"hookSpecificOutput": {"additionalContext": message}, "suppressOutput": True})
     event = payload.event or "UserPromptSubmit"
     return _emit_json({"hookSpecificOutput": {"hookEventName": event, "additionalContext": message}})
 
 
-def _deny(payload: NormalizedPayload, reason: str) -> int:
-    _record_decision(payload, "policy-deny", "deny", reason)
+def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny") -> int:
+    _record_decision(payload, policy_id, "deny", reason)
     if payload.harness == "github-copilot":
         return _emit_json({"permissionDecision": "deny", "permissionDecisionReason": reason})
     if payload.harness == "codex":
@@ -227,9 +286,21 @@ def _deny(payload: NormalizedPayload, reason: str) -> int:
     return 2
 
 
+def _codex_permission_deny(payload: NormalizedPayload, reason: str, policy_id: str) -> int:
+    _record_decision(payload, policy_id, "deny", reason)
+    return _emit_json(
+        {
+            "hookSpecificOutput": {
+                "hookEventName": "PermissionRequest",
+                "decision": {"behavior": "deny", "message": reason},
+            }
+        }
+    )
+
+
 def _stop_retry(payload: NormalizedPayload, reason: str) -> int:
     if payload.harness == "codex":
-        return _emit_json({"continue": False, "stopReason": reason, "systemMessage": reason})
+        return _emit_json({"decision": "block", "reason": reason})
     if payload.harness == "gemini-cli":
         return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     print(reason, file=sys.stderr)
@@ -366,6 +437,325 @@ def _shell_writes_source(command: str, cwd: str) -> bool:
     return False
 
 
+def _json_text(value: Any) -> str:
+    try:
+        return json.dumps(value, ensure_ascii=True, sort_keys=True)
+    except TypeError:
+        return str(value)
+
+
+def _walk_path_values(value: Any) -> list[str]:
+    paths: list[str] = []
+    if isinstance(value, dict):
+        for key, child in value.items():
+            key_normalized = str(key).replace("-", "_").lower()
+            if key_normalized in PATH_KEY_NAMES and isinstance(child, str):
+                paths.append(child)
+            elif key_normalized in PATH_LIST_KEY_NAMES and isinstance(child, list):
+                paths.extend(str(item) for item in child if isinstance(item, str))
+            paths.extend(_walk_path_values(child))
+    elif isinstance(value, list):
+        for child in value:
+            paths.extend(_walk_path_values(child))
+    return paths
+
+
+def _patch_paths(text: str) -> list[str]:
+    paths: list[str] = []
+    patterns = [
+        r"^\*\*\* (?:Add|Update|Delete) File: (?P<path>.+)$",
+        r"^\+\+\+ b/(?P<path>.+)$",
+        r"^--- a/(?P<path>.+)$",
+    ]
+    for line in text.splitlines():
+        for pattern in patterns:
+            match = re.match(pattern, line)
+            if match:
+                paths.append(match.group("path").strip())
+                break
+    return paths
+
+
+def _candidate_paths(payload: NormalizedPayload) -> list[str]:
+    paths = []
+    if payload.file_path:
+        paths.append(payload.file_path)
+    paths.extend(_walk_path_values(payload.tool_input))
+    paths.extend(_walk_path_values(payload.raw))
+    for patch_value in (payload.tool_input.get("patch"), payload.raw.get("patch")):
+        if isinstance(patch_value, str):
+            paths.extend(_patch_paths(patch_value))
+    raw_text = _json_text(payload.raw)
+    paths.extend(_patch_paths(raw_text))
+    deduped: list[str] = []
+    for path in paths:
+        cleaned = path.strip().strip("'\"")
+        if cleaned and cleaned not in deduped:
+            deduped.append(cleaned)
+    return deduped
+
+
+def _path_block_reason(path: str) -> str | None:
+    cleaned = path.strip().strip("'\"")
+    if not cleaned:
+        return None
+    if re.search(r"(^|/)\.\.(/|$)", cleaned):
+        return f"Path traversal detected: {cleaned}"
+    parts = Path(cleaned).parts
+    if ".git" in parts:
+        return f"Protected git internal path: {cleaned}"
+    basename = Path(cleaned).name
+    if basename in SECRET_BASENAMES:
+        return f"Protected secret-bearing file: {cleaned}"
+    if basename in PRIVATE_KEY_BASENAMES or Path(cleaned).suffix.lower() in PRIVATE_KEY_SUFFIXES:
+        return f"Protected private key file: {cleaned}"
+    if LOCKFILE_RE.search(cleaned):
+        return f"Lock files should not be edited directly: {cleaned}"
+    return None
+
+
+def _protected_payload_reason(payload: NormalizedPayload) -> str | None:
+    for path in _candidate_paths(payload):
+        reason = _path_block_reason(path)
+        if reason:
+            return reason
+    if _tool_name(payload) in SHELL_TOOL_NAMES and payload.command:
+        targets = [
+            *_redirection_targets(payload.command),
+            *_tee_targets(_split_shell(payload.command)),
+            *_copy_move_targets(_split_shell(payload.command)),
+        ]
+        for target in targets:
+            reason = _path_block_reason(target)
+            if reason:
+                return reason
+        if re.search(r"(^|\s)(sed|perl)\s+-i\b", payload.command):
+            for token in _split_shell(payload.command):
+                reason = _path_block_reason(token)
+                if reason:
+                    return reason
+    return None
+
+
+def _destructive_shell_reason(command: str) -> str | None:
+    if not command:
+        return None
+    checks = [
+        (
+            r"(sudo\s+)?rm\s+(-[a-zA-Z]*r[a-zA-Z]*f|--recursive\s+--force|-[a-zA-Z]*f[a-zA-Z]*r)\s+(/|~|\$HOME|/Users|/System|/Library|/etc|/var|/usr|\.\.|\./?$)",
+            "rm -rf on a critical path is blocked.",
+        ),
+        (r"\bgit\s+reset\s+--hard\b", "git reset --hard is blocked because it destroys uncommitted work."),
+        (r"\bgit\s+clean\s+-[a-zA-Z]*f", "git clean -f is blocked because it permanently removes untracked files."),
+        (r"\b(curl|wget)\b.*\|\s*(ba)?sh\b", "Piping a remote script to shell is blocked."),
+        (
+            r"\bgit\s+push\b(?=.*\s(--force(\s|$)|-f(\s|$)))(?=.*\s(main|master)(\s|$))(?!.*--force-with-lease)",
+            "Force push to main/master is blocked. Use --force-with-lease after review.",
+        ),
+    ]
+    for pattern, reason in checks:
+        if re.search(pattern, command):
+            return reason
+    return None
+
+
+def _git_session_context(cwd: str) -> str:
+    repo_cwd = cwd or str(REPO_ROOT)
+    proc = subprocess.run(
+        ["git", "status", "--short", "--branch"],
+        cwd=repo_cwd,
+        text=True,
+        capture_output=True,
+        timeout=2,
+        check=False,
+    )
+    if proc.returncode != 0:
+        return f"cwd={repo_cwd}; git=unavailable"
+    lines = proc.stdout.splitlines()
+    branch = lines[0].removeprefix("## ") if lines else "unknown"
+    dirty_count = max(len(lines) - 1, 0)
+    return f"cwd={repo_cwd}; branch={branch}; dirty_paths={dirty_count}"
+
+
+def _display_paths(paths: list[str], limit: int = 5) -> str:
+    if not paths:
+        return "none detected"
+    shown = paths[:limit]
+    suffix = "" if len(paths) <= limit else f"; +{len(paths) - limit} more"
+    return ", ".join(shown) + suffix
+
+
+def _truncate(text: str, limit: int = 400) -> str:
+    compact = " ".join(text.strip().split())
+    if len(compact) <= limit:
+        return compact
+    return compact[: limit - 3] + "..."
+
+
+def _repo_root_for_cwd(cwd: str) -> Path:
+    start = Path(cwd or os.getcwd()).expanduser()
+    proc = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        cwd=start,
+        text=True,
+        capture_output=True,
+        timeout=2,
+        check=False,
+    )
+    if proc.returncode == 0 and proc.stdout.strip():
+        return Path(proc.stdout.strip()).resolve(strict=False)
+    return start.resolve(strict=False)
+
+
+def _quality_paths(payload: NormalizedPayload) -> tuple[Path, list[Path]]:
+    repo_root = _repo_root_for_cwd(payload.cwd)
+    paths: list[Path] = []
+    for raw_path in _candidate_paths(payload):
+        candidate = Path(raw_path).expanduser()
+        if not candidate.is_absolute():
+            candidate = repo_root / candidate
+        resolved = candidate.resolve(strict=False)
+        if resolved != repo_root and repo_root not in resolved.parents:
+            continue
+        if resolved not in paths:
+            paths.append(resolved)
+        if len(paths) >= QUALITY_PATH_LIMIT:
+            break
+    return repo_root, paths
+
+
+def _run_text_parse_check(label: str, path: Path) -> str | None:
+    try:
+        if path.stat().st_size > QUALITY_FILE_LIMIT:
+            return f"skip {label}: {path.name} is larger than {QUALITY_FILE_LIMIT} bytes"
+        text = path.read_text(encoding="utf-8")
+        if label == "json":
+            json.loads(text)
+        elif label == "toml":
+            tomllib.loads(text)
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, tomllib.TOMLDecodeError) as exc:
+        return f"{label} failed for {path.name}: {_truncate(str(exc))}"
+    return None
+
+
+def _run_fast_quality_checks(repo_root: Path, paths: list[Path]) -> tuple[list[str], list[str]]:
+    passed: list[str] = []
+    failures: list[str] = []
+    existing_files = [path for path in paths if path.exists() and path.is_file()]
+    relative_paths = [str(path.relative_to(repo_root)) for path in paths if path.exists() or path.parent.exists()]
+    if relative_paths:
+        proc = subprocess.run(
+            ["git", "diff", "--check", "--", *relative_paths],
+            cwd=repo_root,
+            text=True,
+            capture_output=True,
+            timeout=5,
+            check=False,
+        )
+        if proc.returncode == 0:
+            passed.append("git diff --check")
+        elif proc.returncode != 129:
+            failures.append(f"git diff --check failed: {_truncate(proc.stderr or proc.stdout)}")
+    for path in existing_files:
+        suffix = path.suffix.lower()
+        if suffix == ".json":
+            failure = _run_text_parse_check("json", path)
+            failures.append(failure) if failure else passed.append(f"json:{path.name}")
+        elif suffix == ".toml":
+            failure = _run_text_parse_check("toml", path)
+            failures.append(failure) if failure else passed.append(f"toml:{path.name}")
+        elif suffix == ".py":
+            try:
+                py_compile.compile(str(path), cfile=os.devnull, doraise=True)
+            except (OSError, py_compile.PyCompileError) as exc:
+                failures.append(f"py_compile failed for {path.name}: {_truncate(str(exc))}")
+            else:
+                passed.append(f"py_compile:{path.name}")
+    return passed, failures
+
+
+def _last_assistant_message(payload: NormalizedPayload) -> str:
+    for key in ("last_assistant_message", "lastAssistantMessage", "assistant_message", "message"):
+        value = payload.raw.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+    return ""
+
+
+def _has_code_work_claim(message: str) -> bool:
+    if STRONG_CODE_WORK_CLAIM_RE.search(message):
+        return True
+    return bool(GENERIC_CHANGE_CLAIM_RE.search(message) and CODE_CONTEXT_RE.search(message))
+
+
+def _policy_codex_session_start_context(payload: NormalizedPayload) -> int:
+    message = (
+        f"Codex session context: {_git_session_context(payload.cwd)}; managed hooks source=config/hook-registry.json."
+    )
+    return _additional_context(payload, message, "codex-session-start-context")
+
+
+def _policy_codex_destructive_shell_guard(payload: NormalizedPayload) -> int:
+    if _tool_name(payload) not in SHELL_TOOL_NAMES and not payload.command:
+        return 0
+    reason = _destructive_shell_reason(payload.command)
+    if reason:
+        return _deny(payload, reason, "codex-destructive-shell-guard")
+    return 0
+
+
+def _policy_codex_protected_file_guard(payload: NormalizedPayload) -> int:
+    reason = _protected_payload_reason(payload)
+    if reason:
+        return _deny(payload, reason, "codex-protected-file-guard")
+    return 0
+
+
+def _policy_codex_permission_request_guard(payload: NormalizedPayload) -> int:
+    reason = _destructive_shell_reason(payload.command) or _protected_payload_reason(payload)
+    if reason:
+        return _codex_permission_deny(payload, reason, "codex-permission-request-guard")
+    return 0
+
+
+def _policy_codex_post_tool_verify_context(payload: NormalizedPayload) -> int:
+    repo_root, quality_paths = _quality_paths(payload)
+    paths = [str(path.relative_to(repo_root)) for path in quality_paths] or _candidate_paths(payload)
+    if not paths and not payload.command:
+        return 0
+    passed, failures = _run_fast_quality_checks(repo_root, quality_paths) if quality_paths else ([], [])
+    quality_context = ""
+    if failures:
+        quality_context = f" Fast quality checks found issues: {'; '.join(failures[:3])}."
+    elif passed:
+        quality_context = f" Fast quality checks passed: {', '.join(passed[:5])}."
+    elif paths:
+        quality_context = " No lightweight file-type checks were available for these paths."
+    message = (
+        "Codex post-edit quality context: inspect the diff and run focused validation before final claims; "
+        f"touched paths: {_display_paths(paths)}.{quality_context}"
+    )
+    return _additional_context(payload, message, "codex-post-tool-verify-context")
+
+
+def _policy_codex_stop_truth_gate(payload: NormalizedPayload) -> int:
+    if payload.stop_hook_active:
+        return 0
+    message = _last_assistant_message(payload)
+    if not message or TRUTH_GATE_SKIP_RE.search(message):
+        return 0
+    if not _has_code_work_claim(message):
+        return 0
+    if VALIDATION_EVIDENCE_RE.search(message):
+        return 0
+    reason = (
+        "Stop-time truth gate: the final message claims code or repo work changed, "
+        "but it does not cite validation evidence or explicitly say validation was not run. "
+        "Do one focused verification pass, then final-answer with touched files and validation status."
+    )
+    return _stop_retry(payload, reason)
+
+
 def _policy_dangerous_shell_guard(payload: NormalizedPayload) -> int:
     if not _state_active(payload) or _tool_name(payload) not in SHELL_TOOL_NAMES:
         return 0
@@ -442,6 +832,12 @@ def _policy_stop_verifier(payload: NormalizedPayload) -> int:
 
 
 POLICIES = {
+    "codex-session-start-context": _policy_codex_session_start_context,
+    "codex-destructive-shell-guard": _policy_codex_destructive_shell_guard,
+    "codex-protected-file-guard": _policy_codex_protected_file_guard,
+    "codex-permission-request-guard": _policy_codex_permission_request_guard,
+    "codex-post-tool-verify-context": _policy_codex_post_tool_verify_context,
+    "codex-stop-truth-gate": _policy_codex_stop_truth_gate,
     "research-prompt-triage-context": _policy_prompt_triage,
     "research-readonly-write-guard": _policy_readonly_write_guard,
     "research-dangerous-shell-guard": _policy_dangerous_shell_guard,

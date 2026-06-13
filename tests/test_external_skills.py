@@ -29,10 +29,17 @@ npx skills add openai/skills --skill security-best-practices -y -g -a codex
     assert by_name["accessibility"].status == "install-now-after-trust-gate"
     assert by_name["accessibility"].target_agents == ("codex", "claude-code")
     assert by_name["accessibility"].provenance_status == "verified-install-command"
+    assert (
+        by_name["accessibility"].promotion_policy == "Install only after trust gate; audit again before repo promotion."
+    )
+    assert "named `--skill` selectors" in by_name["accessibility"].provenance_evidence
     assert by_name["security-best-practices"].trust_tier == "needs-inspection"
+    assert by_name["security-best-practices"].promotion_policy.startswith("Inspect source")
     assert by_name["find-skills"].status == "global-only-or-avoid"
     assert by_name["find-skills"].provenance_status == "explicit-unresolved"
     assert by_name["find-skills"].source_url == "https://github.com/vercel-labs/skills"
+    assert by_name["find-skills"].risk_notes == "duplicate of `discover-skills`."
+    assert by_name["find-skills"].promotion_policy.startswith("Keep global-only")
 
 
 def test_parse_external_skill_entries_supports_wildcards():
@@ -53,6 +60,7 @@ npx skills add github:wyattowalsh/agents --skill "*" -y -g -a claude-code
     assert entry.install_source == "github:wyattowalsh/agents"
     assert entry.selector_mode == "wildcard"
     assert entry.provenance_status == "verified-install-command"
+    assert "wildcard" in entry.provenance_evidence
 
 
 def test_parse_external_skill_entries_supports_source_specs():
@@ -73,6 +81,7 @@ npx skills add docs.stripe.com@stripe-best-practices -y -g -a claude-code
     assert entry.install_source == "docs.stripe.com@stripe-best-practices"
     assert entry.selector_mode == "source-spec"
     assert entry.source_url == "https://docs.stripe.com"
+    assert "source-embedded skill selector" in entry.provenance_evidence
 
 
 def test_parse_external_skill_entries_keeps_explicit_unresolved_rows():
@@ -90,6 +99,37 @@ def test_parse_external_skill_entries_keeps_explicit_unresolved_rows():
     assert entry.source == "docs.stripe.com"
     assert entry.provenance_status == "explicit-unresolved"
     assert entry.unresolved_reason == "registry syntax and provenance still need verification."
+    assert entry.risk_notes == "registry syntax and provenance still need verification."
+
+
+def test_parse_external_skill_entries_attaches_adjacent_audit_notes_to_command_entries():
+    entries = parse_external_skill_entries(
+        """
+## Inspect Then Install
+
+```bash
+npx skills add example/skills --skill demo --skill second -y -g -a codex
+```
+
+Install only after reviewing hooks and scripts. Avoid private credential-bearing URLs.
+"""
+    )
+
+    by_name = {entry.name: entry for entry in entries}
+
+    for name in ("demo", "second"):
+        assert (
+            by_name[name].notes
+            == "Install only after reviewing hooks and scripts. Avoid private credential-bearing URLs."
+        )
+        assert (
+            by_name[name].risk_notes
+            == "Install only after reviewing hooks and scripts. Avoid private credential-bearing URLs."
+        )
+        assert "named `--skill` selectors" in by_name[name].provenance_evidence
+        assert (
+            by_name[name].promotion_policy == "Inspect source, hooks, scripts, credentials, and dedupe before install."
+        )
 
 
 def test_parse_external_skill_entries_dedupes_by_source_and_name_preferring_verified():

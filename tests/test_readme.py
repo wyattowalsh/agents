@@ -40,6 +40,9 @@ def test_readme_contains_skills_table(tmp_repo):
     assert "wagents skills search <query>" in readme_text
     assert "wagents openspec doctor" in readme_text
     assert "wagents openspec validate" in readme_text
+    assert "## 🤝 Contributing" in readme_text
+    assert "[CONTRIBUTING.md](CONTRIBUTING.md)" in readme_text
+    assert "[SECURITY.md](SECURITY.md)" in readme_text
     assert "https://github.com/anomalyco/opencode" in readme_text
 
 
@@ -115,5 +118,6 @@ def test_readme_empty_repo_produces_valid_output(tmp_repo):
     assert 'alt="CI"' in readme_text
     assert "repo-level `agents/` directory is reserved for future bundled agent definitions" in readme_text
     assert "## 🛠️ Development" in readme_text
+    assert "## 🤝 Contributing" in readme_text
     assert "## 📚 Documentation" in readme_text
     assert "## 📜 License" in readme_text

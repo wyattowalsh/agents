@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 import shlex
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 
 import wagents
@@ -24,6 +24,9 @@ class ExternalSkillEntry:
     target_agents: tuple[str, ...]
     source_url: str
     notes: str
+    risk_notes: str = ""
+    promotion_policy: str = ""
+    provenance_evidence: str = ""
     source_path: str = "config/external-skills.md"
     selector_mode: str = "named"
     unresolved_reason: str = ""
@@ -115,11 +118,24 @@ def parse_external_skill_entries(markdown: str) -> list[ExternalSkillEntry]:
     current_status: tuple[str, str] | None = None
     in_fence = False
     command_lines: list[str] = []
+    pending_entries: list[ExternalSkillEntry] = []
+    pending_note_lines: list[str] = []
+
+    def flush_pending() -> None:
+        nonlocal pending_entries, pending_note_lines
+        if not pending_entries:
+            pending_note_lines = []
+            return
+        note = _normalize_note_lines(pending_note_lines)
+        entries.extend(_entries_with_adjacent_note(pending_entries, note))
+        pending_entries = []
+        pending_note_lines = []
 
     for raw_line in markdown.splitlines():
         line = raw_line.strip()
         heading = re.match(r"^##\s+(.+)$", line)
         if heading:
+            flush_pending()
             current_status = SECTION_TO_STATUS.get(heading.group(1).strip().lower())
             continue
 
@@ -127,10 +143,12 @@ def parse_external_skill_entries(markdown: str) -> list[ExternalSkillEntry]:
             if in_fence:
                 command = " ".join(part.strip() for part in command_lines if part.strip())
                 if current_status and command:
-                    entries.extend(_entries_from_command(command, *current_status))
+                    flush_pending()
+                    pending_entries = _entries_from_command(command, *current_status)
                 command_lines = []
                 in_fence = False
             else:
+                flush_pending()
                 in_fence = True
                 command_lines = []
             continue
@@ -140,9 +158,16 @@ def parse_external_skill_entries(markdown: str) -> list[ExternalSkillEntry]:
             continue
 
         if current_status and current_status[0] == "global-only-or-avoid" and line.startswith("- "):
+            flush_pending()
             entry = _entry_from_note(line[2:], *current_status)
             if entry:
                 entries.append(entry)
+            continue
+
+        if pending_entries and line:
+            pending_note_lines.append(line)
+
+    flush_pending()
 
     return _dedupe_external_entries(entries)
 
@@ -163,6 +188,8 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
                 target_agents=(),
                 source_url="",
                 notes="Curated command could not be parsed with shell quoting rules.",
+                promotion_policy=_promotion_policy(status),
+                provenance_evidence="Unparsed command in config/external-skills.md.",
                 selector_mode="unresolved",
                 unresolved_reason="Command could not be parsed with shlex.",
             )
@@ -180,6 +207,8 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
                 target_agents=(),
                 source_url="",
                 notes="Curated command is not a supported `npx skills add ...` invocation.",
+                promotion_policy=_promotion_policy(status),
+                provenance_evidence="Unsupported command in config/external-skills.md.",
                 selector_mode="unresolved",
                 unresolved_reason="Only `npx skills add ...` commands are installable.",
             )
@@ -226,6 +255,8 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
                 target_agents=tuple(target_agents),
                 source_url=_source_url(source),
                 notes="Curated source is present, but no installable skill selector was captured.",
+                promotion_policy=_promotion_policy(status),
+                provenance_evidence=_command_provenance_evidence(status, selector_mode="unresolved"),
                 selector_mode="unresolved",
                 unresolved_reason="Missing `--skill` selector or source-embedded skill name.",
                 unsupported_target_agents=unsupported_target_agents,
@@ -244,6 +275,8 @@ def _entries_from_command(command: str, status: str, trust_tier: str) -> list[Ex
             target_agents=tuple(target_agents),
             source_url=_source_url(source),
             notes=_command_note(selector_mode),
+            promotion_policy=_promotion_policy(status),
+            provenance_evidence=_command_provenance_evidence(status, selector_mode=selector_mode),
             selector_mode=selector_mode,
             unsupported_target_agents=unsupported_target_agents,
         )
@@ -269,9 +302,49 @@ def _entry_from_note(note: str, status: str, trust_tier: str) -> ExternalSkillEn
         target_agents=(),
         source_url=_source_url(source),
         notes=details.strip(),
+        risk_notes=details.strip(),
+        promotion_policy=_promotion_policy(status),
+        provenance_evidence="Explicit keep-global/avoid note in config/external-skills.md.",
         selector_mode="unresolved",
         unresolved_reason=details.strip(),
     )
+
+
+def _normalize_note_lines(lines: list[str]) -> str:
+    return " ".join(line.strip() for line in lines if line.strip())
+
+
+def _entries_with_adjacent_note(entries: list[ExternalSkillEntry], note: str) -> list[ExternalSkillEntry]:
+    if not note:
+        return entries
+    return [
+        replace(
+            entry,
+            notes=note,
+            risk_notes=note,
+            provenance_evidence=entry.provenance_evidence
+            or "Curated command plus adjacent audit note in config/external-skills.md.",
+        )
+        for entry in entries
+    ]
+
+
+def _promotion_policy(status: str) -> str:
+    return {
+        "install-now-after-trust-gate": "Install only after trust gate; audit again before repo promotion.",
+        "inspect-then-install": "Inspect source, hooks, scripts, credentials, and dedupe before install.",
+        "global-only-or-avoid": "Keep global-only or avoid unless explicitly approved.",
+    }.get(status, "")
+
+
+def _command_provenance_evidence(status: str, *, selector_mode: str) -> str:
+    selector = {
+        "named": "named `--skill` selectors",
+        "source-spec": "source-embedded skill selector",
+        "wildcard": 'wildcard `--skill "*"` selector',
+        "unresolved": "unresolved selector",
+    }.get(selector_mode, "parsed selector")
+    return f"Curated `npx skills add` command with {selector} under `{status}` in config/external-skills.md."
 
 
 def _source_url(source: str) -> str:

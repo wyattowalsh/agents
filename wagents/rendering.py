@@ -1,6 +1,7 @@
 """MDX escaping and page renderers for skills, agents, and MCP servers."""
 
 import json
+import re
 from pathlib import Path
 
 import typer
@@ -15,7 +16,12 @@ from wagents.parsing import (
     strip_relative_md_links,
     truncate_sentence,
 )
-from wagents.site_model import build_install_command
+from wagents.site_model import (
+    LOCAL_INSTALLED_SOURCE_LABEL,
+    REPO_SOURCE,
+    SUPPORTED_AGENT_IDS,
+    build_install_command,
+)
 
 # ---------------------------------------------------------------------------
 # MDX escaper
@@ -178,10 +184,80 @@ def read_raw_content(node: CatalogNode) -> str:
 def _display_source_path(node: CatalogNode) -> str:
     """Format a source path for display in docs pages."""
     path = str(node.source_path)
+    if node.source != "custom" and _is_local_path_like(path):
+        return LOCAL_INSTALLED_SOURCE_LABEL
     home = str(Path.home())
     if path.startswith(home):
         return "~" + path[len(home) :]
     return path
+
+
+def _is_local_path_like(value: str) -> bool:
+    path = str(value or "").strip()
+    if path.startswith(("http://", "https://", "github:")):
+        return False
+    if path.startswith(("~/", "$HOME/", "/Users/", "/home/", "/private/", "/tmp/")):
+        return True
+    return Path(path).is_absolute()
+
+
+def _contains_local_path(value: str) -> bool:
+    return any(marker in str(value or "") for marker in ("/Users/", "/home/", "/private/", "/tmp/", "~/"))
+
+
+def _installed_install_command(node: CatalogNode) -> str:
+    metadata = node.metadata if isinstance(node.metadata, dict) else {}
+    command = str(metadata.get("_skills_install_command") or "").strip()
+    if command and not _contains_local_path(command):
+        return command
+    source = str(metadata.get("_skills_install_source") or metadata.get("_skills_source") or "").strip()
+    if not source or _is_local_path_like(source):
+        return ""
+    return f"npx skills add {source} --skill {node.id} -y -g"
+
+
+def _skill_display_source(node: CatalogNode) -> str:
+    if node.source == "custom":
+        return REPO_SOURCE
+    metadata = node.metadata if isinstance(node.metadata, dict) else {}
+    source = str(metadata.get("_skills_source") or metadata.get("_skills_install_source") or node.source_path).strip()
+    if not source or _is_local_path_like(source):
+        return LOCAL_INSTALLED_SOURCE_LABEL
+    return source
+
+
+def _skill_source_kind(node: CatalogNode) -> str:
+    source = _skill_display_source(node)
+    if node.source == "custom" or source == REPO_SOURCE:
+        return "repo"
+    if source == LOCAL_INSTALLED_SOURCE_LABEL:
+        return "local-inventory"
+    if source.startswith("github:") or re.match(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", source):
+        return "github"
+    if source.startswith(("http://", "https://")):
+        return "url"
+    return "external"
+
+
+def _skill_public_metadata_rows(node: CatalogNode) -> list[str]:
+    source_type = "repo-owned" if node.source == "custom" else "installed-external"
+    display_source = _skill_display_source(node)
+    install_command = (
+        build_install_command(skill=node.id) if node.source == "custom" else _installed_install_command(node)
+    )
+    install_state = "portable command" if install_command else "local inventory only"
+    review_state = "reviewed" if node.source == "custom" else "local inventory"
+    targets = ", ".join(f"`{agent}`" for agent in SUPPORTED_AGENT_IDS) if node.source == "custom" else ""
+    rows = [
+        f"| Source Type | `{source_type}` |",
+        f"| Display Source | `{escape_mdx_line(display_source)}` |",
+        f"| Source Kind | `{_skill_source_kind(node)}` |",
+        f"| Installability | {install_state} |",
+        f"| Review State | {review_state} |",
+    ]
+    if targets:
+        rows.append(f"| Target Agents | {targets} |")
+    return rows
 
 
 def _extract_body_sections(body: str) -> dict[str, str]:
@@ -316,12 +392,18 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("### Quick Start")
     parts.append("")
     parts.append("**Install:**")
-    parts.append("```bash")
     if node.source == "custom":
+        parts.append("```bash")
         parts.append(build_install_command(skill=node.id))
+        parts.append("```")
     else:
-        parts.append(f"npx skills add {node.id} -y -g")
-    parts.append("```")
+        install_command = _installed_install_command(node)
+        if install_command:
+            parts.append("```bash")
+            parts.append(install_command)
+            parts.append("```")
+        else:
+            parts.append("Discovered from local installed inventory; no portable install command is recorded.")
     parts.append("")
     use_line = f"**Use:** `/{node.id}`"
     if fm.get("argument-hint"):
@@ -347,10 +429,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             f"`{escape_mdx_line(_display_source_path(node))}` by `wagents docs generate`."
         )
     else:
-        parts.append(
-            "This page is generated from an installed skill on disk at "
-            f"`{escape_mdx_line(_display_source_path(node))}`."
-        )
+        parts.append(f"This page is generated from `{escape_mdx_line(_display_source_path(node))}`.")
     parts.append("</Aside>")
     parts.append("")
 
@@ -454,6 +533,14 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
 
     # Tabbed metadata (with single-tab fix)
     tab_items = []
+
+    # Public metadata tab
+    tab_items.append(
+        (
+            "Public Metadata",
+            "| Field | Value |\n| ----- | ----- |\n" + "\n".join(_skill_public_metadata_rows(node)),
+        )
+    )
 
     # General tab
     general_rows = []

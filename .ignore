@@ -6,6 +6,8 @@
 .ruff_cache/**
 .ty/**
 .venv/**
+.DS_Store
+**/.DS_Store
 __pycache__/**
 dist/**
 build/**
@@ -32,6 +34,10 @@ docs/node_modules/**
 .opencode/opencode-tree/**
 .mcphub/**
 .ralph/**
+.vibe/**
+/agents-overhaul-planning/**
+/goals/**
+*.bak-*
 
 # Secrets and machine-local credential material.
 .env*

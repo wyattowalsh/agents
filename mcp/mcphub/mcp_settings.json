@@ -86,6 +86,18 @@
       "args": [],
       "timeout": 600000
     },
+    "penpot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
+      ],
+      "env": {
+        "PENPOT_MCP_USER_TOKEN": "${PENPOT_MCP_USER_TOKEN}"
+      },
+      "timeout": 600000
+    },
     "repomix": {
       "command": "npx",
       "args": [
@@ -302,6 +314,7 @@
         "lotus-wisdom-mcp",
         "ossinsight",
         "package-version",
+        "penpot",
         "repomix",
         "sequential-thinking",
         "shannon-thinking",
@@ -342,6 +355,7 @@
         "fetch",
         "fetcher",
         "package-version",
+        "penpot",
         "repomix",
         "supathings",
         "tavily",

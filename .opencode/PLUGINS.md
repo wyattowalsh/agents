@@ -50,7 +50,7 @@ These remain declared in `../opencode.json` and are expected to auto-install whe
 | `opencode-bettergrep`                       | `@latest` | Enhanced grep/content search tools                                     |
 | `opencode-plugin-ast-lsp`                   | `@latest` | AST and LSP-backed code navigation tools                               |
 
-Local OpenCode plugins are deployed from `../platforms/opencode/plugins/` to `~/.config/opencode/plugins/` during sync. `octto-primary-inherit.mjs` runs after `octto@latest` and removes the upstream primary `octto` agent's hardcoded model pin so it inherits the active OpenCode model; it intentionally leaves Octto's `bootstrapper` and `probe` agent defaults untouched. `opencode-incomplete-resume.mjs` is a tuned local copy of `ilgizar-valiullin/opencode-incomplete-resume-plugin` because upstream is source-only. Its local constant changes are: explicit `TASK_STATUS: INCOMPLETE` trigger only, `MAX_CONTINUES = 3`, and `COOLDOWN_MS = 2000`.
+Local OpenCode plugins are deployed from `../platforms/opencode/plugins/` to `~/.config/opencode/plugins/` during sync. `octto-primary-inherit.mjs` runs after `octto@latest` and removes the upstream primary `octto` agent's hardcoded model pin so it inherits the active OpenCode model; Octto's managed `bootstrapper` and `probe` defaults are rendered from `../config/opencode-octto.json`. `opencode-incomplete-resume.mjs` is a tuned local copy of `ilgizar-valiullin/opencode-incomplete-resume-plugin` because upstream is source-only. Its local constant changes are: explicit `TASK_STATUS: INCOMPLETE` trigger only, `MAX_CONTINUES = 3`, and `COOLDOWN_MS = 2000`.
 
 To update: keep plugin specs in `../opencode.json` on `@latest` and restart OpenCode so its installer refreshes the cache. `opencode-terminal-progress` can be disabled per user/session with `OPENCODE_TERMINAL_PROGRESS=0` when terminal progress control sequences are not wanted. If an `@latest` plugin remains stale because of OpenCode's package cache, remove only that plugin's directory under `~/.cache/opencode/packages/` and restart OpenCode; do not replace repo-managed plugin specs with semver pins unless the user explicitly asks for a rollback.
 
@@ -96,7 +96,7 @@ Injects the active agent identity into the system prompt and exposes an `agent_a
 **Package:** `opencode-adaptive-thinking@latest`
 **Source:** `ian-pascoe/opencode-adaptive-thinking`
 
-Configured inline in `../opencode.json` with tool name `set_reasoning_effort`. The prompt asks agents to lower effort for mechanical work and raise it for ambiguity, debugging, risky changes, multi-step synthesis, or explicit user requests. It relies on the active model exposing OpenCode reasoning-effort variants.
+Configured inline in `../opencode.json` with tool name `set_reasoning_effort`. The prompt keeps xhigh reasoning as the steady-state default for every task and uses the tool only to restore or persist xhigh when a session is not already there. It relies on the active model exposing OpenCode reasoning-effort variants.
 
 ### Ensemble
 
@@ -107,7 +107,7 @@ Configured inline in `../opencode.json` with tool name `set_reasoning_effort`. T
 
 The repo grants Ensemble access to `~/.local/share/opencode/worktree/**` because the plugin uses isolated worktrees for teammate sessions. The managed config sets `mergeOnCleanup: false` so teammate work is not automatically merged; use `team_merge` only after reviewing changes. Dashboard port stays `4747`. `rateLimitCapacity: 10`, `timeoutMs: 3600000`, and `peerMessageLimit: 10` are tuned for this 10-core / 32 GiB workstation and substantial parallel work.
 
-Ensemble model fields intentionally stay empty in `../config/opencode-ensemble.json`. The plugin only passes `provider/model` strings to OpenCode, while this repo expresses thinking levels through OpenCode agent variants: `plan` uses `variant: "xhigh"`, and `build`, `explore`, and `general` use `variant: "high"`. Avoid explicit `team_spawn.model` values unless a task deliberately needs to override the configured agent default.
+Ensemble model fields intentionally stay empty in `../config/opencode-ensemble.json`. The plugin only passes `provider/model` strings to OpenCode, while this repo expresses thinking levels through OpenCode agent variants: `build`, `plan`, `explore`, and `general` all use `variant: "xhigh"`. Avoid explicit `team_spawn.model` values unless a task deliberately needs to override the configured agent default.
 
 If OpenCode resolves `@hueyexe/opencode-ensemble@latest` to a stale package, remove only `~/.cache/opencode/packages/@hueyexe/opencode-ensemble@latest`, restart OpenCode, and verify the cache package version from `node_modules/@hueyexe/opencode-ensemble/package.json`.
 

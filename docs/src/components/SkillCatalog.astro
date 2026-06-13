@@ -4,13 +4,18 @@ type SkillRow = {
   description: string;
   sourceType: string;
   sourceRoot: string;
+  displaySource?: string;
+  sourceKind?: string;
   sourceUrl?: string;
   trustTier: string;
   status?: string;
   provenanceStatus?: string;
   reviewStatus?: string;
+  targetAgents?: string[];
   installedAgents?: string[];
   installCommand?: string;
+  installable?: boolean;
+  localInventoryOnly?: boolean;
   knowledge?: {
     references?: string[];
     scripts?: string[];
@@ -28,6 +33,16 @@ const { skills = [], src } = Astro.props;
 const trustTiers = Array.from(new Set(skills.map((skill) => skill.trustTier).filter(Boolean))).sort();
 const statuses = Array.from(
   new Set(skills.map((skill) => skill.status || skill.provenanceStatus || '').filter(Boolean))
+).sort();
+const reviewStates = Array.from(
+  new Set(skills.map((skill) => skill.reviewStatus || skill.provenanceStatus || '').filter(Boolean))
+).sort();
+const agentOptions = Array.from(
+  new Set(
+    skills
+      .flatMap((skill) => [...(skill.targetAgents ?? []), ...(skill.installedAgents ?? [])])
+      .filter(Boolean)
+  )
 ).sort();
 ---
 
@@ -60,6 +75,29 @@ const statuses = Array.from(
         {statuses.map((status) => <option value={status}>{status}</option>)}
       </select>
     </label>
+    <label>
+      <span>Review</span>
+      <select data-skill-review>
+        <option value="all">All review states</option>
+        {reviewStates.map((state) => <option value={state}>{state}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Agent</span>
+      <select data-skill-agent>
+        <option value="all">All agents</option>
+        {agentOptions.map((agent) => <option value={agent}>{agent}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Install</span>
+      <select data-skill-installable>
+        <option value="all">All install states</option>
+        <option value="installable">Installable</option>
+        <option value="local-only">Local only</option>
+        <option value="not-installable">Not installable</option>
+      </select>
+    </label>
   </div>
 
   <p class="skill-catalog__count">
@@ -70,14 +108,19 @@ const statuses = Array.from(
     {
       skills.map((skill) => {
         const knowledge = skill.knowledge ?? {};
+        const displaySource = skill.displaySource || skill.sourceRoot;
+        const agents = [...(skill.targetAgents ?? []), ...(skill.installedAgents ?? [])];
+        const installState = skill.localInventoryOnly ? 'local-only' : skill.installable || skill.installCommand ? 'installable' : 'not-installable';
         const haystack = [
           skill.name,
           skill.description,
-          skill.sourceRoot,
+          displaySource,
+          skill.sourceKind ?? '',
           skill.trustTier,
           skill.status ?? '',
           skill.provenanceStatus ?? '',
           skill.reviewStatus ?? '',
+          ...agents,
           ...(knowledge.references ?? []),
         ]
           .join(' ')
@@ -89,6 +132,9 @@ const statuses = Array.from(
             data-source={skill.sourceType}
             data-trust={skill.trustTier}
             data-status={skill.status || skill.provenanceStatus || ''}
+            data-review={skill.reviewStatus || skill.provenanceStatus || ''}
+            data-agents={agents.join(' ')}
+            data-installable={installState}
             data-haystack={haystack}
           >
             <div class="skill-catalog-card__badges">
@@ -96,13 +142,14 @@ const statuses = Array.from(
               <span>{skill.trustTier}</span>
               {skill.status && <span>{skill.status}</span>}
               {skill.reviewStatus && <span>{skill.reviewStatus}</span>}
+              {skill.localInventoryOnly && <span>local only</span>}
             </div>
             <h3>{skill.name}</h3>
             <p>{skill.description}</p>
             <dl>
               <div>
                 <dt>Source</dt>
-                <dd>{skill.sourceRoot}</dd>
+                <dd>{displaySource}</dd>
               </div>
               <div>
                 <dt>Knowledge</dt>
@@ -116,6 +163,14 @@ const statuses = Array.from(
                   <div>
                     <dt>Installed</dt>
                     <dd>{skill.installedAgents.join(', ')}</dd>
+                  </div>
+                ) : null
+              }
+              {
+                skill.targetAgents?.length ? (
+                  <div>
+                    <dt>Targets</dt>
+                    <dd>{skill.targetAgents.join(', ')}</dd>
                   </div>
                 ) : null
               }
@@ -142,6 +197,9 @@ const statuses = Array.from(
     const source = catalog.querySelector<HTMLSelectElement>('[data-skill-source]');
     const trust = catalog.querySelector<HTMLSelectElement>('[data-skill-trust]');
     const status = catalog.querySelector<HTMLSelectElement>('[data-skill-status]');
+    const review = catalog.querySelector<HTMLSelectElement>('[data-skill-review]');
+    const agent = catalog.querySelector<HTMLSelectElement>('[data-skill-agent]');
+    const installable = catalog.querySelector<HTMLSelectElement>('[data-skill-installable]');
     const count = catalog.querySelector('[data-skill-visible]');
     const total = catalog.querySelector('[data-skill-total]');
     const grid = catalog.querySelector<HTMLElement>('[data-skill-grid]');
@@ -165,24 +223,37 @@ const statuses = Array.from(
       const scripts = Array.isArray(knowledge.scripts) ? knowledge.scripts : [];
       const evals = Array.isArray(knowledge.evals) ? knowledge.evals : [];
       const installedAgents = Array.isArray(skill.installedAgents) ? skill.installedAgents : [];
+      const targetAgents = Array.isArray(skill.targetAgents) ? skill.targetAgents : [];
+      const agents = Array.from(new Set([...targetAgents, ...installedAgents]));
+      const displaySource = skill.displaySource || skill.sourceRoot || '';
+      const installState = skill.localInventoryOnly
+        ? 'local-only'
+        : skill.installable || skill.installCommand
+          ? 'installable'
+          : 'not-installable';
       const haystack = [
         skill.name,
         skill.description,
-        skill.sourceRoot,
+        displaySource,
+        skill.sourceKind ?? '',
         skill.trustTier,
         skill.status ?? '',
         skill.provenanceStatus ?? '',
         skill.reviewStatus ?? '',
+        ...agents,
         ...references,
       ]
         .join(' ')
         .toLowerCase();
-      const badges = [skill.sourceType, skill.trustTier, skill.status, skill.reviewStatus]
+      const badges = [skill.sourceType, skill.trustTier, skill.status, skill.reviewStatus, skill.localInventoryOnly ? 'local only' : '']
         .filter(Boolean)
         .map((badge) => `<span>${escapeHtml(badge)}</span>`)
         .join('');
       const installed = installedAgents.length
         ? `<div><dt>Installed</dt><dd>${escapeHtml(installedAgents.join(', '))}</dd></div>`
+        : '';
+      const targets = targetAgents.length
+        ? `<div><dt>Targets</dt><dd>${escapeHtml(targetAgents.join(', '))}</dd></div>`
         : '';
       const actions = [
         skill.sourceType === 'custom' ? `<a href="/skills/${encodeURIComponent(skill.name)}/">Details</a>` : '',
@@ -191,14 +262,15 @@ const statuses = Array.from(
       const command = skill.installCommand
         ? `<pre class="agents-scrollbar"><code>${escapeHtml(skill.installCommand)}</code></pre>`
         : '';
-      return `<article class="skill-catalog-card skill-catalog-card--${escapeHtml(skill.sourceType)}" data-skill-card data-source="${escapeHtml(skill.sourceType)}" data-trust="${escapeHtml(skill.trustTier)}" data-status="${escapeHtml(skill.status || skill.provenanceStatus || '')}" data-haystack="${escapeHtml(haystack)}">
+      return `<article class="skill-catalog-card skill-catalog-card--${escapeHtml(skill.sourceType)}" data-skill-card data-source="${escapeHtml(skill.sourceType)}" data-trust="${escapeHtml(skill.trustTier)}" data-status="${escapeHtml(skill.status || skill.provenanceStatus || '')}" data-review="${escapeHtml(skill.reviewStatus || skill.provenanceStatus || '')}" data-agents="${escapeHtml(agents.join(' '))}" data-installable="${escapeHtml(installState)}" data-haystack="${escapeHtml(haystack)}">
         <div class="skill-catalog-card__badges">${badges}</div>
         <h3>${escapeHtml(skill.name)}</h3>
         <p>${escapeHtml(skill.description)}</p>
         <dl>
-          <div><dt>Source</dt><dd>${escapeHtml(skill.sourceRoot)}</dd></div>
+          <div><dt>Source</dt><dd>${escapeHtml(displaySource)}</dd></div>
           <div><dt>Knowledge</dt><dd>${Number(knowledge.wordCount ?? 0)} words · ${references.length} refs · ${scripts.length} scripts · ${evals.length} evals</dd></div>
           ${installed}
+          ${targets}
         </dl>
         <div class="skill-catalog-card__actions">${actions}</div>
         ${command}
@@ -219,13 +291,27 @@ const statuses = Array.from(
       const sourceValue = source?.value ?? 'all';
       const trustValue = trust?.value ?? 'all';
       const statusValue = status?.value ?? 'all';
+      const reviewValue = review?.value ?? 'all';
+      const agentValue = agent?.value ?? 'all';
+      const installableValue = installable?.value ?? 'all';
       let visible = 0;
       cards.forEach((card) => {
         const matchesQuery = !query || card.getAttribute('data-haystack')?.includes(query);
         const matchesSource = sourceValue === 'all' || card.getAttribute('data-source') === sourceValue;
         const matchesTrust = trustValue === 'all' || card.getAttribute('data-trust') === trustValue;
         const matchesStatus = statusValue === 'all' || card.getAttribute('data-status') === statusValue;
-        const show = Boolean(matchesQuery && matchesSource && matchesTrust && matchesStatus);
+        const matchesReview = reviewValue === 'all' || card.getAttribute('data-review') === reviewValue;
+        const matchesAgent = agentValue === 'all' || card.getAttribute('data-agents')?.split(' ').includes(agentValue);
+        const matchesInstallable = installableValue === 'all' || card.getAttribute('data-installable') === installableValue;
+        const show = Boolean(
+          matchesQuery &&
+            matchesSource &&
+            matchesTrust &&
+            matchesStatus &&
+            matchesReview &&
+            matchesAgent &&
+            matchesInstallable
+        );
         card.toggleAttribute('hidden', !show);
         if (show) visible += 1;
       });
@@ -241,8 +327,24 @@ const statuses = Array.from(
       const statusValues = Array.from(
         new Set(rows.map((skill) => String(skill.status || skill.provenanceStatus || '')).filter(Boolean))
       ).sort();
+      const reviewValues = Array.from(
+        new Set(rows.map((skill) => String(skill.reviewStatus || skill.provenanceStatus || '')).filter(Boolean))
+      ).sort();
+      const agentValues = Array.from(
+        new Set(
+          rows
+            .flatMap((skill) => [
+              ...(Array.isArray(skill.targetAgents) ? skill.targetAgents : []),
+              ...(Array.isArray(skill.installedAgents) ? skill.installedAgents : []),
+            ])
+            .map((value) => String(value || ''))
+            .filter(Boolean)
+        )
+      ).sort();
       populateSelect(trust, trustValues, 'All trust tiers');
       populateSelect(status, statusValues, 'All statuses');
+      populateSelect(review, reviewValues, 'All review states');
+      populateSelect(agent, agentValues, 'All agents');
       grid.innerHTML = rows.map(renderSkill).join('');
       cards = Array.from(catalog.querySelectorAll('[data-skill-card]'));
       if (total) total.textContent = String(cards.length);
@@ -253,6 +355,9 @@ const statuses = Array.from(
     source?.addEventListener('change', apply);
     trust?.addEventListener('change', apply);
     status?.addEventListener('change', apply);
+    review?.addEventListener('change', apply);
+    agent?.addEventListener('change', apply);
+    installable?.addEventListener('change', apply);
     hydrate().catch(() => {
       if (grid) grid.innerHTML = '<p class="skill-catalog__count">Unable to load the generated skill index.</p>';
     });

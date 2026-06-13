@@ -100,6 +100,16 @@
       },
       "disabled": true
     },
+    "mcphub_server_penpot": {
+      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "args": [
+        "http://127.0.0.1:46683/mcp/penpot"
+      ],
+      "env": {
+        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
+      },
+      "disabled": true
+    },
     "mcphub_server_repomix": {
       "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
       "args": [

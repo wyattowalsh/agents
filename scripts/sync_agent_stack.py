@@ -1122,14 +1122,50 @@ def render_copilot_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
     return {"version": int(hook_registry.get("version", 1)), "hooks": rendered}
 
 
+CODEX_HOOK_EVENT_MAP = {
+    "SessionStart": "SessionStart",
+    "UserPromptSubmit": "UserPromptSubmit",
+    "PreToolUse": "PreToolUse",
+    "PermissionRequest": "PermissionRequest",
+    "PostToolUse": "PostToolUse",
+    "PreCompact": "PreCompact",
+    "PostCompact": "PostCompact",
+    "SubagentStart": "SubagentStart",
+    "SubagentStop": "SubagentStop",
+    "Stop": "Stop",
+}
+
+
+def _codex_status_message(hook: dict[str, Any]) -> str:
+    return str(hook.get("statusMessage") or hook.get("status_message") or hook.get("description") or hook["id"])
+
+
+def render_codex_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
+    rendered: dict[str, list[dict[str, Any]]] = {}
+    for hook in enabled_hooks_for_harness(hook_registry, "codex"):
+        event = CODEX_HOOK_EVENT_MAP.get(str(hook.get("logical_event")))
+        if not event:
+            continue
+        config: dict[str, Any] = {
+            "type": "command",
+            "command": render_hook_command(hook, "codex", repo_relative=False),
+            "timeout": int(hook.get("timeout", 5)),
+            "statusMessage": _codex_status_message(hook),
+        }
+        command_windows = hook.get("commandWindows") or hook.get("command_windows")
+        if command_windows:
+            config["commandWindows"] = str(command_windows).format(repo_root=str(REPO_ROOT), harness="codex")
+        group: dict[str, Any] = {"hooks": [config]}
+        if hook.get("matcher"):
+            group["matcher"] = hook["matcher"]
+        rendered.setdefault(event, []).append(group)
+    return {"hooks": rendered}
+
+
 def render_standard_hooks(hook_registry: dict[str, Any], harness: str) -> dict[str, Any]:
+    if harness == "codex":
+        return render_codex_hooks(hook_registry)
     event_map = {
-        "codex": {
-            "UserPromptSubmit": "UserPromptSubmit",
-            "PreToolUse": "PreToolUse",
-            "PostToolUse": "PostToolUse",
-            "Stop": "Stop",
-        },
         "claude-code": {
             "UserPromptSubmit": "UserPromptSubmit",
             "PreToolUse": "PreToolUse",
@@ -1209,7 +1245,7 @@ def merge_codex_hooks(ctx: SyncContext, hook_registry: dict[str, Any]) -> None:
         existing = load_json(CODEX_HOOKS_PATH)
     existing_hooks_raw = existing.get("hooks")
     existing_hooks: dict[str, Any] = existing_hooks_raw if isinstance(existing_hooks_raw, dict) else {}
-    existing["hooks"] = merge_hook_groups(existing_hooks, render_standard_hooks(hook_registry, "codex"))
+    existing["hooks"] = merge_hook_groups(existing_hooks, render_codex_hooks(hook_registry))
     write_json(ctx, CODEX_HOOKS_PATH, existing)
 
 
@@ -1247,7 +1283,7 @@ def render_codex_base_config(
 ) -> str:
     model_defaults = policy.get("model_defaults", {}).get("codex", {})
     model = model_defaults.get("model", "gpt-5.5")
-    reasoning_effort = model_defaults.get("reasoning_effort", "high")
+    reasoning_effort = model_defaults.get("reasoning_effort", "xhigh")
     personality = model_defaults.get("personality", "pragmatic")
     top_level = {
         "approval_policy": "never",
@@ -1320,10 +1356,10 @@ def render_codex_base_config(
                 "approval_policy": "on-request",
                 "approvals_reviewer": "guardian_subagent",
                 "model": "gpt-5.4-mini",
-                "model_reasoning_effort": "medium",
+                "model_reasoning_effort": "xhigh",
                 "model_reasoning_summary": "concise",
                 "model_verbosity": "medium",
-                "plan_mode_reasoning_effort": "medium",
+                "plan_mode_reasoning_effort": "xhigh",
                 "sandbox_mode": "workspace-write",
                 "service_tier": "fast",
                 "web_search": "live",
@@ -1335,10 +1371,10 @@ def render_codex_base_config(
                 "approval_policy": "never",
                 "approvals_reviewer": "user",
                 "model": model,
-                "model_reasoning_effort": "high",
+                "model_reasoning_effort": "xhigh",
                 "model_reasoning_summary": "detailed",
                 "model_verbosity": "medium",
-                "plan_mode_reasoning_effort": "high",
+                "plan_mode_reasoning_effort": "xhigh",
                 "sandbox_mode": "danger-full-access",
                 "web_search": "live",
             },
@@ -1352,7 +1388,6 @@ def render_codex_base_config(
                 "open_world_enabled": True,
             },
         ),
-        render_toml_block("tools", {"view_image": True}),
         render_toml_block("tools.web_search", {"context_size": "high"}),
         render_toml_block(
             "tools.web_search.location",
@@ -1934,7 +1969,7 @@ OPENCODE_RUNTIME_DEFAULT_KEYS = {
     "experimental",
     "permission",
 }
-OPENCODE_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding"}
+OPENCODE_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding", "xai"}
 OPENCODE_PYTHON_EXTENSIONS = [".py", ".pyi"]
 OPENCODE_DEFAULT_WATCHER_IGNORES = [
     ".git/**",
@@ -2004,6 +2039,7 @@ def opencode_openai_provider_defaults() -> dict[str, Any]:
             "timeout": 600000,
             "chunkTimeout": 180000,
             "setCacheKey": True,
+            "reasoningEffort": "xhigh",
             "websearch_cited": {"model": "gpt-5.5"},
         },
         "models": {
@@ -2022,19 +2058,23 @@ def opencode_runtime_defaults(policy: dict[str, Any]) -> dict[str, Any]:
         "agent": {
             "build": {
                 "model": "openai/gpt-5.5",
-                "variant": "high",
+                "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
             "plan": {
                 "model": "openai/gpt-5.5",
                 "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
             "explore": {
                 "model": "openai/gpt-5.5",
-                "variant": "high",
+                "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
             "general": {
                 "model": "openai/gpt-5.5",
-                "variant": "high",
+                "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
         },
         "autoupdate": "notify",
@@ -2189,6 +2229,18 @@ def remove_repo_managed_opencode_providers(settings: dict[str, Any]) -> None:
         return
     for provider_id in OPENCODE_MANAGED_PROVIDER_IDS:
         providers.pop(provider_id, None)
+    # Aggressively keep *only* the providers we explicitly manage (openai) or
+    # explicitly add later (lmstudio in home sync). Any others (xai, opencode-go,
+    # vercel, future picker auto-entries for grok etc.) are fully stripped so their
+    # options cannot inherit websearch_cited/setCacheKey/reasoning* etc. and cause
+    # "invalid <provider> provider options".
+    for pid in list(providers.keys()):
+        if pid not in ("openai", "lmstudio"):
+            providers.pop(pid, None)
+    # Always ensure no "xai" provider block remains (desktop can auto-write one with
+    # copied openai options like websearch_cited/setCacheKey etc. when switching models
+    # to grok 4.3, causing "invalid xai provider options"). Strip it so built-in registry owns it.
+    providers.pop("xai", None)
     if not providers:
         settings.pop("provider", None)
 

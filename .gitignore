@@ -23,7 +23,9 @@ htmlcov/
 .playwright-mcp/
 
 # Local skill installs (npx skills add --local)
-.claude/skills/
+.claude/skills/*
+!.claude/skills/docs-steward/
+!.claude/skills/docs-steward/**
 .agents/*
 !.agents/plugins/
 !.agents/plugins/marketplace.json
@@ -49,12 +51,17 @@ skills/prospector/webapp/frontend/dist/
 
 # Local ideation / research scratchpad (intentionally untracked)
 /IDEAS/
+/agents-overhaul-planning/
+/goals/
+*.bak-*
 *_cache/
 .venv-copilot/
+.env
 .envrc
 .env.mcphub
 .mcphub/
 .ralph/
+.vibe/
 
 # Local MCP server installs and machine-specific MCP assets.
 /mcp/archives/*

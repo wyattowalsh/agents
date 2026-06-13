@@ -95,9 +95,6 @@ enabled = true
 destructive_enabled = false
 open_world_enabled = true
 
-[tools]
-view_image = true
-
 [tools.web_search]
 context_size = "high"
 

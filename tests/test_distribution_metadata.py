@@ -159,12 +159,18 @@ def test_opencode_project_config_enforces_openai_and_tooling_defaults():
     assert config["model"] == "openai/gpt-5.5"
     assert config["small_model"] == "openai/gpt-5.4-mini"
     assert config["autoupdate"] == "notify"
-    assert config["agent"]["build"] == {"model": "openai/gpt-5.5", "variant": "high"}
-    assert config["agent"]["plan"] == {"model": "openai/gpt-5.5", "variant": "xhigh"}
-    assert config["agent"]["explore"] == {"model": "openai/gpt-5.5", "variant": "high"}
-    assert config["agent"]["general"] == {"model": "openai/gpt-5.5", "variant": "high"}
+    expected_agent = {
+        "model": "openai/gpt-5.5",
+        "variant": "xhigh",
+        "options": {"reasoningEffort": "xhigh"},
+    }
+    assert config["agent"]["build"] == expected_agent
+    assert config["agent"]["plan"] == expected_agent
+    assert config["agent"]["explore"] == expected_agent
+    assert config["agent"]["general"] == expected_agent
 
     openai = config["provider"]["openai"]
+    assert openai["options"]["reasoningEffort"] == "xhigh"
     assert openai["options"]["websearch_cited"] == {"model": "gpt-5.5"}
     assert set(openai["models"]) == {"gpt-5.5", "gpt-5.4-mini", "gpt-5.3-codex-spark"}
     assert '"reasoningSummary": "auto"' not in json.dumps(openai)

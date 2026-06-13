@@ -147,7 +147,9 @@ args = ["duckduckgo-mcp-server"]
 
 ## Chrome DevTools setup (representative client snippets)
 
-Use server key `chrome-devtools` through the managed MCPHub wrapper. The wrapper starts or reuses a dedicated visible Chrome on `127.0.0.1:9333` with profile `/Users/ww/.cache/chrome-devtools-mcp-login`, then attaches `chrome-devtools-mcp` with `--browserUrl`. This avoids the automation launch flags that `chrome-devtools-mcp` passes when it launches Chrome itself. Chrome opens lazily when the client invokes a browser-backed tool such as `list_pages`, `navigate_page`, or `take_screenshot`; restart the MCP client after config changes so it does not keep using an already-started server process.
+Use server key `chrome-devtools` through the managed MCPHub wrapper. The wrapper starts or reuses a dedicated visible Chrome on `127.0.0.1:9333` with profile `~/.cache/chrome-devtools-mcp-login`, then attaches `chrome-devtools-mcp` with `--browserUrl`. This avoids the automation launch flags that `chrome-devtools-mcp` passes when it launches Chrome itself. Chrome opens lazily when the client invokes a browser-backed tool such as `list_pages`, `navigate_page`, or `take_screenshot`; restart the MCP client after config changes so it does not keep using an already-started server process.
+
+Replace `<repo>` in the examples below with the absolute path to your local checkout.
 
 #### Standard JSON clients (`mcpServers`)
 
@@ -158,7 +160,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
   "mcpServers": {
     "chrome-devtools": {
       "command": "bash",
-      "args": ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"]
+      "args": ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
     }
   }
 }
@@ -169,7 +171,7 @@ Applies to ChatGPT Desktop, Claude Desktop, Cursor, Gemini CLI, Gemini antigravi
 ```toml
 [mcp_servers.chrome-devtools]
 command = "bash"
-args = ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"]
+args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 ```
 
 #### GitHub Copilot CLI (`~/.copilot/mcp-config.json`)
@@ -180,7 +182,7 @@ args = ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-ur
     "chrome-devtools": {
       "type": "stdio",
       "command": "bash",
-      "args": ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"],
+      "args": ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"],
       "tools": ["*"]
     }
   }
@@ -194,7 +196,7 @@ args = ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-ur
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": ["bash", "/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"],
+      "command": ["bash", "<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"],
       "enabled": true
     }
   }
@@ -209,7 +211,7 @@ args = ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-ur
     "chrome-devtools": {
       "type": "stdio",
       "command": "bash",
-      "args": ["/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"]
+      "args": ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
     }
   }
 }

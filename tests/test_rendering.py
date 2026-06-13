@@ -113,6 +113,11 @@ class TestRenderSkillPage:
         assert "## What It Does" in result
         assert "Quick Start" in result
         assert "Source & provenance" in result
+        assert "Public Metadata" in result
+        assert "| Source Type | `repo-owned` |" in result
+        assert "| Display Source | `github:wyattowalsh/agents` |" in result
+        assert "| Installability | portable command |" in result
+        assert "| Target Agents |" in result
         assert "View Full SKILL.md" in result
         assert "View source on GitHub" in result
 
@@ -151,6 +156,10 @@ class TestRenderSkillPage:
         node = _make_node("skill", source="installed", source_path="/tmp/fake/SKILL.md")
         result = render_skill_page(node, [], [node])
         assert "Installed" in result
+        assert "| Display Source | `local installed inventory` |" in result
+        assert "| Source Kind | `local-inventory` |" in result
+        assert "| Installability | local inventory only |" in result
+        assert "/tmp/fake" not in result
         # No "View source on GitHub" for installed
         assert "View source on GitHub" not in result
 

@@ -12,6 +12,7 @@ from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry
 
 REPO_SOURCE = "github:wyattowalsh/agents"
+LOCAL_INSTALLED_SOURCE_LABEL = "local installed inventory"
 
 
 @dataclass(frozen=True)
@@ -461,7 +462,7 @@ def skill_install_scripts(indexes: dict[str, list[dict[str, Any]]]) -> dict[str,
         record = bucket.setdefault(
             key,
             {
-                "source": row.get("sourceRoot") or row.get("installSource") or "",
+                "source": row.get("displaySource") or row.get("sourceRoot") or row.get("installSource") or "",
                 "command": command,
                 "skills": [],
                 "status": row.get("status", "installed-external"),
@@ -485,7 +486,7 @@ def external_skill_groups(external_rows: list[dict[str, Any]]) -> dict[str, Any]
     by_source: dict[str, list[dict[str, Any]]] = {}
     for row in external_rows:
         status = str(row.get("status") or "installed-external")
-        source = str(row.get("sourceRoot") or row.get("installSource") or "unknown")
+        source = str(row.get("displaySource") or row.get("sourceRoot") or row.get("installSource") or "unknown")
         by_status.setdefault(status, []).append(row)
         by_source.setdefault(source, []).append(row)
     return {
@@ -527,6 +528,7 @@ def _merge_external_rows(
             target["installedAgents"] = agents
             target["installedExternalPath"] = installed.get("sourcePath", "")
             target["installedProvenanceStatus"] = installed.get("provenanceStatus", "")
+            target["installedLocalInventoryOnly"] = bool(installed.get("localInventoryOnly"))
             continue
         merged.append(installed)
     return merged
@@ -541,12 +543,18 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
     fm = node.metadata if isinstance(node.metadata, dict) else {}
     meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
     source_type = "custom" if node.source == "custom" else "installed"
-    source_root = REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_source") or node.source_path)
-    install_source = REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_install_source") or source_root)
+    raw_source_root = REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_source") or node.source_path)
+    source_root = raw_source_root if source_type == "custom" else _public_source_label(raw_source_root)
+    source_kind = _source_kind(raw_source_root, source_type=source_type)
+    local_inventory_only = source_type != "custom" and source_kind == "local-inventory"
+    raw_install_source = (
+        REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_install_source") or raw_source_root)
+    )
+    install_source = "" if local_inventory_only and _is_local_path_like(raw_install_source) else raw_install_source
     install_command = (
         build_install_command(skill=node.id)
         if source_type == "custom"
-        else str(fm.get("_skills_install_command") or f"npx skills add {install_source} --skill {node.id} -y -g")
+        else _installed_install_command(node.id, fm, install_source, local_inventory_only=local_inventory_only)
     )
     installed_agents = (
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
@@ -560,15 +568,24 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "description": node.description,
         "sourceType": source_type,
         "sourceRoot": source_root,
+        "displaySource": source_root,
+        "sourceKind": source_kind,
         "installSource": install_source,
+        "installable": bool(install_command),
+        "localInventoryOnly": local_inventory_only,
         "trustTier": "repo" if source_type == "custom" else str(fm.get("_skills_trust_tier") or "external-installed"),
-        "sourcePath": node.source_path,
+        "sourcePath": node.source_path if _is_public_path_like(node.source_path) else "",
         "sourceUrl": _source_url_for_node(node),
         "installCommand": install_command,
         "useCommand": f"/{node.id}",
         "provenanceStatus": provenance_status,
+        "status": provenance_status,
         "reviewStatus": "reviewed" if source_type in {"custom", "installed"} else "",
+        "targetAgents": list(SUPPORTED_AGENT_IDS) if source_type == "custom" else [],
         "installedAgents": installed_agents,
+        "riskNotes": "",
+        "promotionPolicy": "",
+        "provenanceEvidence": provenance_status,
         "license": fm.get("license", ""),
         "version": meta.get("version", ""),
         "author": meta.get("author", ""),
@@ -586,7 +603,11 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "description": entry.notes,
         "sourceType": "curated-external",
         "sourceRoot": entry.source,
+        "displaySource": entry.source or "curated external source",
+        "sourceKind": _source_kind(entry.source, source_type="curated-external"),
         "installSource": entry.install_source,
+        "installable": bool(entry.install_command and entry.selector_mode != "unresolved"),
+        "localInventoryOnly": False,
         "trustTier": entry.trust_tier,
         "sourcePath": entry.source_path,
         "sourceUrl": entry.source_url,
@@ -604,6 +625,10 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "userInvocable": True,
         "status": entry.status,
         "targetAgents": list(entry.target_agents),
+        "installedAgents": [],
+        "riskNotes": entry.risk_notes or entry.notes,
+        "promotionPolicy": entry.promotion_policy or _promotion_policy_for_external_status(entry.status),
+        "provenanceEvidence": entry.provenance_evidence or entry.provenance_status,
         "knowledge": {
             "headings": [],
             "references": [],
@@ -615,6 +640,70 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
             "wordCount": 0,
         },
     }
+
+
+def _installed_install_command(
+    skill_id: str, metadata: dict[str, Any], install_source: str, *, local_inventory_only: bool
+) -> str:
+    command = str(metadata.get("_skills_install_command") or "").strip()
+    if command and not _contains_local_path(command):
+        return command
+    if local_inventory_only or not install_source or _is_local_path_like(install_source):
+        return ""
+    return f"npx skills add {install_source} --skill {skill_id} -y -g"
+
+
+def _public_source_label(value: str) -> str:
+    source = str(value or "").strip()
+    if not source:
+        return LOCAL_INSTALLED_SOURCE_LABEL
+    if _is_local_path_like(source):
+        return LOCAL_INSTALLED_SOURCE_LABEL
+    return source
+
+
+def _source_kind(value: str, *, source_type: str) -> str:
+    source = str(value or "").strip()
+    if source_type == "custom" or source == REPO_SOURCE:
+        return "repo"
+    if not source or _is_local_path_like(source):
+        return "local-inventory"
+    if source.startswith("github:") or re.match(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$", source):
+        return "github"
+    if source.startswith(("http://", "https://")):
+        return "url"
+    return "external"
+
+
+def _is_public_path_like(value: str) -> bool:
+    path = str(value or "").strip()
+    return bool(path) and not _is_local_path_like(path)
+
+
+def _contains_local_path(value: str) -> bool:
+    return bool(re.search(r"(?:/Users/|/home/|/private/|/tmp/|~/|[A-Za-z]:[\\/])", str(value or "")))
+
+
+def _is_local_path_like(value: str) -> bool:
+    source = str(value or "").strip()
+    if not source:
+        return False
+    if source.startswith(("http://", "https://", "github:")):
+        return False
+    if source.startswith(("~/", "$HOME/", "/Users/", "/home/", "/private/", "/tmp/")):
+        return True
+    if re.match(r"^[A-Za-z]:[\\/]", source):
+        return True
+    return Path(source).is_absolute()
+
+
+def _promotion_policy_for_external_status(status: str) -> str:
+    return {
+        "install-now-after-trust-gate": "Install only after trust gate; audit again before repo promotion.",
+        "inspect-then-install": "Inspect source, hooks, scripts, credentials, and dedupe before install.",
+        "global-only-or-avoid": "Keep global-only or avoid unless explicitly approved.",
+        "installed-external": "Treat as local installed inventory until curated and audited.",
+    }.get(status, "")
 
 
 def _knowledge_inventory(node: CatalogNode) -> dict[str, Any]:

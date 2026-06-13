@@ -10,6 +10,7 @@ from wagents.site_model import (
     build_install_command,
     docs_asset_repo_path,
     docs_src_asset_css_url,
+    external_skill_groups,
     render_site_data_module,
     render_visual_assets_css,
     site_data,
@@ -125,6 +126,53 @@ npx skills add example/skills --skill external-one -y -g -a codex
     assert data["skillIndex"] == data["allSkillIndex"]
 
 
+def test_installed_local_inventory_rows_use_public_safe_source_labels():
+    node = CatalogNode(
+        "skill",
+        "local-only",
+        "Local Only",
+        "Installed from local inventory",
+        {},
+        "",
+        "/Users/example/.codex/skills/local-only/SKILL.md",
+        source="installed",
+    )
+
+    data = site_data([node])
+    row = data["installedSkillIndex"][0]
+
+    assert row["sourceType"] == "installed"
+    assert row["sourceRoot"] == "local installed inventory"
+    assert row["displaySource"] == "local installed inventory"
+    assert row["sourceKind"] == "local-inventory"
+    assert row["sourcePath"] == ""
+    assert row["installSource"] == ""
+    assert row["installCommand"] == ""
+    assert row["installable"] is False
+    assert row["localInventoryOnly"] is True
+    assert row["status"] == "installed-external"
+    assert "/Users/" not in " ".join(str(value) for value in row.values())
+
+
+def test_external_skill_groups_use_display_source_not_local_path():
+    node = CatalogNode(
+        "skill",
+        "local-only",
+        "Local Only",
+        "Installed from local inventory",
+        {},
+        "",
+        "/Users/example/.codex/skills/local-only/SKILL.md",
+        source="installed",
+    )
+
+    data = site_data([node])
+    sources = {group["source"] for group in external_skill_groups(data["externalSkillIndex"])["bySource"]}
+
+    assert sources == {"local installed inventory"}
+    assert all("/Users/" not in source for source in sources)
+
+
 def test_site_data_excludes_installed_rows_that_match_custom_and_merges_curated_matches():
     curated = parse_external_skill_entries(
         """
@@ -165,4 +213,7 @@ npx skills add example/skills --skill external-one -y -g -a codex
     assert set(rows) == {"custom-one", "external-one"}
     assert rows["external-one"]["sourceType"] == "curated-external"
     assert rows["external-one"]["installedAgents"] == ["codex"]
+    assert rows["external-one"]["displaySource"] == "example/skills"
+    assert rows["external-one"]["installedLocalInventoryOnly"] is False
+    assert rows["external-one"]["installedExternalPath"] == ""
     assert [row["name"] for row in data["installedSkillIndex"]] == ["external-one"]

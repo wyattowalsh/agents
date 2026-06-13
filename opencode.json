@@ -177,6 +177,404 @@
     "continue_loop_on_deny": true,
     "mcp_timeout": 120000
   },
+  "mcp": {
+    "mcphub_group_all-managed": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/all-managed",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_browser": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/browser",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_code": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/code",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_data": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/data",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_experimental": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/experimental",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_harness-safe": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/harness-safe",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_local-ai": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/local-ai",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_media": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/media",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_personal": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/personal",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_reasoning": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/reasoning",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "mcphub_group_research": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/research",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "arxiv": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/arxiv",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "atom-of-thoughts": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/atom-of-thoughts",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "brave-search": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/brave-search",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "cascade-thinking": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/cascade-thinking",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "chrome-devtools": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/chrome-devtools",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "context7": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/context7",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "crash": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/crash",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "creative-thinking": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/creative-thinking",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "deep-lucid-3d": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/deep-lucid-3d",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "deepwiki": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/deepwiki",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "docling": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/docling",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "duckduckgo-search": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/duckduckgo-search",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "exa": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/exa",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "fetch": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/fetch",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "fetcher": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/fetcher",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "ffmpeg": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/ffmpeg",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "g-search": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/g-search",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "gmail": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/gmail",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "linkedin": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/linkedin",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "lotus-wisdom-mcp": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/lotus-wisdom-mcp",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "ossinsight": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/ossinsight",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "package-version": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/package-version",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "penpot": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/penpot",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "repomix": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/repomix",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "sequential-thinking": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/sequential-thinking",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "shannon-thinking": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/shannon-thinking",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "structured-thinking": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/structured-thinking",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "supathings": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/supathings",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "tavily": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/tavily",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "think-strategies": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/think-strategies",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "trafilatura": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/trafilatura",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "wayback": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/wayback",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    },
+    "wikipedia": {
+      "type": "remote",
+      "url": "http://127.0.0.1:46683/mcp/wikipedia",
+      "enabled": true,
+      "oauth": false,
+      "headers": {
+        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+      }
+    }
+  },
   "plugin": [
     "opencode-antigravity-auth@latest",
     "opencode-gemini-auth@latest",
@@ -221,7 +619,7 @@
         "quiet": false,
         "toolName": "set_reasoning_effort",
         "toolDescription": "Set the current session reasoning effort when the active model exposes effort variants.",
-        "systemPrompt": "Use the lowest reasoning effort that can safely complete the task. Raise effort for ambiguity, debugging, risky changes, multi-step synthesis, or explicit user requests; lower it again when the task becomes mechanical."
+        "systemPrompt": "Keep reasoning effort at xhigh for every mode and task by default. Do not lower effort for mechanical work. Use this tool only to restore or persist xhigh when the active session is not already xhigh."
       }
     ],
     "@mailshieldai/opencode-canvas@latest",
@@ -256,6 +654,7 @@
         "timeout": 600000,
         "chunkTimeout": 180000,
         "setCacheKey": true,
+        "reasoningEffort": "xhigh",
         "websearch_cited": {
           "model": "gpt-5.5"
         }
@@ -392,19 +791,31 @@
   "agent": {
     "build": {
       "model": "openai/gpt-5.5",
-      "variant": "high"
+      "variant": "xhigh",
+      "options": {
+        "reasoningEffort": "xhigh"
+      }
     },
     "plan": {
       "model": "openai/gpt-5.5",
-      "variant": "xhigh"
+      "variant": "xhigh",
+      "options": {
+        "reasoningEffort": "xhigh"
+      }
     },
     "explore": {
       "model": "openai/gpt-5.5",
-      "variant": "high"
+      "variant": "xhigh",
+      "options": {
+        "reasoningEffort": "xhigh"
+      }
     },
     "general": {
       "model": "openai/gpt-5.5",
-      "variant": "high"
+      "variant": "xhigh",
+      "options": {
+        "reasoningEffort": "xhigh"
+      }
     }
   }
 }

@@ -6,11 +6,11 @@
 		},
 		"bootstrapper": {
 			"model": "openai/gpt-5.5",
-			"variant": "high"
+			"variant": "xhigh"
 		},
 		"probe": {
 			"model": "openai/gpt-5.5",
-			"variant": "high"
+			"variant": "xhigh"
 		}
 	}
 }

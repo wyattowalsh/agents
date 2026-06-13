@@ -40,6 +40,14 @@ This repo is packaged as one cross-agent bundle with native plugin adapters and 
 | Other agents | `npx skills add github:wyattowalsh/agents ...` | `wagents update` refreshes recorded sources, and `wagents skills sync` additively reconciles repo + curated external skills across harnesses |
 | OpenSpec | `openspec/` + `uv run wagents openspec ...` | Spec/change workflow with JSON wrappers and local downstream AI tool artifact generation |
 
+## 🤝 Contributing
+
+Start with [CONTRIBUTING.md](CONTRIBUTING.md) before changing skills, agents, MCP config, docs generators, external skill metadata, distribution files, or validation behavior.
+
+Use source-of-truth files first, regenerate derived docs and indexes with `wagents`, and run `uv run wagents openspec validate` for non-trivial public formats, downstream tooling, docs generation, validation behavior, sync behavior, or multi-surface distribution work.
+
+Security-sensitive reports and secret-handling rules are documented in [SECURITY.md](SECURITY.md).
+
 ## ✨ Why use this repository?
 
 | 📦 **Portable** | 🧩 **Composable** | 🌐 **Open Source** |

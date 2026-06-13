@@ -36,14 +36,26 @@ fi
 
 mkdir -p "${PROFILE_DIR}"
 
+launch_chrome() {
+  local args=(
+    --remote-debugging-address="${DEBUG_HOST}"
+    --remote-debugging-port="${DEBUG_PORT}"
+    --user-data-dir="${PROFILE_DIR}"
+    --no-first-run
+    --no-default-browser-check
+  )
+
+  if [[ "$(uname -s)" == "Darwin" && "${CHROME_BIN}" == *".app/Contents/MacOS/"* ]]; then
+    local chrome_app="${CHROME_BIN%%.app/Contents/MacOS/*}.app"
+    open -n "${chrome_app}" --args "${args[@]}" >/dev/null 2>&1
+    return
+  fi
+
+  "${CHROME_BIN}" "${args[@]}" >/dev/null 2>&1 &
+}
+
 if ! devtools_ready; then
-  "${CHROME_BIN}" \
-    --remote-debugging-address="${DEBUG_HOST}" \
-    --remote-debugging-port="${DEBUG_PORT}" \
-    --user-data-dir="${PROFILE_DIR}" \
-    --no-first-run \
-    --no-default-browser-check \
-    >/dev/null 2>&1 &
+  launch_chrome
 
   for _ in {1..50}; do
     if devtools_ready; then

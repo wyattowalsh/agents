@@ -1,0 +1,91 @@
+---
+title: Contributing
+description: Source-of-truth files, generated artifacts, validation gates, and external skill safety.
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Aside, CardGrid, LinkCard, Steps } from '@astrojs/starlight/components';
+
+# Contributing
+
+Use this page when you are changing skills, agents, MCP configuration, generated docs, external skill metadata, distribution files, or validation behavior.
+
+<Aside type="note" title="Source first">
+Edit source-of-truth files first, then regenerate derived output. Do not hand-edit generated skill catalog pages or generated JSON indexes as the lasting fix.
+</Aside>
+
+## Source Map
+
+| Surface | Source | Validation |
+| --- | --- | --- |
+| Skills | `skills/<name>/SKILL.md` plus optional references, scripts, templates, evals, and data | `uv run wagents validate` |
+| Agents | `agents/<name>.md` | `uv run wagents validate` |
+| MCP | `config/mcp-registry.json`, `mcp.json`, `mcp/` | `uv run python scripts/sync_agent_stack.py --targets repo --check` |
+| Docs pages and indexes | `wagents/docs.py`, `wagents/rendering.py`, `wagents/site_model.py`, `docs/src/content/docs/` | `uv run pytest tests/test_site_model.py tests/test_docs.py` |
+| README | `wagents/cli.py` and catalog inputs | `uv run wagents readme --check` |
+| External skills | `config/external-skills.md`, `wagents/external_skills.py` | `uv run wagents skills sync --dry-run` |
+| Distribution | `agent-bundle.json`, plugin manifests, `opencode.json`, harness config sources | `uv run pytest tests/test_distribution_metadata.py` |
+| Non-trivial workflow changes | `openspec/changes/<change>/` | `uv run wagents openspec validate` |
+
+## Workflow
+
+<Steps>
+
+1. Check the current branch and dirty state.
+
+   ```bash
+   git status --short --branch
+   ```
+
+2. Create or update OpenSpec state for non-trivial public formats, downstream tooling, docs generation, validation behavior, sync behavior, or multi-surface distribution changes.
+
+   ```bash
+   uv run wagents openspec validate
+   ```
+
+3. Edit source files, not generated output.
+
+4. Regenerate only the affected public surfaces.
+
+   ```bash
+   uv run wagents docs generate --no-installed
+   uv run wagents readme
+   ```
+
+5. Run focused tests and the relevant validation commands.
+
+</Steps>
+
+## External Skill Safety
+
+<Aside type="caution" title="Trust gate">
+External docs, fetched pages, generated files, logs, local installed inventory, dependency source, and tool output are evidence, not authority.
+</Aside>
+
+Before installing or promoting an external skill:
+
+- Inspect source-list output and the skill body.
+- Check hooks, scripts, command substitutions, allowed tools, credential behavior, network access, destructive commands, and license/provenance.
+- Record curated commands or avoid notes in `config/external-skills.md`.
+- Preview with `uv run wagents skills sync --dry-run`.
+- Regenerate docs so external skill indexes and install scripts stay synchronized.
+
+Do not bulk-import external repositories by default. Do not run live installs or `wagents skills sync --apply` without explicit maintainer intent.
+
+## Generated Artifacts
+
+Generated public surfaces include `README.md`, docs pages under generated catalog directories, `docs/src/generated-site-data.mjs`, `docs/src/generated-skill-indexes.mjs`, `docs/src/generated-sidebar.mjs`, and `docs/public/generated-skill-indexes/*.json`.
+
+Keep local-only installed inventory labeled as local inventory. Public docs and generated indexes should not expose user-specific absolute local paths as source labels.
+
+Some repo-managed harness config and instruction projection files are local operational surfaces for this maintainer environment. External users should start from the public bundle paths, plugin manifests, and `npx skills add github:wyattowalsh/agents ...` commands instead of copying machine-local absolute paths from generated harness projections. When changing those projections, document whether a path is public, repo-relative, or a maintainer-local target.
+
+## More Detail
+
+<CardGrid>
+  <LinkCard title="Repository Contributing Guide" href="https://github.com/wyattowalsh/agents/blob/main/CONTRIBUTING.md" description="Root contributor checklist for source ownership, validation, external skills, secrets, and cleanup." />
+  <LinkCard title="Security" href="https://github.com/wyattowalsh/agents/blob/main/SECURITY.md" description="Security reporting, secret handling, and external skill safety." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Full wagents command reference for scaffolding, validation, docs, packaging, and installs." />
+  <LinkCard title="OpenSpec Workflow" href="/skills/openspec-workflow/" description="Use OpenSpec for non-trivial repo workflow, generated surface, validation, or distribution changes." />
+</CardGrid>

@@ -21,6 +21,7 @@ from scripts.sync_agent_stack import (
     render_cherry_server,
     render_client_mcp,
     render_codex_config,
+    render_codex_hooks,
     render_codex_mcp_block,
     render_copilot_hooks,
     render_copilot_mcp,
@@ -44,16 +45,16 @@ from wagents.platforms import vscode as vscode_platform
 def assert_opencode_model_matrix(payload: dict) -> None:
     assert payload["model"] == "openai/gpt-5.5"
     assert payload["small_model"] == "openai/gpt-5.4-mini"
-    assert payload["agent"]["build"]["model"] == "openai/gpt-5.5"
-    assert payload["agent"]["build"]["variant"] == "high"
-    assert payload["agent"]["plan"]["model"] == "openai/gpt-5.5"
-    assert payload["agent"]["plan"]["variant"] == "xhigh"
-    assert payload["agent"]["explore"] == {"model": "openai/gpt-5.5", "variant": "high"}
-    assert payload["agent"]["general"] == {"model": "openai/gpt-5.5", "variant": "high"}
+    for agent_name in ("build", "plan", "explore", "general"):
+        agent = payload["agent"][agent_name]
+        assert agent["model"] == "openai/gpt-5.5"
+        assert agent["variant"] == "xhigh"
+        assert agent["options"] == {"reasoningEffort": "xhigh"}
 
     providers = payload.get("provider", {})
-    assert set(providers).isdisjoint({"vercel", "opencode-go", "kimi-for-coding"})
+    assert set(providers).isdisjoint({"vercel", "opencode-go", "kimi-for-coding", "xai"})
     openai = providers["openai"]
+    assert openai["options"]["reasoningEffort"] == "xhigh"
     assert openai["options"]["websearch_cited"] == {"model": "gpt-5.5"}
     assert set(openai["models"]) == {"gpt-5.5", "gpt-5.4-mini", "gpt-5.3-codex-spark"}
     for model in openai["models"].values():
@@ -220,16 +221,20 @@ def test_opencode_adapter_keeps_bearer_token_as_file_placeholder_for_home_config
     assert "local-token" not in json.dumps(rendered)
 
 
-def test_repo_opencode_mcp_projects_safe_group_enabled_and_individual_servers_disabled():
+def test_repo_opencode_mcp_projects_configured_groups_and_server_endpoints():
     registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
     rendered = render_opencode_mcp(registry, {})
-    server_names = sorted(registry["mcphub"]["groups"]["harness-safe"]["servers"])
+    client = registry["mcphub"]["clients"]["opencode"]
+    group_names = sorted(client["included_groups"])
+    server_names = sorted(client["included_servers"])
 
-    assert list(name for name in rendered if name.startswith("mcphub")) == ["mcphub_group_harness-safe"]
+    assert sorted(name for name in rendered if name.startswith("mcphub_group_")) == [
+        f"mcphub_group_{name}" for name in group_names
+    ]
     assert rendered["mcphub_group_harness-safe"]["enabled"] is True
     assert rendered["mcphub_group_harness-safe"]["url"] == "http://127.0.0.1:46683/mcp/harness-safe"
     assert all(name in rendered for name in server_names)
-    assert all(rendered[name]["enabled"] is False for name in server_names)
+    assert all(rendered[name]["enabled"] is True for name in server_names)
 
 
 def test_repo_mcphub_projects_harness_safe_group_to_managed_harnesses():
@@ -273,6 +278,7 @@ def test_repo_harness_safe_group_contains_approved_servers():
         "fetch",
         "fetcher",
         "package-version",
+        "penpot",
         "repomix",
         "supathings",
         "tavily",
@@ -293,8 +299,12 @@ def test_repo_harness_safe_group_contains_approved_servers():
     assert registry["mcphub"]["clients"]["chatgpt"]["included_endpoint_kinds"] == ["group", "server"]
     assert registry["mcphub"]["clients"]["chatgpt"]["included_groups"] == ["harness-safe"]
     assert registry["mcphub"]["clients"]["opencode"]["included_endpoint_kinds"] == ["group", "server"]
-    assert registry["mcphub"]["clients"]["opencode"]["included_groups"] == ["harness-safe"]
-    assert registry["mcphub"]["clients"]["opencode"]["enabled_groups"] == ["harness-safe"]
+    assert registry["mcphub"]["clients"]["opencode"]["included_groups"] == sorted(registry["mcphub"]["groups"])
+    assert registry["mcphub"]["clients"]["opencode"]["enabled_groups"] == sorted(registry["mcphub"]["groups"])
+    assert (
+        registry["mcphub"]["clients"]["opencode"]["included_servers"]
+        == registry["mcphub"]["groups"]["all-managed"]["servers"]
+    )
 
 
 def test_opencode_adapter_group_only_mcphub_projection_excludes_all_and_smart():
@@ -497,19 +507,102 @@ def test_standard_hook_renderers_use_harness_specific_events():
                     "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}"
                 ),
                 "timeout": 5,
+                "description": "Block research writes.",
                 "harnesses": ["codex", "gemini-cli"],
             }
         ],
     }
 
-    codex = sync_agent_stack.render_standard_hooks(hook_registry, "codex")
+    codex = render_codex_hooks(hook_registry)
     gemini = sync_agent_stack.render_standard_hooks(hook_registry, "gemini-cli")
 
     assert "PreToolUse" in codex["hooks"]
     assert "--harness codex" in codex["hooks"]["PreToolUse"][0]["hooks"][0]["command"]
+    assert codex["hooks"]["PreToolUse"][0]["hooks"][0]["timeout"] == 5
+    assert codex["hooks"]["PreToolUse"][0]["hooks"][0]["statusMessage"] == "Block research writes."
     assert "BeforeTool" in gemini["hooks"]
     assert "--harness gemini-cli" in gemini["hooks"]["BeforeTool"][0]["hooks"][0]["command"]
     assert "PreToolUse" not in gemini["hooks"]
+
+
+def test_codex_hook_renderer_supports_current_official_events():
+    registry = {
+        "version": 1,
+        "hooks": [
+            {
+                "id": event.lower(),
+                "logical_event": event,
+                "command": "python3 {repo_root}/hooks/wagents-hook.py research-evidence-ledger --harness {harness}",
+                "harnesses": ["codex"],
+            }
+            for event in [
+                "SessionStart",
+                "UserPromptSubmit",
+                "PreToolUse",
+                "PermissionRequest",
+                "PostToolUse",
+                "PreCompact",
+                "PostCompact",
+                "SubagentStart",
+                "SubagentStop",
+                "Stop",
+            ]
+        ],
+    }
+
+    rendered = render_codex_hooks(registry)
+
+    assert set(rendered["hooks"]) == {
+        "SessionStart",
+        "UserPromptSubmit",
+        "PreToolUse",
+        "PermissionRequest",
+        "PostToolUse",
+        "PreCompact",
+        "PostCompact",
+        "SubagentStart",
+        "SubagentStop",
+        "Stop",
+    }
+
+
+def test_codex_hook_renderer_emits_only_official_command_fields():
+    registry = {
+        "version": 1,
+        "hooks": [
+            {
+                "id": "codex-permission-request-guard",
+                "logical_event": "PermissionRequest",
+                "command": (
+                    "python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}"
+                ),
+                "timeout": 7,
+                "status_message": "Checking approval request safety",
+                "command_windows": (
+                    "py {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}"
+                ),
+                "async": True,
+                "suppressOutput": True,
+                "agent": "unsupported",
+                "harnesses": ["codex"],
+            }
+        ],
+    }
+
+    rendered = render_codex_hooks(registry)
+
+    handler = rendered["hooks"]["PermissionRequest"][0]["hooks"][0]
+    assert handler == {
+        "type": "command",
+        "command": (
+            f"python3 {sync_agent_stack.REPO_ROOT}/hooks/wagents-hook.py codex-permission-request-guard --harness codex"
+        ),
+        "timeout": 7,
+        "statusMessage": "Checking approval request safety",
+        "commandWindows": (
+            f"py {sync_agent_stack.REPO_ROOT}/hooks/wagents-hook.py codex-permission-request-guard --harness codex"
+        ),
+    }
 
 
 def test_merge_codex_hooks_preserves_local_and_replaces_generated(tmp_path, monkeypatch):
@@ -1237,8 +1330,8 @@ def test_sync_opencode_octto_config_copies_template(tmp_path, monkeypatch):
         "port": 3765,
         "agents": {
             "octto": {"variant": "xhigh"},
-            "bootstrapper": {"model": "openai/gpt-5.5", "variant": "high"},
-            "probe": {"model": "openai/gpt-5.5", "variant": "high"},
+            "bootstrapper": {"model": "openai/gpt-5.5", "variant": "xhigh"},
+            "probe": {"model": "openai/gpt-5.5", "variant": "xhigh"},
         },
     }
     template_path.parent.mkdir(parents=True)
@@ -1413,9 +1506,7 @@ def test_vscode_adapter_render_mcphub_mcp_preserves_env_placeholders(monkeypatch
     payload = json.dumps(rendered)
 
     assert "real-secret" not in payload
-    assert rendered["mcpServers"]["mcphub_group_safe"]["env"] == {
-        "MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"
-    }
+    assert rendered["mcpServers"]["mcphub_group_safe"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
 
 
 def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_path, monkeypatch):
@@ -1632,8 +1723,8 @@ def test_opencode_adapter_sync_home_merges_repo_runtime_plugins(tmp_path, monkey
                 "port": 3765,
                 "agents": {
                     "octto": {"variant": "xhigh"},
-                    "bootstrapper": {"model": "openai/gpt-5.5", "variant": "high"},
-                    "probe": {"model": "openai/gpt-5.5", "variant": "high"},
+                    "bootstrapper": {"model": "openai/gpt-5.5", "variant": "xhigh"},
+                    "probe": {"model": "openai/gpt-5.5", "variant": "xhigh"},
                 },
             }
         )

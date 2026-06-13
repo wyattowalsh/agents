@@ -67,6 +67,82 @@
       ]
     },
     {
+      "id": "codex-session-start-context",
+      "description": "Report lightweight Codex session and repository context.",
+      "status_message": "Gathering Codex session context",
+      "mode": "context",
+      "logical_event": "SessionStart",
+      "matcher": "startup|resume|clear",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-session-start-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "codex-destructive-shell-guard",
+      "description": "Block critical destructive shell commands in Codex.",
+      "status_message": "Checking shell safety",
+      "mode": "enforce",
+      "logical_event": "PreToolUse",
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-destructive-shell-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "codex-protected-file-guard",
+      "description": "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Codex.",
+      "status_message": "Checking protected paths",
+      "mode": "enforce",
+      "logical_event": "PreToolUse",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-protected-file-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "codex-permission-request-guard",
+      "description": "Deny high-risk Codex permission requests and otherwise preserve the normal approval flow.",
+      "status_message": "Checking approval request safety",
+      "mode": "enforce",
+      "logical_event": "PermissionRequest",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "codex-post-tool-verify-context",
+      "description": "Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use.",
+      "status_message": "Checking post-edit quality",
+      "mode": "context",
+      "logical_event": "PostToolUse",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-post-tool-verify-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
+      "id": "codex-stop-truth-gate",
+      "description": "Ask Codex for one more pass when final code-change claims omit validation evidence.",
+      "status_message": "Checking final-answer evidence",
+      "mode": "enforce",
+      "logical_event": "Stop",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py codex-stop-truth-gate --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "codex"
+      ]
+    },
+    {
       "id": "research-prompt-triage-context",
       "description": "Activate research hook state and inject research-method reminders.",
       "mode": "context",

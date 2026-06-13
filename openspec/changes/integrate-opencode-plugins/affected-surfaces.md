@@ -4,7 +4,7 @@
 
 - `opencode.json` — repo-managed OpenCode runtime plugin mirror.
 - `instructions/opencode-global.md` — OpenCode-specific policy for model-neutral config, plugin placement, telemetry secrets, and scheduler/auth/workflow guardrails.
-- `opencode-setup/INSTALL_MANIFEST.md` — machine install inventory and verification notes.
+- `planning/manifests/opencode-plugin-install-manifest.md` — machine install inventory and verification notes.
 - `.opencode/PLUGINS.md` — repo-local OpenCode plugin installation notes.
 - `.opencode/ocx.jsonc` and `.ocx/receipt.jsonc` — OCX component config and integrity receipt for KDCO worktree support.
 - `.opencode/plugin/worktree.ts`, `.opencode/plugin/worktree/`, and `.opencode/plugin/kdco-primitives/` — OCX-installed worktree component files.

@@ -57,6 +57,7 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
     "codex": [
         {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "authoritative"},
         {"label": "project config", "path": ".codex/config.toml", "kind": "config", "role": "authoritative"},
+        {"label": "project hooks", "path": ".codex/hooks.json", "kind": "hooks", "role": "authoritative"},
     ],
     "cursor": [
         {"label": "root agents", "path": "AGENTS.md", "kind": "instructions", "role": "secondary"},
@@ -158,6 +159,7 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
     "codex": [
         {"label": "global entrypoint", "path": "~/.codex/AGENTS.md", "kind": "instructions", "role": "authoritative"},
         {"label": "global config", "path": "~/.codex/config.toml", "kind": "config", "role": "authoritative"},
+        {"label": "global hooks", "path": "~/.codex/hooks.json", "kind": "hooks", "role": "authoritative"},
         {"label": "installed skills", "path": "~/.codex/skills", "kind": "skills", "role": "secondary"},
     ],
     "cursor": [

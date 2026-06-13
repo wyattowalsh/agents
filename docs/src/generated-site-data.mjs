@@ -3,7 +3,7 @@ const baseSiteData = {
   "counts": {
     "agents": 8,
     "customSkills": 58,
-    "installedSkills": 292,
+    "installedSkills": 293,
     "mcpServers": 1
   },
   "distributionPaths": [
@@ -40,356 +40,6 @@ const baseSiteData = {
   ],
   "externalSkillGroups": {
     "bySource": [
-      {
-        "count": 1,
-        "skills": [
-          "autoplan"
-        ],
-        "source": "/Users/ww/.agents/skills/autoplan"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "benchmark"
-        ],
-        "source": "/Users/ww/.agents/skills/benchmark"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "browse"
-        ],
-        "source": "/Users/ww/.agents/skills/browse"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "canary"
-        ],
-        "source": "/Users/ww/.agents/skills/canary"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "careful"
-        ],
-        "source": "/Users/ww/.agents/skills/careful"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "codex"
-        ],
-        "source": "/Users/ww/.agents/skills/codex"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "connect-chrome"
-        ],
-        "source": "/Users/ww/.agents/skills/connect-chrome"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "cso"
-        ],
-        "source": "/Users/ww/.agents/skills/cso"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "design-consultation"
-        ],
-        "source": "/Users/ww/.agents/skills/design-consultation"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "design-review"
-        ],
-        "source": "/Users/ww/.agents/skills/design-review"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "design-shotgun"
-        ],
-        "source": "/Users/ww/.agents/skills/design-shotgun"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "document-release"
-        ],
-        "source": "/Users/ww/.agents/skills/document-release"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "freeze"
-        ],
-        "source": "/Users/ww/.agents/skills/freeze"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "gstack"
-        ],
-        "source": "/Users/ww/.agents/skills/gstack"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "gstack-upgrade"
-        ],
-        "source": "/Users/ww/.agents/skills/gstack-upgrade"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "guard"
-        ],
-        "source": "/Users/ww/.agents/skills/guard"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "investigate"
-        ],
-        "source": "/Users/ww/.agents/skills/investigate"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "land-and-deploy"
-        ],
-        "source": "/Users/ww/.agents/skills/land-and-deploy"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "office-hours"
-        ],
-        "source": "/Users/ww/.agents/skills/office-hours"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plan-ceo-review"
-        ],
-        "source": "/Users/ww/.agents/skills/plan-ceo-review"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plan-design-review"
-        ],
-        "source": "/Users/ww/.agents/skills/plan-design-review"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plan-eng-review"
-        ],
-        "source": "/Users/ww/.agents/skills/plan-eng-review"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plannotator-compound"
-        ],
-        "source": "/Users/ww/.agents/skills/plannotator-compound"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plannotator-setup-goal"
-        ],
-        "source": "/Users/ww/.agents/skills/plannotator-setup-goal"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plannotator-visual-explainer"
-        ],
-        "source": "/Users/ww/.agents/skills/plannotator-visual-explainer"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "qa"
-        ],
-        "source": "/Users/ww/.agents/skills/qa"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "qa-only"
-        ],
-        "source": "/Users/ww/.agents/skills/qa-only"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "retro"
-        ],
-        "source": "/Users/ww/.agents/skills/retro"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "review"
-        ],
-        "source": "/Users/ww/.agents/skills/review"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-chat-with-data"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-chat-with-data"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-discovery"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-discovery"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-email-monitor"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-email-monitor"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-interview-prep"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-interview-prep"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-materials"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-materials"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-networking"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-networking"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-offer-negotiation"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-offer-negotiation"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-pipeline-analytics"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-pipeline-analytics"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-pipeline-manager"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-pipeline-manager"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-profile-builder"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-profile-builder"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-research"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-research"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ronin-search-strategy"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-search-strategy"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "setup-browser-cookies"
-        ],
-        "source": "/Users/ww/.agents/skills/setup-browser-cookies"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "setup-deploy"
-        ],
-        "source": "/Users/ww/.agents/skills/setup-deploy"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "ship"
-        ],
-        "source": "/Users/ww/.agents/skills/ship"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "unfreeze"
-        ],
-        "source": "/Users/ww/.agents/skills/unfreeze"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "hatch-pet"
-        ],
-        "source": "/Users/ww/.codex/skills/hatch-pet"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plannotator-annotate"
-        ],
-        "source": "/Users/ww/.codex/skills/plannotator-annotate"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plannotator-last"
-        ],
-        "source": "/Users/ww/.codex/skills/plannotator-last"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "plannotator-review"
-        ],
-        "source": "/Users/ww/.codex/skills/plannotator-review"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "project-context"
-        ],
-        "source": "/Users/ww/.config/opencode/skills/project-context"
-      },
       {
         "count": 1,
         "skills": [
@@ -447,6 +97,15 @@ const baseSiteData = {
           "swiftui-expert-skill"
         ],
         "source": "avdlee/swiftui-agent-skill"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "plannotator-compound",
+          "plannotator-setup-goal",
+          "plannotator-visual-explainer"
+        ],
+        "source": "backnotprop/plannotator"
       },
       {
         "count": 1,
@@ -732,6 +391,59 @@ const baseSiteData = {
           "solve-challenge"
         ],
         "source": "ljagiello/ctf-skills"
+      },
+      {
+        "count": 47,
+        "skills": [
+          "autoplan",
+          "benchmark",
+          "browse",
+          "canary",
+          "careful",
+          "codex",
+          "connect-chrome",
+          "cso",
+          "design-consultation",
+          "design-review",
+          "design-shotgun",
+          "document-release",
+          "freeze",
+          "gstack",
+          "gstack-upgrade",
+          "guard",
+          "hatch-pet",
+          "investigate",
+          "land-and-deploy",
+          "office-hours",
+          "plan-ceo-review",
+          "plan-design-review",
+          "plan-eng-review",
+          "plannotator-annotate",
+          "plannotator-last",
+          "plannotator-review",
+          "project-context",
+          "qa",
+          "qa-only",
+          "retro",
+          "review",
+          "ronin-chat-with-data",
+          "ronin-discovery",
+          "ronin-email-monitor",
+          "ronin-interview-prep",
+          "ronin-materials",
+          "ronin-networking",
+          "ronin-offer-negotiation",
+          "ronin-pipeline-analytics",
+          "ronin-pipeline-manager",
+          "ronin-profile-builder",
+          "ronin-research",
+          "ronin-search-strategy",
+          "setup-browser-cookies",
+          "setup-deploy",
+          "ship",
+          "unfreeze"
+        ],
+        "source": "local installed inventory"
       },
       {
         "count": 2,
@@ -1034,7 +746,7 @@ const baseSiteData = {
         "status": "install-now-after-trust-gate"
       },
       {
-        "count": 219,
+        "count": 172,
         "skills": [
           "ab-test-setup",
           "ad-creative",
@@ -1049,35 +761,23 @@ const baseSiteData = {
           "apollo-router-plugin-creator",
           "apollo-server",
           "autofix",
-          "autoplan",
           "baseline-ui",
-          "benchmark",
           "better-auth-best-practices",
-          "browse",
           "building-ai-agent-on-cloudflare",
           "building-mcp-server-on-cloudflare",
-          "canary",
-          "careful",
           "churn-prevention",
           "clerk-nextjs-patterns",
           "cloudwatch",
-          "codex",
           "cold-email",
           "competitor-alternatives",
-          "connect-chrome",
           "content-strategy",
           "context-engineering-collection",
           "copy-editing",
           "copywriting",
-          "cso",
           "deep-agents-core",
           "deep-agents-memory",
           "deep-agents-orchestration",
           "defuddle",
-          "design-consultation",
-          "design-review",
-          "design-shotgun",
-          "document-release",
           "docx",
           "electron",
           "email-sequence",
@@ -1111,7 +811,6 @@ const baseSiteData = {
           "flutter-working-with-databases",
           "form-cro",
           "free-tool-strategy",
-          "freeze",
           "frontend-design",
           "golang-benchmark",
           "golang-cli",
@@ -1157,10 +856,6 @@ const baseSiteData = {
           "golang-uber-fx",
           "graphql-operations",
           "graphql-schema",
-          "gstack",
-          "gstack-upgrade",
-          "guard",
-          "hatch-pet",
           "here-now",
           "hf-cli",
           "huggingface-community-evals",
@@ -1172,9 +867,7 @@ const baseSiteData = {
           "huggingface-papers",
           "huggingface-trackio",
           "huggingface-vision-trainer",
-          "investigate",
           "json-canvas",
-          "land-and-deploy",
           "langchain-dependencies",
           "langchain-middleware",
           "launch-strategy",
@@ -1188,19 +881,12 @@ const baseSiteData = {
           "obsidian-bases",
           "obsidian-cli",
           "obsidian-markdown",
-          "office-hours",
           "onboarding-cro",
           "page-cro",
           "paid-ads",
           "paywall-upgrade-cro",
           "pdf",
-          "plan-ceo-review",
-          "plan-design-review",
-          "plan-eng-review",
-          "plannotator-annotate",
           "plannotator-compound",
-          "plannotator-last",
-          "plannotator-review",
           "plannotator-setup-goal",
           "plannotator-visual-explainer",
           "popup-cro",
@@ -1209,14 +895,68 @@ const baseSiteData = {
           "prisma-database-setup",
           "product-marketing-context",
           "programmatic-seo",
+          "react-native-best-practices",
+          "referral-program",
+          "revops",
+          "rover",
+          "rust-best-practices",
+          "rust-skills",
+          "sales-enablement",
+          "sandbox-sdk",
+          "schema-markup",
+          "seo-audit",
+          "signup-flow-cro",
+          "site-architecture",
+          "sleek-design-mobile-apps",
+          "slidev",
+          "social-content",
+          "svelte-code-writer",
+          "swiftui-expert-skill",
+          "tailwind-design-system",
+          "terraform-style-guide",
+          "transformers-js",
+          "use-dom",
+          "web-artifacts-builder",
+          "web-perf",
+          "webapp-testing",
+          "xlsx"
+        ],
+        "status": "installed-external"
+      },
+      {
+        "count": 47,
+        "skills": [
+          "autoplan",
+          "benchmark",
+          "browse",
+          "canary",
+          "careful",
+          "codex",
+          "connect-chrome",
+          "cso",
+          "design-consultation",
+          "design-review",
+          "design-shotgun",
+          "document-release",
+          "freeze",
+          "gstack",
+          "gstack-upgrade",
+          "guard",
+          "hatch-pet",
+          "investigate",
+          "land-and-deploy",
+          "office-hours",
+          "plan-ceo-review",
+          "plan-design-review",
+          "plan-eng-review",
+          "plannotator-annotate",
+          "plannotator-last",
+          "plannotator-review",
           "project-context",
           "qa",
           "qa-only",
-          "react-native-best-practices",
-          "referral-program",
           "retro",
           "review",
-          "revops",
           "ronin-chat-with-data",
           "ronin-discovery",
           "ronin-email-monitor",
@@ -1229,34 +969,12 @@ const baseSiteData = {
           "ronin-profile-builder",
           "ronin-research",
           "ronin-search-strategy",
-          "rover",
-          "rust-best-practices",
-          "rust-skills",
-          "sales-enablement",
-          "sandbox-sdk",
-          "schema-markup",
-          "seo-audit",
           "setup-browser-cookies",
           "setup-deploy",
           "ship",
-          "signup-flow-cro",
-          "site-architecture",
-          "sleek-design-mobile-apps",
-          "slidev",
-          "social-content",
-          "svelte-code-writer",
-          "swiftui-expert-skill",
-          "tailwind-design-system",
-          "terraform-style-guide",
-          "transformers-js",
-          "unfreeze",
-          "use-dom",
-          "web-artifacts-builder",
-          "web-perf",
-          "webapp-testing",
-          "xlsx"
+          "unfreeze"
         ],
-        "status": "installed-external"
+        "status": "read-only-discovered"
       }
     ]
   },
@@ -1797,456 +1515,6 @@ const baseSiteData = {
     ],
     "installedCommands": [
       {
-        "command": "npx skills add /Users/ww/.agents/skills/autoplan --skill autoplan -y -g",
-        "skills": [
-          "autoplan"
-        ],
-        "source": "/Users/ww/.agents/skills/autoplan",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/benchmark --skill benchmark -y -g",
-        "skills": [
-          "benchmark"
-        ],
-        "source": "/Users/ww/.agents/skills/benchmark",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/browse --skill browse -y -g",
-        "skills": [
-          "browse"
-        ],
-        "source": "/Users/ww/.agents/skills/browse",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/canary --skill canary -y -g",
-        "skills": [
-          "canary"
-        ],
-        "source": "/Users/ww/.agents/skills/canary",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/careful --skill careful -y -g",
-        "skills": [
-          "careful"
-        ],
-        "source": "/Users/ww/.agents/skills/careful",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/codex --skill codex -y -g",
-        "skills": [
-          "codex"
-        ],
-        "source": "/Users/ww/.agents/skills/codex",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/connect-chrome --skill connect-chrome -y -g",
-        "skills": [
-          "connect-chrome"
-        ],
-        "source": "/Users/ww/.agents/skills/connect-chrome",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/cso --skill cso -y -g",
-        "skills": [
-          "cso"
-        ],
-        "source": "/Users/ww/.agents/skills/cso",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/design-consultation --skill design-consultation -y -g",
-        "skills": [
-          "design-consultation"
-        ],
-        "source": "/Users/ww/.agents/skills/design-consultation",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/design-review --skill design-review -y -g",
-        "skills": [
-          "design-review"
-        ],
-        "source": "/Users/ww/.agents/skills/design-review",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/design-shotgun --skill design-shotgun -y -g",
-        "skills": [
-          "design-shotgun"
-        ],
-        "source": "/Users/ww/.agents/skills/design-shotgun",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/document-release --skill document-release -y -g",
-        "skills": [
-          "document-release"
-        ],
-        "source": "/Users/ww/.agents/skills/document-release",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/freeze --skill freeze -y -g",
-        "skills": [
-          "freeze"
-        ],
-        "source": "/Users/ww/.agents/skills/freeze",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/gstack --skill gstack -y -g",
-        "skills": [
-          "gstack"
-        ],
-        "source": "/Users/ww/.agents/skills/gstack",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/gstack-upgrade --skill gstack-upgrade -y -g",
-        "skills": [
-          "gstack-upgrade"
-        ],
-        "source": "/Users/ww/.agents/skills/gstack-upgrade",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/guard --skill guard -y -g",
-        "skills": [
-          "guard"
-        ],
-        "source": "/Users/ww/.agents/skills/guard",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/investigate --skill investigate -y -g",
-        "skills": [
-          "investigate"
-        ],
-        "source": "/Users/ww/.agents/skills/investigate",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/land-and-deploy --skill land-and-deploy -y -g",
-        "skills": [
-          "land-and-deploy"
-        ],
-        "source": "/Users/ww/.agents/skills/land-and-deploy",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/office-hours --skill office-hours -y -g",
-        "skills": [
-          "office-hours"
-        ],
-        "source": "/Users/ww/.agents/skills/office-hours",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/plan-ceo-review --skill plan-ceo-review -y -g",
-        "skills": [
-          "plan-ceo-review"
-        ],
-        "source": "/Users/ww/.agents/skills/plan-ceo-review",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/plan-design-review --skill plan-design-review -y -g",
-        "skills": [
-          "plan-design-review"
-        ],
-        "source": "/Users/ww/.agents/skills/plan-design-review",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/plan-eng-review --skill plan-eng-review -y -g",
-        "skills": [
-          "plan-eng-review"
-        ],
-        "source": "/Users/ww/.agents/skills/plan-eng-review",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/plannotator-compound --skill plannotator-compound -y -g",
-        "skills": [
-          "plannotator-compound"
-        ],
-        "source": "/Users/ww/.agents/skills/plannotator-compound",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/plannotator-setup-goal --skill plannotator-setup-goal -y -g",
-        "skills": [
-          "plannotator-setup-goal"
-        ],
-        "source": "/Users/ww/.agents/skills/plannotator-setup-goal",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/plannotator-visual-explainer --skill plannotator-visual-explainer -y -g",
-        "skills": [
-          "plannotator-visual-explainer"
-        ],
-        "source": "/Users/ww/.agents/skills/plannotator-visual-explainer",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/qa --skill qa -y -g",
-        "skills": [
-          "qa"
-        ],
-        "source": "/Users/ww/.agents/skills/qa",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/qa-only --skill qa-only -y -g",
-        "skills": [
-          "qa-only"
-        ],
-        "source": "/Users/ww/.agents/skills/qa-only",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/retro --skill retro -y -g",
-        "skills": [
-          "retro"
-        ],
-        "source": "/Users/ww/.agents/skills/retro",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/review --skill review -y -g",
-        "skills": [
-          "review"
-        ],
-        "source": "/Users/ww/.agents/skills/review",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-chat-with-data --skill ronin-chat-with-data -y -g",
-        "skills": [
-          "ronin-chat-with-data"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-chat-with-data",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-discovery --skill ronin-discovery -y -g",
-        "skills": [
-          "ronin-discovery"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-discovery",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-email-monitor --skill ronin-email-monitor -y -g",
-        "skills": [
-          "ronin-email-monitor"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-email-monitor",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-interview-prep --skill ronin-interview-prep -y -g",
-        "skills": [
-          "ronin-interview-prep"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-interview-prep",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-materials --skill ronin-materials -y -g",
-        "skills": [
-          "ronin-materials"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-materials",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-networking --skill ronin-networking -y -g",
-        "skills": [
-          "ronin-networking"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-networking",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-offer-negotiation --skill ronin-offer-negotiation -y -g",
-        "skills": [
-          "ronin-offer-negotiation"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-offer-negotiation",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-pipeline-analytics --skill ronin-pipeline-analytics -y -g",
-        "skills": [
-          "ronin-pipeline-analytics"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-pipeline-analytics",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-pipeline-manager --skill ronin-pipeline-manager -y -g",
-        "skills": [
-          "ronin-pipeline-manager"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-pipeline-manager",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-profile-builder --skill ronin-profile-builder -y -g",
-        "skills": [
-          "ronin-profile-builder"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-profile-builder",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-research --skill ronin-research -y -g",
-        "skills": [
-          "ronin-research"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-research",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ronin-search-strategy --skill ronin-search-strategy -y -g",
-        "skills": [
-          "ronin-search-strategy"
-        ],
-        "source": "/Users/ww/.agents/skills/ronin-search-strategy",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/setup-browser-cookies --skill setup-browser-cookies -y -g",
-        "skills": [
-          "setup-browser-cookies"
-        ],
-        "source": "/Users/ww/.agents/skills/setup-browser-cookies",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/setup-deploy --skill setup-deploy -y -g",
-        "skills": [
-          "setup-deploy"
-        ],
-        "source": "/Users/ww/.agents/skills/setup-deploy",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/ship --skill ship -y -g",
-        "skills": [
-          "ship"
-        ],
-        "source": "/Users/ww/.agents/skills/ship",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.agents/skills/unfreeze --skill unfreeze -y -g",
-        "skills": [
-          "unfreeze"
-        ],
-        "source": "/Users/ww/.agents/skills/unfreeze",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.codex/skills/hatch-pet --skill hatch-pet -y -g",
-        "skills": [
-          "hatch-pet"
-        ],
-        "source": "/Users/ww/.codex/skills/hatch-pet",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.codex/skills/plannotator-annotate --skill plannotator-annotate -y -g",
-        "skills": [
-          "plannotator-annotate"
-        ],
-        "source": "/Users/ww/.codex/skills/plannotator-annotate",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.codex/skills/plannotator-last --skill plannotator-last -y -g",
-        "skills": [
-          "plannotator-last"
-        ],
-        "source": "/Users/ww/.codex/skills/plannotator-last",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.codex/skills/plannotator-review --skill plannotator-review -y -g",
-        "skills": [
-          "plannotator-review"
-        ],
-        "source": "/Users/ww/.codex/skills/plannotator-review",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
-        "command": "npx skills add /Users/ww/.config/opencode/skills/project-context --skill project-context -y -g",
-        "skills": [
-          "project-context"
-        ],
-        "source": "/Users/ww/.config/opencode/skills/project-context",
-        "status": "installed-external",
-        "trustTier": "read-only-discovered"
-      },
-      {
         "command": "npx skills add anthropics/skills --skill docx -y -g",
         "skills": [
           "docx"
@@ -2423,6 +1691,33 @@ const baseSiteData = {
           "swiftui-expert-skill"
         ],
         "source": "avdlee/swiftui-agent-skill",
+        "status": "installed-external",
+        "trustTier": "github"
+      },
+      {
+        "command": "npx skills add backnotprop/plannotator --skill plannotator-compound -y -g",
+        "skills": [
+          "plannotator-compound"
+        ],
+        "source": "backnotprop/plannotator",
+        "status": "installed-external",
+        "trustTier": "github"
+      },
+      {
+        "command": "npx skills add backnotprop/plannotator --skill plannotator-setup-goal -y -g",
+        "skills": [
+          "plannotator-setup-goal"
+        ],
+        "source": "backnotprop/plannotator",
+        "status": "installed-external",
+        "trustTier": "github"
+      },
+      {
+        "command": "npx skills add backnotprop/plannotator --skill plannotator-visual-explainer -y -g",
+        "skills": [
+          "plannotator-visual-explainer"
+        ],
+        "source": "backnotprop/plannotator",
         "status": "installed-external",
         "trustTier": "github"
       },

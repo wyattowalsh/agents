@@ -88,7 +88,7 @@ _RUNTIME_DEFAULT_KEYS = {
     "experimental",
     "permission",
 }
-_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding"}
+_MANAGED_PROVIDER_IDS = {"vercel", "opencode-go", "kimi-for-coding", "xai"}
 _PYTHON_EXTENSIONS = [".py", ".pyi"]
 _FORMATTER_DEFAULTS = {
     "biome": {
@@ -273,6 +273,7 @@ def _openai_provider_defaults() -> dict[str, Any]:
             "timeout": 600000,
             "chunkTimeout": 180000,
             "setCacheKey": True,
+            "reasoningEffort": "xhigh",
             "websearch_cited": {"model": "gpt-5.5"},
         },
         "models": {
@@ -291,19 +292,23 @@ def _runtime_defaults(policy: dict[str, Any]) -> dict[str, Any]:
         "agent": {
             "build": {
                 "model": "openai/gpt-5.5",
-                "variant": "high",
+                "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
             "plan": {
                 "model": "openai/gpt-5.5",
                 "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
             "explore": {
                 "model": "openai/gpt-5.5",
-                "variant": "high",
+                "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
             "general": {
                 "model": "openai/gpt-5.5",
-                "variant": "high",
+                "variant": "xhigh",
+                "options": {"reasoningEffort": "xhigh"},
             },
         },
         "autoupdate": "notify",
@@ -391,6 +396,18 @@ def _remove_repo_managed_providers(settings: dict[str, Any]) -> None:
         return
     for provider_id in _MANAGED_PROVIDER_IDS:
         providers.pop(provider_id, None)
+    # Aggressively keep *only* the providers we explicitly manage (openai) or
+    # explicitly add later (lmstudio in home sync). Any others (xai, opencode-go,
+    # vercel, future picker auto-entries for grok etc.) are fully stripped so their
+    # options cannot inherit websearch_cited/setCacheKey/reasoning* etc. and cause
+    # "invalid <provider> provider options".
+    for pid in list(providers.keys()):
+        if pid not in ("openai", "lmstudio"):
+            providers.pop(pid, None)
+    # Always ensure no "xai" provider block remains (desktop can auto-write one with
+    # copied openai options like websearch_cited/setCacheKey etc. when switching models
+    # to grok 4.3, causing "invalid xai provider options"). Strip it so built-in registry owns it.
+    providers.pop("xai", None)
     if not providers:
         settings.pop("provider", None)
 

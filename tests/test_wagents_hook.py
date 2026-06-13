@@ -38,6 +38,91 @@ def run_hook(monkeypatch, payload: dict, args: list[str], env_active: bool = Fal
     return code, stdout.value, stderr.value
 
 
+def test_hook_registry_wagents_policies_are_implemented():
+    registry = json.loads((Path(__file__).parent.parent / "config" / "hook-registry.json").read_text(encoding="utf-8"))
+
+    policy_ids = {
+        command.split("wagents-hook.py ", 1)[1].split()[0]
+        for hook in registry["hooks"]
+        for command in [hook.get("command", "")]
+        if "wagents-hook.py " in command
+    }
+
+    assert policy_ids <= set(wagents_hook.POLICIES)
+
+
+def test_codex_session_start_context_returns_additional_context(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+    monkeypatch.setattr(wagents_hook, "_git_session_context", lambda cwd: f"cwd={cwd}; branch=main; dirty_paths=0")
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {"session_id": "s1", "hook_event_name": "SessionStart", "cwd": str(Path(__file__).parent.parent)},
+        ["codex-session-start-context", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert payload["hookSpecificOutput"]["hookEventName"] == "SessionStart"
+    assert "managed hooks source=config/hook-registry.json" in payload["hookSpecificOutput"]["additionalContext"]
+
+
+def test_codex_always_on_destructive_shell_guard_blocks_git_reset(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "git reset --hard"},
+        },
+        ["codex-destructive-shell-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert "git reset --hard" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_codex_protected_file_guard_blocks_secret_path(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {"session_id": "s1", "hook_event_name": "PreToolUse", "tool_name": "Edit", "tool_input": {"file_path": ".env"}},
+        ["codex-protected-file-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert "secret-bearing" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_codex_permission_request_guard_uses_permission_decision_shape(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PermissionRequest",
+            "tool_name": "Bash",
+            "tool_input": {"command": "git clean -fd"},
+        },
+        ["codex-permission-request-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["hookEventName"] == "PermissionRequest"
+    assert payload["hookSpecificOutput"]["decision"]["behavior"] == "deny"
+
+
 def test_prompt_triage_activates_research_context(monkeypatch, tmp_path):
     monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
 
@@ -109,6 +194,232 @@ def test_codex_dangerous_shell_guard_denies_recursive_remove(monkeypatch, tmp_pa
     record = json.loads(ledger.read_text(encoding="utf-8").splitlines()[0])
     assert record["decision"] == "deny"
     assert record["session_id_hash"]
+
+
+def test_codex_destructive_shell_guard_denies_critical_remove(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {"hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": {"command": "rm -rf /Users"}},
+        ["codex-destructive-shell-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["hookEventName"] == "PreToolUse"
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert "critical path" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_codex_protected_file_guard_blocks_apply_patch_secret(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "apply_patch",
+            "tool_input": {"patch": "*** Begin Patch\n*** Update File: .env\n+TOKEN=secret\n*** End Patch\n"},
+        },
+        ["codex-protected-file-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert "secret-bearing" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_codex_protected_file_guard_blocks_bash_lockfile_write(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "Bash",
+            "tool_input": {"command": "printf '{}' > package-lock.json"},
+        },
+        ["codex-protected-file-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert "Lock files" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_codex_protected_file_guard_blocks_mcp_style_path(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, _stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PreToolUse",
+            "tool_name": "mcp__filesystem__write_file",
+            "tool_input": {"arguments": {"path": "../outside.txt", "content": "data"}},
+        },
+        ["codex-protected-file-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
+    assert "Path traversal" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_codex_permission_request_guard_denies_high_risk_request(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PermissionRequest",
+            "tool_name": "Bash",
+            "tool_input": {"command": "git reset --hard"},
+        },
+        ["codex-permission-request-guard", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert payload == {
+        "hookSpecificOutput": {
+            "hookEventName": "PermissionRequest",
+            "decision": {
+                "behavior": "deny",
+                "message": "git reset --hard is blocked because it destroys uncommitted work.",
+            },
+        }
+    }
+
+
+def test_codex_permission_request_guard_preserves_normal_approval_flow(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PermissionRequest",
+            "tool_name": "Bash",
+            "tool_input": {"command": "python -m pytest tests/test_wagents_hook.py"},
+        },
+        ["codex-permission-request-guard", "--harness", "codex"],
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
+def test_codex_post_tool_verifier_reports_lightweight_quality_failures(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+    target = tmp_path / "broken.json"
+    target.write_text("{", encoding="utf-8")
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "PostToolUse",
+            "tool_name": "apply_patch",
+            "tool_input": {"patch": "*** Begin Patch\n*** Update File: broken.json\n+{\n*** End Patch\n"},
+            "cwd": str(tmp_path),
+        },
+        ["codex-post-tool-verify-context", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    context = payload["hookSpecificOutput"]["additionalContext"]
+    assert "post-edit quality context" in context
+    assert "Fast quality checks found issues" in context
+    assert "json failed" in context
+
+
+def test_codex_stop_truth_gate_blocks_code_claim_without_validation(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "Stop",
+            "last_assistant_message": "Implemented the hook changes in hooks/wagents-hook.py.",
+        },
+        ["codex-stop-truth-gate", "--harness", "codex"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert payload["decision"] == "block"
+    assert "validation evidence" in payload["reason"]
+
+
+def test_codex_stop_truth_gate_allows_explicit_validation_status(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "Stop",
+            "last_assistant_message": (
+                "Implemented the hook changes.\n\nValidation: uv run pytest tests/test_wagents_hook.py -q"
+            ),
+        },
+        ["codex-stop-truth-gate", "--harness", "codex"],
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
+def test_codex_stop_truth_gate_allows_generic_non_code_addition(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "Stop",
+            "last_assistant_message": "Added more candidates to the approval queue.",
+        },
+        ["codex-stop-truth-gate", "--harness", "codex"],
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
+
+
+def test_codex_stop_truth_gate_skips_recursive_stop(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "Stop",
+            "stop_hook_active": True,
+            "last_assistant_message": "Implemented the hook changes.",
+        },
+        ["codex-stop-truth-gate", "--harness", "codex"],
+    )
+
+    assert code == 0
+    assert stdout == ""
+    assert stderr == ""
 
 
 def test_inactive_guard_records_allow_decision(monkeypatch, tmp_path):
@@ -290,3 +601,26 @@ def test_stop_verifier_skips_recursive_payload(monkeypatch):
     assert code == 0
     assert stdout == ""
     assert stderr == ""
+
+
+def test_codex_stop_verifier_failure_requests_continuation(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    class Proc:
+        returncode = 1
+        stdout = ""
+        stderr = "Need one more verification pass."
+
+    monkeypatch.setattr(wagents_hook.subprocess, "run", lambda *args, **kwargs: Proc())
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {"session_id": "s1", "hook_event_name": "Stop"},
+        ["research-stop-verifier", "--harness", "codex"],
+        env_active=True,
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert payload == {"decision": "block", "reason": "Need one more verification pass."}

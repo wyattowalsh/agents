@@ -1,5 +1,7 @@
 """Tests for wagents.docs — index pages, sidebar, and docs subcommands."""
 
+from pathlib import Path
+
 from wagents.catalog import CatalogNode
 from wagents.docs import (
     docs_generate,
@@ -217,6 +219,24 @@ class TestWriteSkillsIndex:
         assert "## Source Groups" in text
         assert "`ext-skill`" in text
 
+    def test_external_skills_page_redacts_local_installed_source_paths(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        write_external_skills_page(
+            [],
+            [
+                _make_node(
+                    "skill",
+                    id_suffix="local",
+                    source="installed",
+                    source_path="/Users/example/.codex/skills/local-skill/SKILL.md",
+                )
+            ],
+        )
+        text = (content_dir / "external-skills.mdx").read_text()
+        assert "`local installed inventory` (1): `local-skill`" in text
+        assert "/Users/example" not in text
+
 
 class TestDocsGenerate:
     def test_includes_installed_skills_as_external_by_default(self, tmp_repo, monkeypatch):
@@ -356,6 +376,7 @@ class TestWriteSidebar:
         text = sidebar.read_text()
         assert "navLinks" in text
         assert "Start Here" in text
+        assert "Contributing" in text
         assert "Skills" in text
         assert "Agents" in text
         assert "CLI Reference" in text
@@ -374,3 +395,14 @@ class TestWriteSidebar:
         write_sidebar([_make_node("skill")])
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
         assert "collapsed: true" in text
+
+
+class TestSkillCatalogComponent:
+    def test_skill_catalog_exposes_extended_filter_controls(self):
+        component = Path("docs/src/components/SkillCatalog.astro").read_text()
+
+        assert "data-skill-review" in component
+        assert "data-skill-agent" in component
+        assert "data-skill-installable" in component
+        assert "displaySource" in component
+        assert "localInventoryOnly" in component

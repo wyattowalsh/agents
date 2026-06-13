@@ -215,6 +215,28 @@
       "tool_approvals": {},
       "platform_overrides": {}
     },
+    "penpot": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
+      ],
+      "env": {
+        "PENPOT_MCP_USER_TOKEN": {
+          "env_var": "PENPOT_MCP_USER_TOKEN"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
     "repomix": {
       "transport": "stdio",
       "command": "npx",
@@ -654,6 +676,7 @@
           "lotus-wisdom-mcp",
           "ossinsight",
           "package-version",
+          "penpot",
           "repomix",
           "sequential-thinking",
           "shannon-thinking",
@@ -694,6 +717,7 @@
           "fetch",
           "fetcher",
           "package-version",
+          "penpot",
           "repomix",
           "supathings",
           "tavily",
@@ -811,6 +835,7 @@
           "fetch",
           "fetcher",
           "package-version",
+          "penpot",
           "repomix",
           "supathings",
           "tavily",
@@ -852,13 +877,69 @@
           "server"
         ],
         "included_groups": [
-          "harness-safe"
+          "all-managed",
+          "browser",
+          "code",
+          "data",
+          "experimental",
+          "harness-safe",
+          "local-ai",
+          "media",
+          "personal",
+          "reasoning",
+          "research"
+        ],
+        "included_servers": [
+          "arxiv",
+          "atom-of-thoughts",
+          "brave-search",
+          "cascade-thinking",
+          "chrome-devtools",
+          "context7",
+          "crash",
+          "creative-thinking",
+          "deep-lucid-3d",
+          "deepwiki",
+          "docling",
+          "duckduckgo-search",
+          "exa",
+          "fetch",
+          "fetcher",
+          "ffmpeg",
+          "g-search",
+          "gmail",
+          "linkedin",
+          "lotus-wisdom-mcp",
+          "ossinsight",
+          "package-version",
+          "penpot",
+          "repomix",
+          "sequential-thinking",
+          "shannon-thinking",
+          "structured-thinking",
+          "supathings",
+          "tavily",
+          "think-strategies",
+          "trafilatura",
+          "wayback",
+          "wikipedia"
         ],
         "enabled_endpoint_kinds": [
-          "group"
+          "group",
+          "server"
         ],
         "enabled_groups": [
-          "harness-safe"
+          "all-managed",
+          "browser",
+          "code",
+          "data",
+          "experimental",
+          "harness-safe",
+          "local-ai",
+          "media",
+          "personal",
+          "reasoning",
+          "research"
         ],
         "enable_server_endpoints": true,
         "server_endpoint_name_style": "base"
