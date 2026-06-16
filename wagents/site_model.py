@@ -67,6 +67,12 @@ SUPPORTED_AGENTS: tuple[SupportedAgent, ...] = (
         "Your AI pair programmer, right in your IDE.",
     ),
     SupportedAgent(
+        "grok",
+        "Grok Build",
+        "https://x.ai/cli",
+        "xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility.",
+    ),
+    SupportedAgent(
         "opencode",
         "OpenCode",
         "https://github.com/anomalyco/opencode",
@@ -247,27 +253,27 @@ def docs_src_asset_css_url(src: str) -> str:
 FEATURED_SKILLS: tuple[FeaturedSkill, ...] = (
     FeaturedSkill(
         "Enhance Code Reviews",
-        "/skills/honest-review/",
+        "/skills/catalog/honest-review/",
         "Review a diff with evidence, structure, and severity instead of ad hoc feedback.",
     ),
     FeaturedSkill(
         "Strategic Decision Analysis",
-        "/skills/wargame/",
+        "/skills/catalog/wargame/",
         "Pressure-test a product or engineering decision before you commit to it.",
     ),
     FeaturedSkill(
         "Host Expert Panels",
-        "/skills/host-panel/",
+        "/skills/catalog/host-panel/",
         "Get multiple expert perspectives in one session when the problem has real trade-offs.",
     ),
     FeaturedSkill(
         "Run Spec Workflows",
-        "/skills/openspec-workflow/",
+        "/skills/catalog/openspec-workflow/",
         "Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands.",
     ),
     FeaturedSkill(
         "Create MCP Servers",
-        "/skills/mcp-creator/",
+        "/skills/catalog/mcp-creator/",
         "Build a production-ready FastMCP server with design, testing, and deployment guidance.",
     ),
 )
@@ -372,7 +378,6 @@ def render_site_data_module(data: dict[str, Any]) -> str:
         "export const visualAssets = baseSiteData.visualAssets;\n"
         "export const skillInstallScripts = baseSiteData.skillInstallScripts;\n"
         "export const externalSkillGroups = baseSiteData.externalSkillGroups;\n"
-        "export const skillIndexModule = './generated-skill-indexes.mjs';\n"
     )
 
 

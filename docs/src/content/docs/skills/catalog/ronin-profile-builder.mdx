@@ -1,0 +1,390 @@
+---
+title: "ronin-profile-builder"
+description: "Build career profile from LinkedIn or resume PDFs, or manual input. Use when creating or updating the SSOT profile. NOT for discovery (ronin-discovery) or materials generation (ronin-materials)."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ronin-profile-builder" variant="note" /> <Badge text="1940 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="ronin" variant="caution" /> <Badge text="claude-opus-4-6" variant="tip" /> <Badge text="Installed" variant="caution" />
+
+> Build career profile from LinkedIn or resume PDFs, or manual input. Use when creating or updating the SSOT profile. NOT for discovery (ronin-discovery) or materials generation (ronin-materials).
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/ronin-profile-builder`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+| `$ARGUMENTS` | Action | |------------|--------| | `import &lt;path&gt;` or PDF file reference | PDF Import workflow | | `add experience` / `add skill` / `add education` | Manual Build workflow (specific entity) | | `edit` / `update` / `fix` + entity reference | Manual Build workflow (corrections) | | `review` / `status` | Inspect current profile state | | `versions` / `history` | List profile version history | | Empty | Show current profile summary and available actions |
+
+## Modes
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `import &lt;path&gt;` or PDF file reference | PDF Import workflow |
+| `add experience` / `add skill` / `add education` | Manual Build workflow (specific entity) |
+| `edit` / `update` / `fix` + entity reference | Manual Build workflow (corrections) |
+| `review` / `status` | Inspect current profile state |
+| `versions` / `history` | List profile version history |
+| Empty | Show current profile summary and available actions |
+
+## Critical Rules
+
+1. Always call get_profile before any write operation — inspect current state first
+2. Use YYYY-MM-DD date format for all date fields — no other formats accepted
+3. At most one experience may have is_current: true at any time
+4. Use create_achievement to add structured achievements under experiences — always include raw_text; STAR fields (action, metric, baseline, result, context) are optional but recommended
+5. full_name is stored on the User model, not Profile — cannot be updated via update_profile
+6. Run the post-import validation checklist after every PDF import
+7. Do not invent or embellish profile content — only record what the user provides or the PDF contains
+8. Verify entity counts are reasonable after import (LinkedIn exports typically yield 3-15 experiences)
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ronin-profile-builder` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | ronin |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `claude-opus-4-6` |
+  </TabItem>
+  <TabItem label="Compatibility">
+| Field | Value |
+| ----- | ----- |
+| Compatibility | ['claude-code', 'cursor', 'gemini-cli', 'codex', 'opencode', 'antigravity', 'crush', 'github-copilot'] |
+| Allowed Tools | `mcp__ronin__get_profile mcp__ronin__update_profile mcp__ronin__import_profile_from_pdf mcp__ronin__import_structured_profile mcp__ronin__import_profile_source mcp__ronin__list_profile_drafts mcp__ronin__apply_profile_draft mcp__ronin__update_profile_settings mcp__ronin__evaluate_profile_quality mcp__ronin__create_experience mcp__ronin__update_experience mcp__ronin__delete_experience mcp__ronin__create_achievement mcp__ronin__create_skill mcp__ronin__create_education mcp__ronin__list_profile_versions mcp__ronin__get_user_memory` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: ronin-profile-builder
+description: Build career profile from LinkedIn or resume PDFs, or manual input. Use when creating or updating the SSOT profile. NOT for discovery (ronin-discovery) or materials generation (ronin-materials).
+compatibility:
+  - claude-code
+  - cursor
+  - gemini-cli
+  - codex
+  - opencode
+  - antigravity
+  - crush
+  - github-copilot
+allowed-tools: mcp__ronin__get_profile mcp__ronin__update_profile mcp__ronin__import_profile_from_pdf mcp__ronin__import_structured_profile mcp__ronin__import_profile_source mcp__ronin__list_profile_drafts mcp__ronin__apply_profile_draft mcp__ronin__update_profile_settings mcp__ronin__evaluate_profile_quality mcp__ronin__create_experience mcp__ronin__update_experience mcp__ronin__delete_experience mcp__ronin__create_achievement mcp__ronin__create_skill mcp__ronin__create_education mcp__ronin__list_profile_versions mcp__ronin__get_user_memory
+model: claude-opus-4-6
+model_settings:
+  thinking:
+    type: enabled
+    budget_tokens: 1000000
+license: "MIT"
+metadata:
+  version: "1.0.0"
+  author: "ronin"
+---
+
+# ronin-profile-builder
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `import <path>` or PDF file reference | PDF Import workflow |
+| `add experience` / `add skill` / `add education` | Manual Build workflow (specific entity) |
+| `edit` / `update` / `fix` + entity reference | Manual Build workflow (corrections) |
+| `review` / `status` | Inspect current profile state |
+| `versions` / `history` | List profile version history |
+| Empty | Show current profile summary and available actions |
+
+A skill for importing LinkedIn exports, resume PDFs, and manually building a Ronin career profile. Produces a fully structured `CareerProfile` SSOT (Source of Truth) with `identity`, `preferences`, `work`, `capabilities`, `credentials`, `governance`, `quality`, `provenance`, and `agent_context` sections for downstream Ronin agents.
+
+`get_profile` is the canonical read. Prefer source-backed draft tools (`import_profile_source`, `list_profile_drafts`, `apply_profile_draft`, `update_profile_settings`, `evaluate_profile_quality`) for durable SSOT changes. Direct create/update tools remain available for targeted UI-style maintenance and repair.
+
+> **Step 0 — Context Load (all skills):** Before any workflow, load `get_profile(user_id)` and `get_user_memory(user_id)`.
+
+---
+
+## Overview
+
+This skill drives the **profile ingestion pipeline**: the first step in the Ronin career execution workflow. It operates in two modes:
+
+**PDF Import** — Parse a LinkedIn data export or resume PDF into structured entities. The MCP tool queues a background task and returns `status: "queued"` plus a `task_id`; you then review the resulting profile and correct the output.
+
+**Manual Build** — Construct or patch a profile through source-backed draft items when evidence is available. Use direct entity tools only for targeted maintenance when the user explicitly provides the fact.
+
+All mutations write to the Ronin PostgreSQL database via the MCP server. Profile changes create immutable version snapshots for audit history. The resulting profile is the single authoritative record used by every other Ronin agent.
+
+### Import Pipeline Architecture
+
+The background import runs a 5-step async pipeline (`api/app/agents/profile_builder/pipeline.py`):
+
+| Step | Action             | Detail                                                                                                                                                                                        |
+| ---- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 | **Download** | Fetch the uploaded file from S3/MinIO storage |
+| 2 | **Extract text** | Parse the PDF using `pypdf` to get raw text |
+| 3 | **Parse with Claude** | Send text to `claude-haiku-4-5-20251001` with a structured extraction prompt. Returns JSON with `full_name`, `headline`, `summary`, `location`, `experiences`, `education`, `skills`. Does not extract achievements, `employment_type`, `gpa`, or education `description`. |
+| 4 | **Store entities** | Write Profile, Experience, Education, and Skill records to PostgreSQL via async SQLAlchemy. Updates `User.name` from `full_name` only if the user has no name set. |
+| 5 | **Update status** | Mark the AgentRun record as completed |
+
+The pipeline accepts dates in both `YYYY-MM-DD` and `YYYY-MM` formats (appending `-01` for month-only). The extraction prompt requests `YYYY-MM-DD`.
+
+> **Note:** `full_name` extracted from the PDF is stored on the `User` model (as `name`), not on the `Profile` model. The `get_profile` response surfaces it via the user relationship.
+
+## Reference File Index
+
+| File | Contents | Load when |
+|------|----------|-----------|
+| [references/tool-reference.md](references/tool-reference.md) | MCP tool parameter tables and response shapes for all tools | Constructing or validating MCP calls |
+| [references/data-shapes.md](references/data-shapes.md) | Achievement model, additional profile entities, versioning response shapes | Inspecting profile structure or versioned responses |
+| [references/examples.md](references/examples.md) | Full example conversations (PDF import, manual build) | First-time runs, QA, or prompt debugging |
+| [references/error-reference.md](references/error-reference.md) | Error symptom/cause/resolution table | Troubleshooting imports, writes, or versioning conflicts |
+
+---
+
+## Prerequisites
+
+### 1. Ronin MCP tools available in-session
+
+This skill assumes the current agent session already has access to the Ronin MCP tools listed in `allowed-tools`.
+
+### 2. Valid `user_id`
+
+Ronin MCP signatures keep `user_id: str` at the boundary. Pass the active Ronin user identifier exactly as supplied by the current environment. In the current local implementation, some profile MCP paths still validate UUID-shaped values, so treat format mismatches as runtime constraints rather than rewriting IDs manually.
+
+### 3. File upload (PDF import only)
+
+Before calling `import_profile_from_pdf`, the file must be uploaded to storage. In the product, prefer the onboarding/profile import flow. If you are operating outside the web app, use the import endpoint:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/profile/import \
+  -H "Authorization: Bearer <token>" \
+  -F "file=@/path/to/linkedin_export.pdf"
+```
+
+The response returns a `file_key` (storage path). Pass this key to `import_profile_from_pdf`.
+
+---
+
+## Workflow: PDF Import
+
+Use this workflow when the user provides a LinkedIn data export (PDF) or a resume PDF. The extraction runs as a background task; your role is to trigger it, wait, then validate and correct the output.
+
+### Steps
+
+**Step 1 — Upload the file**
+
+If not already uploaded, call the import endpoint to get a `file_key`:
+
+```
+POST /api/v1/profile/import
+Content-Type: multipart/form-data
+Body: file=<pdf binary>
+
+Response: { "file_key": "uploads/user-id/linkedin_2024.pdf" }
+```
+
+**Step 2 — Queue the import task**
+
+Call `mcp__ronin__import_profile_from_pdf` with `user_id`, `file_key`, and `file_type` (`"linkedin"` or `"resume"`). See [references/tool-reference.md](references/tool-reference.md) for parameter details and response shape.
+
+**Step 3 — Wait for background processing**
+
+The extraction pipeline typically completes in 30-60 seconds for a LinkedIn export and 15-30 seconds for a resume PDF. Factors that extend this: large number of experiences, complex PDF formatting, LLM API latency.
+
+Poll by calling `mcp__ronin__get_profile` every 15 seconds until the `experiences` list is non-empty.
+
+**Step 4 — Review extracted data**
+
+Call `mcp__ronin__get_profile` with the `user_id` to inspect the full result. See [references/tool-reference.md](references/tool-reference.md) for the full response shape.
+
+**Post-import validation checklist** — run through these checks before declaring the import complete:
+
+- [ ] `experiences` array is non-empty (if empty after 2 minutes, import likely failed)
+- [ ] No experience has `start_date` after `end_date`
+- [ ] At most one experience has `is_current: true`
+- [ ] No experience has an empty `description`
+- [ ] No merged experiences (two distinct jobs collapsed into one entry)
+- [ ] Skills have a `category` assigned (extraction sometimes leaves this `null`); `proficiency_level` is always `null` after import
+- [ ] `full_name` is populated (comes from User model; only set if User had no prior name)
+- [ ] Education entries have both `institution` and `degree`
+- [ ] Entity count is reasonable for the document type (LinkedIn exports typically yield 3-15 experiences)
+
+> **Note:** The import pipeline uses a fast AI model optimized for speed. Complex or lengthy documents may have lower extraction fidelity — always review and correct after import. Achievements are NOT populated during import; the `achievements` arrays will be empty. Use `create_achievement` to add them after import. Additionally, `employment_type` on experiences and `gpa`/`description` on education entries are not extracted — they will be `null` after import.
+
+**Step 5 — Correct extraction errors**
+
+Use the appropriate tool for each correction type:
+
+| Issue | Tool |
+|-------|------|
+| Wrong profile field (headline, location, etc.) | `mcp__ronin__update_profile` |
+| Wrong experience field | `mcp__ronin__update_experience` |
+| Missing experience | `mcp__ronin__create_experience` |
+| Duplicate or merged experience | `mcp__ronin__delete_experience` + `mcp__ronin__create_experience` |
+| Missing skill | `mcp__ronin__create_skill` |
+| Missing education | `mcp__ronin__create_education` |
+| Missing achievement | `mcp__ronin__create_achievement` |
+
+---
+
+## Workflow: Manual Profile Building
+
+Use this when building a profile from scratch, incrementally adding data, or making targeted corrections outside of an import flow.
+
+### Inspect current state
+
+Always start by calling `mcp__ronin__get_profile` to see what exists before writing.
+
+### Update top-level profile fields
+
+Use `mcp__ronin__update_profile` to set profile fields. Pass only the fields you want to change — unset fields are left unchanged.
+
+Updatable fields:
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `headline` | string | One-line professional tagline |
+| `summary` | string | 2-5 sentence professional summary |
+| `location` | string | City, State or City, Country |
+| `linkedin_url` | string | Full URL including `https://` |
+| `github_url` | string | GitHub profile URL |
+| `portfolio_url` | string | Personal site or portfolio URL |
+
+> **Not updatable via this tool:** `full_name` (stored on the User model, not Profile).
+
+### Add a work experience
+
+Use `mcp__ronin__create_experience`. Dates must use `YYYY-MM-DD` format. Use `null` for `end_date` on current roles. If you only know the month, use the first of the month (e.g., `"2020-01-01"` for January 2020).
+
+Required fields: `title`, `company`.
+Optional fields: `start_date`, `end_date`, `description`, `location`, `employment_type`, `is_current`.
+
+### Update an existing experience
+
+Use `mcp__ronin__update_experience`. Requires the `experience_id` from the profile's `experiences` list. Only fields present in `data` are changed.
+
+Updatable fields: `title`, `company`, `start_date`, `end_date`, `description`, `location`, `employment_type`, `is_current`.
+
+### Delete an experience
+
+Use `mcp__ronin__delete_experience` when an experience is wrong, duplicated, or should be replaced. This is a soft-delete — the record is flagged but preserved for history.
+
+### Add a skill
+
+Use `mcp__ronin__create_skill`. The `category` and `proficiency_level` fields are used by the materials agent to filter and rank skills for target job descriptions.
+
+Required fields: `name`.
+Optional fields: `category`, `proficiency_level`, `years_of_experience`.
+
+`proficiency_level` values: `"beginner"`, `"intermediate"`, `"advanced"`, `"expert"`.
+
+### Add an achievement
+
+Use `mcp__ronin__create_achievement` to add a structured achievement. Achievements use STAR-method decomposition and are optionally linked to a specific experience.
+
+Required fields: `raw_text` (the achievement statement as written by the user or extracted from a document).
+Optional fields: `experience_id` (links to a specific experience), `action`, `metric`, `baseline`, `result`, `context`, `impact_score` (float).
+
+```python
+mcp__ronin__create_achievement(
+    user_id="<uuid>",
+    data={
+        "raw_text": "Reduced API latency by 40% by redesigning the caching layer",
+        "experience_id": "exp-uuid",
+        "action": "Redesigned the caching layer",
+        "metric": "API latency",
+        "baseline": "200ms p95",
+        "result": "120ms p95 (40% reduction)",
+        "context": "Core billing platform serving 10M requests/day",
+        "impact_score": 8.5
+    }
+)
+```
+
+> **Tip:** If the user provides a raw achievement statement, decompose it into STAR fields before calling the tool. If STAR decomposition is ambiguous, store `raw_text` only and leave the structured fields for later refinement.
+
+### Add education
+
+Use `mcp__ronin__create_education`. Dates use `YYYY-MM-DD` format.
+
+Required fields: `institution`.
+Optional fields: `degree`, `field_of_study`, `start_date`, `end_date`, `gpa` (float), `description`.
+
+> **Note:** Honors, activities, and other notes go in the `description` field.
+
+---
+
+## Profile Versioning
+
+Every call to `update_profile`, `create_experience`, `update_experience`, `delete_experience`, or `create_achievement` creates an immutable version snapshot recording the change. Use `mcp__ronin__list_profile_versions` to inspect history. Versions are ordered newest-first; each includes `change_type`, `diff`, and `created_at`.
+
+Versions are read-only snapshots — there is no `restore_version` tool. To roll back, inspect the version's `diff` field and manually re-apply the prior state. See [references/tool-reference.md](references/tool-reference.md) for the full response shape and [references/data-shapes.md](references/data-shapes.md) for rollback details.
+
+---
+
+## Critical Rules
+
+1. Always call get_profile before any write operation — inspect current state first
+2. Use YYYY-MM-DD date format for all date fields — no other formats accepted
+3. At most one experience may have is_current: true at any time
+4. Use create_achievement to add structured achievements under experiences — always include raw_text; STAR fields (action, metric, baseline, result, context) are optional but recommended
+5. full_name is stored on the User model, not Profile — cannot be updated via update_profile
+6. Run the post-import validation checklist after every PDF import
+7. Do not invent or embellish profile content — only record what the user provides or the PDF contains
+8. Verify entity counts are reasonable after import (LinkedIn exports typically yield 3-15 experiences)
+
+## Canonical Vocabulary
+
+- **Live MCP entity types:** `experience`, `skill`, `education`, `achievement`
+- **Model-only entity types (not first-class MCP workflow yet):** `certification`, `publication`, `repository`
+- **Import modes:** `PDF Import`, `Manual Build`
+- **File types:** `linkedin`, `resume`
+- **Change types:** `profile_update`, `experience_created`, `experience_updated`, `experience_deleted`, `achievement_added`
+
+---
+
+## Error Handling
+
+See [references/error-reference.md](references/error-reference.md) for the full error symptom/cause/resolution table. Key items:
+
+- `status: "queued"` from import is normal — wait 30-60s, then poll `get_profile`
+- Empty `experiences` after 2 minutes = worker failure — check SSE endpoint, retry import
+- MCP connection unavailable = reconnect the Ronin MCP server configured for this harness, or fix the local API-mounted `/mcp` setup if you are explicitly running Ronin locally
+- Date parsing errors = wrong format — use `"YYYY-MM-DD"` only
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

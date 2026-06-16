@@ -13,11 +13,23 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 This page is generated from the repository agent file `agents/security-auditor.md` by `wagents docs generate`.
 </Aside>
 
-### Identity
+<div class="tool-pills">
+<Badge text="all" variant="note" />
+</div>
 
+<Tabs>
+  <TabItem label="Identity">
 | Field | Value |
 | ----- | ----- |
 | Name | `security-auditor` |
+| Permission Mode | `default` |
+  </TabItem>
+  <TabItem label="Tools">
+| Field | Value |
+| ----- | ----- |
+| Allowed | `all` |
+  </TabItem>
+</Tabs>
 
 ## System Prompt
 
@@ -40,6 +52,7 @@ Read-only. Report risks, assumptions, and mitigations only.
 ### Output Contract
 
 Return:
+
 - Critical issues
 - Important issues
 - Hardening recommendations
@@ -59,17 +72,8 @@ Return:
 ---
 name: security-auditor
 description: Audit code and configuration for security risks without making changes.
-mode: subagent
-temperature: 0.1
-color: error
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-  webfetch: allow
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -91,6 +95,7 @@ Read-only. Report risks, assumptions, and mitigations only.
 ## Output Contract
 
 Return:
+
 - Critical issues
 - Important issues
 - Hardening recommendations

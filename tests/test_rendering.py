@@ -297,7 +297,7 @@ class TestScaffoldDocPage:
         (skill_dir / "SKILL.md").write_text("---\nname: test-skill\ndescription: Test\n---\n\n# X\n\nBody.\n")
         node = _make_node("skill")
         scaffold_doc_page(node)
-        assert (content_dir / "skills" / "test-skill.mdx").exists()
+        assert (content_dir / "skills" / "catalog" / "test-skill.mdx").exists()
 
     def test_noop_when_content_dir_missing(self, tmp_repo):
         node = _make_node("skill")

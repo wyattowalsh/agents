@@ -16,8 +16,21 @@ function isAdminSurfacePath(pathname: string): boolean {
   return pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
 }
 
+const SKILL_HUB_SLUGS = new Set(['all', 'install', 'installed', 'catalog']);
+
+function legacySkillCatalogRedirect(pathname: string): string | null {
+  const match = pathname.match(/^\/skills\/([^/]+)\/?$/);
+  if (!match) return null;
+  if (SKILL_HUB_SLUGS.has(match[1])) return null;
+  return `/skills/catalog/${match[1]}/`;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
+  const legacyRedirect = legacySkillCatalogRedirect(pathname);
+  if (legacyRedirect) {
+    return context.redirect(legacyRedirect, 308);
+  }
   const requestId = randomUUID();
 
   if (!isAdminSurfacePath(pathname)) {

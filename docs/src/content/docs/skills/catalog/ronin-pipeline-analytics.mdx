@@ -1,0 +1,486 @@
+---
+title: "ronin-pipeline-analytics"
+description: "Analyze pipeline performance — funnel conversion, velocity, rejection patterns. Use when reviewing job search health."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ronin-pipeline-analytics" variant="note" /> <Badge text="2322 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="ronin" variant="caution" /> <Badge text="claude-opus-4-6" variant="tip" /> <Badge text="Installed" variant="caution" />
+
+> Analyze pipeline performance — funnel conversion, velocity, rejection patterns. Use when reviewing job search health. NOT for pipeline management (ronin-pipeline-manager) or discovery (ronin-discovery).
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/ronin-pipeline-analytics`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+| `$ARGUMENTS` | Action | |------------|--------| | `funnel` or `conversion` | Funnel Analysis (Workflow 1) | | `velocity` or `speed` | Velocity Metrics (Workflow 2) | | `rejections` or `patterns` | Rejection Pattern Analysis (Workflow 3) | | `goals` or `tracking` or `projection` | Goal Tracking (Workflow 4) | | `benchmark` or `market` | Market Benchmarking (Workflow 5) | | `dashboard` or `overview` | Run all analytics (Workflows 1-5) | | Empty | Show pipeline health summary with key metrics |
+
+## Modes
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `funnel` or `conversion` | Funnel Analysis (Workflow 1) |
+| `velocity` or `speed` | Velocity Metrics (Workflow 2) |
+| `rejections` or `patterns` | Rejection Pattern Analysis (Workflow 3) |
+| `goals` or `tracking` or `projection` | Goal Tracking (Workflow 4) |
+| `benchmark` or `market` | Market Benchmarking (Workflow 5) |
+| `dashboard` or `overview` | Run all analytics (Workflows 1-5) |
+| Empty | Show pipeline health summary with key metrics |
+
+## Quick Start
+
+```
+1. mcp__ronin__get_funnel_stats(user_id="<uuid>")       → funnel counts + conversion rates
+2. mcp__ronin__get_pipeline(user_id="<uuid>")            → all pipeline entries (full dataset)
+3. mcp__ronin__get_pipeline_history(user_id, entry_id)   → transition timestamps for velocity
+4. Compute derived metrics (velocity, rejection patterns, goal projections)
+```
+
+---
+
+## Critical Rules
+
+1. Never call transition_pipeline, create_opportunity, approve_opportunity, reject_opportunity, or update_preferences — this skill is strictly read-only
+2. Always flag sample size when pipeline has fewer than 15-20 entries — metrics are unreliable at small scale
+3. Distinguish between user-controlled velocity (discovery, materials) and externally-controlled velocity (company response times)
+4. Use published benchmark ranges as directional context, not precise targets — always include caveats
+5. Conversion rate benchmarks are heuristics, not absolutes — note when the user's targeting strategy may explain deviations
+6. Issue get_pipeline_history calls in parallel for velocity calculations — sequential calls are too slow for large pipelines
+7. Always recommend specific ronin skills for identified bottlenecks — do not take action directly
+
+---
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ronin-pipeline-analytics` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | ronin |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `claude-opus-4-6` |
+  </TabItem>
+  <TabItem label="Compatibility">
+| Field | Value |
+| ----- | ----- |
+| Compatibility | ['claude-code', 'cursor', 'gemini-cli', 'codex', 'opencode', 'antigravity', 'crush', 'github-copilot'] |
+| Allowed Tools | `mcp__ronin__get_funnel_stats mcp__ronin__get_pipeline mcp__ronin__get_pipeline_history mcp__ronin__list_opportunities mcp__ronin__get_opportunity mcp__ronin__get_preferences mcp__ronin__get_user_memory` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: ronin-pipeline-analytics
+description: Analyze pipeline performance — funnel conversion, velocity, rejection patterns. Use when reviewing job search health. NOT for pipeline management (ronin-pipeline-manager) or discovery (ronin-discovery).
+compatibility:
+  - claude-code
+  - cursor
+  - gemini-cli
+  - codex
+  - opencode
+  - antigravity
+  - crush
+  - github-copilot
+model: claude-opus-4-6
+model_settings:
+  thinking:
+    type: enabled
+    budget_tokens: 1000000
+allowed-tools: mcp__ronin__get_funnel_stats mcp__ronin__get_pipeline mcp__ronin__get_pipeline_history mcp__ronin__list_opportunities mcp__ronin__get_opportunity mcp__ronin__get_preferences mcp__ronin__get_user_memory
+license: "MIT"
+metadata:
+  version: "1.0.0"
+  author: "ronin"
+---
+
+# ronin-pipeline-analytics
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `funnel` or `conversion` | Funnel Analysis (Workflow 1) |
+| `velocity` or `speed` | Velocity Metrics (Workflow 2) |
+| `rejections` or `patterns` | Rejection Pattern Analysis (Workflow 3) |
+| `goals` or `tracking` or `projection` | Goal Tracking (Workflow 4) |
+| `benchmark` or `market` | Market Benchmarking (Workflow 5) |
+| `dashboard` or `overview` | Run all analytics (Workflows 1-5) |
+| Empty | Show pipeline health summary with key metrics |
+
+Analyze job search pipeline performance — funnel conversion rates, stage velocity, rejection patterns, goal tracking, and market benchmarking. This skill reads pipeline data and computes derived metrics. It never transitions pipeline state, modifies preferences, or creates/deletes entities.
+
+> **Context load:** Start from the Ronin MCP connection already configured in the current harness. Load the relevant read-only inputs in parallel. Do not require a local `localhost:8000` health check unless the user is explicitly debugging local infrastructure.
+
+## Quick Start
+
+```
+1. mcp__ronin__get_funnel_stats(user_id="<uuid>")       → funnel counts + conversion rates
+2. mcp__ronin__get_pipeline(user_id="<uuid>")            → all pipeline entries (full dataset)
+3. mcp__ronin__get_pipeline_history(user_id, entry_id)   → transition timestamps for velocity
+4. Compute derived metrics (velocity, rejection patterns, goal projections)
+```
+
+---
+
+## Overview
+
+This skill provides a **read-only analytics layer** over the Ronin pipeline. It consumes data produced by other skills (discovery, research, materials, email-monitor) and derives performance insights that inform the user's job search strategy.
+
+### Read-Only Principle
+
+This skill **never calls** any of the following tools:
+
+- `transition_pipeline` — no state changes
+- `create_opportunity` / `approve_opportunity` / `reject_opportunity` — no entity creation or modification
+- `update_preferences` — no preference changes
+- `create_research` / `create_materials` — no content generation
+
+Every tool in the `allowed-tools` list is a read operation or an external search. If the analysis reveals actionable changes (e.g., "your discovery rate is too low"), recommend the appropriate skill to invoke — do not take the action directly.
+
+### Data Sources
+
+| Source | Tool | What it provides |
+|--------|------|-----------------|
+| Funnel stats | `get_funnel_stats` | Cumulative stage counts, conversion rates |
+| Pipeline entries | `get_pipeline` | Per-entry state, priority, opportunity metadata |
+| Transition history | `get_pipeline_history` | Timestamped state transitions per entry |
+| Opportunities | `list_opportunities` / `get_opportunity` | Match scores, company, role, salary data |
+| Preferences | `get_preferences` | User goals, target roles, compensation targets |
+| Memory | `get_user_memory` | Prior session context, discovery notes |
+
+---
+
+## Reference File Index
+
+| File | Contents | Load when |
+|------|----------|-----------|
+| [`references/tool-reference.md`](references/tool-reference.md) | Full MCP tool signatures, parameters, return shapes, and usage notes | Constructing or validating read-only tool calls |
+| [`references/data-shapes.md`](references/data-shapes.md) | Data models: funnel stats, pipeline entry, transition history, velocity inputs, rejection pattern fields | Interpreting analytics inputs and derived metrics |
+| [`references/examples.md`](references/examples.md) | Detailed response shapes, presentation examples for funnel/velocity/rejection/goal/benchmark outputs | Formatting final analysis or checking worked examples |
+| [`references/error-reference.md`](references/error-reference.md) | Error handling table and limitations | Troubleshooting missing data or misleading metrics |
+
+---
+
+## Prerequisites
+
+1. **Active pipeline data** — At least a few pipeline entries must exist. Run `ronin-discovery` first if the pipeline is empty.
+2. **Ronin MCP connection available** — this skill assumes the current AI harness can already call Ronin MCP tools. If not, surface the MCP connection/configuration issue rather than assuming a Docker-first local setup.
+3. **Valid `user_id`** — Ronin MCP signatures keep `user_id: str` at the boundary. Pass the active Ronin user identifier exactly as supplied by the current environment. In the current local implementation, some analytics-adjacent MCP paths still validate UUID-shaped values, so treat format mismatches as runtime constraints rather than rewriting IDs manually.
+
+---
+
+## Pipeline States and Funnel Mapping
+
+All states are **lowercase** (matching the DB constraint). The `get_funnel_stats` tool maps 12 pipeline states into 5 funnel buckets:
+
+| Pipeline state | Funnel bucket | Description |
+|---------------|--------------|-------------|
+| `discovered`, `shortlisted` | discovered | Found / user-approved for review |
+| `approved`, `materials_generated` | approved | Cleared for materials / materials ready |
+| `applied` | applied | Application submitted |
+| `phone_screen`, `interview_loop` | interview | Phone screen / active interview rounds |
+| `offer`, `accepted` | offer | Offer received / accepted |
+| `rejected`, `withdrawn`, `archived` | (terminal) | Excluded from funnel; tracked via `terminal_count` |
+
+Funnel counts are **cumulative from the bottom up**: `discovered_count` includes everything that reached at least the discovered stage. `approved_count` includes everything that reached approved or deeper. And so on down to `offer_count`.
+
+---
+
+## Workflow 1: Funnel Analysis
+
+Analyze conversion rates across the pipeline funnel to identify bottleneck stages.
+
+### Step 1 — Load funnel stats
+
+```python
+mcp__ronin__get_funnel_stats(user_id="<uuid>")
+```
+
+### Step 2 — Identify bottlenecks
+
+| Transition | Healthy range | Bottleneck signal |
+|-----------|--------------|-------------------|
+| discovered → approved | 30-60% | < 30% means discovery is too broad or preferences are misaligned |
+| approved → applied | 60-90% | < 60% means materials generation is stalling or user is hesitating |
+| applied → interview | 20-40% | < 20% means applications are not landing — review materials quality |
+| interview → offer | 25-50% | < 25% means interview performance needs work — run `ronin-interview-prep` |
+
+> These ranges are heuristics, not absolutes. A user applying only to top-tier companies will have lower applied → interview rates.
+
+### Step 3 — Present the funnel
+
+Present as a visual funnel with conversion percentages between stages. Flag the strongest drop-off point. Recommend specific actions based on the bottleneck (e.g., "Your biggest drop-off is applied → interview. Consider running `ronin-interview-prep` on your active applications.").
+
+---
+
+## Workflow 2: Velocity Metrics
+
+Compute how fast entries move through the pipeline — average time-in-state per stage and week-over-week velocity trends.
+
+### Step 1 — Load all pipeline entries
+
+```python
+mcp__ronin__get_pipeline(user_id="<uuid>")
+```
+
+### Step 2 — Load transition history for each entry
+
+```python
+mcp__ronin__get_pipeline_history(user_id="<uuid>", entry_id="entry-uuid-1")
+```
+
+Transitions are in **ascending chronological order** (`created_at` ASC). The first transition has `from_state: null` (initial creation).
+
+> **Batch strategy:** Issue `get_pipeline_history` calls in parallel for all entries. If the pipeline has >20 entries, prioritize active states (applied, phone_screen, interview_loop, offer) and sample from earlier stages.
+
+### Step 3 — Compute time-in-state
+
+For each entry with transition history, compute duration between consecutive transitions:
+
+```
+time_in_state(stage) = transition[n+1].created_at - transition[n].created_at
+```
+
+where `transition[n].to_state == stage`.
+
+For entries still in their current state (no subsequent transition):
+
+```
+time_in_current_state = now - last_transition.created_at
+```
+
+### Step 4 — Aggregate velocity metrics
+
+```
+avg_time_in_state(stage) = sum(time_in_state(stage) for all entries) / count(entries that passed through stage)
+```
+
+Present as a table showing stage, average time-in-state, entries measured, and interpretation.
+
+### Step 5 — Week-over-week velocity trends
+
+Group transitions by calendar week (ISO week number). For each week, count:
+
+- **Entries created** — transitions with `from_state: null`
+- **Entries advanced** — transitions to a deeper funnel stage
+- **Entries terminated** — transitions to rejected, withdrawn, or archived
+
+Flag declining trends: "Discovery velocity dropped from 8/week to 3/week. Consider running `ronin-discovery` to refill the pipeline."
+
+---
+
+## Workflow 3: Rejection Pattern Analysis
+
+Analyze rejected and withdrawn entries to identify patterns — which stages have the highest rejection rates, and whether rejections correlate with opportunity attributes.
+
+### Step 1 — Load terminal entries
+
+```python
+rejected = mcp__ronin__get_pipeline(user_id="<uuid>", state="rejected")
+withdrawn = mcp__ronin__get_pipeline(user_id="<uuid>", state="withdrawn")
+```
+
+### Step 2 — Load transition history for terminal entries
+
+For each rejected/withdrawn entry, fetch the transition history to determine the **stage at rejection**. The `from_state` on the last transition tells you where the entry was when it was rejected/withdrawn.
+
+### Step 3 — Load opportunity details for correlation
+
+```python
+mcp__ronin__get_opportunity(user_id="<uuid>", opportunity_id="<opp-id>")
+```
+
+### Step 4 — Categorize rejection patterns
+
+**By stage at rejection** — count and percentage of rejections at each stage.
+
+**By company attribute:**
+- Companies where multiple rejections occurred (repeat rejection targets)
+- Average match_score of rejected entries vs. active entries
+- Required skills that appear in rejected entries but not the user's profile (skill gap signal)
+
+**By timing:**
+- Entries rejected within 24h of creation (snap rejections — likely low-quality matches)
+- Entries rejected after long dwell time (> 2 weeks — stale pipeline items)
+
+### Step 5 — Present actionable patterns
+
+Present the top patterns with specific recommendations (e.g., "75% of rejections happen at discovered or applied stage — discovery quality may need tuning", or "4 of 5 post-applied rejections had 'Java' in required_skills which is not in your profile").
+
+---
+
+## Workflow 4: Goal Tracking
+
+Compare current pipeline state and velocity against the user's stated goals. Project whether the user is on track, and compute what inputs are needed to hit the target.
+
+### Step 1 — Load context (parallel)
+
+```python
+funnel = mcp__ronin__get_funnel_stats(user_id="<uuid>")
+prefs = mcp__ronin__get_preferences(user_id="<uuid>")
+memory = mcp__ronin__get_user_memory(user_id="<uuid>")
+pipeline = mcp__ronin__get_pipeline(user_id="<uuid>")
+```
+
+Extract: `compensation_goals`, `target_roles` from preferences. Goals and timeline constraints from memory (e.g., "I want 3 offers in 8 weeks").
+
+### Step 2 — Compute end-to-end conversion rate
+
+```
+discovered_to_offer_rate = offer_count / discovered_count
+```
+
+If `discovered_count` is 0, there is no data to project from — recommend running `ronin-discovery`.
+
+### Step 3 — Project pipeline needs (inverse funnel formula)
+
+```
+needed_discovered = target_offers / (offer_count / discovered_count)
+needed_approved   = target_offers / (offer_count / approved_count)
+needed_applied    = target_offers / (offer_count / applied_count)
+needed_interview  = target_offers / (offer_count / interview_count)
+```
+
+If any stage count is 0, the rate is undefined — use industry heuristics (see Workflow 5) as fallback.
+
+### Step 4 — Compute timeline projection
+
+Using velocity data from Workflow 2 (or estimate from available transition timestamps):
+
+```
+avg_days_discovered_to_offer = sum of avg_time_in_state for all intermediate stages
+weeks_to_target = (needed_discovered - discovered_count) / weekly_discovery_rate + avg_days_discovered_to_offer / 7
+```
+
+### Step 5 — Present goal tracking dashboard
+
+Present: current pipeline counts, end-to-end rate, number of entries needed, weekly discovery rate, time projection, on-track/off-track status, and recommended actions.
+
+If the user has not stated explicit goals, prompt: "What is your target? For example: 'I want 2 offers within 6 weeks' or 'I need to accept a role by July 1'."
+
+---
+
+## Workflow 5: Market Benchmarking
+
+Contextualize the user's pipeline performance against published job search statistics.
+
+### Step 1 — Gather benchmark data
+
+Use the published benchmark ranges below as starting points. For more current data, recommend `ronin-search-strategy` which has web search tools to find updated market statistics.
+
+### Step 2 — Extract published benchmarks
+
+Typical published benchmarks (use as starting points — always cite actual search results):
+
+| Metric | Industry average | Source context |
+|--------|-----------------|---------------|
+| Applications per offer | 100-200 | General job market |
+| Application → interview rate | 5-15% | Varies by seniority and market |
+| Interview → offer rate | 20-40% | Depends on company selectivity |
+| Average job search duration | 3-6 months | Bureau of Labor Statistics |
+| Response rate (applied → any response) | 10-25% | LinkedIn / Glassdoor surveys |
+
+### Step 3 — Compare user performance
+
+Present a table comparing the user's conversion rates, end-to-end rate, and pipeline velocity against market averages.
+
+### Step 4 — Contextualize and caveat
+
+Always include caveats:
+
+- Published benchmarks cover all industries and seniority levels. A staff-level engineer targeting top-tier companies will have different rates.
+- Small sample sizes (< 20 entries) make individual rates unreliable. Flag this.
+- Market conditions change. 2025-2026 tech hiring may differ from historical averages.
+- The user's discovery process is pre-filtered by match scoring, so their application → interview rate should exceed the general average.
+
+---
+
+## Tool Reference
+
+All tools are read-only. This is a summary table — see [`references/tool-reference.md`](references/tool-reference.md) for full parameter details, return shapes, and usage notes.
+
+| Tool | Signature | Returns |
+|------|-----------|---------|
+| `get_funnel_stats` | `(user_id: str)` | Cumulative stage counts and conversion rates |
+| `get_pipeline` | `(user_id: str, state: str \| None = None)` | Pipeline entries with opportunity metadata |
+| `get_pipeline_history` | `(user_id: str, entry_id: str)` | Timestamped state transitions |
+| `list_opportunities` | `(user_id: str, state: str \| None = None, min_score: float \| None = None, sort_by: str = "match_score")` | Opportunities with filters, capped at 50 |
+| `get_opportunity` | `(user_id: str, opportunity_id: str)` | Single opportunity with full details |
+| `get_preferences` | `(user_id: str)` | User goals, target roles, compensation targets |
+| `get_user_memory` | `(user_id: str)` | Prior session context and notes |
+
+> **Note:** This skill does not include web search tools. For market benchmarking data, use the published heuristics in Workflow 5 or recommend `ronin-search-strategy` for live web searches.
+
+---
+
+## Critical Rules
+
+1. Never call transition_pipeline, create_opportunity, approve_opportunity, reject_opportunity, or update_preferences — this skill is strictly read-only
+2. Always flag sample size when pipeline has fewer than 15-20 entries — metrics are unreliable at small scale
+3. Distinguish between user-controlled velocity (discovery, materials) and externally-controlled velocity (company response times)
+4. Use published benchmark ranges as directional context, not precise targets — always include caveats
+5. Conversion rate benchmarks are heuristics, not absolutes — note when the user's targeting strategy may explain deviations
+6. Issue get_pipeline_history calls in parallel for velocity calculations — sequential calls are too slow for large pipelines
+7. Always recommend specific ronin skills for identified bottlenecks — do not take action directly
+
+---
+
+## Canonical Vocabulary
+
+- **Funnel buckets:** "discovered", "approved", "applied", "interview", "offer"
+- **Velocity concepts:** "time-in-state", "weekly velocity", "week-over-week trend"
+- **Rejection categories:** "stage at rejection", "company attribute", "timing"
+- **Goal tracking terms:** "end-to-end conversion rate", "inverse funnel formula", "pipeline needs projection"
+- **Stale severity:** "stale 14-30 days", "very stale 30+ days"
+
+---
+
+## Error Handling
+
+See [`references/error-reference.md`](references/error-reference.md) for the full error table and limitations.
+
+Key errors to watch for:
+- `get_funnel_stats` returns all counts as 0 → run `ronin-discovery` first
+- `get_pipeline_history` returns `error: "not_found"` → verify entry_id against `get_pipeline` results
+- Velocity metrics produce `NaN` → too few entries with transition history
+- MCP connection unavailable → reconnect the Ronin MCP server configured for this harness, or fix the local API-mounted `/mcp` setup if you are explicitly running Ronin locally
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

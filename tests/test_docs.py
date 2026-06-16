@@ -8,9 +8,7 @@ from wagents.docs import (
     write_agents_index,
     write_all_skills_index,
     write_cli_page,
-    write_external_skills_page,
     write_index_page,
-    write_installed_skills_page,
     write_mcp_index,
     write_sidebar,
     write_skill_install_scripts_page,
@@ -166,7 +164,7 @@ class TestWriteSkillsIndex:
         text = idx.read_text()
         assert "User-Invocable Skills (1)" in text
         assert "## Skill Lanes" in text
-        assert '<SkillCatalog src="/generated-skill-indexes/custom.json" />' in text
+        assert "/skills/catalog/test-skill/" in text
         assert "npx skills add github:wyattowalsh/agents --skill honest-review -y -g" in text
 
     def test_skills_index_is_custom_only(self, tmp_repo):
@@ -187,8 +185,8 @@ class TestWriteSkillsIndex:
         nodes = [_make_node("skill"), _make_node("skill", id_suffix="ext", source="installed")]
         write_all_skills_index(nodes, [])
         text = (content_dir / "skills" / "all.mdx").read_text()
-        assert '<SkillCatalog src="/generated-skill-indexes/all.json" />' in text
-        assert "Installed skills are external" in text
+        assert "/skills/catalog/test-skill/" in text
+        assert "Curated External" in text
 
     def test_install_scripts_page_groups_commands(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -199,91 +197,53 @@ class TestWriteSkillsIndex:
         assert "canonical portable install path is `npx skills add`" in text
         assert '<InstallScripts src="/generated-skill-indexes/install-scripts.json" />' in text
 
-    def test_external_skills_page_includes_installed_external(self, tmp_repo):
-        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
-        content_dir.mkdir(parents=True, exist_ok=True)
-        write_external_skills_page(
-            [],
-            [
-                _make_node(
-                    "skill",
-                    id_suffix="ext",
-                    description="Installed external line one.\nLine two stays in the same MDX paragraph.",
-                    source="installed",
-                )
-            ],
-        )
-        text = (content_dir / "external-skills.mdx").read_text()
-        assert "Installed External" in text
-        assert '<SkillCatalog src="/generated-skill-indexes/external.json" />' in text
-        assert "## Source Groups" in text
-        assert "`ext-skill`" in text
-
-    def test_external_skills_page_redacts_local_installed_source_paths(self, tmp_repo):
-        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
-        content_dir.mkdir(parents=True, exist_ok=True)
-        write_external_skills_page(
-            [],
-            [
-                _make_node(
-                    "skill",
-                    id_suffix="local",
-                    source="installed",
-                    source_path="/Users/example/.codex/skills/local-skill/SKILL.md",
-                )
-            ],
-        )
-        text = (content_dir / "external-skills.mdx").read_text()
-        assert "`local installed inventory` (1): `local-skill`" in text
-        assert "/Users/example" not in text
 
 
 class TestDocsGenerate:
-    def test_includes_installed_skills_as_external_by_default(self, tmp_repo, monkeypatch):
-        calls = []
+    def test_includes_installed_skills_as_catalog_pages_by_default(self, tmp_repo, monkeypatch):
+        custom = _make_node("skill")
+        installed = _make_node("skill", id_suffix="ext", source="installed")
 
-        monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
+        monkeypatch.setattr(
+            "wagents.docs.collect_all_doc_nodes",
+            lambda **kwargs: [custom, installed] if kwargs.get("include_installed", True) else [custom],
+        )
         monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
         monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Test\n---\n")
 
-        def _collect_installed(existing_ids):
-            calls.append(existing_ids)
-            return [_make_node("skill", id_suffix="ext", source="installed")]
-
-        monkeypatch.setattr("wagents.docs.collect_installed_skills", _collect_installed)
-
         docs_generate()
 
-        assert calls == [{"test-skill"}]
         assert (tmp_repo / "docs" / "src" / "generated-visual-assets.css").exists()
-        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "ext-skill.mdx").exists()
+        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "all.mdx").exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "install.mdx").exists()
 
     def test_can_exclude_installed_skills_explicitly(self, tmp_repo, monkeypatch):
-        calls = []
+        custom = _make_node("skill")
+        installed = _make_node("skill", id_suffix="ext", source="installed")
 
-        monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
+        def _collect_all(**kwargs):
+            return [custom, installed] if kwargs.get("include_installed", True) else [custom]
+
+        monkeypatch.setattr("wagents.docs.collect_all_doc_nodes", _collect_all)
         monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
         monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Test\n---\n")
 
-        def _collect_installed(existing_ids):
-            calls.append(existing_ids)
-            return [_make_node("skill", id_suffix="ext", source="installed")]
-
-        monkeypatch.setattr("wagents.docs.collect_installed_skills", _collect_installed)
-
         docs_generate(include_installed=False)
 
-        assert calls == []
-        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "ext-skill.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "test-skill.mdx").exists()
 
     def test_preserves_hand_maintained_skill_page(self, tmp_repo, monkeypatch):
-        monkeypatch.setattr("wagents.docs.collect_nodes", lambda: [_make_node("skill")])
+        monkeypatch.setattr(
+            "wagents.docs.collect_all_doc_nodes",
+            lambda **kwargs: [_make_node("skill")],
+        )
         monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
         monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Replaced\n---\n")
 
-        skill_page = tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "test-skill.mdx"
+        skill_page = tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "test-skill.mdx"
         skill_page.parent.mkdir(parents=True, exist_ok=True)
         preserved = "---\ntitle: Curated\n---\n\n{/* HAND-MAINTAINED */}\n\nCurated page.\n"
         skill_page.write_text(preserved)
@@ -291,29 +251,6 @@ class TestDocsGenerate:
         docs_generate(include_installed=False)
 
         assert skill_page.read_text() == preserved
-
-
-class TestWriteInstalledSkillsPage:
-    def test_uses_source_qualified_install_command(self, tmp_repo):
-        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
-        content_dir.mkdir(parents=True, exist_ok=True)
-        nodes = [
-            _make_node(
-                "skill",
-                id_suffix="ext",
-                id="ext-skill",
-                source="installed",
-                metadata={
-                    "name": "ext-skill",
-                    "_skills_source": "example/skills",
-                },
-            )
-        ]
-        write_installed_skills_page(nodes)
-        text = (content_dir / "skills" / "installed.mdx").read_text()
-        assert "Installed Skills (1)" in text
-        assert "installed skills are treated as external catalog rows" in text
-        assert '<SkillCatalog src="/generated-skill-indexes/installed.json" />' in text
 
 
 # ---------------------------------------------------------------------------
@@ -395,6 +332,7 @@ class TestWriteSidebar:
         write_sidebar([_make_node("skill")])
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
         assert "collapsed: true" in text
+        assert "autogenerate: { directory: 'skills/catalog' }" in text
 
 
 class TestSkillCatalogComponent:

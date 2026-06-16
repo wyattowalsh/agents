@@ -22,6 +22,8 @@ from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
     build_install_command,
 )
+from wagents.skill_docs import skill_detail_href
+from wagents.skill_research import load_skill_research
 
 # ---------------------------------------------------------------------------
 # MDX escaper
@@ -145,7 +147,10 @@ def scaffold_doc_page(node: CatalogNode) -> None:
     """Create a single docs page for a newly scaffolded asset."""
     if not CONTENT_DIR.exists():
         return
-    page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
+    if node.kind == "skill":
+        page_dir = CONTENT_DIR / "skills" / "catalog"
+    else:
+        page_dir = CONTENT_DIR / (node.kind + "s" if node.kind != "mcp" else "mcp")
     page_dir.mkdir(parents=True, exist_ok=True)
     content = render_page(node, [], [node])
     (page_dir / f"{node.id}.mdx").write_text(content)
@@ -377,13 +382,18 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         badges.append(f'<Badge text="{escape_attr(fm["model"])}" variant="tip" />')
     if node.source == "custom":
         badges.append('<Badge text="Custom" variant="tip" />')
+    elif node.source == "curated-external":
+        badges.append('<Badge text="Curated External" variant="caution" />')
+        curated_status = str(node.metadata.get("_curated_status") or "")
+        if curated_status:
+            badges.append(f'<Badge text="{escape_attr(curated_status)}" variant="default" />')
     else:
         badges.append('<Badge text="Installed" variant="caution" />')
     parts.append(" ".join(badges))
     parts.append("")
 
     # Description
-    parts.append(f"> {node.description}")
+    parts.append(f"> {escape_mdx(node.description)}")
     parts.append("")
 
     # Quick Start box
@@ -428,10 +438,27 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             "This page is generated from the repository file "
             f"`{escape_mdx_line(_display_source_path(node))}` by `wagents docs generate`."
         )
+    elif node.source == "curated-external":
+        parts.append(
+            "This page is generated from curated config "
+            f"(`{escape_mdx_line(_display_source_path(node))}`) and local inventory when installed."
+        )
+        if node.metadata.get("_is_stub"):
+            parts.append(
+                " SKILL.md is not available locally; install the skill or run "
+                f"`uv run wagents docs research --skill {node.id}` to refresh research context."
+            )
     else:
         parts.append(f"This page is generated from `{escape_mdx_line(_display_source_path(node))}`.")
     parts.append("</Aside>")
     parts.append("")
+
+    research_body = load_skill_research(node.id)
+    if research_body:
+        parts.append('<Aside type="note" title="Research context (evidence, not authority)">')
+        parts.append(escape_mdx(research_body))
+        parts.append("</Aside>")
+        parts.append("")
 
     # Guide cross-link — check if a hand-maintained guide page exists
     guide_path = CONTENT_DIR / "guides" / f"{node.id}.mdx"
@@ -627,8 +654,10 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             rel_node = next((n for n in all_nodes if n.kind == "skill" and n.id == rel_id), None)
             if rel_node:
                 desc = escape_attr(truncate_sentence(rel_node.description, 160))
+                href = skill_detail_href(rel_id)
+                title = escape_attr(rel_id)
                 parts.append(
-                    f'  <LinkCard title="{escape_attr(rel_id)}" href="/skills/{rel_id}/" description="{desc}" />'
+                    f'  <LinkCard title="{title}" href="{href}" description="{desc}" />'
                 )
         parts.append("</CardGrid>")
         parts.append("")
@@ -711,7 +740,7 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append("")
 
     # Description
-    parts.append(f"> {node.description}")
+    parts.append(f"> {escape_mdx(node.description)}")
     parts.append("")
 
     parts.append('<Aside type="note" title="Source & provenance">')
@@ -783,10 +812,12 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
                 desc = escape_attr(truncate_sentence(skill_node.description, 160))
                 parts.append(
                     f'  <LinkCard title="{escape_attr(skill_name)}"'
-                    f' href="/skills/{skill_name}/" description="{desc}" />'
+                    f' href="{skill_detail_href(skill_name)}" description="{desc}" />'
                 )
             else:
-                parts.append(f'  <LinkCard title="{escape_attr(skill_name)}" href="/skills/{skill_name}/" />')
+                parts.append(
+                    f'  <LinkCard title="{escape_attr(skill_name)}" href="{skill_detail_href(skill_name)}" />'
+                )
         parts.append("</CardGrid>")
         parts.append("")
 
@@ -872,7 +903,7 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
 
     # Description
     if node.description:
-        parts.append(f"> {node.description}")
+        parts.append(f"> {escape_mdx(node.description)}")
         parts.append("")
 
     parts.append('<Aside type="note" title="Source & provenance">')

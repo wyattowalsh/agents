@@ -1,0 +1,104 @@
+---
+title: "stripe-best-practices"
+description: "Guides Stripe integration decisions — API selection (Checkout Sessions vs PaymentIntents), Connect platform setup (Accounts v2, controller properties), billing/subscriptions, Treasury financial…"
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="stripe-best-practices" variant="note" /> <Badge text="186 words" variant="default" /> <Badge text="Installed" variant="caution" />
+
+> Guides Stripe integration decisions — API selection (Checkout Sessions vs PaymentIntents), Connect platform setup (Accounts v2, controller properties), billing/subscriptions, Treasury financial accounts, integration surfaces (Checkout, Payment Element), migrating from deprecated Stripe APIs, and security best practices (API key management, restricted keys, webhooks, OAuth). Use when building, modifying, or reviewing any Stripe integration — including accepting payments, building marketplaces, integrating Stripe, processing payments, setting up subscriptions, creating connected accounts, or implementing secure key handling.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add stripe/ai --skill stripe-best-practices -y -g
+```
+
+**Use:** `/stripe-best-practices`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+| Building…                                                                | Recommended API                     | Details                  | | ------------------------------------------------------------------------ | ----------------------------------- | ------------------------ | | One-time payments                                                        | Checkout Sessions                   | \<references/payments.md> | | Custom payment form with embedded UI                                     | Checkout Sessions + Payment Element | \<references/payments.md> | | Saving a payment method for later                                        | Setup Intents                       | \<references/payments.md> | | Connect platform or marketplace                                          | Accounts v2 (`/v2/core/accounts`)   | \<references/connect.md>  | | Subscriptions or recurring billing                                       | Billing APIs + Checkout Sessions    | \<references/billing.md>  | | Embedded financial accounts / banking                                    | v2 Financial Accounts               | \<references/treasury.md> | | Security (key management, RAKs, webhooks, OAuth, 2FA, Connect liability) | See security reference              | \<references/security.md> |
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `stripe/ai` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `stripe-best-practices` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: stripe-best-practices
+description: >-
+  Guides Stripe integration decisions — API selection (Checkout Sessions vs
+  PaymentIntents), Connect platform setup (Accounts v2, controller properties),
+  billing/subscriptions, Treasury financial accounts, integration surfaces
+  (Checkout, Payment Element), migrating from deprecated Stripe APIs, and
+  security best practices (API key management, restricted keys, webhooks,
+  OAuth). Use when building, modifying, or reviewing any Stripe integration —
+  including accepting payments, building marketplaces, integrating Stripe,
+  processing payments, setting up subscriptions, creating connected accounts, or
+  implementing secure key handling.
+
+---
+
+Latest Stripe API version: **2026-04-22.dahlia**. Always use the latest API version and SDK unless the user specifies otherwise.
+
+## Integration routing
+
+| Building…                                                                | Recommended API                     | Details                  |
+| ------------------------------------------------------------------------ | ----------------------------------- | ------------------------ |
+| One-time payments                                                        | Checkout Sessions                   | <references/payments.md> |
+| Custom payment form with embedded UI                                     | Checkout Sessions + Payment Element | <references/payments.md> |
+| Saving a payment method for later                                        | Setup Intents                       | <references/payments.md> |
+| Connect platform or marketplace                                          | Accounts v2 (`/v2/core/accounts`)   | <references/connect.md>  |
+| Subscriptions or recurring billing                                       | Billing APIs + Checkout Sessions    | <references/billing.md>  |
+| Embedded financial accounts / banking                                    | v2 Financial Accounts               | <references/treasury.md> |
+| Security (key management, RAKs, webhooks, OAuth, 2FA, Connect liability) | See security reference              | <references/security.md> |
+
+Read the relevant reference file before answering any integration question or writing code.
+
+## Key documentation
+
+When the user’s request does not clearly fit a single domain above, consult:
+
+- [Integration Options](https://docs.stripe.com/payments/payment-methods/integration-options.md) — Start here when designing any integration.
+- [API Tour](https://docs.stripe.com/payments-api/tour.md) — Overview of Stripe’s API surface.
+- [Go Live Checklist](https://docs.stripe.com/get-started/checklist/go-live.md) — Review before launching.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

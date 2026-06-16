@@ -1,0 +1,137 @@
+---
+title: "host-panel"
+description: "Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation."
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="host-panel" variant="note" /> <Badge text="6035 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
+
+> Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
+```
+
+**Use:** `/host-panel` `"topic" [format] [num-experts]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+## What It Does
+
+`host-panel` stages a source-aware deliberation across simulated intellectual positions. It is designed to expose cruxes, evidence gaps, and trade-offs without pretending that synthetic panelists represent real human opinion, polling, prediction, or truth by consensus.
+
+<Aside type="note" title="Current contract">
+Every substantive panel runs topic diagnosis, source grounding, and research-backed debate mechanics before personas. Weak, loaded, settled-factual, or false-balance prompts are reframed or declined before a panel begins.
+</Aside>
+
+## Research Basis
+
+The skill includes `references/debate-research.md`, a research-to-rule matrix mapping AI debate and role-play findings to panel mechanics. It draws on multi-agent debate, STORM-style perspective discovery, role-playing evaluation, sycophancy research, and adversarial-persuasion failure modes.
+
+| Mechanic | Why it exists |
+|----------|---------------|
+| Independent first positions | Reduces first-answer anchoring before cross-talk |
+| Bounded critique | Avoids endless, circular debate rounds |
+| Anti-conformity checks | Prevents majority pressure from masquerading as correctness |
+| Source ledger | Separates verified claims from thin or unverified synthesis |
+| Methodology cards | Makes panelists differ by evidence standard, not theatrical voice |
+| Trajectory synthesis | Synthesizes by cruxes and evidence, not final-round vote |
+
+## Formats
+
+| Format | Purpose | Best for |
+|--------|---------|----------|
+| `roundtable` | Open multi-perspective mapping | Policy trade-offs, decision-critical topics, exploratory synthesis |
+| `oxford` | Testing a genuinely contestable proposition | Binary motions that pass the false-balance gate |
+| `socratic` | Probing definitions and assumptions | Conceptual disputes, ambiguous terms, hidden premises |
+
+**Defaults:** `roundtable`, 4 experts. Expert range: 2-6.
+
+## Pipeline
+
+<Steps>
+
+1. **Parse** -- Preserve `/host-panel "topic" [format] [num-experts]`; reject invalid formats, counts outside 2-6, and malformed topics.
+
+2. **Diagnose** -- Classify the topic as settled-factual, open-value, controversial-factual, speculative, thin-evidence, decision-critical, or casual-experiential.
+
+3. **Ground** -- Build a source ledger when tools are available; otherwise label the panel as `unverified-training-knowledge`.
+
+4. **Map perspectives** -- Choose intellectual traditions from the terrain map and source ledger before creating personas.
+
+5. **Run the panel** -- Require independent first positions, bounded critique, moderator challenge, convergence checks, and format-specific phases.
+
+6. **Synthesize** -- Separate factual claims, interpretive disagreements, cruxes, evidence gaps, decision implications, and model limits.
+
+</Steps>
+
+## Dispatch
+
+| Input | Mode |
+|------|------|
+| Empty `$ARGUMENTS` | Show gallery, defaults, supported formats, and ask for a topic |
+| `"topic"` only | Parse topic, auto-select format, default to 4 experts |
+| `"topic" roundtable\|oxford\|socratic` | Use explicit format |
+| `"topic" ... <2-6>` | Use explicit expert count |
+| Invalid format or count | Reject before research or personas |
+| Loaded premise | Challenge the framing and offer a neutral motion |
+| Settled factual issue | Reframe or decline false-balance debate |
+| Q&A, code review, real opinion simulation | Redirect out of scope |
+
+## Output Contract
+
+Complete panels contain:
+
+- `Topic Gate`
+- `Research Status`
+- `Source Ledger`
+- `Terrain Map`
+- `Panelist Roster`
+- `Panel Phases`
+- `Final Synthesis`
+- `Follow-up Options`
+
+## Reference Files
+
+| File | Purpose |
+|------|---------|
+| `references/topic-diagnostic.md` | Topic classification, false-balance gate, and format selection |
+| `references/research-integrity.md` | Source ledger, citation integrity, confidence labels, and provenance |
+| `references/debate-research.md` | AI debate, role-play, sycophancy, and synthesis research mapped to rules |
+| `references/archetypes.md` | Methodology-card construction and anti-clustering guidance |
+| `references/moderator-rules.md` | Independent first positions, anti-conformity, turn-taking, and provocation |
+| `references/formats.md` | Roundtable, Oxford, and Socratic phase structures |
+| `references/synthesis.md` | Trajectory-aware final synthesis requirements |
+
+## Quality Gates
+
+The current eval suite covers weak-topic reframing, false-balance handling, loaded premises, invalid arguments, thin evidence, citation traps, human-simulation traps, majority pressure, persuasive falsehoods, cultural/normative scope, and out-of-scope code-review redirects.
+
+## Related Skills
+
+<CardGrid>
+  <LinkCard title="wargame" href="/skills/catalog/wargame/" description="Domain-agnostic strategic decision analysis and wargaming." />
+  <LinkCard title="research" href="/skills/catalog/research/" description="Deep multi-source research with confidence scoring and evidence chains." />
+</CardGrid>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Download SKILL.md" href="https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/host-panel/SKILL.md" description="Raw skill source." />
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/host-panel/SKILL.md)

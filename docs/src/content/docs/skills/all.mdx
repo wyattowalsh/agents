@@ -1,24 +1,630 @@
 ---
 title: All Skills
-description: Giant deduped index of custom, curated external, and installed external skills
+description: Combined index of custom, curated external, and installed external skills
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-import SkillCatalog from '../../../components/SkillCatalog.astro';
+import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 # All Skills
 
-This generated index combines repo-owned custom skills, curated external skills, and installed-only external skills. Installed rows whose names already exist under `./skills/` are excluded, and installed rows that match curated external entries are folded into the curated row.
+This generated index combines repo-owned custom skills, curated external stubs, and installed external skills. Each row links to the unified detail page under `/skills/catalog/<name>/`.
 
 <div class="stats-bar">
   <span class="stat stat-skill">58 Custom</span>
-  <span class="stat stat-external">300 External</span>
-  <span class="stat stat-installed">294 Installed External</span>
-  <span class="stat stat-agent">358 Total Rows</span>
+  <span class="stat stat-external">106 Curated External</span>
+  <span class="stat stat-installed">389 Installed External</span>
+  <span class="stat stat-agent">553 Total</span>
 </div>
 
 <Aside type="note" title="Installed skills are external">
-Local installed skills appear here as external skills unless they are already custom repo skills. Regenerate with `uv run wagents docs generate` to refresh the installed inventory from local harnesses.
+Local installed skills appear here unless their name already exists under `./skills/`. Regenerate with `uv run wagents docs generate` to refresh the installed inventory from local harnesses.
 </Aside>
 
-<SkillCatalog src="/generated-skill-indexes/all.json" />
+## Custom Skills (58)
+
+<details>
+<summary>Browse 58 custom skills</summary>
+
+<div class="catalog-skill">
+<CardGrid>
+  <LinkCard title="add-badges" href="/skills/catalog/add-badges/" description="Detect stack and generate shields.io README badges with icons, colors, live endpoints. Use when adding or updating badges." />
+  <LinkCard title="agent-conventions" href="/skills/catalog/agent-conventions/" description="Agent definition conventions. Validate frontmatter, update indexes. Use when creating or modifying agents. NOT for skills, MCP servers, or CLAUDE.md." />
+  <LinkCard title="agent-runtime-governance" href="/skills/catalog/agent-runtime-governance/" description="Audit runtime controls for tool permissions, approvals, memory, telemetry, evals, rollout, and containment. Use when reviewing tool-bearing agent systems." />
+  <LinkCard title="api-designer" href="/skills/catalog/api-designer/" description="Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs." />
+  <LinkCard title="changelog-writer" href="/skills/catalog/changelog-writer/" description="Generate changelogs, release notes, and migration guides from git history. Parse conventional commits. Use for releases." />
+  <LinkCard title="chrome-devtools" href="/skills/catalog/chrome-devtools/" description="Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions." />
+  <LinkCard title="chrome-devtools-a11y-debugging" href="/skills/catalog/chrome-devtools-a11y-debugging/" description="Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and…" />
+  <LinkCard title="chrome-devtools-cli" href="/skills/catalog/chrome-devtools-cli/" description="Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI." />
+  <LinkCard title="chrome-devtools-debug-optimize-lcp" href="/skills/catalog/chrome-devtools-debug-optimize-lcp/" description="Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification." />
+  <LinkCard title="chrome-devtools-memory-leak-debugging" href="/skills/catalog/chrome-devtools-memory-leak-debugging/" description="Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces." />
+  <LinkCard title="chrome-devtools-troubleshooting" href="/skills/catalog/chrome-devtools-troubleshooting/" description="Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile." />
+  <LinkCard title="data-pipeline-architect" href="/skills/catalog/data-pipeline-architect/" description="Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems." />
+  <LinkCard title="data-wizard" href="/skills/catalog/data-wizard/" description="Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work." />
+  <LinkCard title="database-architect" href="/skills/catalog/database-architect/" description="Design schemas, plan migrations, and optimize queries. Six modes from modeling to evolution. Use for database architecture." />
+  <LinkCard title="devops-engineer" href="/skills/catalog/devops-engineer/" description="Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work." />
+  <LinkCard title="discover-skills" href="/skills/catalog/discover-skills/" description="Discover skills, MCP, plugins, and harness gaps via programmatic audits, coordinator manifests, and parallel scouts. Use for systematic expansion." />
+  <LinkCard title="docling-graph" href="/skills/catalog/docling-graph/" description="Use when designing/reviewing Docling Graph knowledge-graph workflows: templates, contracts, CLI/API configs, inspect reports, exports, traces." />
+  <LinkCard title="docs-steward" href="/skills/catalog/docs-steward/" description="Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change." />
+  <LinkCard title="draw-thing" href="/skills/catalog/draw-thing/" description="Generate local AI images and short media with Draw Things CLI on macOS." />
+  <LinkCard title="email-whiz" href="/skills/catalog/email-whiz/" description="Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail." />
+  <LinkCard title="event-driven-architect" href="/skills/catalog/event-driven-architect/" description="Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines." />
+  <LinkCard title="external-skill-auditor" href="/skills/catalog/external-skill-auditor/" description="Audit third-party Agent Skills before install or repo promotion." />
+  <LinkCard title="files-buddy" href="/skills/catalog/files-buddy/" description="Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders." />
+  <LinkCard title="frontend-designer" href="/skills/catalog/frontend-designer/" description="Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI." />
+  <LinkCard title="git-workflow" href="/skills/catalog/git-workflow/" description="Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks." />
+  <LinkCard title="harness-master" href="/skills/catalog/harness-master/" description="Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements." />
+  <LinkCard title="honest-review" href="/skills/catalog/honest-review/" description="Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality." />
+  <LinkCard title="host-panel" href="/skills/catalog/host-panel/" description="Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles." />
+  <LinkCard title="i18n-localization" href="/skills/catalog/i18n-localization/" description="Plan and review localization changes across app, docs, and web surfaces." />
+  <LinkCard title="incident-response-engineer" href="/skills/catalog/incident-response-engineer/" description="Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation." />
+  <LinkCard title="infrastructure-coder" href="/skills/catalog/infrastructure-coder/" description="Infrastructure-as-Code: Terraform, Kubernetes, Docker. Generate, review, cost-compare, security-scan. Use for IaC work." />
+  <LinkCard title="javascript-conventions" href="/skills/catalog/javascript-conventions/" description="Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json." />
+  <LinkCard title="learn" href="/skills/catalog/learn/" description="Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights." />
+  <LinkCard title="mcp-creator" href="/skills/catalog/mcp-creator/" description="Build MCP servers with FastMCP v3. Research, scaffold, implement, test, deploy. Use when creating MCP servers or integrating APIs via MCP." />
+  <LinkCard title="namer" href="/skills/catalog/namer/" description="Name anything: projects, products, companies, packages." />
+  <LinkCard title="nerdbot" href="/skills/catalog/nerdbot/" description="Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes." />
+  <LinkCard title="new-project" href="/skills/catalog/new-project/" description="Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines." />
+  <LinkCard title="observability-advisor" href="/skills/catalog/observability-advisor/" description="Design and review logs, metrics, traces, SLOs, and alerting for reliable systems. Use for telemetry strategy and coverage gaps." />
+  <LinkCard title="opencode-ensemble" href="/skills/catalog/opencode-ensemble/" description="Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves." />
+  <LinkCard title="openspec-workflow" href="/skills/catalog/openspec-workflow/" description="Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions." />
+  <LinkCard title="orchestrator" href="/skills/catalog/orchestrator/" description="Review and orchestrate parallel execution via subagent waves, teams, and pipelines. Use when 2+ independent actions need coordination." />
+  <LinkCard title="performance-profiler" href="/skills/catalog/performance-profiler/" description="Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance." />
+  <LinkCard title="prompt-engineer" href="/skills/catalog/prompt-engineer/" description="Prompt engineering. Craft, analyze, harden, convert, design tool prompts, and build PromptOps/eval plans. Use for system, agent, tool, RAG prompts." />
+  <LinkCard title="python-conventions" href="/skills/catalog/python-conventions/" description="Enforce Python tooling conventions for uv, ty, Ruff, pytest, and pyproject.toml. Use when working on .py files or Python project config." />
+  <LinkCard title="reasoning-router" href="/skills/catalog/reasoning-router/" description="Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning." />
+  <LinkCard title="release-pipeline-architect" href="/skills/catalog/release-pipeline-architect/" description="Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines." />
+  <LinkCard title="research" href="/skills/catalog/research/" description="Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking." />
+  <LinkCard title="schema-evolution-planner" href="/skills/catalog/schema-evolution-planner/" description="Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops." />
+  <LinkCard title="security-scanner" href="/skills/catalog/security-scanner/" description="Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit." />
+  <LinkCard title="shell-conventions" href="/skills/catalog/shell-conventions/" description="Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files." />
+  <LinkCard title="shell-scripter" href="/skills/catalog/shell-scripter/" description="Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work." />
+  <LinkCard title="simplify" href="/skills/catalog/simplify/" description="Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex." />
+  <LinkCard title="skill-creator" href="/skills/catalog/skill-creator/" description="Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills." />
+  <LinkCard title="skill-router" href="/skills/catalog/skill-router/" description="Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet." />
+  <LinkCard title="tech-debt-analyzer" href="/skills/catalog/tech-debt-analyzer/" description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time." />
+  <LinkCard title="test-architect" href="/skills/catalog/test-architect/" description="Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites." />
+  <LinkCard title="things-manager" href="/skills/catalog/things-manager/" description="Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD." />
+  <LinkCard title="wargame" href="/skills/catalog/wargame/" description="Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty." />
+</CardGrid>
+</div>
+</details>
+
+## Curated External (106)
+
+<details>
+<summary>Browse 106 curated external</summary>
+
+<div class="catalog-skill">
+<CardGrid>
+  <LinkCard title="ab-testing" href="/skills/catalog/ab-testing/" description="Marketing residual tier from `coreyhaines31/marketingskills`." />
+  <LinkCard title="anthropics-skills-all" href="/skills/catalog/anthropics-skills-all/" description="inspect case-by-case; many skills duplicate local/system skills." />
+  <LinkCard title="biome-developer" href="/skills/catalog/biome-developer/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="brainstorming" href="/skills/catalog/brainstorming/" description="Agent workflow discipline from `obra/superpowers`." />
+  <LinkCard title="changelog-automation" href="/skills/catalog/changelog-automation/" description="`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies." />
+  <Card title="ckm:*">avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.</Card>
+  <LinkCard title="claimable-postgres" href="/skills/catalog/claimable-postgres/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="clickhouse-architecture-advisor" href="/skills/catalog/clickhouse-architecture-advisor/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="clickhouse-best-practices" href="/skills/catalog/clickhouse-best-practices/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="coleam00-excalidraw-diagram-skill-all" href="/skills/catalog/coleam00-excalidraw-diagram-skill-all/" description="community Excalidraw skill; prefer `github/awesome-copilot@excalidraw-diagram-generator`." />
+  <LinkCard title="commit" href="/skills/catalog/commit/" description="TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`." />
+  <LinkCard title="competitor-profiling" href="/skills/catalog/competitor-profiling/" description="Marketing tier-2 residual beyond the two curated marketing rows." />
+  <LinkCard title="create-implementation-plan" href="/skills/catalog/create-implementation-plan/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="debugging-strategies" href="/skills/catalog/debugging-strategies/" description="`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies." />
+  <LinkCard title="deno-expert" href="/skills/catalog/deno-expert/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="deploy-to-vercel" href="/skills/catalog/deploy-to-vercel/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="design-agent" href="/skills/catalog/design-agent/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="design-doc-mermaid" href="/skills/catalog/design-doc-mermaid/" description="Architecture diagram guidance for docs and design artifacts; complements local `docs-steward`." />
+  <LinkCard title="design-task" href="/skills/catalog/design-task/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="drizzle-orm-patterns" href="/skills/catalog/drizzle-orm-patterns/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="eval-driven-dev" href="/skills/catalog/eval-driven-dev/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="executing-plans" href="/skills/catalog/executing-plans/" description="Agent workflow discipline from `obra/superpowers`." />
+  <LinkCard title="fastapi-templates" href="/skills/catalog/fastapi-templates/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="figma-code-connect" href="/skills/catalog/figma-code-connect/" description="Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants." />
+  <LinkCard title="figma-generate-design" href="/skills/catalog/figma-generate-design/" description="Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants." />
+  <LinkCard title="figma-implement-design" href="/skills/catalog/figma-implement-design/" description="Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants." />
+  <LinkCard title="find-bugs" href="/skills/catalog/find-bugs/" description="Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns." />
+  <LinkCard title="firebase-ai-logic-basics" href="/skills/catalog/firebase-ai-logic-basics/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="firebase-app-hosting-basics" href="/skills/catalog/firebase-app-hosting-basics/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="firebase-auth-basics" href="/skills/catalog/firebase-auth-basics/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="firecrawl-cli-all" href="/skills/catalog/firecrawl-cli-all/" description="useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested." />
+  <LinkCard title="gemini-api" href="/skills/catalog/gemini-api/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="getting-started" href="/skills/catalog/getting-started/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="gha-security-review" href="/skills/catalog/gha-security-review/" description="Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns." />
+  <LinkCard title="github-actions-docs" href="/skills/catalog/github-actions-docs/" description="high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface." />
+  <LinkCard title="grill-me" href="/skills/catalog/grill-me/" description="Product-engineering workflow skills beyond the curated `obsidian-vault` row." />
+  <LinkCard title="huggingface-skills-all" href="/skills/catalog/huggingface-skills-all/" description="keep global unless ML workflows become frequent." />
+  <LinkCard title="improve-codebase-architecture" href="/skills/catalog/improve-codebase-architecture/" description="Product-engineering workflow skills beyond the curated `obsidian-vault` row." />
+  <LinkCard title="inngest-durable-functions" href="/skills/catalog/inngest-durable-functions/" description="Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested." />
+  <LinkCard title="inngest-events" href="/skills/catalog/inngest-events/" description="Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested." />
+  <LinkCard title="inngest-steps" href="/skills/catalog/inngest-steps/" description="Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested." />
+  <LinkCard title="iterate-pr" href="/skills/catalog/iterate-pr/" description="Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns." />
+  <LinkCard title="langchain-architecture" href="/skills/catalog/langchain-architecture/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="langsmith-dataset" href="/skills/catalog/langsmith-dataset/" description="LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access." />
+  <LinkCard title="langsmith-evaluator" href="/skills/catalog/langsmith-evaluator/" description="LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access." />
+  <LinkCard title="langsmith-trace" href="/skills/catalog/langsmith-trace/" description="LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access." />
+  <LinkCard title="launch" href="/skills/catalog/launch/" description="Marketing tier-2 residual beyond the two curated marketing rows." />
+  <LinkCard title="link-workspace-packages" href="/skills/catalog/link-workspace-packages/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="llm-evaluation" href="/skills/catalog/llm-evaluation/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="mcp-security-audit" href="/skills/catalog/mcp-security-audit/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="microsoft-azure-skills-all" href="/skills/catalog/microsoft-azure-skills-all/" description="massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote." />
+  <LinkCard title="mysql" href="/skills/catalog/mysql/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="neon-ai-gateway" href="/skills/catalog/neon-ai-gateway/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="neon-functions" href="/skills/catalog/neon-functions/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="netlify-deploy" href="/skills/catalog/netlify-deploy/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="netlify-edge-functions" href="/skills/catalog/netlify-edge-functions/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="netlify-functions" href="/skills/catalog/netlify-functions/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="nodejs-backend-patterns" href="/skills/catalog/nodejs-backend-patterns/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="notion-api" href="/skills/catalog/notion-api/" description="third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion." />
+  <LinkCard title="nx-generate" href="/skills/catalog/nx-generate/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="nx-workspace-patterns" href="/skills/catalog/nx-workspace-patterns/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="on-call-handoff-patterns" href="/skills/catalog/on-call-handoff-patterns/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="onboarding" href="/skills/catalog/onboarding/" description="Marketing residual tier from `coreyhaines31/marketingskills`." />
+  <LinkCard title="openapi-spec-generation" href="/skills/catalog/openapi-spec-generation/" description="`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies." />
+  <LinkCard title="otel-collector" href="/skills/catalog/otel-collector/" description="Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines." />
+  <LinkCard title="otel-semantic-conventions" href="/skills/catalog/otel-semantic-conventions/" description="Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines." />
+  <LinkCard title="paywalls" href="/skills/catalog/paywalls/" description="Marketing tier-2 residual beyond the two curated marketing rows." />
+  <LinkCard title="playwright-cli" href="/skills/catalog/playwright-cli/" description="Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control." />
+  <LinkCard title="postgres" href="/skills/catalog/postgres/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="postmortem-writing" href="/skills/catalog/postmortem-writing/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="prisma-compute" href="/skills/catalog/prisma-compute/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="product-marketing" href="/skills/catalog/product-marketing/" description="Marketing residual tier from `coreyhaines31/marketingskills`." />
+  <LinkCard title="pulumi-automation-api" href="/skills/catalog/pulumi-automation-api/" description="Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets." />
+  <LinkCard title="pulumi-component" href="/skills/catalog/pulumi-component/" description="Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets." />
+  <LinkCard title="pulumi-esc" href="/skills/catalog/pulumi-esc/" description="Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets." />
+  <Card title="react:components">Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.</Card>
+  <LinkCard title="redis-clustering" href="/skills/catalog/redis-clustering/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="redis-observability" href="/skills/catalog/redis-observability/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="redis-security" href="/skills/catalog/redis-security/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="remotion-best-practices" href="/skills/catalog/remotion-best-practices/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="render-blueprints" href="/skills/catalog/render-blueprints/" description="Official Render deploy/Blueprint/debug subset." />
+  <LinkCard title="render-debug" href="/skills/catalog/render-debug/" description="Official Render deploy/Blueprint/debug subset." />
+  <LinkCard title="render-deploy" href="/skills/catalog/render-deploy/" description="Official Render deploy/Blueprint/debug subset." />
+  <LinkCard title="rust-mcp-server-generator" href="/skills/catalog/rust-mcp-server-generator/" description="Rust MCP server scaffolding from `github/awesome-copilot`." />
+  <LinkCard title="schema" href="/skills/catalog/schema/" description="Marketing residual tier from `coreyhaines31/marketingskills`." />
+  <LinkCard title="shopify-dev" href="/skills/catalog/shopify-dev/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="shopify-liquid" href="/skills/catalog/shopify-liquid/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="shopify-storefront-graphql" href="/skills/catalog/shopify-storefront-graphql/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="signup" href="/skills/catalog/signup/" description="Marketing residual tier from `coreyhaines31/marketingskills`." />
+  <LinkCard title="stitch-loop" href="/skills/catalog/stitch-loop/" description="Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit." />
+  <Card title="stitch::generate-design">Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.</Card>
+  <LinkCard title="tanstack-router-best-practices" href="/skills/catalog/tanstack-router-best-practices/" description="TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`." />
+  <LinkCard title="tanstack-start-best-practices" href="/skills/catalog/tanstack-start-best-practices/" description="TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`." />
+  <LinkCard title="tdd" href="/skills/catalog/tdd/" description="Product-engineering workflow skills beyond the curated `obsidian-vault` row." />
+  <LinkCard title="test-driven-development" href="/skills/catalog/test-driven-development/" description="Agent workflow discipline from `obra/superpowers`." />
+  <LinkCard title="testing-python" href="/skills/catalog/testing-python/" description="Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion." />
+  <LinkCard title="threat-model-analyst" href="/skills/catalog/threat-model-analyst/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="to-prd" href="/skills/catalog/to-prd/" description="Product-engineering workflow skills beyond the curated `obsidian-vault` row." />
+  <LinkCard title="turborepo-caching" href="/skills/catalog/turborepo-caching/" description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset." />
+  <LinkCard title="uv-package-manager" href="/skills/catalog/uv-package-manager/" description="`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies." />
+  <LinkCard title="vercel-labs-agent-browser-all" href="/skills/catalog/vercel-labs-agent-browser-all/" description="useful, but broad operational scope and overlaps browser automation." />
+  <LinkCard title="vercel-optimize" href="/skills/catalog/vercel-optimize/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="verification-before-completion" href="/skills/catalog/verification-before-completion/" description="Agent workflow discipline from `obra/superpowers`." />
+  <LinkCard title="video" href="/skills/catalog/video/" description="Marketing tier-2 residual beyond the two curated marketing rows." />
+  <LinkCard title="vitest" href="/skills/catalog/vitest/" description="Curated third-party skill source. Run external-skill-auditor before repo promotion." />
+  <LinkCard title="writing-plans" href="/skills/catalog/writing-plans/" description="Agent workflow discipline from `obra/superpowers`." />
+</CardGrid>
+</div>
+</details>
+
+## Installed External (389)
+
+<details>
+<summary>Browse 389 installed external</summary>
+
+<div class="catalog-skill">
+<CardGrid>
+  <LinkCard title="ab-test-setup" href="/skills/catalog/ab-test-setup/" description="When the user wants to plan, design, or implement an A/B test or experiment." />
+  <LinkCard title="accessibility" href="/skills/catalog/accessibility/" description="Audit and improve web accessibility following WCAG 2.2 guidelines." />
+  <LinkCard title="ad-creative" href="/skills/catalog/ad-creative/" description="When the user wants to generate, iterate, or scale ad creative — headlines, descriptions, primary text, or full ad variations — for any paid advertising…" />
+  <LinkCard title="ads" href="/skills/catalog/ads/" description="When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms." />
+  <LinkCard title="agent-governance" href="/skills/catalog/agent-governance/" description="Patterns and techniques for adding governance, safety, and trust controls to AI agent systems." />
+  <LinkCard title="agent-owasp-compliance" href="/skills/catalog/agent-owasp-compliance/" description="Check any AI agent codebase against the OWASP Agentic Security Initiative (ASI) Top 10 risks." />
+  <LinkCard title="agent-supply-chain" href="/skills/catalog/agent-supply-chain/" description="Verify supply chain integrity for AI agent plugins, tools, and dependencies." />
+  <LinkCard title="agentic-actions-auditor" href="/skills/catalog/agentic-actions-auditor/" description="Audits GitHub Actions workflows for security vulnerabilities in AI agent integrations including Claude Code Action, Gemini CLI, OpenAI Codex, and GitHub AI…" />
+  <LinkCard title="agentic-eval" href="/skills/catalog/agentic-eval/" description="Patterns and techniques for evaluating and improving AI agent outputs." />
+  <LinkCard title="agents-sdk" href="/skills/catalog/agents-sdk/" description="Build AI agents on Cloudflare Workers using the Agents SDK." />
+  <LinkCard title="ai-seo" href="/skills/catalog/ai-seo/" description="When the user wants to optimize content for AI search engines, get cited by LLMs, or appear in AI-generated answers." />
+  <LinkCard title="analytics" href="/skills/catalog/analytics/" description="When the user wants to set up, improve, or audit analytics tracking and measurement." />
+  <LinkCard title="analytics-tracking" href="/skills/catalog/analytics-tracking/" description="When the user wants to set up, improve, or audit analytics tracking and measurement." />
+  <LinkCard title="apollo-client" href="/skills/catalog/apollo-client/" description="Guide for building React applications with Apollo Client 4.x." />
+  <LinkCard title="apollo-connectors" href="/skills/catalog/apollo-connectors/" description="Guide for integrating REST APIs into GraphQL supergraphs using Apollo Connectors with @source and @connect directives." />
+  <LinkCard title="apollo-federation" href="/skills/catalog/apollo-federation/" description="Guide for authoring Apollo Federation subgraph schemas." />
+  <LinkCard title="apollo-ios" href="/skills/catalog/apollo-ios/" description="Guide for building Apple-platform applications with Apollo iOS, the strongly-typed GraphQL client for Swift." />
+  <LinkCard title="apollo-kotlin" href="/skills/catalog/apollo-kotlin/" description="Guide for building applications with Apollo Kotlin, the GraphQL client library for Android and Kotlin." />
+  <LinkCard title="apollo-mcp-server" href="/skills/catalog/apollo-mcp-server/" description="Guide for using Apollo MCP Server to connect AI agents with GraphQL APIs." />
+  <LinkCard title="apollo-router" href="/skills/catalog/apollo-router/" description="Version-aware guide for configuring and running Apollo Router for federated GraphQL supergraphs. Generates correct YAML for both Router v1.x and v2.x." />
+  <LinkCard title="apollo-router-plugin-creator" href="/skills/catalog/apollo-router-plugin-creator/" description="Guide for writing Apollo Router native Rust plugins." />
+  <LinkCard title="apollo-server" href="/skills/catalog/apollo-server/" description="Guide for building GraphQL servers with Apollo Server 5.x." />
+  <LinkCard title="arize-evaluator" href="/skills/catalog/arize-evaluator/" description="INVOKE THIS SKILL for LLM-as-judge evaluation workflows on Arize: creating/updating evaluators, running evaluations on spans or experiments, tasks,…" />
+  <LinkCard title="arize-instrumentation" href="/skills/catalog/arize-instrumentation/" description="INVOKE THIS SKILL when adding Arize AX tracing to an application." />
+  <LinkCard title="arize-prompt-optimization" href="/skills/catalog/arize-prompt-optimization/" description="INVOKE THIS SKILL when optimizing, improving, or debugging LLM prompts using production trace data, evaluations, and annotations." />
+  <LinkCard title="autofix" href="/skills/catalog/autofix/" description="Auto-fix CodeRabbit review comments - get CodeRabbit review comments from GitHub and fix them interactively or in batch" />
+  <LinkCard title="autoplan" href="/skills/catalog/autoplan/" description="Auto-review pipeline — reads the full CEO, design, and eng review skills from disk
+and runs them sequentially with auto-decisions using 6 decision principles." />
+  <LinkCard title="aws-ami-builder" href="/skills/catalog/aws-ami-builder/" description="Build Amazon Machine Images (AMIs) with Packer using the amazon-ebs builder. Use when creating custom AMIs for EC2 instances." />
+  <LinkCard title="aws-iam" href="/skills/catalog/aws-iam/" description="Verified corrections for IAM behaviors that AI agents frequently get wrong — policy evaluation edge cases, trust policy gotchas, STS session limits,…" />
+  <LinkCard title="aws-serverless" href="/skills/catalog/aws-serverless/" description="Builds, deploys, manages, debugs, configures, and optimizes serverless applications on AWS using Lambda, API Gateway, Step Functions, EventBridge, and SAM/CDK." />
+  <LinkCard title="baseline-ui" href="/skills/catalog/baseline-ui/" description="Validates animation durations, enforces typography scale, checks component accessibility, and prevents layout anti-patterns in Tailwind CSS projects." />
+  <LinkCard title="benchmark" href="/skills/catalog/benchmark/" description="Performance regression detection using the browse daemon. Establishes
+baselines for page load times, Core Web Vitals, and resource sizes." />
+  <LinkCard title="best-of-n" href="/skills/catalog/best-of-n/" description="Implement a task N ways in parallel and pick the best. Spawns multiple subagents in isolated worktrees, evaluates all candidates, and applies the winner." />
+  <LinkCard title="best-practices" href="/skills/catalog/best-practices/" description="Apply modern web development best practices for security, compatibility, and code quality." />
+  <LinkCard title="better-auth-best-practices" href="/skills/catalog/better-auth-best-practices/" description="Configure Better Auth server and client, set up database adapters, manage sessions, add plugins, and handle environment variables." />
+  <LinkCard title="browse" href="/skills/catalog/browse/" description="Fast headless browser for QA testing and site dogfooding." />
+  <LinkCard title="building-ai-agent-on-cloudflare" href="/skills/catalog/building-ai-agent-on-cloudflare/" description="Builds AI agents on Cloudflare using the Agents SDK with state management,
+real-time WebSockets, scheduled tasks, tool integration, and chat capabilities." />
+  <LinkCard title="building-mcp-server-on-cloudflare" href="/skills/catalog/building-mcp-server-on-cloudflare/" description="Builds remote MCP (Model Context Protocol) servers on Cloudflare Workers
+with tools, OAuth authentication, and production deployment." />
+  <LinkCard title="building-native-ui" href="/skills/catalog/building-native-ui/" description="Complete guide for building beautiful apps with Expo Router. Covers fundamentals, styling, components, navigation, animations, patterns, and native tabs." />
+  <LinkCard title="building-pydantic-ai-agents" href="/skills/catalog/building-pydantic-ai-agents/" description="Build AI agents with Pydantic AI — tools, capabilities, structured output, streaming, testing, and multi-agent patterns." />
+  <LinkCard title="canary" href="/skills/catalog/canary/" description="Post-deploy canary monitoring. Watches the live app for console errors,
+performance regressions, and page failures using the browse daemon." />
+  <LinkCard title="careful" href="/skills/catalog/careful/" description="Safety guardrails for destructive commands. Warns before rm -rf, DROP TABLE,
+force-push, git reset --hard, kubectl delete, and similar destructive operations." />
+  <LinkCard title="chatgpt-app-builder" href="/skills/catalog/chatgpt-app-builder/" description="Build ChatGPT apps with interactive widgets using mcp-use and OpenAI Apps SDK." />
+  <LinkCard title="chatgpt-apps" href="/skills/catalog/chatgpt-apps/" description="Build, scaffold, refactor, and troubleshoot ChatGPT Apps SDK applications that combine an MCP server and widget UI." />
+  <LinkCard title="check-work" href="/skills/catalog/check-work/" description="Check your work with a verification subagent. Spawns a verifier that reviews diffs, runs builds and tests, and evaluates correctness." />
+  <LinkCard title="churn-prevention" href="/skills/catalog/churn-prevention/" description="When the user wants to reduce churn, build cancellation flows, set up save offers, recover failed payments, or implement retention strategies." />
+  <LinkCard title="clerk-nextjs-patterns" href="/skills/catalog/clerk-nextjs-patterns/" description="Advanced Next.js patterns - middleware, Server Actions, caching with Clerk." />
+  <LinkCard title="cli-creator" href="/skills/catalog/cli-creator/" description="Build a composable CLI for Codex from API docs, an OpenAPI spec, existing curl examples, an SDK, a web app, an admin tool, or a local script." />
+  <LinkCard title="cli-just" href="/skills/catalog/cli-just/" description="Use for just/justfile task automation: create justfiles, write recipes, configure settings, add modules/attributes, or set up command-runner workflows." />
+  <LinkCard title="cloudflare" href="/skills/catalog/cloudflare/" description="Comprehensive Cloudflare platform skill covering Workers, Pages, storage (KV, D1, R2), AI (Workers AI, Vectorize, Agents SDK), feature flags (Flagship),…" />
+  <LinkCard title="cloudwatch" href="/skills/catalog/cloudwatch/" description="AWS CloudWatch monitoring for logs, metrics, alarms, and dashboards." />
+  <LinkCard title="code-review" href="/skills/catalog/code-review/" description="Perform code reviews following Sentry engineering practices. Use when reviewing pull requests, examining code changes, or providing feedback on code quality." />
+  <LinkCard title="codeql" href="/skills/catalog/codeql/" description="Scans a codebase for security vulnerabilities using CodeQL's interprocedural data flow and taint tracking analysis." />
+  <LinkCard title="codex" href="/skills/catalog/codex/" description="OpenAI Codex CLI wrapper — three modes. Code review: independent diff review via
+codex review with pass/fail gate." />
+  <LinkCard title="cold-email" href="/skills/catalog/cold-email/" description="Write B2B cold emails and follow-up sequences that get replies." />
+  <LinkCard title="competitor-alternatives" href="/skills/catalog/competitor-alternatives/" description="When the user wants to create competitor comparison or alternative pages for SEO and sales enablement." />
+  <LinkCard title="connect-chrome" href="/skills/catalog/connect-chrome/" description="Launch real Chrome controlled by gstack with the Side Panel extension auto-loaded." />
+  <LinkCard title="content-strategy" href="/skills/catalog/content-strategy/" description="When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover." />
+  <LinkCard title="context-engineering-collection" href="/skills/catalog/context-engineering-collection/" description="A comprehensive collection of Agent Skills for context engineering, multi-agent architectures, and production agent systems." />
+  <LinkCard title="copy-editing" href="/skills/catalog/copy-editing/" description="When the user wants to edit, review, or improve existing marketing copy." />
+  <LinkCard title="copywriting" href="/skills/catalog/copywriting/" description="When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature pages, about pages,…" />
+  <LinkCard title="core-web-vitals" href="/skills/catalog/core-web-vitals/" description="Optimize Core Web Vitals (LCP, INP, CLS) for better page experience and search ranking." />
+  <LinkCard title="create-auth-skill" href="/skills/catalog/create-auth-skill/" description="Scaffold and implement authentication in TypeScript/JavaScript apps using Better Auth." />
+  <LinkCard title="create-skill" href="/skills/catalog/create-skill/" description="Interactively create a new Grok skill (SKILL.md + optional scripts/references)." />
+  <LinkCard title="cro" href="/skills/catalog/cro/" description="When the user wants to optimize, improve, or increase conversions on any marketing page or form — including homepage, landing pages, pricing pages, feature…" />
+  <LinkCard title="cso" href="/skills/catalog/cso/" description="Chief Security Officer mode." />
+  <LinkCard title="ctf-ai-ml" href="/skills/catalog/ctf-ai-ml/" description="Provides AI and machine learning techniques for CTF challenges." />
+  <LinkCard title="ctf-crypto" href="/skills/catalog/ctf-crypto/" description="Provides cryptography attack techniques for CTF challenges." />
+  <LinkCard title="ctf-forensics" href="/skills/catalog/ctf-forensics/" description="Provides digital forensics and signal analysis techniques for CTF challenges." />
+  <LinkCard title="ctf-malware" href="/skills/catalog/ctf-malware/" description="Provides malware analysis and network traffic techniques for CTF challenges." />
+  <LinkCard title="ctf-misc" href="/skills/catalog/ctf-misc/" description="Provides miscellaneous CTF challenge techniques for problems that do not cleanly fit the main categories." />
+  <LinkCard title="ctf-osint" href="/skills/catalog/ctf-osint/" description="Provides open source intelligence techniques for CTF challenges." />
+  <LinkCard title="ctf-pwn" href="/skills/catalog/ctf-pwn/" description="Provides binary exploitation techniques for CTF challenges." />
+  <LinkCard title="ctf-reverse" href="/skills/catalog/ctf-reverse/" description="Provides reverse engineering techniques for CTF challenges." />
+  <LinkCard title="ctf-web" href="/skills/catalog/ctf-web/" description="Provides web exploitation techniques for CTF challenges." />
+  <LinkCard title="ctf-writeup" href="/skills/catalog/ctf-writeup/" description="Generates a single standardized submission-style CTF writeup for competition handoff and organizer review." />
+  <LinkCard title="database-migration" href="/skills/catalog/database-migration/" description="Execute database migrations across ORMs and platforms with zero-downtime strategies, data transformation, and rollback procedures." />
+  <LinkCard title="deep-agents-core" href="/skills/catalog/deep-agents-core/" description="INVOKE THIS SKILL when building ANY Deep Agents application. Covers create_deep_agent(), harness architecture, SKILL.md format, and configuration options." />
+  <LinkCard title="deep-agents-memory" href="/skills/catalog/deep-agents-memory/" description="INVOKE THIS SKILL when your Deep Agent needs memory, persistence, or filesystem access." />
+  <LinkCard title="deep-agents-orchestration" href="/skills/catalog/deep-agents-orchestration/" description="INVOKE THIS SKILL when using subagents, task planning, or human approval in Deep Agents. Covers SubAgentMiddleware, TodoList for planning, and HITL interrupts." />
+  <LinkCard title="defuddle" href="/skills/catalog/defuddle/" description="Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens." />
+  <LinkCard title="deployment-pipeline-design" href="/skills/catalog/deployment-pipeline-design/" description="Design multi-stage CI/CD pipelines with approval gates, security checks, and deployment orchestration." />
+  <LinkCard title="design-consultation" href="/skills/catalog/design-consultation/" description="Design consultation: understands your product, researches the landscape, proposes a
+complete design system…" />
+  <LinkCard title="design-md" href="/skills/catalog/design-md/" description="Analyze Stitch projects and synthesize a semantic design system into DESIGN.md files" />
+  <LinkCard title="design-review" href="/skills/catalog/design-review/" description="Designer's eye QA: finds visual inconsistency, spacing issues, hierarchy problems,
+AI slop patterns, and slow interactions — then fixes them." />
+  <LinkCard title="design-shotgun" href="/skills/catalog/design-shotgun/" description="Design shotgun: generate multiple AI design variants, open a comparison board,
+collect structured feedback, and iterate." />
+  <LinkCard title="design-taste-frontend" href="/skills/catalog/design-taste-frontend/" description="Senior UI/UX Engineer. Architect digital interfaces overriding default LLM biases." />
+  <LinkCard title="differential-review" href="/skills/catalog/differential-review/" description="Performs security-focused differential review of code changes (PRs, commits, diffs)." />
+  <LinkCard title="docker-expert" href="/skills/catalog/docker-expert/" description="You are an advanced Docker containerization expert with comprehensive, practical knowledge of container optimization, security hardening, multi-stage builds,…" />
+  <LinkCard title="document-release" href="/skills/catalog/document-release/" description="Post-ship documentation update. Reads all project docs, cross-references the
+diff, updates README/ARCHITECTURE/CONTRIBUTING/CLAUDE." />
+  <LinkCard title="docx" href="/skills/catalog/docx/" description="Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files)." />
+  <LinkCard title="durable-objects" href="/skills/catalog/durable-objects/" description="Create and review Cloudflare Durable Objects." />
+  <LinkCard title="e2e-testing-patterns" href="/skills/catalog/e2e-testing-patterns/" description="Master end-to-end testing with Playwright and Cypress to build reliable test suites that catch bugs, improve confidence, and enable fast deployment." />
+  <LinkCard title="ecosystem-primer" href="/skills/catalog/ecosystem-primer/" description="INVOKE FIRST for any LangChain / LangGraph / Deep Agents agent building project before consulting other skills or writing any agent code." />
+  <LinkCard title="electron" href="/skills/catalog/electron/" description="Automate Electron desktop apps (VS Code, Slack, Discord, Figma, Notion, Spotify, etc.) using agent-browser via Chrome DevTools Protocol." />
+  <LinkCard title="email-sequence" href="/skills/catalog/email-sequence/" description="When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program." />
+  <LinkCard title="emails" href="/skills/catalog/emails/" description="When the user wants to create or optimize an email sequence, drip campaign, automated email flow, or lifecycle email program." />
+  <LinkCard title="emil-design-eng" href="/skills/catalog/emil-design-eng/" description="This skill encodes Emil Kowalski's philosophy on UI polish, component design, animation decisions, and the invisible details that make software feel great." />
+  <LinkCard title="excalidraw-diagram-generator" href="/skills/catalog/excalidraw-diagram-generator/" description="Generate Excalidraw diagrams from natural language descriptions." />
+  <LinkCard title="expo-api-routes" href="/skills/catalog/expo-api-routes/" description="Guidelines for creating API routes in Expo Router with EAS Hosting" />
+  <LinkCard title="expo-cicd-workflows" href="/skills/catalog/expo-cicd-workflows/" description="Helps understand and write EAS workflow YAML files for Expo projects." />
+  <LinkCard title="expo-deployment" href="/skills/catalog/expo-deployment/" description="Deploying Expo apps to iOS App Store, Android Play Store, web hosting, and API routes" />
+  <LinkCard title="expo-dev-client" href="/skills/catalog/expo-dev-client/" description="Build and distribute Expo development clients locally or via TestFlight" />
+  <LinkCard title="expo-tailwind-setup" href="/skills/catalog/expo-tailwind-setup/" description="Set up Tailwind CSS v4 in Expo with react-native-css and NativeWind v5 for universal styling" />
+  <LinkCard title="extract-design-system" href="/skills/catalog/extract-design-system/" description="Extract design primitives from a public website and generate starter token files for your project." />
+  <LinkCard title="fastmcp-client-cli" href="/skills/catalog/fastmcp-client-cli/" description="Query and invoke tools on MCP servers using fastmcp list and fastmcp call." />
+  <LinkCard title="find-skills" href="/skills/catalog/find-skills/" description="Helps users discover and install agent skills when they ask questions like &quot;how do I do X&quot;, &quot;find a skill for X&quot;, &quot;is there a skill that can..." />
+  <LinkCard title="firecrawl" href="/skills/catalog/firecrawl/" description="Search, scrape, and interact with the web via the Firecrawl CLI." />
+  <LinkCard title="fixing-accessibility" href="/skills/catalog/fixing-accessibility/" description="Audit and fix HTML accessibility issues including ARIA labels, keyboard navigation, focus management, color contrast, and form errors." />
+  <LinkCard title="fixing-metadata" href="/skills/catalog/fixing-metadata/" description="Audit and fix HTML metadata including page titles, meta descriptions, canonical URLs, Open Graph tags, Twitter cards, favicons, JSON-LD structured data, and…" />
+  <LinkCard title="fixing-motion-performance" href="/skills/catalog/fixing-motion-performance/" description="Audit and fix animation performance issues including layout thrashing, compositor properties, scroll-linked motion, and blur effects." />
+  <LinkCard title="flutter-add-integration-test" href="/skills/catalog/flutter-add-integration-test/" description="Configures Flutter Driver for app interaction and converts MCP actions into permanent integration tests." />
+  <LinkCard title="flutter-add-widget-test" href="/skills/catalog/flutter-add-widget-test/" description="Implement a component-level test using `WidgetTester` to verify UI rendering and user interactions (tapping, scrolling, entering text)." />
+  <LinkCard title="flutter-adding-home-screen-widgets" href="/skills/catalog/flutter-adding-home-screen-widgets/" description="Adds home screen widgets to a Flutter app for Android and iOS. Use when providing glanceable app information or quick actions on the device home screen." />
+  <LinkCard title="flutter-animating-apps" href="/skills/catalog/flutter-animating-apps/" description="Implements animated effects, transitions, and motion in a Flutter app. Use when adding visual feedback, shared element transitions, or physics-based animations." />
+  <LinkCard title="flutter-apply-architecture-best-practices" href="/skills/catalog/flutter-apply-architecture-best-practices/" description="Architects a Flutter application using the recommended layered approach (UI, Logic, Data). Use when structuring a new project or refactoring for scalability." />
+  <LinkCard title="flutter-architecting-apps" href="/skills/catalog/flutter-architecting-apps/" description="Architects a Flutter application using the recommended layered approach (UI, Logic, Data). Use when structuring a new project or refactoring for scalability." />
+  <LinkCard title="flutter-build-responsive-layout" href="/skills/catalog/flutter-build-responsive-layout/" description="Use `LayoutBuilder`, `MediaQuery`, or `Expanded/Flexible` to create a layout that adapts to different screen sizes." />
+  <LinkCard title="flutter-building-forms" href="/skills/catalog/flutter-building-forms/" description="Builds Flutter forms with validation and user input handling. Use when creating login screens, data entry forms, or any multi-field user input." />
+  <LinkCard title="flutter-building-layouts" href="/skills/catalog/flutter-building-layouts/" description="Builds Flutter layouts using the constraint system and layout widgets. Use when creating or refining the UI structure of a Flutter application." />
+  <LinkCard title="flutter-building-plugins" href="/skills/catalog/flutter-building-plugins/" description="Builds Flutter plugins that provide native interop for other apps to use." />
+  <LinkCard title="flutter-caching-data" href="/skills/catalog/flutter-caching-data/" description="Implements caching strategies for Flutter apps to improve performance and offline support." />
+  <LinkCard title="flutter-embedding-native-views" href="/skills/catalog/flutter-embedding-native-views/" description="Embeds native Android, iOS, or macOS views into a Flutter app. Use when integrating complex native components like maps or web views." />
+  <LinkCard title="flutter-fix-layout-issues" href="/skills/catalog/flutter-fix-layout-issues/" description="Fixes Flutter layout errors (overflows, unbounded constraints) using Dart and Flutter MCP tools." />
+  <LinkCard title="flutter-handling-concurrency" href="/skills/catalog/flutter-handling-concurrency/" description="Executes long-running tasks in background isolates to keep the UI responsive. Use when performing heavy computations or parsing large datasets." />
+  <LinkCard title="flutter-handling-http-and-json" href="/skills/catalog/flutter-handling-http-and-json/" description="Executes HTTP requests and handles JSON serialization in a Flutter app. Use when integrating with REST APIs or parsing structured data from external sources." />
+  <LinkCard title="flutter-implementing-navigation-and-routing" href="/skills/catalog/flutter-implementing-navigation-and-routing/" description="Handles routing, navigation, and deep linking in a Flutter application. Use when moving between screens or setting up URL-based navigation." />
+  <LinkCard title="flutter-improving-accessibility" href="/skills/catalog/flutter-improving-accessibility/" description="Configures a Flutter app to support assistive technologies like Screen Readers. Use when ensuring an application is usable for people with disabilities." />
+  <LinkCard title="flutter-interoperating-with-native-apis" href="/skills/catalog/flutter-interoperating-with-native-apis/" description="Interoperates with native platform APIs on Android, iOS, and the web." />
+  <LinkCard title="flutter-localizing-apps" href="/skills/catalog/flutter-localizing-apps/" description="Configures a Flutter app to support multiple languages and regions. Use when preparing an application for international markets and diverse user locales." />
+  <LinkCard title="flutter-managing-state" href="/skills/catalog/flutter-managing-state/" description="Manages application and ephemeral state in a Flutter app. Use when sharing data between widgets or handling complex UI state transitions." />
+  <LinkCard title="flutter-reducing-app-size" href="/skills/catalog/flutter-reducing-app-size/" description="Measures and optimizes the size of Flutter application bundles for deployment. Use when minimizing download size or meeting app store package constraints." />
+  <LinkCard title="flutter-setting-up-on-linux" href="/skills/catalog/flutter-setting-up-on-linux/" description="Sets up a Linux environment for Flutter development. Use when configuring a Linux machine to run, build, or deploy Flutter applications." />
+  <LinkCard title="flutter-setting-up-on-macos" href="/skills/catalog/flutter-setting-up-on-macos/" description="Sets up a macOS environment for Flutter development. Use when configuring a macOS machine to run, build, or deploy Flutter applications for iOS or macOS." />
+  <LinkCard title="flutter-setting-up-on-windows" href="/skills/catalog/flutter-setting-up-on-windows/" description="Sets up a Windows environment for Flutter development." />
+  <LinkCard title="flutter-setup-declarative-routing" href="/skills/catalog/flutter-setup-declarative-routing/" description="Configure `MaterialApp.router` using a package like `go_router` for advanced URL-based navigation." />
+  <LinkCard title="flutter-setup-localization" href="/skills/catalog/flutter-setup-localization/" description="Add `flutter_localizations` and `intl` dependencies, enable &quot;generate true&quot; in `pubspec.yaml`, and create an `l10n.yaml` configuration file." />
+  <LinkCard title="flutter-testing-apps" href="/skills/catalog/flutter-testing-apps/" description="Implements unit, widget, and integration tests for a Flutter app. Use when ensuring code quality and preventing regressions through automated testing." />
+  <LinkCard title="flutter-theming-apps" href="/skills/catalog/flutter-theming-apps/" description="Customizes the visual appearance of a Flutter app using the theming system. Use when defining global styles, colors, or typography for an application." />
+  <LinkCard title="flutter-working-with-databases" href="/skills/catalog/flutter-working-with-databases/" description="Manages local data persistence using SQLite or other database solutions." />
+  <LinkCard title="form-cro" href="/skills/catalog/form-cro/" description="When the user wants to optimize any form that is NOT signup/registration — including lead capture forms, contact forms, demo request forms, application forms,…" />
+  <LinkCard title="framework-selection" href="/skills/catalog/framework-selection/" description="INVOKE THIS SKILL at the START of any LangChain/LangGraph/Deep Agents project, before writing any agent code." />
+  <LinkCard title="free-tool-strategy" href="/skills/catalog/free-tool-strategy/" description="When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness." />
+  <LinkCard title="freeze" href="/skills/catalog/freeze/" description="Restrict file edits to a specific directory for the session. Blocks Edit and
+Write outside the allowed path." />
+  <LinkCard title="frontend-design" href="/skills/catalog/frontend-design/" description="Create distinctive, production-grade frontend interfaces with high design quality." />
+  <LinkCard title="gitops-workflow" href="/skills/catalog/gitops-workflow/" description="Implement GitOps workflows with ArgoCD and Flux for automated, declarative Kubernetes deployments with continuous reconciliation." />
+  <LinkCard title="golang-benchmark" href="/skills/catalog/golang-benchmark/" description="Golang benchmarking, profiling, and performance measurement." />
+  <LinkCard title="golang-cli" href="/skills/catalog/golang-cli/" description="Golang CLI application development." />
+  <LinkCard title="golang-code-style" href="/skills/catalog/golang-code-style/" description="Golang code style, formatting and conventions." />
+  <LinkCard title="golang-concurrency" href="/skills/catalog/golang-concurrency/" description="Golang concurrency patterns." />
+  <LinkCard title="golang-context" href="/skills/catalog/golang-context/" description="Idiomatic context.Context usage in Golang — creation, propagation, cancellation, timeouts, deadlines, context values, and cross-service tracing." />
+  <LinkCard title="golang-continuous-integration" href="/skills/catalog/golang-continuous-integration/" description="Provides CI/CD pipeline configuration using GitHub Actions for Golang projects." />
+  <LinkCard title="golang-data-structures" href="/skills/catalog/golang-data-structures/" description="Golang data structures — slices (internals, capacity growth, preallocation, slices package), maps (internals, hash buckets, maps package), arrays,…" />
+  <LinkCard title="golang-database" href="/skills/catalog/golang-database/" description="Comprehensive guide for Go database access." />
+  <LinkCard title="golang-dependency-injection" href="/skills/catalog/golang-dependency-injection/" description="Comprehensive guide for dependency injection (DI) in Golang." />
+  <LinkCard title="golang-dependency-management" href="/skills/catalog/golang-dependency-management/" description="Provides dependency management strategies for Golang projects including go." />
+  <LinkCard title="golang-design-patterns" href="/skills/catalog/golang-design-patterns/" description="Idiomatic Golang design patterns — functional options, constructors, error flow and cascading, resource management and lifecycle, graceful shutdown,…" />
+  <LinkCard title="golang-documentation" href="/skills/catalog/golang-documentation/" description="Comprehensive documentation guide for Golang projects, covering godoc comments, README, CONTRIBUTING, CHANGELOG, Go Playground, Example tests, API docs, and…" />
+  <LinkCard title="golang-error-handling" href="/skills/catalog/golang-error-handling/" description="Idiomatic Golang error handling — creation, wrapping with %w, errors.Is/As, errors." />
+  <LinkCard title="golang-google-wire" href="/skills/catalog/golang-google-wire/" description="Compile-time dependency injection in Golang using google/wire — wire.NewSet, wire.Build, wire.Bind (interface→concrete), wire.Struct, wire.Value, wire." />
+  <LinkCard title="golang-graphql" href="/skills/catalog/golang-graphql/" description="Implements GraphQL APIs in Golang using gqlgen or graphql-go." />
+  <LinkCard title="golang-grpc" href="/skills/catalog/golang-grpc/" description="Provides gRPC usage guidelines, protobuf organization, and production-ready patterns for Golang microservices." />
+  <LinkCard title="golang-how-to" href="/skills/catalog/golang-how-to/" description="Golang skills orchestrator — always active on any Golang coding, review, debug, or setup task." />
+  <LinkCard title="golang-lint" href="/skills/catalog/golang-lint/" description="Provides linting best practices and golangci-lint configuration for Go projects. Covers running linters, configuring .golangci." />
+  <LinkCard title="golang-modernize" href="/skills/catalog/golang-modernize/" description="Continuously modernize Golang code to use the latest language features, standard library improvements, and idiomatic patterns." />
+  <LinkCard title="golang-naming" href="/skills/catalog/golang-naming/" description="Go (Golang) naming conventions — covers packages, constructors, structs, interfaces, constants, enums, errors, booleans, receivers, getters/setters, functional…" />
+  <LinkCard title="golang-observability" href="/skills/catalog/golang-observability/" description="Golang everyday observability — the always-on signals in production." />
+  <LinkCard title="golang-performance" href="/skills/catalog/golang-performance/" description="Golang performance optimization patterns and methodology - if X bottleneck, then apply Y." />
+  <LinkCard title="golang-popular-libraries" href="/skills/catalog/golang-popular-libraries/" description="Recommends production-ready Golang libraries and frameworks." />
+  <LinkCard title="golang-project-layout" href="/skills/catalog/golang-project-layout/" description="Provides a guide for setting up Golang project layouts and workspaces." />
+  <LinkCard title="golang-safety" href="/skills/catalog/golang-safety/" description="Defensive Golang coding to prevent panics, silent data corruption, and subtle runtime bugs." />
+  <LinkCard title="golang-samber-do" href="/skills/catalog/golang-samber-do/" description="Implements dependency injection in Golang using samber/do." />
+  <LinkCard title="golang-samber-hot" href="/skills/catalog/golang-samber-hot/" description="In-memory caching in Golang using samber/hot — eviction algorithms (LRU, LFU, TinyLFU, W-TinyLFU, S3FIFO, ARC, TwoQueue, SIEVE, FIFO), TTL, cache loaders,…" />
+  <LinkCard title="golang-samber-lo" href="/skills/catalog/golang-samber-lo/" description="Functional programming helpers for Golang using samber/lo — 500+ type-safe generic functions for slices, maps, channels, strings, math, tuples, and concurrency…" />
+  <LinkCard title="golang-samber-mo" href="/skills/catalog/golang-samber-mo/" description="Monadic types for Golang using samber/mo — Option, Result, Either, Future, IO, Task, and State types for type-safe nullable values, error handling, and…" />
+  <LinkCard title="golang-samber-oops" href="/skills/catalog/golang-samber-oops/" description="Structured error handling in Golang with samber/oops — error builders, stack traces, error codes, error context, error wrapping, error attributes, user-facing…" />
+  <LinkCard title="golang-samber-ro" href="/skills/catalog/golang-samber-ro/" description="Reactive streams and event-driven programming in Golang using samber/ro — ReactiveX implementation with 150+ type-safe operators, cold/hot observables, 5…" />
+  <LinkCard title="golang-samber-slog" href="/skills/catalog/golang-samber-slog/" description="Structured logging extensions for Golang using samber/slog-**** packages — multi-handler pipelines (slog-multi), log sampling (slog-sampling), attribute…" />
+  <LinkCard title="golang-security" href="/skills/catalog/golang-security/" description="Security best practices and vulnerability prevention for Golang." />
+  <LinkCard title="golang-spf13-cobra" href="/skills/catalog/golang-spf13-cobra/" description="Golang CLI command tree library using spf13/cobra — cobra." />
+  <LinkCard title="golang-spf13-viper" href="/skills/catalog/golang-spf13-viper/" description="Golang configuration library using spf13/viper — layered precedence (flag &gt; env &gt; file &gt; KV &gt; default), BindPFlag/BindPFlags, SetEnvPrefix + SetEnvKeyReplacer…" />
+  <LinkCard title="golang-stay-updated" href="/skills/catalog/golang-stay-updated/" description="Provides resources to stay updated with Golang news, communities and people to follow." />
+  <LinkCard title="golang-stretchr-testify" href="/skills/catalog/golang-stretchr-testify/" description="Comprehensive guide to stretchr/testify for Golang testing. Covers assert, require, mock, and suite packages in depth." />
+  <LinkCard title="golang-structs-interfaces" href="/skills/catalog/golang-structs-interfaces/" description="Golang struct and interface design patterns — composition, embedding, type assertions, type switches, interface segregation, dependency injection via…" />
+  <LinkCard title="golang-swagger" href="/skills/catalog/golang-swagger/" description="Golang OpenAPI/Swagger documentation with swaggo/swag — annotation comments (@Summary, @Param, @Success, @Router, @Security), swag init code generation,…" />
+  <LinkCard title="golang-testing" href="/skills/catalog/golang-testing/" description="Production-ready Golang tests — table-driven tests, testify suites and mocks, parallel tests, fuzzing, fixtures, goroutine leak detection with goleak, snapshot…" />
+  <LinkCard title="golang-troubleshooting" href="/skills/catalog/golang-troubleshooting/" description="Troubleshoot Golang programs systematically - find and fix the root cause. Use when encountering bugs, crashes, deadlocks, or unexpected behavior in Go code." />
+  <LinkCard title="golang-uber-dig" href="/skills/catalog/golang-uber-dig/" description="Implements dependency injection in Golang using uber-go/dig — reflection-based container, Provide/Invoke, dig.In/dig." />
+  <LinkCard title="golang-uber-fx" href="/skills/catalog/golang-uber-fx/" description="Golang application framework using uber-go/fx — fx.New, fx.Provide, fx.Invoke, fx.Module, fx.Lifecycle hooks, fx.Annotate (name/group/As), fx.Decorate, fx." />
+  <LinkCard title="graphql-operations" href="/skills/catalog/graphql-operations/" description="Guide for writing GraphQL operations (queries, mutations, fragments) following best practices." />
+  <LinkCard title="graphql-schema" href="/skills/catalog/graphql-schema/" description="Guide for designing GraphQL schemas following industry best practices." />
+  <LinkCard title="gstack" href="/skills/catalog/gstack/" description="Fast headless browser for QA testing and site dogfooding." />
+  <LinkCard title="gstack-upgrade" href="/skills/catalog/gstack-upgrade/" description="Upgrade gstack to the latest version. Detects global vs vendored install,
+runs the upgrade, and shows what's new." />
+  <LinkCard title="guard" href="/skills/catalog/guard/" description="Full safety mode: destructive command warnings + directory-scoped edits.
+Combines /careful…" />
+  <LinkCard title="hatch-pet" href="/skills/catalog/hatch-pet/" description="Create, repair, validate, visually QA, and package Codex-compatible animated pets and pet spritesheets from character art, generated images, company or…" />
+  <LinkCard title="helm-chart-scaffolding" href="/skills/catalog/helm-chart-scaffolding/" description="Design, organize, and manage Helm charts for templating and packaging Kubernetes applications with reusable configurations." />
+  <LinkCard title="help" href="/skills/catalog/help/" description="Grok documentation and configuration help." />
+  <LinkCard title="here-now" href="/skills/catalog/here-now/" description="here.now lets agents publish websites and store private files in cloud Drives." />
+  <LinkCard title="hf-cli" href="/skills/catalog/hf-cli/" description="Hugging Face Hub CLI (`hf`) for downloading, uploading, and managing repositories, models, datasets, and Spaces on the Hugging Face Hub." />
+  <LinkCard title="huggingface-community-evals" href="/skills/catalog/huggingface-community-evals/" description="Run evaluations for Hugging Face Hub models using inspect-ai and lighteval on local hardware." />
+  <LinkCard title="huggingface-datasets" href="/skills/catalog/huggingface-datasets/" description="Use this skill for Hugging Face Dataset Viewer API workflows that fetch subset/split metadata, paginate rows, search text, apply filters, download parquet…" />
+  <LinkCard title="huggingface-gradio" href="/skills/catalog/huggingface-gradio/" description="Build Gradio web UIs and demos in Python. Use when creating or editing Gradio apps, components, event listeners, layouts, or chatbots." />
+  <LinkCard title="huggingface-jobs" href="/skills/catalog/huggingface-jobs/" description="This skill should be used when users want to run any workload on Hugging Face Jobs infrastructure." />
+  <LinkCard title="huggingface-llm-trainer" href="/skills/catalog/huggingface-llm-trainer/" description="This skill should be used when users want to train or fine-tune language models using TRL (Transformer Reinforcement Learning) on Hugging Face Jobs…" />
+  <LinkCard title="huggingface-paper-publisher" href="/skills/catalog/huggingface-paper-publisher/" description="Publish and manage research papers on Hugging Face Hub." />
+  <LinkCard title="huggingface-papers" href="/skills/catalog/huggingface-papers/" description="Look up and read Hugging Face paper pages in markdown, and use the papers API for structured metadata such as authors, linked models/datasets/spaces, Github…" />
+  <LinkCard title="huggingface-trackio" href="/skills/catalog/huggingface-trackio/" description="Track and visualize ML training experiments with Trackio." />
+  <LinkCard title="huggingface-vision-trainer" href="/skills/catalog/huggingface-vision-trainer/" description="Trains and fine-tunes vision models for object detection (D-FINE, RT-DETR v2, DETR, YOLOS), image classification…" />
+  <LinkCard title="imagine" href="/skills/catalog/imagine/" description="How to use the image_gen and image_edit tool calls in Grok Build: when to build a visual with code instead of generating it, prompt-craft, reference-first…" />
+  <LinkCard title="impeccable" href="/skills/catalog/impeccable/" description="Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or…" />
+  <LinkCard title="incident-runbook-templates" href="/skills/catalog/incident-runbook-templates/" description="Create structured incident response runbooks with step-by-step procedures, escalation paths, and recovery actions." />
+  <LinkCard title="inngest-setup" href="/skills/catalog/inngest-setup/" description="Use when adding durable execution to a TypeScript project — building retry-safe webhook handlers, background jobs that survive crashes, scheduled tasks, or…" />
+  <LinkCard title="insecure-defaults" href="/skills/catalog/insecure-defaults/" description="Detects fail-open insecure defaults (hardcoded secrets, weak auth, permissive security) that allow apps to run insecurely in production." />
+  <LinkCard title="instrumentation" href="/skills/catalog/instrumentation/" description="Add Pydantic Logfire observability to applications." />
+  <LinkCard title="investigate" href="/skills/catalog/investigate/" description="Systematic debugging with root cause investigation. Four phases: investigate,
+analyze, hypothesize, implement. Iron Law: no fixes without root cause." />
+  <LinkCard title="javascript-testing-patterns" href="/skills/catalog/javascript-testing-patterns/" description="Implement comprehensive testing strategies using Jest, Vitest, and Testing Library for unit tests, integration tests, and end-to-end testing with mocking,…" />
+  <LinkCard title="json-canvas" href="/skills/catalog/json-canvas/" description="Create and edit JSON Canvas files (.canvas) with nodes, edges, groups, and connections. Use when working with ." />
+  <LinkCard title="k8s-manifest-generator" href="/skills/catalog/k8s-manifest-generator/" description="Create production-ready Kubernetes manifests for Deployments, Services, ConfigMaps, and Secrets following best practices and security standards." />
+  <LinkCard title="k8s-security-policies" href="/skills/catalog/k8s-security-policies/" description="Implement Kubernetes security policies including NetworkPolicy, PodSecurityPolicy, and RBAC for production-grade security." />
+  <LinkCard title="kubernetes-specialist" href="/skills/catalog/kubernetes-specialist/" description="Use when deploying or managing Kubernetes workloads." />
+  <LinkCard title="land-and-deploy" href="/skills/catalog/land-and-deploy/" description="Land and deploy workflow. Merges the PR, waits for CI and deploy,
+verifies production health via canary checks. Takes over after /ship
+creates the PR." />
+  <LinkCard title="langchain-dependencies" href="/skills/catalog/langchain-dependencies/" description="INVOKE THIS SKILL when setting up a new project or when asked about package versions, installation, or dependency management for LangChain, LangGraph,…" />
+  <LinkCard title="langchain-fundamentals" href="/skills/catalog/langchain-fundamentals/" description="Create LangChain agents with create_agent, define tools, and use middleware for human-in-the-loop and error handling." />
+  <LinkCard title="langchain-middleware" href="/skills/catalog/langchain-middleware/" description="INVOKE THIS SKILL when you need human-in-the-loop approval, custom middleware, or structured output." />
+  <LinkCard title="langchain-rag" href="/skills/catalog/langchain-rag/" description="INVOKE THIS SKILL when building ANY retrieval-augmented generation (RAG) system." />
+  <LinkCard title="langfuse" href="/skills/catalog/langfuse/" description="Interact with Langfuse and access its documentation." />
+  <LinkCard title="langgraph-fundamentals" href="/skills/catalog/langgraph-fundamentals/" description="INVOKE THIS SKILL when writing ANY LangGraph code. Covers StateGraph, state schemas, nodes, edges, Command, Send, invoke, streaming, and error handling." />
+  <LinkCard title="langgraph-human-in-the-loop" href="/skills/catalog/langgraph-human-in-the-loop/" description="INVOKE THIS SKILL when implementing human-in-the-loop patterns, pausing for approval, or handling errors in LangGraph. Covers interrupt(), Command…" />
+  <LinkCard title="langgraph-persistence" href="/skills/catalog/langgraph-persistence/" description="INVOKE THIS SKILL when your LangGraph needs to persist state, remember conversations, travel through history, or configure subgraph checkpointer scoping." />
+  <LinkCard title="launch-strategy" href="/skills/catalog/launch-strategy/" description="When the user wants to plan a product launch, feature announcement, or release strategy." />
+  <LinkCard title="lead-magnets" href="/skills/catalog/lead-magnets/" description="When the user wants to create, plan, or optimize a lead magnet for email capture or lead generation." />
+  <LinkCard title="logfire-instrumentation" href="/skills/catalog/logfire-instrumentation/" description="Add Pydantic Logfire observability to applications." />
+  <LinkCard title="logging-best-practices" href="/skills/catalog/logging-best-practices/" description="Logging best practices focused on wide events (canonical log lines) for powerful debugging and analytics" />
+  <LinkCard title="managed-deep-agents" href="/skills/catalog/managed-deep-agents/" description="INVOKE THIS SKILL when creating, deploying, running, or operating Managed Deep Agents in LangSmith." />
+  <LinkCard title="marketing-ideas" href="/skills/catalog/marketing-ideas/" description="When the user needs marketing ideas, inspiration, or strategies for their SaaS or software product." />
+  <LinkCard title="marketing-psychology" href="/skills/catalog/marketing-psychology/" description="When the user wants to apply psychological principles, mental models, or behavioral science to marketing." />
+  <LinkCard title="mcp-builder" href="/skills/catalog/mcp-builder/" description="Build Model Context Protocol (MCP) servers with mcp-use framework." />
+  <LinkCard title="modern-python" href="/skills/catalog/modern-python/" description="Configures Python projects with modern tooling (uv, ruff, ty). Use when creating projects, writing standalone scripts, or migrating from pip/Poetry/mypy/black." />
+  <LinkCard title="multi-stage-dockerfile" href="/skills/catalog/multi-stage-dockerfile/" description="Create optimized multi-stage Dockerfiles for any language or framework" />
+  <LinkCard title="native-data-fetching" href="/skills/catalog/native-data-fetching/" description="Use when implementing or debugging ANY network request, API call, or data fetching." />
+  <LinkCard title="neon-postgres" href="/skills/catalog/neon-postgres/" description="Guides and best practices for working with Neon Serverless Postgres." />
+  <LinkCard title="neon-postgres-branches" href="/skills/catalog/neon-postgres-branches/" description="Choose and create the right Neon branch type for testing and development." />
+  <LinkCard title="neon-postgres-egress-optimizer" href="/skills/catalog/neon-postgres-egress-optimizer/" description="Diagnose and fix excessive Postgres egress (network data transfer) in a codebase." />
+  <LinkCard title="next-best-practices" href="/skills/catalog/next-best-practices/" description="Next." />
+  <LinkCard title="next-cache-components" href="/skills/catalog/next-cache-components/" description="Next.js 16 Cache Components - PPR, use cache directive, cacheLife, cacheTag, updateTag" />
+  <LinkCard title="next-upgrade" href="/skills/catalog/next-upgrade/" description="Upgrade Next.js to the latest version following official migration guides and codemods" />
+  <LinkCard title="nextjs-app-router-patterns" href="/skills/catalog/nextjs-app-router-patterns/" description="Master Next.js 14+ App Router with Server Components, streaming, parallel routes, and advanced data fetching. Use when building Next." />
+  <LinkCard title="nlm-index" href="/skills/catalog/nlm-index/" description="Index documentation sites or GitHub repos to NotebookLM" />
+  <LinkCard title="notion-cli" href="/skills/catalog/notion-cli/" description="Use the Notion CLI (`ntn`) to interact with the Notion API, manage workers, and upload files." />
+  <LinkCard title="obsidian-bases" href="/skills/catalog/obsidian-bases/" description="Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with ." />
+  <LinkCard title="obsidian-cli" href="/skills/catalog/obsidian-cli/" description="Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more." />
+  <LinkCard title="obsidian-markdown" href="/skills/catalog/obsidian-markdown/" description="Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with ." />
+  <LinkCard title="obsidian-vault" href="/skills/catalog/obsidian-vault/" description="Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian." />
+  <LinkCard title="office-hours" href="/skills/catalog/office-hours/" description="YC Office Hours — two modes." />
+  <LinkCard title="onboarding-cro" href="/skills/catalog/onboarding-cro/" description="When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value." />
+  <LinkCard title="otel-instrumentation" href="/skills/catalog/otel-instrumentation/" description="Configures trace spans, defines custom metrics, sets up log exporters, and optimizes sampling strategies for OpenTelemetry instrumentation." />
+  <LinkCard title="page-cro" href="/skills/catalog/page-cro/" description="When the user wants to optimize, improve, or increase conversions on any marketing page — including homepage, landing pages, pricing pages, feature pages, or…" />
+  <LinkCard title="paid-ads" href="/skills/catalog/paid-ads/" description="When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms." />
+  <LinkCard title="paywall-upgrade-cro" href="/skills/catalog/paywall-upgrade-cro/" description="When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates." />
+  <LinkCard title="pdf" href="/skills/catalog/pdf/" description="Use this skill whenever the user wants to do anything with PDF files." />
+  <LinkCard title="performance" href="/skills/catalog/performance/" description="Optimize web performance for faster loading and better user experience." />
+  <LinkCard title="phoenix-evals" href="/skills/catalog/phoenix-evals/" description="Build and run evaluators for AI/LLM applications using Phoenix." />
+  <LinkCard title="phoenix-tracing" href="/skills/catalog/phoenix-tracing/" description="OpenInference semantic conventions and instrumentation for Phoenix AI observability." />
+  <LinkCard title="plan-ceo-review" href="/skills/catalog/plan-ceo-review/" description="CEO/founder-mode plan review. Rethink the problem, find the 10-star product,
+challenge premises, expand scope when it creates a better product." />
+  <LinkCard title="plan-design-review" href="/skills/catalog/plan-design-review/" description="Designer's eye plan review — interactive, like CEO and Eng review." />
+  <LinkCard title="plan-eng-review" href="/skills/catalog/plan-eng-review/" description="Eng manager-mode plan review. Lock in the execution plan — architecture,
+data flow, diagrams, edge cases, test coverage, performance." />
+  <LinkCard title="plannotator-annotate" href="/skills/catalog/plannotator-annotate/" description="Open Plannotator's annotation UI for a markdown file, converted HTML file, URL, or folder and then respond to the returned annotations." />
+  <LinkCard title="plannotator-compound" href="/skills/catalog/plannotator-compound/" description="Analyze a user's Plannotator plan archive to extract denial patterns, feedback taxonomy, evolution over time, and actionable prompt improvements — then produce…" />
+  <LinkCard title="plannotator-last" href="/skills/catalog/plannotator-last/" description="Open Plannotator on the latest rendered assistant message and use the returned annotations to revise that message or continue." />
+  <LinkCard title="plannotator-review" href="/skills/catalog/plannotator-review/" description="Open Plannotator's browser-based code review UI for the current worktree or a pull request URL, then act on the feedback that comes back." />
+  <LinkCard title="plannotator-setup-goal" href="/skills/catalog/plannotator-setup-goal/" description="Turn an idea or objective into a goal package for /goal." />
+  <LinkCard title="plannotator-visual-explainer" href="/skills/catalog/plannotator-visual-explainer/" description="Generate self-contained HTML visualizations with Plannotator theming." />
+  <LinkCard title="playwright-best-practices" href="/skills/catalog/playwright-best-practices/" description="Use when writing Playwright tests, fixing flaky tests, debugging failures, implementing Page Object Model, configuring CI/CD, optimizing performance, mocking…" />
+  <LinkCard title="popup-cro" href="/skills/catalog/popup-cro/" description="When the user wants to create or optimize popups, modals, overlays, slide-ins, or banners for conversion purposes." />
+  <LinkCard title="pptx" href="/skills/catalog/pptx/" description="Use this skill any time a .pptx file is involved in any way — as input, output, or both." />
+  <LinkCard title="pricing-strategy" href="/skills/catalog/pricing-strategy/" description="When the user wants help with pricing decisions, packaging, or monetization strategy." />
+  <LinkCard title="prisma-cli" href="/skills/catalog/prisma-cli/" description="Prisma ORM CLI commands reference covering init, generate, migrate, db, dev, studio, validate, format, debug, and mcp." />
+  <LinkCard title="prisma-client-api" href="/skills/catalog/prisma-client-api/" description="Prisma Client API reference covering model queries, filters, operators, and client methods." />
+  <LinkCard title="prisma-database-setup" href="/skills/catalog/prisma-database-setup/" description="Guides for configuring Prisma with different database providers (PostgreSQL, MySQL, SQLite, MongoDB, etc.)." />
+  <LinkCard title="prisma-postgres" href="/skills/catalog/prisma-postgres/" description="Prisma Postgres setup and operations guidance across Console, create-db CLI, Management API, and Management API SDK." />
+  <LinkCard title="prisma-upgrade-v7" href="/skills/catalog/prisma-upgrade-v7/" description="Complete migration guide from Prisma ORM v6 to v7 covering all breaking changes." />
+  <LinkCard title="product-marketing-context" href="/skills/catalog/product-marketing-context/" description="When the user wants to create or update their product marketing context document." />
+  <LinkCard title="programmatic-seo" href="/skills/catalog/programmatic-seo/" description="When the user wants to create SEO-driven pages at scale using templates and data." />
+  <LinkCard title="project-context" href="/skills/catalog/project-context/" description="Summarize the project context and key constraints" />
+  <LinkCard title="property-based-testing" href="/skills/catalog/property-based-testing/" description="Provides guidance for property-based testing across multiple languages and smart contracts." />
+  <LinkCard title="pulumi-best-practices" href="/skills/catalog/pulumi-best-practices/" description="Load when the user is writing, reviewing, or debugging Pulumi TypeScript/Python programs; asks about Output&lt;T&gt; or apply() usage; wants to create…" />
+  <LinkCard title="pydantic-ai-harness" href="/skills/catalog/pydantic-ai-harness/" description="Extend Pydantic AI agents with batteries-included capabilities from pydantic-ai-harness -- currently Code Mode, which collapses many tool calls into one…" />
+  <LinkCard title="python-observability" href="/skills/catalog/python-observability/" description="Python observability patterns including structured logging, metrics, and distributed tracing." />
+  <LinkCard title="python-testing-patterns" href="/skills/catalog/python-testing-patterns/" description="Implement comprehensive testing strategies with pytest, fixtures, mocking, and test-driven development." />
+  <LinkCard title="qa" href="/skills/catalog/qa/" description="Systematically QA test a web application and fix bugs found." />
+  <LinkCard title="qa-only" href="/skills/catalog/qa-only/" description="Report-only QA testing." />
+  <LinkCard title="react-native-best-practices" href="/skills/catalog/react-native-best-practices/" description="Provides React Native performance optimization guidelines for FPS, TTI, bundle size, memory leaks, re-renders, and animations." />
+  <LinkCard title="redis-core" href="/skills/catalog/redis-core/" description="Core Redis modeling guidance — choose the right data structure (String, Hash, List, Set, Sorted Set, JSON, Stream, Vector Set) and use consistent…" />
+  <LinkCard title="redis-semantic-cache" href="/skills/catalog/redis-semantic-cache/" description="Redis LangCache guidance for semantic caching of LLM responses on Redis Cloud — calling search/set via the SDK or REST API, tuning the similarity threshold,…" />
+  <LinkCard title="redis-vector-search" href="/skills/catalog/redis-vector-search/" description="Redis vector search guidance covering HNSW vs FLAT algorithm choice, vector index configuration (dims, distance metric, datatype), filtered hybrid search…" />
+  <LinkCard title="referral-program" href="/skills/catalog/referral-program/" description="When the user wants to create, optimize, or analyze a referral program, affiliate program, or word-of-mouth strategy." />
+  <LinkCard title="retro" href="/skills/catalog/retro/" description="Weekly engineering retrospective. Analyzes commit history, work patterns,
+and code quality metrics with persistent history and trend tracking." />
+  <LinkCard title="review" href="/skills/catalog/review/" description="Pre-landing PR review." />
+  <LinkCard title="revops" href="/skills/catalog/revops/" description="When the user wants help with revenue operations, lead lifecycle management, or marketing-to-sales handoff processes." />
+  <LinkCard title="ronin-chat-with-data" href="/skills/catalog/ronin-chat-with-data/" description="Explore Ronin data with interactive Plotly charts — pipeline, salary, skill trends. Use when visualizing career data." />
+  <LinkCard title="ronin-discovery" href="/skills/catalog/ronin-discovery/" description="Scan job boards and score against profile to populate the pipeline. Use when sourcing new opportunities." />
+  <LinkCard title="ronin-email-monitor" href="/skills/catalog/ronin-email-monitor/" description="Detect job search signals in Gmail — interview invites, rejections, offers. Use when syncing email for pipeline updates." />
+  <LinkCard title="ronin-interview-prep" href="/skills/catalog/ronin-interview-prep/" description="Generate STAR-format answers, study plans, and talking points from SSOT data. Use when preparing for phone screens or interviews." />
+  <LinkCard title="ronin-materials" href="/skills/catalog/ronin-materials/" description="Generate SSOT-traced private-sector application materials for researched shortlisted opportunities." />
+  <LinkCard title="ronin-networking" href="/skills/catalog/ronin-networking/" description="Cross-reference contacts with pipeline opportunities and generate outreach messages. Use when leveraging connections for opportunities." />
+  <LinkCard title="ronin-offer-negotiation" href="/skills/catalog/ronin-offer-negotiation/" description="Evaluate offers with benchmark analysis and generate tiered negotiation scripts. Use when negotiating compensation packages." />
+  <LinkCard title="ronin-pipeline-analytics" href="/skills/catalog/ronin-pipeline-analytics/" description="Analyze pipeline performance — funnel conversion, velocity, rejection patterns. Use when reviewing job search health." />
+  <LinkCard title="ronin-pipeline-manager" href="/skills/catalog/ronin-pipeline-manager/" description="Review and monitor pipeline — bulk triage, state transitions, stale detection. Use when advancing pipeline entries." />
+  <LinkCard title="ronin-profile-builder" href="/skills/catalog/ronin-profile-builder/" description="Build career profile from LinkedIn or resume PDFs, or manual input. Use when creating or updating the SSOT profile." />
+  <LinkCard title="ronin-research" href="/skills/catalog/ronin-research/" description="Research shortlisted opportunities — company, tech stack, compensation, culture, red flags. Use when evaluating an opportunity before applying." />
+  <LinkCard title="ronin-search-strategy" href="/skills/catalog/ronin-search-strategy/" description="Optimize search strategy — calibrate preferences, analyze skill gaps, benchmark compensation. Use when refining job search criteria." />
+  <LinkCard title="rover" href="/skills/catalog/rover/" description="Guide for using Apollo Rover CLI to manage GraphQL schemas and federation." />
+  <LinkCard title="rust-async-patterns" href="/skills/catalog/rust-async-patterns/" description="Master Rust async programming with Tokio, async traits, error handling, and concurrent patterns." />
+  <LinkCard title="rust-best-practices" href="/skills/catalog/rust-best-practices/" description="Guide for writing idiomatic Rust code based on Apollo GraphQL's best practices handbook." />
+  <LinkCard title="rust-skills" href="/skills/catalog/rust-skills/" description="Comprehensive Rust coding guidelines with 179 rules across 14 categories. Use when writing, reviewing, or refactoring Rust code." />
+  <LinkCard title="sales-enablement" href="/skills/catalog/sales-enablement/" description="When the user wants to create sales collateral, pitch decks, one-pagers, objection handling docs, or demo scripts." />
+  <LinkCard title="sandbox-sdk" href="/skills/catalog/sandbox-sdk/" description="Build sandboxed applications for secure code execution." />
+  <LinkCard title="sast-configuration" href="/skills/catalog/sast-configuration/" description="Configure Static Application Security Testing (SAST) tools for automated vulnerability detection in application code." />
+  <LinkCard title="schema-markup" href="/skills/catalog/schema-markup/" description="When the user wants to add, fix, or optimize schema markup and structured data on their site." />
+  <LinkCard title="secret-scanning" href="/skills/catalog/secret-scanning/" description="Guide for configuring and managing GitHub secret scanning, push protection, custom patterns, and secret alert remediation." />
+  <LinkCard title="secrets-management" href="/skills/catalog/secrets-management/" description="Implement secure secrets management for CI/CD pipelines using Vault, AWS Secrets Manager, or native platform solutions." />
+  <LinkCard title="security-best-practices" href="/skills/catalog/security-best-practices/" description="Perform language and framework specific security best-practice reviews and suggest improvements." />
+  <LinkCard title="security-ownership-map" href="/skills/catalog/security-ownership-map/" description="Analyze git repositories to build a security ownership topology (people-to-file), compute bus factor and sensitive-code ownership, and export CSV/JSON for…" />
+  <LinkCard title="security-threat-model" href="/skills/catalog/security-threat-model/" description="Repository-grounded threat modeling that enumerates trust boundaries, assets, attacker capabilities, abuse paths, and mitigations, and writes a concise…" />
+  <LinkCard title="semgrep" href="/skills/catalog/semgrep/" description="Run Semgrep static analysis scan on a codebase using parallel subagents." />
+  <LinkCard title="sentry-fix-issues" href="/skills/catalog/sentry-fix-issues/" description="Find and fix issues from Sentry using MCP." />
+  <LinkCard title="sentry-sdk-setup" href="/skills/catalog/sentry-sdk-setup/" description="Set up Sentry in any language or framework. Detects the user's platform and loads the right SDK skill." />
+  <LinkCard title="sentry-setup-ai-monitoring" href="/skills/catalog/sentry-setup-ai-monitoring/" description="Setup Sentry AI Agent Monitoring in any project." />
+  <LinkCard title="seo" href="/skills/catalog/seo/" description="Optimize for search engine visibility and ranking." />
+  <LinkCard title="seo-audit" href="/skills/catalog/seo-audit/" description="When the user wants to audit, review, or diagnose SEO issues on their site." />
+  <LinkCard title="setup-browser-cookies" href="/skills/catalog/setup-browser-cookies/" description="Import cookies from your real Chromium browser into the headless browse session.
+Opens an interactive picker UI where you select which cookie domains to import." />
+  <LinkCard title="setup-deploy" href="/skills/catalog/setup-deploy/" description="Configure deployment settings for /land-and-deploy. Detects your deploy
+platform…" />
+  <LinkCard title="shadcn" href="/skills/catalog/shadcn/" description="Manages shadcn components and projects — adding, searching, fixing, debugging, styling, and composing UI." />
+  <LinkCard title="shieldcn-badges" href="/skills/catalog/shieldcn-badges/" description="Add beautiful shadcn/ui-styled README badges to projects using shieldcn." />
+  <LinkCard title="ship" href="/skills/catalog/ship/" description="Ship workflow: detect + merge base branch, run tests, review diff, bump VERSION, update CHANGELOG, commit, push, create PR." />
+  <LinkCard title="signup-flow-cro" href="/skills/catalog/signup-flow-cro/" description="When the user wants to optimize signup, registration, account creation, or trial activation flows." />
+  <LinkCard title="site-architecture" href="/skills/catalog/site-architecture/" description="When the user wants to plan, map, or restructure their website's page hierarchy, navigation, URL structure, or internal linking." />
+  <LinkCard title="skill-scanner" href="/skills/catalog/skill-scanner/" description="Scan agent skills for security issues. Use when asked to &quot;scan a skill&quot;, &quot;audit a skill&quot;, &quot;review skill security&quot;, &quot;check skill for injection&quot;, &quot;validate SKILL." />
+  <LinkCard title="sleek-design-mobile-apps" href="/skills/catalog/sleek-design-mobile-apps/" description="Use when the user wants to design a mobile app, create screens, build UI, or interact with their Sleek projects." />
+  <LinkCard title="slides-smith" href="/skills/catalog/slides-smith/" description="Use when you need to create, validate, export, migrate, or review Reveal.js decks in this Vite + React repo." />
+  <LinkCard title="slidev" href="/skills/catalog/slidev/" description="Create and present web-based slidedecks for developers using Slidev with Markdown, Vue components, code highlighting, animations, and interactive features." />
+  <LinkCard title="slo-implementation" href="/skills/catalog/slo-implementation/" description="Define and implement Service Level Indicators (SLIs) and Service Level Objectives (SLOs) with error budgets and alerting." />
+  <LinkCard title="social-content" href="/skills/catalog/social-content/" description="When the user wants help creating, scheduling, or optimizing social media content for LinkedIn, Twitter/X, Instagram, TikTok, Facebook, or other platforms." />
+  <LinkCard title="solve-challenge" href="/skills/catalog/solve-challenge/" description="Solves CTF challenges by performing first-pass triage, identifying the dominant category, and routing execution to the right specialized ctf-* skill." />
+  <LinkCard title="sql-code-review" href="/skills/catalog/sql-code-review/" description="Universal SQL code review assistant that performs comprehensive security, maintainability, and code quality analysis across all SQL databases…" />
+  <LinkCard title="sql-optimization" href="/skills/catalog/sql-optimization/" description="Universal SQL performance optimization assistant for comprehensive query tuning, indexing strategies, and database performance analysis across all SQL…" />
+  <LinkCard title="sql-optimization-patterns" href="/skills/catalog/sql-optimization-patterns/" description="Master SQL query optimization, indexing strategies, and EXPLAIN analysis to dramatically improve database performance and eliminate slow queries." />
+  <LinkCard title="stride-analysis-patterns" href="/skills/catalog/stride-analysis-patterns/" description="Apply STRIDE methodology to systematically identify threats." />
+  <LinkCard title="stripe-best-practices" href="/skills/catalog/stripe-best-practices/" description="Guides Stripe integration decisions — API selection (Checkout Sessions vs PaymentIntents), Connect platform setup (Accounts v2, controller properties),…" />
+  <LinkCard title="supabase" href="/skills/catalog/supabase/" description="Use when doing ANY task involving Supabase." />
+  <LinkCard title="supabase-postgres-best-practices" href="/skills/catalog/supabase-postgres-best-practices/" description="Postgres performance optimization and best practices from Supabase." />
+  <LinkCard title="supply-chain-risk-auditor" href="/skills/catalog/supply-chain-risk-auditor/" description="Identifies dependencies at heightened risk of exploitation or takeover." />
+  <LinkCard title="svelte-code-writer" href="/skills/catalog/svelte-code-writer/" description="CLI tools for Svelte 5 documentation lookup and code analysis. MUST be used whenever creating, editing or analyzing any Svelte component…" />
+  <LinkCard title="svelte5-best-practices" href="/skills/catalog/svelte5-best-practices/" description="Svelte 5 runes, snippets, SvelteKit patterns, and modern best practices for TypeScript and component development." />
+  <LinkCard title="swift-concurrency" href="/skills/catalog/swift-concurrency/" description="Diagnose Swift Concurrency issues, refactor callback-based code to async/await, and guide Swift 6 migration when working with tasks, actors, @MainActor,…" />
+  <LinkCard title="swiftui-expert-skill" href="/skills/catalog/swiftui-expert-skill/" description="Write, review, or improve SwiftUI code following best practices for state management, view composition, performance, macOS-specific APIs, and iOS 26+ Liquid…" />
+  <LinkCard title="systematic-debugging" href="/skills/catalog/systematic-debugging/" description="Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes" />
+  <LinkCard title="tailwind-design-system" href="/skills/catalog/tailwind-design-system/" description="Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns." />
+  <LinkCard title="tanstack-query-best-practices" href="/skills/catalog/tanstack-query-best-practices/" description="TanStack Query (React Query) best practices for data fetching, caching, mutations, and server state management." />
+  <LinkCard title="temporal-developer" href="/skills/catalog/temporal-developer/" description="Develop, debug, and manage Temporal applications across Python, TypeScript, Go, Java, .NET, Ruby, and Rust." />
+  <LinkCard title="terraform-module-library" href="/skills/catalog/terraform-module-library/" description="Build reusable Terraform modules for AWS, Azure, GCP, and OCI infrastructure following infrastructure-as-code best practices." />
+  <LinkCard title="terraform-search-import" href="/skills/catalog/terraform-search-import/" description="Discover existing cloud resources using Terraform Search queries and bulk import them into Terraform management." />
+  <LinkCard title="terraform-skill" href="/skills/catalog/terraform-skill/" description="Use when writing, reviewing, or debugging Terraform/OpenTofu modules, tests, CI, scans, or state ops - diagnoses failure mode…" />
+  <LinkCard title="terraform-stacks" href="/skills/catalog/terraform-stacks/" description="Comprehensive guide for working with HashiCorp Terraform Stacks. Use when creating, modifying, or validating Terraform Stack configurations…" />
+  <LinkCard title="terraform-style-guide" href="/skills/catalog/terraform-style-guide/" description="Generate Terraform HCL code following HashiCorp's official style conventions and best practices." />
+  <LinkCard title="terraform-test" href="/skills/catalog/terraform-test/" description="Comprehensive guide for writing and running Terraform tests. Use when creating test files…" />
+  <LinkCard title="transformers-js" href="/skills/catalog/transformers-js/" description="Use Transformers.js to run state-of-the-art machine learning models directly in JavaScript/TypeScript." />
+  <LinkCard title="ui-ux-pro-max" href="/skills/catalog/ui-ux-pro-max/" description="UI/UX design intelligence for web and mobile." />
+  <LinkCard title="unfreeze" href="/skills/catalog/unfreeze/" description="Clear the freeze boundary set by /freeze, allowing edits to all directories
+again. Use when you want to widen edit scope without ending the session." />
+  <LinkCard title="upgrade-stripe" href="/skills/catalog/upgrade-stripe/" description="Guide for upgrading Stripe API versions and SDKs" />
+  <LinkCard title="upgrading-expo" href="/skills/catalog/upgrading-expo/" description="Guidelines for upgrading Expo SDK versions and fixing dependency issues" />
+  <LinkCard title="use-dom" href="/skills/catalog/use-dom/" description="Use Expo DOM components to run web code in a webview on native and as-is on web. Migrate web code to native incrementally." />
+  <LinkCard title="use-railway" href="/skills/catalog/use-railway/" description="Operate Railway infrastructure: sign up for or sign in to a Railway account, create projects, provision services and databases, manage object storage buckets,…" />
+  <LinkCard title="variant-analysis" href="/skills/catalog/variant-analysis/" description="Find similar vulnerabilities and bugs across codebases using pattern-based analysis." />
+  <LinkCard title="vercel-composition-patterns" href="/skills/catalog/vercel-composition-patterns/" description="React composition patterns that scale." />
+  <LinkCard title="vercel-react-best-practices" href="/skills/catalog/vercel-react-best-practices/" description="React and Next.js performance optimization guidelines from Vercel Engineering. This skill should be used when writing, reviewing, or refactoring React/Next." />
+  <LinkCard title="vercel-react-native-skills" href="/skills/catalog/vercel-react-native-skills/" description="React Native and Expo best practices for building performant mobile apps." />
+  <LinkCard title="vercel-react-view-transitions" href="/skills/catalog/vercel-react-view-transitions/" description="Guide for implementing smooth, native-feeling animations using React's View Transition API…" />
+  <LinkCard title="vite" href="/skills/catalog/vite/" description="Vite build tool configuration, plugin API, SSR, and Vite 8 Rolldown migration. Use when working with Vite projects, vite.config." />
+  <LinkCard title="vue" href="/skills/catalog/vue/" description="Vue 3 Composition API, script setup macros, reactivity system, and built-in components." />
+  <LinkCard title="vue-best-practices" href="/skills/catalog/vue-best-practices/" description="MUST be used for Vue.js tasks. Strongly recommends Composition API with `&lt;script setup&gt;` and TypeScript as the standard approach." />
+  <LinkCard title="web-artifacts-builder" href="/skills/catalog/web-artifacts-builder/" description="Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui)." />
+  <LinkCard title="web-design-guidelines" href="/skills/catalog/web-design-guidelines/" description="Review UI code for Web Interface Guidelines compliance." />
+  <LinkCard title="web-perf" href="/skills/catalog/web-perf/" description="Analyzes web performance using Chrome DevTools MCP." />
+  <LinkCard title="web-quality-audit" href="/skills/catalog/web-quality-audit/" description="Comprehensive web quality audit covering performance, accessibility, SEO, and best practices." />
+  <LinkCard title="webapp-testing" href="/skills/catalog/webapp-testing/" description="Toolkit for interacting with and testing local web applications using Playwright." />
+  <LinkCard title="workers-best-practices" href="/skills/catalog/workers-best-practices/" description="Reviews and authors Cloudflare Workers code against production best practices. Load when writing new Workers, reviewing Worker code, configuring wrangler." />
+  <LinkCard title="wrangler" href="/skills/catalog/wrangler/" description="Cloudflare Workers CLI for deploying, developing, and managing Workers, KV, R2, D1, Vectorize, Hyperdrive, Workers AI, Containers, Queues, Workflows,…" />
+  <LinkCard title="xlsx" href="/skills/catalog/xlsx/" description="Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing ." />
+</CardGrid>
+</div>
+</details>

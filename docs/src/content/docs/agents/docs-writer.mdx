@@ -13,11 +13,23 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 This page is generated from the repository agent file `agents/docs-writer.md` by `wagents docs generate`.
 </Aside>
 
-### Identity
+<div class="tool-pills">
+<Badge text="all" variant="note" />
+</div>
 
+<Tabs>
+  <TabItem label="Identity">
 | Field | Value |
 | ----- | ----- |
 | Name | `docs-writer` |
+| Permission Mode | `default` |
+  </TabItem>
+  <TabItem label="Tools">
+| Field | Value |
+| ----- | ----- |
+| Allowed | `all` |
+  </TabItem>
+</Tabs>
 
 ## System Prompt
 
@@ -40,6 +52,7 @@ Read the code before documenting it. Never document hypothetical behavior as imp
 ### Output Contract
 
 Produce documentation that includes:
+
 - A clear overview
 - Accurate usage or behavior details
 - Real examples or commands when relevant
@@ -59,15 +72,8 @@ Produce documentation that includes:
 ---
 name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
-mode: subagent
-temperature: 0.2
-color: accent
-permission:
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-  webfetch: ask
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -89,6 +95,7 @@ Read the code before documenting it. Never document hypothetical behavior as imp
 ## Output Contract
 
 Produce documentation that includes:
+
 - A clear overview
 - Accurate usage or behavior details
 - Real examples or commands when relevant

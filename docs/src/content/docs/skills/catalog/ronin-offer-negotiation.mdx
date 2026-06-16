@@ -1,0 +1,514 @@
+---
+title: "ronin-offer-negotiation"
+description: "Evaluate offers with benchmark analysis and generate tiered negotiation scripts. Use when negotiating compensation packages. NOT for interview prep (ronin-interview-prep) or research (ronin-research)."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ronin-offer-negotiation" variant="note" /> <Badge text="2264 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="ronin" variant="caution" /> <Badge text="claude-opus-4-6" variant="tip" /> <Badge text="Installed" variant="caution" />
+
+> Evaluate offers with benchmark analysis and generate tiered negotiation scripts. Use when negotiating compensation packages. NOT for interview prep (ronin-interview-prep) or research (ronin-research).
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/ronin-offer-negotiation`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+| `$ARGUMENTS` | Action | |------------|--------| | `analyze &lt;company&gt;` or offer details | Analyze Offer workflow | | `negotiate &lt;company&gt;` or `scripts` | Generate Negotiation Scripts workflow | | `compare` | Compare competing offers side-by-side | | `review &lt;company&gt;` | Review Offer Analysis workflow | | Empty | List opportunities in offer state with analysis status |
+
+## Modes
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `analyze &lt;company&gt;` or offer details | Analyze Offer workflow |
+| `negotiate &lt;company&gt;` or `scripts` | Generate Negotiation Scripts workflow |
+| `compare` | Compare competing offers side-by-side |
+| `review &lt;company&gt;` | Review Offer Analysis workflow |
+| Empty | List opportunities in offer state with analysis status |
+
+## Quick Start
+
+```text
+1. Verify opportunity is in offer state
+2. Self-fetch (parallel): opportunity, research, company_research, role_research, profile, preferences, memory
+3. User provides offer terms conversationally (base, equity, bonus, signing, benefits, PTO)
+4. Benchmark against research data and compensation goals
+5. Model total comp at 1yr and 4yr horizons
+6. Check for competing offers via list_opportunities(state="offer")
+7. Generate 3-tier negotiation scripts (Aspirational / Comfortable / Floor)
+8. Present analysis and scripts to user
+```
+
+---
+
+## Critical Rules
+
+1. Never auto-accept or auto-reject an offer — analysis and scripts are advisory only
+2. Do not change pipeline state — this skill provides analysis, not transitions
+3. Null over confabulation — if no credible source supports a salary number, report as unknown
+4. Always flag equity valuation uncertainty at private companies — never present single point estimates as fact
+5. Present all three tiers (Aspirational / Comfortable / Floor) in every negotiation script
+6. Tailor communication scripts to company culture derived from culture_signals.work_style
+7. Always check for competing offers via list_opportunities(state="offer") for leverage analysis
+8. Include source attribution for all market data (source name, sample size, year)
+
+### Scope Boundaries
+
+This skill is not for interview preparation, company research, or pipeline state transitions beyond offer acceptance. Not when no offers exist — run the pipeline through interview stage first.
+
+---
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ronin-offer-negotiation` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | ronin |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `claude-opus-4-6` |
+  </TabItem>
+  <TabItem label="Compatibility">
+| Field | Value |
+| ----- | ----- |
+| Compatibility | ['claude-code', 'cursor', 'gemini-cli', 'codex', 'opencode', 'antigravity', 'crush', 'github-copilot'] |
+| Allowed Tools | `mcp__ronin__get_opportunity mcp__ronin__get_research mcp__ronin__get_company_research mcp__ronin__get_role_research mcp__ronin__get_profile mcp__ronin__get_preferences mcp__ronin__get_user_memory mcp__ronin__list_opportunities mcp__brave-search__brave_web_search mcp__tavily__tavily_search mcp__tavily__tavily_research` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: ronin-offer-negotiation
+description: Evaluate offers with benchmark analysis and generate tiered negotiation scripts. Use when negotiating compensation packages. NOT for interview prep (ronin-interview-prep) or research (ronin-research).
+compatibility:
+  - claude-code
+  - cursor
+  - gemini-cli
+  - codex
+  - opencode
+  - antigravity
+  - crush
+  - github-copilot
+model: claude-opus-4-6
+model_settings:
+  thinking:
+    type: enabled
+    budget_tokens: 1000000
+allowed-tools: mcp__ronin__get_opportunity mcp__ronin__get_research mcp__ronin__get_company_research mcp__ronin__get_role_research mcp__ronin__get_profile mcp__ronin__get_preferences mcp__ronin__get_user_memory mcp__ronin__list_opportunities mcp__brave-search__brave_web_search mcp__tavily__tavily_search mcp__tavily__tavily_research
+license: "MIT"
+metadata:
+  version: "1.0.0"
+  author: "ronin"
+---
+
+# ronin-offer-negotiation
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `analyze <company>` or offer details | Analyze Offer workflow |
+| `negotiate <company>` or `scripts` | Generate Negotiation Scripts workflow |
+| `compare` | Compare competing offers side-by-side |
+| `review <company>` | Review Offer Analysis workflow |
+| Empty | List opportunities in offer state with analysis status |
+
+Evaluates job offers and generates negotiation strategies for Ronin opportunities in the `offer` pipeline state. Uses research benchmarks, user compensation goals, competing offers, and profile context to produce benchmark analysis, total comp models, and tiered negotiation scripts. All data sourced from existing research, preferences, and opportunity records — no new backend endpoints.
+
+> **Context load:** Start from the Ronin MCP connection already configured in the current harness. Load profile, preferences, memory, and any opportunity-specific context in parallel. Do not require a local `localhost:8000` health check unless the user is explicitly debugging local infrastructure.
+
+---
+
+## Overview
+
+Offer negotiation is triggered when an opportunity reaches the `offer` state in the pipeline. At this point the user has completed phone screens and interviews and received an offer. The skill provides three capabilities:
+
+1. **Offer analysis** — benchmark the offer against market data and the user's compensation goals
+2. **Total comp modeling** — project total compensation over 1-year and 4-year horizons
+3. **Negotiation script generation** — produce tiered counter-offer strategies personalized to company culture
+
+### Pipeline Context
+
+The `offer` state sits near the end of the Ronin pipeline:
+
+```text
+discovered → shortlisted → approved → materials_generated → applied → phone_screen → interview_loop → offer → accepted
+```
+
+From `offer`, valid transitions are: `accepted`, `rejected`, or `withdrawn`. This skill does not change pipeline state — it provides analysis and scripts so the user can negotiate confidently before deciding.
+
+### Data Sources
+
+The skill reads from existing Ronin data layers — no new endpoints or storage:
+
+- **Research data** (`get_research`, `get_company_research`, `get_role_research`) — compensation benchmarks, culture signals, company context
+- **User preferences** (`get_preferences`) — compensation goals (min_base, target_base, currency, include_equity), deal breakers
+- **Competing offers** (`list_opportunities` filtered to `state="offer"`) — other active offers for leverage analysis
+- **User profile** (`get_profile`) — seniority, experience depth, rare skills for leverage identification
+- **User memory** (`get_user_memory`) — prior negotiation context, stated priorities
+
+Offer terms themselves are entered conversationally by the user (base salary, equity, signing bonus, annual bonus, benefits, PTO). There is no ATS integration — the user types the numbers in chat.
+
+### Compensation Modeling
+
+All compensation calculations are presentation-only — computed in-skill and returned to the user, never stored in the database. This includes total comp projections, percentile positioning, and gap analysis against targets.
+
+---
+
+## Quick Start
+
+```text
+1. Verify opportunity is in offer state
+2. Self-fetch (parallel): opportunity, research, company_research, role_research, profile, preferences, memory
+3. User provides offer terms conversationally (base, equity, bonus, signing, benefits, PTO)
+4. Benchmark against research data and compensation goals
+5. Model total comp at 1yr and 4yr horizons
+6. Check for competing offers via list_opportunities(state="offer")
+7. Generate 3-tier negotiation scripts (Aspirational / Comfortable / Floor)
+8. Present analysis and scripts to user
+```
+
+---
+
+## Reference File Index
+
+| File | Contents | Load when |
+|------|----------|-----------|
+| [`references/tool-reference.md`](references/tool-reference.md) | MCP tool signatures, parameters, return shapes, and key fields grouped by workflow | Constructing tool calls |
+| [`references/data-shapes.md`](references/data-shapes.md) | JSON response shapes for all data sources (offer terms, research, company, role, preferences, opportunity) | Understanding response structure |
+| [`references/examples.md`](references/examples.md) | Full example conversation plus reusable negotiation templates | First-time use, debugging, or drafting the final script |
+| [`references/error-reference.md`](references/error-reference.md) | Error handling table, missing benchmark fallback, and roadmap | Troubleshooting |
+
+---
+
+## Prerequisites
+
+### 1. Opportunity in `offer` state
+
+This skill only applies to opportunities where the user has received an offer. Confirm state with:
+
+```python
+mcp__ronin__get_opportunity(user_id="<uuid>", opportunity_id="<opp-uuid>")
+# response.opportunity.state must be "offer"
+```
+
+If the opportunity is in an earlier state (e.g. `interview_loop`), the user needs to advance it to `offer` first.
+
+### 2. Completed research
+
+Research data provides the market benchmarks that make offer analysis meaningful. The compensation benchmark and role percentiles are the primary inputs for gap analysis.
+
+```python
+mcp__ronin__get_research(user_id="<uuid>", opportunity_id="<opp-uuid>")
+# response.status must be "researched" and response.research must be non-null
+```
+
+If research is missing, run `ronin-research` first.
+
+### 3. `BRAVE_API_KEY`
+
+Required for supplemental market data searches when research benchmarks are thin or stale: `export BRAVE_API_KEY="BSA..."`
+
+### 4. Ronin MCP connection
+
+This skill assumes the current AI harness can already call the Ronin MCP tools.
+If those calls fail, treat it as an MCP connection/configuration issue for the
+current environment rather than assuming a Docker-first local setup.
+
+---
+
+## Workflow: Analyze Offer
+
+Run this when the user has received an offer and wants to evaluate it before responding.
+
+### Step 1 — Self-fetch context (parallel)
+
+Issue all data-loading calls in parallel at startup:
+
+```python
+# Parallel self-fetch — all 7 calls at once
+opp = mcp__ronin__get_opportunity(user_id="<uuid>", opportunity_id="<opp-uuid>")
+research = mcp__ronin__get_research(user_id="<uuid>", opportunity_id="<opp-uuid>")
+company = mcp__ronin__get_company_research(company_slug="stripe")
+role = mcp__ronin__get_role_research(role_slug="staff-engineer")
+profile = mcp__ronin__get_profile(user_id="<uuid>")
+prefs = mcp__ronin__get_preferences(user_id="<uuid>")
+memory = mcp__ronin__get_user_memory(user_id="<uuid>")
+```
+
+Extract and note:
+
+- `opp.opportunity.state` — must be `"offer"`; abort if not
+- `opp.opportunity.company` — used to derive `company_slug`
+- `opp.opportunity.title` — used to derive `role_slug` via `canonicalize_role_slug()` which strips noise words ("software", "platform", "backend", "frontend", "fullstack") and maps synonyms ("swe"/"dev"/"developer" to "engineer"); e.g. "Staff Software Engineer" becomes `"staff-engineer"`
+- `research.research.compensation_benchmark` — min/max/median from research phase
+- `company.compensation_benchmark` — company-level comp data (may differ from role-specific)
+- `company.culture_signals` — work_style informs script tone (formal vs casual)
+- `role.salary_p25`, `role.salary_p50`, `role.salary_p75` — percentile positioning
+- `role.sample_size` — confidence indicator for percentile data
+- `role.market_demand` — leverage signal
+- `prefs.preferences.compensation_goals[0]` — min_base, target_base, currency, include_equity
+- `prefs.preferences.deal_breakers` — non-negotiables to flag
+- `profile` — years of experience, seniority, rare skills for leverage
+- `memory.ai_memory` — prior negotiation notes, stated priorities
+
+### Step 2 — Collect offer terms from user
+
+Offer terms are entered conversationally. Prompt the user for: base salary, equity, signing bonus, annual bonus, benefits, and PTO. Accept whatever the user provides. Not all fields are required — analyze what is given. Use `null` for fields the user does not mention.
+
+### Step 3 — Benchmark analysis
+
+Compare the offer against three data sources:
+
+**Against user goals (preferences):**
+
+```text
+Offer base: $265,000
+Your minimum: $250,000 (min_base) ✓ Clears floor by $15,000
+Your target:  $280,000 (target_base) ✗ Below target by $15,000
+```
+
+**Against company research (compensation_benchmark):**
+
+```text
+Company benchmark — Min: $240,000 / Median: $270,000 / Max: $310,000
+Your offer base ($265,000) is below the company median ($270,000)
+```
+
+**Against role research (percentiles):**
+
+```text
+Role market data (n=134):
+  P25: $245,000 / P50: $272,000 / P75: $305,000
+Your offer base of $265,000 is at approximately P40
+→ Below median — room for negotiation supported by market data
+```
+
+When percentile data is available, compute approximate percentile positioning. Use linear interpolation between the nearest percentile brackets. When `sample_size` is small (< 20), note reduced confidence.
+
+Flag any deal breakers from `prefs.preferences.deal_breakers` that the offer terms may trigger.
+
+### Step 4 — Total comp modeling
+
+Project total compensation at two horizons:
+
+**1-Year Total Comp:**
+
+```text
+Base salary:     $265,000
+Signing bonus:    $30,000
+Annual bonus:     $26,500 (10% target)
+Equity (Year 1):  $37,500 (RSU vest: 25% of $150,000)
+────────────────────────
+Year 1 Total:    $359,000
+```
+
+**4-Year Total Comp:**
+
+```text
+Base salary:   $1,060,000 ($265,000 × 4)
+Signing bonus:    $30,000 (Year 1 only)
+Annual bonus:   $106,000 ($26,500 × 4)
+Equity (4yr):   $150,000 (full vest)
+────────────────────────
+4-Year Total: $1,346,000
+Annualized:     $336,500/yr
+```
+
+Notes on modeling:
+
+- Assume no raises unless the user specifies expected annual increase
+- Use the stated vesting schedule for equity; default to 4-year with 1-year cliff if not specified
+- For stock options, note that value depends on strike price vs. current/future valuation — flag this uncertainty
+- For RSUs at public companies, use current market price if known; otherwise note the assumption
+- Present as a table, not raw JSON
+
+### Step 5 — Competing offers comparison
+
+Check for other opportunities in `offer` state:
+
+```python
+mcp__ronin__list_opportunities(user_id="<uuid>", state="offer")
+```
+
+If multiple offers exist, produce a side-by-side comparison table. If only one offer exists (the current one), note that no competing offers are available for comparison and suggest this as a potential leverage gap.
+
+### Step 6 — Present analysis
+
+Structure the output in four sections: **Offer Summary**, **Benchmark Analysis**, **Total Comp Model**, **Competing Offers**. End with a clear assessment: "This offer is [above/below/at] market median and [clears/misses] your minimum target by $X. Strongest negotiation angle: [identified leverage]."
+
+---
+
+## Workflow: Generate Negotiation Scripts
+
+Run this after the offer analysis is complete, or when the user asks for help crafting a counter-offer.
+
+### Step 1 — Identify leverage points
+
+Analyze the loaded context to identify negotiation leverage:
+
+- **Competing offers** — strongest leverage; quantifiable with specific numbers
+- **Rare skills** — skills from `profile` that match `opp.required_skills` and have high `market_demand` from role research
+- **Market positioning** — if the offer is below P50 for the role, market data supports a higher ask
+- **Experience depth** — years of experience or seniority level above what the role requires
+- **Company signals** — `culture_signals.growth_stage` (early-stage companies may flex more on equity; late-stage on base)
+
+Rank leverage points by strength and relevance.
+
+### Step 2 — Generate 3-tier counter-offer scripts
+
+Produce three tiers of negotiation asks:
+
+**Tier 1 — Aspirational (best case)**
+
+The maximum reasonable ask supported by data. Anchored to P75 or above, competing offer ceiling, or target_base + equity uplift.
+
+```text
+Target base: $295,000 (P70+ for role)
+Rationale: Competing offer at $285k base; market P75 is $305k; your rare
+distributed systems + payments experience justifies upper-quartile positioning.
+```
+
+**Tier 2 — Comfortable (expected outcome)**
+
+A realistic middle ground the user would be happy with. Anchored to P50 or target_base.
+
+```text
+Target base: $280,000 (your target_base, approximately P50)
+Rationale: Aligns with your stated target; at market median; reasonable
+counter that most companies accept without extended negotiation.
+```
+
+**Tier 3 — Floor (walk-away line)**
+
+The minimum acceptable outcome. Anchored to min_base from preferences.
+
+```text
+Target base: $250,000 (your stated minimum)
+Rationale: Below this, the offer does not meet your compensation floor.
+If the company cannot reach this level, consider whether non-comp terms
+(equity, signing, role scope) compensate sufficiently.
+```
+
+For each tier, specify the full package ask (base + equity + bonus + signing), not just base salary.
+
+### Step 3 — Generate communication scripts
+
+Produce scripts tailored to the company's communication culture, derived from `culture_signals.work_style`.
+
+- For **formal/corporate** cultures, keep the tone polished, structured, and explicit about market data.
+- For **casual/startup** cultures, keep the tone direct and conversational while preserving the same factual anchors.
+- Generate both email and phone-call variants for the user's preferred tier. The phone version should be bullet-point talking prompts, not a verbatim script.
+
+Load `references/examples.md` when you need the reusable formal email, casual email, and phone talking-point templates. Keep the main skill body focused on the decision rules and leverage logic.
+
+---
+
+## Workflow: Review Offer Analysis
+
+Use this to retrieve and present a previously generated analysis from the same session, or to re-run the analysis with updated terms.
+
+### Step 1 — Re-fetch current data
+
+```python
+# Parallel fetch
+opp = mcp__ronin__get_opportunity(user_id="<uuid>", opportunity_id="<opp-uuid>")
+research = mcp__ronin__get_research(user_id="<uuid>", opportunity_id="<opp-uuid>")
+prefs = mcp__ronin__get_preferences(user_id="<uuid>")
+competing = mcp__ronin__list_opportunities(user_id="<uuid>", state="offer")
+```
+
+### Step 2 — Present summary
+
+Reproduce the analysis sections from the Analyze Offer workflow: offer terms as entered, benchmark positioning (vs goals, vs company data, vs market percentiles), total comp projections, competing offer comparison (if applicable), and recommended negotiation tier and rationale.
+
+### Step 3 — Handle updated terms
+
+If the user received a counter-offer or revised terms, re-run the analysis with the new numbers. Highlight what changed:
+
+```text
+UPDATED: Company countered with $275,000 base (was $265,000)
+→ Now at approximately P48 (was ~P40)
+→ $5,000 below your target (was $15,000 below)
+→ Year 1 total comp: $369,000 (was $359,000)
+```
+
+Keep benchmark analysis and leverage assessment in the current conversation only. There is no persistent offer-analysis record yet, so re-run the workflow when terms materially change.
+
+---
+
+## Critical Rules
+
+1. Never auto-accept or auto-reject an offer — analysis and scripts are advisory only
+2. Do not change pipeline state — this skill provides analysis, not transitions
+3. Null over confabulation — if no credible source supports a salary number, report as unknown
+4. Always flag equity valuation uncertainty at private companies — never present single point estimates as fact
+5. Present all three tiers (Aspirational / Comfortable / Floor) in every negotiation script
+6. Tailor communication scripts to company culture derived from culture_signals.work_style
+7. Always check for competing offers via list_opportunities(state="offer") for leverage analysis
+8. Include source attribution for all market data (source name, sample size, year)
+
+### Scope Boundaries
+
+This skill is not for interview preparation, company research, or pipeline state transitions beyond offer acceptance. Not when no offers exist — run the pipeline through interview stage first.
+
+---
+
+## Canonical Vocabulary
+
+- **Negotiation tiers:** "Aspirational", "Comfortable", "Floor"
+- **Compensation components:** "base_salary", "equity", "signing_bonus", "annual_bonus", "benefits", "pto"
+- **Comp horizons:** "1-Year Total Comp", "4-Year Total Comp", "Annualized"
+- **Culture styles:** "formal/corporate", "casual/startup"
+- **Benchmark sources:** "levels.fyi", "Glassdoor", "job posting salary band"
+
+---
+
+## Error Handling
+
+See [`references/error-reference.md`](references/error-reference.md) for the full error table, missing benchmark fallback procedure, and roadmap.
+
+Key errors to watch for:
+- `get_opportunity` returns state other than `"offer"` → advance opportunity first
+- `get_research` returns `status: "not_researched"` → run `ronin-research` first
+- `compensation_benchmark` fields all null → proceed with user goals as only benchmark
+- MCP connection unavailable → reconnect the Ronin MCP server configured for this harness, or fix the local API-mounted `/mcp` setup if you are explicitly running Ronin locally
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

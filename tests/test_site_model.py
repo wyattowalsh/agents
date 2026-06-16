@@ -68,7 +68,6 @@ def test_render_site_data_module_exports_runtime_constants():
     assert "export const supportedAgents = baseSiteData.supportedAgents;" in rendered
     assert "export const installCommands = baseSiteData.installCommands;" in rendered
     assert "export const visualAssets = baseSiteData.visualAssets;" in rendered
-    assert "export const skillIndexModule = './generated-skill-indexes.mjs';" in rendered
 
 
 def test_visual_assets_are_manifest_backed():

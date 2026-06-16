@@ -1,0 +1,638 @@
+---
+title: "on-call-handoff-patterns"
+description: "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="on-call-handoff-patterns" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="install-now-after-trust-gate" variant="default" />
+
+> `wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/on-call-handoff-patterns`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
+ SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill on-call-handoff-patterns` to refresh research context.
+</Aside>
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `wshobson/agents` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `on-call-handoff-patterns` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+# External Skills Install Set
+
+Approved external Agent Skill sources for this repo. Treat these as
+trust-bearing assets: inspect source-list output, hooks, scripts, commands,
+network access, credential handling, and dedupe before repo promotion.
+
+Target agents for installs in this environment:
+
+- `antigravity`
+- `claude-code`
+- `codex`
+- `crush`
+- `cursor`
+- `gemini-cli`
+- `github-copilot`
+- `grok`
+- `opencode`
+
+Use this exact target suffix unless a user asks for a different target set:
+
+```bash
+-a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Grok Build is a first-class harness target. The Skills CLI does not expose a native `grok` agent ID yet; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter (`~/.claude/skills`, which Grok reads) and mirrors them into `~/.grok/skills`.
+
+## Install Now After Trust Gate
+
+```bash
+npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder
+```
+
+Install `shieldcn-badges` from `jal-co/shieldcn` for local badge-generation workflows. The source at audited HEAD `55daa08d15c92dab7f443facd55a91b8c914c78d` exposes one skill, has MIT licensing, and no observed hooks, command substitutions, `allowed-tools`, or skill-local scripts; keep usage scoped to README/docs badge generation. Dynamic JSON badge patterns can embed arbitrary external JSON endpoints in documentation, so avoid adding badges for private or secret-bearing URLs. The command intentionally enumerates observed local Skills CLI adapters instead of using `--all`; current Skills CLI installs these adapters through the universal `~/.agents/skills/shieldcn-badges` root and symlinks Crush.
+
+```bash
+npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them.
+
+```bash
+npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add coreyhaines31/marketingskills --skill seo-audit --skill copywriting --skill cro --skill marketing-psychology --skill content-strategy --skill analytics --skill programmatic-seo --skill cold-email --skill emails --skill ads -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+High-install marketing and growth skills from `coreyhaines31/marketingskills`. Slugs use the upstream bundle names (`cro`, `analytics`, `emails`, `ads`) rather than older registry aliases.
+
+```bash
+npx skills add flutter/skills --skill flutter-apply-architecture-best-practices --skill flutter-build-responsive-layout --skill flutter-add-widget-test --skill flutter-setup-declarative-routing --skill flutter-fix-layout-issues --skill flutter-add-integration-test --skill flutter-setup-localization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.
+
+```bash
+npx skills add apollographql/skills --skill graphql-schema --skill apollo-federation --skill rust-best-practices --skill graphql-operations --skill apollo-server -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add hashicorp/agent-skills --skill terraform-style-guide --skill terraform-test -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add shadcn/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install `shadcn` from `shadcn/ui` as the primary shadcn registry source.
+
+```bash
+npx skills add shadcn-ui/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Also install `shadcn` from `shadcn-ui/ui` when the monorepo checkout path is required. Both sources expose the same slug; Skills CLI dedupes to one install root — keep only the source you actively use to avoid symlink churn.
+
+```bash
+npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add kepano/obsidian-skills --skill obsidian-markdown --skill obsidian-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add antfu/skills --skill vite --skill slidev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add hyf0/vue-skills --skill vue-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add github/awesome-copilot --skill sql-optimization --skill multi-stage-dockerfile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add mattpocock/skills --skill obsidian-vault -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add avdlee/swift-concurrency-agent-skill --skill swift-concurrency -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add ejirocodes/agent-skills --skill svelte5-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
+
+```bash
+npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Marketing residual tier from `coreyhaines31/marketingskills`. These six slugs are not named in the existing curated marketing row; `schema` covers structured-data work distinct from local `seo-audit`.
+
+```bash
+npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them.
+
+```bash
+npx skills add antfu/skills --skill vitest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add remotion-dev/skills --skill remotion-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
+
+```bash
+npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.
+
+```bash
+npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Product-engineering workflow skills beyond the curated `obsidian-vault` row.
+
+```bash
+npx skills add denoland/skills --skill deno-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add deckardger/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-start-best-practices --skill tanstack-router-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`.
+
+```bash
+npx skills add spillwavesolutions/design-doc-mermaid --skill design-doc-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Architecture diagram guidance for docs and design artifacts; complements local `docs-steward`.
+
+```bash
+npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Marketing tier-2 residual beyond the two curated marketing rows.
+
+```bash
+npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
+
+```bash
+npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
+
+```bash
+npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle.
+
+```bash
+npx skills add ibelick/ui-skills --skill baseline-ui --skill fixing-accessibility --skill fixing-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Targeted UI polish, WCAG/a11y fixes, and HTML metadata/OG/JSON-LD audits. Documentation-only skills with no observed hooks; complements `addyosmani/web-quality-skills` and `vercel-labs/agent-skills@web-design-guidelines`.
+
+```bash
+npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies.
+
+```bash
+npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns. Complements `avdlee/swift-concurrency-agent-skill@swift-concurrency` and Flutter/Expo mobile coverage.
+
+## Inspect Then Install
+
+Run these only after `external-skill-auditor` confirms the source-list output,
+scripts, hooks, credential behavior, and dedupe fit.
+
+```bash
+npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
+
+```bash
+npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill logfire-instrumentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
+
+```bash
+npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces.
+
+```bash
+npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install only `design-taste-frontend` from `Leonxlnx/taste-skill` by default. The source-list exposes 12 skills and the repository has strong public adoption, MIT licensing, and no observed hooks in the inspected skill frontmatter, but the bundle substantially overlaps local design/image-generation workflows; keep style variants, image-generation variants, `full-output-enforcement`, and `stitch-design-taste` global-only unless a user explicitly requests them.
+
+```bash
+npx skills add hueyexe/opencode-ensemble --skill opencode-ensemble -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install `opencode-ensemble` from `hueyexe/opencode-ensemble` after verifying source-list output. The repo vendors the skill at upstream tag `v0.14.2` / commit `b6bc7f706c13aa42d32e836ea647677d0b14c2f7` and keeps the OpenCode runtime plugin spec on `@latest`; refresh OpenCode's `@hueyexe` cache rather than pinning the plugin when stale.
+
+```bash
+npx skills add neondatabase/agent-skills --skill neon-postgres --skill neon-postgres-branches --skill neon-postgres-egress-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Neon Postgres skills. Prefer this source over generic community Neon skills; audit hooks and network behavior before promoting to install-now.
+
+```bash
+npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested.
+
+```bash
+npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add pydantic/skills --skill pydantic-ai-harness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add antonbabenko/terraform-skill --skill terraform-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add pbakaus/impeccable --skill impeccable -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.
+
+```bash
+npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
+
+```bash
+npx skills add render-oss/skills --skill render-deploy --skill render-blueprints --skill render-debug -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Render deploy/Blueprint/debug subset. Low registry install counts; review hooks, MCP references, and `RENDER_API_KEY` usage before install-now promotion.
+
+```bash
+npx skills add github/awesome-copilot --skill rust-mcp-server-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Rust MCP server scaffolding from `github/awesome-copilot`. Complements `apollographql/skills@rust-best-practices`; audit generated server code before production use.
+
+```bash
+npx skills add emilkowalski/skill --skill emil-design-eng -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add antfu/skills --skill vue -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add sickn33/antigravity-awesome-skills --skill docker-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Install only `docker-expert` from `sickn33/antigravity-awesome-skills`. The bundle exposes hundreds of unrelated skills; keep the rest global-only.
+
+```bash
+npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add prisma/skills --skill prisma-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add redis/agent-skills --skill redis-vector-search --skill redis-semantic-cache -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add aws/agent-toolkit-for-aws --skill aws-iam --skill aws-serverless -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add getsentry/skills --skill skill-scanner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add google-labs-code/stitch-skills --skill design-md --skill react:components --skill stitch-loop --skill stitch::generate-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.
+
+```bash
+npx skills add figma/mcp-server-guide --skill figma-implement-design --skill figma-generate-design --skill figma-code-connect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants.
+
+```bash
+npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion.
+
+```bash
+npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.
+
+```bash
+npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
+
+```bash
+npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns.
+
+```bash
+npx skills add firebase/agent-skills --skill firebase-auth-basics --skill firebase-app-hosting-basics --skill firebase-ai-logic-basics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add redis/agent-skills --skill redis-security --skill redis-clustering --skill redis-observability -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add prisma/skills --skill prisma-compute --skill prisma-database-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add giuseppe-trisciuoglio/developer-kit --skill drizzle-orm-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add github/awesome-copilot --skill eval-driven-dev --skill mcp-security-audit --skill threat-model-analyst --skill create-implementation-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.
+
+```bash
+npx skills add inngest/inngest-skills --skill inngest-setup --skill inngest-durable-functions --skill inngest-events --skill inngest-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.
+
+```bash
+npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth.
+
+```bash
+npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling.
+
+```bash
+npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+```bash
+npx skills add google/skills --skill gemini-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Keep Global Only Or Avoid
+
+- `vercel-labs/skills@find-skills`: duplicate of `discover-skills`.
+- `vercel-labs/agent-browser`: useful, but broad operational scope and overlaps browser automation.
+- `anthropics/skills`: inspect case-by-case; many skills duplicate local/system skills.
+- `huggingface/skills`: keep global unless ML workflows become frequent.
+- `xixu-me/skills@github-actions-docs`: high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
+- `shadcn-ui/ui@shadcn` vs `shadcn/ui@shadcn`: both are curated; install only one active source to avoid duplicate symlink roots for the same `shadcn` slug.
+- Community Better Auth, Clerk, and generic OpenAI Agent SDK skills: lower source confidence or duplicate local architecture coverage.
+- `docs.stripe.com@stripe-best-practices`: registry syntax and provenance still need verification before automated sync/install.
+- `nextlevelbuilder/ui-ux-pro-max-skill@ckm:*`: avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
+- `Leonxlnx/taste-skill` bundle variants besides `design-taste-frontend`: keep global-only unless explicitly requested; many are visual-style, image-generation, Google Stitch, or output-behavior skills that overlap current design workflows.
+- `firecrawl/cli`: useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
+- `intellectronica/agent-skills@notion-api`: third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion.
+- `microsoft/azure-skills`: massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
+- `inngest/inngest-skills` overflow skills (`inngest-api`, `inngest-realtime`, `inngest-agents`, `inngest-brownfield-audit`, etc.): keep global-only unless explicitly requested.
+- `temporalio/skill-temporal-cloud` and community Temporal skill repos: keep global-only when official `temporal-developer` exists.
+- `coleam00/excalidraw-diagram-skill`: community Excalidraw skill; prefer `github/awesome-copilot@excalidraw-diagram-generator`.
+- `samber/cc-skills-golang` DI-cluster skills (`golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, `golang-samber-do`): narrow library scope; keep global-only unless explicitly requested.
+
+## Validation After Install Or Promotion
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python skills/skill-creator/scripts/audit.py skills/external-skill-auditor
+uv run python skills/skill-creator/scripts/audit.py skills/i18n-localization
+uv run python skills/skill-creator/scripts/audit.py skills/agent-runtime-governance
+uv run wagents package external-skill-auditor --dry-run
+uv run wagents package i18n-localization --dry-run
+uv run wagents package agent-runtime-governance --dry-run
+```
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

@@ -1,0 +1,87 @@
+---
+title: "plannotator-review"
+description: "Open Plannotator's browser-based code review UI for the current worktree or a pull request URL, then act on the feedback that comes back."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="plannotator-review" variant="note" /> <Badge text="83 words" variant="default" /> <Badge text="Installed" variant="caution" />
+
+> Open Plannotator's browser-based code review UI for the current worktree or a pull request URL, then act on the feedback that comes back.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/plannotator-review`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+Use this skill when the user wants to review current code changes in Plannotator instead of reading a diff inline.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `plannotator-review` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: plannotator-review
+description: Open Plannotator's browser-based code review UI for the current worktree or a pull request URL, then act on the feedback that comes back.
+---
+
+# Plannotator Review
+
+Use this skill when the user wants to review current code changes in Plannotator instead of reading a diff inline.
+
+Run:
+
+```bash
+plannotator review [optional-pr-url]
+```
+
+Behavior:
+
+1. Launch the command with Bash.
+2. Wait for it to finish.
+3. If it returns feedback or annotations, address them in the same conversation.
+4. If it returns an approval/LGTM-style message, acknowledge that review passed and continue.
+
+Do not ask the user to copy shell commands into chat. Run the command yourself.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

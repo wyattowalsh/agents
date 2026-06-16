@@ -13,11 +13,23 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 This page is generated from the repository agent file `agents/planner.md` by `wagents docs generate`.
 </Aside>
 
-### Identity
+<div class="tool-pills">
+<Badge text="all" variant="note" />
+</div>
 
+<Tabs>
+  <TabItem label="Identity">
 | Field | Value |
 | ----- | ----- |
 | Name | `planner` |
+| Permission Mode | `default` |
+  </TabItem>
+  <TabItem label="Tools">
+| Field | Value |
+| ----- | ----- |
+| Allowed | `all` |
+  </TabItem>
+</Tabs>
 
 ## System Prompt
 
@@ -40,6 +52,7 @@ Read-only. Never create, edit, or modify files.
 ### Output Contract
 
 Return:
+
 - Goal
 - Current state
 - Affected files
@@ -61,19 +74,8 @@ Return:
 ---
 name: planner
 description: Create a codebase-grounded implementation plan before coding.
-mode: subagent
-temperature: 0.1
-color: info
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-  webfetch: ask
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -95,6 +97,7 @@ Read-only. Never create, edit, or modify files.
 ## Output Contract
 
 Return:
+
 - Goal
 - Current state
 - Affected files

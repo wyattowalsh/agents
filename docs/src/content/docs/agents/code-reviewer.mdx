@@ -13,11 +13,23 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 This page is generated from the repository agent file `agents/code-reviewer.md` by `wagents docs generate`.
 </Aside>
 
-### Identity
+<div class="tool-pills">
+<Badge text="all" variant="note" />
+</div>
 
+<Tabs>
+  <TabItem label="Identity">
 | Field | Value |
 | ----- | ----- |
 | Name | `code-reviewer` |
+| Permission Mode | `default` |
+  </TabItem>
+  <TabItem label="Tools">
+| Field | Value |
+| ----- | ----- |
+| Allowed | `all` |
+  </TabItem>
+</Tabs>
 
 ## System Prompt
 
@@ -40,6 +52,7 @@ Read-only. Report findings only.
 ### Output Contract
 
 Return:
+
 - Overall assessment
 - Critical issues
 - Important improvements
@@ -60,18 +73,8 @@ Return:
 ---
 name: code-reviewer
 description: Review changes for correctness, risk, and maintainability without editing code.
-mode: subagent
-temperature: 0.1
-color: warning
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-  webfetch: deny
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -93,6 +96,7 @@ Read-only. Report findings only.
 ## Output Contract
 
 Return:
+
 - Overall assessment
 - Critical issues
 - Important improvements

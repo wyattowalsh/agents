@@ -1,0 +1,107 @@
+---
+title: "web-design-guidelines"
+description: "Review UI code for Web Interface Guidelines compliance. Use when asked to &quot;review my UI&quot;, &quot;check accessibility&quot;, &quot;audit design&quot;, &quot;review UX&quot;, or &quot;check my site against best practices&quot;."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="web-design-guidelines" variant="note" /> <Badge text="136 words" variant="default" /> <Badge text="v1.0.0" variant="success" /> <Badge text="vercel" variant="caution" /> <Badge text="Installed" variant="caution" />
+
+> Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines -y -g
+```
+
+**Use:** `/web-design-guidelines`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+Review files for compliance with Web Interface Guidelines.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `vercel-labs/agent-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `web-design-guidelines` |
+| Version | 1.0.0 |
+| Author | vercel |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: web-design-guidelines
+description: Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against best practices".
+metadata:
+  author: vercel
+  version: "1.0.0"
+  argument-hint: <file-or-pattern>
+---
+
+# Web Interface Guidelines
+
+Review files for compliance with Web Interface Guidelines.
+
+## How It Works
+
+1. Fetch the latest guidelines from the source URL below
+2. Read the specified files (or prompt user for files/pattern)
+3. Check against all rules in the fetched guidelines
+4. Output findings in the terse `file:line` format
+
+## Guidelines Source
+
+Fetch fresh guidelines before each review:
+
+```
+https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md
+```
+
+Use WebFetch to retrieve the latest rules. The fetched content contains all the rules and output format instructions.
+
+## Usage
+
+When a user provides a file or pattern argument:
+1. Fetch guidelines from the source URL above
+2. Read the specified files
+3. Apply all rules from the fetched guidelines
+4. Output findings using the format specified in the guidelines
+
+If no files specified, ask the user which files to review.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

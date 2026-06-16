@@ -1,0 +1,564 @@
+---
+title: "ronin-search-strategy"
+description: "Optimize search strategy — calibrate preferences, analyze skill gaps, benchmark compensation. Use when refining job search criteria."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ronin-search-strategy" variant="note" /> <Badge text="2968 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="ronin" variant="caution" /> <Badge text="claude-opus-4-6" variant="tip" /> <Badge text="Installed" variant="caution" />
+
+> Optimize search strategy — calibrate preferences, analyze skill gaps, benchmark compensation. Use when refining job search criteria. NOT for discovery (ronin-discovery) or pipeline management (ronin-pipeline-manager).
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/ronin-search-strategy`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+| `$ARGUMENTS` | Action | |------------|--------| | `review` / `preferences` / `calibrate` | Preference Review workflow (Workflow 1) | | `skills` / `gaps` | Skill Gap Analysis (Workflow 2) | | `semantic` / `similar` | Vocabulary-Overlap Discovery (Workflow 3) | | `market` / `compensation` / `salary` | Market Calibration (Workflow 4) | | `persist` / `save` | Strategy Persistence (Workflow 5) | | Empty | Run full strategy analysis (Workflows 1-4 in sequence) |
+
+## Modes
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `review` / `preferences` / `calibrate` | Preference Review workflow (Workflow 1) |
+| `skills` / `gaps` | Skill Gap Analysis (Workflow 2) |
+| `semantic` / `similar` | Vocabulary-Overlap Discovery (Workflow 3) |
+| `market` / `compensation` / `salary` | Market Calibration (Workflow 4) |
+| `persist` / `save` | Strategy Persistence (Workflow 5) |
+| Empty | Run full strategy analysis (Workflows 1-4 in sequence) |
+
+## Quick Start
+
+```
+1. mcp__ronin__get_preferences(user_id="<uuid>")                → load current search criteria
+2. mcp__ronin__get_funnel_stats(user_id="<uuid>")               → load pipeline conversion rates
+3. mcp__ronin__list_opportunities(user_id="<uuid>", min_score=50) → load high-scoring opportunities
+4. mcp__ronin__get_profile(user_id="<uuid>")                    → load skills + experience for gap analysis
+5. Analyze preference-to-outcome correlation → recommend preference updates
+6. mcp__ronin__update_preferences(user_id="<uuid>", data={...}) → apply calibration (with user consent)
+```
+
+---
+
+## Critical Rules
+
+1. Never auto-apply preference changes — present recommendations with evidence and wait for user confirmation
+2. similarity_search uses mock-v1 (vocabulary overlap), NOT semantic similarity — always caveat results
+3. compute_match_score is lexical only — apply agent judgment for seniority, location, and industry fit
+4. compensation_goals are NOT updatable via update_preferences — they require separate child table management
+5. Require at least 10 pipeline opportunities before running preference correlation analysis
+6. Always attribute market data sources with name, sample size, and recency
+7. Null over confabulation — if no credible source supports a salary number, report as unknown
+
+### Scope Boundaries
+
+This skill is not for discovering opportunities, generating materials, or managing pipeline entries directly. Not when the pipeline has fewer than 5 entries — insufficient data for meaningful strategy analysis.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ronin-search-strategy` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | ronin |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `claude-opus-4-6` |
+  </TabItem>
+  <TabItem label="Compatibility">
+| Field | Value |
+| ----- | ----- |
+| Compatibility | ['claude-code', 'cursor', 'gemini-cli', 'codex', 'opencode', 'antigravity', 'crush', 'github-copilot'] |
+| Allowed Tools | `mcp__ronin__get_preferences mcp__ronin__update_preferences mcp__ronin__get_profile mcp__ronin__list_opportunities mcp__ronin__get_funnel_stats mcp__ronin__compute_match_score mcp__ronin__similarity_search mcp__ronin__compute_embedding mcp__ronin__store_embedding mcp__ronin__get_user_memory mcp__brave-search__brave_web_search mcp__tavily__tavily_search` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: ronin-search-strategy
+description: Optimize search strategy — calibrate preferences, analyze skill gaps, benchmark compensation. Use when refining job search criteria. NOT for discovery (ronin-discovery) or pipeline management (ronin-pipeline-manager).
+compatibility:
+  - claude-code
+  - cursor
+  - gemini-cli
+  - codex
+  - opencode
+  - antigravity
+  - crush
+  - github-copilot
+model: claude-opus-4-6
+model_settings:
+  thinking:
+    type: enabled
+    budget_tokens: 1000000
+allowed-tools: mcp__ronin__get_preferences mcp__ronin__update_preferences mcp__ronin__get_profile mcp__ronin__list_opportunities mcp__ronin__get_funnel_stats mcp__ronin__compute_match_score mcp__ronin__similarity_search mcp__ronin__compute_embedding mcp__ronin__store_embedding mcp__ronin__get_user_memory mcp__brave-search__brave_web_search mcp__tavily__tavily_search
+license: "MIT"
+metadata:
+  version: "1.0.0"
+  author: "ronin"
+---
+
+# ronin-search-strategy
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `review` / `preferences` / `calibrate` | Preference Review workflow (Workflow 1) |
+| `skills` / `gaps` | Skill Gap Analysis (Workflow 2) |
+| `semantic` / `similar` | Vocabulary-Overlap Discovery (Workflow 3) |
+| `market` / `compensation` / `salary` | Market Calibration (Workflow 4) |
+| `persist` / `save` | Strategy Persistence (Workflow 5) |
+| Empty | Run full strategy analysis (Workflows 1-4 in sequence) |
+
+Optimize job search strategy by analyzing pipeline outcomes, calibrating preferences, identifying skill gaps, finding vocabulary-near opportunities, and benchmarking compensation against market data. This is the meta-layer that evaluates whether the search itself is well-configured.
+
+> **Context load:** Start from the Ronin MCP connection already configured in the current harness. Load only the workflow inputs you need in parallel. Do not require a local `localhost:8000` health check unless the user is explicitly debugging local infrastructure.
+
+## Quick Start
+
+```
+1. mcp__ronin__get_preferences(user_id="<uuid>")                → load current search criteria
+2. mcp__ronin__get_funnel_stats(user_id="<uuid>")               → load pipeline conversion rates
+3. mcp__ronin__list_opportunities(user_id="<uuid>", min_score=50) → load high-scoring opportunities
+4. mcp__ronin__get_profile(user_id="<uuid>")                    → load skills + experience for gap analysis
+5. Analyze preference-to-outcome correlation → recommend preference updates
+6. mcp__ronin__update_preferences(user_id="<uuid>", data={...}) → apply calibration (with user consent)
+```
+
+---
+
+## Overview
+
+This skill sits above the discovery loop. Where `ronin-discovery` asks "What jobs are out there?", this skill asks "Am I looking for the right things?" It correlates search preferences with pipeline outcomes to surface misalignments, identifies skill gaps across top opportunities, uses embedding-based similarity to find overlooked matches, and benchmarks compensation goals against market data.
+
+### When to Use
+
+- After 2+ discovery cycles with low conversion (many discovered, few approved)
+- After a batch of rejections that suggest preference drift
+- When the user questions whether their target roles or compensation goals are realistic
+- When the pipeline has enough data (10+ opportunities) to draw meaningful patterns
+- Periodically (monthly) as a search health check
+
+### Architecture
+
+This skill is purely analytical — it reads pipeline data, computes insights, and recommends changes. It does NOT create opportunities, transition pipeline states, or trigger downstream workflows. The only write operations are `update_preferences` (with explicit user consent) and `store_embedding` (for caching computed vectors).
+
+```
+context load → preference/outcome correlation → skill gap analysis → vocabulary-overlap discovery → market calibration → persist strategy
+
+### State and persistence contract
+
+- **Preference changes** are the only durable strategy writes this skill performs directly, and only after explicit user consent via `update_preferences`.
+- **Embeddings** are optional cache artifacts scoped to `user_id + entity_type + entity_id`; they improve later similarity lookups but do not change the user's profile or pipeline state.
+- **Memory** is read-only over MCP in the current contract. Workflow 5 can summarize decisions, but persistence into `ai_memory` still depends on the chat-side memory tools.
+```
+
+---
+
+## Reference File Index
+
+| File | Contents | Load when |
+|------|----------|-----------|
+| [`references/tool-reference.md`](references/tool-reference.md) | Full tool signatures, parameter tables, and response shapes for all embedding, preference, profile, and pipeline tools | Constructing or validating MCP tool calls |
+| [`references/data-shapes.md`](references/data-shapes.md) | Detailed JSON response examples for all data sources | Interpreting responses during analysis |
+| [`references/error-reference.md`](references/error-reference.md) | Error handling table, limitations, and roadmap | Handling MCP failures or low-confidence analysis |
+| [`references/examples.md`](references/examples.md) | Worked example: preference calibration with full MCP tool calls and agent reasoning | First run-throughs, QA, or prompt debugging |
+
+---
+
+## Prerequisites
+
+1. **Populated Ronin profile** — Run `ronin-profile-builder` first. Skill gap analysis requires profile skills and experiences.
+2. **Configured preferences** — At minimum `target_roles` and `compensation_goals`. See `ronin-discovery` for the Configure Preferences workflow.
+3. **Pipeline data** — At least 10 opportunities in the pipeline (any state) for meaningful analysis. Fewer than 10 produces low-confidence insights.
+4. **`BRAVE_API_KEY`** — Required for market calibration (salary research). Set in environment.
+5. **Ronin MCP connection available** — this skill assumes the current AI harness can already call the Ronin MCP tools. If those calls fail, treat it as an MCP connection/configuration issue for the current environment.
+6. **Valid `user_id`** — Ronin MCP signatures keep `user_id: str` at the boundary. Pass the active Ronin user identifier exactly as supplied by the current environment. In the current local implementation, some MCP paths still validate UUID-shaped values, so treat format mismatches as runtime constraints rather than rewriting IDs manually.
+
+---
+
+## Workflow 1: Preference Review
+
+Correlate current preference dimensions with pipeline outcomes. Identify which preferences drive high-scoring, advanced-stage opportunities and which correlate with rejections or withdrawals.
+
+### Step 0 — Load shared context (preferences)
+
+Issue all context calls in parallel:
+
+```python
+# Parallel context load — preferences and funnel
+prefs    = mcp__ronin__get_preferences(user_id="<uuid>")
+funnel   = mcp__ronin__get_funnel_stats(user_id="<uuid>")
+memory   = mcp__ronin__get_user_memory(user_id="<uuid>")
+top_opps = mcp__ronin__list_opportunities(user_id="<uuid>", min_score=50, sort_by="match_score")
+all_opps = mcp__ronin__list_opportunities(user_id="<uuid>", sort_by="match_score")
+```
+
+### Step 1 — Extract preference dimensions
+
+From `prefs.preferences`, extract the active search criteria:
+
+| Dimension | Source field | Example |
+|-----------|-------------|---------|
+| Target roles | `target_roles` | `["Staff Engineer", "Principal Engineer"]` |
+| Target companies | `target_companies` | `["Stripe", "Plaid"]` |
+| Company sizes | `company_sizes` | `["startup", "mid-size"]` |
+| Industries | `industries` | `["fintech", "devtools"]` |
+| Remote preference | `remote_preference` | `"remote"` |
+| Deal breakers | `deal_breakers` | `["no_equity", "contract_only"]` |
+| Compensation floor | `compensation_goals[0].min_base` | `180000` |
+| Compensation target | `compensation_goals[0].target_base` | `250000` |
+
+### Step 2 — Analyze pipeline funnel
+
+From `funnel`, evaluate conversion health:
+
+| Rate | Healthy | Concern | Action |
+|------|---------|---------|--------|
+| `approved_per_discovered` | >= 0.3 | < 0.15 | Discovery is sourcing irrelevant opportunities — tighten `target_roles` or `industries` |
+| `applied_per_approved` | >= 0.5 | < 0.25 | Approved opportunities are being abandoned — check if materials generation is blocking |
+| `interview_per_applied` | >= 0.2 | < 0.1 | Applications are not converting — review resume targeting or skills alignment |
+| `offer_per_interview` | >= 0.2 | < 0.1 | Interviews are not converting — defer to `ronin-interview-prep` |
+
+### Step 3 — Correlate preferences with outcomes
+
+Cross-reference the opportunities list against preference dimensions:
+
+1. **High-score opportunities** (`min_score >= 50`): Which `target_roles`, `industries`, and `company_sizes` appear most frequently? These preferences are working.
+2. **Advanced-stage opportunities** (state: `approved`, `applied`, `interview_loop`, `offer`): Which preference dimensions do they share? These are validated by user behavior.
+3. **Withdrawn/rejected opportunities**: Which preferences led to opportunities the user rejected? These may need narrowing.
+
+Produce a dimension-by-dimension assessment:
+
+```text
+target_roles:
+  "Staff Engineer" — 8 discovered, 5 approved, 2 applied → strong signal, keep
+  "Principal Engineer" — 3 discovered, 0 approved → no conversions, consider removing or re-evaluating
+
+industries:
+  "fintech" — 12 discovered, 7 approved → strong signal
+  "devtools" — 6 discovered, 1 approved → weak conversion, investigate
+
+remote_preference: "remote"
+  → 80% of approved opportunities are remote → preference aligned with outcomes
+```
+
+### Step 4 — Recommend updates
+
+Based on the analysis, present specific recommendations. Each recommendation must cite the evidence:
+
+- "Remove 'Principal Engineer' from target_roles — 3 discovered, 0 approved over 2 cycles"
+- "Add 'AI/ML' to industries — 4 of your top-10 scored opportunities are in AI/ML but it is not in your industries list"
+- "Tighten company_sizes to remove 'enterprise' — all 5 withdrawn opportunities were enterprise companies"
+
+> **DECISION POINT:** Do NOT auto-apply preference changes. Present recommendations with evidence and wait for user confirmation before calling `update_preferences`.
+
+### Step 5 — Apply confirmed updates
+
+Only after the user confirms:
+
+```python
+mcp__ronin__update_preferences(
+    user_id="<uuid>",
+    data={
+        "target_roles": ["Staff Engineer"],
+        "industries": ["fintech", "AI/ML"],
+        "company_sizes": ["startup", "mid-size"]
+    }
+)
+```
+
+### Updatable fields via `update_preferences`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `target_roles` | `string[]` | Job title keywords to search for |
+| `target_companies` | `string[]` | Specific companies to target |
+| `company_sizes` | `string[]` | `"startup"`, `"mid-size"`, `"enterprise"` |
+| `industries` | `string[]` | Sector keywords (e.g. `"fintech"`, `"devtools"`) |
+| `deal_breakers` | `string[]` | Free-form tags for filtering |
+| `remote_preference` | `string` | `"remote"`, `"hybrid"`, `"onsite"`, or `"any"` |
+
+> **Note:** `compensation_goals` and `geographic_preferences` are managed through separate child tables and are NOT updatable via `update_preferences`. They require direct profile editing.
+
+---
+
+## Workflow 2: Skill Gap Analysis
+
+Compare the user's profile skills against `required_skills` from top pipeline opportunities. Identify skills that appear in 3 or more opportunities but are absent from the profile.
+
+### Step 0 — Load shared context (profile and pipeline)
+
+```python
+# Parallel context load — profile and opportunities
+profile  = mcp__ronin__get_profile(user_id="<uuid>")
+top_opps = mcp__ronin__list_opportunities(user_id="<uuid>", min_score=30, sort_by="match_score")
+```
+
+### Step 1 — Extract profile skills
+
+From `profile.skills`, build the user's skill set. Normalize skill names to lowercase for comparison.
+
+### Step 2 — Aggregate required skills across opportunities
+
+From `top_opps.opportunities`, collect all `required_skills` arrays and count frequency:
+
+```text
+Python             — 12 opportunities (user has it)
+distributed systems — 9 opportunities (user has it)
+Kubernetes         — 7 opportunities (user MISSING)
+Go                 — 5 opportunities (user MISSING)
+Rust               — 4 opportunities (user MISSING)
+React              — 3 opportunities (user MISSING)
+PostgreSQL         — 8 opportunities (user has it)
+```
+
+### Step 3 — Identify gaps
+
+Filter to skills appearing in 3+ opportunities that are NOT in the user's profile.
+
+### Step 4 — Prioritize and recommend
+
+Rank gaps by frequency and relevance to the user's career trajectory:
+
+1. **High priority** (appears in > 40% of target opportunities): "Kubernetes appears in 50% of your top opportunities. Adding this skill would meaningfully improve match scores."
+2. **Medium priority** (appears in 20-40%): "Go appears in 36%. Consider if this aligns with your target stack."
+3. **Low priority** (appears in < 20% but still 3+): "React appears in 21%. Likely role-specific — skip unless targeting frontend-heavy roles."
+
+Also identify **overrepresented profile skills** — skills the user has that rarely appear in target opportunities. These may indicate a preference misalignment (the user's skills do not match the roles they are targeting).
+
+### Step 5 — Optionally re-score specific opportunities
+
+If the user adds a missing skill to their profile, re-score affected opportunities:
+
+```python
+mcp__ronin__compute_match_score(user_id="<uuid>", opportunity_id="<opp-uuid>")
+```
+
+The score is 0-100. The `reasoning` is a static label describing the scoring method (lexical cosine similarity on word-frequency hash vectors).
+
+---
+
+## Workflow 3: Vocabulary-Overlap Discovery
+
+Use `compute_embedding` on the user's profile summary and `similarity_search` to find opportunities that share vocabulary with the profile but may have been under-ranked by the lexical match scorer. Keep the `semantic` alias in the dispatch table for compatibility, but describe the workflow accurately as vocabulary-overlap search.
+
+### Critical Limitation: mock-v1 Embeddings
+
+The current embedding implementation (`mock-v1`) is a **deterministic word-frequency hash vector** (whitespace tokenization → MD5 hash → 1536-dim mapping → L2-normalized), NOT a real semantic embedding. Results reflect **vocabulary overlap**, not semantic meaning — "Senior Python Engineer" vs. "Staff Backend Developer" scores LOW because the words differ.
+
+**CAN do:** Find opportunities sharing keywords with the profile, catching cases where `compute_match_score` under-weighted matches due to description length differences.
+
+**CANNOT do:** Find semantically related opportunities with different vocabulary. A Voyage AI (`voyage-3`) upgrade is planned. Until then, treat `similarity_search` as vocabulary-overlap search.
+
+### Step 0 — Load shared context (profile for embedding)
+
+```python
+profile = mcp__ronin__get_profile(user_id="<uuid>")
+```
+
+### Step 1 — Build profile summary text
+
+Concatenate the user's headline, summary, experience titles/descriptions, and skill names into a single text block. This becomes the query for similarity search.
+
+### Step 2 — Compute profile embedding
+
+```python
+mcp__ronin__compute_embedding(
+    text="Staff Software Engineer Python distributed systems payments Senior Engineer Stripe Built real-time fraud detection pipeline...",
+    model="mock-v1"
+)
+```
+
+The `model` parameter only supports `"mock-v1"`. Any other value logs a warning and falls back to mock-v1.
+
+### Step 3 — Store profile embedding (optional)
+
+Persist for reuse: `store_embedding(user_id, entity_type="profile", entity_id=<profile-uuid>, embedding=[...])`. Embeddings are **user-private** and upsert on `user_id` + `entity_id` + `entity_type`. Valid `entity_type` values: `"experience"`, `"achievement"`, `"skill"`, `"opportunity"`, `"profile"`.
+
+### Step 4 — Run similarity search
+
+```python
+mcp__ronin__similarity_search(
+    user_id="<uuid>",
+    query="Staff Software Engineer Python distributed systems payments fraud detection pipeline",
+    top_k=10,
+    entity_types=["opportunity"]
+)
+```
+
+The `similarity` score is `1.0 - cosine_distance`, where 1.0 = identical vocabulary and 0.0 = no shared words. With mock-v1, scores above 0.7 indicate strong vocabulary overlap. The `entity_types` filter restricts results to specific entity types; pass `null` to search across all types.
+
+### Step 5 — Cross-reference with match scores
+
+Compare similarity_search ranking against match_score ranking. Opportunities ranking high in similarity but low in match_score may have been under-scored due to short descriptions or boilerplate dilution. Present these as "potentially under-ranked opportunities" with the vocabulary-overlap caveat.
+
+### Step 6 — Store opportunity embeddings (optional)
+
+For opportunities not yet embedded, `compute_embedding(text=<description>, model="mock-v1")` then `store_embedding(user_id, entity_type="opportunity", entity_id=<opp-uuid>, embedding=result["embedding"])`. This expands the searchable vector space for future similarity searches.
+
+---
+
+## Workflow 4: Market Calibration
+
+Use web search to gather salary data for the user's target roles and compare against their configured `compensation_goals`. Flag misalignment between goals and market reality.
+
+### Step 0 — Load shared context (preferences and profile)
+
+```python
+# Parallel context load — preferences and profile
+prefs   = mcp__ronin__get_preferences(user_id="<uuid>")
+profile = mcp__ronin__get_profile(user_id="<uuid>")
+```
+
+If `compensation_goals` is empty, advise the user to set compensation targets before running calibration.
+
+### Step 1 — Build market research queries
+
+Construct queries from `target_roles`, `industries`, and `geographic_preferences`. Build queries that include:
+- Each role from `target_roles`
+- Relevant industries from `industries`
+- Geographic qualifiers from `geographic_preferences` (if not remote)
+- Current year for recency
+- Sources like "levels.fyi", "glassdoor", "blind"
+
+### Step 2 — Synthesize market data
+
+From search results, extract salary ranges. Use extended thinking for synthesis — do NOT add CoT scaffolding. Apply these rules:
+
+- **Null over confabulation:** If no credible source supports a specific number, report the range as unknown rather than guessing.
+- **Source attribution:** Note where each data point comes from (e.g., "levels.fyi n=127", "Glassdoor 2025 data", "job posting salary band").
+- **Recency weighting:** Prefer 2025-2026 data over older data. Note the year for each source.
+
+Produce a market summary:
+
+```text
+MARKET CALIBRATION — Staff Engineer (fintech, remote)
+
+Source                  | Min      | Median   | Max      | Notes
+levels.fyi (n=127)      | $195,000 | $245,000 | $320,000 | 2025 data, L6 equivalent
+Glassdoor (n=84)        | $180,000 | $230,000 | $290,000 | 2024-2025, "Staff" title
+Job postings (n=12)     | $200,000 | $250,000 | $300,000 | From recent listings
+
+Composite estimate: $195,000 - $245,000 - $320,000 (min/median/max)
+```
+
+### Step 3 — Compare against compensation goals
+
+Present a clear comparison showing where the user's min and target fall relative to market data. Flag whether goals are market-aligned, below market (leaving money on the table), or above market (may explain low conversion rates).
+
+### Step 4 — Present recommendations
+
+Compensation goal changes require user consent. Present the market data and recommendation, then wait for confirmation. Do NOT call `update_preferences` for compensation goals — they are managed via separate child tables and are not updatable through `update_preferences`.
+
+If the analysis suggests role or industry changes that would improve compensation alignment, those CAN be applied via `update_preferences` with user consent.
+
+---
+
+## Workflow 5: Strategy Persistence
+
+Record strategy decisions in user memory so downstream skills (discovery, research, materials) can reference them. This ensures continuity across sessions.
+
+### Step 1 — Retrieve current memory
+
+```python
+mcp__ronin__get_user_memory(user_id="<uuid>")
+```
+
+The `ai_memory` field is a free-form string injected into every AI system prompt for this user.
+
+### Step 2 — Summarize strategy decisions
+
+After running any of the workflows above, compile the key findings into a concise strategy note:
+
+```text
+[Search Strategy — 2026-03-19]
+- Removed "Principal Engineer" from target_roles (0/3 approved over 2 cycles)
+- Added "AI/ML" to industries (4 of top-10 opportunities; strong conversion signal)
+- Skill gaps: Kubernetes (50% of targets), Go (36%). User plans to address Kubernetes first.
+- Compensation goals market-aligned ($250k target vs $245k median for Staff/fintech).
+- Similarity search surfaced 3 under-ranked opportunities in payments infrastructure.
+```
+
+### Step 3 — Persist to memory
+
+The current `get_user_memory` tool only reads memory. To update user memory with strategy decisions, advise the user to note the findings in their session. The `ai_memory` field is managed through the chat tool-use system (`memory_tools.py`), not through MCP tools directly.
+
+> **Current limitation:** The MCP server exposes `get_user_memory` (read) but does not expose a `set_user_memory` or `update_user_memory` tool. Strategy persistence requires the user to reference these findings in a chat session where the memory tool can write them. This skill documents the pattern for when a write tool is added.
+
+Present the strategy summary to the user with the recommendation to save it via the chat interface.
+
+---
+
+## Critical Rules
+
+1. Never auto-apply preference changes — present recommendations with evidence and wait for user confirmation
+2. similarity_search uses mock-v1 (vocabulary overlap), NOT semantic similarity — always caveat results
+3. compute_match_score is lexical only — apply agent judgment for seniority, location, and industry fit
+4. compensation_goals are NOT updatable via update_preferences — they require separate child table management
+5. Require at least 10 pipeline opportunities before running preference correlation analysis
+6. Always attribute market data sources with name, sample size, and recency
+7. Null over confabulation — if no credible source supports a salary number, report as unknown
+
+### Scope Boundaries
+
+This skill is not for discovering opportunities, generating materials, or managing pipeline entries directly. Not when the pipeline has fewer than 5 entries — insufficient data for meaningful strategy analysis.
+
+## Canonical Vocabulary
+
+- **Scoring methods:** `lexical cosine similarity`, `mock-v1 hash vector`, `Jaccard similarity`
+- **Skill categories:** `strong match`, `partial match`, `gap`, `nice-to-have`
+- **Embedding model:** `mock-v1`
+- **Entity types for embeddings:** `experience`, `achievement`, `skill`, `opportunity`, `profile`
+- **Conversion health levels:** `healthy`, `concern`
+
+---
+
+## Error Handling
+
+See [`references/error-reference.md`](references/error-reference.md) for the full error table, limitations, and roadmap.
+
+Key errors to watch for:
+- `get_preferences` returns `null` → run `ronin-discovery` Configure Preferences first
+- `similarity_search` returns `count: 0` → no embeddings stored; run Workflow 3 Step 6 first
+- `get_profile` returns `error: "profile_not_found"` → run `ronin-profile-builder` first
+- MCP connection unavailable → reconnect the Ronin MCP server configured for this harness, or fix the local API-mounted `/mcp` setup if you are explicitly running Ronin locally
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

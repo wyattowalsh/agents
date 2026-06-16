@@ -1,0 +1,28 @@
+custom:
+  tier: quick
+  prompt: |
+    What problem does the skill "{name}" solve for AI coding agents?
+    What tooling or stack does it assume?
+    Name one comparable ecosystem alternative outside this repository.
+installed:
+  tier: standard
+  prompt: |
+    Who maintains the upstream source for skill "{name}" ({install_source})?
+    Summarize what the skill does, recent activity signals, and any known risks.
+    Source URL: {source_url}
+curated-external:
+  tier: standard
+  prompt: |
+    Audit curated external skill "{name}" from {install_source}.
+    Summarize purpose, trust posture, and install prerequisites.
+    Curated status: {curated_status}. Trust tier: {trust_tier}.
+inspect-then-install:
+  tier: quick
+  prompt: |
+    Why does skill "{name}" require inspection before install?
+    Summarize risks; do not endorse installation.
+global-only-or-avoid:
+  tier: quick
+  prompt: |
+    Why is skill "{name}" marked global-only or avoid in the curated catalog?
+    Summarize rationale only.

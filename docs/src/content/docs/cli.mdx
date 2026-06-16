@@ -173,7 +173,7 @@ OpenSpec-generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.cru
 
 ### `wagents validate` -- Check All Assets
 
-Validate frontmatter and structure for every skill, agent, and MCP server in the repository. Also validates hook event names and `RELATED_SKILLS` references.
+Validate frontmatter and structure for every skill, agent, and MCP server in the repository. Also validates hook registry, harness paths, and lifecycle event names via `scripts/validate/validate_repo.py`.
 
 ```bash
 wagents validate
@@ -189,10 +189,9 @@ wagents validate --format json
 | **Skills** | Required `name` and `description` fields, kebab-case naming, name matches directory, description within 1024 chars, body is non-empty |
 | **Agents** | Required `name` and `description` fields, kebab-case naming, name matches filename |
 | **MCP servers** | Directory is kebab-case, `server.py` exists and references FastMCP, `pyproject.toml` includes fastmcp dependency, `fastmcp.json` exists |
-| **Hooks** | Hook event names are known lifecycle events across skills, agents, and settings |
-| **Related skills** | Every key and value in `RELATED_SKILLS` maps to an existing skill directory |
+| **Hooks** | Registry entries, runner paths, harness coverage, and known lifecycle events across skills, agents, and settings |
 
-The command exits with code 1 if any validation fails, printing each error to stderr.
+The command exits with code 1 if any validation fails, printing each error to stdout.
 
 <Aside type="tip" title="CI integration">
 Run `wagents validate` in your CI pipeline to catch frontmatter issues before merge. It is included in the repository's pre-commit and CI checks.
@@ -276,7 +275,7 @@ wagents install -y
 For third-party skill sources or curated subsets, use `npx skills add` directly:
 
 ```bash
-npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
+npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
 | Option | Default | Description |

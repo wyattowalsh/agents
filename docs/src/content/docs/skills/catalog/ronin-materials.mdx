@@ -1,0 +1,657 @@
+---
+title: "ronin-materials"
+description: "Generate SSOT-traced private-sector application materials for researched shortlisted opportunities."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ronin-materials" variant="note" /> <Badge text="5450 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="ronin" variant="caution" /> <Badge text="claude-opus-4-6" variant="tip" /> <Badge text="Installed" variant="caution" />
+
+> Generate SSOT-traced private-sector application materials for researched shortlisted opportunities. Use for one optimized resume plus required cover letters, short answers, questionnaire responses, and related text materials. NOT for profile building, research-only work, or academic/federal/creative resumes.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/ronin-materials`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+| `$ARGUMENTS` | Action | |------------|--------| | `opportunity_id` or explicit researched shortlisted opportunity context | Generate resume + cover letter for the opportunity | | `review` or `status` | Retrieve and present existing materials for review | | `edit &lt;section&gt;` | Apply user edits to stored materials | | `refresh` | Unlock an approved draft for same-row regeneration | | `restore &lt;revision_id&gt;` | Copy a prior immutable revision into a new editable head version | | `approve` | Validate traceability and lock materials | | `help` or natural language question | Contextual guidance on materials workflow | | Empty | Show available workflows with examples |
+
+## Modes
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `opportunity_id` or explicit researched shortlisted opportunity context | Generate resume + cover letter for the opportunity |
+| `review` or `status` | Retrieve and present existing materials for review |
+| `edit &lt;section&gt;` | Apply user edits to stored materials |
+| `refresh` | Unlock an approved draft for same-row regeneration |
+| `restore &lt;revision_id&gt;` | Copy a prior immutable revision into a new editable head version |
+| `approve` | Validate traceability and lock materials |
+| `help` or natural language question | Contextual guidance on materials workflow |
+| Empty | Show available workflows with examples |
+
+## Quick Start
+
+```text
+1. Load SSOT, opportunity, research, existing comments, and current materials
+2. Build the `MaterialsManifest` for every required application artifact
+3. Create or edit one `optimized_resume` plus manifest-required supporting artifacts
+4. Validate, preview/export PDF and DOCX, visually audit, and iterate until gates pass
+5. Present and approve only after manifest-level review (`approve_materials` runs validation internally)
+```
+
+---
+
+## Critical Rules
+
+1. Never fabricate achievements, metrics, or claims not present in the SSOT — every source-referenced factual assertion must trace to a supported source entity
+2. Always use plain UUID strings in `source_references` values — never prefixed URNs or non-UUID formats
+3. Must validate source traceability before approving — `approve_materials` enforces this as a hard-blocking gate
+4. Only supported profile entity UUIDs pass validation — Experience, Skill, Achievement, Education, Certification, Publication, and Repository are valid; Profile and OpportunityResearch are not
+5. Always obtain `pipeline_entry_id` from `get_materials` response — never construct it or read it from the opportunity object
+6. Never add skills to materials that are not present in the SSOT skills list
+7. Never add metrics, percentages, dollar amounts, or counts not present verbatim in the SSOT
+8. Must present materials to the user for review before approval — do not auto-approve
+9. Always surface SSOT gaps (missing required skills) explicitly to the user rather than inventing content to fill them
+10. Never edit or restore locked materials directly — call `refresh_materials_draft` first when a locked draft needs regeneration or rollback; `update_materials` and `restore_materials_revision` will reject locked rows
+11. Default to standard private-sector ATS-safe structure — single-column, standard headings, simple bullets, and body-embedded contact info
+12. Never generate tables, sidebars, graphics, icons, skill bars, text boxes, or decorative formatting in resume content
+13. Default to 1 page; use 2 pages only when additional role-relevant evidence earns it, and always surface the page-length choice to the user
+14. A traceability-valid but section-thin draft is not complete — include `Projects` when traceable Experience evidence supports it, and repair missing recruiter-expected sections before saving
+15. Preview or render generated materials whenever the harness can, visually audit the result, and iterate until the layout is clean before saying the materials are ready
+16. Optimize for ATS parsing, recruiter scanability, and hiring-manager evidence; do not optimize by keyword-stuffing, unsupported skills, or generic summaries
+17. Academic CVs, federal resumes, and creative/visual resume formats are out of scope — say so explicitly and offer a standard private-sector version instead
+18. Preserve `resume_variants` and `ai_comments` in external-agent edits; variant comments use `document: "resume_variant:&lt;variant_id&gt;"` and must remain visible from `get_materials`
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ronin-materials` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | ronin |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Model | `claude-opus-4-6` |
+  </TabItem>
+  <TabItem label="Compatibility">
+| Field | Value |
+| ----- | ----- |
+| Compatibility | ['claude-code', 'cursor', 'gemini-cli', 'codex', 'opencode', 'antigravity', 'crush', 'github-copilot'] |
+| Allowed Tools | `mcp__ronin__get_profile mcp__ronin__get_opportunity mcp__ronin__get_research mcp__ronin__get_materials mcp__ronin__create_materials mcp__ronin__update_materials mcp__ronin__refresh_materials_draft mcp__ronin__restore_materials_revision mcp__ronin__approve_materials mcp__ronin__validate_source_traceability mcp__ronin__get_user_memory mcp__ronin__get_preferences mcp__fetch__fetch_markdown mcp__fetch__fetch_html` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: ronin-materials
+description: Generate SSOT-traced private-sector application materials for researched shortlisted opportunities. Use for one optimized resume plus required cover letters, short answers, questionnaire responses, and related text materials. NOT for profile building, research-only work, or academic/federal/creative resumes.
+compatibility:
+  - claude-code
+  - cursor
+  - gemini-cli
+  - codex
+  - opencode
+  - antigravity
+  - crush
+  - github-copilot
+model: claude-opus-4-6
+model_settings:
+  thinking:
+    type: enabled
+    budget_tokens: 1000000
+allowed-tools: mcp__ronin__get_profile mcp__ronin__get_opportunity mcp__ronin__get_research mcp__ronin__get_materials mcp__ronin__create_materials mcp__ronin__update_materials mcp__ronin__refresh_materials_draft mcp__ronin__restore_materials_revision mcp__ronin__approve_materials mcp__ronin__validate_source_traceability mcp__ronin__get_user_memory mcp__ronin__get_preferences mcp__fetch__fetch_markdown mcp__fetch__fetch_html
+license: "MIT"
+metadata:
+  version: "1.0.0"
+  author: "ronin"
+---
+
+# ronin-materials
+
+| `$ARGUMENTS` | Action |
+|------------|--------|
+| `opportunity_id` or explicit researched shortlisted opportunity context | Generate resume + cover letter for the opportunity |
+| `review` or `status` | Retrieve and present existing materials for review |
+| `edit <section>` | Apply user edits to stored materials |
+| `refresh` | Unlock an approved draft for same-row regeneration |
+| `restore <revision_id>` | Copy a prior immutable revision into a new editable head version |
+| `approve` | Validate traceability and lock materials |
+| `help` or natural language question | Contextual guidance on materials workflow |
+| Empty | Show available workflows with examples |
+
+A skill for generating tailored, traceable application materials for a specific Ronin opportunity. Every run produces one optimized resume and any application-required supporting materials, such as cover letters, short answers, questionnaire responses, recruiter notes, or portfolio blurbs. Every source-referenced factual claim traces to a source entity in the SSOT. The traceability validation gate is mandatory before any materials are approved.
+
+> **Step 0 — Context Load (all skills):** This skill assumes the Ronin MCP server is already available as an external prerequisite. Always load `get_profile(user_id)` and `get_user_memory(user_id)` first. Load `get_opportunity(user_id, opportunity_id)` only when the request already includes opportunity context or once the user provides it. This pattern applies to every ronin-* skill invocation.
+
+## Classification Logic
+
+Choose the workflow from the user intent before loading extra references:
+
+1. **Help / empty args** — show available workflows and examples.
+2. **Out of scope** — reject academic CVs, federal resumes/KSAs, creative resumes, profile building, and research-only requests.
+3. **Generate** — user supplies a researched shortlisted opportunity or asks for new materials.
+4. **Review / status** — user wants to inspect the current stored draft.
+5. **Edit** — user wants to change a section of the current draft.
+6. **Refresh** — user wants to reopen a locked approved draft for same-row regeneration.
+7. **Restore** — user names a prior `revision_id` to bring back as the new editable head.
+8. **Approve** — user wants to validate traceability and lock the current draft.
+
+If the user asks for multiple actions in one turn, execute them in state order: review the current draft first, then edit or refresh/restore as needed, then validate, then approve only after the user has seen the resulting content.
+
+---
+
+## Quick Start
+
+```text
+1. Load SSOT, opportunity, research, existing comments, and current materials
+2. Build the `MaterialsManifest` for every required application artifact
+3. Create or edit one `optimized_resume` plus manifest-required supporting artifacts
+4. Validate, preview/export PDF and DOCX, visually audit, and iterate until gates pass
+5. Present and approve only after manifest-level review (`approve_materials` runs validation internally)
+```
+
+---
+
+## Overview
+
+This skill covers the researched `shortlisted -> materials_generated` seam for a single Ronin opportunity. Use it to generate, review, edit, refresh, restore, validate, and approve one materials row without inventing alternate lifecycle paths. The lifecycle-heavy tool contracts live in `references/lifecycle-reference.md`; this file focuses on how to operate them safely from the skill surface.
+
+### Job-seeking optimization contract
+
+Optimize materials for three readers at once:
+
+1. **ATS parser** — simple text structure, standard headings, body-embedded contact info, no tables/sidebars/graphics, and natural role keywords only when they are supported by the SSOT.
+2. **Recruiter scan** — a 10-second read should reveal the target role, strongest matching evidence, highest-priority matched skills, and any meaningful gap the user should know about.
+3. **Hiring manager read** — every prominent claim should show evidence: action, scope or method, and result. Metrics are best when present in the SSOT, but unsupported numbers are never allowed.
+
+This skill optimizes for interview conversion, not profile completeness. Prefer a shorter, sharper, role-specific resume over an exhaustive career export. Do not keyword-stuff, list unsupported skills, or create generic AI-sounding summaries to fill space.
+
+### Block-canonical storage
+
+Materials are **block-canonical**, not markdown-first. The stored source of truth is structured artifact content: one `optimized_resume`, optional `cover_letter`, and any required text-response artifacts. Legacy fields (`resume_blocks`, `cover_letter_blocks`, `short_answers`) remain the storage compatibility layer; markdown fields are derived from blocks and kept in sync automatically. When you pass only markdown to `create_materials` or `update_materials`, the server converts it to blocks internally. See `references/data-shapes.md` and `references/artifact-types.md` for the full shape.
+
+### Skill-orchestrated multiagent workflow
+
+The runtime is the active harness: `deepagents`, `opencode`, or `codex`. This skill is the orchestration program loaded by those runtimes. Run the materials workflow as named phases, delegating to subagents when the harness supports it and otherwise executing the same roles sequentially in one session:
+
+1. `RequirementExtractor` — identify every application-required material from the job post, ATS prompts, application instructions, user request, and research.
+2. `Researcher` — use existing Ronin research first; refresh or enrich company, role, team, product, and application-process context only when missing or thin.
+3. `EvidenceAnalyst` — map role requirements and prompts to profile evidence; flag unsupported requirements instead of inventing them.
+4. `ApplicationPlanner` — create or update the `MaterialsManifest` with required, optional, blocked, and missing-input artifacts.
+5. `ResumeStrategist` — plan exactly one optimized resume for this application.
+6. `ArtifactWriters` — write only the manifest-required or explicitly useful artifacts.
+7. `ClaimVerifier` — verify factual claims against allowed source evidence.
+8. `RecruiterCritic` — evaluate scan value, firm fit, role targeting, specificity, ATS safety, and tone.
+9. `ApplicationCompletenessCritic` — confirm every manifest-required material is complete or explicitly blocked with a reason.
+10. `ExportAuditor` — require PDF and DOCX resume exports from the same artifact and inspect the rendered output.
+11. `RepairRouter` — route precise repairs back through the same workflow until all gates pass or the run fails with diagnostics.
+
+Ronin backend tools are the deterministic state and validation substrate: use them to load context, persist manifests/artifacts/comments, validate traceability, export files, audit rendered materials, and approve only after the manifest is complete.
+
+### Single optimized resume
+
+Generate exactly one resume per application: the canonical `optimized_resume`. Do not create alternate resume versions, expanded variants, or a separate ATS-vs-polished split. Existing historical `resume_variants` may appear when reviewing old rows; treat them as compatibility data, not as a current-generation target.
+
+### Immutable revision history
+
+Materials revisions are immutable snapshots. Restoring an older revision does **not** mutate the historical record; it copies the selected snapshot into the current materials row as a new unlocked head version with an incremented `version`. If the current row is locked, refresh it first, then restore the desired prior `revision_id`.
+
+### Inclusion reasoning threads
+
+Each generated materials record can carry `inclusion_threads` — per-inclusion reasoning metadata that explains why every document unit (heading, bullet, paragraph, short answer) was selected for this role. Each thread records the matched required skills, a human-readable label, and an ordered list of reasoning steps. See `references/data-shapes.md` for the `MaterialsInclusionThread` shape.
+
+### AI comments
+
+Materials can also carry `ai_comments` — selected-text review comments and instructions created in the web editor or by an external agent harness. These comments are durable on the Ronin materials row, visible from `get_materials`, and accepted by `update_materials`. Treat them as instructions for the next edit or AI proposal, not as document content, source evidence, or traceability references. The `document` key may be `resume`, `cover_letter`, or `resume_variant:<variant_id>`.
+
+### Export and readiness
+
+API-backed retrieval can also surface `export_readiness` — an assessment of whether the content is ready for export, with a normalized score, recommended format, recommended preset (`ats_safe` by default), plus warnings and notes. A complete resume run requires both PDF and DOCX exports from the same `optimized_resume` artifact. Export supports two presets: `ats_safe` and `polished`; both share the same ATS-safe semantic structure, and `polished` only adjusts presentation details. See `references/data-shapes.md` and `references/export-audit.md` for readiness and audit expectations.
+
+### Preview and visual audit loop
+
+After generation or any content-affecting edit, preview the generated materials whenever the active harness has a browser, PDF, DOCX, screenshot, or app-preview capability. Visually audit the rendered resume and cover letter before saying they are ready to use. Check page count, whitespace balance, section order, line wraps, orphan sections, clipped text, overlapping text, awkward page breaks, oversized headings, and whether the strongest evidence is visible without hunting.
+
+If the preview exposes a defect, revise the stored materials, revalidate when content or references changed, render again, and repeat until the document is both traceable and visually clean. `export_readiness` is not a substitute for visual review; it is an input to the review. If the harness cannot preview or render files, say that explicitly and run the text/layout preflight instead — do not claim a visual audit was completed.
+
+### ATS-safe content structure
+
+The app generator and this skill should follow the same recruiter-first defaults: one page by default, summary only when it earns the space, curated skills near the top, project evidence when the SSOT supports it, and aggressively pruned lower-signal experience.
+
+Generate content for a single-column, ATS-friendly resume. Use standard headings (`Summary`, `Technical Skills` or `Skills`, `Professional Experience` or `Experience`, `Projects`, `Education`), simple bullets, and body-embedded contact info at the top.
+
+Do NOT generate tables, text boxes, sidebars, graphics, icons, skill bars, photos, or header/footer contact details. The export presets control presentation; the generated content must stay structurally clean and text-first.
+
+**Resume customization** — selects and reorders the user's SSOT experiences to lead with what is most relevant to the role. Highlights skills that match `required_skills`. Formats achievement bullets using only data already present in the SSOT — no embellishment, no invented metrics.
+
+**Section completeness gate** — validation-passing is not enough. Before saving, check that the resume has recruiter-complete sections: contact/header, `Summary` when it earns space, `Technical Skills` or `Skills`, `Professional Experience`, `Projects` when at least one SSOT Experience can be reframed as project evidence, and `Education` when present in the profile. A draft that omits `Projects` despite traceable project-style experience is incomplete and must be repaired before `create_materials` or `update_materials`.
+
+**Editorial defaults** — treat the resume like a selective pitch, not an exhaustive profile export. Use these defaults unless the role clearly earns more space:
+
+- **Page length** — default to 1 page. Use 2 pages only when multiple directly relevant roles or achievements would otherwise hide strong alignment signals.
+- **Summary** — optional, not mandatory. Include it only when you can state a sharp role thesis in roughly 55 words or fewer using 2 grounded fit signals. If it would become generic, omit it.
+- **Skills section** — keep it near the top, compact, and curated. Surface the strongest role-aligned skills only; do not dump every tool from the SSOT. Prefer inline grouped text over a tall stack of one-skill bullets.
+- **Experience budget** — lead role usually gets 3-5 bullets. Supporting roles usually get 1-2 bullets. Older or lower-signal roles should be compressed or omitted before adding a second page.
+- **Projects section** — include a `Projects` section when the SSOT contains traceable project-style work inside Experience records. Use Experience UUIDs as the source references and word the section so it does not imply separate project entities.
+- **Bullet style** — short, evidence-led, recruiter-skimmable. Prefer one proof point per bullet using action + scope or method + result. Avoid generic filler like “worked closely with stakeholders” unless the source evidence itself makes that wording necessary.
+- **Soft skills** — demonstrate teamwork, communication, leadership, ownership, and problem solving through SSOT-backed bullets. Do not list them as naked keywords unless the source profile explicitly stores them as skills.
+
+**Cover letter composition** — opens with a reference to research findings (company context, recent developments, role specifics). The body highlights 2-3 SSOT achievements directly relevant to the role's stated requirements. Keep it concise, specific to the employer, and free of boilerplate or repeated resume bullets. Closes professionally.
+
+**Source traceability** — `source_references` tracks SSOT-backed factual claims via plain UUID strings pointing to supported profile records: Experience, Skill, Achievement, Education, Certification, Publication, or Repository. Not every section needs a reference: research can guide framing, and Profile or OpportunityResearch records are not valid `source_references`. The `validate_source_traceability` check verifies that every reference maps to a real supported entity. This gate cannot be bypassed — `approve_materials` runs it internally as a hard-blocking check.
+
+## State Management
+
+State-dir: this skill does not persist local `~/.{ronin-materials}/state/` files. Durable state is the Ronin materials row returned by `get_materials`.
+
+Normalize materials handling around five axes:
+
+- **Pipeline gate** — first-pass generation runs after research for a linked `shortlisted` pipeline entry. Re-approval after a refresh stays in `materials_generated`.
+- **Lock state** — locked drafts are reviewable but not directly editable, restorable, or regenerable; use `refresh_materials_draft` first.
+- **Versioning** — every refresh, restore, and successful edit increments `version` on the live head row without mutating historical revisions.
+- **Refresh vs restore** — `refresh_materials_draft` reopens the current locked head in place; `restore_materials_revision` copies a known immutable snapshot into a new unlocked head version.
+- **Reasoning and validation metadata** — editing content, `short_answers`, or `source_references` can make validation stale, block approval, and clear `inclusion_threads` unless refreshed reasoning metadata is supplied.
+- **AI comments** — `ai_comments` travel with the materials row for web and external agents. Updating only comments does not make validation stale and must not be copied into exported resume or cover-letter text.
+
+> **Red line**: NEVER generate achievements, metrics, or claims that are not present in the SSOT. If the SSOT shows "Led backend architecture" but not a specific metric like "reduced latency by 40%", do NOT generate that metric. Only use data that exists in SSOT entities. Fabricated content that passes traceability validation by mapping to the wrong entity ID is still fabrication — each reference must map to the entity that actually contains the stated claim.
+
+## Progressive Disclosure
+
+Load only the reference needed for the current action:
+
+| File | Content | Load when |
+|------|---------|-----------|
+| `references/tool-reference.md` | SSOT load, generation, editing, and `source_references` tool contracts | Constructing load/generate/edit calls |
+| `references/lifecycle-reference.md` | Refresh, restore, validate, and approve lifecycle contracts | Working with locked drafts, revisions, or approval |
+| `references/data-shapes.md` | Data model documentation, resume guidelines, and validation scope | Understanding response structure |
+| `references/multiagent-workflow.md` | Skill-primary orchestration roles and handoffs | Generating or repairing materials |
+| `references/materials-manifest.md` | Manifest contract for required, optional, blocked, and missing-input artifacts | Planning one application |
+| `references/artifact-types.md` | Supported artifacts and artifact-scoped comments | Handling non-resume materials |
+| `references/quality-gates.md` | Validation, critique, completeness, comments, and readiness gates | Deciding whether materials are ready |
+| `references/export-audit.md` | PDF/DOCX export and visual/text audit checks | Previewing and exporting |
+| `references/resume-repo-profile-import.md` | How to borrow useful resume repo facts and logic safely | Profile enrichment and evidence selection |
+| `references/formatting-guide.md` | Page-length, ATS-safe layout, anti-patterns, and export-format guidance | Shaping resume or cover-letter structure |
+| `references/examples.md` | Example conversations with full agent steps | First-time use or debugging |
+| `references/error-reference.md` | Error handling table, limitations, and roadmap | Troubleshooting |
+
+Do not load all references at once — load the relevant one when needed.
+
+---
+
+## Scope boundaries
+
+This skill generates standard private-sector resumes and cover letters. It is NOT for academic CVs, federal resumes/KSAs, creative or portfolio-first visual resumes, or long-form career narratives.
+
+If a user asks for one of those formats, explain that the format is out of scope, offer a standard private-sector version as a starting point, and do not pretend the specialized format is supported.
+
+---
+
+## Prerequisites
+
+### 1. Opportunity in the correct materials state
+
+First-pass materials generation runs after research has been completed for a `shortlisted` opportunity. The common automated path is `discovered → shortlisted → materials_generated → applied`, but the MCP contract also supports a manual/legacy `approved` gate before first-pass materials generation. In practice, `create_materials` accepts first-pass generation from either `shortlisted` or `approved`, and completed materials move the entry to `materials_generated`/ready to apply.
+
+Confirm state with `get_opportunity(user_id, opportunity_id)`:
+
+- If `state` is `"shortlisted"` or `"approved"` with completed research, follow the standard generation flow below.
+- If `state` is `"materials_generated"` and `get_materials(user_id, opportunity_id)` shows `materials.is_locked == true`, use **Workflow: Refresh Locked Draft** before regenerating.
+- If `state` is `"shortlisted"` without completed research, run `ronin-research` first; successful automated research will queue materials.
+
+### 2. Completed research
+
+`get_research` must return `status: "researched"` with non-null `research`. If missing, run `ronin-research` first.
+
+### 3. Populated SSOT profile
+
+The SSOT should contain at minimum one relevant experience and a skills list. Achievements strengthen traceability and resume quality, but they are not required for the tools to run. If the profile is too thin to tailor credibly, run `ronin-profile-builder` first.
+
+### 4. `ANTHROPIC_API_KEY`
+
+Materials generation uses the backend-configured Claude model tier for content synthesis. Set `ANTHROPIC_API_KEY` in the environment before starting the agent session.
+
+### 5. Ronin MCP tools available in-session
+
+This skill assumes the current agent session already has access to the Ronin MCP tools listed in `allowed-tools`.
+
+---
+
+## Critical Constraint: No Fabrication
+
+> **Red line**: NEVER generate achievements, metrics, or claims that are not present in the SSOT.
+
+| SSOT contains | You MAY write | You MUST NOT write |
+|---|---|---|
+| "Led backend architecture for billing platform" | "Led backend architecture for billing platform" | "Led backend architecture, reducing costs by 30%" |
+| "Grew team from 3 to 12 engineers" | "Grew engineering team from 3 to 12 engineers" | "Built and scaled a high-performing team of 15+" |
+| "Migrated monolith to microservices" | "Led migration of monolith to microservices" | "Migrated monolith to microservices, enabling 5x faster deployments" |
+
+**What counts as fabrication:** Any metric/percentage/count not verbatim in SSOT; inferred outcomes unless explicitly stated; skills/technologies not in SSOT; responsibilities not in any experience record; generic filler bullets.
+
+**Rewording is allowed; invention is not.** You may rephrase for clarity, grammar, or tone. You may reorder and emphasize. You may not add facts that do not exist in the SSOT. See `references/data-shapes.md` for detailed resume customization guidelines.
+
+---
+
+## Workflow: Generate Materials
+
+Run this after the opportunity is in `shortlisted` or `approved` state and research is complete.
+
+### Step 1 — Load the full SSOT profile
+
+Call `get_profile(user_id)`. Extract and record entity IDs for every Experience, Skill, Achievement, Education, Certification, Publication, and Repository you may reference. These IDs become `source_references` values. Prefer citing specific `achievement.id` over parent `experience.id` for finer-grained traceability. See `references/tool-reference.md` for the full response shape.
+
+> **Important**: Profile and OpportunityResearch UUIDs do not pass source-reference validation. Research can shape framing, but it is not a claim-level source reference.
+
+### Step 2 — Load the opportunity
+
+Call `get_opportunity(user_id, opportunity_id)`. Extract `title`, `company`, `description`, and `required_skills`. See `references/tool-reference.md` for the full response shape.
+
+### Step 3 — Load research findings
+
+Call `get_research(user_id, opportunity_id)`. Extract `company_overview` (cover letter framing only; do not treat it as a `source_references` target), `requirements_match`, `culture_signals`, and `red_flags`. See `references/tool-reference.md` for the full response shape.
+
+### Step 4 — Look up `pipeline_entry_id`
+
+`create_materials` requires a `pipeline_entry_id`, not an `opportunity_id`. Obtain it from:
+
+```python
+mcp__ronin__get_materials(user_id="<user-id>", opportunity_id="<opp-uuid>")
+```
+
+Extract `pipeline_entry_id` from the response. There is no other way to obtain it — do not attempt to read it from the opportunity or construct it. If `pipeline_entry_id` is `null`, there is no pipeline entry for this opportunity/user pair.
+
+### Step 5 — Generate resume content
+
+Before drafting, decide whether the role earns 1 page or 2. Default to 1 page. Use 2 pages only when multiple directly relevant roles or achievements would otherwise hide important alignment signals; page 2 must contain role-relevant evidence, not filler. Never exceed 2 pages for this skill.
+
+Page 1 must carry the summary, the strongest role match, and the highest-priority required skills. If content spills to page 2, keep the best alignment signals on page 1.
+
+Load `references/formatting-guide.md` when you need the detailed heading-label set, ATS anti-pattern list, or export-format guidance.
+
+Rank candidate evidence before drafting:
+
+1. Required skills or responsibilities from the opportunity that match SSOT achievements or experience details.
+2. Recent, senior, or high-scope work that proves the same capability with stronger evidence.
+3. Adjacent domain evidence from research or role context, but only when the factual claim still comes from SSOT.
+4. Lower-relevance chronology, generic responsibilities, or repeated tools — cut these before lengthening the resume.
+
+Work through sections in order, selecting SSOT content and noting entity IDs. Build structured content blocks when possible (the server accepts either blocks or markdown):
+
+- **Summary** — optional 2-4 line professional summary positioning the user for this specific role. If it cannot be sharp and grounded, omit it. Never use a generic “results-driven” summary.
+- **Skills** — List SSOT skills, prioritizing those in `required_skills`. Keep the section curated, compact, and role-aligned. Do not list skills absent from SSOT. Prefer one inline grouped section over many separate skill bullets.
+- **Experience** — Select and order by relevance to the role (most relevant first). For the lead experience, use 3-5 high-value bullets. Supporting experiences usually get 1-3 bullets each. Cut lower-relevance bullets and older/tangential experiences before compressing whitespace or adding filler. Use exact company/title/dates from SSOT, keep achievement text grounded in the SSOT, and note `experience.id`
+- **Projects** — Required when at least one SSOT Experience contains project-style evidence that can be reframed honestly. Back each project item with the underlying `experience.id`; do not imply a separate project record unless the profile exposes one.
+- **Education** — Include education records from the SSOT when useful, and use education UUIDs for factual education-only lines when a claim-level reference is needed.
+- **Certifications / publications / repositories** — Include these when directly useful to the target role and backed by SSOT records. Use the certification, publication, or repository UUID as the claim-level source reference for factual claims they directly support.
+
+Before storing the draft, run the section completeness gate: reject thin drafts that only satisfy traceability but omit recruiter-expected sections that the SSOT can support. Do not add empty unsupported sections to pass the gate.
+
+Also run the recruiter scan test before storing: in roughly 10 seconds, the draft should make the target role, top matched evidence, and highest-priority matched skills obvious. If it does not, reorder or cut before calling `create_materials` or `update_materials`.
+
+### Step 6 — Generate cover letter content
+
+Keep the cover letter to 1 page and flowing prose — no bullet lists or visual formatting tricks.
+
+- **Opening** — Reference company using research `company_overview`. State the role. Connect one specific research detail to user's background.
+- **Body (2-3 paragraphs)** — Each highlights one SSOT achievement addressing a stated requirement. Achievement text must come verbatim from SSOT; connection to role may be editorial.
+- **Closing** — Professional closing expressing interest and next steps.
+
+Do not restate the resume in paragraph form. The letter should answer why this company, why this role, and why this user's proven evidence fits now.
+
+### Step 7 — Build `source_references` and `inclusion_threads`
+
+Construct a `source_references` dict mapping factual claims that need validation to SSOT entity UUIDs. Values must be **plain UUID strings**. Key naming: descriptive labels (`exp_bullet_1`, `skill_claim_1`, `cover_letter_para1`) — must be unique. See `references/tool-reference.md` for format details.
+
+Optionally build an `inclusion_threads` list — one entry per document unit (heading, bullet, paragraph) explaining why it was included for this role. Each thread carries the content key, document type, kind, a human-readable label, the text excerpt, matched required skills, and ordered reasoning steps. See `references/data-shapes.md` for the `MaterialsInclusionThread` shape.
+
+### Step 8 — Store materials
+
+```python
+mcp__ronin__create_materials(
+    user_id="<user-id>",
+    pipeline_entry_id="<pe-uuid>",
+    source_references={...},
+    # pass either blocks or markdown per document:
+    resume_blocks=[...],
+    cover_letter_blocks=[...],
+    # or:
+    # resume_markdown="...",
+    # cover_letter_markdown="...",
+    # optional — named alternate resumes:
+    resume_variants=[
+        {
+            "id": "expanded_two_page",
+            "label": "Expanded resume",
+            "page_target": 2,
+            "blocks": [...],
+            "source_references": {...},
+            "inclusion_threads": [...],
+        }
+    ],
+    # optional — per-inclusion reasoning metadata:
+    inclusion_threads=[...]
+)
+```
+
+Returns `id` (the `materials_id` for all subsequent calls), `status`, `version`, `is_locked`, and the resolved `resume_blocks`, `resume_variants`, `cover_letter_blocks`, and markdown. See `references/tool-reference.md` for the full response shape.
+
+### Step 9 — Validate source traceability (optional pre-check)
+
+Recommended but optional — `approve_materials` runs validation internally after presentation. Running manually first catches issues early.
+
+```python
+mcp__ronin__validate_source_traceability(user_id="<user-id>", materials_id="<materials-uuid>")
+```
+
+If `valid: true`, proceed to Step 10. If `valid: false`, inspect `missing_refs` for the failure reason: fix UUID typos, replace unsupported entity IDs, add missing `source_references` when the validator reports `missing_source_references`, handle `export_not_allowed` by selecting export-safe source evidence or removing the claim, or remove fabricated claims. If validation returns `error: "profile_not_found"`, load or build the user's SSOT profile before retrying. Re-validate until `valid: true`. See `references/tool-reference.md` for response shapes.
+
+### Step 10 — Present to user
+
+Format the primary resume, any `resume_variants`, and the cover letter clearly, noting: which SSOT experiences were selected and why, excluded experiences or bullets and why, chosen page length and why it earned that space, skill gaps (required skills absent from SSOT), export-readiness warnings, and traceability result (X/Y validated). If `quality_score` is available, include it. If `inclusion_threads` are present, summarize the reasoning for key inclusions.
+
+Before calling the materials ready, preview or export them when the harness supports it and run the visual audit loop. If defects remain, repair them before final presentation. If preview is unavailable, report that limitation and describe the text-based preflight checks you performed.
+
+---
+
+## Workflow: Review and Edit Materials
+
+Use this after materials have been stored to present, refine, and finalize the current draft head.
+
+### Step 1 — Retrieve stored materials
+
+Call `get_materials(user_id, opportunity_id)`. Materials are nested inside the `materials` key. Use `materials.id` as `materials_id` for subsequent calls. The response includes `resume_blocks`, `cover_letter_blocks`, derived markdown, `inclusion_threads`, and `ai_comments`. See `references/tool-reference.md` for the full response shape.
+
+### Step 2 — Present for review
+
+Display resume and cover letter in readable format. Summarize: included/excluded experiences, surfaced/absent required skills, and cover letter research vs. SSOT references. If `inclusion_threads` are present, surface reasoning highlights for key inclusions. If open `ai_comments` are present, list the selected text and instruction so the user can decide whether to address, dismiss, or carry them into the next edit.
+
+### Step 3 — Apply user edits
+
+Update only affected sections. Ensure new content remains traceable — update `source_references` accordingly. `update_materials` accepts partial updates; unset fields retain current values. Version increments on each update. Locked materials (`is_locked: true`) reject edits.
+
+> **Note**: Editing content or changing `source_references` without providing `inclusion_threads` in the same update clears the stored reasoning threads. Pass `inclusion_threads` alongside those updates if you want to preserve or refresh them.
+
+Use `ai_comments` in `update_materials` when a user highlights text and asks the AI to revise or consider it later. Updating only `ai_comments` is a review-state change: do not treat it as source evidence, do not alter `source_references`, and do not claim validation is stale unless content or references also changed.
+
+### Step 4 — Approve materials
+
+```python
+mcp__ronin__approve_materials(user_id="<user-id>", materials_id="<materials-uuid>")
+```
+
+`approve_materials` runs `validate_source_traceability` internally as a hard-blocking gate. On success: materials are locked. If the pipeline is still in `shortlisted` or `approved`, it advances to `materials_generated`. If it is already `materials_generated` after generation or a prior refresh, approval is same-state and does not roll the pipeline back. On validation failure: fix references and retry. See `references/tool-reference.md` for response shapes.
+
+### Step 5 — Optionally restore a prior revision
+
+If the user wants to roll the draft back to a prior immutable snapshot, use **Workflow: Restore Prior Revision**. Restore creates a new editable head version from the selected `revision_id`; it does not overwrite or alter the historical revision record.
+
+---
+
+## Workflow: Refresh Locked Draft
+
+Use this when the stored draft is already approved and locked, but the user wants a regenerated version without creating a second materials row.
+
+### Step 1 — Retrieve the locked draft
+
+Call `get_materials(user_id, opportunity_id)` and confirm:
+
+- `materials.id` is the `materials_id` you will refresh
+- `materials.is_locked` is `true`
+- the linked pipeline entry is already at `materials_generated`
+
+### Step 2 — Refresh the same row
+
+```python
+mcp__ronin__refresh_materials_draft(
+    user_id="<user-id>",
+    materials_id="<materials-uuid>"
+)
+```
+
+This unlocks the same materials row, increments `version`, preserves the current content, `source_references`, `inclusion_threads`, and any persisted validation summary, and keeps the pipeline in `materials_generated`.
+
+### Step 3 — Regenerate in place
+
+Call `create_materials` again with the same `pipeline_entry_id`. On the refresh path, `create_materials` accepts the existing unlocked row even though the pipeline is already `materials_generated`.
+
+### Step 4 — Review and approve again
+
+Present the regenerated draft, then call `approve_materials` again. Approval remains same-state when the pipeline is already `materials_generated`.
+
+---
+
+## Workflow: Restore Prior Revision
+
+Use this when the user wants to bring back a known older materials revision as the new editable draft.
+
+### Step 1 — Ensure the current row is unlocked
+
+Call `get_materials(user_id, opportunity_id)` and confirm:
+
+- `materials.id` is the `materials_id` you will restore into
+- `materials.is_locked` is `false`
+
+If `materials.is_locked` is `true`, run **Workflow: Refresh Locked Draft** first. `restore_materials_revision` rejects locked rows.
+
+### Step 2 — Restore the known immutable revision
+
+```python
+mcp__ronin__restore_materials_revision(
+    user_id="<user-id>",
+    materials_id="<materials-uuid>",
+    revision_id="<revision-uuid>"
+)
+```
+
+This copies the selected historical snapshot into the current materials row, increments `version`, keeps the row unlocked, preserves the snapshot's traceability payload (`validation_status`, `validation_summary`, and the matching editable-draft workflow state), and appends a restore audit event. The historical revision itself remains unchanged.
+
+### Step 3 — Review, re-validate, and approve if needed
+
+Present the restored draft to the user, apply any further edits with `update_materials`, and re-run validation or approval as needed. Treat the restored head as a new editable draft, not as an already-approved submission.
+
+---
+
+## Example Conversation
+
+Load `references/examples.md` for a complete worked example.
+
+---
+
+## Critical Rules
+
+1. Never fabricate achievements, metrics, or claims not present in the SSOT — every source-referenced factual assertion must trace to a supported source entity
+2. Always use plain UUID strings in `source_references` values — never prefixed URNs or non-UUID formats
+3. Must validate source traceability before approving — `approve_materials` enforces this as a hard-blocking gate
+4. Only supported profile entity UUIDs pass validation — Experience, Skill, Achievement, Education, Certification, Publication, and Repository are valid; Profile and OpportunityResearch are not
+5. Always obtain `pipeline_entry_id` from `get_materials` response — never construct it or read it from the opportunity object
+6. Never add skills to materials that are not present in the SSOT skills list
+7. Never add metrics, percentages, dollar amounts, or counts not present verbatim in the SSOT
+8. Must present materials to the user for review before approval — do not auto-approve
+9. Always surface SSOT gaps (missing required skills) explicitly to the user rather than inventing content to fill them
+10. Never edit or restore locked materials directly — call `refresh_materials_draft` first when a locked draft needs regeneration or rollback; `update_materials` and `restore_materials_revision` will reject locked rows
+11. Default to standard private-sector ATS-safe structure — single-column, standard headings, simple bullets, and body-embedded contact info
+12. Never generate tables, sidebars, graphics, icons, skill bars, text boxes, or decorative formatting in resume content
+13. Default to 1 page; use 2 pages only when additional role-relevant evidence earns it, and always surface the page-length choice to the user
+14. A traceability-valid but section-thin draft is not complete — include `Projects` when traceable Experience evidence supports it, and repair missing recruiter-expected sections before saving
+15. Preview or render generated materials whenever the harness can, visually audit the result, and iterate until the layout is clean before saying the materials are ready
+16. Optimize for ATS parsing, recruiter scanability, and hiring-manager evidence; do not optimize by keyword-stuffing, unsupported skills, or generic summaries
+17. Academic CVs, federal resumes, and creative/visual resume formats are out of scope — say so explicitly and offer a standard private-sector version instead
+18. Preserve `resume_variants` and `ai_comments` in external-agent edits; variant comments use `document: "resume_variant:<variant_id>"` and must remain visible from `get_materials`
+
+## Canonical Vocabulary
+
+**Canonical terms** (use these exactly throughout):
+- Pipeline states: "shortlisted", "approved", "materials_generated"
+- Validation results: "valid", "missing_refs", "entity_not_found", "invalid_ref_format", "missing_source_references", "export_not_allowed"
+- Lock states: "is_locked: true", "is_locked: false"
+- Content storage: "resume_blocks", "cover_letter_blocks" (source of truth); "resume_markdown", "cover_letter_markdown" (derived)
+- Block types: "heading", "paragraph", "list"
+- Material status: "created", "updated", "refreshed", "restored", "approved"
+- Reference format: "source_references" (dict of label to plain UUID string)
+- Entity types valid for references: "Experience", "Skill", "Achievement"
+- Reasoning: "inclusion_threads" (list of per-inclusion reasoning metadata)
+- AI comments: "ai_comments" (list of selected-text review instructions visible to web and external agent harnesses)
+- Resume variants: "resume_variants" with stable ids such as "expanded_two_page"; variant comments use "resume_variant:<id>"
+- Refresh/restore errors: "materials_not_locked", "materials_locked", "revision_not_found"
+- Export presets: "ats_safe", "polished"
+- Export formats: "pdf", "docx"
+- Export assessment: "export_readiness" (ready, score, recommended_format, recommended_preset, warnings, notes)
+
+## Validation Contract
+
+Before declaring this skill complete after edits, these commands must pass:
+
+```bash
+uv run wagents validate
+uv run wagents eval validate
+uv run python "$SKILL_CREATOR_AUDIT" skills/ronin-materials/ # audit.py skills/ronin-materials/
+uv run wagents package "$(pwd)/skills/ronin-materials" --dry-run
+uv run python -m py_compile skills/ronin-materials/scripts/check_prereqs.py
+(cd api && uv run pytest tests/test_materials_pipeline.py tests/api/test_materials_contract.py -q)
+```
+
+Completion criteria: all commands pass with zero errors, the skill audit remains `A` grade, and the mirror diff is clean when `.agents/skills/ronin-materials` is synced.
+
+## Error Handling
+
+Load `references/error-reference.md` for the full error resolution table, limitations, and roadmap.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

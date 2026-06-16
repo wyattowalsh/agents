@@ -1,0 +1,87 @@
+---
+title: "plannotator-annotate"
+description: "Open Plannotator's annotation UI for a markdown file, converted HTML file, URL, or folder and then respond to the returned annotations."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="plannotator-annotate" variant="note" /> <Badge text="81 words" variant="default" /> <Badge text="Installed" variant="caution" />
+
+> Open Plannotator's annotation UI for a markdown file, converted HTML file, URL, or folder and then respond to the returned annotations.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/plannotator-annotate`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+Use this skill when the user wants to annotate a document in Plannotator instead of reviewing it inline in chat.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `plannotator-annotate` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: plannotator-annotate
+description: Open Plannotator's annotation UI for a markdown file, converted HTML file, URL, or folder and then respond to the returned annotations.
+---
+
+# Plannotator Annotate
+
+Use this skill when the user wants to annotate a document in Plannotator instead of reviewing it inline in chat.
+
+Run:
+
+```bash
+plannotator annotate <path-or-url>
+```
+
+Behavior:
+
+1. Launch the command with Bash.
+2. Wait for the browser review to finish.
+3. If annotations are returned, address them directly.
+4. If the session closes without feedback, say so briefly and continue.
+
+Do not ask the user to paste a shell command into the chat. Run the command yourself.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

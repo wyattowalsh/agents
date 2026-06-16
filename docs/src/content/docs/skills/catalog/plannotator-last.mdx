@@ -1,0 +1,91 @@
+---
+title: "plannotator-last"
+description: "Open Plannotator on the latest rendered assistant message and use the returned annotations to revise that message or continue."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="plannotator-last" variant="note" /> <Badge text="103 words" variant="default" /> <Badge text="Installed" variant="caution" />
+
+> Open Plannotator on the latest rendered assistant message and use the returned annotations to revise that message or continue.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+Discovered from local installed inventory; no portable install command is recorded.
+
+**Use:** `/plannotator-last`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from `local installed inventory`.
+</Aside>
+
+## What It Does
+
+Use this skill when the user wants to annotate the latest assistant response in Plannotator.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `installed-external` |
+| Display Source | `local installed inventory` |
+| Source Kind | `local-inventory` |
+| Installability | local inventory only |
+| Review State | local inventory |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `plannotator-last` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: plannotator-last
+description: Open Plannotator on the latest rendered assistant message and use the returned annotations to revise that message or continue.
+---
+
+# Plannotator Last
+
+Use this skill when the user wants to annotate the latest assistant response in Plannotator.
+
+Do not send a commentary/status message before running the command. The command
+targets the latest rendered assistant response, so a preamble can mistakenly become the
+thing being annotated.
+
+Run:
+
+```bash
+plannotator last
+```
+
+Behavior:
+
+1. Launch the command with Bash.
+2. Wait for the annotation session to finish.
+3. If feedback is returned, incorporate it into the follow-up response.
+4. If the session closes without feedback, mention that briefly and continue.
+
+Run the command yourself rather than telling the user to invoke shell syntax manually.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

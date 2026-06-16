@@ -3,7 +3,7 @@ const baseSiteData = {
   "counts": {
     "agents": 8,
     "customSkills": 58,
-    "installedSkills": 294,
+    "installedSkills": 495,
     "mcpServers": 1
   },
   "distributionPaths": [
@@ -48,9 +48,12 @@ const baseSiteData = {
         "source": "Leonxlnx/taste-skill"
       },
       {
-        "count": 1,
+        "count": 4,
         "skills": [
-          "cli-just"
+          "cli-just",
+          "code-review",
+          "commit",
+          "vitest"
         ],
         "source": "PaulRBerg/agent-skills"
       },
@@ -67,6 +70,16 @@ const baseSiteData = {
         "source": "addyosmani/web-quality-skills"
       },
       {
+        "count": 4,
+        "skills": [
+          "slidev",
+          "vite",
+          "vitest",
+          "vue"
+        ],
+        "source": "antfu/skills"
+      },
+      {
         "count": 8,
         "skills": [
           "anthropics-skills-all",
@@ -81,11 +94,19 @@ const baseSiteData = {
         "source": "anthropics/skills"
       },
       {
-        "count": 12,
+        "count": 1,
+        "skills": [
+          "terraform-skill"
+        ],
+        "source": "antonbabenko/terraform-skill"
+      },
+      {
+        "count": 13,
         "skills": [
           "apollo-client",
           "apollo-connectors",
           "apollo-federation",
+          "apollo-ios",
           "apollo-kotlin",
           "apollo-mcp-server",
           "apollo-router",
@@ -101,9 +122,31 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "extract-design-system"
+        ],
+        "source": "arvindrk/extract-design-system"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "swift-concurrency"
+        ],
+        "source": "avdlee/swift-concurrency-agent-skill"
+      },
+      {
+        "count": 1,
+        "skills": [
           "swiftui-expert-skill"
         ],
         "source": "avdlee/swiftui-agent-skill"
+      },
+      {
+        "count": 2,
+        "skills": [
+          "aws-iam",
+          "aws-serverless"
+        ],
+        "source": "aws/agent-toolkit-for-aws"
       },
       {
         "count": 3,
@@ -115,11 +158,26 @@ const baseSiteData = {
         "source": "backnotprop/plannotator"
       },
       {
-        "count": 1,
+        "count": 2,
         "skills": [
-          "better-auth-best-practices"
+          "better-auth-best-practices",
+          "create-auth-skill"
         ],
         "source": "better-auth/skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "biome-developer"
+        ],
+        "source": "biomejs/biome"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "logging-best-practices"
+        ],
+        "source": "boristane/agent-skills"
       },
       {
         "count": 1,
@@ -134,6 +192,14 @@ const baseSiteData = {
           "clerk-nextjs-patterns"
         ],
         "source": "clerk/skills"
+      },
+      {
+        "count": 2,
+        "skills": [
+          "clickhouse-architecture-advisor",
+          "clickhouse-best-practices"
+        ],
+        "source": "clickhouse/agent-skills"
       },
       {
         "count": 9,
@@ -158,43 +224,72 @@ const baseSiteData = {
         "source": "coderabbitai/skills"
       },
       {
-        "count": 33,
+        "count": 1,
+        "skills": [
+          "coleam00-excalidraw-diagram-skill-all"
+        ],
+        "source": "coleam00/excalidraw-diagram-skill"
+      },
+      {
+        "count": 46,
         "skills": [
           "ab-test-setup",
+          "ab-testing",
           "ad-creative",
+          "ads",
           "ai-seo",
+          "analytics",
           "analytics-tracking",
           "churn-prevention",
           "cold-email",
           "competitor-alternatives",
+          "competitor-profiling",
           "content-strategy",
           "copy-editing",
           "copywriting",
+          "cro",
           "email-sequence",
+          "emails",
           "form-cro",
           "free-tool-strategy",
+          "launch",
           "launch-strategy",
           "lead-magnets",
           "marketing-ideas",
           "marketing-psychology",
+          "onboarding",
           "onboarding-cro",
           "page-cro",
           "paid-ads",
           "paywall-upgrade-cro",
+          "paywalls",
           "popup-cro",
           "pricing-strategy",
+          "product-marketing",
           "product-marketing-context",
           "programmatic-seo",
           "referral-program",
           "revops",
           "sales-enablement",
+          "schema",
           "schema-markup",
           "seo-audit",
+          "signup",
           "signup-flow-cro",
           "site-architecture",
-          "social-content"
+          "social-content",
+          "video"
         ],
         "source": "coreyhaines31/marketingskills"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "design-agent",
+          "design-task",
+          "getting-started"
+        ],
+        "source": "crewaiinc/skills"
       },
       {
         "count": 1,
@@ -204,11 +299,50 @@ const baseSiteData = {
         "source": "currents-dev/playwright-best-practices-skill"
       },
       {
+        "count": 3,
+        "skills": [
+          "otel-collector",
+          "otel-instrumentation",
+          "otel-semantic-conventions"
+        ],
+        "source": "dash0hq/agent-skills"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "tanstack-query-best-practices",
+          "tanstack-router-best-practices",
+          "tanstack-start-best-practices"
+        ],
+        "source": "deckardger/tanstack-agent-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "deno-expert"
+        ],
+        "source": "denoland/skills"
+      },
+      {
         "count": 1,
         "skills": [
           "stripe-best-practices"
         ],
         "source": "docs.stripe.com"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "svelte5-best-practices"
+        ],
+        "source": "ejirocodes/agent-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "emil-design-eng"
+        ],
+        "source": "emilkowalski/skill"
       },
       {
         "count": 9,
@@ -226,23 +360,47 @@ const baseSiteData = {
         "source": "expo/skills"
       },
       {
-        "count": 1,
+        "count": 3,
         "skills": [
-          "firecrawl"
+          "figma-code-connect",
+          "figma-generate-design",
+          "figma-implement-design"
+        ],
+        "source": "figma/mcp-server-guide"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "firebase-ai-logic-basics",
+          "firebase-app-hosting-basics",
+          "firebase-auth-basics"
+        ],
+        "source": "firebase/agent-skills"
+      },
+      {
+        "count": 2,
+        "skills": [
+          "firecrawl",
+          "firecrawl-cli-all"
         ],
         "source": "firecrawl/cli"
       },
       {
-        "count": 22,
+        "count": 29,
         "skills": [
+          "flutter-add-integration-test",
+          "flutter-add-widget-test",
           "flutter-adding-home-screen-widgets",
           "flutter-animating-apps",
+          "flutter-apply-architecture-best-practices",
           "flutter-architecting-apps",
+          "flutter-build-responsive-layout",
           "flutter-building-forms",
           "flutter-building-layouts",
           "flutter-building-plugins",
           "flutter-caching-data",
           "flutter-embedding-native-views",
+          "flutter-fix-layout-issues",
           "flutter-handling-concurrency",
           "flutter-handling-http-and-json",
           "flutter-implementing-navigation-and-routing",
@@ -254,6 +412,8 @@ const baseSiteData = {
           "flutter-setting-up-on-linux",
           "flutter-setting-up-on-macos",
           "flutter-setting-up-on-windows",
+          "flutter-setup-declarative-routing",
+          "flutter-setup-localization",
           "flutter-testing-apps",
           "flutter-theming-apps",
           "flutter-working-with-databases"
@@ -272,16 +432,25 @@ const baseSiteData = {
       {
         "count": 5,
         "skills": [
+          "code-review",
+          "find-bugs",
+          "gha-security-review",
+          "iterate-pr",
+          "skill-scanner"
+        ],
+        "source": "getsentry/skills"
+      },
+      {
+        "count": 3,
+        "skills": [
           "defuddle",
           "json-canvas",
-          "obsidian-bases",
-          "obsidian-cli",
-          "obsidian-markdown"
+          "obsidian-bases"
         ],
         "source": "git@github.com:kepano/obsidian-skills.git"
       },
       {
-        "count": 9,
+        "count": 19,
         "skills": [
           "agent-governance",
           "agent-owasp-compliance",
@@ -290,15 +459,53 @@ const baseSiteData = {
           "arize-evaluator",
           "arize-instrumentation",
           "arize-prompt-optimization",
+          "create-implementation-plan",
+          "eval-driven-dev",
+          "excalidraw-diagram-generator",
+          "mcp-security-audit",
+          "multi-stage-dockerfile",
           "phoenix-evals",
-          "phoenix-tracing"
+          "phoenix-tracing",
+          "rust-mcp-server-generator",
+          "secret-scanning",
+          "sql-code-review",
+          "sql-optimization",
+          "threat-model-analyst"
         ],
         "source": "github/awesome-copilot"
       },
       {
         "count": 1,
         "skills": [
-          "terraform-style-guide"
+          "drizzle-orm-patterns"
+        ],
+        "source": "giuseppe-trisciuoglio/developer-kit"
+      },
+      {
+        "count": 4,
+        "skills": [
+          "design-md",
+          "react:components",
+          "stitch-loop",
+          "stitch::generate-design"
+        ],
+        "source": "google-labs-code/stitch-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "gemini-api"
+        ],
+        "source": "google/skills"
+      },
+      {
+        "count": 5,
+        "skills": [
+          "aws-ami-builder",
+          "terraform-search-import",
+          "terraform-stacks",
+          "terraform-style-guide",
+          "terraform-test"
         ],
         "source": "hashicorp/agent-skills"
       },
@@ -335,6 +542,13 @@ const baseSiteData = {
         "source": "huggingface/skills"
       },
       {
+        "count": 1,
+        "skills": [
+          "vue-best-practices"
+        ],
+        "source": "hyf0/vue-skills"
+      },
+      {
         "count": 4,
         "skills": [
           "baseline-ui",
@@ -343,6 +557,23 @@ const baseSiteData = {
           "fixing-motion-performance"
         ],
         "source": "ibelick/ui-skills"
+      },
+      {
+        "count": 4,
+        "skills": [
+          "inngest-durable-functions",
+          "inngest-events",
+          "inngest-setup",
+          "inngest-steps"
+        ],
+        "source": "inngest/inngest-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "notion-api"
+        ],
+        "source": "intellectronica/agent-skills"
       },
       {
         "count": 1,
@@ -359,11 +590,35 @@ const baseSiteData = {
         "source": "jal-co/shieldcn"
       },
       {
-        "count": 11,
+        "count": 1,
+        "skills": [
+          "kubernetes-specialist"
+        ],
+        "source": "jeffallan/claude-skills"
+      },
+      {
+        "count": 2,
+        "skills": [
+          "fastmcp-client-cli",
+          "testing-python"
+        ],
+        "source": "jlowin/fastmcp"
+      },
+      {
+        "count": 2,
+        "skills": [
+          "obsidian-cli",
+          "obsidian-markdown"
+        ],
+        "source": "kepano/obsidian-skills"
+      },
+      {
+        "count": 13,
         "skills": [
           "deep-agents-core",
           "deep-agents-memory",
           "deep-agents-orchestration",
+          "ecosystem-primer",
           "framework-selection",
           "langchain-dependencies",
           "langchain-fundamentals",
@@ -371,9 +626,26 @@ const baseSiteData = {
           "langchain-rag",
           "langgraph-fundamentals",
           "langgraph-human-in-the-loop",
-          "langgraph-persistence"
+          "langgraph-persistence",
+          "managed-deep-agents"
         ],
         "source": "langchain-ai/langchain-skills"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "langsmith-dataset",
+          "langsmith-evaluator",
+          "langsmith-trace"
+        ],
+        "source": "langchain-ai/langsmith-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "langfuse"
+        ],
+        "source": "langfuse/skills"
       },
       {
         "count": 1,
@@ -400,15 +672,18 @@ const baseSiteData = {
         "source": "ljagiello/ctf-skills"
       },
       {
-        "count": 47,
+        "count": 53,
         "skills": [
           "autoplan",
           "benchmark",
+          "best-of-n",
           "browse",
           "canary",
           "careful",
+          "check-work",
           "codex",
           "connect-chrome",
+          "create-skill",
           "cso",
           "design-consultation",
           "design-review",
@@ -419,6 +694,8 @@ const baseSiteData = {
           "gstack-upgrade",
           "guard",
           "hatch-pet",
+          "help",
+          "imagine",
           "investigate",
           "land-and-deploy",
           "office-hours",
@@ -448,9 +725,28 @@ const baseSiteData = {
           "setup-browser-cookies",
           "setup-deploy",
           "ship",
+          "slides-smith",
           "unfreeze"
         ],
         "source": "local installed inventory"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "notion-cli"
+        ],
+        "source": "makenotion/skills"
+      },
+      {
+        "count": 5,
+        "skills": [
+          "grill-me",
+          "improve-codebase-architecture",
+          "obsidian-vault",
+          "tdd",
+          "to-prd"
+        ],
+        "source": "mattpocock/skills"
       },
       {
         "count": 2,
@@ -463,16 +759,44 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "microsoft-azure-skills-all"
+        ],
+        "source": "microsoft/azure-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "playwright-cli"
+        ],
+        "source": "microsoft/playwright-cli"
+      },
+      {
+        "count": 1,
+        "skills": [
           "context-engineering-collection"
         ],
         "source": "muratcankoylan/Agent-Skills-for-Context-Engineering"
       },
       {
-        "count": 1,
+        "count": 6,
         "skills": [
-          "neon-postgres"
+          "claimable-postgres",
+          "neon-ai-gateway",
+          "neon-functions",
+          "neon-postgres",
+          "neon-postgres-branches",
+          "neon-postgres-egress-optimizer"
         ],
         "source": "neondatabase/agent-skills"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "netlify-deploy",
+          "netlify-edge-functions",
+          "netlify-functions"
+        ],
+        "source": "netlify/context-and-tools"
       },
       {
         "count": 2,
@@ -490,6 +814,26 @@ const baseSiteData = {
         "source": "nghyane/opencode-plugin-notebooklm"
       },
       {
+        "count": 2,
+        "skills": [
+          "link-workspace-packages",
+          "nx-generate"
+        ],
+        "source": "nrwl/nx-ai-agents-config"
+      },
+      {
+        "count": 6,
+        "skills": [
+          "brainstorming",
+          "executing-plans",
+          "systematic-debugging",
+          "test-driven-development",
+          "verification-before-completion",
+          "writing-plans"
+        ],
+        "source": "obra/superpowers"
+      },
+      {
         "count": 5,
         "skills": [
           "chatgpt-apps",
@@ -503,20 +847,87 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "prisma-database-setup"
+          "impeccable"
         ],
-        "source": "prisma/skills"
+        "source": "pbakaus/impeccable"
       },
       {
         "count": 2,
         "skills": [
+          "mysql",
+          "postgres"
+        ],
+        "source": "planetscale/database-skills"
+      },
+      {
+        "count": 6,
+        "skills": [
+          "prisma-cli",
+          "prisma-client-api",
+          "prisma-compute",
+          "prisma-database-setup",
+          "prisma-postgres",
+          "prisma-upgrade-v7"
+        ],
+        "source": "prisma/skills"
+      },
+      {
+        "count": 4,
+        "skills": [
+          "pulumi-automation-api",
+          "pulumi-best-practices",
+          "pulumi-component",
+          "pulumi-esc"
+        ],
+        "source": "pulumi/agent-skills"
+      },
+      {
+        "count": 4,
+        "skills": [
           "building-pydantic-ai-agents",
-          "instrumentation"
+          "instrumentation",
+          "logfire-instrumentation",
+          "pydantic-ai-harness"
         ],
         "source": "pydantic/skills"
       },
       {
-        "count": 42,
+        "count": 1,
+        "skills": [
+          "use-railway"
+        ],
+        "source": "railwayapp/railway-skills"
+      },
+      {
+        "count": 6,
+        "skills": [
+          "redis-clustering",
+          "redis-core",
+          "redis-observability",
+          "redis-security",
+          "redis-semantic-cache",
+          "redis-vector-search"
+        ],
+        "source": "redis/agent-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "remotion-best-practices"
+        ],
+        "source": "remotion-dev/skills"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "render-blueprints",
+          "render-debug",
+          "render-deploy"
+        ],
+        "source": "render-oss/skills"
+      },
+      {
+        "count": 43,
         "skills": [
           "golang-benchmark",
           "golang-cli",
@@ -534,6 +945,7 @@ const baseSiteData = {
           "golang-google-wire",
           "golang-graphql",
           "golang-grpc",
+          "golang-how-to",
           "golang-lint",
           "golang-modernize",
           "golang-naming",
@@ -566,6 +978,36 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "shadcn"
+        ],
+        "source": "shadcn-ui/ui"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "shadcn"
+        ],
+        "source": "shadcn/ui"
+      },
+      {
+        "count": 3,
+        "skills": [
+          "shopify-dev",
+          "shopify-liquid",
+          "shopify-storefront-graphql"
+        ],
+        "source": "shopify/shopify-ai-toolkit"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "docker-expert"
+        ],
+        "source": "sickn33/antigravity-awesome-skills"
+      },
+      {
+        "count": 1,
+        "skills": [
           "sleek-design-mobile-apps"
         ],
         "source": "sleekdotdesign/agent-skills"
@@ -573,9 +1015,9 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "slidev"
+          "design-doc-mermaid"
         ],
-        "source": "slidevjs/slidev"
+        "source": "spillwavesolutions/design-doc-mermaid"
       },
       {
         "count": 2,
@@ -601,11 +1043,24 @@ const baseSiteData = {
         "source": "sveltejs/ai-tools"
       },
       {
-        "count": 3,
+        "count": 1,
         "skills": [
+          "temporal-developer"
+        ],
+        "source": "temporalio/skill-temporal-developer"
+      },
+      {
+        "count": 9,
+        "skills": [
+          "agentic-actions-auditor",
           "codeql",
+          "differential-review",
+          "insecure-defaults",
+          "modern-python",
           "property-based-testing",
-          "semgrep"
+          "semgrep",
+          "supply-chain-risk-auditor",
+          "variant-analysis"
         ],
         "source": "trailofbits/skills"
       },
@@ -618,9 +1073,11 @@ const baseSiteData = {
         "source": "vercel-labs/agent-browser"
       },
       {
-        "count": 5,
+        "count": 7,
         "skills": [
+          "deploy-to-vercel",
           "vercel-composition-patterns",
+          "vercel-optimize",
           "vercel-react-best-practices",
           "vercel-react-native-skills",
           "vercel-react-view-transitions",
@@ -645,43 +1102,97 @@ const baseSiteData = {
         "source": "vercel-labs/skills"
       },
       {
-        "count": 2,
+        "count": 32,
         "skills": [
+          "changelog-automation",
+          "database-migration",
+          "debugging-strategies",
+          "deployment-pipeline-design",
+          "e2e-testing-patterns",
+          "fastapi-templates",
+          "gitops-workflow",
+          "helm-chart-scaffolding",
+          "incident-runbook-templates",
+          "javascript-testing-patterns",
+          "k8s-manifest-generator",
+          "k8s-security-policies",
+          "langchain-architecture",
+          "llm-evaluation",
           "nextjs-app-router-patterns",
-          "tailwind-design-system"
+          "nodejs-backend-patterns",
+          "nx-workspace-patterns",
+          "on-call-handoff-patterns",
+          "openapi-spec-generation",
+          "postmortem-writing",
+          "python-observability",
+          "python-testing-patterns",
+          "rust-async-patterns",
+          "sast-configuration",
+          "secrets-management",
+          "slo-implementation",
+          "sql-optimization-patterns",
+          "stride-analysis-patterns",
+          "tailwind-design-system",
+          "terraform-module-library",
+          "turborepo-caching",
+          "uv-package-manager"
         ],
         "source": "wshobson/agents"
+      },
+      {
+        "count": 1,
+        "skills": [
+          "github-actions-docs"
+        ],
+        "source": "xixu-me/skills"
       }
     ],
     "byStatus": [
       {
-        "count": 6,
+        "count": 11,
         "skills": [
           "anthropics-skills-all",
           "ckm:*",
+          "coleam00-excalidraw-diagram-skill-all",
           "find-skills",
+          "firecrawl-cli-all",
+          "github-actions-docs",
           "huggingface-skills-all",
+          "microsoft-azure-skills-all",
+          "notion-api",
           "stripe-best-practices",
           "vercel-labs-agent-browser-all"
         ],
         "status": "global-only-or-avoid"
       },
       {
-        "count": 49,
+        "count": 186,
         "skills": [
           "agent-governance",
           "agent-owasp-compliance",
           "agent-supply-chain",
+          "agentic-actions-auditor",
           "agentic-eval",
+          "apollo-ios",
+          "apollo-mcp-server",
+          "apollo-router",
           "arize-evaluator",
           "arize-instrumentation",
           "arize-prompt-optimization",
+          "aws-ami-builder",
+          "aws-iam",
+          "aws-serverless",
           "building-native-ui",
           "building-pydantic-ai-agents",
           "chatgpt-app-builder",
           "chatgpt-apps",
+          "claimable-postgres",
           "cli-creator",
+          "clickhouse-architecture-advisor",
+          "clickhouse-best-practices",
+          "code-review",
           "codeql",
+          "create-implementation-plan",
           "ctf-ai-ml",
           "ctf-crypto",
           "ctf-forensics",
@@ -692,22 +1203,125 @@ const baseSiteData = {
           "ctf-reverse",
           "ctf-web",
           "ctf-writeup",
+          "database-migration",
+          "deep-agents-core",
+          "deep-agents-memory",
+          "deep-agents-orchestration",
+          "deploy-to-vercel",
+          "deployment-pipeline-design",
+          "design-agent",
+          "design-md",
+          "design-task",
           "design-taste-frontend",
+          "differential-review",
+          "docker-expert",
+          "drizzle-orm-patterns",
+          "e2e-testing-patterns",
+          "ecosystem-primer",
+          "emil-design-eng",
+          "eval-driven-dev",
+          "excalidraw-diagram-generator",
           "expo-cicd-workflows",
           "expo-deployment",
           "expo-dev-client",
-          "framework-selection",
-          "instrumentation",
+          "fastmcp-client-cli",
+          "figma-code-connect",
+          "figma-generate-design",
+          "figma-implement-design",
+          "find-bugs",
+          "firebase-ai-logic-basics",
+          "firebase-app-hosting-basics",
+          "firebase-auth-basics",
+          "gemini-api",
+          "getting-started",
+          "gha-security-review",
+          "golang-benchmark",
+          "golang-cli",
+          "golang-concurrency",
+          "golang-database",
+          "golang-error-handling",
+          "golang-graphql",
+          "golang-grpc",
+          "golang-how-to",
+          "golang-lint",
+          "golang-modernize",
+          "golang-observability",
+          "golang-performance",
+          "golang-popular-libraries",
+          "golang-project-layout",
+          "golang-safety",
+          "golang-security",
+          "golang-spf13-cobra",
+          "golang-spf13-viper",
+          "golang-stretchr-testify",
+          "golang-testing",
+          "golang-troubleshooting",
+          "impeccable",
+          "incident-runbook-templates",
+          "inngest-durable-functions",
+          "inngest-events",
+          "inngest-setup",
+          "inngest-steps",
+          "insecure-defaults",
+          "iterate-pr",
+          "javascript-testing-patterns",
+          "kubernetes-specialist",
+          "langchain-dependencies",
           "langchain-fundamentals",
+          "langchain-middleware",
           "langchain-rag",
           "langgraph-fundamentals",
           "langgraph-human-in-the-loop",
           "langgraph-persistence",
+          "langsmith-dataset",
+          "langsmith-evaluator",
+          "langsmith-trace",
+          "link-workspace-packages",
+          "logfire-instrumentation",
+          "managed-deep-agents",
           "mcp-builder",
+          "mcp-security-audit",
+          "modern-python",
+          "mysql",
+          "neon-ai-gateway",
+          "neon-functions",
+          "neon-postgres",
+          "neon-postgres-branches",
+          "neon-postgres-egress-optimizer",
+          "netlify-deploy",
+          "netlify-edge-functions",
+          "netlify-functions",
+          "notion-cli",
+          "nx-generate",
           "opencode-ensemble",
+          "otel-collector",
+          "otel-instrumentation",
+          "otel-semantic-conventions",
           "phoenix-evals",
           "phoenix-tracing",
+          "playwright-cli",
+          "postgres",
+          "prisma-compute",
+          "prisma-database-setup",
+          "prisma-postgres",
           "property-based-testing",
+          "pydantic-ai-harness",
+          "python-observability",
+          "python-testing-patterns",
+          "react:components",
+          "redis-clustering",
+          "redis-observability",
+          "redis-security",
+          "redis-semantic-cache",
+          "redis-vector-search",
+          "render-blueprints",
+          "render-debug",
+          "render-deploy",
+          "rust-async-patterns",
+          "rust-mcp-server-generator",
+          "sast-configuration",
+          "secret-scanning",
+          "secrets-management",
           "security-best-practices",
           "security-ownership-map",
           "security-threat-model",
@@ -715,76 +1329,191 @@ const baseSiteData = {
           "sentry-fix-issues",
           "sentry-sdk-setup",
           "sentry-setup-ai-monitoring",
+          "shopify-dev",
+          "shopify-liquid",
+          "shopify-storefront-graphql",
+          "skill-scanner",
+          "sleek-design-mobile-apps",
+          "slo-implementation",
           "solve-challenge",
+          "sql-code-review",
+          "stitch-loop",
+          "stitch::generate-design",
+          "stride-analysis-patterns",
+          "supply-chain-risk-auditor",
+          "temporal-developer",
+          "terraform-module-library",
+          "terraform-search-import",
+          "terraform-skill",
+          "terraform-stacks",
+          "testing-python",
+          "threat-model-analyst",
           "ui-ux-pro-max",
-          "upgrading-expo"
+          "upgrading-expo",
+          "use-railway",
+          "variant-analysis",
+          "vercel-optimize",
+          "vue"
         ],
         "status": "inspect-then-install"
       },
       {
-        "count": 26,
+        "count": 134,
         "skills": [
+          "ab-testing",
           "accessibility",
+          "ads",
           "agents-sdk",
+          "ai-seo",
+          "analytics",
+          "apollo-client",
+          "apollo-connectors",
+          "apollo-federation",
+          "apollo-server",
+          "baseline-ui",
           "best-practices",
+          "better-auth-best-practices",
+          "biome-developer",
+          "brainstorming",
+          "changelog-automation",
+          "churn-prevention",
           "cli-just",
           "cloudflare",
+          "code-review",
+          "cold-email",
+          "commit",
+          "competitor-profiling",
+          "content-strategy",
+          "copywriting",
           "core-web-vitals",
+          "cro",
+          "debugging-strategies",
+          "deno-expert",
+          "design-doc-mermaid",
           "durable-objects",
+          "emails",
+          "executing-plans",
+          "extract-design-system",
+          "fastapi-templates",
+          "fixing-accessibility",
+          "fixing-metadata",
+          "flutter-add-integration-test",
+          "flutter-add-widget-test",
+          "flutter-apply-architecture-best-practices",
+          "flutter-build-responsive-layout",
+          "flutter-fix-layout-issues",
+          "flutter-setup-declarative-routing",
+          "flutter-setup-localization",
+          "gitops-workflow",
+          "graphql-operations",
+          "graphql-schema",
+          "grill-me",
+          "helm-chart-scaffolding",
+          "improve-codebase-architecture",
+          "k8s-manifest-generator",
+          "k8s-security-policies",
+          "langchain-architecture",
+          "langfuse",
+          "launch",
+          "llm-evaluation",
+          "logging-best-practices",
+          "marketing-ideas",
+          "marketing-psychology",
+          "multi-stage-dockerfile",
           "next-best-practices",
           "next-cache-components",
           "next-upgrade",
+          "nodejs-backend-patterns",
+          "nx-workspace-patterns",
+          "obsidian-cli",
+          "obsidian-markdown",
+          "obsidian-vault",
+          "on-call-handoff-patterns",
+          "onboarding",
+          "openapi-spec-generation",
+          "paywalls",
           "performance",
           "playwright-best-practices",
+          "postmortem-writing",
+          "prisma-cli",
+          "prisma-client-api",
+          "prisma-upgrade-v7",
+          "product-marketing",
+          "programmatic-seo",
+          "pulumi-automation-api",
+          "pulumi-best-practices",
+          "pulumi-component",
+          "pulumi-esc",
+          "redis-core",
+          "remotion-best-practices",
+          "revops",
+          "rover",
+          "rust-best-practices",
+          "schema",
           "seo",
+          "seo-audit",
+          "shadcn",
+          "shadcn",
           "shieldcn-badges",
+          "signup",
+          "site-architecture",
+          "slidev",
+          "sql-optimization",
+          "sql-optimization-patterns",
           "stripe-best-practices",
           "supabase",
           "supabase-postgres-best-practices",
+          "svelte5-best-practices",
+          "swift-concurrency",
+          "swiftui-expert-skill",
+          "systematic-debugging",
+          "tailwind-design-system",
+          "tanstack-query-best-practices",
+          "tanstack-router-best-practices",
+          "tanstack-start-best-practices",
+          "tdd",
+          "terraform-style-guide",
+          "terraform-test",
+          "test-driven-development",
+          "to-prd",
+          "turborepo-caching",
           "upgrade-stripe",
+          "uv-package-manager",
           "vercel-composition-patterns",
           "vercel-react-best-practices",
           "vercel-react-native-skills",
           "vercel-react-view-transitions",
+          "verification-before-completion",
+          "video",
+          "vite",
+          "vitest",
+          "vitest",
+          "vue-best-practices",
           "web-design-guidelines",
           "web-quality-audit",
           "workers-best-practices",
-          "wrangler"
+          "wrangler",
+          "writing-plans"
         ],
         "status": "install-now-after-trust-gate"
       },
       {
-        "count": 172,
+        "count": 116,
         "skills": [
           "ab-test-setup",
           "ad-creative",
-          "ai-seo",
           "analytics-tracking",
-          "apollo-client",
-          "apollo-connectors",
-          "apollo-federation",
           "apollo-kotlin",
-          "apollo-mcp-server",
-          "apollo-router",
           "apollo-router-plugin-creator",
-          "apollo-server",
           "autofix",
-          "baseline-ui",
-          "better-auth-best-practices",
           "building-ai-agent-on-cloudflare",
           "building-mcp-server-on-cloudflare",
-          "churn-prevention",
           "clerk-nextjs-patterns",
           "cloudwatch",
-          "cold-email",
           "competitor-alternatives",
-          "content-strategy",
           "context-engineering-collection",
           "copy-editing",
-          "copywriting",
-          "deep-agents-core",
-          "deep-agents-memory",
-          "deep-agents-orchestration",
+          "create-auth-skill",
           "defuddle",
           "docx",
           "electron",
@@ -792,8 +1521,6 @@ const baseSiteData = {
           "expo-api-routes",
           "expo-tailwind-setup",
           "firecrawl",
-          "fixing-accessibility",
-          "fixing-metadata",
           "fixing-motion-performance",
           "flutter-adding-home-screen-widgets",
           "flutter-animating-apps",
@@ -818,32 +1545,19 @@ const baseSiteData = {
           "flutter-theming-apps",
           "flutter-working-with-databases",
           "form-cro",
+          "framework-selection",
           "free-tool-strategy",
           "frontend-design",
-          "golang-benchmark",
-          "golang-cli",
           "golang-code-style",
-          "golang-concurrency",
           "golang-context",
           "golang-continuous-integration",
           "golang-data-structures",
-          "golang-database",
           "golang-dependency-injection",
           "golang-dependency-management",
           "golang-design-patterns",
           "golang-documentation",
-          "golang-error-handling",
           "golang-google-wire",
-          "golang-graphql",
-          "golang-grpc",
-          "golang-lint",
-          "golang-modernize",
           "golang-naming",
-          "golang-observability",
-          "golang-performance",
-          "golang-popular-libraries",
-          "golang-project-layout",
-          "golang-safety",
           "golang-samber-do",
           "golang-samber-hot",
           "golang-samber-lo",
@@ -851,19 +1565,11 @@ const baseSiteData = {
           "golang-samber-oops",
           "golang-samber-ro",
           "golang-samber-slog",
-          "golang-security",
-          "golang-spf13-cobra",
-          "golang-spf13-viper",
           "golang-stay-updated",
-          "golang-stretchr-testify",
           "golang-structs-interfaces",
           "golang-swagger",
-          "golang-testing",
-          "golang-troubleshooting",
           "golang-uber-dig",
           "golang-uber-fx",
-          "graphql-operations",
-          "graphql-schema",
           "here-now",
           "hf-cli",
           "huggingface-community-evals",
@@ -875,20 +1581,14 @@ const baseSiteData = {
           "huggingface-papers",
           "huggingface-trackio",
           "huggingface-vision-trainer",
+          "instrumentation",
           "json-canvas",
-          "langchain-dependencies",
-          "langchain-middleware",
           "launch-strategy",
           "lead-magnets",
-          "marketing-ideas",
-          "marketing-psychology",
           "native-data-fetching",
-          "neon-postgres",
           "nextjs-app-router-patterns",
           "nlm-index",
           "obsidian-bases",
-          "obsidian-cli",
-          "obsidian-markdown",
           "onboarding-cro",
           "page-cro",
           "paid-ads",
@@ -900,28 +1600,16 @@ const baseSiteData = {
           "popup-cro",
           "pptx",
           "pricing-strategy",
-          "prisma-database-setup",
           "product-marketing-context",
-          "programmatic-seo",
           "react-native-best-practices",
           "referral-program",
-          "revops",
-          "rover",
-          "rust-best-practices",
           "rust-skills",
           "sales-enablement",
           "sandbox-sdk",
           "schema-markup",
-          "seo-audit",
           "signup-flow-cro",
-          "site-architecture",
-          "sleek-design-mobile-apps",
-          "slidev",
           "social-content",
           "svelte-code-writer",
-          "swiftui-expert-skill",
-          "tailwind-design-system",
-          "terraform-style-guide",
           "transformers-js",
           "use-dom",
           "web-artifacts-builder",
@@ -932,15 +1620,18 @@ const baseSiteData = {
         "status": "installed-external"
       },
       {
-        "count": 47,
+        "count": 53,
         "skills": [
           "autoplan",
           "benchmark",
+          "best-of-n",
           "browse",
           "canary",
           "careful",
+          "check-work",
           "codex",
           "connect-chrome",
+          "create-skill",
           "cso",
           "design-consultation",
           "design-review",
@@ -951,6 +1642,8 @@ const baseSiteData = {
           "gstack-upgrade",
           "guard",
           "hatch-pet",
+          "help",
+          "imagine",
           "investigate",
           "land-and-deploy",
           "office-hours",
@@ -980,6 +1673,7 @@ const baseSiteData = {
           "setup-browser-cookies",
           "setup-deploy",
           "ship",
+          "slides-smith",
           "unfreeze"
         ],
         "status": "read-only-discovered"
@@ -1012,274 +1706,274 @@ const baseSiteData = {
   "featuredSkills": [
     {
       "description": "Review a diff with evidence, structure, and severity instead of ad hoc feedback.",
-      "href": "/skills/honest-review/",
+      "href": "/skills/catalog/honest-review/",
       "title": "Enhance Code Reviews"
     },
     {
       "description": "Pressure-test a product or engineering decision before you commit to it.",
-      "href": "/skills/wargame/",
+      "href": "/skills/catalog/wargame/",
       "title": "Strategic Decision Analysis"
     },
     {
       "description": "Get multiple expert perspectives in one session when the problem has real trade-offs.",
-      "href": "/skills/host-panel/",
+      "href": "/skills/catalog/host-panel/",
       "title": "Host Expert Panels"
     },
     {
       "description": "Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands.",
-      "href": "/skills/openspec-workflow/",
+      "href": "/skills/catalog/openspec-workflow/",
       "title": "Run Spec Workflows"
     },
     {
       "description": "Build a production-ready FastMCP server with design, testing, and deployment guidance.",
-      "href": "/skills/mcp-creator/",
+      "href": "/skills/catalog/mcp-creator/",
       "title": "Create MCP Servers"
     }
   ],
   "installCommands": {
-    "all": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
-    "starter": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode"
+    "all": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+    "starter": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode"
   },
   "repoSource": "github:wyattowalsh/agents",
   "skillInstallScripts": {
-    "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+    "customAll": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
     "customIndividual": [
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "add-badges"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill agent-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "agent-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill agent-runtime-governance -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "agent-runtime-governance"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "api-designer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill changelog-writer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "changelog-writer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "chrome-devtools"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "chrome-devtools-a11y-debugging"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "chrome-devtools-cli"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "chrome-devtools-debug-optimize-lcp"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "chrome-devtools-memory-leak-debugging"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "chrome-devtools-troubleshooting"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "data-pipeline-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "data-wizard"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill database-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "database-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "devops-engineer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill discover-skills -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill discover-skills -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "discover-skills"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "docling-graph"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "docs-steward"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "draw-thing"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "email-whiz"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill event-driven-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "event-driven-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "external-skill-auditor"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "files-buddy"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill frontend-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill frontend-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "frontend-designer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "git-workflow"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "harness-master"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "honest-review"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "host-panel"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill i18n-localization -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "i18n-localization"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "incident-response-engineer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill infrastructure-coder -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "infrastructure-coder"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "javascript-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "learn"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill mcp-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "mcp-creator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill namer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "namer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "nerdbot"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "new-project"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill observability-advisor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "observability-advisor"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "opencode-ensemble"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "openspec-workflow"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill orchestrator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "orchestrator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill performance-profiler -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "performance-profiler"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill prompt-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "prompt-engineer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill python-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "python-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "reasoning-router"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "release-pipeline-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill research -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "research"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "schema-evolution-planner"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill security-scanner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "security-scanner"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "shell-conventions"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "shell-scripter"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "simplify"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "skill-creator"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "skill-router"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "tech-debt-analyzer"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill test-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "test-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill things-manager -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "things-manager"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode",
+        "command": "npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "wargame"
       }
     ],
     "externalCommands": [
       {
-        "command": "npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "design-taste-frontend"
         ],
@@ -1288,7 +1982,7 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "cli-just"
         ],
@@ -1297,7 +1991,18 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "code-review",
+          "commit",
+          "vitest"
+        ],
+        "source": "PaulRBerg/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "accessibility",
           "best-practices",
@@ -1311,7 +2016,153 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add antfu/skills --skill vite --skill slidev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "slidev",
+          "vite"
+        ],
+        "source": "antfu/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add antfu/skills --skill vitest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "vitest"
+        ],
+        "source": "antfu/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add antfu/skills --skill vue -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "vue"
+        ],
+        "source": "antfu/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add antonbabenko/terraform-skill --skill terraform-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "terraform-skill"
+        ],
+        "source": "antonbabenko/terraform-skill",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "apollo-client",
+          "apollo-connectors",
+          "rover"
+        ],
+        "source": "apollographql/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "apollo-ios",
+          "apollo-mcp-server",
+          "apollo-router"
+        ],
+        "source": "apollographql/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add apollographql/skills --skill graphql-schema --skill apollo-federation --skill rust-best-practices --skill graphql-operations --skill apollo-server -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "apollo-federation",
+          "apollo-server",
+          "graphql-operations",
+          "graphql-schema",
+          "rust-best-practices"
+        ],
+        "source": "apollographql/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "extract-design-system"
+        ],
+        "source": "arvindrk/extract-design-system",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add avdlee/swift-concurrency-agent-skill --skill swift-concurrency -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swift-concurrency"
+        ],
+        "source": "avdlee/swift-concurrency-agent-skill",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "swiftui-expert-skill"
+        ],
+        "source": "avdlee/swiftui-agent-skill",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add aws/agent-toolkit-for-aws --skill aws-iam --skill aws-serverless -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "aws-iam",
+          "aws-serverless"
+        ],
+        "source": "aws/agent-toolkit-for-aws",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "better-auth-best-practices"
+        ],
+        "source": "better-auth/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "biome-developer"
+        ],
+        "source": "biomejs/biome",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "logging-best-practices"
+        ],
+        "source": "boristane/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "clickhouse-architecture-advisor",
+          "clickhouse-best-practices"
+        ],
+        "source": "clickhouse/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "agents-sdk",
           "cloudflare",
@@ -1324,7 +2175,66 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "ab-testing",
+          "ai-seo",
+          "onboarding",
+          "product-marketing",
+          "schema",
+          "signup"
+        ],
+        "source": "coreyhaines31/marketingskills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add coreyhaines31/marketingskills --skill seo-audit --skill copywriting --skill cro --skill marketing-psychology --skill content-strategy --skill analytics --skill programmatic-seo --skill cold-email --skill emails --skill ads -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "ads",
+          "analytics",
+          "cold-email",
+          "content-strategy",
+          "copywriting",
+          "cro",
+          "emails",
+          "marketing-psychology",
+          "programmatic-seo",
+          "seo-audit"
+        ],
+        "source": "coreyhaines31/marketingskills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "churn-prevention",
+          "competitor-profiling",
+          "launch",
+          "marketing-ideas",
+          "paywalls",
+          "revops",
+          "site-architecture",
+          "video"
+        ],
+        "source": "coreyhaines31/marketingskills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "design-agent",
+          "design-task",
+          "getting-started"
+        ],
+        "source": "crewaiinc/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add currents-dev/playwright-best-practices-skill --skill playwright-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "playwright-best-practices"
         ],
@@ -1333,7 +2243,56 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "otel-collector",
+          "otel-instrumentation",
+          "otel-semantic-conventions"
+        ],
+        "source": "dash0hq/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add deckardger/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-start-best-practices --skill tanstack-router-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "tanstack-query-best-practices",
+          "tanstack-router-best-practices",
+          "tanstack-start-best-practices"
+        ],
+        "source": "deckardger/tanstack-agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add denoland/skills --skill deno-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "deno-expert"
+        ],
+        "source": "denoland/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add ejirocodes/agent-skills --skill svelte5-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "svelte5-best-practices"
+        ],
+        "source": "ejirocodes/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add emilkowalski/skill --skill emil-design-eng -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "emil-design-eng"
+        ],
+        "source": "emilkowalski/skill",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "building-native-ui",
           "expo-cicd-workflows",
@@ -1346,7 +2305,44 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add figma/mcp-server-guide --skill figma-implement-design --skill figma-generate-design --skill figma-code-connect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "figma-code-connect",
+          "figma-generate-design",
+          "figma-implement-design"
+        ],
+        "source": "figma/mcp-server-guide",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add firebase/agent-skills --skill firebase-auth-basics --skill firebase-app-hosting-basics --skill firebase-ai-logic-basics -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "firebase-ai-logic-basics",
+          "firebase-app-hosting-basics",
+          "firebase-auth-basics"
+        ],
+        "source": "firebase/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add flutter/skills --skill flutter-apply-architecture-best-practices --skill flutter-build-responsive-layout --skill flutter-add-widget-test --skill flutter-setup-declarative-routing --skill flutter-fix-layout-issues --skill flutter-add-integration-test --skill flutter-setup-localization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "flutter-add-integration-test",
+          "flutter-add-widget-test",
+          "flutter-apply-architecture-best-practices",
+          "flutter-build-responsive-layout",
+          "flutter-fix-layout-issues",
+          "flutter-setup-declarative-routing",
+          "flutter-setup-localization"
+        ],
+        "source": "flutter/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "sentry-fix-issues",
           "sentry-sdk-setup",
@@ -1357,7 +2353,28 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "code-review",
+          "find-bugs",
+          "gha-security-review",
+          "iterate-pr"
+        ],
+        "source": "getsentry/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add getsentry/skills --skill skill-scanner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "skill-scanner"
+        ],
+        "source": "getsentry/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add github/awesome-copilot --skill agent-governance --skill agent-supply-chain --skill agent-owasp-compliance --skill agentic-eval -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "agent-governance",
           "agent-owasp-compliance",
@@ -1369,7 +2386,28 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add github/awesome-copilot --skill eval-driven-dev --skill mcp-security-audit --skill threat-model-analyst --skill create-implementation-plan -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "create-implementation-plan",
+          "eval-driven-dev",
+          "mcp-security-audit",
+          "threat-model-analyst"
+        ],
+        "source": "github/awesome-copilot",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "excalidraw-diagram-generator"
+        ],
+        "source": "github/awesome-copilot",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "arize-evaluator",
           "arize-instrumentation",
@@ -1382,11 +2420,123 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add hueyexe/opencode-ensemble --skill opencode-ensemble -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add github/awesome-copilot --skill rust-mcp-server-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "rust-mcp-server-generator"
+        ],
+        "source": "github/awesome-copilot",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "secret-scanning",
+          "sql-code-review"
+        ],
+        "source": "github/awesome-copilot",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add github/awesome-copilot --skill sql-optimization --skill multi-stage-dockerfile -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "multi-stage-dockerfile",
+          "sql-optimization"
+        ],
+        "source": "github/awesome-copilot",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add giuseppe-trisciuoglio/developer-kit --skill drizzle-orm-patterns -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "drizzle-orm-patterns"
+        ],
+        "source": "giuseppe-trisciuoglio/developer-kit",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add google-labs-code/stitch-skills --skill design-md --skill react:components --skill stitch-loop --skill stitch::generate-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "design-md",
+          "react:components",
+          "stitch-loop",
+          "stitch::generate-design"
+        ],
+        "source": "google-labs-code/stitch-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add google/skills --skill gemini-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "gemini-api"
+        ],
+        "source": "google/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "aws-ami-builder",
+          "terraform-search-import",
+          "terraform-stacks"
+        ],
+        "source": "hashicorp/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add hashicorp/agent-skills --skill terraform-style-guide --skill terraform-test -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "terraform-style-guide",
+          "terraform-test"
+        ],
+        "source": "hashicorp/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add hueyexe/opencode-ensemble --skill opencode-ensemble -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "opencode-ensemble"
         ],
         "source": "hueyexe/opencode-ensemble",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add hyf0/vue-skills --skill vue-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "vue-best-practices"
+        ],
+        "source": "hyf0/vue-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add ibelick/ui-skills --skill baseline-ui --skill fixing-accessibility --skill fixing-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "baseline-ui",
+          "fixing-accessibility",
+          "fixing-metadata"
+        ],
+        "source": "ibelick/ui-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add inngest/inngest-skills --skill inngest-setup --skill inngest-durable-functions --skill inngest-events --skill inngest-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "inngest-durable-functions",
+          "inngest-events",
+          "inngest-setup",
+          "inngest-steps"
+        ],
+        "source": "inngest/inngest-skills",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
       },
@@ -1400,21 +2550,76 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add langchain-ai/langchain-skills --skill framework-selection --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
-          "framework-selection",
+          "kubernetes-specialist"
+        ],
+        "source": "jeffallan/claude-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "fastmcp-client-cli",
+          "testing-python"
+        ],
+        "source": "jlowin/fastmcp",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add kepano/obsidian-skills --skill obsidian-markdown --skill obsidian-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "obsidian-cli",
+          "obsidian-markdown"
+        ],
+        "source": "kepano/obsidian-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "deep-agents-core",
+          "deep-agents-memory",
+          "deep-agents-orchestration",
+          "ecosystem-primer",
+          "langchain-dependencies",
           "langchain-fundamentals",
+          "langchain-middleware",
           "langchain-rag",
           "langgraph-fundamentals",
           "langgraph-human-in-the-loop",
-          "langgraph-persistence"
+          "langgraph-persistence",
+          "managed-deep-agents"
         ],
         "source": "langchain-ai/langchain-skills",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "langsmith-dataset",
+          "langsmith-evaluator",
+          "langsmith-trace"
+        ],
+        "source": "langchain-ai/langsmith-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "langfuse"
+        ],
+        "source": "langfuse/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "ctf-ai-ml",
           "ctf-crypto",
@@ -1433,7 +2638,37 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "notion-cli"
+        ],
+        "source": "makenotion/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "grill-me",
+          "improve-codebase-architecture",
+          "tdd",
+          "to-prd"
+        ],
+        "source": "mattpocock/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add mattpocock/skills --skill obsidian-vault -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "obsidian-vault"
+        ],
+        "source": "mattpocock/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add mcp-use/skills --skill mcp-builder --skill chatgpt-app-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "chatgpt-app-builder",
           "mcp-builder"
@@ -1443,7 +2678,49 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "playwright-cli"
+        ],
+        "source": "microsoft/playwright-cli",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "claimable-postgres",
+          "neon-ai-gateway",
+          "neon-functions"
+        ],
+        "source": "neondatabase/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add neondatabase/agent-skills --skill neon-postgres --skill neon-postgres-branches --skill neon-postgres-egress-optimizer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "neon-postgres",
+          "neon-postgres-branches",
+          "neon-postgres-egress-optimizer"
+        ],
+        "source": "neondatabase/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "netlify-deploy",
+          "netlify-edge-functions",
+          "netlify-functions"
+        ],
+        "source": "netlify/context-and-tools",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "ui-ux-pro-max"
         ],
@@ -1452,7 +2729,31 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "link-workspace-packages",
+          "nx-generate"
+        ],
+        "source": "nrwl/nx-ai-agents-config",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "brainstorming",
+          "executing-plans",
+          "systematic-debugging",
+          "test-driven-development",
+          "verification-before-completion",
+          "writing-plans"
+        ],
+        "source": "obra/superpowers",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "chatgpt-apps",
           "cli-creator",
@@ -1465,17 +2766,231 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill instrumentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add pbakaus/impeccable --skill impeccable -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "impeccable"
+        ],
+        "source": "pbakaus/impeccable",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "mysql",
+          "postgres"
+        ],
+        "source": "planetscale/database-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "prisma-cli",
+          "prisma-client-api",
+          "prisma-upgrade-v7"
+        ],
+        "source": "prisma/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add prisma/skills --skill prisma-compute --skill prisma-database-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "prisma-compute",
+          "prisma-database-setup"
+        ],
+        "source": "prisma/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add prisma/skills --skill prisma-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "prisma-postgres"
+        ],
+        "source": "prisma/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "pulumi-automation-api",
+          "pulumi-best-practices",
+          "pulumi-component",
+          "pulumi-esc"
+        ],
+        "source": "pulumi/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill logfire-instrumentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "building-pydantic-ai-agents",
-          "instrumentation"
+          "logfire-instrumentation"
         ],
         "source": "pydantic/skills",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add pydantic/skills --skill pydantic-ai-harness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "pydantic-ai-harness"
+        ],
+        "source": "pydantic/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "use-railway"
+        ],
+        "source": "railwayapp/railway-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "redis-core"
+        ],
+        "source": "redis/agent-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add redis/agent-skills --skill redis-security --skill redis-clustering --skill redis-observability -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "redis-clustering",
+          "redis-observability",
+          "redis-security"
+        ],
+        "source": "redis/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add redis/agent-skills --skill redis-vector-search --skill redis-semantic-cache -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "redis-semantic-cache",
+          "redis-vector-search"
+        ],
+        "source": "redis/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add remotion-dev/skills --skill remotion-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "remotion-best-practices"
+        ],
+        "source": "remotion-dev/skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add render-oss/skills --skill render-deploy --skill render-blueprints --skill render-debug -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "render-blueprints",
+          "render-debug",
+          "render-deploy"
+        ],
+        "source": "render-oss/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "golang-benchmark",
+          "golang-cli",
+          "golang-concurrency",
+          "golang-database",
+          "golang-error-handling",
+          "golang-graphql",
+          "golang-grpc",
+          "golang-how-to",
+          "golang-lint",
+          "golang-modernize",
+          "golang-observability",
+          "golang-performance",
+          "golang-popular-libraries",
+          "golang-project-layout",
+          "golang-safety",
+          "golang-security",
+          "golang-spf13-cobra",
+          "golang-spf13-viper",
+          "golang-stretchr-testify",
+          "golang-testing",
+          "golang-troubleshooting"
+        ],
+        "source": "samber/cc-skills-golang",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add shadcn-ui/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "shadcn"
+        ],
+        "source": "shadcn-ui/ui",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add shadcn/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "shadcn"
+        ],
+        "source": "shadcn/ui",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "shopify-dev",
+          "shopify-liquid",
+          "shopify-storefront-graphql"
+        ],
+        "source": "shopify/shopify-ai-toolkit",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add sickn33/antigravity-awesome-skills --skill docker-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "docker-expert"
+        ],
+        "source": "sickn33/antigravity-awesome-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "sleek-design-mobile-apps"
+        ],
+        "source": "sleekdotdesign/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add spillwavesolutions/design-doc-mermaid --skill design-doc-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "design-doc-mermaid"
+        ],
+        "source": "spillwavesolutions/design-doc-mermaid",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "stripe-best-practices",
           "upgrade-stripe"
@@ -1485,7 +3000,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add supabase/agent-skills --skill supabase-postgres-best-practices --skill supabase -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "supabase",
           "supabase-postgres-best-practices"
@@ -1495,7 +3010,16 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "temporal-developer"
+        ],
+        "source": "temporalio/skill-temporal-developer",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "codeql",
           "property-based-testing",
@@ -1506,7 +3030,31 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "agentic-actions-auditor",
+          "differential-review",
+          "insecure-defaults",
+          "modern-python",
+          "supply-chain-risk-auditor",
+          "variant-analysis"
+        ],
+        "source": "trailofbits/skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "deploy-to-vercel",
+          "vercel-optimize"
+        ],
+        "source": "vercel-labs/agent-skills",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "vercel-composition-patterns",
           "vercel-react-best-practices",
@@ -1519,13 +3067,76 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode",
+        "command": "npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "next-best-practices",
           "next-cache-components",
           "next-upgrade"
         ],
         "source": "vercel-labs/next-skills",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "fastapi-templates",
+          "langchain-architecture",
+          "llm-evaluation",
+          "nodejs-backend-patterns",
+          "nx-workspace-patterns",
+          "on-call-handoff-patterns",
+          "postmortem-writing",
+          "turborepo-caching"
+        ],
+        "source": "wshobson/agents",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "changelog-automation",
+          "debugging-strategies",
+          "openapi-spec-generation",
+          "uv-package-manager"
+        ],
+        "source": "wshobson/agents",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "database-migration",
+          "deployment-pipeline-design",
+          "e2e-testing-patterns",
+          "incident-runbook-templates",
+          "javascript-testing-patterns",
+          "python-observability",
+          "python-testing-patterns",
+          "rust-async-patterns",
+          "sast-configuration",
+          "secrets-management",
+          "slo-implementation",
+          "stride-analysis-patterns",
+          "terraform-module-library"
+        ],
+        "source": "wshobson/agents",
+        "status": "inspect-then-install",
+        "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "gitops-workflow",
+          "helm-chart-scaffolding",
+          "k8s-manifest-generator",
+          "k8s-security-policies",
+          "sql-optimization-patterns",
+          "tailwind-design-system"
+        ],
+        "source": "wshobson/agents",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       }
@@ -1595,54 +3206,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add apollographql/skills --skill apollo-client -y -g",
-        "skills": [
-          "apollo-client"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-connectors -y -g",
-        "skills": [
-          "apollo-connectors"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-federation -y -g",
-        "skills": [
-          "apollo-federation"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add apollographql/skills --skill apollo-kotlin -y -g",
         "skills": [
           "apollo-kotlin"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-mcp-server -y -g",
-        "skills": [
-          "apollo-mcp-server"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-router -y -g",
-        "skills": [
-          "apollo-router"
         ],
         "source": "apollographql/skills",
         "status": "installed-external",
@@ -1654,60 +3220,6 @@ const baseSiteData = {
           "apollo-router-plugin-creator"
         ],
         "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-server -y -g",
-        "skills": [
-          "apollo-server"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill graphql-operations -y -g",
-        "skills": [
-          "graphql-operations"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill graphql-schema -y -g",
-        "skills": [
-          "graphql-schema"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill rover -y -g",
-        "skills": [
-          "rover"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill rust-best-practices -y -g",
-        "skills": [
-          "rust-best-practices"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g",
-        "skills": [
-          "swiftui-expert-skill"
-        ],
-        "source": "avdlee/swiftui-agent-skill",
         "status": "installed-external",
         "trustTier": "github"
       },
@@ -1739,9 +3251,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g",
+        "command": "npx skills add better-auth/skills --skill create-auth-skill -y -g",
         "skills": [
-          "better-auth-best-practices"
+          "create-auth-skill"
         ],
         "source": "better-auth/skills",
         "status": "installed-external",
@@ -1829,36 +3341,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill ai-seo -y -g",
-        "skills": [
-          "ai-seo"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add coreyhaines31/marketingskills --skill analytics-tracking -y -g",
         "skills": [
           "analytics-tracking"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill churn-prevention -y -g",
-        "skills": [
-          "churn-prevention"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill cold-email -y -g",
-        "skills": [
-          "cold-email"
         ],
         "source": "coreyhaines31/marketingskills",
         "status": "installed-external",
@@ -1874,27 +3359,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill content-strategy -y -g",
-        "skills": [
-          "content-strategy"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add coreyhaines31/marketingskills --skill copy-editing -y -g",
         "skills": [
           "copy-editing"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill copywriting -y -g",
-        "skills": [
-          "copywriting"
         ],
         "source": "coreyhaines31/marketingskills",
         "status": "installed-external",
@@ -1940,24 +3407,6 @@ const baseSiteData = {
         "command": "npx skills add coreyhaines31/marketingskills --skill lead-magnets -y -g",
         "skills": [
           "lead-magnets"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill marketing-ideas -y -g",
-        "skills": [
-          "marketing-ideas"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill marketing-psychology -y -g",
-        "skills": [
-          "marketing-psychology"
         ],
         "source": "coreyhaines31/marketingskills",
         "status": "installed-external",
@@ -2027,27 +3476,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill programmatic-seo -y -g",
-        "skills": [
-          "programmatic-seo"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add coreyhaines31/marketingskills --skill referral-program -y -g",
         "skills": [
           "referral-program"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill revops -y -g",
-        "skills": [
-          "revops"
         ],
         "source": "coreyhaines31/marketingskills",
         "status": "installed-external",
@@ -2072,27 +3503,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add coreyhaines31/marketingskills --skill seo-audit -y -g",
-        "skills": [
-          "seo-audit"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add coreyhaines31/marketingskills --skill signup-flow-cro -y -g",
         "skills": [
           "signup-flow-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill site-architecture -y -g",
-        "skills": [
-          "site-architecture"
         ],
         "source": "coreyhaines31/marketingskills",
         "status": "installed-external",
@@ -2378,33 +3791,6 @@ const baseSiteData = {
         "trustTier": "git"
       },
       {
-        "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill obsidian-cli -y -g",
-        "skills": [
-          "obsidian-cli"
-        ],
-        "source": "git@github.com:kepano/obsidian-skills.git",
-        "status": "installed-external",
-        "trustTier": "git"
-      },
-      {
-        "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill obsidian-markdown -y -g",
-        "skills": [
-          "obsidian-markdown"
-        ],
-        "source": "git@github.com:kepano/obsidian-skills.git",
-        "status": "installed-external",
-        "trustTier": "git"
-      },
-      {
-        "command": "npx skills add hashicorp/agent-skills --skill terraform-style-guide -y -g",
-        "skills": [
-          "terraform-style-guide"
-        ],
-        "source": "hashicorp/agent-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add heredotnow/skill --skill here-now -y -g",
         "skills": [
           "here-now"
@@ -2513,33 +3899,6 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add ibelick/ui-skills --skill baseline-ui -y -g",
-        "skills": [
-          "baseline-ui"
-        ],
-        "source": "ibelick/ui-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add ibelick/ui-skills --skill fixing-accessibility -y -g",
-        "skills": [
-          "fixing-accessibility"
-        ],
-        "source": "ibelick/ui-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add ibelick/ui-skills --skill fixing-metadata -y -g",
-        "skills": [
-          "fixing-metadata"
-        ],
-        "source": "ibelick/ui-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -y -g",
         "skills": [
           "fixing-motion-performance"
@@ -2558,45 +3917,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add langchain-ai/langchain-skills --skill deep-agents-core -y -g",
+        "command": "npx skills add langchain-ai/langchain-skills --skill framework-selection -y -g",
         "skills": [
-          "deep-agents-core"
-        ],
-        "source": "langchain-ai/langchain-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add langchain-ai/langchain-skills --skill deep-agents-memory -y -g",
-        "skills": [
-          "deep-agents-memory"
-        ],
-        "source": "langchain-ai/langchain-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add langchain-ai/langchain-skills --skill deep-agents-orchestration -y -g",
-        "skills": [
-          "deep-agents-orchestration"
-        ],
-        "source": "langchain-ai/langchain-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add langchain-ai/langchain-skills --skill langchain-dependencies -y -g",
-        "skills": [
-          "langchain-dependencies"
-        ],
-        "source": "langchain-ai/langchain-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add langchain-ai/langchain-skills --skill langchain-middleware -y -g",
-        "skills": [
-          "langchain-middleware"
+          "framework-selection"
         ],
         "source": "langchain-ai/langchain-skills",
         "status": "installed-external",
@@ -2621,15 +3944,6 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add neondatabase/agent-skills --skill neon-postgres -y -g",
-        "skills": [
-          "neon-postgres"
-        ],
-        "source": "neondatabase/agent-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add nghyane/opencode-plugin-notebooklm --skill nlm-index -y -g",
         "skills": [
           "nlm-index"
@@ -2639,29 +3953,11 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add prisma/skills --skill prisma-database-setup -y -g",
+        "command": "npx skills add pydantic/skills --skill instrumentation -y -g",
         "skills": [
-          "prisma-database-setup"
+          "instrumentation"
         ],
-        "source": "prisma/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-benchmark -y -g",
-        "skills": [
-          "golang-benchmark"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-cli -y -g",
-        "skills": [
-          "golang-cli"
-        ],
-        "source": "samber/cc-skills-golang",
+        "source": "pydantic/skills",
         "status": "installed-external",
         "trustTier": "github"
       },
@@ -2669,15 +3965,6 @@ const baseSiteData = {
         "command": "npx skills add samber/cc-skills-golang --skill golang-code-style -y -g",
         "skills": [
           "golang-code-style"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-concurrency -y -g",
-        "skills": [
-          "golang-concurrency"
         ],
         "source": "samber/cc-skills-golang",
         "status": "installed-external",
@@ -2705,15 +3992,6 @@ const baseSiteData = {
         "command": "npx skills add samber/cc-skills-golang --skill golang-data-structures -y -g",
         "skills": [
           "golang-data-structures"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-database -y -g",
-        "skills": [
-          "golang-database"
         ],
         "source": "samber/cc-skills-golang",
         "status": "installed-external",
@@ -2756,15 +4034,6 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-error-handling -y -g",
-        "skills": [
-          "golang-error-handling"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add samber/cc-skills-golang --skill golang-google-wire -y -g",
         "skills": [
           "golang-google-wire"
@@ -2774,90 +4043,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-graphql -y -g",
-        "skills": [
-          "golang-graphql"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-grpc -y -g",
-        "skills": [
-          "golang-grpc"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-lint -y -g",
-        "skills": [
-          "golang-lint"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-modernize -y -g",
-        "skills": [
-          "golang-modernize"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add samber/cc-skills-golang --skill golang-naming -y -g",
         "skills": [
           "golang-naming"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-observability -y -g",
-        "skills": [
-          "golang-observability"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-performance -y -g",
-        "skills": [
-          "golang-performance"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-popular-libraries -y -g",
-        "skills": [
-          "golang-popular-libraries"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-project-layout -y -g",
-        "skills": [
-          "golang-project-layout"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-safety -y -g",
-        "skills": [
-          "golang-safety"
         ],
         "source": "samber/cc-skills-golang",
         "status": "installed-external",
@@ -2927,45 +4115,9 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-security -y -g",
-        "skills": [
-          "golang-security"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-spf13-cobra -y -g",
-        "skills": [
-          "golang-spf13-cobra"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-spf13-viper -y -g",
-        "skills": [
-          "golang-spf13-viper"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add samber/cc-skills-golang --skill golang-stay-updated -y -g",
         "skills": [
           "golang-stay-updated"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-stretchr-testify -y -g",
-        "skills": [
-          "golang-stretchr-testify"
         ],
         "source": "samber/cc-skills-golang",
         "status": "installed-external",
@@ -2990,24 +4142,6 @@ const baseSiteData = {
         "trustTier": "github"
       },
       {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-testing -y -g",
-        "skills": [
-          "golang-testing"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-troubleshooting -y -g",
-        "skills": [
-          "golang-troubleshooting"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
         "command": "npx skills add samber/cc-skills-golang --skill golang-uber-dig -y -g",
         "skills": [
           "golang-uber-dig"
@@ -3022,24 +4156,6 @@ const baseSiteData = {
           "golang-uber-fx"
         ],
         "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g",
-        "skills": [
-          "sleek-design-mobile-apps"
-        ],
-        "source": "sleekdotdesign/agent-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add slidevjs/slidev --skill slidev -y -g",
-        "skills": [
-          "slidev"
-        ],
-        "source": "slidevjs/slidev",
         "status": "installed-external",
         "trustTier": "github"
       },
@@ -3065,15 +4181,6 @@ const baseSiteData = {
         "command": "npx skills add wshobson/agents --skill nextjs-app-router-patterns -y -g",
         "skills": [
           "nextjs-app-router-patterns"
-        ],
-        "source": "wshobson/agents",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add wshobson/agents --skill tailwind-design-system -y -g",
-        "skills": [
-          "tailwind-design-system"
         ],
         "source": "wshobson/agents",
         "status": "installed-external",
@@ -3125,6 +4232,12 @@ const baseSiteData = {
       "href": "https://github.com/features/copilot",
       "id": "github-copilot",
       "label": "GitHub Copilot"
+    },
+    {
+      "description": "xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility.",
+      "href": "https://x.ai/cli",
+      "id": "grok",
+      "label": "Grok Build"
     },
     {
       "description": "Native AGENTS.md support plus repo-level OpenCode config and subagents.",
@@ -3196,4 +4309,3 @@ export const featuredSkills = baseSiteData.featuredSkills;
 export const visualAssets = baseSiteData.visualAssets;
 export const skillInstallScripts = baseSiteData.skillInstallScripts;
 export const externalSkillGroups = baseSiteData.externalSkillGroups;
-export const skillIndexModule = './generated-skill-indexes.mjs';
