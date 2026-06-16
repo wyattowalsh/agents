@@ -29,6 +29,14 @@ Apply these conventions when creating or modifying AI agent definitions.
 |------|---------|
 | `references/readme-template.md` | Template for agent README.md index entries |
 
+## Scaffolding
+
+Create new agent definitions with:
+
+```bash
+python skills/agent-conventions/scripts/scaffold_agent.py <name>
+```
+
 ## Conventions
 
 ### Required Frontmatter
@@ -89,7 +97,7 @@ Update the corresponding `README.md` index in the same directory:
 3. Include both `name` and `description` in frontmatter -- they are required
 4. Never duplicate agent functionality -- check existing agents first
 5. Keep agent system prompts under 500 lines for maintainability
-6. Run `wagents validate` after any agent frontmatter change
+6. Run `python skills/agent-conventions/scripts/validate_agent.py --check-index` after any agent frontmatter change
 7. Use imperative voice throughout the agent body text
 
 **Canonical terms** (use these exactly):
@@ -98,3 +106,16 @@ Update the corresponding `README.md` index in the same directory:
 - `system prompt` -- the markdown body after frontmatter
 - `index table` -- the markdown table in README.md listing all agents
 - `kebab-case` -- lowercase words separated by hyphens
+
+## Validation Contract
+
+Before declaring changes to this skill complete, run:
+
+```bash
+python skills/agent-conventions/scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Agent frontmatter changes pass `scripts/validate_agent.py --check-index`.

@@ -8,6 +8,6 @@
     "Agent creates agents/code-reviewer.md with required frontmatter fields: name (matching filename) and description (non-empty)",
     "Agent writes the system prompt body in imperative voice ('Check the logs' not 'Checks the logs')",
     "Agent updates the corresponding README.md index with a new row for code-reviewer sorted alphabetically",
-    "Agent runs 'wagents validate' after creating the agent to check frontmatter compliance"
+    "Agent runs 'python skills/agent-conventions/scripts/validate_agent.py --check-index' after creating the agent to check frontmatter compliance"
   ]
 }
