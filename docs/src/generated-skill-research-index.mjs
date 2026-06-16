@@ -436,7 +436,7 @@ export const skillResearchIndex = [
     "mean_confidence": 0.65,
     "name": "code-review",
     "research_tier": "standard",
-    "researched_at": "2026-06-16T06:01:41Z",
+    "researched_at": "2026-06-16T06:33:22Z",
     "source_type": "curated-external",
     "stale": false
   },
@@ -2708,7 +2708,7 @@ export const skillResearchIndex = [
     "mean_confidence": 0.65,
     "name": "stripe-best-practices",
     "research_tier": "standard",
-    "researched_at": "2026-06-16T06:01:42Z",
+    "researched_at": "2026-06-16T06:33:22Z",
     "source_type": "curated-external",
     "stale": false
   },
@@ -3052,7 +3052,7 @@ export const skillResearchIndex = [
     "mean_confidence": 0.65,
     "name": "vitest",
     "research_tier": "standard",
-    "researched_at": "2026-06-16T06:01:40Z",
+    "researched_at": "2026-06-16T06:33:22Z",
     "source_type": "curated-external",
     "stale": false
   },

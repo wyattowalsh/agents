@@ -1,30 +1,30 @@
 ---
 skill: stripe-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T06:33:22Z'
 research_tier: standard
 mean_confidence: 0.65
 ---
 
 ## Purpose
 
-registry syntax and provenance still need verification before automated sync/install.
+Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=registry syntax and provenance still need verification before automated sync/install.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: registry syntax and provenance still need verification before automated sync/install.
+Install: `npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[docs.stripe.com](https://docs.stripe.com)
+[stripe/ai](https://github.com/stripe/ai)
 
 ## Comparable Alternatives
 
