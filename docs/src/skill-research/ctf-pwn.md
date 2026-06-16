@@ -1,0 +1,33 @@
+---
+skill: ctf-pwn
+source_type: curated-external
+researched_at: '2026-06-16T06:01:41Z'
+research_tier: standard
+mean_confidence: 0.65
+---
+
+## Purpose
+
+Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
+
+## Harness Coverage
+
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+
+## Trust And Risks
+
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+
+## Install Prerequisites
+
+Install: `npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+
+## Upstream Maintainer
+
+[ljagiello/ctf-skills](https://github.com/ljagiello/ctf-skills)
+
+## Comparable Alternatives
+
+A general-purpose agent instruction without a scoped skill contract
+
+> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.

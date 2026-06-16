@@ -1,21 +1,33 @@
 ---
 skill: opencode-ensemble
-source_type: custom
-researched_at: '2026-06-16T01:14:01Z'
-research_tier: quick
-mean_confidence: 0.78
+source_type: curated-external
+researched_at: '2026-06-16T06:01:41Z'
+research_tier: standard
+mean_confidence: 0.65
 ---
 
-## Quick Answer
+## Purpose
 
-**Problem:** Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves. NOT for single-agent tasks, nested team-of-teams, or teammate subagents using team tools.
+Install `opencode-ensemble` from `hueyexe/opencode-ensemble` after verifying source-list output. The repo vendors the skill at upstream tag `v0.14.2` / commit `b6bc7f706c13aa42d32e836ea647677d0b14c2f7` and keeps the OpenCode runtime plugin spec on `@latest`; refresh OpenCode's `@hueyexe` cache rather than pinning the plugin when stale.
 
-**Stack / assumptions:** OpenCode with the @hueyexe/opencode-ensemble plugin installed
+## Harness Coverage
 
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
 
-**Repo summary:**
+## Trust And Risks
 
-Use OpenCode Ensemble as a coordination system, not a shortcut for avoiding judgment. Parallel agents work best when the lead owns decomposition, sequencing, review, merge, and verification.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Install `opencode-ensemble` from `hueyexe/opencode-ensemble` after verifying source-list output. The repo vendors the skill at upstream tag `v0.14.2` / commit `b6bc7f706c13aa42d32e836ea647677d0b14c2f7` and keeps the OpenCode runtime plugin spec on `@latest`; refresh OpenCode's `@hueyexe` cache rather than pinning the plugin when stale.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
 
-> Grounded in repository `skills/opencode-ensemble/SKILL.md`; treat as evidence, not authority.
+## Install Prerequisites
+
+Install: `npx skills add hueyexe/opencode-ensemble --skill opencode-ensemble -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+
+## Upstream Maintainer
+
+[hueyexe/opencode-ensemble](https://github.com/hueyexe/opencode-ensemble)
+
+## Comparable Alternatives
+
+A general-purpose agent instruction without a scoped skill contract
+
+> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
