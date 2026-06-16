@@ -561,9 +561,20 @@ class TestSkillsSync:
             queries=(HarnessQueryResult(agent_id="codex", ok=True, entries=()),),
         )
 
+    def _patch_sync_inventory(
+        self,
+        monkeypatch,
+        snapshot: InstalledInventorySnapshot | None = None,
+    ) -> InstalledInventorySnapshot:
+        """Isolate sync tests from live external-skills desired rows."""
+        resolved = snapshot if snapshot is not None else self._snapshot()
+        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: resolved)
+        monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
+        return resolved
+
     def test_sync_dry_run_reports_categories_and_commands(self, monkeypatch):
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
-        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: self._snapshot())
+        self._patch_sync_inventory(monkeypatch)
 
         result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
 
@@ -577,7 +588,7 @@ class TestSkillsSync:
     def test_sync_apply_executes_verified_commands_only(self, monkeypatch):
         calls = []
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
-        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: self._snapshot())
+        self._patch_sync_inventory(monkeypatch)
 
         def mock_run(cmd, **kwargs):
             calls.append(cmd)
@@ -596,7 +607,7 @@ class TestSkillsSync:
         calls: list[list[str]] = []
         mirror_calls: list[dict[str, object]] = []
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
-        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: self._snapshot())
+        self._patch_sync_inventory(monkeypatch)
 
         def mock_run(cmd, **kwargs):
             calls.append(cmd)
@@ -662,7 +673,7 @@ class TestSkillsSync:
             ),
         )
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
-        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: snapshot)
+        self._patch_sync_inventory(monkeypatch, snapshot)
 
         result = runner.invoke(app, ["skills", "sync", "--agent", "github-copilot"])
 
@@ -719,6 +730,7 @@ class TestSkillsSync:
 
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
         monkeypatch.setattr("wagents.cli.collect_installed_inventory", capture_inventory)
+        monkeypatch.setattr("wagents.cli.collect_desired_sync_rows", lambda **kwargs: ())
 
         result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
 
