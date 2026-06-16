@@ -24,7 +24,7 @@ _GITHUB_URL_RE = re.compile(r"^(?:github:)?([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)")
 
 
 def _parse_github_source(install_source: str) -> tuple[str, str] | None:
-    """Return (owner, repo) from install_source variants like 'owner/repo', 'github:owner/repo@ref', 'owner/repo/sub'."""
+    """Return (owner, repo) from install_source (owner/repo, github:owner/repo@ref, etc.)."""
     if not install_source:
         return None
     s = str(install_source).strip().removeprefix("github:")

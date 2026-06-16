@@ -1937,14 +1937,6 @@ export const skillResearchIndex = [
     "stale": false
   },
   {
-    "mean_confidence": 0.65,
-    "name": "opencode-ensemble",
-    "research_tier": "standard",
-    "researched_at": "2026-06-16T06:01:41Z",
-    "source_type": "curated-external",
-    "stale": false
-  },
-  {
     "mean_confidence": 0.78,
     "name": "openspec-workflow",
     "research_tier": "quick",

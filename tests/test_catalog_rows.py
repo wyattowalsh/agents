@@ -1,6 +1,7 @@
 """Tests for wagents.catalog_rows — public row builders, curated lookup, and text helpers (3-4 core tests)."""
 
 from wagents.catalog_rows import (
+    curated_catalog_parity_gaps,
     curated_entry_by_name,
     entry_to_public_row,
     first_sentence,
@@ -123,6 +124,11 @@ def test_merge_installed_agents_merges_from_node_metadata():
     assert sorted(row["installedAgents"]) == ["claude-code", "codex", "grok"]
     assert row.get("installedProvenanceStatus") == "verified-curated-external"
     assert row.get("installedExternalPath") == "jal-co/shieldcn"
+
+
+def test_curated_catalog_parity_gaps_reports_repo_superseded_ids():
+    gaps = curated_catalog_parity_gaps()
+    assert "opencode-ensemble" in gaps
 
 
 def test_first_sentence_skips_abbreviations_and_splits_on_sentence_boundaries():

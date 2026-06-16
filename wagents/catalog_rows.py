@@ -5,12 +5,30 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from wagents.external_skills import ExternalSkillEntry
+from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.site_model import (
     _promotion_policy_for_external_status,
     _source_kind,
     trust_badge_for_tier,
 )
+from wagents.skill_docs import collect_skill_doc_nodes
+
+
+def curated_catalog_parity_gaps(
+    entries: list[ExternalSkillEntry] | None = None,
+    *,
+    include_installed: bool = False,
+) -> list[str]:
+    """Return curated skill IDs in config that are missing from the generated catalog curated set."""
+    rows = entries if entries is not None else read_external_skill_entries()
+    config_ids = {entry.name for entry in rows}
+    catalog_ids = {
+        doc.id
+        for doc in collect_skill_doc_nodes(include_installed=include_installed, include_curated=True)
+        if doc.source_type == "curated-external"
+    }
+    return sorted(config_ids - catalog_ids)
+
 
 CURATED_SECTION_HEADERS: tuple[str, ...] = (
     "Install Now After Trust Gate",
@@ -103,7 +121,8 @@ def merge_installed_agents(row: dict[str, Any], node_metadata: dict[str, object]
 
     # Agents (primary)
     current: list[str] = list(row.get("installedAgents") or [])
-    added = node_metadata.get("_skills_installed_agents") or []
+    raw_added = node_metadata.get("_skills_installed_agents")
+    added: list[object] = list(raw_added) if isinstance(raw_added, list) else []
     merged = sorted(set(current) | {str(a) for a in added if a})
     row["installedAgents"] = merged
 
