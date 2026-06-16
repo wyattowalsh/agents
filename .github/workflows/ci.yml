@@ -50,6 +50,10 @@ jobs:
       - run: uv sync
       - run: uv run wagents validate
       - run: uv run wagents readme --check
+      - run: uv run pytest tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_skill_index.py tests/test_authoring_sync.py -q --tb=line
+      - run: uv run wagents openspec validate
+      - run: uv run wagents skills sync --dry-run
+      - run: uv run wagents catalog index --check
 
   wagents-wheel:
     runs-on: ubuntu-latest

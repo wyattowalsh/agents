@@ -659,8 +659,13 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         )
     elif node.source == "curated-external":
         parts.append(
-            "This page is generated from curated config "
-            f"(`{escape_mdx_line(_display_source_path(node))}`) and local inventory when installed."
+            "This page is generated from authoring SSOT "
+            f"`docs/src/authoring/skills/{node.id}.mdx` and "
+            "`docs/public/generated-registries/skills-catalog-index.json` by "
+            "`wagents docs generate`."
+        )
+        parts.append(
+            " Legacy projection `config/external-skills.md` remains dual-read during migration."
         )
         if node.metadata.get("_is_stub"):
             if is_enriched_stub:

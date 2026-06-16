@@ -21,6 +21,12 @@ repos:
         language: system
         pass_filenames: false
         files: ^(skills/|agents/)
+      - id: catalog-index-check
+        name: Check skills catalog index freshness
+        entry: uv run wagents catalog index --check
+        language: system
+        pass_filenames: false
+        files: ^(docs/src/authoring/skills/.*\.mdx|skills/.*/SKILL\.md)$
       - id: docs-build-check
         name: "Verify docs build"
         entry: sh -c 'uv run wagents docs build'

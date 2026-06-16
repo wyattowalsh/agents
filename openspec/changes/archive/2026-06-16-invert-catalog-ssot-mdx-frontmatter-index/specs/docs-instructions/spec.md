@@ -34,8 +34,6 @@ The repository SHALL treat per-skill authoring files under `docs/src/authoring/s
 - **THEN** consumers SHALL fall back to parsing `config/external-skills.md` via the legacy parser
 - **AND** operators MAY force legacy reads with `WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`.
 
-## MODIFIED Requirements
-
 ### Requirement: External Skills Registry Projection Is Derived
 
 `config/external-skills.md` SHALL be treated as a deprecated legacy projection during the Bucket A inversion. New curation work SHALL target authoring MDX; the flat markdown file MAY be regenerated from authoring for compatibility but SHALL NOT be the authoritative edit surface.

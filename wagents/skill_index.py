@@ -225,6 +225,31 @@ def read_catalog_index(path: Path | None = None) -> dict[str, Any] | None:
         return None
 
 
+def build_catalog_index_from_authoring(dir_path: Path | None = None) -> dict[str, Any] | None:
+    """Build the expected index bundle from authoring MDX entries."""
+    entries = load_authoring_entries(dir_path)
+    if not entries:
+        return None
+    return build_catalog_index(entries)
+
+
+def catalog_index_stale_reason(path: Path | None = None) -> str | None:
+    """Return a remediation message when the committed index drifts from authoring SSOT."""
+    expected = build_catalog_index_from_authoring()
+    if expected is None:
+        return None
+    existing = read_catalog_index(path)
+    out = path or CATALOG_INDEX_PATH
+    if existing is None:
+        return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
+    if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
+        return (
+            f"{out.relative_to(wagents.ROOT)} is stale; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+    return None
+
+
 def entry_to_external_skill_entry(entry: CatalogAuthoringEntry) -> ExternalSkillEntry:
     """Convert an authoring entry (source_kind curated-external) into an ExternalSkillEntry.
 

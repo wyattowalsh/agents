@@ -1681,6 +1681,34 @@ def skills_sync(
             typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
 
 
+@catalog_app.command("index")
+def catalog_index(
+    check: bool = typer.Option(False, "--check", help="Exit 1 when committed index drifts from authoring"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Inspect or verify the generated skills catalog index bundle."""
+    from wagents.skill_index import CATALOG_INDEX_PATH, catalog_index_stale_reason
+
+    reason = catalog_index_stale_reason()
+    if check:
+        if reason:
+            if format_ == "json" or format_ == "jsonl":
+                typer.echo(json.dumps({"ok": False, "error": reason, "path": str(CATALOG_INDEX_PATH)}))
+            else:
+                typer.echo(reason, err=True)
+            raise SystemExit(1)
+        if format_ == "json" or format_ == "jsonl":
+            typer.echo(json.dumps({"ok": True, "path": str(CATALOG_INDEX_PATH)}))
+        else:
+            typer.echo(f"{CATALOG_INDEX_PATH.relative_to(ROOT)} is up to date")
+        return
+
+    if reason:
+        typer.echo(reason)
+    else:
+        typer.echo(f"{CATALOG_INDEX_PATH.relative_to(ROOT)} is up to date")
+
+
 @catalog_app.command("sync-authoring")
 def catalog_sync_authoring(
     dry_run: bool = typer.Option(

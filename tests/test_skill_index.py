@@ -223,3 +223,22 @@ def test_authoring_entry_to_catalog_node_curated_produces_curated_stub(tmp_autho
     assert node.metadata.get("_is_stub") is True  # empty body
     assert node.metadata.get("_skills_source") == "foo/bar"
     assert node.metadata.get("_curated_status") == "inspect-then-install"
+
+def test_catalog_index_stale_reason_none_when_index_matches_authoring(tmp_path, monkeypatch):
+    from wagents.skill_index import (
+        AUTHORING_SKILLS_DIR,
+        build_catalog_index,
+        catalog_index_stale_reason,
+        load_authoring_entries,
+        write_catalog_index,
+    )
+
+    if not AUTHORING_SKILLS_DIR.exists() or not any(AUTHORING_SKILLS_DIR.glob("*.mdx")):
+        return
+
+    entries = load_authoring_entries()
+    index_path = tmp_path / "skills-catalog-index.json"
+    write_catalog_index(build_catalog_index(entries), path=index_path)
+    monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
+    assert catalog_index_stale_reason(index_path) is None
+
