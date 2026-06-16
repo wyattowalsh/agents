@@ -13,6 +13,7 @@ from wagents.parsing import (
     FenceTracker,
     escape_attr,
     is_navigable_catalog_link_target,
+    process_outside_fences,
     sanitize_catalog_links,
     shift_headings,
     truncate_sentence,
@@ -33,17 +34,7 @@ from wagents.skill_research import load_skill_research
 
 def escape_mdx(body: str) -> str:
     """Escape markdown body for safe MDX embedding."""
-    lines = body.split("\n")
-    result = []
-    fence = FenceTracker()
-
-    for line in lines:
-        if fence.update(line) or fence.inside_fence:
-            result.append(line)
-        else:
-            result.append(escape_mdx_line(line))
-
-    return "\n".join(result)
+    return process_outside_fences(body, escape_mdx_line)
 
 
 def escape_mdx_line(line: str) -> str:
@@ -619,11 +610,11 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     # Extract and render additional body sections for richer docs pages
     body_sections = _extract_body_sections(node.body) if node.body else {}
     for section_key, section_content in body_sections.items():
-        if section_key in _SKIP_SECTIONS:
-            continue
-        if section_key not in _RENDERABLE_SECTIONS:
-            continue
-        if not section_content.strip():
+        if (
+            section_key in _SKIP_SECTIONS
+            or section_key not in _RENDERABLE_SECTIONS
+            or not section_content.strip()
+        ):
             continue
         if (
             node.source != "custom"

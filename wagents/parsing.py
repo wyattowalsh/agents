@@ -1,6 +1,7 @@
 """Frontmatter parsing, fence tracking, and text transforms."""
 
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
 
 import yaml
@@ -62,16 +63,9 @@ def sanitize_catalog_links(text: str, *, fence_aware: bool = False) -> str:
     """Neutralize links that cannot resolve on generated docs catalog pages."""
     if not fence_aware:
         return _LINK_PATTERN.sub(_neutralize_catalog_link, text)
-
-    lines = text.split("\n")
-    fence = FenceTracker()
-    result: list[str] = []
-    for line in lines:
-        if fence.update(line) or fence.inside_fence:
-            result.append(line)
-        else:
-            result.append(_LINK_PATTERN.sub(_neutralize_catalog_link, line))
-    return "\n".join(result)
+    return process_outside_fences(
+        text, lambda line: _LINK_PATTERN.sub(_neutralize_catalog_link, line)
+    )
 
 
 def strip_relative_md_links(text: str) -> str:
@@ -94,18 +88,39 @@ class FenceTracker:
         """Update state for *line*. Returns True if the line is a fence boundary."""
         stripped = line.lstrip()
         indent = len(line) - len(stripped)
-        if indent <= 3 and (stripped.startswith("```") or stripped.startswith("~~~")):
-            char = stripped[0]
-            count = len(stripped) - len(stripped.lstrip(char))
-            if self._char is None:
-                self._char = char
-                self._count = count
-                return True
-            if char == self._char and count >= self._count:
-                self._char = None
-                self._count = 0
-                return True
+        if indent > 3:
+            return False
+        if not (stripped.startswith("```") or stripped.startswith("~~~")):
+            return False
+        char = stripped[0]
+        count = len(stripped) - len(stripped.lstrip(char))
+        if self._char is None:
+            self._char = char
+            self._count = count
+            return True
+        if char == self._char and count >= self._count:
+            self._char = None
+            self._count = 0
+            return True
         return False
+
+
+def process_outside_fences(text: str, processor: Callable[[str], str]) -> str:
+    """Apply *processor* to every line outside fenced code blocks.
+
+    Fence-boundary lines and lines inside fences are passed through unchanged.
+    This centralizes the fence-skipping pattern for DRY fence-aware transforms
+    (sanitize links, shift headings, MDX escape, etc).
+    """
+    lines = text.split("\n")
+    fence = FenceTracker()
+    result: list[str] = []
+    for line in lines:
+        if fence.update(line) or fence.inside_fence:
+            result.append(line)
+        else:
+            result.append(processor(line))
+    return "\n".join(result)
 
 
 def shift_headings(body: str, levels: int = 1) -> str:
@@ -114,17 +129,9 @@ def shift_headings(body: str, levels: int = 1) -> str:
     Fence-aware: skips headings inside fenced code blocks.
     """
     extra = "#" * levels
-    lines = body.split("\n")
-    result = []
-    fence = FenceTracker()
-
-    for line in lines:
-        if fence.update(line) or fence.inside_fence:
-            result.append(line)
-        else:
-            result.append(re.sub(r"^(#{1,5})", lambda m: extra + m.group(1), line))
-
-    return "\n".join(result)
+    return process_outside_fences(
+        body, lambda line: re.sub(r"^(#{1,5})", lambda m: extra + m.group(1), line)
+    )
 
 
 def escape_attr(text: str) -> str:
@@ -145,7 +152,7 @@ def parse_frontmatter(content: str) -> tuple[dict, str]:
         else:
             raise ValueError("Invalid frontmatter: missing closing '---'")
     frontmatter = yaml.safe_load(rest[:end_idx])
-    body = rest[end_idx + 5 :].strip() if end_idx + 5 <= len(rest) else ""
+    body = rest[end_idx + 5 :].strip()
     return frontmatter, body
 
 
