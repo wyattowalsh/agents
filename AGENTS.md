@@ -69,6 +69,19 @@ Agents use YAML frontmatter followed by a markdown system prompt.
 | `memory`          | string  | —         | Persistent memory: `user` \| `project` \| `local`                                      |
 | `hooks`           | object  | —         | Lifecycle hooks scoped to this agent                                                   |
 
+**OpenCode-specific extensions (non-portable):**
+
+The following frontmatter keys are recognized only by the OpenCode harness and are not part of the portable agent contract. They are stored in a separate overlay file (`instructions/opencode-agents-overlay.md`) and are loaded exclusively by OpenCode:
+
+| Field         | Type   | Description                                                  |
+| ------------- | ------ | ------------------------------------------------------------ |
+| `mode`        | string | Subagent mode (`subagent`)                                   |
+| `temperature` | float  | Sampling temperature for the agent (`0.1`–`0.2`)             |
+| `color`       | string | UI color token for the agent in the OpenCode TUI             |
+| `permission`  | object | Nested permission rules (`edit`, `bash`, `webfetch`, `task`) |
+
+These keys are tolerated by the local OpenCode harness but are stripped or ignored by Codex, Claude Code, and Grok routes. Model selection is deliberately kept out of agent frontmatter (belongs in `opencode.json` config).
+
 ### Memory System
 
 The `memory` field on agents enables persistent storage across sessions:
@@ -312,6 +325,9 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Crush              | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
 | OpenCode           | `AGENTS.md` → `@instructions/global.md`                        | `instructions/opencode-global.md` for global OpenCode config     |
 | Cursor             | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
+| Grok Build         | `AGENTS.md` → `@instructions/global.md`                        | `instructions/grok-global.md`, `config/grok-config.toml`, `~/.grok/config.toml`, `.grok/config.toml`; MCP via sync; `wagents grok doctor` |
 | GitHub Copilot     | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Generated from `instructions/copilot-global.md`                  |
+
+Grok Build discovers skills from `~/.grok/skills/`, repo `.grok/skills/`, and `~/.claude/skills/`. The Skills CLI has no native `grok` adapter; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter and mirrors them into `~/.grok/skills`.
 
 GitHub Copilot stays in harness config and instruction sync, but installed-skill inventory should report only what the Skills CLI actually discovers. Do not fabricate skill rows from Copilot instruction or config files when the CLI reports zero installs.

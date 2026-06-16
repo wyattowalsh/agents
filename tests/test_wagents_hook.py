@@ -27,9 +27,9 @@ class CaptureStream:
 def run_hook(monkeypatch, payload: dict, args: list[str], env_active: bool = False) -> tuple[int, str, str]:
     monkeypatch.setattr(sys, "stdin", type("In", (), {"read": lambda self: json.dumps(payload)})())
     if env_active:
-        monkeypatch.setenv("WAGENTS_RESEARCH_ACTIVE", "1")
+        monkeypatch.setenv("RESEARCH_SKILL_ACTIVE", "1")
     else:
-        monkeypatch.delenv("WAGENTS_RESEARCH_ACTIVE", raising=False)
+        monkeypatch.delenv("RESEARCH_SKILL_ACTIVE", raising=False)
     stdout = CaptureStream()
     stderr = CaptureStream()
     monkeypatch.setattr(sys, "stdout", stdout)

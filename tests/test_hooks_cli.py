@@ -31,8 +31,6 @@ def patched_repo(tmp_path, monkeypatch):
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
     monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
-    monkeypatch.setattr("wagents.catalog.RELATED_SKILLS", {})
-    monkeypatch.setattr("wagents.cli.RELATED_SKILLS", {})
     (tmp_path / "skills").mkdir()
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()
@@ -337,8 +335,8 @@ class TestSkillCreatorVerify:
         monkeypatch.setattr(skill_creator_verify.subprocess, "run", fake_run)
 
         assert skill_creator_verify.main(["post-tool-use"]) == 0
-        assert ["uv", "run", "wagents", "validate"] in commands
-        assert ["uv", "run", "wagents", "hooks", "validate"] in commands
+        assert any(cmd[-1].endswith("validate_skill.py") for cmd in commands)
+        assert any(cmd[-1].endswith("validate_hooks.py") for cmd in commands)
 
     def test_stop_dirty_eval_runs_eval_validate(self, monkeypatch):
         commands = []
@@ -361,7 +359,7 @@ class TestSkillCreatorVerify:
         monkeypatch.setattr(skill_creator_verify.subprocess, "run", fake_run)
 
         assert skill_creator_verify.main(["stop"]) == 0
-        assert ["uv", "run", "wagents", "eval", "validate"] in commands
+        assert any(cmd[-1].endswith("validate_evals.py") for cmd in commands)
 
 
 class TestValidateIncludesHooks:

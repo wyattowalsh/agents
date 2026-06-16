@@ -804,6 +804,90 @@ def test_render_codex_config_enables_hooks_feature():
     assert "codex_hooks" not in rendered
 
 
+def test_render_codex_config_uses_live_web_search_per_latest_docs():
+    import tomllib
+
+    registry = {"servers": {}}
+    policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
+
+    rendered = render_codex_config("", registry, policy, include_local_extras=False)
+    data = tomllib.loads(rendered)
+
+    assert data["web_search"] == "live"
+    assert all(profile["web_search"] == "live" for name, profile in data["profiles"].items() if "web_search" in profile)
+    assert data["tools"]["web_search"]["context_size"] == "high"
+    assert data["tools"]["web_search"]["location"]["country"] == "US"
+    assert "web_search_cached" not in rendered
+    assert "web_search_request" not in rendered
+
+
+def test_repair_codex_config_text_deduplicates_managed_mcphub_servers():
+    import tomllib
+
+    registry = json.loads((sync_agent_stack.REPO_ROOT / "config/mcp-registry.json").read_text(encoding="utf-8"))
+    current = """
+[mcp_servers.mcphub_group_harness-safe]
+url = "http://127.0.0.1:46683/mcp/harness-safe"
+enabled = true
+
+# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
+
+[mcp_servers.mcphub_group_harness-safe]
+url = "http://127.0.0.1:46683/mcp/harness-safe"
+enabled = true
+
+# END MANAGED BY sync_agent_stack.py: MCP_SERVERS
+"""
+    repaired = sync_agent_stack.repair_codex_config_text(current, registry)
+    data = tomllib.loads(repaired)
+
+    assert repaired.count("[mcp_servers.mcphub_group_harness-safe]") == 0
+    assert "mcphub_group_harness-safe" not in data.get("mcp_servers", {})
+
+
+def test_render_codex_config_drops_preserved_managed_mcphub_servers():
+    import tomllib
+
+    registry = mcphub_registry()
+    policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
+    current = """
+[mcp_servers.mcphub_group_harness-safe]
+url = "http://127.0.0.1:46683/mcp/harness-safe"
+enabled = true
+
+[mcp_servers.mcphub_server_brave-search]
+url = "http://127.0.0.1:46683/mcp/brave-search"
+enabled = false
+"""
+
+    rendered = render_codex_config(current, registry, policy, include_local_extras=True)
+    data = tomllib.loads(rendered)
+    harness_safe_blocks = rendered.count("[mcp_servers.mcphub_group_harness-safe]")
+    brave_blocks = rendered.count("[mcp_servers.mcphub_server_brave-search]")
+
+    assert harness_safe_blocks == 1
+    assert brave_blocks == 1
+    assert "mcphub_group_harness-safe" in data["mcp_servers"]
+
+
+def test_render_codex_config_drops_preserved_features_multi_agent_v2_table():
+    import tomllib
+
+    registry = {"servers": {}}
+    policy = {"model_defaults": {"codex": {"model": "gpt-5.5", "reasoning_effort": "high", "personality": "pragmatic"}}}
+    current = """
+[features.multi_agent_v2]
+enabled = true
+max_concurrent_threads_per_session = 512
+"""
+
+    rendered = render_codex_config(current, registry, policy, include_local_extras=True)
+    data = tomllib.loads(rendered)
+
+    assert data["features"]["multi_agent_v2"] is True
+    assert "[features.multi_agent_v2]" not in rendered
+
+
 def test_render_codex_config_adds_lmstudio_provider_profile():
     registry = {"servers": {}}
     policy = {
@@ -917,6 +1001,9 @@ def test_merge_opencode_config_adds_managed_instructions_and_skills_path(tmp_pat
     monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
     monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        sync_agent_stack, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
 
@@ -937,6 +1024,7 @@ def test_merge_opencode_config_adds_managed_instructions_and_skills_path(tmp_pat
     assert payload["instructions"] == [
         "~/dev/projects/agents/instructions/global.md",
         "~/dev/projects/agents/instructions/opencode-global.md",
+        "~/dev/projects/agents/instructions/opencode-agents-overlay.md",
         "~/.config/opencode/rules/shared.md",
     ]
     assert payload["skills"]["paths"] == [
@@ -963,6 +1051,7 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
                 "instructions": [
                     str((repo_root / "instructions" / "global.md").resolve()),
                     str((repo_root / "instructions" / "opencode-global.md").resolve()),
+                    str((repo_root / "instructions" / "opencode-agents-overlay.md").resolve()),
                 ],
                 "skills": {"paths": [str((repo_root / "skills").resolve())]},
             }
@@ -973,6 +1062,9 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
     monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
     monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        sync_agent_stack, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
 
@@ -1011,6 +1103,9 @@ def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_model
     monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
     monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        sync_agent_stack, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
 
@@ -1073,6 +1168,9 @@ def test_merge_opencode_config_enforces_requested_model_matrix(tmp_path, monkeyp
     monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
     monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        sync_agent_stack, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_REPO_CONFIG_PATH", repo_root / "opencode.json")
@@ -1142,6 +1240,9 @@ def test_merge_opencode_config_preserves_custom_agent_models(tmp_path, monkeypat
     monkeypatch.setattr(sync_agent_stack, "REPO_ROOT", repo_root)
     monkeypatch.setattr(sync_agent_stack, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        sync_agent_stack, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(sync_agent_stack, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_CONFIG_PATH", config_path)
     monkeypatch.setattr(sync_agent_stack, "OPENCODE_REPO_CONFIG_PATH", repo_root / "opencode.json")
@@ -1396,7 +1497,11 @@ def test_generate_project_opencode_config_creates_file(tmp_path, monkeypatch):
     payload = json.loads(config_path.read_text())
 
     assert payload["$schema"] == "https://opencode.ai/config.json"
-    assert payload["instructions"] == ["AGENTS.md", "instructions/opencode-global.md"]
+    assert payload["instructions"] == [
+        "AGENTS.md",
+        "instructions/opencode-global.md",
+        "instructions/opencode-agents-overlay.md",
+    ]
     assert payload["skills"]["paths"] == ["skills"]
     assert_opencode_model_matrix(payload)
     assert set(payload["formatter"]) == {"biome", "prettier", "ruff", "shell", "toml", "just", "gofmt", "rustfmt"}
@@ -1453,7 +1558,7 @@ def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monk
 
     assert json.loads(registry_path.read_text(encoding="utf-8")) == registry
     assert json.loads(hook_path.read_text(encoding="utf-8")) == hook_registry
-    assert called == ["vscode", "opencode"]
+    assert called == ["vscode", "opencode", "grok"]
 
 
 def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
@@ -1598,6 +1703,9 @@ def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_
     monkeypatch.setattr(opencode_platform, "OPENCODE_CONFIG_PATH", config_path)
     monkeypatch.setattr(opencode_platform, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(opencode_platform, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        opencode_platform, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(opencode_platform, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
 
@@ -1795,6 +1903,9 @@ def test_opencode_adapter_sync_home_merges_repo_runtime_plugins(tmp_path, monkey
     monkeypatch.setattr(opencode_platform, "OPENCODE_REPO_CONFIG_PATH", repo_config_path)
     monkeypatch.setattr(opencode_platform, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(opencode_platform, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        opencode_platform, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(opencode_platform, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(opencode_platform.Adapter, "_sync_dcp_config", lambda self, ctx: None)
     monkeypatch.setattr(opencode_platform.Adapter, "_sync_large_image_optimizer_config", lambda self, ctx: None)
@@ -1890,6 +2001,9 @@ def test_opencode_adapter_sync_home_errors_before_dropping_runtime_entries(tmp_p
     monkeypatch.setattr(opencode_platform, "OPENCODE_REPO_CONFIG_PATH", repo_config_path)
     monkeypatch.setattr(opencode_platform, "GLOBAL_MD", repo_root / "instructions" / "global.md")
     monkeypatch.setattr(opencode_platform, "OPENCODE_GLOBAL_MD", repo_root / "instructions" / "opencode-global.md")
+    monkeypatch.setattr(
+        opencode_platform, "OPENCODE_AGENTS_OVERLAY_MD", repo_root / "instructions" / "opencode-agents-overlay.md"
+    )
     monkeypatch.setattr(opencode_platform, "SKILLS_DIR", repo_root / "skills")
     monkeypatch.setattr(opencode_platform.Adapter, "_deploy_plugins", lambda self, ctx: None)
 
@@ -2245,3 +2359,28 @@ def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch
 
     assert (codex_home / "AGENTS.md").is_symlink()
     assert (codex_home / "AGENTS.md").resolve() == repo_root / "instructions" / "codex-global.md"
+
+def test_platform_filter_allows_shared_grok_only():
+    from scripts.sync_agent_stack import platform_filter_allows
+
+    assert platform_filter_allows({"grok"}, "shared") is False
+    assert platform_filter_allows({"grok"}, "grok") is True
+    assert platform_filter_allows({"grok"}, "opencode") is False
+    assert platform_filter_allows(None, "opencode") is True
+
+
+def test_sync_platforms_grok_only_skips_opencode(monkeypatch):
+    from scripts.sync_agent_stack import sync_home_targets
+    from wagents.platforms.base import SyncContext
+
+    called: list[str] = []
+
+    def fake_sync(name, ctx, registry, policy, fallbacks, hook_registry):
+        called.append(name)
+
+    monkeypatch.setattr("scripts.sync_agent_stack.sync_platform_home_target", fake_sync)
+    ctx = SyncContext(apply=False)
+    sync_home_targets(ctx, {}, {}, {}, {}, platforms_filter={"grok"})
+    assert called == ["grok"]
+    assert "opencode" not in called
+

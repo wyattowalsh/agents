@@ -93,3 +93,6 @@ For unfamiliar tools/APIs, check `{docs_url}/llms.txt` (index) and `llms-full.tx
   `uv run wagents skills search|context|read|doctor ...` from `/Users/ww/dev/projects/agents`
   when a task needs a skill body or a missing/omitted skill must be recovered.
 - Prefer dynamic subagent delegation over hardcoded static teams; keep local agent ceilings practical.
+- Keep Codex web search on live mode: set top-level `web_search = "live"` (and the same in managed profiles).
+- Do not rely on deprecated `features.web_search*` toggles; tune search context with `[tools.web_search]`.
+- Codex config reference: https://developers.openai.com/codex/config-reference

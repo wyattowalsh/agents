@@ -342,6 +342,45 @@
 			"secret_handling": "path-only"
 		},
 		{
+			"path": "/Users/ww/dev/projects/agents/config/grok-config.toml",
+			"mode": "canonical",
+			"location_class": "repo",
+			"source_tier": "canonical-source",
+			"owner_change": "agents-c04-grok-harness",
+			"drift_policy": "canonical",
+			"validation_evidence": [
+				"uv run pytest tests/test_sync_agent_stack.py",
+				"uv run wagents validate"
+			],
+			"secret_handling": "not-secret-bearing"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/instructions/grok-global.md",
+			"mode": "canonical",
+			"location_class": "repo",
+			"source_tier": "canonical-source",
+			"owner_change": "agents-c04-grok-harness",
+			"drift_policy": "canonical",
+			"validation_evidence": [
+				"uv run pytest tests/test_sync_agent_stack.py",
+				"uv run wagents validate"
+			],
+			"secret_handling": "not-secret-bearing"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/grok-env.sh",
+			"mode": "canonical",
+			"location_class": "repo",
+			"source_tier": "canonical-source",
+			"owner_change": "agents-c04-grok-harness",
+			"drift_policy": "canonical",
+			"validation_evidence": [
+				"uv run pytest tests/test_sync_agent_stack.py",
+				"uv run wagents validate"
+			],
+			"secret_handling": "path-only"
+		},
+		{
 			"path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
 			"mode": "generated",
 			"location_class": "repo",

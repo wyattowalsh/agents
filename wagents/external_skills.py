@@ -72,6 +72,7 @@ SUPPORTED_TARGET_AGENTS = (
     "forgecode",
     "gemini-cli",
     "github-copilot",
+    "grok",
     "goose",
     "hermes-agent",
     "iflow-cli",
@@ -399,6 +400,16 @@ def _entry_priority(entry: ExternalSkillEntry) -> int:
     if entry.status != "global-only-or-avoid":
         return 1
     return 0
+
+
+def desired_install_now_entries(path: Path | None = None) -> list[ExternalSkillEntry]:
+    """Return Install Now curated entries with verified install commands."""
+    return [
+        entry
+        for entry in read_external_skill_entries(path)
+        if entry.status == "install-now-after-trust-gate"
+        and entry.provenance_status == "verified-install-command"
+    ]
 
 
 def unsupported_target_agents(entries: list[ExternalSkillEntry]) -> dict[str, tuple[str, ...]]:

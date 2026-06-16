@@ -271,6 +271,33 @@
 			"validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
 		},
 		{
+			"path": "/Users/ww/dev/projects/agents/config/grok-config.toml",
+			"expected_mode": "canonical",
+			"current_state": "not-checked",
+			"drift_risk": "medium",
+			"owner_change": "agents-c04-grok-harness",
+			"next_action": "validate-before-sync",
+			"validation_command": "uv run pytest tests/test_sync_agent_stack.py"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/instructions/grok-global.md",
+			"expected_mode": "canonical",
+			"current_state": "not-checked",
+			"drift_risk": "medium",
+			"owner_change": "agents-c04-grok-harness",
+			"next_action": "validate-before-sync",
+			"validation_command": "uv run pytest tests/test_sync_agent_stack.py"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/grok-env.sh",
+			"expected_mode": "canonical",
+			"current_state": "not-checked",
+			"drift_risk": "medium",
+			"owner_change": "agents-c04-grok-harness",
+			"next_action": "validate-before-sync",
+			"validation_command": "uv run pytest tests/test_sync_agent_stack.py"
+		},
+		{
 			"path": "/Users/ww/dev/projects/agents/config/codex-config.toml",
 			"expected_mode": "generated",
 			"current_state": "generated-live",

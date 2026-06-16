@@ -22,8 +22,6 @@ def patched_repo(tmp_path, monkeypatch):
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
     monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
-    monkeypatch.setattr("wagents.catalog.RELATED_SKILLS", {})
-    monkeypatch.setattr("wagents.cli.RELATED_SKILLS", {})
     (tmp_path / "skills").mkdir()
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()

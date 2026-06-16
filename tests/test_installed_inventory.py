@@ -3,7 +3,13 @@ import subprocess
 import sys
 
 from wagents.external_skills import parse_external_skill_entries
-from wagents.installed_inventory import _run_harness_command, collect_installed_inventory, query_harness_skills
+from wagents.installed_inventory import (
+    _run_harness_command,
+    collect_installed_inventory,
+    mirror_grok_skills_from_claude,
+    query_harness_skills,
+    skills_cli_agent_id,
+)
 
 
 def _completed(cmd, payload):
@@ -205,6 +211,41 @@ def test_run_harness_command_captures_large_stdout():
     assert json.loads(result.stdout)[0]["agents"] == ["Codex"]
 
 
+def test_query_grok_harness_scans_grok_and_claude_skill_roots(tmp_path):
+    grok_skill_dir = tmp_path / ".grok" / "skills" / "grok-only"
+    claude_skill_dir = tmp_path / ".claude" / "skills" / "shared-skill"
+    grok_skill_dir.mkdir(parents=True)
+    claude_skill_dir.mkdir(parents=True)
+    (grok_skill_dir / "SKILL.md").write_text("---\nname: grok-only\ndescription: Grok\n---\n")
+    (claude_skill_dir / "SKILL.md").write_text("---\nname: shared-skill\ndescription: Shared\n---\n")
+
+    (result,) = query_harness_skills(agent_ids=("grok",), home=tmp_path)
+
+    assert result.ok
+    by_name = {entry.name: entry for entry in result.entries}
+    assert set(by_name) == {"grok-only", "shared-skill"}
+    assert by_name["grok-only"].path == str(grok_skill_dir)
+    assert by_name["shared-skill"].raw_agents == ("Claude Code",)
+
+
+def test_mirror_grok_skills_from_claude_symlinks_missing_entries(tmp_path):
+    claude_skill_dir = tmp_path / ".claude" / "skills" / "demo-skill"
+    claude_skill_dir.mkdir(parents=True)
+    (claude_skill_dir / "SKILL.md").write_text("---\nname: demo-skill\ndescription: Demo\n---\n")
+
+    mirrored = mirror_grok_skills_from_claude(home=tmp_path)
+
+    dest = tmp_path / ".grok" / "skills" / "demo-skill"
+    assert mirrored == 1
+    assert dest.is_symlink()
+    assert dest.resolve() == claude_skill_dir.resolve()
+
+
+def test_skills_cli_agent_id_maps_grok_to_claude_code():
+    assert skills_cli_agent_id("grok") == "claude-code"
+    assert skills_cli_agent_id("codex") == "codex"
+
+
 def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label(tmp_path):
     root = tmp_path / "repo"
     home = tmp_path / "home"
@@ -245,3 +286,21 @@ def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label
 
     by_name = {row.name: row for row in snapshot.rows}
     assert by_name["ui-ux-pro-max"].installed_agents == ("claude-code", "opencode")
+
+def test_query_grok_harness_includes_repo_project_skills(tmp_path):
+    repo = tmp_path / "repo"
+    home = tmp_path / "home"
+    global_skill = home / ".grok" / "skills" / "shared-skill"
+    project_skill = repo / ".grok" / "skills" / "shared-skill"
+    global_skill.mkdir(parents=True)
+    project_skill.mkdir(parents=True)
+    (global_skill / "SKILL.md").write_text("---\nname: shared-skill\ndescription: Global\n---\n", encoding="utf-8")
+    (project_skill / "SKILL.md").write_text("---\nname: shared-skill\ndescription: Project\n---\n", encoding="utf-8")
+
+    (result,) = query_harness_skills(agent_ids=("grok",), home=home, repo_root=repo)
+
+    assert result.ok
+    by_name = {entry.name: entry for entry in result.entries}
+    assert by_name["shared-skill"].scope == "project"
+    assert by_name["shared-skill"].path == str(project_skill)
+

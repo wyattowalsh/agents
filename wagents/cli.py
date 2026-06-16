@@ -14,9 +14,16 @@ from typing import Annotated, Any, cast
 import typer
 
 from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
-from wagents.catalog import RELATED_SKILLS, CatalogNode
+from wagents.catalog import CatalogNode
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
-from wagents.installed_inventory import InstalledSkillInventoryRow, collect_installed_inventory
+from wagents.installed_inventory import (
+    InstalledSkillInventoryRow,
+    collect_desired_sync_rows,
+    collect_installed_inventory,
+    merge_desired_with_installed,
+    mirror_grok_skills_from_claude,
+    skills_cli_agent_id,
+)
 from wagents.opencode_sessions import (
     DEFAULT_OPENCODE_DB_PATH,
     DEFAULT_OPENCODE_LOG_DIR,
@@ -40,7 +47,52 @@ from wagents.site_model import (
     build_install_command,
     docs_asset_repo_path,
 )
-from wagents.skill_index import collect_skill_records, doctor_report, read_skill, search_skills
+
+SKILL_CREATOR_SCRIPTS = ROOT / "skills" / "skill-creator" / "scripts"
+SKILL_ROUTER_SCRIPT = ROOT / "skills" / "skill-router" / "scripts" / "skill_index.py"
+VALIDATE_REPO_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "validate" / "validate_repo.py"
+
+
+def _run_python_script(script: Path, args: list[str]) -> int:
+    result = subprocess.run(
+        [sys.executable, str(script), *args],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    if result.stdout:
+        sys.stdout.write(result.stdout)
+        if not result.stdout.endswith("\n"):
+            sys.stdout.write("\n")
+    if result.stderr:
+        sys.stderr.write(result.stderr)
+        if not result.stderr.endswith("\n"):
+            sys.stderr.write("\n")
+    return result.returncode
+
+
+def _skill_router_args(args: list[str]) -> list[str]:
+    return [
+        *args,
+        "--repo-root",
+        str(ROOT),
+        "--home",
+        str(Path.home()),
+        "--cwd",
+        str(Path.cwd()),
+    ]
+
+
+def _run_skill_router(args: list[str]) -> int:
+    return _run_python_script(SKILL_ROUTER_SCRIPT, _skill_router_args(args))
+
+
+def _exit_skill_router(args: list[str], *, source: str | None = None) -> None:
+    if source is not None:
+        _normalize_skill_source(source)
+    raise typer.Exit(code=_run_skill_router(args))
+
 
 # Typer apps
 app = typer.Typer(help="CLI for managing centralized AI agent assets")
@@ -57,6 +109,8 @@ openspec_app = typer.Typer(help="Manage OpenSpec workflows and downstream AI too
 app.add_typer(openspec_app, name="openspec")
 opencode_app = typer.Typer(help="Diagnose OpenCode runtime state")
 app.add_typer(opencode_app, name="opencode")
+grok_app = typer.Typer(help="Diagnose Grok Build runtime state")
+app.add_typer(grok_app, name="grok")
 
 OUTPUT_FORMATS = ("text", "json", "jsonl")
 SKILL_SOURCES = (
@@ -164,20 +218,6 @@ def _normalize_skill_source(source: str) -> str:
         )
         raise typer.Exit(code=1)
     return normalized
-
-
-def _format_skill_row(record: dict[str, object]) -> str:
-    """Render a compact skill index/search row."""
-    warnings = record.get("warnings")
-    warning_count = len(warnings) if isinstance(warnings, list) else 0
-    warning_text = f" warnings={warning_count}" if warning_count else ""
-    description = str(record.get("description") or "").replace("\n", " ").strip()
-    if len(description) > 120:
-        description = description[:117].rstrip() + "..."
-    return (
-        f"{record['name']} [{record['source']}:{record['trust_tier']}]"
-        f"{warning_text}\n  {record['path']}\n  {description}"
-    )
 
 
 def _collect_hooks():
@@ -730,58 +770,12 @@ def new_skill(
     no_docs: bool = typer.Option(False, "--no-docs", help="Skip docs page scaffold"),
 ):
     """Create a new skill from template."""
-    validate_name(name)
-    skill_dir = ROOT / "skills" / name
-    skill_file = skill_dir / "SKILL.md"
-
-    if skill_file.exists():
-        typer.echo(f"Error: {skill_file} already exists", err=True)
-        raise typer.Exit(code=1)
-
-    skill_dir.mkdir(parents=True, exist_ok=True)
-
-    title = to_title(name)
-    content = f"""---
-name: {name}
-description: TODO — What this skill does and when to use it
-
-## Cross-Platform (agentskills.io spec)
-# license: MIT                              # SPDX identifier
-# compatibility: "Requires git and docker"  # Environment requirements (max 500 chars)
-# allowed-tools: Read Grep Glob             # Space-delimited tool allowlist (experimental)
-# metadata:
-#   author: wyattowalsh
-#   version: "1.0"
-#   internal: false                         # If true, hidden unless INSTALL_INTERNAL_SKILLS=1
-
-## Claude Code Extensions
-# argument-hint: "[query]"                  # Shown during autocomplete
-# model: sonnet                             # Model override: sonnet | opus | haiku
-# context: fork                             # Run in isolated subagent
-# agent: Explore                            # Subagent type when context: fork
-# user-invocable: true                      # Set false to hide from / menu (background knowledge only)
-# disable-model-invocation: false           # Set true to prevent auto-invocation (manual /name only)
-# hooks:                                    # Lifecycle hooks scoped to this skill
-#   PreToolUse:
-#     - matcher: Bash
-#       hooks: [{{command: "echo check"}}]
----
-
-# {title}
-
-Skill instructions go here in markdown. Use imperative voice.
-
-## When to Use
-
-Describe when an AI agent should invoke this skill.
-
-## Instructions
-
-Step-by-step instructions for the agent.
-"""
-
-    skill_file.write_text(content)
-    typer.echo(f"Created skills/{name}/SKILL.md")
+    scaffold_script = SKILL_CREATOR_SCRIPTS / "scaffold_skill.py"
+    code = _run_python_script(scaffold_script, [name])
+    if code != 0:
+        raise typer.Exit(code=code)
+    skill_file = ROOT / "skills" / name / "SKILL.md"
+    content = skill_file.read_text()
 
     if not no_docs:
         fm, body = parse_frontmatter(content)
@@ -984,197 +978,12 @@ def validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Validate all skills and agents."""
-    errors: list[dict[str, str]] = []
-
-    def add_error(source: str | Path, message: str) -> None:
-        errors.append({"source": str(source), "message": message})
-
-    # Validate skills
-    skills_dir = ROOT / "skills"
-    if skills_dir.exists():
-        for skill_dir in skills_dir.iterdir():
-            if not skill_dir.is_dir():
-                continue
-
-            skill_file = skill_dir / "SKILL.md"
-            if not skill_file.exists():
-                continue
-
-            try:
-                content = skill_file.read_text()
-                fm, body = parse_frontmatter(content)
-
-                # Validate name
-                if "name" not in fm:
-                    add_error(skill_file, "missing required field 'name'")
-                else:
-                    name = fm["name"]
-                    if not KEBAB_CASE_PATTERN.match(name):
-                        add_error(skill_file, "name must be kebab-case")
-                    if len(name) > 64:
-                        add_error(skill_file, "name exceeds 64 characters")
-                    if name != skill_dir.name:
-                        add_error(skill_file, f"name '{name}' doesn't match directory '{skill_dir.name}'")
-
-                # Validate description
-                if "description" not in fm:
-                    add_error(skill_file, "missing required field 'description'")
-                elif not str(fm["description"]).strip():
-                    add_error(skill_file, "description cannot be empty")
-                elif len(str(fm["description"])) > 1024:
-                    add_error(skill_file, "description exceeds 1024 characters")
-
-                # Validate body
-                if not body:
-                    add_error(skill_file, "body cannot be empty")
-
-            except Exception as e:
-                add_error(skill_file, str(e))
-
-    # Validate agents
-    agents_dir = ROOT / "agents"
-    if agents_dir.exists():
-        for agent_file in agents_dir.glob("*.md"):
-            try:
-                content = agent_file.read_text()
-                fm, _ = parse_frontmatter(content)
-
-                # Validate name
-                if "name" not in fm:
-                    add_error(agent_file, "missing required field 'name'")
-                else:
-                    name = fm["name"]
-                    if not KEBAB_CASE_PATTERN.match(name):
-                        add_error(agent_file, "name must be kebab-case")
-                    if name != agent_file.stem:
-                        add_error(agent_file, f"name '{name}' doesn't match filename '{agent_file.stem}'")
-
-                # Validate description
-                if "description" not in fm:
-                    add_error(agent_file, "missing required field 'description'")
-                elif not str(fm["description"]).strip():
-                    add_error(agent_file, "description cannot be empty")
-
-            except Exception as e:
-                add_error(agent_file, str(e))
-
-    # Validate MCP servers
-    mcp_dir = ROOT / "mcp"
-    if mcp_dir.exists():
-        for mcp_subdir in mcp_dir.iterdir():
-            if not mcp_subdir.is_dir():
-                continue
-            if _is_local_mcp_dir(mcp_subdir):
-                continue
-            dir_name = mcp_subdir.name
-            if not KEBAB_CASE_PATTERN.match(dir_name):
-                add_error(f"mcp/{dir_name}", "directory name must be kebab-case")
-            # Check if it's a Node.js project
-            package_json = mcp_subdir / "package.json"
-            if package_json.exists():
-                continue
-
-            server_py = mcp_subdir / "server.py"
-            if not server_py.exists():
-                add_error(f"mcp/{dir_name}", "missing server.py")
-            else:
-                server_text = server_py.read_text()
-                if "FastMCP" not in server_text:
-                    add_error(f"mcp/{dir_name}", "server.py does not reference FastMCP")
-            pyproject = mcp_subdir / "pyproject.toml"
-            if not pyproject.exists():
-                add_error(f"mcp/{dir_name}", "missing pyproject.toml")
-            else:
-                pyproject_text = pyproject.read_text()
-                if "fastmcp" not in pyproject_text:
-                    add_error(f"mcp/{dir_name}", "pyproject.toml missing fastmcp dependency")
-            fastmcp_json = mcp_subdir / "fastmcp.json"
-            if not fastmcp_json.exists():
-                add_error(f"mcp/{dir_name}", "missing fastmcp.json")
-
-    # Validate RELATED_SKILLS references
-    for key, values in RELATED_SKILLS.items():
-        if not (ROOT / "skills" / key).is_dir():
-            add_error("RELATED_SKILLS", f"key '{key}' does not match a skill directory")
-        for val in values:
-            if not (ROOT / "skills" / val).is_dir():
-                add_error("RELATED_SKILLS", f"value '{val}' (in '{key}') does not match a skill directory")
-
-    # Validate hooks
-    from wagents.parsing import KNOWN_HOOK_EVENTS
-
-    def _check_hooks(source: str, hooks_dict: dict) -> None:
-        if not isinstance(hooks_dict, dict):
-            add_error(source, "hooks must be a mapping")
-            return
-        for event in hooks_dict:
-            if event not in KNOWN_HOOK_EVENTS:
-                add_error(source, f"unknown hook event '{event}'")
-
-    for settings_name in ["settings.json", "settings.local.json"]:
-        settings_file = ROOT / ".claude" / settings_name
-        if settings_file.exists():
-            try:
-                data = json.loads(settings_file.read_text())
-                hooks_dict = data.get("hooks", {})
-                if hooks_dict:
-                    _check_hooks(settings_name, hooks_dict)
-            except json.JSONDecodeError as e:
-                add_error(settings_name, f"invalid JSON: {e}")
-
-    # Skills hooks — check events from already-parsed frontmatter
-    if skills_dir.exists():
-        for skill_dir in skills_dir.iterdir():
-            if not skill_dir.is_dir():
-                continue
-            skill_file = skill_dir / "SKILL.md"
-            if not skill_file.exists():
-                continue
-            try:
-                content = skill_file.read_text()
-                fm, _ = parse_frontmatter(content)
-                hooks_dict = fm.get("hooks", {})
-                if hooks_dict:
-                    _check_hooks(f"skill:{skill_dir.name}", hooks_dict)
-            except Exception:
-                pass
-
-    if agents_dir.exists():
-        for agent_file in agents_dir.glob("*.md"):
-            try:
-                content = agent_file.read_text()
-                fm, _ = parse_frontmatter(content)
-                hooks_dict = fm.get("hooks", {})
-                if hooks_dict:
-                    _check_hooks(f"agent:{agent_file.stem}", hooks_dict)
-            except Exception:
-                pass
-
-    text_errors = [_format_error(error["source"], error["message"]) for error in errors]
-    json_result = {
-        "ok": not errors,
-        "error_count": len(errors),
-        "errors": errors,
-        "message": "All validations passed" if not errors else "Validation failed",
-    }
-    jsonl_records: list[dict[str, object]] = [{"type": "error", **error} for error in errors]
-    jsonl_records.append(
-        {
-            "type": "summary",
-            "ok": not errors,
-            "error_count": len(errors),
-            "message": json_result["message"],
-        }
+    raise typer.Exit(
+        code=_run_python_script(
+            VALIDATE_REPO_SCRIPT,
+            ["--format", format_, "--repo-root", str(ROOT)],
+        )
     )
-
-    _emit_structured_output(
-        format_,
-        text_lines=text_errors if errors else ["All validations passed"],
-        json_data=json_result,
-        jsonl_records=jsonl_records,
-    )
-    if errors:
-        raise typer.Exit(code=1)
 
 
 SUPPORTED_AGENTS = list(SUPPORTED_AGENT_IDS)
@@ -1232,14 +1041,14 @@ def _sync_command_groups(rows: list[InstalledSkillInventoryRow], agent_id: str) 
         argv = ["npx", "skills", "add", install_source]
         for name in sorted(set(names)):
             argv.extend(["--skill", name])
-        argv.extend(["-y", "-g", "-a", agent_id])
+        argv.extend(["-y", "-g", "-a", skills_cli_agent_id(agent_id)])
         commands.append({"argv": argv, "text": _command_text(argv)})
 
     for (_, selector_mode), row in sorted(grouped_modes.items()):
         argv = ["npx", "skills", "add", row.install_source]
         if selector_mode == "wildcard":
             argv.extend(["--skill", "*"])
-        argv.extend(["-y", "-g", "-a", agent_id])
+        argv.extend(["-y", "-g", "-a", skills_cli_agent_id(agent_id)])
         commands.append({"argv": argv, "text": _command_text(argv)})
 
     return commands
@@ -1268,13 +1077,14 @@ def _build_sync_report(
     # Always collect the full cross-harness inventory so a skill present in any
     # harness is visible when checking what is missing in the requested targets.
     snapshot = collect_installed_inventory()
+    merged = merge_desired_with_installed(snapshot, collect_desired_sync_rows())
     report_agents: list[dict[str, object]] = []
     query_by_agent = {query.agent_id: query for query in snapshot.queries}
 
-    verified_rows = [row for row in snapshot.rows if row.is_repo_owned() or row.is_verified_curated()]
-    optional_installed = [row for row in snapshot.rows if row.provenance_status == "installed-external"]
+    verified_rows = [row for row in merged.rows if row.is_repo_owned() or row.is_verified_curated()]
+    optional_installed = [row for row in merged.rows if row.provenance_status == "installed-external"]
     unresolved_rows = [
-        row for row in snapshot.rows if row.provenance_status in {"curated-unresolved", "read-only-discovered"}
+        row for row in merged.rows if row.provenance_status in {"curated-unresolved", "read-only-discovered"}
     ]
 
     for agent_id in target_agents:
@@ -1341,7 +1151,7 @@ def _build_sync_report(
         )
 
     return {
-        "inventory_count": len(snapshot.rows),
+        "inventory_count": len(merged.rows),
         "include_installed": include_installed,
         "agents": report_agents,
     }
@@ -1411,7 +1221,7 @@ def install(
                         err=True,
                     )
                     raise typer.Exit(code=1)
-                cmd.extend(["-a", a])
+                cmd.extend(["-a", skills_cli_agent_id(a)])
         else:
             cmd.extend(["--agent", "*"])
 
@@ -1424,7 +1234,89 @@ def install(
             cmd.append("-y")
 
     result = subprocess.run(cmd, capture_output=False)
+    if result.returncode == 0 and agent and "grok" in agent:
+        mirrored = mirror_grok_skills_from_claude()
+        if mirrored:
+            typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
     raise typer.Exit(code=result.returncode)
+
+
+@grok_app.command("doctor")
+def grok_doctor() -> None:
+    """Report Grok config paths, env vars, MCP block, and skill roots."""
+    import os
+    import shutil
+
+    from wagents.platforms.grok import (
+        GROK_BINARY_PATH,
+        GROK_CONFIG_PATH,
+        GROK_CONFIG_POLICY_PATH,
+        GROK_CONFIG_REPO_PATH,
+        GROK_MCP_BEGIN,
+        GROK_POLICY_BEGIN,
+    )
+
+    home = Path.home()
+    issues: list[str] = []
+    warnings: list[str] = []
+    lines: list[str] = ["Grok Build doctor", ""]
+
+    binary = shutil.which("grok") or (str(GROK_BINARY_PATH) if GROK_BINARY_PATH.exists() else None)
+    lines.append(f"binary: {binary or 'missing'}")
+    if not binary:
+        issues.append("Grok CLI binary not found")
+
+    for label, cfg in (
+        ("home config", GROK_CONFIG_PATH),
+        ("repo project config", GROK_CONFIG_REPO_PATH),
+        ("policy template", GROK_CONFIG_POLICY_PATH),
+    ):
+        state = "present" if cfg.exists() else "missing"
+        lines.append(f"{label}: {cfg} ({state})")
+
+    if GROK_CONFIG_PATH.exists():
+        content = GROK_CONFIG_PATH.read_text(encoding="utf-8")
+        has_mcp_managed = GROK_MCP_BEGIN in content
+        has_policy_managed = GROK_POLICY_BEGIN in content
+        has_mcphub = "mcp_servers.mcphub_group_harness-safe" in content
+        lines.append(f"mcp managed block: {'yes' if has_mcp_managed else 'no'}")
+        lines.append(f"policy managed block: {'yes' if has_policy_managed else 'no'}")
+        lines.append(f"mcphub harness-safe endpoint: {'yes' if has_mcphub else 'no'}")
+        if not has_mcp_managed and has_mcphub:
+            warnings.append(
+                "MCP tables present without managed markers; run sync with --platforms grok --targets home"
+            )
+        if not has_mcp_managed and not has_mcphub:
+            issues.append("No MCPHub MCP projection found in ~/.grok/config.toml")
+        if not has_policy_managed and has_mcphub:
+            warnings.append(
+                "Policy managed block missing; run sync with --platforms grok --targets home to refresh policy"
+            )
+    else:
+        issues.append("~/.grok/config.toml missing")
+
+    for env_name in ("GROK_WEB_FETCH", "GROK_MEMORY", "GROK_SUBAGENTS", "GROK_LSP_TOOLS"):
+        value = os.environ.get(env_name)
+        lines.append(f"{env_name}: {value if value else 'unset'}")
+        if not value:
+            warnings.append(f"{env_name} is unset (source config/grok-env.sh)")
+
+    for skill_root in (home / ".grok" / "skills", home / ".claude" / "skills", ROOT / ".grok" / "skills"):
+        count = len(list(skill_root.glob("*/SKILL.md"))) if skill_root.is_dir() else 0
+        lines.append(f"skills at {skill_root}: {count}")
+
+    if warnings:
+        lines.append("")
+        lines.append("warnings:")
+        lines.extend(f"- {item}" for item in warnings)
+    if issues:
+        lines.append("")
+        lines.append("issues:")
+        lines.extend(f"- {item}" for item in issues)
+
+    typer.echo("\n".join(lines))
+    if issues:
+        raise typer.Exit(code=1)
 
 
 @app.command()
@@ -1447,16 +1339,7 @@ def skills_index(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Index locally available skills without loading full skill bodies."""
-    normalized_source = _normalize_skill_source(source)
-    records = [record.public_dict() for record in collect_skill_records(source=normalized_source)]
-    text_lines = [f"{len(records)} skills found"]
-    text_lines.extend(_format_skill_row(record) for record in records)
-    _emit_structured_output(
-        format_,
-        text_lines=text_lines,
-        json_data={"count": len(records), "skills": records},
-        jsonl_records=[{"type": "skill", **record} for record in records],
-    )
+    _exit_skill_router(["index", "--source", source, "--format", format_], source=source)
 
 
 @skills_app.command("search")
@@ -1467,23 +1350,9 @@ def skills_search(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Search locally available skills with deterministic lexical ranking."""
-    normalized_source = _normalize_skill_source(source)
-    results = [result.public_dict() for result in search_skills(query, source=normalized_source, limit=limit)]
-    text_lines = [f"{len(results)} matches for {query!r}"]
-    for result in results:
-        matched_fields = result.get("matched_fields")
-        fields_text = ",".join(str(field) for field in matched_fields) if isinstance(matched_fields, list) else ""
-        text_lines.append(
-            f"{result['name']} score={result['score']} fields={fields_text}\n"
-            f"  {result['reason']}\n"
-            f"  {result['path']}\n"
-            f"  {result.get('description', '')}"
-        )
-    _emit_structured_output(
-        format_,
-        text_lines=text_lines,
-        json_data={"query": query, "count": len(results), "skills": results},
-        jsonl_records=[{"type": "skill", "query": query, **result} for result in results],
+    _exit_skill_router(
+        ["search", query, "--source", source, "--limit", str(limit), "--format", format_],
+        source=source,
     )
 
 
@@ -1493,27 +1362,7 @@ def skills_read(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Read one skill body by exact name or path."""
-    try:
-        record = read_skill(name_or_path)
-    except (FileNotFoundError, LookupError) as exc:
-        typer.echo(f"Error: {exc}", err=True)
-        raise typer.Exit(code=1) from exc
-
-    data = record.public_dict(include_body=True)
-    text_lines = [
-        f"{record.name} [{record.source}:{record.trust_tier}]",
-        str(record.path),
-        "",
-        record.description,
-        "",
-        record.body,
-    ]
-    _emit_structured_output(
-        format_,
-        text_lines=text_lines,
-        json_data=data,
-        jsonl_records=[{"type": "skill", **data}],
-    )
+    _exit_skill_router(["read", name_or_path, "--format", format_])
 
 
 @skills_app.command("context")
@@ -1524,38 +1373,9 @@ def skills_context(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Build a compact context packet for the best matching skills."""
-    normalized_source = _normalize_skill_source(source)
-    results = search_skills(query, source=normalized_source, limit=limit)
-    records: list[dict[str, object]] = []
-    for result in results:
-        try:
-            record = read_skill(result.record.path)
-        except (FileNotFoundError, LookupError):
-            record = result.record
-        data = result.public_dict()
-        data["body"] = record.body
-        records.append(data)
-
-    text_lines = [f"Skill context for {query!r}", ""]
-    for result in records:
-        warnings = result.get("warnings")
-        warning_text = ", ".join(str(warning) for warning in warnings) if isinstance(warnings, list) else ""
-        text_lines.extend(
-            [
-                f"## {result['name']} score={result['score']} [{result['source']}:{result['trust_tier']}]",
-                f"Path: {result['path']}",
-                f"Reason: {result['reason']}",
-            ]
-        )
-        if warning_text:
-            text_lines.append(f"Warnings: {warning_text}")
-        text_lines.extend(["", str(result.get("body") or ""), ""])
-
-    _emit_structured_output(
-        format_,
-        text_lines=text_lines,
-        json_data={"query": query, "count": len(records), "skills": records},
-        jsonl_records=[{"type": "skill_context", "query": query, **record} for record in records],
+    _exit_skill_router(
+        ["context", query, "--source", source, "--limit", str(limit), "--format", format_],
+        source=source,
     )
 
 
@@ -1564,25 +1384,7 @@ def skills_doctor(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Diagnose skill discovery roots and counts."""
-    report = doctor_report()
-    roots = report.get("roots")
-    root_rows: list[dict[str, object]] = []
-    if isinstance(roots, list):
-        root_rows = [cast(dict[str, object], row) for row in roots if isinstance(row, dict)]
-    text_lines = [
-        f"Skill roots: {report['root_count']}",
-        f"Skills found: {report['skill_count']}",
-        f"Warnings: {report['warning_count']}",
-    ]
-    for row in root_rows:
-        status = "ok" if row.get("exists") else "missing"
-        text_lines.append(f"{status} {row.get('source')} {row.get('skill_count')} {row.get('path')}")
-    _emit_structured_output(
-        format_,
-        text_lines=text_lines,
-        json_data=report,
-        jsonl_records=[{"type": "root", **row} for row in root_rows],
-    )
+    _exit_skill_router(["doctor", "--format", format_])
 
 
 @skills_app.command("sync")
@@ -1608,11 +1410,18 @@ def skills_sync(
     if dry_run:
         return
 
+    grok_mirror_needed = False
     for payload in agent_reports:
+        if payload.get("agent") == "grok" and payload.get("_command_argvs"):
+            grok_mirror_needed = True
         for argv in cast(list[list[str]], payload.get("_command_argvs") or []):
             result = subprocess.run(argv, capture_output=False)
             if result.returncode != 0:
                 raise typer.Exit(code=result.returncode)
+    if grok_mirror_needed:
+        mirrored = mirror_grok_skills_from_claude()
+        if mirrored:
+            typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
 
 
 def _emit_openspec_command_result(result, format_: str, *, success_message: str) -> None:
@@ -2334,171 +2143,8 @@ def hooks_validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Validate all hooks across skills, agents, and settings."""
-    from wagents.parsing import KNOWN_HOOK_EVENTS
-
-    errors: list[dict[str, str]] = []
-
-    def add_error(source: str, message: str) -> None:
-        errors.append({"source": source, "message": message})
-
-    def _validate_hook_registry() -> None:
-        supported_harnesses = {"codex", "claude-code", "github-copilot", "gemini-cli"}
-        hook_registry_file = ROOT / "config" / "hook-registry.json"
-        if not hook_registry_file.exists():
-            return
-        try:
-            data = json.loads(hook_registry_file.read_text())
-        except json.JSONDecodeError as e:
-            add_error("hook-registry.json", f"invalid JSON: {e}")
-            return
-        hooks = data.get("hooks", [])
-        if not isinstance(hooks, list):
-            add_error("hook-registry.json", "hooks must be a list")
-            return
-        for index, hook in enumerate(hooks, 1):
-            source = f"hook-registry.json[{index}]"
-            if not isinstance(hook, dict):
-                add_error(source, "hook entry must be a mapping")
-                continue
-            hook_dict = cast(dict[str, object], hook)
-            hook_id = hook_dict.get("id")
-            if not isinstance(hook_id, str) or not hook_id:
-                add_error(source, "hook id is required")
-            event = hook_dict.get("logical_event")
-            if event not in KNOWN_HOOK_EVENTS:
-                add_error(source, f"unknown logical_event '{event}'")
-            harnesses = hook_dict.get("harnesses")
-            if not isinstance(harnesses, list) or not harnesses:
-                add_error(source, "harnesses must be a non-empty list")
-            else:
-                unknown = sorted(set(harnesses) - supported_harnesses)
-                if unknown:
-                    add_error(source, f"unsupported harnesses: {', '.join(str(item) for item in unknown)}")
-            command = hook_dict.get("command")
-            if not isinstance(command, str) or not command:
-                add_error(source, "command is required")
-            elif "hooks/wagents-hook.py" in command and not (ROOT / "hooks" / "wagents-hook.py").exists():
-                add_error(source, "command references missing hooks/wagents-hook.py")
-            elif command.startswith("./hooks/"):
-                script_name = command.split()[0].removeprefix("./hooks/")
-                if not (ROOT / "hooks" / script_name).exists():
-                    add_error(source, f"command references missing hooks/{script_name}")
-
-    def _validate_hooks(source: str, hooks_dict: dict) -> None:
-        if not isinstance(hooks_dict, dict):
-            add_error(source, "hooks must be a mapping")
-            return
-        for event, entries in hooks_dict.items():
-            if event not in KNOWN_HOOK_EVENTS:
-                add_error(source, f"unknown hook event '{event}'")
-            if not isinstance(entries, list):
-                add_error(source, f"entries for '{event}' must be a list")
-                continue
-            for entry in entries:
-                if not isinstance(entry, dict):
-                    add_error(source, f"each entry in '{event}' must be a mapping")
-                    continue
-                hook_list = entry.get("hooks", [])
-                # Standard format: nested hooks list
-                if isinstance(hook_list, list) and hook_list:
-                    for hook_def in hook_list:
-                        if not isinstance(hook_def, dict):
-                            add_error(source, "each hook definition must be a mapping")
-                            continue
-                        handler_type = hook_def.get("type", "command")
-                        if handler_type not in ("command", "prompt", "agent"):
-                            add_error(source, f"unknown handler type '{handler_type}' in '{event}'")
-                        if handler_type == "command" and not hook_def.get("command"):
-                            add_error(source, f"command handler in '{event}' has empty command")
-                        if handler_type in (
-                            "prompt",
-                            "agent",
-                        ) and not hook_def.get("prompt"):
-                            add_error(source, f"{handler_type} handler in '{event}' has empty prompt")
-                elif not isinstance(hook_list, list):
-                    add_error(source, f"'hooks' in '{event}' entry must be a list")
-                # Shorthand format: command/prompt directly on entry
-                elif "command" in entry or "prompt" in entry:
-                    handler_type = entry.get("type", "command")
-                    if handler_type not in ("command", "prompt", "agent"):
-                        add_error(source, f"unknown handler type '{handler_type}' in '{event}'")
-                    if handler_type == "command" and not entry.get("command"):
-                        add_error(source, f"command handler in '{event}' has empty command")
-                    if handler_type in (
-                        "prompt",
-                        "agent",
-                    ) and not entry.get("prompt"):
-                        add_error(source, f"{handler_type} handler in '{event}' has empty prompt")
-
-    # 1. Settings files
-    for settings_name in ["settings.json", "settings.local.json"]:
-        settings_file = ROOT / ".claude" / settings_name
-        if settings_file.exists():
-            try:
-                data = json.loads(settings_file.read_text())
-                hooks_dict = data.get("hooks", {})
-                if hooks_dict:
-                    _validate_hooks(settings_name, hooks_dict)
-            except json.JSONDecodeError as e:
-                add_error(settings_name, f"invalid JSON: {e}")
-
-    # 2. Skills
-    skills_dir = ROOT / "skills"
-    if skills_dir.exists():
-        for skill_dir in sorted(skills_dir.iterdir()):
-            if not skill_dir.is_dir():
-                continue
-            skill_file = skill_dir / "SKILL.md"
-            if not skill_file.exists():
-                continue
-            try:
-                fm, _ = parse_frontmatter(skill_file.read_text())
-                hooks_dict = fm.get("hooks", {})
-                if hooks_dict:
-                    _validate_hooks(f"skill:{skill_dir.name}", hooks_dict)
-            except Exception:
-                pass
-
-    # 3. Agents
-    agents_dir = ROOT / "agents"
-    if agents_dir.exists():
-        for agent_file in sorted(agents_dir.glob("*.md")):
-            try:
-                fm, _ = parse_frontmatter(agent_file.read_text())
-                hooks_dict = fm.get("hooks", {})
-                if hooks_dict:
-                    _validate_hooks(f"agent:{agent_file.stem}", hooks_dict)
-            except Exception:
-                pass
-
-    # 4. Portable hook registry
-    _validate_hook_registry()
-
-    text_errors = [_format_error(error["source"], error["message"]) for error in errors]
-    json_result = {
-        "ok": not errors,
-        "error_count": len(errors),
-        "errors": errors,
-        "message": "All hooks valid" if not errors else "Hook validation failed",
-    }
-    jsonl_records: list[dict[str, object]] = [{"type": "error", **error} for error in errors]
-    jsonl_records.append(
-        {
-            "type": "summary",
-            "ok": not errors,
-            "error_count": len(errors),
-            "message": json_result["message"],
-        }
-    )
-
-    _emit_structured_output(
-        format_,
-        text_lines=text_errors if errors else ["All hooks valid"],
-        json_data=json_result,
-        jsonl_records=jsonl_records,
-    )
-    if errors:
-        raise typer.Exit(code=1)
+    script = SKILL_CREATOR_SCRIPTS / "asset_toolkit" / "validate_hooks.py"
+    raise typer.Exit(code=_run_python_script(script, ["--format", format_]))
 
 
 # ---------------------------------------------------------------------------
@@ -2600,115 +2246,8 @@ def eval_validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Validate all eval JSON files."""
-    evals = _collect_evals()
-    if not evals:
-        _emit_structured_output(
-            format_,
-            text_lines=["No evals found. Nothing to validate."],
-            json_data={"ok": True, "eval_count": 0, "error_count": 0, "errors": []},
-            jsonl_records=[{"type": "summary", "ok": True, "eval_count": 0, "error_count": 0}],
-        )
-        return
-
-    errors: list[dict[str, str]] = []
-    skills_dir = ROOT / "skills"
-
-    def add_error(source: str | Path, message: str) -> None:
-        errors.append({"source": str(source), "message": message})
-
-    for path, data in evals:
-        rel = path.relative_to(ROOT)
-
-        # Check for parse failure (empty dict from JSONDecodeError)
-        if not data and path.stat().st_size > 2:
-            add_error(rel, "invalid JSON")
-            continue
-
-        if _is_eval_manifest(data):
-            if not isinstance(data.get("skill_name"), str) or not data["skill_name"].strip():
-                add_error(rel, "'skill_name' must be a non-empty string")
-            elif not (skills_dir / data["skill_name"]).is_dir():
-                add_error(rel, f"skill '{data['skill_name']}' does not match a skill directory")
-
-            if not isinstance(data.get("evals"), list) or len(data["evals"]) < 1:
-                add_error(rel, "'evals' must be a non-empty list")
-                continue
-
-            for index, item in enumerate(data["evals"], start=1):
-                case_label = f"eval {index}"
-                if not isinstance(item, dict):
-                    add_error(rel, f"{case_label} must be an object")
-                    continue
-                if not isinstance(item.get("prompt"), str) or not item["prompt"].strip():
-                    add_error(rel, f"{case_label} missing required non-empty string 'prompt'")
-                if not isinstance(item.get("expected_output"), str) or not item["expected_output"].strip():
-                    add_error(rel, f"{case_label} missing required non-empty string 'expected_output'")
-                if "files" in item and (
-                    not isinstance(item["files"], list)
-                    or any(not isinstance(file_path, str) for file_path in item["files"])
-                ):
-                    add_error(rel, f"{case_label} field 'files' must be a list of strings")
-                if "assertions" in item:
-                    if not isinstance(item["assertions"], list) or len(item["assertions"]) < 1:
-                        add_error(rel, f"{case_label} field 'assertions' must be a non-empty list of strings")
-                    elif any(not isinstance(assertion, str) for assertion in item["assertions"]):
-                        add_error(rel, f"{case_label} field 'assertions' must contain only strings")
-            continue
-
-        # Legacy eval scenario format.
-        if "skills" not in data:
-            add_error(rel, "missing required field 'skills'")
-        elif not isinstance(data["skills"], list) or len(data["skills"]) < 1:
-            add_error(rel, "'skills' must be a non-empty list of strings")
-        else:
-            for s in data["skills"]:
-                if not isinstance(s, str):
-                    add_error(rel, "each entry in 'skills' must be a string")
-                elif not (skills_dir / s).is_dir():
-                    add_error(rel, f"skill '{s}' does not match a skill directory")
-
-        if "query" not in data:
-            add_error(rel, "missing required field 'query'")
-        elif not isinstance(data["query"], str) or not data["query"].strip():
-            add_error(rel, "'query' must be a non-empty string")
-
-        if "expected_behavior" not in data:
-            add_error(rel, "missing required field 'expected_behavior'")
-        elif not isinstance(data["expected_behavior"], list) or len(data["expected_behavior"]) < 1:
-            add_error(rel, "'expected_behavior' must be a non-empty list of strings")
-        else:
-            for eb in data["expected_behavior"]:
-                if not isinstance(eb, str):
-                    add_error(rel, "each entry in 'expected_behavior' must be a string")
-
-    total_cases = sum(len(_expand_eval_cases(path, data)) for path, data in evals)
-    text_errors = [_format_error(error["source"], error["message"]) for error in errors]
-    json_result = {
-        "ok": not errors,
-        "eval_count": total_cases,
-        "error_count": len(errors),
-        "errors": errors,
-        "message": "All evals valid" if not errors else "Eval validation failed",
-    }
-    jsonl_records: list[dict[str, object]] = [{"type": "error", **error} for error in errors]
-    jsonl_records.append(
-        {
-            "type": "summary",
-            "ok": not errors,
-            "eval_count": total_cases,
-            "error_count": len(errors),
-            "message": json_result["message"],
-        }
-    )
-
-    _emit_structured_output(
-        format_,
-        text_lines=text_errors if errors else ["All evals valid"],
-        json_data=json_result,
-        jsonl_records=jsonl_records,
-    )
-    if errors:
-        raise typer.Exit(code=1)
+    script = SKILL_CREATOR_SCRIPTS / "asset_toolkit" / "validate_evals.py"
+    raise typer.Exit(code=_run_python_script(script, ["--format", format_]))
 
 
 @eval_app.command("coverage")

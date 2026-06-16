@@ -19,7 +19,7 @@
 Install all skills globally into your favorite agents:
 
 ```bash
-npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent opencode
+npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
 For non-trivial repository changes, check the OpenSpec workflow state:
@@ -75,7 +75,7 @@ Reusable actions and knowledge bases for AI agents.
 | data-wizard | Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code. |
 | database-architect | Design schemas, plan migrations, and optimize queries. Six modes from modeling to evolution. Use for database architecture. NOT for DBA ops, backups, or deployment (devops-engineer). |
 | devops-engineer | Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code. |
-| discover-skills | Discover AI agent skills via gap analysis, registry search, and ideation. Use when expanding your collection systematically. NOT for creating skills (skill-creator) or ad-hoc search (find-skills). |
+| discover-skills | Discover skills, MCP, plugins, and harness gaps via programmatic audits, coordinator manifests, and parallel scouts. Use for systematic expansion. NOT for creating skills (skill-creator) or ad-hoc search (find-skills). |
 | docling-graph | Use when designing/reviewing Docling Graph knowledge-graph workflows: templates, contracts, CLI/API configs, inspect reports, exports, traces. NOT for generic Docling parsing, vector-only RAG, graph DB admin, or ontology-only work. |
 | docs-steward | Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator). |
 | draw-thing | Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research). |
@@ -85,7 +85,7 @@ Reusable actions and knowledge bases for AI agents.
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | frontend-designer | Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI. NOT for backend, tests, state, routing, or DevOps. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
-| harness-master | Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor, Gemini, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry. |
+| harness-master | Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor, Gemini, Grok Build, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry. |
 | honest-review | Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality. NOT for feature work or benchmarking. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
 | i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |

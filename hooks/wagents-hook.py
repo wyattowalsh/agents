@@ -13,10 +13,12 @@ import sys
 import tomllib
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+RESEARCH_HOOK_PATH = REPO_ROOT / "skills" / "research" / "scripts" / "research_hook.py"
 RESEARCH_STATE_TTL = timedelta(hours=12)
 WRITE_TOOL_NAMES = {
     "write",
@@ -229,7 +231,7 @@ def _write_state(payload: NormalizedPayload) -> None:
 
 
 def _state_active(payload: NormalizedPayload) -> bool:
-    if os.environ.get("WAGENTS_RESEARCH_ACTIVE") == "1":
+    if os.environ.get("RESEARCH_SKILL_ACTIVE") == "1" or os.environ.get("WAGENTS_RESEARCH_ACTIVE") == "1":
         return True
     path = _state_path(payload)
     if not path.exists():
@@ -324,21 +326,42 @@ def _policy_prompt_triage(payload: NormalizedPayload) -> int:
     )
 
 
+@lru_cache(maxsize=1)
+def _load_research_hook_module():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("research_hook", RESEARCH_HOOK_PATH)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"unable to load research hook module from {RESEARCH_HOOK_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def _research_payload(payload: NormalizedPayload, research_hook):
+    return research_hook.NormalizedPayload(
+        harness=payload.harness,
+        event=payload.event,
+        tool_name=payload.tool_name,
+        tool_input=payload.tool_input,
+        command=payload.command,
+        file_path=payload.file_path,
+        prompt=payload.prompt,
+        cwd=payload.cwd,
+        session_id=payload.session_id,
+        stop_hook_active=payload.stop_hook_active,
+        raw=payload.raw,
+        decision_recorded=payload.decision_recorded,
+    )
+
+
 def _policy_readonly_write_guard(payload: NormalizedPayload) -> int:
-    if not _state_active(payload):
-        return 0
-    name = _tool_name(payload)
-    if name in WRITE_TOOL_NAMES or any(token in name for token in ("edit", "write", "replace", "create")):
-        return _deny(
-            payload,
-            "Research sessions are read-only for source files; use journal-store.py for research journals.",
-        )
-    if name in SHELL_TOOL_NAMES and _shell_writes_source(payload.command, payload.cwd):
-        return _deny(
-            payload,
-            "Research shell command appears to write source files; journals must stay under the research state dir.",
-        )
-    return 0
+    research_hook = _load_research_hook_module()
+    research_payload = _research_payload(payload, research_hook)
+    code = research_hook.readonly_write_guard(research_payload)
+    payload.decision_recorded = research_payload.decision_recorded
+    return code
 
 
 def _split_shell(command: str) -> list[str]:
@@ -813,22 +836,11 @@ def _policy_evidence_ledger(payload: NormalizedPayload) -> int:
 
 
 def _policy_stop_verifier(payload: NormalizedPayload) -> int:
-    if payload.stop_hook_active or not _state_active(payload):
-        return 0
-    script = REPO_ROOT / "skills" / "research" / "scripts" / "verify.py"
-    command = ["uv", "run", "python", str(script), "stop"]
-    proc = subprocess.run(
-        command,
-        input=json.dumps(payload.raw),
-        text=True,
-        capture_output=True,
-        cwd=REPO_ROOT,
-        check=False,
-    )
-    if proc.returncode == 0:
-        return 0
-    reason = (proc.stderr or proc.stdout or "Research stop verifier failed.").strip()
-    return _stop_retry(payload, reason)
+    research_hook = _load_research_hook_module()
+    research_payload = _research_payload(payload, research_hook)
+    code = research_hook.stop_verifier(research_payload)
+    payload.decision_recorded = research_payload.decision_recorded
+    return code
 
 
 POLICIES = {

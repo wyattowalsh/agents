@@ -31,9 +31,10 @@
 			"update": "codex plugin marketplace upgrade agents"
 		},
 		"agent-skills-cli": {
-			"install": "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode",
+			"install": "npx skills add github:wyattowalsh/agents --all -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode --agent grok",
 			"update": "npx skills update",
 			"supportedAgents": [
+				"grok",
 				"antigravity",
 				"claude-code",
 				"codex",

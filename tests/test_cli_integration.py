@@ -30,9 +30,6 @@ def patched_repo(tmp_path, monkeypatch):
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
     monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
-    # Empty RELATED_SKILLS so validate doesn't fail on missing skill dirs
-    monkeypatch.setattr("wagents.catalog.RELATED_SKILLS", {})
-    monkeypatch.setattr("wagents.cli.RELATED_SKILLS", {})
     (tmp_path / "skills").mkdir()
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()
@@ -76,14 +73,20 @@ def test_validate_jsonl_failure(patched_repo):
     assert records[-1]["ok"] is False
 
 
-def test_validate_skips_gitignored_mcp_cache_dirs(patched_repo, monkeypatch):
+def test_validate_skips_gitignored_mcp_cache_dirs(patched_repo):
     """Validate should ignore local MCP cache directories excluded by git."""
-    ignored_mcp_dir = patched_repo / "mcp" / "cache"
-    ignored_mcp_dir.mkdir()
-    monkeypatch.setattr("wagents.cli._is_git_ignored", lambda path: path == ignored_mcp_dir)
-
-    ignored_runtime_dir = patched_repo / "mcp" / "servers" / "missing-files"
-    ignored_runtime_dir.mkdir(parents=True)
+    subprocess.run(["git", "init"], cwd=patched_repo, capture_output=True, check=False)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.com"],
+        cwd=patched_repo,
+        capture_output=True,
+        check=False,
+    )
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=patched_repo, capture_output=True, check=False)
+    (patched_repo / ".gitignore").write_text("mcp/cache/\n")
+    (patched_repo / "mcp" / "cache").mkdir()
+    (patched_repo / "mcp" / "servers" / "missing-files").mkdir(parents=True)
+    subprocess.run(["git", "add", ".gitignore"], cwd=patched_repo, capture_output=True, check=False)
 
     result = runner.invoke(app, ["validate"])
 
@@ -406,6 +409,34 @@ class TestInstall:
         assert result.exit_code == 0
         assert "-g" not in calls[0]
 
+
+    def test_install_grok_uses_claude_adapter_and_mirrors(self, monkeypatch):
+        import subprocess
+
+        calls: list[list[str]] = []
+        mirror_calls: list[object] = []
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        def mock_mirror():
+            mirror_calls.append(True)
+            return 2
+
+        _mock_npx_available(monkeypatch)
+        monkeypatch.setattr("subprocess.run", mock_run)
+        monkeypatch.setattr("wagents.cli.mirror_grok_skills_from_claude", mock_mirror)
+
+        result = runner.invoke(app, ["install", "honest-review", "-a", "grok", "-y"])
+
+        assert result.exit_code == 0
+        assert calls[0].count("-a") >= 1
+        assert "claude-code" in calls[0]
+        assert "grok" not in calls[0]
+        assert mirror_calls
+        assert "Mirrored 2 skill(s)" in result.output
+
     def test_install_requires_npx(self, monkeypatch):
         """Install should fail gracefully when npx is not found."""
 
@@ -561,6 +592,43 @@ class TestSkillsSync:
             ["npx", "skills", "add", "github:wyattowalsh/agents", "--skill", "repo-skill", "-y", "-g", "-a", "codex"]
         ]
 
+    def test_sync_grok_uses_claude_code_adapter_and_mirrors(self, monkeypatch):
+        calls: list[list[str]] = []
+        mirror_calls: list[dict[str, object]] = []
+        monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+        monkeypatch.setattr("wagents.cli.collect_installed_inventory", lambda **kwargs: self._snapshot())
+
+        def mock_run(cmd, **kwargs):
+            calls.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0)
+
+        def mock_mirror(**kwargs):
+            mirror_calls.append(kwargs)
+            return 2
+
+        monkeypatch.setattr("subprocess.run", mock_run)
+        monkeypatch.setattr("wagents.cli.mirror_grok_skills_from_claude", mock_mirror)
+
+        result = runner.invoke(app, ["skills", "sync", "--agent", "grok", "--apply"])
+
+        assert result.exit_code == 0
+        assert calls == [
+            [
+                "npx",
+                "skills",
+                "add",
+                "github:wyattowalsh/agents",
+                "--skill",
+                "repo-skill",
+                "-y",
+                "-g",
+                "-a",
+                "claude-code",
+            ]
+        ]
+        assert mirror_calls == [{}]
+        assert "Mirrored 2 skill(s) into ~/.grok/skills" in result.output
+
     def test_sync_reports_zero_install_copilot_truthfully(self, monkeypatch):
         # Physically possible state: skill discovered in claude-code (installed
         # there), but github-copilot query returned nothing — so the skill is
@@ -663,3 +731,42 @@ class TestSkillsSync:
         # Cross-harness skill correctly reported as missing for the target.
         assert "missing (1)" in result.output
         assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a codex" in result.output
+
+class TestGrokDoctor:
+    def test_grok_doctor_reports_missing_env(self, monkeypatch, tmp_path):
+        grok_cfg = tmp_path / "config.toml"
+        grok_cfg.write_text(
+            "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
+            "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n"
+            "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS\n",
+            encoding="utf-8",
+        )
+        monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_PATH", grok_cfg)
+        monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_REPO_PATH", tmp_path / "repo.toml")
+        monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", tmp_path / "policy.toml")
+        monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "grok")
+        monkeypatch.setattr("shutil.which", lambda _: str(tmp_path / "grok"))
+        monkeypatch.delenv("GROK_WEB_FETCH", raising=False)
+
+        result = runner.invoke(app, ["grok", "doctor"])
+        assert result.exit_code == 0
+        assert "GROK_WEB_FETCH" in result.output
+        assert "warnings:" in result.output
+
+    def test_grok_doctor_warns_missing_managed_markers(self, monkeypatch, tmp_path):
+        grok_cfg = tmp_path / "config.toml"
+        grok_cfg.write_text(
+            "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n",
+            encoding="utf-8",
+        )
+        monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_PATH", grok_cfg)
+        monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_REPO_PATH", tmp_path / "repo.toml")
+        monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", tmp_path / "policy.toml")
+        monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "grok")
+        monkeypatch.setattr("shutil.which", lambda _: str(tmp_path / "grok"))
+
+        result = runner.invoke(app, ["grok", "doctor"])
+        assert result.exit_code == 0
+        assert "managed markers" in result.output or "managed block" in result.output
+        assert "warnings:" in result.output
+

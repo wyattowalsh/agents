@@ -12,6 +12,10 @@ from pathlib import Path
 from typing import Any
 
 from wagents.platforms.base import assert_no_config_drops
+from wagents.platforms.grok import (
+    render_grok_config as _render_grok_config,
+    render_grok_mcp_block,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
@@ -21,6 +25,7 @@ CLAUDE_COMPAT_MD = REPO_ROOT / "instructions" / "claude-code-global.md"
 COPILOT_GLOBAL_MD = REPO_ROOT / "instructions" / "copilot-global.md"
 GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
+OPENCODE_AGENTS_OVERLAY_MD = REPO_ROOT / "instructions" / "opencode-agents-overlay.md"
 MCP_REGISTRY_PATH = CONFIG_DIR / "mcp-registry.json"
 HOOK_REGISTRY_PATH = CONFIG_DIR / "hook-registry.json"
 TOOLING_POLICY_PATH = CONFIG_DIR / "tooling-policy.json"
@@ -159,6 +164,7 @@ CODEX_OWNED_TABLES = {
     "apps._default",
     "auto_review",
     "features",
+    "features.multi_agent_v2",
     "feedback",
     "history",
     "memories",
@@ -1085,82 +1091,16 @@ def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_grok_mcp_block(registry: dict[str, Any]) -> str:
-    lines = [GROK_MCP_BEGIN]
-    if mcphub_enabled(registry):
-        mode = mcphub_projection_mode(registry, "grok", "http")
-        token_env = mcphub_bearer_env_var(registry)
-        auth_header = f"Bearer ${{{token_env}}}"
-        for spec in mcphub_endpoint_specs(registry, "grok"):
-            lines.append("")
-            lines.append(f"[mcp_servers.{spec['name']}]")
-            if mode == "http":
-                lines.append(f"url = {toml_value(spec['url'])}")
-                lines.append(f'headers = {{ "Authorization" = {toml_value(auth_header)} }}')
-            else:
-                entry = render_mcphub_stdio_server(registry, spec["url"], enabled=bool(spec["enabled"]))
-                lines.append(f"command = {toml_value(entry['command'])}")
-                lines.append(f"args = {toml_value(entry['args'])}")
-                lines.append(f"env = {toml_value(entry['env'])}")
-            startup_timeout_sec = int(mcphub_config(registry).get("startup_timeout_sec", 20))
-            tool_timeout_sec = int(mcphub_config(registry).get("tool_timeout_sec", 90))
-            lines.append(f"startup_timeout_sec = {toml_value(startup_timeout_sec)}")
-            lines.append(f"tool_timeout_sec = {toml_value(tool_timeout_sec)}")
-            lines.append(f"enabled = {toml_value(bool(spec['enabled']))}")
-        lines.append("")
-        lines.append(GROK_MCP_END)
-        return "\n".join(lines) + "\n"
-
-    for name, entry in enabled_registry_servers(registry, "grok").items():
-        lines.append("")
-        lines.append(f"[mcp_servers.{name}]")
-        lines.append(f"command = {toml_value(entry['command'])}")
-        lines.append(f"args = {toml_value(render_codex_args(entry))}")
-        lines.append(f"startup_timeout_sec = {toml_value(entry.get('startup_timeout_sec', 90))}")
-        if entry.get("timeout_ms"):
-            lines.append(f"tool_timeout_sec = {toml_value(max(1, int(entry['timeout_ms']) // 1000))}")
-        if entry.get("env"):
-            env_map = {key: render_env_value(value, {}, local_values=False) for key, value in entry["env"].items()}
-            lines.append(f"env = {toml_value(env_map)}")
-    lines.append("")
-    lines.append(GROK_MCP_END)
-    return "\n".join(lines) + "\n"
-
-
-def remove_managed_grok_block(text: str) -> str:
-    begin = text.find(GROK_MCP_BEGIN)
-    if begin == -1:
-        return text
-    end = text.find(GROK_MCP_END, begin)
-    if end == -1:
-        return text[:begin]
-    end += len(GROK_MCP_END)
-    while end < len(text) and text[end] == "\n":
-        end += 1
-    prefix = text[:begin].rstrip("\n")
-    suffix = text[end:].lstrip("\n")
-    if prefix and suffix:
-        return prefix + "\n\n" + suffix
-    if prefix:
-        return prefix + "\n"
-    return suffix
-
 
 def render_grok_config(current: str, registry: dict[str, Any], *, repo_only: bool) -> str:
-    preserved = remove_managed_grok_block(current).rstrip()
-    managed = render_grok_mcp_block(registry).rstrip()
-    if repo_only:
-        return managed + "\n"
-    if preserved:
-        return preserved + "\n\n" + managed + "\n"
-    return managed + "\n"
-
-
-def merge_grok_config(ctx: SyncContext, registry: dict[str, Any]) -> None:
-    managed = render_grok_mcp_block(registry).rstrip() + "\n"
-    write_text(ctx, GROK_CONFIG_REPO_PATH, managed)
-    current = GROK_CONFIG_PATH.read_text(encoding="utf-8") if GROK_CONFIG_PATH.exists() else ""
-    write_text(ctx, GROK_CONFIG_PATH, render_grok_config(current, registry, repo_only=False))
+    policy = load_json(TOOLING_POLICY_PATH)
+    return _render_grok_config(
+        current,
+        registry,
+        repo_only=repo_only,
+        repo_root=REPO_ROOT if not repo_only else None,
+        policy=policy,
+    )
 
 
 def render_hook_command(entry: dict[str, Any], harness: str, *, repo_relative: bool) -> str:
@@ -1344,6 +1284,9 @@ def render_codex_global_instructions() -> str:
   `uv run wagents skills search|context|read|doctor ...` from `/Users/ww/dev/projects/agents`
   when a task needs a skill body or a missing/omitted skill must be recovered.
 - Prefer dynamic subagent delegation over hardcoded static teams; keep local agent ceilings practical.
+- Keep Codex web search on live mode: set top-level `web_search = "live"` (and the same in managed profiles).
+- Do not rely on deprecated `features.web_search*` toggles; tune search context with `[tools.web_search]`.
+- Codex config reference: https://developers.openai.com/codex/config-reference
 """
     return global_text + codex_suffix
 
@@ -1569,15 +1512,14 @@ def render_codex_config(
     include_local_extras: bool,
     fallbacks: dict[str, str] | None = None,
 ) -> str:
-    current_data = tomllib.loads(current)
+    current, current_data = load_codex_config_source(current, registry)
     preserved = render_preserved_codex_config(current, include_local_extras=include_local_extras)
     if include_local_extras:
-        managed_names = set(registry["servers"])
+        managed_names = managed_codex_mcp_server_names(registry)
         filtered_chunks: list[str] = []
         for header, chunk in chunk_toml_sections(preserved):
             server_name = codex_mcp_server_name(header)
-            normalized_server_name = normalize_name(server_name) if server_name else None
-            if normalized_server_name and normalized_server_name in managed_names:
+            if server_name and normalize_name(server_name) in managed_names:
                 continue
             filtered_chunks.append(chunk.strip())
         preserved = "\n\n".join(chunk for chunk in filtered_chunks if chunk)
@@ -1639,10 +1581,37 @@ def codex_mcp_server_name(header: str | None) -> str | None:
     return suffix.split(".", 1)[0]
 
 
+def managed_codex_mcp_server_names(registry: dict[str, Any]) -> set[str]:
+    if mcphub_enabled(registry):
+        return {str(spec["name"]) for spec in mcphub_endpoint_specs(registry, "codex")}
+    return set(enabled_registry_servers(registry, "codex"))
+
+
+def repair_codex_config_text(current: str, registry: dict[str, Any]) -> str:
+    managed_names = managed_codex_mcp_server_names(registry)
+    stripped = remove_managed_codex_block(current)
+    preserved_chunks: list[str] = []
+    for header, chunk in chunk_toml_sections(stripped):
+        server_name = codex_mcp_server_name(header)
+        if server_name and normalize_name(server_name) in managed_names:
+            continue
+        preserved_chunks.append(chunk.strip())
+    return "\n\n".join(chunk for chunk in preserved_chunks if chunk) + "\n"
+
+
+def load_codex_config_source(current: str, registry: dict[str, Any]) -> tuple[str, dict[str, Any] | None]:
+    try:
+        return current, tomllib.loads(current)
+    except tomllib.TOMLDecodeError:
+        repaired = repair_codex_config_text(current, registry)
+        return repaired, tomllib.loads(repaired)
+
+
 def merge_codex_config(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
     current = CODEX_CONFIG_PATH.read_text(encoding="utf-8")
+    current, current_data = load_codex_config_source(current, registry)
     write_text(
         ctx,
         CODEX_CONFIG_PATH,
@@ -1802,21 +1771,35 @@ def sync_platform_home_target(
     load_platform_adapter(name).sync_home(ctx, registry, policy, fallbacks, hook_registry)
 
 
+
+def platform_filter_allows(platforms_filter: set[str] | None, *names: str) -> bool:
+    if platforms_filter is None:
+        return True
+    return any(name in platforms_filter for name in names)
+
+
+
 def sync_repo_targets(
     ctx: SyncContext,
     registry: dict[str, Any],
     hook_registry: dict[str, Any],
     policy: dict[str, Any],
+    platforms_filter: set[str] | None = None,
 ) -> None:
-    write_json(ctx, MCP_REGISTRY_PATH, registry)
-    sync_platform_repo_target("vscode", ctx, registry, hook_registry, policy)
-    write_json(ctx, HOOK_REGISTRY_PATH, hook_registry)
-    generate_codex_global_instructions(ctx)
-    generate_copilot_repo_instructions(ctx)
-    generate_copilot_rule_instructions(ctx)
-    generate_copilot_hooks(ctx, hook_registry)
-    sync_platform_repo_target("opencode", ctx, registry, hook_registry, policy)
-    merge_grok_config(ctx, registry)
+    if platform_filter_allows(platforms_filter, "repo-core"):
+        write_json(ctx, MCP_REGISTRY_PATH, registry)
+        write_json(ctx, HOOK_REGISTRY_PATH, hook_registry)
+    if platform_filter_allows(platforms_filter, "vscode"):
+        sync_platform_repo_target("vscode", ctx, registry, hook_registry, policy)
+    if platform_filter_allows(platforms_filter, "repo-core"):
+        generate_codex_global_instructions(ctx)
+        generate_copilot_repo_instructions(ctx)
+        generate_copilot_rule_instructions(ctx)
+        generate_copilot_hooks(ctx, hook_registry)
+    if platform_filter_allows(platforms_filter, "opencode"):
+        sync_platform_repo_target("opencode", ctx, registry, hook_registry, policy)
+    if platform_filter_allows(platforms_filter, "grok"):
+        sync_platform_repo_target("grok", ctx, registry, hook_registry, policy)
 
 
 def render_gemini_mcp(registry: dict[str, Any], fallbacks: dict[str, str]) -> dict[str, Any]:
@@ -2686,7 +2669,11 @@ def merge_opencode_config(
         managed_registry_server_names(registry, "opencode"),
     )
     settings["instructions"] = merge_unique_path_strings(
-        [render_home_path(GLOBAL_MD), render_home_path(OPENCODE_GLOBAL_MD)],
+        [
+            render_home_path(GLOBAL_MD),
+            render_home_path(OPENCODE_GLOBAL_MD),
+            render_home_path(OPENCODE_AGENTS_OVERLAY_MD),
+        ],
         settings.get("instructions"),
     )
 
@@ -2707,13 +2694,13 @@ def merge_opencode_config(
 def generate_project_opencode_config(ctx: SyncContext) -> None:
     config: dict[str, Any] = {
         "$schema": "https://opencode.ai/config.json",
-        "instructions": ["AGENTS.md", "instructions/opencode-global.md"],
+        "instructions": ["AGENTS.md", "instructions/opencode-global.md", "instructions/opencode-agents-overlay.md"],
         "skills": {"paths": ["skills"]},
     }
     if OPENCODE_REPO_CONFIG_PATH.exists():
         existing = load_json(OPENCODE_REPO_CONFIG_PATH)
         if isinstance(existing, dict):
-            existing.setdefault("instructions", config["instructions"])
+            existing["instructions"] = merge_unique_path_strings(config["instructions"], existing.get("instructions"))
             existing.setdefault("skills", config["skills"])
             config = existing
     policy = load_json(TOOLING_POLICY_PATH) if TOOLING_POLICY_PATH.exists() else {}
@@ -2820,7 +2807,12 @@ def sync_home_targets(
     policy: dict[str, Any],
     fallbacks: dict[str, str],
     hook_registry: dict[str, Any],
+    platforms_filter: set[str] | None = None,
 ) -> None:
+    if not platform_filter_allows(platforms_filter, "shared"):
+        if platform_filter_allows(platforms_filter, "grok"):
+            sync_platform_home_target("grok", ctx, registry, policy, fallbacks, hook_registry)
+        return
     sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
@@ -2869,7 +2861,8 @@ def sync_home_targets(
         render_client_mcp(registry, fallbacks, "antigravity-extension")["mcpServers"],
         managed_registry_server_names(registry, "antigravity-extension"),
     )
-    sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
+    if platform_filter_allows(platforms_filter, "opencode"):
+        sync_platform_home_target("opencode", ctx, registry, policy, fallbacks, hook_registry)
     merge_server_root_config(
         ctx, AITK_MCP_PATH, "servers", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
     )
@@ -2877,7 +2870,8 @@ def sync_home_targets(
         ctx, CRUSH_CONFIG_PATH, "mcp", render_gemini_mcp(registry, fallbacks), managed_registry_server_names(registry)
     )
     merge_codex_config(ctx, registry, policy, fallbacks)
-    merge_grok_config(ctx, registry)
+    if platform_filter_allows(platforms_filter, "grok"):
+        sync_platform_home_target("grok", ctx, registry, policy, fallbacks, hook_registry)
     merge_codex_hooks(ctx, hook_registry)
     sync_generated_json_directory(
         ctx, CHERRY_STUDIO_MANAGED_IMPORT_DIR, render_cherry_import_files(registry, fallbacks)
@@ -2908,6 +2902,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--targets", default="all", help="Comma-separated list: repo,home,all")
     parser.add_argument("--apply", action="store_true", help="Apply changes")
     parser.add_argument("--check", action="store_true", help="Check drift without writing")
+    parser.add_argument(
+        "--platforms",
+        default=None,
+        help="Comma-separated harness ids (e.g. grok,opencode). Omit for all.",
+    )
     return parser.parse_args(argv)
 
 
@@ -2922,10 +2921,15 @@ def main(argv: list[str] | None = None) -> int:
     hook_registry = load_hook_registry()
     fallbacks = load_current_secret_fallbacks()
     targets = {item.strip() for item in args.targets.split(",")} if args.targets != "all" else {"repo", "home"}
+    platforms_filter = (
+        {item.strip() for item in args.platforms.split(",") if item.strip()}
+        if getattr(args, "platforms", None)
+        else None
+    )
     if "repo" in targets:
-        sync_repo_targets(ctx, registry, hook_registry, policy)
+        sync_repo_targets(ctx, registry, hook_registry, policy, platforms_filter)
     if "home" in targets:
-        sync_home_targets(ctx, registry, policy, fallbacks, hook_registry)
+        sync_home_targets(ctx, registry, policy, fallbacks, hook_registry, platforms_filter)
     if args.check:
         for change in ctx.changes:
             print(change)

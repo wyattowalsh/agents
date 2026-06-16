@@ -304,6 +304,18 @@
 		{
 			"path": "/Users/ww/.gemini/skills",
 			"mode": "symlinked-entries"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/grok-config.toml",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/instructions/grok-global.md",
+			"mode": "canonical"
+		},
+		{
+			"path": "/Users/ww/dev/projects/agents/config/grok-env.sh",
+			"mode": "canonical"
 		}
 	]
 }

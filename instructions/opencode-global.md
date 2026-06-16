@@ -12,6 +12,8 @@ OpenCode model defaults are repo-managed. Repo and live OpenCode config set root
 
 Repo-managed OpenCode agent frontmatter must avoid `model`, `small_model`, `mode.*.model`, `agent.*.model`, and `steps` caps. Model selection belongs in config, not agent frontmatter.
 
+Runtime-specific keys (`mode`, `temperature`, `color`, `permission`) for the built-in agents are stored in `instructions/opencode-agents-overlay.md` and loaded exclusively by the OpenCode harness. The canonical agent definitions in `agents/*.md` contain only the portable schema (`name`, `description`, `tools`, `permissionMode`, etc.).
+
 When merging live user-owned OpenCode config, preserve unrelated user settings while enforcing repo-managed model, plugin, and tooling defaults.
 
 ### Formatter And LSP Setup

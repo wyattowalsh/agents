@@ -53,6 +53,7 @@ OPENCODE_OCTTO_TEMPLATE_PATH = REPO_ROOT / "config" / "opencode-octto.json"
 OPENCODE_REPO_CONFIG_PATH = REPO_ROOT / "opencode.json"
 OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
+OPENCODE_AGENTS_OVERLAY_MD = REPO_ROOT / "instructions" / "opencode-agents-overlay.md"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
 CHROME_DEVTOOLS_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"
 SKILLS_DIR = REPO_ROOT / "skills"
@@ -662,13 +663,15 @@ class Adapter(PlatformAdapter):
         """Ensure repo ``opencode.json`` exists with base instructions and skills paths."""
         config: dict[str, Any] = {
             "$schema": "https://opencode.ai/config.json",
-            "instructions": ["AGENTS.md", "instructions/opencode-global.md"],
+            "instructions": ["AGENTS.md", "instructions/opencode-global.md", "instructions/opencode-agents-overlay.md"],
             "skills": {"paths": ["skills"]},
         }
         if OPENCODE_REPO_CONFIG_PATH.exists():
             existing = load_json(OPENCODE_REPO_CONFIG_PATH)
             if isinstance(existing, dict):
-                existing.setdefault("instructions", config["instructions"])
+                existing["instructions"] = merge_unique_path_strings(
+                    config["instructions"], existing.get("instructions")
+                )
                 existing.setdefault("skills", config["skills"])
                 config = existing
         defaults = _runtime_defaults(policy)
@@ -727,7 +730,11 @@ class Adapter(PlatformAdapter):
 
         # -- Instructions paths --
         settings["instructions"] = merge_unique_path_strings(
-            [render_home_path(GLOBAL_MD), render_home_path(OPENCODE_GLOBAL_MD)],
+            [
+                render_home_path(GLOBAL_MD),
+                render_home_path(OPENCODE_GLOBAL_MD),
+                render_home_path(OPENCODE_AGENTS_OVERLAY_MD),
+            ],
             settings.get("instructions"),
         )
 
