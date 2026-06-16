@@ -241,6 +241,21 @@ def _skill_display_source(node: CatalogNode) -> str:
 
 
 def _skill_source_kind(node: CatalogNode) -> str:
+    """Derive displayable source kind for metadata table in rendered skill pages.
+
+    Prefers explicit source_kind (or sourceKind) from node.metadata when present
+    (e.g. from authoring SSOT entries), falling back to source+display derivation.
+    """
+    fm = node.metadata if isinstance(node.metadata, dict) else {}
+    sk = str(fm.get("source_kind") or fm.get("sourceKind") or "").strip().lower()
+    if sk in ("custom", "repo"):
+        return "repo"
+    if sk:
+        # if metadata specifies a concrete kind (e.g. 'github', 'curated-external' etc), honor for display
+        # but for high-level we still derive sub-kind below unless custom
+        if sk not in ("curated-external", "external", "installed"):
+            return sk
+
     source = _skill_display_source(node)
     if node.source == "custom" or source == REPO_SOURCE:
         return "repo"
@@ -867,7 +882,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             rel_node = next((n for n in all_nodes if n.kind == "skill" and n.id == rel_id), None)
             if rel_node:
                 desc = escape_attr(truncate_sentence(rel_node.description, 160))
-                href = skill_detail_href(rel_id)
+                href = skill_detail_href(rel_id, node=rel_node)
                 title = escape_attr(rel_id)
                 parts.append(
                     f'  <LinkCard title="{title}" href="{href}" description="{desc}" />'
@@ -899,7 +914,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("## Resources")
     parts.append("")
     parts.append("<CardGrid>")
-    parts.append('  <LinkCard title="All Skills" href="/skills/" description="Browse the full skill catalog." />')
+    parts.append('  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />')
     parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />')
     if node.source == "custom":
         parts.append(
@@ -1026,11 +1041,11 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
                 desc = escape_attr(truncate_sentence(skill_node.description, 160))
                 parts.append(
                     f'  <LinkCard title="{escape_attr(skill_name)}"'
-                    f' href="{skill_detail_href(skill_name)}" description="{desc}" />'
+                    f' href="{skill_detail_href(skill_name, node=skill_node)}" description="{desc}" />'
                 )
             else:
                 parts.append(
-                    f'  <LinkCard title="{escape_attr(skill_name)}" href="{skill_detail_href(skill_name)}" />'
+                    f'  <LinkCard title="{escape_attr(skill_name)}" href="{skill_detail_href(skill_name, source="custom")}" />'
                 )
         parts.append("</CardGrid>")
         parts.append("")

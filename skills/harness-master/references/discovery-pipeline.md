@@ -7,7 +7,7 @@ Gap analysis, coordinator scouts, and harness-bounded research for systematic ex
 | Layer | Location | Role |
 | ----- | -------- | ---- |
 | Contracts | `data/discovery/` (taxonomy, schemas, fixtures) | Skill-shipped JSON shapes |
-| Evidence | `config/*` registries, `skills/`, `mcp/`, live harness files | Read-only repo truth (no docs index) |
+| Evidence | `config/*` (Bucket B), `docs/src/authoring/skills/` (Bucket A catalog semantics + index), `skills/`, `mcp/`, live harness files | Read-only repo truth (legacy external-skills.md deprecated) |
 
 Do not depend on `docs/src/generated-*`; run scripts directly.
 

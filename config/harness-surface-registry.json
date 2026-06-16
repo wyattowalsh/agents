@@ -252,7 +252,8 @@
         "skills",
         "agents",
         "mcp",
-        "plugins"
+        "plugins",
+        "hooks"
       ],
       "validation_requirements": [
         "rules fixture",
@@ -378,7 +379,8 @@
         "skills",
         "agents",
         "mcp",
-        "plugins"
+        "plugins",
+        "hooks"
       ],
       "validation_requirements": [
         "config merge fixture",

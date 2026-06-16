@@ -1,0 +1,123 @@
+---
+title: "rover"
+description: "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="rover" variant="note" /> <Badge text="22 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+
+> GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/rover`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/rover.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Rover CLI for GraphQL schema management and local supergraph dev: subgraph publish/fetch/check/lint, graph mgmt, supergraph composition, rover dev, auth/config. Core for GraphOS and local federated workflows.
+
+## Install Prerequisites
+
+`npx skills add apollographql/skills --skill rover -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named. Claude plugin or gh skill alternatives available.
+
+## Upstream Maintainer
+
+apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT. Experimental/reference collection (11 skills) with detailed SKILL.md + references/. Install via npx, Claude plugin (namespaced /apollo-skills:*), gh skill (pinning supported). Links to official Apollo docs. Disclaimer: not officially supported at core Apollo level.
+
+## Comparable Alternatives
+
+apollo-federation, apollo-router, graphql-schema (same); other GraphQL schema tooling or composition skills.
+
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `apollographql/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `rover` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "rover"
+description: "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row."
+title: "Rover"
+source_kind: "curated-external"
+source: "apollographql/skills"
+install_source: "apollographql/skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/apollographql/skills"
+notes: "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row."
+risk_notes: "GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=rover; re-run migration to refresh */}
+
+GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

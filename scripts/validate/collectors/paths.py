@@ -24,7 +24,7 @@ def _load_contains():
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.contains_maintainer_absolute_path
+    return mod.contains_portable_path_leak
 
 
 def collect_path_portability_errors(repo_root: Path) -> list[dict[str, str]]:
@@ -43,7 +43,7 @@ def collect_path_portability_errors(repo_root: Path) -> list[dict[str, str]]:
             if contains(text):
                 errors.append({
                     "source": rel,
-                    "message": "Maintainer-specific absolute path leak (/Users/<user>/)",
+                    "message": "Portable-path leak (absolute /Users/... or /home/... path)",
                 })
     return errors
 

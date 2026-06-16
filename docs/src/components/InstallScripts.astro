@@ -63,10 +63,12 @@ const { src } = Astro.props;
       root.innerHTML = [
         '<h2>Custom Skills</h2>',
         commandBlock(String(scripts.customAll ?? ''), 'Install all custom skills'),
-        '<h2>Reconcile Repo + Curated External Skills</h2>',
+        '<h2>Reconcile Repo + External Skills</h2>',
         commandBlock([scripts.syncDryRun, scripts.syncApply].filter(Boolean).join('\n'), 'Preview or apply repo reconciliation'),
-        groupedCommands('Curated External Source Commands', scripts.externalCommands ?? []),
-        groupedCommands('Installed External Skill Commands', scripts.installedCommands ?? []),
+        groupedCommands('External Skill Commands', [
+          ...(scripts.externalCommands ?? []),
+          ...(scripts.installedCommands ?? []),
+        ]),
         '<h2>Individual Custom Skills</h2>',
         commandBlock(customCommands, 'Install individual custom skills'),
       ].join('');

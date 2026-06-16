@@ -33,10 +33,10 @@ npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-revi
 Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.
 
 ```bash
-npx skills add backnotprop/plannotator --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
-Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above.
+Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above. Do not install from the repo root (`backnotprop/plannotator`) — that path exposes maintainer-only skills (pierre-guard, release-plannotator, review-renovate, update-deps), not the user-facing extras.
 
 ```bash
 npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
@@ -107,16 +107,10 @@ npx skills add hashicorp/agent-skills --skill terraform-style-guide --skill terr
 ```
 
 ```bash
-npx skills add shadcn/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-Install `shadcn` from `shadcn/ui` as the primary shadcn registry source.
-
-```bash
 npx skills add shadcn-ui/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
-Also install `shadcn` from `shadcn-ui/ui` when the monorepo checkout path is required. Both sources expose the same slug; Skills CLI dedupes to one install root — keep only the source you actively use to avoid symlink churn.
+Install `shadcn` from `shadcn-ui/ui` as the canonical curated source. Both `shadcn/ui` and `shadcn-ui/ui` expose the same slug; Skills CLI dedupes to one install root — keep only this source in Install Now to avoid symlink churn.
 
 ```bash
 npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
@@ -555,12 +549,12 @@ npx skills add google/skills --skill gemini-api -y -g -a antigravity claude-code
 
 ## Keep Global Only Or Avoid
 
-- `vercel-labs/skills@find-skills`: duplicate of `discover-skills`.
+- `vercel-labs/skills@find-skills`: duplicate of `harness-master` discover (systematic gap pipeline).
 - `vercel-labs/agent-browser`: useful, but broad operational scope and overlaps browser automation.
 - `anthropics/skills`: inspect case-by-case; many skills duplicate local/system skills.
 - `huggingface/skills`: keep global unless ML workflows become frequent.
 - `xixu-me/skills@github-actions-docs`: high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
-- `shadcn-ui/ui@shadcn` vs `shadcn/ui@shadcn`: both are curated; install only one active source to avoid duplicate symlink roots for the same `shadcn` slug.
+- `shadcn/ui@shadcn`: alternate registry checkout for the same `shadcn` slug; keep global-only. Install Now uses `shadcn-ui/ui@shadcn` as the canonical curated source.
 - Community Better Auth, Clerk, and generic OpenAI Agent SDK skills: lower source confidence or duplicate local architecture coverage.
 - `docs.stripe.com@stripe-best-practices`: registry syntax and provenance still need verification before automated sync/install.
 - `nextlevelbuilder/ui-ux-pro-max-skill@ckm:*`: avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.

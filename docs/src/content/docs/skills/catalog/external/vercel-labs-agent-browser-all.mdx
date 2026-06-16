@@ -1,0 +1,122 @@
+---
+title: "vercel-labs-agent-browser-all"
+description: "useful, but broad operational scope and overlaps browser automation."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="vercel-labs-agent-browser-all" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+
+> useful, but broad operational scope and overlaps browser automation.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add vercel-labs/agent-browser --skill vercel-labs-agent-browser-all -y -g
+```
+
+**Use:** `/vercel-labs-agent-browser-all`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/vercel-labs-agent-browser-all.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets all supported agent harnesses via the install command below.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add vercel-labs/agent-browser --skill vercel-labs-agent-browser-all -y -g
+```
+
+## Trust / Audit
+
+Trust tier: **Avoid default** (`global-only-or-avoid`)
+
+Curated status: `global-only-or-avoid`
+
+Risk notes: useful, but broad operational scope and overlaps browser automation.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Vercel-labs agent-browser bundle; useful for browser automation/ops but broad operational scope and overlaps existing browser automation skills. Marked global-only-or-avoid to avoid duplication and uncontrolled surface.
+
+## Install Prerequisites
+
+status=global-only-or-avoid; selector=unresolved; note in Keep section. Do not bulk install.
+
+## Upstream Maintainer
+
+[vercel-labs/agent-browser](https://github.com/vercel-labs/agent-browser)
+
+## Comparable Alternatives
+
+Specialized browser or automation skills if/when curated; general web interaction without broad bundle.
+
+&gt; Web evidence from vercel-labs repos + config rationale. Evidence only.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `vercel-labs/agent-browser` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `global-only-or-avoid` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `vercel-labs-agent-browser-all` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "vercel-labs-agent-browser-all"
+description: "useful, but broad operational scope and overlaps browser automation."
+title: "Vercel Labs Agent Browser All"
+source_kind: "curated-external"
+source: "vercel-labs/agent-browser"
+install_source: "vercel-labs/agent-browser"
+status: "global-only-or-avoid"
+trust_tier: "global-only-or-avoid"
+provenance_status: "explicit-unresolved"
+source_url: "https://github.com/vercel-labs/agent-browser"
+notes: "useful, but broad operational scope and overlaps browser automation."
+risk_notes: "useful, but broad operational scope and overlaps browser automation."
+promotion_policy: "Keep global-only or avoid unless explicitly approved."
+provenance_evidence: "Explicit keep-global/avoid note in config/external-skills.md."
+selector_mode: "unresolved"
+unresolved_reason: "useful, but broad operational scope and overlaps browser automation."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=vercel-labs-agent-browser-all; re-run migration to refresh */}
+
+useful, but broad operational scope and overlaps browser automation.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

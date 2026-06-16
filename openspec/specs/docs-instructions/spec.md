@@ -43,24 +43,32 @@ Generated docs, root README updates, and bridge instruction files SHALL only be 
 - **WHEN** C08 defines docs truth contracts
 - **THEN** C08 records the blocker and commits source fragments without overwriting shared generated outputs.
 
-### Requirement: Unified skill catalog detail URLs
+### Requirement: Grouped skill catalog detail URLs
 
-Generated skill documentation SHALL publish one detail page per skill at `/skills/catalog/<name>/` and compile hub indexes from the same deduped node list.
+Generated skill documentation SHALL publish one detail page per skill under `/skills/catalog/custom/<name>/` (repo-owned) or `/skills/catalog/external/<name>/` (curated-external and optional installed inventory) and compile hub indexes from the same deduped node list.
 
 #### Scenario: Docs generate emits catalog detail pages
 
 - **WHEN** `wagents docs generate` runs
-- **THEN** each skill node writes `docs/src/content/docs/skills/catalog/<id>.mdx`
-- **AND** hub pages `skills/index.mdx`, `skills/all.mdx`, and `skills/install.mdx` are generated without importing a JSON `SkillCatalog` component.
+- **THEN** each custom skill node writes `docs/src/content/docs/skills/catalog/custom/<id>.mdx`
+- **AND** each external skill node writes `docs/src/content/docs/skills/catalog/external/<id>.mdx`
+- **AND** hub pages `skills/catalog/index.mdx`, `skills/catalog/custom/index.mdx`, `skills/catalog/external/index.mdx`, and `skills/install.mdx` are generated without importing a JSON `SkillCatalog` component
+- **AND** the Starlight sidebar autogenerates `skills/catalog/custom` and `skills/catalog/external` detail trees.
 
-### Requirement: Legacy skill URLs redirect to catalog
+#### Scenario: Public docs default omits installed-only externals
 
-The docs site SHALL redirect legacy `/skills/<name>/` detail URLs to `/skills/catalog/<name>/` with HTTP 308, excluding hub slugs.
+- **WHEN** `wagents docs generate --no-installed` runs
+- **THEN** curated-external catalog rows are emitted under `skills/catalog/external/`
+- **AND** harness-installed-only skills are omitted unless `--include-installed` is set.
 
-#### Scenario: Legacy detail URL is requested
+### Requirement: Canonical catalog URLs only
 
-- **WHEN** a client requests `/skills/honest-review/`
-- **THEN** middleware responds with 308 to `/skills/catalog/honest-review/`.
+The docs site SHALL serve skill detail pages only at grouped catalog paths. Legacy flat hubs (`/skills/`, `/skills/all/`) and flat detail URLs (`/skills/catalog/<name>/`, `/skills/<name>/`) SHALL NOT be generated or redirected.
+
+#### Scenario: Catalog landing links to grouped indexes
+
+- **WHEN** a reader opens `/skills/catalog/`
+- **THEN** the page links to `/skills/catalog/custom/` and `/skills/catalog/external/` rather than a combined all-skills hub.
 
 ### Requirement: Sync desired set includes repo and Install Now curated skills
 

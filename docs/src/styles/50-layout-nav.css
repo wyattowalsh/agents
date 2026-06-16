@@ -1,23 +1,21 @@
 /* Auto-extracted from custom.css for modular maintenance: 50-layout-nav.css */
 
-/* ===== SIDEBAR ENHANCEMENTS ===== */
-/* Type-coded sidebar group labels (nth-child matches sidebar order: 1=home, 2=Skills, 3=Agents, 4=MCP) */
-.sidebar-content .top-level > li:nth-child(2) > details > summary .group-label {
+/* ===== SIDEBAR ===== */
+/* Order: home, Start Here, Skills, Agents, MCP, CLI */
+.sidebar-content .top-level > li:nth-child(3) > details > summary .group-label {
   color: var(--type-skill);
 }
-.sidebar-content .top-level > li:nth-child(3) > details > summary .group-label {
+.sidebar-content .top-level > li:nth-child(4) > details > summary .group-label {
   color: var(--type-agent);
 }
-.sidebar-content .top-level > li:nth-child(4) > details > summary .group-label {
+.sidebar-content .top-level > li:nth-child(5) > details > summary .group-label {
   color: var(--type-mcp);
 }
 
-/* Active item glow (sidebar only) */
 :root[data-theme='dark'] .sidebar-content a[aria-current='page'] {
-  background: oklch(0.19 0.03 210 / 0.36);
-  box-shadow: inset 3px 0 0 var(--primary), 0 0 12px oklch(0.58 0.09 210 / 0.14);
-  border-radius: 4px;
-  animation: glow-pulse 3s ease-in-out infinite;
+  background: oklch(0.19 0.02 210 / 0.32);
+  box-shadow: inset 2px 0 0 var(--primary);
+  border-radius: 6px;
 }
 
 /* ===== PAGE TITLE TYPE ICONS ===== */
@@ -42,7 +40,7 @@ body:not([data-has-hero])::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, oklch(0.42 0.03 210 / 0.055) 0.5px, transparent 0.5px);
+  background-image: radial-gradient(circle, oklch(0.42 0.02 210 / 0.04) 0.5px, transparent 0.5px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 80%);
@@ -50,7 +48,7 @@ body:not([data-has-hero])::before {
   z-index: 0;
 }
 [data-theme='light'] body:not([data-has-hero])::before {
-  background-image: radial-gradient(circle, oklch(0.55 0.03 210 / 0.05) 0.5px, transparent 0.5px);
+  background-image: radial-gradient(circle, oklch(0.55 0.02 210 / 0.04) 0.5px, transparent 0.5px);
 }
 @media (max-width: 640px) {
   body:not([data-has-hero])::before {

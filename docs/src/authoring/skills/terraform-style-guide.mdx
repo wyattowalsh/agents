@@ -1,0 +1,22 @@
+---
+name: "terraform-style-guide"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+title: "Terraform Style Guide"
+source_kind: "curated-external"
+source: "hashicorp/agent-skills"
+install_source: "hashicorp/agent-skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add hashicorp/agent-skills --skill terraform-style-guide --skill terraform-test -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/hashicorp/agent-skills"
+notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=terraform-style-guide; re-run migration to refresh */}
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.

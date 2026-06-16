@@ -202,3 +202,66 @@ def test_validate_repo_mcp_registry_rejects_string_tools_allow_all(mini_repo: Pa
     result = _run_validate_repo(cwd=mini_repo)
     assert result.returncode == 1
     assert "tools_allow_all" in result.stdout + result.stderr
+
+
+def test_path_leak_other_user(mini_repo: Path) -> None:
+    """Other-user absolute path in tracked config must fail validate (portability leak)."""
+    leak_path = mini_repo / "config" / "tooling-policy.json"
+    leak_path.parent.mkdir(parents=True, exist_ok=True)
+    leak_path.write_text('{"note": "see /Users/otheruser/secret/project"}', encoding="utf-8")
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    combined = result.stdout + result.stderr
+    assert "Portable-path leak" in combined
+
+
+def test_quarantine_slug_in_external_skills(mini_repo: Path) -> None:
+    """Hard-quarantined repo slug in config/external-skills.md must fail validate."""
+    qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
+    qreg.parent.mkdir(parents=True, exist_ok=True)
+    qreg.write_text(
+        json.dumps(
+            {
+                "external_repo_records": [
+                    {
+                        "repo": "snailsploit/claude-red",
+                        "default_action": "quarantine",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    ext = mini_repo / "config" / "external-skills.md"
+    ext.parent.mkdir(parents=True, exist_ok=True)
+    ext.write_text("Curated: npx skills add snailsploit/claude-red --skill foo -y -g", encoding="utf-8")
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    combined = (result.stdout + result.stderr).lower()
+    assert "quarantined" in combined or "snailsploit/claude-red" in combined
+
+
+def test_mcp_missing_defaults_and_tools(mini_repo: Path) -> None:
+    """Missing contributor_defaults + missing tools field aggregates 2+ errors."""
+    reg = mini_repo / "config" / "mcp-registry.json"
+    reg.parent.mkdir(parents=True, exist_ok=True)
+    reg.write_text(
+        """{
+  "servers": {
+    "demo": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "demo-mcp"]
+    }
+  }
+}
+""",
+        encoding="utf-8",
+    )
+    result = _run_validate_repo("--format", "json", cwd=mini_repo)
+    assert result.returncode == 1
+    payload = json.loads(result.stdout)
+    assert payload["ok"] is False
+    assert len(payload["errors"]) >= 2
+    sources = [e["source"] for e in payload["errors"]]
+    assert any("mcp-registry.json" in s for s in sources)

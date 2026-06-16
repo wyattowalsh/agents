@@ -1,0 +1,123 @@
+---
+title: "vercel-optimize"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="vercel-optimize" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/vercel-optimize`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/vercel-optimize.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Audits deployed Vercel project for cost, perf, reliability, caching, function usage, billing. Collects Vercel metrics first then drills into pointed routes/files. Finds ISR/middleware/image/build issues etc. From vercel-labs/agent-skills.
+
+## Install Prerequisites
+
+`npx skills add vercel-labs/agent-skills --skill vercel-optimize ...` status per config.
+
+## Upstream Maintainer
+
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
+
+## Comparable Alternatives
+
+General perf profilers, cost tools; web-design-guidelines for UI perf aspects.
+
+&gt; Web evidence.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `vercel-labs/agent-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `vercel-optimize` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "vercel-optimize"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+title: "Vercel Optimize"
+source_kind: "curated-external"
+source: "vercel-labs/agent-skills"
+install_source: "vercel-labs/agent-skills"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/vercel-labs/agent-skills"
+notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=vercel-optimize; re-run migration to refresh */}
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

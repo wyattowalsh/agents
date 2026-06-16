@@ -418,6 +418,7 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
     assert harnesses["cherry-studio"]["support_tier"] == "experimental"
     assert "skills" not in harnesses["claude-desktop"]["projection_surfaces"]
     assert "skills" not in harnesses["chatgpt"]["projection_surfaces"]
+    assert "hooks" in harnesses["grok-build"]["projection_surfaces"]
 
 
 def test_registry_core_freezes_support_tiers_and_plugin_sources():

@@ -1,0 +1,123 @@
+---
+title: "langsmith-trace"
+description: "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="langsmith-trace" variant="note" /> <Badge text="19 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/langsmith-trace`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/langsmith-trace.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Official from langchain-ai/langsmith-skills (early dev, 131 stars). Query and export traces (helpers). Requires LANGSMITH_API_KEY + cloud access per README. Part of observability for LLM apps. Complements langchain-skills.
+
+## Install Prerequisites
+
+npx skills add langchain-ai/langsmith-skills --skill ... -y -g -a [..]; set LANGSMITH_API_KEY; status=inspect-then-install.
+
+## Upstream Maintainer
+
+[langchain-ai/langsmith-skills](https://github.com/langchain-ai/langsmith-skills)
+
+## Comparable Alternatives
+
+Other trace/eval skills (e.g. langfuse, phoenix).
+
+&gt; Evidence from public web sources, GitHub (official orgs 2026), curated catalog; research evidence, not authority. External audit advised.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `langchain-ai/langsmith-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `langsmith-trace` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "langsmith-trace"
+description: "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access."
+title: "Langsmith Trace"
+source_kind: "curated-external"
+source: "langchain-ai/langsmith-skills"
+install_source: "langchain-ai/langsmith-skills"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/langchain-ai/langsmith-skills"
+notes: "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access."
+risk_notes: "LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=langsmith-trace; re-run migration to refresh */}
+
+LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

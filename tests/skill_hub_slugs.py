@@ -3,4 +3,4 @@
 Keep in sync with docs/src/lib/skillHubSlugs.ts.
 """
 
-SKILL_HUB_SLUGS = frozenset({"all", "install", "installed", "catalog", "index"})
+SKILL_HUB_SLUGS = frozenset({"install", "catalog", "custom", "external"})

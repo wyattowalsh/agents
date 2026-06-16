@@ -1,0 +1,123 @@
+---
+title: "shopify-liquid"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="shopify-liquid" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/shopify-liquid`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/shopify-liquid.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Specialized guidance for Shopify Liquid templating language, theme development, and customization best practices. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
+
+## Install Prerequisites
+
+Install: `npx skills add shopify/shopify-ai-toolkit --skill shopify-liquid -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
+
+## Upstream Maintainer
+
+[shopify/shopify-ai-toolkit](https://github.com/shopify/shopify-ai-toolkit)
+
+## Comparable Alternatives
+
+A general-purpose agent instruction without a scoped skill contract
+
+&gt; Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `shopify/shopify-ai-toolkit` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `shopify-liquid` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "shopify-liquid"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+title: "Shopify Liquid"
+source_kind: "curated-external"
+source: "shopify/shopify-ai-toolkit"
+install_source: "shopify/shopify-ai-toolkit"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/shopify/shopify-ai-toolkit"
+notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=shopify-liquid; re-run migration to refresh */}
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

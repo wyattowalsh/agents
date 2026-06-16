@@ -1,0 +1,122 @@
+---
+title: "anthropics-skills-all"
+description: "inspect case-by-case; many skills duplicate local/system skills."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="anthropics-skills-all" variant="note" /> <Badge text="16 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+
+> inspect case-by-case; many skills duplicate local/system skills.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add anthropics/skills --skill anthropics-skills-all -y -g
+```
+
+**Use:** `/anthropics-skills-all`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/anthropics-skills-all.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets all supported agent harnesses via the install command below.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add anthropics/skills --skill anthropics-skills-all -y -g
+```
+
+## Trust / Audit
+
+Trust tier: **Avoid default** (`global-only-or-avoid`)
+
+Curated status: `global-only-or-avoid`
+
+Risk notes: inspect case-by-case; many skills duplicate local/system skills.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Official Anthropic skills repository demonstrating the Agent Skills system for Claude. Contains example skills across creative/design, development/technical, enterprise/comms, plus production document creation/editing capabilities (docx, pdf, pptx, xlsx) and the skills spec/template. The `anthropics-skills-all` entry represents the full/wildcard source (many individual skills available). Skills are self-contained SKILL.md + resources for repeatable task performance; some open (Apache 2.0), document skills source-available as reference.
+
+## Install Prerequisites
+
+No direct curated install command for the -all wildcard in this status section (see config/external-skills.md for explicit avoid note). General install via Claude Code plugin marketplace (anthropic-agent-skills), document-skills or example-skills sub-plugins, or skills.sh. Selector would be wildcard or broad. Status explicitly global-only-or-avoid.
+
+## Upstream Maintainer
+
+Anthropic (github.com/anthropics/skills; anthropic.com). Official. Includes partner examples (e.g. Notion). Links to full skills docs and engineering post on Agent Skills. 151k stars, active.
+
+## Comparable Alternatives
+
+Local or repo-owned skills for document handling, creative tasks, or specific workflows; narrower curated skills from other sources; direct use of Claude native document features or MCP where applicable instead of broad third-party skill bundles; custom skills built from the included template/spec.
+
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `anthropics/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `global-only-or-avoid` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `anthropics-skills-all` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "anthropics-skills-all"
+description: "inspect case-by-case; many skills duplicate local/system skills."
+title: "Anthropics Skills All"
+source_kind: "curated-external"
+source: "anthropics/skills"
+install_source: "anthropics/skills"
+status: "global-only-or-avoid"
+trust_tier: "global-only-or-avoid"
+provenance_status: "explicit-unresolved"
+source_url: "https://github.com/anthropics/skills"
+notes: "inspect case-by-case; many skills duplicate local/system skills."
+risk_notes: "inspect case-by-case; many skills duplicate local/system skills."
+promotion_policy: "Keep global-only or avoid unless explicitly approved."
+provenance_evidence: "Explicit keep-global/avoid note in config/external-skills.md."
+selector_mode: "unresolved"
+unresolved_reason: "inspect case-by-case; many skills duplicate local/system skills."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=anthropics-skills-all; re-run migration to refresh */}
+
+inspect case-by-case; many skills duplicate local/system skills.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

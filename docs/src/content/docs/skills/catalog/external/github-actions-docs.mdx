@@ -1,0 +1,122 @@
+---
+title: "github-actions-docs"
+description: "high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="github-actions-docs" variant="note" /> <Badge text="21 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+
+> high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add xixu-me/skills@github-actions-docs --skill github-actions-docs -y -g
+```
+
+**Use:** `/github-actions-docs`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/github-actions-docs.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets all supported agent harnesses via the install command below.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add xixu-me/skills@github-actions-docs --skill github-actions-docs -y -g
+```
+
+## Trust / Audit
+
+Trust tier: **Avoid default** (`global-only-or-avoid`)
+
+Curated status: `global-only-or-avoid`
+
+Risk notes: high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+High-install CI/docs reference skill. Marked global-only-or-avoid to prevent bloating the curated sync surface.
+
+## Install Prerequisites
+
+status=global-only-or-avoid; selector=unresolved.
+
+## Upstream Maintainer
+
+[xixu-me/skills](https://github.com/xixu-me/skills) @github-actions-docs.
+
+## Comparable Alternatives
+
+Local CI or actions docs skills if emerge; general gh actions knowledge.
+
+&gt; Config + github.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `xixu-me/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `global-only-or-avoid` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `github-actions-docs` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "github-actions-docs"
+description: "high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface."
+title: "Github Actions Docs"
+source_kind: "curated-external"
+source: "xixu-me/skills"
+install_source: "xixu-me/skills@github-actions-docs"
+status: "global-only-or-avoid"
+trust_tier: "global-only-or-avoid"
+provenance_status: "explicit-unresolved"
+source_url: "https://github.com/xixu-me/skills"
+notes: "high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface."
+risk_notes: "high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface."
+promotion_policy: "Keep global-only or avoid unless explicitly approved."
+provenance_evidence: "Explicit keep-global/avoid note in config/external-skills.md."
+selector_mode: "unresolved"
+unresolved_reason: "high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=github-actions-docs; re-run migration to refresh */}
+
+high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

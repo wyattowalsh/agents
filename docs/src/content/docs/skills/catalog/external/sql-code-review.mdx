@@ -1,0 +1,123 @@
+---
+title: "sql-code-review"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="sql-code-review" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/sql-code-review`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/sql-code-review.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Universal SQL code review assistant that performs comprehensive security, maintainability, and code quality analysis across all SQL databases (MySQL, PostgreSQL, SQL Server, Oracle). Focuses on SQL injection prevention, access control, code standards, and anti-pattern detection.
+
+## Install Prerequisites
+
+Install: `npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+
+## Upstream Maintainer
+
+[github/awesome-copilot](https://github.com/github/awesome-copilot)
+
+## Comparable Alternatives
+
+`sql-optimization` complements for perf; `code-review` for general.
+
+&gt; Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `github/awesome-copilot` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `sql-code-review` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "sql-code-review"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+title: "Sql Code Review"
+source_kind: "curated-external"
+source: "github/awesome-copilot"
+install_source: "github/awesome-copilot"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add github/awesome-copilot --skill sql-code-review --skill secret-scanning -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/github/awesome-copilot"
+notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=sql-code-review; re-run migration to refresh */}
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

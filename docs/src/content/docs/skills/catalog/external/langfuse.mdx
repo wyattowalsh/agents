@@ -1,0 +1,123 @@
+---
+title: "langfuse"
+description: "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="langfuse" variant="note" /> <Badge text="36 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+
+> Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/langfuse`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/langfuse.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Official langfuse/skills (MIT, 161 stars on skills repo). Main skill for Langfuse open-source LLM eng platform: tracing, prompt mgmt, eval, datasets, scores via API. Query docs/best-practices. Requires LANGFUSE_* keys (public/secret/base). Scoped tools. Complements OpenInference skills.
+
+## Install Prerequisites
+
+npx skills add langfuse/skills --skill langfuse -y -g -a [agents]; export keys; status=install-now-after-trust-gate; selector=named.
+
+## Upstream Maintainer
+
+[langfuse/skills](https://github.com/langfuse/skills) (MIT, official).
+
+## Comparable Alternatives
+
+Other observability: phoenix, arize, langsmith skills.
+
+&gt; Evidence from public web sources, GitHub (official orgs 2026), curated catalog; research evidence, not authority. External audit advised.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `langfuse/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `langfuse` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "langfuse"
+description: "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them."
+title: "Langfuse"
+source_kind: "curated-external"
+source: "langfuse/skills"
+install_source: "langfuse/skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/langfuse/skills"
+notes: "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them."
+risk_notes: "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=langfuse; re-run migration to refresh */}
+
+Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

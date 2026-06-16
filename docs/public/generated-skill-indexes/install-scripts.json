@@ -62,10 +62,6 @@
       "name": "devops-engineer"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill discover-skills -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "discover-skills"
-    },
-    {
       "command": "npx skills add github:wyattowalsh/agents --skill docling-graph -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "docling-graph"
     },
@@ -241,6 +237,7 @@
         "design-taste-frontend"
       ],
       "source": "Leonxlnx/taste-skill",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -250,17 +247,18 @@
         "cli-just"
       ],
       "source": "PaulRBerg/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
-        "code-review",
         "commit",
         "vitest"
       ],
       "source": "PaulRBerg/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -275,6 +273,7 @@
         "web-quality-audit"
       ],
       "source": "addyosmani/web-quality-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -285,15 +284,7 @@
         "vite"
       ],
       "source": "antfu/skills",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
-    },
-    {
-      "command": "npx skills add antfu/skills --skill vitest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "vitest"
-      ],
-      "source": "antfu/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -303,6 +294,7 @@
         "vue"
       ],
       "source": "antfu/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -312,6 +304,7 @@
         "terraform-skill"
       ],
       "source": "antonbabenko/terraform-skill",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -323,6 +316,7 @@
         "rover"
       ],
       "source": "apollographql/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -334,6 +328,7 @@
         "apollo-router"
       ],
       "source": "apollographql/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -347,6 +342,7 @@
         "rust-best-practices"
       ],
       "source": "apollographql/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -356,6 +352,7 @@
         "extract-design-system"
       ],
       "source": "arvindrk/extract-design-system",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -365,6 +362,7 @@
         "swift-concurrency"
       ],
       "source": "avdlee/swift-concurrency-agent-skill",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -374,6 +372,7 @@
         "swiftui-expert-skill"
       ],
       "source": "avdlee/swiftui-agent-skill",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -384,17 +383,19 @@
         "aws-serverless"
       ],
       "source": "aws/agent-toolkit-for-aws",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
     {
-      "command": "npx skills add backnotprop/plannotator --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "command": "npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "plannotator-compound",
         "plannotator-setup-goal",
         "plannotator-visual-explainer"
       ],
-      "source": "backnotprop/plannotator",
+      "source": "backnotprop/plannotator/apps/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -406,6 +407,7 @@
         "plannotator-review"
       ],
       "source": "backnotprop/plannotator/apps/skills/core",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -415,6 +417,7 @@
         "better-auth-best-practices"
       ],
       "source": "better-auth/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -424,6 +427,7 @@
         "biome-developer"
       ],
       "source": "biomejs/biome",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -433,6 +437,7 @@
         "logging-best-practices"
       ],
       "source": "boristane/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -443,6 +448,7 @@
         "clickhouse-best-practices"
       ],
       "source": "clickhouse/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -456,6 +462,7 @@
         "wrangler"
       ],
       "source": "cloudflare/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -470,6 +477,7 @@
         "signup"
       ],
       "source": "coreyhaines31/marketingskills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -488,6 +496,7 @@
         "seo-audit"
       ],
       "source": "coreyhaines31/marketingskills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -504,6 +513,7 @@
         "video"
       ],
       "source": "coreyhaines31/marketingskills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -515,6 +525,7 @@
         "getting-started"
       ],
       "source": "crewaiinc/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -524,6 +535,7 @@
         "playwright-best-practices"
       ],
       "source": "currents-dev/playwright-best-practices-skill",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -535,6 +547,7 @@
         "otel-semantic-conventions"
       ],
       "source": "dash0hq/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -546,6 +559,7 @@
         "tanstack-start-best-practices"
       ],
       "source": "deckardger/tanstack-agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -555,6 +569,7 @@
         "deno-expert"
       ],
       "source": "denoland/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -564,6 +579,7 @@
         "svelte5-best-practices"
       ],
       "source": "ejirocodes/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -573,6 +589,7 @@
         "emil-design-eng"
       ],
       "source": "emilkowalski/skill",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -586,6 +603,7 @@
         "upgrading-expo"
       ],
       "source": "expo/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -597,6 +615,7 @@
         "figma-implement-design"
       ],
       "source": "figma/mcp-server-guide",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -608,6 +627,7 @@
         "firebase-auth-basics"
       ],
       "source": "firebase/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -623,6 +643,7 @@
         "flutter-setup-localization"
       ],
       "source": "flutter/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -634,6 +655,7 @@
         "sentry-setup-ai-monitoring"
       ],
       "source": "getsentry/sentry-for-ai",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -646,6 +668,7 @@
         "iterate-pr"
       ],
       "source": "getsentry/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -655,6 +678,7 @@
         "skill-scanner"
       ],
       "source": "getsentry/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -667,6 +691,7 @@
         "agentic-eval"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -679,6 +704,7 @@
         "threat-model-analyst"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -688,6 +714,7 @@
         "excalidraw-diagram-generator"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -701,6 +728,7 @@
         "phoenix-tracing"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -710,6 +738,7 @@
         "rust-mcp-server-generator"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -720,6 +749,7 @@
         "sql-code-review"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -730,6 +760,7 @@
         "sql-optimization"
       ],
       "source": "github/awesome-copilot",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -739,6 +770,7 @@
         "drizzle-orm-patterns"
       ],
       "source": "giuseppe-trisciuoglio/developer-kit",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -751,6 +783,7 @@
         "stitch::generate-design"
       ],
       "source": "google-labs-code/stitch-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -760,6 +793,7 @@
         "gemini-api"
       ],
       "source": "google/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -771,6 +805,7 @@
         "terraform-stacks"
       ],
       "source": "hashicorp/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -781,17 +816,9 @@
         "terraform-test"
       ],
       "source": "hashicorp/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
-    },
-    {
-      "command": "npx skills add hueyexe/opencode-ensemble --skill opencode-ensemble -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "opencode-ensemble"
-      ],
-      "source": "hueyexe/opencode-ensemble",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
     },
     {
       "command": "npx skills add hyf0/vue-skills --skill vue-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -799,6 +826,7 @@
         "vue-best-practices"
       ],
       "source": "hyf0/vue-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -810,6 +838,7 @@
         "fixing-metadata"
       ],
       "source": "ibelick/ui-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -822,6 +851,7 @@
         "inngest-steps"
       ],
       "source": "inngest/inngest-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -831,6 +861,7 @@
         "shieldcn-badges"
       ],
       "source": "jal-co/shieldcn",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -840,6 +871,7 @@
         "kubernetes-specialist"
       ],
       "source": "jeffallan/claude-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -850,6 +882,7 @@
         "testing-python"
       ],
       "source": "jlowin/fastmcp",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -860,6 +893,7 @@
         "obsidian-markdown"
       ],
       "source": "kepano/obsidian-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -880,6 +914,7 @@
         "managed-deep-agents"
       ],
       "source": "langchain-ai/langchain-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -891,6 +926,7 @@
         "langsmith-trace"
       ],
       "source": "langchain-ai/langsmith-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -900,6 +936,7 @@
         "langfuse"
       ],
       "source": "langfuse/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -919,6 +956,7 @@
         "solve-challenge"
       ],
       "source": "ljagiello/ctf-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -928,6 +966,7 @@
         "notion-cli"
       ],
       "source": "makenotion/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -940,6 +979,7 @@
         "to-prd"
       ],
       "source": "mattpocock/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -949,6 +989,7 @@
         "obsidian-vault"
       ],
       "source": "mattpocock/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -959,6 +1000,7 @@
         "mcp-builder"
       ],
       "source": "mcp-use/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -968,6 +1010,7 @@
         "playwright-cli"
       ],
       "source": "microsoft/playwright-cli",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -979,6 +1022,7 @@
         "neon-functions"
       ],
       "source": "neondatabase/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -990,6 +1034,7 @@
         "neon-postgres-egress-optimizer"
       ],
       "source": "neondatabase/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1001,6 +1046,7 @@
         "netlify-functions"
       ],
       "source": "netlify/context-and-tools",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1010,6 +1056,7 @@
         "ui-ux-pro-max"
       ],
       "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1020,6 +1067,7 @@
         "nx-generate"
       ],
       "source": "nrwl/nx-ai-agents-config",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1034,6 +1082,7 @@
         "writing-plans"
       ],
       "source": "obra/superpowers",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1047,6 +1096,7 @@
         "security-threat-model"
       ],
       "source": "openai/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1056,6 +1106,7 @@
         "impeccable"
       ],
       "source": "pbakaus/impeccable",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1066,6 +1117,7 @@
         "postgres"
       ],
       "source": "planetscale/database-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1077,6 +1129,7 @@
         "prisma-upgrade-v7"
       ],
       "source": "prisma/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1087,6 +1140,7 @@
         "prisma-database-setup"
       ],
       "source": "prisma/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1096,6 +1150,7 @@
         "prisma-postgres"
       ],
       "source": "prisma/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1108,6 +1163,7 @@
         "pulumi-esc"
       ],
       "source": "pulumi/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1118,6 +1174,7 @@
         "logfire-instrumentation"
       ],
       "source": "pydantic/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1127,6 +1184,7 @@
         "pydantic-ai-harness"
       ],
       "source": "pydantic/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1136,6 +1194,7 @@
         "use-railway"
       ],
       "source": "railwayapp/railway-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1145,6 +1204,7 @@
         "redis-core"
       ],
       "source": "redis/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1156,6 +1216,7 @@
         "redis-security"
       ],
       "source": "redis/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1166,6 +1227,7 @@
         "redis-vector-search"
       ],
       "source": "redis/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1175,6 +1237,7 @@
         "remotion-best-practices"
       ],
       "source": "remotion-dev/skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1186,6 +1249,7 @@
         "render-deploy"
       ],
       "source": "render-oss/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1215,26 +1279,9 @@
         "golang-troubleshooting"
       ],
       "source": "samber/cc-skills-golang",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add shadcn-ui/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "shadcn"
-      ],
-      "source": "shadcn-ui/ui",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
-    },
-    {
-      "command": "npx skills add shadcn/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "shadcn"
-      ],
-      "source": "shadcn/ui",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add shopify/shopify-ai-toolkit --skill shopify-dev --skill shopify-liquid --skill shopify-storefront-graphql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -1244,6 +1291,7 @@
         "shopify-storefront-graphql"
       ],
       "source": "shopify/shopify-ai-toolkit",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1253,6 +1301,7 @@
         "docker-expert"
       ],
       "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1262,6 +1311,7 @@
         "sleek-design-mobile-apps"
       ],
       "source": "sleekdotdesign/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1271,16 +1321,17 @@
         "design-doc-mermaid"
       ],
       "source": "spillwavesolutions/design-doc-mermaid",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
-        "stripe-best-practices",
         "upgrade-stripe"
       ],
       "source": "stripe/ai",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1291,6 +1342,7 @@
         "supabase-postgres-best-practices"
       ],
       "source": "supabase/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1300,6 +1352,7 @@
         "temporal-developer"
       ],
       "source": "temporalio/skill-temporal-developer",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1311,6 +1364,7 @@
         "semgrep"
       ],
       "source": "trailofbits/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1325,6 +1379,7 @@
         "variant-analysis"
       ],
       "source": "trailofbits/skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1335,6 +1390,7 @@
         "vercel-optimize"
       ],
       "source": "vercel-labs/agent-skills",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1348,6 +1404,7 @@
         "web-design-guidelines"
       ],
       "source": "vercel-labs/agent-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1359,6 +1416,7 @@
         "next-upgrade"
       ],
       "source": "vercel-labs/next-skills",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1375,6 +1433,7 @@
         "turborepo-caching"
       ],
       "source": "wshobson/agents",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1387,6 +1446,7 @@
         "uv-package-manager"
       ],
       "source": "wshobson/agents",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     },
@@ -1408,6 +1468,7 @@
         "terraform-module-library"
       ],
       "source": "wshobson/agents",
+      "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
     },
@@ -1422,11 +1483,11 @@
         "tailwind-design-system"
       ],
       "source": "wshobson/agents",
+      "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
     }
   ],
-  "installedCommands": [],
   "syncApply": "uv run wagents skills sync --apply",
   "syncDryRun": "uv run wagents skills sync --dry-run"
 }

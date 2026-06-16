@@ -1,0 +1,123 @@
+---
+title: "pulumi-automation-api"
+description: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="pulumi-automation-api" variant="note" /> <Badge text="35 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+
+> Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/pulumi-automation-api`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/pulumi-automation-api.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Best practices for using Pulumi Automation API (programmatic IaC). From Pulumi official agent-skills for infrastructure as code. Part of pulumi/ plugin groups (pulumi skills + migration etc).
+
+## Install Prerequisites
+
+Install: `npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
+
+## Upstream Maintainer
+
+[pulumi/agent-skills](https://github.com/pulumi/agent-skills) (official Pulumi)
+
+## Comparable Alternatives
+
+Terraform skills (hashicorp, antonbabenko), CDK migration skills, local Pulumi docs.
+
+&gt; Web from pulumi/agent-skills README 2026.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `pulumi/agent-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `pulumi-automation-api` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "pulumi-automation-api"
+description: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
+title: "Pulumi Automation Api"
+source_kind: "curated-external"
+source: "pulumi/agent-skills"
+install_source: "pulumi/agent-skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/pulumi/agent-skills"
+notes: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
+risk_notes: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=pulumi-automation-api; re-run migration to refresh */}
+
+Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

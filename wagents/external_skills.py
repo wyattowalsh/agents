@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import re
 import shlex
 from dataclasses import asdict, dataclass, replace
@@ -106,15 +107,108 @@ SUPPORTED_TARGET_AGENTS = (
 
 
 def read_external_skill_entries(path: Path | None = None) -> list[ExternalSkillEntry]:
-    """Read curated external skill entries from the repo config source."""
-    source_path = path or wagents.ROOT / "config" / "external-skills.md"
-    if not source_path.exists():
+    """Read curated external skill entries.
+
+    Prefer catalog index JSON + authoring external MDX (via skill_index).
+    Fall back to legacy ``config/external-skills.md`` when the index path is empty,
+    or when ``WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`` forces legacy reconciliation.
+    """
+    # Try catalog index + authoring first (bundle-first / dual-read)
+    combined: list[ExternalSkillEntry] = []
+    try:
+        cat_entries = read_catalog_external_entries()
+        auth_entries = _load_authoring_external_entries()
+        seen: set[tuple[str, str]] = set()
+        for e in (*cat_entries, *auth_entries):
+            key = (e.name.lower(), e.source.lower())
+            if key not in seen:
+                seen.add(key)
+                combined.append(e)
+        if combined:
+            return combined
+    except Exception:
+        pass
+
+    # Legacy fallback while config/external-skills.md remains as projection (W6: remove when index-only)
+    if not combined or os.environ.get("WAGENTS_CATALOG_LEGACY_EXTERNAL_MD") == "1":
+        source_path = path or wagents.ROOT / "config" / "external-skills.md"
+        if source_path.exists():
+            legacy = parse_external_skill_entries_legacy(source_path.read_text(encoding="utf-8"))
+            if legacy:
+                return legacy
+    return combined
+
+
+def _catalog_index_missing() -> bool:
+    try:
+        from . import skill_index as si
+
+        p = si.CATALOG_INDEX_PATH
+        return not p.exists()
+    except Exception:
+        return True
+
+
+def _load_authoring_external_entries() -> list[ExternalSkillEntry]:
+    """Load external entries from docs/src/authoring/skills mdx (via skill_index)."""
+    try:
+        from . import skill_index as si
+
+        auths = si.load_authoring_entries()
+        return [
+            si.entry_to_external_skill_entry(e)
+            for e in auths
+            if getattr(e, "source_kind", "custom") != "custom"
+        ]
+    except Exception:
         return []
-    return parse_external_skill_entries(source_path.read_text(encoding="utf-8"))
 
 
-def parse_external_skill_entries(markdown: str) -> list[ExternalSkillEntry]:
-    """Parse curated install commands and avoid notes from external-skills.md."""
+def read_catalog_external_entries() -> list[ExternalSkillEntry]:
+    """Read external (curated) entries from the catalog index JSON using skill_index."""
+    try:
+        from . import skill_index as si
+
+        idx = si.read_catalog_index()
+        if not idx:
+            return []
+        rows = idx.get("externalSkillIndex") or idx.get("allSkillIndex") or []
+        entries: list[ExternalSkillEntry] = []
+        for r in rows:
+            if not isinstance(r, dict):
+                continue
+            if r.get("sourceType") not in ("curated-external", "external"):
+                continue
+            entries.append(
+                ExternalSkillEntry(
+                    name=str(r.get("name") or ""),
+                    source=str(r.get("sourceRoot") or r.get("source") or ""),
+                    install_source=str(r.get("installSource") or r.get("install_source") or ""),
+                    status=str(r.get("status") or ""),
+                    trust_tier=str(r.get("trustTier") or r.get("trust_tier") or ""),
+                    provenance_status=str(r.get("provenanceStatus") or r.get("provenance_status") or ""),
+                    install_command=str(r.get("installCommand") or r.get("install_command") or ""),
+                    target_agents=tuple(r.get("targetAgents") or r.get("target_agents") or ()),
+                    source_url=str(r.get("sourceUrl") or r.get("source_url") or ""),
+                    notes=str(r.get("description") or r.get("notes") or ""),
+                    risk_notes=str(r.get("riskNotes") or r.get("risk_notes") or ""),
+                    promotion_policy=str(r.get("promotionPolicy") or r.get("promotion_policy") or ""),
+                    provenance_evidence=str(r.get("provenanceEvidence") or r.get("provenance_evidence") or ""),
+                    source_path=str(r.get("sourcePath") or r.get("source_path") or "catalog-index"),
+                    selector_mode=str(r.get("selectorMode") or r.get("selector_mode") or "named"),
+                    unresolved_reason=str(r.get("unresolvedReason") or r.get("unresolved_reason") or ""),
+                    unsupported_target_agents=tuple(
+                        r.get("unsupportedTargetAgents") or r.get("unsupported_target_agents") or ()
+                    ),
+                )
+            )
+        return entries
+    except Exception:
+        return []
+
+
+def parse_external_skill_entries_legacy(markdown: str) -> list[ExternalSkillEntry]:
+    """Parse curated install commands and avoid notes from external-skills.md (legacy MD parser)."""
     entries: list[ExternalSkillEntry] = []
     current_status: tuple[str, str] | None = None
     in_fence = False
@@ -171,6 +265,10 @@ def parse_external_skill_entries(markdown: str) -> list[ExternalSkillEntry]:
     flush_pending()
 
     return _dedupe_external_entries(entries)
+
+
+# Alias kept for backward compat and existing tests that import the parser name directly.
+parse_external_skill_entries = parse_external_skill_entries_legacy
 
 
 def _entries_from_command(command: str, status: str, trust_tier: str) -> list[ExternalSkillEntry]:

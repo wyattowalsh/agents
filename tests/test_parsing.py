@@ -174,7 +174,7 @@ class TestIsNavigableCatalogLinkTarget:
         [
             ("https://example.com", True),
             ("http://example.com", True),
-            ("/skills/catalog/foo", True),
+            ("/skills/catalog/custom/foo", True),
             ("references/guide.md", False),
             ("#section", False),
         ],
@@ -215,8 +215,8 @@ class TestStripRelativeMdLinks:
         assert strip_relative_md_links("[section](#core-architecture)") == "`section`"
 
     def test_internal_link_strips_hash_fragment(self):
-        text = "[section](/skills/catalog/foo#core-architecture)"
-        assert strip_relative_md_links(text) == "[section](/skills/catalog/foo)"
+        text = "[section](/skills/catalog/custom/foo#core-architecture)"
+        assert strip_relative_md_links(text) == "[section](/skills/catalog/custom/foo)"
 
 
 class TestSanitizeCatalogLinks:

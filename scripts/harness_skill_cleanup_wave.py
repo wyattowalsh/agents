@@ -17,7 +17,7 @@ TARGET_HARNESSES = ("claude-code", "codex", "grok", "opencode")
 
 KNOWN_DEDUP_SLUGS = {
     "shadcn": ["shadcn/ui", "shadcn-ui/ui"],
-    "find-skills": ["vercel-labs/skills", "discover-skills"],
+    "find-skills": ["vercel-labs/skills", "harness-master"],
 }
 
 DEDUP_PRECEDENCE = (

@@ -34,8 +34,12 @@
 			"mode": "canonical"
 		},
 		{
-			"path": "${REPO_ROOT}/config/external-skills.md",
+			"path": "${REPO_ROOT}/docs/src/authoring/skills",
 			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/external-skills.md",
+			"mode": "generated"
 		},
 		{
 			"path": "${REPO_ROOT}/config/plugin-extension-registry.json",

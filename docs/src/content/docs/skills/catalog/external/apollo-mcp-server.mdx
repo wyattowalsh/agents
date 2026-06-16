@@ -1,0 +1,123 @@
+---
+title: "apollo-mcp-server"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="apollo-mcp-server" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/apollo-mcp-server`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/apollo-mcp-server.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Apollo MCP Server — connect AI agents with GraphQL APIs. Config (endpoints/schemas/headers), built-in tools (introspect/search/validate/execute), operation sources, auth/security, health/debug. Bridge for agent &lt;-&gt; GraphQL.
+
+## Install Prerequisites
+
+`npx skills add apollographql/skills --skill apollo-mcp-server -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=inspect-then-install; selector=named. Alternative: Claude plugin marketplace or gh skill install.
+
+## Upstream Maintainer
+
+apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT license. 11 skills total with SKILL.md + references/. Install via npx skills add, Claude Code plugin (namespaced), GitHub CLI gh skill (with pinning support), or direct. Experimental/reference project per disclaimer; community feedback welcome but not officially supported like core Apollo repos. Links to official Apollo docs (Client/Server/Federation/Connectors/Rover/iOS/MCP).
+
+## Comparable Alternatives
+
+Other MCP or agent-tooling skills; apollo-router for runtime.
+
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `apollographql/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `apollo-mcp-server` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "apollo-mcp-server"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+title: "Apollo Mcp Server"
+source_kind: "curated-external"
+source: "apollographql/skills"
+install_source: "apollographql/skills"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add apollographql/skills --skill apollo-mcp-server --skill apollo-router --skill apollo-ios -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/apollographql/skills"
+notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=apollo-mcp-server; re-run migration to refresh */}
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

@@ -13,21 +13,15 @@
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 70%);
 }
 
-/* Layer 2: Gradient text on hero title */
+/* Hero title */
 .hero h1 {
-  background: var(--hero-accent-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px oklch(0.62 0.1 205 / 0.25));
-  text-shadow: 0 0 30px oklch(0.62 0.1 205 / 0.22);
-  letter-spacing: -0.03em;
-  animation: color-shift 8s ease-in-out infinite;
+  color: var(--sl-color-white);
+  letter-spacing: -0.02em;
 }
 
 /* ===== HERO ENHANCEMENTS ===== */
 .hero {
-  padding-block: 6rem 4rem;
+  padding-block: 5rem 3rem;
   position: relative;
   overflow: hidden;
 }
@@ -54,36 +48,6 @@
   max-width: 100%;
   margin: 0 auto;
   box-shadow: var(--hero-panel-shadow);
-  animation: softBreath 6s ease-in-out infinite;
-}
-.hero-terminal::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, oklch(0.7 0.13 200 / 0.7), oklch(0.7 0.12 285 / 0.55), transparent 70%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.7;
-  animation: glowPulse 4.5s ease-in-out infinite;
-}
-.hero-terminal::after {
-  content: '';
-  position: absolute;
-  inset: 10px;
-  border-radius: inherit;
-  background:
-    radial-gradient(circle at 14% 24%, oklch(0.82 0.1 200 / 0.4) 0 2px, transparent 3px),
-    radial-gradient(circle at 82% 22%, oklch(0.78 0.12 285 / 0.35) 0 2px, transparent 3px),
-    radial-gradient(circle at 72% 78%, oklch(0.8 0.08 160 / 0.28) 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 22% 82%, oklch(0.82 0.1 200 / 0.22) 0 1.5px, transparent 2.5px);
-  pointer-events: none;
-  opacity: 0.9;
-  animation: particleFloat 12s linear infinite;
 }
 .hero-terminal-header {
   display: flex;
@@ -217,11 +181,13 @@
               box-shadow var(--duration-normal) ease;
 }
 .stat:hover {
-  transform: translateY(-2px);
-  animation: statPulse 1.5s ease-in-out infinite;
+  transform: translateY(-1px);
+  border-color: oklch(0.45 0.04 210 / 0.55);
 }
+.stat-total { border-color: oklch(0.55 0.08 250 / 0.5); color: oklch(0.82 0.06 250); }
 .stat-skill { border-color: oklch(0.5 0.15 285 / 0.5); color: var(--type-skill); }
 .stat-agent { border-color: oklch(0.5 0.1 200 / 0.5); color: var(--type-agent); }
+.stat-harness { border-color: oklch(0.5 0.1 200 / 0.5); color: var(--type-agent); }
 .stat-mcp { border-color: oklch(0.5 0.12 155 / 0.5); color: var(--type-mcp); }
 .stat-external { border-color: oklch(0.7 0.12 45 / 0.5); color: oklch(0.78 0.15 45); }
 
@@ -245,16 +211,4 @@
   }
 }
 
-/* Stats bar entrance animation — staggered fade-up */
-@keyframes statEnter {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.stat {
-  animation: statEnter 0.6s ease-out both;
-}
-.stat:nth-child(1) { animation-delay: 0.1s; }
-.stat:nth-child(2) { animation-delay: 0.2s; }
-.stat:nth-child(3) { animation-delay: 0.3s; }
-.stat:nth-child(4) { animation-delay: 0.4s; }
-.stat:nth-child(5) { animation-delay: 0.5s; }
+

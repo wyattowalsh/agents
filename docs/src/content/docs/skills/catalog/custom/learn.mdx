@@ -1,0 +1,236 @@
+---
+title: "learn"
+description: "Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="learn" variant="note" /> <Badge text="501 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+
+> Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
+```
+
+**Use:** `/learn` `[correction or insight to capture]`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/learn/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review.
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Record corrections, insights, and patterns. Route them to the correct instruction file. Apply kaizen principles to keep instructions lean and effective.
+
+&gt; Grounded in repository `skills/learn/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
+## What It Does
+
+Record corrections, insights, and patterns. Route them to the correct instruction file. Apply kaizen principles to keep instructions lean and effective.
+
+## Modes
+
+| `$ARGUMENTS` | Action |
+|---|---|
+| `"&lt;correction text&gt;"` | Route correction to appropriate instruction file |
+| `review` | Show pending learnings and their frequency |
+| `promote` | Promote high-frequency learnings (3+ occurrences) to instruction files |
+| `audit` | Check for stale, contradictory, or duplicate learnings |
+| Empty | Display usage summary |
+
+## Verification Checklist
+
+1. Verify against actual practice — confirm the pattern reflects real usage
+2. Check for contradictions with existing instructions
+3. Assess token impact — keep always-loaded content minimal
+4. Get user approval — never modify instruction files without consent
+5. Test the change — run `python scripts/check.py` after any instruction file edit
+
+## Critical Rules
+
+1. Never modify instruction files without explicit user approval
+2. Require 3+ corrections across 2+ sessions before promoting
+3. Check for contradictions with existing instructions
+4. Route to narrowest applicable scope (rule before skill, skill before global)
+5. Keep always-loaded content under token budget
+6. Run `python scripts/check.py` after every instruction file modification
+7. Prefer hooks/rules over prose (poka-yoke principle)
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `learn` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+  <TabItem label="Claude Code">
+| Field | Value |
+| ----- | ----- |
+| Argument Hint | `[correction or insight to capture]` |
+  </TabItem>
+</Tabs>
+
+## Related Skills
+
+<CardGrid>
+  <LinkCard title="python-conventions" href="/skills/catalog/custom/python-conventions/" description="Enforce Python tooling conventions for uv, ty, Ruff, pytest, and pyproject.toml. Use when working on .py files or Python project config." />
+  <LinkCard title="javascript-conventions" href="/skills/catalog/custom/javascript-conventions/" description="Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json." />
+  <LinkCard title="agent-conventions" href="/skills/catalog/custom/agent-conventions/" description="Agent definition conventions. Validate frontmatter, update indexes. Use when creating or modifying agents. NOT for skills, MCP servers, or CLAUDE.md." />
+</CardGrid>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: learn
+description: >-
+  Capture corrections and patterns as reusable knowledge. Routes to the right
+  instruction file. Use when patterns repeat 3+ times or to save insights.
+  NOT for one-time fixes or code review.
+argument-hint: "[correction or insight to capture]"
+user-invocable: true
+disable-model-invocation: false
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+---
+
+# Learn — Capture and Route Project Knowledge
+
+Record corrections, insights, and patterns. Route them to the correct instruction file. Apply kaizen principles to keep instructions lean and effective.
+
+## Dispatch
+
+| `$ARGUMENTS` | Action |
+|---|---|
+| `"<correction text>"` | Route correction to appropriate instruction file |
+| `review` | Show pending learnings and their frequency |
+| `promote` | Promote high-frequency learnings (3+ occurrences) to instruction files |
+| `audit` | Check for stale, contradictory, or duplicate learnings |
+| Empty | Display usage summary |
+
+## References
+
+| File | Purpose |
+|------|---------|
+| `references/routing-rules.md` | Decision tree for where to route instruction changes |
+| `references/kaizen-principles.md` | Error-proofing patterns, when to use hooks vs prose vs rules |
+
+## Routing Protocol
+
+Route proposed updates to the correct target:
+
+| Scope | Target |
+|-------|--------|
+| Cross-project conventions | `instructions/global.md` |
+| Language-specific tooling | Convention skill (`python-conventions`, etc.) |
+| Orchestration/parallelism | `orchestrator` skill body |
+| Project-specific standards | Project's `AGENTS.md` |
+| File-scoped enforcement | `.claude/rules/<topic>.md` |
+| Skill behavior | The skill's own `SKILL.md` |
+
+### Routing Decision Steps
+
+1. Determine the scope: does this apply to all projects or just one?
+2. If cross-project, does it relate to a specific language or tool?
+3. If language-specific, route to the corresponding convention skill
+4. If general, route to `instructions/global.md`
+5. If project-only, route to the project's `AGENTS.md`
+6. If file-scoped enforcement only, create a `.claude/rules/` entry
+
+## Kaizen Principles
+
+1. **Incremental > revolutionary** — Smallest viable change, verify before next
+2. **Poka-yoke** — Prefer hooks/tooling over prose instructions (error-proof by design)
+3. **Standards work** — Follow existing patterns, document what works
+4. **JIT** — Build only what is needed, optimize when measured
+
+## Verification Checklist
+
+1. Verify against actual practice — confirm the pattern reflects real usage
+2. Check for contradictions with existing instructions
+3. Assess token impact — keep always-loaded content minimal
+4. Get user approval — never modify instruction files without consent
+5. Test the change — run `python scripts/check.py` after any instruction file edit
+
+## Critical Rules
+
+1. Never modify instruction files without explicit user approval
+2. Require 3+ corrections across 2+ sessions before promoting
+3. Check for contradictions with existing instructions
+4. Route to narrowest applicable scope (rule before skill, skill before global)
+5. Keep always-loaded content under token budget
+6. Run `python scripts/check.py` after every instruction file modification
+7. Prefer hooks/rules over prose (poka-yoke principle)
+
+## Canonical Terms
+
+- `instruction file` — any file that provides agent instructions (global.md, AGENTS.md, SKILL.md)
+- `routing` — the process of choosing the correct target file for a change
+- `correction pattern` — a repeated fix that indicates a missing or wrong instruction
+- `token budget` — the limit on always-loaded instruction content
+- `scope` — cross-project, language-specific, orchestration, project-specific, or file-scoped
+
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
+
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/learn/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/learn/SKILL.md)

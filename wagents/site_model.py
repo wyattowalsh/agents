@@ -6,10 +6,13 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry
+
+NodeSourceType = Literal["custom", "curated-external", "installed"]
+BucketSourceType = Literal["custom", "external"]
 
 REPO_SOURCE = "github:wyattowalsh/agents"
 LOCAL_INSTALLED_SOURCE_LABEL = "local installed inventory"
@@ -83,18 +86,24 @@ SUPPORTED_AGENTS: tuple[SupportedAgent, ...] = (
 SUPPORTED_AGENT_IDS = tuple(agent.id for agent in SUPPORTED_AGENTS)
 
 
+def _strip(v: str) -> str:
+    """Normalize value to stripped string (centralized to reduce duplication in source/path/trust logic)."""
+    return str(v or "").strip()
+
+
 def trust_badge_for_tier(trust_tier: str) -> tuple[str, str]:
     """Map trust tier to public docs badge text and Starlight variant."""
     mapping = {
         "repo": ("Repo-owned", "tip"),
         "curated-trust-gated": ("Curated", "note"),
         "needs-inspection": ("Inspect first", "caution"),
+        "read-only-discovered": ("Inspect first", "caution"),
         "external-installed": ("Local install", "default"),
         "global-only-or-avoid": ("Avoid default", "danger"),
         "github": ("GitHub", "note"),
         "git": ("Git source", "note"),
     }
-    return mapping.get(str(trust_tier or "").strip(), ("External", "default"))
+    return mapping.get(_strip(trust_tier), ("External", "default"))
 
 
 @dataclass(frozen=True)
@@ -267,27 +276,27 @@ def docs_src_asset_css_url(src: str) -> str:
 FEATURED_SKILLS: tuple[FeaturedSkill, ...] = (
     FeaturedSkill(
         "Enhance Code Reviews",
-        "/skills/catalog/honest-review/",
+        "/skills/catalog/custom/honest-review/",
         "Review a diff with evidence, structure, and severity instead of ad hoc feedback.",
     ),
     FeaturedSkill(
         "Strategic Decision Analysis",
-        "/skills/catalog/wargame/",
+        "/skills/catalog/custom/wargame/",
         "Pressure-test a product or engineering decision before you commit to it.",
     ),
     FeaturedSkill(
         "Host Expert Panels",
-        "/skills/catalog/host-panel/",
+        "/skills/catalog/custom/host-panel/",
         "Get multiple expert perspectives in one session when the problem has real trade-offs.",
     ),
     FeaturedSkill(
         "Run Spec Workflows",
-        "/skills/catalog/openspec-workflow/",
+        "/skills/catalog/custom/openspec-workflow/",
         "Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands.",
     ),
     FeaturedSkill(
         "Create MCP Servers",
-        "/skills/catalog/mcp-creator/",
+        "/skills/catalog/custom/mcp-creator/",
         "Build a production-ready FastMCP server with design, testing, and deployment guidance.",
     ),
 )
@@ -316,20 +325,56 @@ def build_install_command(
     return f"npx skills add {REPO_SOURCE} {selector} -y -g {agent_flags(agent_ids)}"
 
 
+def _node_source_type(node: CatalogNode) -> NodeSourceType:
+    """Return the catalog node's skill source type."""
+    if node.source == "custom":
+        return "custom"
+    if node.source == "curated-external":
+        return "curated-external"
+    return "installed"
+
+
+def _bucket_source_type(node: CatalogNode) -> BucketSourceType:
+    """Map catalog source to public custom vs external bucket."""
+    return "custom" if _node_source_type(node) == "custom" else "external"
+
+
+def skill_source_counts(skills: list[CatalogNode]) -> dict[str, int]:
+    """Count skills by public custom/external taxonomy from catalog nodes."""
+    custom = sum(1 for node in skills if _node_source_type(node) == "custom")
+    external = sum(1 for node in skills if _bucket_source_type(node) == "external")
+    return {
+        "skills": custom + external,
+        "customSkills": custom,
+        "externalSkills": external,
+    }
+
+
+def mcp_source_counts(
+    nodes: list[CatalogNode], *, mcp_config_count: int | None = None
+) -> dict[str, int]:
+    """Count MCP tools by repo packages vs configured external servers."""
+    custom_mcp = len([node for node in nodes if node.kind == "mcp"])
+    external_mcp = mcp_config_count or 0
+    return {
+        "customMcp": custom_mcp,
+        "externalMcp": external_mcp,
+        "mcpTools": custom_mcp + external_mcp,
+    }
+
+
 def node_counts(
     nodes: list[CatalogNode], *, mcp_config_count: int | None = None, has_mcp_overview: bool = False
 ) -> dict[str, int | str]:
     """Summarize catalog counts for generated docs UI."""
     skills = [node for node in nodes if node.kind == "skill"]
     counts: dict[str, int | str] = {
-        "customSkills": len([node for node in skills if node.source == "custom"]),
-        "installedSkills": len([node for node in skills if node.source != "custom"]),
-        "agents": len([node for node in nodes if node.kind == "agent"]),
-        "mcpServers": len([node for node in nodes if node.kind == "mcp"]),
+        **skill_source_counts(skills),
+        **mcp_source_counts(nodes, mcp_config_count=mcp_config_count),
+        "supportedHarnesses": len(SUPPORTED_AGENTS),
+        "bundledAgents": len([node for node in nodes if node.kind == "agent"]),
     }
-    if counts["mcpServers"] == 0 and mcp_config_count:
-        counts["mcpServers"] = mcp_config_count
-    if counts["mcpServers"] == 0 and has_mcp_overview:
+    if counts["customMcp"] == 0 and counts["externalMcp"] == 0 and has_mcp_overview:
         counts["mcpOverview"] = "available"
     return counts
 
@@ -370,8 +415,6 @@ def render_site_data_module(data: dict[str, Any]) -> str:
         if key
         not in {
             "customSkillIndex",
-            "curatedExternalSkillIndex",
-            "installedSkillIndex",
             "externalSkillIndex",
             "allSkillIndex",
             "skillIndex",
@@ -392,23 +435,6 @@ def render_site_data_module(data: dict[str, Any]) -> str:
         "export const visualAssets = baseSiteData.visualAssets;\n"
         "export const skillInstallScripts = baseSiteData.skillInstallScripts;\n"
         "export const externalSkillGroups = baseSiteData.externalSkillGroups;\n"
-    )
-
-
-def render_skill_indexes_module(data: dict[str, Any]) -> str:
-    """Render large skill index exports in a separate module."""
-    custom_index = json.dumps(data["customSkillIndex"], indent=2, sort_keys=True)
-    curated_external_index = json.dumps(data["curatedExternalSkillIndex"], indent=2, sort_keys=True)
-    installed_index = json.dumps(data["installedSkillIndex"], indent=2, sort_keys=True)
-    external_index = json.dumps(data["externalSkillIndex"], indent=2, sort_keys=True)
-    return (
-        "// Auto-generated by wagents docs generate - do not edit\n"
-        f"export const customSkillIndex = {custom_index};\n"
-        f"export const curatedExternalSkillIndex = {curated_external_index};\n"
-        f"export const installedSkillIndex = {installed_index};\n"
-        f"export const externalSkillIndex = {external_index};\n"
-        "export const allSkillIndex = [...customSkillIndex, ...externalSkillIndex];\n"
-        "export const skillIndex = allSkillIndex;\n"
     )
 
 
@@ -439,25 +465,45 @@ def skill_indexes(
     nodes: list[CatalogNode], *, external_skills: list[ExternalSkillEntry] | None = None
 ) -> dict[str, list[dict[str, Any]]]:
     """Return filtered and deduped skill indexes for generated docs."""
-    custom_rows = [_skill_node_row(node) for node in nodes if node.kind == "skill" and node.source == "custom"]
+    custom_rows = sorted(
+        (_skill_node_row(node) for node in nodes if node.kind == "skill" and node.source == "custom"),
+        key=lambda row: str(row["name"]),
+    )
     custom_names = {str(row["name"]).lower() for row in custom_rows}
-    curated_rows = [_external_skill_row(entry) for entry in (external_skills or [])]
-    installed_rows = [
-        _skill_node_row(node)
-        for node in nodes
-        if node.kind == "skill" and node.source != "custom" and node.id.lower() not in custom_names
-    ]
-    external_rows = _merge_external_rows(curated_rows, installed_rows)
-    rows = [*custom_rows, *external_rows]
-    rows.sort(key=lambda row: (str(row["sourceType"]), str(row["name"])))
-    custom_rows.sort(key=lambda row: str(row["name"]))
-    curated_rows.sort(key=lambda row: (str(row["status"]), str(row["sourceRoot"]), str(row["name"])))
-    installed_rows.sort(key=lambda row: (str(row["sourceRoot"]), str(row["name"])))
-    external_rows.sort(key=lambda row: (str(row["sourceType"]), str(row.get("status", "")), str(row["name"])))
+    curated_parser_rows = sorted(
+        (_external_skill_row(entry) for entry in (external_skills or [])),
+        key=lambda row: (str(row["status"]), str(row["sourceRoot"]), str(row["name"])),
+    )
+    curated_stub_rows = sorted(
+        [
+            _skill_node_row(node)
+            for node in nodes
+            if node.kind == "skill"
+            and node.source == "curated-external"
+            and node.id.lower() not in custom_names
+        ],
+        key=lambda row: str(row["name"]),
+    )
+    curated_merged = _merge_curated_catalog_rows(curated_parser_rows, curated_stub_rows)
+    installed_rows = sorted(
+        [
+            _skill_node_row(node)
+            for node in nodes
+            if node.kind == "skill" and node.source == "installed" and node.id.lower() not in custom_names
+        ],
+        key=lambda row: (str(row["sourceRoot"]), str(row["name"])),
+    )
+    external_rows = _merge_external_rows(curated_merged, installed_rows)
+    external_rows = sorted(
+        external_rows,
+        key=lambda row: (str(row["sourceType"]), str(row.get("status", "")), str(row["name"])),
+    )
+    rows = sorted(
+        [*custom_rows, *external_rows],
+        key=lambda row: (str(row["sourceType"]), str(row["name"])),
+    )
     return {
         "customSkillIndex": custom_rows,
-        "curatedExternalSkillIndex": curated_rows,
-        "installedSkillIndex": installed_rows,
         "externalSkillIndex": external_rows,
         "allSkillIndex": rows,
     }
@@ -471,14 +517,12 @@ def skill_install_scripts(indexes: dict[str, list[dict[str, Any]]]) -> dict[str,
         {"name": row["name"], "command": build_install_command(skill=str(row["name"]))} for row in custom_rows
     ]
     external_commands: dict[str, dict[str, Any]] = {}
-    installed_commands: dict[str, dict[str, Any]] = {}
     for row in external_rows:
         command = str(row.get("installCommand") or "").strip()
         if not command or row.get("selectorMode") == "unresolved":
             continue
-        bucket = installed_commands if row["sourceType"] == "installed" else external_commands
         key = command
-        record = bucket.setdefault(
+        record = external_commands.setdefault(
             key,
             {
                 "source": row.get("displaySource") or row.get("sourceRoot") or row.get("installSource") or "",
@@ -486,6 +530,7 @@ def skill_install_scripts(indexes: dict[str, list[dict[str, Any]]]) -> dict[str,
                 "skills": [],
                 "status": row.get("status", "installed-external"),
                 "trustTier": row.get("trustTier", ""),
+                "sourceType": row.get("sourceType", "curated-external"),
             },
         )
         record["skills"].append(row["name"])
@@ -493,7 +538,6 @@ def skill_install_scripts(indexes: dict[str, list[dict[str, Any]]]) -> dict[str,
         "customAll": build_install_command(all_skills=True),
         "customIndividual": custom_individual,
         "externalCommands": sorted(external_commands.values(), key=lambda item: (item["source"], item["command"])),
-        "installedCommands": sorted(installed_commands.values(), key=lambda item: (item["source"], item["command"])),
         "syncDryRun": "uv run wagents skills sync --dry-run",
         "syncApply": "uv run wagents skills sync --apply",
     }
@@ -528,6 +572,21 @@ def external_skill_groups(external_rows: list[dict[str, Any]]) -> dict[str, Any]
     }
 
 
+def _merge_curated_catalog_rows(
+    parser_rows: list[dict[str, Any]], stub_rows: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Merge parser curated rows with catalog stub rows; parser wins on name collision."""
+    merged = [dict(row) for row in parser_rows]
+    by_name = {str(row["name"]).lower(): row for row in merged}
+    for stub in stub_rows:
+        if str(stub["name"]).lower() in by_name:
+            continue
+        row = dict(stub)
+        merged.append(row)
+        by_name[str(row["name"]).lower()] = row
+    return merged
+
+
 def _merge_external_rows(
     curated_rows: list[dict[str, Any]], installed_rows: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
@@ -558,30 +617,60 @@ def _external_row_key(row: dict[str, Any]) -> tuple[str, str]:
     return (str(row["name"]).lower(), source)
 
 
+def resolve_trust_tier_for_node(node: CatalogNode) -> str:
+    """Derive trust tier for node rows (read from inventory metadata when present; custom always repo)."""
+    if getattr(node, "source", None) == "custom":
+        return "repo"
+    fm = node.metadata if isinstance(node.metadata, dict) else {}
+    tier = fm.get("_skills_trust_tier")
+    if tier:
+        return _strip(tier)
+    if getattr(node, "source", None) == "curated-external":
+        return "curated-trust-gated"
+    return "external-installed"
+
+
 def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
     fm = node.metadata if isinstance(node.metadata, dict) else {}
     meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
-    source_type = "custom" if node.source == "custom" else "installed"
-    raw_source_root = REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_source") or node.source_path)
-    source_root = raw_source_root if source_type == "custom" else _public_source_label(raw_source_root)
-    source_kind = _source_kind(raw_source_root, source_type=source_type)
-    local_inventory_only = source_type != "custom" and source_kind == "local-inventory"
-    raw_install_source = (
-        REPO_SOURCE if source_type == "custom" else str(fm.get("_skills_install_source") or raw_source_root)
-    )
-    install_source = "" if local_inventory_only and _is_local_path_like(raw_install_source) else raw_install_source
-    install_command = (
-        build_install_command(skill=node.id)
-        if source_type == "custom"
-        else _installed_install_command(node.id, fm, install_source, local_inventory_only=local_inventory_only)
-    )
+    source_type = _node_source_type(node)
+    if source_type == "custom":
+        raw_source_root = REPO_SOURCE
+        source_root = REPO_SOURCE
+        source_kind = _source_kind(raw_source_root, source_type=source_type)
+        local_inventory_only = False
+        install_source = REPO_SOURCE
+        install_command = build_install_command(skill=node.id)
+        provenance_status = "repo-owned"
+        review_status = "reviewed"
+    elif source_type == "curated-external":
+        raw_source_root = str(fm.get("_skills_source") or node.source_path or REPO_SOURCE)
+        source_root = _public_source_label(raw_source_root)
+        source_kind = _source_kind(raw_source_root, source_type=source_type)
+        local_inventory_only = False
+        raw_install_source = str(fm.get("_skills_install_source") or raw_source_root)
+        install_source = raw_install_source
+        install_command = _installed_install_command(
+            node.id, fm, install_source, local_inventory_only=local_inventory_only
+        )
+        provenance_status = str(fm.get("_skills_provenance_status") or "verified-curated-external")
+        review_status = "curated"
+    else:
+        raw_source_root = str(fm.get("_skills_source") or node.source_path)
+        source_root = _public_source_label(raw_source_root)
+        source_kind = _source_kind(raw_source_root, source_type=source_type)
+        local_inventory_only = source_kind == "local-inventory"
+        raw_install_source = str(fm.get("_skills_install_source") or raw_source_root)
+        install_source = "" if local_inventory_only and _is_local_path_like(raw_install_source) else raw_install_source
+        install_command = _installed_install_command(
+            node.id, fm, install_source, local_inventory_only=local_inventory_only
+        )
+        provenance_status = str(fm.get("_skills_provenance_status") or "installed-external")
+        review_status = "reviewed"
     installed_agents = (
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
     )
-    provenance_status = (
-        "repo-owned" if source_type == "custom" else str(fm.get("_skills_provenance_status") or "installed-external")
-    )
-    trust_tier = "repo" if source_type == "custom" else "external-installed"
+    trust_tier = resolve_trust_tier_for_node(node)
     trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
     return {
         "name": node.id,
@@ -603,7 +692,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "useCommand": f"/{node.id}",
         "provenanceStatus": provenance_status,
         "status": provenance_status,
-        "reviewStatus": "reviewed" if source_type in {"custom", "installed"} else "",
+        "reviewStatus": review_status,
         "targetAgents": list(SUPPORTED_AGENT_IDS) if source_type == "custom" else [],
         "installedAgents": installed_agents,
         "riskNotes": "",
@@ -680,7 +769,7 @@ def _installed_install_command(
 
 
 def _public_source_label(value: str) -> str:
-    source = str(value or "").strip()
+    source = _strip(value)
     if not source:
         return LOCAL_INSTALLED_SOURCE_LABEL
     if _is_local_path_like(source):
@@ -689,7 +778,7 @@ def _public_source_label(value: str) -> str:
 
 
 def _source_kind(value: str, *, source_type: str) -> str:
-    source = str(value or "").strip()
+    source = _strip(value)
     if source_type == "custom" or source == REPO_SOURCE:
         return "repo"
     if not source or _is_local_path_like(source):
@@ -702,7 +791,7 @@ def _source_kind(value: str, *, source_type: str) -> str:
 
 
 def _is_public_path_like(value: str) -> bool:
-    path = str(value or "").strip()
+    path = _strip(value)
     return bool(path) and not _is_local_path_like(path)
 
 
@@ -711,7 +800,7 @@ def _contains_local_path(value: str) -> bool:
 
 
 def _is_local_path_like(value: str) -> bool:
-    source = str(value or "").strip()
+    source = _strip(value)
     if not source:
         return False
     if source.startswith(("http://", "https://", "github:")):

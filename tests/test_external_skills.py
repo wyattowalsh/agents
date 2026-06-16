@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from wagents.external_skills import parse_external_skill_entries
+# Retargeted after discovery move to harness-master; dedupe string (historical duplicate-of discover-skills) preserved as test data
+from wagents.external_skills import parse_external_skill_entries, read_catalog_external_entries, read_external_skill_entries  # minimal for W2 dual-read compat
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXTERNAL_SKILLS_PATH = REPO_ROOT / "config" / "external-skills.md"
@@ -25,7 +26,7 @@ npx skills add openai/skills --skill security-best-practices -y -g -a codex
 
 ## Keep Global Only Or Avoid
 
-- `vercel-labs/skills@find-skills`: duplicate of `discover-skills`.
+- `vercel-labs/skills@find-skills`: duplicate of `harness-master` discover (systematic gap pipeline).
 """
     )
 
@@ -45,7 +46,7 @@ npx skills add openai/skills --skill security-best-practices -y -g -a codex
     assert by_name["find-skills"].status == "global-only-or-avoid"
     assert by_name["find-skills"].provenance_status == "explicit-unresolved"
     assert by_name["find-skills"].source_url == "https://github.com/vercel-labs/skills"
-    assert by_name["find-skills"].risk_notes == "duplicate of `discover-skills`."
+    assert "harness-master" in by_name["find-skills"].risk_notes
     assert by_name["find-skills"].promotion_policy.startswith("Keep global-only")
 
 
@@ -204,3 +205,37 @@ def test_curated_plannotator_entries_include_grok_target():
     ):
         assert skill_name in by_name, f"missing curated entry for {skill_name}"
         assert "grok" in by_name[skill_name].target_agents
+
+    for extra in ("plannotator-compound", "plannotator-setup-goal", "plannotator-visual-explainer"):
+        entry = by_name[extra]
+        assert "apps/skills" in entry.source
+        assert "apps/skills" in entry.install_command
+        assert "backnotprop/plannotator --skill" not in entry.install_command
+
+
+def test_curated_shadcn_install_now_single_source():
+    if not EXTERNAL_SKILLS_PATH.exists():
+        pytest.skip("external-skills.md missing")
+
+    text = EXTERNAL_SKILLS_PATH.read_text(encoding="utf-8")
+    install_now, _ = text.split("## Keep Global Only Or Avoid", maxsplit=1)
+    shadcn_install_rows = [
+        line
+        for line in install_now.splitlines()
+        if "npx skills add" in line and "shadcn" in line and "--skill shadcn" in line
+    ]
+    assert len(shadcn_install_rows) == 1
+    assert "shadcn-ui/ui" in shadcn_install_rows[0]
+    assert "shadcn/ui" not in shadcn_install_rows[0]
+
+
+def test_plannotator_extras_sync_command_uses_apps_skills_path():
+    from wagents.cli import PLANNOTATOR_EXTRAS_SYNC_COMMAND
+
+    assert "backnotprop/plannotator/apps/skills" in PLANNOTATOR_EXTRAS_SYNC_COMMAND
+    root_only = [
+        part
+        for part in PLANNOTATOR_EXTRAS_SYNC_COMMAND
+        if part == "backnotprop/plannotator"
+    ]
+    assert root_only == []

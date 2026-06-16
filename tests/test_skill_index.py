@@ -1,165 +1,225 @@
-"""Tests for local skill indexing and routing."""
+"""Tests for wagents.skill_index — authoring catalog entries, index build, converters, and I/O."""
 
 from __future__ import annotations
 
-import importlib.util
-import json
-import subprocess
-import sys
 from pathlib import Path
 
-from typer.testing import CliRunner
+import pytest
 
-from wagents.cli import app
+from wagents.catalog import CatalogNode
+from wagents.external_skills import ExternalSkillEntry
+from wagents.skill_index import (
+    CatalogAuthoringEntry,
+    authoring_entry_to_catalog_node,
+    build_catalog_index,
+    entry_to_external_skill_entry,
+    load_authoring_entries,
+    read_catalog_index,
+    write_catalog_index,
+)
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-SKILL_INDEX_SCRIPT = REPO_ROOT / "skills" / "skill-router" / "scripts" / "skill_index.py"
-
-runner = CliRunner()
-
-
-def _load_skill_index_module():
-    spec = importlib.util.spec_from_file_location("skill_router_index", SKILL_INDEX_SCRIPT)
-    assert spec and spec.loader
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
-
-
-skill_index = _load_skill_index_module()
+# ---------------------------------------------------------------------------
+# Fixtures (tmp paths)
+# ---------------------------------------------------------------------------
 
 
-def _write_skill(base: Path, name: str, description: str, body: str = "Body text.") -> Path:
-    skill_dir = base / name
-    skill_dir.mkdir(parents=True)
-    (skill_dir / "SKILL.md").write_text(f"---\nname: {name}\ndescription: {description}\n---\n\n# {name}\n\n{body}\n")
-    return skill_dir
+@pytest.fixture
+def tmp_authoring_dir(tmp_path: Path) -> Path:
+    d = tmp_path / "authoring" / "skills"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
 
 
-def _run_skill_index(
-    *args: str,
-    repo: Path,
-    home: Path,
-    cwd: Path | None = None,
-) -> subprocess.CompletedProcess[str]:
-    command = [
-        sys.executable,
-        str(SKILL_INDEX_SCRIPT),
-        *args,
-        "--repo-root",
-        str(repo),
-        "--home",
-        str(home),
-    ]
-    if cwd is not None:
-        command.extend(["--cwd", str(cwd)])
-    return subprocess.run(command, check=False, text=True, capture_output=True, cwd=repo)
+@pytest.fixture
+def tmp_index_path(tmp_path: Path) -> Path:
+    return tmp_path / "generated-registries" / "skills-catalog-index.json"
 
 
-def test_collect_skill_records_scans_known_roots_and_sources(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    _write_skill(repo / "skills", "repo-skill", "Use when working in the repo.")
-    _write_skill(home / ".agents" / "skills", "global-skill", "Use when installed globally.")
-    _write_skill(home / ".codex" / "skills", "codex-skill", "Use when installed for Codex.")
-    _write_skill(
-        home / ".codex" / "plugins" / "cache" / "openai-curated" / "demo" / "skills",
-        "plugin-skill",
-        "Use when plugin skills are needed.",
+def _write_mdx(dir_path: Path, name: str, frontmatter: dict, body: str = "") -> Path:
+    lines = ["---"]
+    for k, v in frontmatter.items():
+        if isinstance(v, (list, tuple)):
+            # simple inline list for YAML-ish frontmatter used by our parser
+            items = ", ".join(str(x) for x in v)
+            lines.append(f"{k}: [{items}]")
+        else:
+            val = str(v).replace('"', '\\"')
+            lines.append(f'{k}: "{val}"')
+    lines.append("---")
+    content = "\n".join(lines) + ("\n\n" + body if body else "\n")
+    p = dir_path / f"{name}.mdx"
+    p.write_text(content, encoding="utf-8")
+    return p
+
+
+# ---------------------------------------------------------------------------
+# load_authoring_entries
+# ---------------------------------------------------------------------------
+
+
+def test_load_authoring_entries_reads_mdx_with_frontmatter_and_body(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "demo-skill",
+        {"name": "demo-skill", "description": "A demo", "source_kind": "custom"},
+        "# Demo\n\nBody text.",
     )
-
-    records = skill_index.collect_skill_records(root=repo, home=home, cwd=repo)
-
-    by_name = {record.name: record for record in records}
-    assert by_name["repo-skill"].source == "repo"
-    assert by_name["repo-skill"].trust_tier == "repo"
-    assert by_name["global-skill"].source == "global"
-    assert by_name["codex-skill"].source == "codex"
-    assert by_name["plugin-skill"].source == "plugin"
-    assert by_name["plugin-skill"].trust_tier == "openai-plugin"
-
-
-def test_search_prefers_exact_and_description_matches(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    _write_skill(repo / "skills", "skill-router", "Use when choosing skills for an agent task.")
-    _write_skill(repo / "skills", "python-conventions", "Use when editing Python code.")
-
-    results = skill_index.search_skills("skill-router", root=repo, home=home, cwd=repo)
-
-    assert results[0].record.name == "skill-router"
-    assert "name" in results[0].matched_fields
-    assert results[0].score > 50
+    entries = load_authoring_entries(tmp_authoring_dir)
+    assert len(entries) == 1
+    e = entries[0]
+    assert isinstance(e, CatalogAuthoringEntry)
+    assert e.name == "demo-skill"
+    assert e.description == "A demo"
+    assert e.source_kind == "custom"
+    assert "Body text." in e.body
+    assert e.path.endswith("demo-skill.mdx")
 
 
-def test_read_skill_accepts_name_and_path(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    skill_dir = _write_skill(repo / "skills", "files-buddy", "Use when working with files.", "Read and edit files.")
-
-    by_name = skill_index.read_skill("files-buddy", root=repo, home=home, cwd=repo)
-    by_path = skill_index.read_skill(str(skill_dir / "SKILL.md"), root=repo, home=home, cwd=repo)
-
-    assert by_name.body.startswith("# files-buddy")
-    assert by_path.name == "files-buddy"
-
-
-def test_doctor_report_counts_roots_and_warnings(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    skill_dir = _write_skill(repo / "skills", "scripted-skill", "Use when scripts exist.")
-    (skill_dir / "scripts").mkdir()
-
-    report = skill_index.doctor_report(root=repo, home=home, cwd=repo)
-
-    assert report["skill_count"] == 1
-    assert report["warning_count"] == 1
-    assert any(row["source"] == "repo" and row["skill_count"] == 1 for row in report["roots"])
-
-
-def test_skill_index_search_cli_json(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    _write_skill(repo / "skills", "skill-router", "Use when routing to the right skill.")
-
-    result = _run_skill_index(
-        "search", "routing", "--source", "repo", "--format", "json", repo=repo, home=home, cwd=repo
+def test_load_authoring_entries_handles_curated_fields(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "ext-foo",
+        {
+            "name": "ext-foo",
+            "description": "From external",
+            "source_kind": "curated-external",
+            "source": "owner/repo",
+            "install_command": "npx skills add owner/repo --skill ext-foo",
+            "status": "install-now-after-trust-gate",
+            "trust_tier": "curated-trust-gated",
+            "target_agents": ["claude-code", "codex"],
+        },
+        "{/* marker */}",
     )
-
-    assert result.returncode == 0, result.stderr or result.stdout
-    payload = json.loads(result.stdout)
-    assert payload["count"] == 1
-    assert payload["skills"][0]["name"] == "skill-router"
-
-
-def test_skill_index_context_cli_includes_body(tmp_path: Path) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    _write_skill(repo / "skills", "skill-router", "Use when routing to the right skill.", "Route with context.")
-
-    result = _run_skill_index("context", "routing", "--source", "repo", repo=repo, home=home, cwd=repo)
-
-    assert result.returncode == 0, result.stderr or result.stdout
-    assert "Skill context for 'routing'" in result.stdout
-    assert "Route with context." in result.stdout
+    entries = load_authoring_entries(tmp_authoring_dir)
+    assert len(entries) == 1
+    e = entries[0]
+    assert e.source_kind == "curated-external"
+    assert e.source == "owner/repo"
+    assert e.install_command.startswith("npx skills add")
+    assert e.status == "install-now-after-trust-gate"
+    assert e.trust_tier == "curated-trust-gated"
+    assert e.target_agents == ("claude-code", "codex")
 
 
-def test_wagents_skills_search_cli_json(tmp_path: Path, monkeypatch) -> None:
-    repo = tmp_path / "repo"
-    home = tmp_path / "home"
-    _write_skill(repo / "skills", "skill-router", "Use when routing to the right skill.")
+def test_load_authoring_entries_returns_empty_for_missing_dir(tmp_path: Path):
+    missing = tmp_path / "no-such-dir"
+    assert load_authoring_entries(missing) == []
 
-    monkeypatch.setattr("wagents.ROOT", repo)
-    monkeypatch.setattr("wagents.cli.ROOT", repo)
-    monkeypatch.setattr("wagents.cli.Path.home", lambda: home)
-    monkeypatch.chdir(repo)
 
-    result = runner.invoke(app, ["skills", "search", "routing", "--source", "repo", "--format", "json"])
+# ---------------------------------------------------------------------------
+# build_catalog_index
+# ---------------------------------------------------------------------------
 
-    assert result.exit_code == 0, result.output
-    payload = json.loads(result.output)
-    assert payload["count"] == 1
-    assert payload["skills"][0]["name"] == "skill-router"
-    script_results = skill_index.search_skills("routing", root=repo, home=home, cwd=repo, source="repo")
-    assert script_results[0].record.name == "skill-router"
+
+def test_build_catalog_index_separates_custom_and_external(tmp_authoring_dir: Path):
+    _write_mdx(tmp_authoring_dir, "custom-a", {"name": "custom-a", "source_kind": "custom"})
+    _write_mdx(
+        tmp_authoring_dir,
+        "ext-b",
+        {"name": "ext-b", "source_kind": "curated-external", "status": "inspect-then-install"},
+    )
+    entries = load_authoring_entries(tmp_authoring_dir)
+    idx = build_catalog_index(entries)
+    assert "customSkillIndex" in idx and "externalSkillIndex" in idx and "allSkillIndex" in idx
+    custom_names = {r["name"] for r in idx["customSkillIndex"]}
+    ext_names = {r["name"] for r in idx["externalSkillIndex"]}
+    assert custom_names == {"custom-a"}
+    assert ext_names == {"ext-b"}
+    # all should contain both
+    all_names = {r["name"] for r in idx["allSkillIndex"]}
+    assert all_names == {"custom-a", "ext-b"}
+
+
+# ---------------------------------------------------------------------------
+# write/read_catalog_index (roundtrip via tmp path)
+# ---------------------------------------------------------------------------
+
+
+def test_write_and_read_catalog_index_roundtrip(tmp_index_path: Path):
+    data = {"customSkillIndex": [{"name": "x"}], "externalSkillIndex": [], "allSkillIndex": [{"name": "x"}]}
+    out = write_catalog_index(data, path=tmp_index_path)
+    assert out.exists()
+    loaded = read_catalog_index(path=tmp_index_path)
+    assert loaded is not None
+    assert loaded["customSkillIndex"][0]["name"] == "x"
+
+
+def test_read_catalog_index_returns_none_for_missing(tmp_path: Path):
+    assert read_catalog_index(path=tmp_path / "nope.json") is None
+
+
+# ---------------------------------------------------------------------------
+# entry_to_external_skill_entry
+# ---------------------------------------------------------------------------
+
+
+def test_entry_to_external_skill_entry_maps_fields(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "ext-1",
+        {
+            "name": "ext-1",
+            "source_kind": "curated-external",
+            "source": "acme/tools",
+            "install_source": "acme/tools@HEAD",
+            "install_command": 'npx skills add acme/tools --skill "ext-1"',
+            "status": "install-now-after-trust-gate",
+            "trust_tier": "curated-trust-gated",
+            "target_agents": ["claude-code"],
+            "notes": "Use for X.",
+        },
+    )
+    e = load_authoring_entries(tmp_authoring_dir)[0]
+    ext = entry_to_external_skill_entry(e)
+    assert isinstance(ext, ExternalSkillEntry)
+    assert ext.name == "ext-1"
+    assert ext.source == "acme/tools"
+    assert ext.status == "install-now-after-trust-gate"
+    assert ext.trust_tier == "curated-trust-gated"
+    assert "acme/tools" in ext.install_command
+    assert ext.target_agents == ("claude-code",)
+
+
+# ---------------------------------------------------------------------------
+# authoring_entry_to_catalog_node
+# ---------------------------------------------------------------------------
+
+
+def test_authoring_entry_to_catalog_node_custom_produces_custom_node(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "my-skill",
+        {"name": "my-skill", "description": "Does things", "source_kind": "custom", "license": "MIT"},
+        "# My Skill\n\nDetails.",
+    )
+    e = load_authoring_entries(tmp_authoring_dir)[0]
+    node = authoring_entry_to_catalog_node(e)
+    assert isinstance(node, CatalogNode)
+    assert node.kind == "skill"
+    assert node.id == "my-skill"
+    assert node.source == "custom"
+    assert node.description == "Does things"
+    assert "Details." in node.body
+    assert node.metadata.get("license") == "MIT"
+
+
+def test_authoring_entry_to_catalog_node_curated_produces_curated_stub(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "curated-x",
+        {
+            "name": "curated-x",
+            "source_kind": "curated-external",
+            "source": "foo/bar",
+            "install_command": "npx ...",
+            "status": "inspect-then-install",
+            "trust_tier": "needs-inspection",
+        },
+    )
+    e = load_authoring_entries(tmp_authoring_dir)[0]
+    node = authoring_entry_to_catalog_node(e)
+    assert node.source == "curated-external"
+    assert node.metadata.get("_is_stub") is True  # empty body
+    assert node.metadata.get("_skills_source") == "foo/bar"
+    assert node.metadata.get("_curated_status") == "inspect-then-install"

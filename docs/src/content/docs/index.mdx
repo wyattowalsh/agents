@@ -18,24 +18,13 @@ hero:
           <span class="hero-terminal-cmd">npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode</span>
           <span class="hero-terminal-cursor">▋</span>
         </div>
-        <div class="hero-agents-row">
-          <span class="hero-agent-badge">Antigravity</span>
-          <span class="hero-agent-badge">Claude Code</span>
-          <span class="hero-agent-badge">Codex</span>
-          <span class="hero-agent-badge">Crush</span>
-          <span class="hero-agent-badge">Cursor</span>
-          <span class="hero-agent-badge">Gemini CLI</span>
-          <span class="hero-agent-badge">GitHub Copilot</span>
-          <span class="hero-agent-badge">Grok Build</span>
-          <span class="hero-agent-badge">OpenCode</span>
-        </div>
       </div>
   actions:
     - text: Get Started
       link: /start-here/
       icon: right-arrow
     - text: Explore Skills
-      link: /skills/
+      link: /skills/catalog/
       variant: minimal
       icon: right-arrow
 ---
@@ -43,17 +32,13 @@ hero:
 import { Badge, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 import InstallCommand from '../../components/InstallCommand.astro';
 import { installCommands } from '../../generated-site-data.mjs';
-import catalogMeshArt from '../../assets/illustrations/catalog-mesh.webp';
-import mcpRoutingArt from '../../assets/illustrations/mcp-routing.webp';
-import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
-import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
 
 <div class="stats-bar">
-  <span class="stat stat-skill">58 Custom Skills</span>
-  <span class="stat stat-installed">332 Installed Skills</span>
-  <span class="stat stat-external">337 Curated External</span>
-  <span class="stat stat-agent">8 Agents</span>
-  <span class="stat stat-mcp">1 MCP Servers</span>
+  <span class="stat stat-total">389 Skills</span>
+  <span class="stat stat-skill">57 Custom Skills</span>
+  <span class="stat stat-external">332 External Skills</span>
+  <span class="stat stat-harness">9 Supported Harnesses</span>
+  <span class="stat stat-mcp">1 Custom MCP</span>
 </div>
 
 <div class="hero-badge-row">
@@ -63,80 +48,15 @@ import workflowMapArt from '../../assets/illustrations/workflow-map.webp';
   <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=0284c7" alt="Latest release" /></a>
 </div>
 
-## Start Here
+## Get started
 
-Install the catalog once, then call a focused specialist inside your agent. Use OpenSpec for non-trivial repo changes that need a durable proposal, tasks, and validation trail. If you want the shortest guided path through setup, start with [Start Here](/start-here/).
+Install the catalog once, then invoke a focused skill inside your agent. For the shortest guided path, see [Start Here](/start-here/).
 
 <InstallCommand command={installCommands.all} title="Install the full catalog" note="Globally installs repo skills across supported agent harnesses." />
 
-<InstallCommand command={installCommands.starter} title="Install one starter skill" note="Use this when you want to test the workflow before installing everything." />
+Then run `/honest-review`, `/wargame`, or `/mcp-creator` in Claude Code, OpenCode, Grok Build, or any [agentskills.io](https://agentskills.io)-compatible harness.
 
-Then run `/honest-review`, `/wargame`, or `/mcp-creator` inside Claude Code, Gemini CLI, OpenCode, or any [agentskills.io](https://agentskills.io)-compatible agent.
-
-Check OpenSpec workflow health when a change affects public asset formats or downstream tooling:
-
-```bash
-uv run wagents openspec doctor
-```
-
-## Distribution Paths
-
-<CardGrid>
-  <Card title="Claude Code Plugin">
-    <Badge text="native" variant="tip" /> `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` expose the repo root as a Git-hosted plugin. The plugin version is intentionally unpinned so Git commits drive updates.
-  </Card>
-  <Card title="Codex Plugin">
-    <Badge text="native" variant="note" /> `.codex-plugin/plugin.json` and `.agents/plugins/marketplace.json` package the same `skills/` and `mcp.json` bundle for Codex.
-  </Card>
-  <Card title="OpenCode Project Config">
-    <Badge text="native" variant="note" /> `opencode.json` keeps repo-managed npm plugin specs on `@latest` and scopes Plannotator to the `plan` agent; restart OpenCode or refresh `~/.cache/opencode/packages/` when Bun's plugin cache is stale.
-  </Card>
-  <Card title="Skills CLI">
-    <Badge text="fallback" variant="success" /> `npx skills add github:wyattowalsh/agents ...` remains the portable install path for supported agents.
-  </Card>
-  <Card title="OpenSpec">
-    <Badge text="workflow" variant="caution" /> `openspec/` and `uv run wagents openspec ...` provide a spec/change workflow plus local materialization of upstream OpenSpec skills and commands for downstream AI tools.
-  </Card>
-</CardGrid>
-
-<Aside type="tip" title="Fastest path">
-Use [Start Here](/start-here/) when you want the shortest setup path, a few strong starter skills, and a quick mental model of the repo.
-</Aside>
-
-## Visual Map
-
-<div class="visual-showcase">
-  <figure class="visual-panel">
-    <img src={catalogMeshArt.src} alt="Portable skills represented as connected modular interface cards" />
-    <figcaption>
-      <strong>Catalog Mesh</strong>
-      <span>Explains the skill catalog as reusable, connected workflow components.</span>
-    </figcaption>
-  </figure>
-  <figure class="visual-panel">
-    <img src={mcpRoutingArt.src} alt="MCP tools and document pipelines represented as a luminous routing graph" />
-    <figcaption>
-      <strong>MCP Routing</strong>
-      <span>Explains tool, server, and document flow across configured MCP surfaces.</span>
-    </figcaption>
-  </figure>
-  <figure class="visual-panel">
-    <img src={harnessMatrixArt.src} alt="Multiple coding-agent harness interfaces connected to one shared skill source" />
-    <figcaption>
-      <strong>Harness Matrix</strong>
-      <span>Shows supported agents consuming one portable skill bundle.</span>
-    </figcaption>
-  </figure>
-  <figure class="visual-panel">
-    <img src={workflowMapArt.src} alt="Repository bundle flowing through install, invocation, and validation panels" />
-    <figcaption>
-      <strong>Workflow Map</strong>
-      <span>Shows the operational path from bundle source to validated agent workflow.</span>
-    </figcaption>
-  </figure>
-</div>
-
-## What Skills Are
+## What skills are
 
 <div class="catalog-skill">
 <CardGrid>
@@ -155,50 +75,36 @@ Use [Start Here](/start-here/) when you want the shortest setup path, a few stro
 </CardGrid>
 </div>
 
-## Popular Starting Points
+## Explore
 
 <CardGrid>
-  <LinkCard title="Enhance Code Reviews" href="/skills/catalog/honest-review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
-  <LinkCard title="Strategic Decision Analysis" href="/skills/catalog/wargame/" description="Pressure-test a product or engineering decision before you commit to it." />
-  <LinkCard title="Host Expert Panels" href="/skills/catalog/host-panel/" description="Get multiple expert perspectives in one session when the problem has real trade-offs." />
-  <LinkCard title="Run Spec Workflows" href="/skills/catalog/openspec-workflow/" description="Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands." />
-  <LinkCard title="Create MCP Servers" href="/skills/catalog/mcp-creator/" description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />
-</CardGrid>
-
-## Explore the Catalog
-
-<CardGrid>
-  <LinkCard title="Start Here" href="/start-here/" description="The shortest guided path: install the catalog, pick a starter skill, and understand the repo layout." />
-  <LinkCard title="Skills Index" href="/skills/" description="Browse repository skills plus optional installed external skills from local agent directories." />
-  <LinkCard title="MCP Overview" href="/mcp/" description="Hand-maintained overview of 15 configured MCP servers from `mcp.json`, including repo-local and external servers." />
+  <LinkCard title="Enhance Code Reviews" href="/skills/catalog/custom/honest-review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
+  <LinkCard title="Strategic Decision Analysis" href="/skills/catalog/custom/wargame/" description="Pressure-test a product or engineering decision before you commit to it." />
+  <LinkCard title="Host Expert Panels" href="/skills/catalog/custom/host-panel/" description="Get multiple expert perspectives in one session when the problem has real trade-offs." />
+  <LinkCard title="Run Spec Workflows" href="/skills/catalog/custom/openspec-workflow/" description="Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands." />
+  <LinkCard title="Create MCP Servers" href="/skills/catalog/custom/mcp-creator/" description="Build a production-ready FastMCP server with design, testing, and deployment guidance." />
+  <LinkCard title="Start Here" href="/start-here/" description="Shortest guided path: install, pick a starter skill, and learn the repo layout." />
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse repository skills plus external skills from the curated catalog and local harness inventory." />
+  <LinkCard title="MCP Overview" href="/mcp/" description="Overview of 1 repo MCP package(s) and 15 external MCP tools from `mcp.json`." />
   <LinkCard title="CLI Reference" href="/cli/" description="Commands for scaffolding, validation, packaging, installation, and docs generation workflows." />
-  <LinkCard title="OpenSpec Workflow" href="/skills/catalog/openspec-workflow/" description="Use spec/change artifacts and JSON wrappers for non-trivial repo and downstream-tooling changes." />
+  <LinkCard title="OpenSpec Workflow" href="/skills/catalog/custom/openspec-workflow/" description="Spec/change workflow for non-trivial repo and downstream-tooling changes." />
+  <LinkCard title="Create Your Own" href="/skills/catalog/custom/skill-creator/" description="Build, improve, and audit skills with skill-creator." />
 </CardGrid>
 
-## Supported Agents
+## Supported agents
 
 <CardGrid>
-  <LinkCard title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code" description="Anthropic's official CLI for Claude." />
-  <LinkCard title="Gemini CLI" href="https://github.com/google/gemini-cli" description="Google's command-line interface for Gemini." />
-  <LinkCard title="Codex" href="https://github.com/openai/codex" description="Autonomous coding workflows for command-line development." />
-  <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />
-  <LinkCard title="GitHub Copilot" href="https://github.com/features/copilot" description="Your AI pair programmer, right in your IDE." />
   <LinkCard title="Antigravity" href="https://antigravity.google/" description="Advanced Agentic Coding assistant." />
+  <LinkCard title="Claude Code" href="https://docs.anthropic.com/en/docs/claude-code" description="Anthropic's official CLI for Claude." />
+  <LinkCard title="Codex" href="https://github.com/openai/codex" description="Autonomous coding workflows for command-line development." />
   <LinkCard title="Crush" href="https://github.com/crush-ai/crush" description="Autonomous development agent focused on fast terminal workflows." />
+  <LinkCard title="Cursor" href="https://cursor.com/" description="The AI Code Editor." />
+  <LinkCard title="Gemini CLI" href="https://github.com/google/gemini-cli" description="Google's command-line interface for Gemini." />
+  <LinkCard title="GitHub Copilot" href="https://github.com/features/copilot" description="Your AI pair programmer, right in your IDE." />
+  <LinkCard title="Grok Build" href="https://x.ai/cli" description="xAI's agentic coding CLI with skills, MCP, and Claude Code compatibility." />
   <LinkCard title="OpenCode" href="https://github.com/anomalyco/opencode" description="Native AGENTS.md support plus repo-level OpenCode config and subagents." />
 </CardGrid>
 
-## How These Docs Work
-
-<Aside type="note" title="Generated pages, curated framing">
-Most pages in this site are generated from repository assets (`skills/`, `agents/`, `mcp/`) via `wagents docs generate`, while OpenSpec state lives in `openspec/`. Repo workflow and policy truth lives in `AGENTS.md`, the public README is regenerated with `wagents readme`, curated onboarding pages stay hand-maintained, and generated catalogs keep the docs in sync with the repo.
+<Aside type="note" title="How these docs work">
+Catalog pages are generated from `skills/`, `agents/`, and `mcp/` via `wagents docs generate`. Onboarding pages stay hand-maintained. See [Contributing](/contributing/) and [Harness Support](/harness-support/) for maintainer detail.
 </Aside>
-
-## Resources
-
-<CardGrid>
-  <LinkCard title="GitHub" href="https://github.com/wyattowalsh/agents" description="Source code, issues, and contributions." />
-  <LinkCard title="CLI Reference" href="/cli/" description="Full command reference for the wagents CLI." />
-  <LinkCard title="Start Here" href="/start-here/" description="Use the shortest guided path through install, invocation, and the repo map." />
-  <LinkCard title="Create Your Own" href="/skills/catalog/skill-creator/" description="Build, improve, and audit skills with the skill-creator." />
-</CardGrid>

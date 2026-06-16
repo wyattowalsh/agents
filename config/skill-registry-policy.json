@@ -3,6 +3,7 @@
   "support_tiers_ref": "config/support-tier-registry.json",
   "canonical_sources": [
     "skills/",
+    "docs/src/authoring/skills/",
     "config/external-skills.md",
     "planning/manifests/external-repo-evaluation-final.json",
     "planning/manifests/external-repo-evaluation-summary.json",

@@ -12,6 +12,7 @@ def collect_mcp_registry_errors(repo_root: Path) -> list[dict[str, str]]:
     if not path.is_file():
         return []
 
+    # Load inline (no _load_registry helper)
     registry = json.loads(path.read_text(encoding="utf-8"))
     errors: list[dict[str, str]] = []
     defaults = registry.get("contributor_defaults")
@@ -28,9 +29,11 @@ def collect_mcp_registry_errors(repo_root: Path) -> list[dict[str, str]]:
                 "message": "contributor_defaults.tools_policy must be 'deny-by-default'",
             })
         wildcard_requires_opt_in = defaults.get("wildcard_requires_explicit_opt_in") is True
+
+    # Continue server scan even if contributor_defaults missing (no early return)
     servers = registry.get("servers", {})
     if not isinstance(servers, dict):
-        return errors
+        servers = {}
 
     for name, server in servers.items():
         if not isinstance(server, dict):

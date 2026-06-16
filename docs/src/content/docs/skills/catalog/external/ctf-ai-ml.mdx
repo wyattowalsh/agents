@@ -1,0 +1,123 @@
+---
+title: "ctf-ai-ml"
+description: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ctf-ai-ml" variant="note" /> <Badge text="56 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/ctf-ai-ml`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/ctf-ai-ml.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+From ljagiello/ctf-skills repo: agent skills for CTF categories. ctf-ai-ml covers techniques from writeups (e.g. ai-ml: adversarial, jailbreaks, model extraction; pwn/reverse: binary; web: exploitation; etc). Includes scripts/ for env. MIT license stated, SECURITY.md with responsible use. Use only for authorized CTF/lab/security-research.
+
+## Install Prerequisites
+
+npx skills add ljagiello/ctf-skills --skill ctf-ai-ml ... ; or full group; pre-run installer dry-run; status=inspect-then-install.
+
+## Upstream Maintainer
+
+[ljagiello/ctf-skills](https://github.com/ljagiello/ctf-skills) (MIT).
+
+## Comparable Alternatives
+
+Manual CTF tooling or other sec skills (e.g. security-scanner).
+
+&gt; Evidence from GitHub (ljagiello/ctf-skills etc 2026), curated notes (MIT + responsible use but broad installer), research only; do not endorse. Inspect installer and offensive content before use.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `ljagiello/ctf-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ctf-ai-ml` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "ctf-ai-ml"
+description: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it."
+title: "Ctf Ai Ml"
+source_kind: "curated-external"
+source: "ljagiello/ctf-skills"
+install_source: "ljagiello/ctf-skills"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/ljagiello/ctf-skills"
+notes: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it."
+risk_notes: "Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=ctf-ai-ml; re-run migration to refresh */}
+
+Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

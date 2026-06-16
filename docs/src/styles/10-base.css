@@ -59,9 +59,9 @@ hr {
 [data-theme='light'] .page-title-icon--mcp   { background: oklch(0.92 0.05 155 / 0.5); }
 
 :root[data-theme='light'] .sidebar-content a[aria-current='page'] {
-  background: oklch(0.92 0.02 215 / 0.55);
-  box-shadow: inset 3px 0 0 var(--primary), 0 0 10px oklch(0.52 0.07 210 / 0.08);
-  border-radius: 4px;
+  background: oklch(0.94 0.02 215 / 0.7);
+  box-shadow: inset 2px 0 0 var(--primary);
+  border-radius: 6px;
 }
 
 [data-theme='light'] .expressive-code {

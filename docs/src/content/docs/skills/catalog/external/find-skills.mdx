@@ -5,7 +5,7 @@ description: "duplicate of `harness-master` discover (systematic gap pipeline)."
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="find-skills" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+<Badge text="find-skills" variant="note" /> <Badge text="16 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
 
 > duplicate of `harness-master` discover (systematic gap pipeline).
 
@@ -25,8 +25,7 @@ npx skills add vercel-labs/skills@find-skills --skill find-skills -y -g
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
-This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
- Enriched from research cache (stub); the upstream SKILL.md body is not present locally. Re-run `uv run wagents docs research --skill find-skills` to refresh.
+This page is generated from curated config (`docs/src/authoring/skills/find-skills.mdx`) and local inventory when installed.
 </Aside>
 
 ## Harness Coverage
@@ -83,6 +82,37 @@ harness-master Discover (local canonical for systematic gap/MCP/plugin/hook expa
 | Name | `find-skills` |
   </TabItem>
 </Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "find-skills"
+description: "duplicate of `harness-master` discover (systematic gap pipeline)."
+title: "Find Skills"
+source_kind: "curated-external"
+source: "vercel-labs/skills"
+install_source: "vercel-labs/skills@find-skills"
+status: "global-only-or-avoid"
+trust_tier: "global-only-or-avoid"
+provenance_status: "explicit-unresolved"
+source_url: "https://github.com/vercel-labs/skills"
+notes: "duplicate of `harness-master` discover (systematic gap pipeline)."
+risk_notes: "duplicate of `harness-master` discover (systematic gap pipeline)."
+promotion_policy: "Keep global-only or avoid unless explicitly approved."
+provenance_evidence: "Explicit keep-global/avoid note in config/external-skills.md."
+selector_mode: "unresolved"
+unresolved_reason: "duplicate of `harness-master` discover (systematic gap pipeline)."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=find-skills; re-run migration to refresh */}
+
+duplicate of `harness-master` discover (systematic gap pipeline).
+
+````
+
+</details>
 
 ## Resources
 

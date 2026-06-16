@@ -1,0 +1,123 @@
+---
+title: "vitest"
+description: "TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="vitest" variant="note" /> <Badge text="21 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+
+> TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/vitest`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/vitest.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Vitest unit testing framework (Vite-powered). Generated from vitest-dev/vitest official docs. Guidance on testing patterns, config, running suites in Vite-based projects. Complements vite and antfu opinionated preferences.
+
+## Install Prerequisites
+
+`npx skills add antfu/skills --skill vitest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named (or source-spec for some).
+
+## Upstream Maintainer
+
+antfu (Anthony Fu, github.com/antfu/skills). 5.3k stars. MIT (skills/scripts); vendored retain upstream licenses. Proof-of-concept using git submodules + sync from official docs (vuejs, vitejs, vitest-dev, slidevjs etc.) for reliable/up-to-date context. Primarily Vite/Nuxt ecosystem focus. POC; author welcomes feedback on real-world performance.
+
+## Comparable Alternatives
+
+Other test skills (e.g. from PaulRBerg or general); pnpm/vite in same collection.
+
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `PaulRBerg/agent-skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `vitest` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "vitest"
+description: "TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`."
+title: "Vitest"
+source_kind: "curated-external"
+source: "PaulRBerg/agent-skills"
+install_source: "PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/PaulRBerg/agent-skills"
+notes: "TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`."
+risk_notes: "TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=vitest; re-run migration to refresh */}
+
+TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

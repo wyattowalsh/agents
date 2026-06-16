@@ -13,7 +13,7 @@ Edit source files first, then regenerate derived output.
 | MCP registry and config | `config/mcp-registry.json`, `mcp.json`, `mcp/` | `uv run python scripts/sync_agent_stack.py --targets repo --check`, docs generation when public docs change |
 | Public docs | `docs/src/content/docs/`, `wagents/docs.py`, `wagents/rendering.py`, `wagents/site_model.py` | `uv run wagents docs generate`, `cd docs && pnpm exec astro check` |
 | README | `wagents/cli.py` and catalog inputs | `uv run wagents readme`, `uv run wagents readme --check` |
-| Curated external skills | `config/external-skills.md`, `wagents/external_skills.py` | `uv run wagents skills sync --dry-run`, docs generation |
+| Curated external skills | `docs/src/authoring/skills/*.mdx` (+ `skills-catalog-index.json` via generate), `config/external-skills.md` (legacy), `wagents/external_skills.py` / `skill_index.py` | `uv run wagents skills sync --dry-run`, `uv run wagents docs generate`, docs generation |
 | Distribution metadata | `agent-bundle.json`, plugin manifests, `opencode.json`, harness config sources | `uv run pytest tests/test_distribution_metadata.py` |
 | Non-trivial workflow changes | `openspec/changes/<change>/` | `uv run wagents openspec validate` |
 

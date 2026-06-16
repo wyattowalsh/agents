@@ -1,0 +1,89 @@
+"""Minimal schema validation tests for skills catalog authoring + index (W0 SSOT inversion)."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parent.parent
+SCHEMAS_DIR = ROOT / "config" / "schemas"
+
+AUTHORING_SCHEMA = SCHEMAS_DIR / "skills-catalog-authoring.schema.json"
+INDEX_SCHEMA = SCHEMAS_DIR / "skills-catalog-index.schema.json"
+
+
+def _load_json(p: Path) -> dict:
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def _try_jsonschema():
+    try:
+        from jsonschema import Draft202012Validator
+        return Draft202012Validator
+    except Exception:
+        return None
+
+
+def test_authoring_schema_file_exists_and_loads() -> None:
+    assert AUTHORING_SCHEMA.exists()
+    schema = _load_json(AUTHORING_SCHEMA)
+    assert schema["title"] == "SkillsCatalogAuthoring"
+    assert "skill_id" in schema["properties"]
+    assert "source_kind" in schema["properties"]
+
+
+def test_index_schema_file_exists_and_loads() -> None:
+    assert INDEX_SCHEMA.exists()
+    schema = _load_json(INDEX_SCHEMA)
+    assert schema["title"] == "SkillsCatalogIndex"
+    assert schema["properties"]["version"]["const"] == 1
+    assert "entries" in schema["properties"]
+
+
+def test_authoring_minimal_valid_structural() -> None:
+    # Structural assert fallback (jsonschema used if available in full run)
+    data = {
+        "skill_id": "plannotator-review",
+        "source_kind": "external",
+        "name": "plannotator-review",
+        "description": "Review plans with structured critique.",
+    }
+    schema = _load_json(AUTHORING_SCHEMA)
+    # basic required + enum checks manually for structural path
+    assert data["source_kind"] in ["custom", "external"]
+    for k in schema.get("required", []):
+        assert k in data
+    # if jsonschema present, also run it
+    Validator = _try_jsonschema()
+    if Validator:
+        v = Validator(schema)
+        v.validate(data)  # raises on invalid
+
+
+def test_index_minimal_valid_structural() -> None:
+    data = {
+        "version": 1,
+        "generated_at": "2026-06-16T12:00:00Z",
+        "entries": [
+            {
+                "skill_id": "example-skill",
+                "source_kind": "external",
+                "name": "example-skill",
+                "description": "Example.",
+                "body_path": "docs/src/authoring/skills/external/example-skill.mdx",
+                "install_command": "npx skills add owner/repo --skill example-skill",
+            }
+        ],
+    }
+    schema = _load_json(INDEX_SCHEMA)
+    assert data["version"] == schema["properties"]["version"]["const"]
+    assert isinstance(data["entries"], list) and len(data["entries"]) > 0
+    entry0 = data["entries"][0]
+    for k in ["skill_id", "source_kind", "body_path"]:
+        assert k in entry0
+    Validator = _try_jsonschema()
+    if Validator:
+        v = Validator(schema)
+        v.validate(data)

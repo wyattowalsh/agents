@@ -745,14 +745,6 @@ export const skillResearchIndex = [
     "stale": false
   },
   {
-    "mean_confidence": 0.78,
-    "name": "discover-skills",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
-    "stale": false
-  },
-  {
     "mean_confidence": 0.72,
     "name": "docker-expert",
     "research_tier": "standard",

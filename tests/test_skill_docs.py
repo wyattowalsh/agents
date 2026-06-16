@@ -2,7 +2,6 @@
 
 from wagents.catalog import CatalogNode
 from wagents.skill_docs import (
-    SKILL_DETAIL_SLUG_PREFIX,
     collect_skill_doc_nodes,
     merge_skill_doc_nodes,
     skill_detail_href,
@@ -24,9 +23,9 @@ def _skill(id_suffix: str, *, source: str = "custom") -> CatalogNode:
 
 
 def test_skill_detail_paths():
-    assert skill_detail_href("honest-review") == "/skills/catalog/honest-review/"
-    assert skill_detail_slug("honest-review") == "skills/catalog/honest-review"
-    assert SKILL_DETAIL_SLUG_PREFIX == "skills/catalog"
+    assert skill_detail_href("honest-review", source="custom") == "/skills/catalog/custom/honest-review/"
+    assert skill_detail_slug("honest-review", source="custom") == "skills/catalog/custom/honest-review"
+    assert skill_detail_href("baseline-ui", source="curated-external") == "/skills/catalog/external/baseline-ui/"
 
 
 def test_merge_prefers_custom_over_installed():
@@ -56,6 +55,15 @@ def test_collect_skill_doc_nodes_marks_curated_stubs(monkeypatch):
                 source="curated-external",
             )
         ],
+    )
+
+    # Force the legacy stub path (no authoring mdx) for this test; real AUTHORING_SKILLS_DIR
+    # now contains files post W3 sync/migrate, which would take the collect_authoring branch instead.
+    from pathlib import Path
+
+    monkeypatch.setattr(
+        "wagents.skill_index.AUTHORING_SKILLS_DIR",
+        Path("/nonexistent/forcing-legacy-stub-path-in-test"),
     )
 
     nodes = collect_skill_doc_nodes(include_installed=False, include_curated=True)

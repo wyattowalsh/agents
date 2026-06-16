@@ -1,7 +1,9 @@
 """Integration tests for the wagents CLI via typer.testing.CliRunner."""
 
 import json
+import shutil
 import subprocess
+from pathlib import Path
 
 import pytest
 from typer.testing import CliRunner
@@ -16,6 +18,9 @@ runner = CliRunner()
 # ---------------------------------------------------------------------------
 # Fixture: patched_repo — redirects ROOT and related paths to tmp_path
 # ---------------------------------------------------------------------------
+
+
+REAL_REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture
@@ -33,6 +38,26 @@ def patched_repo(tmp_path, monkeypatch):
     (tmp_path / "skills").mkdir()
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()
+    pyproject = '[project]\nname = "wagents"\nrequires-python = ">=3.13"\n'
+    (tmp_path / "pyproject.toml").write_text(pyproject, encoding="utf-8")
+    shutil.copytree(REAL_REPO_ROOT / "scripts" / "validate", tmp_path / "scripts" / "validate")
+    shutil.copytree(REAL_REPO_ROOT / "skills" / "skill-creator", tmp_path / "skills" / "skill-creator")
+    shutil.copytree(REAL_REPO_ROOT / "wagents", tmp_path / "wagents")
+    (tmp_path / "config").mkdir(exist_ok=True)
+    for rel in (
+        "config/mcp-registry.json",
+        "config/sync-manifest.json",
+        "config/tooling-policy.json",
+        "config/harness-surface-registry.json",
+        "planning/manifests/security-quarantine-register.json",
+        "AGENTS.md",
+    ):
+        src = REAL_REPO_ROOT / rel
+        if src.is_file():
+            dest = tmp_path / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest)
+    monkeypatch.setenv("WAGENTS_REPO_ROOT", str(tmp_path))
     return tmp_path
 
 

@@ -36,6 +36,6 @@ uv run python tests/docs_ui/screenshot_smoke.py --base-url http://127.0.0.1:4321
 
 Outputs are written to `artifacts/docs-ui-smoke/` by default.
 
-Skill detail pages live under `/skills/catalog/<name>/`. The retired
-`/skills/installed/` hub is not part of the default smoke route set. The harness
-also verifies legacy `/skills/<name>/` URLs return HTTP 308 to the catalog path.
+Skill detail pages live under `/skills/catalog/custom/<name>/` or
+`/skills/catalog/external/<name>/`. Hub routes (`/skills/catalog/`, custom index,
+external index, install) are covered by the default smoke route set.

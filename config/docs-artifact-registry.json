@@ -6,7 +6,8 @@
     "config/mcp-registry.json",
     "config/hook-registry.json",
     "config/sync-manifest.json",
-    "agent-bundle.json"
+    "agent-bundle.json",
+    "docs/src/authoring/skills/"
   ],
   "artifacts": [
     {
@@ -36,12 +37,20 @@
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
       "validation": "uv run wagents docs generate"
+    },
+    {
+      "path": "docs/public/generated-registries/skills-catalog-index.json",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate"
     }
   ],
   "docs_truth_rules": [
     "Support matrices must distinguish desktop, web/cloud, CLI, editor, and experimental surfaces.",
     "Generated docs must label blind spots and experimental support explicitly.",
     "Install commands must be generated only from supported adapter records.",
-    "External repositories must not appear as promoted capabilities until intake gates pass."
+    "External repositories must not appear as promoted capabilities until intake gates pass.",
+    "Skill catalog detail URLs must use grouped paths under skills/catalog/custom/ or skills/catalog/external/; do not document flat skills/catalog/<id>/, /skills/, or /skills/all/ hubs."
   ]
 }

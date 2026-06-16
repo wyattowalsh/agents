@@ -5,12 +5,10 @@ from wagents.platforms.base import SyncContext
 
 
 def test_codex_adapter_dry_run_notes_changes(tmp_path, monkeypatch):
-    import scripts.sync_agent_stack as sync_agent_stack
-
     stale = tmp_path / "instructions" / "codex-global.md"
     stale.parent.mkdir(parents=True)
     stale.write_text("stale\n", encoding="utf-8")
-    monkeypatch.setattr(sync_agent_stack, "CODEX_GLOBAL_MD", stale)
+    monkeypatch.setattr("scripts.sync_agent_stack.CODEX_GLOBAL_MD", stale)
 
     ctx = SyncContext(apply=False)
     adapter = get_adapter("codex")

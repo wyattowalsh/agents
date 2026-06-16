@@ -17,9 +17,7 @@
   .sl-link-card {
     transition: none;
   }
-  .sl-link-card[href*="skills/"]::before {
-    animation: none;
-  }
+
   .hero h1 {
     animation: none;
   }

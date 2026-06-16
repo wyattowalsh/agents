@@ -1,0 +1,123 @@
+---
+title: "ui-ux-pro-max"
+description: "Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="ui-ux-pro-max" variant="note" /> <Badge text="38 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+
+> Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/ui-ux-pro-max`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/ui-ux-pro-max.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Risk notes: Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+An AI skill providing design intelligence for building professional UI/UX across multiple platforms and frameworks (React, Vue, Angular, React Native, etc). Flagship: Design System Generator using multi-domain search (161 product categories, 67 styles, 161 palettes, 24 patterns, 57 fonts) + reasoning engine to output tailored pattern/style/colors/typography/effects + anti-patterns + pre-delivery checklist. Includes CLI, preview assets, and extensive .claude/skills.
+
+## Install Prerequisites
+
+Install: `npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named. Keep ckm:* global-only.
+
+## Upstream Maintainer
+
+[nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT, active, cross-agent support incl. custom CLI).
+
+## Comparable Alternatives
+
+shadcn/ui skills, ibelick/ui-skills, addyosmani/web-quality-skills, or local design-system skills; ClaudeKit or other marketplace UI skills.
+
+&gt; Web-augmented from GitHub README, marketplace listings, 2026. Config notes: install only ui-ux-pro-max.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `nextlevelbuilder/ui-ux-pro-max-skill` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `ui-ux-pro-max` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "ui-ux-pro-max"
+description: "Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces."
+title: "Ui Ux Pro Max"
+source_kind: "curated-external"
+source: "nextlevelbuilder/ui-ux-pro-max-skill"
+install_source: "nextlevelbuilder/ui-ux-pro-max-skill"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+notes: "Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces."
+risk_notes: "Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=ui-ux-pro-max; re-run migration to refresh */}
+
+Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

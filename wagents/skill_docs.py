@@ -9,7 +9,8 @@ from wagents.catalog import CatalogNode, collect_installed_skills, collect_nodes
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import to_title
 
-SKILL_DETAIL_SLUG_PREFIX = "skills/catalog"
+SKILL_CATALOG_PREFIX = "skills/catalog"
+SKILL_CATALOG_GROUPS = ("custom", "external")
 
 SourceType = Literal["custom", "installed", "curated-external"]
 
@@ -38,14 +39,34 @@ class SkillDocNode:
         return self.node.description
 
 
-def skill_detail_href(skill_id: str) -> str:
+def skill_catalog_group(*, source: str | None = None, node: CatalogNode | None = None) -> str:
+    """Map a skill source to the public catalog category slug."""
+    resolved = source or (node.source if node is not None else "custom")
+    return "custom" if resolved == "custom" else "external"
+
+
+def skill_detail_href(
+    skill_id: str,
+    *,
+    source: str | None = None,
+    node: CatalogNode | None = None,
+    group: str | None = None,
+) -> str:
     """Return the canonical docs URL for a skill detail page."""
-    return f"/{SKILL_DETAIL_SLUG_PREFIX}/{skill_id}/"
+    category = group or skill_catalog_group(source=source, node=node)
+    return f"/{SKILL_CATALOG_PREFIX}/{category}/{skill_id}/"
 
 
-def skill_detail_slug(skill_id: str) -> str:
+def skill_detail_slug(
+    skill_id: str,
+    *,
+    source: str | None = None,
+    node: CatalogNode | None = None,
+    group: str | None = None,
+) -> str:
     """Return the Starlight content slug for a skill detail page."""
-    return f"{SKILL_DETAIL_SLUG_PREFIX}/{skill_id}"
+    category = group or skill_catalog_group(source=source, node=node)
+    return f"{SKILL_CATALOG_PREFIX}/{category}/{skill_id}"
 
 
 def collect_repo_skill_nodes() -> list[CatalogNode]:
@@ -56,6 +77,22 @@ def collect_repo_skill_nodes() -> list[CatalogNode]:
 def collect_installed_skill_nodes(existing_ids: set[str]) -> list[CatalogNode]:
     """Return installed harness skills not already present as repo-owned."""
     return collect_installed_skills(existing_ids)
+
+
+def collect_authoring_skill_nodes() -> list[CatalogNode]:
+    """Return skill nodes (custom + external with body) loaded from authoring SSOT via skill_index.
+
+    Used when docs/src/authoring/skills/ contains files (post-sync custom or enriched external mdx).
+    """
+    try:
+        from . import skill_index as si
+
+        auth_entries = si.load_authoring_entries()
+        if not auth_entries:
+            return []
+        return [si.authoring_entry_to_catalog_node(e) for e in auth_entries]
+    except Exception:
+        return []
 
 
 def curated_entry_to_node(entry: ExternalSkillEntry) -> CatalogNode:
@@ -141,7 +178,19 @@ def collect_skill_doc_nodes(
         groups.append(collect_installed_skill_nodes(repo_ids))
 
     if include_curated:
-        groups.append(curated_entries_to_stub_nodes(sections=curated_sections))
+        # W2: when authoring dir has files, use authoring nodes (externals may have body; customs after sync)
+        # instead of stub nodes from legacy curated md.
+        try:
+            from . import skill_index as si
+
+            auth_dir = si.AUTHORING_SKILLS_DIR
+            has_authoring = auth_dir.exists() and bool(list(auth_dir.glob("*.mdx")))
+        except Exception:
+            has_authoring = False
+        if has_authoring:
+            groups.append(collect_authoring_skill_nodes())
+        else:
+            groups.append(curated_entries_to_stub_nodes(sections=curated_sections))
 
     merged = merge_skill_doc_nodes(*groups)
     doc_nodes: list[SkillDocNode] = []

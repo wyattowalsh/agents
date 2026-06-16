@@ -94,7 +94,7 @@ Use this flow when adding or updating trust-gated third-party skills (full detai
 4. Preview: `uv run wagents skills sync --dry-run`.
 5. Regenerate: `uv run wagents readme`, `uv run wagents docs generate`, `uv run wagents docs build`.
 
-Public docs default to repo-owned `/skills/catalog/` pages; curated externals publish on `/external-skills/`. Use `--include-installed` only for maintainer previews of local installed inventory.
+Public docs publish the catalog landing at `/skills/catalog/`, custom skill detail pages at `/skills/catalog/custom/<name>/`, and curated external detail pages at `/skills/catalog/external/<name>/`. The curated install hub remains `/external-skills/`. Use `--include-installed` only for maintainer previews of local harness inventory rows.
 
 ## Codex-Specific Instructions
 

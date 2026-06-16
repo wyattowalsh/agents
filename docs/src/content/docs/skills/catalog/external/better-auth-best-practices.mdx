@@ -1,0 +1,125 @@
+---
+title: "better-auth-best-practices"
+description: "Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+<Badge text="better-auth-best-practices" variant="note" /> <Badge text="27 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+
+> Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies.
+
+<div class="quick-start">
+
+### Quick Start
+
+**Install:**
+```bash
+npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+**Use:** `/better-auth-best-practices`
+
+</div>
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from curated config (`docs/src/authoring/skills/better-auth-best-practices.mdx`) and local inventory when installed.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+better-auth-best-practices provides authoritative configuration guidance for Better Auth (server/client setup, database adapters, sessions, plugins, environment variables, email flows, security, hooks, and client usage). The skill instructs agents to always consult the official better-auth.com/docs and re-run the @better-auth/cli after plugin changes. It is triggered by mentions of Better Auth, betterauth, auth.ts, or TypeScript auth setup needs.
+
+## Install Prerequisites
+
+`npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+
+Depends on `npm install better-auth` and running the Better Auth CLI for schema generation/migrations in the consuming project.
+
+## Upstream Maintainer
+
+better-auth (https://github.com/better-auth/skills and https://github.com/better-auth/better-auth). Docs: https://better-auth.com/docs
+
+## Comparable Alternatives
+
+Framework-native auth (NextAuth/Auth.js, Clerk, Supabase Auth, Lucia) skills or local architecture patterns when the project has already chosen a different provider.
+
+&gt; Evidence gathered from public GitHub sources (raw SKILL.md) and better-auth.com/docs. Not an endorsement or authority; review generated code and security configuration for the target application.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `better-auth/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `better-auth-best-practices` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "better-auth-best-practices"
+description: "Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies."
+title: "Better Auth Best Practices"
+source_kind: "curated-external"
+source: "better-auth/skills"
+install_source: "better-auth/skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/better-auth/skills"
+notes: "Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies."
+risk_notes: "Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=better-auth-best-practices; re-run migration to refresh */}
+
+Official Better Auth server/client setup, adapters, sessions, plugins, and environment variables. Prefer this over community Better Auth copies.
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

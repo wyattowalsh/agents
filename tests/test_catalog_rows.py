@@ -127,7 +127,39 @@ def test_merge_installed_agents_merges_from_node_metadata():
 
 
 def test_curated_catalog_parity_gaps_reports_repo_superseded_ids():
-    gaps = curated_catalog_parity_gaps()
+    """Gaps reporter detects curated entries that are superseded by higher-priority repo custom skills.
+
+    In authoring-SSOT, sync_custom sets source_kind=custom for skills/ names (overwriting any prior
+    migrate of same name), so they appear only as custom (not curated-external). To exercise the
+    supersede detection without depending on global config/skills overlap state, we patch read
+    to inject a colliding entry while letting collect see the real repo custom.
+    """
+    from pathlib import Path
+    from unittest.mock import patch
+
+    from wagents.external_skills import ExternalSkillEntry
+
+    fake_superseded = ExternalSkillEntry(
+        name="opencode-ensemble",
+        source="example/repo",
+        install_source="example/repo",
+        status="inspect-then-install",
+        trust_tier="needs-inspection",
+        provenance_status="explicit-unresolved",
+        install_command="",
+        target_agents=(),
+        source_url="",
+        notes="",
+        risk_notes="",
+        promotion_policy="",
+        provenance_evidence="",
+        source_path="",
+        selector_mode="named",
+        unresolved_reason="",
+        unsupported_target_agents=(),
+    )
+    with patch("wagents.catalog_rows.read_external_skill_entries", return_value=[fake_superseded]):
+        gaps = curated_catalog_parity_gaps()
     assert "opencode-ensemble" in gaps
 
 

@@ -2,11 +2,12 @@
 
 from pathlib import Path
 
+import pytest
+
 from wagents.catalog import CatalogNode
 from wagents.external_skills import parse_external_skill_entries
 from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
-    trust_badge_for_tier,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
@@ -15,6 +16,7 @@ from wagents.site_model import (
     render_site_data_module,
     render_visual_assets_css,
     site_data,
+    trust_badge_for_tier,
 )
 
 
@@ -37,10 +39,14 @@ def test_site_data_derives_counts_from_catalog_nodes():
     data = site_data(nodes, mcp_config_count=30, has_mcp_overview=True)
 
     assert data["counts"] == {
+        "skills": 2,
         "customSkills": 1,
-        "installedSkills": 1,
-        "agents": 1,
-        "mcpServers": 30,
+        "externalSkills": 1,
+        "customMcp": 0,
+        "externalMcp": 30,
+        "mcpTools": 30,
+        "supportedHarnesses": len(SUPPORTED_AGENT_IDS),
+        "bundledAgents": 1,
     }
 
 
@@ -90,7 +96,7 @@ def test_render_visual_assets_css_exports_src_asset_variables():
     assert "--agents-asset-social-card" not in rendered
 
 
-def test_site_data_splits_custom_curated_installed_and_all_indexes():
+def test_site_data_splits_custom_and_external_indexes():
     curated = parse_external_skill_entries(
         """
 ## Install Now After Trust Gate
@@ -120,8 +126,7 @@ npx skills add example/skills --skill external-one -y -g -a codex
     data = site_data(nodes, external_skills=curated)
 
     assert [row["name"] for row in data["customSkillIndex"]] == ["custom-one"]
-    assert [row["name"] for row in data["curatedExternalSkillIndex"]] == ["external-one"]
-    assert [row["name"] for row in data["installedSkillIndex"]] == ["installed-one"]
+    assert {row["name"] for row in data["externalSkillIndex"]} == {"external-one", "installed-one"}
     assert {row["name"] for row in data["allSkillIndex"]} == {"custom-one", "external-one", "installed-one"}
     assert data["skillIndex"] == data["allSkillIndex"]
 
@@ -139,7 +144,7 @@ def test_installed_local_inventory_rows_use_public_safe_source_labels():
     )
 
     data = site_data([node])
-    row = data["installedSkillIndex"][0]
+    row = data["externalSkillIndex"][0]
 
     assert row["sourceType"] == "installed"
     assert row["sourceRoot"] == "local installed inventory"
@@ -216,13 +221,26 @@ npx skills add example/skills --skill external-one -y -g -a codex
     assert rows["external-one"]["displaySource"] == "example/skills"
     assert rows["external-one"]["installedLocalInventoryOnly"] is False
     assert rows["external-one"]["installedExternalPath"] == ""
-    assert [row["name"] for row in data["installedSkillIndex"]] == ["external-one"]
+    assert "external-one" in {row["name"] for row in data["externalSkillIndex"]}
 
 
-def test_trust_badge_for_tier_maps_public_labels():
-    assert trust_badge_for_tier("repo") == ("Repo-owned", "tip")
-    assert trust_badge_for_tier("curated-trust-gated") == ("Curated", "note")
-    assert trust_badge_for_tier("needs-inspection") == ("Inspect first", "caution")
+@pytest.mark.parametrize(
+    "tier,expected",
+    [
+        ("repo", ("Repo-owned", "tip")),
+        ("curated-trust-gated", ("Curated", "note")),
+        ("needs-inspection", ("Inspect first", "caution")),
+        ("read-only-discovered", ("Inspect first", "caution")),
+        ("external-installed", ("Local install", "default")),
+        ("global-only-or-avoid", ("Avoid default", "danger")),
+        ("github", ("GitHub", "note")),
+        ("git", ("Git source", "note")),
+        ("unknown-unknown", ("External", "default")),
+        ("", ("External", "default")),
+    ],
+)
+def test_trust_badge_for_tier_maps_public_labels(tier, expected):
+    assert trust_badge_for_tier(tier) == expected
 
 
 def test_skill_index_rows_include_trust_badges():
@@ -231,3 +249,39 @@ def test_skill_index_rows_include_trust_badges():
     row = data["customSkillIndex"][0]
     assert row["trustBadge"] == "Repo-owned"
     assert row["trustBadgeVariant"] == "tip"
+
+
+def test_installed_node_with_read_only_discovered_trust_tier_emits_inspect_badge():
+    node = CatalogNode(
+        "skill",
+        "discovered-one",
+        "Discovered One",
+        "Discovered skill",
+        {"_skills_trust_tier": "read-only-discovered"},
+        "",
+        "/tmp/discovered-one/SKILL.md",
+        source="installed",
+    )
+    data = site_data([node])
+    row = data["externalSkillIndex"][0]
+    assert row["trustTier"] == "read-only-discovered"
+    assert row["trustBadge"] == "Inspect first"
+    assert row["trustBadgeVariant"] == "caution"
+
+
+def test_curated_external_stub_node_with_curated_trust_gated_tier_emits_curated_badge():
+    node = CatalogNode(
+        "skill",
+        "curated-stub",
+        "Curated Stub",
+        "Curated external stub",
+        {"_skills_trust_tier": "curated-trust-gated"},
+        "",
+        "config/external-skills.md",
+        source="curated-external",
+    )
+    data = site_data([node])
+    row = data["externalSkillIndex"][0]
+    assert row["trustTier"] == "curated-trust-gated"
+    assert row["trustBadge"] == "Curated"
+    assert row["trustBadgeVariant"] == "note"

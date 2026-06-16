@@ -15,6 +15,8 @@ from typing import Any, cast
 
 from wagents import ROOT
 from wagents.external_skills import ExternalSkillEntry, desired_install_now_entries, read_external_skill_entries
+
+# desired_install_now_entries (and callers) continue to work by delegating to (dual-read) read_external_skill_entries
 from wagents.parsing import parse_frontmatter
 
 DEFAULT_HARNESS_QUERY_TIMEOUT_SEC = 120

@@ -8,6 +8,8 @@ def tmp_repo(tmp_path, monkeypatch):
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()
     (tmp_path / "config").mkdir(exist_ok=True)
+    pyproject = '[project]\nname = "wagents"\nrequires-python = ">=3.13"\n'
+    (tmp_path / "pyproject.toml").write_text(pyproject, encoding="utf-8")
     (tmp_path / "planning/manifests").mkdir(parents=True, exist_ok=True)
     (tmp_path / "config/harness-surface-registry.json").write_text('{"harnesses": []}', encoding="utf-8")
     (tmp_path / "planning/manifests/harness-fixture-support.json").write_text('{"records": []}', encoding="utf-8")

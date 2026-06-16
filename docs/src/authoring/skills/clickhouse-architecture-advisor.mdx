@@ -1,0 +1,22 @@
+---
+name: "clickhouse-architecture-advisor"
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+title: "Clickhouse Architecture Advisor"
+source_kind: "curated-external"
+source: "clickhouse/agent-skills"
+install_source: "clickhouse/agent-skills"
+status: "inspect-then-install"
+trust_tier: "needs-inspection"
+provenance_status: "verified-install-command"
+install_command: "npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/clickhouse/agent-skills"
+notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=clickhouse-architecture-advisor; re-run migration to refresh */}
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.

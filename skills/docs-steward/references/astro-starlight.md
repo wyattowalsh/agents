@@ -23,6 +23,7 @@ Re-check before claiming "latest": see `version-refresh.md`.
 ## 4. Advanced Configuration Focus
 
 - Use explicit sidebar group hierarchy.
+- In this repo, skill catalog IA is grouped: landing `skills/catalog/`, indexes `skills/catalog/custom/` and `skills/catalog/external/`, detail pages under those trees, plus `skills/install/`. Do not document or link flat `skills/catalog/<id>/`, `/skills/`, or `/skills/all/` hubs.
 - Ensure slug stability for long-lived links.
 - Keep custom components constrained to content UX needs.
 - Keep frontmatter complete (`title`, `description`, nav metadata).

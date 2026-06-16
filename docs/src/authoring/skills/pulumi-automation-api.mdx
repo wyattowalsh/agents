@@ -1,0 +1,22 @@
+---
+name: "pulumi-automation-api"
+description: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
+title: "Pulumi Automation Api"
+source_kind: "curated-external"
+source: "pulumi/agent-skills"
+install_source: "pulumi/agent-skills"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "npx skills add pulumi/agent-skills --skill pulumi-best-practices --skill pulumi-component --skill pulumi-automation-api --skill pulumi-esc -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
+source_url: "https://github.com/pulumi/agent-skills"
+notes: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
+risk_notes: "Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle."
+promotion_policy: "Install only after trust gate; audit again before repo promotion."
+provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
+---
+
+{/* GENERATED-AUTHORING: source=config/external-skills.md; entry=pulumi-automation-api; re-run migration to refresh */}
+
+Official Pulumi IaC subset: program authoring, components, Automation API, and ESC secrets. Distinct from `terraform-skill` and `hashicorp/agent-skills`; cherry-pick only these four slugs from the 14-skill bundle.
