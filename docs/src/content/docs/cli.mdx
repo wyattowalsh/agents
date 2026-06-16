@@ -303,7 +303,11 @@ Install the Plannotator CLI, core slash skills, optional extras, mirror into `~/
 ```bash
 wagents grok plannotator install
 wagents grok plannotator install --no-extras --no-hooks
+wagents grok plannotator sync
 ```
+
+Grok home sync enables Plannotator hooks and skill overlays by default. Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip hook refresh.
+
 
 ---
 
@@ -507,6 +511,9 @@ wagents docs generate
 **Options:**
 
 ```bash
+# Default: repository-only catalog (CI parity)
+wagents docs generate --no-installed
+
 # Include installed skills from local agent skill directories (~/.config/opencode/skills/, ~/.agents/skills/, ~/.claude/skills/)
 wagents docs generate --include-installed
 
@@ -514,7 +521,7 @@ wagents docs generate --include-installed
 wagents docs generate --include-drafts
 ```
 
-By default, generation is deterministic and repository-only. The generator creates individual pages for each skill, agent, and MCP server, plus category index pages and the sidebar navigation.
+By default, generation is deterministic and repository-only (`--no-installed`). Opt in with `--include-installed` for local harness inventory rows. The generator creates individual pages for each skill, agent, and MCP server, plus category index pages and the sidebar navigation.
 
   </TabItem>
   <TabItem label="dev">

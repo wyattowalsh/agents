@@ -1,13 +1,13 @@
 ---
 title: "vite"
-description: "Vite build tool configuration, plugin API, SSR, and Vite 8 Rolldown migration. Use when working with Vite projects, vite.config.ts, Vite plugins, or building libraries/SSR apps with Vite."
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="vite" variant="note" /> <Badge text="270 words" variant="default" /> <Badge text="v2026.1.31" variant="success" /> <Badge text="Anthony Fu" variant="caution" /> <Badge text="Installed" variant="caution" />
+<Badge text="vite" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
-> Vite build tool configuration, plugin API, SSR, and Vite 8 Rolldown migration. Use when working with Vite projects, vite.config.ts, Vite plugins, or building libraries/SSR apps with Vite.
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 <div class="quick-start">
 
@@ -15,7 +15,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add antfu/skills --skill vite -y -g
+npx skills add antfu/skills --skill vite --skill slidev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
 **Use:** `/vite`
@@ -25,12 +25,9 @@ npx skills add antfu/skills --skill vite -y -g
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
-This page is generated from `local installed inventory`.
+This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
+ SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill vite` to refresh research context.
 </Aside>
-
-## What It Does
-
-&gt; Based on Vite 8 beta (Rolldown-powered). Vite 8 uses Rolldown bundler and Oxc transformer.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -46,91 +43,8 @@ This page is generated from `local installed inventory`.
 | Field | Value |
 | ----- | ----- |
 | Name | `vite` |
-| Version | 2026.1.31 |
-| Author | Anthony Fu |
   </TabItem>
 </Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
----
-name: vite
-description: Vite build tool configuration, plugin API, SSR, and Vite 8 Rolldown migration. Use when working with Vite projects, vite.config.ts, Vite plugins, or building libraries/SSR apps with Vite.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.31"
-  source: Generated from https://github.com/vitejs/vite, scripts at https://github.com/antfu/skills
----
-
-# Vite
-
-> Based on Vite 8 beta (Rolldown-powered). Vite 8 uses Rolldown bundler and Oxc transformer.
-
-Vite is a next-generation frontend build tool with fast dev server (native ESM + HMR) and optimized production builds.
-
-## Preferences
-
-- Use TypeScript: prefer `vite.config.ts`
-- Always use ESM, avoid CommonJS
-
-## Core
-
-| Topic | Description | Reference |
-|-------|-------------|-----------|
-| Configuration | `vite.config.ts`, `defineConfig`, conditional configs, `loadEnv` | [core-config](references/core-config.md) |
-| Features | `import.meta.glob`, asset queries (`?raw`, `?url`), `import.meta.env`, HMR API | [core-features](references/core-features.md) |
-| Plugin API | Vite-specific hooks, virtual modules, plugin ordering | [core-plugin-api](references/core-plugin-api.md) |
-
-## Build & SSR
-
-| Topic | Description | Reference |
-|-------|-------------|-----------|
-| Build & SSR | Library mode, SSR middleware mode, `ssrLoadModule`, JavaScript API | [build-and-ssr](references/build-and-ssr.md) |
-
-## Advanced
-
-| Topic | Description | Reference |
-|-------|-------------|-----------|
-| Environment API | Vite 6+ multi-environment support, custom runtimes | [environment-api](references/environment-api.md) |
-| Rolldown Migration | Vite 8 changes: Rolldown bundler, Oxc transformer, config migration | [rolldown-migration](references/rolldown-migration.md) |
-
-## Quick Reference
-
-### CLI Commands
-
-```bash
-vite              # Start dev server
-vite build        # Production build
-vite preview      # Preview production build
-vite build --ssr  # SSR build
-```
-
-### Common Config
-
-```ts
-import { defineConfig } from 'vite'
-
-export default defineConfig({
-  plugins: [],
-  resolve: { alias: { '@': '/src' } },
-  server: { port: 3000, proxy: { '/api': 'http://localhost:8080' } },
-  build: { target: 'esnext', outDir: 'dist' },
-})
-```
-
-### Official Plugins
-
-- `@vitejs/plugin-vue` - Vue 3 SFC support
-- `@vitejs/plugin-vue-jsx` - Vue 3 JSX
-- `@vitejs/plugin-react` - React with Oxc/Babel
-- `@vitejs/plugin-react-swc` - React with SWC
-- `@vitejs/plugin-legacy` - Legacy browser support
-
-````
-
-</details>
 
 ## Resources
 

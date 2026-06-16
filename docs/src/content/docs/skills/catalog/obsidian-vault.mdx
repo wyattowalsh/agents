@@ -1,13 +1,13 @@
 ---
 title: "obsidian-vault"
-description: "Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian."
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="obsidian-vault" variant="note" /> <Badge text="196 words" variant="default" /> <Badge text="Installed" variant="caution" />
+<Badge text="obsidian-vault" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
-> Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 <div class="quick-start">
 
@@ -15,7 +15,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add mattpocock/skills --skill obsidian-vault -y -g
+npx skills add mattpocock/skills --skill obsidian-vault -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
 **Use:** `/obsidian-vault`
@@ -25,12 +25,9 @@ npx skills add mattpocock/skills --skill obsidian-vault -y -g
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
-This page is generated from `local installed inventory`.
+This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
+ SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill obsidian-vault` to refresh research context.
 </Aside>
-
-## What It Does
-
-`/mnt/d/Obsidian Vault/AI Research/`
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -48,74 +45,6 @@ This page is generated from `local installed inventory`.
 | Name | `obsidian-vault` |
   </TabItem>
 </Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
----
-name: obsidian-vault
-description: Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.
----
-
-# Obsidian Vault
-
-## Vault location
-
-`/mnt/d/Obsidian Vault/AI Research/`
-
-Mostly flat at root level.
-
-## Naming conventions
-
-- **Index notes**: aggregate related topics (e.g., `Ralph Wiggum Index.md`, `Skills Index.md`, `RAG Index.md`)
-- **Title case** for all note names
-- No folders for organization - use links and index notes instead
-
-## Linking
-
-- Use Obsidian `[[wikilinks]]` syntax: `[[Note Title]]`
-- Notes link to dependencies/related notes at the bottom
-- Index notes are just lists of `[[wikilinks]]`
-
-## Workflows
-
-### Search for notes
-
-```bash
-# Search by filename
-find "/mnt/d/Obsidian Vault/AI Research/" -name "*.md" | grep -i "keyword"
-
-# Search by content
-grep -rl "keyword" "/mnt/d/Obsidian Vault/AI Research/" --include="*.md"
-```
-
-Or use Grep/Glob tools directly on the vault path.
-
-### Create a new note
-
-1. Use **Title Case** for filename
-2. Write content as a unit of learning (per vault rules)
-3. Add `[[wikilinks]]` to related notes at the bottom
-4. If part of a numbered sequence, use the hierarchical numbering scheme
-
-### Find related notes
-
-Search for `[[Note Title]]` across the vault to find backlinks:
-
-```bash
-grep -rl "\\[\\[Note Title\\]\\]" "/mnt/d/Obsidian Vault/AI Research/"
-```
-
-### Find index notes
-
-```bash
-find "/mnt/d/Obsidian Vault/AI Research/" -name "*Index*"
-```
-
-````
-
-</details>
 
 ## Resources
 

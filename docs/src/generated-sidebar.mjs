@@ -2,7 +2,8 @@
 export const navLinks = [
   { label: 'Start Here', link: '/start-here/' },
   { label: 'Contributing', link: '/contributing/' },
-  { label: 'Skills', link: '/skills/', badge: '553' },
+  { label: 'Harness Support', link: '/harness-support/' },
+  { label: 'Skills', link: '/skills/', badge: '390' },
   { label: 'Agents', link: '/agents/' },
   { label: 'MCP', link: '/mcp/', badge: '15' },
   { label: 'CLI', link: '/cli/' }
@@ -12,16 +13,17 @@ export default [
   { slug: '' },
   { slug: 'start-here', label: 'Start Here' },
   { slug: 'contributing', label: 'Contributing' },
+  { slug: 'harness-support', label: 'Harness Support' },
   {
     label: 'Skills',
-    badge: { text: '553', variant: 'tip' },
+    badge: { text: '390', variant: 'tip' },
     collapsed: true,
     items: [
       { slug: 'skills', label: 'Custom Skills (58)' },
-      { slug: 'skills/all', label: 'All Skills (553)' },
+      { slug: 'skills/all', label: 'All Skills (390)' },
       { slug: 'skills/install', label: 'Install Scripts' },
       {
-        label: 'Catalog (553)',
+        label: 'Catalog (390)',
         autogenerate: { directory: 'skills/catalog' },
       },
     ],

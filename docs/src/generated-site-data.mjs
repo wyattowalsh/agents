@@ -3,7 +3,7 @@ const baseSiteData = {
   "counts": {
     "agents": 8,
     "customSkills": 58,
-    "installedSkills": 495,
+    "installedSkills": 332,
     "mcpServers": 1
   },
   "distributionPaths": [
@@ -80,16 +80,9 @@ const baseSiteData = {
         "source": "antfu/skills"
       },
       {
-        "count": 8,
+        "count": 1,
         "skills": [
-          "anthropics-skills-all",
-          "docx",
-          "frontend-design",
-          "pdf",
-          "pptx",
-          "web-artifacts-builder",
-          "webapp-testing",
-          "xlsx"
+          "anthropics-skills-all"
         ],
         "source": "anthropics/skills"
       },
@@ -101,16 +94,14 @@ const baseSiteData = {
         "source": "antonbabenko/terraform-skill"
       },
       {
-        "count": 13,
+        "count": 11,
         "skills": [
           "apollo-client",
           "apollo-connectors",
           "apollo-federation",
           "apollo-ios",
-          "apollo-kotlin",
           "apollo-mcp-server",
           "apollo-router",
-          "apollo-router-plugin-creator",
           "apollo-server",
           "graphql-operations",
           "graphql-schema",
@@ -167,10 +158,9 @@ const baseSiteData = {
         "source": "backnotprop/plannotator/apps/skills/core"
       },
       {
-        "count": 2,
+        "count": 1,
         "skills": [
-          "better-auth-best-practices",
-          "create-auth-skill"
+          "better-auth-best-practices"
         ],
         "source": "better-auth/skills"
       },
@@ -189,20 +179,6 @@ const baseSiteData = {
         "source": "boristane/agent-skills"
       },
       {
-        "count": 1,
-        "skills": [
-          "react-native-best-practices"
-        ],
-        "source": "callstackincubator/agent-skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "clerk-nextjs-patterns"
-        ],
-        "source": "clerk/skills"
-      },
-      {
         "count": 2,
         "skills": [
           "clickhouse-architecture-advisor",
@@ -211,26 +187,15 @@ const baseSiteData = {
         "source": "clickhouse/agent-skills"
       },
       {
-        "count": 9,
+        "count": 5,
         "skills": [
           "agents-sdk",
-          "building-ai-agent-on-cloudflare",
-          "building-mcp-server-on-cloudflare",
           "cloudflare",
           "durable-objects",
-          "sandbox-sdk",
-          "web-perf",
           "workers-best-practices",
           "wrangler"
         ],
         "source": "cloudflare/skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "autofix"
-        ],
-        "source": "coderabbitai/skills"
       },
       {
         "count": 1,
@@ -240,53 +205,31 @@ const baseSiteData = {
         "source": "coleam00/excalidraw-diagram-skill"
       },
       {
-        "count": 46,
+        "count": 24,
         "skills": [
-          "ab-test-setup",
           "ab-testing",
-          "ad-creative",
           "ads",
           "ai-seo",
           "analytics",
-          "analytics-tracking",
           "churn-prevention",
           "cold-email",
-          "competitor-alternatives",
           "competitor-profiling",
           "content-strategy",
-          "copy-editing",
           "copywriting",
           "cro",
-          "email-sequence",
           "emails",
-          "form-cro",
-          "free-tool-strategy",
           "launch",
-          "launch-strategy",
-          "lead-magnets",
           "marketing-ideas",
           "marketing-psychology",
           "onboarding",
-          "onboarding-cro",
-          "page-cro",
-          "paid-ads",
-          "paywall-upgrade-cro",
           "paywalls",
-          "popup-cro",
-          "pricing-strategy",
           "product-marketing",
-          "product-marketing-context",
           "programmatic-seo",
-          "referral-program",
           "revops",
-          "sales-enablement",
           "schema",
-          "schema-markup",
           "seo-audit",
           "signup",
-          "signup-flow-cro",
           "site-architecture",
-          "social-content",
           "video"
         ],
         "source": "coreyhaines31/marketingskills"
@@ -354,17 +297,13 @@ const baseSiteData = {
         "source": "emilkowalski/skill"
       },
       {
-        "count": 9,
+        "count": 5,
         "skills": [
           "building-native-ui",
-          "expo-api-routes",
           "expo-cicd-workflows",
           "expo-deployment",
           "expo-dev-client",
-          "expo-tailwind-setup",
-          "native-data-fetching",
-          "upgrading-expo",
-          "use-dom"
+          "upgrading-expo"
         ],
         "source": "expo/skills"
       },
@@ -387,45 +326,22 @@ const baseSiteData = {
         "source": "firebase/agent-skills"
       },
       {
-        "count": 2,
+        "count": 1,
         "skills": [
-          "firecrawl",
           "firecrawl-cli-all"
         ],
         "source": "firecrawl/cli"
       },
       {
-        "count": 29,
+        "count": 7,
         "skills": [
           "flutter-add-integration-test",
           "flutter-add-widget-test",
-          "flutter-adding-home-screen-widgets",
-          "flutter-animating-apps",
           "flutter-apply-architecture-best-practices",
-          "flutter-architecting-apps",
           "flutter-build-responsive-layout",
-          "flutter-building-forms",
-          "flutter-building-layouts",
-          "flutter-building-plugins",
-          "flutter-caching-data",
-          "flutter-embedding-native-views",
           "flutter-fix-layout-issues",
-          "flutter-handling-concurrency",
-          "flutter-handling-http-and-json",
-          "flutter-implementing-navigation-and-routing",
-          "flutter-improving-accessibility",
-          "flutter-interoperating-with-native-apis",
-          "flutter-localizing-apps",
-          "flutter-managing-state",
-          "flutter-reducing-app-size",
-          "flutter-setting-up-on-linux",
-          "flutter-setting-up-on-macos",
-          "flutter-setting-up-on-windows",
           "flutter-setup-declarative-routing",
-          "flutter-setup-localization",
-          "flutter-testing-apps",
-          "flutter-theming-apps",
-          "flutter-working-with-databases"
+          "flutter-setup-localization"
         ],
         "source": "flutter/skills"
       },
@@ -448,15 +364,6 @@ const baseSiteData = {
           "skill-scanner"
         ],
         "source": "getsentry/skills"
-      },
-      {
-        "count": 3,
-        "skills": [
-          "defuddle",
-          "json-canvas",
-          "obsidian-bases"
-        ],
-        "source": "git@github.com:kepano/obsidian-skills.git"
       },
       {
         "count": 19,
@@ -521,32 +428,14 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "here-now"
-        ],
-        "source": "heredotnow/skill"
-      },
-      {
-        "count": 1,
-        "skills": [
           "opencode-ensemble"
         ],
         "source": "hueyexe/opencode-ensemble"
       },
       {
-        "count": 12,
+        "count": 1,
         "skills": [
-          "hf-cli",
-          "huggingface-community-evals",
-          "huggingface-datasets",
-          "huggingface-gradio",
-          "huggingface-jobs",
-          "huggingface-llm-trainer",
-          "huggingface-paper-publisher",
-          "huggingface-papers",
-          "huggingface-skills-all",
-          "huggingface-trackio",
-          "huggingface-vision-trainer",
-          "transformers-js"
+          "huggingface-skills-all"
         ],
         "source": "huggingface/skills"
       },
@@ -558,12 +447,11 @@ const baseSiteData = {
         "source": "hyf0/vue-skills"
       },
       {
-        "count": 4,
+        "count": 3,
         "skills": [
           "baseline-ui",
           "fixing-accessibility",
-          "fixing-metadata",
-          "fixing-motion-performance"
+          "fixing-metadata"
         ],
         "source": "ibelick/ui-skills"
       },
@@ -583,13 +471,6 @@ const baseSiteData = {
           "notion-api"
         ],
         "source": "intellectronica/agent-skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "cloudwatch"
-        ],
-        "source": "itsmostafa/aws-agent-skills"
       },
       {
         "count": 1,
@@ -622,13 +503,12 @@ const baseSiteData = {
         "source": "kepano/obsidian-skills"
       },
       {
-        "count": 13,
+        "count": 12,
         "skills": [
           "deep-agents-core",
           "deep-agents-memory",
           "deep-agents-orchestration",
           "ecosystem-primer",
-          "framework-selection",
           "langchain-dependencies",
           "langchain-fundamentals",
           "langchain-middleware",
@@ -657,13 +537,6 @@ const baseSiteData = {
         "source": "langfuse/skills"
       },
       {
-        "count": 1,
-        "skills": [
-          "rust-skills"
-        ],
-        "source": "leonardomso/rust-skills"
-      },
-      {
         "count": 11,
         "skills": [
           "ctf-ai-ml",
@@ -679,62 +552,6 @@ const baseSiteData = {
           "solve-challenge"
         ],
         "source": "ljagiello/ctf-skills"
-      },
-      {
-        "count": 50,
-        "skills": [
-          "autoplan",
-          "benchmark",
-          "best-of-n",
-          "browse",
-          "canary",
-          "careful",
-          "check-work",
-          "codex",
-          "connect-chrome",
-          "create-skill",
-          "cso",
-          "design-consultation",
-          "design-review",
-          "design-shotgun",
-          "document-release",
-          "freeze",
-          "gstack",
-          "gstack-upgrade",
-          "guard",
-          "hatch-pet",
-          "help",
-          "imagine",
-          "investigate",
-          "land-and-deploy",
-          "office-hours",
-          "plan-ceo-review",
-          "plan-design-review",
-          "plan-eng-review",
-          "project-context",
-          "qa",
-          "qa-only",
-          "retro",
-          "review",
-          "ronin-chat-with-data",
-          "ronin-discovery",
-          "ronin-email-monitor",
-          "ronin-interview-prep",
-          "ronin-materials",
-          "ronin-networking",
-          "ronin-offer-negotiation",
-          "ronin-pipeline-analytics",
-          "ronin-pipeline-manager",
-          "ronin-profile-builder",
-          "ronin-research",
-          "ronin-search-strategy",
-          "setup-browser-cookies",
-          "setup-deploy",
-          "ship",
-          "slides-smith",
-          "unfreeze"
-        ],
-        "source": "local installed inventory"
       },
       {
         "count": 1,
@@ -777,13 +594,6 @@ const baseSiteData = {
         "source": "microsoft/playwright-cli"
       },
       {
-        "count": 1,
-        "skills": [
-          "context-engineering-collection"
-        ],
-        "source": "muratcankoylan/Agent-Skills-for-Context-Engineering"
-      },
-      {
         "count": 6,
         "skills": [
           "claimable-postgres",
@@ -811,13 +621,6 @@ const baseSiteData = {
           "ui-ux-pro-max"
         ],
         "source": "nextlevelbuilder/ui-ux-pro-max-skill"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "nlm-index"
-        ],
-        "source": "nghyane/opencode-plugin-notebooklm"
       },
       {
         "count": 2,
@@ -888,10 +691,9 @@ const baseSiteData = {
         "source": "pulumi/agent-skills"
       },
       {
-        "count": 4,
+        "count": 3,
         "skills": [
           "building-pydantic-ai-agents",
-          "instrumentation",
           "logfire-instrumentation",
           "pydantic-ai-harness"
         ],
@@ -933,51 +735,29 @@ const baseSiteData = {
         "source": "render-oss/skills"
       },
       {
-        "count": 43,
+        "count": 21,
         "skills": [
           "golang-benchmark",
           "golang-cli",
-          "golang-code-style",
           "golang-concurrency",
-          "golang-context",
-          "golang-continuous-integration",
-          "golang-data-structures",
           "golang-database",
-          "golang-dependency-injection",
-          "golang-dependency-management",
-          "golang-design-patterns",
-          "golang-documentation",
           "golang-error-handling",
-          "golang-google-wire",
           "golang-graphql",
           "golang-grpc",
           "golang-how-to",
           "golang-lint",
           "golang-modernize",
-          "golang-naming",
           "golang-observability",
           "golang-performance",
           "golang-popular-libraries",
           "golang-project-layout",
           "golang-safety",
-          "golang-samber-do",
-          "golang-samber-hot",
-          "golang-samber-lo",
-          "golang-samber-mo",
-          "golang-samber-oops",
-          "golang-samber-ro",
-          "golang-samber-slog",
           "golang-security",
           "golang-spf13-cobra",
           "golang-spf13-viper",
-          "golang-stay-updated",
           "golang-stretchr-testify",
-          "golang-structs-interfaces",
-          "golang-swagger",
           "golang-testing",
-          "golang-troubleshooting",
-          "golang-uber-dig",
-          "golang-uber-fx"
+          "golang-troubleshooting"
         ],
         "source": "samber/cc-skills-golang"
       },
@@ -1044,13 +824,6 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
-          "svelte-code-writer"
-        ],
-        "source": "sveltejs/ai-tools"
-      },
-      {
-        "count": 1,
-        "skills": [
           "temporal-developer"
         ],
         "source": "temporalio/skill-temporal-developer"
@@ -1071,9 +844,8 @@ const baseSiteData = {
         "source": "trailofbits/skills"
       },
       {
-        "count": 2,
+        "count": 1,
         "skills": [
-          "electron",
           "vercel-labs-agent-browser-all"
         ],
         "source": "vercel-labs/agent-browser"
@@ -1108,7 +880,7 @@ const baseSiteData = {
         "source": "vercel-labs/skills"
       },
       {
-        "count": 32,
+        "count": 31,
         "skills": [
           "changelog-automation",
           "database-migration",
@@ -1124,7 +896,6 @@ const baseSiteData = {
           "k8s-security-policies",
           "langchain-architecture",
           "llm-evaluation",
-          "nextjs-app-router-patterns",
           "nodejs-backend-patterns",
           "nx-workspace-patterns",
           "on-call-handoff-patterns",
@@ -1508,181 +1279,6 @@ const baseSiteData = {
           "writing-plans"
         ],
         "status": "install-now-after-trust-gate"
-      },
-      {
-        "count": 113,
-        "skills": [
-          "ab-test-setup",
-          "ad-creative",
-          "analytics-tracking",
-          "apollo-kotlin",
-          "apollo-router-plugin-creator",
-          "autofix",
-          "building-ai-agent-on-cloudflare",
-          "building-mcp-server-on-cloudflare",
-          "clerk-nextjs-patterns",
-          "cloudwatch",
-          "competitor-alternatives",
-          "context-engineering-collection",
-          "copy-editing",
-          "create-auth-skill",
-          "defuddle",
-          "docx",
-          "electron",
-          "email-sequence",
-          "expo-api-routes",
-          "expo-tailwind-setup",
-          "firecrawl",
-          "fixing-motion-performance",
-          "flutter-adding-home-screen-widgets",
-          "flutter-animating-apps",
-          "flutter-architecting-apps",
-          "flutter-building-forms",
-          "flutter-building-layouts",
-          "flutter-building-plugins",
-          "flutter-caching-data",
-          "flutter-embedding-native-views",
-          "flutter-handling-concurrency",
-          "flutter-handling-http-and-json",
-          "flutter-implementing-navigation-and-routing",
-          "flutter-improving-accessibility",
-          "flutter-interoperating-with-native-apis",
-          "flutter-localizing-apps",
-          "flutter-managing-state",
-          "flutter-reducing-app-size",
-          "flutter-setting-up-on-linux",
-          "flutter-setting-up-on-macos",
-          "flutter-setting-up-on-windows",
-          "flutter-testing-apps",
-          "flutter-theming-apps",
-          "flutter-working-with-databases",
-          "form-cro",
-          "framework-selection",
-          "free-tool-strategy",
-          "frontend-design",
-          "golang-code-style",
-          "golang-context",
-          "golang-continuous-integration",
-          "golang-data-structures",
-          "golang-dependency-injection",
-          "golang-dependency-management",
-          "golang-design-patterns",
-          "golang-documentation",
-          "golang-google-wire",
-          "golang-naming",
-          "golang-samber-do",
-          "golang-samber-hot",
-          "golang-samber-lo",
-          "golang-samber-mo",
-          "golang-samber-oops",
-          "golang-samber-ro",
-          "golang-samber-slog",
-          "golang-stay-updated",
-          "golang-structs-interfaces",
-          "golang-swagger",
-          "golang-uber-dig",
-          "golang-uber-fx",
-          "here-now",
-          "hf-cli",
-          "huggingface-community-evals",
-          "huggingface-datasets",
-          "huggingface-gradio",
-          "huggingface-jobs",
-          "huggingface-llm-trainer",
-          "huggingface-paper-publisher",
-          "huggingface-papers",
-          "huggingface-trackio",
-          "huggingface-vision-trainer",
-          "instrumentation",
-          "json-canvas",
-          "launch-strategy",
-          "lead-magnets",
-          "native-data-fetching",
-          "nextjs-app-router-patterns",
-          "nlm-index",
-          "obsidian-bases",
-          "onboarding-cro",
-          "page-cro",
-          "paid-ads",
-          "paywall-upgrade-cro",
-          "pdf",
-          "popup-cro",
-          "pptx",
-          "pricing-strategy",
-          "product-marketing-context",
-          "react-native-best-practices",
-          "referral-program",
-          "rust-skills",
-          "sales-enablement",
-          "sandbox-sdk",
-          "schema-markup",
-          "signup-flow-cro",
-          "social-content",
-          "svelte-code-writer",
-          "transformers-js",
-          "use-dom",
-          "web-artifacts-builder",
-          "web-perf",
-          "webapp-testing",
-          "xlsx"
-        ],
-        "status": "installed-external"
-      },
-      {
-        "count": 50,
-        "skills": [
-          "autoplan",
-          "benchmark",
-          "best-of-n",
-          "browse",
-          "canary",
-          "careful",
-          "check-work",
-          "codex",
-          "connect-chrome",
-          "create-skill",
-          "cso",
-          "design-consultation",
-          "design-review",
-          "design-shotgun",
-          "document-release",
-          "freeze",
-          "gstack",
-          "gstack-upgrade",
-          "guard",
-          "hatch-pet",
-          "help",
-          "imagine",
-          "investigate",
-          "land-and-deploy",
-          "office-hours",
-          "plan-ceo-review",
-          "plan-design-review",
-          "plan-eng-review",
-          "project-context",
-          "qa",
-          "qa-only",
-          "retro",
-          "review",
-          "ronin-chat-with-data",
-          "ronin-discovery",
-          "ronin-email-monitor",
-          "ronin-interview-prep",
-          "ronin-materials",
-          "ronin-networking",
-          "ronin-offer-negotiation",
-          "ronin-pipeline-analytics",
-          "ronin-pipeline-manager",
-          "ronin-profile-builder",
-          "ronin-research",
-          "ronin-search-strategy",
-          "setup-browser-cookies",
-          "setup-deploy",
-          "ship",
-          "slides-smith",
-          "unfreeze"
-        ],
-        "status": "read-only-discovered"
       }
     ]
   },
@@ -3169,1025 +2765,7 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       }
     ],
-    "installedCommands": [
-      {
-        "command": "npx skills add anthropics/skills --skill docx -y -g",
-        "skills": [
-          "docx"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add anthropics/skills --skill frontend-design -y -g",
-        "skills": [
-          "frontend-design"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add anthropics/skills --skill pdf -y -g",
-        "skills": [
-          "pdf"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add anthropics/skills --skill pptx -y -g",
-        "skills": [
-          "pptx"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add anthropics/skills --skill web-artifacts-builder -y -g",
-        "skills": [
-          "web-artifacts-builder"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add anthropics/skills --skill webapp-testing -y -g",
-        "skills": [
-          "webapp-testing"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add anthropics/skills --skill xlsx -y -g",
-        "skills": [
-          "xlsx"
-        ],
-        "source": "anthropics/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-kotlin -y -g",
-        "skills": [
-          "apollo-kotlin"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add apollographql/skills --skill apollo-router-plugin-creator -y -g",
-        "skills": [
-          "apollo-router-plugin-creator"
-        ],
-        "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add better-auth/skills --skill create-auth-skill -y -g",
-        "skills": [
-          "create-auth-skill"
-        ],
-        "source": "better-auth/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add callstackincubator/agent-skills --skill react-native-best-practices -y -g",
-        "skills": [
-          "react-native-best-practices"
-        ],
-        "source": "callstackincubator/agent-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add clerk/skills --skill clerk-nextjs-patterns -y -g",
-        "skills": [
-          "clerk-nextjs-patterns"
-        ],
-        "source": "clerk/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add cloudflare/skills --skill building-ai-agent-on-cloudflare -y -g",
-        "skills": [
-          "building-ai-agent-on-cloudflare"
-        ],
-        "source": "cloudflare/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add cloudflare/skills --skill building-mcp-server-on-cloudflare -y -g",
-        "skills": [
-          "building-mcp-server-on-cloudflare"
-        ],
-        "source": "cloudflare/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add cloudflare/skills --skill sandbox-sdk -y -g",
-        "skills": [
-          "sandbox-sdk"
-        ],
-        "source": "cloudflare/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add cloudflare/skills --skill web-perf -y -g",
-        "skills": [
-          "web-perf"
-        ],
-        "source": "cloudflare/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coderabbitai/skills --skill autofix -y -g",
-        "skills": [
-          "autofix"
-        ],
-        "source": "coderabbitai/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill ab-test-setup -y -g",
-        "skills": [
-          "ab-test-setup"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill ad-creative -y -g",
-        "skills": [
-          "ad-creative"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill analytics-tracking -y -g",
-        "skills": [
-          "analytics-tracking"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill competitor-alternatives -y -g",
-        "skills": [
-          "competitor-alternatives"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill copy-editing -y -g",
-        "skills": [
-          "copy-editing"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill email-sequence -y -g",
-        "skills": [
-          "email-sequence"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill form-cro -y -g",
-        "skills": [
-          "form-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill free-tool-strategy -y -g",
-        "skills": [
-          "free-tool-strategy"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill launch-strategy -y -g",
-        "skills": [
-          "launch-strategy"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill lead-magnets -y -g",
-        "skills": [
-          "lead-magnets"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill onboarding-cro -y -g",
-        "skills": [
-          "onboarding-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill page-cro -y -g",
-        "skills": [
-          "page-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill paid-ads -y -g",
-        "skills": [
-          "paid-ads"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill paywall-upgrade-cro -y -g",
-        "skills": [
-          "paywall-upgrade-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill popup-cro -y -g",
-        "skills": [
-          "popup-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill pricing-strategy -y -g",
-        "skills": [
-          "pricing-strategy"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill product-marketing-context -y -g",
-        "skills": [
-          "product-marketing-context"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill referral-program -y -g",
-        "skills": [
-          "referral-program"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill sales-enablement -y -g",
-        "skills": [
-          "sales-enablement"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill schema-markup -y -g",
-        "skills": [
-          "schema-markup"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill signup-flow-cro -y -g",
-        "skills": [
-          "signup-flow-cro"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add coreyhaines31/marketingskills --skill social-content -y -g",
-        "skills": [
-          "social-content"
-        ],
-        "source": "coreyhaines31/marketingskills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add expo/skills --skill expo-api-routes -y -g",
-        "skills": [
-          "expo-api-routes"
-        ],
-        "source": "expo/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add expo/skills --skill expo-tailwind-setup -y -g",
-        "skills": [
-          "expo-tailwind-setup"
-        ],
-        "source": "expo/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add expo/skills --skill native-data-fetching -y -g",
-        "skills": [
-          "native-data-fetching"
-        ],
-        "source": "expo/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add expo/skills --skill use-dom -y -g",
-        "skills": [
-          "use-dom"
-        ],
-        "source": "expo/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add firecrawl/cli --skill firecrawl -y -g",
-        "skills": [
-          "firecrawl"
-        ],
-        "source": "firecrawl/cli",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-adding-home-screen-widgets -y -g",
-        "skills": [
-          "flutter-adding-home-screen-widgets"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-animating-apps -y -g",
-        "skills": [
-          "flutter-animating-apps"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-architecting-apps -y -g",
-        "skills": [
-          "flutter-architecting-apps"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-building-forms -y -g",
-        "skills": [
-          "flutter-building-forms"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-building-layouts -y -g",
-        "skills": [
-          "flutter-building-layouts"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-building-plugins -y -g",
-        "skills": [
-          "flutter-building-plugins"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-caching-data -y -g",
-        "skills": [
-          "flutter-caching-data"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-embedding-native-views -y -g",
-        "skills": [
-          "flutter-embedding-native-views"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-handling-concurrency -y -g",
-        "skills": [
-          "flutter-handling-concurrency"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-handling-http-and-json -y -g",
-        "skills": [
-          "flutter-handling-http-and-json"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-implementing-navigation-and-routing -y -g",
-        "skills": [
-          "flutter-implementing-navigation-and-routing"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-improving-accessibility -y -g",
-        "skills": [
-          "flutter-improving-accessibility"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-interoperating-with-native-apis -y -g",
-        "skills": [
-          "flutter-interoperating-with-native-apis"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-localizing-apps -y -g",
-        "skills": [
-          "flutter-localizing-apps"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-managing-state -y -g",
-        "skills": [
-          "flutter-managing-state"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-reducing-app-size -y -g",
-        "skills": [
-          "flutter-reducing-app-size"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-setting-up-on-linux -y -g",
-        "skills": [
-          "flutter-setting-up-on-linux"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-setting-up-on-macos -y -g",
-        "skills": [
-          "flutter-setting-up-on-macos"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-setting-up-on-windows -y -g",
-        "skills": [
-          "flutter-setting-up-on-windows"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-testing-apps -y -g",
-        "skills": [
-          "flutter-testing-apps"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-theming-apps -y -g",
-        "skills": [
-          "flutter-theming-apps"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add flutter/skills --skill flutter-working-with-databases -y -g",
-        "skills": [
-          "flutter-working-with-databases"
-        ],
-        "source": "flutter/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill defuddle -y -g",
-        "skills": [
-          "defuddle"
-        ],
-        "source": "git@github.com:kepano/obsidian-skills.git",
-        "status": "installed-external",
-        "trustTier": "git"
-      },
-      {
-        "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill json-canvas -y -g",
-        "skills": [
-          "json-canvas"
-        ],
-        "source": "git@github.com:kepano/obsidian-skills.git",
-        "status": "installed-external",
-        "trustTier": "git"
-      },
-      {
-        "command": "npx skills add git@github.com:kepano/obsidian-skills.git --skill obsidian-bases -y -g",
-        "skills": [
-          "obsidian-bases"
-        ],
-        "source": "git@github.com:kepano/obsidian-skills.git",
-        "status": "installed-external",
-        "trustTier": "git"
-      },
-      {
-        "command": "npx skills add heredotnow/skill --skill here-now -y -g",
-        "skills": [
-          "here-now"
-        ],
-        "source": "heredotnow/skill",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill hf-cli -y -g",
-        "skills": [
-          "hf-cli"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-community-evals -y -g",
-        "skills": [
-          "huggingface-community-evals"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-datasets -y -g",
-        "skills": [
-          "huggingface-datasets"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-gradio -y -g",
-        "skills": [
-          "huggingface-gradio"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-jobs -y -g",
-        "skills": [
-          "huggingface-jobs"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-llm-trainer -y -g",
-        "skills": [
-          "huggingface-llm-trainer"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-paper-publisher -y -g",
-        "skills": [
-          "huggingface-paper-publisher"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-papers -y -g",
-        "skills": [
-          "huggingface-papers"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-trackio -y -g",
-        "skills": [
-          "huggingface-trackio"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill huggingface-vision-trainer -y -g",
-        "skills": [
-          "huggingface-vision-trainer"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add huggingface/skills --skill transformers-js -y -g",
-        "skills": [
-          "transformers-js"
-        ],
-        "source": "huggingface/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -y -g",
-        "skills": [
-          "fixing-motion-performance"
-        ],
-        "source": "ibelick/ui-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add itsmostafa/aws-agent-skills --skill cloudwatch -y -g",
-        "skills": [
-          "cloudwatch"
-        ],
-        "source": "itsmostafa/aws-agent-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add langchain-ai/langchain-skills --skill framework-selection -y -g",
-        "skills": [
-          "framework-selection"
-        ],
-        "source": "langchain-ai/langchain-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add leonardomso/rust-skills --skill rust-skills -y -g",
-        "skills": [
-          "rust-skills"
-        ],
-        "source": "leonardomso/rust-skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add muratcankoylan/Agent-Skills-for-Context-Engineering --skill context-engineering-collection -y -g",
-        "skills": [
-          "context-engineering-collection"
-        ],
-        "source": "muratcankoylan/Agent-Skills-for-Context-Engineering",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add nghyane/opencode-plugin-notebooklm --skill nlm-index -y -g",
-        "skills": [
-          "nlm-index"
-        ],
-        "source": "nghyane/opencode-plugin-notebooklm",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add pydantic/skills --skill instrumentation -y -g",
-        "skills": [
-          "instrumentation"
-        ],
-        "source": "pydantic/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-code-style -y -g",
-        "skills": [
-          "golang-code-style"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-context -y -g",
-        "skills": [
-          "golang-context"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-continuous-integration -y -g",
-        "skills": [
-          "golang-continuous-integration"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-data-structures -y -g",
-        "skills": [
-          "golang-data-structures"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-dependency-injection -y -g",
-        "skills": [
-          "golang-dependency-injection"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-dependency-management -y -g",
-        "skills": [
-          "golang-dependency-management"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-design-patterns -y -g",
-        "skills": [
-          "golang-design-patterns"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-documentation -y -g",
-        "skills": [
-          "golang-documentation"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-google-wire -y -g",
-        "skills": [
-          "golang-google-wire"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-naming -y -g",
-        "skills": [
-          "golang-naming"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-do -y -g",
-        "skills": [
-          "golang-samber-do"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-hot -y -g",
-        "skills": [
-          "golang-samber-hot"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-lo -y -g",
-        "skills": [
-          "golang-samber-lo"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-mo -y -g",
-        "skills": [
-          "golang-samber-mo"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-oops -y -g",
-        "skills": [
-          "golang-samber-oops"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-ro -y -g",
-        "skills": [
-          "golang-samber-ro"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-samber-slog -y -g",
-        "skills": [
-          "golang-samber-slog"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-stay-updated -y -g",
-        "skills": [
-          "golang-stay-updated"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-structs-interfaces -y -g",
-        "skills": [
-          "golang-structs-interfaces"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-swagger -y -g",
-        "skills": [
-          "golang-swagger"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-uber-dig -y -g",
-        "skills": [
-          "golang-uber-dig"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add samber/cc-skills-golang --skill golang-uber-fx -y -g",
-        "skills": [
-          "golang-uber-fx"
-        ],
-        "source": "samber/cc-skills-golang",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add sveltejs/ai-tools --skill svelte-code-writer -y -g",
-        "skills": [
-          "svelte-code-writer"
-        ],
-        "source": "sveltejs/ai-tools",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add vercel-labs/agent-browser --skill electron -y -g",
-        "skills": [
-          "electron"
-        ],
-        "source": "vercel-labs/agent-browser",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add wshobson/agents --skill nextjs-app-router-patterns -y -g",
-        "skills": [
-          "nextjs-app-router-patterns"
-        ],
-        "source": "wshobson/agents",
-        "status": "installed-external",
-        "trustTier": "github"
-      }
-    ],
+    "installedCommands": [],
     "syncApply": "uv run wagents skills sync --apply",
     "syncDryRun": "uv run wagents skills sync --dry-run"
   },

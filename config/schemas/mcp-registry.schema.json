@@ -2,51 +2,149 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "McpRegistry",
   "type": "object",
-  "required": ["version", "instruction_source", "servers"],
+  "required": [
+    "version",
+    "instruction_source",
+    "servers"
+  ],
   "properties": {
-    "version": {"const": 1},
-    "instruction_source": {"type": "string", "minLength": 1},
+    "version": {
+      "const": 1
+    },
+    "instruction_source": {
+      "type": "string",
+      "minLength": 1
+    },
     "servers": {
       "type": "object",
       "additionalProperties": {
         "type": "object",
-        "required": ["transport", "command", "args", "env", "enabled", "startup_timeout_sec", "timeout_ms", "tools", "tool_approvals", "platform_overrides"],
+        "required": [
+          "transport",
+          "command",
+          "args",
+          "env",
+          "enabled",
+          "startup_timeout_sec",
+          "timeout_ms",
+          "tools",
+          "tool_approvals",
+          "platform_overrides"
+        ],
         "properties": {
-          "transport": {"type": "string", "minLength": 1},
-          "command": {"type": "string", "minLength": 1},
-          "args": {"type": "array", "items": {"type": "string"}},
-          "env": {"type": "object"},
-          "enabled": {"type": "boolean"},
-          "startup_timeout_sec": {"type": "integer", "minimum": 1},
-          "timeout_ms": {"type": "integer", "minimum": 1},
-          "tools": {"type": "array", "items": {"type": "string"}},
-          "tool_approvals": {"type": "object"},
-          "platform_overrides": {"type": "object"}
+          "transport": {
+            "type": "string",
+            "minLength": 1
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          },
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "env": {
+            "type": "object"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "startup_timeout_sec": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tool_approvals": {
+            "type": "object"
+          },
+          "platform_overrides": {
+            "type": "object"
+          },
+          "tools_allow_all": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": true
       }
     },
     "mcphub": {
       "type": "object",
-      "required": ["enabled", "base_url", "bearer_token_env_var", "groups"],
+      "required": [
+        "enabled",
+        "base_url",
+        "bearer_token_env_var",
+        "groups"
+      ],
       "properties": {
-        "enabled": {"type": "boolean"},
-        "base_url": {"type": "string", "pattern": "^https?://"},
-        "public_url": {"type": "string", "pattern": "^https?://"},
-        "bearer_token_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
-        "startup_timeout_sec": {"type": "integer", "minimum": 1},
-        "tool_timeout_sec": {"type": "integer", "minimum": 1},
-        "settings_path": {"type": "string", "minLength": 1},
-        "openapi_export_path": {"type": "string", "minLength": 1},
+        "enabled": {
+          "type": "boolean"
+        },
+        "base_url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "public_url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "bearer_token_env_var": {
+          "type": "string",
+          "pattern": "^[A-Z_][A-Z0-9_]*$"
+        },
+        "startup_timeout_sec": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tool_timeout_sec": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "settings_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "openapi_export_path": {
+          "type": "string",
+          "minLength": 1
+        },
         "smart_routing": {
           "type": "object",
           "properties": {
-            "enabled_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
-            "default_enabled": {"type": "boolean"},
-            "base_path": {"type": "string", "pattern": "^/"},
-            "database_url_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
-            "embedding_provider_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"},
-            "embedding_model_env_var": {"type": "string", "pattern": "^[A-Z_][A-Z0-9_]*$"}
+            "enabled_env_var": {
+              "type": "string",
+              "pattern": "^[A-Z_][A-Z0-9_]*$"
+            },
+            "default_enabled": {
+              "type": "boolean"
+            },
+            "base_path": {
+              "type": "string",
+              "pattern": "^/"
+            },
+            "database_url_env_var": {
+              "type": "string",
+              "pattern": "^[A-Z_][A-Z0-9_]*$"
+            },
+            "embedding_provider_env_var": {
+              "type": "string",
+              "pattern": "^[A-Z_][A-Z0-9_]*$"
+            },
+            "embedding_model_env_var": {
+              "type": "string",
+              "pattern": "^[A-Z_][A-Z0-9_]*$"
+            }
           },
           "additionalProperties": true
         },
@@ -54,13 +152,23 @@
           "type": "object",
           "additionalProperties": {
             "type": "object",
-            "required": ["enabled", "servers"],
+            "required": [
+              "enabled",
+              "servers"
+            ],
             "properties": {
-              "description": {"type": "string"},
-              "enabled": {"type": "boolean"},
+              "description": {
+                "type": "string"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
               "servers": {
                 "type": "array",
-                "items": {"type": "string", "minLength": 1},
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "uniqueItems": true
               }
             },
@@ -72,45 +180,113 @@
           "additionalProperties": {
             "type": "object",
             "properties": {
-              "transport": {"type": "string"},
-              "auth": {"type": "string"},
-              "command": {"type": "string"},
-              "url": {"type": "string", "pattern": "^https?://"},
-              "url_source": {"enum": ["local", "public"]},
-              "clients": {"type": "array", "items": {"type": "string"}},
+              "transport": {
+                "type": "string"
+              },
+              "auth": {
+                "type": "string"
+              },
+              "command": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string",
+                "pattern": "^https?://"
+              },
+              "url_source": {
+                "enum": [
+                  "local",
+                  "public"
+                ]
+              },
+              "clients": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
               "included_endpoint_kinds": {
                 "type": "array",
-                "items": {"enum": ["all", "group", "server", "smart"]},
+                "items": {
+                  "enum": [
+                    "all",
+                    "group",
+                    "server",
+                    "smart"
+                  ]
+                },
                 "uniqueItems": true
               },
               "enabled_endpoint_kinds": {
                 "type": "array",
-                "items": {"enum": ["all", "group", "server", "smart"]},
+                "items": {
+                  "enum": [
+                    "all",
+                    "group",
+                    "server",
+                    "smart"
+                  ]
+                },
                 "uniqueItems": true
               },
               "enabled_groups": {
                 "type": "array",
-                "items": {"type": "string"},
+                "items": {
+                  "type": "string"
+                },
                 "uniqueItems": true
               },
               "included_groups": {
                 "type": "array",
-                "items": {"type": "string"},
+                "items": {
+                  "type": "string"
+                },
                 "uniqueItems": true
               },
               "included_servers": {
                 "type": "array",
-                "items": {"type": "string"},
+                "items": {
+                  "type": "string"
+                },
                 "uniqueItems": true
               },
-              "enable_server_endpoints": {"type": "boolean"},
-              "server_endpoint_name_style": {"enum": ["prefixed", "base"]}
+              "enable_server_endpoints": {
+                "type": "boolean"
+              },
+              "server_endpoint_name_style": {
+                "enum": [
+                  "prefixed",
+                  "base"
+                ]
+              }
             },
             "additionalProperties": true
           }
         }
       },
       "additionalProperties": true
+    },
+    "contributor_defaults": {
+      "type": "object",
+      "required": [
+        "tools_policy",
+        "wildcard_requires_explicit_opt_in"
+      ],
+      "properties": {
+        "tools_policy": {
+          "const": "deny-by-default"
+        },
+        "wildcard_requires_explicit_opt_in": {
+          "type": "boolean"
+        },
+        "new_server_tools_default": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

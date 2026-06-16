@@ -1,13 +1,13 @@
 ---
 title: "vue"
-description: "Vue 3 Composition API, script setup macros, reactivity system, and built-in components."
+description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
 ---
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="vue" variant="note" /> <Badge text="258 words" variant="default" /> <Badge text="v2026.1.31" variant="success" /> <Badge text="Anthony Fu" variant="caution" /> <Badge text="Installed" variant="caution" />
+<Badge text="vue" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
 
-> Vue 3 Composition API, script setup macros, reactivity system, and built-in components. Use when writing Vue SFCs, defineProps/defineEmits/defineModel, watchers, or using Transition/Teleport/Suspense/KeepAlive.
+> Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 <div class="quick-start">
 
@@ -15,7 +15,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add antfu/skills --skill vue -y -g
+npx skills add antfu/skills --skill vue -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
 **Use:** `/vue`
@@ -25,7 +25,8 @@ npx skills add antfu/skills --skill vue -y -g
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Source & provenance">
-This page is generated from `local installed inventory`.
+This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
+ SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill vue` to refresh research context.
 </Aside>
 
 <Tabs>
@@ -42,103 +43,8 @@ This page is generated from `local installed inventory`.
 | Field | Value |
 | ----- | ----- |
 | Name | `vue` |
-| Version | 2026.1.31 |
-| Author | Anthony Fu |
   </TabItem>
 </Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
----
-name: vue
-description: Vue 3 Composition API, script setup macros, reactivity system, and built-in components. Use when writing Vue SFCs, defineProps/defineEmits/defineModel, watchers, or using Transition/Teleport/Suspense/KeepAlive.
-metadata:
-  author: Anthony Fu
-  version: "2026.1.31"
-  source: Generated from https://github.com/vuejs/docs, scripts at https://github.com/antfu/skills
----
-
-# Vue
-
-> Based on Vue 3.5. Always use Composition API with `<script setup lang="ts">`.
-
-## Preferences
-
-- Prefer TypeScript over JavaScript
-- Prefer `<script setup lang="ts">` over `<script>`
-- For performance, prefer `shallowRef` over `ref` if deep reactivity is not needed
-- Always use Composition API over Options API
-- Discourage using Reactive Props Destructure
-
-## Core
-
-| Topic | Description | Reference |
-|-------|-------------|-----------|
-| Script Setup & Macros | `<script setup>`, defineProps, defineEmits, defineModel, defineExpose, defineOptions, defineSlots, generics | [script-setup-macros](references/script-setup-macros.md) |
-| Reactivity & Lifecycle | ref, shallowRef, computed, watch, watchEffect, effectScope, lifecycle hooks, composables | [core-new-apis](references/core-new-apis.md) |
-
-## Features
-
-| Topic | Description | Reference |
-|-------|-------------|-----------|
-| Built-in Components & Directives | Transition, Teleport, Suspense, KeepAlive, v-memo, custom directives | [advanced-patterns](references/advanced-patterns.md) |
-
-## Quick Reference
-
-### Component Template
-
-```vue
-<script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
-
-const props = defineProps<{
-  title: string
-  count?: number
-}>()
-
-const emit = defineEmits<{
-  update: [value: string]
-}>()
-
-const model = defineModel<string>()
-
-const doubled = computed(() => (props.count ?? 0) * 2)
-
-watch(() => props.title, (newVal) => {
-  console.log('Title changed:', newVal)
-})
-
-onMounted(() => {
-  console.log('Component mounted')
-})
-</script>
-
-<template>
-  <div>{{ title }} - {{ doubled }}</div>
-</template>
-```
-
-### Key Imports
-
-```ts
-// Reactivity
-import { ref, shallowRef, computed, reactive, readonly, toRef, toRefs, toValue } from 'vue'
-
-// Watchers
-import { watch, watchEffect, watchPostEffect, onWatcherCleanup } from 'vue'
-
-// Lifecycle
-import { onMounted, onUpdated, onUnmounted, onBeforeMount, onBeforeUpdate, onBeforeUnmount } from 'vue'
-
-// Utilities
-import { nextTick, defineComponent, defineAsyncComponent } from 'vue'
-```
-
-````
-
-</details>
 
 ## Resources
 
