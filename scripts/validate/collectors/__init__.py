@@ -1,0 +1,1 @@
+"""Error collectors for full-repo validation."""

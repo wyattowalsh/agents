@@ -43,12 +43,18 @@ line-length = 120
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
+[tool.ruff.lint.per-file-ignores]
+"scripts/validate/**" = ["E402"]
+"skills/skill-creator/scripts/asset_toolkit/**" = ["E402"]
+
 # Keep Ty explicitly declared for config discovery, scoped checks, and tooling detection.
 [tool.ty.environment]
 python-version = "3.13"
 
 [tool.ty.src]
 include = ["wagents", "scripts"]
+# scripts/validate uses runtime sys.path bootstrap (ruff E402 ignored); exclude from ty.
+exclude = ["scripts/validate/**"]
 
 [tool.ty.terminal]
 error-on-warning = true
