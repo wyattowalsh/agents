@@ -14,7 +14,6 @@ from wagents.parsing import (
     escape_attr,
     sanitize_catalog_links,
     shift_headings,
-    strip_relative_md_links,
     truncate_sentence,
 )
 from wagents.site_model import (
@@ -349,12 +348,11 @@ def _section_is_link_heavy(content: str) -> bool:
     links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", content)
     if not links:
         return False
-    relative = 0
-    for _label, target in links:
-        target = target.strip()
-        if target.startswith(("http://", "https://", "mailto:", "tel:", "/")):
-            continue
-        relative += 1
+    relative = sum(
+        1
+        for _, target in links
+        if not target.strip().startswith(("http://", "https://", "mailto:", "tel:", "/"))
+    )
     return relative / len(links) > 0.5
 
 
@@ -928,7 +926,7 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     if node.body:
         parts.append("## System Prompt")
         parts.append("")
-        parts.append(strip_relative_md_links(escape_mdx(shift_headings(node.body, 1))))
+        parts.append(_catalog_prose(shift_headings(node.body, 1)))
         parts.append("")
 
     outer_fence = safe_outer_fence(raw_content)
