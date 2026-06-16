@@ -12,10 +12,10 @@ from pathlib import Path
 from typing import Any
 
 from wagents.platforms.base import assert_no_config_drops
-from wagents.repo_paths import render_portable_path, resolve_portable_path
 from wagents.platforms.grok import (
     render_grok_config as _render_grok_config,
 )
+from wagents.repo_paths import render_portable_path, resolve_portable_path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = REPO_ROOT / "config"
