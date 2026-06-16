@@ -1,8 +1,8 @@
 ---
 name: discover-skills
 description: >-
-  Discover AI agent skills via gap analysis, registry search, and ideation.
-  Use when expanding your collection systematically.
+  Discover skills, MCP, plugins, and harness gaps via programmatic audits,
+  coordinator manifests, and parallel scouts. Use for systematic expansion.
   NOT for creating skills (skill-creator) or ad-hoc search (find-skills).
 argument-hint: "[mode] [query]"
 model: opus
@@ -28,14 +28,14 @@ NOT for: ad-hoc "find me a skill for X" queries (use `vercel-labs/skills@find-sk
 
 ## Dispatch
 
-| `$ARGUMENTS` | Action |
-|------------|--------|
-| *(empty)* / `discover` | **Full discovery**: audit → research → ideate → interactive report |
-| `audit` | **Audit only**: deep audit of existing skills, output gap analysis |
-| `research [focus]` | **Research only**: web research, optionally focused on a domain |
-| `ideate` | **Ideate only**: propose custom skills from prior audit/research |
-| `resume [N or keyword]` | **Resume**: continue a saved discovery session |
-| `list` | **List**: show saved discovery sessions |
+| `$ARGUMENTS`                 | Action                                                               |
+| ---------------------------- | -------------------------------------------------------------------- |
+| _(empty)_ / `discover`       | **Full discovery**: audit → research → ideate → interactive report   |
+| `audit`                      | **Audit only**: deep audit of existing skills, output gap analysis   |
+| `research [focus]`           | **Research only**: web research, optionally focused on a domain      |
+| `ideate`                     | **Ideate only**: propose custom skills from prior audit/research     |
+| `resume [N or keyword]`      | **Resume**: continue a saved discovery session                       |
+| `list`                       | **List**: show saved discovery sessions                              |
 | `install <owner/repo@skill>` | **Install**: install a previously discovered skill with confirmation |
 
 ### Auto-Detection Heuristic
@@ -49,66 +49,66 @@ If no mode keyword matches:
 
 ### Skill Awareness
 
-| Signal | Redirect |
-|--------|----------|
-| "Find me a skill for X" (ad-hoc query) | Suggest `npx skills find <query>` or `vercel-labs/skills@find-skills` |
-| "Create a new skill" | Redirect to `/skill-creator` |
-| "Install X skill" (known skill) | Run `npx skills add <source> -s <name> -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode` directly |
+| Signal                                 | Redirect                                                                                                                                |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| "Find me a skill for X" (ad-hoc query) | Suggest `npx skills find <query>` or `vercel-labs/skills@find-skills`                                                                   |
+| "Create a new skill"                   | Redirect to `/skill-creator`                                                                                                            |
+| "Install X skill" (known skill)        | Run `npx skills add <source> -s <name> -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode` directly |
 
 ## Vocabulary
 
-| Term | Definition |
-|------|-----------|
-| **gap** | A domain or capability with no existing skill coverage |
-| **coverage** | Score (None/Low/Medium/Good) of existing skill depth per domain |
-| **domain** | A category of skill functionality (e.g., Testing, Frontend, Security) |
-| **candidate** | An external skill discovered during research, not yet installed |
-| **proposal** | A custom skill idea with spec sketch, not yet created |
-| **journal** | A saved discovery session in `~/.{gemini|copilot|codex|claude}/discover-skills/` |
-| **auditor** | Teammate that reads and categorizes all existing skills |
-| **registry-scout** | Teammate that searches skills.sh via `npx skills find` |
-| **web-researcher** | Teammate that searches GitHub, blogs, HN, Reddit |
-| **ideator** | Teammate that synthesizes gaps + research into proposals |
+| Term               | Definition                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| **gap**            | A domain or capability with no existing skill coverage                               |
+| **coverage**       | Score (None/Low/Medium/Good) of existing skill depth per domain                      |
+| **domain**         | A category of skill functionality (e.g., Testing, Frontend, Security)                |
+| **candidate**      | An external skill discovered during research, not yet installed                      |
+| **proposal**       | A custom skill idea with spec sketch, not yet created                                |
+| **journal**        | A saved discovery session in `~/.{gemini|copilot|codex|claude}/discover-skills/`     |
+| **auditor**        | Teammate that reads and categorizes all existing skills                              |
+| **registry-scout** | Teammate that searches skills.sh via `npx skills find`                               |
+| **web-researcher** | Teammate that searches GitHub, blogs, HN, Reddit                                     |
+| **ideator**        | Teammate that synthesizes gaps + research into proposals                             |
 
 ## Orchestration: Pattern E Team
 
-```
-Lead (orchestrate + synthesize + present interactive report)
-  ├── auditor
-  │     Wave 1a: parallel subagents read repo skills (skills/*/SKILL.md)
-  │     Wave 1b: read installed skills (~/.{gemini|copilot|codex|claude}/skills/ + installed.mdx)
-  │     → domain taxonomy, coverage scores, gap report (JSON)
-  │
-  ├── registry-scout
-  │     Wave 2a: 15-20 parallel `npx skills find <query>` subagents
-  │              (queries from references/research-queries.md, targeted by gap report)
-  │     Wave 2b: deduplicate against existing skills
-  │     → ranked external skill candidates with install commands
-  │
-  ├── web-researcher
-  │     Wave 2a: parallel subagents across sources:
-  │       - brave-search for "AI agent skills" + domain keywords
-  │       - GitHub search for skill repos (SKILL.md in:path)
-  │       - Community: Reddit, HN, dev.to, blog posts
-  │     Wave 2b: fetch + extract promising leads
-  │     → skill ideas from the web not on the registry
-  │
-  └── ideator
-        Wave 3: synthesize gaps + all research findings
-        → spec sketches (name, description, use cases, scope, complexity)
+### Wave 0 — Deterministic scans (lead runs scripts)
+
+Run scripts from `references/coordinator-contract.md` to produce `artifacts/<session>/wave0/gap-report.json`. Do not hand-author gap JSON.
+
+### Wave 1 — Repo auditors
+
+Parallel subagents confirm domain tags for skill batches. Write `scout-artifact` JSON to paths in the W1 manifest (optional when W0 gap report is trusted).
+
+### Wave 2 — Scouts (max 24 parallel)
+
+```bash
+python skills/discover-skills/scripts/coordinator.py plan --gap ... --wave 2 ...
 ```
 
-### Wave Sequencing
+| Role | Tooling |
+|------|---------|
+| registry-scout | `scripts/npx_skills.py find` per manifest query |
+| web-researcher | Bounded research per `references/research-integration.md` |
+| mcp-scout | `scripts/mcp_scan.py` + gap MCP section |
+| harness-scout | `scripts/invoke_surfaces.py` |
+| plugin-scout | `scripts/plugin_scan.py` |
+| policy-scout | Read `config/external-skills.md` + planning manifests (evidence only) |
 
+After scouts:
+
+```bash
+python skills/discover-skills/scripts/coordinator.py verify --manifest ... --artifacts ...
+python skills/discover-skills/scripts/merge_artifacts.py --artifacts ... -o .../merged/candidates.json
 ```
-Wave 1: auditor (produces gap report needed by Wave 2)
-    ↓ gap report shared via lead
-Wave 2: registry-scout + web-researcher (parallel, both use gap report)
-    ↓ all findings shared via lead
-Wave 3: ideator (synthesizes everything into proposals)
-    ↓ all outputs to lead
-Wave 4: lead synthesizes interactive report (inline)
-```
+
+### Wave 3 — Ideator
+
+Synthesize proposals from gap report + merged candidates.
+
+### Wave 4 — Lead report
+
+Interactive report per `references/output-formats.md` (sections A–E: skills, MCP, plugins, harness, custom).
 
 **Dependency rule**: Wave N+1 cannot start until all Wave N agents are accounted for (Accounting Rule: N dispatched = N resolved).
 
@@ -118,38 +118,39 @@ All teammates and their nested subagents use `opus`. No downgrades.
 
 ### Mode-Specific Orchestration
 
-| Mode | Teammates Used | Waves |
-|------|---------------|-------|
-| Full discovery | All 4 | 1 → 2 → 3 → 4 |
-| Audit only | auditor | 1 only |
-| Research [focus] | registry-scout + web-researcher | 2 only (with focus filter) |
-| Ideate | ideator | 3 only (requires prior journal; if none found, ask user to run `audit` first or switch to full discovery) |
-| Resume | Lead only | Load journal → reconstruct state → continue from last wave |
-| List | Lead only | Scan journals → display |
+| Mode             | Teammates Used                  | Waves                                                                                                     |
+| ---------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Full discovery   | All 4                           | 1 → 2 → 3 → 4                                                                                             |
+| Audit only       | auditor                         | 1 only                                                                                                    |
+| Research [focus] | registry-scout + web-researcher | 2 only (with focus filter)                                                                                |
+| Ideate           | ideator                         | 3 only (requires prior journal; if none found, ask user to run `audit` first or switch to full discovery) |
+| Resume           | Lead only                       | Load journal → reconstruct state → continue from last wave                                                |
+| List             | Lead only                       | Scan journals → display                                                                                   |
 
 ## Quality Verification
 
 Before recommending any external skill:
 
-| Signal | Threshold | Below threshold |
-|--------|-----------|-----------------|
-| Install count | >= 500 preferred | Move to "Worth Investigating" tier |
-| Source reputation | Official repos preferred | Flag unknown authors |
-| Duplication | Must not overlap existing skill | Exclude or note as "alternative to X" |
-| Recency | Updated within 6 months | Flag as potentially stale |
+| Signal            | Threshold                       | Below threshold                       |
+| ----------------- | ------------------------------- | ------------------------------------- |
+| Install count     | >= 500 preferred                | Move to "Worth Investigating" tier    |
+| Source reputation | Official repos preferred        | Flag unknown authors                  |
+| Duplication       | Must not overlap existing skill | Exclude or note as "alternative to X" |
+| Recency           | Updated within 6 months         | Flag as potentially stale             |
 
 **Confidence tiers**:
+
 - **High**: >= 1K installs + reputable source + fills clear gap
 - **Medium**: 100-999 installs or less-known source but fills gap
 - **Investigate**: < 100 installs or unclear quality, but interesting concept
 
 ## Scaling Strategy
 
-| Collection Size | Audit Strategy | Research Queries | Subagent Count |
-|----------------|---------------|------------------|----------------|
-| Small (< 20 skills) | Single auditor pass | 10 targeted queries | 4-6 |
-| Medium (20-100 skills) | Parallel auditor subagents by domain | 20 queries | 10-15 |
-| Large (100+ skills) | Domain-partitioned waves, prune low-priority domains | Full 42 queries | 20+ |
+| Collection Size        | Audit Strategy                                       | Research Queries    | Subagent Count |
+| ---------------------- | ---------------------------------------------------- | ------------------- | -------------- |
+| Small (< 20 skills)    | Single auditor pass                                  | 10 targeted queries | 4-6            |
+| Medium (20-100 skills) | Parallel auditor subagents by domain                 | 20 queries          | 10-15          |
+| Large (100+ skills)    | Domain-partitioned waves, prune low-priority domains | Full 42 queries     | 20+            |
 
 ## Interactive Report Format
 
@@ -157,51 +158,76 @@ Before recommending any external skill:
 ## Discovery Report — {date}
 
 ### Coverage Summary
+
 | Domain | Existing Skills | Coverage | Gaps |
-|--------|----------------|----------|------|
+| ------ | --------------- | -------- | ---- |
 
 ### A. External Skills to Install ({N} found)
 
 #### High Confidence
-| # | Skill | Source | Installs | Install Command | Fills Gap |
-|---|-------|--------|----------|-----------------|-----------|
+
+| #   | Skill | Source | Installs | Install Command | Fills Gap |
+| --- | ----- | ------ | -------- | --------------- | --------- |
 
 #### Worth Investigating
-| # | Skill | Source | URL | Notes |
-|---|-------|--------|-----|-------|
+
+| #   | Skill | Source | URL | Notes |
+| --- | ----- | ------ | --- | ----- |
 
 ### B. Custom Skills to Create ({N} proposals)
-| # | Name | Description | Use Cases | NOT For | Complexity |
-|---|------|-------------|-----------|---------|------------|
+
+| #   | Name | Description | Use Cases | NOT For | Complexity |
+| --- | ---- | ----------- | --------- | ------- | ---------- |
 
 > Pick numbers to install (A) or create (B), or type "all A" / "all B".
 ```
 
 After the user picks:
+
 - **Install**: run `npx skills add <source> -s <name> -g -y -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`
-- **Create**: surface the command `wagents new skill <name>` and suggest running `/skill-creator create <name>`
+- **Create**: surface `python skills/skill-creator/scripts/scaffold_skill.py <name>` and suggest running `/skill-creator create <name>`
 
 ## State Management
 
 - **Path**: `~/.{gemini|copilot|codex|claude}/discover-skills/`
 - **Filename**: `{YYYY-MM-DD}-discovery-{slug}.md`
 - **Format**: YAML frontmatter + markdown body + `<!-- STATE -->` blocks
+- **v2 fields**: `session_version: 2`, `artifact_root` (path to `artifacts/<session_id>/`)
 - **Tracks**: `discovered_external`, `discovered_custom`, `installed`, `rejected`
 - **Script**: `!uv run python skills/discover-skills/scripts/journal-store.py`
 
 **Save protocol**:
+
 - Audit only: save once after gap report
 - Full discovery: save after each wave; final save after report
 - Resume: load prior journal, check for new skills since last run
 
 **Resume protocol**:
+
 1. `resume` (no args): find `status: In Progress` journals. One → auto-resume. Multiple → show list.
 2. `resume N`: Nth journal from `list` output.
 3. `resume keyword`: search frontmatter for match.
 
 **Install protocol**:
+
 1. `install <owner/repo@skill>`: run the install command directly after confirmation.
 2. `install <name-or-number>`: look up the most recent journal, search `discovered_external` for a matching candidate by name or report number, extract the stored install command, confirm with user, then run.
+
+## Validation Contract
+
+After changing this skill, all commands must pass:
+
+```bash
+uv run python skills/discover-skills/scripts/check.py
+uv run pytest tests/test_discovery_gap_engine.py tests/test_discovery_coordinator.py \
+  tests/test_discovery_schemas.py tests/test_discover_journal_store.py tests/test_skills_no_wagents.py -q
+uv run python skills/discover-skills/scripts/parity_check.py
+uv run python skills/discover-skills/scripts/validate_session.py artifacts/<sid>/wave0/gap-report.json
+```
+
+`check.py` also runs `audit.py` (score >= 80) and `package.py --dry-run`.
+
+**Completion criteria:** portable check exit 0, discovery tests green, parity `ok: true`, wave-2 `expected_count <= 24`, coordinator `verify` returns `ok: true` only when every manifest task has a valid scout artifact.
 
 ## Critical Rules
 
@@ -218,11 +244,16 @@ After the user picks:
 
 ## Reference File Index
 
-| File | Content | Load When |
-|------|---------|-----------|
-| `references/research-queries.md` | 42+ validated registry queries, GitHub/web/community search patterns, known-good repos | Wave 2 (before dispatching research teammates) |
-| `references/gap-analysis.md` | 18-domain taxonomy, coverage scoring rubric, gap priority formula | Wave 1 (during audit), Wave 4 (building coverage summary) |
-| `references/team-templates.md` | Full spawn prompts for all 4 teammates with role, input, output, quality checks | Wave 0 (before spawning team) |
-| `references/output-formats.md` | Full report template, install command template, spec sketch template, journal format | Wave 4 (formatting output) |
+| File                             | Content                                                                                | Load When                                                 |
+| -------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `references/research-queries.md` | 42+ validated registry queries, GitHub/web/community search patterns, known-good repos | Wave 2 (before dispatching research teammates)            |
+| `data/discovery-taxonomy.json`   | Machine source of truth for domains, coverage, scout queries                         | Wave 0 (gap_engine input)                                 |
+| `references/coordinator-contract.md` | W0 commands, manifest schema, verify gate, merge                                 | Wave 0–2 (before scouts)                                  |
+| `references/research-integration.md` | Web-researcher boundaries vs `/research`                                         | Wave 2 (web scouts)                                       |
+| `references/gap-analysis.md`     | Generated summary of taxonomy (run `render_gap_reference.py`)                        | Wave 4 (coverage summary)                                 |
+| `references/scout-templates.md`  | Manifest-driven W2 scout prompts and artifact contract                               | Wave 2 (per manifest task)                                |
+| `references/team-templates.md`   | Legacy full-team spawn prompts                                                      | Wave 2 (only if manifest unavailable)                     |
+| `data/schemas/*.schema.json`     | JSON contracts for gap-report, wave-manifest, scout-artifact                         | Wave 0–2 (validate_session / coordinator)                 |
+| `references/output-formats.md`   | Full report template, install command template, spec sketch template, journal format   | Wave 4 (formatting output)                                |
 
 **Loading rule**: Load ONE reference at a time per the "Load When" column. Do not preload.

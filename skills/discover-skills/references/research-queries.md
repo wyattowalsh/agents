@@ -129,24 +129,37 @@ Curated list of repositories with verified, high-quality skills.
 
 | Repository | Notable Skills | Installs |
 |---|---|---|
+| `coreyhaines31/marketingskills` | seo-audit, copywriting, cro, analytics | 136K, 126K, 58K, 58K |
+| `shadcn/ui` | shadcn | 189K |
+| `arvindrk/extract-design-system` | extract-design-system | 123K |
 | `vercel-labs/agent-skills` | react-best-practices, web-design-guidelines | 240K, 192K |
-| `anthropics/skills` | frontend-design, mcp-builder, webapp-testing, doc-coauthoring | 191K, 26K, 31K, 18K |
-| `google-labs-code/stitch-skills` | react:components, design-md, enhance-prompt | 22K, 21K, 18K |
+| `pbakaus/impeccable` | impeccable | 159K |
+| `emilkowalski/skill` | emil-design-eng | 92K |
+| `sleekdotdesign/agent-skills` | sleek-design-mobile-apps | 212K |
+| `wshobson/agents` | tailwind-design-system, sql-optimization-patterns, k8s-security-policies | 48K, 15K, 11K |
+| `kepano/obsidian-skills` | obsidian-markdown, obsidian-cli | 44K, 38K |
+| `mattpocock/skills` | obsidian-vault | 39K |
+| `antfu/skills` | vite, slidev, vue | 26K, 10K, 26K |
+| `hyf0/vue-skills` | vue-best-practices | 23K |
+| `flutter/skills` | flutter-apply-architecture-best-practices, flutter-build-responsive-layout | 17K, 17K |
+| `prisma/skills` | prisma-client-api, prisma-cli, prisma-upgrade-v7 | 11K, 10K, 4K |
+| `hashicorp/agent-skills` | terraform-style-guide, terraform-test, terraform-stacks | 6K, 4K, 3K |
+| `apollographql/skills` | graphql-schema, apollo-federation, apollo-server | 2K, 1K, 2K |
+| `redis/agent-skills` | redis-core, redis-vector-search | 452, 265 |
+| `neondatabase/agent-skills` | neon-postgres, neon-postgres-branches | 41K, 384 |
+| `samber/cc-skills-golang` | golang-concurrency, golang-testing, golang-security | 4K |
+| `antonbabenko/terraform-skill` | terraform-skill | — |
+| `aws/agent-toolkit-for-aws` | aws-iam, aws-serverless | 2K |
+| `getsentry/skills` | skill-scanner | 1.2K |
+| `boristane/agent-skills` | logging-best-practices | 3.5K |
+| `ejirocodes/agent-skills` | svelte5-best-practices | 3.6K |
+| `avdlee/swift-concurrency-agent-skill` | swift-concurrency | 12K |
 | `addyosmani/web-quality-skills` | web-quality-audit, performance, seo, accessibility | 6K, 4K |
-| `coreyhaines31/marketingskills` | seo-audit, analytics-tracking | 52K, 24K |
 | `expo/skills` | building-native-ui, expo-tailwind-setup | 21K, 13K |
+| `google-labs-code/stitch-skills` | react:components, design-md, enhance-prompt | 22K, 21K, 18K |
 | `inferen-sh/skills` | python-executor, python-sdk, agent-tools | 13K, 102K |
-| `getsentry/skills` | skill-scanner, skill-writer, security-review | 1.2K |
-| `getsentry/sentry-agent-skills` | sentry-setup-logging | 262 |
-| `hashicorp/agent-skills` | terraform-style-guide, terraform-test | 2.1K, 1.2K |
-| `neondatabase/agent-skills` | neon-postgres | 12.7K |
-| `redis/agent-skills` | redis-development | 940 |
 | `stripe/ai` | stripe-best-practices, upgrade-stripe | — |
-| `apollographql/skills` | graphql-schema, apollo-client | 950, 1.5K |
-| `prisma/skills` | prisma-database-setup | 3K |
-| `clerk/skills` | clerk-nextjs-patterns | 4.9K |
-| `better-auth/skills` | better-auth-best-practices | 26.8K |
-| `sleekdotdesign/agent-skills` | sleek-design-mobile-apps | 25.4K |
-| `ibelick/ui-skills` | fixing-accessibility | 4.8K |
-| `github/awesome-copilot` | 45+ skills across many domains | varied |
+| `github/awesome-copilot` | sql-optimization, multi-stage-dockerfile, secret-scanning | 12K, 16K, 3K |
+| `anthropics/skills` | frontend-design, mcp-builder, webapp-testing | 191K, 26K, 31K |
 | `obra/superpowers` | brainstorming, TDD, debugging, writing-plans | — |
+| `xixu-me/skills` | github-actions-docs (keep global-only) | 216K |

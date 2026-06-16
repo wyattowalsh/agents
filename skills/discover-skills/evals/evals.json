@@ -1,0 +1,54 @@
+{
+  "skill_name": "discover-skills",
+  "evals": [
+    {
+      "id": "w0-gap-engine",
+      "prompt": "Run full discovery audit only for this repo.",
+      "expected_output": "Runs W0 scripts from coordinator-contract.md, produces gap-report.json via gap_engine.py, and does not spawn scouts before gap report exists.",
+      "assertions": [
+        "Uses deterministic scripts before agentic scouts",
+        "Gap report includes domain priorities from taxonomy",
+        "Read-only hooks respected"
+      ]
+    },
+    {
+      "id": "coordinator-accounting",
+      "prompt": "Plan wave 2 scouts from the gap report, then verify accounting before ideation.",
+      "expected_output": "Emits wave manifest with expected_count, writes scout artifacts to manifest paths, and blocks ideation until coordinator verify returns ok true.",
+      "assertions": [
+        "Uses coordinator plan and verify",
+        "Enforces N dispatched equals N resolved",
+        "Does not install skills without user confirmation"
+      ]
+    },
+    {
+      "id": "negative-ad-hoc-find",
+      "prompt": "Find me a skill for Redis caching right now.",
+      "expected_output": "Redirects to ad-hoc find-skills or npx skills find rather than full discover-skills orchestration.",
+      "assertions": [
+        "Identifies ad-hoc query",
+        "Does not spawn full Pattern E team by default"
+      ]
+    },
+    {
+      "id": "implicit-trigger-full-discovery",
+      "prompt": "What skills am I missing in this repo?",
+      "expected_output": "Auto-invokes discover-skills full discovery: W0 deterministic scans, gap report, then coordinator-planned scouts — not a one-off npx find.",
+      "assertions": [
+        "Treats question syntax as full discovery per auto-detection heuristic",
+        "Runs gap_engine before scouts",
+        "Does not install without user confirmation"
+      ]
+    },
+    {
+      "id": "scope-refusal-skill-creator",
+      "prompt": "/discover-skills create a new skill called redis-cache-helper",
+      "expected_output": "Refuses skill authoring scope and redirects to skill-creator; does not scaffold SKILL.md.",
+      "assertions": [
+        "Names skill-creator as the correct alternative",
+        "Does not run scaffold or write skill files",
+        "Read-only hooks remain enforced"
+      ]
+    }
+  ]
+}

@@ -91,7 +91,7 @@ Output of ideator for custom skill proposals:
 
 **Notes**: {any relevant context, similar external skills, structural references}
 
-**Create**: `wagents new skill {name}` then `/skill-creator create {name}`
+**Create**: `python skills/skill-creator/scripts/scaffold_skill.py {name}` then `/skill-creator create {name}`
 ```
 
 ---

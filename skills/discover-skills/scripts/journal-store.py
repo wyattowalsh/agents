@@ -38,6 +38,7 @@ from typing import Any
 
 JOURNAL_DIR = get_agent_dir("discover-skills")
 ARCHIVE_DIR = JOURNAL_DIR / "archive"
+SESSION_VERSION = 2
 
 
 # --- YAML frontmatter parsing (stdlib only, no pyyaml) ---
@@ -427,6 +428,8 @@ def cmd_init(args: argparse.Namespace) -> None:
 
     meta: dict[str, Any] = {
         "session_type": "discovery",
+        "session_version": SESSION_VERSION,
+        "artifact_root": getattr(args, "artifact_root", None) or "",
         "focus": focus if focus else "",
         "status": "In Progress",
         "created": now,
@@ -477,6 +480,9 @@ def cmd_save(args: argparse.Namespace) -> None:
         meta["status"] = args.status
     if args.wave is not None:
         meta["last_wave"] = args.wave
+    if getattr(args, "artifact_root", None):
+        meta["artifact_root"] = args.artifact_root
+        meta["session_version"] = SESSION_VERSION
 
     # Parse and merge candidates
     parsed_candidates: list[Any] | None = None
@@ -641,6 +647,8 @@ def cmd_resume(args: argparse.Namespace) -> None:
 
     # Compute resume context
     resume_context = {
+        "session_version": int(meta.get("session_version", 1)),
+        "artifact_root": meta.get("artifact_root", ""),
         "last_wave": meta.get("last_wave", 0),
         "last_updated": meta.get("updated", ""),
         "candidates_found": meta.get("candidates_found", 0),
@@ -749,6 +757,11 @@ def main() -> None:
     sp_init.add_argument(
         "--focus", default=None, help="Optional domain focus for this discovery session."
     )
+    sp_init.add_argument(
+        "--artifact-root",
+        default=None,
+        help="Filesystem path to artifacts/<session_id>/ for this run.",
+    )
 
     # save
     sp_save = sub.add_parser("save", help="Update an existing discovery journal.")
@@ -767,6 +780,11 @@ def main() -> None:
     )
     sp_save.add_argument(
         "--installed", default=None, help="JSON string of installed skills array."
+    )
+    sp_save.add_argument(
+        "--artifact-root",
+        default=None,
+        help="Update artifacts/<session_id>/ path for resume.",
     )
 
     # load

@@ -40,7 +40,7 @@ def journal_dir(tmp_path, monkeypatch):
 
 def _init_journal(journal_dir: Path, focus: str = "test domain") -> dict:
     """Create a journal via cmd_init and return the parsed JSON result."""
-    args = argparse.Namespace(focus=focus)
+    args = argparse.Namespace(focus=focus, artifact_root=None)
     import io
 
     buf = io.StringIO()
@@ -143,11 +143,31 @@ def test_cmd_init_creates_journal(journal_dir):
     text = path.read_text(encoding="utf-8")
     meta, body = jmod.parse_frontmatter(text)
     assert meta["session_type"] == "discovery"
+    assert meta["session_version"] == jmod.SESSION_VERSION
+    assert meta["artifact_root"] == ""
     assert meta["focus"] == "AI tooling"
     assert meta["status"] == "In Progress"
     assert meta["candidates_found"] == 0
     assert "created" in meta
     assert "updated" in meta
+
+
+def test_cmd_init_sets_artifact_root(journal_dir):
+    """cmd_init --artifact-root stores v2 resume path."""
+    args = argparse.Namespace(
+        focus="testing",
+        artifact_root="artifacts/test-session-01",
+    )
+    import io
+
+    buf = io.StringIO()
+    with patch.object(sys, "stdout", buf):
+        jmod.cmd_init(args)
+    result = json.loads(buf.getvalue())
+
+    meta = result["metadata"]
+    assert meta["session_version"] == 2
+    assert meta["artifact_root"] == "artifacts/test-session-01"
 
 
 # ---------------------------------------------------------------------------
@@ -168,6 +188,7 @@ def test_cmd_save_stores_full_data(journal_dir):
         candidates=json.dumps(candidates),
         proposals=None,
         installed=None,
+        artifact_root=None,
     )
     import io
 
@@ -202,6 +223,7 @@ def test_cmd_save_rejects_non_list_json(journal_dir):
         candidates='{"bad": true}',
         proposals=None,
         installed=None,
+        artifact_root=None,
     )
     with pytest.raises(SystemExit) as exc_info:
         jmod.cmd_save(save_args)
@@ -259,6 +281,7 @@ def test_state_block_timestamp_parsed(journal_dir):
         candidates='[{"name": "x"}]',
         proposals=None,
         installed=None,
+        artifact_root=None,
     )
     import io
 
@@ -296,6 +319,7 @@ def test_cmd_resume_returns_resume_context(journal_dir):
         candidates='[{"name": "x"}]',
         proposals=None,
         installed=None,
+        artifact_root=None,
     )
     import io
 
@@ -320,6 +344,8 @@ def test_cmd_resume_returns_resume_context(journal_dir):
     assert "rejected" in rc
     assert rc["last_wave"] == 1
     assert rc["candidates_found"] == 1
+    assert rc["session_version"] == 2
+    assert "artifact_root" in rc
 
 
 # ---------------------------------------------------------------------------

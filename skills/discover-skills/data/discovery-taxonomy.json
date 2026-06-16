@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "coverage_severity": {
+    "none": 5,
+    "low": 3,
+    "medium": 1,
+    "good": 0,
+    "full": 0
+  },
+  "default_domain_relevance": 2,
+  "default_solution_availability": 2,
+  "priority_high": 9,
+  "priority_medium": 4,
+  "dedup_exclusions": ["find-skills"],
+  "domains": [
+    {
+      "id": "code-quality",
+      "name": "Code Quality",
+      "existing_skills": ["honest-review", "tech-debt-analyzer"],
+      "coverage": "medium",
+      "scout_queries": ["code review", "tech debt", "refactoring"]
+    },
+    {
+      "id": "testing",
+      "name": "Testing",
+      "existing_skills": ["test-architect", "playwright-best-practices"],
+      "coverage": "medium",
+      "scout_queries": ["testing", "playwright", "e2e testing"]
+    },
+    {
+      "id": "devops-ci",
+      "name": "DevOps/CI",
+      "existing_skills": ["devops-engineer", "infrastructure-coder"],
+      "coverage": "medium",
+      "scout_queries": ["ci cd", "github actions", "devops"]
+    },
+    {
+      "id": "api-backend",
+      "name": "API/Backend",
+      "existing_skills": ["api-designer", "database-architect", "mcp-creator"],
+      "coverage": "good",
+      "scout_queries": ["api design", "graphql", "rest api"]
+    },
+    {
+      "id": "frontend",
+      "name": "Frontend",
+      "existing_skills": ["frontend-designer"],
+      "coverage": "low",
+      "scout_queries": ["react", "tailwind", "frontend design", "shadcn"]
+    },
+    {
+      "id": "documentation",
+      "name": "Documentation",
+      "existing_skills": ["docs-steward", "changelog-writer", "add-badges"],
+      "coverage": "good",
+      "scout_queries": ["documentation", "changelog", "readme"]
+    },
+    {
+      "id": "research-analysis",
+      "name": "Research/Analysis",
+      "existing_skills": ["research", "data-wizard", "wargame", "host-panel"],
+      "coverage": "good",
+      "scout_queries": ["research", "data analysis"]
+    },
+    {
+      "id": "workflow",
+      "name": "Workflow",
+      "existing_skills": ["orchestrator", "git-workflow", "shell-scripter"],
+      "coverage": "good",
+      "scout_queries": ["git workflow", "orchestration", "shell"]
+    },
+    {
+      "id": "ai-prompting",
+      "name": "AI/Prompting",
+      "existing_skills": ["prompt-engineer", "skill-creator", "reasoning-router"],
+      "coverage": "good",
+      "scout_queries": ["prompt engineering", "skill creator", "agent skills"]
+    },
+    {
+      "id": "naming-branding",
+      "name": "Naming/Branding",
+      "existing_skills": ["namer", "email-whiz"],
+      "coverage": "medium",
+      "scout_queries": ["naming", "branding"]
+    },
+    {
+      "id": "language-conventions",
+      "name": "Language Conventions",
+      "existing_skills": ["python-conventions", "javascript-conventions", "agent-conventions"],
+      "coverage": "medium",
+      "scout_queries": ["python conventions", "javascript conventions"]
+    },
+    {
+      "id": "security",
+      "name": "Security",
+      "existing_skills": ["security-scanner", "codeql", "semgrep"],
+      "coverage": "good",
+      "scout_queries": ["security audit", "sast", "semgrep"]
+    },
+    {
+      "id": "web-quality",
+      "name": "Web Quality",
+      "existing_skills": [],
+      "coverage": "none",
+      "scout_queries": ["accessibility", "lighthouse", "core web vitals", "seo audit"]
+    },
+    {
+      "id": "mobile",
+      "name": "Mobile",
+      "existing_skills": [],
+      "coverage": "none",
+      "scout_queries": ["react native", "flutter", "expo", "mobile development"]
+    },
+    {
+      "id": "observability",
+      "name": "Observability",
+      "existing_skills": [],
+      "coverage": "none",
+      "scout_queries": ["observability", "opentelemetry", "logging", "monitoring"]
+    },
+    {
+      "id": "marketing-growth",
+      "name": "Marketing/Growth",
+      "existing_skills": [],
+      "coverage": "none",
+      "scout_queries": ["marketing", "cro", "seo content", "analytics"]
+    },
+    {
+      "id": "i18n-l10n",
+      "name": "i18n/l10n",
+      "existing_skills": ["i18n-localization"],
+      "coverage": "low",
+      "scout_queries": ["i18n", "localization", "translation"]
+    },
+    {
+      "id": "specific-services",
+      "name": "Specific Services",
+      "existing_skills": ["supabase-postgres-best-practices"],
+      "coverage": "low",
+      "scout_queries": ["aws", "cloudflare", "stripe", "supabase"]
+    }
+  ]
+}
