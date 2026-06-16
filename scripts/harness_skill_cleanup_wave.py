@@ -52,9 +52,7 @@ def classify_row(row: dict, *, repo_skill_names: set[str], desired_by_name: dict
     if desired:
         target_agents = desired.get("target_agents") or TARGET_HARNESSES
         if any(h not in agents for h in TARGET_HARNESSES if h in target_agents):
-            missing = [h for h in TARGET_HARNESSES if h in target_agents and h not in agents]
-            if missing:
-                return "parity_install"
+            return "parity_install"
 
     if status == "installed-external" and row.get("install_command"):
         return "review_external"
