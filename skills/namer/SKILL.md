@@ -28,27 +28,27 @@ Not for domain registration, branding strategy, or logo design. Not for reviewin
 
 ## Dispatch
 
-| $ARGUMENTS | Action |
-|------------|--------|
+| $ARGUMENTS                              | Action                                                                     |
+| --------------------------------------- | -------------------------------------------------------------------------- |
 | `<thing to name>` (with optional flags) | **Name** — full pipeline: brief → generate → filter → check → score → rank |
-| `check <name> [name2...]` | **Check** — availability audit only (skip generation) |
-| `expand <name>` | **Expand** — generate variations/modifications of an existing name |
-| `compare <name1> vs <name2> [vs...]` | **Compare** — side-by-side scoring of specific names |
-| `resume [# or keyword]` | **Resume** — load prior naming session |
-| `list` | **List** — show saved naming sessions |
-| `preferences` | **Preferences** — show accumulated naming profile and memory stats |
-| Empty | **Gallery** — show examples + "what are you naming?" prompt |
+| `check <name> [name2...]`               | **Check** — availability audit only (skip generation)                      |
+| `expand <name>`                         | **Expand** — generate variations/modifications of an existing name         |
+| `compare <name1> vs <name2> [vs...]`    | **Compare** — side-by-side scoring of specific names                       |
+| `resume [# or keyword]`                 | **Resume** — load prior naming session                                     |
+| `list`                                  | **List** — show saved naming sessions                                      |
+| `preferences`                           | **Preferences** — show accumulated naming profile and memory stats         |
+| Empty                                   | **Gallery** — show examples + "what are you naming?" prompt                |
 
 ### Gallery (Empty Arguments)
 
-| # | Context | Example |
-|---|---------|---------|
-| 1 | CLI Tool | "I'm building a terminal file manager in Rust" |
-| 2 | SaaS Product | "Developer productivity tool for code review" |
-| 3 | OSS Library | "Python library for data validation" |
-| 4 | Startup | "AI-powered hiring platform" |
-| 5 | Side Project | "Weekend project — a bookmark manager" |
-| 6 | Brand | "Design agency specializing in developer tools" |
+| #   | Context      | Example                                         |
+| --- | ------------ | ----------------------------------------------- |
+| 1   | CLI Tool     | "I'm building a terminal file manager in Rust"  |
+| 2   | SaaS Product | "Developer productivity tool for code review"   |
+| 3   | OSS Library  | "Python library for data validation"            |
+| 4   | Startup      | "AI-powered hiring platform"                    |
+| 5   | Side Project | "Weekend project — a bookmark manager"          |
+| 6   | Brand        | "Design agency specializing in developer tools" |
 
 > Pick a number, describe what you're naming, or type "guide me".
 
@@ -64,15 +64,15 @@ If the user types "guide me", ask three questions:
 
 Auto-detect from the user's description. Adjusts both platform priority AND scoring weights.
 
-| Context Signal | Category | Primary Platforms | Secondary |
-|----------------|----------|-------------------|-----------|
-| "CLI tool", "command", "binary" | **CLI Tool** | GitHub, npm/PyPI/Crates, Homebrew, .dev | Social |
-| "package", "library", "framework", "SDK" | **OSS Library** | GitHub, npm/PyPI/Crates, .dev/.io | Social |
-| "app", "product", "startup", "SaaS" | **Product** | .com, X/Twitter, LinkedIn, GitHub | Dev registries |
-| "company", "brand", "agency", "studio" | **Brand** | .com, X/Twitter, Instagram, LinkedIn, YouTube | Dev registries |
-| "game", "content", "media", "community" | **Creative** | .com, YouTube, TikTok, X/Twitter, Reddit, Discord | Dev registries |
-| "open source", "OSS", "contrib" | **OSS Project** | GitHub, npm/PyPI/Crates, .dev, Discord | Social |
-| Ambiguous | **Balanced** | .com, GitHub, X/Twitter, npm/PyPI | All others |
+| Context Signal                           | Category        | Primary Platforms                                 | Secondary      |
+| ---------------------------------------- | --------------- | ------------------------------------------------- | -------------- |
+| "CLI tool", "command", "binary"          | **CLI Tool**    | GitHub, npm/PyPI/Crates, Homebrew, .dev           | Social         |
+| "package", "library", "framework", "SDK" | **OSS Library** | GitHub, npm/PyPI/Crates, .dev/.io                 | Social         |
+| "app", "product", "startup", "SaaS"      | **Product**     | .com, X/Twitter, LinkedIn, GitHub                 | Dev registries |
+| "company", "brand", "agency", "studio"   | **Brand**       | .com, X/Twitter, Instagram, LinkedIn, YouTube     | Dev registries |
+| "game", "content", "media", "community"  | **Creative**    | .com, YouTube, TikTok, X/Twitter, Reddit, Discord | Dev registries |
+| "open source", "OSS", "contrib"          | **OSS Project** | GitHub, npm/PyPI/Crates, .dev, Discord            | Social         |
+| Ambiguous                                | **Balanced**    | .com, GitHub, X/Twitter, npm/PyPI                 | All others     |
 
 **Scoring presets** — each context uses different intrinsic/extrinsic dimension weights AND a different intrinsic/extrinsic split ratio. See `references/scoring-rubric.md` § Context Presets for the full weight tables. Key differences:
 
@@ -114,14 +114,14 @@ Load `references/naming-strategies.md` for archetype details and sound symbolism
 
 Generate 40-60 candidates across **6 naming archetypes**:
 
-| Archetype | Description | Examples |
-|-----------|-------------|----------|
-| Invented words | Phonetically constructed neologisms | Kodak, Xerox, Hulu, Roku |
-| Metaphorical transfers | Concepts from other domains | Amazon, Safari, Slack, Rust |
-| Compound blends | Portmanteaus, morpheme combos | Instagram, Pinterest, YouTube |
-| Classical roots | Latin, Greek, Sanskrit etymology | Nike, Astra, Veritas, Lumen |
-| Evocative fragments | Short, punchy, abstract feel | Figma, Sumo, Neon, Zed |
-| Descriptive-creative | Clear meaning with flair | Cloudflare, Datadog, Fastly |
+| Archetype              | Description                         | Examples                      |
+| ---------------------- | ----------------------------------- | ----------------------------- |
+| Invented words         | Phonetically constructed neologisms | Kodak, Xerox, Hulu, Roku      |
+| Metaphorical transfers | Concepts from other domains         | Amazon, Safari, Slack, Rust   |
+| Compound blends        | Portmanteaus, morpheme combos       | Instagram, Pinterest, YouTube |
+| Classical roots        | Latin, Greek, Sanskrit etymology    | Nike, Astra, Veritas, Lumen   |
+| Evocative fragments    | Short, punchy, abstract feel        | Figma, Sumo, Neon, Zed        |
+| Descriptive-creative   | Clear meaning with flair            | Cloudflare, Datadog, Fastly   |
 
 **Hard filters** (binary pass/fail, run BEFORE availability checking):
 
@@ -146,22 +146,26 @@ Load `references/platform-checks.md` for per-platform check methods.
 Dispatch **4 parallel subagents**, each checking ALL candidates in its category:
 
 **Subagent A — Domain Checker:**
+
 - .com/.net via RDAP: `GET https://rdap.verisign.com/com/v1/domain/{name}.com` → 404 = available
 - .dev/.io/.ai/.app via brave_web_search
 - Pricing: brave_web_search for top 5 candidates
 
 **Subagent B — Dev Registry Checker (Direct API):**
+
 - GitHub: `GET https://api.github.com/users/{name}` → 404 = available
 - npm: `GET https://registry.npmjs.org/{name}` → 404 = available
 - PyPI: `GET https://pypi.org/pypi/{name}/json` → 404 = available
 - Crates: `GET https://crates.io/api/v1/crates/{name}` → 404 = available
 
 **Subagent C — Social & Handle Checker:**
+
 - Reddit: `GET https://www.reddit.com/api/username_available.json?user={name}`
 - Bluesky: AT Protocol handle resolution
 - X/Twitter, YouTube, Instagram, LinkedIn: brave_web_search with `site:` prefix
 
 **Subagent D — Conflict & Distinctiveness:**
+
 - Search collision volume: `brave_web_search '"{name}" software'`
 - Trademark (--thorough): `brave_web_search "USPTO TESS {name}"`
 
@@ -169,6 +173,7 @@ Or run deterministic checks via script:
 `!uv run python skills/namer/scripts/check.py check-all candidate1 candidate2 ...`
 
 **Scaling:**
+
 - ≤10 candidates: 4 parallel subagents
 - 11-25 candidates: Pre-filter with quick .com RDAP, full check top 10-15
 - `--thorough`: All social + trademark + Wikipedia checks
@@ -176,6 +181,7 @@ Or run deterministic checks via script:
 ### Phase 2.5: Variant Generation (conditional)
 
 For top 5 intrinsic-scored candidates that FAILED availability:
+
 - Generate 3-5 variants each: prefix (`go-`, `un-`), suffix (`-kit`, `-lab`, `-ify`), vowel dropping (`namr`), respelling (`nomer`), scoped (`@scope/name`)
 - Run availability checks on variants (same subagent pattern, smaller batch)
 
@@ -185,18 +191,18 @@ Load `references/scoring-rubric.md` for detailed criteria.
 
 **10 scoring dimensions** (0-10 scale, context-weighted):
 
-| Dimension | Method |
-|-----------|--------|
-| Domain availability | .com=10, .dev/.io=7, .ai/.app=5, parked=3, none=0 |
-| Registry availability | % of target registries available |
-| Handle consistency | % of target social platforms available |
-| Memorability | Length bonus + syllable count + imagery |
-| Phonetic quality | Consonant/vowel flow, stress, sound symbolism |
-| Semantic fit | Domain relevance, emotional tone, metaphor richness |
-| Typeability | Character count, keyboard locality, no specials |
-| Search distinctiveness | Inverse of search result count |
-| Morphological flexibility | Can verb/noun/compound? Product family support? |
-| Visual quality | Letter balance, ascenders/descenders, URL aesthetics |
+| Dimension                 | Method                                               |
+| ------------------------- | ---------------------------------------------------- |
+| Domain availability       | .com=10, .dev/.io=7, .ai/.app=5, parked=3, none=0    |
+| Registry availability     | % of target registries available                     |
+| Handle consistency        | % of target social platforms available               |
+| Memorability              | Length bonus + syllable count + imagery              |
+| Phonetic quality          | Consonant/vowel flow, stress, sound symbolism        |
+| Semantic fit              | Domain relevance, emotional tone, metaphor richness  |
+| Typeability               | Character count, keyboard locality, no specials      |
+| Search distinctiveness    | Inverse of search result count                       |
+| Morphological flexibility | Can verb/noun/compound? Product family support?      |
+| Visual quality            | Letter balance, ascenders/descenders, URL aesthetics |
 
 **Composite**: `(0.4 × intrinsic_avg) + (0.6 × extrinsic_avg)` — user can adjust split.
 
@@ -230,48 +236,48 @@ Save to `~/.{gemini|copilot|codex|claude}/namer/{YYYY-MM-DD}-{context}-{slug}.md
 
 Save memories at natural decision points. NEVER slow down a phase for a memory write — always save AFTER delivering primary output.
 
-| Trigger | Command |
-|---------|---------|
-| Phase 0: User states style preference | `memory.py save-preference --type vibe --value "..."` |
-| Phase 0: User cites inspiration names | `memory.py save-inspiration --name "..." --context "..."` |
-| Phase 0: User adjusts weights | `memory.py save-weights --intrinsic-split F --extrinsic-split F` |
-| Phase 1: User says "avoid X sounds" | `memory.py save-rejection --pattern "X" --type phonetic --reason "..."` |
-| Phase 4: User selects a name | `memory.py save-selection --name "..." --archetype "..." --context "..." --score N --query "..."` |
-| Refinement: "more like #N" | `memory.py save-preference --type archetype --value "..." --like` |
-| Refinement: "shorter" / "longer" | `memory.py save-preference --type length --value "max=5"` or `"min=8"` |
-| Any: User rejects a style | `memory.py save-rejection --pattern "..." --type archetype --reason "..."` |
+| Trigger                               | Command                                                                                           |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Phase 0: User states style preference | `memory.py save-preference --type vibe --value "..."`                                             |
+| Phase 0: User cites inspiration names | `memory.py save-inspiration --name "..." --context "..."`                                         |
+| Phase 0: User adjusts weights         | `memory.py save-weights --intrinsic-split F --extrinsic-split F`                                  |
+| Phase 1: User says "avoid X sounds"   | `memory.py save-rejection --pattern "X" --type phonetic --reason "..."`                           |
+| Phase 4: User selects a name          | `memory.py save-selection --name "..." --archetype "..." --context "..." --score N --query "..."` |
+| Refinement: "more like #N"            | `memory.py save-preference --type archetype --value "..." --like`                                 |
+| Refinement: "shorter" / "longer"      | `memory.py save-preference --type length --value "max=5"` or `"min=8"`                            |
+| Any: User rejects a style             | `memory.py save-rejection --pattern "..." --type archetype --reason "..."`                        |
 
 Batch multiple saves in a SINGLE message when a session produces several memories. All `memory.py` commands are prefixed with `!uv run python skills/namer/scripts/`.
 
 ## Canonical Vocabulary
 
-| Term | Definition |
-|------|-----------|
-| **brief** | Naming requirements: what, context, style, constraints |
-| **candidate** | A generated name before availability checking |
-| **archetype** | Naming strategy: invented, metaphorical, compound, classical, evocative, descriptive |
-| **intrinsic score** | Quality from linguistic/creative dimensions (no I/O) |
-| **extrinsic score** | Availability from platform checks (I/O intensive) |
-| **composite score** | Weighted combination of intrinsic + extrinsic |
-| **hard filter** | Binary pass/fail gate: profanity, length, pronounceability |
-| **variant** | Modification of a candidate: prefix, suffix, respelling |
-| **namespace report** | Per-candidate availability matrix across all platforms |
-| **context preset** | Auto-configured weights + platforms for what's being named |
-| **memory** | Persistent naming preferences at `~/.{gemini|copilot|codex|claude}/namer/memory.json` |
+| Term                   | Definition                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------- |
+| **brief**              | Naming requirements: what, context, style, constraints                                |
+| **candidate**          | A generated name before availability checking                                         |
+| **archetype**          | Naming strategy: invented, metaphorical, compound, classical, evocative, descriptive  |
+| **intrinsic score**    | Quality from linguistic/creative dimensions (no I/O)                                  |
+| **extrinsic score**    | Availability from platform checks (I/O intensive)                                     |
+| **composite score**    | Weighted combination of intrinsic + extrinsic                                         |
+| **hard filter**        | Binary pass/fail gate: profanity, length, pronounceability                            |
+| **variant**            | Modification of a candidate: prefix, suffix, respelling                               |
+| **namespace report**   | Per-candidate availability matrix across all platforms                                |
+| **context preset**     | Auto-configured weights + platforms for what's being named                            |
+| **memory**             | Persistent naming preferences at `~/.{gemini|copilot|codex|claude}/namer/memory.json` |
 | **archetype affinity** | Weighted distribution of user's preferred naming archetypes, computed from selections |
-| **selection** | A name the user chose as their winner, stored for preference learning |
-| **rejection** | An explicitly unwanted pattern (phonetic, archetype, or specific name) |
+| **selection**          | A name the user chose as their winner, stored for preference learning                 |
+| **rejection**          | An explicitly unwanted pattern (phonetic, archetype, or specific name)                |
 
 ## Reference File Index
 
-| File | Content | Read When |
-|------|---------|-----------|
-| `references/naming-strategies.md` | 6 archetypes, sound symbolism, phonetic guide, morpheme library | Phase 1 (generation) |
-| `references/platform-checks.md` | Per-platform: URLs, methods, response parsing, rate limits | Phase 2 (availability) |
-| `references/scoring-rubric.md` | 10 dimensions detailed, 6 presets, hard filters, composite formula | Phase 3 (scoring) |
-| `references/output-formats.md` | Templates for 3 views, name cards, variant tables, next-steps | Phase 4 (presentation) |
-| `templates/dashboard.html` | Self-contained GUI — inject structured JSON from § Structured Output Schema | Phase 4 (dashboard render) |
-| `scripts/memory.py` | CLI for persistent naming preferences (load, save, prune, stats) | Phase -1 (load), end of session (save) |
+| File                              | Content                                                                     | Read When                              |
+| --------------------------------- | --------------------------------------------------------------------------- | -------------------------------------- |
+| `references/naming-strategies.md` | 6 archetypes, sound symbolism, phonetic guide, morpheme library             | Phase 1 (generation)                   |
+| `references/platform-checks.md`   | Per-platform: URLs, methods, response parsing, rate limits                  | Phase 2 (availability)                 |
+| `references/scoring-rubric.md`    | 10 dimensions detailed, 6 presets, hard filters, composite formula          | Phase 3 (scoring)                      |
+| `references/output-formats.md`    | Templates for 3 views, name cards, variant tables, next-steps               | Phase 4 (presentation)                 |
+| `templates/dashboard.html`        | Self-contained GUI — inject structured JSON from § Structured Output Schema | Phase 4 (dashboard render)             |
+| `scripts/memory.py`               | CLI for persistent naming preferences (load, save, prune, stats)            | Phase -1 (load), end of session (save) |
 
 Load ONE reference at a time per the "Read When" column.
 
