@@ -5,7 +5,7 @@ description: "Curated third-party skill source. Run external-skill-auditor befor
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="sast-configuration" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+<Badge text="sast-configuration" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
 
 > Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
@@ -26,18 +26,55 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 
 <Aside type="note" title="Source & provenance">
 This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
- SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill sast-configuration` to refresh research context.
+ Enriched from research cache (stub); the upstream SKILL.md body is not present locally. Re-run `uv run wagents docs research --skill sast-configuration` to refresh.
 </Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Inspect first** (`needs-inspection`)
+
+Curated status: `inspect-then-install`
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
+## Install Prerequisites
+
+Install: `npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+
+## Upstream Maintainer
+
+[wshobson/agents](https://github.com/wshobson/agents)
+
+## Comparable Alternatives
+
+A general-purpose agent instruction without a scoped skill contract
+
+&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
 | Field | Value |
 | ----- | ----- |
-| Source Type | `installed-external` |
+| Source Type | `curated-external` |
 | Display Source | `wshobson/agents` |
 | Source Kind | `github` |
 | Installability | portable command |
-| Review State | local inventory |
+| Review State | curated |
+| Trust Tier | `needs-inspection` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |

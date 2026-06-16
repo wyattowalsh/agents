@@ -5,7 +5,7 @@ description: "avoid by default; overlaps existing local skills and has broader A
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="ckm:*" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="global-only-or-avoid" variant="default" />
+<Badge text="ckm:*" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
 
 > avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
 
@@ -26,18 +26,56 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 
 <Aside type="note" title="Source & provenance">
 This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
- SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill ckm:*` to refresh research context.
+ Enriched from research cache (stub); the upstream SKILL.md body is not present locally. Re-run `uv run wagents docs research --skill ckm:*` to refresh.
 </Aside>
+
+## Harness Coverage
+
+Targets all supported agent harnesses via the install command below.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add nextlevelbuilder/ui-ux-pro-max-skill@ckm:* --skill ckm:* -y -g
+```
+
+## Trust / Audit
+
+Trust tier: **Avoid default** (`global-only-or-avoid`)
+
+Curated status: `global-only-or-avoid`
+
+Risk notes: avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
+
+## Install Prerequisites
+
+status=global-only-or-avoid; selector=unresolved unresolved: avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
+
+## Upstream Maintainer
+
+[nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+
+## Comparable Alternatives
+
+A general-purpose agent instruction without a scoped skill contract
+
+&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
 | Field | Value |
 | ----- | ----- |
-| Source Type | `installed-external` |
+| Source Type | `curated-external` |
 | Display Source | `nextlevelbuilder/ui-ux-pro-max-skill` |
 | Source Kind | `github` |
 | Installability | portable command |
-| Review State | local inventory |
+| Review State | curated |
+| Trust Tier | `global-only-or-avoid` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |

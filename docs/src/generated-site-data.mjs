@@ -146,7 +146,7 @@ const baseSiteData = {
           "plannotator-setup-goal",
           "plannotator-visual-explainer"
         ],
-        "source": "backnotprop/plannotator"
+        "source": "backnotprop/plannotator/apps/skills"
       },
       {
         "count": 3,
@@ -926,7 +926,7 @@ const baseSiteData = {
     ],
     "byStatus": [
       {
-        "count": 11,
+        "count": 12,
         "skills": [
           "anthropics-skills-all",
           "ckm:*",
@@ -937,6 +937,7 @@ const baseSiteData = {
           "huggingface-skills-all",
           "microsoft-azure-skills-all",
           "notion-api",
+          "shadcn",
           "stripe-best-practices",
           "vercel-labs-agent-browser-all"
         ],
@@ -1135,7 +1136,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 140,
+        "count": 139,
         "skills": [
           "ab-testing",
           "accessibility",
@@ -1235,7 +1236,6 @@ const baseSiteData = {
           "schema",
           "seo",
           "seo-audit",
-          "shadcn",
           "shadcn",
           "shieldcn-badges",
           "signup",
@@ -1727,13 +1727,13 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add backnotprop/plannotator --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "plannotator-compound",
           "plannotator-setup-goal",
           "plannotator-visual-explainer"
         ],
-        "source": "backnotprop/plannotator",
+        "source": "backnotprop/plannotator/apps/skills",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },
@@ -2563,15 +2563,6 @@ const baseSiteData = {
           "shadcn"
         ],
         "source": "shadcn-ui/ui",
-        "status": "install-now-after-trust-gate",
-        "trustTier": "curated-trust-gated"
-      },
-      {
-        "command": "npx skills add shadcn/ui --skill shadcn -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "shadcn"
-        ],
-        "source": "shadcn/ui",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
       },

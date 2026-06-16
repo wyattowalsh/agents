@@ -5,7 +5,7 @@ description: "Marketing residual tier from `coreyhaines31/marketingskills`. Thes
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="schema" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated External" variant="caution" /> <Badge text="install-now-after-trust-gate" variant="default" />
+<Badge text="schema" variant="note" /> <Badge text="0 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > Marketing residual tier from `coreyhaines31/marketingskills`. These six slugs are not named in the existing curated marketing row; `schema` covers structured-data work distinct from local `seo-audit`.
 
@@ -26,18 +26,57 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 
 <Aside type="note" title="Source & provenance">
 This page is generated from curated config (`config/external-skills.md`) and local inventory when installed.
- SKILL.md is not available locally; install the skill or run `uv run wagents docs research --skill schema` to refresh research context.
+ Enriched from research cache (stub); the upstream SKILL.md body is not present locally. Re-run `uv run wagents docs research --skill schema` to refresh.
 </Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: Marketing residual tier from `coreyhaines31/marketingskills`. These six slugs are not named in the existing curated marketing row; `schema` covers structured-data work distinct from local `seo-audit`.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+## Purpose
+
+Marketing residual tier from `coreyhaines31/marketingskills`. These six slugs are not named in the existing curated marketing row; `schema` covers structured-data work distinct from local `seo-audit`.
+
+## Install Prerequisites
+
+Install: `npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+
+## Upstream Maintainer
+
+[coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills)
+
+## Comparable Alternatives
+
+A general-purpose agent instruction without a scoped skill contract
+
+&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
 | Field | Value |
 | ----- | ----- |
-| Source Type | `installed-external` |
+| Source Type | `curated-external` |
 | Display Source | `coreyhaines31/marketingskills` |
 | Source Kind | `github` |
 | Installability | portable command |
-| Review State | local inventory |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
   </TabItem>
   <TabItem label="General">
 | Field | Value |
