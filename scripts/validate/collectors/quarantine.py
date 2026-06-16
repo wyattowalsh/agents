@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 
 
@@ -27,13 +26,13 @@ def _quarantined_repo_slugs(repo_root: Path) -> set[str]:
 def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
     """Fail when curated external skill sources reference hard-quarantined repos."""
     external_path = repo_root / "config/external-skills.md"
-    if not external_path.exists():
+    if not external_path.is_file():
         return []
 
     text = external_path.read_text(encoding="utf-8").lower()
     errors: list[dict[str, str]] = []
     for slug in sorted(_quarantined_repo_slugs(repo_root)):
-        if re.search(re.escape(slug.lower()), text):
+        if slug in text:
             errors.append({
                 "source": "config/external-skills.md",
                 "message": f"Hard-quarantined source '{slug}' must not appear in curated external skills",
