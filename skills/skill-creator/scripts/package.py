@@ -17,6 +17,19 @@ from pathlib import Path
 
 from _shared import parse_frontmatter
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+ASSET_TOOLKIT_SRC = SCRIPT_DIR / "asset_toolkit"
+PORTABLE_TOOLKIT_MODULES = frozenset(
+    {
+        "__init__.py",
+        "common.py",
+        "validate_skill.py",
+        "validate_evals.py",
+        "validate_hooks.py",
+    }
+)
+WAGENTS_RE = re.compile(r"\bwagents\b", re.IGNORECASE)
+
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
@@ -212,6 +225,26 @@ def check_referenced_files(skill_dir: Path, body: str) -> dict:
     }
 
 
+def check_no_wagents_reference(body: str) -> dict:
+    """Check for wagents CLI references in skill body (outside code fences)."""
+    matches = []
+    in_code_block = False
+    for i, line in enumerate(body.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code_block = not in_code_block
+            continue
+        if in_code_block:
+            continue
+        if WAGENTS_RE.search(line):
+            matches.append(f"line {i}: {line.strip()}")
+    return {
+        "check": "no_wagents_reference",
+        "passed": len(matches) == 0,
+        "details": "; ".join(matches[:5]) if matches else "No wagents references found",
+    }
+
+
 def check_no_at_imports(body: str) -> dict:
     """Check for @ imports or repo-specific path assumptions.
 
@@ -270,6 +303,7 @@ def run_portability_checks(skill_dir: Path, fm: dict, body: str) -> list[dict]:
     checks.extend(check_frontmatter_fields(fm))
     checks.append(check_no_absolute_paths(body))
     checks.append(check_referenced_files(skill_dir, body))
+    checks.append(check_no_wagents_reference(body))
     checks.append(check_no_at_imports(body))
     checks.append(check_name_directory_match(fm, skill_dir.name))
     return checks
@@ -300,6 +334,22 @@ def generate_manifest(fm: dict, files: list[Path]) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def _asset_toolkit_files(skill_dir: Path, included: list[Path]) -> list[tuple[Path, Path]]:
+    """Return (source, archive_rel) pairs for vendored asset_toolkit files."""
+    if not ASSET_TOOLKIT_SRC.is_dir():
+        return []
+    has_toolkit = any(str(path).startswith("scripts/asset_toolkit/") for path in included)
+    if has_toolkit:
+        return []
+    pairs: list[tuple[Path, Path]] = []
+    for module_name in sorted(PORTABLE_TOOLKIT_MODULES):
+        src = ASSET_TOOLKIT_SRC / module_name
+        if not src.is_file():
+            continue
+        pairs.append((src, Path("scripts") / "asset_toolkit" / module_name))
+    return pairs
+
+
 def create_zip(skill_dir: Path, output_dir: Path, files: list[Path], manifest: dict) -> tuple[Path, list[str]]:
     """Create the .skill.zip bundle and return (path, errors)."""
     name = manifest["name"]
@@ -320,6 +370,13 @@ def create_zip(skill_dir: Path, output_dir: Path, files: list[Path], manifest: d
                 except OSError as exc:
                     errors.append(f"Failed to add {rel_path}: {exc}")
                     _warn(f"Skipping {rel_path}: {exc}")
+
+            for src_path, rel_path in _asset_toolkit_files(skill_dir, files):
+                try:
+                    zf.write(src_path, str(archive_root / rel_path))
+                except OSError as exc:
+                    errors.append(f"Failed to add vendored {rel_path}: {exc}")
+                    _warn(f"Skipping vendored {rel_path}: {exc}")
 
             manifest_json = json.dumps(manifest, indent=2) + "\n"
             zf.writestr(str(archive_root / "manifest.json"), manifest_json)

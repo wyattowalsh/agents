@@ -7,7 +7,7 @@ description: >-
 argument-hint: "<mode> [name]"
 model: opus
 license: MIT
-compatibility: "Requires uv, Python 3.13+, wagents CLI; optional Node.js/npm for install commands; hook support varies by agent client."
+compatibility: "Requires Python 3.13+; optional uv for project tooling; optional Node.js/npm for install commands; hook support varies by agent client."
 metadata:
   author: wyattowalsh
   version: "2.0.0"
@@ -31,26 +31,26 @@ hooks:
 
 Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
 
-**Scope:** Skills only. NOT for creating agents (`wagents new agent`), building MCP servers (`/mcp-creator`), or running existing skills. This repo uses raw `SKILL.md` format committed directly to `skills/`.
+**Scope:** Skills only. NOT for creating agents (use `agent-conventions`), building MCP servers (`/mcp-creator`), or running existing skills. This repo uses raw `SKILL.md` format committed directly to `skills/`.
 
 ## Dispatch
 
-| $ARGUMENTS | Action | Example |
-|------------|--------|---------|
-| `create <name>` / `new <name>` | Develop (new) | `/skill-creator create my-analyzer` |
-| `create <name> --from <source>` | Develop (new, from exemplar) | `/skill-creator create my-analyzer --from wargame` |
-| `improve <name>` / `improve <path>` | Develop (existing) | `/skill-creator improve add-badges` |
-| `plan <name>` / `plan <path>` | Plan (existing) | `/skill-creator plan honest-review` |
-| `plan --all` / `plan repo` | Plan (repo-wide) | `/skill-creator plan --all` |
-| `audit <name>` | Audit | `/skill-creator audit honest-review` |
-| `audit --all` | Audit All | `/skill-creator audit --all` |
-| `dashboard` | Dashboard | `/skill-creator dashboard` |
-| `package <name>` / `package --all` | Package | `/skill-creator package wargame` |
-| Natural language skill idea | Auto: Develop (new) | `"tool that audits Python type safety"` |
-| Skill name + modification verb | Auto: Develop (existing) | `"refactor the wargame skill"` |
-| Path to SKILL.md | Auto: Develop (existing) | `skills/wargame/SKILL.md` |
-| "MCP server" / "agent" / "run" | Refuse + redirect | — |
-| Empty | Gallery | `/skill-creator` |
+| $ARGUMENTS                          | Action                       | Example                                            |
+| ----------------------------------- | ---------------------------- | -------------------------------------------------- |
+| `create <name>` / `new <name>`      | Develop (new)                | `/skill-creator create my-analyzer`                |
+| `create <name> --from <source>`     | Develop (new, from exemplar) | `/skill-creator create my-analyzer --from wargame` |
+| `improve <name>` / `improve <path>` | Develop (existing)           | `/skill-creator improve add-badges`                |
+| `plan <name>` / `plan <path>`       | Plan (existing)              | `/skill-creator plan honest-review`                |
+| `plan --all` / `plan repo`          | Plan (repo-wide)             | `/skill-creator plan --all`                        |
+| `audit <name>`                      | Audit                        | `/skill-creator audit honest-review`               |
+| `audit --all`                       | Audit All                    | `/skill-creator audit --all`                       |
+| `dashboard`                         | Dashboard                    | `/skill-creator dashboard`                         |
+| `package <name>` / `package --all`  | Package                      | `/skill-creator package wargame`                   |
+| Natural language skill idea         | Auto: Develop (new)          | `"tool that audits Python type safety"`            |
+| Skill name + modification verb      | Auto: Develop (existing)     | `"refactor the wargame skill"`                     |
+| Path to SKILL.md                    | Auto: Develop (existing)     | `skills/wargame/SKILL.md`                          |
+| "MCP server" / "agent" / "run"      | Refuse + redirect            | —                                                  |
+| Empty                               | Gallery                      | `/skill-creator`                                   |
 
 ### Auto-Detection Heuristic
 
@@ -66,25 +66,24 @@ If no explicit mode keyword is provided:
 ## Quick Start
 
 ```bash
-wagents new skill <name>           # Scaffold from template
-wagents validate                   # Check all skills
-wagents eval validate              # Check eval manifests after eval changes
+python skills/skill-creator/scripts/scaffold_skill.py <name>  # Scaffold from template
+python scripts/check.py                                        # Validate from skill directory
 uv run python skills/skill-creator/scripts/audit.py skills/<name>/  # Score quality
-wagents package <name> --dry-run   # Check single-skill portability before packaging
+python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Portability check
 ```
 
 ## Skill Development
 
 Unified process for creating new skills and improving existing ones. Load `references/workflow.md` for the full procedure.
 
-| Step | New Skill | Existing Skill |
-|------|-----------|----------------|
-| 1. Understand | Define use cases, scope, patterns | Audit + understand user's intent |
-| 2. Plan | Structure, description, frontmatter | Gap analysis + improvement plan (approval gate) |
-| 3. Scaffold | `wagents new skill <name>` | Skip |
-| 4. Build | Write/edit body, references, scripts, templates, evals | Same |
-| 5. Validate | `wagents validate` + `wagents eval validate` + `audit.py` | Same |
-| 6. Iterate | Test, identify issues, loop to Step 4 | Same |
+| Step          | New Skill                                                 | Existing Skill                                  |
+| ------------- | --------------------------------------------------------- | ----------------------------------------------- |
+| 1. Understand | Define use cases, scope, patterns                         | Audit + understand user's intent                |
+| 2. Plan       | Structure, description, frontmatter                       | Gap analysis + improvement plan (approval gate) |
+| 3. Scaffold   | `scaffold_skill.py <name>`                                | Skip                                            |
+| 4. Build      | Write/edit body, references, scripts, templates, evals    | Same                                            |
+| 5. Validate   | `scripts/check.py` + `audit.py`                           | Same                                            |
+| 6. Iterate    | Test, identify issues, loop to Step 4                     | Same                                            |
 
 ## Repo-Wide / Multi-Skill Planning
 
@@ -126,10 +125,8 @@ Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, 
 Package skills into portable ZIP files for Claude Code Desktop import. Load `references/packaging-guide.md` for ZIP structure, manifest schema, portability checks, and cross-agent compatibility.
 
 ```bash
-wagents package <name> --dry-run  # Check a single skill before emitting a ZIP
-wagents package <name>            # Single skill → <name>-v<version>.skill.zip
-wagents package --all             # All skills → dist/ with manifest.json
-wagents package --all --dry-run   # Check portability without creating ZIPs
+python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run  # Check before emitting a ZIP
+python skills/skill-creator/scripts/package.py skills/<name>/            # Single skill → <name>-v<version>.skill.zip
 ```
 
 ## Hooks
@@ -137,12 +134,14 @@ wagents package --all --dry-run   # Check portability without creating ZIPs
 PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
 
 Post-edit enforcement for this skill:
-- `SKILL.md` edits trigger `uv run wagents validate`
-- `evals/*.json` edits trigger `uv run wagents eval validate`
-- hook-bearing skill/settings edits trigger `uv run wagents hooks validate`
+
+- `SKILL.md` edits trigger `validate_skill.py`
+- `evals/*.json` edits trigger `validate_evals.py`
+- hook-bearing skill/settings edits trigger `validate_hooks.py`
 - failures surface to the agent instead of being swallowed
 
 Stop hook enforcement:
+
 - runs `uv run python skills/skill-creator/scripts/verify.py stop`
 - validates dirty skill-definition, eval, and hook surfaces before exit
 - exits immediately when hook input has `stop_hook_active: true` to avoid recursive Stop-hook loops
@@ -153,16 +152,16 @@ Creation progress persists at `~/.{gemini|copilot|codex|claude}/skill-progress/<
 
 ## Reference File Index
 
-| File | Content | Read When |
-|------|---------|-----------|
-| `references/workflow.md` | Unified 6-step skill development process for new and existing skills | Develop (new), Develop (existing) |
-| `references/refinement-plan.md` | Standalone refinement-plan contract for existing-skill and repo-wide planning output | Plan (existing), Plan (repo-wide) |
-| `references/audit-guide.md` | Audit procedure, Audit All, Dashboard rendering, Gallery, grade thresholds | Audit, Audit All, Dashboard, Gallery |
-| `references/proven-patterns.md` | 14 structural patterns with examples from repo skills | Step 4 (Build), gap analysis |
-| `references/best-practices.md` | Anthropic guide + superpowers methodology + cross-agent awareness | Step 2 (Plan), Step 4 (Build), description writing |
-| `references/frontmatter-spec.md` | Full field catalog, invocation matrix, decision tree | Step 3 (Scaffold), frontmatter configuration |
-| `references/packaging-guide.md` | ZIP structure, manifest schema, portability checks, import instructions | Package |
-| `references/evaluation-rubric.md` | 13 weighted scoring dimensions normalized to 100, grade thresholds, pressure testing | Audit (pressure testing), scoring targets |
+| File                              | Content                                                                              | Read When                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `references/workflow.md`          | Unified 6-step skill development process for new and existing skills                 | Develop (new), Develop (existing)                  |
+| `references/refinement-plan.md`   | Standalone refinement-plan contract for existing-skill and repo-wide planning output | Plan (existing), Plan (repo-wide)                  |
+| `references/audit-guide.md`       | Audit procedure, Audit All, Dashboard rendering, Gallery, grade thresholds           | Audit, Audit All, Dashboard, Gallery               |
+| `references/proven-patterns.md`   | 14 structural patterns with examples from repo skills                                | Step 4 (Build), gap analysis                       |
+| `references/best-practices.md`    | Anthropic guide + superpowers methodology + cross-agent awareness                    | Step 2 (Plan), Step 4 (Build), description writing |
+| `references/frontmatter-spec.md`  | Full field catalog, invocation matrix, decision tree                                 | Step 3 (Scaffold), frontmatter configuration       |
+| `references/packaging-guide.md`   | ZIP structure, manifest schema, portability checks, import instructions              | Package                                            |
+| `references/evaluation-rubric.md` | 13 weighted scoring dimensions normalized to 100, grade thresholds, pressure testing | Audit (pressure testing), scoring targets          |
 
 Read reference files as indicated by the "Read When" column above. Do not rely on memory or prior knowledge of their contents.
 
@@ -174,10 +173,23 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 
 **Self-exemplar** — This skill follows every pattern it teaches. When in doubt, look at how skill-creator applies it.
 
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
+
 ## Critical Rules
 
-1. Run `uv run wagents validate` before declaring any skill complete
-2. Run `uv run wagents eval validate` after changing evals and before declaring the skill complete
+1. Run `python scripts/check.py` from the target skill directory before declaring any skill complete
+2. Re-run `python scripts/check.py` after changing evals and before declaring the skill complete
 3. Run `uv run python skills/skill-creator/scripts/audit.py` after every significant SKILL.md change
 4. Never create a skill without a dispatch table — it is the routing contract
 5. Never create a dispatch table without an empty-args handler — unrouted input is a bug
@@ -188,7 +200,7 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 10. Names must be kebab-case, 2-64 chars, no consecutive hyphens, no reserved words
 11. Scripts use argparse + JSON to stdout — no custom output formats
 12. Templates are self-contained HTML with no external dependencies
-13. Do NOT call `wagents docs generate` — delegate to docs-steward
+13. Do NOT call repo-specific docs generators directly — delegate to docs-steward
 14. Do NOT create agents or MCP servers — refuse gracefully and redirect
 15. Improving existing skills requires presenting an improvement plan and getting user approval before implementing changes
 16. Audit mode is read-only — never modify the skill being audited
@@ -198,6 +210,7 @@ Read reference files as indicated by the "Read When" column above. Do not rely o
 20. Stop hooks must include a `stop_hook_active` guard — recursive hook loops are implementation bugs
 
 **Canonical terms** (use these exactly throughout):
+
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
 - Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (<40)

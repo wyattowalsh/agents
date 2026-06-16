@@ -1172,11 +1172,11 @@ def score_validation_contract(fm: dict, body: str, dir_path: Path) -> dict:
     has_hooks = bool(fm.get("hooks"))
     distributable = bool(fm.get("license")) or isinstance(fm.get("metadata"), dict)
 
-    if "wagents validate" in corpus:
+    if re.search(r"(validate_skill\.py|scripts/check\.py)", corpus):
         s += 2
-        f.append("Validation contract includes wagents validate")
+        f.append("Validation contract includes portable skill validation")
     else:
-        f.append("Missing wagents validate proof command")
+        f.append("Missing validate_skill.py or scripts/check.py proof command")
 
     if re.search(r"audit\.py\s+skills/(?:<name>|[a-z0-9-]+|.+?)/?", corpus):
         s += 2
@@ -1185,17 +1185,17 @@ def score_validation_contract(fm: dict, body: str, dir_path: Path) -> dict:
         f.append("Missing audit.py skill-path proof command")
 
     if has_evals:
-        if "wagents eval validate" in corpus:
+        if re.search(r"(validate_evals\.py|scripts/check\.py)", corpus):
             s += 1
-            f.append("Validation contract includes wagents eval validate")
+            f.append("Validation contract includes portable eval validation")
         else:
-            f.append("Missing wagents eval validate despite eval manifest")
+            f.append("Missing validate_evals.py or scripts/check.py despite eval manifest")
     else:
         s += 1
         f.append("Eval validation not required because no eval manifest exists")
 
     if distributable:
-        if re.search(r"(wagents package|package\.py).+--dry-run|--dry-run.+(wagents package|package\.py)", corpus):
+        if re.search(r"package\.py.+--dry-run|--dry-run.+package\.py", corpus):
             s += 1
             f.append("Validation contract includes package dry-run")
         else:
@@ -1205,11 +1205,11 @@ def score_validation_contract(fm: dict, body: str, dir_path: Path) -> dict:
         f.append("Package dry-run not required for non-distributable skill")
 
     if has_hooks:
-        if "wagents hooks validate" in corpus:
+        if re.search(r"(validate_hooks\.py|scripts/check\.py)", corpus):
             s += 1
-            f.append("Validation contract includes wagents hooks validate")
+            f.append("Validation contract includes portable hook validation")
         else:
-            f.append("Missing wagents hooks validate despite hooks config")
+            f.append("Missing validate_hooks.py or scripts/check.py despite hooks config")
     else:
         s += 1
         f.append("Hook validation not required because hooks are not configured")
@@ -1309,8 +1309,8 @@ _DIMENSION_SUGGESTIONS: dict[str, list[str]] = {
         "Add scope-refusal or malformed-input coverage",
     ],
     "validation-contract": [
-        "Add wagents validate and audit.py proof commands",
-        "Add wagents eval validate when evals exist",
+        "Add validate_skill.py or scripts/check.py proof commands",
+        "Add validate_evals.py when evals exist",
         "Add package dry-run and hooks validation where applicable",
     ],
 }

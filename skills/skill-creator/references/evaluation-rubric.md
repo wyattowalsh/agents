@@ -17,7 +17,7 @@ Audit scoring system for skill quality. Defines what `audit.py` measures determi
 
 Skill quality is assessed through two complementary checks run in sequence:
 
-1. **`wagents validate`** -- structural correctness (pass/fail). Checks that `name` matches the directory, `description` is non-empty, and the body is non-empty. A skill that fails validation is broken and cannot be audited. Always run this first.
+1. **`scripts/check.py`** -- structural correctness (pass/fail). Checks that `name` matches the directory, `description` is non-empty, eval manifests are valid when present, package dry-run passes, and audit completes. A skill that fails validation is broken and cannot be audited. Always run this first.
 
 2. **`audit.py`** -- quality scoring (graded A--F). Measures how well the skill follows proven patterns and best practices across 13 weighted dimensions. Produces a deterministic numeric score capped at 100 and a letter grade. Run against a single skill (`audit.py skills/<name>`) or all skills (`audit.py --all`).
 
@@ -126,8 +126,8 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 
 **13. Validation Contract (10 pts, 1x weight)**
 
-- **Full marks (10):** The skill or its references define concrete proof commands for `wagents validate`, `wagents eval validate` when evals exist, `audit.py skills/<name>/`, package dry-run for distributable skills, `wagents hooks validate` when hooks are configured, no stale legacy progress-audit flag, explicit completion criteria, and at least one test or smoke-check surface.
-- **Common deductions:** Missing audit command (-2), missing `wagents validate` (-2), stale legacy progress-audit flag (-1), missing hook/eval/package checks when applicable (-1 each).
+- **Full marks (10):** The skill or its references define concrete proof commands for `scripts/check.py`, `audit.py skills/<name>/`, package dry-run for distributable skills, hook validation when hooks are configured, no stale legacy progress-audit flag, explicit completion criteria, and at least one test or smoke-check surface.
+- **Common deductions:** Missing audit command (-2), missing `scripts/check.py` (-2), stale legacy progress-audit flag (-1), missing hook/eval/package checks when applicable (-1 each).
 - **Zero:** No validation or completion proof contract.
 
 ---
@@ -140,7 +140,7 @@ Raw scores are not summed directly. Each dimension's raw score is multiplied by 
 | B | 75--89 | Good quality. Minor gaps in optional patterns. Ready for use, could improve with polish. |
 | C | 60--74 | Functional but missing important patterns. Needs improvement before distribution. |
 | D | 40--59 | Incomplete. Missing critical patterns or has structural issues. Needs significant work. |
-| F | <40 | Broken or stub. Needs rewrite. Likely fails `wagents validate` as well. |
+| F | <40 | Broken or stub. Needs rewrite. Likely fails `scripts/check.py` as well. |
 
 A skill should target B or above before merging. A grade is expected for skills intended for public distribution.
 

@@ -14,11 +14,11 @@
       "assertions": [
         "Agent dispatches to Develop (new) mode based on the explicit create keyword.",
         "Agent validates name 'my-analyzer' as kebab-case, no more than 64 chars, and conflict-free in skills/.",
-        "Agent runs 'uv run wagents new skill my-analyzer' to scaffold.",
+        "Agent runs 'uv run python skills/skill-creator/scripts/scaffold_skill.py my-analyzer' to scaffold.",
         "Agent loads frontmatter and proven-pattern references before filling out the skill.",
         "Agent follows the six-step workflow: Understand, Plan, Scaffold, Build, Validate, Iterate.",
         "Agent produces a complete SKILL.md with a dispatch table and critical rules at minimum.",
-        "Agent runs 'uv run wagents validate' before declaring completion."
+        "Agent runs 'python scripts/check.py' before declaring completion."
       ]
     },
     {
@@ -32,7 +32,7 @@
       "assertions": [
         "Agent dispatches to Develop (new, from exemplar) mode.",
         "Agent reads skills/wargame/SKILL.md as a structural template.",
-        "Agent scaffolds skills/my-tool/SKILL.md via wagents new skill.",
+        "Agent scaffolds skills/my-tool/SKILL.md via scaffold_skill.py.",
         "Agent copies applicable structure from wargame while replacing domain-specific content."
       ]
     },
@@ -78,7 +78,7 @@
       "assertions": [
         "Agent identifies this as an agent creation request, not a skill creation request.",
         "Agent does not scaffold skills/terraform-drift-reviewer/ or any SKILL.md.",
-        "Agent redirects to the agent conventions or wagents new agent workflow.",
+        "Agent redirects to the agent-conventions workflow.",
         "Agent explains the scope boundary using the skill-creator NOT-for-agents rule."
       ]
     },
@@ -384,7 +384,7 @@
       ],
       "assertions": [
         "Agent detects the out-of-scope MCP server request.",
-        "Agent refuses gracefully with redirect to /mcp-creator or wagents new mcp.",
+        "Agent refuses gracefully with redirect to /mcp-creator.",
         "Agent does not attempt to create a skill."
       ]
     },
@@ -398,7 +398,7 @@
       ],
       "assertions": [
         "Agent detects the out-of-scope agent creation request.",
-        "Agent refuses gracefully with redirect to wagents new agent or the agent-conventions workflow.",
+        "Agent refuses gracefully with redirect to the agent-conventions workflow.",
         "Agent does not create a skill as a substitute for the requested agent."
       ]
     },

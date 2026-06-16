@@ -244,9 +244,11 @@ def test_evaluation_and_validation_dimensions_score_real_contracts(tmp_path: Pat
 
         ## Validation
 
-        Run `uv run wagents validate`, `uv run wagents eval validate`,
-        `uv run python skills/contracted-skill/scripts/audit.py skills/<name>/`,
-        and `uv run wagents package contracted-skill --dry-run`.
+        Run `uv run python skills/skill-creator/scripts/asset_toolkit/validate_skill.py skills/contracted-skill/`,
+        `uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/contracted-skill/`,
+        `uv run python skills/contracted-skill/scripts/audit.py skills/contracted-skill/`,
+        `uv run python skills/skill-creator/scripts/package.py skills/contracted-skill --dry-run`,
+        and `uv run pytest tests/test_contracted_skill.py`.
         These commands must pass before declaring the skill complete.
 
         ## Critical Rules

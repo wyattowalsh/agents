@@ -13,7 +13,7 @@ Steps 1-3 branch on new vs existing. Steps 4-6 are identical for both.
 6. [Step 6: Iterate](#step-6-iterate)
 
 > **Quick Build fast-path:** For simple single-mode skills with no scripts/templates:
-> Skip Steps 2-3, go straight to Step 4 with `wagents new skill <name>`, build the body,
+> Skip Steps 2-3, go straight to Step 4 with `scaffold_skill.py <name>`, build the body,
 > then validate (Step 5). The audit will flag any missing patterns.
 
 ---
@@ -98,7 +98,7 @@ Each improvement item must include:
 
 Skip this step for existing skills.
 
-1. Run `uv run wagents new skill <name>` to scaffold `skills/<name>/SKILL.md`
+1. Run `uv run python skills/skill-creator/scripts/scaffold_skill.py <name>` to scaffold `skills/<name>/SKILL.md`
    Update metrics: `uv run python skills/skill-creator/scripts/progress.py metric --skill <name> --key files_created --value 1`
 2. Configure frontmatter — load `references/frontmatter-spec.md` for the full field catalog and decision tree. At minimum: `name`, `description`, `license: MIT`, `metadata.author`, `metadata.version`, `argument-hint`.
 3. If `--from <source>` was specified, read the source skill as a structural template. Copy applicable structure, replace all domain-specific content.
@@ -192,15 +192,13 @@ Load `references/proven-patterns.md`. Apply:
 
 ## Step 5: Validate
 
-1. Run `uv run wagents validate` — must pass with zero errors
-2. Run `uv run wagents eval validate` whenever eval manifests changed — must pass with zero errors
-3. Run `uv run python skills/skill-creator/scripts/audit.py skills/<name>/` — target A (90+)
-4. Run `uv run wagents readme` — regenerate README
-5. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call `wagents docs generate` directly.
+1. Run `python scripts/check.py` from `skills/<name>/` — must pass with zero errors
+2. Run `uv run python skills/skill-creator/scripts/audit.py skills/<name>/` — target A (90+)
+3. Delegate docs to docs-steward — auto-triggers on skill file changes. Do NOT call repo-specific docs generators directly.
 
 ### Portability Check
 
-Run `wagents package <name> --dry-run` to verify the skill is distributable:
+Run `python skills/skill-creator/scripts/package.py skills/<name>/ --dry-run` to verify the skill is distributable:
 - All 7 portability checks must pass (see `references/packaging-guide.md`)
 - Fix any warnings before declaring the skill complete
 
@@ -211,10 +209,9 @@ Run `wagents package <name> --dry-run` to verify the skill is distributable:
 
 ### Completion Criteria
 
-- `wagents validate` passes with zero errors
-- `wagents eval validate` passes when evals changed
+- `scripts/check.py` passes with zero errors
 - `audit.py` scores the skill at A (90+)
-- `wagents readme --check` exits 0 (README is current)
+- docs-steward has handled generated docs when skill docs changed
 
 ---
 
@@ -249,7 +246,7 @@ Common errors and their fixes during skill development.
 
 ### Validation Failures After Refactoring
 
-**Symptom:** `wagents validate` fails after renaming a skill.
+**Symptom:** `scripts/check.py` fails after renaming a skill.
 **Fix:** Ensure the directory name matches the `name:` field in frontmatter. Both must be kebab-case and identical.
 
 ### Audit Score Drops After Adding Content

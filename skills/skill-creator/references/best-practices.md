@@ -58,7 +58,7 @@ Match instruction specificity to task fragility.
 
 | Level | Fragility | Style | Example |
 |-------|-----------|-------|---------|
-| **Narrow bridge** | High | Exact steps, exact format, exact tools | "Run `uv run wagents validate` -- if exit code is non-zero, fix all errors before proceeding." |
+| **Narrow bridge** | High | Exact steps, exact format, exact tools | "Run `python scripts/check.py` -- if exit code is non-zero, fix all errors before proceeding." |
 | **Guided path** | Medium | Structure with room for judgment | "Generate 3-5 expert personas. Each must have distinct intellectual traditions and genuine points of disagreement." |
 | **Open field** | Low | State the goal, let the agent choose | "Organize the reference material into logical sections." |
 

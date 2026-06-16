@@ -262,7 +262,7 @@ hooks:
   PostToolUse:
     - matcher: Write
       hooks:
-        - command: "uv run wagents validate 2>&1 | tail -5"
+        - command: "python scripts/check.py 2>&1 | tail -5"
 ```
 
 **Exit codes:**
@@ -329,7 +329,7 @@ Session-end verification gates that run automatically when the agent is about to
         "hooks": [
           {
             "type": "command",
-            "command": "INPUT=$(cat); if [ \"$(echo \"$INPUT\" | jq -r '.stop_hook_active')\" = \"true\" ]; then exit 0; fi; wagents validate 2>/dev/null && uv run pytest -x --tb=short 2>/dev/null || { echo 'Verification failed' >&2; exit 2; }"
+            "command": "INPUT=$(cat); if [ \"$(echo \"$INPUT\" | jq -r '.stop_hook_active')\" = \"true\" ]; then exit 0; fi; python scripts/check.py 2>/dev/null && uv run pytest -x --tb=short 2>/dev/null || { echo 'Verification failed' >&2; exit 2; }"
           }
         ]
       }

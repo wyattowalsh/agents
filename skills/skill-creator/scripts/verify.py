@@ -14,6 +14,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+ASSET_TOOLKIT = Path(__file__).resolve().parent / "asset_toolkit"
 
 
 def _warn(msg: str) -> None:
@@ -109,11 +110,11 @@ def _needs_hooks_validate(path: str) -> bool:
 def _run_relevant_checks(paths: list[str]) -> int:
     commands: list[list[str]] = []
     if any(_needs_validate(path) for path in paths):
-        commands.append(["uv", "run", "wagents", "validate"])
+        commands.append([sys.executable, str(ASSET_TOOLKIT / "validate_skill.py")])
     if any(_needs_eval_validate(path) for path in paths):
-        commands.append(["uv", "run", "wagents", "eval", "validate"])
+        commands.append([sys.executable, str(ASSET_TOOLKIT / "validate_evals.py")])
     if any(_needs_hooks_validate(path) for path in paths):
-        commands.append(["uv", "run", "wagents", "hooks", "validate"])
+        commands.append([sys.executable, str(ASSET_TOOLKIT / "validate_hooks.py")])
 
     ok = True
     for command in commands:
