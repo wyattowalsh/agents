@@ -83,6 +83,20 @@ SUPPORTED_AGENTS: tuple[SupportedAgent, ...] = (
 SUPPORTED_AGENT_IDS = tuple(agent.id for agent in SUPPORTED_AGENTS)
 
 
+def trust_badge_for_tier(trust_tier: str) -> tuple[str, str]:
+    """Map trust tier to public docs badge text and Starlight variant."""
+    mapping = {
+        "repo": ("Repo-owned", "tip"),
+        "curated-trust-gated": ("Curated", "note"),
+        "needs-inspection": ("Inspect first", "caution"),
+        "external-installed": ("Local install", "default"),
+        "global-only-or-avoid": ("Avoid default", "danger"),
+        "github": ("GitHub", "note"),
+        "git": ("Git source", "note"),
+    }
+    return mapping.get(str(trust_tier or "").strip(), ("External", "default"))
+
+
 @dataclass(frozen=True)
 class DistributionPath:
     title: str
@@ -567,6 +581,8 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
     provenance_status = (
         "repo-owned" if source_type == "custom" else str(fm.get("_skills_provenance_status") or "installed-external")
     )
+    trust_tier = "repo" if source_type == "custom" else "external-installed"
+    trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
     return {
         "name": node.id,
         "title": node.title,
@@ -578,7 +594,9 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "installSource": install_source,
         "installable": bool(install_command),
         "localInventoryOnly": local_inventory_only,
-        "trustTier": "repo" if source_type == "custom" else str(fm.get("_skills_trust_tier") or "external-installed"),
+        "trustTier": trust_tier,
+        "trustBadge": trust_badge,
+        "trustBadgeVariant": trust_badge_variant,
         "sourcePath": node.source_path if _is_public_path_like(node.source_path) else "",
         "sourceUrl": _source_url_for_node(node),
         "installCommand": install_command,
@@ -602,6 +620,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
 
 
 def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
+    trust_badge, trust_badge_variant = trust_badge_for_tier(entry.trust_tier)
     return {
         "name": entry.name,
         "title": entry.name.replace("-", " ").title(),
@@ -614,6 +633,8 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "installable": bool(entry.install_command and entry.selector_mode != "unresolved"),
         "localInventoryOnly": False,
         "trustTier": entry.trust_tier,
+        "trustBadge": trust_badge,
+        "trustBadgeVariant": trust_badge_variant,
         "sourcePath": entry.source_path,
         "sourceUrl": entry.source_url,
         "installCommand": entry.install_command,

@@ -136,7 +136,7 @@ class TestWriteCliPage:
         assert "wagents docs generate --include-installed" in text
         assert "local agent skill directories" in text
         assert "~/.config/opencode/skills/" in text
-        assert "wagents docs generate --no-installed" not in text
+        assert "wagents docs generate --no-installed" in text
         assert "Bundle Manifest" in text
         assert "current bundle surface and generated docs inputs" in text
         assert "wagents skills sync --apply" in text
@@ -198,7 +198,7 @@ class TestWriteSkillsIndex:
 
 
 class TestDocsGenerate:
-    def test_includes_installed_skills_as_catalog_pages_by_default(self, tmp_repo, monkeypatch):
+    def test_excludes_installed_skills_by_default(self, tmp_repo, monkeypatch):
         custom = _make_node("skill")
         installed = _make_node("skill", id_suffix="ext", source="installed")
 
@@ -212,10 +212,26 @@ class TestDocsGenerate:
         docs_generate()
 
         assert (tmp_repo / "docs" / "src" / "generated-visual-assets.css").exists()
-        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "ext-skill.mdx").exists()
-        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "installed.mdx").exists()
+        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "ext-skill.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "test-skill.mdx").exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "all.mdx").exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "install.mdx").exists()
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "harness-support.mdx").exists()
+
+    def test_can_include_installed_skills_explicitly(self, tmp_repo, monkeypatch):
+        custom = _make_node("skill")
+        installed = _make_node("skill", id_suffix="ext", source="installed")
+
+        monkeypatch.setattr(
+            "wagents.docs.collect_all_doc_nodes",
+            lambda **kwargs: [custom, installed] if kwargs.get("include_installed", False) else [custom],
+        )
+        monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
+        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Test\n---\n")
+
+        docs_generate(include_installed=True)
+
+        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "ext-skill.mdx").exists()
 
     def test_can_exclude_installed_skills_explicitly(self, tmp_repo, monkeypatch):
         custom = _make_node("skill")

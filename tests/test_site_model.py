@@ -6,6 +6,7 @@ from wagents.catalog import CatalogNode
 from wagents.external_skills import parse_external_skill_entries
 from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
+    trust_badge_for_tier,
     VISUAL_ASSET_BY_ID,
     build_install_command,
     docs_asset_repo_path,
@@ -216,3 +217,17 @@ npx skills add example/skills --skill external-one -y -g -a codex
     assert rows["external-one"]["installedLocalInventoryOnly"] is False
     assert rows["external-one"]["installedExternalPath"] == ""
     assert [row["name"] for row in data["installedSkillIndex"]] == ["external-one"]
+
+
+def test_trust_badge_for_tier_maps_public_labels():
+    assert trust_badge_for_tier("repo") == ("Repo-owned", "tip")
+    assert trust_badge_for_tier("curated-trust-gated") == ("Curated", "note")
+    assert trust_badge_for_tier("needs-inspection") == ("Inspect first", "caution")
+
+
+def test_skill_index_rows_include_trust_badges():
+    node = CatalogNode("skill", "demo", "Demo", "Demo skill", {}, "", "skills/demo/SKILL.md")
+    data = site_data([node])
+    row = data["customSkillIndex"][0]
+    assert row["trustBadge"] == "Repo-owned"
+    assert row["trustBadgeVariant"] == "tip"
