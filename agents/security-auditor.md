@@ -1,17 +1,8 @@
 ---
 name: security-auditor
 description: Audit code and configuration for security risks without making changes.
-mode: subagent
-temperature: 0.1
-color: error
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-  webfetch: allow
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -33,6 +24,7 @@ Read-only. Report risks, assumptions, and mitigations only.
 ## Output Contract
 
 Return:
+
 - Critical issues
 - Important issues
 - Hardening recommendations

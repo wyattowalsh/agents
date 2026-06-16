@@ -1,17 +1,8 @@
 ---
 name: researcher
 description: Investigate a technical question deeply and return a concise evidence-backed summary.
-mode: subagent
-temperature: 0.1
-color: primary
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-    "git log*": allow
-  webfetch: allow
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -33,6 +24,7 @@ Read-only. Research and synthesize only.
 ## Output Contract
 
 Return:
+
 - Key findings
 - Supporting details
 - Recommendations

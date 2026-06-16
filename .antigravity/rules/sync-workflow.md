@@ -7,15 +7,19 @@ The repository uses `scripts/sync_agent_stack.py` and the `wagents` CLI to keep 
 Before every commit that touches skills, agents, MCP servers, or harness configuration:
 
 1. Run validation:
+
    ```bash
    wagents validate
    ```
+
    Fix any frontmatter or naming errors before proceeding.
 
 2. Regenerate the README if the repo structure or asset inventory changed:
+
    ```bash
    wagents readme
    ```
+
    Do not hand-edit `README.md`; it is fully generated from repo contents.
 
 3. Regenerate documentation if skills or agents changed:
@@ -26,16 +30,16 @@ Before every commit that touches skills, agents, MCP servers, or harness configu
 
 ## Documentation Site Commands
 
-| Command | Purpose |
-|---------|---------|
-| `wagents docs init` | One-time setup (`pnpm install` in `docs/`) |
-| `wagents docs generate` | Generate MDX content pages |
-| `wagents docs generate --include-installed` | Include installed skills from harness inventory |
-| `wagents docs generate --include-drafts` | Include skills with TODO descriptions |
-| `wagents docs dev` | Generate + launch dev server |
-| `wagents docs build` | Generate + static build |
-| `wagents docs preview` | Generate + build + preview server |
-| `wagents docs clean` | Remove generated content pages |
+| Command                                     | Purpose                                                            |
+| ------------------------------------------- | ------------------------------------------------------------------ |
+| `wagents docs init`                         | One-time setup (`pnpm install` in `docs/`)                         |
+| `wagents docs generate`                     | Generate MDX content pages                                         |
+| `wagents docs generate --include-installed` | Include installed skills from harness inventory                    |
+| `wagents docs generate --include-drafts`    | Include skills with TODO descriptions                              |
+| `wagents docs dev`                          | Generate + launch dev server                                       |
+| `wagents docs build`                        | Generate + static build                                            |
+| `wagents docs preview`                      | Generate + build + preview server                                  |
+| `wagents docs clean`                        | Remove generated content pages                                     |
 
 ## Modifying `sync_agent_stack.py`
 

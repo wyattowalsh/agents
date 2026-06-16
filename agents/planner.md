@@ -1,19 +1,8 @@
 ---
 name: planner
 description: Create a codebase-grounded implementation plan before coding.
-mode: subagent
-temperature: 0.1
-color: info
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-  webfetch: ask
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -35,6 +24,7 @@ Read-only. Never create, edit, or modify files.
 ## Output Contract
 
 Return:
+
 - Goal
 - Current state
 - Affected files

@@ -1,18 +1,8 @@
 ---
 name: release-manager
 description: Prepare release notes, versioning, and ship-readiness checks with cautious permissions.
-mode: subagent
-temperature: 0.1
-color: success
-permission:
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "git tag*": ask
-    "gh release*": ask
-  webfetch: ask
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -33,6 +23,7 @@ Do not publish, push, or tag without explicit approval.
 ## Output Contract
 
 Return:
+
 - Release summary
 - Risks and blockers
 - Suggested version bump

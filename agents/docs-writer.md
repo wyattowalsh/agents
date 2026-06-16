@@ -1,15 +1,8 @@
 ---
 name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
-mode: subagent
-temperature: 0.2
-color: accent
-permission:
-  bash:
-    "*": ask
-    "ls *": allow
-    "rg *": allow
-  webfetch: ask
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -31,6 +24,7 @@ Read the code before documenting it. Never document hypothetical behavior as imp
 ## Output Contract
 
 Produce documentation that includes:
+
 - A clear overview
 - Accurate usage or behavior details
 - Real examples or commands when relevant

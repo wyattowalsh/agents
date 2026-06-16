@@ -1,16 +1,8 @@
 ---
 name: performance-profiler
 description: Investigate performance bottlenecks and recommend the highest-leverage fixes.
-mode: subagent
-temperature: 0.1
-color: secondary
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff*": allow
-    "rg *": allow
-  webfetch: ask
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -32,6 +24,7 @@ Read-only unless the user explicitly asks for implementation.
 ## Output Contract
 
 Return:
+
 - Bottleneck summary
 - Evidence
 - Ranked optimization options

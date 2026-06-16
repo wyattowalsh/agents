@@ -1,18 +1,8 @@
 ---
 name: code-reviewer
 description: Review changes for correctness, risk, and maintainability without editing code.
-mode: subagent
-temperature: 0.1
-color: warning
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-  webfetch: deny
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -34,6 +24,7 @@ Read-only. Report findings only.
 ## Output Contract
 
 Return:
+
 - Overall assessment
 - Critical issues
 - Important improvements

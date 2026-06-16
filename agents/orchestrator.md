@@ -1,24 +1,8 @@
 ---
 name: orchestrator
 description: Coordinate multi-step work by decomposing, delegating, and synthesizing results.
-mode: subagent
-temperature: 0.1
-color: primary
-permission:
-  edit: deny
-  bash: ask
-  webfetch: ask
-  task:
-    "*": deny
-    "general": allow
-    "explore": allow
-    "planner": allow
-    "researcher": allow
-    "code-reviewer": allow
-    "docs-writer": allow
-    "security-auditor": allow
-    "release-manager": allow
-    "performance-profiler": allow
+tools: all
+permissionMode: default
 ---
 
 ## Role
@@ -41,6 +25,7 @@ Do not implement directly when delegation is the better fit.
 ## Output Contract
 
 Return:
+
 - Task breakdown
 - Delegation or execution order
 - Synthesized result

@@ -1,3 +1,108 @@
 # BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS
 
+[mcp_servers.mcphub_group_harness-safe]
+url = "http://127.0.0.1:46683/mcp/harness-safe"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = true
+
+[mcp_servers.mcphub_server_brave-search]
+url = "http://127.0.0.1:46683/mcp/brave-search"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_chrome-devtools]
+url = "http://127.0.0.1:46683/mcp/chrome-devtools"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_context7]
+url = "http://127.0.0.1:46683/mcp/context7"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_deepwiki]
+url = "http://127.0.0.1:46683/mcp/deepwiki"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_duckduckgo-search]
+url = "http://127.0.0.1:46683/mcp/duckduckgo-search"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_fetch]
+url = "http://127.0.0.1:46683/mcp/fetch"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_fetcher]
+url = "http://127.0.0.1:46683/mcp/fetcher"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_gmail]
+url = "http://127.0.0.1:46683/mcp/gmail"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_package-version]
+url = "http://127.0.0.1:46683/mcp/package-version"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_penpot]
+url = "http://127.0.0.1:46683/mcp/penpot"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_repomix]
+url = "http://127.0.0.1:46683/mcp/repomix"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_supathings]
+url = "http://127.0.0.1:46683/mcp/supathings"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_tavily]
+url = "http://127.0.0.1:46683/mcp/tavily"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
+[mcp_servers.mcphub_server_trafilatura]
+url = "http://127.0.0.1:46683/mcp/trafilatura"
+headers = { "Authorization" = "Bearer ${MCPHUB_BEARER_TOKEN}" }
+startup_timeout_sec = 20
+tool_timeout_sec = 90
+enabled = false
+
 # END MANAGED BY sync_agent_stack.py: MCP_SERVERS
