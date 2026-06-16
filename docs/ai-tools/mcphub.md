@@ -69,7 +69,7 @@ MCPHUB_TUNNEL_PROTOCOL=http2
 MCPHUB_TUNNEL_NAME=mcphub
 MCPHUB_TUNNEL_HOSTNAME=mcp.w4w.dev
 MCPHUB_TUNNEL_TARGET_URL=http://127.0.0.1:46683
-MCPHUB_TUNNEL_CREDENTIALS_FILE=/Users/ww/.cloudflared/<tunnel-id>.json
+MCPHUB_TUNNEL_CREDENTIALS_FILE=~/.cloudflared/<tunnel-id>.json
 # Or use MCPHUB_TUNNEL_TOKEN from the Cloudflare dashboard connector command.
 ```
 

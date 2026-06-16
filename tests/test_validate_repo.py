@@ -149,3 +149,29 @@ def test_validate_repo_check_index(mini_repo: Path) -> None:
     result = _run_validate_repo(cwd=mini_repo)
     assert result.returncode == 1
     assert "missing from README index table" in result.stdout
+
+
+def test_validate_repo_mcp_registry_wildcard_requires_opt_in(mini_repo: Path) -> None:
+    registry_path = mini_repo / "config" / "mcp-registry.json"
+    registry_path.parent.mkdir(parents=True, exist_ok=True)
+    registry_path.write_text(
+        """{
+  "contributor_defaults": {
+    "tools_policy": "deny-by-default",
+    "wildcard_requires_explicit_opt_in": true
+  },
+  "servers": {
+    "demo": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "demo-mcp"],
+      "tools": ["*"]
+    }
+  }
+}
+""",
+        encoding="utf-8",
+    )
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    assert "tools_allow_all" in result.stdout + result.stderr

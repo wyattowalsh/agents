@@ -21,7 +21,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "cascade-thinking": {
       "transport": "stdio",
@@ -38,7 +39,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "chrome-devtools": {
       "transport": "stdio",
@@ -89,7 +91,8 @@
           "perplexity-desktop",
           "cherry-studio"
         ]
-      }
+      },
+      "tools_allow_all": true
     },
     "context7": {
       "transport": "stdio",
@@ -112,7 +115,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "deepwiki": {
       "transport": "stdio",
@@ -130,7 +134,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "docling": {
       "transport": "stdio",
@@ -144,7 +149,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "fetch": {
       "transport": "stdio",
@@ -161,7 +167,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "fetcher": {
       "transport": "stdio",
@@ -178,7 +185,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "ossinsight": {
       "transport": "stdio",
@@ -195,7 +203,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "package-version": {
       "transport": "stdio",
@@ -236,7 +245,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "repomix": {
       "transport": "stdio",
@@ -254,7 +264,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "sequential-thinking": {
       "transport": "stdio",
@@ -271,7 +282,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "structured-thinking": {
       "transport": "stdio",
@@ -288,7 +300,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "supathings": {
       "transport": "stdio",
@@ -305,7 +318,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "tavily": {
       "transport": "stdio",
@@ -326,7 +340,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "trafilatura": {
       "transport": "stdio",
@@ -346,7 +361,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "arxiv": {
       "transport": "stdio",
@@ -363,7 +379,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "atom-of-thoughts": {
       "transport": "stdio",
@@ -379,7 +396,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "crash": {
       "transport": "stdio",
@@ -403,7 +421,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "creative-thinking": {
       "transport": "stdio",
@@ -417,7 +436,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "deep-lucid-3d": {
       "transport": "stdio",
@@ -434,7 +454,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "duckduckgo-search": {
       "transport": "stdio",
@@ -450,7 +471,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "exa": {
       "transport": "stdio",
@@ -471,7 +493,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "ffmpeg": {
       "transport": "stdio",
@@ -490,7 +513,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "g-search": {
       "transport": "stdio",
@@ -507,7 +531,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "gmail": {
       "transport": "stdio",
@@ -524,7 +549,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "linkedin": {
       "transport": "stdio",
@@ -541,7 +567,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "lotus-wisdom-mcp": {
       "transport": "stdio",
@@ -557,7 +584,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "shannon-thinking": {
       "transport": "stdio",
@@ -574,7 +602,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "think-strategies": {
       "transport": "stdio",
@@ -591,7 +620,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "wayback": {
       "transport": "stdio",
@@ -609,7 +639,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     },
     "wikipedia": {
       "transport": "stdio",
@@ -627,7 +658,8 @@
         "*"
       ],
       "tool_approvals": {},
-      "platform_overrides": {}
+      "platform_overrides": {},
+      "tools_allow_all": true
     }
   },
   "mcphub": {
@@ -997,5 +1029,10 @@
         ]
       }
     }
+  },
+  "contributor_defaults": {
+    "tools_policy": "deny-by-default",
+    "wildcard_requires_explicit_opt_in": true,
+    "new_server_tools_default": []
   }
 }

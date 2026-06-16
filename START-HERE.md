@@ -46,7 +46,7 @@ uv run wagents docs dev
 
 ## Harness support honesty
 
-All repo-present harnesses are **fixture-executable** or **plan-only** — see docs harness support page after `wagents docs generate`.
+All repo-present harnesses are **fixture-executable** or **plan-only** — see [docs harness support](/harness-support/) after `uv run wagents docs generate --no-installed`.
 
 ## MCP (optional, maintainer/advanced)
 
