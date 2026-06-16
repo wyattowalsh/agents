@@ -5,6 +5,7 @@ import pytest
 from wagents.parsing import (
     FenceTracker,
     escape_attr,
+    is_navigable_catalog_link_target,
     parse_frontmatter,
     sanitize_catalog_links,
     shift_headings,
@@ -160,6 +161,26 @@ class TestTruncateSentence:
         text = "Wow! That is great."
         result = truncate_sentence(text, 10)
         assert result == "Wow!"
+
+
+# ---------------------------------------------------------------------------
+# is_navigable_catalog_link_target
+# ---------------------------------------------------------------------------
+
+
+class TestIsNavigableCatalogLinkTarget:
+    @pytest.mark.parametrize(
+        ("target", "expected"),
+        [
+            ("https://example.com", True),
+            ("http://example.com", True),
+            ("/skills/catalog/foo", True),
+            ("references/guide.md", False),
+            ("#section", False),
+        ],
+    )
+    def test_navigable_targets(self, target: str, expected: bool) -> None:
+        assert is_navigable_catalog_link_target(target) is expected
 
 
 # ---------------------------------------------------------------------------

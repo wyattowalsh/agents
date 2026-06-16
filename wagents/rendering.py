@@ -12,6 +12,7 @@ from wagents.catalog import RELATED_SKILLS, CatalogEdge, CatalogNode
 from wagents.parsing import (
     FenceTracker,
     escape_attr,
+    is_navigable_catalog_link_target,
     sanitize_catalog_links,
     shift_headings,
     truncate_sentence,
@@ -348,11 +349,7 @@ def _section_is_link_heavy(content: str) -> bool:
     links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", content)
     if not links:
         return False
-    relative = sum(
-        1
-        for _, target in links
-        if not target.strip().startswith(("http://", "https://", "mailto:", "tel:", "/"))
-    )
+    relative = sum(1 for _, target in links if not is_navigable_catalog_link_target(target))
     return relative / len(links) > 0.5
 
 

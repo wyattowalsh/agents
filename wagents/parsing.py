@@ -40,18 +40,22 @@ def truncate_sentence(text: str, max_len: int) -> str:
 
 
 _LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+_NAVIGABLE_LINK_PREFIXES = ("http://", "https://", "mailto:", "tel:", "/")
+
+
+def is_navigable_catalog_link_target(target: str) -> bool:
+    """Return True when a markdown link target can resolve on generated catalog pages."""
+    return target.strip().startswith(_NAVIGABLE_LINK_PREFIXES)
 
 
 def _neutralize_catalog_link(match: re.Match[str]) -> str:
     label = match.group(1)
     target = match.group(2).strip()
-    if target.startswith(("http://", "https://", "mailto:", "tel:")):
-        return match.group(0)
-    if target.startswith("/"):
-        if "#" in target:
-            return f"[{label}]({target.split('#', 1)[0]})"
-        return match.group(0)
-    return f"`{label}`"
+    if not is_navigable_catalog_link_target(target):
+        return f"`{label}`"
+    if target.startswith("/") and "#" in target:
+        return f"[{label}]({target.split('#', 1)[0]})"
+    return match.group(0)
 
 
 def sanitize_catalog_links(text: str, *, fence_aware: bool = False) -> str:
