@@ -17,7 +17,7 @@ from wagents import ROOT
 from wagents.external_skills import ExternalSkillEntry, desired_install_now_entries, read_external_skill_entries
 from wagents.parsing import parse_frontmatter
 
-DEFAULT_HARNESS_QUERY_TIMEOUT_SEC = 60
+DEFAULT_HARNESS_QUERY_TIMEOUT_SEC = 120
 
 AGENT_LABEL_TO_ID = {
     "Antigravity": "antigravity",
@@ -422,22 +422,26 @@ def _query_grok_harness(home: Path, *, repo_root: Path | None = None) -> Harness
 
 
 def mirror_grok_skills_from_claude(*, home: Path | None = None) -> int:
-    """Symlink Claude Code global skills into ``~/.grok/skills`` when absent."""
+    """Symlink Claude Code and Skills CLI global skills into ``~/.grok/skills`` when absent."""
     home_dir = home or Path.home()
-    claude_root = home_dir / ".claude" / "skills"
+    source_roots = (
+        home_dir / ".claude" / "skills",
+        home_dir / ".agents" / "skills",
+    )
     grok_root = home_dir / ".grok" / "skills"
-    if not claude_root.is_dir():
-        return 0
     grok_root.mkdir(parents=True, exist_ok=True)
     mirrored = 0
-    for skill_dir in sorted(claude_root.iterdir()):
-        if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").exists():
+    for source_root in source_roots:
+        if not source_root.is_dir():
             continue
-        dest = grok_root / skill_dir.name
-        if dest.exists():
-            continue
-        dest.symlink_to(skill_dir, target_is_directory=True)
-        mirrored += 1
+        for skill_dir in sorted(source_root.iterdir()):
+            if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").exists():
+                continue
+            dest = grok_root / skill_dir.name
+            if dest.exists():
+                continue
+            dest.symlink_to(skill_dir, target_is_directory=True)
+            mirrored += 1
     return mirrored
 
 
