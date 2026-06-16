@@ -13,6 +13,7 @@ from typing import Any
 import yaml
 
 from wagents import DOCS_DIR, ROOT
+from wagents.catalog_rows import curated_entry_by_name
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.skill_docs import SkillDocNode, collect_skill_doc_nodes
 
@@ -173,8 +174,8 @@ def partition_skills_by_source(
         nodes = [node for node in nodes if node.curated_status == curated_status]
     groups: dict[str, list[SkillDocNode]] = defaultdict(list)
     for node in nodes:
-        meta = node.node.metadata if hasattr(node, "node") and node.node else {}
-        src = str((meta or {}).get("_skills_install_source") or "").strip() or "unknown"
+        meta = node.node.metadata or {}
+        src = str(meta.get("_skills_install_source") or "").strip() or "unknown"
         groups[src].append(node)
     # stable order: sort group keys, sort nodes by id within group
     batches: list[list[SkillDocNode]] = []
@@ -412,6 +413,18 @@ def seed_phase_a_research(
     return written
 
 
+def _curated_entry_for_doc(doc: SkillDocNode, entries: list[ExternalSkillEntry]) -> ExternalSkillEntry | None:
+    """Resolve the config row that matches a curated catalog doc node (install_source first, else first-by-name)."""
+    install_source = str((doc.node.metadata or {}).get("_skills_install_source") or "")
+    matches = [entry for entry in entries if entry.name == doc.id]
+    if not matches:
+        return None
+    for entry in matches:
+        if entry.install_source == install_source:
+            return entry
+    return curated_entry_by_name(entries, doc.id)
+
+
 def seed_curated_config_research(
     curated_status: str | None = None,
     overwrite: bool = False,
@@ -420,17 +433,22 @@ def seed_curated_config_research(
     Optional curated_status filter (e.g. 'install-now-after-trust-gate'); overwrite to force rewrite.
     """
     entries = read_external_skill_entries()
+    doc_nodes = collect_skill_doc_nodes(include_installed=False, include_curated=True)
+    curated_docs = [doc for doc in doc_nodes if doc.source_type == "curated-external"]
     if curated_status is not None:
-        entries = [e for e in entries if e.status == curated_status]
+        curated_docs = [doc for doc in curated_docs if doc.curated_status == curated_status]
     written: list[Path] = []
-    for entry in entries:
-        path = research_artifact_path(entry.name)
+    for doc in curated_docs:
+        entry = _curated_entry_for_doc(doc, entries)
+        if entry is None:
+            continue
+        path = research_artifact_path(doc.id)
         if path.exists() and not overwrite:
             continue
         body = build_curated_config_research_body(entry)
         written.append(
             write_skill_research_artifact(
-                entry.name,
+                doc.id,
                 source_type="curated-external",
                 research_tier="standard",
                 mean_confidence=0.65,

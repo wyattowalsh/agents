@@ -165,13 +165,36 @@ def test_build_curated_config_research_body_structured_sections():
     assert "Sourced from curated config/external-skills.md" in body
 
 
+def _curated_doc_node(
+    entry: ExternalSkillEntry,
+) -> SkillDocNode:
+    return SkillDocNode(
+        node=CatalogNode(
+            kind="skill",
+            id=entry.name,
+            title=entry.name,
+            description=entry.notes,
+            metadata={"_skills_install_source": entry.install_source},
+            body="",
+            source_path=entry.source_path,
+            source="curated-external",
+        ),
+        source_type="curated-external",
+        curated_status=entry.status,
+    )
+
+
 def test_seed_curated_config_research_writes_and_manifest(tmp_path, monkeypatch):
     entries = [
         _curated_entry("plannotator-review"),
         _curated_entry("inspect-me", status="inspect-then-install"),
     ]
+    doc_nodes = [_curated_doc_node(entry) for entry in entries]
     monkeypatch.setattr(
         "wagents.skill_research.read_external_skill_entries", lambda path=None: entries
+    )
+    monkeypatch.setattr(
+        "wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: doc_nodes
     )
     monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
@@ -192,10 +215,57 @@ def test_seed_curated_config_research_writes_and_manifest(tmp_path, monkeypatch)
     assert len(written3) == 1
 
 
+def test_seed_curated_config_research_uses_catalog_install_source_for_duplicates(tmp_path, monkeypatch):
+    entries = [
+        ExternalSkillEntry(
+            name="vitest",
+            source="antfu/skills",
+            install_source="antfu/skills",
+            status="install-now-after-trust-gate",
+            trust_tier="low",
+            provenance_status="verified-install-command",
+            install_command="npx skills add antfu/skills --skill vitest -y -g",
+            target_agents=("claude-code",),
+            source_url="https://github.com/antfu/skills",
+            notes="antfu vitest",
+        ),
+        ExternalSkillEntry(
+            name="vitest",
+            source="PaulRBerg/agent-skills",
+            install_source="PaulRBerg/agent-skills@abc",
+            status="install-now-after-trust-gate",
+            trust_tier="low",
+            provenance_status="verified-install-command",
+            install_command="npx skills add PaulRBerg/agent-skills@abc --skill vitest -y -g",
+            target_agents=("claude-code",),
+            source_url="https://github.com/PaulRBerg/agent-skills",
+            notes="paul vitest",
+        ),
+    ]
+    doc_nodes = [_curated_doc_node(entries[0])]
+    monkeypatch.setattr(
+        "wagents.skill_research.read_external_skill_entries", lambda path=None: entries
+    )
+    monkeypatch.setattr(
+        "wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: doc_nodes
+    )
+    monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
+    monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
+    written = seed_curated_config_research(overwrite=True)
+    assert len(written) == 1
+    body = (tmp_path / "vitest.md").read_text(encoding="utf-8")
+    assert "antfu vitest" in body
+    assert "paul vitest" not in body
+
+
 def test_seed_curated_config_research_skips_when_no_overwrite(tmp_path, monkeypatch):
     entry = _curated_entry("existing-one")
     monkeypatch.setattr(
         "wagents.skill_research.read_external_skill_entries", lambda path=None: [entry]
+    )
+    monkeypatch.setattr(
+        "wagents.skill_research.collect_skill_doc_nodes",
+        lambda **kwargs: [_curated_doc_node(entry)],
     )
     monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")

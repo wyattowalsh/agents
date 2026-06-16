@@ -10,14 +10,11 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 REPO = Path(__file__).resolve().parents[1]
-
-
-def _load_json(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def main() -> int:
@@ -48,7 +45,7 @@ def main() -> int:
         entries = [e for e in entries if e.status == args.curated_status]
     inv_rows = [e.public_dict() for e in entries]
     w0_payload = {
-        "generated_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
+        "generated_at": datetime.now(tz=UTC).isoformat(),
         "count": len(inv_rows),
         "rows": inv_rows,
         "curated_status_filter": args.curated_status,

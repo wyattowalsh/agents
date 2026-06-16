@@ -31,16 +31,14 @@ def first_sentence(text: str) -> str:
 
 
 def curated_entry_by_name(entries: list[ExternalSkillEntry] | None, skill_id: str) -> ExternalSkillEntry | None:
-    """Return the curated entry for *skill_id*, preferring ``verified-install-command`` provenance."""
+    """Return the curated entry for *skill_id*, preferring the first verified install row (catalog merge order)."""
     if not entries or not skill_id:
         return None
-    match: ExternalSkillEntry | None = None
-    for entry in entries:
-        if entry.name != skill_id:
-            continue
-        if match is None or entry.provenance_status == "verified-install-command":
-            match = entry
-    return match
+    matches = [entry for entry in entries if entry.name == skill_id]
+    if not matches:
+        return None
+    verified = [entry for entry in matches if entry.provenance_status == "verified-install-command"]
+    return (verified or matches)[0]
 
 
 def entry_to_public_row(entry: ExternalSkillEntry) -> dict[str, Any]:

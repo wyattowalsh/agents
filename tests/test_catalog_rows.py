@@ -9,6 +9,39 @@ from wagents.catalog_rows import (
 from wagents.external_skills import ExternalSkillEntry, parse_external_skill_entries
 
 
+def test_curated_entry_by_name_prefers_first_verified_row_for_duplicate_names():
+    entries = [
+        ExternalSkillEntry(
+            name="vitest",
+            source="antfu/skills",
+            install_source="antfu/skills",
+            status="install-now-after-trust-gate",
+            trust_tier="low",
+            provenance_status="verified-install-command",
+            install_command="npx ...",
+            target_agents=(),
+            source_url="",
+            notes="first",
+        ),
+        ExternalSkillEntry(
+            name="vitest",
+            source="PaulRBerg/agent-skills",
+            install_source="PaulRBerg/agent-skills@abc",
+            status="install-now-after-trust-gate",
+            trust_tier="low",
+            provenance_status="verified-install-command",
+            install_command="npx ...",
+            target_agents=(),
+            source_url="",
+            notes="second",
+        ),
+    ]
+    found = curated_entry_by_name(entries, "vitest")
+    assert found is not None
+    assert found.install_source == "antfu/skills"
+    assert found.notes == "first"
+
+
 def test_curated_entry_by_name_prefers_verified_provenance():
     """Lookup by name should return the verified variant when both unresolved and verified exist."""
     entries = parse_external_skill_entries(
