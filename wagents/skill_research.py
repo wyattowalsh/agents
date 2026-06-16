@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import defaultdict
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -12,6 +13,7 @@ from typing import Any
 import yaml
 
 from wagents import DOCS_DIR, ROOT
+from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.skill_docs import SkillDocNode, collect_skill_doc_nodes
 
 RESEARCH_DIR = DOCS_DIR / "src" / "skill-research"
@@ -20,6 +22,17 @@ QUERIES_PATH = Path(__file__).resolve().parent / "data" / "skill-research-querie
 
 _LOCAL_PATH_PATTERN = re.compile(r"(/Users/|/home/|/private/)")
 _STALE_DAYS = {"custom": 90, "installed": 30, "curated-external": 30}
+
+
+CURATED_RESEARCH_SECTIONS: tuple[str, ...] = (
+    "Purpose",
+    "Harness Coverage",
+    "Trust And Risks",
+    "Install Prerequisites",
+    "Upstream Maintainer",
+    "Comparable Alternatives",
+)
+
 
 
 @dataclass(frozen=True)
@@ -81,6 +94,11 @@ def validate_artifact(path: Path) -> list[str]:
         errors.append("contains local filesystem path")
     if not body.strip():
         errors.append("empty research body")
+    source_type = str(meta.get("source_type") or "")
+    if source_type == "curated-external":
+        for section in CURATED_RESEARCH_SECTIONS:
+            if f"## {section}" not in body:
+                errors.append(f"missing curated-external header: ## {section}")
     return errors
 
 
@@ -141,6 +159,32 @@ def partition_skills_for_research(
     return batches
 
 
+def partition_skills_by_source(
+    batch_max: int = 10,
+    curated_status: str | None = None,
+    include_installed: bool = False,
+) -> list[list[SkillDocNode]]:
+    """Partition skill doc nodes into batches (max size batch_max), grouped by _skills_install_source then chunked.
+    Optional curated_status filter (for curated-external). Groups ensure related-source skills stay together for
+    batched research prompts when using GROUP BY install_source in enrichment waves.
+    """
+    nodes = collect_skill_doc_nodes(include_installed=include_installed, include_curated=True)
+    if curated_status is not None:
+        nodes = [node for node in nodes if node.curated_status == curated_status]
+    groups: dict[str, list[SkillDocNode]] = defaultdict(list)
+    for node in nodes:
+        meta = node.node.metadata if hasattr(node, "node") and node.node else {}
+        src = str((meta or {}).get("_skills_install_source") or "").strip() or "unknown"
+        groups[src].append(node)
+    # stable order: sort group keys, sort nodes by id within group
+    batches: list[list[SkillDocNode]] = []
+    for src in sorted(groups.keys()):
+        gnodes = sorted(groups[src], key=lambda n: n.id)
+        for index in range(0, len(gnodes), batch_max):
+            batches.append(gnodes[index : index + batch_max])
+    return batches
+
+
 def build_batch_prompt(batch: list[SkillDocNode]) -> str:
     """Build a subagent prompt for researching one batch of skills."""
     templates = research_queries()
@@ -190,10 +234,13 @@ def research_coverage(
     doc_nodes: list[SkillDocNode] | None = None,
     *,
     source_type: str = "custom",
+    curated_status: str | None = None,
 ) -> tuple[int, int]:
-    """Return (present, total) research cache coverage for a source type."""
+    """Return (present, total) research cache coverage for a source type (optionally filtered by curated_status)."""
     nodes = doc_nodes or collect_skill_doc_nodes(include_installed=False, include_curated=True)
     filtered = [node for node in nodes if node.source_type == source_type]
+    if curated_status is not None:
+        filtered = [node for node in filtered if node.curated_status == curated_status]
     present = sum(1 for node in filtered if research_artifact_path(node.id).exists())
     return present, len(filtered)
 
@@ -274,6 +321,68 @@ def build_repo_grounded_research_body(doc: SkillDocNode) -> str:
     return "\n".join(lines)
 
 
+def build_curated_config_research_body(entry: ExternalSkillEntry) -> str:
+    """Build structured research body with required sections from ExternalSkillEntry (config/external-skills.md fields)."""
+    purpose = (entry.notes or entry.risk_notes or f"Curated external skill: {entry.name}.").strip()
+    harness_list = ", ".join(entry.target_agents) if entry.target_agents else "(see install command -a targets)"
+    trust_parts: list[str] = [
+        f"trust_tier={entry.trust_tier or 'unspecified'}",
+        f"status={entry.status}",
+        f"provenance={entry.provenance_status}",
+    ]
+    if entry.risk_notes:
+        trust_parts.append(f"risks={entry.risk_notes}")
+    if entry.promotion_policy:
+        trust_parts.append(f"policy={entry.promotion_policy}")
+    if entry.provenance_evidence:
+        trust_parts.append(f"evidence={entry.provenance_evidence}")
+    trust_and_risks = "; ".join(trust_parts)
+
+    prereqs: list[str] = []
+    if entry.install_command:
+        prereqs.append(f"Install: `{entry.install_command}`")
+    prereqs.append(f"status={entry.status}; selector={entry.selector_mode}")
+    if entry.unresolved_reason:
+        prereqs.append(f"unresolved: {entry.unresolved_reason}")
+    install_prereqs = " ".join(prereqs)
+
+    if entry.source_url:
+        upstream = f"[{entry.source}]({entry.source_url})"
+    else:
+        upstream = entry.source or entry.install_source or "config/external-skills.md"
+
+    comparable = _extract_comparable_alternative(purpose)
+
+    lines = [
+        "## Purpose",
+        "",
+        purpose,
+        "",
+        "## Harness Coverage",
+        "",
+        f"Target agents: {harness_list}.",
+        "",
+        "## Trust And Risks",
+        "",
+        trust_and_risks,
+        "",
+        "## Install Prerequisites",
+        "",
+        install_prereqs,
+        "",
+        "## Upstream Maintainer",
+        "",
+        upstream,
+        "",
+        "## Comparable Alternatives",
+        "",
+        comparable,
+        "",
+        "> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.",
+    ]
+    return "\n".join(lines)
+
+
 def seed_phase_a_research(
     doc_nodes: list[SkillDocNode] | None = None,
     *,
@@ -295,6 +404,36 @@ def seed_phase_a_research(
                 source_type="custom",
                 research_tier="quick",
                 mean_confidence=0.78,
+                body=body,
+            )
+        )
+    if written:
+        update_research_manifest()
+    return written
+
+
+def seed_curated_config_research(
+    curated_status: str | None = None,
+    overwrite: bool = False,
+) -> list[Path]:
+    """Write research artifacts for curated-external skills, using config fields via build_curated_config_research_body.
+    Optional curated_status filter (e.g. 'install-now-after-trust-gate'); overwrite to force rewrite.
+    """
+    entries = read_external_skill_entries()
+    if curated_status is not None:
+        entries = [e for e in entries if e.status == curated_status]
+    written: list[Path] = []
+    for entry in entries:
+        path = research_artifact_path(entry.name)
+        if path.exists() and not overwrite:
+            continue
+        body = build_curated_config_research_body(entry)
+        written.append(
+            write_skill_research_artifact(
+                entry.name,
+                source_type="curated-external",
+                research_tier="standard",
+                mean_confidence=0.65,
                 body=body,
             )
         )

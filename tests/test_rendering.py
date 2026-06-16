@@ -168,17 +168,82 @@ class TestRenderSkillPage:
         assert "View Full SKILL.md" not in result
         assert "Curated config bulk content" not in result
         assert "SKILL.md is not available locally" in result
+        # Harness / trust sections now emitted for curated-external (even non-enriched stubs)
+        assert "## Harness Coverage" in result
+        assert "## Trust / Audit" in result
+        assert "curated-external" in result  # metadata row sourceType
+        assert "| Review State | curated |" in result
+        assert "install-now-after-trust-gate" in result or "Curated status" in result
+        # Public metadata rows use curated values, not the old installed-external fallback
+        assert "| Source Type | `curated-external` |" in result
+        assert "Trust Tier" in result
+
+    def test_curated_external_enriched_stub_uses_harness_trust_structured_research_h2s(self, tmp_repo, monkeypatch):
+        """Curated-external stubs with research cache render harness/trust H2 + parsed research as H2s
+        (never the single research Aside) and update provenance text for enriched stubs.
+        """
+        node = _make_node(
+            "skill",
+            id="curated-enrich",
+            source="curated-external",
+            body="",
+            source_path="config/external-skills.md",
+            metadata={
+                "_is_stub": True,
+                "_curated_status": "install-now-after-trust-gate",
+                "_skills_trust_tier": "curated-trust-gated",
+                "_skills_target_agents": ["claude-code", "opencode", "cursor"],
+                "_skills_install_command": "npx skills add example/curated --skill curated-enrich -y -g -a claude-code cursor",
+            },
+        )
+        fake_research = (
+            "## Quick Answer\n\n**Problem:** test curated.\n\n"
+            "## Trust Posture\n\nAudited; safe under gate.\n\n"
+            "## Harness Notes\n\nBroad target set."
+        )
+        monkeypatch.setattr("wagents.rendering.load_skill_research", lambda sid: fake_research if sid == node.id else None)
+
+        result = render_skill_page(node, [], [node])
+        # Guard: still no View Full SKILL.md (even when enriched via research)
+        assert "View Full SKILL.md" not in result
+        # Harness + trust sections
+        assert "## Harness Coverage" in result
+        assert "claude-code" in result and "opencode" in result
+        assert "Portable multi-harness install command" in result
+        assert "## Trust / Audit" in result
+        assert "curated-trust-gated" in result or "Curated" in result
+        assert "curated-external" in result
+        assert "| Source Type | `curated-external` |" in result
+        # Structured research as H2s, not the collapsed Aside
+        assert "## Quick Answer" in result
+        assert "## Trust Posture" in result
+        assert "Audited; safe under gate" in result
+        assert "Research context (evidence, not authority)" not in result
+        # Enriched stub provenance text
+        assert "Enriched from research cache (stub)" in result
+        assert "SKILL.md is not available locally" not in result
 
     def test_installed_skill_badge(self, tmp_repo):
         node = _make_node("skill", source="installed", source_path="/tmp/fake/SKILL.md")
         result = render_skill_page(node, [], [node])
-        assert "Installed" in result
+        assert "Local install" in result
         assert "| Display Source | `local installed inventory` |" in result
         assert "| Source Kind | `local-inventory` |" in result
         assert "| Installability | local inventory only |" in result
         assert "/tmp/fake" not in result
         # No "View source on GitHub" for installed
         assert "View source on GitHub" not in result
+
+    def test_installed_skill_trust_tier_badge(self, tmp_repo):
+        node = _make_node(
+            "skill",
+            source="installed",
+            source_path="/tmp/fake/SKILL.md",
+            metadata={"_skills_trust_tier": "read-only-discovered"},
+        )
+        result = render_skill_page(node, [], [node])
+        assert "Inspect first" in result
+        assert "Local install" not in result
 
 
 # ---------------------------------------------------------------------------

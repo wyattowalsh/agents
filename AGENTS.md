@@ -208,6 +208,10 @@ Third-party skills stay **out of** `skills/` unless you are authoring a new
 repo-owned skill. The curated install set is tracked in
 `config/external-skills.md` and parsed by `wagents/external_skills.py`.
 
+**Mental model:** Curated catalog pages are enriched config+research views (not runtime stubs). Runtime truth: `config/external-skills.md` → `skills sync` → harness dirs; docs-only views from `docs generate --no-installed` (CI default). Enrich = research briefs + harness rows + trust tiers + install commands + lazy upstream SKILL.md preview. Parity = matching skill IDs in catalog vs `external-skills.md`/sync. Merge: custom > installed > curated-external. Optional fetch-upstream is on-demand/CI-safe.
+
+**Maintainer loop:** `skills sync --dry-run`; `docs research --seed-from-config`; `docs research --emit-waves`; `docs generate --no-installed` (CI) vs `--include-installed` (local); optional fetch-upstream.
+
 | Surface | Role |
 | --- | --- |
 | `config/external-skills.md` | Audited `npx skills add ...` commands, avoid notes, standard harness target suffix |
@@ -260,8 +264,8 @@ wagents readme --check       # Exits 1 if README is stale
 
 # Documentation site
 wagents docs init                       # One-time: pnpm install in docs/
-wagents docs generate                   # Generate MDX content pages
-wagents docs generate --include-installed  # Opt in to installed skills from the normalized harness inventory
+wagents docs generate                   # Generate MDX content pages (repo-only default, same as --no-installed)
+wagents docs generate --include-installed  # Opt-in to installed skills from the normalized harness inventory
 wagents docs generate --include-drafts  # Include skills with TODO descriptions
 wagents docs dev                        # Generate + launch dev server
 wagents docs build                      # Generate + static build

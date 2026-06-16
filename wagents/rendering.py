@@ -23,6 +23,8 @@ from wagents.site_model import (
     REPO_SOURCE,
     SUPPORTED_AGENT_IDS,
     build_install_command,
+    resolve_trust_tier_for_node,
+    trust_badge_for_tier,
 )
 from wagents.skill_docs import skill_detail_href
 from wagents.skill_research import load_skill_research
@@ -252,6 +254,28 @@ def _skill_source_kind(node: CatalogNode) -> str:
 
 
 def _skill_public_metadata_rows(node: CatalogNode) -> list[str]:
+    if node.source == "curated-external":
+        source_type = "curated-external"
+        display_source = _skill_display_source(node)
+        install_command = _installed_install_command(node)
+        install_state = "portable command" if install_command else "local inventory only"
+        review_state = "curated"
+        fm = node.metadata if isinstance(node.metadata, dict) else {}
+        target_list = fm.get("_skills_target_agents") or []
+        targets = ", ".join(f"`{agent}`" for agent in target_list) if target_list else ""
+        trust_tier = resolve_trust_tier_for_node(node)
+        rows = [
+            f"| Source Type | `{source_type}` |",
+            f"| Display Source | `{escape_mdx_line(display_source)}` |",
+            f"| Source Kind | `{_skill_source_kind(node)}` |",
+            f"| Installability | {install_state} |",
+            f"| Review State | {review_state} |",
+            f"| Trust Tier | `{trust_tier}` |",
+        ]
+        if targets:
+            rows.append(f"| Target Agents | {targets} |")
+        return rows
+
     source_type = "repo-owned" if node.source == "custom" else "installed-external"
     display_source = _skill_display_source(node)
     install_command = (
@@ -426,6 +450,101 @@ _SKIP_SECTIONS = {
 }
 
 
+def _parse_research_sections(body: str) -> dict[str, str]:
+    """Extract ##-headed sections from a research body for structured H2 rendering.
+
+    Preserves original heading casing. Skips leading H1. Used for curated-external
+    enrichment so research appears as native page sections (not a single Aside).
+    """
+    sections: dict[str, str] = {}
+    if not body:
+        return sections
+
+    lines = body.split("\n")
+    current_heading = ""
+    current_lines: list[str] = []
+    fence = FenceTracker()
+
+    for line in lines:
+        fence.update(line)
+        if fence.inside_fence:
+            current_lines.append(line)
+            continue
+        stripped = line.strip()
+        if stripped.startswith("## "):
+            if current_heading:
+                sections[current_heading] = "\n".join(current_lines).strip()
+            current_heading = stripped[3:].strip()
+            current_lines = []
+        elif stripped.startswith("# ") and not current_heading:
+            # Skip the first H1 heading
+            continue
+        else:
+            current_lines.append(line)
+
+    if current_heading:
+        sections[current_heading] = "\n".join(current_lines).strip()
+
+    return sections
+
+
+def _render_curated_harness_section(node: CatalogNode) -> list[str]:
+    """Render a Harness Coverage H2 section for curated-external (stub) skills.
+
+    Pulls verified target harnesses from _skills_target_agents metadata and the
+    portable install command when present.
+    """
+    fm = node.metadata if isinstance(node.metadata, dict) else {}
+    target_agents = fm.get("_skills_target_agents") or []
+    install_cmd = _installed_install_command(node)
+    parts: list[str] = []
+    parts.append("## Harness Coverage")
+    parts.append("")
+    if target_agents:
+        listed = ", ".join(f"`{a}`" for a in target_agents)
+        parts.append(f"Targets verified harnesses: {listed}.")
+    else:
+        parts.append("Targets all supported agent harnesses via the install command below.")
+    if install_cmd:
+        parts.append("")
+        parts.append("**Portable multi-harness install command:**")
+        parts.append("```bash")
+        parts.append(install_cmd)
+        parts.append("```")
+    parts.append("")
+    return parts
+
+
+def _render_curated_trust_section(node: CatalogNode) -> list[str]:
+    """Render a Trust / Audit H2 section for curated-external skills.
+
+    Uses the shared resolve_trust_tier_for_node + trust_badge_for_tier so the
+    rendered page matches the site index badges/rows.
+    """
+    trust_tier = resolve_trust_tier_for_node(node)
+    badge_text, _ = trust_badge_for_tier(trust_tier)
+    fm = node.metadata if isinstance(node.metadata, dict) else {}
+    status = fm.get("_curated_status") or ""
+    risk = fm.get("_risk_notes") or ""
+    parts: list[str] = []
+    parts.append("## Trust / Audit")
+    parts.append("")
+    parts.append(f"Trust tier: **{escape_mdx_line(badge_text)}** (`{trust_tier}`)")
+    if status:
+        parts.append("")
+        parts.append(f"Curated status: `{escape_mdx_line(str(status))}`")
+    if risk:
+        parts.append("")
+        parts.append(f"Risk notes: {escape_mdx_line(_sanitize_what_it_does(str(risk)))}")
+    parts.append("")
+    parts.append(
+        "Entry maintained in `config/external-skills.md`; provenance and audit notes are "
+        "authoritative there (research context is advisory)."
+    )
+    parts.append("")
+    return parts
+
+
 def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     fm = node.metadata
     parts = []
@@ -463,15 +582,14 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             badges.append(f'<Badge text="{escape_attr(meta["author"])}" variant="caution" />')
     if fm.get("model"):
         badges.append(f'<Badge text="{escape_attr(fm["model"])}" variant="tip" />')
-    if node.source == "custom":
-        badges.append('<Badge text="Custom" variant="tip" />')
-    elif node.source == "curated-external":
-        badges.append('<Badge text="Curated External" variant="caution" />')
+    # Emit single trust badge from site_model mapping (replaces legacy Custom/Curated/Installed)
+    trust_tier = resolve_trust_tier_for_node(node)
+    trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
+    badges.append(f'<Badge text="{escape_attr(trust_badge)}" variant="{trust_badge_variant}" />')
+    if node.source == "curated-external":
         curated_status = str(node.metadata.get("_curated_status") or "")
         if curated_status:
             badges.append(f'<Badge text="{escape_attr(curated_status)}" variant="default" />')
-    else:
-        badges.append('<Badge text="Installed" variant="caution" />')
     parts.append(" ".join(badges))
     parts.append("")
 
@@ -515,6 +633,9 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     )
     parts.append("")
 
+    research_body = load_skill_research(node.id)
+    is_enriched_stub = bool(node.source == "curated-external" and node.metadata.get("_is_stub") and research_body)
+
     parts.append('<Aside type="note" title="Source & provenance">')
     if node.source == "custom":
         parts.append(
@@ -527,17 +648,38 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             f"(`{escape_mdx_line(_display_source_path(node))}`) and local inventory when installed."
         )
         if node.metadata.get("_is_stub"):
-            parts.append(
-                " SKILL.md is not available locally; install the skill or run "
-                f"`uv run wagents docs research --skill {node.id}` to refresh research context."
-            )
+            if is_enriched_stub:
+                parts.append(
+                    " Enriched from research cache (stub); the upstream SKILL.md body is not present locally."
+                    " Re-run `uv run wagents docs research --skill "
+                    f"{node.id}` to refresh."
+                )
+            else:
+                parts.append(
+                    " SKILL.md is not available locally; install the skill or run "
+                    f"`uv run wagents docs research --skill {node.id}` to refresh research context."
+                )
     else:
         parts.append(f"This page is generated from `{escape_mdx_line(_display_source_path(node))}`.")
     parts.append("</Aside>")
     parts.append("")
 
-    research_body = load_skill_research(node.id)
-    if research_body:
+    if node.source == "curated-external":
+        # For curated-external show dedicated harness + trust/audit sections plus
+        # structured research H2s (never collapse research into a single Aside).
+        parts.extend(_render_curated_harness_section(node))
+        parts.extend(_render_curated_trust_section(node))
+        if research_body:
+            research_sections = _parse_research_sections(research_body)
+            skip_headings = {"Harness Coverage", "Trust And Risks", "Trust / Audit"}
+            for heading, content in research_sections.items():
+                if heading in skip_headings or not content or not content.strip():
+                    continue
+                parts.append(f"## {heading}")
+                parts.append("")
+                parts.append(_catalog_prose(content))
+                parts.append("")
+    elif research_body:
         parts.append('<Aside type="note" title="Research context (evidence, not authority)">')
         parts.append(_catalog_prose(research_body))
         parts.append("</Aside>")

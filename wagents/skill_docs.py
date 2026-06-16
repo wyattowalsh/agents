@@ -74,9 +74,15 @@ def curated_entry_to_node(entry: ExternalSkillEntry) -> CatalogNode:
         "_skills_install_source": entry.install_source,
         "_curated_status": entry.status,
         "_is_stub": True,
+        "_promotion_policy": entry.promotion_policy,
+        "_provenance_evidence": entry.provenance_evidence,
+        "_unsupported_target_agents": list(entry.unsupported_target_agents),
+        "_source_url": entry.source_url,
+        "_selector_mode": entry.selector_mode,
+        "_risk_notes": entry.risk_notes,
+        "_notes_full": entry.notes,
+        "_install_endorsed": entry.status == "install-now-after-trust-gate",
     }
-    if entry.risk_notes:
-        metadata["_risk_notes"] = entry.risk_notes
     return CatalogNode(
         kind="skill",
         id=entry.name,
@@ -146,9 +152,7 @@ def collect_skill_doc_nodes(
             source_type = "installed"
         else:
             source_type = "curated-external"
-        is_stub = bool(node.metadata.get("_is_stub")) or (
-            source_type == "curated-external" and not node.body.strip()
-        )
+        is_stub = bool(node.metadata.get("_is_stub")) or (source_type == "curated-external" and not node.body.strip())
         curated_status = str(node.metadata.get("_curated_status") or "")
         doc_nodes.append(
             SkillDocNode(

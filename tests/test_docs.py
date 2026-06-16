@@ -1,11 +1,14 @@
 """Tests for wagents.docs — index pages, sidebar, and docs subcommands."""
 
+import json
+
 from wagents.catalog import CatalogNode
 from wagents.docs import (
     docs_generate,
     write_agents_index,
     write_all_skills_index,
     write_cli_page,
+    write_harness_support_page,
     write_index_page,
     write_mcp_index,
     write_sidebar,
@@ -331,6 +334,8 @@ class TestWriteSidebar:
         assert "Skills" in text
         assert "Agents" in text
         assert "CLI Reference" in text
+        assert "Harness Support" in text
+        assert "/harness-support/" in text
 
     def test_sidebar_without_agents_or_mcp(self, tmp_repo):
         docs_src = tmp_repo / "docs" / "src"
@@ -347,6 +352,59 @@ class TestWriteSidebar:
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
         assert "collapsed: true" in text
         assert "autogenerate: { directory: 'skills/catalog' }" in text
+
+
+class TestWriteHarnessSupportPage:
+    def test_populated_fixtures_emit_aside_table_and_executable(self, tmp_repo):
+        """Populated harness registry + fixture-executable record produces Aside, table row, and executable section."""
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+
+        # Overwrite seeded empty fixtures from conftest with 1 harness + 1 executable record
+        (tmp_repo / "config" / "harness-surface-registry.json").write_text(
+            json.dumps(
+                {
+                    "harnesses": [
+                        {
+                            "id": "claude-code",
+                            "label": "Claude Code",
+                            "support_tier": "repo-present-validation-required",
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        (tmp_repo / "planning" / "manifests" / "harness-fixture-support.json").write_text(
+            json.dumps(
+                {
+                    "records": [
+                        {
+                            "harness_id": "claude-code",
+                            "fixture_status": "fixture-executable",
+                            "promotion_blocker": "CI green required.",
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        write_harness_support_page()
+
+        out = content_dir / "harness-support.mdx"
+        assert out.exists()
+        text = out.read_text(encoding="utf-8")
+        # Aside
+        assert "import { Aside, Badge }" in text
+        assert '<Aside type="caution"' in text
+        assert "Stranger defaults" in text
+        # table row for the harness
+        assert "Claude Code" in text
+        assert "repo-present-validation-required" in text
+        # executable section
+        assert "## Executable fixtures today" in text
+        assert "`claude-code` — CI green required." in text
 
 
 class TestSkillHubPages:
@@ -444,7 +502,7 @@ class TestDocsResearchCommand:
             source_type="custom",
         )
 
-        def fake_coverage(doc_nodes, *, source_type: str):
+        def fake_coverage(doc_nodes, *, source_type: str, curated_status: str | None = None):
             if source_type == "curated-external":
                 return 0, 1
             return 1, 1

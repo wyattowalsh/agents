@@ -28,12 +28,16 @@ from wagents.skill_docs import (
     skill_detail_href,
 )
 from wagents.skill_research import (
+    RESEARCH_DIR,
     build_batch_prompt,
+    partition_skills_by_source,
     partition_skills_for_research,
     research_artifact_path,
     research_coverage,
+    seed_curated_config_research,
     seed_phase_a_research,
     update_research_manifest,
+    validate_artifact,
 )
 
 # ---------------------------------------------------------------------------
@@ -1631,7 +1635,7 @@ def write_all_skills_index(nodes: list) -> None:
         "",
         "# All Skills",
         "",
-        "This generated index combines repo-owned custom skills, curated external stubs, and installed external "
+        "This generated index combines repo-owned custom skills, curated external (config-enriched), and installed external "
         "skills. Each row links to the unified detail page under "
         f"`/{SKILL_DETAIL_SLUG_PREFIX}/<name>/`.",
         "",
@@ -1950,6 +1954,19 @@ def _is_hand_maintained_mdx(path: Path) -> bool:
         return False
 
 
+def _resolve_typer_option(value: object, *, default: object = None) -> object:
+    """Coerce Typer OptionInfo (seen on some direct-invocation/test paths) to resolved value.
+
+    Extracts .default when an OptionInfo instance is passed instead of the
+    concrete bool/int/str/etc; falls back to caller-supplied default when None.
+    """
+    if isinstance(value, OptionInfo):
+        value = value.default
+    if value is None:
+        value = default
+    return value
+
+
 def _clean_content_subdir(d: Path) -> bool:
     """Remove generated files from *d*, preserving hand-maintained ones recursively.
 
@@ -2002,7 +2019,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     """Generate MDX content pages from repo assets."""
     for subdir in ["skills", "agents", "mcp"]:
         _clean_content_subdir(CONTENT_DIR / subdir)
-    for f in ["index.mdx", "cli.mdx"]:
+    for f in ["index.mdx", "cli.mdx", "harness-support.mdx"]:
         p = CONTENT_DIR / f
         if p.exists() and not _is_hand_maintained_mdx(p):
             p.unlink()
@@ -2080,10 +2097,8 @@ def docs_generate(
     ),
 ):
     """Generate MDX content pages from repo assets."""
-    if isinstance(include_drafts, OptionInfo):
-        include_drafts = include_drafts.default
-    if isinstance(include_installed, OptionInfo):
-        include_installed = include_installed.default
+    include_drafts = _resolve_typer_option(include_drafts, default=False)
+    include_installed = _resolve_typer_option(include_installed, default=False)
     _docs_generate_impl(include_drafts=include_drafts, include_installed=include_installed)
 
 
@@ -2161,24 +2176,39 @@ def docs_research(
         "--seed-from-repo",
         help="Write Phase A research artifacts grounded in repo SKILL.md (custom skills only)",
     ),
+    seed_from_config: bool = typer.Option(
+        False,
+        "--seed-from-config",
+        help="Write research artifacts for curated-external from config/external-skills.md fields (W1)",
+    ),
+    curated_status: str | None = typer.Option(
+        None,
+        "--curated-status",
+        help="Filter curated external by status (e.g. install-now-after-trust-gate) for seed/partition/waves",
+    ),
+    validate_artifacts: bool = typer.Option(
+        False,
+        "--validate-artifacts",
+        help="Validate existing research (and upstream) artifacts for frontmatter, sections, local-path redaction",
+    ),
+    emit_waves: bool = typer.Option(
+        False,
+        "--emit-waves",
+        help="Emit orchestrator batch packets using partition_skills_by_source (GROUP BY install_source)",
+    ),
 ):
-    """Plan or refresh cached per-skill web research artifacts."""
-    if isinstance(dry_run, OptionInfo):
-        dry_run = bool(dry_run.default)
-    if isinstance(include_installed, OptionInfo):
-        include_installed = bool(include_installed.default)
-    if isinstance(batch_size, OptionInfo):
-        batch_size = int(batch_size.default or 25)
-    resolved_source_type = source_type
-    if isinstance(resolved_source_type, OptionInfo):
-        resolved_source_type = str(resolved_source_type.default or "all")
-    resolved_skill = skill
-    if isinstance(resolved_skill, OptionInfo):
-        resolved_skill = None
-    if isinstance(check_research, OptionInfo):
-        check_research = bool(check_research.default)
-    if isinstance(seed_from_repo, OptionInfo):
-        seed_from_repo = bool(seed_from_repo.default)
+    """Plan or refresh cached per-skill web research artifacts. Supports seed-from-repo/config, grouped waves, artifact validation."""
+    dry_run = _resolve_typer_option(dry_run, default=False)
+    include_installed = _resolve_typer_option(include_installed, default=False)
+    batch_size = _resolve_typer_option(batch_size, default=25) or 25
+    resolved_source_type = _resolve_typer_option(source_type, default="all") or "all"
+    resolved_skill = _resolve_typer_option(skill, default=None)
+    check_research = _resolve_typer_option(check_research, default=False)
+    seed_from_repo = _resolve_typer_option(seed_from_repo, default=False)
+    seed_from_config = _resolve_typer_option(seed_from_config, default=False)
+    resolved_curated_status = _resolve_typer_option(curated_status, default=None)
+    validate_artifacts = _resolve_typer_option(validate_artifacts, default=False)
+    emit_waves = _resolve_typer_option(emit_waves, default=False)
 
     allowed = {"all", "custom", "installed", "curated-external"}
     if resolved_source_type not in allowed:
@@ -2218,6 +2248,72 @@ def docs_research(
             raise typer.Exit(code=1)
         return
 
+    if seed_from_config:
+        if resolved_source_type not in {"all", "curated-external"}:
+            typer.echo("Error: --seed-from-config only supports --source-type curated-external or all", err=True)
+            raise typer.Exit(code=1)
+        if dry_run:
+            typer.echo(f"Would seed curated research artifacts (status={resolved_curated_status or 'any'})")
+        else:
+            written = seed_curated_config_research(
+                curated_status=resolved_curated_status, overwrite=bool(resolved_skill)
+            )
+            typer.echo(f"Seeded {len(written)} curated research artifact(s) from config")
+        cov_nodes = [n for n in doc_nodes if n.source_type == "curated-external"]
+        present, total = research_coverage(cov_nodes, source_type="curated-external", curated_status=resolved_curated_status)
+        typer.echo(f"Research cache coverage (curated-external): {present}/{total}")
+        if check_research and total and present < total:
+            typer.echo(f"Error: research cache incomplete for curated-external: {present}/{total}", err=True)
+            raise typer.Exit(code=1)
+        return
+
+    if emit_waves:
+        # Use the fixed partition that groups by install_source then chunks
+        batches = partition_skills_by_source(
+            batch_max=batch_size if not resolved_skill else max(len(doc_nodes), 1),
+            curated_status=resolved_curated_status,
+            include_installed=include_installed,
+        )
+        if source_types is not None:
+            batches = [[d for d in b if d.source_type in source_types] for b in batches]
+            batches = [b for b in batches if b]
+        typer.echo(f"Emit waves (grouped by _skills_install_source): {len(batches)} batches")
+        for index, batch in enumerate(batches, start=1):
+            names = ", ".join(d.id for d in batch)
+            srcs = ", ".join(sorted({str((d.node.metadata or {}).get("_skills_install_source", ""))[:40] for d in batch}))
+            typer.echo(f"  WaveBatch {index}: {len(batch)} skills (sources: {srcs}) — {names}")
+            if dry_run:
+                typer.echo(build_batch_prompt(batch))
+                typer.echo("")
+        if not dry_run:
+            update_research_manifest()
+            typer.echo("Updated manifest after wave emission planning.")
+        return
+
+    if validate_artifacts:
+        errors: list[tuple[str, list[str]]] = []
+        if RESEARCH_DIR.exists():
+            for p in sorted(RESEARCH_DIR.glob("*.md")):
+                errs = validate_artifact(p)
+                if errs:
+                    errors.append((str(p.relative_to(RESEARCH_DIR.parent.parent)), errs))
+        # also check upstream if present (lazy) — simple local path scan
+        _local_re = re.compile(r"(/Users/|/home/|/private/)")
+        upstream_dir = DOCS_DIR / "src" / "skill-upstream"
+        if upstream_dir.exists():
+            for p in sorted(upstream_dir.glob("*.md")):
+                txt = p.read_text(encoding="utf-8")
+                if _local_re.search(txt):
+                    errors.append((str(p), ["contains local path (upstream)"]))
+        if errors:
+            for rel, es in errors:
+                typer.echo(f"INVALID {rel}: {es}")
+            if check_research or not dry_run:
+                raise typer.Exit(code=1)
+        else:
+            typer.echo("All research (and upstream) artifacts validated (no local paths, required fields/sections present).")
+        return
+
     batches = partition_skills_for_research(
         doc_nodes,
         batch_size=batch_size if not resolved_skill else max(len(doc_nodes), 1),
@@ -2232,16 +2328,16 @@ def docs_research(
             typer.echo(build_batch_prompt(batch))
             typer.echo("")
 
-    if not dry_run and not seed_from_repo:
+    if not dry_run and not seed_from_repo and not seed_from_config:
         typer.echo(
             "Note: this command does not auto-write research artifacts. "
-            "Use --dry-run prompts for agent batches or --seed-from-repo for Phase A seeding."
+            "Use --dry-run prompts for agent batches or --seed-from-repo/--seed-from-config for seeding."
         )
 
     coverage_types = _research_coverage_types(resolved_source_type, include_installed=include_installed)
     incomplete: list[tuple[str, int, int]] = []
     for coverage_type in coverage_types:
-        present, total = research_coverage(doc_nodes, source_type=coverage_type)
+        present, total = research_coverage(doc_nodes, source_type=coverage_type, curated_status=resolved_curated_status)
         typer.echo(f"Research cache coverage ({coverage_type}): {present}/{total}")
         if check_research and total and present < total:
             incomplete.append((coverage_type, present, total))
@@ -2264,7 +2360,7 @@ def docs_clean():
     for subdir in ["skills", "agents", "mcp"]:
         if _clean_content_subdir(CONTENT_DIR / subdir):
             cleaned = True
-    for f in ["index.mdx", "cli.mdx"]:
+    for f in ["index.mdx", "cli.mdx", "harness-support.mdx"]:
         p = CONTENT_DIR / f
         if p.exists() and not _is_hand_maintained_mdx(p):
             p.unlink()

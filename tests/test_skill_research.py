@@ -1,20 +1,25 @@
 """Tests for wagents.skill_research helpers."""
 
 from wagents.catalog import CatalogNode
+from wagents.external_skills import ExternalSkillEntry
 from wagents.skill_docs import SkillDocNode
 from wagents.skill_research import (
+    CURATED_RESEARCH_SECTIONS,
     build_batch_prompt,
+    build_curated_config_research_body,
     build_repo_grounded_research_body,
+    partition_skills_by_source,
     partition_skills_for_research,
     research_coverage,
     research_queries,
+    seed_curated_config_research,
     seed_phase_a_research,
     validate_artifact,
     write_skill_research_artifact,
 )
 
 
-def _doc_node(skill_id: str, source_type: str = "custom") -> SkillDocNode:
+def _doc_node(skill_id: str, source_type: str = "custom", curated_status: str = "") -> SkillDocNode:
     source = source_type if source_type != "curated-external" else "curated-external"
     return SkillDocNode(
         node=CatalogNode(
@@ -28,6 +33,7 @@ def _doc_node(skill_id: str, source_type: str = "custom") -> SkillDocNode:
             source=source,
         ),
         source_type=source_type,  # type: ignore[arg-type]
+        curated_status=curated_status,
     )
 
 
@@ -113,3 +119,131 @@ def test_write_and_validate_artifact(tmp_path, monkeypatch):
     assert path.exists()
     errors = validate_artifact(path)
     assert errors == []
+
+
+def _curated_entry(
+    name: str,
+    status: str = "install-now-after-trust-gate",
+    *,
+    trust_tier: str = "low",
+    notes: str = "",
+    risk_notes: str = "",
+) -> ExternalSkillEntry:
+    return ExternalSkillEntry(
+        name=name,
+        source="example/source",
+        install_source="example/source",
+        status=status,
+        trust_tier=trust_tier,
+        provenance_status="verified-install-command",
+        install_command=f"npx skills add example/source --skill {name} -a claude-code opencode",
+        target_agents=("claude-code", "opencode"),
+        source_url="https://github.com/example/source",
+        notes=notes or f"Purpose of curated skill {name}.",
+        risk_notes=risk_notes or "Review hooks and dedupe.",
+        promotion_policy="Install only after trust gate.",
+        provenance_evidence="Curated in config/external-skills.md.",
+    )
+
+
+def test_curated_research_sections_constant():
+    assert CURATED_RESEARCH_SECTIONS[0] == "Purpose"
+    assert "Harness Coverage" in CURATED_RESEARCH_SECTIONS
+    assert "Comparable Alternatives" in CURATED_RESEARCH_SECTIONS
+    assert len(CURATED_RESEARCH_SECTIONS) == 6
+
+
+def test_build_curated_config_research_body_structured_sections():
+    entry = _curated_entry("shieldcn-badges", notes="Generate badges from templates.")
+    body = build_curated_config_research_body(entry)
+    for section in CURATED_RESEARCH_SECTIONS:
+        assert f"## {section}" in body, f"missing section {section}"
+    assert "shieldcn-badges" in body or "Purpose" in body
+    assert "Target agents:" in body
+    assert "trust_tier=low" in body
+    assert "https://github.com/example/source" in body
+    assert "Sourced from curated config/external-skills.md" in body
+
+
+def test_seed_curated_config_research_writes_and_manifest(tmp_path, monkeypatch):
+    entries = [
+        _curated_entry("plannotator-review"),
+        _curated_entry("inspect-me", status="inspect-then-install"),
+    ]
+    monkeypatch.setattr(
+        "wagents.skill_research.read_external_skill_entries", lambda path=None: entries
+    )
+    monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
+    monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
+    written = seed_curated_config_research()
+    assert len(written) == 2
+    p1 = tmp_path / "plannotator-review.md"
+    assert p1.exists()
+    text = p1.read_text(encoding="utf-8")
+    assert "source_type: curated-external" in text
+    assert "## Purpose" in text
+    assert "## Harness Coverage" in text
+    # only the filtered one
+    written2 = seed_curated_config_research(curated_status="install-now-after-trust-gate")
+    assert len(written2) == 0  # already exist, no overwrite
+    written3 = seed_curated_config_research(
+        curated_status="install-now-after-trust-gate", overwrite=True
+    )
+    assert len(written3) == 1
+
+
+def test_seed_curated_config_research_skips_when_no_overwrite(tmp_path, monkeypatch):
+    entry = _curated_entry("existing-one")
+    monkeypatch.setattr(
+        "wagents.skill_research.read_external_skill_entries", lambda path=None: [entry]
+    )
+    monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
+    monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
+    # pre-create
+    (tmp_path / "existing-one.md").write_text("---\nskill: existing-one\nsource_type: curated-external\n---\n\n## Purpose\n\nx", encoding="utf-8")
+    written = seed_curated_config_research(overwrite=False)
+    assert written == []
+
+
+def test_partition_skills_by_source_with_filter(monkeypatch):
+    nodes = [
+        _doc_node("alpha", "curated-external", "install-now-after-trust-gate"),
+        _doc_node("beta", "curated-external", "install-now-after-trust-gate"),
+        _doc_node("gamma", "curated-external", "inspect-then-install"),
+        _doc_node("delta", "custom"),
+    ]
+    monkeypatch.setattr("wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: nodes)
+    batches = partition_skills_by_source(batch_max=2)
+    assert len(batches) >= 2
+    batches_filtered = partition_skills_by_source(batch_max=10, curated_status="install-now-after-trust-gate")
+    assert len(batches_filtered) == 1
+    assert len(batches_filtered[0]) == 2
+    ids = {n.id for n in batches_filtered[0]}
+    assert ids == {"alpha", "beta"}
+
+
+def test_validate_artifact_curated_external_requires_headers(tmp_path, monkeypatch):
+    monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
+    # missing headers
+    bad_path = write_skill_research_artifact(
+        "cur-bad",
+        source_type="curated-external",
+        research_tier="standard",
+        mean_confidence=0.6,
+        body="Just some freeform text without the required sections.",
+    )
+    errs = validate_artifact(bad_path)
+    assert any("missing curated-external header: ## Purpose" in e for e in errs)
+    assert any("## Harness Coverage" in e for e in errs)
+    # good body
+    good_body = "\n\n".join(f"## {sec}\n\nContent for {sec}." for sec in CURATED_RESEARCH_SECTIONS)
+    good_path = write_skill_research_artifact(
+        "cur-good",
+        source_type="curated-external",
+        research_tier="standard",
+        mean_confidence=0.7,
+        body=good_body,
+    )
+    errs_good = validate_artifact(good_path)
+    assert not any("missing curated-external header" in e for e in errs_good)
+    assert errs_good == []
