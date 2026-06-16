@@ -28,6 +28,8 @@ DEDUP_PRECEDENCE = (
     "read-only-discovered",
 )
 
+PARITY_PROVENANCE = frozenset({"repo-owned", "verified-curated-external"})
+
 
 def _load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -40,18 +42,51 @@ def _provenance_rank(status: str) -> int:
         return len(DEDUP_PRECEDENCE)
 
 
-def classify_row(row: dict, *, repo_skill_names: set[str], desired_by_name: dict[str, dict]) -> str:
+def _is_skills_cli_canonical_path(path: str, name: str) -> bool:
+    """~/.agents/skills/<name> is the normal Skills CLI install root — not a duplicate."""
+    if not path:
+        return False
+    canonical = (Path.home() / ".agents" / "skills" / name).resolve()
+    try:
+        return Path(path).resolve() == canonical
+    except OSError:
+        return str(canonical) in path
+
+
+def _is_grok_project_override(path: str) -> bool:
+    """Repo .grok/skills overrides are intentional; do not refresh mirrors."""
+    project_root = (REPO / ".grok" / "skills").resolve()
+    if not path:
+        return False
+    try:
+        return Path(path).resolve().is_relative_to(project_root)
+    except (OSError, ValueError):
+        return str(project_root) in path
+
+
+def classify_row(
+    row: dict,
+    *,
+    repo_skill_names: set[str],
+    desired_by_name: dict[str, dict],
+    duplicate_names: set[str],
+) -> str:
     name = row["name"]
     status = row.get("provenance_status", "")
+    path = str(row.get("path") or "")
     agents = set(row.get("installed_agents") or [])
     desired = desired_by_name.get(name)
 
-    if name in repo_skill_names and status != "repo-owned":
+    # Repo-owned skills installed via Skills CLI universal root are expected.
+    if name in repo_skill_names and _is_skills_cli_canonical_path(path, name):
+        return "keep"
+
+    if name in duplicate_names and name not in repo_skill_names:
         return "dedupe_source"
 
-    if desired:
+    if desired and desired.get("provenance_status") in PARITY_PROVENANCE:
         target_agents = desired.get("target_agents") or TARGET_HARNESSES
-        if any(h not in agents for h in TARGET_HARNESSES if h in target_agents):
+        if set(target_agents) & set(TARGET_HARNESSES) - agents:
             return "parity_install"
 
     if status == "installed-external" and row.get("install_command"):
@@ -60,17 +95,30 @@ def classify_row(row: dict, *, repo_skill_names: set[str], desired_by_name: dict
     return "keep"
 
 
-def build_parity_gaps(inventory_rows: list[dict], desired_rows: list[dict]) -> dict[str, list[dict]]:
+def _grok_discovered_names(inventory_rows: list[dict]) -> set[str]:
+    """Skills visible to Grok via directory scan (discovered_in includes grok)."""
+    return {r["name"] for r in inventory_rows if "grok" in (r.get("discovered_in") or [])}
+
+
+def build_parity_gaps(
+    inventory_rows: list[dict],
+    desired_rows: list[dict],
+    *,
+    grok_discovered: set[str] | None = None,
+) -> dict[str, list[dict]]:
     by_name = {r["name"]: r for r in inventory_rows}
+    grok_present = grok_discovered or _grok_discovered_names(inventory_rows)
     gaps: dict[str, list[dict]] = {h: [] for h in TARGET_HARNESSES}
     for desired in desired_rows:
-        if desired.get("provenance_status") not in {"repo-owned", "verified-curated-external"}:
+        if desired.get("provenance_status") not in PARITY_PROVENANCE:
             continue
         name = desired["name"]
         installed = by_name.get(name, {})
         installed_agents = set(installed.get("installed_agents") or [])
         targets = set(desired.get("target_agents") or TARGET_HARNESSES)
         for harness in TARGET_HARNESSES:
+            if harness == "grok" and name in grok_present:
+                continue
             if harness in targets and harness not in installed_agents:
                 gaps[harness].append(
                     {
@@ -125,32 +173,42 @@ def merge_ledger(
     desired_rows: list[dict],
     symlink_audit: dict,
     multiroot: dict,
+    dedup_candidates: list[dict],
 ) -> list[dict]:
     repo_skill_names = {
-        r["name"] for r in desired_rows if r.get("provenance_status") == "repo-owned"
-    } | {
-        r["name"] for r in inventory_rows if r.get("provenance_status") == "repo-owned"
+        r["name"]
+        for rows in (desired_rows, inventory_rows)
+        for r in rows
+        if r.get("provenance_status") == "repo-owned"
     }
     desired_by_name = {r["name"]: r for r in desired_rows}
+    inventory_by_name: dict[str, list[dict]] = defaultdict(list)
+    for row in inventory_rows:
+        inventory_by_name[row["name"]].append(row)
+    duplicate_names = {name for name, rows in inventory_by_name.items() if len(rows) >= 2}
 
-    mismatch_names = {e["name"] for e in symlink_audit.get("mismatch", [])}
     broken_names = {e["name"] for e in symlink_audit.get("broken", [])}
     multiroot_names = set((multiroot.get("collisions") or {}).keys())
 
     ledger = []
     for row in sorted(inventory_rows, key=lambda r: r["name"].lower()):
-        action = classify_row(row, repo_skill_names=repo_skill_names, desired_by_name=desired_by_name)
         name = row["name"]
+        path = str(row.get("path") or "")
+        action = classify_row(
+            row,
+            repo_skill_names=repo_skill_names,
+            desired_by_name=desired_by_name,
+            duplicate_names=duplicate_names,
+        )
         notes: list[str] = []
 
-        if name in broken_names:
+        if _is_grok_project_override(path):
+            notes.append("grok project override — keep")
+        elif name in broken_names:
             action = "refresh_mirror"
             notes.append("broken grok symlink")
-        elif name in mismatch_names:
-            action = "refresh_mirror"
-            notes.append("grok symlink target mismatch")
         if name in multiroot_names:
-            notes.append("opencode multi-root collision")
+            notes.append("opencode multi-root collision (informational)")
 
         ledger.append(
             {
@@ -167,19 +225,33 @@ def merge_ledger(
     return ledger
 
 
-def emit_sync_dryruns(session: Path) -> None:
-    import io
-    from contextlib import redirect_stdout
-
-    sys.path.insert(0, str(REPO))
-    from wagents.cli import _build_sync_report, _emit_sync_report
-
+def write_sync_dryruns_from_gaps(
+    session: Path,
+    *,
+    parity_gaps: dict[str, list[dict]],
+    inventory_count: int,
+    refresh: bool,
+) -> None:
+    """Write sync dry-run summaries from ledger parity gaps (no repeated npx inventory)."""
+    wave0 = session / "wave0"
     for harness in TARGET_HARNESSES:
-        report = _build_sync_report((harness,), include_installed=False)
-        buf = io.StringIO()
-        with redirect_stdout(buf):
-            _emit_sync_report(report, dry_run=True)
-        (session / "wave0" / f"sync-dryrun-{harness}.txt").write_text(buf.getvalue(), encoding="utf-8")
+        out_path = wave0 / f"sync-dryrun-{harness}.txt"
+        if out_path.exists() and out_path.stat().st_size > 200 and not refresh:
+            continue
+        gaps = parity_gaps.get(harness, [])
+        lines = [
+            "wagents skills sync (dry-run-from-ledger)",
+            f"Inventory rows: {inventory_count}",
+            "",
+            f"[{harness}]",
+            f"  missing ({len(gaps)})",
+        ]
+        for gap in gaps[:80]:
+            suffix = f" — {gap['install_command'][:60]}..." if gap.get("install_command") else ""
+            lines.append(f"    - {gap['name']} [{gap.get('provenance_status', '')}]{suffix}")
+        if len(gaps) > 80:
+            lines.append(f"    ... and {len(gaps) - 80} more (see parity-gaps.json)")
+        out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def write_batch_packets(session: Path, ledger: list[dict], parity_gaps: dict[str, list[dict]]) -> None:
@@ -237,7 +309,13 @@ def write_batch_packets(session: Path, ledger: list[dict], parity_gaps: dict[str
         (wave4 / "batch-3-grok-mirror.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def write_kpi(session: Path, parity_gaps: dict, dedup_candidates: list, symlink_audit: dict, multiroot: dict) -> str:
+def write_kpi(
+    session: Path,
+    parity_gaps: dict[str, list[dict]],
+    dedup_candidates: list[dict],
+    symlink_audit: dict,
+    multiroot: dict,
+) -> str:
     missing_total = sum(len(v) for v in parity_gaps.values())
     lines = [
         "# KPI Report",
@@ -282,10 +360,42 @@ def run_apply_parity(session: Path, parity_gaps: dict[str, list[dict]]) -> list[
     return log
 
 
+def _load_or_collect_inventory(
+    wave0: Path,
+    *,
+    refresh: bool,
+    query_timeout_sec: int,
+) -> list[dict]:
+    wave0.mkdir(parents=True, exist_ok=True)
+    inv_path = wave0 / "inventory-full.json"
+    if inv_path.exists() and not refresh:
+        payload = _load_json(inv_path)
+        if isinstance(payload, dict):
+            payload = payload["rows"]
+        return cast(list[dict], payload)
+
+    sys.path.insert(0, str(REPO))
+    from wagents.installed_inventory import collect_installed_inventory
+
+    snap = collect_installed_inventory(
+        agent_ids=TARGET_HARNESSES,
+        query_timeout_sec=query_timeout_sec,
+    )
+    rows = [r.public_dict() for r in snap.rows]
+    queries = [
+        {"agent": q.agent_id, "ok": q.ok, "error": q.error, "count": len(q.entries)} for q in snap.queries
+    ]
+    inv_path.write_text(json.dumps({"rows": rows, "queries": queries}, indent=2), encoding="utf-8")
+    return rows
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--session", default="harness-skill-cleanup-20260615")
     parser.add_argument("--apply-parity", action="store_true")
+    parser.add_argument("--refresh-inventory", action="store_true", help="Re-run npx inventory (slow)")
+    parser.add_argument("--refresh-sync", action="store_true", help="Overwrite sync dry-run text files")
+    parser.add_argument("--query-timeout-sec", type=int, default=180)
     args = parser.parse_args()
 
     session = REPO / "artifacts" / args.session
@@ -293,21 +403,29 @@ def main() -> int:
     wave2 = session / "wave2" / "merged"
     wave2.mkdir(parents=True, exist_ok=True)
 
-    inventory_payload = _load_json(wave0 / "inventory-full.json")
-    if isinstance(inventory_payload, dict):
-        inventory_rows = cast(list[dict], inventory_payload["rows"])
-    else:
-        inventory_rows = cast(list[dict], inventory_payload)
+    inventory_rows = _load_or_collect_inventory(
+        wave0,
+        refresh=args.refresh_inventory,
+        query_timeout_sec=args.query_timeout_sec,
+    )
     desired_rows = cast(list[dict], _load_json(wave0 / "desired-rows.json"))
     external_policy = cast(list[dict], _load_json(wave0 / "external-policy.json"))
     symlink_audit = cast(dict, _load_json(wave0 / "symlink-audit-grok.json"))
     multiroot = cast(dict, _load_json(wave0 / "multiroot-opencode.json"))
 
-    emit_sync_dryruns(session)
-
-    parity_gaps = build_parity_gaps(inventory_rows, desired_rows)
+    parity_gaps = build_parity_gaps(
+        inventory_rows,
+        desired_rows,
+        grok_discovered=_grok_discovered_names(inventory_rows),
+    )
     dedup_candidates = build_dedup_candidates(inventory_rows, external_policy)
-    ledger = merge_ledger(inventory_rows, desired_rows, symlink_audit, multiroot)
+    ledger = merge_ledger(inventory_rows, desired_rows, symlink_audit, multiroot, dedup_candidates)
+    write_sync_dryruns_from_gaps(
+        session,
+        parity_gaps=parity_gaps,
+        inventory_count=len(inventory_rows),
+        refresh=args.refresh_sync,
+    )
 
     (wave2 / "parity-gaps.json").write_text(json.dumps(parity_gaps, indent=2), encoding="utf-8")
     (wave2 / "dedup-candidates.json").write_text(json.dumps(dedup_candidates, indent=2), encoding="utf-8")
@@ -320,8 +438,10 @@ def main() -> int:
     (wave2 / "ledger-summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
     write_batch_packets(session, ledger, parity_gaps)
+    wave7 = session / "wave7"
+    wave7.mkdir(parents=True, exist_ok=True)
     kpi = write_kpi(session, parity_gaps, dedup_candidates, symlink_audit, multiroot)
-    (session / "wave7" / "kpi-report.md").write_text(kpi, encoding="utf-8")
+    (wave7 / "kpi-report.md").write_text(kpi, encoding="utf-8")
 
     if args.apply_parity:
         run_apply_parity(session, parity_gaps)
