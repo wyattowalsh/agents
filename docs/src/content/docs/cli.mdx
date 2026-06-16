@@ -18,6 +18,17 @@ import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
 
 ## Boot Sequence
 
+### Global install (any directory)
+
+```bash
+uv tool install wagents --from git+https://github.com/wyattowalsh/agents
+wagents self doctor
+```
+
+Run repo-scoped commands inside a clone, or set `WAGENTS_REPO_ROOT` / `--repo-root`.
+
+### Contributor workflow (repository clone)
+
 <Steps>
 
 1. Sync the repo environment:
@@ -43,7 +54,7 @@ import harnessMatrixArt from '../../assets/illustrations/harness-matrix.webp';
 </Steps>
 
 <Aside type="tip" title="Running commands">
-Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wagents ...` from the repository root.
+Examples below omit the `uv run` prefix for brevity. Use `wagents ...` after `uv tool install`, or `uv run wagents ...` from a clone.
 </Aside>
 
 ## Command Map
@@ -53,6 +64,7 @@ Examples below omit the `uv run` prefix for brevity. In practice, run `uv run wa
 | `wagents new <asset>` | Scaffold a new skill, agent, or MCP server from repo templates |
 | `wagents validate` | Check frontmatter, naming, hooks, and related-skill integrity |
 | `wagents doctor` | Sanity-check Python, uv, Node tooling, docs deps, and Playwright |
+| `wagents self <subcommand>` | Install, upgrade, and diagnose the global wagents binary |
 | `wagents readme` | Regenerate `README.md` or fail if it is stale |
 | `wagents openspec <subcommand>` | Inspect, validate, and materialize OpenSpec workflows for downstream AI tools |
 | `wagents install` | Install repo skills into supported agent platforms |
@@ -769,7 +781,7 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
 ## Related Pages
 
 <CardGrid>
-  <LinkCard title="Skills Catalog" href="/skills/" description="Browse all available skills." />
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" description="Browse agent configurations in the repository." />
   <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />
 </CardGrid>

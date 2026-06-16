@@ -5,6 +5,7 @@ description = "CLI for managing centralized AI agent assets"
 requires-python = ">=3.13"
 license = "MIT"
 authors = [{ name = "Wyatt Walsh", email = "wyattowalsh@gmail.com" }]
+readme = "README.md"
 dependencies = [
     "fastapi>=0.115",
     "typer>=0.15",
@@ -16,7 +17,11 @@ dependencies = [
 ]
 
 [project.scripts]
-wagents = "wagents.cli:app"
+wagents = "wagents.cli:run"
+
+[project.urls]
+Repository = "https://github.com/wyattowalsh/agents"
+Documentation = "https://github.com/wyattowalsh/agents/tree/main/docs"
 
 [build-system]
 requires = ["hatchling"]

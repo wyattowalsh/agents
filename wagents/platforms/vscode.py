@@ -10,6 +10,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from wagents.context import get_repo_root
 from wagents.platforms.base import (
     PlatformAdapter,
     SyncContext,
@@ -23,17 +24,20 @@ from wagents.platforms.base import (
     replace_arg_placeholders,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 
-VSCODE_MCP_PATH = REPO_ROOT / ".vscode" / "mcp.json"
-REPO_MCP_PATH = REPO_ROOT / "mcp.json"
+def vscode_mcp_path() -> Path:
+    return get_repo_root() / ".vscode" / "mcp.json"
+
+
+def repo_mcp_path() -> Path:
+    return get_repo_root() / "mcp.json"
 
 
 class Adapter(PlatformAdapter):
     name = "vscode"
 
     def repo_config_paths(self) -> list[Path]:
-        return [REPO_MCP_PATH, VSCODE_MCP_PATH]
+        return [repo_mcp_path(), vscode_mcp_path()]
 
     def sync_repo(
         self,
@@ -46,8 +50,8 @@ class Adapter(PlatformAdapter):
         # Repo configs use placeholder env vars, not resolved secrets. Keep
         # generic mcp.json complete while allowing .vscode to suppress servers
         # owned by native VS Code/Copilot plugins.
-        ctx.write_json(REPO_MCP_PATH, self.render_mcp(registry, fallbacks={}, harness="repo-mcp"))
-        ctx.write_json(VSCODE_MCP_PATH, self.render_mcp(registry, fallbacks={}, harness="vscode"))
+        ctx.write_json(repo_mcp_path(), self.render_mcp(registry, fallbacks={}, harness="repo-mcp"))
+        ctx.write_json(vscode_mcp_path(), self.render_mcp(registry, fallbacks={}, harness="vscode"))
 
     def sync_home(
         self,

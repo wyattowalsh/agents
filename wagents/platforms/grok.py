@@ -577,7 +577,9 @@ class Adapter(PlatformAdapter):
     ) -> None:
         del fallbacks, hook_registry
         current = GROK_CONFIG_PATH.read_text(encoding="utf-8") if GROK_CONFIG_PATH.exists() else ""
-        rendered = render_grok_config(current, registry, repo_only=False, repo_root=REPO_ROOT, policy=policy)
+        from wagents.context import get_repo_root
+
+        rendered = render_grok_config(current, registry, repo_only=False, repo_root=get_repo_root(), policy=policy)
         assert_no_grok_config_drops(current, rendered, registry)
         ctx.write_text(GROK_CONFIG_PATH, rendered)
         sync_grok_agents(ctx)

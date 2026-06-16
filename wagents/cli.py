@@ -15,6 +15,14 @@ import typer
 
 from wagents import KEBAB_CASE_PATTERN, ROOT, VERSION
 from wagents.catalog import CatalogNode
+from wagents.context import (
+    REPO_ROOT_ENV,
+    bootstrap_cli_context,
+    detect_install_mode,
+    get_repo_root,
+    get_repo_root_optional,
+    resolve_repo_script,
+)
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
@@ -38,8 +46,11 @@ from wagents.openspec import (
     run_openspec,
     select_openspec_tools,
 )
+from wagents.output import emit_structured_output, normalize_output_format
 from wagents.parsing import parse_frontmatter, to_title
+from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
+from wagents.self_cmd import self_app
 from wagents.site_model import (
     REPO_SOURCE,
     SUPPORTED_AGENT_IDS,
@@ -47,16 +58,22 @@ from wagents.site_model import (
     build_install_command,
     docs_asset_repo_path,
 )
+from wagents.telemetry import begin_command_telemetry, doctor_telemetry_check, end_command_telemetry
 
-SKILL_CREATOR_SCRIPTS = ROOT / "skills" / "skill-creator" / "scripts"
-SKILL_ROUTER_SCRIPT = ROOT / "skills" / "skill-router" / "scripts" / "skill_index.py"
-VALIDATE_REPO_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "validate" / "validate_repo.py"
+
+def _skill_creator_scripts() -> Path:
+    return get_repo_root() / "skills" / "skill-creator" / "scripts"
+
+
+def _skill_router_script() -> Path:
+    return get_repo_root() / "skills" / "skill-router" / "scripts" / "skill_index.py"
 
 
 def _run_python_script(script: Path, args: list[str]) -> int:
+    repo_root = get_repo_root()
     result = subprocess.run(
         [sys.executable, str(script), *args],
-        cwd=ROOT,
+        cwd=repo_root,
         check=False,
         text=True,
         capture_output=True,
@@ -73,19 +90,21 @@ def _run_python_script(script: Path, args: list[str]) -> int:
 
 
 def _skill_router_args(args: list[str]) -> list[str]:
-    return [
+    router_args = [
         *args,
-        "--repo-root",
-        str(ROOT),
         "--home",
         str(Path.home()),
         "--cwd",
         str(Path.cwd()),
     ]
+    repo_root = get_repo_root_optional()
+    if repo_root is not None:
+        router_args.extend(["--repo-root", str(repo_root)])
+    return router_args
 
 
 def _run_skill_router(args: list[str]) -> int:
-    return _run_python_script(SKILL_ROUTER_SCRIPT, _skill_router_args(args))
+    return _run_python_script(_skill_router_script(), _skill_router_args(args))
 
 
 def _exit_skill_router(args: list[str], *, source: str | None = None) -> None:
@@ -95,7 +114,11 @@ def _exit_skill_router(args: list[str], *, source: str | None = None) -> None:
 
 
 # Typer apps
-app = typer.Typer(help="CLI for managing centralized AI agent assets")
+app = typer.Typer(
+    help="CLI for managing centralized AI agent assets",
+    add_completion=True,
+    rich_markup_mode="rich",
+)
 new_app = typer.Typer(help="Create new assets from reference templates")
 app.add_typer(new_app, name="new")
 app.add_typer(docs_app, name="docs")
@@ -105,6 +128,8 @@ eval_app = typer.Typer(help="Manage and validate skill evals")
 app.add_typer(eval_app, name="eval")
 skills_app = typer.Typer(help="Index and search local skills")
 app.add_typer(skills_app, name="skills")
+catalog_app = typer.Typer(help="Catalog authoring SSOT and generated index management")
+app.add_typer(catalog_app, name="catalog")
 openspec_app = typer.Typer(help="Manage OpenSpec workflows and downstream AI tool setup")
 app.add_typer(openspec_app, name="openspec")
 opencode_app = typer.Typer(help="Diagnose OpenCode runtime state")
@@ -113,6 +138,9 @@ grok_app = typer.Typer(help="Diagnose Grok Build runtime state")
 plannotator_app = typer.Typer(help="Install and verify Plannotator for Grok Build")
 grok_app.add_typer(plannotator_app, name="plannotator")
 app.add_typer(grok_app, name="grok")
+app.add_typer(self_app, name="self")
+
+_PLUGIN_RESULTS = load_command_plugins(app)
 
 PLANNOTATOR_CORE_SYNC_COMMAND = [
     "npx",
@@ -136,7 +164,7 @@ PLANNOTATOR_EXTRAS_SYNC_COMMAND = [
     "-y",
     "skills",
     "add",
-    "backnotprop/plannotator",
+    "backnotprop/plannotator/apps/skills",
     "--skill",
     "plannotator-compound",
     "--skill",
@@ -172,24 +200,29 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
+def _command_telemetry_label() -> str:
+    return " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "wagents"
+
+
 @app.callback()
 def main(
     version: bool | None = typer.Option(None, "--version", callback=version_callback, help="Show version and exit"),
+    repo_root: Annotated[
+        Path | None,
+        typer.Option(
+            "--repo-root",
+            envvar=REPO_ROOT_ENV,
+            help="Agents repository root (auto-discovered from cwd when omitted)",
+        ),
+    ] = None,
 ):
     """CLI for managing centralized AI agent assets."""
-    pass
+    begin_command_telemetry(_command_telemetry_label())
+    bootstrap_cli_context(repo_root)
 
 
 def _normalize_output_format(format_: str) -> str:
-    """Normalize and validate a requested output format."""
-    normalized = format_.lower()
-    if normalized not in OUTPUT_FORMATS:
-        typer.echo(
-            f"Error: unsupported format '{format_}'. Use one of: {', '.join(OUTPUT_FORMATS)}",
-            err=True,
-        )
-        raise typer.Exit(code=1)
-    return normalized
+    return normalize_output_format(format_)
 
 
 def _emit_structured_output(
@@ -199,17 +232,12 @@ def _emit_structured_output(
     json_data: dict | list | None = None,
     jsonl_records: list[dict] | None = None,
 ) -> None:
-    """Emit command output in text, json, or jsonl format."""
-    normalized = _normalize_output_format(format_)
-    if normalized == "text":
-        for line in text_lines or []:
-            typer.echo(line)
-        return
-    if normalized == "json":
-        typer.echo(json.dumps(json_data, indent=2))
-        return
-    for record in jsonl_records or []:
-        typer.echo(json.dumps(record))
+    emit_structured_output(
+        format_,
+        text_lines=text_lines,
+        json_data=json_data,
+        jsonl_records=jsonl_records,
+    )
 
 
 def _format_error(source: str, message: str) -> str:
@@ -742,6 +770,43 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
             )
         )
 
+    wagents_path = shutil.which("wagents")
+    checks.append(
+        _make_doctor_check(
+            "wagents-install-mode",
+            "ok",
+            detect_install_mode(),
+        )
+    )
+    checks.append(
+        _make_doctor_check(
+            "wagents-binary",
+            "ok" if wagents_path else "warn",
+            (
+                f"Found at {wagents_path}"
+                if wagents_path
+                else "wagents is not on PATH (uv run wagents still works in clone)"
+            ),
+        )
+    )
+    discovered = get_repo_root_optional()
+    checks.append(
+        _make_doctor_check(
+            "repo-discovery",
+            "ok" if discovered else "warn",
+            str(discovered) if discovered else f"No agents repo discovered; set {REPO_ROOT_ENV} or run inside clone",
+        )
+    )
+    for plugin in _PLUGIN_RESULTS:
+        checks.append(
+            _make_doctor_check(
+                f"plugin:{plugin.name}",
+                plugin.status,
+                plugin.summary,
+            )
+        )
+    checks.append(doctor_telemetry_check())
+
     return checks
 
 
@@ -807,7 +872,7 @@ def new_skill(
     no_docs: bool = typer.Option(False, "--no-docs", help="Skip docs page scaffold"),
 ):
     """Create a new skill from template."""
-    scaffold_script = SKILL_CREATOR_SCRIPTS / "scaffold_skill.py"
+    scaffold_script = _skill_creator_scripts() / "scaffold_skill.py"
     code = _run_python_script(scaffold_script, [name])
     if code != 0:
         raise typer.Exit(code=code)
@@ -1015,10 +1080,11 @@ def validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Validate all skills and agents."""
+    script = resolve_repo_script("scripts/validate/validate_repo.py")
     raise typer.Exit(
         code=_run_python_script(
-            VALIDATE_REPO_SCRIPT,
-            ["--format", format_, "--repo-root", str(ROOT)],
+            script,
+            ["--format", format_, "--repo-root", str(get_repo_root())],
         )
     )
 
@@ -1615,6 +1681,31 @@ def skills_sync(
             typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
 
 
+@catalog_app.command("sync-authoring")
+def catalog_sync_authoring(
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Show target authoring MDX paths without writing files"
+    ),
+):
+    """Sync repo-owned skills/*/SKILL.md into docs/src/authoring/skills/*.mdx (source_kind: custom).
+
+    This populates the authoring SSOT used by docs generate for catalog index + pages.
+    External (curated) entries are authored separately (or via migrate script) under same dir.
+    """
+    from wagents.authoring_sync import sync_custom_authoring_from_skills
+
+    targets = sync_custom_authoring_from_skills(dry_run=dry_run)
+    if dry_run:
+        typer.echo(f"DRY-RUN: would sync {len(targets)} custom skills to authoring MDX")
+        for t in targets[:20]:
+            typer.echo(f"  {t}")
+        if len(targets) > 20:
+            typer.echo(f"  ... and {len(targets) - 20} more")
+    else:
+        typer.echo(f"Synced {len(targets)} custom authoring MDX entries")
+        typer.echo("Next: uv run wagents docs generate --no-installed to refresh pages + indexes.")
+
+
 def _emit_openspec_command_result(result, format_: str, *, success_message: str) -> None:
     """Emit an OpenSpec subprocess result and preserve its exit status."""
     try:
@@ -1934,13 +2025,14 @@ def package(
     """Package skills into portable ZIP files."""
     import subprocess
 
-    script = ROOT / "skills" / "skill-creator" / "scripts" / "package.py"
-    cmd = ["uv", "run", "python", str(script)]
+    repo_root = get_repo_root()
+    script = repo_root / "skills" / "skill-creator" / "scripts" / "package.py"
+    cmd = [sys.executable, str(script)]
 
     if all_skills:
         cmd.append("--all")
     elif name:
-        skill_dir = ROOT / "skills" / name
+        skill_dir = repo_root / "skills" / name
         cmd.append(str(skill_dir))
     else:
         typer.echo("Error: provide a skill name or use --all", err=True)
@@ -1952,7 +2044,7 @@ def package(
         cmd.append("--dry-run")
     cmd.extend(["--format", format_])
 
-    result = subprocess.run(cmd, capture_output=False)
+    result = subprocess.run(cmd, cwd=repo_root, capture_output=False)
     raise typer.Exit(code=result.returncode)
 
 
@@ -2032,7 +2124,7 @@ def readme(
             'style=flat-square&color=2E86C1" alt="Release"></a>'
         ),
         (
-            f'    <a href="https://agents.w4w.dev/skills/"><img '
+            f'    <a href="https://agents.w4w.dev/skills/catalog/"><img '
             f'src="https://img.shields.io/badge/skills-{len(skills)}-0f766e?'
             'style=flat-square" alt="Skills"></a>'
         ),
@@ -2362,7 +2454,7 @@ def hooks_validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Validate all hooks across skills, agents, and settings."""
-    script = SKILL_CREATOR_SCRIPTS / "asset_toolkit" / "validate_hooks.py"
+    script = _skill_creator_scripts() / "asset_toolkit" / "validate_hooks.py"
     raise typer.Exit(code=_run_python_script(script, ["--format", format_]))
 
 
@@ -2465,7 +2557,7 @@ def eval_validate(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Validate all eval JSON files."""
-    script = SKILL_CREATOR_SCRIPTS / "asset_toolkit" / "validate_evals.py"
+    script = _skill_creator_scripts() / "asset_toolkit" / "validate_evals.py"
     raise typer.Exit(code=_run_python_script(script, ["--format", format_]))
 
 
@@ -2524,5 +2616,20 @@ def eval_coverage(
     )
 
 
+def run() -> None:
+    """Console entry point with opt-in telemetry recording."""
+    exit_code = 0
+    try:
+        app(standalone_mode=False)
+    except typer.Exit as exc:
+        exit_code = exc.exit_code
+        raise SystemExit(exc.exit_code) from exc
+    except SystemExit as exc:
+        exit_code = exc.code if isinstance(exc.code, int) else 0
+        raise
+    finally:
+        end_command_telemetry(exit_code)
+
+
 if __name__ == "__main__":
-    app()
+    run()

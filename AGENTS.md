@@ -202,37 +202,42 @@ Smart Routing is opt-in only and requires local PostgreSQL with pgvector plus
 embedding configuration. Use OpenSpec for topology, sync, client projection,
 validation, or public docs changes in this area.
 
-## 2.7 Curated External Skills
+## 2.7 Curated External Skills (Catalog Semantics — Bucket A)
 
 Third-party skills stay **out of** `skills/` unless you are authoring a new
-repo-owned skill. The curated install set is tracked in
-`config/external-skills.md` and parsed by `wagents/external_skills.py`.
+repo-owned skill.
 
-**Mental model:** Curated catalog pages are enriched config+research views (not runtime stubs). Runtime truth: `config/external-skills.md` → `skills sync` → harness dirs; docs-only views from `docs generate --no-installed` (CI default). Enrich = research briefs + harness rows + trust tiers + install commands + lazy upstream SKILL.md preview. Parity = matching skill IDs in catalog vs `external-skills.md`/sync. Merge: custom > installed > curated-external. Optional fetch-upstream is on-demand/CI-safe.
+**W5+ mental model (phased SSOT invert, Bucket A only):**
 
-**Maintainer loop:** `skills sync --dry-run`; `docs research --seed-from-config`; `docs research --emit-waves`; `docs generate --no-installed` (CI) vs `--include-installed` (local); optional fetch-upstream.
+- **Bucket A (catalog semantics)**: Human authoring SSOT lives in per-skill files under `docs/src/authoring/skills/*.mdx` (flat; one `.mdx` per skill) carrying YAML frontmatter (per `skills-catalog-authoring.schema.json`: name, description, source_kind ("custom" | "curated-external"), install_command, install_source, trust_tier, status/curated_status, target_agents, provenance_*, risk_notes, promotion_policy, provenance_evidence, notes, ...) + markdown body (prose, audit notes, evidence snippets). `wagents docs generate` (default `--no-installed`) emits the committed machine bundle `docs/public/generated-registries/skills-catalog-index.json` (shape per `skills-catalog-index.schema.json`, includes body_path) which serves as the runtime/consumer SSOT for skill_index, external_skills (dual-read), catalog rows, site_model, validate, discover, etc. Generated catalog MDX pages remain derived output.
+
+- **Bucket B (MCP/hooks/sync/harness registries)**: Unchanged. MCP, hooks, `sync-manifest.json`, harness-surface-registry, tool policy, support tiers, and related config/ entries stay canonical under `config/` (machine-first / sync-projection model, not part of the catalog semantics authoring invert).
+
+- **config/external-skills.md**: Deprecated/legacy projection. Dual-read supported in `wagents/external_skills.py` and callers (prefer authoring MDX + index; fall back to legacy MD parse of `config/external-skills.md` only if index missing or `WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`). Treat as read-only evidence/compat during transition; new curation work targets authoring MDX.
+
+**Maintainer loop (Bucket A):** Author/edit `docs/src/authoring/skills/<id>.mdx` (or use one-time migration from legacy for bulk); run `uv run wagents docs generate` to emit index + catalog pages (CI default); `uv run wagents skills sync --dry-run`; research waves optional. Repo custom skills typically flow skills/*/SKILL.md → authoring sync → *.mdx. Do not hand-author the index.
 
 | Surface | Role |
 | --- | --- |
-| `config/external-skills.md` | Audited `npx skills add ...` commands, avoid notes, standard harness target suffix |
+| `docs/src/authoring/skills/*.mdx` | Human SSOT for Bucket A (custom + curated-external catalog entries via frontmatter + body) |
+| `docs/public/generated-registries/skills-catalog-index.json` | Committed generated machine bundle (index + metadata; emitted by docs generate; SSOT for code) |
+| `config/external-skills.md` | Deprecated/legacy projection (audited commands + notes); dual-read fallback only |
 | `planning/manifests/security-quarantine-register.json` | Hard-quarantine blocklist enforced by `wagents validate` |
-| Generated `/external-skills/` docs page | Public curated catalog and install scripts |
-| `/skills/catalog/` | Catalog landing; custom detail pages under `/skills/catalog/custom/`, curated externals under `/skills/catalog/external/` (`wagents docs generate --no-installed` omits installed-only rows) |
-| `wagents skills sync` | Additive reconciliation of repo + curated external installs across harnesses |
+| Generated `/skills/catalog/...` pages | Public catalog (generated from index + research; do not hand-edit) |
+| `wagents skills sync` | Additive reconciliation across harnesses (consumes index or legacy) |
 
-### Adding curated external skill(s)
+### Adding / updating a curated external (or custom catalog) entry
 
-1. **Audit before record** — Use `/external-skill-auditor` (or `/harness-master discover` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing curated rows.
-2. **Choose outcome** — `install now` → add under **Install Now After Trust Gate** in `config/external-skills.md`. `keep global only` / `avoid` → add under **Keep Global Only Or Avoid** with rationale. Do not copy third-party trees into `skills/`.
-3. **Write the curated row** — Add the fenced `npx skills add ...` block using the standard target suffix from `config/external-skills.md` unless the user requests a narrower harness set. Pin `@commit` when practical. Below the command, document audited HEAD, license, executable-surface notes, dedupe decisions, and any harness-specific caveats (for example Grok installs via the Claude Code adapter).
+1. **Audit before record** — Use `/external-skill-auditor` (or `/harness-master discover` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing authored catalog rows.
+2. **Choose outcome** — `install now` / endorse → set appropriate status + trust_tier (e.g. install-now-after-trust-gate + curated-trust-gated) in the authoring frontmatter. `keep global only` / `avoid` → set status + notes with rationale. Do not copy third-party trees into `skills/`.
+3. **Author the mdx** — Create/update `docs/src/authoring/skills/<skill-id>.mdx` (kebab id matches name). Populate YAML frontmatter with the structured fields (install_command using standard target suffix, pinned @commit when practical, source, provenance_evidence, etc.). Document audited HEAD, license, executable-surface notes, dedupe, harness caveats in the body or notes field. (During transition: may still append temporarily to legacy `config/external-skills.md` then migrate via script to authoring mdx.)
 4. **OpenSpec when non-trivial** — Create or update an OpenSpec change when the work touches public catalog shape, sync behavior, trust tiers, validation, or multi-harness install policy.
-5. **Validate** — `uv run wagents validate` (includes quarantine checks on `config/external-skills.md`). Add or update tests when parser, sync, or docs behavior changes.
+5. **Validate** — `uv run wagents validate` (includes quarantine checks; now covers authoring sources). Add or update tests when parser, sync, or docs behavior changes.
 6. **Preview installs** — `uv run wagents skills sync --dry-run` (optionally `-a <harness>`). Do **not** run `wagents skills sync --apply` or live `npx skills add ...` unless the maintainer explicitly requests live installs.
-7. **Regenerate public surfaces** — `uv run wagents readme`, then `uv run wagents docs generate` (repo-owned catalog default for CI/pre-commit parity), then `uv run wagents docs build` for link validation. Use `wagents docs generate --include-installed` only for maintainer previews of local installed-inventory catalog pages.
+7. **Regenerate public surfaces** — `uv run wagents docs generate` (emits skills-catalog-index.json + catalog MDX; repo-owned default for CI/pre-commit), then `uv run wagents readme` (if catalog inputs affect it), then `uv run wagents docs build` for link validation. Use `--include-installed` only for maintainer previews of local inventory.
 
-Do not hand-edit generated `docs/src/content/docs/external-skills.mdx`,
-`docs/src/content/docs/skills/catalog/custom/*.mdx`, `docs/src/content/docs/skills/catalog/external/*.mdx`, or install-script indexes. Do not
-expose machine-local absolute paths as public source labels.
+Do not hand-edit generated `docs/src/content/docs/skills/catalog/custom/*.mdx`,
+`docs/src/content/docs/skills/catalog/external/*.mdx`, `docs/src/content/docs/external-skills.mdx`, the emitted `skills-catalog-index.json`, or install-script indexes. Do not expose machine-local absolute paths as public source labels.
 
 ---
 
@@ -249,6 +254,12 @@ expose machine-local absolute paths as public source labels.
 ## 4. Workflow
 
 ```bash
+# Global CLI install (Git source; repo assets resolved at runtime)
+uv tool install wagents --from git+https://github.com/wyattowalsh/agents
+wagents self doctor
+# Optional when not running inside the clone:
+export WAGENTS_REPO_ROOT=/path/to/agents
+
 # Create new assets from reference templates
 wagents new skill <name>            # → skills/<name>/SKILL.md
 wagents new skill <name> --no-docs  # Skip docs page scaffold
@@ -300,9 +311,10 @@ make help                                    # Show all make targets
 > **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
 
 Curated third-party skills follow **§2.7 Curated External Skills**: audit with
-`/external-skill-auditor`, record reviewed commands in `config/external-skills.md`,
-preview with `wagents skills sync --dry-run`, then regenerate README and docs from
-source (`wagents readme`, `wagents docs generate`, `wagents docs build`).
+`/external-skill-auditor`, author the entry under `docs/src/authoring/skills/<id>.mdx`
+(legacy: may record in `config/external-skills.md` during transition), preview with
+`wagents skills sync --dry-run`, then `wagents docs generate` (emits index) + README/docs
+as needed.
 
 ---
 

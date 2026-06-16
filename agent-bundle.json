@@ -45,6 +45,12 @@
 				"opencode"
 			]
 		},
+		"wagents-cli": {
+			"install": "uv tool install wagents --from git+https://github.com/wyattowalsh/agents",
+			"upgrade": "uv tool upgrade wagents",
+			"doctor": "wagents self doctor",
+			"repoEnv": "WAGENTS_REPO_ROOT"
+		},
 		"openspec": {
 			"package": "@fission-ai/openspec@latest",
 			"minimumNode": "20.19.0",

@@ -105,3 +105,15 @@ Grok MCP and config merge logic SHALL live in `wagents/platforms/grok.py` and `s
 - **THEN** `wagents/platforms/grok.py` SHALL perform render and merge
 - **AND** monolith SHALL not duplicate `render_grok_mcp_block` after migration.
 
+### Requirement: wagents is globally installable from Git
+
+The repository SHALL support installing the `wagents` CLI globally via `uv tool install wagents --from git+https://github.com/wyattowalsh/agents` and SHALL resolve agents repository assets at runtime instead of assuming the package parent directory is the repo root.
+
+#### Scenario: Global binary validates inside a clone
+
+- **GIVEN** `wagents` is installed with `uv tool install`
+- **AND** the user runs the command inside a checked-out agents repository
+- **WHEN** the user runs `wagents validate`
+- **THEN** the command SHALL discover the repo root from the working directory
+- **AND** validation SHALL execute against that repository's `skills/`, `agents/`, and related assets.
+

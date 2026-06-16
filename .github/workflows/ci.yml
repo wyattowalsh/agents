@@ -51,6 +51,19 @@ jobs:
       - run: uv run wagents validate
       - run: uv run wagents readme --check
 
+  wagents-wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync
+      - run: uv build
+      - run: uv tool install "$(ls dist/wagents-*.whl | head -1)" --force
+      - run: wagents self doctor --format json
+      - run: wagents validate
+
   docs:
     runs-on: ubuntu-latest
     steps:

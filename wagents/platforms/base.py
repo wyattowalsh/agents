@@ -15,9 +15,10 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from wagents.context import REPO_ROOT_PROXY, get_repo_root
 from wagents.repo_paths import render_portable_path, resolve_portable_path
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = REPO_ROOT_PROXY
 HOME = Path.home()
 
 # Normalized registry constants (mirrored from sync_agent_stack.py)
@@ -47,7 +48,8 @@ MANAGED_HEADER = "<!-- Managed by wagents. Do not edit directly. -->\n"
 HOOK_COMMAND_MARKER = "wagents-hook.py"
 MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
 MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
-MCPHUB_REMOTE_STDIO = REPO_ROOT / "scripts" / "mcphub" / "remote-stdio.sh"
+def mcphub_remote_stdio() -> Path:
+    return get_repo_root() / "scripts" / "mcphub" / "remote-stdio.sh"
 
 
 def normalize_name(name: str) -> str:
@@ -259,14 +261,14 @@ def render_home_path(path: Path) -> str:
 
 def normalize_path_value(value: str) -> str:
     if value.startswith("${REPO_ROOT}"):
-        return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
+        return resolve_portable_path(value, repo_root=get_repo_root(), home=HOME)
     if value == "~":
         return str(HOME.resolve())
     if value.startswith("~/"):
         return str((HOME / value[2:]).resolve())
     if value.startswith("/"):
         return str(Path(value).resolve())
-    return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
+    return resolve_portable_path(value, repo_root=get_repo_root(), home=HOME)
 
 
 def merge_unique_path_strings(managed: list[str], existing: Any) -> list[str]:
@@ -491,7 +493,7 @@ def render_mcphub_stdio_server(
 ) -> dict[str, Any]:
     token_env = mcphub_bearer_env_var(registry)
     return {
-        "command": render_portable_path(MCPHUB_REMOTE_STDIO),
+        "command": render_portable_path(mcphub_remote_stdio()),
         "args": [url],
         "env": {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=local_values)},
         "disabled": not enabled,
@@ -643,7 +645,7 @@ class PlatformAdapter(ABC):
                 continue
             config: dict[str, Any] = {
                 "type": "command",
-                "command": str(hook["command"]).format(repo_root=str(REPO_ROOT), harness=self.name),
+                "command": str(hook["command"]).format(repo_root=str(get_repo_root()), harness=self.name),
             }
             group: dict[str, Any] = {"hooks": [config]}
             if hook.get("matcher"):
