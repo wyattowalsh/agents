@@ -152,6 +152,16 @@
       "validation_commands": ["uv run wagents validate"],
       "rollback_coverage": "planned",
       "promotion_blocker": "Requires an explicit retain-vs-experimental decision plus config and skills fixtures before validated support claims."
+    },
+    {
+      "harness_id": "grok-build",
+      "owner_change": "agents-c04-grok-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": ["config-merge-fixture", "skills-install-alias-fixture", "platform-filter-fixture", "rollback-fixture"],
+      "validation_commands": ["uv run pytest tests/test_sync_agent_stack.py", "uv run wagents validate"],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires executable Grok config merge, skills install alias, platform filter, and rollback fixtures before validated support claims."
     }
   ]
 }

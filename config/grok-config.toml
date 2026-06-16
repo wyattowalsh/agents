@@ -1,0 +1,74 @@
+# Repo-managed Grok Build policy template (sanitized).
+# Home sync merges this into ~/.grok/config.toml and resolves [plugins].paths locally.
+# MCP servers are projected separately into managed blocks.
+
+[models]
+default = "grok-composer-2.5-fast"
+web_search = "grok-4.20-multi-agent"
+
+[ui]
+yolo = true
+permission_mode = "always-approve"
+
+[features]
+telemetry = false
+feedback = false
+lsp_tools = true
+codebase_indexing = true
+
+[session]
+auto_compact_threshold_percent = 95
+
+[tools]
+respect_gitignore = false
+
+[toolset.bash]
+timeout_secs = 86400.0
+output_byte_limit = 2097152
+
+[subagents]
+enabled = true
+
+[subagents.toggle]
+explore = true
+plan = true
+
+[subagents.models]
+explore = "grok-build"
+plan = "grok-build"
+general-purpose = "grok-build"
+
+[memory]
+enabled = true
+
+[memory.session]
+save_on_end = true
+
+[memory.watcher]
+enabled = true
+
+[memory.search]
+max_results = 12
+min_score = 0.25
+
+[memory.initial_injection]
+enabled = true
+min_score = 0.0
+
+[telemetry]
+mixpanel_enabled = false
+trace_upload = false
+
+[compat.cursor]
+skills = true
+rules = true
+agents = true
+mcps = true
+hooks = true
+
+[compat.claude]
+skills = true
+rules = true
+agents = true
+mcps = true
+hooks = true

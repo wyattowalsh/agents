@@ -1,0 +1,3 @@
+schema: agent-asset-change
+name: add-grok-harness-integration
+status: in-progress
