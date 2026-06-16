@@ -1594,6 +1594,7 @@ def skills_sync(
         raise typer.Exit(code=1)
 
     target_agents = _select_sync_agents(agent, all_agents)
+    typer.echo("Collecting cross-harness skill inventory...", err=True)
     report = _build_sync_report(target_agents, include_installed=include_installed)
     agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
     _emit_sync_report(report, dry_run=dry_run, format_=format_)

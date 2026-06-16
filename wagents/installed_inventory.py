@@ -7,6 +7,7 @@ import os
 import signal
 import subprocess
 import tempfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
@@ -147,16 +148,37 @@ def query_harness_skills(
     timeout_sec: int = DEFAULT_HARNESS_QUERY_TIMEOUT_SEC,
     home: Path | None = None,
     repo_root: Path | None = None,
+    max_workers: int | None = None,
 ) -> tuple[HarnessQueryResult, ...]:
     """Enumerate installed skills for each supported harness."""
     home_dir = home or Path.home()
     root = repo_root or ROOT
-    results: list[HarnessQueryResult] = []
-    for agent_id in agent_ids or supported_agent_ids():
-        results.append(
-            _query_one_harness(agent_id, runner=runner, timeout_sec=timeout_sec, home=home_dir, repo_root=root)
+    ids = agent_ids or supported_agent_ids()
+    if not ids:
+        return ()
+    if len(ids) == 1:
+        return (
+            _query_one_harness(ids[0], runner=runner, timeout_sec=timeout_sec, home=home_dir, repo_root=root),
         )
-    return tuple(results)
+
+    workers = max_workers or min(len(ids), 8)
+    by_agent: dict[str, HarnessQueryResult] = {}
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futures = {
+            executor.submit(
+                _query_one_harness,
+                agent_id,
+                runner=runner,
+                timeout_sec=timeout_sec,
+                home=home_dir,
+                repo_root=root,
+            ): agent_id
+            for agent_id in ids
+        }
+        for future in as_completed(futures):
+            agent_id = futures[future]
+            by_agent[agent_id] = future.result()
+    return tuple(by_agent[agent_id] for agent_id in ids)
 
 
 def collect_installed_inventory(
