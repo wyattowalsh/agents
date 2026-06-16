@@ -1,33 +1,33 @@
 ---
 skill: vercel-react-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:14:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.78
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+React + Next.js perf optimization guidelines from Vercel Engineering: 40+ rules, 8 categories (eliminate waterfalls Critical, bundle size Critical, server perf High, data fetching, re-renders, rendering, micro-opts). Prioritized by impact. From vercel-labs/agent-skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+React/Next dev + perf agents (install-now-after-trust-gate).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Docs/guidelines focused; low surface. policy=After trust gate.; evidence=vercel agent-skills + config (multiple vercel react skills row).
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices ... -a ...` status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (Vercel Eng).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+web-design-guidelines, tanstack best practices, general react skills. Vercel-specific React/Next perf contract.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web README + skill ref.

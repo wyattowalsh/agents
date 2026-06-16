@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Audits deployed Vercel project for cost, perf, reliability, caching, function usage, billing. Collects Vercel metrics first then drills into pointed routes/files. Finds ISR/middleware/image/build issues etc. From vercel-labs/agent-skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add vercel-labs/agent-skills --skill vercel-optimize ...` status per config.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General perf profilers, cost tools; web-design-guidelines for UI perf aspects.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web evidence.
 
 <Tabs>
   <TabItem label="Public Metadata">

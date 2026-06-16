@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Deploy web projects to Netlify using the Netlify CLI (`npx netlify`). Use when the user asks to deploy, host, publish, or link a site/repo on Netlify, including preview and production deploys. Automates CLI auth check (npx netlify status/login), Git-based site linking or init, dep install, framework detection, and npx netlify deploy / --prod. Includes handling for netlify.toml, build/publish dirs, env vars, and error patterns. Factual reference from official Netlify.
 
 ## Install Prerequisites
 
-Install: `npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named. Requires Netlify account/CLI auth for full use.
 
 ## Upstream Maintainer
 
-[netlify/context-and-tools](https://github.com/netlify/context-and-tools)
+[netlify/context-and-tools](https://github.com/netlify/context-and-tools) (official Netlify org, MIT license, active maintenance, cross-harness plugins + MCP).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Official Netlify docs/CLI or vercel-labs equivalent deploy skills for other hosts; local netlify.toml knowledge; IaC tools (Pulumi/Terraform skills) for broader infra.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented from github.com/netlify/context-and-tools README + SKILL.md (fetched 2026). Sourced from curated config; use external-skill-auditor for live evidence. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">

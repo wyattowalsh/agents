@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+WCAG 2.2 compliance, screen reader support, keyboard navigation for web projects. Categories: Perceivable, Operable, Understandable, Robust. Trigger: "improve accessibility", "WCAG audit", "a11y review". Part of Lighthouse-derived web quality suite, stack-agnostic.
 
 ## Install Prerequisites
 
-Install: `npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add addyosmani/web-quality-skills --skill accessibility -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode. status=install-now-after-trust-gate; selector=named (group install supports multiple). Supports Claude plugin, Codex marketplace, Gemini extensions, manual copy.`
 
 ## Upstream Maintainer
 
-[addyosmani/web-quality-skills](https://github.com/addyosmani/web-quality-skills)
+addyosmani (github.com/addyosmani/web-quality-skills). MIT License. Insights from Chrome DevTools team, web perf experts, a11y advocates. 2.4k stars, 216 forks. Resources link to Lighthouse, web.dev, WCAG, Agent Skills spec.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other skills in same bundle (e.g. web-quality-audit, best-practices; chrome-devtools-a11y-debugging or other a11y skills); general Lighthouse/web.dev guidance; framework-specific perf/a11y plugins; other curated quality skills like chrome-devtools-*.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

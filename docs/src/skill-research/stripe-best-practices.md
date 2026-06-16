@@ -1,14 +1,14 @@
 ---
 skill: stripe-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:33:22Z'
+researched_at: '2026-06-16T08:37:54Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Stripe API and integration best practices for payments, billing, subscriptions, and webhooks. Note: registry provenance verification recommended per catalog notes. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
 
 ## Harness Coverage
 
@@ -16,11 +16,11 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command (web-audited SKILL.md + repo); risks=Standard curated gating; some sources note pending registry/provenance details or API key prerequisites (e.g. RENDER_API_KEY, Stripe). Review before bulk use. policy=Install only after trust gate; re-audit on promotion.
 
 ## Install Prerequisites
 
-Install: `npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add stripe/ai --skill stripe-best-practices -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
@@ -30,4 +30,4 @@ Install: `npx skills add stripe/ai --skill stripe-best-practices --skill upgrade
 
 A general-purpose agent instruction without a scoped skill contract
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.

@@ -1,33 +1,33 @@
 ---
 skill: web-design-guidelines
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:17:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Audit UI for 100+ web interface best practices (a11y, perf, UX): aria/semantic/keyboard, focus states, forms, animation (reduced-motion), typography, images/lazy/alt, virtualization, nav/state URL, dark mode, touch, i18n Intl. From vercel-labs/agent-skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+UI / a11y / design review agents (trust-gated).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified; risks=Rule-based audit; no exec. policy=After trust gate.; evidence=vercel row in config + https://github.com/vercel-labs/agent-skills (web-design-guidelines).
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add vercel-labs/agent-skills --skill web-design-guidelines ...` status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+baseline-ui, fixing-accessibility (other curated), addyosmani web-quality. Vercel web UI guidelines.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence.

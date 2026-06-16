@@ -1,33 +1,33 @@
 ---
 skill: database-migration
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:30:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Database migration patterns and safety. Summarize risks (destructive ops, data loss, lock contention). From wshobson/agents multi-harness marketplace (36.8k stars; 84 plugins, 156 skills). One source, five harness adapters.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode (per wshobson rows in config).
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=inspect-then-install; provenance=verified-install-command; risks=Database migration patterns and safety. Summarize risks (destructive ops, data loss, lock contention).; policy=Install only after trust gate; audit again before repo promotion or use external-skill-auditor.; evidence=Curated wshobson/agents install/inspect batches in config/external-skills.md (multiple residual groups); upstream https://github.com/wshobson/agents (docs/agent-skills.md, plugins/*/skills).
 
 ## Install Prerequisites
 
-Install: `npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add wshobson/agents --skill database-migration ... -y -g -a ...` status=inspect-then-install; selector=named. 
 
 ## Upstream Maintainer
 
-[wshobson/agents](https://github.com/wshobson/agents)
+[wshobson/agents](https://github.com/wshobson/agents) — large community agentic plugin/skill marketplace. MIT.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other backend/k8s/devops patterns from catalog (e.g. nodejs-backend, k8s-*, terraform-*) or local equivalents. A general-purpose agent instruction without this exact wshobson database-migration contract.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from wshobson/agents README + plugin docs (2026) + config notes. Evidence only; not endorsement.

@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
+LLM evaluation patterns and harness (wshobson). From wshobson/agents (large multi-harness marketplace, 84 plugins/156 skills; one Markdown source to 5 harnesses).
 
 ## Install Prerequisites
 
-Install: `npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add wshobson/agents --skill llm-evaluation -y -g -a antigravity claude-code ...` status=install-now-after-trust-gate; selector=named. Review outputs for safety (esp. generators, k8s, tf, secrets).
 
 ## Upstream Maintainer
 
-[wshobson/agents](https://github.com/wshobson/agents)
+[wshobson/agents](https://github.com/wshobson/agents) — MIT, broad agentic patterns + quality eval (plugin-eval).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Similar patterns in trailofbits, vercel, local skills/* or other curated (e.g. python from modern-python, k8s from hashicorp). General llm evaluation instruction.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web evidence from wshobson/agents github (README, docs, example SKILLs 2026) + config notes. Evidence only.
 
 <Tabs>
   <TabItem label="Public Metadata">

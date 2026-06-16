@@ -1,14 +1,14 @@
 ---
 skill: threat-model-analyst
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:43:06Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Full STRIDE-A threat model analysis and incremental update skill for repositories and systems. Supports single full analysis and incremental updates with change tracking.
 
 ## Harness Coverage
 
@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Web-augmented from upstream SKILL.md + config/external-skills.md (fetched 2026-06-16).
 
 ## Install Prerequisites
 
@@ -28,6 +28,6 @@ Install: `npx skills add github/awesome-copilot --skill eval-driven-dev --skill 
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General purpose agent skills in similar domain (see catalog for alternatives); e.g. other SQL or UI or infra skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.

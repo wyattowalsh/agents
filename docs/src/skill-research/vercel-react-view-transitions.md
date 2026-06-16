@@ -1,33 +1,33 @@
 ---
 skill: vercel-react-view-transitions
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:16:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Implement native-feeling animations with React View Transition API: <ViewTransition>, addTransitionType, shared element (name prop), directional nav, Next.js integration (transitionTypes on Link), CSS recipes (fade/slide etc), a11y prefers-reduced-motion. From vercel-labs/agent-skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+React / animation / Next UI agents.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Modern web API; browser support considerations. policy=Trust gate.; evidence=config + repo.
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+vercel-labs/agent-skills named --skill. status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General animation or framer etc skills. View transitions scoped.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence.

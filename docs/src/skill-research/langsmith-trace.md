@@ -1,26 +1,26 @@
 ---
 skill: langsmith-trace
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:41:53Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
+Official from langchain-ai/langsmith-skills (early dev, 131 stars). Query and export traces (helpers). Requires LANGSMITH_API_KEY + cloud access per README. Part of observability for LLM apps. Complements langchain-skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+antigravity,claude-code,... group targets.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; requires secret API key (user provisioned); early dev; scripts included may exec. Official LangChain but scoped to LangSmith tracing/eval.
 
 ## Install Prerequisites
 
-Install: `npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+npx skills add langchain-ai/langsmith-skills --skill ... -y -g -a [..]; set LANGSMITH_API_KEY; status=inspect-then-install.
 
 ## Upstream Maintainer
 
@@ -28,6 +28,6 @@ Install: `npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluat
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other trace/eval skills (e.g. langfuse, phoenix).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public web sources, GitHub (official orgs 2026), curated catalog; research evidence, not authority. External audit advised.

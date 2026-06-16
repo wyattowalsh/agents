@@ -1,33 +1,33 @@
 ---
 skill: workers-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:46:20Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+workers-best-practices encodes production rules and anti-patterns for authoring/reviewing Cloudflare Workers code: streaming responses, waitUntil usage, no global request state, no floating promises, binding access via generated types, crypto for randomness, secrets handling, observability config, and wrangler.jsonc practices. Retrieval-first; tells agents to fetch latest best-practices page and types before flagging.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Installed with the cloudflare skills bundle; used whenever writing or reviewing Worker code, config, or CI.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+install-now-after-trust-gate / curated-trust-gated. Official guidance. Following the rules reduces common runtime, memory, security, and debuggability issues on the Workers platform. The skill itself performs no actions; risk is in the reviewed code.
 
 ## Install Prerequisites
 
-Install: `npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Part of `npx skills add cloudflare/skills --skill workers-best-practices ...`
 
 ## Upstream Maintainer
 
-[cloudflare/skills](https://github.com/cloudflare/skills)
+Cloudflare (https://github.com/cloudflare/skills). Canonical source: https://developers.cloudflare.com/workers/best-practices/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General edge function best practices from other platforms when porting patterns; project-specific linters and review checklists.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub (raw SKILL.md). Not an endorsement or authority.

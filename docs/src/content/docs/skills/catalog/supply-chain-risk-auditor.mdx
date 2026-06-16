@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Generates report on supply-chain threat landscape of direct dependencies (popularity, #maintainers, CVE history, update freq, security contacts). Flags high-risk; suggests alts where known. Uses `gh` CLI queries. Explicitly does NOT scan source for CVEs/creds. Trail of Bits (Spencer Michaels).
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Inspect group install cmd. status=inspect-then-install; selector=named.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+sast-configuration, secrets-management, general dep tools or wshobson patterns. Supply chain specific.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web README evidence.
 
 <Tabs>
   <TabItem label="Public Metadata">

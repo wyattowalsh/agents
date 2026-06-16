@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Security-focused differential review of code changes (PRs, commits, diffs) using git history/blame for regressions, blast radius (callers), test coverage gaps, risk-first prioritization (auth/crypto/external/value), adaptive depth (SMALL/MEDIUM/LARGE), and adversarial modeling. Produces structured markdown report. Modular progressive disclosure (core SKILL.md + methodology/adversarial/reporting/patterns.md). Trail of Bits.
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add trailofbits/skills --skill differential-review ...` status=inspect-then-install; selector=named. Part of broader code-auditing plugin set.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills) — security research org.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+`honest-review`, other code-review skills (e.g. from PaulRBerg or wshobson); `static-analysis` for non-diff. Scoped to security diff+blast+adversarial.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web evidence: plugin README + skills/differential-review/SKILL.md (2026).
 
 <Tabs>
   <TabItem label="Public Metadata">

@@ -1,26 +1,26 @@
 ---
 skill: ckm:*
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
+Bundle of additional design/brand/context skills (e.g. ckm:design, ckm:brand, ckm:styling variants) shipped alongside ui-ux-pro-max in nextlevelbuilder/ui-ux-pro-max-skill. Provide extended design intelligence but overlap heavily with curated ui-ux-pro-max and local skills.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+Target agents: (none in curated set; global-only).
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved. Web-aug: Same repo as ui-ux-pro-max (active, MIT). Catalog explicitly calls out overlaps with existing local skills and broader API/script surfaces; do not bulk install. Potential for conflicting guidance in monorepo design flows.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: avoid by default; overlaps existing local skills and has broader API/script surfaces than the approved `ui-ux-pro-max` skill.
+Not installed by default. Selector unresolved in catalog. Use only if explicitly requested after full audit.
 
 ## Upstream Maintainer
 
@@ -28,6 +28,6 @@ status=global-only-or-avoid; selector=unresolved unresolved: avoid by default; o
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+The primary `ui-ux-pro-max` skill itself; local or shadcn/figma design skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Per config/external-skills.md and web research on bundle contents. Keep out of install-now.

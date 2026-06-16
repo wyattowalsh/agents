@@ -1,14 +1,14 @@
 ---
 skill: best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:36:02Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Modern web dev standards and security practices. Covers HTTPS/security headers, modern JS APIs, browser compat, error handling, console cleanliness. Trigger: "best practices", "security audit", "code quality review". Complements the other quality dimensions.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Curated install-now-after-trust-gate / curated-trust-gated. MIT licensed. Source by addyosmani (Chrome DevTools / web performance expert) with 2.4k GitHub stars. Unofficial collection encoding wisdom from 150+ Lighthouse audits, real-world perf engineering, WCAG 2.2, modern SEO. Stack-agnostic (React/Vue/Svelte/Next/Nuxt/Astro/plain). Skills activate on matching prompts. No specific per-skill hooks noted in config; provenance via verified npx command. Popular, reputable maintainer reduces baseline risk; still follow general audit-before-promotion guidance.
 
 ## Install Prerequisites
 
-Install: `npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add addyosmani/web-quality-skills --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode. status=install-now-after-trust-gate; selector=named (group install supports multiple). Supports Claude plugin, Codex marketplace, Gemini extensions, manual copy.`
 
 ## Upstream Maintainer
 
-[addyosmani/web-quality-skills](https://github.com/addyosmani/web-quality-skills)
+addyosmani (github.com/addyosmani/web-quality-skills). MIT License. Insights from Chrome DevTools team, web perf experts, a11y advocates. 2.4k stars, 216 forks. Resources link to Lighthouse, web.dev, WCAG, Agent Skills spec.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other skills in same bundle (e.g. web-quality-audit, performance; general security/hardening skills); general Lighthouse/web.dev guidance; framework-specific perf/a11y plugins; other curated quality skills like chrome-devtools-*.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.

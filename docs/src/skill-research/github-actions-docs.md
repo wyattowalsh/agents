@@ -1,33 +1,33 @@
 ---
 skill: github-actions-docs
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T20:22:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
+High-install CI/docs reference skill. Marked global-only-or-avoid to prevent bloating the curated sync surface.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+CI/docs (global only).
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=High volume install surface for reference material; prefer cherry-pick if needed. policy=Keep global-only.; evidence=Explicit in config/external-skills.md Keep section (xixu-me/skills@github-actions-docs).
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: high-install CI/docs reference; keep global-only to avoid bloating the curated sync surface.
+status=global-only-or-avoid; selector=unresolved.
 
 ## Upstream Maintainer
 
-[xixu-me/skills](https://github.com/xixu-me/skills)
+[xixu-me/skills](https://github.com/xixu-me/skills) @github-actions-docs.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Local CI or actions docs skills if emerge; general gh actions knowledge.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Config + github.

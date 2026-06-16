@@ -1,14 +1,14 @@
 ---
 skill: stitch::generate-design
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:43:06Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.
+Generate new screens from text prompts or images, edit existing screens with prompts and design system tokens, and generate design variants using Stitch MCP. Includes prompt enhancement pipeline.
 
 ## Harness Coverage
 
@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Web-augmented from upstream SKILL.md + config/external-skills.md (fetched 2026-06-16).
 
 ## Install Prerequisites
 
@@ -28,6 +28,6 @@ Install: `npx skills add google-labs-code/stitch-skills --skill design-md --skil
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other UI/design skills like `baseline-ui`; `vue-best-practices` for framework specific.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.

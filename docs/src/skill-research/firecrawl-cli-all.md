@@ -1,33 +1,33 @@
 ---
 skill: firecrawl-cli-all
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:36:15Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
+Firecrawl CLI skill bundle for live web capabilities inside agents: search, scrape single URLs, map site structure, crawl for bulk content, browser automation, structured extraction to LLM-friendly markdown/JSON. Enables agents to fetch fresh external data without leaving the editor/terminal.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier=needs-inspection (global-only/avoid per catalog); status=global-only or avoid; provenance=verified-install-command; source=firecrawl (web scraping startup); provides live internet access to agents (cost, rate limits, ToS, potential data exfil or untrusted content injection risks). Rationale for global-only/avoid likely: broad web surface can be abused or incur unexpected usage; prefer scoped per-project install or explicit opt-in. Evidence: firecrawl.dev blog posts, GitHub firecrawl/cli, skill registry listings, CLI docs.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
+Install (per listings): `npx skills add firecrawl/cli --skill firecrawl-cli-all` (or named selectors); may require API key / login; global-only per catalog rationale summary; policy=Inspect for usage policy, auth, and cost exposure before global or broad install.
 
 ## Upstream Maintainer
 
-[firecrawl/cli](https://github.com/firecrawl/cli)
+[firecrawl/cli](https://github.com/firecrawl/cli) (Firecrawl team)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other web-scrape/fetch skills (e.g. browserless, puppeteer skills); built-in search tools in some agents; tavily or similar search MCP/tools.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

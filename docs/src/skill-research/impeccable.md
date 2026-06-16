@@ -1,14 +1,14 @@
 ---
 skill: impeccable
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+The design language that makes your AI harness better at design. One skill + 23 commands (polish, audit, critique, distill, animate, bolder, quieter...) + 44 deterministic detector rules (no LLM) + live browser iteration. Writes PRODUCT.md + DESIGN.md on /impeccable init. Starts from prior frontend-design work; eliminates common SaaS template tells in AI-generated UIs. CLI: npx impeccable install.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command. Web-aug: github.com/pbakaus/impeccable (extremely active 2026 daily commits, 700+ history, Apache 2.0 now, dedicated impeccable.style, CLI + browser ext + multi-harness plugins + .impeccable config). Broad surface (CLI install, detectors, functions, site). High velocity but design-focused; audit creds/network in CLI.
 
 ## Install Prerequisites
 
-Install: `npx skills add pbakaus/impeccable --skill impeccable -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add pbakaus/impeccable --skill impeccable -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named. Run npx impeccable install then /impeccable init.
 
 ## Upstream Maintainer
 
-[pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+[pbakaus/impeccable](https://github.com/pbakaus/impeccable) (Apache-2.0, high activity)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+ui-ux-pro-max, shadcn/ui skills, local DESIGN.md patterns, anthropics frontend-design.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-aug 2026 from GitHub + docs.

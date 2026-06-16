@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+GraphQL schema design best practices: type design (interfaces/unions/scalars), naming, cursor pagination (Connection), error modeling/result types, security (depth/complexity/authz). For designing/reviewing GraphQL schemas/APIs.
 
 ## Install Prerequisites
 
-Install: `npx skills add apollographql/skills --skill graphql-schema --skill apollo-federation --skill rust-best-practices --skill graphql-operations --skill apollo-server -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add apollographql/skills --skill graphql-schema -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named. Claude plugin or gh skill alternatives available.
 
 ## Upstream Maintainer
 
-[apollographql/skills](https://github.com/apollographql/skills)
+apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT. Experimental/reference collection (11 skills) with detailed SKILL.md + references/. Install via npx, Claude plugin (namespaced /apollo-skills:*), gh skill (pinning supported). Links to official Apollo docs. Disclaimer: not officially supported at core Apollo level.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+apollo-federation, apollo-server, graphql-operations (same source); other schema design or API modeling skills.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

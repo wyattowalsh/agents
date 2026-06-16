@@ -50,21 +50,23 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
+otel-collector provides expert configuration for the OpenTelemetry Collector (receivers, exporters, processors, pipelines, deployment modes, sampling, RED metrics, custom distributions). Mandates memory_limiter first, one pipeline per signal, and explicit validation. Includes Dash0 export examples but is vendor-neutral for OTLP.
 
 ## Install Prerequisites
 
-Install: `npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add dash0hq/agent-skills --skill otel-collector --skill otel-instrumentation --skill otel-semantic-conventions -y -g -a ...`
+
+Requires the otelcol binary or contrib image and proper auth for the target backend.
 
 ## Upstream Maintainer
 
-[dash0hq/agent-skills](https://github.com/dash0hq/agent-skills)
+dash0 (https://github.com/dash0hq/agent-skills). Complements https://opentelemetry.io/docs/collector/.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Direct OpenTelemetry Collector docs + contrib components; vendor-specific distribution guides.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Evidence from public GitHub raw skills and linked OTel docs. Summarizes risks; do not endorse installation without inspection. Not authority.
 
 <Tabs>
   <TabItem label="Public Metadata">

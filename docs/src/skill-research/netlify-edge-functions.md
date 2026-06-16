@@ -1,14 +1,14 @@
 ---
 skill: netlify-edge-functions
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Guide for writing Netlify Edge Functions. Use when building middleware, geolocation-based logic, request/response manipulation, authentication checks, A/B testing, or low-latency edge compute. Covers Deno runtime, context.next() middleware, geolocation (city/country etc via context.geo), config paths/methods, when to choose edge vs serverless. Limits: 50ms CPU, 512MB, 20MB code.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect before install.; evidence=config/external-skills.md. Web-aug: Same official Netlify repo as netlify-deploy (MIT, active, factual references only). No persistent state or broad FS; edge functions execute in Netlify Deno sandbox on deploy. Inspect for any custom scripts in bundle.
 
 ## Install Prerequisites
 
-Install: `npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add netlify/context-and-tools --skill netlify-deploy --skill netlify-functions --skill netlify-edge-functions -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named
 
 ## Upstream Maintainer
 
-[netlify/context-and-tools](https://github.com/netlify/context-and-tools)
+[netlify/context-and-tools](https://github.com/netlify/context-and-tools) (official, MIT)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Cloudflare Workers / Deno Deploy skills; general edge compute patterns in framework skills (Next.js middleware etc).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented 2026 from repo SKILL.md + README. Evidence only.

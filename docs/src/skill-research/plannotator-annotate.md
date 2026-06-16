@@ -1,33 +1,36 @@
 ---
 skill: plannotator-annotate
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:45:57Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.
+Plannotator-annotate launches the external Plannotator browser UI to annotate a markdown file, converted HTML, URL, or folder. The skill runs `plannotator annotate <path-or-url>`, waits for the annotation session, and feeds returned structured annotations back into the conversation for follow-up work. It is designed for cases where visual plan or document review benefits from a dedicated surface rather than inline chat.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. The skill sets `disable-model-invocation: true` and delegates entirely to the `plannotator` CLI plus browser UI; the agent does not perform the annotation itself.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Curated status install-now-after-trust-gate; trust_tier curated-trust-gated. The wrapper is minimal and shells out to a separately installed `plannotator` binary (MIT, open source at backnotprop/plannotator). Primary risks are execution of the external CLI, browser-launched local UI that can read local paths or URLs provided by the user, and optional encrypted sharing features. The project is actively developed with public demos and integrations for multiple agents; local execution keeps plans on-machine by default. Audit the installed binary and any companion hooks (e.g. grok-plannotator-hooks.json) before broad deployment.
 
 ## Install Prerequisites
 
-Install: `npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+1. Install the Plannotator CLI: `curl -fsSL https://plannotator.ai/install.sh | bash` (or `uv run wagents grok plannotator install`).
+2. `npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-annotate -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+
+Works alongside the review and last skills; Grok integration uses repo-synced hooks.
 
 ## Upstream Maintainer
 
-backnotprop/plannotator/apps/skills/core
+backnotprop (https://github.com/backnotprop/plannotator). Official site: https://plannotator.ai/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Inline plan/code review inside the primary agent chat; GitHub awesome-copilot excalidraw-diagram-generator or other visual diagramming skills for architecture sketches; dedicated PR review tools for code changes.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub sources, raw SKILL.md, and project site (plannotator.ai). Not an endorsement or authority; inspect the CLI binary, hooks, and network behavior before use.

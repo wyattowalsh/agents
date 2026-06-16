@@ -1,33 +1,33 @@
 ---
 skill: microsoft-azure-skills-all
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:42:44Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
+microsoft/azure-skills (official Microsoft). Massive bundle covering many Azure topics (compute, prepare, upgrade, validate, reliability, entra, functions etc) via SKILL.md + references/global-rules. Intended for AI coding agents to have real Azure expertise. Per catalog: do not bulk-promote; cherry-pick only if concrete need.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+global-only per policy.
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier unspecified in row; status=keep-global-only-or-avoid (per external-skills.md); official Microsoft but scope is very large (hundreds of ref files); risk of over-broad exposure or duplication with focused skills. Massive size noted.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
+npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curated install-now); status=keep-global-only-or-avoid.
 
 ## Upstream Maintainer
 
-[microsoft/azure-skills](https://github.com/microsoft/azure-skills)
+[microsoft/azure-skills](https://github.com/microsoft/azure-skills) (official).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Focused Azure sub-skills; other cloud provider skills (e.g. if exist).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from GitHub (mcp-use, microsoft, neondatabase 2026) + catalog; research evidence only - not authority or endorsement.

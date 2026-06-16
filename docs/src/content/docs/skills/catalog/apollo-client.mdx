@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
+Apollo Client 4.x for React — queries, mutations, caching, local state. Covers useQuery/useMutation hooks, InMemoryCache + type policies, reactive vars, optimistic UI, error links, perf opt. Use for React GraphQL data management.
 
 ## Install Prerequisites
 
-Install: `npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add apollographql/skills --skill apollo-client -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named. Alternative: Claude plugin marketplace or gh skill install.
 
 ## Upstream Maintainer
 
-[apollographql/skills](https://github.com/apollographql/skills)
+apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT license. 11 skills total with SKILL.md + references/. Install via npx skills add, Claude Code plugin (namespaced), GitHub CLI gh skill (with pinning support), or direct. Experimental/reference project per disclaimer; community feedback welcome but not officially supported like core Apollo repos. Links to official Apollo docs (Client/Server/Federation/Connectors/Rover/iOS/MCP).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+graphql-operations, apollo-server (same source); other GraphQL client libs or React Query skills.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

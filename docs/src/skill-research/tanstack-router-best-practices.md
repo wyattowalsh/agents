@@ -1,14 +1,14 @@
 ---
 skill: tanstack-router-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:35:20Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`.
+TanStack Router best practices for type-safe routing, data loading, search params, navigation, and code splitting in React apps. 30+ rules covering type safety, route organization, loaders, search param validation, preloading. Integrates with TanStack Query for data.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=TanStack Query, Start, and Router best practices. Complements curated React/Next skills without overlapping `vercel-react-best-practices`.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; source=community (DeckardGer); ~184 stars on repo, MIT, structured rule files; guidance-only; integrates well-documented open patterns.
 
 ## Install Prerequisites
 
-Install: `npx skills add deckardger/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-start-best-practices --skill tanstack-router-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add DeckardGer/tanstack-agent-skills --skill tanstack-query-best-practices --skill tanstack-router-best-practices --skill tanstack-start-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[deckardger/tanstack-agent-skills](https://github.com/deckardger/tanstack-agent-skills)
+[DeckardGer/tanstack-agent-skills](https://github.com/DeckardGer/tanstack-agent-skills) (community contributor)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+TanStack Start skills or file-based router skills from other frameworks; general routing best practices skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

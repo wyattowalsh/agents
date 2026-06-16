@@ -1,14 +1,14 @@
 ---
 skill: building-pydantic-ai-agents
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Build LLM-powered agents with Pydantic AI — tools, capabilities, streaming, testing. From pydantic/skills: Logfire + Pydantic AI plugins and cross-agent SKILL.md files. Supports Claude Code, Codex, Cursor via plugins + standalone.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command. Web-aug: github.com/pydantic/skills (MIT, active Pydantic team, 80+ stars, plugins/ + skills/ dir, MCP for Logfire, requires LOGFIRE_TOKEN for full use). Official; telemetry surface.
 
 ## Install Prerequisites
 
-Install: `npx skills add pydantic/skills --skill building-pydantic-ai-agents --skill logfire-instrumentation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+For plugins: claude/codex/cursor marketplace add pydantic/skills then install specific. Standalone: npx skills add pydantic/skills --skill building-pydantic-ai-agents status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[pydantic/skills](https://github.com/pydantic/skills)
+[pydantic/skills](https://github.com/pydantic/skills) (official Pydantic)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other observability (otel, langsmith), agent framework skills (langchain, crewai).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> 2026 web + pydantic README.

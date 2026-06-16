@@ -1,33 +1,33 @@
 ---
 skill: clickhouse-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:45:57Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+clickhouse-best-practices encodes 31 prioritized rules (schema PK ordering, data types, JOIN algorithms, insert batching, mutation avoidance, partitioning, skipping indices, agent discovery/safety) that must be checked and cited before giving ClickHouse recommendations. Requires following a strict connect-discover-plan-execute-recover workflow and rule-file consultation order.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. Forces rule-driven output format (Rules Checked, Violations, Compliant, Recommendations with citations).
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+inspect-then-install / needs-inspection per bundle. Official ClickHouse Inc. material. High value when followed; risk of incomplete rule application leading to suboptimal schemas or queries. The skill is advisory only; agents must still validate against live EXPLAIN, cluster topology, and current docs.
 
 ## Install Prerequisites
 
-Install: `npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Same install command as the architecture advisor skill. Requires prior audit of the agent-skills source.
 
 ## Upstream Maintainer
 
-[clickhouse/agent-skills](https://github.com/clickhouse/agent-skills)
+ClickHouse Inc. (https://github.com/ClickHouse/agent-skills). Complements https://clickhouse.com/docs/best-practices.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+ClickHouse official documentation, CH community knowledge bases, and direct EXPLAIN-driven tuning without the rule wrapper.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub (raw SKILL.md and ClickHouse blog). Summarizes risks; do not endorse installation without inspection. Not authority.

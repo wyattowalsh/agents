@@ -1,14 +1,14 @@
 ---
 skill: slidev
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:36:25Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Official vendored skill for Slidev - presentation slides for developers. From slidevjs/slidev. Provides guidance on creating developer-focused slides/presentations using the Slidev tool (Markdown-based, Vite-powered). Part of antfu skills collection for Vite ecosystem tooling.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Curated mostly install-now-after-trust-gate / curated-trust-gated (except vue which is inspect-then-install). MIT. High-quality maintainer (Anthony Fu, core contributor to Vite/Vitest/Vue ecosystem). 5.3k stars. Skills generated/synced from official upstream docs where possible (except hand-maintained antfu and vendored slidev). Config provenance verified-install-command for listed. For vue specifically: needs-inspection per catalog (reason not expanded in web evidence; may relate to scope of generated Vue core skill or overlap).
 
 ## Install Prerequisites
 
-Install: `npx skills add antfu/skills --skill vite --skill slidev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add antfu/skills --skill slidev -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named (or source-spec for some).
 
 ## Upstream Maintainer
 
-[antfu/skills](https://github.com/antfu/skills)
+antfu (Anthony Fu, github.com/antfu/skills). 5.3k stars. MIT (skills/scripts); vendored retain upstream licenses. Proof-of-concept using git submodules + sync from official docs (vuejs, vitejs, vitest-dev, slidevjs etc.) for reliable/up-to-date context. Primarily Vite/Nuxt ecosystem focus. POC; author welcomes feedback on real-world performance.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other presentation tools or general docs-writing skills; vitepress (same source); web-design-guidelines.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.

@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Deploy apps/websites to Vercel (auto-detect 40+ frameworks). "Claimable" deployments for claude.ai/Claude Desktop conversations; returns preview + claim URL (transfer ownership). Handles static + tarball packaging, excludes node_modules/.git. From vercel-labs/agent-skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize ...` status=install-now-after-trust-gate; selector=named.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (official Vercel).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other deploy skills (render, railway, netlify from catalog); general `deploy` patterns.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web evidence from vercel-labs/agent-skills README (2026) + config.
 
 <Tabs>
   <TabItem label="Public Metadata">

@@ -1,14 +1,14 @@
 ---
 skill: arize-evaluator
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:38:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Arize skill (from Arize-ai/arize-skills or phoenix) for building/running evaluators for LLM apps (RAG relevance, answer relevance, hallucination, groundedness etc). Integrates with Phoenix observability.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; source=Arize AI (phoenix/arize-skills repos); 10k+ stars on phoenix; open source (MIT); pairs tracing + evals; inspect for evaluator model costs and data sent to Arize/Phoenix.
 
 ## Install Prerequisites
 
-Install: `npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: subset of github/awesome-copilot or direct arize-ai/arize-skills; or npx skills add Arize-ai/phoenix; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[github/awesome-copilot](https://github.com/github/awesome-copilot)
+[Arize-ai/arize-skills](https://github.com/Arize-ai/arize-skills) and [Arize-ai/phoenix](https://github.com/Arize-ai/phoenix) (official Arize)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+`phoenix-evals`, `agentic-eval`, `eval-driven-dev`; LangSmith evals or other LLM eval harness skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

@@ -50,11 +50,11 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
+Official from langchain-ai/langsmith-skills (early dev, 131 stars). Generate evaluation datasets from traces (with helper scripts). Requires LANGSMITH_API_KEY + cloud access per README. Part of observability for LLM apps. Complements langchain-skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+npx skills add langchain-ai/langsmith-skills --skill ... -y -g -a [..]; set LANGSMITH_API_KEY; status=inspect-then-install.
 
 ## Upstream Maintainer
 
@@ -62,9 +62,9 @@ Install: `npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluat
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other trace/eval skills (e.g. langfuse, phoenix).
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Evidence from public web sources, GitHub (official orgs 2026), curated catalog; research evidence, not authority. External audit advised.
 
 <Tabs>
   <TabItem label="Public Metadata">

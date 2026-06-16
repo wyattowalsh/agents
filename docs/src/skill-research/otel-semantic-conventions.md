@@ -1,33 +1,33 @@
 ---
 skill: otel-semantic-conventions
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:46:52Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
+otel-semantic-conventions is the authority for selecting and placing attributes according to the OTel semconv registry. Requires searching the registry first, preferring stable attributes, correct resource vs span placement, low-cardinality for metrics, and org.namespace.* for customs. Includes versioning/migration and Dash0-derived notes.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Used alongside otel-instrumentation and collector skills for any attribute or metric naming decision.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+inspect-then-install. Misuse of custom or high-cardinality attributes can break downstream querying, increase cost, or leak data. The skill is a thin disciplined wrapper over the public registry.
 
 ## Install Prerequisites
 
-Install: `npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Same bundle as the other otel skills.
 
 ## Upstream Maintainer
 
-[dash0hq/agent-skills](https://github.com/dash0hq/agent-skills)
+dash0 (https://github.com/dash0hq/agent-skills) with direct links to https://opentelemetry.io/docs/specs/semconv/registry/attributes/.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Direct use of the OTel semantic conventions specification and registry browser.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub (raw skill). Summarizes risks; do not endorse without inspection.

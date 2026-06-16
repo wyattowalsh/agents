@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Extend Pydantic AI agents with harness capabilities (e.g. Code Mode sandboxed run). From pydantic/skills: Logfire + Pydantic AI plugins and cross-agent SKILL.md files. Supports Claude Code, Codex, Cursor via plugins + standalone.
 
 ## Install Prerequisites
 
-Install: `npx skills add pydantic/skills --skill pydantic-ai-harness -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+For plugins: claude/codex/cursor marketplace add pydantic/skills then install specific. Standalone: npx skills add pydantic/skills --skill pydantic-ai-harness status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[pydantic/skills](https://github.com/pydantic/skills)
+[pydantic/skills](https://github.com/pydantic/skills) (official Pydantic)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other observability (otel, langsmith), agent framework skills (langchain, crewai).
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; 2026 web + pydantic README.
 
 <Tabs>
   <TabItem label="Public Metadata">

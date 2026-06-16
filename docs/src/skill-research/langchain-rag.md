@@ -1,33 +1,33 @@
 ---
 skill: langchain-rag
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:40:51Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
+Part of official langchain-ai/langchain-skills (early dev, ~800 stars). ecosystem-primer: start-here for choosing LangChain vs LangGraph vs Deep Agents, env setup, next skills. langchain-fundamentals: agents via create_agent, tools, structured output, middleware. langchain-middleware: HITL approval, custom middleware, Command resume. langchain-rag: RAG (loaders, embeddings, vector stores). langchain-dependencies: version pinning ref for py/ts.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Targets from curated: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. Requires OPENAI/ANTHROPIC keys for use per README.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified npx install cmd in config; policy=Inspect source, hooks, scripts, credentials, dedupe before install (per catalog). Early dev warning in repo; LangChain org official but skills in flux. Risks: broad API key needs, potential dep drift, agent-generated code exec patterns in fundamentals.
 
 ## Install Prerequisites
 
-Install: `npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install (group): npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals ... --skill langchain-rag --skill deep-agents-* ... -y -g -a [agents]; status=inspect-then-install; selector=named. Set API keys post-install.
 
 ## Upstream Maintainer
 
-[langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)
+[langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) (official LangChain AI org).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+langchain docs or custom agent building skills; other RAG/LLM framework skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public web sources, GitHub repositories (official orgs Jun 2026), curated catalog; treat as research evidence, not authority or endorsement. Use external-skill-auditor + live audit for promotion.

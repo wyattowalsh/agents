@@ -1,33 +1,33 @@
 ---
 skill: wrangler
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:46:20Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+wrangler is the dedicated skill for the Cloudflare Workers CLI (deploy, dev, secret management, KV/R2/D1/Vectorize/Hyperdrive/Queues/Workflows/Pipelines/Containers operations, types generation, tail, versions/rollback). It stresses use of wrangler.jsonc, recent compatibility_date, remote bindings for local dev, interactive secret commands, and never echoing secrets.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents from the cloudflare bundle. Complements workers-best-practices and platform skills for all CLI-driven workflows.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+install-now-after-trust-gate / curated-trust-gated. Official. Main risks are destructive CLI operations (delete, secret overwrite, deploy) and accidental secret leakage via command history or logs. The skill explicitly warns against common misuses.
 
 ## Install Prerequisites
 
-Install: `npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Bundled with cloudflare/skills. The consuming project must have wrangler as devDependency for full type/config schema support.
 
 ## Upstream Maintainer
 
-[cloudflare/skills](https://github.com/cloudflare/skills)
+Cloudflare (https://github.com/cloudflare/skills). Wrangler docs: https://developers.cloudflare.com/workers/wrangler/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Cloudflare REST API + dashboards for one-off tasks; other IaC (Terraform, Pulumi) skills when managing at scale.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub (raw SKILL.md). Not an endorsement or authority.

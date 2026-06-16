@@ -1,14 +1,14 @@
 ---
 skill: postgres
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.78
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Plan and review PostgreSQL / PlanetScale Postgres schema, indexing, query tuning, transactions, operations, MVCC, replication, connection issues, PlanetScale-specific features (pooling, CLI insights). Use for create/modify tables/indexes/queries, migrations, troubleshooting.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command. Web-aug: github.com/planetscale/database-skills (MIT, ~500 stars, active, db-skills.com, references/ for deeper, compatible with skills.sh and Cursor). Official PlanetScale; narrow DB focus, no broad exec hooks apparent.
 
 ## Install Prerequisites
 
-Install: `npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add planetscale/database-skills --skill postgres --skill mysql -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named
 
 ## Upstream Maintainer
 
-[planetscale/database-skills](https://github.com/planetscale/database-skills)
+[planetscale/database-skills](https://github.com/planetscale/database-skills) (PlanetScale, MIT)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Prisma DB skills, general SQL/Postgres skills, local db docs.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> From repo README + skills/ 2026.

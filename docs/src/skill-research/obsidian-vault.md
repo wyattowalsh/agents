@@ -1,33 +1,33 @@
 ---
 skill: obsidian-vault
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:42:27Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.78
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+From mattpocock/skills (MIT, 131k stars, respected TS educator Matt Pocock). Personal: agentic note-taking in Obsidian vault (complements kepano obsidian skills). Part of composable engineering/productivity skills for real (non-vibe) engineering with agents. Setup skill recommended first. Small, adaptable, feedback-loop focused.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+curated agents (antigravity..).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; high community adoption/positive reports; MIT; focuses on process (grill, TDD, arch) rather than broad exec. Low risk per reviews.
 
 ## Install Prerequisites
 
-Install: `npx skills add mattpocock/skills --skill obsidian-vault -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+npx skills add mattpocock/skills --skill obsidian-vault -y -g -a [agents]; often with setup-matt-pocock-skills; status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[mattpocock/skills](https://github.com/mattpocock/skills)
+[mattpocock/skills](https://github.com/mattpocock/skills) (MIT, very popular).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+GSD/BMAD process skills; other TDD/arch skills; kepano for obsidian.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub (official + community 2026) + catalog; research evidence, not authority/endorsement.

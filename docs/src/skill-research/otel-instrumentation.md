@@ -1,33 +1,33 @@
 ---
 skill: otel-instrumentation
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:46:52Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
+otel-instrumentation guides application instrumentation for traces, metrics, and logs using OpenTelemetry SDKs. Covers resource attributes, span hygiene, metric instrument selection, sensitive-data redaction, per-language SDK setup (Node, Go, Python, Java, etc.), and validation checklists. Defers sampling to the Collector.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Paired with otel-collector and semantic-conventions in the dash0 bundle.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+inspect-then-install. Risks are incorrect instrumentation (missing context propagation, high cardinality, PII leakage, performance overhead). The skill emphasizes signal density over volume and consistent resource attributes.
 
 ## Install Prerequisites
 
-Install: `npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Same dash0hq/agent-skills bundle install.
 
 ## Upstream Maintainer
 
-[dash0hq/agent-skills](https://github.com/dash0hq/agent-skills)
+dash0 (https://github.com/dash0hq/agent-skills). Primary: https://opentelemetry.io/docs/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Language-specific OTel docs, auto-instrumentation agents, and vendor SDK guides.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub. Summarizes risks; do not endorse without inspection.

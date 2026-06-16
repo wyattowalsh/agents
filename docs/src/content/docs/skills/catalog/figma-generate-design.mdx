@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants.
+Figma skill to generate designs in Figma from code, existing components/variables, or natural language using Figma MCP tools and skills. Supports creating/editing assets aligned to design system. Complements Code Connect for round-tripping design &lt;-&gt; code.
 
 ## Install Prerequisites
 
-Install: `npx skills add figma/mcp-server-guide --skill figma-implement-design --skill figma-generate-design --skill figma-code-connect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add figma/mcp-server-guide --skill figma-code-connect --skill figma-generate-design --skill figma-implement-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named (inferred); policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[figma/mcp-server-guide](https://github.com/figma/mcp-server-guide)
+[figma/mcp-server-guide](https://github.com/figma/mcp-server-guide) (official Figma)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Diagram/diagram-gen or other design tool skills (Excalidraw etc); code-to-design reverse skills.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">

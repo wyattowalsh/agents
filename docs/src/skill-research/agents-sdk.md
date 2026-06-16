@@ -1,33 +1,35 @@
 ---
 skill: agents-sdk
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:46:20Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+agents-sdk teaches building stateful AI agents on Cloudflare Workers with the Agents SDK. It covers Agent class, persistent SQLite-backed state with client sync, @callable RPC, scheduling (one-time, recurring, cron), Workflows for durable multi-step execution, queues, retries, hibernation WebSockets, MCP client/server, email handling, React hooks (useAgent, useAgentChat), observability, and experimental voice/browser tools. Strongly biases toward live retrieval from developers.cloudflare.com/agents.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. Provides code patterns, wrangler config snippets, routing conventions, and reference links for stateful agent development on the Cloudflare platform.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+install-now-after-trust-gate / curated-trust-gated. Official Cloudflare skills repo (Apache-2.0). The skill is retrieval-heavy documentation; no privileged execution. Risks are standard for Workers (bindings, secrets, egress) plus Durable Object / Workflow state costs. Prefer official docs over the skill snapshot for limits and new APIs.
 
 ## Install Prerequisites
 
-Install: `npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add cloudflare/skills --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+
+Requires a Workers project with `agents` package, Durable Objects bindings/migrations, and usually `nodejs_compat`.
 
 ## Upstream Maintainer
 
-[cloudflare/skills](https://github.com/cloudflare/skills)
+Cloudflare (https://github.com/cloudflare/skills). Docs hub: https://developers.cloudflare.com/agents/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other agent frameworks (LangGraph, CrewAI, AutoGen) with their hosting patterns; plain Workers + DO for lighter state; Vercel or other edge runtimes when not tied to Cloudflare.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub (raw SKILL.md and repo README). Not an endorsement or authority; cross-check current Cloudflare docs for pricing, limits, and APIs.

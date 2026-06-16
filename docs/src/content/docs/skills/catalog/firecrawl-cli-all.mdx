@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
+Firecrawl CLI skill bundle for live web capabilities inside agents: search, scrape single URLs, map site structure, crawl for bulk content, browser automation, structured extraction to LLM-friendly markdown/JSON. Enables agents to fetch fresh external data without leaving the editor/terminal.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
+Install (per listings): `npx skills add firecrawl/cli --skill firecrawl-cli-all` (or named selectors); may require API key / login; global-only per catalog rationale summary; policy=Inspect for usage policy, auth, and cost exposure before global or broad install.
 
 ## Upstream Maintainer
 
-[firecrawl/cli](https://github.com/firecrawl/cli)
+[firecrawl/cli](https://github.com/firecrawl/cli) (Firecrawl team)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other web-scrape/fetch skills (e.g. browserless, puppeteer skills); built-in search tools in some agents; tavily or similar search MCP/tools.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">

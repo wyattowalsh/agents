@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Sentry skill for scanning/discovering or auditing agent skills themselves (meta); likely helps inventory or validate skills in a workspace.
 
 ## Install Prerequisites
 
-Install: `npx skills add getsentry/skills --skill skill-scanner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add getsentry/skills --skill find-bugs --skill gha-security-review --skill iterate-pr --skill skill-scanner -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[getsentry/skills](https://github.com/getsentry/skills)
+[getsentry/skills](https://github.com/getsentry/skills) (Sentry team)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other skill-inventory or manifest tools; meta skills for agents.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">

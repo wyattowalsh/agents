@@ -1,14 +1,14 @@
 ---
 skill: cli-just
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:35:46Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them.
+Provides Just command runner guidance and Justfile workflows. Part of PRB collection of AI agent skills optimized primarily for Claude Code and Codex (also cross-agent). Helps with defining and using `just` recipes for common dev tasks, replacing or augmenting make/npm scripts. Install name `cli-just`. The source at the curated pinned commit exposes 20 skills total including biome, code review/simplify/polish, commit, tailwind, etc.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Curated install-now-after-trust-gate / curated-trust-gated. MIT license. Pinned to specific HEAD d3f5540ed2fc0fa07f802bd925e06b9387cbe90f for audit reproducibility. Per config: the inspected cli-just skill has no observed hooks, allowed-tools, or skill-local scripts. References include documentation, examples, dotenv loading, package-manager, publish, network, and destructive cleanup snippets — review any generated Just recipes as executable project code before running. Repo warning: skills optimized for maintainer personal setup/workflow; user must do own due diligence, customize to stack/agents; no warranties. 62 stars on GitHub. Maintainer PaulRBerg.
 
 ## Install Prerequisites
 
-Install: `npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named. From curated source with pinned commit.
 
 ## Upstream Maintainer
 
-[PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills)
+PaulRBerg (github.com/PaulRBerg/agent-skills at pinned d3f5540). MIT License. Primary for personal Claude Code / Codex workflows. See also dot-claude and dot-agents from same author. Cross references to vercel-labs/skills.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other CLI runners in same source (e.g. cli-gh, cli-cast); general just/make guidance skills; commit + code-review from same bundle for TS workflow coverage; native just CLI docs or other agent skills like work/end-to-end-task.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.

@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-TS workflow residual from the pinned `PaulRBerg/agent-skills` HEAD already used for `cli-just`.
+Vitest unit testing framework (Vite-powered). Generated from vitest-dev/vitest official docs. Guidance on testing patterns, config, running suites in Vite-based projects. Complements vite and antfu opinionated preferences.
 
 ## Install Prerequisites
 
-Install: `npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill vitest --skill commit --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add antfu/skills --skill vitest -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named (or source-spec for some).
 
 ## Upstream Maintainer
 
-[PaulRBerg/agent-skills](https://github.com/PaulRBerg/agent-skills)
+antfu (Anthony Fu, github.com/antfu/skills). 5.3k stars. MIT (skills/scripts); vendored retain upstream licenses. Proof-of-concept using git submodules + sync from official docs (vuejs, vitejs, vitest-dev, slidevjs etc.) for reliable/up-to-date context. Primarily Vite/Nuxt ecosystem focus. POC; author welcomes feedback on real-world performance.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other test skills (e.g. from PaulRBerg or general); pnpm/vite in same collection.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

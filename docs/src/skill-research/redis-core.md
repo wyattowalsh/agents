@@ -1,14 +1,14 @@
 ---
 skill: redis-core
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.
+Data structures, key naming, memory and TTL, atomic primitives, JSON vs Hash, Streams vs Pub/Sub. Official Redis agent skills for AI coding agents working with Redis. Follow agentskills.io.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate (for core/vec/sem); provenance=verified-install-command. Web-aug: github.com/redis/agent-skills (MIT, official Redis, ~71 stars, TS/JS, active, includes plugins for Claude/Cursor, AGENTS.md, references). Redis surface (connections, data); official.
 
 ## Install Prerequisites
 
-Install: `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install (core example): `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` ; additional for vec/sem via bundle. status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[redis/agent-skills](https://github.com/redis/agent-skills)
+[redis/agent-skills](https://github.com/redis/agent-skills) (official redis.io, MIT)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other cache/KV skills, vector DB skills (pgvector etc).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web 2026 from redis/agent-skills.

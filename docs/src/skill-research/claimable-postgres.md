@@ -1,33 +1,33 @@
 ---
 skill: claimable-postgres
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:42:55Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Official neondatabase/agent-skills (Apache-2.0, 70 stars, TS/JS). Provision instant temp Postgres dbs via Claimable (neon.new) with no login/signup/card. REST/CLI/SDK support. For quick scratch dbs. Part of Neon Serverless Postgres agent skills + MCP. neon.new claimable for zero-friction temps. Use with neonctl init --agent for setup.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+curated agents (antigravity..). Some features require Neon account/OAuth/MCP for full; claimable is anon.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; official Neon; Apache; network to neon services; auth/OAuth for non-claimable; egress optimizer touches billing/cost surfaces. Catalog notes: audit hooks/network before promote-to-install-now. Prefer this over generic Neon skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+npx skills add neondatabase/agent-skills --skill claimable-postgres ... (separate row for functions/ai/claimable); or plugin; status=inspect-then-install. OAuth for MCP in some.
 
 ## Upstream Maintainer
 
-[neondatabase/agent-skills](https://github.com/neondatabase/agent-skills)
+[neondatabase/agent-skills](https://github.com/neondatabase/agent-skills) (Apache-2, official).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other Postgres skills; self-hosted pg skills; generic DB skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from GitHub (neondatabase/agent-skills official 2026), neon.com docs, catalog notes (Apache-2, prefer official over community); research evidence, not authority.

@@ -1,33 +1,33 @@
 ---
 skill: find-skills
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T20:21:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-duplicate of `discover-skills`.
+Vercel find-skills; duplicate of discover-skills. Marked global-only-or-avoid to avoid bloat and duplication in curated surface.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+(none in sync; global)
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=duplicate of `discover-skills`.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=dupe of local discover-skills; high install count for docs ref. policy=Keep global-only.; evidence=Keep Global section in config/external-skills.md (vercel-labs/skills@find-skills).
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: duplicate of `discover-skills`.
+Avoid; status=global-only-or-avoid; unresolved.
 
 ## Upstream Maintainer
 
-[vercel-labs/skills](https://github.com/vercel-labs/skills)
+[vercel-labs/skills](https://github.com/vercel-labs/skills) @find-skills tag.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+discover-skills (local canonical).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Config rationale + web vercel labs.

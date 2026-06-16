@@ -1,14 +1,14 @@
 ---
 skill: prisma-cli
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Complete reference for current Prisma ORM CLI commands (init, generate, migrate*, db*, studio, mcp). For Prisma Compute use prisma-compute. Official Prisma skills for AI agents working with Prisma ORM (targets 7.6.x).
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command. Web-aug: github.com/prisma/skills (MIT, official Prisma, active, AGENTS.md, multiple SKILL + references/, install via npx or full bundle). Focused ORM/CLI/Compute; inspect compute variant separately.
 
 ## Install Prerequisites
 
-Install: `npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[prisma/skills](https://github.com/prisma/skills)
+[prisma/skills](https://github.com/prisma/skills) (official Prisma, MIT)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Local Prisma docs, other ORM skills (drizzle etc), database-setup skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented from GitHub README + skill dirs 2026.

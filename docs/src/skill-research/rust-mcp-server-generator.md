@@ -1,14 +1,14 @@
 ---
 skill: rust-mcp-server-generator
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:38:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Rust MCP server scaffolding from `github/awesome-copilot`. Complements `apollographql/skills@rust-best-practices`; audit generated server code before production use.
+awesome-copilot / MCP ecosystem skill for scaffolding production-ready Rust MCP servers (tools, logging, config, transport). Generates server code that exposes capabilities to AI agents via MCP.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Rust MCP server scaffolding from `github/awesome-copilot`. Complements `apollographql/skills@rust-best-practices`; audit generated server code before production use.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; GitHub curated; generates executable server code (security surface: auth, sandbox, input sanitization, resource access); generated code must be audited before running; high leverage but high responsibility.
 
 ## Install Prerequisites
 
-Install: `npx skills add github/awesome-copilot --skill rust-mcp-server-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: via github/awesome-copilot or MCP generators; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install; do not run generated servers without review.
 
 ## Upstream Maintainer
 
-[github/awesome-copilot](https://github.com/github/awesome-copilot)
+github/awesome-copilot and MCP community generators
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other MCP server generators (python, TS, go); general Rust CLI / server scaffolding skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

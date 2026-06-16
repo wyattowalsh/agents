@@ -1,14 +1,14 @@
 ---
 skill: redis-semantic-cache
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+LangCache — cache-aside for LLM responses, similarity threshold, per-task separation. Official Redis agent skills for AI coding agents working with Redis. Follow agentskills.io.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate (for core/vec/sem); provenance=verified-install-command. Web-aug: github.com/redis/agent-skills (MIT, official Redis, ~71 stars, TS/JS, active, includes plugins for Claude/Cursor, AGENTS.md, references). Redis surface (connections, data); official.
 
 ## Install Prerequisites
 
-Install: `npx skills add redis/agent-skills --skill redis-vector-search --skill redis-semantic-cache -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install (core example): `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` ; additional for vec/sem via bundle. status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[redis/agent-skills](https://github.com/redis/agent-skills)
+[redis/agent-skills](https://github.com/redis/agent-skills) (official redis.io, MIT)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other cache/KV skills, vector DB skills (pgvector etc).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web 2026 from redis/agent-skills.

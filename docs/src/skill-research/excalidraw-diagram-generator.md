@@ -1,14 +1,14 @@
 ---
 skill: excalidraw-diagram-generator
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:38:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.
+awesome-copilot / community skill (multiple origins) to generate editable Excalidraw diagrams (.excalidraw JSON) from natural language descriptions or codebase analysis. Supports flowcharts, ERDs, architecture, sequence, mindmaps, swimlanes etc. with layout and styling guidance. Often paired with Excalidraw MCP servers for live canvas.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; GitHub curated + community forks (coleam00, ooiyeefei etc) and excalidraw/excalidraw-mcp; output is diagrams (safe); MCP variants add live canvas write surface - inspect MCP trust if using integrated server. Evidence from awesome-copilot, excalidraw repos, blogs.
 
 ## Install Prerequisites
 
-Install: `npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add github/awesome-copilot --skill excalidraw-diagram-generator` or community variants; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[github/awesome-copilot](https://github.com/github/awesome-copilot)
+[github/awesome-copilot](https://github.com/github/awesome-copilot) and community (e.g. excalidraw org, coleam00)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Mermaid diagram skills, draw.io / plantuml skills; architecture doc skills; `figma-generate-design` for design-tool diagrams.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

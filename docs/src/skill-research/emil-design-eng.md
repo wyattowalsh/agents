@@ -1,14 +1,14 @@
 ---
 skill: emil-design-eng
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:35:33Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Design engineering skill distilled from Emil Kowalski (animations.dev) articles and course. Encodes philosophy on UI polish, component design, animation decisions (timing <300ms, custom easing), perceived performance, invisible details that make interfaces feel great. Uses before/after tables and concrete rules for reviews.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; source=personal blog/course of well-known design engineer (emilkowalski); high popularity (~77k installs reported in listings, 2k stars on related); single-author origin increases review burden; risk of opinionated style not suiting all teams; no executable surface but influences visual/UX code heavily; inspect for scope and bias before adoption. Evidence: personal site, GitHub emilkowalski/skill, marketplace listings, social posts.
 
 ## Install Prerequisites
 
-Install: `npx skills add emilkowalski/skill --skill emil-design-eng -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add emilkowalski/skill --skill emil-design-eng -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named (per curated); policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[emilkowalski/skill](https://github.com/emilkowalski/skill)
+[emilkowalski/skill](https://github.com/emilkowalski/skill) (personal / design engineer)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other UI/animation focused skills or design-system review skills; general frontend polish or UX linting skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

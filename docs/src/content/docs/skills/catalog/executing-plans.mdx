@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
+Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes in batches with human checkpoints. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -&gt; writing-plans -&gt; executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
 
 ## Install Prerequisites
 
-Install: `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[obra/superpowers](https://github.com/obra/superpowers)
+[obra/superpowers](https://github.com/obra/superpowers) (MIT, highly active)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Local planning/debug/review skills; github/awesome-copilot planning skills; other TDD/methodology bundles.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-aug from README + skills/ 2026. Evidence only.
 
 <Tabs>
   <TabItem label="Public Metadata">

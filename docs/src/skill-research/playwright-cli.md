@@ -1,33 +1,33 @@
 ---
 skill: playwright-cli
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:42:44Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.
+Official microsoft/playwright-cli. CLI (with SKILL) for common Playwright browser actions: open/goto/type/click/fill/screenshot/pdf/eval, tabs, storage, network route, tracing, video, sessions, dashboard. Token-efficient (avoids full a11y trees). For coding agents (better than MCP for some high-throughput cases per README). Node 18+. Headed/persistent options.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+curated agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; official Microsoft/Playwright team; browser automation surface (file upload, net, js eval on page); requires node; use for test/automation only in scoped contexts.
 
 ## Install Prerequisites
 
-Install: `npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a [agents]; npm global or npx; status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[microsoft/playwright-cli](https://github.com/microsoft/playwright-cli)
+[microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) (official).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+playwright-best-practices (curated internal); puppeteer/selenium skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from GitHub (mcp-use, microsoft, neondatabase 2026) + catalog; research evidence only - not authority or endorsement.

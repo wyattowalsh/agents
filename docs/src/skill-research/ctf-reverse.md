@@ -1,33 +1,33 @@
 ---
 skill: ctf-reverse
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:42:14Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.
+From ljagiello/ctf-skills repo: agent skills for CTF categories. ctf-reverse covers techniques from writeups (e.g. ai-ml: adversarial, jailbreaks, model extraction; pwn/reverse: binary; web: exploitation; etc). Includes scripts/ for env. MIT license stated, SECURITY.md with responsible use. Use only for authorized CTF/lab/security-research.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+curated agents list (antigravity etc).
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Use `ljagiello/ctf-skills` only for authorized CTF, lab, and security-research work. Its audit found MIT licensing and responsible-use framing, but also offensive-security workflows, write-capable permissions, and a broad local installer that can invoke `pip`, `apt`, `brew`, `gem`, `go`, and possibly `sudo`; run the installer dry-run before executing it.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; per catalog: MIT + responsible framing but offensive-security workflows, write-capable perms, broad local installer (pip,apt,brew,gem,go,sudo possible); run scripts/install_ctf_tools.sh --dry-run first. 80+ commits, active techniques from CTFTime.
 
 ## Install Prerequisites
 
-Install: `npx skills add ljagiello/ctf-skills --skill ctf-ai-ml --skill ctf-crypto --skill ctf-forensics --skill ctf-malware --skill ctf-misc --skill ctf-osint --skill ctf-pwn --skill ctf-reverse --skill ctf-web --skill ctf-writeup --skill solve-challenge -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+npx skills add ljagiello/ctf-skills --skill ctf-reverse ... ; or full group; pre-run installer dry-run; status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[ljagiello/ctf-skills](https://github.com/ljagiello/ctf-skills)
+[ljagiello/ctf-skills](https://github.com/ljagiello/ctf-skills) (MIT).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Manual CTF tooling or other sec skills (e.g. security-scanner).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from GitHub (ljagiello/ctf-skills etc 2026), curated notes (MIT + responsible use but broad installer), research only; do not endorse. Inspect installer and offensive content before use.

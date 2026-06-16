@@ -1,33 +1,33 @@
 ---
 skill: modern-python
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:04:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Configures and migrates Python projects to modern tooling: uv (deps/venv/tooling, replaces pip/pipx/poetry), ruff (unified lint+format), ty (fast type checking replacing mypy), pytest+cov, prek (fast pre-commit). Includes SessionStart hook to intercept legacy python/pip/pipx cmds and redirect. Security: detect-secrets, shellcheck, actionlint, zizmor, pip-audit, Dependabot. PEP 723 scripts, pyproject.toml, src layout, 3.11+. Based on trailofbits/cookiecutter-python.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Python dev / setup agents. Includes hooks/.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Legacy cmd hook can surprise users expecting direct python/pip (exits non-zero with guidance); broad devtooling surface; migration alters lockfiles/envs. Respect user legacy if requested. policy=Inspect.; evidence=trailofbits batch in config + https://github.com/trailofbits/skills/plugins/modern-python (full SKILL.md + refs).
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add trailofbits/skills --skill modern-python -y -g ...` status=inspect-then-install; selector=named.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills) (William Tan).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Language-specific from wshobson/agents (fastapi-templates etc), general python skills. This is scoped modern toolchain migration + hook.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from repo SKILL.md/README/hooks (2026).

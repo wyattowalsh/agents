@@ -1,33 +1,35 @@
 ---
 skill: onboarding
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:46:52Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Marketing residual tier from `coreyhaines31/marketingskills`. These six slugs are not named in the existing curated marketing row; `schema` covers structured-data work distinct from local `seo-audit`.
+Post-signup activation, first-run experience, time-to-value, and progressive disclosure to improve activation and retention.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. All skills in the bundle cross-reference the product-marketing context document first and share related-skills sections.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Marketing residual tier from `coreyhaines31/marketingskills`. These six slugs are not named in the existing curated marketing row; `schema` covers structured-data work distinct from local `seo-audit`.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+install-now-after-trust-gate / curated-trust-gated (core marketing tier plus residual tier). High-install community bundle from a recognized practitioner (Corey Haines). Content is guidance; actual tactics must be adapted to current platform TOS, privacy law, deliverability rules, and brand. Some skills (ads, cold-email, paywalls) touch regulated or reputation-sensitive surfaces.
 
 ## Install Prerequisites
 
-Install: `npx skills add coreyhaines31/marketingskills --skill ai-seo --skill schema --skill product-marketing --skill ab-testing --skill signup --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+npx skills add coreyhaines31/marketingskills --skill onboarding -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+
+The bundle installs many related skills; install only the needed subset when possible. Requires a product-marketing.md context file for best results.
 
 ## Upstream Maintainer
 
-[coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills)
+coreyhaines31 (https://github.com/coreyhaines31/marketingskills). Companion resources: Coding for Marketers, Swipe Files, Conversion Factory.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Framework or channel-specific guides (Google Ads docs, Klaviyo/Mailchimp playbooks, traditional CRO resources, competitor tools such as Ahrefs/Semrush skills when available). Local playbooks and analytics-driven experimentation replace generic advice over time.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub (repo README, skills/ sources, AGENTS.md). Not an endorsement or authority; marketing tactics must be validated against current platform policies, data, and legal requirements.

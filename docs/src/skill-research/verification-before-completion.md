@@ -1,14 +1,14 @@
 ---
 skill: verification-before-completion
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
+Final verification of tests, plan compliance before branch finish/merge. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=prompt-only, no hooks observed; policy=Install only after trust gate; audit before promotion. Web-aug: github.com/obra/superpowers (very active 2026, 400+ commits, hiring, MIT, comprehensive docs, plugin marketplaces for 7+ harnesses, AGENTS.md/CLAUDE.md). Strong community signals; methodology-focused.
 
 ## Install Prerequisites
 
-Install: `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[obra/superpowers](https://github.com/obra/superpowers)
+[obra/superpowers](https://github.com/obra/superpowers) (MIT, highly active)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Local planning/debug/review skills; github/awesome-copilot planning skills; other TDD/methodology bundles.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-aug from README + skills/ 2026. Evidence only.

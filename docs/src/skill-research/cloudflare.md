@@ -1,33 +1,33 @@
 ---
 skill: cloudflare
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:46:20Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+cloudflare is the comprehensive platform skill for Cloudflare (Workers, Pages, KV/D1/R2/Vectorize, Workers AI, Agents SDK, Durable Objects, security WAF/DDoS/Turnstile, networking Tunnel/Spectrum, IaC via Terraform/Pulumi, etc.). It provides decision trees to select the right product and then points to detailed references and official docs. Retrieval-first: always prefer live Cloudflare documentation.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. Acts as the entry point that loads or references narrower skills (agents-sdk, wrangler, durable-objects, workers-best-practices, etc.).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+install-now-after-trust-gate / curated-trust-gated. Official Cloudflare content. Low direct risk from the skill text; actual risk surface is the Cloudflare account, bindings, secrets, and any deployed Worker/DO code. The skill explicitly tells agents to retrieve fresh limits/pricing/types.
 
 ## Install Prerequisites
 
-Install: `npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add cloudflare/skills --skill cloudflare ...` (often installed together with the other cloudflare/* skills in one command).
 
 ## Upstream Maintainer
 
-[cloudflare/skills](https://github.com/cloudflare/skills)
+Cloudflare (https://github.com/cloudflare/skills). Primary docs: https://developers.cloudflare.com/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Per-product official docs or other platform skills (Vercel, AWS, etc.) when the workload is not on Cloudflare.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub (raw SKILL.md, repo README). Not an endorsement or authority.

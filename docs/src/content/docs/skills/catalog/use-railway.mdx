@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.
+Official Railway deploy/ops skill. Broad allowed-tools (railway CLI, curl, npm). Covers deploy, ops for Railway platform.
 
 ## Install Prerequisites
 
-Install: `npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named. Requires railway CLI + creds.
 
 ## Upstream Maintainer
 
-[railwayapp/railway-skills](https://github.com/railwayapp/railway-skills)
+[railwayapp/railway-skills](https://github.com/railwayapp/railway-skills) (official)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Netlify/Vercel/Render deploy skills; general hosting CLIs.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web + config notes 2026.
 
 <Tabs>
   <TabItem label="Public Metadata">

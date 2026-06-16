@@ -1,14 +1,14 @@
 ---
 skill: figma-implement-design
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:35:57Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants.
+Figma skill for implementing designs from Figma into production code. Guides agent through using Figma context/MCP to translate designs to components, respecting design tokens, variants, and system rules. Part of Figma MCP + skills suite.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Official Figma MCP design-to-code skills. Requires Figma MCP token; prefer this source over overlapping `openai/skills` Figma variants.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; official Figma; read-heavy but depends on MCP server access which can expose file contents and team data; inspect for workspace data sensitivity.
 
 ## Install Prerequisites
 
-Install: `npx skills add figma/mcp-server-guide --skill figma-implement-design --skill figma-generate-design --skill figma-code-connect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add figma/mcp-server-guide --skill figma-code-connect --skill figma-generate-design --skill figma-implement-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named (inferred); policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[figma/mcp-server-guide](https://github.com/figma/mcp-server-guide)
+[figma/mcp-server-guide](https://github.com/figma/mcp-server-guide) (official Figma)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other implement-from-design or screenshot-to-code skills; component library implementation skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

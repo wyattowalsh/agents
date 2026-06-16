@@ -1,33 +1,33 @@
 ---
 skill: supply-chain-risk-auditor
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:07:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Generates report on supply-chain threat landscape of direct dependencies (popularity, #maintainers, CVE history, update freq, security contacts). Flags high-risk; suggests alts where known. Uses `gh` CLI queries. Explicitly does NOT scan source for CVEs/creds. Trail of Bits (Spencer Michaels).
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Security / audit / supply chain agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Depends on gh auth + public data quality; holistic flags not exhaustive CVE scanner; network calls via gh. policy=Inspect.; evidence=trailofbits batch + https://github.com/trailofbits/skills/plugins/supply-chain-risk-auditor .
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Inspect group install cmd. status=inspect-then-install; selector=named.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+sast-configuration, secrets-management, general dep tools or wshobson patterns. Supply chain specific.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web README evidence.

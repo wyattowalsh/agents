@@ -48,21 +48,23 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+logging-best-practices teaches the wide-event (canonical log line) pattern: emit one structured, context-rich JSON event per request per service at completion, carrying high-cardinality identifiers, business context, environment characteristics, and outcome. Covers middleware usage, single-logger discipline, two-level logging (info/error), anti-patterns (scattered console.log, multiple loggers, unstructured strings), and references to Stripe canonical lines and observability literature.
 
 ## Install Prerequisites
 
-Install: `npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add boristane/agent-skills --skill logging-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+
+Adoption requires a structured logger (JSON) and middleware or finally-block emission pattern in the application.
 
 ## Upstream Maintainer
 
-[boristane/agent-skills](https://github.com/boristane/agent-skills)
+boristane (https://github.com/boristane/agent-skills). Author blog references included in skill.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Framework or platform logging guides (e.g. Pino, Winston best practices, OpenTelemetry logging bridge, vendor-specific canonical logging docs).
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Evidence gathered from public GitHub (raw SKILL.md). Not an endorsement or authority; validate against your observability backend cardinality and retention constraints.
 
 <Tabs>
   <TabItem label="Public Metadata">

@@ -48,21 +48,23 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Extract design tokens (colors, typography, spacing, border radius, shadows) from any public website. Reverse-engineers visual primitives and generates starter W3C-compatible `tokens.json` + `tokens.css` (CSS custom props) for local projects. Available as focused AI agent skill (for Claude/Cursor/Codex etc) and standalone npm CLI + MCP server exposing extract/init/get tools. Workflow: confirm public site, run extraction (Playwright), normalize, summarize findings, emit starter files under design-system/ and .extract-design-system/. Not a full component lib or auto-rewriter; for initialization and repeatable extraction before broader styling work. MIT.
 
 ## Install Prerequisites
 
-Install: `npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
+
+status=install-now-after-trust-gate; selector=named (or source-spec). Requires npm + optional `npx playwright install chromium`. Also publishes MCP server (`extract-design-system-mcp`) for direct tool use in supported hosts. Config supports global/project install.
 
 ## Upstream Maintainer
 
-[arvindrk/extract-design-system](https://github.com/arvindrk/extract-design-system)
+arvindrk (github.com/arvindrk/extract-design-system). MIT. Skills-first design with references/ for workflow. npm package `extract-design-system`. GitHub Sponsors for support. Related topics: design-tokens, design-system, ui-audit, brand-audit, mcp, agent-skills. Has release tags.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Same-ecosystem design skills (e.g. design-taste-frontend, web-design-guidelines from antfu, baseline-ui); manual token extraction or design system audits; other CLI token extractors or Figma/brand kit importers; general design-md or ui-audit skills without web fetch.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

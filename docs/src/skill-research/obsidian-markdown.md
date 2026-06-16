@@ -1,33 +1,33 @@
 ---
 skill: obsidian-markdown
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:43:18Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Official agent skill from kepano/obsidian-skills. Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes. MIT. Includes refs to dedicated md files for properties/embeds/callouts.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents from same curated row.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=official by Obsidian CEO + verified npx; MIT; syntax-only skill (no execution surface); low risk; complements obsidian-cli for full coverage.
 
 ## Install Prerequisites
 
-Install: `npx skills add kepano/obsidian-skills --skill obsidian-markdown --skill obsidian-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install same npx ... obsidian-markdown ... as above; status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
+[kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) (MIT).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Standard markdown or general writing skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public web sources, GitHub (kepano/obsidian-skills official Jun 2026), curated; research evidence, not authority or endorsement.

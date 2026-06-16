@@ -1,14 +1,14 @@
 ---
 skill: use-railway
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.78
 ---
 
 ## Purpose
 
-Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.
+Official Railway deploy/ops skill. Broad allowed-tools (railway CLI, curl, npm). Covers deploy, ops for Railway platform.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command. Web-aug: github.com/railwayapp/railway-skills (official Railway). Catalog notes: High Snyk risk reported by Skills CLI; confirm credential handling and signup/deploy flows before promoting.
 
 ## Install Prerequisites
 
-Install: `npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named. Requires railway CLI + creds.
 
 ## Upstream Maintainer
 
-[railwayapp/railway-skills](https://github.com/railwayapp/railway-skills)
+[railwayapp/railway-skills](https://github.com/railwayapp/railway-skills) (official)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Netlify/Vercel/Render deploy skills; general hosting CLIs.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web + config notes 2026.

@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+AWS serverless skill (Lambda, API Gateway, SAM/CDK serverless patterns, etc). Guidance for agents on building, deploying, observing serverless apps on AWS. Part of core serverless/containers/storage/deployment coverage in aws-core plugin/skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add aws/agent-toolkit-for-aws --skill aws-iam --skill aws-serverless -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add aws/agent-toolkit-for-aws --skill aws-serverless -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` (or via aws-core plugin install). status=inspect-then-install; selector=named/group. MCP config (e.g. uvx mcp-proxy-for-aws pinned) often required for full capability. See AWS user guide.
 
 ## Upstream Maintainer
 
-[aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws)
+aws (Amazon Web Services, github.com/aws/agent-toolkit-for-aws). Apache-2.0. Official GA-supported toolkit (successor to AWS Labs MCP/skills). Includes managed AWS MCP Server (full 300+ service API, sandbox exec, docs search), plugins bundling MCP+skills, curated skills/, rules/. Enterprise: CloudWatch, IAM agent-specific condition keys, CloudTrail. Requires AWS creds + uv for some paths. 886 stars.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Official AWS docs + CDK/CloudFormation/SAM/Serverless Framework guidance without agent layer; other cloud provider agent toolkits or IaC skills (e.g. terraform-skill); general devops or security skills focused on IAM/policies; direct use of AWS CLI/Console + agent code intelligence.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

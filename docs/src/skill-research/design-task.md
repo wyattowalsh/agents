@@ -1,33 +1,33 @@
 ---
 skill: design-task
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:46:52Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+design-task (CrewAI) teaches writing effective task descriptions, expected outputs, dependencies (context), structured output (pydantic/json/file), guardrails, human-in-the-loop, and async execution. Emphasizes that good task design outweighs agent sophistication.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Paired with design-agent in the crewaiinc bundle.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+Same inspect-then-install gate as the crewai bundle. Low direct risk from the skill text; downstream risk in task-generated prompts and tool use.
 
 ## Install Prerequisites
 
-Install: `npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Same bundle install as design-agent.
 
 ## Upstream Maintainer
 
-[crewaiinc/skills](https://github.com/crewaiinc/skills)
+CrewAI Inc. (https://github.com/crewAIInc/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Task/prompt engineering guides from other agent frameworks.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub. Summarizes risks; do not endorse without inspection.

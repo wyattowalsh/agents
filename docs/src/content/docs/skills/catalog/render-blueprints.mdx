@@ -50,11 +50,11 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Official Render deploy/Blueprint/debug subset. Low registry install counts; review hooks, MCP references, and `RENDER_API_KEY` usage before install-now promotion.
+Authors and validates render.yaml Blueprints for Render PaaS infrastructure as code. Supports wiring services, projects, environments, previews, and schema validation. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
 
 ## Install Prerequisites
 
-Install: `npx skills add render-oss/skills --skill render-deploy --skill render-blueprints --skill render-debug -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add render-oss/skills --skill render-blueprints -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named; requires RENDER_API_KEY or MCP server config for full function; Git remote recommended for Blueprints.
 
 ## Upstream Maintainer
 
@@ -64,7 +64,7 @@ Install: `npx skills add render-oss/skills --skill render-deploy --skill render-
 
 A general-purpose agent instruction without a scoped skill contract
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">

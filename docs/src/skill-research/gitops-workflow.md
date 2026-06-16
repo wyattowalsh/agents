@@ -1,33 +1,33 @@
 ---
 skill: gitops-workflow
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:30:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+GitOps workflow patterns (k8s etc). From wshobson/agents multi-harness marketplace (36.8k stars; 84 plugins, 156 skills). One source, five harness adapters.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode (per wshobson rows in config).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=GitOps workflow patterns (k8s etc).; policy=Install only after trust gate; audit again before repo promotion or use external-skill-auditor.; evidence=Curated wshobson/agents install/inspect batches in config/external-skills.md (multiple residual groups); upstream https://github.com/wshobson/agents (docs/agent-skills.md, plugins/*/skills).
 
 ## Install Prerequisites
 
-Install: `npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add wshobson/agents --skill gitops-workflow ... -y -g -a ...` status=install-now-after-trust-gate; selector=named. Review generated artifacts (e.g. recipes, charts) before apply.
 
 ## Upstream Maintainer
 
-[wshobson/agents](https://github.com/wshobson/agents)
+[wshobson/agents](https://github.com/wshobson/agents) — large community agentic plugin/skill marketplace. MIT.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other backend/k8s/devops patterns from catalog (e.g. nodejs-backend, k8s-*, terraform-*) or local equivalents. A general-purpose agent instruction without this exact wshobson gitops-workflow contract.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from wshobson/agents README + plugin docs (2026) + config notes. Evidence only; not endorsement.

@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Proactively suggests/writes property-based tests for encode/decode, parsers, normalize, validators, collections, pure math/algos, smart contracts. Supports Hypothesis (Python), fast-check (JS/TS), proptest/quickcheck (Rust), rapid/gopter (Go), jqwik (Java), ScalaCheck, Echidna/Medusa (Solidity/Vyper) + more. References library list.
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Grouped with codeql/semgrep in inspect install. status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+e2e-testing-patterns, python-testing-patterns, javascript-testing-patterns (wshobson). PBT-specific instruction.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web evidence repo.
 
 <Tabs>
   <TabItem label="Public Metadata">

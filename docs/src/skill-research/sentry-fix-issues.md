@@ -1,14 +1,14 @@
 ---
 skill: sentry-fix-issues
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:36:45Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Sentry workflow skill for using AI coding assistants to debug and fix issues detected in production or PRs (error monitoring, tracing, Seer bug prediction). Part of Sentry-for-AI plugin.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; official Sentry org (getsentry/sentry-for-ai); requires Sentry account/project and may surface prod error data; inspect for data access policies and key handling.
 
 ## Install Prerequisites
 
-Install: `npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-setup-ai-monitoring --skill sentry-sdk-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add getsentry/sentry-for-ai --skill sentry-fix-issues --skill sentry-sdk-setup --skill sentry-setup-ai-monitoring -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[getsentry/sentry-for-ai](https://github.com/getsentry/sentry-for-ai)
+[getsentry/sentry-for-ai](https://github.com/getsentry/sentry-for-ai) (official Sentry)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other error monitoring/debug or APM AI skills; general issue triaging skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

@@ -1,26 +1,26 @@
 ---
 skill: vercel-labs-agent-browser-all
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T20:10:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-useful, but broad operational scope and overlaps browser automation.
+Vercel-labs agent-browser bundle; useful for browser automation/ops but broad operational scope and overlaps existing browser automation skills. Marked global-only-or-avoid to avoid duplication and uncontrolled surface.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+Target agents: (see install; broad). Global-only to prevent sync bloat.
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=useful, but broad operational scope and overlaps browser automation.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=broad operational scope, overlaps browser automation skills; potential high privilege in browser context. policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit note in config/external-skills.md Keep Global Only section.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: useful, but broad operational scope and overlaps browser automation.
+status=global-only-or-avoid; selector=unresolved; note in Keep section. Do not bulk install.
 
 ## Upstream Maintainer
 
@@ -28,6 +28,6 @@ status=global-only-or-avoid; selector=unresolved unresolved: useful, but broad o
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Specialized browser or automation skills if/when curated; general web interaction without broad bundle.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from vercel-labs repos + config rationale. Evidence only.

@@ -1,14 +1,14 @@
 ---
 skill: deno-expert
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:35:33Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Expert-level Deno knowledge for code review, debugging, and best practice enforcement in modern Deno (JSR imports, Fresh frontend, Deno Deploy, sandboxing). Enforces JSR over deno.land/x, built-in fmt/lint/test, island architecture.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; official from denoland org (Deno creators); ~85 stars, MIT license; follows agent skills spec; includes versioning policy for the skills themselves; low-risk pure guidance skill.
 
 ## Install Prerequisites
 
-Install: `npx skills add denoland/skills --skill deno-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add denoland/skills --skill deno-expert -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[denoland/skills](https://github.com/denoland/skills)
+[denoland/skills](https://github.com/denoland/skills) (official Deno team)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General Deno guidance or other runtime-specific expert skills (e.g. node-expert equivalents); `deno-guidance` sibling skill.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

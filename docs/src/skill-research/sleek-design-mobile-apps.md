@@ -1,14 +1,14 @@
 ---
 skill: sleek-design-mobile-apps
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:54Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Design guidance and patterns for sleek, modern mobile app UIs and experiences. Focuses on mobile-first component and flow design. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
 
 ## Harness Coverage
 
@@ -16,11 +16,11 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command (web-audited SKILL.md + repo); risks=Requires source inspection for hooks, broad Bash tool scopes (e.g. language CLIs), credential/API usage, and deduplication with local skills before install. Low adoption for some sources; community provenance. Do not endorse without audit. policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Install Prerequisites
 
-Install: `npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named
 
 ## Upstream Maintainer
 
@@ -30,4 +30,4 @@ Install: `npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile
 
 A general-purpose agent instruction without a scoped skill contract
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.

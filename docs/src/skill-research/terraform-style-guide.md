@@ -1,14 +1,14 @@
 ---
 skill: terraform-style-guide
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:43:06Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Enforces consistent Terraform code style, formatting, and best practices.
 
 ## Harness Coverage
 
@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Web-augmented from upstream SKILL.md + config/external-skills.md (fetched 2026-06-16).
 
 ## Install Prerequisites
 
@@ -28,6 +28,6 @@ Install: `npx skills add hashicorp/agent-skills --skill terraform-style-guide --
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other infra skills like `kubernetes-specialist`.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.

@@ -1,33 +1,33 @@
 ---
 skill: coleam00-excalidraw-diagram-skill-all
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:46:20Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-community Excalidraw skill; prefer `github/awesome-copilot@excalidraw-diagram-generator`.
+coleam00-excalidraw-diagram-skill-all (skill slug excalidraw-diagram or similar) is a community skill for generating Excalidraw .excalidraw JSON diagrams from text descriptions. It encodes a detailed visual-argument methodology (isomorphism, evidence artifacts, multi-zoom, research mandate before drawing technical diagrams, render-validate loop, pattern library of fan-out/convergence/timelines, color semantics, container discipline, etc.). The skill is large and prescriptive about diagram construction process and quality gates.
 
 ## Harness Coverage
 
-Target agents: (see install command -a targets).
+Target agents from its original install (varies). Marked global-only / avoid in the curated catalog.
 
 ## Trust And Risks
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=community Excalidraw skill; prefer `github/awesome-copilot@excalidraw-diagram-generator`.; policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit keep-global/avoid note in config/external-skills.md.
+In the enrichment batch prompt this skill is flagged for "global-only or avoid" rationale summary. Upstream is a popular community contribution (coleam00/excalidraw-diagram-skill) with many stars and third-party mentions. Risks are typical of generative diagram tools (large JSON output, potential for incorrect technical content if research step is skipped, render pipeline dependencies). The curated catalog explicitly prefers `github/awesome-copilot@excalidraw-diagram-generator` over this bundle for the primary curated slot; remaining variants kept global-only to avoid duplication and bloat.
 
 ## Install Prerequisites
 
-status=global-only-or-avoid; selector=unresolved unresolved: community Excalidraw skill; prefer `github/awesome-copilot@excalidraw-diagram-generator`.
+Historically installed via npx skills add coleam00/excalidraw-diagram-skill ... . Not promoted to install-now in the current curated set.
 
 ## Upstream Maintainer
 
-[coleam00/excalidraw-diagram-skill](https://github.com/coleam00/excalidraw-diagram-skill)
+coleam00 (https://github.com/coleam00/excalidraw-diagram-skill). Many derivative listings and demos exist.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+github/awesome-copilot excalidraw-diagram-generator (preferred curated source); other diagramming or Excalidraw generation patterns; direct use of Excalidraw + manual research.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub search results, repo, and curated config notes. Summarizes rationale only. Not an endorsement.

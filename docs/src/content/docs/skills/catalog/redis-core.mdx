@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.
+Data structures, key naming, memory and TTL, atomic primitives, JSON vs Hash, Streams vs Pub/Sub. Official Redis agent skills for AI coding agents working with Redis. Follow agentskills.io.
 
 ## Install Prerequisites
 
-Install: `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install (core example): `npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` ; additional for vec/sem via bundle. status=install-now-after-trust-gate; selector=named
 
 ## Upstream Maintainer
 
-[redis/agent-skills](https://github.com/redis/agent-skills)
+[redis/agent-skills](https://github.com/redis/agent-skills) (official redis.io, MIT)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other cache/KV skills, vector DB skills (pgvector etc).
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web 2026 from redis/agent-skills.
 
 <Tabs>
   <TabItem label="Public Metadata">

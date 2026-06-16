@@ -1,33 +1,33 @@
 ---
 skill: variant-analysis
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:08:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+5-step systematic variant analysis to find similar vulns/bugs from a seed: 1) understand root cause 2) exact match pattern 3) identify abstractions 4) iteratively generalize 5) analyze/triage. Includes tool guidance (rg/Semgrep/CodeQL), pitfalls, ready CodeQL/Semgrep templates (py,js,java,go,c++). Trail of Bits.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Audit / variant hunt / static analysis agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Easy to over-generalize (scope creep, FPs); best after seed vuln found. policy=Inspect.; evidence=config trailofbits + https://github.com/trailofbits/skills (Axel Mierczuk).
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+In differential/agentic batch install. status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+codeql, semgrep (directly), differential-review. Pattern generalization instruction.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence.

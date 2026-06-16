@@ -1,33 +1,57 @@
 ---
 skill: swift-concurrency
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:39:37Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Swift Concurrency Agent Skill: expert guidance for AI coding tools on safe concurrency, performance optimization, and Swift 6+ migration. Distilled from Swift Concurrency Course by Antoine van der Lee. Covers choosing async/await vs actors vs tasks vs groups; @MainActor/custom actors/nonisolated; Sendable conformance; isolation domains & data races prevention; actor reentrancy/retain cycles avoidance; task lifecycle/cancellation/priorities; async sequences/streams; memory (isolated deinit, weak); performance (contention, suspension, Instruments); testing (Swift Testing/XCTest, withMainSerialExecutor, @MainActor handling); Core Data integration (NSManagedObjectID, DAO, custom executors); linting/migration strategies; latest Swift 6.2 features (default actor isolation, approachable concurrency, etc). Non-opinionated, compile-time safety focus. Practical references + decision trees. MIT.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. Install via npx skills add ... --skill swift-concurrency (or full URL); Claude Code /plugin marketplace + install; pi package manager; or manual clone + symlink per-tool (Codex/Claude/Cursor docs). Skill + references/ activate for matching Swift concurrency tasks/migration/debug.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Curated install-now-after-trust-gate / curated-trust-gated. MIT. 1.5k stars. Author AvdLee (Antoine van der Lee / SwiftLee blog, published concurrency course/articles, real-world large codebase Swift 6 migrations). Complements author's other skills (swiftui-expert-skill, core-data, swift-testing). Structured SKILL.md + 15+ reference files for depth. Install options include project vs global, plugin config for teams. Risks standard for domain-specific code guidance: verify against current Swift version/tooling; generated concurrent code can have high impact on correctness/perf; review migration steps incrementally. Config notes complementarity with avdlee/swiftui. npx provenance verified.
 
 ## Install Prerequisites
 
-Install: `npx skills add avdlee/swift-concurrency-agent-skill --skill swift-concurrency -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+
+[38;5;250m███████╗██╗  ██╗██╗██╗     ██╗     ███████╗[0m
+[38;5;248m██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝[0m
+[38;5;245m███████╗█████╔╝ ██║██║     ██║     ███████╗[0m
+[38;5;243m╚════██║██╔═██╗ ██║██║     ██║     ╚════██║[0m
+[38;5;240m███████║██║  ██╗██║███████╗███████╗███████║[0m
+[38;5;238m╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝[0m
+
+┌   skills 
+│
+│  Tip: use the --yes (-y) and --global (-g) flags to install without prompts.
+[?25l│
+◇  Source: https://github.com/avdlee/swift-concurrency-agent-skill.git
+[?25h[?25l│
+◒  Cloning repository[999D[J◐  Cloning repository[999D[J◓  Cloning repository[999D[J◑  Cloning repository[999D[J◒  Cloning repository[999D[J◐  Cloning repository[999D[J◓  Cloning repository[999D[J◑  Cloning repository[999D[J◒  Cloning repository.[999D[J◇  Repository cloned
+[?25h[?25l│
+[999D[J◇  Found 1 skill
+[?25h│
+●  Selected 1 skill: swift-concurrency
+│
+■  Invalid agents: grok
+│
+●  Valid agents: aider-desk, amp, antigravity, antigravity-cli, astrbot, autohand-code, augment, bob, claude-code, openclaw, cline, codearts-agent, codebuddy, codemaker, codestudio, codex, command-code, continue, cortex, crush, cursor, deepagents, devin, dexto, droid, firebender, forgecode, gemini-cli, github-copilot, goose, hermes-agent, inference-sh, jazz, junie, iflow-cli, kilo, kimi-code-cli, kiro-cli, kode, lingma, loaf, mcpjam, mistral-vibe, moxby, mux, opencode, openhands, ona, pi, qoder, qoder-cn, qwen-code, replit, reasonix, rovodev, roo, tabnine-cli, terramind, tinycloud, trae, trae-cn, warp, windsurf, zed, zencoder, zenflow, neovate, pochi, promptscript, adal, universal
+
+status=install-now-after-trust-gate; selector=source-spec or named. Supports Claude plugin (personal or .claude/settings.json for teams), pi, manual. Requires compatible agent with skills support. See README for verification (agent should reference triage/playbook).
 
 ## Upstream Maintainer
 
-[avdlee/swift-concurrency-agent-skill](https://github.com/avdlee/swift-concurrency-agent-skill)
+AvdLee / Antoine van der Lee (github.com/AvdLee/Swift-Concurrency-Agent-Skill; avanderlee.com, swiftconcurrencycourse.com). MIT License. Active (releases to 2.1.1, 115+ commits). Companion skills: SwiftUI-Agent-Skill, Core-Data-Agent-Skill, Swift-Testing-Agent-Skill. Strong focus on practical Swift concurrency education and tooling.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Author's swiftui-expert-skill (same maintainer); general Swift or async programming skills; official Swift docs + Swift 6 migration guides; Xcode Instruments + concurrency linting rules without agent skill; other platform concurrency experts or testing skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.

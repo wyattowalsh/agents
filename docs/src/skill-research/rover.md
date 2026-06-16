@@ -1,14 +1,14 @@
 ---
 skill: rover
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:38:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
+Rover CLI for GraphQL schema management and local supergraph dev: subgraph publish/fetch/check/lint, graph mgmt, supergraph composition, rover dev, auth/config. Core for GraphOS and local federated workflows.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Curated install-now-after-trust-gate / curated-trust-gated. MIT. Official org. Experimental per README disclaimer. Skills provide rich references/ subdocs for transparency. Provenance via verified npx commands in config. Use gh skill --pin for stability if needed.
 
 ## Install Prerequisites
 
-Install: `npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add apollographql/skills --skill rover -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named. Claude plugin or gh skill alternatives available.
 
 ## Upstream Maintainer
 
-[apollographql/skills](https://github.com/apollographql/skills)
+apollographql (Apollo GraphQL org, github.com/apollographql/skills). MIT. Experimental/reference collection (11 skills) with detailed SKILL.md + references/. Install via npx, Claude plugin (namespaced /apollo-skills:*), gh skill (pinning supported). Links to official Apollo docs. Disclaimer: not officially supported at core Apollo level.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+apollo-federation, apollo-router, graphql-schema (same); other GraphQL schema tooling or composition skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.

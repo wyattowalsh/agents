@@ -1,33 +1,33 @@
 ---
 skill: deploy-to-vercel
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:11:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Deploy apps/websites to Vercel (auto-detect 40+ frameworks). "Claimable" deployments for claude.ai/Claude Desktop conversations; returns preview + claim URL (transfer ownership). Handles static + tarball packaging, excludes node_modules/.git. From vercel-labs/agent-skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Deploy / Vercel agents. Install targets include antigravity etc.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Requires auth to Vercel account implicitly via deploy; network upload of project tarball; ownership transfer flow. Review before broad use. policy=Install after trust gate.; evidence=vercel-labs/agent-skills row + config/external-skills.md (grouped with vercel-optimize).
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add vercel-labs/agent-skills --skill deploy-to-vercel --skill vercel-optimize ...` status=install-now-after-trust-gate; selector=named.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills) (official Vercel).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other deploy skills (render, railway, netlify from catalog); general `deploy` patterns.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from vercel-labs/agent-skills README (2026) + config.

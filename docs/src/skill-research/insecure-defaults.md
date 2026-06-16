@@ -1,33 +1,33 @@
 ---
 skill: insecure-defaults
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:03:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Detects insecure default configurations causing vulns: hardcoded secrets/fallbacks, default creds (admin/admin), weak crypto (MD5/DES/ECB), permissive access (CORS *), fail-open patterns vs fail-secure. Scans manifests, env handling, auth, third-party integrations. Trail of Bits.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Security/config audit agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Broad applicability leads to context-dependent findings; low direct exec surface but config changes could be sensitive. policy=Inspect source/hooks/dedupe.; evidence=trailofbits/skills batch + https://github.com/trailofbits/skills/plugins/insecure-defaults .
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Grouped in `npx skills add trailofbits/skills --skill ... insecure-defaults ...` status=inspect-then-install; selector=named.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+`secrets-management`, `sast-configuration`, `semgrep`/`codeql`. General "insecure defaults" instruction.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from repo plugin README.

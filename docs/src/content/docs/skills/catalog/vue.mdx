@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Vue.js core skill covering reactivity, components, Composition API. Generated from vuejs/docs. Unopinionated with focus on modern (TS, ESM, Composition). Part of comprehensive Vue/Vite one-stop in antfu/skills. Marked inspect-then-install in catalog.
 
 ## Install Prerequisites
 
-Install: `npx skills add antfu/skills --skill vue -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add antfu/skills --skill vue -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=inspect-then-install; selector=named (or source-spec for some).
 
 ## Upstream Maintainer
 
-[antfu/skills](https://github.com/antfu/skills)
+antfu (Anthony Fu, github.com/antfu/skills). 5.3k stars. MIT (skills/scripts); vendored retain upstream licenses. Proof-of-concept using git submodules + sync from official docs (vuejs, vitejs, vitest-dev, slidevjs etc.) for reliable/up-to-date context. Primarily Vite/Nuxt ecosystem focus. POC; author welcomes feedback on real-world performance.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+nuxt, pinia, vueuse-functions, vue-best-practices (same source); other framework core skills.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">

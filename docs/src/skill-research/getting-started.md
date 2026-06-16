@@ -1,33 +1,33 @@
 ---
 skill: getting-started
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:46:52Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+getting-started (CrewAI) covers project scaffolding, choosing the right abstraction level (LLM.call vs Agent.kickoff vs Crew vs Flow), CLI usage, YAML agents/tasks wiring, @CrewBase, Flows with @start/@listen, and common setup pitfalls.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Entry point for new CrewAI projects in the curated bundle.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+inspect-then-install. Guidance on choosing abstractions and avoiding over-engineering (e.g., unnecessary multi-agent crews for linear work).
 
 ## Install Prerequisites
 
-Install: `npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Same crewaiinc/skills bundle.
 
 ## Upstream Maintainer
 
-[crewaiinc/skills](https://github.com/crewaiinc/skills)
+CrewAI Inc.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Framework getting-started guides for LangChain/LangGraph, LlamaIndex workflows, etc.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub. Summarizes risks; do not endorse without inspection.

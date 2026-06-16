@@ -1,14 +1,14 @@
 ---
 skill: inngest-events
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:43:06Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.
+Guidance for sending, receiving, and typing Inngest events for workflow triggers.
 
 ## Harness Coverage
 
@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global-only unless explicitly requested.; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Inngest durable-workflow core subset only. Route TS serverless step workflows here; keep remaining Inngest skills global; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Web-augmented from upstream SKILL.md + config/external-skills.md (fetched 2026-06-16).
 
 ## Install Prerequisites
 
@@ -28,6 +28,6 @@ Install: `npx skills add inngest/inngest-skills --skill inngest-setup --skill in
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General purpose agent skills in similar domain (see catalog for alternatives); e.g. other SQL or UI or infra skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.

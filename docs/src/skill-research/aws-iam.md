@@ -1,33 +1,33 @@
 ---
 skill: aws-iam
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:41:29Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.73
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+AWS IAM focused skill within Agent Toolkit for AWS. Helps agents with IAM concepts, policy authoring, least-privilege, condition keys for agents, roles, and secure access patterns when building/deploying on AWS. Part of aws-core coverage (service selection, IAM, etc).
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. Via npx skills add aws/agent-toolkit-for-aws/skills (or --skill specific), or bundled in aws-core plugin for Claude/Codex/Cursor; also Kiro MCP + skills. Skills load on-demand.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+inspect-then-install / needs-inspection. Official AWS source with strong provenance (GA, evaluations mentioned). However, skills provide direct AWS API access via MCP (high privilege potential); IAM condition keys help but require proper policy setup to segregate agent vs human actions. Sandboxed exec and logging are positives, but broad service surface (IAM, serverless deploys etc) and real creds mean inspection of usage, least-privilege, and audit is required before install/adoption. No endorsement of specific workflows.
 
 ## Install Prerequisites
 
-Install: `npx skills add aws/agent-toolkit-for-aws --skill aws-iam --skill aws-serverless -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add aws/agent-toolkit-for-aws --skill aws-iam -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` (or via aws-core plugin install). status=inspect-then-install; selector=named/group. MCP config (e.g. uvx mcp-proxy-for-aws pinned) often required for full capability. See AWS user guide.
 
 ## Upstream Maintainer
 
-[aws/agent-toolkit-for-aws](https://github.com/aws/agent-toolkit-for-aws)
+aws (Amazon Web Services, github.com/aws/agent-toolkit-for-aws). Apache-2.0. Official GA-supported toolkit (successor to AWS Labs MCP/skills). Includes managed AWS MCP Server (full 300+ service API, sandbox exec, docs search), plugins bundling MCP+skills, curated skills/, rules/. Enterprise: CloudWatch, IAM agent-specific condition keys, CloudTrail. Requires AWS creds + uv for some paths. 886 stars.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Official AWS docs + CDK/CloudFormation/SAM/Serverless Framework guidance without agent layer; other cloud provider agent toolkits or IaC skills (e.g. terraform-skill); general devops or security skills focused on IAM/policies; direct use of AWS CLI/Console + agent code intelligence.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.

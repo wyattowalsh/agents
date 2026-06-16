@@ -48,21 +48,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Database migration patterns and safety. Summarize risks (destructive ops, data loss, lock contention). From wshobson/agents multi-harness marketplace (36.8k stars; 84 plugins, 156 skills). One source, five harness adapters.
 
 ## Install Prerequisites
 
-Install: `npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add wshobson/agents --skill database-migration ... -y -g -a ...` status=inspect-then-install; selector=named.
 
 ## Upstream Maintainer
 
-[wshobson/agents](https://github.com/wshobson/agents)
+[wshobson/agents](https://github.com/wshobson/agents) — large community agentic plugin/skill marketplace. MIT.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other backend/k8s/devops patterns from catalog (e.g. nodejs-backend, k8s-*, terraform-*) or local equivalents. A general-purpose agent instruction without this exact wshobson database-migration contract.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web evidence from wshobson/agents README + plugin docs (2026) + config notes. Evidence only; not endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">

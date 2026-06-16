@@ -50,21 +50,21 @@ Entry maintained in `config/external-skills.md`; provenance and audit notes are 
 
 ## Purpose
 
-Install only `ui-ux-pro-max` from `nextlevelbuilder/ui-ux-pro-max-skill`. Keep bundled `ckm:*` skills out of the curated install set unless explicitly requested because they overlap existing local skills and introduce broader API/script surfaces.
+An AI skill providing design intelligence for building professional UI/UX across multiple platforms and frameworks (React, Vue, Angular, React Native, etc). Flagship: Design System Generator using multi-domain search (161 product categories, 67 styles, 161 palettes, 24 patterns, 57 fonts) + reasoning engine to output tailored pattern/style/colors/typography/effects + anti-patterns + pre-delivery checklist. Includes CLI, preview assets, and extensive .claude/skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named. Keep ckm:* global-only.
 
 ## Upstream Maintainer
 
-[nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+[nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT, active, cross-agent support incl. custom CLI).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+shadcn/ui skills, ibelick/ui-skills, addyosmani/web-quality-skills, or local design-system skills; ClaudeKit or other marketplace UI skills.
 
-&gt; Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+&gt; Web-augmented from GitHub README, marketplace listings, 2026. Config notes: install only ui-ux-pro-max.
 
 <Tabs>
   <TabItem label="Public Metadata">

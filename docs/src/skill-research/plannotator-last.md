@@ -1,33 +1,33 @@
 ---
 skill: plannotator-last
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T08:45:57Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.74
 ---
 
 ## Purpose
 
-Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.
+Plannotator-last opens Plannotator on the latest rendered assistant message so the user can annotate it visually. The skill invokes `plannotator last`, suppresses an initial status preamble (to avoid annotating the preamble itself), waits for feedback, and incorporates annotations into the next response. Useful for targeted revision of the most recent agent output without re-specifying context.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode. `disable-model-invocation: true`; purely a launcher for the external CLI + UI session.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+Same provenance as sibling plannotator skills: install-now-after-trust-gate, curated-trust-gated. Relies on the plannotator binary and local browser UI. Risks center on external process execution and the ability of the UI to receive and return annotations derived from recent chat context. The implementation intentionally avoids sending commentary before launch. Open-source project with local-first operation; review the binary provenance and any sidecar hooks.
 
 ## Install Prerequisites
 
-Install: `npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Plannotator CLI must be present (`curl -fsSL https://plannotator.ai/install.sh | bash`). Install the core skill bundle with the same npx skills add command used for plannotator-annotate / plannotator-review, targeting the listed agents.
 
 ## Upstream Maintainer
 
-backnotprop/plannotator/apps/skills/core
+backnotprop (https://github.com/backnotprop/plannotator); https://plannotator.ai/
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Direct chat follow-ups with pasted excerpts; other annotation or diff-review skills; visual tools such as Excalidraw diagram skills for higher-level overviews.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence gathered from public GitHub sources, raw SKILL.md, and project site (plannotator.ai). Not an endorsement or authority; inspect the CLI binary, hooks, and network behavior before use.

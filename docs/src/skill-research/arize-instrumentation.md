@@ -1,14 +1,14 @@
 ---
 skill: arize-instrumentation
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:38:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Arize skill for adding Arize AX / Phoenix tracing to LLM apps in two-phase agent-assisted flow: analyze codebase then implement instrumentation (LLM calls, tools, chains) across Python/TS/Java + 30+ integrations. Uses OpenInference/OpenTelemetry.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; Arize official; requires ARIZE_API_KEY / SPACE_ID; two-phase edit flow; inspect for key handling and what spans are exported.
 
 ## Install Prerequisites
 
-Install: `npx skills add github/awesome-copilot --skill phoenix-tracing --skill phoenix-evals --skill arize-instrumentation --skill arize-evaluator --skill arize-prompt-optimization -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add Arize-ai/arize-skills --skill arize-instrumentation`; export keys; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 ## Upstream Maintainer
 
-[github/awesome-copilot](https://github.com/github/awesome-copilot)
+[Arize-ai/arize-skills](https://github.com/Arize-ai/arize-skills) (official Arize)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other tracing skills (phoenix-tracing, sentry-setup-ai-monitoring, langfuse, openinference).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.

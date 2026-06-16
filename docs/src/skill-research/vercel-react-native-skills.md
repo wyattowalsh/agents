@@ -1,33 +1,33 @@
 ---
 skill: vercel-react-native-skills
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:15:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+React Native / Expo best practices for AI agents: 16 rules, 7 sections (perf Critical: FlashList/memo/heavy, layout High, animation High, images, state (Zustand), arch, platform iOS/Android specifics). From vercel-labs/agent-skills (listed as react-native-guidelines).
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Mobile / RN agents.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified; risks=Guidelines only. policy=Trust gate.; evidence=config vercel row + github vercel-labs/agent-skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Part of vercel agent-skills named install. status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills)
+[vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+General mobile or expo skills; flutter etc. RN-specific.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence.

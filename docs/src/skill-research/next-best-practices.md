@@ -1,33 +1,33 @@
 ---
 skill: next-best-practices
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:18:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Next.js best practices (perf, patterns) from Vercel. Part of vercel-labs/next-skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Next.js / React server agents (install-now-after-trust-gate).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Guidelines focused. policy=Trust gate.; evidence=config vercel/next row + https://github.com/vercel-labs/next-skills.
 
 ## Install Prerequisites
 
-Install: `npx skills add vercel-labs/next-skills --skill next-best-practices --skill next-cache-components --skill next-upgrade -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+`npx skills add vercel-labs/next-skills --skill next-best-practices ...` status=install-now-after-trust-gate.
 
 ## Upstream Maintainer
 
-[vercel-labs/next-skills](https://github.com/vercel-labs/next-skills)
+[vercel-labs/next-skills](https://github.com/vercel-labs/next-skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+vercel-react-best-practices, web-design-guidelines, turborepo etc. Next-specific.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web + config.

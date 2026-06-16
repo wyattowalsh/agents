@@ -1,33 +1,33 @@
 ---
 skill: property-based-testing
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T20:05:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Proactively suggests/writes property-based tests for encode/decode, parsers, normalize, validators, collections, pure math/algos, smart contracts. Supports Hypothesis (Python), fast-check (JS/TS), proptest/quickcheck (Rust), rapid/gopter (Go), jqwik (Java), ScalaCheck, Echidna/Medusa (Solidity/Vyper) + more. References library list.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Testing / verification agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Only useful on code with suitable pure/roundtrip/invariant patterns; may propose new deps. policy=Inspect group.; evidence=config trailofbits + https://github.com/trailofbits/skills .
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill codeql --skill semgrep --skill property-based-testing -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Grouped with codeql/semgrep in inspect install. status=inspect-then-install.
 
 ## Upstream Maintainer
 
-[trailofbits/skills](https://github.com/trailofbits/skills)
+[trailofbits/skills](https://github.com/trailofbits/skills).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+e2e-testing-patterns, python-testing-patterns, javascript-testing-patterns (wshobson). PBT-specific instruction.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence repo.

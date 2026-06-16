@@ -1,33 +1,33 @@
 ---
 skill: langfuse
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:41:53Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.77
 ---
 
 ## Purpose
 
-Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
+Official langfuse/skills (MIT, 161 stars on skills repo). Main skill for Langfuse open-source LLM eng platform: tracing, prompt mgmt, eval, datasets, scores via API. Query docs/best-practices. Requires LANGFUSE_* keys (public/secret/base). Scoped tools. Complements OpenInference skills.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Targets: antigravity,claude-code,...opencode.
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; official from langfuse team; MIT; key-based auth (user owned); network to langfuse.com only per notes. Low broad risk.
 
 ## Install Prerequisites
 
-Install: `npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+npx skills add langfuse/skills --skill langfuse -y -g -a [agents]; export keys; status=install-now-after-trust-gate; selector=named.
 
 ## Upstream Maintainer
 
-[langfuse/skills](https://github.com/langfuse/skills)
+[langfuse/skills](https://github.com/langfuse/skills) (MIT, official).
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other observability: phoenix, arize, langsmith skills.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public web sources, GitHub (official orgs 2026), curated catalog; research evidence, not authority. External audit advised.

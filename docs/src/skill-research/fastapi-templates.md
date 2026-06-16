@@ -1,33 +1,33 @@
 ---
 skill: fastapi-templates
 source_type: curated-external
-researched_at: '2026-06-16T06:01:40Z'
+researched_at: '2026-06-16T20:30:00Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.76
 ---
 
 ## Purpose
 
-`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
+FastAPI project templates and patterns from wshobson/agents. From wshobson/agents multi-harness marketplace (36.8k stars; 84 plugins, 156 skills). One source, five harness adapters.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode (per wshobson rows in config).
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.; policy=Install only after trust gate; audit again before repo promotion.; evidence=Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md.
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=FastAPI project templates and patterns from wshobson/agents.; policy=Install only after trust gate; audit again before repo promotion or use external-skill-auditor.; evidence=Curated wshobson/agents install/inspect batches in config/external-skills.md (multiple residual groups); upstream https://github.com/wshobson/agents (docs/agent-skills.md, plugins/*/skills).
 
 ## Install Prerequisites
 
-Install: `npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=install-now-after-trust-gate; selector=named
+Install: `npx skills add wshobson/agents --skill fastapi-templates ... -y -g -a ...` status=install-now-after-trust-gate; selector=named. 
 
 ## Upstream Maintainer
 
-[wshobson/agents](https://github.com/wshobson/agents)
+[wshobson/agents](https://github.com/wshobson/agents) — large community agentic plugin/skill marketplace. MIT.
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other backend/k8s/devops patterns from catalog (e.g. nodejs-backend, k8s-*, terraform-*) or local equivalents. A general-purpose agent instruction without this exact wshobson fastapi-templates contract.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web evidence from wshobson/agents README + plugin docs (2026) + config notes. Evidence only; not endorsement.

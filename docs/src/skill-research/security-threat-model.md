@@ -1,14 +1,14 @@
 ---
 skill: security-threat-model
 source_type: curated-external
-researched_at: '2026-06-16T06:01:41Z'
+researched_at: '2026-06-16T08:37:32Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.75
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Threat modeling workflows and patterns for security analysis. From official openai/skills catalog for Codex (and compatible). Curated or experimental skills in .curated/.experimental.
 
 ## Harness Coverage
 
@@ -16,18 +16,18 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command. Web-aug: github.com/openai/skills (high stars ~22k, active OpenAI team, Python/JS/Shell, follows agentskills.io standard, documented install via $skill-installer). Inspect for broad scopes in security/CLI creator (write/exec potential). Catalog flags for inspection before promotion.
 
 ## Install Prerequisites
 
-Install: `npx skills add openai/skills --skill chatgpt-apps --skill cli-creator --skill security-threat-model --skill security-best-practices --skill security-ownership-map -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+Install: `npx skills add openai/skills --skill security-threat-model -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` (or via specific .experimental etc) status=inspect-then-install; selector=named. Restart agent after install per docs.
 
 ## Upstream Maintainer
 
-[openai/skills](https://github.com/openai/skills)
+[openai/skills](https://github.com/openai/skills) (official OpenAI, high activity)
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Anthropics skills, local security-auditor / threat-model skills; other platform-specific (e.g. mcp-use).
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Web from repo README 2026 + catalog notes.

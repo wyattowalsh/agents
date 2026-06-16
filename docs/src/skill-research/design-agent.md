@@ -1,33 +1,35 @@
 ---
 skill: design-agent
 source_type: curated-external
-researched_at: '2026-06-16T06:01:42Z'
+researched_at: '2026-06-16T08:46:52Z'
 research_tier: standard
-mean_confidence: 0.65
+mean_confidence: 0.72
 ---
 
 ## Purpose
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+design-agent (CrewAI) covers agent design using the Role-Goal-Backstory framework, LLM selection (including cheap function-calling models), tool assignment, execution tuning (max_iter, max_rpm, max_execution_time), memory/knowledge sources, guardrails, YAML vs code config, planning modes, and delegation. Strongly recommends spending 80% effort on task design first and defaulting to a single agent unless clear persona/tool/LLM splits exist.
 
 ## Harness Coverage
 
-Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode.
+Target agents from the crewaiinc bundle. Used when creating or debugging CrewAI agents.
 
 ## Trust And Risks
 
-trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md.
+inspect-then-install / needs-inspection. Official CrewAI Inc. skill (MIT). The skill itself is advisory. Risks come from the generated CrewAI code (cost from extra agents/iterations, guardrail bypasses, delegation loops, code-execution mode). The skill explicitly warns about over-splitting into agents and cost of planning modes.
 
 ## Install Prerequisites
 
-Install: `npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
+`npx skills add crewaiinc/skills --skill design-agent --skill design-task --skill getting-started -y -g -a ...`
+
+Requires CrewAI installed in the target project; Docker for safe code execution if used.
 
 ## Upstream Maintainer
 
-[crewaiinc/skills](https://github.com/crewaiinc/skills)
+CrewAI Inc. (https://github.com/crewAIInc/skills). Docs: https://docs.crewai.com
 
 ## Comparable Alternatives
 
-A general-purpose agent instruction without a scoped skill contract
+Other multi-agent frameworks (LangGraph, AutoGen, Semantic Kernel) and their design guides; direct LLM orchestration without framework ceremony for simple cases.
 
-> Sourced from curated config/external-skills.md; use external-skill-auditor for live evidence. Not an endorsement.
+> Evidence from public GitHub (raw skill) and repo README. Summarizes risks; do not endorse installation without inspection. Not authority.
