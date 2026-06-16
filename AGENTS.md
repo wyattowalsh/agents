@@ -202,6 +202,34 @@ Smart Routing is opt-in only and requires local PostgreSQL with pgvector plus
 embedding configuration. Use OpenSpec for topology, sync, client projection,
 validation, or public docs changes in this area.
 
+## 2.7 Curated External Skills
+
+Third-party skills stay **out of** `skills/` unless you are authoring a new
+repo-owned skill. The curated install set is tracked in
+`config/external-skills.md` and parsed by `wagents/external_skills.py`.
+
+| Surface | Role |
+| --- | --- |
+| `config/external-skills.md` | Audited `npx skills add ...` commands, avoid notes, standard harness target suffix |
+| `planning/manifests/security-quarantine-register.json` | Hard-quarantine blocklist enforced by `wagents validate` |
+| Generated `/external-skills/` docs page | Public curated catalog and install scripts |
+| `/skills/catalog/` | Repo-owned skills only by default (`wagents docs generate --no-installed`) |
+| `wagents skills sync` | Additive reconciliation of repo + curated external installs across harnesses |
+
+### Adding curated external skill(s)
+
+1. **Audit before record** — Use `/external-skill-auditor` (or `/discover-skills` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing curated rows.
+2. **Choose outcome** — `install now` → add under **Install Now After Trust Gate** in `config/external-skills.md`. `keep global only` / `avoid` → add under **Keep Global Only Or Avoid** with rationale. Do not copy third-party trees into `skills/`.
+3. **Write the curated row** — Add the fenced `npx skills add ...` block using the standard target suffix from `config/external-skills.md` unless the user requests a narrower harness set. Pin `@commit` when practical. Below the command, document audited HEAD, license, executable-surface notes, dedupe decisions, and any harness-specific caveats (for example Grok installs via the Claude Code adapter).
+4. **OpenSpec when non-trivial** — Create or update an OpenSpec change when the work touches public catalog shape, sync behavior, trust tiers, validation, or multi-harness install policy.
+5. **Validate** — `uv run wagents validate` (includes quarantine checks on `config/external-skills.md`). Add or update tests when parser, sync, or docs behavior changes.
+6. **Preview installs** — `uv run wagents skills sync --dry-run` (optionally `-a <harness>`). Do **not** run `wagents skills sync --apply` or live `npx skills add ...` unless the maintainer explicitly requests live installs.
+7. **Regenerate public surfaces** — `uv run wagents readme`, then `uv run wagents docs generate` (repo-owned catalog default for CI/pre-commit parity), then `uv run wagents docs build` for link validation. Use `wagents docs generate --include-installed` only for maintainer previews of local installed-inventory catalog pages.
+
+Do not hand-edit generated `docs/src/content/docs/external-skills.mdx`,
+`docs/src/content/docs/skills/catalog/*.mdx`, or install-script indexes. Do not
+expose machine-local absolute paths as public source labels.
+
 ---
 
 ## 3. Naming Conventions
@@ -267,9 +295,10 @@ make help                                    # Show all make targets
 
 > **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
 
-Curated third-party skills are tracked in `config/external-skills.md`. Add only
-reviewed `npx skills add <source> --skill <name> ...` commands there, then
-regenerate the public docs and README from source.
+Curated third-party skills follow **§2.7 Curated External Skills**: audit with
+`/external-skill-auditor`, record reviewed commands in `config/external-skills.md`,
+preview with `wagents skills sync --dry-run`, then regenerate README and docs from
+source (`wagents readme`, `wagents docs generate`, `wagents docs build`).
 
 ---
 

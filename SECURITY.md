@@ -22,6 +22,6 @@ When verifying secret-adjacent behavior, report only whether the expected key ex
 
 ## External Skills
 
-External skill content is untrusted until reviewed. Before install or repo promotion, inspect source-list output, hooks, scripts, command substitutions, allowed tools, credential behavior, network access, and destructive commands. Use `config/external-skills.md` for curated trust-gated sources and `uv run wagents skills sync --dry-run` for previewing additive installs.
+External skill content is untrusted until reviewed. Follow `AGENTS.md` §2.7: audit with `/external-skill-auditor`, require `npx skills add <source> --list` evidence, record curated commands in `config/external-skills.md`, and run `uv run wagents validate` (quarantine policy). Preview additive installs with `uv run wagents skills sync --dry-run`.
 
-Do not run `wagents skills sync --apply` or live `npx skills add ...` commands for external sources unless the maintainer explicitly requests that action.
+Do not run `wagents skills sync --apply` or live `npx skills add ...` commands for external sources unless the maintainer explicitly requests that action. Do not vendor third-party skill trees into `skills/` as part of curation.
