@@ -92,4 +92,13 @@ Recommend the smallest config change and specify whether it belongs in a canonic
 
 ## Validation Contract
 
-Before declaring skill changes complete, run `uv run wagents validate`, `uv run python skills/skill-creator/scripts/audit.py skills/chrome-devtools-troubleshooting`, and `uv run wagents package chrome-devtools-troubleshooting --dry-run`.
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.

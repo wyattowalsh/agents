@@ -9,7 +9,7 @@ license: MIT
 compatibility: "Requires git and Python 3.11+ for the nerdbot CLI and kb_* compatibility scripts."
 metadata:
   author: wyattowalsh
-  version: "0.1.0"
+  version: "1.0.0"
 user-invocable: true
 ---
 
@@ -23,28 +23,29 @@ Build, query, and maintain Obsidian-native, git-friendly, agent-managed knowledg
 
 ## Dispatch Table
 
-| `$ARGUMENTS` | Workflow | First move |
-|--------------|----------|------------|
-| (empty) | Interview | Show mode menu; if headless, run inventory-only planning and do not mutate files |
-| `create <topic>` | Create | Establish an Obsidian-native KB root, layered structure, shared vault surfaces, starter indexes, and activity log |
-| `ingest <source-or-path>` | Ingest | Add sources to `raw/`, preserve originals, then update indexes and provenance stubs |
-| `enrich <page-or-topic>` | Enrich | Improve `wiki/` pages from raw or canonical inputs with traceable synthesis |
-| `audit [path]` | Audit | Run inventory + lint read-only; report structure, provenance, and drift findings |
-| `query <question-or-topic>` | Query | Answer from `wiki/` + `indexes/` first, inspect `raw/` only to verify citations or confirm gaps, and stay read-only |
-| `derive <artifact-or-target>` | Derive | Generate reproducible outputs from the current KB without replacing canonical material |
-| `improve <path>` | Existing repo | Start with inventory-first, Obsidian-native overhaul planning before any expansion or refinement |
-| `migrate <path-or-scope>` | Migration | Run the risky-change interview + inversion before any move, rename, cutover, or replacement |
-| Natural language: "create a knowledge base / vault for ..." | Create | Treat the remainder as topic and scope; default to an Obsidian-native vault |
-| Natural language: "ingest/import these sources" | Ingest | Route sources into `raw/` and update indexes |
-| Natural language: "improve/fix this knowledge base/repo/vault" | Existing repo | Start with a read-only inventory, vault classification, and additive-first repair plan |
-| Natural language: "query/search/ask this KB/wiki/vault about ..." | Query | Read maintained `wiki/` + `indexes/`, answer with provenance, and recommend `enrich` or `ingest` if the KB has a gap |
-| Natural language mentioning `Obsidian`, `vault`, `.obsidian`, `[[wikilinks]]`, `embeds`, or `Dataview` | Create / Existing repo / Audit | Route to the matching workflow with Obsidian-native assumptions turned on |
-| Natural language: "audit/lint/check the knowledge base" | Audit | Stay read-only unless the user explicitly asks for fixes |
-| Requests for generic notes or docs-site work | Refuse + redirect | Redirect to the correct workflow or specialized skill |
+| `$ARGUMENTS`                                                                                           | Workflow                       | First move                                                                                                           |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| (empty)                                                                                                | Interview                      | Show mode menu; if headless, run inventory-only planning and do not mutate files                                     |
+| `create <topic>`                                                                                       | Create                         | Establish an Obsidian-native KB root, layered structure, shared vault surfaces, starter indexes, and activity log    |
+| `ingest <source-or-path>`                                                                              | Ingest                         | Add sources to `raw/`, preserve originals, then update indexes and provenance stubs                                  |
+| `enrich <page-or-topic>`                                                                               | Enrich                         | Improve `wiki/` pages from raw or canonical inputs with traceable synthesis                                          |
+| `audit [path]`                                                                                         | Audit                          | Run inventory + lint read-only; report structure, provenance, and drift findings                                     |
+| `query <question-or-topic>`                                                                            | Query                          | Answer from `wiki/` + `indexes/` first, inspect `raw/` only to verify citations or confirm gaps, and stay read-only  |
+| `derive <artifact-or-target>`                                                                          | Derive                         | Generate reproducible outputs from the current KB without replacing canonical material                               |
+| `improve <path>`                                                                                       | Existing repo                  | Start with inventory-first, Obsidian-native overhaul planning before any expansion or refinement                     |
+| `migrate <path-or-scope>`                                                                              | Migration                      | Run the risky-change interview + inversion before any move, rename, cutover, or replacement                          |
+| Natural language: "create a knowledge base / vault for ..."                                            | Create                         | Treat the remainder as topic and scope; default to an Obsidian-native vault                                          |
+| Natural language: "ingest/import these sources"                                                        | Ingest                         | Route sources into `raw/` and update indexes                                                                         |
+| Natural language: "improve/fix this knowledge base/repo/vault"                                         | Existing repo                  | Start with a read-only inventory, vault classification, and additive-first repair plan                               |
+| Natural language: "query/search/ask this KB/wiki/vault about ..."                                      | Query                          | Read maintained `wiki/` + `indexes/`, answer with provenance, and recommend `enrich` or `ingest` if the KB has a gap |
+| Natural language mentioning `Obsidian`, `vault`, `.obsidian`, `[[wikilinks]]`, `embeds`, or `Dataview` | Create / Existing repo / Audit | Route to the matching workflow with Obsidian-native assumptions turned on                                            |
+| Natural language: "audit/lint/check the knowledge base"                                                | Audit                          | Stay read-only unless the user explicitly asks for fixes                                                             |
+| Requests for generic notes or docs-site work                                                           | Refuse + redirect              | Redirect to the correct workflow or specialized skill                                                                |
 
 ### Empty-Args Handler
 
 Present this menu:
+
 1. Create a new KB from a topic
 2. Ingest sources into `raw/`
 3. Enrich `wiki/` pages
@@ -80,22 +81,22 @@ If clarifying exchange is unavailable, default to inventory-only planning with n
 
 Use these terms exactly throughout:
 
-| Term | Meaning | Default rule |
-|------|---------|--------------|
-| `raw` | Source captures, imports, transcripts, extracts, and normalized evidence | Append-only; preserve source metadata and originals |
-| `wiki` | Synthesized markdown knowledge for humans and agents | Every substantive claim traces to `raw` or declared canonical material |
-| `schema` | Structural contracts: naming, frontmatter, required fields, taxonomies | Change deliberately and version consciously |
-| `config` | Operational settings for ingest, derive, lint, or publish flows | Keep separate from content |
-| `indexes` | Coverage maps, navigation pages, source-to-page maps, inventories | Update in the same batch as related content changes |
-| `activity log` | Append-only record of decisions, mutations, imports, and known gaps | Update after every mutating batch |
-| `provenance` | Trace from a wiki or derived claim back to raw evidence | Mandatory for enrich and derive flows |
-| `canonical material` | User-authored pages or files that remain authoritative | Preserve unless explicitly told to rewrite, move, or delete |
-| `derived output` | Rebuildable exports generated from the KB | Never treat as the sole source of truth |
-| `imperfect repo` | Existing repo with mixed docs, partial layers, or unclear ownership | Use inventory-first, additive-first repair |
-| `migration` | Move, rename, replace, or cut over existing KB structure | Requires interview + explicit approval |
-| `vault` | The Obsidian-facing working surface around the KB, including note syntax and shared `.obsidian/` conventions | Default to Obsidian-native note shapes for create and improve |
-| `shared vault config` | Project-safe `.obsidian/` surfaces such as templates, snippets, and documented shared conventions | Manage deliberately; do not mix with volatile workspace state |
-| `Dataview metadata` | YAML fields such as `tags`, `aliases`, `kind`, `status`, `updated`, and `source_count` | Keep consistent across maintained wiki pages |
+| Term                  | Meaning                                                                                                      | Default rule                                                           |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `raw`                 | Source captures, imports, transcripts, extracts, and normalized evidence                                     | Append-only; preserve source metadata and originals                    |
+| `wiki`                | Synthesized markdown knowledge for humans and agents                                                         | Every substantive claim traces to `raw` or declared canonical material |
+| `schema`              | Structural contracts: naming, frontmatter, required fields, taxonomies                                       | Change deliberately and version consciously                            |
+| `config`              | Operational settings for ingest, derive, lint, or publish flows                                              | Keep separate from content                                             |
+| `indexes`             | Coverage maps, navigation pages, source-to-page maps, inventories                                            | Update in the same batch as related content changes                    |
+| `activity log`        | Append-only record of decisions, mutations, imports, and known gaps                                          | Update after every mutating batch                                      |
+| `provenance`          | Trace from a wiki or derived claim back to raw evidence                                                      | Mandatory for enrich and derive flows                                  |
+| `canonical material`  | User-authored pages or files that remain authoritative                                                       | Preserve unless explicitly told to rewrite, move, or delete            |
+| `derived output`      | Rebuildable exports generated from the KB                                                                    | Never treat as the sole source of truth                                |
+| `imperfect repo`      | Existing repo with mixed docs, partial layers, or unclear ownership                                          | Use inventory-first, additive-first repair                             |
+| `migration`           | Move, rename, replace, or cut over existing KB structure                                                     | Requires interview + explicit approval                                 |
+| `vault`               | The Obsidian-facing working surface around the KB, including note syntax and shared `.obsidian/` conventions | Default to Obsidian-native note shapes for create and improve          |
+| `shared vault config` | Project-safe `.obsidian/` surfaces such as templates, snippets, and documented shared conventions            | Manage deliberately; do not mix with volatile workspace state          |
+| `Dataview metadata`   | YAML fields such as `tags`, `aliases`, `kind`, `status`, `updated`, and `source_count`                       | Keep consistent across maintained wiki pages                           |
 
 ## Default KB Pattern
 
@@ -125,6 +126,7 @@ Teach and prefer this layered shape unless the repository has a stronger existin
 ```
 
 Notes:
+
 - Keep the layer semantics intact even if directory names need small repo-local adjustments.
 - `raw/` stores evidence, including downloaded assets when they materially support the KB.
 - `wiki/` stores synthesis, `schema/` + `config/` store contracts, `indexes/` stores navigational and coverage maps, and `activity/` stores the append-only operating history.
@@ -135,15 +137,15 @@ Notes:
 
 Use gates for every multi-step flow. Stop at the first blocked gate.
 
-| Gate | Goal | Output |
-|------|------|--------|
-| Gate 0 — Classify | Decide whether this is Create, Ingest, Enrich, Audit, Query, Derive, Existing repo, or Migration | Safe workflow selection |
-| Gate 1 — Inventory | Map layers, canonical material, vault state, source surfaces, risky paths, and existing automation | Read-only inventory |
-| Gate 2 — Plan | Propose the smallest additive, reviewable batch or migration plan | File-level plan with explicit non-goals |
-| Gate 3 — Confirm | Require approval for destructive or high-impact changes | Approval or downgrade to plan-only |
-| Gate 4 — Execute | Change one layer at a time: `raw` -> `wiki` -> `indexes` -> `activity` | Small reviewable edit set |
-| Gate 5 — Verify | Check provenance, index freshness, schema/config consistency, and activity logging | Lint/audit results |
-| Gate 6 — Handoff | Record next steps, unresolved gaps, and missing dependencies | Activity-log entry + follow-up plan |
+| Gate               | Goal                                                                                               | Output                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| Gate 0 — Classify  | Decide whether this is Create, Ingest, Enrich, Audit, Query, Derive, Existing repo, or Migration   | Safe workflow selection                 |
+| Gate 1 — Inventory | Map layers, canonical material, vault state, source surfaces, risky paths, and existing automation | Read-only inventory                     |
+| Gate 2 — Plan      | Propose the smallest additive, reviewable batch or migration plan                                  | File-level plan with explicit non-goals |
+| Gate 3 — Confirm   | Require approval for destructive or high-impact changes                                            | Approval or downgrade to plan-only      |
+| Gate 4 — Execute   | Change one layer at a time: `raw` -> `wiki` -> `indexes` -> `activity`                             | Small reviewable edit set               |
+| Gate 5 — Verify    | Check provenance, index freshness, schema/config consistency, and activity logging                 | Lint/audit results                      |
+| Gate 6 — Handoff   | Record next steps, unresolved gaps, and missing dependencies                                       | Activity-log entry + follow-up plan     |
 
 For Query, stop after Gate 2 unless the user explicitly asks to turn a KB gap into `enrich`, `ingest`, or `derive` work.
 
@@ -229,6 +231,7 @@ Even when the user explicitly says `migrate`, do a quick additive-repair check f
 ### Interview
 
 Ask or determine:
+
 1. What files are canonical and must keep authority?
 2. What paths are consumed by people, agents, or automation today?
 3. What note names, aliases, wikilinks, embeds, and Dataview queries depend on current naming or frontmatter?
@@ -240,14 +243,14 @@ Ask or determine:
 
 Assume the migration will fail in the most likely ways, then design against them:
 
-| Failure to prevent | Safe response |
-|--------------------|---------------|
-| Canonical material gets overwritten | Preserve originals and write companion pages or stubs instead |
-| Links and agent references break | Add indexes, aliases, redirects, mapping pages, and stable note names before cutover |
-| Provenance becomes unverifiable | Capture raw evidence and source maps before restructuring wiki pages |
-| Schema/config change invalidates pages | Stage compatibility updates and lint before switching defaults |
-| Dataview queries or Obsidian navigation drift | Normalize frontmatter, aliases, and `[[wikilinks]]` in the same batch as note moves |
-| Rollback is unclear | Stop after the plan; do not execute the migration |
+| Failure to prevent                            | Safe response                                                                        |
+| --------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Canonical material gets overwritten           | Preserve originals and write companion pages or stubs instead                        |
+| Links and agent references break              | Add indexes, aliases, redirects, mapping pages, and stable note names before cutover |
+| Provenance becomes unverifiable               | Capture raw evidence and source maps before restructuring wiki pages                 |
+| Schema/config change invalidates pages        | Stage compatibility updates and lint before switching defaults                       |
+| Dataview queries or Obsidian navigation drift | Normalize frontmatter, aliases, and `[[wikilinks]]` in the same batch as note moves  |
+| Rollback is unclear                           | Stop after the plan; do not execute the migration                                    |
 
 If any answer is unknown and clarification is unavailable, halt at Gate 2 and return a plan only.
 
@@ -281,38 +284,39 @@ Load references on demand; do not load all at once. If a listed reference, scrip
 
 ### References
 
-| File | Content | Load When |
-|------|---------|-----------|
-| `references/audit-checklist.md` | Read-only audit rubric, severity model, provenance/index/activity checks, and report shape | Audit, Gate 5 verification, pre-migration checks, post-change confidence checks |
-| `references/cli.md` | Local and installed CLI command contracts, examples, and safe/read-only command defaults | CLI smoke, command planning, package validation, user-facing command guidance |
-| `references/current-state-and-compatibility.md` | Stable compatibility surfaces, baseline script/package behavior, and runtime authority | Skill/package alignment checks, compatibility-sensitive changes, release or audit review |
-| `references/graph.md` | Graph source model, supported edge concepts, implemented analytics, and graph safety rules | Graph inspection, backlink/blast-radius planning, derived graph outputs, migration impact analysis |
-| `references/implementation-charter.md` | Non-negotiable promises, build order, and out-of-scope implementation constraints | Before expanding Nerdbot capabilities, contract audits, package or script behavior changes |
-| `references/ingestion-adapters.md` | Adapter output contract, dependency-light ingest baseline, and planned parser lanes | Ingest planning with parsers/adapters, large or uncertain sources, optional integration review |
-| `references/kb-architecture.md` | Canonical KB layer model, directory semantics, provenance contract, and safe default layouts | Create, Query, Existing Imperfect Repo, Migration planning |
-| `references/obsidian-vaults.md` | Obsidian syntax contract, shared `.obsidian/` surfaces, Dataview metadata, and vault-safe migration rules | Create, Existing Imperfect Repo, Migration, Enrich when note metadata or linking changes |
-| `references/kb-operations.md` | Detailed create/ingest/enrich/derive procedures, ordering rules, and verification steps | Create, Ingest, Enrich, Derive |
-| `references/migration-playbooks.md` | Additive repair patterns, phased restructure plans, cutover sequencing, and rollback playbooks | Existing Imperfect Repo when additive repair is insufficient, all Migration flows |
-| `references/page-templates.md` | Canonical page shapes for wiki pages, source notes, indexes, and activity-log entries | Create, Enrich, Derive, additive repair that adds missing pages |
-| `references/oss-dependencies.md` | Baseline dependency policy and optional adapter package targets | Optional adapter selection, dependency review, keeping baseline commands dependency-light |
-| `references/pipeline-contracts.md` | Gate sequence, mode defaults, machine-caller payload expectations, and durable surfaces | Empty args, headless runs, CLI planning, mode dispatch, JSON/tooling contract checks |
-| `references/recovery-replay.md` | Recovery, replay, interruption handling, operation IDs, and append-only failure handling | Resuming interrupted work, retry planning, replay dry-runs, recovery audits |
-| `references/retrieval.md` | Lexical and SQLite FTS retrieval, query safety, semantic retrieval boundaries, and query result shape | Query mode, retrieval tuning, raw-inspection decisions, save-back review queues |
-| `references/schema-contracts.md` | Entity fields, public contract modules, source/evidence records, and generated artifact rules | Schema/config edits, source/evidence fields, package contract review, eval/contract drift checks |
-| `references/setup.md` | Local development commands, first KB walkthrough, and optional extras install guidance | Setup help, local smoke tests, onboarding, optional extras selection |
-| `references/source-acquisition.md` | Source-record helpers, pointer-stub policy, provider contracts, and source safety | Ingesting URLs/files, oversized, private, or credentialed sources, source acquisition planning |
-| `references/watch-mode.md` | Watch-mode event policy, debounce/checkpoint requirements, and review-first save-back rules | Watch mode, local file-change automation, volatile workspace event handling |
+| File                                            | Content                                                                                                   | Load When                                                                                          |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `references/audit-checklist.md`                 | Read-only audit rubric, severity model, provenance/index/activity checks, and report shape                | Audit, Gate 5 verification, pre-migration checks, post-change confidence checks                    |
+| `references/cli.md`                             | Local and installed CLI command contracts, examples, and safe/read-only command defaults                  | CLI smoke, command planning, package validation, user-facing command guidance                      |
+| `references/current-state-and-compatibility.md` | Stable compatibility surfaces, baseline script/package behavior, and runtime authority                    | Skill/package alignment checks, compatibility-sensitive changes, release or audit review           |
+| `references/graph.md`                           | Graph source model, supported edge concepts, implemented analytics, and graph safety rules                | Graph inspection, backlink/blast-radius planning, derived graph outputs, migration impact analysis |
+| `references/implementation-charter.md`          | Non-negotiable promises, build order, and out-of-scope implementation constraints                         | Before expanding Nerdbot capabilities, contract audits, package or script behavior changes         |
+| `references/ingestion-adapters.md`              | Adapter output contract, dependency-light ingest baseline, and planned parser lanes                       | Ingest planning with parsers/adapters, large or uncertain sources, optional integration review     |
+| `references/kb-architecture.md`                 | Canonical KB layer model, directory semantics, provenance contract, and safe default layouts              | Create, Query, Existing Imperfect Repo, Migration planning                                         |
+| `references/obsidian-vaults.md`                 | Obsidian syntax contract, shared `.obsidian/` surfaces, Dataview metadata, and vault-safe migration rules | Create, Existing Imperfect Repo, Migration, Enrich when note metadata or linking changes           |
+| `references/kb-operations.md`                   | Detailed create/ingest/enrich/derive procedures, ordering rules, and verification steps                   | Create, Ingest, Enrich, Derive                                                                     |
+| `references/migration-playbooks.md`             | Additive repair patterns, phased restructure plans, cutover sequencing, and rollback playbooks            | Existing Imperfect Repo when additive repair is insufficient, all Migration flows                  |
+| `references/page-templates.md`                  | Canonical page shapes for wiki pages, source notes, indexes, and activity-log entries                     | Create, Enrich, Derive, additive repair that adds missing pages                                    |
+| `references/oss-dependencies.md`                | Baseline dependency policy and optional adapter package targets                                           | Optional adapter selection, dependency review, keeping baseline commands dependency-light          |
+| `references/pipeline-contracts.md`              | Gate sequence, mode defaults, machine-caller payload expectations, and durable surfaces                   | Empty args, headless runs, CLI planning, mode dispatch, JSON/tooling contract checks               |
+| `references/recovery-replay.md`                 | Recovery, replay, interruption handling, operation IDs, and append-only failure handling                  | Resuming interrupted work, retry planning, replay dry-runs, recovery audits                        |
+| `references/retrieval.md`                       | Lexical and SQLite FTS retrieval, query safety, semantic retrieval boundaries, and query result shape     | Query mode, retrieval tuning, raw-inspection decisions, save-back review queues                    |
+| `references/schema-contracts.md`                | Entity fields, public contract modules, source/evidence records, and generated artifact rules             | Schema/config edits, source/evidence fields, package contract review, eval/contract drift checks   |
+| `references/setup.md`                           | Local development commands, first KB walkthrough, and optional extras install guidance                    | Setup help, local smoke tests, onboarding, optional extras selection                               |
+| `references/source-acquisition.md`              | Source-record helpers, pointer-stub policy, provider contracts, and source safety                         | Ingesting URLs/files, oversized, private, or credentialed sources, source acquisition planning     |
+| `references/watch-mode.md`                      | Watch-mode event policy, debounce/checkpoint requirements, and review-first save-back rules               | Watch mode, local file-change automation, volatile workspace event handling                        |
 
 ### Scripts
 
-| Script | Purpose | Use When |
-|--------|---------|----------|
-| `scripts/kb_inventory.py` | Inventory layers, canonical material, risky paths, source surfaces, vault signals, and missing shared vault structure | Gate 1 for Audit, Existing Imperfect Repo, and every Migration |
-| `scripts/kb_lint.py` | Check provenance, index freshness, schema/config drift, wikilinks, embeds, aliases, required files, and activity-log coverage | Gate 5 after any mutating batch and before declaring work complete |
-| `scripts/kb_bootstrap.py` | Scaffold the approved layered structure, shared `.obsidian/` surfaces, and default starter files | Create and additive repair after Gate 3 approval; never for cutover or overwrite-by-default |
-| `scripts/kb_path_policy.py` | Internal/shared helper for classifying protected, volatile, generated, and safe KB paths | Script internals and contract review; call through inventory/lint/bootstrap unless explicitly debugging path policy |
+| Script                      | Purpose                                                                                                                       | Use When                                                                                                            |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `scripts/kb_inventory.py`   | Inventory layers, canonical material, risky paths, source surfaces, vault signals, and missing shared vault structure         | Gate 1 for Audit, Existing Imperfect Repo, and every Migration                                                      |
+| `scripts/kb_lint.py`        | Check provenance, index freshness, schema/config drift, wikilinks, embeds, aliases, required files, and activity-log coverage | Gate 5 after any mutating batch and before declaring work complete                                                  |
+| `scripts/kb_bootstrap.py`   | Scaffold the approved layered structure, shared `.obsidian/` surfaces, and default starter files                              | Create and additive repair after Gate 3 approval; never for cutover or overwrite-by-default                         |
+| `scripts/kb_path_policy.py` | Internal/shared helper for classifying protected, volatile, generated, and safe KB paths                                      | Script internals and contract review; call through inventory/lint/bootstrap unless explicitly debugging path policy |
 
 Run from the skill root:
+
 - `python3 scripts/kb_inventory.py --root .`
 - `python3 scripts/kb_lint.py --root . --fail-on warning`
 - `python3 scripts/kb_lint.py --root . --include-unlayered` for mixed repos where important markdown still lives outside the default layers
@@ -320,26 +324,32 @@ Run from the skill root:
 
 ## Validation Contract
 
-Before declaring Nerdbot skill, eval, package, or contract changes complete, run and report:
+Run from this skill directory before declaring changes complete:
 
-1. `uv run wagents validate`
-2. `uv run wagents eval validate`
-3. `uv run ruff check skills/nerdbot tests/test_nerdbot*.py`
-4. `uv run ruff format --check skills/nerdbot tests/test_nerdbot*.py`
-5. `uv run ty check`
-6. `uv run pytest tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py -q`
-7. `uv run python skills/skill-creator/scripts/audit.py skills/nerdbot/ --format json`
-8. `uv run wagents package nerdbot --dry-run`
-9. `uv run wagents openspec validate`
-10. CLI smoke: `uv run --project skills/nerdbot nerdbot --help`, `uv run --project skills/nerdbot nerdbot modes`, and one read-only plan or dry-run command such as `uv run --project skills/nerdbot nerdbot bootstrap --root ./nerdbot-smoke --dry-run`
+```bash
+python scripts/check.py
+ruff check . tests/test_nerdbot*.py
+ruff format --check . tests/test_nerdbot*.py
+ty check
+pytest tests/test_nerdbot*.py tests/test_package.py tests/test_skill_creator_audit.py -q
+```
+
+CLI smoke: `uv run --project skills/nerdbot nerdbot --help`, `uv run --project skills/nerdbot nerdbot modes`, and one read-only plan or dry-run command such as `uv run --project skills/nerdbot nerdbot bootstrap --root ./nerdbot-smoke --dry-run`.
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Lint, type-check, and focused tests pass.
+3. CLI smoke commands succeed.
+4. No portable-CLI violations remain under this skill directory.
 
 If any command is unavailable, report the exact failure and do not claim the validation passed.
 
 ### Assets
 
-| Asset path | Use When |
-|------------|----------|
-| `assets/kb-bootstrap-template.md` | Manual starter packet for `wiki/index.md`, `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` when scripted scaffolding is not the right fit |
+| Asset path                                                     | Use When                                                                                                                                                                             |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `assets/kb-bootstrap-template.md`                              | Manual starter packet for `wiki/index.md`, `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` when scripted scaffolding is not the right fit                      |
 | `assets/activity-log-template.md`, `assets/*-page-template.md` | Optional activity-log and wiki-page starters during Create, Enrich, or additive repair; never overwrite existing user-authored files by template expansion without explicit approval |
 
 ## Examples
@@ -349,6 +359,7 @@ If any command is unavailable, report the exact failure and do not claim the val
 `/nerdbot create "field guide to agentic knowledge bases"`
 
 Expected flow:
+
 1. Load `references/kb-architecture.md`.
 2. Choose the KB root and scaffold `raw/`, `wiki/`, `schema/`, `config/`, `indexes/`, and `activity/`.
 3. Seed `wiki/index.md`, `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` with `scripts/kb_bootstrap.py` or the manual packet in `assets/kb-bootstrap-template.md`.
@@ -359,6 +370,7 @@ Expected flow:
 `/nerdbot improve ./client-repo`
 
 Expected flow:
+
 1. Run `scripts/kb_inventory.py` first.
 2. Identify canonical user-authored material, current source files, existing indexes, and risky paths.
 3. Propose an Obsidian-native overhaul plan: add missing `indexes/` and `activity/`, establish a safe `raw/` intake area, normalize note metadata, introduce shared vault surfaces, and map existing docs into the `wiki/` layer without destructive rewrites.
@@ -369,6 +381,7 @@ Expected flow:
 `/nerdbot query "What do we know about vendor pricing risk?"`
 
 Expected flow:
+
 1. Load `references/kb-architecture.md`.
 2. Read `wiki/` and `indexes/` first to locate the maintained synthesis and its coverage state.
 3. Inspect `raw/` only if a citation needs verification or the KB appears incomplete.
@@ -380,6 +393,7 @@ Expected flow:
 `/nerdbot improve ./client-repo turn this into an Obsidian vault before you expand it`
 
 Expected flow:
+
 1. Run `scripts/kb_inventory.py` first and classify the repo's vault state.
 2. Identify canonical material, current consumers, existing note names, aliases, embeds, and any `.obsidian/` shared config.
 3. Plan the smallest safe vault-overhaul batch: shared templates, metadata normalization, link normalization, path mapping, and attachment placement.

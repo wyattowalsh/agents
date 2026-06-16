@@ -69,7 +69,7 @@ Route proposed updates to the correct target:
 2. Check for contradictions with existing instructions
 3. Assess token impact — keep always-loaded content minimal
 4. Get user approval — never modify instruction files without consent
-5. Test the change — run `wagents validate` after any instruction file edit
+5. Test the change — run `python scripts/check.py` after any instruction file edit
 
 ## Critical Rules
 
@@ -78,7 +78,7 @@ Route proposed updates to the correct target:
 3. Check for contradictions with existing instructions
 4. Route to narrowest applicable scope (rule before skill, skill before global)
 5. Keep always-loaded content under token budget
-6. Run `wagents validate` after every instruction file modification
+6. Run `python scripts/check.py` after every instruction file modification
 7. Prefer hooks/rules over prose (poka-yoke principle)
 
 ## Canonical Terms
@@ -88,3 +88,16 @@ Route proposed updates to the correct target:
 - `correction pattern` — a repeated fix that indicates a missing or wrong instruction
 - `token budget` — the limit on always-loaded instruction content
 - `scope` — cross-project, language-specific, orchestration, project-specific, or file-scoped
+
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.

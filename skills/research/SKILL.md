@@ -14,11 +14,11 @@ hooks:
   PreToolUse:
     - matcher: "Write|Edit|MultiEdit"
       hooks:
-        - command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-readonly-write-guard --harness claude-code'''
+        - command: 'bash -lc ''RESEARCH_SKILL_ACTIVE=1 python3 skills/research/scripts/research_hook.py research-readonly-write-guard --harness claude-code'''
   Stop:
     - hooks:
         - type: command
-          command: 'bash -lc ''WAGENTS_RESEARCH_ACTIVE=1 python3 hooks/wagents-hook.py research-stop-verifier --harness claude-code'''
+          command: 'bash -lc ''RESEARCH_SKILL_ACTIVE=1 python3 skills/research/scripts/research_hook.py research-stop-verifier --harness claude-code'''
 ---
 
 # Deep Research
@@ -409,6 +409,21 @@ Read `references/session-commands.md` for full protocols.
 
 **Loading rule:** Load ONE reference at a time per the "Read When" column. Do not preload.
 
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+pytest tests/test_research_hook.py -q -k "readonly_guard or stop_verifier or shell_write_guard"
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Research hook smoke tests pass for readonly guard and stop verifier behavior.
+3. Skill directory stays free of repo control-plane CLI references.
+
 ## Critical Rules
 
 1. **No claim >= 0.7 unless supported by 2+ independent sources** — single-source claims cap at 0.6
@@ -425,6 +440,6 @@ Read `references/session-commands.md` for full protocols.
 12. **Load ONE reference file at a time** — do not preload all references into context
 13. **Track mode must load prior journal before searching** — avoid re-researching what is already known
 14. **The synthesis is not a summary** — it must integrate findings into novel analysis, identify patterns across sources, and surface emergent insights not present in any single source
-15. **PreToolUse write guard is non-negotiable** — the research skill never modifies source files; it only creates/updates journals in `~/.{gemini|copilot|codex|claude}/research/`
-16. **Stop hook must pass** — `verify.py stop` confirms the skill did not leave tracked research-source files dirty
+15. **PreToolUse write guard is non-negotiable** — `research_hook.py research-readonly-write-guard` blocks source-file writes; journals stay under `~/.{gemini|copilot|codex|claude}/research/`
+16. **Stop hook must pass** — `research_hook.py research-stop-verifier` delegates to `verify.py stop` and confirms tracked research-source files stayed clean
 17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape

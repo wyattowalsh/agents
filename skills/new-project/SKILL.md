@@ -161,17 +161,10 @@ Scripts use `argparse`, JSON stdout, diagnostics on stderr, and `--help`. They m
 
 Before declaring changes to this skill complete, run:
 
-1. `uv run wagents openspec validate`
-2. `uv run wagents validate`
-3. `uv run wagents eval validate`
-4. `uv run python skills/new-project/scripts/validate_catalog.py --format json`
-5. `uv run python skills/new-project/scripts/preferences.py validate --format json`
-6. `uv run pytest tests/test_new_project.py`
-7. `uv run python skills/new-project/scripts/preflight.py --path . --format json`
-8. `uv run python skills/new-project/scripts/blueprint.py --help`
-9. `uv run python skills/new-project/scripts/validate_plan.py --help`
-10. `uv run python skills/skill-creator/scripts/audit.py skills/new-project/ --format json`
-11. `uv run wagents package new-project --dry-run`
-12. `uv run wagents readme --check`
+```bash
+python skills/new-project/scripts/check.py
+uv run pytest tests/test_new_project.py
+uv run python skills/new-project/scripts/preflight.py --path . --format json
+```
 
 After changing skill definitions, public descriptions, references, or eval behavior, invoke `docs-steward` if available.

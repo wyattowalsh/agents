@@ -300,17 +300,19 @@ Load ONE reference at a time.
 
 ## Validation Contract
 
-Before declaring this skill complete after edits, run:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python skills/skill-creator/scripts/audit.py skills/draw-thing/
-wagents package draw-thing --dry-run
-uv run python skills/draw-thing/scripts/model_inventory.py --format json
+python scripts/check.py
+python scripts/model_inventory.py --format json
 ```
 
-Completion criteria: validation commands pass, audit score is A-range or any remaining gap is explained, model inventory identifies recommended-pack status, and no command examples use stale direct flags unsupported by current `generate --help`.
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Model inventory identifies recommended-pack status.
+3. No command examples use stale direct flags unsupported by current `generate --help`.
+4. No portable-CLI violations remain under this skill directory.
 
 ---
 

@@ -3,8 +3,8 @@
   "evals": [
     {
       "id": "active-python-primary",
-      "prompt": "Add a retry decorator to the fetch_data function in wagents/utils.py",
-      "files": ["wagents/utils.py"],
+      "prompt": "Add a retry decorator to the fetch_data function in src/utils.py",
+      "files": ["src/utils.py"],
       "expected_output": "An active auto-invoked response that applies Python conventions to a Python-primary task.",
       "assertions": [
         "Agent auto-invokes python-conventions when the primary file is Python.",
@@ -130,7 +130,7 @@
     {
       "id": "ty-discovery-via-uv-run",
       "prompt": "Run the Python type checker for this repo.",
-      "files": ["pyproject.toml", "wagents/cli.py"],
+      "files": ["pyproject.toml", "src/cli.py"],
       "expected_output": "A type-check response that requires uv run ty check.",
       "assertions": [
         "Agent recommends uv run ty check.",

@@ -11,5 +11,5 @@ Default project artifacts:
 Do not commit generated downstream tool artifacts unless explicitly promoted. Validate with:
 
 ```bash
-uv run wagents openspec validate
+python skills/new-project/scripts/openspec_cli.py validate
 ```

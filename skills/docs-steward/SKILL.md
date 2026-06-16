@@ -160,7 +160,7 @@ Bring generated docs artifacts into a consistent state.
 
 ### C.1 Astro + Starlight
 - Verify Astro config and Starlight integration.
-- Regenerate docs artifacts with project commands (for this repo: `uv run wagents docs generate`).
+- Regenerate docs artifacts with project commands (for this repo: `python skills/docs-steward/scripts/docs_sync.py generate`).
 - Build-check docs output.
 
 ### C.2 Docusaurus
@@ -386,10 +386,8 @@ Completion criteria:
 2. Mutating modes run the relevant framework build, docs generation, or health check.
 3. Maintain mode remains read-only and reports next commands instead of editing.
 4. Skill changes pass these proof commands when applicable:
-   - `uv run wagents validate`
-   - `uv run wagents eval validate`
-   - Run `audit.py skills/docs-steward/` from the repository's `skill-creator` scripts directory
-   - `uv run wagents package docs-steward --dry-run` if packaging is supported in the repository
+   - `python skills/docs-steward/scripts/check.py`
+   - `python skills/docs-steward/scripts/docs_sync.py` when generated docs surfaces change
 
 ---
 

@@ -56,6 +56,12 @@ npx skills add wyattowalsh/agents --skill harness-master -y -g --agent <agent>
 
 If the skill is not being installed from that source, replace `<source>` with the actual published source.
 
+Build install commands without executing them:
+
+```bash
+python skills/harness-master/scripts/install_skills.py harness-master --dry-run -a <agent>
+```
+
 ## Project-Local Install Guidance
 
 Do not suggest project-local install by default.
@@ -63,7 +69,7 @@ Do not suggest project-local install by default.
 If the user explicitly asks for project-local installation, mention:
 
 ```bash
-wagents install --local
+python skills/harness-master/scripts/install_skills.py harness-master --local --execute -y
 ```
 
 Do not invent an `npx skills add --local` form.

@@ -144,18 +144,14 @@ Classify the request before choosing a mode:
 
 ## Validation Contract
 
-Before declaring this skill complete after edits:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python audit.py skills/agent-runtime-governance
-uv run wagents package agent-runtime-governance --dry-run
+python scripts/check.py
 ```
 
 Completion criteria:
 
-- Skill and eval validation pass.
-- Audit score is A or all remaining findings are explicitly accepted.
-- Package dry-run passes.
-- Smoke review covers explicit, implicit, rollout, and negative-control prompts.
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
+3. Smoke review covers explicit, implicit, rollout, and negative-control prompts.

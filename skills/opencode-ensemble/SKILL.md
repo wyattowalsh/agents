@@ -136,7 +136,7 @@ Before claiming an Ensemble workflow is successful:
 - Merged branches have been inspected with project diffs.
 - Repository-specific verification commands have passed or blockers are reported.
 
-When changing this skill, run `uv run wagents validate`, `uv run wagents readme --check`, `uv run pytest tests/test_distribution_metadata.py tests/test_sync_agent_stack.py -q`, `uv run wagents package opencode-ensemble --dry-run`, and `uv run python skills/skill-creator/scripts/audit.py skills/opencode-ensemble` before declaring the edit complete.
+When changing this skill, run `python skills/opencode-ensemble/scripts/check.py`, `uv run pytest tests/test_distribution_metadata.py tests/test_sync_agent_stack.py -q`, before declaring the edit complete.
 
 ## Minimal Example
 

@@ -80,4 +80,13 @@ Chrome DevTools MCP performance tooling can use CrUX-related behavior depending 
 
 ## Validation Contract
 
-Before declaring skill changes complete, run `uv run wagents validate`, `uv run python skills/skill-creator/scripts/audit.py skills/chrome-devtools-debug-optimize-lcp`, and `uv run wagents package chrome-devtools-debug-optimize-lcp --dry-run`.
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.

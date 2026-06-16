@@ -1,6 +1,6 @@
 {
   "skills": ["docs-steward"],
-  "query": "/docs-steward generate api wagents/",
+  "query": "/docs-steward generate api agents/",
   "files": [],
   "expected_behavior": [
     "Routes to Mode J (Generate)",

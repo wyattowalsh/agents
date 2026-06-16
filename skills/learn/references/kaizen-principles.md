@@ -18,7 +18,7 @@ Prefer mechanisms that make mistakes impossible over instructions that ask agent
 | Mechanism | Example | Strength |
 |-----------|---------|----------|
 | Hook (PostToolUse) | Auto-run ruff after Python edits | Strongest — automatic |
-| Scoped rule | "Run wagents validate after SKILL.md edits" | Strong — triggered on path |
+| Scoped rule | "Run `python scripts/check.py` after SKILL.md edits" | Strong — triggered on path |
 | Skill convention | "Use uv, not pip" in python-conventions | Medium — requires auto-invoke |
 | Prose instruction | "Remember to lint" in global.md | Weakest — easily forgotten |
 
@@ -30,7 +30,7 @@ Follow existing patterns. Do not invent new conventions when established ones ex
 
 - Match the naming, formatting, and structure of surrounding files
 - Check AGENTS.md for the canonical format before creating assets
-- Use `wagents new` templates as starting points
+- Use `skill-creator` scaffold templates as starting points
 - When a pattern works, document it; when it does not, fix the root cause
 
 ## 4. Just-In-Time (JIT)

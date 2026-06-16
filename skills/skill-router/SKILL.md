@@ -6,7 +6,7 @@ description: >-
   for install, authoring, or audit workflows.
 argument-hint: "<search|context|read|doctor> [query]"
 license: MIT
-compatibility: "Requires wagents CLI from this repository; reads local SKILL.md files from repo, Codex, global, plugin, and supported agent skill roots."
+compatibility: "Requires Python 3.11+ with PyYAML; reads local SKILL.md files from repo, Codex, global, plugin, and supported agent skill roots via scripts/skill_index.py."
 metadata:
   author: wyattowalsh
   version: "1.0.0"
@@ -38,13 +38,13 @@ Use local skill indexing to choose and load relevant skills only when a task nee
 
 ### 2. Retrieve
 
-2. Run the matching CLI command from the repository root:
+2. Run the matching CLI command from this skill directory or the repository root:
 
 ```bash
-uv run wagents skills search "$ARGUMENTS" --limit 5
-uv run wagents skills context "$ARGUMENTS" --limit 3
-uv run wagents skills read <skill-name>
-uv run wagents skills doctor
+python scripts/skill_index.py search "$ARGUMENTS" --limit 5
+python scripts/skill_index.py context "$ARGUMENTS" --limit 3
+python scripts/skill_index.py read <skill-name>
+python scripts/skill_index.py doctor
 ```
 
 ### 3. Select
@@ -55,7 +55,7 @@ uv run wagents skills doctor
 
 ## Source Scope
 
-`wagents skills` searches these roots:
+`python scripts/skill_index.py` searches these roots:
 
 | Source | Root | Trust tier |
 |--------|------|------------|
@@ -126,21 +126,17 @@ Use `--format json` when another script or agent will consume the result.
 
 ## Validation Contract
 
-Run these before declaring changes complete:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run wagents package skill-router --dry-run
+python scripts/check.py
 uv run pytest tests/test_skill_index.py -q
 ```
 
-See `references/routing-guide.md` for the exact audit command and validation notes.
+See `references/routing-guide.md` for additional validation notes.
 
 Completion criteria:
 
-1. Asset validation passes with zero errors.
-2. Eval validation passes with `skill-router` evals present.
-3. Audit grade is A or documented with an explicit remaining gap.
-4. Package dry-run reports no blocking portability failure.
-5. Search and context CLI tests pass.
+1. `scripts/check.py` exits 0.
+2. No repository CLI references remain under this skill directory.
+3. Search and context CLI tests pass.

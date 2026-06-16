@@ -192,18 +192,19 @@ Load ONE reference at a time. Do not preload all references into context.
 
 ## Validation Contract
 
-Before declaring this skill complete after edits, run:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python -m py_compile skills/files-buddy/scripts/*.py
-uv run python path/to/audit.py skills/files-buddy/
-uv run wagents package files-buddy --dry-run
-uv run python skills/files-buddy/scripts/dashboard-renderer.py --data <sample.json> --output <tmp.html>
+python scripts/check.py
+python -m py_compile scripts/*.py
+python scripts/dashboard-renderer.py --data <sample.json> --output <tmp.html>
 ```
 
-Completion criteria: validations pass, dashboard smoke writes HTML, invalid JSON returns JSON error, audit grade is A or remaining gaps are explicitly reported.
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Dashboard smoke writes HTML; invalid JSON returns a JSON error.
+3. No portable-CLI violations remain under this skill directory.
 
 ## Critical Rules
 

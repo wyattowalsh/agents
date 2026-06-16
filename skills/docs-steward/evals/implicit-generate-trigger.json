@@ -1,6 +1,6 @@
 {
   "skills": ["docs-steward"],
-  "query": "I need API documentation for the wagents package",
+  "query": "I need API documentation for the agents package",
   "files": [],
   "expected_behavior": [
     "Detects natural language requesting documentation generation",

@@ -77,4 +77,13 @@ Extension tools require MCP extension support. If tools like `install_extension`
 
 ## Validation Contract
 
-Before declaring skill changes complete, run `uv run wagents validate`, `uv run python skills/skill-creator/scripts/audit.py skills/chrome-devtools`, and `uv run wagents package chrome-devtools --dry-run`.
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.

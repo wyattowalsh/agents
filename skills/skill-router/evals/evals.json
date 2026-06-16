@@ -4,7 +4,7 @@
     {
       "id": "explicit-search",
       "prompt": "/skill-router search \"fix Playwright test\"",
-      "expected_output": "Runs or recommends `uv run wagents skills search \"fix Playwright test\" --limit 5` and explains that ranked results should guide which skill to load.",
+      "expected_output": "Runs or recommends `python scripts/skill_index.py search \"fix Playwright test\" --limit 5` and explains that ranked results should guide which skill to load.",
       "assertions": [
         "Uses the search dispatch path",
         "Preserves the user query",

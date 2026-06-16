@@ -73,4 +73,13 @@ node -e "const r=require('./report.json'); Object.values(r.audits).filter(a=>a.s
 
 ## Validation Contract
 
-Before declaring skill changes complete, run `uv run wagents validate`, `uv run python skills/skill-creator/scripts/audit.py skills/chrome-devtools-a11y-debugging`, and `uv run wagents package chrome-devtools-a11y-debugging --dry-run`.
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.

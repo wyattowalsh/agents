@@ -158,20 +158,17 @@ Use `references/import-checklist.md` for the full gate. Minimum checks:
 
 ## Validation Contract
 
-Before declaring this skill complete after edits:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python audit.py skills/external-skill-auditor
-uv run wagents package external-skill-auditor --dry-run
-uv run python skills/external-skill-auditor/scripts/audit_external_skill.py skills/external-skill-auditor
+python scripts/check.py
+python scripts/audit_external_skill.py .
 ```
 
 Completion criteria:
 
-- Skill and eval validation pass.
-- Audit score is A or all remaining findings are explicitly accepted.
-- Package dry-run passes.
+1. `scripts/check.py` exits 0.
+2. External audit smoke passes on this skill directory.
+3. No portable-CLI violations remain under this skill directory.
 - Static scanner returns JSON without executing candidate scripts.
 - Smoke review covers source triage, local scan, hook/script risk, and negative-control routing.

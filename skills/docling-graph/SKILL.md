@@ -302,35 +302,23 @@ Scale Docling Graph work by increasing operational controls before increasing mo
 
 ## Validation Contract
 
-For skill maintenance in this repository, run the repo's validation stack after changes:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python audit.py skills/docling-graph/ --format json
-uv run python [path-to-skill-creator-audit.py] skills/docling-graph/ --format json
-uv run wagents package docling-graph --dry-run
-uv run python -m py_compile skills/docling-graph/scripts/check-env.py skills/docling-graph/scripts/lint-template.py
-uv run pytest -q tests/test_docling_graph_skill.py
-uv run wagents readme --check
+python scripts/check.py
+python -m py_compile scripts/check-env.py scripts/lint-template.py
+pytest -q tests/test_docling_graph_skill.py
 git diff --check
-```
-
-After public skill changes, run the docs-steward workflow for this repo:
-
-```bash
-uv run wagents docs generate
-uv run wagents readme
 ```
 
 Completion criteria:
 
-1. `wagents validate` passes.
-2. `wagents eval validate` passes.
-3. Skill audit remains grade A unless a documented package-safety tradeoff explains a lower score.
-4. Package dry-run succeeds.
-5. Helper scripts compile and focused tests pass.
-6. Generated README/docs are synchronized.
+1. `scripts/check.py` exits 0.
+2. Helper scripts compile and focused tests pass.
+3. `git diff --check` exits 0.
+4. No portable-CLI violations remain under this skill directory.
+
+After changing skill definitions, public descriptions, reference files, or eval behavior, invoke `docs-steward` if available.
 
 ## Critical Rules
 

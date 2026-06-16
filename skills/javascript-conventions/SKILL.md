@@ -143,14 +143,17 @@ these tools. These are defaults, not absolute law; check
 
 ## Validation Contract
 
-Before considering this skill complete after edits, run:
+Run from this skill directory before declaring changes complete:
 
-1. `uv run wagents validate`
-2. `uv run wagents eval validate`
-3. Run the skill-creator audit command with `audit.py skills/javascript-conventions/ --format json`
-4. `uv run wagents package javascript-conventions --dry-run`
-5. `uv run wagents readme --check`
-6. `git diff --check`
+```bash
+python scripts/check.py
+git diff --check
+```
 
-Completion criteria: all applicable commands must pass with zero errors, or
-the final response must name the exact unrelated blocker.
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. `git diff --check` exits 0.
+3. No portable-CLI violations remain under this skill directory.
+
+After changing skill definitions, public descriptions, reference files, or eval behavior, invoke `docs-steward` if available.

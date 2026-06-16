@@ -59,7 +59,7 @@ def explain_add(capability_id: str) -> dict:
             "Attach the capability to one or more presets in data/presets.json.",
             "Add a reference note only if catalog metadata is not enough.",
             "Add or update evals for routing, conflict, and safety behavior.",
-            "Run validate_catalog.py, preferences.py validate, wagents eval validate, and the skill audit.",
+            "Run validate_catalog.py, preferences.py validate, scripts/check.py, and the skill audit.",
         ],
     }
 

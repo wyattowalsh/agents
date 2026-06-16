@@ -122,7 +122,7 @@ Produce a tool/resource/prompt inventory table before proceeding:
 
 ### 2.1 Create Project Structure
 
-Run `wagents new mcp <name>` to scaffold:
+Run `python skills/mcp-creator/scripts/scaffold_mcp.py <name>` to scaffold:
 
 ```
 mcp/<name>/
@@ -160,7 +160,7 @@ Create `tests/conftest.py` — see `references/testing.md` §4 for the complete 
 - Run `cd mcp/<name> && uv sync` to install dependencies.
 - Verify: `uv run python -c "from server import mcp; print(mcp.name)"`.
 
-Note: `wagents validate` validates skills/agents only, NOT MCP servers. Use the import check above for MCP server validation.
+Note: `python scripts/check.py` validates this skill only, NOT MCP servers. Use the import check above for MCP server validation.
 
 ---
 
@@ -398,7 +398,7 @@ See `references/deployment.md` §7 for complete configs per client.
 
 ### 5.3 Validate
 
-MCP server validation (wagents validate does NOT check MCP servers):
+MCP server validation (skill check.py does NOT check MCP servers):
 
 ```bash
 # Import check
@@ -500,3 +500,16 @@ Use these terms consistently. Do not invent synonyms.
 | **ToolError** | Exception class for user-visible error messages | "raise Exception" |
 | **annotation** | Tool metadata hints (`readOnlyHint`, `destructiveHint`, etc.) | "tag", "label" |
 | **transport** | Communication layer: stdio or Streamable HTTP | "protocol", "channel" |
+
+## Validation Contract
+
+Before declaring changes to this skill complete, run:
+
+```bash
+python skills/mcp-creator/scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. MCP scaffold smoke-check: `python skills/mcp-creator/scripts/scaffold_mcp.py --dry-run example-server`.

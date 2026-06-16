@@ -23,7 +23,7 @@ skills.
 
 ## Ranking Interpretation
 
-`wagents skills search` uses deterministic lexical ranking:
+`python scripts/skill_index.py search` uses deterministic lexical ranking:
 
 - Exact name and alias matches are strongest.
 - Name and title token matches outrank description matches.
@@ -81,15 +81,13 @@ skill, complete the relevant step, then search again for the next workstream.
 
 ## Validation Notes
 
-Use the repo validation stack when changing this skill:
+Use the skill validation stack when changing this skill:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python skills/skill-creator/scripts/audit.py skills/skill-router/
-uv run wagents package skill-router --dry-run
+python scripts/check.py
 uv run pytest tests/test_skill_index.py -q
 ```
 
-The audit command checks skill-creator structural expectations, while the CLI
-test checks the on-demand retrieval behavior this skill depends on.
+`scripts/check.py` runs skill validation, eval validation, package dry-run, and
+audit checks. The pytest suite checks the on-demand retrieval behavior this
+skill depends on.

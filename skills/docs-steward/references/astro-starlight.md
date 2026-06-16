@@ -16,7 +16,7 @@ Re-check before claiming "latest": see `version-refresh.md`.
 ## 3. High-Value Sync Workflow
 
 1. Validate content collection schemas.
-2. Regenerate derived docs artifacts (for this repo, via `wagents docs generate`).
+2. Regenerate derived docs artifacts (for this repo, via `python skills/docs-steward/scripts/docs_sync.py generate`).
 3. Build-check the site.
 4. Scan for orphaned pages and sidebar drift.
 

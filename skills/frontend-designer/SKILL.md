@@ -468,18 +468,20 @@ Load on demand during the relevant mode. Do NOT load all at once.
 
 ## Validation Contract
 
-Run before declaring this skill complete after edits:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python path/to/audit.py skills/frontend-designer/ --format json
-uv run wagents package frontend-designer --dry-run
-uv run pytest -q tests/test_frontend_designer_scan.py
-uv run wagents readme --check
+python scripts/check.py
+pytest -q tests/test_frontend_designer_scan.py
 ```
 
-Completion criteria: all commands pass with zero errors, audit score is A (90+), and docs-steward has handled generated docs if skill docs changed.
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. Focused tests pass with zero errors.
+3. No portable-CLI violations remain under this skill directory.
+
+After changing skill definitions, public descriptions, reference files, or eval behavior, invoke `docs-steward` if available.
 
 ---
 

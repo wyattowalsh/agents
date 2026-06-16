@@ -9,6 +9,6 @@
     "Agent routes to the narrowest applicable scope (rule before skill, skill before global)",
     "Agent applies kaizen principles: incremental change, poka-yoke (prefer hooks/tooling over prose), standards work",
     "Agent requests explicit user approval before modifying any instruction file",
-    "Agent runs 'wagents validate' after every instruction file modification"
+    "Agent runs 'python scripts/check.py' after every instruction file modification"
   ]
 }

@@ -270,7 +270,7 @@ After creating a new MCP server:
 
 1. Add `"mcp/<name>"` to root `pyproject.toml` workspace members
 2. Run `uv sync` to install
-3. Run `uv run wagents validate`
+3. Run `uv run python -c "from server import mcp; print(mcp.name)"` to verify import
 
 ## 9. Development Workflow
 

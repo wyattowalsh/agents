@@ -3,8 +3,8 @@ name: harness-master
 description: >-
   Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill
   improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor,
-  Gemini, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry.
-argument-hint: "[usage|research|candidate|compare|sources|project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|opencode|perplexity-desktop|cherry-studio|all ...]"
+  Gemini, Grok Build, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry.
+argument-hint: "[usage|research|candidate|compare|sources|project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|grok-build|opencode|perplexity-desktop|cherry-studio|all ...]"
 model: opus
 license: MIT
 compatibility: >-
@@ -58,7 +58,7 @@ If the user invokes `/harness-master` with no arguments:
 
 ## Input Normalization
 
-- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `opencode`, `perplexity-desktop`, `cherry-studio`
+- Supported harnesses: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`
 - Supported levels: `project`, `global`, `both`
 - Supported research categories: `config`, `plugin`, `extension`, `mcp`, `skill`, `all`
 - Supported usage windows: positive day counts such as `7`, `14`, `30`, or `days=14`; default to `14` when absent
@@ -73,6 +73,7 @@ If the user invokes `/harness-master` with no arguments:
   - `github-copilot`, `copilot`, `gh-copilot` -> expand to `github-copilot-web` and `github-copilot-cli`
   - `github-copilot-web`, `copilot-web`, `copilot-cloud`, `copilot-coding-agent` -> `github-copilot-web`
   - `github-copilot-cli`, `copilot-cli` -> `github-copilot-cli`
+  - `grok`, `grok-build`, `grok-cli` -> `grok-build`
   - `opencode`, `open-code` -> `opencode`
   - `perplexity`, `perplexity-desktop`, `perplexity-mac` -> `perplexity-desktop`
   - `cherry`, `cherrystudio`, `cherry-ai`, `cherry-studio` -> `cherry-studio`
@@ -82,8 +83,18 @@ If the user invokes `/harness-master` with no arguments:
   - `both`, `all-levels` -> `both`
 - Split multiple harnesses on commas and whitespace.
 - If the user supplies both `all` and named harnesses, ask which form they want.
-- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `opencode`, `perplexity-desktop`, `cherry-studio`
+- Deterministic `all` order: `claude-code`, `claude-desktop`, `chatgpt`, `codex`, `github-copilot-web`, `github-copilot-cli`, `cursor`, `gemini-cli`, `antigravity`, `grok-build`, `opencode`, `perplexity-desktop`, `cherry-studio`
 - Unknown tokens are never guessed. Ask one focused clarification question.
+
+
+### Grok Build (`grok-build`)
+
+- **Instruction entry:** `AGENTS.md` -> `instructions/grok-global.md` -> `instructions/global.md`
+- **Policy template:** `config/grok-config.toml` merged into `~/.grok/config.toml` via repo Grok platform adapter sync
+- **Ownership:** replace-owned (`models`, `mcp_servers`, `plugins`, `compat`, `telemetry`) vs blend-owned (`ui`, `features`, `session`, `tools`, `toolset`, `subagents`, `memory`)
+- **Skills:** no native Skills CLI adapter; install/sync uses `claude-code` alias + mirror to `~/.grok/skills`; inventory also scans repo `.grok/skills` (project scope)
+- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; check with Grok doctor CLI
+- **Isolated sync:** repo stack sync with `--platforms grok --targets home` (skips other harness home merges)
 
 ## Classification Gate
 
@@ -245,18 +256,14 @@ Never claim `latest` without evidence from a current source.
   npx skills add <source> --skill harness-master -y -g --agent <agent>
   ```
 - Do not recommend install commands for native config problems.
-- Do not suggest project-local install by default. Mention `wagents install --local` only if the user explicitly asks for project-local installation.
+- Do not suggest project-local install by default. Mention `python skills/harness-master/scripts/install_skills.py --local --execute` only if the user explicitly asks for project-local installation.
 
 ## Validation Contract
 
 After changing this skill, run:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-AUDIT_DIR=skills/skill-creator/scripts
-uv run python "$AUDIT_DIR"/audit.py skills/harness-master/
-uv run wagents package harness-master --dry-run
+python skills/harness-master/scripts/check.py
 uv run python skills/harness-master/scripts/usage_probe.py --repo-root . --harness opencode --level both --days 14 --json
 uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level both --harness claude-code --harness claude-desktop --harness chatgpt --harness codex --harness github-copilot-web --harness github-copilot-cli --harness cursor --harness gemini-cli --harness antigravity --harness opencode --harness perplexity-desktop --harness cherry-studio
 ```

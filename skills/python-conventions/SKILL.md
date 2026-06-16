@@ -100,15 +100,20 @@ Guided library preferences apply only when starting new Python work and no stron
 
 ## Validation Contract
 
-Before declaring changes to this skill complete, run:
+Run from this skill directory before declaring changes complete:
 
-1. `uv run wagents validate`
-2. `uv run wagents eval validate`
-3. `uv run python path/to/audit.py skills/python-conventions/ --format json`
-4. `uv run wagents package python-conventions --dry-run`
-5. `git diff --check`
+```bash
+python scripts/check.py
+git diff --check
+```
 
-After changing skill definitions, public descriptions, reference files, or eval behavior, invoke `docs-steward` if available and then run `uv run wagents readme --check`.
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. `git diff --check` exits 0.
+3. No portable-CLI violations remain under this skill directory.
+
+After changing skill definitions, public descriptions, reference files, or eval behavior, invoke `docs-steward` if available.
 
 ## Critical Rules
 

@@ -1,7 +1,7 @@
 {
   "skills": ["honest-review"],
-  "query": "/honest-review wagents/cli.py",
-  "files": ["wagents/cli.py"],
+  "query": "/honest-review src/cli.py",
+  "files": ["src/cli.py"],
   "expected_behavior": [
     "Agent dispatches to Scoped Review mode based on a file path argument",
     "Agent performs triage on the specified file, classifying its risk level",

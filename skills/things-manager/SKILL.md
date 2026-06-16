@@ -288,21 +288,17 @@ Include:
 
 ## Validation Contract
 
-Run these before declaring changes to this skill complete:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python skills/skill-creator/scripts/audit.py skills/things-manager/
-uv run wagents package things-manager --dry-run
+python scripts/check.py
 ```
 
 Completion criteria:
 
-- All validations pass.
-- Audit grade is A or any remaining gap is explicitly documented.
-- Package dry-run reports `Portable: yes`.
-- Smoke-check representative eval prompts for read-only planning, ambiguous deadlines, and bulk approval behavior.
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
+3. Smoke-check representative eval prompts for read-only planning, ambiguous deadlines, and bulk approval behavior.
 - No docs generation is run by this skill; docs sync belongs to docs-steward.
 
 ## Critical Rules

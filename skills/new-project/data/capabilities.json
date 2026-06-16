@@ -234,13 +234,13 @@
 			"external_side_effects": false,
 			"mutates_files": true,
 			"runs_install": false,
-			"commands": ["uv run wagents openspec init --apply"],
+			"commands": ["python skills/new-project/scripts/openspec_cli.py init --apply"],
 			"artifacts": [
 				"openspec/config.yaml",
 				"openspec/specs/",
 				"openspec/changes/"
 			],
-			"validation": ["uv run wagents openspec validate"],
+			"validation": ["python skills/new-project/scripts/openspec_cli.py validate"],
 			"handoff_skills": ["openspec-workflow"],
 			"docs_sources": ["https://openspec.dev/"],
 			"notes": "Do not commit generated downstream OpenSpec tool artifacts unless promoted."

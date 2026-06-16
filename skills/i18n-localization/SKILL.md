@@ -138,18 +138,14 @@ Do not rewrite marketing copy unless the user explicitly asks for copy editing. 
 
 ## Validation Contract
 
-Before declaring this skill complete after edits:
+Run from this skill directory before declaring changes complete:
 
 ```bash
-uv run wagents validate
-uv run wagents eval validate
-uv run python audit.py skills/i18n-localization
-uv run wagents package i18n-localization --dry-run
+python scripts/check.py
 ```
 
 Completion criteria:
 
-- Skill and eval validation pass.
-- Audit score is A or all remaining findings are explicitly accepted.
-- Package dry-run passes.
-- A smoke review of the dispatch table covers empty, explicit, implicit, and negative-control prompts.
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
+3. A smoke review of the dispatch table covers empty, explicit, implicit, and negative-control prompts.
