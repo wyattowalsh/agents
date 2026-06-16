@@ -7,18 +7,13 @@ from pathlib import Path
 from typing import Any
 
 
-def _load_registry(repo_root: Path) -> dict[str, Any]:
-    path = repo_root / "config/mcp-registry.json"
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
 def collect_mcp_registry_errors(repo_root: Path) -> list[dict[str, str]]:
     """Validate contributor-safe MCP tool policy in the registry."""
     path = repo_root / "config/mcp-registry.json"
     if not path.is_file():
         return []
 
-    registry = _load_registry(repo_root)
+    registry: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
     errors: list[dict[str, str]] = []
     defaults = registry.get("contributor_defaults")
     if not isinstance(defaults, dict):
