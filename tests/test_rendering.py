@@ -152,6 +152,23 @@ class TestRenderSkillPage:
         assert "## Used By" in result
         assert "my-agent" in result
 
+    def test_curated_stub_skips_raw_skill_collapsible(self, tmp_repo):
+        config_path = tmp_repo / "config" / "external-skills.md"
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        config_path.write_text("# Curated config bulk content that must not appear on stub pages\n")
+        node = _make_node(
+            "skill",
+            id="curated-skill",
+            source="curated-external",
+            body="",
+            source_path="config/external-skills.md",
+            metadata={"_is_stub": True, "_curated_status": "install-now-after-trust-gate"},
+        )
+        result = render_skill_page(node, [], [node])
+        assert "View Full SKILL.md" not in result
+        assert "Curated config bulk content" not in result
+        assert "SKILL.md is not available locally" in result
+
     def test_installed_skill_badge(self, tmp_repo):
         node = _make_node("skill", source="installed", source_path="/tmp/fake/SKILL.md")
         result = render_skill_page(node, [], [node])

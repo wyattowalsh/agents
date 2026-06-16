@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/docs-steward/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator).
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** `skill-creator` for backend code, skill definition edits
+
+**Repo summary:**
+
+Maintain docs quality, architecture, and framework currency in project-local repositories.
+
+&gt; Grounded in repository `skills/docs-steward/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Maintain docs quality, architecture, and framework currency in project-local repositories.

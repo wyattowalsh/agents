@@ -30,7 +30,7 @@ This page is generated from `local installed inventory`.
 
 ## What It Does
 
-## Core Philosophy
+1. **Profile before optimizing** — intuition about bottlenecks is wrong ~80% of the time. Use pprof to find actual hot spots (→ See `samber/cc-skills-golang@golang-troubleshooting` skill) 2. **Allocation reduction yields the biggest ROI** — Go's GC is fast but not free. Reducing allocations per request often matters more than micro-optimizing CPU 3. **Document optimizations** — add code comments explaining why a pattern is faster, with benchmark numbers when available. Future readers need context to avoid reverting an "unnecessary" optimization
 
 <Tabs>
   <TabItem label="Public Metadata">

@@ -8,7 +8,7 @@
 - Use llms.txt, Context7, and relevant tools for up-to-date context; prefer latest dependency versions.
 - After changes to public APIs, file structure, agent definitions, or skill definitions, invoke `/docs-steward` if available.
 - When skills need installing, surface the command to the user: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode`. When reconciling harness installs, prefer `uv run wagents skills sync --dry-run` before `--apply`.
-- For the curated third-party skill install set and trust-gated external sources, use `/Users/ww/dev/projects/agents/config/external-skills.md`.
+- For the curated third-party skill install set and trust-gated external sources, use `${REPO_ROOT}/config/external-skills.md`.
 - Never sign or add self-attribution.
 - Use hooks for deterministic enforcement; reserve instructions for intent and heuristics that require judgment.
 - Use OpenSpec for non-trivial changes to repo workflows, public asset formats, downstream agent tooling, docs generation, or validation behavior. Prefer `uv run wagents openspec ... --format json` when AI tools need machine-readable OpenSpec state.
@@ -86,11 +86,11 @@ For unfamiliar tools/APIs, check `{docs_url}/llms.txt` (index) and `llms-full.tx
 
 ## Codex-Specific Instructions
 
-- Treat `/Users/ww/dev/projects/agents/instructions/global.md` as the canonical shared instruction source.
-- Keep Codex-specific config generation in `/Users/ww/dev/projects/agents/scripts/sync_agent_stack.py`.
-- Keep `/Users/ww/.codex/config.toml` and the repo-owned sanitized config copy schema-valid.
+- Treat `./instructions/global.md` as the canonical shared instruction source.
+- Keep Codex-specific config generation in `./scripts/sync_agent_stack.py`.
+- Keep `~/.codex/config.toml` and the repo-owned sanitized config copy schema-valid.
 - Codex disables automatic startup skill-list injection to avoid context-budget warnings; use
-  `uv run wagents skills search|context|read|doctor ...` from `/Users/ww/dev/projects/agents`
+  `uv run wagents skills search|context|read|doctor ...` from the repo root
   when a task needs a skill body or a missing/omitted skill must be recovered.
 - Prefer dynamic subagent delegation over hardcoded static teams; keep local agent ceilings practical.
 - Keep Codex web search on live mode: set top-level `web_search = "live"` (and the same in managed profiles).

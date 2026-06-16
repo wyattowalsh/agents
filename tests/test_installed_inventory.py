@@ -219,7 +219,7 @@ def test_query_grok_harness_scans_grok_and_claude_skill_roots(tmp_path):
     (grok_skill_dir / "SKILL.md").write_text("---\nname: grok-only\ndescription: Grok\n---\n")
     (claude_skill_dir / "SKILL.md").write_text("---\nname: shared-skill\ndescription: Shared\n---\n")
 
-    (result,) = query_harness_skills(agent_ids=("grok",), home=tmp_path)
+    (result,) = query_harness_skills(agent_ids=("grok",), home=tmp_path, repo_root=tmp_path)
 
     assert result.ok
     by_name = {entry.name: entry for entry in result.entries}

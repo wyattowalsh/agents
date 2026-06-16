@@ -1,6 +1,12 @@
 """Tests for wagents.rendering — MDX escaping functions."""
 
-from wagents.rendering import escape_mdx, escape_mdx_line, safe_outer_fence
+from wagents.rendering import (
+    _extract_what_it_does,
+    _sanitize_what_it_does,
+    escape_mdx,
+    escape_mdx_line,
+    safe_outer_fence,
+)
 
 # ---------------------------------------------------------------------------
 # escape_mdx_line
@@ -12,7 +18,19 @@ class TestEscapeMdxLine:
         assert escape_mdx_line("use {x} here") == "use \\{x\\} here"
 
     def test_angle_bracket_escaped(self):
-        assert escape_mdx_line("a < b") == "a \\< b"
+        assert escape_mdx_line("a < b") == "a &lt; b"
+
+    def test_angle_brackets_in_table_cells_use_entities(self):
+        line = '| **Analyze** ("analyze <url>", "analyze db") | `ref.md` | details |'
+        result = escape_mdx_line(line)
+        assert "\\<" not in result
+        assert "&lt;url&gt;" in result
+
+    def test_markdown_escaped_angle_brackets_normalized(self):
+        line = '| ("analyze \\<url\\>", "db") | `ref.md` | details |'
+        result = escape_mdx_line(line)
+        assert "\\<" not in result
+        assert "&lt;url&gt;" in result
 
     def test_inline_code_preserved(self):
         result = escape_mdx_line("text `{x}` more")
@@ -74,6 +92,51 @@ class TestEscapeMdx:
         body = "```\n{x}\n```"
         result = escape_mdx(body)
         assert result == "```\n{x}\n```"
+
+
+# ---------------------------------------------------------------------------
+# _sanitize_what_it_does
+# ---------------------------------------------------------------------------
+
+
+class TestSanitizeWhatItDoes:
+    def test_rejects_code_fence_fragments(self):
+        text = "``` </python> import { createDeepAgent } from 'deepagents';"
+        assert _sanitize_what_it_does(text) == ""
+
+    def test_keeps_plain_summary(self):
+        text = "Systematic skill discovery engine for gap analysis."
+        assert _sanitize_what_it_does(text) == text
+
+    def test_rejects_hash_toc_links(self):
+        text = "## Contents - [Layers](#architectural-layers) - [Examples](#examples)"
+        assert _sanitize_what_it_does(text) == ""
+
+    def test_rejects_table_heavy_summary(self):
+        text = "| a | b | c | d |"
+        assert _sanitize_what_it_does(text) == ""
+
+
+class TestExtractWhatItDoes:
+    def test_skips_subheadings_and_tables(self):
+        body = (
+            "# AWS Serverless\n"
+            "## Overview\n"
+            "\n"
+            "Domain expertise for serverless on AWS.\n"
+            "\n"
+            "## Routing\n"
+            "| need | action |\n"
+        )
+        assert _extract_what_it_does(body) == "Domain expertise for serverless on AWS."
+
+    def test_rejects_toc_paragraph(self):
+        body = (
+            "# Flutter App\n"
+            "## Contents\n"
+            "- [Layers](#architectural-layers)\n"
+        )
+        assert _extract_what_it_does(body) == ""
 
 
 # ---------------------------------------------------------------------------

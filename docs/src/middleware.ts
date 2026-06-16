@@ -5,6 +5,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { readAdminSessionFromCookies } from './lib/admin/auth';
 import { ensureCsrfToken } from './lib/admin/csrf';
 import { readFeatureOverridesFromCookies } from './lib/admin/flags';
+import { legacySkillCatalogRedirect } from './lib/legacySkillCatalogRedirect';
 
 function isProtectedAdminPath(pathname: string): boolean {
   if (pathname.startsWith('/api/admin') && pathname !== '/api/admin/login') return true;
@@ -16,22 +17,15 @@ function isAdminSurfacePath(pathname: string): boolean {
   return pathname.startsWith('/admin') || pathname.startsWith('/api/admin');
 }
 
-const SKILL_HUB_SLUGS = new Set(['all', 'install', 'installed', 'catalog']);
-
-function legacySkillCatalogRedirect(pathname: string): string | null {
-  const match = pathname.match(/^\/skills\/([^/]+)\/?$/);
-  if (!match) return null;
-  if (SKILL_HUB_SLUGS.has(match[1])) return null;
-  return `/skills/catalog/${match[1]}/`;
-}
-
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
+  const requestId = randomUUID();
   const legacyRedirect = legacySkillCatalogRedirect(pathname);
   if (legacyRedirect) {
-    return context.redirect(legacyRedirect, 308);
+    const response = context.redirect(legacyRedirect, 308);
+    response.headers.set('x-request-id', requestId);
+    return response;
   }
-  const requestId = randomUUID();
 
   if (!isAdminSurfacePath(pathname)) {
     const response = await next();

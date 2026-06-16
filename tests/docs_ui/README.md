@@ -36,7 +36,6 @@ uv run python tests/docs_ui/screenshot_smoke.py --base-url http://127.0.0.1:4321
 
 Outputs are written to `artifacts/docs-ui-smoke/` by default.
 
-The `/skills/installed/` route is optional because it is generated only when
-docs are built with `wagents docs generate --include-installed`. The harness
-skips that route on 404 and still fails on 4xx/5xx responses for required
-routes.
+Skill detail pages live under `/skills/catalog/<name>/`. The retired
+`/skills/installed/` hub is not part of the default smoke route set. The harness
+also verifies legacy `/skills/<name>/` URLs return HTTP 308 to the catalog path.

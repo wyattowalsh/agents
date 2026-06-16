@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +29,24 @@ GROK_CONFIG_REPO_PATH = REPO_ROOT / ".grok" / "config.toml"
 GROK_CONFIG_POLICY_PATH = REPO_ROOT / "config" / "grok-config.toml"
 GROK_BINARY_PATH = HOME / ".grok" / "bin" / "grok"
 GROK_AGENTS_HOME_DIR = HOME / ".grok" / "agents"
+GROK_HOOKS_DIR = HOME / ".grok" / "hooks"
+GROK_PLANNOTATOR_HOOKS_PATH = GROK_HOOKS_DIR / "plannotator.json"
 AGENTS_DIR = REPO_ROOT / "agents"
+PLANNOTATOR_BIN_PATH = HOME / ".local" / "bin" / "plannotator"
+PLANNOTATOR_HOOKS_POLICY_PATH = REPO_ROOT / "config" / "grok-plannotator-hooks.json"
+PLANNOTATOR_EXIT_PLAN_HOOK_REL = Path("scripts") / "grok" / "plannotator-exit-plan-hook.sh"
+PLANNOTATOR_EXIT_PLAN_HOOK_PY_REL = Path("scripts") / "grok" / "plannotator-exit-plan-hook.py"
+PLANNOTATOR_EXIT_PLAN_HOOK_PATH = REPO_ROOT / PLANNOTATOR_EXIT_PLAN_HOOK_REL
+PLANNOTATOR_EXIT_PLAN_HOOK_PY_PATH = REPO_ROOT / PLANNOTATOR_EXIT_PLAN_HOOK_PY_REL
+PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME = "plannotator-exit-plan-hook.py"
+PLANNOTATOR_EXIT_PLAN_HOOK_HOME_PATH = GROK_HOOKS_DIR / PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME
+GROK_SKILLS_HOME_DIR = HOME / ".grok" / "skills"
+GROK_SKILLS_REPO_DIR = REPO_ROOT / ".grok" / "skills"
+PLANNOTATOR_CORE_SKILLS: tuple[str, ...] = (
+    "plannotator-review",
+    "plannotator-annotate",
+    "plannotator-last",
+)
 
 GROK_MCP_BEGIN = "# BEGIN MANAGED BY sync_agent_stack.py: MCP_SERVERS"
 GROK_MCP_END = "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS"
@@ -400,6 +419,114 @@ def render_grok_config(
     return "\n\n".join(part for part in parts if part) + "\n"
 
 
+def resolve_plannotator_binary() -> Path:
+    """Return the preferred Plannotator CLI path."""
+    return PLANNOTATOR_BIN_PATH
+
+
+def plannotator_core_skill_roots(*, home: Path | None = None) -> tuple[Path, ...]:
+    """Skill directories Grok doctor should scan for Plannotator core skills."""
+    home_dir = home or HOME
+    roots: list[Path] = []
+    for relative in (Path(".grok") / "skills", Path(".claude") / "skills"):
+        roots.append(home_dir / relative)
+    project_root = REPO_ROOT / ".grok" / "skills"
+    if project_root.is_dir():
+        roots.append(project_root)
+    return tuple(roots)
+
+
+def missing_plannotator_core_skills(*, home: Path | None = None) -> list[str]:
+    """Return core Plannotator skill names that are not installed in known roots."""
+    present: set[str] = set()
+    for skill_root in plannotator_core_skill_roots(home=home):
+        if not skill_root.is_dir():
+            continue
+        for skill_name in PLANNOTATOR_CORE_SKILLS:
+            if (skill_root / skill_name / "SKILL.md").exists():
+                present.add(skill_name)
+    return [name for name in PLANNOTATOR_CORE_SKILLS if name not in present]
+
+
+def plannotator_exit_plan_hook_home_path(*, hooks_dir: Path | None = None) -> Path:
+    """Return the home-local Plannotator exit-plan hook path."""
+    return (hooks_dir or GROK_HOOKS_DIR) / PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME
+
+
+def render_grok_plannotator_hooks(*, hooks_dir: Path | None = None) -> str:
+    """Render managed Plannotator hook JSON with home-local absolute paths."""
+    policy_path = PLANNOTATOR_HOOKS_POLICY_PATH
+    if not policy_path.exists():
+        return ""
+    template = policy_path.read_text(encoding="utf-8")
+    exit_hook = str(plannotator_exit_plan_hook_home_path(hooks_dir=hooks_dir).resolve())
+    plannotator_bin = str(resolve_plannotator_binary())
+    rendered = template.replace("__PLANNOTATOR_EXIT_PLAN_HOOK__", exit_hook)
+    rendered = rendered.replace("__PLANNOTATOR_BIN__", plannotator_bin)
+    return rendered.rstrip() + "\n"
+
+
+def _chmod_executable(path: Path) -> None:
+    path.chmod(path.stat().st_mode | 0o111)
+
+
+def _copy_plannotator_exit_plan_hook(ctx: SyncContext, *, hooks_dir: Path) -> None:
+    source = PLANNOTATOR_EXIT_PLAN_HOOK_PY_PATH
+    if not source.is_file():
+        return
+    destination = hooks_dir / PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME
+    if destination.exists() and destination.read_bytes() == source.read_bytes():
+        if ctx.apply and not os.access(destination, os.X_OK):
+            _chmod_executable(destination)
+        return
+    ctx.note(f"copy {source} -> {destination}")
+    if ctx.apply:
+        hooks_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+        _chmod_executable(destination)
+
+
+def sync_grok_plannotator_skill_overlays(ctx: SyncContext) -> None:
+    """Symlink repo Plannotator skill overlays into ~/.grok/skills."""
+    if not GROK_SKILLS_REPO_DIR.is_dir():
+        return
+    if ctx.apply:
+        GROK_SKILLS_HOME_DIR.mkdir(parents=True, exist_ok=True)
+    for skill_dir in sorted(GROK_SKILLS_REPO_DIR.glob("plannotator-*")):
+        if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").is_file():
+            continue
+        destination = GROK_SKILLS_HOME_DIR / skill_dir.name
+        if destination.is_symlink() and destination.resolve() == skill_dir.resolve():
+            continue
+        if destination.exists() and not destination.is_symlink():
+            continue
+        ctx.note(f"symlink {skill_dir} -> {destination}")
+        if ctx.apply:
+            if destination.exists() or destination.is_symlink():
+                destination.unlink()
+            destination.symlink_to(skill_dir)
+
+
+def sync_grok_plannotator(ctx: SyncContext) -> None:
+    """Sync Plannotator hooks, home hook shim, and skill overlays (default-on)."""
+    rendered = render_grok_plannotator_hooks()
+    if not rendered:
+        return
+    _copy_plannotator_exit_plan_hook(ctx, hooks_dir=GROK_HOOKS_DIR)
+    destination = GROK_PLANNOTATOR_HOOKS_PATH
+    ctx.note(f"write {destination}")
+    if ctx.apply:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(rendered, encoding="utf-8")
+    sync_grok_plannotator_skill_overlays(ctx)
+
+
+def sync_grok_plannotator_hooks(ctx: SyncContext, *, repo_root: Path | None = None) -> None:
+    """Backward-compatible alias for Plannotator home sync."""
+    del repo_root
+    sync_grok_plannotator(ctx)
+
+
 def sync_grok_agents(ctx: SyncContext) -> None:
     if not AGENTS_DIR.is_dir():
         return
@@ -454,3 +581,5 @@ class Adapter(PlatformAdapter):
         assert_no_grok_config_drops(current, rendered, registry)
         ctx.write_text(GROK_CONFIG_PATH, rendered)
         sync_grok_agents(ctx)
+        if ctx.grok_plannotator_hooks:
+            sync_grok_plannotator(ctx)

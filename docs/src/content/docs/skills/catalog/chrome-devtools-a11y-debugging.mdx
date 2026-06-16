@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/chrome-devtools-a11y-debugging/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization.
+
+**Stack / assumptions:** Requires Chrome DevTools MCP 0.23.0 or compatible tools with `lighthouse_audit`, `take_snapshot`, `press_key`, `evaluate_script`, and console issue access.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Use Chrome DevTools MCP to validate what assistive technologies can see and how keyboard users move through the page. The accessibility tree is the primary source of truth; screenshots are supporting evidence.
+
+&gt; Grounded in repository `skills/chrome-devtools-a11y-debugging/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Use Chrome DevTools MCP to validate what assistive technologies can see and how keyboard users move through the page. The accessibility tree is the primary source of truth; screenshots are supporting evidence.

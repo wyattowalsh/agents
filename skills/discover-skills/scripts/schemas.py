@@ -6,10 +6,16 @@ from __future__ import annotations
 import json
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 from _paths import data_dir
+
+try:
+    from jsonschema import Draft202012Validator
+except ImportError:  # pragma: no cover - repo depends on jsonschema
+    Draft202012Validator = None  # type: ignore[misc, assignment]
 
 COVERAGE_VALUES = frozenset({"none", "low", "medium", "good", "full"})
 SCOUT_ROLES = frozenset(
@@ -91,8 +97,26 @@ def utc_now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat()
 
 
+@lru_cache(maxsize=8)
+def _schema_validator(name: str) -> Draft202012Validator | None:
+    if Draft202012Validator is None:
+        return None
+    path = data_dir() / "schemas" / f"{name}.schema.json"
+    if not path.is_file():
+        return None
+    schema = json.loads(path.read_text(encoding="utf-8"))
+    return Draft202012Validator(schema)
+
+
+def _validate_with_schema(data: dict[str, Any], schema_name: str) -> list[str]:
+    validator = _schema_validator(schema_name)
+    if validator is None:
+        return []
+    return [f"schema:{err.message}" for err in sorted(validator.iter_errors(data), key=str)]
+
+
 def validate_gap_report(data: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+    errors = _validate_with_schema(data, "gap-report")
     for key in ("version", "generated_at", "domains"):
         if key not in data:
             errors.append(f"missing key: {key}")
@@ -114,7 +138,7 @@ def validate_gap_report(data: dict[str, Any]) -> list[str]:
 
 
 def validate_wave_manifest(data: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+    errors = _validate_with_schema(data, "wave-manifest")
     for key in ("session_id", "wave", "expected_count", "tasks"):
         if key not in data:
             errors.append(f"missing key: {key}")
@@ -138,7 +162,7 @@ def validate_wave_manifest(data: dict[str, Any]) -> list[str]:
 
 
 def validate_scout_artifact(data: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+    errors = _validate_with_schema(data, "scout-artifact")
     for key in ("task_id", "role", "status"):
         if key not in data:
             errors.append(f"missing key: {key}")

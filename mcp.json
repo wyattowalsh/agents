@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "mcphub_group_harness-safe": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/harness-safe"
       ],
@@ -11,7 +11,7 @@
       "disabled": false
     },
     "mcphub_server_brave-search": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/brave-search"
       ],
@@ -21,7 +21,7 @@
       "disabled": true
     },
     "mcphub_server_chrome-devtools": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/chrome-devtools"
       ],
@@ -31,7 +31,7 @@
       "disabled": true
     },
     "mcphub_server_context7": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/context7"
       ],
@@ -41,7 +41,7 @@
       "disabled": true
     },
     "mcphub_server_deepwiki": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/deepwiki"
       ],
@@ -51,7 +51,7 @@
       "disabled": true
     },
     "mcphub_server_duckduckgo-search": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/duckduckgo-search"
       ],
@@ -61,7 +61,7 @@
       "disabled": true
     },
     "mcphub_server_fetch": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/fetch"
       ],
@@ -71,7 +71,7 @@
       "disabled": true
     },
     "mcphub_server_fetcher": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/fetcher"
       ],
@@ -81,7 +81,7 @@
       "disabled": true
     },
     "mcphub_server_gmail": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/gmail"
       ],
@@ -91,7 +91,7 @@
       "disabled": true
     },
     "mcphub_server_package-version": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/package-version"
       ],
@@ -101,7 +101,7 @@
       "disabled": true
     },
     "mcphub_server_penpot": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/penpot"
       ],
@@ -111,7 +111,7 @@
       "disabled": true
     },
     "mcphub_server_repomix": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/repomix"
       ],
@@ -121,7 +121,7 @@
       "disabled": true
     },
     "mcphub_server_supathings": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/supathings"
       ],
@@ -131,7 +131,7 @@
       "disabled": true
     },
     "mcphub_server_tavily": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/tavily"
       ],
@@ -141,7 +141,7 @@
       "disabled": true
     },
     "mcphub_server_trafilatura": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/remote-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
       "args": [
         "http://127.0.0.1:46683/mcp/trafilatura"
       ],

@@ -1,4 +1,4 @@
-@/Users/ww/dev/projects/agents/instructions/global.md
+@./instructions/global.md
 
 # Gemini CLI
 

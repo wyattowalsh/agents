@@ -1,0 +1,18 @@
+flowchart TD
+  P0_PATH["P0: Path-neutral sync\n(P0-001)"]
+  P0_ONBOARD["P0: 30-min onboarding\n(W1-ASSETS-DOCS-005)"]
+  P0_TIER["P0: Tier honesty docs\n(P0-002)"]
+  P1_CODEX["P1: Codex adapter\n(W1-003)"]
+  P1_MCP["P1: MCP safe defaults\n(W2-SEC-03)"]
+  P1_CATALOG["P1: Catalog trust UX\n(W1-ASSETS-DOCS-011)"]
+  P2_OPENSPEC["P2: OpenSpec hygiene\n(W2-OS-002)"]
+  P2_SECURITY["P2: Security tests\n(W2-SEC-11)"]
+  P2_THIN["P2: Thin sync monolith\n(W1-T-01)"]
+
+  P0_PATH --> P1_CODEX
+  P0_PATH --> P1_MCP
+  P0_ONBOARD --> P1_CATALOG
+  P0_TIER --> P2_OPENSPEC
+  P1_CODEX --> P2_THIN
+  P1_MCP --> P2_SECURITY
+  P1_CATALOG --> P2_OPENSPEC

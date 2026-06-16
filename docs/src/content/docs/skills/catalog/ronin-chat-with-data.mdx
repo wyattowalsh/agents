@@ -28,7 +28,7 @@ This page is generated from `local installed inventory`.
 
 ## What It Does
 
-| `$ARGUMENTS` | Action | |------------|--------| | `funnel` / `pipeline` | Pipeline funnel visualization | | `skills` / `skill gaps` | Skill demand analysis across opportunities | | `salary` / `compensation` / `money` | Compensation landscape scatter/range chart | | `velocity` / `speed` / `timeline` | Pipeline velocity and weekly activity | | `flow` / `sankey` | Pipeline state flow (Sankey diagram) | | `signals` / `email` | Email signal timeline | | `offers` / `compare offers` | Offer comparison grouped bar chart | | `dashboard` / `overview` | Full dashboard — funnel + metrics + top charts | | Natural language data question | Auto-detect: query data, choose best chart type, render | | Empty | Show available visualizations with data summary |
+&gt; **Context load:** Start from the Ronin MCP connection already configured in the current harness. Load only the data needed for the requested visualization in parallel. Do not require a local `localhost:8000` health check unless the user is explicitly debugging local infrastructure.
 
 ## Modes
 

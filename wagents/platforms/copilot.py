@@ -1,14 +1,4 @@
-"""GitHub Copilot adapter.
-
-Placeholder — Copilot requires:
-- ``~/.copilot/settings.json``  (model defaults, trusted folders, allowed URLs)
-- ``~/.copilot/mcp-config.json``  (MCP with tool allowlists)
-- ``~/.copilot/hooks.json``  (custom event mapping)
-- ``.github/copilot-instructions.md``  (generated from global.md)
-- ``.github/instructions/``  (rules from Claude rules)
-- ``.github/hooks/policy.json``  (hook policy)
-- Subagent env file
-"""
+"""GitHub Copilot adapter."""
 
 from __future__ import annotations
 
@@ -34,8 +24,15 @@ class Adapter(PlatformAdapter):
         hook_registry: dict[str, Any],
         policy: dict[str, Any],
     ) -> None:
-        """TODO: generate repo instructions, rules, and hooks."""
-        pass
+        from scripts.sync_agent_stack import (
+            generate_copilot_hooks,
+            generate_copilot_repo_instructions,
+            generate_copilot_rule_instructions,
+        )
+
+        generate_copilot_repo_instructions(ctx)
+        generate_copilot_rule_instructions(ctx)
+        generate_copilot_hooks(ctx, hook_registry)
 
     def sync_home(
         self,
@@ -45,5 +42,15 @@ class Adapter(PlatformAdapter):
         fallbacks: dict[str, str],
         hook_registry: dict[str, Any],
     ) -> None:
-        """TODO: merge settings, MCP, subagent env, and agent symlinks."""
-        pass
+        from scripts.sync_agent_stack import (
+            merge_copilot_config,
+            render_copilot_mcp,
+            sync_copilot_agents,
+            sync_copilot_subagent_env,
+        )
+
+        merge_copilot_config(ctx, policy)
+        sync_copilot_subagent_env(ctx, policy)
+        ctx.write_json(COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks, "github-copilot-cli"))
+        sync_copilot_agents(ctx)
+

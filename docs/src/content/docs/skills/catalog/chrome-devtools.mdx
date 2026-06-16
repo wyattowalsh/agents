@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/chrome-devtools/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions. NOT for CLI-only automation, a11y audits, LCP deep dives, memory leaks, or MCP setup troubleshooting.
+
+**Stack / assumptions:** Requires chrome-devtools-mcp 0.23.0 or compatible MCP tools backed by Chrome or Chrome for Testing.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Use Chrome DevTools MCP for browser-grounded debugging and automation. Prefer the text accessibility snapshot for structure and interaction, and use screenshots or traces only when the task needs visual or performance evidence.
+
+&gt; Grounded in repository `skills/chrome-devtools/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Use Chrome DevTools MCP for browser-grounded debugging and automation. Prefer the text accessibility snapshot for structure and interaction, and use screenshots or traces only when the task needs visual or performance evidence.

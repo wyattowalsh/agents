@@ -388,6 +388,28 @@
       "trustTier": "needs-inspection"
     },
     {
+      "command": "npx skills add backnotprop/plannotator --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "plannotator-compound",
+        "plannotator-setup-goal",
+        "plannotator-visual-explainer"
+      ],
+      "source": "backnotprop/plannotator",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "plannotator-annotate",
+        "plannotator-last",
+        "plannotator-review"
+      ],
+      "source": "backnotprop/plannotator/apps/skills/core",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "better-auth-best-practices"
@@ -1483,33 +1505,6 @@
         "apollo-router-plugin-creator"
       ],
       "source": "apollographql/skills",
-      "status": "installed-external",
-      "trustTier": "github"
-    },
-    {
-      "command": "npx skills add backnotprop/plannotator --skill plannotator-compound -y -g",
-      "skills": [
-        "plannotator-compound"
-      ],
-      "source": "backnotprop/plannotator",
-      "status": "installed-external",
-      "trustTier": "github"
-    },
-    {
-      "command": "npx skills add backnotprop/plannotator --skill plannotator-setup-goal -y -g",
-      "skills": [
-        "plannotator-setup-goal"
-      ],
-      "source": "backnotprop/plannotator",
-      "status": "installed-external",
-      "trustTier": "github"
-    },
-    {
-      "command": "npx skills add backnotprop/plannotator --skill plannotator-visual-explainer -y -g",
-      "skills": [
-        "plannotator-visual-explainer"
-      ],
-      "source": "backnotprop/plannotator",
       "status": "installed-external",
       "trustTier": "github"
     },

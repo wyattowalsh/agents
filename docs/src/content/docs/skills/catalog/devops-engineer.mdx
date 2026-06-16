@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/devops-engineer/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code.
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** `infrastructure-coder` for infrastructure provisioning
+
+**Repo summary:**
+
+CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: generate workflows, optimize build times, design deployment strategies, review existing pipelines, debug CI failures.
+
+&gt; Grounded in repository `skills/devops-engineer/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: generate workflows, optimize build times, design deployment strategies, review existing pipelines, debug CI failures.
@@ -56,7 +72,7 @@ CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: g
 7. Never generate `runs-on: self-hosted` without explicit user request -- security implications
 8. Always validate generated YAML by running `workflow-analyzer.py` before presenting
 9. Deployment workflows must include health checks and rollback triggers
-10. Debug mode must truncate/sample large logs (>500 lines) before analysis -- do not load entire CI logs into context
+10. Debug mode must truncate/sample large logs (&gt;500 lines) before analysis -- do not load entire CI logs into context
 11. Review mode is read-only until user approves fixes (approval gate)
 12. Load ONE reference file at a time -- do not preload all references into context
 13. Every optimization recommendation must include estimated time savings

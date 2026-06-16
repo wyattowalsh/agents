@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "instruction_source": "/Users/ww/dev/projects/agents/instructions/global.md",
+  "instruction_source": "${REPO_ROOT}/instructions/global.md",
   "servers": {
     "brave-search": {
       "transport": "stdio",
@@ -44,7 +44,7 @@
       "transport": "stdio",
       "command": "bash",
       "args": [
-        "/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"
+        "${REPO_ROOT}/scripts/mcphub/chrome-devtools-browser-url.sh"
       ],
       "env": {
         "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": {
@@ -134,7 +134,7 @@
     },
     "docling": {
       "transport": "stdio",
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/docling-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/docling-stdio.sh",
       "args": [],
       "env": {},
       "enabled": true,
@@ -199,7 +199,7 @@
     },
     "package-version": {
       "transport": "stdio",
-      "command": "/Users/ww/go/bin/mcp-package-version",
+      "command": "~/go/bin/mcp-package-version",
       "args": [],
       "env": {},
       "enabled": true,
@@ -333,7 +333,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/projects/agents/mcp/servers/trafilatura_mcp",
+        "${REPO_ROOT}/mcp/servers/trafilatura_mcp",
         "run",
         "python3",
         "trafilatura_mcp.py"
@@ -369,7 +369,7 @@
       "transport": "stdio",
       "command": "node",
       "args": [
-        "/Users/ww/dev/projects/agents/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
+        "${REPO_ROOT}/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
       ],
       "env": {},
       "enabled": true,
@@ -407,7 +407,7 @@
     },
     "creative-thinking": {
       "transport": "stdio",
-      "command": "/Users/ww/dev/projects/agents/scripts/mcp_tools/run_mcp_thinking.sh",
+      "command": "${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh",
       "args": [],
       "env": {},
       "enabled": true,
@@ -478,7 +478,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/projects/agents/mcp/servers/ffmpeg-mcp",
+        "${REPO_ROOT}/mcp/servers/ffmpeg-mcp",
         "run",
         "ffmpeg-mcp"
       ],
@@ -547,7 +547,7 @@
       "transport": "stdio",
       "command": "node",
       "args": [
-        "/Users/ww/dev/projects/agents/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
+        "${REPO_ROOT}/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
       ],
       "env": {},
       "enabled": true,

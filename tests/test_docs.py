@@ -1,7 +1,5 @@
 """Tests for wagents.docs — index pages, sidebar, and docs subcommands."""
 
-from pathlib import Path
-
 from wagents.catalog import CatalogNode
 from wagents.docs import (
     docs_generate,
@@ -183,7 +181,7 @@ class TestWriteSkillsIndex:
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
         content_dir.mkdir(parents=True, exist_ok=True)
         nodes = [_make_node("skill"), _make_node("skill", id_suffix="ext", source="installed")]
-        write_all_skills_index(nodes, [])
+        write_all_skills_index(nodes)
         text = (content_dir / "skills" / "all.mdx").read_text()
         assert "/skills/catalog/test-skill/" in text
         assert "Curated External" in text
@@ -191,7 +189,7 @@ class TestWriteSkillsIndex:
     def test_install_scripts_page_groups_commands(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
         content_dir.mkdir(parents=True, exist_ok=True)
-        write_skill_install_scripts_page([_make_node("skill")], [])
+        write_skill_install_scripts_page()
         text = (content_dir / "skills" / "install.mdx").read_text()
         assert "Skill Install Scripts" in text
         assert "canonical portable install path is `npx skills add`" in text
@@ -335,12 +333,124 @@ class TestWriteSidebar:
         assert "autogenerate: { directory: 'skills/catalog' }" in text
 
 
-class TestSkillCatalogComponent:
-    def test_skill_catalog_exposes_extended_filter_controls(self):
-        component = Path("docs/src/components/SkillCatalog.astro").read_text()
+class TestSkillHubPages:
+    def test_generated_skill_hubs_use_link_cards_not_skill_catalog(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        nodes = [_make_node("skill")]
+        write_skills_index(nodes)
+        write_all_skills_index(nodes)
 
-        assert "data-skill-review" in component
-        assert "data-skill-agent" in component
-        assert "data-skill-installable" in component
-        assert "displaySource" in component
-        assert "localInventoryOnly" in component
+        for name in ("index.mdx", "all.mdx"):
+            text = (content_dir / "skills" / name).read_text()
+            assert "SkillCatalog" not in text
+            assert "LinkCard" in text
+            assert "/skills/catalog/" in text
+
+
+class TestResearchCoverageTypes:
+    def test_all_includes_installed_when_requested(self):
+        from wagents.docs import _research_coverage_types
+
+        assert _research_coverage_types("all", include_installed=True) == [
+            "custom",
+            "curated-external",
+            "installed",
+        ]
+
+    def test_all_omits_installed_when_disabled(self):
+        from wagents.docs import _research_coverage_types
+
+        assert _research_coverage_types("all", include_installed=False) == [
+            "custom",
+            "curated-external",
+        ]
+
+    def test_single_source_type_passthrough(self):
+        from wagents.docs import _research_coverage_types
+
+        assert _research_coverage_types("custom", include_installed=True) == ["custom"]
+
+
+class TestDocsResearchCommand:
+    def test_research_skill_filter(self, monkeypatch):
+        from typer.testing import CliRunner
+
+        from wagents.cli import app
+        from wagents.skill_docs import SkillDocNode
+
+        node = SkillDocNode(
+            node=_make_node("skill", id="alpha"),
+            source_type="custom",
+        )
+
+        monkeypatch.setattr("wagents.docs.collect_skill_doc_nodes", lambda **kwargs: [node])
+        monkeypatch.setattr("wagents.docs.research_coverage", lambda *args, **kwargs: (0, 1))
+        monkeypatch.setattr("wagents.docs.update_research_manifest", lambda: None)
+
+        runner = CliRunner()
+        result = runner.invoke(app, ["docs", "research", "--skill", "alpha", "--dry-run", "--no-installed"])
+
+        assert result.exit_code == 0
+        assert "Batch 1: 1 skills — alpha" in result.output
+
+    def test_check_research_exits_when_incomplete(self, monkeypatch):
+        from typer.testing import CliRunner
+
+        from wagents.cli import app
+        from wagents.skill_docs import SkillDocNode
+
+        node = SkillDocNode(
+            node=_make_node("skill", id="alpha"),
+            source_type="custom",
+        )
+
+        monkeypatch.setattr("wagents.docs.collect_skill_doc_nodes", lambda **kwargs: [node])
+        monkeypatch.setattr("wagents.docs.research_coverage", lambda *args, **kwargs: (0, 1))
+
+        runner = CliRunner()
+        result = runner.invoke(
+            app,
+            ["docs", "research", "--check-research", "--source-type", "custom", "--dry-run", "--no-installed"],
+        )
+
+        assert result.exit_code == 1
+        assert "research cache incomplete" in result.output
+
+    def test_check_research_all_validates_each_source_type(self, monkeypatch):
+        from typer.testing import CliRunner
+
+        from wagents.cli import app
+        from wagents.skill_docs import SkillDocNode
+
+        node = SkillDocNode(
+            node=_make_node("skill", id="alpha"),
+            source_type="custom",
+        )
+
+        def fake_coverage(doc_nodes, *, source_type: str):
+            if source_type == "curated-external":
+                return 0, 1
+            return 1, 1
+
+        monkeypatch.setattr("wagents.docs.collect_skill_doc_nodes", lambda **kwargs: [node])
+        monkeypatch.setattr("wagents.docs.research_coverage", fake_coverage)
+
+        runner = CliRunner()
+        result = runner.invoke(
+            app,
+            [
+                "docs",
+                "research",
+                "--check-research",
+                "--source-type",
+                "all",
+                "--dry-run",
+                "--no-installed",
+            ],
+        )
+
+        assert result.exit_code == 1
+        assert "research cache incomplete for curated-external" in result.output
+        assert "Research cache coverage (custom):" in result.output
+        assert "Research cache coverage (curated-external):" in result.output

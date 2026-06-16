@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/research/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+General-purpose deep research with multi-source synthesis, confidence scoring, and anti-hallucination verification. Adopts SOTA patterns from OpenAI Deep Research (multi-agent triage pipeline), Google Gemini Deep Research (user-reviewable plans), STORM (perspective-guided conversations), Perplexity (source confidenc...
+
+&gt; Grounded in repository `skills/research/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 General-purpose deep research with multi-source synthesis, confidence scoring, and anti-hallucination verification. Adopts SOTA patterns from OpenAI Deep Research (multi-agent triage pipeline), Google Gemini Deep Research (user-reviewable plans), STORM (perspective-guided conversations), Perplexity (source confidence ratings), and LangChain ODR (supervisor-researcher with reflection).
@@ -37,7 +53,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 | `$ARGUMENTS` | Action |
 |---|---|
 | Question or topic text (has verb or `?`) | **Investigate** — classify complexity, execute wave pipeline |
-| Vague input (\<5 words, no verb, no `?`) | **Intake** — ask 2-3 clarifying questions, then classify |
+| Vague input (&lt;5 words, no verb, no `?`) | **Intake** — ask 2-3 clarifying questions, then classify |
 | `check &lt;claim&gt;` or `verify &lt;claim&gt;` | **Fact-check** — verify claim against 3+ search engines |
 | `compare &lt;A&gt; vs &lt;B&gt; [vs &lt;C&gt;...]` | **Compare** — structured comparison with decision matrix output |
 | `survey &lt;field or topic&gt;` | **Survey** — landscape mapping, annotated bibliography |
@@ -51,7 +67,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 
 ## Critical Rules
 
-1. **No claim >= 0.7 unless supported by 2+ independent sources** — single-source claims cap at 0.6
+1. **No claim &gt;= 0.7 unless supported by 2+ independent sources** — single-source claims cap at 0.6
 2. **Never fabricate citations** — if URL, author, title, or date cannot be verified, use vague attribution ("a study in this tradition") rather than inventing specifics
 3. **Always surface contradictions explicitly** — never silently resolve disagreements; present both sides with evidence
 4. **Always present triage scoring before executing research** — user must see and can override complexity tier

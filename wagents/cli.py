@@ -110,7 +110,44 @@ app.add_typer(openspec_app, name="openspec")
 opencode_app = typer.Typer(help="Diagnose OpenCode runtime state")
 app.add_typer(opencode_app, name="opencode")
 grok_app = typer.Typer(help="Diagnose Grok Build runtime state")
+plannotator_app = typer.Typer(help="Install and verify Plannotator for Grok Build")
+grok_app.add_typer(plannotator_app, name="plannotator")
 app.add_typer(grok_app, name="grok")
+
+PLANNOTATOR_CORE_SYNC_COMMAND = [
+    "npx",
+    "-y",
+    "skills",
+    "add",
+    "backnotprop/plannotator/apps/skills/core",
+    "--skill",
+    "plannotator-review",
+    "--skill",
+    "plannotator-annotate",
+    "--skill",
+    "plannotator-last",
+    "-y",
+    "-g",
+    "-a",
+    skills_cli_agent_id("grok"),
+]
+PLANNOTATOR_EXTRAS_SYNC_COMMAND = [
+    "npx",
+    "-y",
+    "skills",
+    "add",
+    "backnotprop/plannotator",
+    "--skill",
+    "plannotator-compound",
+    "--skill",
+    "plannotator-setup-goal",
+    "--skill",
+    "plannotator-visual-explainer",
+    "-y",
+    "-g",
+    "-a",
+    skills_cli_agent_id("grok"),
+]
 
 OUTPUT_FORMATS = ("text", "json", "jsonl")
 SKILL_SOURCES = (
@@ -987,6 +1024,7 @@ def validate(
 
 
 SUPPORTED_AGENTS = list(SUPPORTED_AGENT_IDS)
+UNRESOLVED_PROVENANCE = frozenset({"curated-unresolved", "read-only-discovered"})
 
 
 def _select_sync_agents(agent: list[str] | None, all_agents: bool) -> tuple[str, ...]:
@@ -1005,9 +1043,7 @@ def _select_sync_agents(agent: list[str] | None, all_agents: bool) -> tuple[str,
                 raise typer.Exit(code=1)
             normalized.append(item)
         return tuple(normalized)
-    if all_agents or not agent:
-        return tuple(SUPPORTED_AGENTS)
-    return tuple()
+    return tuple(SUPPORTED_AGENTS)
 
 
 def _row_targets_agent(row: InstalledSkillInventoryRow, agent_id: str) -> bool:
@@ -1057,9 +1093,7 @@ def _sync_command_groups(rows: list[InstalledSkillInventoryRow], agent_id: str) 
 def _sync_row_summary(row: InstalledSkillInventoryRow) -> str:
     """Render a compact sync summary line."""
     suffix = ""
-    has_unresolved_reason = (
-        row.provenance_status in {"curated-unresolved", "read-only-discovered"} and row.unresolved_reason
-    )
+    has_unresolved_reason = row.provenance_status in UNRESOLVED_PROVENANCE and row.unresolved_reason
     has_source_suffix = row.provenance_status in {"installed-external", "verified-curated-external"} and row.source
     if has_unresolved_reason:
         suffix = f" — {row.unresolved_reason}"
@@ -1083,9 +1117,7 @@ def _build_sync_report(
 
     verified_rows = [row for row in merged.rows if row.is_repo_owned() or row.is_verified_curated()]
     optional_installed = [row for row in merged.rows if row.provenance_status == "installed-external"]
-    unresolved_rows = [
-        row for row in merged.rows if row.provenance_status in {"curated-unresolved", "read-only-discovered"}
-    ]
+    unresolved_rows = [row for row in merged.rows if row.provenance_status in UNRESOLVED_PROVENANCE]
 
     for agent_id in target_agents:
         query = query_by_agent.get(agent_id)
@@ -1157,10 +1189,27 @@ def _build_sync_report(
     }
 
 
-def _emit_sync_report(report: dict[str, object], *, dry_run: bool) -> None:
-    """Print a human-readable sync report."""
+def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str = "text") -> None:
+    """Emit a skills sync report in text, json, or jsonl format."""
     mode = "dry-run" if dry_run else "apply"
     agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
+    json_payload: dict[str, object] = {
+        "mode": mode,
+        "inventory_count": report.get("inventory_count"),
+        "include_installed": report.get("include_installed"),
+        "agents": [
+            {key: value for key, value in agent_payload.items() if not str(key).startswith("_")}
+            for agent_payload in agent_reports
+        ],
+    }
+    if format_ != "text":
+        _emit_structured_output(
+            format_,
+            json_data=json_payload,
+            jsonl_records=[{"type": "skills-sync", **json_payload}],
+        )
+        return
+
     typer.echo(f"wagents skills sync ({mode})")
     typer.echo(f"Inventory rows: {report['inventory_count']}")
     typer.echo("")
@@ -1191,6 +1240,7 @@ def install(
     list_: bool = typer.Option(False, "--list", help="List available skills without installing"),
     copy: bool = typer.Option(False, "--copy", help="Copy files instead of symlinking"),
     yes: bool = typer.Option(False, "-y", "--yes", help="Skip confirmation prompts"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Install skills into agent platforms via npx skills."""
     import shutil
@@ -1233,12 +1283,90 @@ def install(
         if yes:
             cmd.append("-y")
 
-    result = subprocess.run(cmd, capture_output=False)
+    capture = _normalize_output_format(format_) != "text"
+    result = subprocess.run(cmd, capture_output=capture, text=True)
+    mirrored = 0
     if result.returncode == 0 and agent and "grok" in agent:
         mirrored = mirror_grok_skills_from_claude()
-        if mirrored:
-            typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
+    if capture:
+        payload: dict[str, object] = {
+            "argv": cmd,
+            "returncode": result.returncode,
+            "stdout": (result.stdout or "").strip(),
+            "stderr": (result.stderr or "").strip(),
+            "mirrored_grok_skills": mirrored,
+        }
+        _emit_structured_output(
+            format_,
+            json_data=payload,
+            jsonl_records=[{"type": "install-result", **payload}],
+        )
+    elif mirrored:
+        typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
     raise typer.Exit(code=result.returncode)
+
+
+@plannotator_app.command("install")
+def grok_plannotator_install(
+    extras: bool = typer.Option(
+        True,
+        "--extras/--no-extras",
+        help="Install optional Plannotator extra skills after the core slash commands",
+    ),
+    hooks: bool = typer.Option(
+        True,
+        "--hooks/--no-hooks",
+        help="Sync repo-managed Plannotator plan-review hooks to ~/.grok/hooks",
+    ),
+) -> None:
+    """Install Plannotator CLI, skills, and optional Grok hooks."""
+    from wagents.platforms.base import SyncContext
+    from wagents.platforms.grok import sync_grok_plannotator
+
+    if not shutil.which("npx"):
+        typer.echo("Error: npx not found. Install Node.js first.", err=True)
+        raise typer.Exit(code=1)
+
+    typer.echo("Installing plannotator CLI...")
+    install_result = subprocess.run(
+        ["bash", "-c", "curl -fsSL https://plannotator.ai/install.sh | bash -s -- --non-interactive --no-extras"],
+        capture_output=False,
+    )
+    if install_result.returncode != 0:
+        raise typer.Exit(code=install_result.returncode)
+
+    typer.echo(f"Running: {shlex.join(PLANNOTATOR_CORE_SYNC_COMMAND)}")
+    result = subprocess.run(PLANNOTATOR_CORE_SYNC_COMMAND, capture_output=False)
+    if result.returncode != 0:
+        raise typer.Exit(code=result.returncode)
+
+    if extras:
+        typer.echo(f"Running: {shlex.join(PLANNOTATOR_EXTRAS_SYNC_COMMAND)}")
+        result = subprocess.run(PLANNOTATOR_EXTRAS_SYNC_COMMAND, capture_output=False)
+        if result.returncode != 0:
+            raise typer.Exit(code=result.returncode)
+
+    mirrored = mirror_grok_skills_from_claude()
+    if mirrored:
+        typer.echo(f"Mirrored {mirrored} skill(s) into ~/.grok/skills")
+
+    if hooks:
+        ctx = SyncContext(apply=True)
+        sync_grok_plannotator(ctx)
+        typer.echo(f"Wrote {Path.home() / '.grok' / 'hooks' / 'plannotator.json'}")
+
+    typer.echo("Plannotator install complete. Restart Grok Build before using hooks.")
+
+
+@plannotator_app.command("sync")
+def grok_plannotator_sync() -> None:
+    """Sync home-local Plannotator hooks, shim, and repo skill overlays."""
+    from wagents.platforms.base import SyncContext
+    from wagents.platforms.grok import sync_grok_plannotator
+
+    ctx = SyncContext(apply=True)
+    sync_grok_plannotator(ctx)
+    typer.echo("Plannotator sync complete. Restart Grok Build before using hooks.")
 
 
 @grok_app.command("doctor")
@@ -1253,7 +1381,12 @@ def grok_doctor() -> None:
         GROK_CONFIG_POLICY_PATH,
         GROK_CONFIG_REPO_PATH,
         GROK_MCP_BEGIN,
+        GROK_PLANNOTATOR_HOOKS_PATH,
         GROK_POLICY_BEGIN,
+        PLANNOTATOR_BIN_PATH,
+        PLANNOTATOR_CORE_SKILLS,
+        missing_plannotator_core_skills,
+        resolve_plannotator_binary,
     )
 
     home = Path.home()
@@ -1305,6 +1438,46 @@ def grok_doctor() -> None:
         count = len(list(skill_root.glob("*/SKILL.md"))) if skill_root.is_dir() else 0
         lines.append(f"skills at {skill_root}: {count}")
 
+    preferred_plannotator = resolve_plannotator_binary()
+    plannotator_bin = shutil.which("plannotator") or (
+        str(preferred_plannotator) if preferred_plannotator.exists() else None
+    )
+    lines.append(f"plannotator binary: {plannotator_bin or 'missing'}")
+    if not plannotator_bin:
+        warnings.append(
+            "plannotator CLI missing; run `uv run wagents grok plannotator install` or the Plannotator install script"
+        )
+    else:
+        version_result = subprocess.run(
+            [plannotator_bin, "--version"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        version = (version_result.stdout or version_result.stderr).strip()
+        if version:
+            lines.append(f"plannotator version: {version}")
+
+    missing_core = missing_plannotator_core_skills(home=home)
+    if missing_core:
+        warnings.append(
+            "Missing Plannotator core skills: "
+            + ", ".join(missing_core)
+            + "; run `uv run wagents grok plannotator install` or `wagents skills sync -a grok --apply`"
+        )
+    else:
+        lines.append(f"plannotator core skills: {', '.join(PLANNOTATOR_CORE_SKILLS)}")
+
+    hooks_state = "present" if GROK_PLANNOTATOR_HOOKS_PATH.exists() else "missing"
+    lines.append(f"plannotator hooks: {GROK_PLANNOTATOR_HOOKS_PATH} ({hooks_state})")
+    if not GROK_PLANNOTATOR_HOOKS_PATH.exists():
+        warnings.append(
+            "Plannotator hooks missing; run `uv run wagents grok plannotator install --hooks` "
+            "or `uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets home`"
+        )
+    elif not PLANNOTATOR_BIN_PATH.exists() and not shutil.which("plannotator"):
+        warnings.append("Plannotator hooks present but CLI binary is missing")
+
     if warnings:
         lines.append("")
         lines.append("warnings:")
@@ -1320,7 +1493,9 @@ def grok_doctor() -> None:
 
 
 @app.command()
-def update():
+def update(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
     """Refresh installed skills from their recorded sources via npx skills."""
     import shutil
     import subprocess
@@ -1329,7 +1504,21 @@ def update():
         typer.echo("Error: npx not found. Install Node.js first.", err=True)
         raise typer.Exit(code=1)
 
-    result = subprocess.run(["npx", "-y", "skills", "update"], capture_output=False)
+    cmd = ["npx", "-y", "skills", "update"]
+    capture = _normalize_output_format(format_) != "text"
+    result = subprocess.run(cmd, capture_output=capture, text=True)
+    if capture:
+        payload: dict[str, object] = {
+            "argv": cmd,
+            "returncode": result.returncode,
+            "stdout": (result.stdout or "").strip(),
+            "stderr": (result.stderr or "").strip(),
+        }
+        _emit_structured_output(
+            format_,
+            json_data=payload,
+            jsonl_records=[{"type": "update-result", **payload}],
+        )
     raise typer.Exit(code=result.returncode)
 
 
@@ -1397,6 +1586,7 @@ def skills_sync(
         "--include-installed",
         help="Include verified one-off installed external skills outside the curated desired set",
     ),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Additively sync repo and curated external skills across supported harnesses."""
     if not shutil.which("npx"):
@@ -1406,7 +1596,7 @@ def skills_sync(
     target_agents = _select_sync_agents(agent, all_agents)
     report = _build_sync_report(target_agents, include_installed=include_installed)
     agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
-    _emit_sync_report(report, dry_run=dry_run)
+    _emit_sync_report(report, dry_run=dry_run, format_=format_)
     if dry_run:
         return
 
@@ -1768,6 +1958,7 @@ def package(
 @app.command()
 def readme(
     check: bool = typer.Option(False, "--check", help="Check if README is up to date"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
 ):
     """Generate or check README.md."""
     skills = []
@@ -1859,6 +2050,8 @@ def readme(
         "---",
         "",
         "## 🚀 Quick Start",
+        "",
+        "New here? Start with [START-HERE.md](START-HERE.md) for a 30-minute onboarding path.",
         "",
         "Install all skills globally into your favorite agents:",
         "",
@@ -2066,17 +2259,42 @@ def readme(
 
     readme_file = ROOT / "README.md"
 
+    up_to_date = readme_file.exists() and readme_file.read_text() == generated_content
+    payload: dict[str, object] = {
+        "check": check,
+        "path": str(readme_file),
+        "up_to_date": up_to_date,
+        "skills_count": len(skills),
+        "agents_count": len(agents),
+        "mcps_count": len(mcps),
+        "written": False,
+    }
     if check:
         if not readme_file.exists():
-            typer.echo("README.md is missing. Run `wagents readme` to create it.")
+            if _normalize_output_format(format_) == "text":
+                typer.echo("README.md is missing. Run `wagents readme` to create it.")
+            else:
+                payload["error"] = "README.md is missing"
+                _emit_structured_output(format_, json_data=payload, jsonl_records=[{"type": "readme", **payload}])
             raise typer.Exit(code=1)
-        if readme_file.read_text() != generated_content:
-            typer.echo("README.md is stale. Run `wagents readme` to update.")
+        if not up_to_date:
+            if _normalize_output_format(format_) == "text":
+                typer.echo("README.md is stale. Run `wagents readme` to update.")
+            else:
+                payload["error"] = "README.md is stale"
+                _emit_structured_output(format_, json_data=payload, jsonl_records=[{"type": "readme", **payload}])
             raise typer.Exit(code=1)
-        typer.echo("README.md is up to date")
+        if _normalize_output_format(format_) == "text":
+            typer.echo("README.md is up to date")
+        else:
+            _emit_structured_output(format_, json_data=payload, jsonl_records=[{"type": "readme", **payload}])
     else:
         readme_file.write_text(generated_content)
-        typer.echo("Updated README.md")
+        payload["written"] = True
+        if _normalize_output_format(format_) == "text":
+            typer.echo("Updated README.md")
+        else:
+            _emit_structured_output(format_, json_data=payload, jsonl_records=[{"type": "readme", **payload}])
 
 
 # ---------------------------------------------------------------------------

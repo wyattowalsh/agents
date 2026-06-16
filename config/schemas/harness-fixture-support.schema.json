@@ -36,7 +36,7 @@
               "quarantine"
             ]
           },
-          "fixture_status": {"enum": ["fixture-backed", "fixture-plan-only", "docs-ledger-required", "blocked"]},
+          "fixture_status": {"enum": ["fixture-backed", "fixture-executable", "fixture-plan-only", "docs-ledger-required", "blocked"]},
           "fixture_classes": {"type": "array", "items": {"type": "string", "minLength": 1}},
           "validation_commands": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
           "rollback_coverage": {"enum": ["present", "planned", "not-applicable", "blocked"]},

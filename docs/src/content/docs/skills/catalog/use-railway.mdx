@@ -31,23 +31,7 @@ This page is generated from `local installed inventory`.
 
 ## What It Does
 
-## Railway resource model
-
-## Routing
-
-For anything beyond quick operations, load the reference that matches the user's intent. Load only what you need, one reference is usually enough, two at most.
-
-| Intent | Reference | Use for |
-|---|---|---|
-| **Analyze a database** ("analyze \\<url\>", "analyze db", "analyze database", "analyze service", "introspect", "check my postgres/redis/mysql/mongo") | `analyze-db.md` | Database introspection and performance analysis. analyze-db.md directs you to the DB-specific reference. **This takes priority over the status/operate routes when a Railway URL to a database service is provided alongside "analyze".** |
-| Create or connect resources | `setup.md` | Projects, services, databases, buckets, templates, workspaces |
-| Ship code or manage releases | `deploy.md` | Deploy, redeploy, restart, build config, monorepo, Dockerfile |
-| Change configuration | `configure.md` | Environments, variables, config patches, domains, networking |
-| Check health or debug failures | `operate.md` | Status, logs, metrics, build/runtime triage, recovery |
-| Use a sandbox or build remotely ("sandbox", "scratch environment", "ephemeral box", "build remotely", "remote build", "run this remotely", "checkpoint", "snapshot/save/restore sandbox state") | `sandbox.md` | Create/fork sandboxes, run commands remotely, remote template builds, checkpoints (save/restore sandbox state), port forwarding, teardown. Requires Sandboxes enabled in Priority Boarding — if unavailable, prompt the user to enable it. |
-| Request from API, docs, or community | `request.md` | Railway GraphQL API queries/mutations, metrics queries, Central Station, official docs |
-
-If the request spans two areas (for example, "deploy and then check if it's healthy"), load both references and compose one response.
+Railway organizes infrastructure in a hierarchy:
 
 <Tabs>
   <TabItem label="Public Metadata">

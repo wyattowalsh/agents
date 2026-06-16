@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/skill-router/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows.
+
+**Stack / assumptions:** Requires Python 3.11+ with PyYAML; reads local SKILL.md files from repo, Codex, global, plugin, and supported agent skill roots via scripts/skill_index.py.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Use local skill indexing to choose and load relevant skills only when a task needs them.
+
+&gt; Grounded in repository `skills/skill-router/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Use local skill indexing to choose and load relevant skills only when a task needs them.

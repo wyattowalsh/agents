@@ -15,11 +15,12 @@ class SmokeRoute:
 ROUTES = [
     SmokeRoute("/"),
     SmokeRoute("/skills/"),
-    SmokeRoute("/skills/honest-review/"),
-    SmokeRoute("/skills/wargame/"),
-    SmokeRoute("/skills/orchestrator/"),
-    SmokeRoute("/skills/mcp-creator/"),
-    SmokeRoute("/skills/installed/", optional=True),
+    SmokeRoute("/skills/all/"),
+    SmokeRoute("/skills/install/"),
+    SmokeRoute("/skills/catalog/honest-review/"),
+    SmokeRoute("/skills/catalog/wargame/"),
+    SmokeRoute("/skills/catalog/orchestrator/"),
+    SmokeRoute("/skills/catalog/mcp-creator/"),
     SmokeRoute("/mcp/"),
     SmokeRoute("/cli/"),
 ]
@@ -29,6 +30,10 @@ VIEWPORTS = {
     "tablet": {"width": 1024, "height": 768},
     "mobile": {"width": 390, "height": 844},
 }
+
+LEGACY_REDIRECT_CHECKS = [
+    ("/skills/honest-review/", 308, "/skills/catalog/honest-review/"),
+]
 
 
 def _slug(route: str) -> str:
@@ -80,6 +85,24 @@ def main() -> int:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
+            request_context = browser.new_context()
+            try:
+                for legacy_path, expected_status, expected_location in LEGACY_REDIRECT_CHECKS:
+                    url = args.base_url.rstrip("/") + legacy_path
+                    response = request_context.request.get(url, max_redirects=0)
+                    status = response.status
+                    location = response.headers.get("location", "")
+                    if status != expected_status:
+                        raise RuntimeError(
+                            f"{legacy_path} expected HTTP {expected_status}, got {status}"
+                        )
+                    if not location.endswith(expected_location):
+                        raise RuntimeError(
+                            f"{legacy_path} expected Location ending with {expected_location}, got {location!r}"
+                        )
+                    print(f"[redirect] {legacy_path} -> {location} ({status})", flush=True)
+            finally:
+                request_context.close()
 
             def _screenshot_with_retry(page, path: Path, *, full_page: bool) -> None:
                 """Take a screenshot with one retry on transient errors."""

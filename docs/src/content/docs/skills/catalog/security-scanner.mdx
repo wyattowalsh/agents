@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/security-scanner/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (honest-review) or pen testing.
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** `honest-review` for code review
+
+**Repo summary:**
+
+Proactive pre-deployment security assessment. SAST pattern matching, secrets detection, dependency scanning, OWASP/CWE mapping, and compliance heuristics.
+
+&gt; Grounded in repository `skills/security-scanner/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Proactive pre-deployment security assessment. SAST pattern matching, secrets detection, dependency scanning, OWASP/CWE mapping, and compliance heuristics.
@@ -49,7 +65,7 @@ Proactive pre-deployment security assessment. SAST pattern matching, secrets det
 
 1. Never expose actual secret values in output — show type, file, line only
 2. Every finding must map to at least one CWE ID
-3. Confidence \< 0.3 = discard; 0.3-0.7 = flag as potential; >= 0.7 = report
+3. Confidence &lt; 0.3 = discard; 0.3-0.7 = flag as potential; &gt;= 0.7 = report
 4. Run secrets-detector.py before reporting — regex patterns catch what LLM scanning misses
 5. Do not report phantom vulnerabilities requiring impossible conditions
 6. For 100+ files, always triage before scanning — never brute-force the full codebase

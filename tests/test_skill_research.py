@@ -1,16 +1,17 @@
 """Tests for wagents.skill_research helpers."""
 
-from pathlib import Path
-
+from wagents.catalog import CatalogNode
+from wagents.skill_docs import SkillDocNode
 from wagents.skill_research import (
     build_batch_prompt,
+    build_repo_grounded_research_body,
     partition_skills_for_research,
+    research_coverage,
     research_queries,
+    seed_phase_a_research,
     validate_artifact,
     write_skill_research_artifact,
 )
-from wagents.skill_docs import SkillDocNode
-from wagents.catalog import CatalogNode
 
 
 def _doc_node(skill_id: str, source_type: str = "custom") -> SkillDocNode:
@@ -50,6 +51,54 @@ def test_build_batch_prompt_includes_skill_ids(monkeypatch):
     prompt = build_batch_prompt(batch)
     assert "alpha" in prompt
     assert "beta" in prompt
+
+
+def test_build_repo_grounded_research_body_detects_scripts_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr("wagents.skill_research.ROOT", tmp_path)
+    skill_dir = tmp_path / "skills" / "alpha"
+    (skill_dir / "scripts").mkdir(parents=True)
+    doc = _doc_node("alpha")
+    body = build_repo_grounded_research_body(doc)
+    assert "portable skill scripts" in body
+
+
+def test_build_repo_grounded_research_body_uses_description_and_not_for():
+    doc = _doc_node("honest-review")
+    doc.node.description = (
+        "Review code with confidence-scored evidence. NOT for feature work (simplify)."
+    )
+    doc.node.body = "# Honest Review\n\nResearch-driven code review.\n"
+    body = build_repo_grounded_research_body(doc)
+    assert "Quick Answer" in body
+    assert "`simplify`" in body
+    assert "Research-driven code review." in body
+
+
+def test_seed_phase_a_research_writes_custom_skills(tmp_path, monkeypatch):
+    monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
+    monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
+    nodes = [_doc_node("alpha"), _doc_node("beta", source_type="installed")]
+
+    written = seed_phase_a_research(nodes)
+
+    assert len(written) == 1
+    assert (tmp_path / "alpha.md").exists()
+    assert not (tmp_path / "beta.md").exists()
+
+
+def test_research_coverage_counts_present_artifacts(tmp_path, monkeypatch):
+    monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
+    write_skill_research_artifact(
+        "alpha",
+        source_type="custom",
+        research_tier="quick",
+        mean_confidence=0.8,
+        body="## Summary\n\nAlpha.",
+    )
+    nodes = [_doc_node("alpha"), _doc_node("beta")]
+    present, total = research_coverage(nodes, source_type="custom")
+    assert present == 1
+    assert total == 2
 
 
 def test_write_and_validate_artifact(tmp_path, monkeypatch):

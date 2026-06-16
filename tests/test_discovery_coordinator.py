@@ -71,6 +71,24 @@ def test_verify_detects_missing(coord_mod, tmp_path) -> None:
     assert result["resolved_count"] == 0
 
 
+def test_write_checkpoint_includes_journal_v2_fields(coord_mod, tmp_path) -> None:
+    artifacts = tmp_path / "session"
+    artifacts.mkdir()
+    coord_mod.write_checkpoint(
+        artifacts,
+        {
+            "session_id": "test-session",
+            "session_version": 2,
+            "artifact_root": str(artifacts),
+            "wave": 2,
+            "manifest": str(artifacts / "wave-2.json"),
+        },
+    )
+    payload = json.loads((artifacts / "checkpoint.json").read_text(encoding="utf-8"))
+    assert payload["session_version"] == 2
+    assert payload["artifact_root"] == str(artifacts)
+
+
 def test_verify_counts_success(coord_mod, tmp_path) -> None:
     artifact = tmp_path / "W2-RS-00.json"
     artifact.write_text(

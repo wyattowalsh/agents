@@ -1,20 +1,15 @@
-"""Gemini CLI / Antigravity adapter.
-
-Placeholder — Gemini requires:
-- ``~/.gemini/settings.json``  (MCP, hooks, model defaults, mirrors some Claude settings)
-- ``~/.gemini/GEMINI.md``  (entrypoint)
-- ``~/.gemini/antigravity/mcp_config.json``  (Antigravity MCP)
-- ``~/.gemini/extensions/.../mcp_config.json``  (Extension MCP)
-"""
+"""Gemini CLI / Antigravity adapter."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
 
-from wagents.platforms.base import HOME, PlatformAdapter, SyncContext
+from wagents.platforms.base import HOME, REPO_ROOT, PlatformAdapter, SyncContext
 
 GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
+GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
+GEMINI_GLOBAL_MD = REPO_ROOT / "instructions" / "gemini-cli-global.md"
 
 
 class Adapter(PlatformAdapter):
@@ -49,5 +44,8 @@ class Adapter(PlatformAdapter):
         fallbacks: dict[str, str],
         hook_registry: dict[str, Any],
     ) -> None:
-        """TODO: merge settings, MCP, hooks, and entrypoint."""
-        pass
+        from scripts.sync_agent_stack import ensure_symlink, merge_gemini_settings
+
+        ensure_symlink(ctx, GEMINI_ENTRYPOINT_PATH, GEMINI_GLOBAL_MD)
+        merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
+

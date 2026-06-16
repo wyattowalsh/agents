@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/files-buddy/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup.
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Mac storage command center for safe filesystem organization, duplicate review, cache analysis, cloud offload planning, and cleanup execution. It delegates to free/OSS CLI tools and treats iCloud Drive, Google Drive, developer caches, AI/model caches, containers, VMs, backups, and app-managed libraries as first-class...
+
+&gt; Grounded in repository `skills/files-buddy/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Mac storage command center for safe filesystem organization, duplicate review, cache analysis, cloud offload planning, and cleanup execution. It delegates to free/OSS CLI tools and treats iCloud Drive, Google Drive, developer caches, AI/model caches, containers, VMs, backups, and app-managed libraries as first-class storage surfaces.

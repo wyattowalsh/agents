@@ -24,12 +24,15 @@ from wagents.site_model import (
 from wagents.skill_docs import (
     SKILL_DETAIL_SLUG_PREFIX,
     collect_all_doc_nodes,
+    collect_skill_doc_nodes,
     skill_detail_href,
 )
 from wagents.skill_research import (
     build_batch_prompt,
     partition_skills_for_research,
+    research_artifact_path,
     research_coverage,
+    seed_phase_a_research,
     update_research_manifest,
 )
 
@@ -106,7 +109,6 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         external_skills=external_entries,
     )
     skills = [n for n in nodes if n.kind == "skill"]
-    installed_skills = [n for n in skills if n.source != "custom"]
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
 
@@ -822,7 +824,68 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append(
         "**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, "
-        "`cursor`, `gemini-cli`, `github-copilot`, `opencode`"
+        "`cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`"
+    )
+    parts.append("")
+    parts.append('<Aside type="note" title="Grok Build install alias">')
+    parts.append(
+        "Skills CLI has no native `grok` adapter. `wagents install -a grok` and "
+        "`wagents skills sync -a grok` install via the `claude-code` adapter, then "
+        "mirror missing skills into `~/.grok/skills`."
+    )
+    parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+    parts.append("### `wagents grok plannotator install` -- Plannotator for Grok")
+    parts.append("")
+    parts.append(
+        "Install the Plannotator CLI, core slash skills, optional extras, mirror into `~/.grok/skills`, "
+        "and sync repo-managed plan-review hooks to `~/.grok/hooks/plannotator.json`. "
+        "Grok has no npm plugin like OpenCode's `@plannotator/opencode`."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents grok plannotator install")
+    parts.append("wagents grok plannotator install --no-extras --no-hooks")
+    parts.append("wagents grok plannotator sync")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Grok home sync enables Plannotator hooks and skill overlays by default. "
+        "Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip hook refresh."
+    )
+    parts.append("")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+    parts.append("### `wagents grok doctor` -- Grok Build diagnostics")
+    parts.append("")
+    parts.append(
+        "Report Grok config paths, managed MCP/policy blocks, experimental env vars, skill roots, "
+        "and Plannotator binary/skills/hooks status:"
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents grok doctor")
+    parts.append("```")
+    parts.append("")
+    parts.append("Source optional env defaults before sessions:")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("source config/grok-env.sh")
+    parts.append("```")
+    parts.append("")
+    parts.append("Isolated home sync (skips OpenCode and other harness home merges):")
+    parts.append("")
+    parts.append("```bash")
+    parts.append("uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets home")
+    parts.append("```")
+    parts.append("")
+    parts.append(
+        "Repo-owned policy lives in `config/grok-config.toml`; project MCP projection is "
+        "`.grok/config.toml`; full home merge targets `~/.grok/config.toml`. Blend-owned "
+        "tables (`ui`, `features`, etc.) keep user-only keys while repo policy overrides shared keys."
     )
     parts.append("")
     parts.append("---")
@@ -1431,7 +1494,7 @@ def _render_skill_linkcards(nodes: list, *, limit: int | None = None) -> list[st
     return parts
 
 
-def write_skills_index(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
+def write_skills_index(nodes: list) -> None:
     """Write skills/index.mdx as the repo-owned custom skill catalog."""
     custom = [n for n in nodes if n.kind == "skill" and n.source == "custom"]
     user_invocable = [n for n in custom if n.metadata.get("user-invocable") is not False]
@@ -1548,7 +1611,7 @@ def write_skills_index(nodes: list, external_entries: list[ExternalSkillEntry] |
     (out_dir / "index.mdx").write_text("\n".join(parts))
 
 
-def write_all_skills_index(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
+def write_all_skills_index(nodes: list) -> None:
     """Write skills/all.mdx as the deduped combined skill index."""
     skills = [n for n in nodes if n.kind == "skill"]
     groups: dict[str, list] = {"custom": [], "installed": [], "curated-external": []}
@@ -1605,15 +1668,8 @@ def write_all_skills_index(nodes: list, external_entries: list[ExternalSkillEntr
     (out_dir / "all.mdx").write_text("\n".join(parts))
 
 
-def _html_text(value: object) -> str:
-    return escape_attr(" ".join(str(value).split()))
-
-
-def write_skill_install_scripts_page(nodes: list, external_entries: list[ExternalSkillEntry] | None = None) -> None:
+def write_skill_install_scripts_page() -> None:
     """Write skills/install.mdx with copyable install scripts."""
-    if external_entries is None:
-        external_entries = read_external_skill_entries()
-
     parts = [
         "---",
         "title: Skill Install Scripts",
@@ -1806,9 +1862,9 @@ def regenerate_sidebar_and_indexes(*, include_installed: bool = True) -> None:
     mcps = [n for n in nodes if n.kind == "mcp"]
 
     write_sidebar(nodes)
-    write_skills_index(skills, external_entries)
-    write_all_skills_index(skills, external_entries)
-    write_skill_install_scripts_page(skills, external_entries)
+    write_skills_index(skills)
+    write_all_skills_index(skills)
+    write_skill_install_scripts_page()
     if agents_list:
         write_agents_index(agents_list)
     if mcps:
@@ -1925,11 +1981,11 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
 
-    write_skills_index(skills, external_entries)
+    write_skills_index(skills)
     typer.echo("  Generated skills/index.mdx")
-    write_all_skills_index(skills, external_entries)
+    write_all_skills_index(skills)
     typer.echo("  Generated skills/all.mdx")
-    write_skill_install_scripts_page(skills, external_entries)
+    write_skill_install_scripts_page()
     typer.echo("  Generated skills/install.mdx")
     if agents:
         write_agents_index(agents)
@@ -2002,6 +2058,16 @@ def docs_preview():
 
 
 
+def _research_coverage_types(resolved_source_type: str, *, include_installed: bool) -> list[str]:
+    """Return source types to report when checking research cache coverage."""
+    if resolved_source_type != "all":
+        return [resolved_source_type]
+    types = ["custom", "curated-external"]
+    if include_installed:
+        types.append("installed")
+    return types
+
+
 @docs_app.command("research")
 def docs_research(
     dry_run: bool = typer.Option(False, "--dry-run", help="Print batch plan without writing artifacts"),
@@ -2016,6 +2082,21 @@ def docs_research(
         "--source-type",
         help="Filter batches to custom, installed, curated-external, or all",
     ),
+    skill: str | None = typer.Option(
+        None,
+        "--skill",
+        help="Research a single skill id instead of batching the full catalog",
+    ),
+    check_research: bool = typer.Option(
+        False,
+        "--check-research",
+        help="Exit 1 when cached research coverage is below 100% for the selected source type",
+    ),
+    seed_from_repo: bool = typer.Option(
+        False,
+        "--seed-from-repo",
+        help="Write Phase A research artifacts grounded in repo SKILL.md (custom skills only)",
+    ),
 ):
     """Plan or refresh cached per-skill web research artifacts."""
     if isinstance(dry_run, OptionInfo):
@@ -2027,6 +2108,13 @@ def docs_research(
     resolved_source_type = source_type
     if isinstance(resolved_source_type, OptionInfo):
         resolved_source_type = str(resolved_source_type.default or "all")
+    resolved_skill = skill
+    if isinstance(resolved_skill, OptionInfo):
+        resolved_skill = None
+    if isinstance(check_research, OptionInfo):
+        check_research = bool(check_research.default)
+    if isinstance(seed_from_repo, OptionInfo):
+        seed_from_repo = bool(seed_from_repo.default)
 
     allowed = {"all", "custom", "installed", "curated-external"}
     if resolved_source_type not in allowed:
@@ -2034,10 +2122,43 @@ def docs_research(
         raise typer.Exit(code=1)
 
     source_types = None if resolved_source_type == "all" else {resolved_source_type}
+    doc_nodes = collect_skill_doc_nodes(include_installed=include_installed, include_curated=True)
+    if source_types is not None:
+        doc_nodes = [node for node in doc_nodes if node.source_type in source_types]
+    if resolved_skill:
+        doc_nodes = [node for node in doc_nodes if node.id == resolved_skill]
+        if not doc_nodes:
+            typer.echo(f"Error: skill not found in catalog: {resolved_skill}", err=True)
+            raise typer.Exit(code=1)
+
+    if seed_from_repo:
+        if resolved_source_type not in {"all", "custom"}:
+            typer.echo("Error: --seed-from-repo only supports --source-type custom or all", err=True)
+            raise typer.Exit(code=1)
+        custom_nodes = [node for node in doc_nodes if node.source_type == "custom"]
+        if resolved_skill:
+            custom_nodes = [node for node in custom_nodes if node.id == resolved_skill]
+        if dry_run:
+            missing = [node for node in custom_nodes if not research_artifact_path(node.id).exists()]
+            typer.echo(f"Would seed {len(missing)} research artifact(s) from repository SKILL.md")
+        else:
+            written = seed_phase_a_research(custom_nodes, overwrite=bool(resolved_skill))
+            typer.echo(f"Seeded {len(written)} research artifact(s) from repository SKILL.md")
+        present, total = research_coverage(custom_nodes or doc_nodes, source_type="custom")
+        typer.echo(f"Research cache coverage (custom): {present}/{total}")
+        if check_research and total and present < total:
+            typer.echo(
+                f"Error: research cache incomplete for custom: {present}/{total}",
+                err=True,
+            )
+            raise typer.Exit(code=1)
+        return
+
     batches = partition_skills_for_research(
-        batch_size=batch_size,
+        doc_nodes,
+        batch_size=batch_size if not resolved_skill else max(len(doc_nodes), 1),
         include_installed=include_installed,
-        source_types=source_types,
+        source_types=None,
     )
     typer.echo(f"Research batches: {len(batches)} (batch_size={batch_size})")
     for index, batch in enumerate(batches, start=1):
@@ -2047,8 +2168,26 @@ def docs_research(
             typer.echo(build_batch_prompt(batch))
             typer.echo("")
 
-    present, total = research_coverage(source_type="custom" if resolved_source_type == "all" else resolved_source_type)
-    typer.echo(f"Research cache coverage ({resolved_source_type}): {present}/{total}")
+    if not dry_run and not seed_from_repo:
+        typer.echo(
+            "Note: this command does not auto-write research artifacts. "
+            "Use --dry-run prompts for agent batches or --seed-from-repo for Phase A seeding."
+        )
+
+    coverage_types = _research_coverage_types(resolved_source_type, include_installed=include_installed)
+    incomplete: list[tuple[str, int, int]] = []
+    for coverage_type in coverage_types:
+        present, total = research_coverage(doc_nodes, source_type=coverage_type)
+        typer.echo(f"Research cache coverage ({coverage_type}): {present}/{total}")
+        if check_research and total and present < total:
+            incomplete.append((coverage_type, present, total))
+    if incomplete:
+        for coverage_type, present, total in incomplete:
+            typer.echo(
+                f"Error: research cache incomplete for {coverage_type}: {present}/{total}",
+                err=True,
+            )
+        raise typer.Exit(code=1)
     if not dry_run:
         update_research_manifest()
         typer.echo("Updated generated-skill-research-index.mjs")

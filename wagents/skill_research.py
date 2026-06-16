@@ -11,7 +11,7 @@ from typing import Any
 
 import yaml
 
-from wagents import DOCS_DIR
+from wagents import DOCS_DIR, ROOT
 from wagents.skill_docs import SkillDocNode, collect_skill_doc_nodes
 
 RESEARCH_DIR = DOCS_DIR / "src" / "skill-research"
@@ -51,11 +51,10 @@ def load_skill_research(skill_id: str) -> str | None:
     text = path.read_text(encoding="utf-8")
     if not text.startswith("---"):
         return text.strip() or None
-    parts = text.split("---", 2)
-    if len(parts) < 3:
+    meta, body = _parse_frontmatter(text)
+    if not meta and len(text.split("---", 2)) < 3:
         return None
-    body = parts[2].strip()
-    return body or None
+    return body.strip() or None
 
 
 def _parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
@@ -197,3 +196,108 @@ def research_coverage(
     filtered = [node for node in nodes if node.source_type == source_type]
     present = sum(1 for node in filtered if research_artifact_path(node.id).exists())
     return present, len(filtered)
+
+
+_NOT_FOR_PATTERN = re.compile(r"NOT for ([^(]+)\(([^)]+)\)", re.IGNORECASE)
+
+
+def _extract_comparable_alternative(description: str) -> str:
+    match = _NOT_FOR_PATTERN.search(description)
+    if match:
+        scope, skill = match.group(1).strip(), match.group(2).strip()
+        return f"`{skill}` for {scope.lower()}"
+    return "A general-purpose agent instruction without a scoped skill contract"
+
+
+def _first_body_paragraph(body: str, *, max_chars: int = 320) -> str:
+    found_heading = False
+    paragraph: list[str] = []
+    for line in body.splitlines():
+        stripped = line.strip()
+        if not found_heading:
+            if stripped.startswith("#"):
+                found_heading = True
+            continue
+        if not stripped:
+            if paragraph:
+                break
+            continue
+        if stripped.startswith("|") or stripped.startswith("```"):
+            if paragraph:
+                break
+            continue
+        paragraph.append(stripped)
+    text = " ".join(paragraph).strip()
+    if len(text) > max_chars:
+        return text[: max_chars - 3].rstrip() + "..."
+    return text
+
+
+def _stack_assumptions(node: SkillDocNode) -> str:
+    compatibility = str(node.node.metadata.get("compatibility") or "").strip()
+    if compatibility:
+        return compatibility
+    skill_dir = (ROOT / node.node.source_path).parent
+    hints: list[str] = []
+    if (skill_dir / "scripts").is_dir():
+        hints.append("portable skill scripts under `scripts/`")
+    if (skill_dir / "references").is_dir():
+        hints.append("on-demand references")
+    if (skill_dir / "evals").is_dir():
+        hints.append("eval fixtures")
+    if hints:
+        return "; ".join(hints)
+    return "Repository skill format (`skills/<name>/SKILL.md`) with progressive disclosure"
+
+
+def build_repo_grounded_research_body(doc: SkillDocNode) -> str:
+    """Build a Phase A quick research brief grounded in repository SKILL.md."""
+    description = doc.description.strip() or doc.node.description.strip()
+    summary = _first_body_paragraph(doc.node.body)
+    alternative = _extract_comparable_alternative(description)
+    stack = _stack_assumptions(doc)
+    lines = [
+        "## Quick Answer",
+        "",
+        f"**Problem:** {description}",
+        "",
+        f"**Stack / assumptions:** {stack}",
+        "",
+        f"**Comparable alternative:** {alternative}",
+        "",
+    ]
+    if summary:
+        lines.extend(["**Repo summary:**", "", summary, ""])
+    lines.append(
+        f"> Grounded in repository `skills/{doc.id}/SKILL.md`; treat as evidence, not authority."
+    )
+    return "\n".join(lines)
+
+
+def seed_phase_a_research(
+    doc_nodes: list[SkillDocNode] | None = None,
+    *,
+    overwrite: bool = False,
+) -> list[Path]:
+    """Write Phase A research artifacts for repo-owned custom skills."""
+    nodes = doc_nodes or collect_skill_doc_nodes(include_installed=False, include_curated=False)
+    written: list[Path] = []
+    for doc in nodes:
+        if doc.source_type != "custom":
+            continue
+        path = research_artifact_path(doc.id)
+        if path.exists() and not overwrite:
+            continue
+        body = build_repo_grounded_research_body(doc)
+        written.append(
+            write_skill_research_artifact(
+                doc.id,
+                source_type="custom",
+                research_tier="quick",
+                mean_confidence=0.78,
+                body=body,
+            )
+        )
+    if written:
+        update_research_manifest()
+    return written

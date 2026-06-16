@@ -23,7 +23,7 @@ repos:
         files: ^(skills/|agents/)
       - id: docs-build-check
         name: "Verify docs build"
-        entry: sh -c 'uv run wagents docs generate --no-installed && pnpm --dir docs exec astro check && pnpm --dir docs build'
+        entry: sh -c 'uv run wagents docs build'
         language: system
         files: '^(docs/.*\.(mdx|css|mjs|astro)|skills/|agents/|mcp/)'
         pass_filenames: false

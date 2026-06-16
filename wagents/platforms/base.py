@@ -15,6 +15,8 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from wagents.repo_paths import render_portable_path, resolve_portable_path
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 HOME = Path.home()
 
@@ -97,8 +99,9 @@ def dump_json(data: Any) -> str:
 class SyncContext:
     """Tracks pending changes and whether to apply them."""
 
-    def __init__(self, apply: bool = False) -> None:
+    def __init__(self, apply: bool = False, *, grok_plannotator_hooks: bool = True) -> None:
         self.apply = apply
+        self.grok_plannotator_hooks = grok_plannotator_hooks
         self.changes: list[str] = []
 
     def note(self, message: str) -> None:
@@ -255,13 +258,15 @@ def render_home_path(path: Path) -> str:
 
 
 def normalize_path_value(value: str) -> str:
+    if value.startswith("${REPO_ROOT}"):
+        return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
     if value == "~":
         return str(HOME.resolve())
     if value.startswith("~/"):
         return str((HOME / value[2:]).resolve())
     if value.startswith("/"):
         return str(Path(value).resolve())
-    return value
+    return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
 
 
 def merge_unique_path_strings(managed: list[str], existing: Any) -> list[str]:
@@ -486,7 +491,7 @@ def render_mcphub_stdio_server(
 ) -> dict[str, Any]:
     token_env = mcphub_bearer_env_var(registry)
     return {
-        "command": str(MCPHUB_REMOTE_STDIO),
+        "command": render_portable_path(MCPHUB_REMOTE_STDIO),
         "args": [url],
         "env": {token_env: render_env_value({"env_var": token_env}, fallbacks, local_values=local_values)},
         "disabled": not enabled,

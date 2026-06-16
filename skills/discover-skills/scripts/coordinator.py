@@ -267,7 +267,13 @@ def main(argv: list[str] | None = None) -> int:
         write_json(args.output, manifest)
         write_checkpoint(
             args.artifacts_root,
-            {"session_id": args.session_id, "wave": args.wave, "manifest": str(args.output)},
+            {
+                "session_id": args.session_id,
+                "session_version": 2,
+                "artifact_root": str(args.artifacts_root),
+                "wave": args.wave,
+                "manifest": str(args.output),
+            },
         )
         return 0 if "validation_errors" not in manifest else 1
 

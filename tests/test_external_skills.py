@@ -1,4 +1,11 @@
+from pathlib import Path
+
+import pytest
+
 from wagents.external_skills import parse_external_skill_entries
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+EXTERNAL_SKILLS_PATH = REPO_ROOT / "config" / "external-skills.md"
 
 
 def test_parse_external_skill_entries_from_curated_markdown():
@@ -178,3 +185,22 @@ npx skills add example/skills --skill demo -y -g -a codex windsurf augment openh
     )
 
     assert entries[0].unsupported_target_agents == ()
+
+
+def test_curated_plannotator_entries_include_grok_target():
+    if not EXTERNAL_SKILLS_PATH.exists():
+        pytest.skip("external-skills.md missing")
+
+    entries = parse_external_skill_entries(EXTERNAL_SKILLS_PATH.read_text(encoding="utf-8"))
+    by_name = {entry.name: entry for entry in entries}
+
+    for skill_name in (
+        "plannotator-review",
+        "plannotator-annotate",
+        "plannotator-last",
+        "plannotator-compound",
+        "plannotator-setup-goal",
+        "plannotator-visual-explainer",
+    ):
+        assert skill_name in by_name, f"missing curated entry for {skill_name}"
+        assert "grok" in by_name[skill_name].target_agents

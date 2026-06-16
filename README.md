@@ -16,6 +16,8 @@
 
 ## 🚀 Quick Start
 
+New here? Start with [START-HERE.md](START-HERE.md) for a 30-minute onboarding path.
+
 Install all skills globally into your favorite agents:
 
 ```bash

@@ -158,6 +158,15 @@ const baseSiteData = {
         "source": "backnotprop/plannotator"
       },
       {
+        "count": 3,
+        "skills": [
+          "plannotator-annotate",
+          "plannotator-last",
+          "plannotator-review"
+        ],
+        "source": "backnotprop/plannotator/apps/skills/core"
+      },
+      {
         "count": 2,
         "skills": [
           "better-auth-best-practices",
@@ -672,7 +681,7 @@ const baseSiteData = {
         "source": "ljagiello/ctf-skills"
       },
       {
-        "count": 53,
+        "count": 50,
         "skills": [
           "autoplan",
           "benchmark",
@@ -702,9 +711,6 @@ const baseSiteData = {
           "plan-ceo-review",
           "plan-design-review",
           "plan-eng-review",
-          "plannotator-annotate",
-          "plannotator-last",
-          "plannotator-review",
           "project-context",
           "qa",
           "qa-only",
@@ -1358,7 +1364,7 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 134,
+        "count": 140,
         "skills": [
           "ab-testing",
           "accessibility",
@@ -1433,6 +1439,12 @@ const baseSiteData = {
           "openapi-spec-generation",
           "paywalls",
           "performance",
+          "plannotator-annotate",
+          "plannotator-compound",
+          "plannotator-last",
+          "plannotator-review",
+          "plannotator-setup-goal",
+          "plannotator-visual-explainer",
           "playwright-best-practices",
           "postmortem-writing",
           "prisma-cli",
@@ -1498,7 +1510,7 @@ const baseSiteData = {
         "status": "install-now-after-trust-gate"
       },
       {
-        "count": 116,
+        "count": 113,
         "skills": [
           "ab-test-setup",
           "ad-creative",
@@ -1594,9 +1606,6 @@ const baseSiteData = {
           "paid-ads",
           "paywall-upgrade-cro",
           "pdf",
-          "plannotator-compound",
-          "plannotator-setup-goal",
-          "plannotator-visual-explainer",
           "popup-cro",
           "pptx",
           "pricing-strategy",
@@ -1620,7 +1629,7 @@ const baseSiteData = {
         "status": "installed-external"
       },
       {
-        "count": 53,
+        "count": 50,
         "skills": [
           "autoplan",
           "benchmark",
@@ -1650,9 +1659,6 @@ const baseSiteData = {
           "plan-ceo-review",
           "plan-design-review",
           "plan-eng-review",
-          "plannotator-annotate",
-          "plannotator-last",
-          "plannotator-review",
           "project-context",
           "qa",
           "qa-only",
@@ -2123,6 +2129,28 @@ const baseSiteData = {
         "source": "aws/agent-toolkit-for-aws",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
+      },
+      {
+        "command": "npx skills add backnotprop/plannotator --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "plannotator-compound",
+          "plannotator-setup-goal",
+          "plannotator-visual-explainer"
+        ],
+        "source": "backnotprop/plannotator",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "plannotator-annotate",
+          "plannotator-last",
+          "plannotator-review"
+        ],
+        "source": "backnotprop/plannotator/apps/skills/core",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add better-auth/skills --skill better-auth-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -3220,33 +3248,6 @@ const baseSiteData = {
           "apollo-router-plugin-creator"
         ],
         "source": "apollographql/skills",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add backnotprop/plannotator --skill plannotator-compound -y -g",
-        "skills": [
-          "plannotator-compound"
-        ],
-        "source": "backnotprop/plannotator",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add backnotprop/plannotator --skill plannotator-setup-goal -y -g",
-        "skills": [
-          "plannotator-setup-goal"
-        ],
-        "source": "backnotprop/plannotator",
-        "status": "installed-external",
-        "trustTier": "github"
-      },
-      {
-        "command": "npx skills add backnotprop/plannotator --skill plannotator-visual-explainer -y -g",
-        "skills": [
-          "plannotator-visual-explainer"
-        ],
-        "source": "backnotprop/plannotator",
         "status": "installed-external",
         "trustTier": "github"
       },

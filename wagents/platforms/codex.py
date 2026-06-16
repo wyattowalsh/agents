@@ -1,12 +1,4 @@
-"""Codex adapter.
-
-Placeholder — Codex requires complex TOML merging with section preservation.
-Full implementation should handle:
-- ``~/.codex/config.toml``  (base config + preserved user tables + managed MCP block)
-- ``~/.codex/AGENTS.md``  (symlink)
-- ``~/.codex/hooks.json``  (hook merge)
-- ``config/codex-config.toml``  (sanitized repo copy)
-"""
+"""Codex adapter."""
 
 from __future__ import annotations
 
@@ -31,8 +23,9 @@ class Adapter(PlatformAdapter):
         hook_registry: dict[str, Any],
         policy: dict[str, Any],
     ) -> None:
-        """TODO: generate ``instructions/codex-global.md`` and repo config copy."""
-        pass
+        from scripts.sync_agent_stack import generate_codex_global_instructions
+
+        generate_codex_global_instructions(ctx)
 
     def sync_home(
         self,
@@ -42,5 +35,9 @@ class Adapter(PlatformAdapter):
         fallbacks: dict[str, str],
         hook_registry: dict[str, Any],
     ) -> None:
-        """TODO: merge TOML config with preserved user sections and managed MCP block."""
-        pass
+        from scripts.sync_agent_stack import merge_codex_config, merge_codex_hooks, sync_codex_entrypoint
+
+        sync_codex_entrypoint(ctx)
+        merge_codex_config(ctx, registry, policy, fallbacks)
+        merge_codex_hooks(ctx, hook_registry)
+

@@ -1,0 +1,13 @@
+harness_id,current_tier,fixture_status,top_gap,priority_action,target_tier_90d
+claude-code,repo-present-validation-required,fixture-plan-only,path leaks in mcp.json,Path-neutral MCP render,fixture-executable
+codex,repo-present-validation-required,fixture-plan-only,adapter stub,Implement codex.py MVP,fixture-executable
+opencode,repo-present-validation-required,fixture-plan-only,bearer file: paths,Env-only secrets,fixture-executable
+grok-build,repo-present-validation-required,fixture-plan-only,skills alias fixtures,Alias fixture + docs,fixture-plan-only
+cursor-editor,repo-present-validation-required,fixture-plan-only,partial adapter,Full adapter or doc tier,fixture-plan-only
+github-copilot-web,repo-present-validation-required,fixture-plan-only,inventory fabrication risk,Discovery-only inventory,fixture-plan-only
+github-copilot-cli,repo-present-validation-required,fixture-plan-only,adapter stub,copilot.py minimum,fixture-plan-only
+gemini-cli,repo-present-validation-required,fixture-plan-only,adapter stub,gemini.py minimum,fixture-plan-only
+antigravity,repo-present-validation-required,docs-ledger-required,no docs ledger,Create ledger or downgrade,docs-ledger-required
+crush,repo-present-validation-required,fixture-plan-only,experimental ambiguity,Explicit retain decision,fixture-plan-only
+chatgpt,repo-present-validation-required,docs-ledger-required,MCP-only under-documented,Connector docs ledger,docs-ledger-required
+claude-desktop,repo-present-validation-required,fixture-plan-only,global MCP merge,Redaction fixture,fixture-plan-only

@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "exit_plan_mode|ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "__PLANNOTATOR_EXIT_PLAN_HOOK__",
+            "timeout": 345600
+          }
+        ]
+      },
+      {
+        "matcher": "enter_plan_mode|EnterPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "__PLANNOTATOR_BIN__ improve-context",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

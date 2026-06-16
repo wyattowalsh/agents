@@ -28,7 +28,7 @@ This page is generated from `local installed inventory`.
 
 ## What It Does
 
-| `$ARGUMENTS` | Action | |------------|--------| | `research &lt;company&gt; &lt;role&gt;` or opportunity reference | Run Research workflow | | `review &lt;company&gt;` or `status &lt;opportunity&gt;` | Review Research workflow | | `refresh &lt;company&gt;` | Force re-research (bypass cache) | | Empty | Show research status for all shortlisted opportunities |
+A skill for deep-diving on a company and role once an opportunity is worth pursuing in Ronin. It uses a 3-layer model: shared company research, shared role research, and per-opportunity research persisted through `create_research`. Company and role layers should be reused when possible; user-fit analysis should be refreshed from the current opportunity and profile context.
 
 ## Modes
 

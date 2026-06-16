@@ -288,7 +288,46 @@ npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-
 | `--copy` | `false` | Copy files instead of symlinking |
 | `-y`, `--yes` | `false` | Skip confirmation prompts |
 
-**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`
+**Supported agents:** `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode`
+
+<Aside type="note" title="Grok Build install alias">
+Skills CLI has no native `grok` adapter. `wagents install -a grok` and `wagents skills sync -a grok` install via the `claude-code` adapter, then mirror missing skills into `~/.grok/skills`.
+</Aside>
+
+---
+
+### `wagents grok plannotator install` -- Plannotator for Grok
+
+Install the Plannotator CLI, core slash skills, optional extras, mirror into `~/.grok/skills`, and sync repo-managed plan-review hooks to `~/.grok/hooks/plannotator.json`. Grok has no npm plugin like OpenCode's `@plannotator/opencode`.
+
+```bash
+wagents grok plannotator install
+wagents grok plannotator install --no-extras --no-hooks
+```
+
+---
+
+### `wagents grok doctor` -- Grok Build diagnostics
+
+Report Grok config paths, managed MCP/policy blocks, experimental env vars, skill roots, and Plannotator binary/skills/hooks status:
+
+```bash
+wagents grok doctor
+```
+
+Source optional env defaults before sessions:
+
+```bash
+source config/grok-env.sh
+```
+
+Isolated home sync (skips OpenCode and other harness home merges):
+
+```bash
+uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets home
+```
+
+Repo-owned policy lives in `config/grok-config.toml`; project MCP projection is `.grok/config.toml`; full home merge targets `~/.grok/config.toml`. Blend-owned tables (`ui`, `features`, etc.) keep user-only keys while repo policy overrides shared keys.
 
 ---
 

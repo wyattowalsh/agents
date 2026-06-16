@@ -757,7 +757,12 @@ class TestGrokDoctor:
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_REPO_PATH", tmp_path / "repo.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", tmp_path / "policy.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "grok")
-        monkeypatch.setattr("shutil.which", lambda _: str(tmp_path / "grok"))
+        def fake_which(cmd: str) -> str | None:
+            if cmd == "grok":
+                return str(tmp_path / "grok")
+            return None
+
+        monkeypatch.setattr("shutil.which", fake_which)
         monkeypatch.delenv("GROK_WEB_FETCH", raising=False)
 
         result = runner.invoke(app, ["grok", "doctor"])
@@ -775,7 +780,12 @@ class TestGrokDoctor:
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_REPO_PATH", tmp_path / "repo.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", tmp_path / "policy.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "grok")
-        monkeypatch.setattr("shutil.which", lambda _: str(tmp_path / "grok"))
+        def fake_which(cmd: str) -> str | None:
+            if cmd == "grok":
+                return str(tmp_path / "grok")
+            return None
+
+        monkeypatch.setattr("shutil.which", fake_which)
 
         result = runner.invoke(app, ["grok", "doctor"])
         assert result.exit_code == 0

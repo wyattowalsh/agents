@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/simplify/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex. NOT for review (honest-review) or debt scans (tech-debt-analyzer).
+
+**Stack / assumptions:** Pre/Post hooks inspect edited files when metadata exists and no-op outside git repos. Stop hook intentionally runs repo-wide git diff --check hygiene inside git repos.
+
+**Comparable alternative:** `honest-review` for review
+
+**Repo summary:**
+
+Simplify recently modified code for clarity, consistency, and maintainability while preserving exact behavior.
+
+&gt; Grounded in repository `skills/simplify/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Simplify recently modified code for clarity, consistency, and maintainability while preserving exact behavior.
@@ -36,11 +52,11 @@ Simplify recently modified code for clarity, consistency, and maintainability wh
 
 | $ARGUMENTS | Action |
 |------------|--------|
-| `analyze &lt;path, symbol, or snippet&gt;` | -> Mode A: Analyze simplification opportunities (read-only) |
-| `apply &lt;path, symbol, or snippet&gt;` | -> Mode B: Apply a simplification pass |
-| `explain &lt;path, symbol, or snippet&gt;` | -> Mode C: Explain why something feels complex and how to simplify it |
-| `Simplify this code` / `Make this clearer` / `Refine this implementation` | -> Auto-detect: Mode B only when the Apply Eligibility Gate passes; otherwise Mode A or ask |
-| Natural-language request asking what should be simplified | -> Auto-detect: Mode A |
+| `analyze &lt;path, symbol, or snippet&gt;` | -&gt; Mode A: Analyze simplification opportunities (read-only) |
+| `apply &lt;path, symbol, or snippet&gt;` | -&gt; Mode B: Apply a simplification pass |
+| `explain &lt;path, symbol, or snippet&gt;` | -&gt; Mode C: Explain why something feels complex and how to simplify it |
+| `Simplify this code` / `Make this clearer` / `Refine this implementation` | -&gt; Auto-detect: Mode B only when the Apply Eligibility Gate passes; otherwise Mode A or ask |
+| Natural-language request asking what should be simplified | -&gt; Auto-detect: Mode A |
 | Empty | Show mode menu with examples |
 
 ## Core Principles

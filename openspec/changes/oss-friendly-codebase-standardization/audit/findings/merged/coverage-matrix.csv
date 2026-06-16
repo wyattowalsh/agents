@@ -1,0 +1,13 @@
+harness_id,instructions,skills,agents,mcp,plugins,hooks,fixtures,path_portability,cells_covered,mean_score
+claude-code,partial,good,good,partial,good,partial,planned,planned,6,2.12
+codex,partial,good,partial,partial,partial,planned,planned,planned,5,1.75
+opencode,partial,good,good,partial,good,partial,planned,planned,6,2.12
+grok-build,partial,partial,partial,partial,partial,planned,planned,partial,6,1.75
+cursor-editor,good,good,partial,partial,partial,planned,planned,partial,6,2.0
+github-copilot-web,partial,planned,partial,planned,planned,planned,planned,planned,2,1.25
+github-copilot-cli,partial,partial,partial,partial,planned,partial,planned,planned,5,1.62
+gemini-cli,partial,partial,planned,partial,partial,planned,planned,planned,4,1.5
+antigravity,partial,partial,planned,planned,planned,planned,planned,planned,2,1.25
+crush,good,partial,planned,partial,planned,planned,planned,partial,4,1.62
+chatgpt,planned,planned,planned,partial,planned,planned,planned,planned,1,1.12
+claude-desktop,planned,planned,planned,partial,planned,planned,planned,planned,1,1.12

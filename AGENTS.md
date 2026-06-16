@@ -1,4 +1,4 @@
-@/Users/ww/dev/projects/agents/instructions/global.md
+@./instructions/global.md
 
 # AGENTS.md — AI Agent Asset Standards
 
@@ -151,9 +151,9 @@ Keep OpenCode DCP model-neutral by default. Do not add OpenCode model fields or 
 
 For repo-managed harness configs, keep the `chrome-devtools` server on the MCPHub attached-browser launch shape:
 
-- `bash /Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh`
+- `bash ${REPO_ROOT}/scripts/mcphub/chrome-devtools-browser-url.sh`
 
-This is the shared default for managed surfaces in this repository across Codex, Cursor, GitHub Copilot CLI, Antigravity, OpenCode, Cherry Studio, and other MCP-only harnesses that consume the normalized MCP registry. The wrapper starts or reuses a separate visible Chrome on `127.0.0.1:9333` with long-lived profile `/Users/ww/.cache/chrome-devtools-mcp-login`, then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`. Keep Chrome launch ownership in the wrapper so the MCP package does not launch Chrome with automation flags such as `--enable-automation`, `--disable-sync`, `--use-mock-keychain`, or `--remote-debugging-pipe`. The managed config also sets `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1` and `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1` where the target config format supports fixed environment values.
+This is the shared default for managed surfaces in this repository across Codex, Cursor, GitHub Copilot CLI, Antigravity, OpenCode, Cherry Studio, and other MCP-only harnesses that consume the normalized MCP registry. The wrapper starts or reuses a separate visible Chrome on `127.0.0.1:9333` with long-lived profile `~/.cache/chrome-devtools-mcp-login`, then runs `chrome-devtools-mcp --browserUrl http://127.0.0.1:9333`. Keep Chrome launch ownership in the wrapper so the MCP package does not launch Chrome with automation flags such as `--enable-automation`, `--disable-sync`, `--use-mock-keychain`, or `--remote-debugging-pipe`. The managed config also sets `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS=1` and `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS=1` where the target config format supports fixed environment values.
 
 Chrome DevTools has a one-owner-per-harness rule. Claude Code uses the upstream `ChromeDevTools/chrome-devtools-mcp` plugin when installed, Gemini CLI uses the upstream extension when installed, and VS Code/GitHub Copilot plugin-capable surfaces use the upstream source plugin where supported. Those plugin/extension owners suppress duplicate standalone `chrome-devtools` MCP projection for their harness-specific config. Repo MCP remains the fallback owner for MCP-only or UI-only harnesses.
 
@@ -325,9 +325,9 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Crush              | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
 | OpenCode           | `AGENTS.md` → `@instructions/global.md`                        | `instructions/opencode-global.md` for global OpenCode config     |
 | Cursor             | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
-| Grok Build         | `AGENTS.md` → `@instructions/global.md`                        | `instructions/grok-global.md`, `config/grok-config.toml`, `~/.grok/config.toml`, `.grok/config.toml`; MCP via sync; `wagents grok doctor` |
+| Grok Build         | `AGENTS.md` → `@instructions/global.md`                        | `instructions/grok-global.md`, `config/grok-config.toml`, `~/.grok/config.toml`, `.grok/config.toml`; MCP via sync; Plannotator via CLI + skills + `config/grok-plannotator-hooks.json` (not OpenCode plugin); `wagents grok doctor`, `wagents grok plannotator install` |
 | GitHub Copilot     | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Generated from `instructions/copilot-global.md`                  |
 
-Grok Build discovers skills from `~/.grok/skills/`, repo `.grok/skills/`, and `~/.claude/skills/`. The Skills CLI has no native `grok` adapter; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter and mirrors them into `~/.grok/skills`.
+Grok Build discovers skills from `~/.grok/skills/`, repo `.grok/skills/`, and `~/.claude/skills/`. The Skills CLI has no native `grok` adapter; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter and mirrors them into `~/.grok/skills`. Plannotator on Grok uses `wagents grok plannotator install` (CLI + core skills + optional hooks synced from `config/grok-plannotator-hooks.json`); there is no Grok npm plugin like OpenCode's `@plannotator/opencode`.
 
 GitHub Copilot stays in harness config and instruction sync, but installed-skill inventory should report only what the Skills CLI actually discovers. Do not fabricate skill rows from Copilot instruction or config files when the CLI reports zero installs.

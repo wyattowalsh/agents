@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import Any
 
 from wagents.platforms.base import assert_no_config_drops
+from wagents.repo_paths import render_portable_path, resolve_portable_path
 from wagents.platforms.grok import (
     render_grok_config as _render_grok_config,
-    render_grok_mcp_block,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -102,7 +102,7 @@ PERPLEXITY_SKILLS_DIR = HOME / ".perplexity" / "skills"
 CHERRY_PRESETS_DIR = CHERRY_STUDIO_DIR / "presets"
 ANTIGRAVITY_RULES_DIR = HOME / ".gemini" / "antigravity" / "rules"
 OPENCODE_PLUGIN_MANIFEST_PATH = OPENCODE_PLUGINS_DIR / "agents" / "plugin.json"
-CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"
+CHROME_DEVTOOLS_OPENCODE_LAUNCHER = "~/.config/opencode/tools/chrome-devtools-launcher.sh"
 MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
 MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
 MCPHUB_REMOTE_STDIO = REPO_ROOT / "scripts" / "mcphub" / "remote-stdio.sh"
@@ -269,8 +269,9 @@ COPILOT_TOOLS_OVERRIDES = {
 
 
 class SyncContext:
-    def __init__(self, apply: bool) -> None:
+    def __init__(self, apply: bool, *, grok_plannotator_hooks: bool = True) -> None:
         self.apply = apply
+        self.grok_plannotator_hooks = grok_plannotator_hooks
         self.changes: list[str] = []
 
     def note(self, message: str) -> None:
@@ -472,13 +473,11 @@ def render_home_path(path: Path) -> str:
 
 
 def normalize_path_value(value: str) -> str:
-    if value == "~":
-        return str(HOME.resolve())
-    if value.startswith("~/"):
-        return str((HOME / value[2:]).resolve())
+    if value.startswith("${REPO_ROOT}") or value == "~" or value.startswith("~/"):
+        return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
     if value.startswith("/"):
         return str(Path(value).resolve())
-    return value
+    return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
 
 
 def merge_unique_path_strings(managed: list[str], existing: Any) -> list[str]:
@@ -577,12 +576,21 @@ def render_codex_lmstudio_blocks(
     ]
 
 
+def resolve_registry_path(value: str) -> str:
+    text = value.strip()
+    if text.startswith("${REPO_ROOT}") or text == "~" or text.startswith("~/"):
+        return resolve_portable_path(text, repo_root=REPO_ROOT, home=HOME)
+    return value
+
+
 def replace_arg_placeholders(args: list[Any], fallbacks: dict[str, str], local_values: bool) -> list[Any]:
     rendered: list[Any] = []
     for item in args:
         if isinstance(item, str) and item.startswith("${") and item.endswith("}"):
             env_name = item[2:-1]
             rendered.append(resolve_env_value(env_name, fallbacks) if local_values else item)
+        elif local_values and isinstance(item, str):
+            rendered.append(resolve_registry_path(item))
         else:
             rendered.append(item)
     return rendered
@@ -676,7 +684,7 @@ def seed_registry_from_current_state() -> dict[str, Any]:
     }
     return {
         "version": 1,
-        "instruction_source": str(GLOBAL_MD),
+        "instruction_source": render_portable_path(GLOBAL_MD),
         "servers": ordered_servers,
     }
 
@@ -918,7 +926,7 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
 def render_mcphub_stdio_server(registry: dict[str, Any], url: str, *, enabled: bool = True) -> dict[str, Any]:
     token_env = mcphub_bearer_env_var(registry)
     return {
-        "command": str(MCPHUB_REMOTE_STDIO),
+        "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
         "args": [url],
         "env": {token_env: "${" + token_env + "}"},
         "disabled": not enabled,
@@ -1277,11 +1285,11 @@ def render_codex_global_instructions() -> str:
 
 ## Codex-Specific Instructions
 
-- Treat `/Users/ww/dev/projects/agents/instructions/global.md` as the canonical shared instruction source.
-- Keep Codex-specific config generation in `/Users/ww/dev/projects/agents/scripts/sync_agent_stack.py`.
-- Keep `/Users/ww/.codex/config.toml` and the repo-owned sanitized config copy schema-valid.
+- Treat `./instructions/global.md` as the canonical shared instruction source.
+- Keep Codex-specific config generation in `./scripts/sync_agent_stack.py`.
+- Keep `~/.codex/config.toml` and the repo-owned sanitized config copy schema-valid.
 - Codex disables automatic startup skill-list injection to avoid context-budget warnings; use
-  `uv run wagents skills search|context|read|doctor ...` from `/Users/ww/dev/projects/agents`
+  `uv run wagents skills search|context|read|doctor ...` from the repo root
   when a task needs a skill body or a missing/omitted skill must be recovered.
 - Prefer dynamic subagent delegation over hardcoded static teams; keep local agent ceilings practical.
 - Keep Codex web search on live mode: set top-level `web_search = "live"` (and the same in managed profiles).
@@ -1712,7 +1720,7 @@ def sync_copilot_subagent_env(ctx: SyncContext, policy: dict[str, Any]) -> None:
     limits = defaults.get("subagent_limits")
     if not limits:
         content = (
-            "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+            "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
             "unset COPILOT_SUBAGENT_MAX_CONCURRENT\n"
             "unset COPILOT_SUBAGENT_MAX_DEPTH\n"
         )
@@ -1721,7 +1729,7 @@ def sync_copilot_subagent_env(ctx: SyncContext, policy: dict[str, Any]) -> None:
     max_concurrent = int(limits["max_concurrent"])
     max_depth = int(limits["max_depth"])
     content = (
-        "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+        "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
         f'export COPILOT_SUBAGENT_MAX_CONCURRENT="{max_concurrent}"\n'
         f'export COPILOT_SUBAGENT_MAX_DEPTH="{max_depth}"\n'
     )
@@ -2398,7 +2406,7 @@ def opencode_plugin_key(plugin_spec: Any) -> str | None:
 
 
 def opencode_mcphub_bearer_auth_header(token_env: str) -> str:
-    return "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+    return "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
 
 
 def sanitize_opencode_mcphub_auth_headers(mcp_servers: dict[str, Any], token_env: str) -> None:
@@ -2816,12 +2824,12 @@ def sync_home_targets(
     sync_codex_entrypoint(ctx)
     ensure_symlink(ctx, CLAUDE_ENTRYPOINT_PATH, GLOBAL_MD)
     ensure_symlink(ctx, COPILOT_ENTRYPOINT_PATH, COPILOT_GLOBAL_MD)
-    write_text(ctx, GEMINI_ENTRYPOINT_PATH, f"@{REPO_ROOT / 'AGENTS.md'}\n@{GEMINI_GLOBAL_MD}\n")
+    write_text(ctx, GEMINI_ENTRYPOINT_PATH, "@./AGENTS.md\n@./instructions/gemini-cli-global.md\n")
     write_text(
         ctx,
         CLAUDE_COMPAT_MD,
         (
-            "@/Users/ww/dev/projects/agents/instructions/global.md\n\n"
+            "@./instructions/global.md\n\n"
             "Compatibility shim only. Active configs should point directly at `global.md`.\n"
         ),
     )
@@ -2907,6 +2915,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         default=None,
         help="Comma-separated harness ids (e.g. grok,opencode). Omit for all.",
     )
+    parser.add_argument(
+        "--no-plannotator-hooks",
+        action="store_true",
+        help="Skip syncing Grok Plannotator hooks and skill overlays during home sync (default: enabled).",
+    )
     return parser.parse_args(argv)
 
 
@@ -2915,7 +2928,7 @@ def main(argv: list[str] | None = None) -> int:
     if not args.apply and not args.check:
         print("Pass --apply or --check.", file=sys.stderr)
         return 2
-    ctx = SyncContext(apply=args.apply)
+    ctx = SyncContext(apply=args.apply, grok_plannotator_hooks=not args.no_plannotator_hooks)
     policy = load_json(TOOLING_POLICY_PATH)
     registry = load_registry(ctx)
     hook_registry = load_hook_registry()

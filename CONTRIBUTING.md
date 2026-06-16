@@ -21,6 +21,10 @@ Do not hand-edit generated catalog pages or generated skill indexes as the lasti
 
 Some repo-managed harness config and instruction projection files are local operational surfaces for this maintainer environment. External users should start from the public bundle paths (`agent-bundle.json`, plugin manifests, and `npx skills add github:wyattowalsh/agents ...`) instead of copying machine-local absolute paths from generated harness projections. When changing those projections, document whether a path is a public source path, a repo-relative path, or a maintainer-local target path.
 
+## Stranger first contribution
+
+Follow [START-HERE.md](START-HERE.md) for the 30-minute clone-to-PR path, then return here for change-type validation.
+
 ## Local Setup
 
 ```bash

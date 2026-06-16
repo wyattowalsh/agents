@@ -87,20 +87,20 @@ For OpenCode on this machine, prefer the local wrapper-based Chrome DevTools MCP
 The live OpenCode config should point `mcp.chrome-devtools.command` at:
 
 ```json
-["bash", "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"]
+["bash", "~/.config/opencode/tools/chrome-devtools-launcher.sh"]
 ```
 
 That launcher currently:
 
 - starts or reuses a dedicated Chrome instance on `127.0.0.1:9333`
-- uses profile dir `/Users/ww/.cache/chrome-devtools-mcp-browser-url-profile`
+- uses profile dir `~/.cache/chrome-devtools-mcp-browser-url-profile`
 - verifies `http://127.0.0.1:9333/json/version` returns a real DevTools payload before continuing
 - then execs `npx -y chrome-devtools-mcp@latest --browserUrl http://127.0.0.1:9333`
 
 The current launcher path is:
 
 ```bash
-/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh
+~/.config/opencode/tools/chrome-devtools-launcher.sh
 ```
 
 Use this OpenCode-specific override only where needed. Keep the shared repo-managed MCP default on the generic headed persistent-profile launch shape documented in `AGENTS.md`.

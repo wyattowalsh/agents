@@ -30,7 +30,7 @@ This page is generated from `local installed inventory`.
 
 ## What It Does
 
-## AI Agent Rule: Ask Before Adding Dependencies
+**Before running `go get` to add any new dependency, AI agents MUST ask the user for confirmation.** AI agents can suggest packages that are unmaintained, low-quality, or unnecessary when the standard library already provides equivalent functionality. Using `go get -u` to upgrade an existing dependency is safe.
 
 <Tabs>
   <TabItem label="Public Metadata">

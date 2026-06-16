@@ -8,6 +8,11 @@ from scripts.sync_agent_stack import MCP_REGISTRY_PATH, load_json
 from wagents.platforms.base import SyncContext
 from wagents.platforms.grok import (
     GROK_CONFIG_POLICY_PATH,
+    GROK_PLANNOTATOR_HOOKS_PATH,
+    PLANNOTATOR_CORE_SKILLS,
+    PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME,
+    PLANNOTATOR_EXIT_PLAN_HOOK_PY_PATH,
+    PLANNOTATOR_HOOKS_POLICY_PATH,
     Adapter,
     GrokConfigDropError,
     apply_model_defaults,
@@ -15,11 +20,17 @@ from wagents.platforms.grok import (
     blend_owned_table,
     is_grok_blend_header,
     is_grok_owned_header,
+    missing_plannotator_core_skills,
     parse_toml_table_kv,
+    plannotator_core_skill_roots,
+    plannotator_exit_plan_hook_home_path,
     registry_mcp_server_names,
     render_grok_config,
+    render_grok_plannotator_hooks,
     render_preserved_grok_config,
+    resolve_plannotator_binary,
     strip_registry_mcp_tables,
+    sync_grok_plannotator,
 )
 
 
@@ -220,3 +231,113 @@ def test_sync_grok_agents_creates_symlinks(tmp_path, monkeypatch):
     link = grok_agents / "planner.md"
     assert link.is_symlink()
     assert link.resolve() == (agents_dir / "planner.md").resolve()
+
+
+def test_resolve_plannotator_binary_uses_home_local_bin():
+    path = resolve_plannotator_binary()
+    assert path.name == "plannotator"
+    assert path.parent.name == "bin"
+    assert ".local" in str(path)
+
+
+def test_render_grok_plannotator_hooks_substitutes_placeholders(tmp_path, monkeypatch):
+    hooks_dir = tmp_path / "hooks"
+    policy = tmp_path / "grok-plannotator-hooks.json"
+    policy.write_text(
+        '{"hooks":{"PreToolUse":[{"command":"__PLANNOTATOR_EXIT_PLAN_HOOK__","bin":"__PLANNOTATOR_BIN__"}]}}\n',
+        encoding="utf-8",
+    )
+    monkeypatch.setattr("wagents.platforms.grok.PLANNOTATOR_HOOKS_POLICY_PATH", policy)
+
+    rendered = render_grok_plannotator_hooks(hooks_dir=hooks_dir)
+    assert "__PLANNOTATOR_" not in rendered
+    assert str(plannotator_exit_plan_hook_home_path(hooks_dir=hooks_dir).resolve()) in rendered
+    assert str(resolve_plannotator_binary()) in rendered
+
+
+def test_render_grok_plannotator_hooks_returns_empty_when_policy_missing(tmp_path, monkeypatch):
+    missing = tmp_path / "missing.json"
+    monkeypatch.setattr("wagents.platforms.grok.PLANNOTATOR_HOOKS_POLICY_PATH", missing)
+    assert render_grok_plannotator_hooks(hooks_dir=tmp_path / "hooks") == ""
+
+
+def test_sync_grok_plannotator_writes_home_hooks_and_shim(tmp_path, monkeypatch):
+    hooks_home = tmp_path / "grok-hooks"
+    destination = hooks_home / "plannotator.json"
+    hook_destination = hooks_home / PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME
+    policy = tmp_path / "grok-plannotator-hooks.json"
+    policy.write_text('{"hooks":{}}\n', encoding="utf-8")
+    source_py = tmp_path / "plannotator-exit-plan-hook.py"
+    source_py.write_text('print("ok")\n', encoding="utf-8")
+    monkeypatch.setattr("wagents.platforms.grok.PLANNOTATOR_HOOKS_POLICY_PATH", policy)
+    monkeypatch.setattr("wagents.platforms.grok.GROK_PLANNOTATOR_HOOKS_PATH", destination)
+    monkeypatch.setattr("wagents.platforms.grok.GROK_HOOKS_DIR", hooks_home)
+    monkeypatch.setattr("wagents.platforms.grok.PLANNOTATOR_EXIT_PLAN_HOOK_PY_PATH", source_py)
+
+    ctx = SyncContext(apply=True)
+    sync_grok_plannotator(ctx)
+
+    assert destination.exists()
+    assert destination.read_text(encoding="utf-8").startswith("{")
+    assert hook_destination.exists()
+    assert hook_destination.stat().st_mode & 0o111
+
+
+def test_sync_home_skips_plannotator_when_disabled(tmp_path, monkeypatch):
+    if not PLANNOTATOR_EXIT_PLAN_HOOK_PY_PATH.is_file():
+        pytest.skip("plannotator hook source missing")
+    hooks_home = tmp_path / "grok-hooks"
+    monkeypatch.setattr("wagents.platforms.grok.GROK_HOOKS_DIR", hooks_home)
+    monkeypatch.setattr("wagents.platforms.grok.GROK_PLANNOTATOR_HOOKS_PATH", hooks_home / "plannotator.json")
+    monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_PATH", tmp_path / "config.toml")
+    monkeypatch.setattr("wagents.platforms.grok.GROK_AGENTS_HOME_DIR", tmp_path / "agents")
+    monkeypatch.setattr("wagents.platforms.grok.AGENTS_DIR", tmp_path / "missing-agents")
+
+    registry = load_json(MCP_REGISTRY_PATH)
+    ctx = SyncContext(apply=True, grok_plannotator_hooks=False)
+    Adapter().sync_home(ctx, registry, {}, {}, {})
+    assert not (hooks_home / "plannotator.json").exists()
+
+
+def test_missing_plannotator_core_skills_detects_repo_overlays(tmp_path, monkeypatch):
+    repo = tmp_path / "repo"
+    skills_dir = repo / ".grok" / "skills"
+    (skills_dir / "plannotator-review").mkdir(parents=True)
+    skill_md = skills_dir / "plannotator-review" / "SKILL.md"
+    skill_md.write_text("---\nname: plannotator-review\n---\n", encoding="utf-8")
+    monkeypatch.setattr("wagents.platforms.grok.REPO_ROOT", repo)
+    monkeypatch.setattr(
+        "wagents.platforms.grok.plannotator_core_skill_roots",
+        lambda *, home=None: (skills_dir,),
+    )
+
+    missing = missing_plannotator_core_skills()
+    assert "plannotator-review" not in missing
+    assert "plannotator-annotate" in missing
+    assert "plannotator-last" in missing
+    assert set(PLANNOTATOR_CORE_SKILLS) - set(missing) == {"plannotator-review"}
+
+
+def test_plannotator_core_skill_roots_includes_project_overlay_when_present(tmp_path, monkeypatch):
+    repo = tmp_path / "repo"
+    project_skills = repo / ".grok" / "skills"
+    project_skills.mkdir(parents=True)
+    monkeypatch.setattr("wagents.platforms.grok.REPO_ROOT", repo)
+    monkeypatch.setattr("wagents.platforms.grok.HOME", tmp_path / "home")
+
+    roots = plannotator_core_skill_roots(home=tmp_path / "home")
+    assert project_skills in roots
+
+
+def test_grok_plannotator_policy_template_exists_in_repo():
+    if not PLANNOTATOR_HOOKS_POLICY_PATH.exists():
+        pytest.skip("plannotator hooks policy missing")
+    text = PLANNOTATOR_HOOKS_POLICY_PATH.read_text(encoding="utf-8")
+    assert "__PLANNOTATOR_EXIT_PLAN_HOOK__" in text
+    assert "__PLANNOTATOR_BIN__" in text
+    assert "exit_plan_mode" in text
+
+
+def test_grok_plannotator_hooks_path_under_home_hooks():
+    assert GROK_PLANNOTATOR_HOOKS_PATH.name == "plannotator.json"
+    assert GROK_PLANNOTATOR_HOOKS_PATH.parent.name == "hooks"

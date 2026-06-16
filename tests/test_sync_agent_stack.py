@@ -26,7 +26,6 @@ from scripts.sync_agent_stack import (
     render_copilot_hooks,
     render_copilot_mcp,
     render_gemini_mcp,
-    render_grok_mcp_block,
     render_opencode_mcp,
     render_repo_mcp,
     render_standard_hooks,
@@ -38,6 +37,7 @@ from scripts.sync_agent_stack import (
     sync_repo_targets,
 )
 from wagents.platforms import base as platform_base
+from wagents.platforms.grok import render_grok_mcp_block
 from wagents.platforms import cursor as cursor_platform
 from wagents.platforms import opencode as opencode_platform
 from wagents.platforms import vscode as vscode_platform
@@ -200,7 +200,7 @@ def test_render_opencode_mcp_projects_remote_mcphub_entries(monkeypatch):
         "url": "http://127.0.0.1:46683/mcp",
         "enabled": True,
         "oauth": False,
-        "headers": {"Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"},
+        "headers": {"Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"},
     }
 
 
@@ -208,7 +208,7 @@ def test_render_opencode_mcp_keeps_bearer_token_as_file_placeholder_for_home_con
     rendered = render_opencode_mcp(mcphub_registry(), {"MCPHUB_BEARER_TOKEN": "local-token"})
 
     assert rendered["mcphub_all"]["headers"] == {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
     }
     assert "local-token" not in json.dumps(rendered)
 
@@ -217,7 +217,7 @@ def test_opencode_adapter_keeps_bearer_token_as_file_placeholder_for_home_config
     rendered = opencode_platform.Adapter().render_mcp(mcphub_registry(), {"MCPHUB_BEARER_TOKEN": "local-token"})
 
     assert rendered["mcphub_all"]["headers"] == {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
     }
     assert "local-token" not in json.dumps(rendered)
 
@@ -1934,7 +1934,7 @@ def test_opencode_adapter_sync_home_merges_repo_runtime_plugins(tmp_path, monkey
     assert plugins[1] == ["@plannotator/opencode@latest", {"workflow": "plan-agent", "planningAgents": ["plan"]}]
     assert "local-token" not in json.dumps(payload)
     assert payload["mcp"]["mcphub_all"]["headers"] == {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
     }
     assert payload["mcp"]["custom-local"] == {
         "type": "local",
@@ -2323,7 +2323,7 @@ def test_sync_copilot_subagent_env_writes_bounded_limits(tmp_path, monkeypatch):
     sync_copilot_subagent_env(ctx, policy)
 
     assert env_path.read_text(encoding="utf-8") == (
-        "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+        "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
         'export COPILOT_SUBAGENT_MAX_CONCURRENT="2"\n'
         'export COPILOT_SUBAGENT_MAX_DEPTH="1"\n'
     )
@@ -2338,7 +2338,7 @@ def test_sync_copilot_subagent_env_unsets_limits_when_unbounded(tmp_path, monkey
     sync_copilot_subagent_env(ctx, policy)
 
     assert env_path.read_text(encoding="utf-8") == (
-        "# Managed by /Users/ww/dev/projects/agents/scripts/sync_agent_stack.py.\n"
+        "# Managed by wagents sync (scripts/sync_agent_stack.py).\n"
         "unset COPILOT_SUBAGENT_MAX_CONCURRENT\n"
         "unset COPILOT_SUBAGENT_MAX_DEPTH\n"
     )

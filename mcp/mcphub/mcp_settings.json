@@ -22,7 +22,7 @@
     "chrome-devtools": {
       "command": "bash",
       "args": [
-        "/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh"
+        "${REPO_ROOT}/scripts/mcphub/chrome-devtools-browser-url.sh"
       ],
       "env": {
         "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": "1",
@@ -53,7 +53,7 @@
       "timeout": 600000
     },
     "docling": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcphub/docling-stdio.sh",
+      "command": "${REPO_ROOT}/scripts/mcphub/docling-stdio.sh",
       "args": [],
       "timeout": 600000
     },
@@ -82,7 +82,7 @@
       "timeout": 600000
     },
     "package-version": {
-      "command": "/Users/ww/go/bin/mcp-package-version",
+      "command": "~/go/bin/mcp-package-version",
       "args": [],
       "timeout": 600000
     },
@@ -146,7 +146,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/projects/agents/mcp/servers/trafilatura_mcp",
+        "${REPO_ROOT}/mcp/servers/trafilatura_mcp",
         "run",
         "python3",
         "trafilatura_mcp.py"
@@ -164,7 +164,7 @@
     "atom-of-thoughts": {
       "command": "node",
       "args": [
-        "/Users/ww/dev/projects/agents/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
+        "${REPO_ROOT}/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
       ],
       "timeout": 600000
     },
@@ -181,7 +181,7 @@
       "timeout": 600000
     },
     "creative-thinking": {
-      "command": "/Users/ww/dev/projects/agents/scripts/mcp_tools/run_mcp_thinking.sh",
+      "command": "${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh",
       "args": [],
       "timeout": 600000
     },
@@ -215,7 +215,7 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/Users/ww/dev/projects/agents/mcp/servers/ffmpeg-mcp",
+        "${REPO_ROOT}/mcp/servers/ffmpeg-mcp",
         "run",
         "ffmpeg-mcp"
       ],
@@ -248,7 +248,7 @@
     "lotus-wisdom-mcp": {
       "command": "node",
       "args": [
-        "/Users/ww/dev/projects/agents/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
+        "${REPO_ROOT}/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
       ],
       "timeout": 600000
     },
@@ -306,11 +306,11 @@
         "duckduckgo-search",
         "exa",
         "fetch",
-          "fetcher",
-          "ffmpeg",
-          "g-search",
-          "gmail",
-          "linkedin",
+        "fetcher",
+        "ffmpeg",
+        "g-search",
+        "gmail",
+        "linkedin",
         "lotus-wisdom-mcp",
         "ossinsight",
         "package-version",

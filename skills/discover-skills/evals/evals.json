@@ -49,6 +49,36 @@
         "Does not run scaffold or write skill files",
         "Read-only hooks remain enforced"
       ]
+    },
+    {
+      "id": "dispatch-audit",
+      "prompt": "/discover-skills audit",
+      "expected_output": "Runs W0 deterministic scans only and returns gap-report summary without spawning wave-2 scouts.",
+      "assertions": [
+        "Uses audit dispatch mode",
+        "Produces gap report before any scout wave",
+        "Does not install skills"
+      ]
+    },
+    {
+      "id": "dispatch-list",
+      "prompt": "/discover-skills list active",
+      "expected_output": "Lists discovery journal sessions from journal-store without starting a new discovery run.",
+      "assertions": [
+        "Uses list dispatch mode",
+        "Reads journal metadata only",
+        "Does not spawn scouts"
+      ]
+    },
+    {
+      "id": "dispatch-resume",
+      "prompt": "/discover-skills resume",
+      "expected_output": "Loads the latest journal session, restores artifact_root when present, and continues from the saved wave.",
+      "assertions": [
+        "Uses resume dispatch mode",
+        "Honors session_version 2 and artifact_root",
+        "Does not restart W0 when checkpoint exists"
+      ]
     }
   ]
 }

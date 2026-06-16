@@ -45,6 +45,10 @@ Run `wagents update` or `npx skills update` after upstream changes to refresh re
 OpenCode runtime plugins are tracked in repo `opencode.json`; TUI-only plugins and shortcuts live in `~/.config/opencode/tui.json`. Current OpenCode shortcut config uses `keybinds`, not stale `keymap.sections`. Plannotator stays scoped to the `plan` agent, while scheduler jobs, Claude credential reuse, Langfuse credentials, and local workflow-state plugins require explicit opt-in instead of being enabled by repo defaults.
 </Aside>
 
+<Aside type="note" title="Grok Build Plannotator">
+Grok has no npm plugin like OpenCode's `@plannotator/opencode`. Run `wagents grok plannotator install` once for the CLI and curated skills (extras on by default). Home sync keeps hooks and overlays enabled by default; opt out with `--no-plannotator-hooks` on `sync_agent_stack.py`. Verify with `wagents grok doctor`.
+</Aside>
+
 <Aside type="caution" title="OpenCode session recovery">
 When one OpenCode session loops on OpenAI `server_error` but fresh `openai/gpt-5.5` pure and plugin-loaded runs succeed, diagnose the session before changing model defaults. Preserve request IDs, inspect the session DB for incomplete assistant turns and encrypted reasoning parts, back up `~/.local/share/opencode/opencode.db`, and archive the affected session instead of repeatedly resuming it.
 </Aside>

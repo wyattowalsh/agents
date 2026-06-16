@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"instruction_source": "/Users/ww/dev/projects/agents/instructions/global.md",
+	"instruction_source": "${REPO_ROOT}/instructions/global.md",
 	"model_defaults": {
 		"codex": {
 			"model": "gpt-5.5",
@@ -59,7 +59,6 @@
 		"modelcontextprotocol.io"
 	],
 	"trusted_roots": [
-		"/Users/ww",
-		"/Users/ww/dev/projects"
+		"${REPO_ROOT}"
 	]
 }

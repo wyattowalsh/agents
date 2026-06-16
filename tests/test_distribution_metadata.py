@@ -469,22 +469,22 @@ def test_repo_sync_inventory_covers_sync_manifest_paths():
     inventory = load_json("planning/manifests/repo-sync-inventory.json")
     drift_ledger = load_json("planning/manifests/repo-drift-ledger.json")
     known_opencode_sync_paths = {
-        "/Users/ww/dev/projects/agents/config/opencode-dcp.jsonc",
-        "/Users/ww/dev/projects/agents/config/opencode-large-image-optimizer.json",
-        "/Users/ww/dev/projects/agents/config/opencode-notifier.json",
-        "/Users/ww/dev/projects/agents/config/opencode-tui-plugins.json",
-        "/Users/ww/dev/projects/agents/config/opencode-quota-toast.json",
-        "/Users/ww/dev/projects/agents/config/opencode-token-monitor.json",
-        "/Users/ww/dev/projects/agents/config/opencode-ensemble.json",
-        "/Users/ww/dev/projects/agents/config/opencode-octto.json",
-        "/Users/ww/.config/opencode/dcp.jsonc",
-        "/Users/ww/.config/opencode/large-image-optimizer.json",
-        "/Users/ww/.config/opencode/opencode-notifier.json",
-        "/Users/ww/.config/opencode/tui.json",
-        "/Users/ww/.config/opencode/opencode-quota/quota-toast.json",
-        "/Users/ww/.config/opencode/token-monitor.json",
-        "/Users/ww/.config/opencode/ensemble.json",
-        "/Users/ww/.config/opencode/octto.json",
+        "${REPO_ROOT}/config/opencode-dcp.jsonc",
+        "${REPO_ROOT}/config/opencode-large-image-optimizer.json",
+        "${REPO_ROOT}/config/opencode-notifier.json",
+        "${REPO_ROOT}/config/opencode-tui-plugins.json",
+        "${REPO_ROOT}/config/opencode-quota-toast.json",
+        "${REPO_ROOT}/config/opencode-token-monitor.json",
+        "${REPO_ROOT}/config/opencode-ensemble.json",
+        "${REPO_ROOT}/config/opencode-octto.json",
+        "~/.config/opencode/dcp.jsonc",
+        "~/.config/opencode/large-image-optimizer.json",
+        "~/.config/opencode/opencode-notifier.json",
+        "~/.config/opencode/tui.json",
+        "~/.config/opencode/opencode-quota/quota-toast.json",
+        "~/.config/opencode/token-monitor.json",
+        "~/.config/opencode/ensemble.json",
+        "~/.config/opencode/octto.json",
     }
 
     sync_paths = {record["path"] for record in sync_manifest["managed"]}
@@ -518,6 +518,7 @@ def test_harness_fixture_support_covers_every_harness_without_tier_promotion():
         assert evidence["owner_change"] == harness["owner_change"]
         assert evidence["fixture_status"] in {
             "fixture-backed",
+            "fixture-executable",
             "fixture-plan-only",
             "docs-ledger-required",
             "blocked",

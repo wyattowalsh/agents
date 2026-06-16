@@ -12,6 +12,7 @@ from wagents.catalog import RELATED_SKILLS, CatalogEdge, CatalogNode
 from wagents.parsing import (
     FenceTracker,
     escape_attr,
+    sanitize_catalog_links,
     shift_headings,
     strip_relative_md_links,
     truncate_sentence,
@@ -49,6 +50,9 @@ def escape_mdx_line(line: str) -> str:
     """Escape a single MDX line, preserving inline code spans."""
     if line.startswith("import ") or line.startswith("export "):
         return "\\" + line
+
+    # Normalize markdown-escaped angle brackets from upstream SKILL sources.
+    line = re.sub(r"\\([<>])", r"\1", line)
 
     # Find all inline code span ranges
     code_ranges = []
@@ -96,7 +100,11 @@ def escape_mdx_line(line: str) -> str:
             i += 1
             continue
         if line[i] == "<":
-            out.append("\\<")
+            out.append("&lt;")
+            i += 1
+            continue
+        if line[i] == ">":
+            out.append("&gt;")
             i += 1
             continue
         out.append(line[i])
@@ -169,9 +177,17 @@ def safe_outer_fence(content: str) -> str:
     return "`" * (max_fence + 1)
 
 
+def _resolve_raw_path(node: CatalogNode) -> Path:
+    """Resolve the on-disk path for a catalog node's source file."""
+    raw = Path(node.source_path)
+    if node.source == "custom" or not raw.is_absolute():
+        return ROOT / node.source_path
+    return raw
+
+
 def read_raw_content(node: CatalogNode) -> str:
     """Read the raw file content for a CatalogNode from disk."""
-    raw_path = ROOT / node.source_path if node.source == "custom" else Path(node.source_path)
+    raw_path = _resolve_raw_path(node)
     try:
         return raw_path.read_text()
     except Exception:
@@ -265,6 +281,87 @@ def _skill_public_metadata_rows(node: CatalogNode) -> list[str]:
     return rows
 
 
+def _sanitize_what_it_does(text: str) -> str:
+    """Drop summary text that would break MDX when embedded as prose."""
+    stripped = text.strip()
+    if not stripped:
+        return ""
+    if "```" in stripped:
+        return ""
+    if "import {" in stripped:
+        return ""
+    if re.search(r"</?[A-Za-z][^>]*>", stripped):
+        return ""
+    if re.search(r"\]\(#", stripped):
+        return ""
+    if re.match(r"^#{1,6}\s", stripped):
+        return ""
+    if "## Contents" in stripped or stripped.lower().startswith("## contents"):
+        return ""
+    if stripped.count("|") >= 4:
+        return ""
+    return stripped
+
+
+def _extract_what_it_does(body: str) -> str:
+    """Return the first prose paragraph after the H1, excluding subheadings and tables."""
+    if not body:
+        return ""
+
+    lines = body.split("\n")
+    past_h1 = False
+    para_lines: list[str] = []
+    fence = FenceTracker()
+
+    for line in lines:
+        fence.update(line)
+        if fence.inside_fence:
+            if para_lines:
+                break
+            continue
+
+        stripped = line.strip()
+        if not past_h1:
+            if stripped.startswith("# ") and not stripped.startswith("## "):
+                past_h1 = True
+            continue
+
+        if not stripped:
+            if para_lines:
+                break
+            continue
+        if re.match(r"^#{1,6}\s", stripped):
+            if para_lines:
+                break
+            continue
+        if stripped.startswith("|"):
+            if para_lines:
+                break
+            continue
+
+        para_lines.append(stripped)
+
+    return _sanitize_what_it_does(" ".join(para_lines))
+
+
+def _section_is_link_heavy(content: str) -> bool:
+    """True when most markdown links in a section point at non-navigable relative paths."""
+    links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", content)
+    if not links:
+        return False
+    relative = 0
+    for _label, target in links:
+        target = target.strip()
+        if target.startswith(("http://", "https://", "mailto:", "tel:", "/")):
+            continue
+        relative += 1
+    return relative / len(links) > 0.5
+
+
+def _catalog_prose(text: str) -> str:
+    return sanitize_catalog_links(escape_mdx(text), fence_aware=True)
+
+
 def _extract_body_sections(body: str) -> dict[str, str]:
     """Extract named sections from SKILL.md body.
 
@@ -347,8 +444,8 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     fm = node.metadata
     parts = []
 
-    # Read raw content from disk for the copyable code block
-    raw_content = read_raw_content(node)
+    is_stub = bool(node.metadata.get("_is_stub"))
+    raw_content = read_raw_content(node) if not is_stub else ""
 
     # Frontmatter
     parts.append("---")
@@ -456,7 +553,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     research_body = load_skill_research(node.id)
     if research_body:
         parts.append('<Aside type="note" title="Research context (evidence, not authority)">')
-        parts.append(escape_mdx(research_body))
+        parts.append(_catalog_prose(research_body))
         parts.append("</Aside>")
         parts.append("")
 
@@ -467,29 +564,11 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         parts.append(f'<LinkCard title="Full Guide: {node.id}" href="/guides/{node.id}/" description="{desc}" />')
         parts.append("")
 
-    # "What it does" section — first paragraph after first heading
-    what_it_does = ""
-    if node.body:
-        body_lines = node.body.split("\n")
-        found_heading = False
-        para_lines = []
-        for bl in body_lines:
-            if not found_heading:
-                if bl.strip().startswith("#"):
-                    found_heading = True
-                continue
-            if bl.strip() == "":
-                if para_lines:
-                    break
-                continue
-            para_lines.append(bl.strip())
-        if para_lines:
-            what_it_does = " ".join(para_lines)
-
+    what_it_does = _extract_what_it_does(node.body) if node.body else ""
     if what_it_does:
         parts.append("## What It Does")
         parts.append("")
-        parts.append(strip_relative_md_links(escape_mdx(what_it_does)))
+        parts.append(_catalog_prose(what_it_does))
         parts.append("")
 
     # Auto-invoke aside for convention skills
@@ -539,7 +618,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     if dispatch_table:
         parts.append("## Modes")
         parts.append("")
-        parts.append(strip_relative_md_links(escape_mdx(dispatch_table)))
+        parts.append(_catalog_prose(dispatch_table))
         parts.append("")
 
     # Extract and render additional body sections for richer docs pages
@@ -551,11 +630,17 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             continue
         if not section_content.strip():
             continue
+        if (
+            node.source != "custom"
+            and section_key == "routing"
+            and _section_is_link_heavy(section_content)
+        ):
+            continue
         # Use the original casing from the body for the heading
         heading = section_key.title()
         parts.append(f"## {heading}")
         parts.append("")
-        parts.append(strip_relative_md_links(escape_mdx(section_content)))
+        parts.append(_catalog_prose(section_content))
         parts.append("")
 
     # Tabbed metadata (with single-tab fix)
@@ -665,21 +750,22 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     # === TIER 2: Copyable asset preview ===
     # Skills show raw SKILL.md behind a disclosure widget (install-and-use artifacts).
     # Agents show system prompts inline (read-to-understand artifacts). This is intentional.
-    outer_fence = safe_outer_fence(raw_content)
-    parts.append("<details>")
-    parts.append("<summary>View Full SKILL.md</summary>")
-    parts.append("")
-    parts.append(f'{outer_fence}yaml title="SKILL.md"')
-    parts.append(raw_content)
-    parts.append(outer_fence)
-    parts.append("")
-    if node.source == "custom":
-        parts.append(
-            f"[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/{node.source_path})"
-        )
+    if not is_stub:
+        outer_fence = safe_outer_fence(raw_content)
+        parts.append("<details>")
+        parts.append("<summary>View Full SKILL.md</summary>")
         parts.append("")
-    parts.append("</details>")
-    parts.append("")
+        parts.append(f'{outer_fence}yaml title="SKILL.md"')
+        parts.append(raw_content)
+        parts.append(outer_fence)
+        parts.append("")
+        if node.source == "custom":
+            parts.append(
+                f"[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/{node.source_path})"
+            )
+            parts.append("")
+        parts.append("</details>")
+        parts.append("")
 
     # Resources
     parts.append("## Resources")

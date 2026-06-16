@@ -6,6 +6,7 @@ from wagents.parsing import (
     FenceTracker,
     escape_attr,
     parse_frontmatter,
+    sanitize_catalog_links,
     shift_headings,
     strip_relative_md_links,
     to_title,
@@ -185,6 +186,24 @@ class TestStripRelativeMdLinks:
         text = "See [a](x.md) and [b](https://b.com) and [c](y.md)"
         result = strip_relative_md_links(text)
         assert result == "See `a` and [b](https://b.com) and `c`"
+
+    def test_relative_asset_link_becomes_code(self):
+        assert strip_relative_md_links("[main](assets/examples/main.go)") == "`main`"
+
+    def test_hash_only_link_becomes_code(self):
+        assert strip_relative_md_links("[section](#core-architecture)") == "`section`"
+
+    def test_internal_link_strips_hash_fragment(self):
+        text = "[section](/skills/catalog/foo#core-architecture)"
+        assert strip_relative_md_links(text) == "[section](/skills/catalog/foo)"
+
+
+class TestSanitizeCatalogLinks:
+    def test_fence_aware_preserves_links_inside_code(self):
+        text = "See [ref](foo.md)\n```\n[keep](inside.md)\n```\n"
+        result = sanitize_catalog_links(text, fence_aware=True)
+        assert "See `ref`" in result
+        assert "[keep](inside.md)" in result
 
 
 # ---------------------------------------------------------------------------

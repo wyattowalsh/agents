@@ -55,7 +55,10 @@ OPENCODE_PLUGINS_DIR = HOME / ".config" / "opencode" / "plugins"
 OPENCODE_GLOBAL_MD = REPO_ROOT / "instructions" / "opencode-global.md"
 OPENCODE_AGENTS_OVERLAY_MD = REPO_ROOT / "instructions" / "opencode-agents-overlay.md"
 GLOBAL_MD = REPO_ROOT / "instructions" / "global.md"
-CHROME_DEVTOOLS_LAUNCHER = "/Users/ww/.config/opencode/tools/chrome-devtools-launcher.sh"
+CHROME_DEVTOOLS_LAUNCHER = os.environ.get(
+    "CHROME_DEVTOOLS_LAUNCHER",
+    str(HOME / ".config/opencode/tools/chrome-devtools-launcher.sh"),
+)
 SKILLS_DIR = REPO_ROOT / "skills"
 _LOCAL_PLUGIN_SPECS = [
     "./plugins/opencode-context-cache.mjs",
@@ -450,7 +453,7 @@ def _plugin_package_key(plugin_spec: Any) -> str | None:
 
 
 def _mcphub_bearer_auth_header(token_env: str) -> str:
-    return "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+    return "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
 
 
 def _sanitize_mcphub_auth_headers(mcp_servers: dict[str, Any], token_env: str) -> None:

@@ -39,13 +39,40 @@ def truncate_sentence(text: str, max_len: int) -> str:
     return result
 
 
+_LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+
+
+def _neutralize_catalog_link(match: re.Match[str]) -> str:
+    label = match.group(1)
+    target = match.group(2).strip()
+    if target.startswith(("http://", "https://", "mailto:", "tel:")):
+        return match.group(0)
+    if target.startswith("/"):
+        if "#" in target:
+            return f"[{label}]({target.split('#', 1)[0]})"
+        return match.group(0)
+    return f"`{label}`"
+
+
+def sanitize_catalog_links(text: str, *, fence_aware: bool = False) -> str:
+    """Neutralize links that cannot resolve on generated docs catalog pages."""
+    if not fence_aware:
+        return _LINK_PATTERN.sub(_neutralize_catalog_link, text)
+
+    lines = text.split("\n")
+    fence = FenceTracker()
+    result: list[str] = []
+    for line in lines:
+        if fence.update(line) or fence.inside_fence:
+            result.append(line)
+        else:
+            result.append(_LINK_PATTERN.sub(_neutralize_catalog_link, line))
+    return "\n".join(result)
+
+
 def strip_relative_md_links(text: str) -> str:
-    """Convert relative .md links [text](file.md) to just `text` (no link)."""
-    return re.sub(
-        r"\[([^\]]+)\]\((?!https?://|/)[^)]*\.md(?:[#?][^)]*)?\)",
-        r"`\1`",
-        text,
-    )
+    """Alias for :func:`sanitize_catalog_links` (backward compatible)."""
+    return sanitize_catalog_links(text)
 
 
 class FenceTracker:

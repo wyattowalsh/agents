@@ -185,7 +185,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_browser": {
@@ -194,7 +194,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_code": {
@@ -203,7 +203,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_data": {
@@ -212,7 +212,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_experimental": {
@@ -221,7 +221,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_harness-safe": {
@@ -230,7 +230,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_local-ai": {
@@ -239,7 +239,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_media": {
@@ -248,7 +248,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_personal": {
@@ -257,7 +257,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_reasoning": {
@@ -266,7 +266,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "mcphub_group_research": {
@@ -275,7 +275,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "arxiv": {
@@ -284,7 +284,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "atom-of-thoughts": {
@@ -293,7 +293,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "brave-search": {
@@ -302,7 +302,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "cascade-thinking": {
@@ -311,7 +311,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "chrome-devtools": {
@@ -320,7 +320,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "context7": {
@@ -329,7 +329,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "crash": {
@@ -338,7 +338,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "creative-thinking": {
@@ -347,7 +347,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "deep-lucid-3d": {
@@ -356,7 +356,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "deepwiki": {
@@ -365,7 +365,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "docling": {
@@ -374,7 +374,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "duckduckgo-search": {
@@ -383,7 +383,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "exa": {
@@ -392,7 +392,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "fetch": {
@@ -401,7 +401,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "fetcher": {
@@ -410,7 +410,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "ffmpeg": {
@@ -419,7 +419,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "g-search": {
@@ -428,7 +428,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "gmail": {
@@ -437,7 +437,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "linkedin": {
@@ -446,7 +446,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "lotus-wisdom-mcp": {
@@ -455,7 +455,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "ossinsight": {
@@ -464,7 +464,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "package-version": {
@@ -473,7 +473,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "penpot": {
@@ -482,7 +482,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "repomix": {
@@ -491,7 +491,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "sequential-thinking": {
@@ -500,7 +500,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "shannon-thinking": {
@@ -509,7 +509,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "structured-thinking": {
@@ -518,7 +518,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "supathings": {
@@ -527,7 +527,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "tavily": {
@@ -536,7 +536,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "think-strategies": {
@@ -545,7 +545,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "trafilatura": {
@@ -554,7 +554,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "wayback": {
@@ -563,7 +563,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     },
     "wikipedia": {
@@ -572,7 +572,7 @@
       "enabled": true,
       "oauth": false,
       "headers": {
-        "Authorization": "Bearer {file:/Users/ww/.config/opencode/secrets/mcphub-bearer-token}"
+        "Authorization": "Bearer {file:~/.config/opencode/secrets/mcphub-bearer-token}"
       }
     }
   },

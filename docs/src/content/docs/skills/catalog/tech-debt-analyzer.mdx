@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/tech-debt-analyzer/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring.
+
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** `honest-review` for code review
+
+**Repo summary:**
+
+Systematic technical debt inventory, prioritization, and remediation planning. Multi-pass analysis with confidence scoring and evidence-based findings.
+
+&gt; Grounded in repository `skills/tech-debt-analyzer/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Systematic technical debt inventory, prioritization, and remediation planning. Multi-pass analysis with confidence scoring and evidence-based findings.
@@ -48,7 +64,7 @@ Systematic technical debt inventory, prioritization, and remediation planning. M
 
 1. Run all 4 analysis scripts before presenting findings — partial scans are labeled as such
 2. Every finding must have a confidence score backed by evidence (script output or codebase grep)
-3. Confidence \< 0.3 = discard; 0.3-0.7 = flag as uncertain; >= 0.7 = report
+3. Confidence &lt; 0.3 = discard; 0.3-0.7 = flag as uncertain; &gt;= 0.7 = report
 4. Never execute remediation — this skill inventories and plans, not fixes
 5. Store baseline after every full scan — longitudinal tracking depends on it
 6. Do not report style preferences as debt — only structural, behavioral, or maintainability issues
@@ -56,7 +72,7 @@ Systematic technical debt inventory, prioritization, and remediation planning. M
 8. Prioritize mode requires a prior scan — prompt user to run scan first if no baseline exists
 9. Always present the debt score (aggregate metric) in scan output
 10. Track mode must show delta (new/resolved/changed) — raw numbers without comparison are useless
-11. Dead code detection requires high confidence (>= 0.8) — false positives erode trust
+11. Dead code detection requires high confidence (&gt;= 0.8) — false positives erode trust
 12. Load ONE reference file at a time — do not preload all references
 
 <Tabs>

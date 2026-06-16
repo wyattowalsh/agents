@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "finding_schema": {
+    "required": [
+      "id",
+      "wave",
+      "agent",
+      "title",
+      "category",
+      "severity",
+      "confidence",
+      "evidence",
+      "impact",
+      "recommendation",
+      "effort",
+      "validation",
+      "status"
+    ],
+    "extensions": [
+      "task_id",
+      "shard_file",
+      "blast_radius",
+      "owner_surface",
+      "harness_id",
+      "dimension",
+      "duplicate_of",
+      "critic_challenged",
+      "rebuttal_status"
+    ]
+  },
+  "severity_scale": {
+    "P0": "blocks OSS adoption",
+    "P1": "maintainer pain",
+    "P2": "polish",
+    "P3": "aspirational"
+  },
+  "coverage_dimensions": [
+    "instructions",
+    "skills",
+    "mcp",
+    "plugins",
+    "hooks",
+    "sync",
+    "fixtures",
+    "oss-leaks"
+  ],
+  "repo_present_harnesses": [
+    "claude-code",
+    "claude-desktop",
+    "chatgpt",
+    "codex",
+    "github-copilot-web",
+    "github-copilot-cli",
+    "opencode",
+    "gemini-cli",
+    "antigravity",
+    "cursor-editor",
+    "crush",
+    "grok-build"
+  ]
+}

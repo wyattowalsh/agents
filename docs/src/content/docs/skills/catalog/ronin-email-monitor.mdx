@@ -28,7 +28,7 @@ This page is generated from `local installed inventory`.
 
 ## What It Does
 
-| `$ARGUMENTS` | Action | |------------|--------| | `sync` or `check` | Manual Sync workflow | | `connect` | Connect Gmail workflow | | `signals` or `pending` | List pending signals | | Empty | Show pending signal count |
+&gt; **Step 0 — Context Load (all skills):** Before any workflow, load `get_user_memory(user_id)`. Load `list_opportunities(user_id)` when you need company-matching context for manual review.
 
 ## Modes
 
@@ -52,7 +52,7 @@ This page is generated from `local installed inventory`.
 ## Critical Rules
 
 1. Never apply pipeline transitions without user confirmation — `confirm_signal` is always required.
-2. Only store signals with confidence >= 0.6 — below threshold signals are discarded.
+2. Only store signals with confidence &gt;= 0.6 — below threshold signals are discarded.
 3. Skip emails that are not job-search-related entirely — do not create signals for irrelevant emails.
 4. Gmail OAuth uses read-only scope — never send, modify, or delete emails.
 5. Never log or include OAuth tokens in error messages or API responses.

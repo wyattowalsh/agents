@@ -28,6 +28,22 @@ Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemin
 This page is generated from the repository file `skills/skill-creator/SKILL.md` by `wagents docs generate`.
 </Aside>
 
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills.
+
+**Stack / assumptions:** Requires Python 3.13+; optional uv for project tooling; optional Node.js/npm for install commands; hook support varies by agent client.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
+
+&gt; Grounded in repository `skills/skill-creator/SKILL.md`; treat as evidence, not authority.
+</Aside>
+
 ## What It Does
 
 Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
@@ -94,7 +110,7 @@ python skills/skill-creator/scripts/package.py skills/<name>/            # Singl
 
 **Conciseness is respect** — The context window is shared. Every line competes with the agent's working memory. Earn every line or delete it.
 
-**Progressive disclosure** — Frontmatter for discovery (~100 tokens), body for dispatch (\<5K tokens), references for deep knowledge (on demand), scripts/templates for execution (never loaded).
+**Progressive disclosure** — Frontmatter for discovery (~100 tokens), body for dispatch (&lt;5K tokens), references for deep knowledge (on demand), scripts/templates for execution (never loaded).
 
 **Self-exemplar** — This skill follows every pattern it teaches. When in doubt, look at how skill-creator applies it.
 
@@ -125,7 +141,7 @@ python skills/skill-creator/scripts/package.py skills/<name>/            # Singl
 
 - Modes: "Develop (new)", "Develop (existing)", "Audit", "Audit All", "Dashboard", "Package", "Gallery"
 - Steps (Development): "Understand", "Plan", "Scaffold", "Build", "Validate", "Iterate"
-- Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (\<40)
+- Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (&lt;40)
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
 - Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract"
 
