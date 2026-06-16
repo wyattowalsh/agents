@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from wagents.platforms.base import SyncContext
 from wagents.platforms import get_adapter
+from wagents.platforms.base import SyncContext
 
 
 def test_codex_adapter_dry_run_notes_changes(tmp_path, monkeypatch):
@@ -28,7 +28,8 @@ def test_copilot_adapter_dry_run_notes_repo_changes():
 def test_gemini_adapter_dry_run_home_notes_when_settings_missing(monkeypatch):
     ctx = SyncContext(apply=False)
     adapter = get_adapter("gemini-cli")
-    monkeypatch.setattr("scripts.sync_agent_stack.GEMINI_SETTINGS_PATH", __import__("pathlib").Path("/nonexistent/settings.json"))
+    missing_settings = __import__("pathlib").Path("/nonexistent/settings.json")
+    monkeypatch.setattr("scripts.sync_agent_stack.GEMINI_SETTINGS_PATH", missing_settings)
     adapter.sync_home(ctx, {}, {}, {}, {})
     # no settings file: merge_gemini_settings returns early without changes
     assert isinstance(ctx.changes, list)
