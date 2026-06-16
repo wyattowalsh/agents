@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harness-master/discovery/hook-scan",
+  "title": "HookScan",
+  "type": "object",
+  "required": [
+    "version",
+    "registry",
+    "frontmatter",
+    "embedded_settings",
+    "grok_managed",
+    "surface_parity",
+    "gaps",
+    "validation_errors",
+    "blind_spots"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "registry": {
+      "type": "object",
+      "properties": {
+        "by_harness": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "by_logical_event": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "managed_wagents_hook_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "frontmatter": {
+      "type": "object",
+      "properties": {
+        "skills_with_hooks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "agents_with_hooks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "embedded_settings": {
+      "type": "object",
+      "properties": {
+        "claude": {
+          "type": "boolean"
+        },
+        "gemini": {
+          "type": "boolean"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "grok_managed": {
+      "type": "object",
+      "properties": {
+        "policy_present": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "surface_parity": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "blind_spots": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

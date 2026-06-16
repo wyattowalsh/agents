@@ -11,9 +11,10 @@
 7. [Cursor](#cursor)
 8. [Gemini CLI](#gemini-cli)
 9. [Antigravity](#antigravity)
-10. [OpenCode](#opencode)
-11. [Perplexity Desktop](#perplexity-desktop)
-12. [Cherry Studio](#cherry-studio)
+10. [Grok Build](#grok-build)
+11. [OpenCode](#opencode)
+12. [Perplexity Desktop](#perplexity-desktop)
+13. [Cherry Studio](#cherry-studio)
 
 ## Claude Code
 
@@ -24,6 +25,7 @@ Check:
 - `.mcp.json` and `~/.claude.json` MCP/config placement
 - project/global settings placement
 - local vs global overrides
+- embedded hooks inside `.claude/settings*.json` (discover now emits explicit `kind: hooks` surfaces for settings files containing hooks)
 - whether generated or merged config is being hand-edited instead of a canonical source
 
 ## Claude Desktop
@@ -71,6 +73,7 @@ Check:
 - `~/.copilot/settings.json` trusted folders and permissions
 - `~/.copilot/mcp-config.json` and alternate MCP config path
 - `~/.config/copilot-subagents.env` caps if subagent fan-out is in scope
+- `.github/hooks/*` on project for CLI harness (parity with web facet)
 - CLI flags or local permissions that may bypass intended policy
 - overlap with project `.vscode/mcp.json` and web/coding-agent surfaces
 
@@ -96,6 +99,7 @@ Check:
 - `.gemini/settings.json` necessity vs noise
 - project vs global settings split
 - `mcpServers` and `hooks` shape in settings files
+- explicit embedded-hooks surfaces emitted for `.gemini/settings.json` (kind: hooks alongside kind: config)
 - whether the repo relies on generated wrapper content that should instead be changed at a canonical source
 
 ## Antigravity
@@ -110,6 +114,17 @@ Check:
 - terminal auto-execution and non-workspace file access policy
 - worktree support assumptions
 - project-level compatibility with repo wrapper files, clearly labeled as `repo-observed` if not first-party verified
+
+## Grok Build
+
+Check:
+
+- `config/grok-plannotator-hooks.json` as source of truth for plannotator hooks policy (repo-observed)
+- `~/.grok/hooks/*.json` (and specifically plannotator.json) after repo Grok plannotator install (`--hooks`) or stack sync
+- that hooks changes are followed by "Restart Grok Build" (as documented)
+- exit-plan-mode / enter-plan-mode hook shims and the plannotator-exit-plan-hook mapping
+- presence of `kind: hooks` surfaces (global + project) when running harness-master discover / gap scans for grok-build
+- whether plannotator hooks are unintentionally enabled/disabled via sync context
 
 ## OpenCode
 

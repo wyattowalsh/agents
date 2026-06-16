@@ -1,13 +1,15 @@
-# Ecosystem Research
+# Ecosystem Research (legacy notes)
 
-Use this reference for read-only discovery, comparison, and ranking of harness config, plugin, extension, MCP, and Agent Skill improvements.
+> **Dispatch:** use `references/discovery-pipeline.md` for mode, depth, and W0–W4 orchestration. Legacy CLI tokens (`research`, `candidate`, `compare`, `sources`) map to unified **Discover** via `scripts/discovery/classify_intent.py`.
 
-## Dispatch Modes
+Use this reference for W2 source-family detail when planning read-only scouts. Comparison and ranking still use `candidate_score.py` inside Discover W2b.
 
-- `research <harness|all> <config|plugin|extension|mcp|skill|all> [goal]`: discover candidates from a source plan, score them, and synthesize recommendations.
-- `candidate <source-or-url> <harness|all> [level]`: build one candidate dossier and score adoption readiness.
-- `compare <candidate...> for <harness|all>`: compare multiple candidates for the target harness set.
-- `sources [category]`: list supported sources and programmatic access status from `data/research-sources.json`.
+## Legacy CLI aliases (→ Discover depth)
+
+- `research …` → focused
+- `candidate …` → candidate
+- `compare …` → compare
+- `sources [category]` → sources catalog from `data/research-sources.json`
 
 ## Wave 0: Normalize And Plan
 

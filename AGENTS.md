@@ -217,12 +217,12 @@ repo-owned skill. The curated install set is tracked in
 | `config/external-skills.md` | Audited `npx skills add ...` commands, avoid notes, standard harness target suffix |
 | `planning/manifests/security-quarantine-register.json` | Hard-quarantine blocklist enforced by `wagents validate` |
 | Generated `/external-skills/` docs page | Public curated catalog and install scripts |
-| `/skills/catalog/` | Repo-owned skills only by default (`wagents docs generate --no-installed`) |
+| `/skills/catalog/` | Catalog landing; custom detail pages under `/skills/catalog/custom/`, curated externals under `/skills/catalog/external/` (`wagents docs generate --no-installed` omits installed-only rows) |
 | `wagents skills sync` | Additive reconciliation of repo + curated external installs across harnesses |
 
 ### Adding curated external skill(s)
 
-1. **Audit before record** — Use `/external-skill-auditor` (or `/discover-skills` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing curated rows.
+1. **Audit before record** — Use `/external-skill-auditor` (or `/harness-master discover` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing curated rows.
 2. **Choose outcome** — `install now` → add under **Install Now After Trust Gate** in `config/external-skills.md`. `keep global only` / `avoid` → add under **Keep Global Only Or Avoid** with rationale. Do not copy third-party trees into `skills/`.
 3. **Write the curated row** — Add the fenced `npx skills add ...` block using the standard target suffix from `config/external-skills.md` unless the user requests a narrower harness set. Pin `@commit` when practical. Below the command, document audited HEAD, license, executable-surface notes, dedupe decisions, and any harness-specific caveats (for example Grok installs via the Claude Code adapter).
 4. **OpenSpec when non-trivial** — Create or update an OpenSpec change when the work touches public catalog shape, sync behavior, trust tiers, validation, or multi-harness install policy.
@@ -231,7 +231,7 @@ repo-owned skill. The curated install set is tracked in
 7. **Regenerate public surfaces** — `uv run wagents readme`, then `uv run wagents docs generate` (repo-owned catalog default for CI/pre-commit parity), then `uv run wagents docs build` for link validation. Use `wagents docs generate --include-installed` only for maintainer previews of local installed-inventory catalog pages.
 
 Do not hand-edit generated `docs/src/content/docs/external-skills.mdx`,
-`docs/src/content/docs/skills/catalog/*.mdx`, or install-script indexes. Do not
+`docs/src/content/docs/skills/catalog/custom/*.mdx`, `docs/src/content/docs/skills/catalog/external/*.mdx`, or install-script indexes. Do not
 expose machine-local absolute paths as public source labels.
 
 ---

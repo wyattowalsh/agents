@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare discover-skills inventory_scan vs skill-router index counts."""
+"""Compare harness-master discovery inventory_scan vs skill-router index counts."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ def main() -> int:
     parser.add_argument("--repo-root", type=Path, default=ROOT)
     args = parser.parse_args()
 
-    inv_script = args.repo_root / "skills" / "discover-skills" / "scripts" / "inventory_scan.py"
+    inv_script = args.repo_root / "skills" / "harness-master" / "scripts" / "discovery" / "inventory_scan.py"
     index_script = args.repo_root / "skills" / "skill-router" / "scripts" / "skill_index.py"
 
     inv_proc = subprocess.run(

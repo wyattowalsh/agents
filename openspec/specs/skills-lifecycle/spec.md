@@ -13,21 +13,34 @@ The skills lifecycle lane SHALL treat Agent Skills as the default portable capab
 - **WHEN** it is evaluated for promotion
 - **THEN** it documents `--help`, `--json`, `--dry-run`, or a justified exception.
 
-### Requirement: Discover-skills uses skill-local discovery scripts
+### Requirement: Harness-master discovery uses skill-local discovery scripts
 
-The `discover-skills` skill SHALL implement gap analysis, coordinator manifests, and scout artifact merge entirely under `skills/discover-skills/scripts/` without importing or referencing `wagents`.
+The `harness-master` skill SHALL implement gap analysis, coordinator manifests, scout artifact merge, surface/usage probes, and harness-bounded ecosystem research entirely under `skills/harness-master/scripts/discovery/` (and peer `scripts/` modules) and `data/discovery/` without importing or referencing `wagents`.
 
 #### Scenario: Inventory scan delegates via subprocess
 
-- **WHEN** `inventory_scan.py` builds the repo skill inventory
+- **WHEN** `inventory_scan.py` (under `skills/harness-master/scripts/discovery/`) builds the repo skill inventory
 - **THEN** it SHALL invoke `skills/skill-router/scripts/skill_index.py` via subprocess
 - **AND** it SHALL NOT import `wagents` modules.
 
-#### Scenario: Harness scan delegates via subprocess
+#### Scenario: Harness scan delegates via subprocess (or direct in-package post-merge)
 
-- **WHEN** `invoke_surfaces.py` scans harness surfaces
-- **THEN** it SHALL invoke `skills/harness-master/scripts/discover_surfaces.py` via subprocess
+- **WHEN** `invoke_surfaces.py` (under discovery/) scans harness surfaces
+- **THEN** it SHALL invoke `skills/harness-master/scripts/discover_surfaces.py` (via subprocess for portable check parity, or direct relative import inside the unified skill)
 - **AND** it SHALL NOT import `wagents` modules.
+
+#### Scenario: Hook scan delegates via subprocess (parity with inventory)
+
+- **WHEN** `hook_scan.py` (under `skills/harness-master/scripts/discovery/`) builds the semantic hook inventory for harness-master discovery
+- **THEN** it SHALL invoke its collection logic (e.g. local stdlib helper `_hook_collect.py` or delegated script) via subprocess in the style of `inventory_scan.py`
+- **AND** it SHALL NOT import `wagents` modules (enforced by test_skills_no_wagents + portable check).
+- **AND** it SHALL produce `hook-scan.json` (or equivalent named artifact) that `validate_hook_scan` (and the hook-scan schema under `data/discovery/schemas/`) accepts.
+
+#### Scenario: Gap engine, coordinator, and journal use harness-master paths
+
+- **WHEN** `gap_engine.py`, `coordinator.py`, `journal-store.py`, `validate_session.py`, or `parity_check.py` execute under the discovery pipeline
+- **THEN** they SHALL resolve taxonomy, schemas, and output under `skills/harness-master/data/discovery/` and write journals/artifacts to `~/.agents/harness-master/discovery/<sid>/`
+- **AND** the skill SHALL continue to satisfy the no-wagents import rule and schema validation contracts.
 
 ### Requirement: Discovery artifacts are schema-validated
 

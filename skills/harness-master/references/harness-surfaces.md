@@ -12,9 +12,10 @@
 8. [Cursor](#cursor)
 9. [Gemini CLI](#gemini-cli)
 10. [Antigravity](#antigravity)
-11. [OpenCode](#opencode)
-12. [Perplexity Desktop](#perplexity-desktop)
-13. [Cherry Studio](#cherry-studio)
+11. [Grok Build](#grok-build)
+12. [OpenCode](#opencode)
+13. [Perplexity Desktop](#perplexity-desktop)
+14. [Cherry Studio](#cherry-studio)
 
 ## Legend
 
@@ -35,10 +36,14 @@
 | project | `.mcp.json` | authoritative when present | Claude Code project MCP surface |
 | project | `.claude/settings.json` | authoritative when present | Project settings surface |
 | project | `.claude/settings.local.json` | secondary | Local project overrides when present |
+| project | `.claude/settings.json` (embedded hooks) | authoritative | Hooks surface (embedded in settings; explicit `kind: hooks` surface emitted by discover in addition to config) |
+| project | `.claude/settings.local.json` (embedded hooks) | secondary | Local overrides may embed hooks |
 | global | `~/.claude/CLAUDE.md` | authoritative | Global entrypoint |
 | global | `~/.claude.json` | authoritative | User-level project registry and MCP/settings state |
 | global | `~/.claude/settings.json` | authoritative | Global settings |
 | global | `~/.claude/settings.local.json` | secondary | Local/global override surface |
+| global | `~/.claude/settings.json` (embedded hooks) | authoritative | Hooks surface (embedded in settings; explicit `kind: hooks`) |
+| global | `~/.claude/settings.local.json` (embedded hooks) | secondary | Local/global hooks overrides |
 
 Install agent name: `claude-code`
 
@@ -92,6 +97,7 @@ Install agent name: `github-copilot`
 |-------|---------|------|-------|
 | project | `AGENTS.md` | secondary | Shared repo guidance |
 | project | `.vscode/mcp.json` | secondary | Project MCP may be relevant when CLI uses VS Code/Copilot context |
+| project | `.github/hooks/*` | secondary | Copilot hooks (also on web facet; discover now includes on CLI harness) |
 | global | `~/.copilot/copilot-instructions.md` | authoritative | Global instructions |
 | global | `~/.copilot/settings.json` | authoritative when present | CLI trusted folders and permissions |
 | global | `~/.config/copilot-subagents.env` | authoritative when sourced | Global subagent fan-out caps |
@@ -136,8 +142,10 @@ Install agent name: `cursor`
 | project | `GEMINI.md` | authoritative | Repo-local entrypoint |
 | project | `AGENTS.md` | secondary | Shared guidance imported or referenced by wrapper files |
 | project | `.gemini/settings.json` | authoritative when present | Project settings, MCP servers, and hooks |
+| project | `.gemini/settings.json` (embedded hooks) | authoritative | Explicit hooks-labeled surface (hooks are embedded inside the settings JSON; discover emits separate `kind: hooks` entry) |
 | global | `~/.gemini/GEMINI.md` | authoritative | Global entrypoint |
 | global | `~/.gemini/settings.json` | authoritative | Global settings, MCP servers, and hooks |
+| global | `~/.gemini/settings.json` (embedded hooks) | authoritative | Explicit hooks-labeled surface for embedded hooks |
 | global | `~/.gemini/skills` | secondary | Installed skill location |
 
 Install agent name: `gemini-cli`
@@ -156,6 +164,18 @@ Install agent name: `gemini-cli`
 | global | Antigravity agent mode settings | blind-spot | Approval/auto-exec/non-workspace file policies may live in the UI |
 
 Install agent name: `antigravity`
+
+## Grok Build
+
+| Scope | Surface | Role | Notes |
+|-------|---------|------|-------|
+| project | `config/grok-plannotator-hooks.json` | repo-observed | Canonical policy for Plannotator plan-mode hooks (PreToolUse for enter/exit); rendered on sync to global hooks dir |
+| global | `~/.grok/hooks/*.json` | authoritative | Grok hook surfaces (directory of JSON hook files); includes plannotator.json when synced via repo Grok plannotator install |
+| global | `~/.grok/hooks/plannotator.json` | authoritative (when present) | Rendered Plannotator hooks (exit_plan_mode -> block/deny shim + context improvement) |
+
+Grok Build also observes shared `AGENTS.md` / `instructions/grok-global.md` and MCP via the common sync pipeline (see harness-surface-registry for other projection surfaces).
+
+Install agent name: `grok-build`
 
 ## OpenCode
 

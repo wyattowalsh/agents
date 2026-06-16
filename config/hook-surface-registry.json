@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "support_tiers_ref": "config/support-tier-registry.json",
+  "source_notes": [
+    "Dedicated registry declaring per-harness hook discovery surfaces (file paths, embedding, authority).",
+    "Extracted from harness surface audits, discover_surfaces.py hook entries, harness-surfaces.md, and Grok/Plannotator sync logic.",
+    "Complements config/harness-surface-registry.json (which declares projection claim via 'hooks' in projection_surfaces).",
+    "Intended for use by hook_scan.py, GapReport.hooks population, and harness discovery parity (beyond file-presence only).",
+    "kind values: 'hooks' | 'config' (for embedded); role: 'authoritative' | 'secondary' | 'repo-observed' | 'blind-spot'.",
+    "Embedded hooks (Claude, Gemini) live inside settings.json surfaces that are typed 'config' in generic surface scans."
+  ],
+  "harness_aliases": {
+    "github-copilot": ["github-copilot-web", "github-copilot-cli"],
+    "copilot": ["github-copilot-web", "github-copilot-cli"],
+    "gh-copilot": ["github-copilot-web", "github-copilot-cli"],
+    "copilot-web": "github-copilot-web",
+    "copilot-cloud": "github-copilot-web",
+    "copilot-coding-agent": "github-copilot-web",
+    "copilot-cli": "github-copilot-cli",
+    "cursor-agent-cli": "cursor",
+    "cursor-agent": "cursor",
+    "cursor-editor": "cursor",
+    "cursor-desktop": "cursor",
+    "cursor-cli": "cursor",
+    "cursor-cloud": "cursor",
+    "cursor-cloud-agent": "cursor",
+    "cursor-background-agent": "cursor",
+    "cursor-web": "cursor",
+    "cursor": "cursor",
+    "claude": "claude-code",
+    "claude-code": "claude-code",
+    "gemini": "gemini-cli",
+    "gemini-cli": "gemini-cli",
+    "grok": "grok-build",
+    "grok-build": "grok-build",
+    "grok-cli": "grok-build",
+    "opencode": "opencode",
+    "open-code": "opencode"
+  },
+  "harnesses": [
+    {
+      "id": "claude-code",
+      "label": "Claude Code",
+      "brand": "Claude",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-claude-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "embedded hooks",
+          "path": ".claude/settings.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Hooks are embedded under top-level 'hooks' key inside the settings.json (also carries permissions)."
+        },
+        {
+          "level": "global",
+          "label": "embedded hooks",
+          "path": "~/.claude/settings.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Global hooks embedded in ~/.claude/settings.json; ~/.claude/settings.local.json may carry overrides (secondary)."
+        }
+      ],
+      "blind_spots": [
+        {
+          "level": "global",
+          "label": "Claude managed policy / enterprise hooks",
+          "notes": "Team, org, or Claude-managed policy hooks, allowlists, and permission sets may be applied centrally and not reflected (or fully editable) in local settings.json files."
+        }
+      ],
+      "repo_evidence": [
+        "config/hook-registry.json",
+        "scripts/sync_agent_stack.py:merge_claude_settings",
+        "wagents/platforms/claude.py",
+        ".claude/settings.json (generated on sync)"
+      ]
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "brand": "OpenAI",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-openai-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "project hooks",
+          "path": ".codex/hooks.json",
+          "kind": "hooks",
+          "role": "authoritative"
+        },
+        {
+          "level": "global",
+          "label": "global hooks",
+          "path": "~/.codex/hooks.json",
+          "kind": "hooks",
+          "role": "authoritative"
+        }
+      ],
+      "blind_spots": [],
+      "repo_evidence": [
+        "config/hook-registry.json",
+        "scripts/sync_agent_stack.py:merge_codex_hooks",
+        "wagents/platforms/codex.py",
+        "openspec/changes/overhaul-codex-hooks/"
+      ]
+    },
+    {
+      "id": "cursor-editor",
+      "label": "Cursor Editor",
+      "brand": "Cursor",
+      "surface_kind": "editor",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "project hooks",
+          "path": ".cursor/hooks.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Project hooks; Cursor cloud agents may honor repo-level hooks."
+        },
+        {
+          "level": "global",
+          "label": "global hooks",
+          "path": "~/.cursor/hooks.json",
+          "kind": "hooks",
+          "role": "authoritative"
+        }
+      ],
+      "blind_spots": [
+        {
+          "level": "global",
+          "label": "Cursor team hooks",
+          "notes": "Team or enterprise hooks may be distributed from admin surfaces / dashboard outside local files."
+        },
+        {
+          "level": "global",
+          "label": "Cursor cloud agent hook settings",
+          "notes": "Cloud agent hook configuration and secrets may be dashboard-managed and not present in local ~/.cursor/hooks.json."
+        }
+      ],
+      "blind_spot": "Cursor team/enterprise hooks and cloud agent hook config may be UI/dashboard managed and not visible in local .cursor/hooks.json files.",
+      "repo_evidence": [
+        "skills/harness-master/scripts/discover_surfaces.py",
+        "skills/harness-master/references/harness-surfaces.md",
+        ".cursor/hooks.json (if present)"
+      ]
+    },
+    {
+      "id": "gemini-cli",
+      "label": "Gemini CLI",
+      "brand": "Gemini",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "embedded hooks",
+          "path": ".gemini/settings.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Hooks embedded inside project .gemini/settings.json (shared surface with MCP, instructions)."
+        },
+        {
+          "level": "global",
+          "label": "embedded hooks",
+          "path": "~/.gemini/settings.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Global hooks embedded in ~/.gemini/settings.json."
+        }
+      ],
+      "blind_spots": [],
+      "repo_evidence": [
+        "skills/harness-master/scripts/discover_surfaces.py",
+        "wagents/platforms/gemini.py",
+        "scripts/sync_agent_stack.py:render_standard_hooks"
+      ]
+    },
+    {
+      "id": "github-copilot-web",
+      "label": "GitHub Copilot Web and Coding Agent",
+      "brand": "GitHub Copilot",
+      "surface_kind": "web-cloud-agent",
+      "owner_change": "agents-c04-copilot-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "copilot hooks",
+          "path": ".github/hooks/*",
+          "kind": "hooks",
+          "role": "secondary",
+          "notes": "Generated hook scaffolding for Copilot; not primary execution surface for web agent."
+        }
+      ],
+      "blind_spots": [
+        {
+          "level": "global",
+          "label": "GitHub.com / Copilot cloud hook policy",
+          "notes": "Repository, org, and cloud coding agent hook/approval policies live on GitHub.com rather than local .github/hooks/*."
+        }
+      ],
+      "repo_evidence": [
+        "skills/harness-master/scripts/discover_surfaces.py",
+        "scripts/sync_agent_stack.py:generate_copilot_hooks"
+      ]
+    },
+    {
+      "id": "github-copilot-cli",
+      "label": "GitHub Copilot CLI",
+      "brand": "GitHub Copilot",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-copilot-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "copilot hooks",
+          "path": ".github/hooks/*",
+          "kind": "hooks",
+          "role": "secondary"
+        }
+      ],
+      "blind_spots": [],
+      "repo_evidence": [
+        "config/hook-registry.json (harnesses include 'github-copilot')",
+        "wagents/platforms/copilot.py"
+      ]
+    },
+    {
+      "id": "grok-build",
+      "label": "Grok Build",
+      "brand": "xAI",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-grok-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [
+        {
+          "level": "global",
+          "label": "grok global hooks",
+          "path": "~/.grok/hooks/*.json",
+          "kind": "hooks",
+          "role": "authoritative",
+          "notes": "Grok reads per-event hook groups from ~/.grok/hooks/<event>.json or individual *.json files under the dir."
+        },
+        {
+          "level": "repo",
+          "label": "plannotator hook policy",
+          "path": "config/grok-plannotator-hooks.json",
+          "kind": "hooks",
+          "role": "repo-observed",
+          "notes": "Repo-curated Plannotator exit-plan / pre-tool hooks; rendered and synced to ~/.grok/hooks/plannotator.json during home sync (placeholders resolved at sync time)."
+        }
+      ],
+      "blind_spots": [],
+      "repo_evidence": [
+        "config/grok-plannotator-hooks.json",
+        "wagents/platforms/grok.py:render_grok_plannotator_hooks",
+        "scripts/sync_agent_stack.py",
+        "instructions/grok-global.md"
+      ]
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "brand": "OpenCode",
+      "surface_kind": "cli-tui",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "support_tier": "repo-present-validation-required",
+      "hook_surfaces": [],
+      "blind_spots": [
+        {
+          "level": "project",
+          "label": "plugin-internal hooks",
+          "notes": "No native top-level hooks.json equivalent. Hooks are provided internally by OpenCode plugins (see platforms/opencode/plugins/* and ~/.config/opencode/plugins/*); plugin frontmatter or runtime registration surfaces are blind to generic hooks.json discovery."
+        },
+        {
+          "level": "global",
+          "label": "plugin-internal hooks",
+          "notes": "Plugin authors may register hooks at runtime; no stable repo-discoverable hooks.json file for OpenCode."
+        }
+      ],
+      "blind_spot": "No native hooks.json for OpenCode; hooks are plugin-internal (platforms/opencode/plugins/* and global plugins dir); plugin runtime registration is not observable via hooks.json surfaces.",
+      "repo_evidence": [
+        "skills/harness-master/scripts/discover_surfaces.py (no hooks entry)",
+        "config/harness-surface-registry.json (lists 'hooks' in projection_surfaces for opencode)",
+        "platforms/opencode/"
+      ]
+    }
+  ]
+}

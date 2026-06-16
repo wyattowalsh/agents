@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harness-master/discovery/scout-artifact",
+  "title": "ScoutArtifact",
+  "type": "object",
+  "required": ["task_id", "role", "status"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "role": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["success", "skipped", "failed"]
+    },
+    "candidates": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "provenance": { "type": "object" }
+  },
+  "additionalProperties": true
+}

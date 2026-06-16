@@ -1,4 +1,4 @@
-"""Tests for discover-skills merge_artifacts.py."""
+"""Tests for harness-master discovery merge_artifacts.py."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS = ROOT / "skills" / "discover-skills" / "scripts"
+SCRIPTS = ROOT / "skills" / "harness-master" / "scripts" / "discovery"
 
 
 def _load():
@@ -18,6 +18,7 @@ def _load():
     spec = importlib.util.spec_from_file_location("merge_artifacts", path)
     assert spec and spec.loader
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
     return mod
 

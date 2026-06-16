@@ -123,17 +123,6 @@
 			]
 		},
 		{
-			"id": "ecosystem-research-opencode-plugins",
-			"prompt": "/harness-master research opencode plugin latest runtime progress and rules plugins",
-			"files": ["evals/ecosystem-research-opencode-plugins.json"],
-			"expected_output": "Run read-only ecosystem research for OpenCode plugins, build a source plan, use local plugin registry context, and stop before edits or installs.",
-			"assertions": [
-				"Enters Ecosystem Research mode.",
-				"Treats OpenCode runtime plugin discovery as read-only.",
-				"Requires a later dry-run audit and approval before apply."
-			]
-		},
-		{
 			"id": "github-graphql-enrichment",
 			"prompt": "/harness-master research opencode plugin GitHub candidates with GraphQL enrichment",
 			"files": ["evals/github-graphql-enrichment.json"],
@@ -205,7 +194,7 @@
 			"files": ["evals/usage-review-opencode-explicit.json"],
 			"expected_output": "Enter Usage Review mode for OpenCode, run safe aggregate/source planning, report usage signals and recommendation lanes, and stop before edits.",
 			"assertions": [
-				"Runs Usage Review rather than Audit or Ecosystem Research.",
+				"Runs Usage Review rather than Audit or Discover.",
 				"Uses usage_probe.py and safe runtime summary tools only.",
 				"Does not edit files, install tools, or print raw sessions."
 			]
@@ -285,6 +274,45 @@
 				"Expands all supported harnesses deterministically.",
 				"Uses the Usage Review scorecard and canonical recommendation lanes.",
 				"Stops before config edits, installs, or docs generation."
+			]
+		},
+		{
+			"id": "discovery-w0-gap-engine",
+			"prompt": "/harness-master discover audit",
+			"expected_output": "Runs W0 scripts from discovery/coordinator-contract.md, produces gap-report.json, and does not spawn scouts before gap report exists.",
+			"assertions": [
+				"Uses deterministic scripts before agentic scouts",
+				"Gap report includes domain priorities from taxonomy",
+				"Read-only boundary respected"
+			]
+		},
+		{
+			"id": "discovery-implicit-full",
+			"prompt": "What skills am I missing in this repo?",
+			"expected_output": "Runs harness-master Discover full depth: W0 scans, gap report, coordinator scouts — not ad-hoc npx find.",
+			"assertions": [
+				"Treats question syntax as full discovery",
+				"Runs gap_engine before scouts",
+				"Does not install without user confirmation"
+			]
+		},
+		{
+			"id": "discovery-redirect-find-skills",
+			"prompt": "Find me a skill for Redis caching right now.",
+			"expected_output": "Redirects to find-skills or npx skills find rather than full discover orchestration.",
+			"assertions": [
+				"Identifies ad-hoc query",
+				"Does not spawn full Pattern E team by default"
+			]
+		},
+		{
+			"id": "discovery-focused-opencode-plugins",
+			"prompt": "Find the best OpenCode plugins for this repo",
+			"expected_output": "Runs Discover focused depth: W0 surfaces plus plugin-category scouts via source_probe; read-only.",
+			"assertions": [
+				"Uses discover mode not audit",
+				"Runs W0 before broad scouts",
+				"Blocks apply without audit approval"
 			]
 		}
 	]

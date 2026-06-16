@@ -1,4 +1,4 @@
-"""Tests for discover-skills gap_engine.py."""
+"""Tests for harness-master discovery gap_engine.py."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS = ROOT / "skills" / "discover-skills" / "scripts"
+SCRIPTS = ROOT / "skills" / "harness-master" / "scripts" / "discovery"
 
 
 def _load(name: str, filename: str):
@@ -20,6 +20,7 @@ def _load(name: str, filename: str):
     spec = importlib.util.spec_from_file_location(name, path)
     assert spec and spec.loader
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
     return mod
 
@@ -31,7 +32,7 @@ def gap_mod():
 
 @pytest.fixture
 def taxonomy():
-    path = ROOT / "skills" / "discover-skills" / "data" / "discovery-taxonomy.json"
+    path = ROOT / "skills" / "harness-master" / "data" / "discovery" / "discovery-taxonomy.json"
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -48,11 +49,13 @@ def test_gap_report_validates(gap_mod, taxonomy) -> None:
     payload = report.public_dict()
     errors = gap_mod.validate_gap_report(payload)
     assert errors == []
+    assert "hooks" in payload
+    assert isinstance(payload["hooks"], dict)
 
 
 def test_gap_engine_cli(tmp_path, gap_mod) -> None:
     out = tmp_path / "gap.json"
-    taxonomy = ROOT / "skills" / "discover-skills" / "data" / "discovery-taxonomy.json"
+    taxonomy = ROOT / "skills" / "harness-master" / "data" / "discovery" / "discovery-taxonomy.json"
     rc = gap_mod.main(["--taxonomy", str(taxonomy), "-o", str(out)])
     assert rc == 0
     data = json.loads(out.read_text(encoding="utf-8"))

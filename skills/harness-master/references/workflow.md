@@ -8,7 +8,7 @@
 4. [Gate 3: Per-Harness Audit](#gate-3-per-harness-audit)
 5. [Gate 4: Dry-Run Report](#gate-4-dry-run-report)
 6. [Gate 5: Apply Approved](#gate-5-apply-approved)
-7. [Mode C: Ecosystem Research](#mode-c-ecosystem-research)
+7. [Mode C: Discover](#mode-c-discover)
 8. [Mode D: Usage Review](#mode-d-usage-review)
 9. [Precedence And Conflict Rules](#precedence-and-conflict-rules)
 10. [Degraded Mode](#degraded-mode)
@@ -126,43 +126,34 @@ After edits:
 2. rerun targeted dry-run checks
 3. summarize what changed and what remains
 
-## Mode C: Ecosystem Research
+## Mode C: Discover
 
-Use this mode for current ecosystem discovery and candidate comparison across harness configs, plugins, extensions, MCP servers, and Agent Skills. It is always advisory and read-only.
+Read-only gap expansion and harness-bounded research across configs, plugins, extensions, MCP servers, Agent Skills, and hooks.
 
-Supported forms:
+**Canonical dispatch:** `references/discovery-pipeline.md` and `references/discovery/coordinator-contract.md`.
 
-- `research <harness|all> <config|plugin|extension|mcp|skill|all> [goal]`
-- `candidate <source-or-url> <harness|all> [level]`
-- `compare <candidate...> for <harness|all>`
-- `sources [category]`
+Supported forms (legacy aliases still accepted by `classify_intent.py`):
 
-Research gates:
+- `discover` — full depth (W0 → scouts → ideate → report)
+- `discover audit` / `audit gaps` — W0 gap report only
+- `discover resume` / `discover list` — journal sessions under `~/.agents/harness-master/discovery/`
+- `research …` — alias for Discover **focused** depth
+- `candidate …` — alias for Discover **candidate** depth
+- `compare …` — alias for Discover **compare** depth
+- `sources [category]` — alias for source-catalog depth
 
-1. Normalize the harness set, category, depth, and goal.
-2. Run `discover_surfaces.py` when local fit, canonical ownership, or overlap checks matter.
-3. Load local registries before external sources: `config/harness-surface-registry.json`, `config/plugin-extension-registry.json`, `config/mcp-registry.json`, and `config/external-skills.md`.
-4. Build a source plan with `source_probe.py --dry-run --json`.
-5. Execute only low-risk read-only source calls when the user or runtime mode permits live research. Missing optional credentials create degraded evidence, not a hard failure.
-6. Dispatch read-only source-family scouts when subagents or teams are available. Resolve or explicitly skip every scout before synthesis.
-7. Normalize evidence into candidate dossiers.
-8. Score candidates with `candidate_score.py`.
-9. Produce the `Ecosystem Research Report` from `references/output-format.md`.
-10. Stop before installs, config edits, docs generation, or generated artifact updates.
+Discover gates:
+
+1. Infer depth (full, focused, candidate, compare, w0only, journal, sources) via args or `scripts/discovery/classify_intent.py --args "<args>" --json`.
+2. Run W0 deterministic scripts before scouts when depth requires gaps.
+3. Load repo evidence from `config/*` registries and `skills/` — not docs-generated indexes.
+4. Plan sources with `source_probe.py --dry-run --json`; score with `candidate_score.py` in W2b.
+5. Produce reports per `references/discovery/output-formats.md`; stop before installs, config edits, or generated artifact updates.
 
 Apply boundary:
 
-- A research report is not an approval gate.
-- If the user asks to apply a research finding, rerun or produce a matching dry-run audit for the exact harness/level/change surface first.
-- Apply only after explicit approval of that dry-run audit.
-
-Candidate support tiers:
-
-- `validated`: fixture evidence and rollback coverage exist.
-- `repo-present-validation-required`: repo source exists but fixtures or rollback checks are missing.
-- `planned-research-backed`: external evidence is strong but no local support exists yet.
-- `experimental`: UI, cloud, desktop, or runtime behavior is still mostly blind.
-- `quarantine`: credential bridging, auth proxying, offensive behavior, broad destructive tools, or broad permission risk requires isolation before adoption.
+- Discover output is not an approval gate.
+- Config fixes require a matching dry-run Audit plus explicit `apply approved`.
 
 ## Mode D: Usage Review
 

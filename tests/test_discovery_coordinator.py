@@ -1,4 +1,4 @@
-"""Tests for discover-skills coordinator.py."""
+"""Tests for harness-master discovery coordinator.py."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS = ROOT / "skills" / "discover-skills" / "scripts"
+SCRIPTS = ROOT / "skills" / "harness-master" / "scripts" / "discovery"
 
 
 def _load(name: str, filename: str):
@@ -20,6 +20,7 @@ def _load(name: str, filename: str):
     spec = importlib.util.spec_from_file_location(name, path)
     assert spec and spec.loader
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
     return mod
 
@@ -31,7 +32,7 @@ def coord_mod():
 
 @pytest.fixture
 def gap_report():
-    path = ROOT / "skills" / "discover-skills" / "data" / "discovery-taxonomy.json"
+    path = ROOT / "skills" / "harness-master" / "data" / "discovery" / "discovery-taxonomy.json"
     taxonomy = json.loads(path.read_text(encoding="utf-8"))
     gap_mod = _load("gap_engine", "gap_engine.py")
     report = gap_mod.build_gap_report(taxonomy=taxonomy)
@@ -51,6 +52,10 @@ def test_plan_wave2_manifest(coord_mod, gap_report, tmp_path) -> None:
     assert manifest["expected_count"] <= coord_mod.MAX_WAVE2_TASKS
     errors = coord_mod.validate_wave_manifest(manifest)
     assert errors == []
+    task_ids = [t["id"] for t in manifest["tasks"]]
+    task_roles = {t["id"]: t["role"] for t in manifest["tasks"]}
+    assert "W2-HK-00" in task_ids
+    assert task_roles.get("W2-HK-00") == "hook-scout"
 
 
 def test_verify_detects_missing(coord_mod, tmp_path) -> None:

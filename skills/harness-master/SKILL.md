@@ -1,18 +1,16 @@
 ---
 name: harness-master
 description: >-
-  Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill
-  improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor,
-  Gemini, Grok Build, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry.
-argument-hint: "[usage|research|candidate|compare|sources|project|global|both] [claude-code|claude-desktop|chatgpt|codex|github-copilot-web|github-copilot-cli|cursor|gemini-cli|antigravity|grok-build|opencode|perplexity-desktop|cherry-studio|all ...]"
+  Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning
+  Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry.
+argument-hint: "[discover|audit|usage|apply|install|resume|list] [harness|all] [project|global|both]"
 model: opus
 license: MIT
 compatibility: >-
-  Dry-run analysis first. Web access recommended for latest-doc checks. Optional
-  Python 3.12+ for the surface discovery script.
+  Dry-run audit first. Web access recommended. Python 3.12+ for discovery scripts.
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Harness Master
@@ -21,7 +19,7 @@ Audit AI harness configuration quality, usage posture, and ecosystem options, th
 
 **NOT for:** creating agents (agent-conventions), building MCP servers (mcp-creator), generic application telemetry (observability-advisor), or generic code review without harness/config focus (honest-review).
 
-**Input:** the argument string after the skill name — harness names, level selection, `usage`, `apply approved`, `install`, read-only ecosystem research modes, or natural-language harness requests.
+**Input:** harness names, level, or natural language. Modes: **Audit**, **Discover** (gap + bounded research), **Usage**, **Apply/Install**, **Journal**. Run `scripts/discovery/classify_intent.py --args "$ARGUMENTS" --json` when mode is ambiguous.
 
 ## Dispatch
 
@@ -36,14 +34,14 @@ Audit AI harness configuration quality, usage posture, and ecosystem options, th
 | `apply approved`                                                                  | Apply Approved     | Apply the last matching dry-run batch only if the user already approved it in this session                                |
 | `apply <harness...> <level>` / `apply <level> <harness...>`                       | Apply Approved     | Apply only if the same scope was already reviewed and approved in this session; otherwise rerun audit first               |
 | `install <harness...>`                                                            | Install Guidance   | Show exact `npx skills add ...` commands only; do not edit configs                                                        |
-| `research <harness\|all> <config\|plugin\|extension\|mcp\|skill\|all> [goal]`     | Ecosystem Research | Build a read-only source plan, dispatch scouts where available, score candidates, and stop before apply                   |
-| `candidate <source-or-url> <harness\|all> [level]`                                | Candidate Dossier  | Normalize one candidate into an evidence dossier, run candidate scoring, and recommend an adoption lane                   |
-| `compare <candidate...> for <harness\|all>`                                       | Candidate Compare  | Compare multiple normalized candidates for the target harnesses and rank by evidence, fit, risk, validation, and rollback |
-| `sources [category]`                                                              | Source Catalog     | Show supported research sources, programmatic access status, credential needs, evidence fields, and failure modes         |
-| `usage <harness\|all> [level] [days]`                                             | Usage Review       | Collect safe aggregate usage/cost/token/tool signals, score posture, and stop before config edits or installs             |
+| `discover`                                                                        | Discover full      | W0 scans → scouts → ideate → report per `references/discovery-pipeline.md`                                                |
+| `discover audit` / `audit gaps`                                                   | Discover W0        | Gap report only; no scouts                                                                                                |
+| `discover resume` / `discover list`                                               | Journal            | Load or list `~/.agents/harness-master/discovery/` sessions                                                               |
+| `usage <harness\|all> [level] [days]`                                             | Usage Review       | Collect safe aggregate usage/cost/token/tool signals; read-only                                                           |
+| NL: missing skills / expand / find best X for harness                             | Discover (inferred)| Depth: full, focused, candidate, or compare — see discovery-pipeline.md                                                   |
 | Natural language: "review/audit/check/tune <harness> config"                      | Audit              | Normalize harnesses + level, then run dry-run review                                                                      |
 | Natural language: "review/analyze usage/cost/tokens/tools for <harness>"          | Usage Review       | Normalize harnesses + level, collect safe metadata only, and report optimization lanes                                    |
-| Natural language: "find/latest/best plugins/extensions/MCPs/skills for <harness>" | Ecosystem Research | Normalize harness/category/goal and run read-only ecosystem research                                                      |
+| Natural language: "find/latest/best plugins/extensions/MCPs/skills for <harness>" | Discover focused   | W0 + category scouts + `source_probe.py`; read-only                                                                       |
 | Natural language approval like "approved", "do it", "apply those changes"         | Apply Approved     | Continue only if the immediately preceding `harness-master` review matches the scope and is still current                 |
 | Requests to create agents or MCP servers                                          | Refuse + redirect  | Redirect to the correct specialized skill                                                                                 |
 | Unsupported harness names                                                         | Refuse + clarify   | List supported harnesses and ask the user to choose from that set                                                         |
@@ -101,24 +99,22 @@ If the user invokes `/harness-master` with no arguments:
 
 1. Parse `$ARGUMENTS` into harnesses, level, `all`, install intent, apply intent, and unresolved tokens.
 2. If unresolved tokens remain, ask a single clarification question before continuing.
-3. If the request is `sources ...`, run Source Catalog only.
+3. If the request is `discover ...`, gap/missing/expand intent, or find-best-for-harness NL, run Discover (infer depth via `classify_intent.py` or discovery-pipeline.md).
 4. If the request is `usage ...`, run Usage Review only.
-5. If the request is `research ...`, run Ecosystem Research only.
-6. If the request is `candidate ...`, run Candidate Dossier only.
-7. If the request is `compare ... for ...`, run Candidate Compare only.
-8. If the request is `install ...`, run Install Guidance only.
-9. If the request is `apply ...` or an approval phrase, run Apply Approved only if the matching dry-run review already exists in this session. Otherwise rerun audit first.
-10. If the request includes unsupported harnesses, refuse cleanly and list the supported set.
-11. If harnesses are missing, ask only for harnesses or `all`.
-12. If the level is missing, ask only for `project`, `global`, or `both`.
-13. Otherwise run Audit in dry-run mode.
+5. If the request is `install ...`, run Install Guidance only.
+6. If ad-hoc "find skill for X", redirect to find-skills. If create skill, redirect to skill-creator. If open-ended non-harness research, redirect to `/research`.
+7. If the request is `apply ...` or an approval phrase, run Apply Approved only if the matching dry-run review already exists in this session. Otherwise rerun audit first.
+8. If the request includes unsupported harnesses, refuse cleanly and list the supported set.
+9. If harnesses are missing (audit/usage), ask only for harnesses or `all`.
+10. If the level is missing (audit/usage), ask only for `project`, `global`, or `both`.
+11. Otherwise run Audit in dry-run mode.
 
 ## Classification Logic
 
-1. Route explicit mode tokens first: `sources`, `usage`, `research`, `candidate`, `compare`, `install`, and `apply`.
-2. Route complete harness/level scopes to Audit only after unsupported and unresolved tokens are excluded.
-3. Route natural-language cost, token, usage, quota, session history, attribution, telemetry, or tool-friction requests to Usage Review, not Audit or Ecosystem Research.
-4. Route natural-language latest/best ecosystem requests to Ecosystem Research, not Apply Approved.
+1. Route explicit mode tokens first: `discover`, `usage`, `install`, `apply`, `resume`, `list`.
+2. Route gap/missing/expand/find-best NL to Discover depths (not Audit).
+3. Route complete harness/level scopes to Audit when config tune/fix intent and no discover signal.
+4. Route usage/cost/token NL to Usage Review.
 5. Route approvals to Apply Approved only when the immediately preceding dry-run audit matches the requested scope.
 
 ## Workflow
@@ -164,43 +160,14 @@ If the user invokes `/harness-master` with no arguments:
 6. If the approved remediation is an install step, use the exact `npx skills add ...` guidance from `references/install-guidance.md`.
 7. After edits, rerun surface discovery and targeted dry-run checks for the touched harnesses, then summarize remaining gaps.
 
-### Mode C: Ecosystem Research
+### Mode C: Discover
 
-Use this mode for `research`, `candidate`, `compare`, `sources`, or natural-language requests for latest or best harness ecosystem improvements.
+Read-only gap expansion and harness-bounded research. Load `references/discovery-pipeline.md` and `references/discovery/coordinator-contract.md`.
 
-1. Treat the entire mode as read-only. Do not edit files, install packages, add skills, add MCP servers, run generated docs, or mutate harness configs.
-2. Normalize harnesses, research category, and goal. For `candidate`, normalize the candidate URL/package/source and optional level. For `compare`, split candidates before `for` and normalize the target harness set.
-3. Run surface discovery for the selected harnesses when local fit matters:
-   ```bash
-   uv run python skills/harness-master/scripts/discover_surfaces.py --repo-root . --level both --harness <canonical-harness> [--harness ...]
-   ```
-4. Load `references/ecosystem-research.md`, `references/source-profiles.md`, and `data/research-sources.json`. Load `references/output-format.md` only when preparing the final report.
-5. Build a source plan before live research:
-   ```bash
-   uv run python skills/harness-master/scripts/source_probe.py --harness <harness|all> --source <source-id> --query "<query>" --dry-run --json
-   ```
-   Use `--list-sources --category <category> --json` for filtered `sources` mode.
-6. Dispatch read-only scouts by source family where the runtime supports subagents or teams. Every scout must be resolved or explicitly skipped before synthesis.
-7. Normalize candidates into dossiers with official/config evidence separated from GitHub, package, MCP-registry, skill-hub, security, and community evidence.
-8. Score candidates with:
-   ```bash
-   uv run python skills/harness-master/scripts/candidate_score.py <candidate-json> --json
-   ```
-9. Report ranked recommendations, confidence, blocked evidence, support-tier recommendation, validation plan, and rollback plan.
-10. If the user asks to apply a research finding, block the apply step and require a matching dry-run audit plus explicit approval first.
-
-#### Research Source Precedence
-
-Use this source order for adoption confidence:
-
-1. Official harness docs and `llms.txt`
-2. Local repo registries and existing harness surfaces
-3. Official or vendor-neutral MCP/skill/package registries with machine-readable metadata
-4. GitHub REST/search for discovery and GitHub GraphQL for known-repo enrichment
-5. Security and supply-chain APIs
-6. Issues, discussions, changelogs, releases, and community sources as corroboration only
-
-Community praise, blog posts, forums, Reddit, HN, or social chatter can raise investigation priority but cannot by itself justify adoption, install, or apply recommendations.
+1. Classify depth (full, focused, candidate, compare, w0only, ideate, journal).
+2. Run W0 scripts before any scouts when depth requires gaps.
+3. Use `source_probe.py` and `candidate_score.py` inside W2/W2b — not as separate user-facing modes.
+4. Block apply/install until user confirms; config fixes require Audit + `apply approved`.
 
 ### Mode D: Usage Review
 
@@ -225,8 +192,8 @@ Use this mode for `usage` or natural-language requests to review token cost, quo
 | small                           | 1 harness and 1 level: inline review with one per-harness report                                                                                           |
 | medium                          | 2-3 harnesses or one `both` scope: review each harness independently, then add a short synthesis                                                           |
 | large                           | 4+ harnesses or `all`: batch discovery where possible, keep per-harness sections strict, then finish with cross-harness synthesis and ranked cleanup order |
-| Ecosystem research              | Use Pattern F semantics: explore sources, score candidates, synthesize evidence, and stop before apply                                                     |
-| Team-capable ecosystem research | Use Pattern E or nested waves for source-family scouts, with accounting for every dispatched scout                                                         |
+| Discover (full/focused)         | Use Pattern F semantics: explore sources, score candidates, synthesize evidence, and stop before apply                                                     |
+| Team-capable Discover           | Use Pattern E or nested waves for source-family scouts, with accounting for every dispatched scout                                                         |
 | Usage review                    | Prefer aggregate probes and runtime summaries first; avoid raw transcripts, raw traces, secret files, and message-table reads                              |
 
 ## Latest-Doc Lookup Policy
@@ -275,7 +242,7 @@ Completion criteria:
 - packaging remains portable
 - surface discovery smoke-check accepts every canonical harness
 - dry-run/apply behavior still requires approval before edits
-- ecosystem research remains read-only and blocks apply until a matching audit is approved
+- Discover remains read-only and blocks apply until a matching audit is approved
 - usage review remains read-only, redacts sensitive sources, and blocks apply until a matching audit is approved
 
 ## Cross-Harness Synthesis Contract
@@ -317,10 +284,12 @@ Then add a cross-harness synthesis section when 2+ harnesses were reviewed.
 | `references/evidence-boundaries.md` | Evidence tags, blind-spot handling, and contradiction policy                                         | Reporting findings                                       |
 | `references/install-guidance.md`    | Exact `npx skills add ...` commands, when to surface them, and anti-patterns                         | Install Guidance                                         |
 | `references/output-format.md`       | Per-harness and cross-harness report templates                                                       | Final output                                             |
-| `references/ecosystem-research.md`  | Read-only research waves, orchestration semantics, source planning, scoring, and blocked-apply rules | Ecosystem Research, Candidate Dossier, Candidate Compare |
-| `references/source-profiles.md`     | Source families, programmatic access, confidence roles, and degraded-source behavior                 | Source Catalog, Ecosystem Research                       |
+| `references/discovery-pipeline.md`    | W0–W4 discover waves, depth inference, evidence vs contracts, redirects                             | Discover                                                 |
+| `references/discovery/`             | Coordinator contract, scout templates, output formats, research integration                          | Discover scouts and reports                              |
+| `references/ecosystem-research.md`  | Legacy source-family notes; prefer discovery-pipeline.md for dispatch                                  | Discover W2 source planning                              |
+| `references/source-profiles.md`     | Source families, programmatic access, confidence roles, and degraded-source behavior                 | Discover W2 source planning                              |
 | `references/usage-review.md`        | Read-only usage sources, privacy classes, scorecard, signal schema, and recommendation lanes         | Usage Review                                             |
-| `data/research-sources.json`        | Machine-readable source registry for source planning and probe scripts                               | Source Catalog, Ecosystem Research                       |
+| `data/research-sources.json`        | Machine-readable source registry for source planning and probe scripts                               | Discover W2 source planning                              |
 
 Read only the references needed for the active step. Do not preload all references.
 

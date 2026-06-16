@@ -14,7 +14,12 @@ ALLOWED_PATH_FRAGMENTS = (
     "skills/skill-creator/scripts/asset_toolkit/validate_hooks.py",
 )
 
-WAGENTS_RE = re.compile(r"\bwagents\b", re.IGNORECASE)
+# Portable skills must not import or shell out to the repo wagents CLI.
+WAGENTS_VIOLATION_RES = (
+    re.compile(r"^\s*(?:from|import)\s+wagents\b", re.IGNORECASE),
+    re.compile(r"\buv\s+run\s+wagents\b", re.IGNORECASE),
+    re.compile(r"\bwagents\.[a-z_]+\b", re.IGNORECASE),
+)
 
 
 def _is_allowed(path: Path) -> bool:
@@ -33,6 +38,6 @@ def test_skills_have_no_wagents_references() -> None:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for line_no, line in enumerate(text.splitlines(), 1):
-            if WAGENTS_RE.search(line):
+            if any(pat.search(line) for pat in WAGENTS_VIOLATION_RES):
                 violations.append(f"{path.relative_to(ROOT)}:{line_no}: {line.strip()}")
     assert not violations, "wagents references under skills/:\n" + "\n".join(violations)

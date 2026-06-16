@@ -1,4 +1,4 @@
-"""Tests for discover-skills parity_check.py wrapper."""
+"""Tests for harness-master discovery parity_check.py wrapper."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS = ROOT / "skills" / "discover-skills" / "scripts"
+SCRIPTS = ROOT / "skills" / "harness-master" / "scripts" / "discovery"
 
 
 def _load():
@@ -18,6 +18,7 @@ def _load():
     spec = importlib.util.spec_from_file_location("parity_check", path)
     assert spec and spec.loader
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
     return mod
 
@@ -31,9 +32,12 @@ def test_parity_check_delegates_to_repo_script() -> None:
         code = mod.main(["--repo-root", str(ROOT)])
 
     assert code == 0
-    run.assert_called_once()
-    cmd = run.call_args.args[0]
-    assert str(ROOT / "scripts" / "check_discovery_parity.py") in cmd[1]
+    assert run.call_count == 2
+    # first call is discovery parity, second is hook parity
+    first_cmd = run.call_args_list[0].args[0]
+    second_cmd = run.call_args_list[1].args[0]
+    assert str(ROOT / "scripts" / "check_discovery_parity.py") in first_cmd[1]
+    assert str(ROOT / "scripts" / "check_hook_discovery_parity.py") in second_cmd[1]
 
 
 def test_parity_check_missing_script_returns_one(tmp_path: Path) -> None:

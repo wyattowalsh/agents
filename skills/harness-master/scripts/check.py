@@ -40,6 +40,11 @@ def main() -> int:
     if audit_script.is_file():
         commands.append([sys.executable, str(audit_script), str(SKILL_DIR)])
 
+    # Run discovery parity (inventory + hook) as part of harness-master checks
+    disc_parity = SKILL_DIR / "scripts" / "discovery" / "parity_check.py"
+    if disc_parity.is_file():
+        commands.append([sys.executable, str(disc_parity)])
+
     exit_code = 0
     for command in commands:
         exit_code = _run(command) or exit_code

@@ -9,7 +9,7 @@
 		"scripts/usage_probe.py"
 	],
 	"expected_behavior": [
-		"Agent enters Usage Review mode rather than Audit or Ecosystem Research",
+		"Agent enters Usage Review mode rather than Audit or Discover",
 		"Agent uses usage_probe.py and aggregate-safe runtime tools where available",
 		"Agent reports scorecard dimensions and recommendation lanes",
 		"Agent does not edit files, install packages, or print raw session content"

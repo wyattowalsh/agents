@@ -51,6 +51,19 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
             "kind": "config",
             "role": "secondary",
         },
+        # explicit hook-labeled surfaces for settings files (embedded hooks)
+        {
+            "label": "project settings (embedded hooks)",
+            "path": ".claude/settings.json",
+            "kind": "hooks",
+            "role": "authoritative",
+        },
+        {
+            "label": "project local settings (embedded hooks)",
+            "path": ".claude/settings.local.json",
+            "kind": "hooks",
+            "role": "secondary",
+        },
     ],
     "claude-desktop": [],
     "chatgpt": [],
@@ -75,6 +88,22 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "secondary"},
         {"label": "gemini entrypoint", "path": "GEMINI.md", "kind": "instructions", "role": "authoritative"},
         {"label": "project settings", "path": ".gemini/settings.json", "kind": "config", "role": "authoritative"},
+        # explicit hook-labeled surface for settings file (embedded hooks)
+        {
+            "label": "project settings (embedded hooks)",
+            "path": ".gemini/settings.json",
+            "kind": "hooks",
+            "role": "authoritative",
+        },
+    ],
+    "grok-build": [
+        # hook surfaces per spec: project repo-observed plannotator policy + global ~/.grok/hooks
+        {
+            "label": "grok plannotator hooks",
+            "path": "config/grok-plannotator-hooks.json",
+            "kind": "hooks",
+            "role": "repo-observed",
+        },
     ],
     "antigravity": [
         {"label": "repo wrapper instructions", "path": "AGENTS.md", "kind": "instructions", "role": "repo-observed"},
@@ -101,6 +130,8 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
     "github-copilot-cli": [
         {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "secondary"},
         {"label": "project mcp", "path": ".vscode/mcp.json", "kind": "mcp", "role": "secondary"},
+        # .github/hooks/* (added for parity; also present on github-copilot-web)
+        {"label": "copilot hooks", "path": ".github/hooks/*", "kind": "hooks", "role": "secondary"},
     ],
     "opencode": [
         {"label": "shared instructions", "path": "AGENTS.md", "kind": "instructions", "role": "authoritative"},
@@ -139,6 +170,9 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "kind": "config",
             "role": "secondary",
         },
+        # explicit hook-labeled surfaces for settings files (embedded hooks)
+        {"label": "global settings (embedded hooks)", "path": "~/.claude/settings.json", "kind": "hooks", "role": "authoritative"},
+        {"label": "global local settings (embedded hooks)", "path": "~/.claude/settings.local.json", "kind": "hooks", "role": "secondary"},
     ],
     "claude-desktop": [
         {
@@ -175,6 +209,12 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "global entrypoint", "path": "~/.gemini/GEMINI.md", "kind": "instructions", "role": "authoritative"},
         {"label": "global settings", "path": "~/.gemini/settings.json", "kind": "config", "role": "authoritative"},
         {"label": "installed skills", "path": "~/.gemini/skills", "kind": "skills", "role": "secondary"},
+        # explicit hook-labeled surface for settings file (embedded hooks)
+        {"label": "global settings (embedded hooks)", "path": "~/.gemini/settings.json", "kind": "hooks", "role": "authoritative"},
+    ],
+    "grok-build": [
+        # hook surfaces per spec: global ~/.grok/hooks/*.json
+        {"label": "global grok hooks", "path": "~/.grok/hooks/*.json", "kind": "hooks", "role": "authoritative"},
     ],
     "antigravity": [
         {
@@ -382,6 +422,56 @@ def _management_mode(candidate: Path, manifest_entries: list[dict[str, Any]]) ->
     return None
 
 
+def _load_hook_surface_registry(repo_root: Path) -> None:
+    """Load additional hook surfaces from config/hook-surface-registry.json (if present)
+    and merge/extend into PROJECT_SURFACES / GLOBAL_SURFACES per harness.
+
+    - Only affects entries where kind == "hooks" from registry.
+    - Creates harness key if registry introduces a new one (for forward compat).
+    - Dedupes by label to avoid duplicate surfaces for same path/label.
+    - Safe/no-op if file missing or unreadable (backward compat for harnesses
+      without hook-surface-registry entries and for runs without the registry).
+    """
+    registry_path = repo_root / "config" / "hook-surface-registry.json"
+    if not registry_path.is_file():
+        return
+    try:
+        payload = json.loads(registry_path.read_text(encoding="utf-8"))
+    except Exception as exc:  # pragma: no cover - defensive
+        _warn(f"Failed to parse hook surface registry: {exc}")
+        return
+    if not isinstance(payload, dict):
+        return
+
+    for level_name, target in (("project", PROJECT_SURFACES), ("global", GLOBAL_SURFACES)):
+        level_block = payload.get(level_name)
+        if not isinstance(level_block, dict):
+            continue
+        for harness, specs in level_block.items():
+            if not isinstance(specs, list):
+                continue
+            if harness not in target:
+                target[harness] = []
+            # dedupe by existing labels
+            existing = {s.get("label") for s in target[harness] if isinstance(s, dict)}
+            for spec in specs:
+                if (
+                    isinstance(spec, dict)
+                    and spec.get("kind") == "hooks"
+                    and spec.get("label")
+                    and spec.get("label") not in existing
+                ):
+                    target[harness].append(
+                        {
+                            "label": spec["label"],
+                            "path": spec.get("path"),
+                            "kind": "hooks",
+                            "role": spec.get("role", "secondary"),
+                        }
+                    )
+                    existing.add(spec["label"])
+
+
 def _project_matches(repo_root: Path, pattern: str) -> list[Path]:
     if any(ch in pattern for ch in "*?["):
         matches = sorted(repo_root.glob(pattern))
@@ -469,12 +559,14 @@ def _blind_spot_surfaces(harness: str, level: str) -> list[Surface]:
 
 def discover(repo_root: Path, harnesses: list[str], level: str) -> dict[str, Any]:
     manifest_entries = _load_manifest(repo_root)
+    _load_hook_surface_registry(repo_root)
     results: list[Surface] = []
     levels = ["project", "global"] if level == "both" else [level]
 
     for harness in harnesses:
         for active_level in levels:
-            specs = PROJECT_SURFACES[harness] if active_level == "project" else GLOBAL_SURFACES[harness]
+            surface_map = PROJECT_SURFACES if active_level == "project" else GLOBAL_SURFACES
+            specs = surface_map.get(harness, [])
             for spec in specs:
                 results.append(_emit_surface(harness, active_level, spec, repo_root, manifest_entries))
         results.extend(_blind_spot_surfaces(harness, level))

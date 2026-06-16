@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "registry": {
+    "by_harness": {
+      "claude-code": [
+        "research-prompt-triage-context",
+        "research-readonly-write-guard",
+        "research-dangerous-shell-guard",
+        "research-evidence-ledger",
+        "research-stop-verifier"
+      ],
+      "codex": [
+        "codex-session-start-context",
+        "codex-destructive-shell-guard",
+        "codex-protected-file-guard",
+        "codex-permission-request-guard",
+        "codex-post-tool-verify-context",
+        "codex-stop-truth-gate",
+        "research-prompt-triage-context",
+        "research-readonly-write-guard",
+        "research-dangerous-shell-guard",
+        "research-evidence-ledger",
+        "research-stop-verifier"
+      ],
+      "gemini-cli": [
+        "research-prompt-triage-context",
+        "research-readonly-write-guard",
+        "research-dangerous-shell-guard",
+        "research-evidence-ledger",
+        "research-stop-verifier"
+      ],
+      "github-copilot": [
+        "session-start",
+        "prompt-log",
+        "destructive-shell-guard",
+        "protected-file-guard",
+        "post-edit-format",
+        "post-edit-lint",
+        "research-prompt-triage-context",
+        "research-readonly-write-guard",
+        "research-dangerous-shell-guard",
+        "research-evidence-ledger"
+      ]
+    },
+    "by_logical_event": {
+      "PermissionRequest": [
+        "codex-permission-request-guard"
+      ],
+      "PostToolUse": [
+        "codex-post-tool-verify-context",
+        "post-edit-format",
+        "post-edit-lint",
+        "research-evidence-ledger"
+      ],
+      "PreToolUse": [
+        "codex-destructive-shell-guard",
+        "codex-protected-file-guard",
+        "destructive-shell-guard",
+        "protected-file-guard",
+        "research-dangerous-shell-guard",
+        "research-readonly-write-guard"
+      ],
+      "SessionStart": [
+        "codex-session-start-context",
+        "session-start"
+      ],
+      "Stop": [
+        "codex-stop-truth-gate",
+        "research-stop-verifier"
+      ],
+      "UserPromptSubmit": [
+        "prompt-log",
+        "research-prompt-triage-context"
+      ]
+    },
+    "managed_wagents_hook_count": 12
+  },
+  "frontmatter": {
+    "skills_with_hooks": 6,
+    "agents_with_hooks": 0,
+    "sources": [
+      "skill:add-badges",
+      "skill:namer",
+      "skill:honest-review",
+      "skill:research",
+      "skill:simplify",
+      "skill:skill-creator"
+    ]
+  },
+  "embedded_settings": {
+    "claude": true,
+    "gemini": false,
+    "paths": [
+      ".claude/settings.json"
+    ]
+  },
+  "grok_managed": {
+    "policy_present": true
+  },
+  "surface_parity": {
+    "harnesses_projecting_hooks": [
+      "claude-code",
+      "codex",
+      "github-copilot-cli",
+      "opencode"
+    ],
+    "harnesses_in_registry": [
+      "claude-code",
+      "codex",
+      "gemini-cli",
+      "github-copilot"
+    ],
+    "alias_map_used": {
+      "copilot": "github-copilot",
+      "cursor": "cursor-editor",
+      "cursor-agent-cli": "cursor-editor",
+      "cursor-agent-web": "cursor-editor",
+      "github-copilot-cli": "github-copilot",
+      "github-copilot-web": "github-copilot"
+    }
+  },
+  "gaps": [
+    "harness:github-copilot-cli:hooks-projected-in-harness-registry-but-missing-from-hook-registry",
+    "harness:opencode:hooks-projected-in-harness-registry-but-missing-from-hook-registry"
+  ],
+  "validation_errors": [],
+  "blind_spots": [
+    "team-managed-or-enterprise-hooks",
+    "ui-only-hook-configuration",
+    "global-per-user-hook-files-outside-repo",
+    "harness-specific-hook-files-not-centralized-in-registry"
+  ]
+}

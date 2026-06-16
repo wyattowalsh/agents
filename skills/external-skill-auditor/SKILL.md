@@ -20,7 +20,7 @@ globally or promoting them into this repository.
 
 **Scope:** External skill import review only. NOT for creating skills
 (`skill-creator`), normal code review (`honest-review`), dependency/appsec
-scanning (`security-scanner`), or broad skill discovery (`discover-skills`).
+scanning (`security-scanner`), or broad skill discovery (`harness-master` discover).
 
 ## Dispatch
 
@@ -66,7 +66,7 @@ Classify the request before auditing:
 1. If the user asks to create or improve a skill, route to `skill-creator`.
 2. If the user asks for normal code review, route to `honest-review`.
 3. If the user asks for app vulnerability or dependency scanning, route to `security-scanner`.
-4. If the user asks for broad skill discovery, route to `discover-skills`.
+4. If the user asks for broad skill discovery, route to `harness-master` discover mode.
 5. Otherwise, choose the closest mode from the dispatch table.
 
 ## Audit Workflow
