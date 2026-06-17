@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "shell-scripter"
 composed_by: "compose-custom-wave-7"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="shell-scripter" variant="note" /> <Badge text="1122 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="sonnet" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work. NOT for Python (python-conventions) or CI/CD (devops-engineer).
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/shell-scripter` `&lt;mode&gt; [script|description]`
-
-</div>
+<SkillPageHeader
+  name="shell-scripter"
+  description="Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work. NOT for Python (python-conventions) or CI/CD (devops-engineer)."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/shell-scripter &lt;mode&gt; [script|description]"
+  badges={[{ text: "shell-scripter", variant: "note" }, { text: "1122 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work. NOT for Python (python-conventions) or CI/CD (devops-engineer).

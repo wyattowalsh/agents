@@ -12,29 +12,22 @@ install_command: "npx skills add getsentry/skills --skill gha-security-review --
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "iterate-pr"
 composed_by: "compose-external-wave-7"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="iterate-pr" variant="note" /> <Badge text="23 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/iterate-pr`
-
-</div>
+<SkillPageHeader
+  name="iterate-pr"
+  description="Sentry engineering-process skills beyond curated `skill-scanner`. `gha-security-review` analyzes GitHub Actions workflows for pwn-request patterns."
+  installCommand={`npx skills add getsentry/skills --skill gha-security-review --skill find-bugs --skill iterate-pr --skill code-review -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/iterate-pr"
+  badges={[{ text: "iterate-pr", variant: "note" }, { text: "23 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

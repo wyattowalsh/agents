@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "data-pipeline-architect"
 composed_by: "compose-custom-wave-2"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="data-pipeline-architect" variant="note" /> <Badge text="1218 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/data-pipeline-architect` `&lt;mode&gt; [pipeline]`
-
-</div>
+<SkillPageHeader
+  name="data-pipeline-architect"
+  description="Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/data-pipeline-architect &lt;mode&gt; [pipeline]"
+  badges={[{ text: "data-pipeline-architect", variant: "note" }, { text: "1218 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design.

@@ -12,6 +12,7 @@ docs_density: standard
 
 {/* HAND-MAINTAINED */}
 
+import McpClientSnippet from '../../../components/McpClientSnippet.astro';
 import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
 <Badge text="harness-config" variant="note" /> <Badge text="registry" variant="default" />
@@ -42,6 +43,22 @@ Projections target:
 - Repo `mcp.json` (distribution manifest) and `~/.config/...` home merges/generates.
 
 See `config/sync-manifest.json` for which outputs are generated vs merged.
+
+## Client snippets
+
+Example MCP client blocks for commonly referenced servers:
+
+<McpClientSnippet serverKey="chrome-devtools" chromeRepoPath="${REPO_ROOT}" />
+
+<McpClientSnippet serverKey="brave-search" package="brave-search-mcp" />
+
+## Client snippets
+
+Example MCP client blocks for commonly referenced servers:
+
+<McpClientSnippet serverKey="chrome-devtools" chromeRepoPath="${REPO_ROOT}" />
+
+<McpClientSnippet serverKey="brave-search" package="brave-search-mcp" />
 
 ## Key Fields (server entry)
 
@@ -86,7 +103,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
 <details class="source-disclosure">
 <summary>Full registry (config/mcp-registry.json)</summary>
 
-```json title="config/mcp-registry.json"
+````json title="config/mcp-registry.json"
 {
   "version": 1,
   "instruction_source": "${REPO_ROOT}/instructions/global.md",
@@ -1125,7 +1142,7 @@ All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote UR
     "new_server_tools_default": []
   }
 }
-```
+````
 
 </details>
 

@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "javascript-conventions"
 composed_by: "compose-custom-wave-4"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="javascript-conventions" variant="note" /> <Badge text="1240 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/javascript-conventions`
-
-</div>
+<SkillPageHeader
+  name="javascript-conventions"
+  description="Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill javascript-conventions -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/javascript-conventions"
+  badges={[{ text: "javascript-conventions", variant: "note" }, { text: "1240 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Configure and validate JS/TS tooling conventions. Enforce pnpm, TypeScript, ESLint, and Prettier defaults. Use when working on JS/TS files or package.json. NOT for Python, backend-only, or shell scripts.

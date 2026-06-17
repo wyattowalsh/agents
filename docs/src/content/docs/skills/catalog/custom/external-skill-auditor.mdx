@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "external-skill-auditor"
 composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="external-skill-auditor" variant="note" /> <Badge text="964 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Audit third-party Agent Skills before install or repo promotion. Use when evaluating external skill sources, hooks, scripts, provenance, credentials, network behavior, or destructive commands. NOT for creating skills, code review, or appsec scans.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/external-skill-auditor` `&lt;mode&gt; [source-or-path]`
-
-</div>
+<SkillPageHeader
+  name="external-skill-auditor"
+  description="Audit third-party Agent Skills before install or repo promotion. Use when evaluating external skill sources, hooks, scripts, provenance, credentials, network behavior, or destructive commands."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/external-skill-auditor &lt;mode&gt; [source-or-path]"
+  badges={[{ text: "external-skill-auditor", variant: "note" }, { text: "964 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Audit third-party Agent Skills before install or repo promotion. Use when evaluating external skill sources, hooks, scripts, provenance, credentials, network behavior, or destructive commands. NOT for creating skills, code review, or appsec scans.

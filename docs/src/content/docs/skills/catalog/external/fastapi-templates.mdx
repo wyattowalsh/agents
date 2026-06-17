@@ -12,29 +12,22 @@ install_command: "npx skills add wshobson/agents --skill fastapi-templates --ski
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "fastapi-templates"
 composed_by: "compose-external-wave-4"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="fastapi-templates" variant="note" /> <Badge text="21 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> `wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/fastapi-templates`
-
-</div>
+<SkillPageHeader
+  name="fastapi-templates"
+  description="`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset."
+  installCommand={`npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/fastapi-templates"
+  badges={[{ text: "fastapi-templates", variant: "note" }, { text: "21 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

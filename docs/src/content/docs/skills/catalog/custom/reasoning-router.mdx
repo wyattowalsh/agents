@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "0.1.0"
 research_slug: "reasoning-router"
 composed_by: "compose-custom-wave-6"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="reasoning-router" variant="note" /> <Badge text="1539 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v0.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (honest-review).
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/reasoning-router` `[problem or question]`
-
-</div>
+<SkillPageHeader
+  name="reasoning-router"
+  description="Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill reasoning-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/reasoning-router [problem or question]"
+  badges={[{ text: "reasoning-router", variant: "note" }, { text: "1539 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (honest-review).

@@ -45,7 +45,7 @@ Changes here are canonical; sync or platform renderers project the values.
 
 | Field                          | Description |
 |--------------------------------|-------------|
-| `model_defaults.<harness>`     | Object with `model`, `reasoning_effort`, `personality`, `effort_level`, `provider_model`, `text_verbosity`, etc. |
+| `model_defaults.&lt;harness&gt;`     | Object with `model`, `reasoning_effort`, `personality`, `effort_level`, `provider_model`, `text_verbosity`, etc. |
 | `local_llm_providers.lmstudio` | Discovery + wire config for local OpenAI-compatible server |
 | `docs_domains`                 | Retrieval safety list |
 | `trusted_roots`                | Filesystem roots treated as first-party/trusted |
@@ -71,74 +71,74 @@ Changes here are canonical; sync or platform renderers project the values.
 </CardGrid>
 
 <details class="source-disclosure">
-<summary>Full registry (config/tooling-policy.json)</summary>
+<summary>Full policy (config/tooling-policy.json)</summary>
 
-```json title="config/tooling-policy.json"
+````json title="config/tooling-policy.json"
 {
-	"version": 1,
-	"instruction_source": "${REPO_ROOT}/instructions/global.md",
-	"model_defaults": {
-		"codex": {
-			"model": "gpt-5.5",
-			"reasoning_effort": "xhigh",
-			"personality": "pragmatic"
-		},
-		"copilot": {
-			"model": "gpt-5.4",
-			"effort_level": "high",
-			"continue_on_auto_mode": false
-		},
-		"gemini": {
-			"model": "gpt-5.4",
-			"effort_level": "xhigh"
-		},
-		"opencode": {
-			"provider_model": "openai/gpt-5.5",
-			"manage_model_options": true,
-			"reasoning_effort": "xhigh",
-			"reasoning_summary": "auto",
-			"text_verbosity": "low"
-		},
-		"grok": {
-			"default": "grok-composer-2.5-fast",
-			"web_search": "grok-4.20-multi-agent"
-		}
-	},
-	"local_llm_providers": {
-		"lmstudio": {
-			"name": "LM Studio (local)",
-			"base_url_env": "LM_STUDIO_API_BASE",
-			"base_url_env_aliases": [
-				"LMSTUDIO_API_BASE"
-			],
-			"default_base_url": "http://127.0.0.1:1234/v1",
-			"default_model": "local-model",
-			"codex": {
-				"provider_id": "local-lmstudio",
-				"profile": "local-lmstudio",
-				"wire_api": "responses"
-			},
-			"opencode": {
-				"npm": "@ai-sdk/openai-compatible",
-				"models": {
-					"local-model": {
-						"name": "LM Studio Local Model"
-					}
-				}
-			}
-		}
-	},
-	"docs_domains": [
-		"developers.openai.com",
-		"docs.github.com",
-		"docs.anthropic.com",
-		"modelcontextprotocol.io"
-	],
-	"trusted_roots": [
-		"${REPO_ROOT}"
-	]
+  "version": 1,
+  "instruction_source": "${REPO_ROOT}/instructions/global.md",
+  "model_defaults": {
+    "codex": {
+      "model": "gpt-5.5",
+      "reasoning_effort": "xhigh",
+      "personality": "pragmatic"
+    },
+    "copilot": {
+      "model": "gpt-5.4",
+      "effort_level": "high",
+      "continue_on_auto_mode": false
+    },
+    "gemini": {
+      "model": "gpt-5.4",
+      "effort_level": "xhigh"
+    },
+    "opencode": {
+      "provider_model": "openai/gpt-5.5",
+      "manage_model_options": true,
+      "reasoning_effort": "xhigh",
+      "reasoning_summary": "auto",
+      "text_verbosity": "low"
+    },
+    "grok": {
+      "default": "grok-composer-2.5-fast",
+      "web_search": "grok-4.20-multi-agent"
+    }
+  },
+  "local_llm_providers": {
+    "lmstudio": {
+      "name": "LM Studio (local)",
+      "base_url_env": "LM_STUDIO_API_BASE",
+      "base_url_env_aliases": [
+        "LMSTUDIO_API_BASE"
+      ],
+      "default_base_url": "http://127.0.0.1:1234/v1",
+      "default_model": "local-model",
+      "codex": {
+        "provider_id": "local-lmstudio",
+        "profile": "local-lmstudio",
+        "wire_api": "responses"
+      },
+      "opencode": {
+        "npm": "@ai-sdk/openai-compatible",
+        "models": {
+          "local-model": {
+            "name": "LM Studio Local Model"
+          }
+        }
+      }
+    }
+  },
+  "docs_domains": [
+    "developers.openai.com",
+    "docs.github.com",
+    "docs.anthropic.com",
+    "modelcontextprotocol.io"
+  ],
+  "trusted_roots": [
+    "${REPO_ROOT}"
+  ]
 }
-```
+````
 
 </details>
 

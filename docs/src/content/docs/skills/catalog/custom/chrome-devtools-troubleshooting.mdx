@@ -12,29 +12,22 @@ metadata.author: "Google LLC"
 metadata.version: "0.23.0"
 research_slug: "chrome-devtools-troubleshooting"
 composed_by: "compose-custom-wave-2"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="chrome-devtools-troubleshooting" variant="note" /> <Badge text="614 words" variant="default" /> <Badge text="Apache-2.0" variant="success" /> <Badge text="v0.23.0" variant="success" /> <Badge text="Google LLC" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile. NOT for application debugging after MCP is healthy or unrelated browser automation.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/chrome-devtools-troubleshooting`
-
-</div>
+<SkillPageHeader
+  name="chrome-devtools-troubleshooting"
+  description="Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-troubleshooting -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/chrome-devtools-troubleshooting"
+  badges={[{ text: "chrome-devtools-troubleshooting", variant: "note" }, { text: "614 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when auditing Chrome DevTools MCP setup failures: initialization, connection, page listing, navigation, missing tools, or wrong Chrome profile. NOT for application debugging after MCP is healthy or unrelated browser automation.

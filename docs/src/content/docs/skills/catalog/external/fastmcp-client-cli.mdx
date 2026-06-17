@@ -12,29 +12,22 @@ install_command: "npx skills add jlowin/fastmcp --skill fastmcp-client-cli --ski
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "fastmcp-client-cli"
 composed_by: "compose-external-wave-4"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="fastmcp-client-cli" variant="note" /> <Badge text="22 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/fastmcp-client-cli`
-
-</div>
+<SkillPageHeader
+  name="fastmcp-client-cli"
+  description="Authoritative FastMCP maintainer skills. `fastmcp-client-cli` invokes MCP tool calls; review scripts before promotion."
+  installCommand={`npx skills add jlowin/fastmcp --skill fastmcp-client-cli --skill testing-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/fastmcp-client-cli"
+  badges={[{ text: "fastmcp-client-cli", variant: "note" }, { text: "22 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

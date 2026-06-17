@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "draw-thing"
 composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="draw-thing" variant="note" /> <Badge text="2099 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research).
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/draw-thing` `&lt;mode&gt; [prompt or path] [--model qwen|z-image|flux2|video]`
-
-</div>
+<SkillPageHeader
+  name="draw-thing"
+  description="Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill draw-thing -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/draw-thing &lt;mode&gt; [prompt or path] [--model qwen|z-image|flux2|video]"
+  badges={[{ text: "draw-thing", variant: "note" }, { text: "2099 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research).

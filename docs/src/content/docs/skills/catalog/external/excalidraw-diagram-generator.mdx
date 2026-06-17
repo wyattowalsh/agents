@@ -12,29 +12,22 @@ install_command: "npx skills add github/awesome-copilot --skill excalidraw-diagr
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "excalidraw-diagram-generator"
 composed_by: "compose-external-wave-4"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="excalidraw-diagram-generator" variant="note" /> <Badge text="26 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> `excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/excalidraw-diagram-generator`
-
-</div>
+<SkillPageHeader
+  name="excalidraw-diagram-generator"
+  description="`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion."
+  installCommand={`npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/excalidraw-diagram-generator"
+  badges={[{ text: "excalidraw-diagram-generator", variant: "note" }, { text: "26 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

@@ -12,29 +12,22 @@ install_command: "npx skills add expo/skills --skill building-native-ui --skill 
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "building-native-ui"
 composed_by: "compose-external-wave-2"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="building-native-ui" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/building-native-ui`
-
-</div>
+<SkillPageHeader
+  name="building-native-ui"
+  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  installCommand={`npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/building-native-ui"
+  badges={[{ text: "building-native-ui", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

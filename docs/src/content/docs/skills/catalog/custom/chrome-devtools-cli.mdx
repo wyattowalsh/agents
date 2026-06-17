@@ -12,29 +12,22 @@ metadata.author: "Google LLC"
 metadata.version: "0.23.0"
 research_slug: "chrome-devtools-cli"
 composed_by: "compose-custom-wave-1"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="chrome-devtools-cli" variant="note" /> <Badge text="527 words" variant="default" /> <Badge text="Apache-2.0" variant="success" /> <Badge text="v0.23.0" variant="success" /> <Badge text="Google LLC" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/chrome-devtools-cli`
-
-</div>
+<SkillPageHeader
+  name="chrome-devtools-cli"
+  description="Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/chrome-devtools-cli"
+  badges={[{ text: "chrome-devtools-cli", variant: "note" }, { text: "527 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration.

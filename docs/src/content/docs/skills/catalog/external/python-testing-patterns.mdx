@@ -12,29 +12,22 @@ install_command: "npx skills add wshobson/agents --skill python-testing-patterns
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "python-testing-patterns"
 composed_by: "compose-external-wave-10"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="python-testing-patterns" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/python-testing-patterns`
-
-</div>
+<SkillPageHeader
+  name="python-testing-patterns"
+  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  installCommand={`npx skills add wshobson/agents --skill python-testing-patterns --skill sast-configuration --skill e2e-testing-patterns --skill javascript-testing-patterns --skill rust-async-patterns --skill database-migration --skill terraform-module-library --skill deployment-pipeline-design --skill python-observability --skill incident-runbook-templates --skill secrets-management --skill stride-analysis-patterns --skill slo-implementation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/python-testing-patterns"
+  badges={[{ text: "python-testing-patterns", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

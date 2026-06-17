@@ -12,29 +12,22 @@ install_command: "npx skills add dash0hq/agent-skills --skill otel-instrumentati
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "otel-semantic-conventions"
 composed_by: "compose-external-wave-9"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="otel-semantic-conventions" variant="note" /> <Badge text="32 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/otel-semantic-conventions`
-
-</div>
+<SkillPageHeader
+  name="otel-semantic-conventions"
+  description="Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines."
+  installCommand={`npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/otel-semantic-conventions"
+  badges={[{ text: "otel-semantic-conventions", variant: "note" }, { text: "32 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

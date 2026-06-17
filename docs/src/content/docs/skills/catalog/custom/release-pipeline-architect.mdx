@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "release-pipeline-architect"
 composed_by: "compose-custom-wave-6"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="release-pipeline-architect" variant="note" /> <Badge text="1101 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/release-pipeline-architect` `&lt;mode&gt; [target]`
-
-</div>
+<SkillPageHeader
+  name="release-pipeline-architect"
+  description="Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill release-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/release-pipeline-architect &lt;mode&gt; [target]"
+  badges={[{ text: "release-pipeline-architect", variant: "note" }, { text: "1101 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure.

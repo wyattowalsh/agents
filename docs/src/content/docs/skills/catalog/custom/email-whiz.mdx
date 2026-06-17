@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "5.0.0"
 research_slug: "email-whiz"
 composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="email-whiz" variant="note" /> <Badge text="3289 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v5.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/email-whiz` `&lt;mode&gt; [options]`
-
-</div>
+<SkillPageHeader
+  name="email-whiz"
+  description="Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill email-whiz -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/email-whiz &lt;mode&gt; [options]"
+  badges={[{ text: "email-whiz", variant: "note" }, { text: "3289 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail.
@@ -677,7 +670,7 @@ Offer: reply with number, mode name, `all` (chain top 3 sequentially sharing Pha
 
 ---
 
-## Orchestration Patterns
+<!-- deduped Orchestration Patterns -->
 
 This skill runs in `context: fork`. Apply these patterns internally:
 

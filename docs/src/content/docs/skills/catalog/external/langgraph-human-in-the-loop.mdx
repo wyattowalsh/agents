@@ -12,29 +12,22 @@ install_command: "npx skills add langchain-ai/langchain-skills --skill ecosystem
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "langgraph-human-in-the-loop"
 composed_by: "compose-external-wave-7"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="langgraph-human-in-the-loop" variant="note" /> <Badge text="29 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/langgraph-human-in-the-loop`
-
-</div>
+<SkillPageHeader
+  name="langgraph-human-in-the-loop"
+  description="Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply."
+  installCommand={`npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/langgraph-human-in-the-loop"
+  badges={[{ text: "langgraph-human-in-the-loop", variant: "note" }, { text: "29 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

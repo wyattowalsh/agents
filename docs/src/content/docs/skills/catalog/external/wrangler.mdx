@@ -5,41 +5,34 @@ page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "wrangler"
 composed: true
-composed_by: "compose-external-wave-8"
-composed_at: "2026-06-16"
 docs_density: standard
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
 install_command: "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "wrangler"
+composed_by: "compose-external-wave-14"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="wrangler" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/wrangler`
-
-</div>
+<SkillPageHeader
+  name="wrangler"
+  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  installCommand={`npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/wrangler"
+  badges={[{ text: "wrangler", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/wrangler.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-14 using authoring SSOT (`docs/src/authoring/skills/wrangler.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -57,18 +50,36 @@ npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill wor
 
 ## Trust / Audit
 
-install-now-after-trust-gate / curated-trust-gated. Official. Main risks are destructive CLI operations (delete, secret overwrite, deploy) and accidental secret leakage via command history or logs. The skill explicitly warns against common misuses.
+Trust tier: **Curated** (`curated-trust-gated`)
 
-Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
+Curated status: `install-now-after-trust-gate`
 
-## Related Skills
+Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-<CardGrid>
-  <LinkCard title="cloudflare" href="/skills/catalog/external/cloudflare/" description="Related curated external skill." />
-  <LinkCard title="workers-best-practices" href="/skills/catalog/external/workers-best-practices/" description="Related curated external skill." />
-  <LinkCard title="durable-objects" href="/skills/catalog/external/durable-objects/" description="Related curated external skill." />
-  <LinkCard title="agents-sdk" href="/skills/catalog/external/agents-sdk/" description="Related curated external skill." />
-</CardGrid>
+Entry maintained via authoring + research for compose-external-wave-14; provenance and audit notes are authoritative there (research context is advisory).
+
+## Install Prerequisites
+
+Bundled with cloudflare/skills. The consuming project must have wrangler as devDependency for full type/config schema support.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `cloudflare/skills` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `wrangler` |
+  </TabItem>
+</Tabs>
 
 <details class="source-disclosure">
 <summary>Curated catalog entry</summary>
@@ -96,6 +107,7 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=wrangler; re-run migration to refresh */}
 
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
 ````
 
 **Install / provenance (from authoring frontmatter + research):**
@@ -103,11 +115,11 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 | Field | Value |
 |-------|-------|
 | install_command | `npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
-| source | cloudflare/skills |
-| source_url | https://github.com/cloudflare/skills |
-| trust_tier | curated-trust-gated |
-| curated_status | install-now-after-trust-gate |
-| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
+| source | `cloudflare/skills` |
+| source_url | `https://github.com/cloudflare/skills` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 
@@ -116,5 +128,4 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
-  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

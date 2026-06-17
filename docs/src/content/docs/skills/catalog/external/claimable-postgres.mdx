@@ -12,29 +12,22 @@ install_command: "npx skills add neondatabase/agent-skills --skill neon-function
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "claimable-postgres"
 composed_by: "compose-external-wave-2"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="claimable-postgres" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/claimable-postgres`
-
-</div>
+<SkillPageHeader
+  name="claimable-postgres"
+  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  installCommand={`npx skills add neondatabase/agent-skills --skill neon-functions --skill neon-ai-gateway --skill claimable-postgres -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/claimable-postgres"
+  badges={[{ text: "claimable-postgres", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

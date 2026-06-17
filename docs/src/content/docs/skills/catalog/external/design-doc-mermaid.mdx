@@ -12,29 +12,22 @@ install_command: "npx skills add spillwavesolutions/design-doc-mermaid --skill d
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "design-doc-mermaid"
 composed_by: "compose-external-wave-3"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="design-doc-mermaid" variant="note" /> <Badge text="20 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Architecture diagram guidance for docs and design artifacts; complements local `docs-steward`.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add spillwavesolutions/design-doc-mermaid --skill design-doc-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/design-doc-mermaid`
-
-</div>
+<SkillPageHeader
+  name="design-doc-mermaid"
+  description="Architecture diagram guidance for docs and design artifacts; complements local `docs-steward`."
+  installCommand={`npx skills add spillwavesolutions/design-doc-mermaid --skill design-doc-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/design-doc-mermaid"
+  badges={[{ text: "design-doc-mermaid", variant: "note" }, { text: "20 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

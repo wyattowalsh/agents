@@ -12,29 +12,22 @@ install_command: "npx skills add prisma/skills --skill prisma-compute --skill pr
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "prisma-database-setup"
 composed_by: "compose-external-wave-9"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="prisma-database-setup" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add prisma/skills --skill prisma-compute --skill prisma-database-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/prisma-database-setup`
-
-</div>
+<SkillPageHeader
+  name="prisma-database-setup"
+  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  installCommand={`npx skills add prisma/skills --skill prisma-compute --skill prisma-database-setup -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/prisma-database-setup"
+  badges={[{ text: "prisma-database-setup", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

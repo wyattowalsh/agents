@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "simplify"
 composed_by: "compose-custom-wave-7"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="simplify" variant="note" /> <Badge text="1634 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex. NOT for review (honest-review) or debt scans (tech-debt-analyzer).
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/simplify` `[mode] [target]`
-
-</div>
+<SkillPageHeader
+  name="simplify"
+  description="Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex. NOT for review (honest-review) or debt scans (tech-debt-analyzer)."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/simplify [mode] [target]"
+  badges={[{ text: "simplify", variant: "note" }, { text: "1634 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex. NOT for review (honest-review) or debt scans (tech-debt-analyzer).

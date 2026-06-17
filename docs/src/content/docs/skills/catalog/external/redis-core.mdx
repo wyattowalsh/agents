@@ -12,29 +12,22 @@ install_command: "npx skills add redis/agent-skills --skill redis-core -y -g -a 
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "redis-core"
 composed_by: "compose-external-wave-10"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="redis-core" variant="note" /> <Badge text="30 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/redis-core`
-
-</div>
+<SkillPageHeader
+  name="redis-core"
+  description="Install `redis-core` from the official Redis agent-skills bundle. The older `redis-development` slug is no longer exposed by the current source list."
+  installCommand={`npx skills add redis/agent-skills --skill redis-core -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/redis-core"
+  badges={[{ text: "redis-core", variant: "note" }, { text: "30 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

@@ -10,29 +10,22 @@ trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 research_slug: "anthropics-skills-all"
 composed_by: "compose-external-wave-1"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="anthropics-skills-all" variant="note" /> <Badge text="16 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> inspect case-by-case; many skills duplicate local/system skills.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add anthropics/skills --skill anthropics-skills-all -y -g
-```
-
-**Use:** `/anthropics-skills-all`
-
-</div>
+<SkillPageHeader
+  name="anthropics-skills-all"
+  description="inspect case-by-case; many skills duplicate local/system skills."
+  installCommand={`npx skills add anthropics/skills --skill anthropics-skills-all -y -g`}
+  usage="/anthropics-skills-all"
+  badges={[{ text: "anthropics-skills-all", variant: "note" }, { text: "16 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

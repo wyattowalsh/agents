@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "new-project"
 composed_by: "compose-custom-wave-5"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="new-project" variant="note" /> <Badge text="1375 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions. NOT for product features, agents, MCP servers, cloud provisioning, or destructive migrations.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/new-project` `&lt;plan|init|bootstrap|audit|repair|prefs|preset|docs|ai|github|doctor&gt; [name|path]`
-
-</div>
+<SkillPageHeader
+  name="new-project"
+  description="Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/new-project &lt;plan|init|bootstrap|audit|repair|prefs|preset|docs|ai|github|doctor&gt; [name|path]"
+  badges={[{ text: "new-project", variant: "note" }, { text: "1375 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions. NOT for product features, agents, MCP servers, cloud provisioning, or destructive migrations.

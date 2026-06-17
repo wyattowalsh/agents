@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "files-buddy"
 composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="files-buddy" variant="note" /> <Badge text="2001 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="sonnet" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/files-buddy` `&lt;mode&gt; &lt;path-or-all-local&gt; [options]`
-
-</div>
+<SkillPageHeader
+  name="files-buddy"
+  description="Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/files-buddy &lt;mode&gt; &lt;path-or-all-local&gt; [options]"
+  badges={[{ text: "files-buddy", variant: "note" }, { text: "2001 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup.

@@ -12,29 +12,22 @@ install_command: "npx skills add langchain-ai/langsmith-skills --skill langsmith
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "langsmith-evaluator"
 composed_by: "compose-external-wave-7"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="langsmith-evaluator" variant="note" /> <Badge text="19 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/langsmith-evaluator`
-
-</div>
+<SkillPageHeader
+  name="langsmith-evaluator"
+  description="LangSmith eval pipeline skills. Requires `LANGCHAIN_API_KEY` and LangSmith cloud access."
+  installCommand={`npx skills add langchain-ai/langsmith-skills --skill langsmith-evaluator --skill langsmith-dataset --skill langsmith-trace -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/langsmith-evaluator"
+  badges={[{ text: "langsmith-evaluator", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

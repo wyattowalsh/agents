@@ -5,41 +5,34 @@ page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "tailwind-design-system"
 composed: true
-composed_by: "compose-external-wave-7"
-composed_at: "2026-06-16"
 docs_density: standard
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
 install_command: "npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "tailwind-design-system"
+composed_by: "compose-external-wave-12"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="tailwind-design-system" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/tailwind-design-system`
-
-</div>
+<SkillPageHeader
+  name="tailwind-design-system"
+  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  installCommand={`npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/tailwind-design-system"
+  badges={[{ text: "tailwind-design-system", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/tailwind-design-system.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-12 using authoring SSOT (`docs/src/authoring/skills/tailwind-design-system.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -57,19 +50,36 @@ npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-securi
 
 ## Trust / Audit
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=Tailwind design system patterns.; policy=Install only after trust gate / inspect source/hooks/credentials/dedupe before promotion.; evidence=wshobson/agents batches (residual + patterns) in config/external-skills.md; upstream https://github.com/wshobson/agents (plugins/*, docs/agent-skills.md, high star count).
+Trust tier: **Curated** (`curated-trust-gated`)
 
-Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
+Curated status: `install-now-after-trust-gate`
 
-## Related Skills
+Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-<CardGrid>
-  <LinkCard title="k8s-security-policies" href="/skills/catalog/external/k8s-security-policies/" description="Related curated external skill." />
-  <LinkCard title="sql-optimization-patterns" href="/skills/catalog/external/sql-optimization-patterns/" description="Related curated external skill." />
-  <LinkCard title="helm-chart-scaffolding" href="/skills/catalog/external/helm-chart-scaffolding/" description="Related curated external skill." />
-  <LinkCard title="gitops-workflow" href="/skills/catalog/external/gitops-workflow/" description="Related curated external skill." />
-  <LinkCard title="k8s-manifest-generator" href="/skills/catalog/external/k8s-manifest-generator/" description="Related curated external skill." />
-</CardGrid>
+Entry maintained via authoring + research for compose-external-wave-12; provenance and audit notes are authoritative there (research context is advisory).
+
+## Install Prerequisites
+
+Install: `npx skills add wshobson/agents --skill tailwind-design-system -y -g -a antigravity claude-code ...` status=install-now-after-trust-gate; selector=named. Review outputs for safety (esp. generators, k8s, tf, secrets).
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `wshobson/agents` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `tailwind-design-system` |
+  </TabItem>
+</Tabs>
 
 <details class="source-disclosure">
 <summary>Curated catalog entry</summary>
@@ -97,6 +107,7 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=tailwind-design-system; re-run migration to refresh */}
 
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
+
 ````
 
 **Install / provenance (from authoring frontmatter + research):**
@@ -104,11 +115,11 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 | Field | Value |
 |-------|-------|
 | install_command | `npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
-| source | wshobson/agents |
-| source_url | https://github.com/wshobson/agents |
-| trust_tier | curated-trust-gated |
-| curated_status | install-now-after-trust-gate |
-| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
+| source | `wshobson/agents` |
+| source_url | `https://github.com/wshobson/agents` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 
@@ -117,5 +128,4 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
-  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

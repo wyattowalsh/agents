@@ -12,29 +12,22 @@ metadata.author: "hueyexe"
 metadata.version: "1.0.0"
 research_slug: "opencode-ensemble"
 composed_by: "compose-custom-wave-5"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="opencode-ensemble" variant="note" /> <Badge text="1464 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="hueyexe" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves. NOT for single-agent tasks, nested team-of-teams, or teammate subagents using team tools.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/opencode-ensemble`
-
-</div>
+<SkillPageHeader
+  name="opencode-ensemble"
+  description="Use when coordinating OpenCode Ensemble teams, delegating independent coding work, reviewing teammate output, or running staged parallel waves."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill opencode-ensemble -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/opencode-ensemble"
+  badges={[{ text: "opencode-ensemble", variant: "note" }, { text: "1464 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
@@ -291,7 +284,7 @@ This repo vendors the upstream `hueyexe/opencode-ensemble` skill from tag `v0.14
 
 Spawn teammates only for independent, verifiable work. A good Ensemble team has narrow task ownership, clear dependencies, and a lead that integrates results deliberately.
 
-## Dispatch Table
+<!-- deduped Dispatch --> Table
 
 Route `$ARGUMENTS` by the user's request:
 

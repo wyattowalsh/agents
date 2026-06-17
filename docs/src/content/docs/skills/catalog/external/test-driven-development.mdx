@@ -1,50 +1,43 @@
 ---
 title: "test-driven-development"
-description: "Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them."
+description: "Agent workflow discipline from `obra/superpowers`."
 page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "test-driven-development"
 composed: true
-composed_by: "compose-external-wave-7"
-composed_at: "2026-06-16"
 docs_density: standard
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
 install_command: "npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "test-driven-development"
+composed_by: "compose-external-wave-13"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="test-driven-development" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/test-driven-development`
-
-</div>
+<SkillPageHeader
+  name="test-driven-development"
+  description="Agent workflow discipline from `obra/superpowers`."
+  installCommand={`npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/test-driven-development"
+  badges={[{ text: "test-driven-development", variant: "note" }, { text: "34 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/test-driven-development.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-13 using authoring SSOT (`docs/src/authoring/skills/test-driven-development.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
 
 ## What It Does
 
-Enforces RED-GREEN-REFACTOR: write failing test, watch fail, minimal code, pass, commit. Deletes pre-test code. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Enforces RED-GREEN-REFACTOR: write failing test, watch fail, minimal code, pass, commit. Deletes pre-test code. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -&gt; writing-plans -&gt; executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
 
 ## Harness Coverage
 
@@ -57,19 +50,36 @@ npx skills add obra/superpowers --skill brainstorming --skill systematic-debuggi
 
 ## Trust / Audit
 
-trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=prompt-only, no hooks observed; policy=Install only after trust gate; audit before promotion. Web-aug: github.com/obra/superpowers (very active 2026, 400+ commits, hiring, MIT, comprehensive docs, plugin marketplaces for 7+ harnesses, AGENTS.md/CLAUDE.md). Strong community signals; methodology-focused.
+Trust tier: **Curated** (`curated-trust-gated`)
 
-Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
+Curated status: `install-now-after-trust-gate`
 
-## Related Skills
+Risk notes: Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
 
-<CardGrid>
-  <LinkCard title="brainstorming" href="/skills/catalog/external/brainstorming/" description="Related curated external skill." />
-  <LinkCard title="systematic-debugging" href="/skills/catalog/external/systematic-debugging/" description="Related curated external skill." />
-  <LinkCard title="writing-plans" href="/skills/catalog/external/writing-plans/" description="Related curated external skill." />
-  <LinkCard title="executing-plans" href="/skills/catalog/external/executing-plans/" description="Related curated external skill." />
-  <LinkCard title="verification-before-completion" href="/skills/catalog/external/verification-before-completion/" description="Related curated external skill." />
-</CardGrid>
+Entry maintained via authoring + research for compose-external-wave-13; provenance and audit notes are authoritative there (research context is advisory).
+
+## Install Prerequisites
+
+Install: `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `obra/superpowers` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `test-driven-development` |
+  </TabItem>
+</Tabs>
 
 <details class="source-disclosure">
 <summary>Curated catalog entry</summary>
@@ -97,6 +107,7 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=test-driven-development; re-run migration to refresh */}
 
 Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
+
 ````
 
 **Install / provenance (from authoring frontmatter + research):**
@@ -104,11 +115,11 @@ Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no ob
 | Field | Value |
 |-------|-------|
 | install_command | `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
-| source | obra/superpowers |
-| source_url | https://github.com/obra/superpowers |
-| trust_tier | curated-trust-gated |
-| curated_status | install-now-after-trust-gate |
-| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
+| source | `obra/superpowers` |
+| source_url | `https://github.com/obra/superpowers` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 
@@ -117,5 +128,4 @@ Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no ob
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
-  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

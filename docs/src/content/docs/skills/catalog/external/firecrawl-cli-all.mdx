@@ -10,29 +10,22 @@ trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 research_slug: "firecrawl-cli-all"
 composed_by: "compose-external-wave-5"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="firecrawl-cli-all" variant="note" /> <Badge text="25 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add firecrawl/cli --skill firecrawl-cli-all -y -g
-```
-
-**Use:** `/firecrawl-cli-all`
-
-</div>
+<SkillPageHeader
+  name="firecrawl-cli-all"
+  description="useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested."
+  installCommand={`npx skills add firecrawl/cli --skill firecrawl-cli-all -y -g`}
+  usage="/firecrawl-cli-all"
+  badges={[{ text: "firecrawl-cli-all", variant: "note" }, { text: "25 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

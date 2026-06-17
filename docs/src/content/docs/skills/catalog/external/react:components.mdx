@@ -12,29 +12,22 @@ install_command: "npx skills add google-labs-code/stitch-skills --skill design-m
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "react:components"
 composed_by: "compose-external-wave-10"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="react:components" variant="note" /> <Badge text="27 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add google-labs-code/stitch-skills --skill design-md --skill react:components --skill stitch-loop --skill stitch::generate-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/react:components`
-
-</div>
+<SkillPageHeader
+  name="react:components"
+  description="Google Stitch design pipeline. Requires Stitch MCP auth and network calls to Google services; pin commit after audit."
+  installCommand={`npx skills add google-labs-code/stitch-skills --skill design-md --skill react:components --skill stitch-loop --skill stitch::generate-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/react:components"
+  badges={[{ text: "react:components", variant: "note" }, { text: "27 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

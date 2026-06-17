@@ -12,29 +12,22 @@ metadata.author: "Google LLC"
 metadata.version: "0.23.0"
 research_slug: "chrome-devtools"
 composed_by: "compose-custom-wave-2"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="chrome-devtools" variant="note" /> <Badge text="617 words" variant="default" /> <Badge text="Apache-2.0" variant="success" /> <Badge text="v0.23.0" variant="success" /> <Badge text="Google LLC" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions. NOT for CLI-only automation, a11y audits, LCP deep dives, memory leaks, or MCP setup troubleshooting.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/chrome-devtools`
-
-</div>
+<SkillPageHeader
+  name="chrome-devtools"
+  description="Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/chrome-devtools"
+  badges={[{ text: "chrome-devtools", variant: "note" }, { text: "617 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when debugging web pages with Chrome DevTools MCP: navigation, snapshots, screenshots, console issues, network requests, traces, or extensions. NOT for CLI-only automation, a11y audits, LCP deep dives, memory leaks, or MCP setup troubleshooting.

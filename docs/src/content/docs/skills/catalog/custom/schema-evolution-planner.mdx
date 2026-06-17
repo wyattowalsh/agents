@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "schema-evolution-planner"
 composed_by: "compose-custom-wave-6"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="schema-evolution-planner" variant="note" /> <Badge text="1158 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/schema-evolution-planner` `&lt;mode&gt; [change]`
-
-</div>
+<SkillPageHeader
+  name="schema-evolution-planner"
+  description="Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/schema-evolution-planner &lt;mode&gt; [change]"
+  badges={[{ text: "schema-evolution-planner", variant: "note" }, { text: "1158 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops.

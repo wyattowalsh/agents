@@ -12,29 +12,22 @@ metadata.author: "Google LLC"
 metadata.version: "0.23.0"
 research_slug: "chrome-devtools-a11y-debugging"
 composed_by: "compose-custom-wave-1"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="chrome-devtools-a11y-debugging" variant="note" /> <Badge text="535 words" variant="default" /> <Badge text="Apache-2.0" variant="success" /> <Badge text="v0.23.0" variant="success" /> <Badge text="Google LLC" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/chrome-devtools-a11y-debugging`
-
-</div>
+<SkillPageHeader
+  name="chrome-devtools-a11y-debugging"
+  description="Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/chrome-devtools-a11y-debugging"
+  badges={[{ text: "chrome-devtools-a11y-debugging", variant: "note" }, { text: "535 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization.

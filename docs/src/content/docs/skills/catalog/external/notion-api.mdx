@@ -10,29 +10,22 @@ trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
 research_slug: "notion-api"
 composed_by: "compose-external-wave-8"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="notion-api" variant="note" /> <Badge text="19 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add intellectronica/agent-skills@notion-api --skill notion-api -y -g
-```
-
-**Use:** `/notion-api`
-
-</div>
+<SkillPageHeader
+  name="notion-api"
+  description="third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion."
+  installCommand={`npx skills add intellectronica/agent-skills@notion-api --skill notion-api -y -g`}
+  usage="/notion-api"
+  badges={[{ text: "notion-api", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

@@ -12,29 +12,22 @@ install_command: "npx skills add apollographql/skills --skill apollo-client --sk
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "apollo-connectors"
 composed_by: "compose-external-wave-1"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="apollo-connectors" variant="note" /> <Badge text="22 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/apollo-connectors`
-
-</div>
+<SkillPageHeader
+  name="apollo-connectors"
+  description="GraphQL client and tooling residual from `apollographql/skills`. Complements the existing server/federation curated row."
+  installCommand={`npx skills add apollographql/skills --skill apollo-client --skill rover --skill apollo-connectors -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/apollo-connectors"
+  badges={[{ text: "apollo-connectors", variant: "note" }, { text: "22 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

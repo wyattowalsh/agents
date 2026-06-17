@@ -12,29 +12,22 @@ metadata.author: "Google LLC"
 metadata.version: "0.23.0"
 research_slug: "chrome-devtools-debug-optimize-lcp"
 composed_by: "compose-custom-wave-1"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="chrome-devtools-debug-optimize-lcp" variant="note" /> <Badge text="602 words" variant="default" /> <Badge text="Apache-2.0" variant="success" /> <Badge text="v0.23.0" variant="success" /> <Badge text="Google LLC" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification. NOT for non-LCP performance work, generic browser automation, or SEO copy advice.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/chrome-devtools-debug-optimize-lcp`
-
-</div>
+<SkillPageHeader
+  name="chrome-devtools-debug-optimize-lcp"
+  description="Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-debug-optimize-lcp -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/chrome-devtools-debug-optimize-lcp"
+  badges={[{ text: "chrome-devtools-debug-optimize-lcp", variant: "note" }, { text: "602 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when auditing or optimizing Largest Contentful Paint with Chrome DevTools MCP: traces, element discovery, waterfalls, render blocking, and fix verification. NOT for non-LCP performance work, generic browser automation, or SEO copy advice.

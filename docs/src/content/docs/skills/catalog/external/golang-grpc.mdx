@@ -12,29 +12,22 @@ install_command: "npx skills add samber/cc-skills-golang --skill golang-concurre
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "golang-grpc"
 composed_by: "compose-external-wave-5"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="golang-grpc" variant="note" /> <Badge text="30 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/golang-grpc`
-
-</div>
+<SkillPageHeader
+  name="golang-grpc"
+  description="Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset."
+  installCommand={`npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/golang-grpc"
+  badges={[{ text: "golang-grpc", variant: "note" }, { text: "30 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

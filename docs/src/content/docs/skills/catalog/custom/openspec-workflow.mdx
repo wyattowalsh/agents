@@ -12,29 +12,22 @@ metadata.author: "Wyatt Walsh"
 metadata.version: "1.0.0"
 research_slug: "openspec-workflow"
 composed_by: "compose-custom-wave-5"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="openspec-workflow" variant="note" /> <Badge text="824 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="Wyatt Walsh" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/openspec-workflow`
-
-</div>
+<SkillPageHeader
+  name="openspec-workflow"
+  description="Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill openspec-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/openspec-workflow"
+  badges={[{ text: "openspec-workflow", variant: "note" }, { text: "824 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when planning, applying, validating, or archiving OpenSpec changes in this repo, or when downstream AI tools need OpenSpec JSON status/instructions. NOT for generic code review, unrelated docs edits, or replacing generated upstream openspec-* skills.
@@ -198,7 +191,7 @@ Completion criteria:
   <TabItem label="Compatibility">
 | Field | Value |
 | ----- | ----- |
-| Compatibility | Node >=20.19.0 |
+| Compatibility | Node &gt;=20.19.0 |
   </TabItem>
 </Tabs>
 

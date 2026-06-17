@@ -5,41 +5,32 @@ page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "vercel-labs-agent-browser-all"
 composed: true
-composed_by: "compose-external-wave-8"
-composed_at: "2026-06-16"
 docs_density: standard
 trust_tier: "global-only-or-avoid"
 curated_status: "global-only-or-avoid"
-install_command: ""
-target_agents: []
 research_slug: "vercel-labs-agent-browser-all"
+composed_by: "compose-external-wave-13"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
-import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="vercel-labs-agent-browser-all" variant="note" /> <Badge text="Inspect first" variant="caution" /> <Badge text="global-only-or-avoid" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> useful, but broad operational scope and overlaps browser automation.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-
-```
-
-**Use:** `/vercel-labs-agent-browser-all`
-
-</div>
+<SkillPageHeader
+  name="vercel-labs-agent-browser-all"
+  description="useful, but broad operational scope and overlaps browser automation."
+  installCommand={`npx skills add vercel-labs/agent-browser --skill vercel-labs-agent-browser-all -y -g`}
+  usage="/vercel-labs-agent-browser-all"
+  badges={[{ text: "vercel-labs-agent-browser-all", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Avoid default", variant: "danger" }, { text: "global-only-or-avoid", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/vercel-labs-agent-browser-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-13 using authoring SSOT (`docs/src/authoring/skills/vercel-labs-agent-browser-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -48,24 +39,44 @@ Vercel-labs agent-browser bundle; useful for browser automation/ops but broad op
 
 ## Harness Coverage
 
-Targets verified harnesses: .
+Targets all supported agent harnesses via the install command below.
 
 **Portable multi-harness install command:**
 ```bash
-
+npx skills add vercel-labs/agent-browser --skill vercel-labs-agent-browser-all -y -g
 ```
 
 ## Trust / Audit
 
-trust_tier=global-only-or-avoid; status=global-only-or-avoid; provenance=explicit-unresolved; risks=broad operational scope, overlaps browser automation skills; potential high privilege in browser context. policy=Keep global-only or avoid unless explicitly approved.; evidence=Explicit note in config/external-skills.md Keep Global Only section.
+Trust tier: **Avoid default** (`global-only-or-avoid`)
 
-Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
+Curated status: `global-only-or-avoid`
 
-## Related Skills
+Risk notes: useful, but broad operational scope and overlaps browser automation.
 
-<CardGrid>
+Entry maintained via authoring + research for compose-external-wave-13; provenance and audit notes are authoritative there (research context is advisory).
 
-</CardGrid>
+## Install Prerequisites
+
+status=global-only-or-avoid; selector=unresolved; note in Keep section. Do not bulk install.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `vercel-labs/agent-browser` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `global-only-or-avoid` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `vercel-labs-agent-browser-all` |
+  </TabItem>
+</Tabs>
 
 <details class="source-disclosure">
 <summary>Curated catalog entry</summary>
@@ -93,18 +104,17 @@ unresolved_reason: "useful, but broad operational scope and overlaps browser aut
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=vercel-labs-agent-browser-all; re-run migration to refresh */}
 
 useful, but broad operational scope and overlaps browser automation.
+
 ````
 
 **Install / provenance (from authoring frontmatter + research):**
 
 | Field | Value |
 |-------|-------|
-| install_command | `` |
-| source | vercel-labs/agent-browser |
-| source_url | https://github.com/vercel-labs/agent-browser |
-| trust_tier | global-only-or-avoid |
-| curated_status | global-only-or-avoid |
-| target_agents |  |
+| source | `vercel-labs/agent-browser` |
+| source_url | `https://github.com/vercel-labs/agent-browser` |
+| trust_tier | `global-only-or-avoid` |
+| curated_status | `global-only-or-avoid` |
 
 </details>
 
@@ -113,5 +123,4 @@ useful, but broad operational scope and overlaps browser automation.
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
-  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

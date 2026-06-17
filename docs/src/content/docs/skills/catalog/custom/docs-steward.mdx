@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "docs-steward"
 composed_by: "compose-custom-wave-3"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="docs-steward" variant="note" /> <Badge text="2719 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator).
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/docs-steward` `[auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework &lt;name&gt; &lt;action&gt;]`
-
-</div>
+<SkillPageHeader
+  name="docs-steward"
+  description="Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill docs-steward -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/docs-steward [auto|init|sync|enhance|maintain|research|matrix|migrate|generate api|generate adr|generate runbook|generate onboard|generate glossary|framework &lt;name&gt; &lt;action&gt;]"
+  badges={[{ text: "docs-steward", variant: "note" }, { text: "2719 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator).
@@ -212,7 +205,7 @@ Classify detected change signals before choosing a mode:
 
 ---
 
-## Mode B: Framework-Targeted (`Framework <Name> [<Action>]`)
+## Mode B: Framework-Targeted (`Framework &lt;Name&gt; [&lt;Action&gt;]`)
 
 Supported names:
 - `astro` / `starlight`
@@ -330,7 +323,7 @@ Matrix run output must keep results grouped per framework and include cross-fram
 
 ---
 
-## Mode H: Migrate (`Migrate <From> -> <To>`)
+## Mode H: Migrate (`Migrate &lt;From&gt; -&gt; &lt;To&gt;`)
 
 Migration is in scope for v1.
 
@@ -351,7 +344,7 @@ Do not promise one-shot full conversion; prefer staged migration with checkpoint
 
 ---
 
-## Mode I: Init (`Init`, `Init <Framework>`, `Init-Sync`, `Init-Sync <Framework>`)
+## Mode I: Init (`Init`, `Init &lt;Framework&gt;`, `Init-Sync`, `Init-Sync &lt;Framework&gt;`)
 
 Bootstrap docs site wiring in an existing repository without destructive rewrites.
 This mode applies to explicit `init*` commands and implicit "bootstrap docs + keep synced" requests in existing codebases.
@@ -376,7 +369,7 @@ Load `references/init-sync-existing-repos.md` plus the selected framework refere
 
 ---
 
-## Mode J: Generate (`Generate <Type> [<Target>]`)
+## Mode J: Generate (`Generate &lt;Type&gt; [&lt;Target&gt;]`)
 
 Generate technical documentation from source code. Load `references/generate-mode.md` for detailed procedures, output formats, and script usage.
 
@@ -517,7 +510,7 @@ Use these canonical terms exactly throughout docs-steward outputs.
 
 ---
 
-## Dispatch Table
+<!-- deduped Dispatch --> Table
 
 Route `$ARGUMENTS` to mode:
 

@@ -12,29 +12,22 @@ install_command: "npx skills add backnotprop/plannotator/apps/skills --skill pla
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "plannotator-setup-goal"
 composed_by: "compose-external-wave-9"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="plannotator-setup-goal" variant="note" /> <Badge text="48 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above. Do not install from the repo root (`backnotprop/plannotator`) — that path exposes maintainer-only skills (pierre-guard, release-plannotator, review-renovate, update-deps), not the user-facing extras.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-```
-
-**Use:** `/plannotator-setup-goal`
-
-</div>
+<SkillPageHeader
+  name="plannotator-setup-goal"
+  description="Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above."
+  installCommand={`npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  usage="/plannotator-setup-goal"
+  badges={[{ text: "plannotator-setup-goal", variant: "note" }, { text: "48 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 

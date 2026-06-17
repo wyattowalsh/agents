@@ -12,29 +12,22 @@ metadata.author: "Google LLC"
 metadata.version: "0.23.0"
 research_slug: "chrome-devtools-memory-leak-debugging"
 composed_by: "compose-custom-wave-2"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="chrome-devtools-memory-leak-debugging" variant="note" /> <Badge text="565 words" variant="default" /> <Badge text="Apache-2.0" variant="success" /> <Badge text="v0.23.0" variant="success" /> <Badge text="Google LLC" variant="caution" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/chrome-devtools-memory-leak-debugging`
-
-</div>
+<SkillPageHeader
+  name="chrome-devtools-memory-leak-debugging"
+  description="Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/chrome-devtools-memory-leak-debugging"
+  badges={[{ text: "chrome-devtools-memory-leak-debugging", variant: "note" }, { text: "565 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots.

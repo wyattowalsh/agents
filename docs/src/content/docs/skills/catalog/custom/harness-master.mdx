@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.1.0"
 research_slug: "harness-master"
 composed_by: "compose-custom-wave-4"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="harness-master" variant="note" /> <Badge text="3133 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.1.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/harness-master` `[discover|audit|usage|apply|install|resume|list] [harness|all] [project|global|both]`
-
-</div>
+<SkillPageHeader
+  name="harness-master"
+  description="Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/harness-master [discover|audit|usage|apply|install|resume|list] [harness|all] [project|global|both]"
+  badges={[{ text: "harness-master", variant: "note" }, { text: "3133 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Audit harness configs, usage/cost signals, and plugin, extension, MCP, or skill improvements. Use when tuning Claude, ChatGPT, Codex, Copilot, Cursor, Gemini, Grok Build, OpenCode, or Cherry. NOT for agents, MCP servers, or general app telemetry.

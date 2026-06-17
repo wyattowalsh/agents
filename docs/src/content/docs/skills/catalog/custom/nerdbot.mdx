@@ -12,29 +12,22 @@ metadata.author: "wyattowalsh"
 metadata.version: "1.0.0"
 research_slug: "nerdbot"
 composed_by: "compose-custom-wave-5"
-composed_at: "2026-06-16"
+composed_at: "2026-06-17"
 ---
 
 {/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="nerdbot" variant="note" /> <Badge text="4006 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" /> <Badge text="opus" variant="tip" /> <Badge text="Repo-owned" variant="tip" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes.
-
-<div class="quick-start">
-
-### Quick Start
-
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
-```
-
-**Use:** `/nerdbot` `[create|ingest|enrich|audit|query|derive|improve|migrate] [topic|path]`
-
-</div>
+<SkillPageHeader
+  name="nerdbot"
+  description="Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill nerdbot -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/nerdbot [create|ingest|enrich|audit|query|derive|improve|migrate] [topic|path]"
+  badges={[{ text: "nerdbot", variant: "note" }, { text: "4006 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
 <Aside type="note" title="Research context (evidence, not authority)">
 **Problem:** Use when creating, repairing, querying, auditing, or migrating Obsidian-native git KBs with raw/wiki layers. NOT for docs sites or generic notes.
@@ -488,7 +481,7 @@ Build, query, and maintain Obsidian-native, git-friendly, agent-managed knowledg
 
 **Input:** `$ARGUMENTS` — mode keywords, topics, repo paths, or natural-language KB requests.
 
-## Dispatch Table
+<!-- deduped Dispatch --> Table
 
 | `$ARGUMENTS`                                                                                           | Workflow                       | First move                                                                                                           |
 | ------------------------------------------------------------------------------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
