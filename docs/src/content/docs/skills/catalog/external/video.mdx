@@ -1,11 +1,25 @@
 ---
 title: "video"
 description: "Marketing tier-2 residual beyond the two curated marketing rows."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "video"
+composed: true
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "video"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="video" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="video" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > Marketing tier-2 residual beyond the two curated marketing rows.
 
@@ -24,10 +38,13 @@ npx skills add coreyhaines31/marketingskills --skill site-architecture --skill m
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/video.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/video.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Create, script, or produce marketing video content (AI-assisted or programmatic). Complements content-strategy and social.
 
 ## Harness Coverage
 
@@ -40,57 +57,26 @@ npx skills add coreyhaines31/marketingskills --skill site-architecture --skill m
 
 ## Trust / Audit
 
-Trust tier: **Curated** (`curated-trust-gated`)
+install-now-after-trust-gate / curated-trust-gated (core marketing tier plus residual tier). High-install community bundle from a recognized practitioner (Corey Haines). Content is guidance; actual tactics must be adapted to current platform TOS, privacy law, deliverability rules, and brand. Some skills (ads, cold-email, paywalls) touch regulated or reputation-sensitive surfaces.
 
-Curated status: `install-now-after-trust-gate`
+Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Marketing tier-2 residual beyond the two curated marketing rows.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="site-architecture" href="/skills/catalog/external/site-architecture/" description="Related curated external skill." />
+  <LinkCard title="marketing-ideas" href="/skills/catalog/external/marketing-ideas/" description="Related curated external skill." />
+  <LinkCard title="competitor-profiling" href="/skills/catalog/external/competitor-profiling/" description="Related curated external skill." />
+  <LinkCard title="revops" href="/skills/catalog/external/revops/" description="Related curated external skill." />
+  <LinkCard title="churn-prevention" href="/skills/catalog/external/churn-prevention/" description="Related curated external skill." />
+  <LinkCard title="paywalls" href="/skills/catalog/external/paywalls/" description="Related curated external skill." />
+  <LinkCard title="launch" href="/skills/catalog/external/launch/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-Create, script, or produce marketing video content (AI-assisted or programmatic). Complements content-strategy and social.
-
-## Install Prerequisites
-
-npx skills add coreyhaines31/marketingskills --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
-
-The bundle installs many related skills; install only the needed subset when possible. Requires a product-marketing.md context file for best results.
-
-## Upstream Maintainer
-
-coreyhaines31 (https://github.com/coreyhaines31/marketingskills). Companion resources: Coding for Marketers, Swipe Files, Conversion Factory.
-
-## Comparable Alternatives
-
-Framework or channel-specific guides (Google Ads docs, Klaviyo/Mailchimp playbooks, traditional CRO resources, competitor tools such as Ahrefs/Semrush skills when available). Local playbooks and analytics-driven experimentation replace generic advice over time.
-
-&gt; Evidence gathered from public GitHub (repo README, skills/ sources, AGENTS.md). Not an endorsement or authority; marketing tactics must be validated against current platform policies, data, and legal requirements.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `coreyhaines31/marketingskills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `video` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/video.mdx (full SSOT excerpt)"
 ---
 name: "video"
 description: "Marketing tier-2 residual beyond the two curated marketing rows."
@@ -113,8 +99,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=video; re-run migration to refresh */}
 
 Marketing tier-2 residual beyond the two curated marketing rows.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | coreyhaines31/marketingskills |
+| source_url | https://github.com/coreyhaines31/marketingskills |
+| trust_tier | curated-trust-gated |
+| curated_status | install-now-after-trust-gate |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -123,4 +119,5 @@ Marketing tier-2 residual beyond the two curated marketing rows.
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

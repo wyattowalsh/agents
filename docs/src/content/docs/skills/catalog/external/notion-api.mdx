@@ -1,7 +1,19 @@
 ---
 title: "notion-api"
 description: "third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "notion-api"
+composed: true
+docs_density: standard
+trust_tier: "global-only-or-avoid"
+curated_status: "global-only-or-avoid"
+research_slug: "notion-api"
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +36,13 @@ npx skills add intellectronica/agent-skills@notion-api --skill notion-api -y -g
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/notion-api.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/notion-api.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Third-party Notion REST guide; prefer official makenotion/skills@notion-cli for catalog promotion.
 
 ## Harness Coverage
 
@@ -46,25 +61,11 @@ Curated status: `global-only-or-avoid`
 
 Risk notes: third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Third-party Notion REST guide; prefer official makenotion/skills@notion-cli for catalog promotion.
+Entry maintained via authoring + research for compose-external-wave-8; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 status=global-only-or-avoid; selector=unresolved; unresolved: third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion.
-
-## Upstream Maintainer
-
-[intellectronica/agent-skills](https://github.com/intellectronica/agent-skills)
-
-## Comparable Alternatives
-
-General purpose agent skills in similar domain (see catalog for alternatives); e.g. other SQL or UI or infra skills.
-
-&gt; Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -84,10 +85,10 @@ General purpose agent skills in similar domain (see catalog for alternatives); e
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/notion-api.mdx (full SSOT excerpt)"
 ---
 name: "notion-api"
 description: "third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion."
@@ -112,6 +113,15 @@ unresolved_reason: "third-party Notion REST guide; prefer official `makenotion/s
 third-party Notion REST guide; prefer official `makenotion/skills@notion-cli` for catalog promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| source | `intellectronica/agent-skills` |
+| source_url | `https://github.com/intellectronica/agent-skills` |
+| trust_tier | `global-only-or-avoid` |
+| curated_status | `global-only-or-avoid` |
 
 </details>
 

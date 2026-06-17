@@ -1,7 +1,18 @@
 ---
 title: "docs-writer"
 description: "Update or create technical documentation grounded in the current codebase."
+page_kind: "agent"
+source_kind: "repo"
+asset_id: "docs-writer"
+composed: true
+docs_density: standard
+tools: "all"
+permissionMode: "default"
+composed_by: "compose-batch-apply"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
@@ -9,8 +20,8 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 
 > Update or create technical documentation grounded in the current codebase.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository agent file `agents/docs-writer.md` by `wagents docs generate`.
+<Aside type="note" title="Repo agent (hand-maintained)">
+Composed compose-batch-apply from `agents/docs-writer.md`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 <div class="tool-pills">
@@ -65,8 +76,8 @@ Produce documentation that includes:
 - Scannable
 - Honest about limitations
 
-<details>
-<summary>View Full Agent File</summary>
+<details class="source-disclosure">
+<summary>Full agent file</summary>
 
 ````yaml title="docs-writer.md"
 ---

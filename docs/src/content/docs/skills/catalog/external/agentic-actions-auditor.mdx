@@ -1,7 +1,21 @@
 ---
 title: "agentic-actions-auditor"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "agentic-actions-auditor"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "agentic-actions-auditor"
+composed_by: "compose-external-wave-1"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add trailofbits/skills --skill differential-review --skill agentic-ac
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/agentic-actions-auditor.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-1 using authoring SSOT (`docs/src/authoring/skills/agentic-actions-auditor.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Audits GitHub Actions workflows for AI agent security vulnerabilities specific to integrations like Claude Code Action, Gemini CLI, OpenAI Codex, and GitHub AI Inference. Detects 9 attack vectors (env var intermediary, direct $\{\{\}\} injection, gh CLI data fetch at runtime, pull_request_target+checkout, error log injection, subshell bypass, eval of AI output, dangerous sandboxes like --yolo, wildcard allowlists). From Trail of Bits skills marketplace.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Audits GitHub Actions workflows for AI agent security vulnerabilities specific to integrations like Claude Code Action, Gemini CLI, OpenAI Codex, and GitHub AI Inference. Detects 9 attack vectors (env var intermediary, direct $\{\{\}\} injection, gh CLI data fetch at runtime, pull_request_target+checkout, error log injection, subshell bypass, eval of AI output, dangerous sandboxes like --yolo, wildcard allowlists). From Trail of Bits skills marketplace.
+Entry maintained via authoring + research for compose-external-wave-1; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add trailofbits/skills --skill agentic-actions-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named. Best with .github/ workflows present. Run external-skill-auditor first per policy.
-
-## Upstream Maintainer
-
-[trailofbits/skills](https://github.com/trailofbits/skills) — security-focused plugin marketplace and skills for Claude Code / agent harnesses. See also related static-analysis, variant-analysis, differential-review plugins.
-
-## Comparable Alternatives
-
-`differential-review` for security PR/diff analysis with history; `static-analysis` (codeql/semgrep) or `insecure-defaults` for other vuln classes; general `honest-review`. A general-purpose agent instruction without a scoped skill contract for GitHub Actions AI agent security audits.
-
-&gt; Web evidence from github.com/trailofbits/skills README + plugin/agentic-actions-auditor/README.md + SKILL structure (fetched 2026-06); cross-ref config/external-skills.md. Evidence only; not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Install: `npx skills add trailofbits/skills --skill agentic-actions-auditor -y -
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/agentic-actions-auditor.mdx (full SSOT excerpt)"
 ---
 name: "agentic-actions-auditor"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `trailofbits/skills` |
+| source_url | `https://github.com/trailofbits/skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

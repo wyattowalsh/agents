@@ -1,7 +1,21 @@
 ---
 title: "postmortem-writing"
 description: "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "postmortem-writing"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "postmortem-writing"
+composed_by: "compose-external-wave-9"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/postmortem-writing.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/postmortem-writing.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Postmortem writing templates/patterns. From wshobson/agents (large multi-harness marketplace, 84 plugins/156 skills; one Markdown source to 5 harnesses).
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: `wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Postmortem writing templates/patterns. From wshobson/agents (large multi-harness marketplace, 84 plugins/156 skills; one Markdown source to 5 harnesses).
+Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add wshobson/agents --skill postmortem-writing -y -g -a antigravity claude-code ...` status=install-now-after-trust-gate; selector=named. Review outputs for safety (esp. generators, k8s, tf, secrets).
-
-## Upstream Maintainer
-
-[wshobson/agents](https://github.com/wshobson/agents) — MIT, broad agentic patterns + quality eval (plugin-eval).
-
-## Comparable Alternatives
-
-Similar patterns in trailofbits, vercel, local skills/* or other curated (e.g. python from modern-python, k8s from hashicorp). General postmortem writing instruction.
-
-&gt; Web evidence from wshobson/agents github (README, docs, example SKILLs 2026) + config notes. Evidence only.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Similar patterns in trailofbits, vercel, local skills/* or other curated (e.g. p
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/postmortem-writing.mdx (full SSOT excerpt)"
 ---
 name: "postmortem-writing"
 description: "`wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 `wshobson/agents` backend, monorepo, incident, and eval residual beyond the existing curated subset.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add wshobson/agents --skill fastapi-templates --skill nodejs-backend-patterns --skill postmortem-writing --skill on-call-handoff-patterns --skill nx-workspace-patterns --skill turborepo-caching --skill langchain-architecture --skill llm-evaluation -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `wshobson/agents` |
+| source_url | `https://github.com/wshobson/agents` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

@@ -1,0 +1,66 @@
+---
+/** Client filter for custom skill catalog index sections. */
+---
+
+<div class="catalog-skill-filter" data-catalog-filter-root>
+  <div class="catalog-skill-filter__controls" role="toolbar" aria-label="Filter custom skills">
+    <button type="button" class="catalog-skill-filter__btn is-active" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" class="catalog-skill-filter__btn" data-filter="user-invocable" aria-pressed="false">User-invocable</button>
+    <button type="button" class="catalog-skill-filter__btn" data-filter="convention" aria-pressed="false">Convention</button>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector("[data-catalog-filter-root]");
+  if (root) {
+    const buttons = root.querySelectorAll("[data-filter]");
+    const sections = document.querySelectorAll("[data-skill-lane]");
+
+    const apply = (lane) => {
+      for (const section of sections) {
+        const value = section.getAttribute("data-skill-lane");
+        const show = lane === "all" || value === lane;
+        section.classList.toggle("is-filter-hidden", !show);
+      }
+      for (const btn of buttons) {
+        const active = btn.getAttribute("data-filter") === lane;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", active ? "true" : "false");
+      }
+    };
+
+    for (const btn of buttons) {
+      btn.addEventListener("click", () => {
+        apply(btn.getAttribute("data-filter") || "all");
+      });
+    }
+  }
+</script>
+
+<style>
+  .catalog-skill-filter {
+    margin: 1rem 0 1.5rem;
+  }
+  .catalog-skill-filter__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .catalog-skill-filter__btn {
+    border: 1px solid var(--sl-color-gray-5);
+    background: transparent;
+    color: var(--sl-color-text);
+    border-radius: var(--radius-pill);
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .catalog-skill-filter__btn.is-active,
+  .catalog-skill-filter__btn:hover {
+    border-color: var(--primary);
+    color: var(--sl-color-text-accent);
+  }
+  :global([data-skill-lane].is-filter-hidden) {
+    display: none !important;
+  }
+</style>

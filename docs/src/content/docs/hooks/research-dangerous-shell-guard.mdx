@@ -1,0 +1,79 @@
+---
+title: "research-dangerous-shell-guard"
+description: "Block dangerous shell side effects during active research sessions."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "research-dangerous-shell-guard"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block dangerous shell side effects during active research sessions.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `research-dangerous-shell-guard` |
+| mode | `enforce` |
+| degraded_behavior | `audit when the harness payload does not expose a shell command` |
+| logical_event | `PreToolUse` |
+| matcher | `Bash\|bash\|run_shell_command` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py research-dangerous-shell-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex", "claude-code", "github-copilot", "gemini-cli"]` |
+
+<Aside type="note">
+Blocks high-risk shell during research; falls back to audit in degraded harness payloads. Complements the non-research destructive-shell-guard.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "research-dangerous-shell-guard",
+  "description": "Block dangerous shell side effects during active research sessions.",
+  "mode": "enforce",
+  "degraded_behavior": "audit when the harness payload does not expose a shell command",
+  "logical_event": "PreToolUse",
+  "matcher": "Bash|bash|run_shell_command",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py research-dangerous-shell-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "github-copilot",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (delegating)"
+def _policy_dangerous_shell_guard(payload: NormalizedPayload) -> int:
+    if not _state_active(payload) or _tool_name(payload) not in SHELL_TOOL_NAMES:
+        return 0
+    # ... delegates heavy logic or uses research_hook equivalent
+```
+
+See `skills/research/scripts/research_hook.py` for the canonical research shell policy implementation.
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="research skill" href="/skills/catalog/custom/research/" description="The driving research skill." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

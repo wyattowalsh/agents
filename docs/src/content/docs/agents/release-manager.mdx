@@ -1,7 +1,18 @@
 ---
 title: "release-manager"
 description: "Prepare release notes, versioning, and ship-readiness checks with cautious permissions."
+page_kind: "agent"
+source_kind: "repo"
+asset_id: "release-manager"
+composed: true
+docs_density: standard
+tools: "all"
+permissionMode: "default"
+composed_by: "compose-batch-apply"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
@@ -9,8 +20,8 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 
 > Prepare release notes, versioning, and ship-readiness checks with cautious permissions.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository agent file `agents/release-manager.md` by `wagents docs generate`.
+<Aside type="note" title="Repo agent (hand-maintained)">
+Composed compose-batch-apply from `agents/release-manager.md`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 <div class="tool-pills">
@@ -64,8 +75,8 @@ Return:
 - Focus on what changed and why it matters.
 - Call out missing validation before ship steps.
 
-<details>
-<summary>View Full Agent File</summary>
+<details class="source-disclosure">
+<summary>Full agent file</summary>
 
 ````yaml title="release-manager.md"
 ---

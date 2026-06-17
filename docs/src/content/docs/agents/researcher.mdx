@@ -1,7 +1,18 @@
 ---
 title: "researcher"
 description: "Investigate a technical question deeply and return a concise evidence-backed summary."
+page_kind: "agent"
+source_kind: "repo"
+asset_id: "researcher"
+composed: true
+docs_density: standard
+tools: "all"
+permissionMode: "default"
+composed_by: "compose-batch-apply"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
@@ -9,8 +20,8 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 
 > Investigate a technical question deeply and return a concise evidence-backed summary.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository agent file `agents/researcher.md` by `wagents docs generate`.
+<Aside type="note" title="Repo agent (hand-maintained)">
+Composed compose-batch-apply from `agents/researcher.md`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 <div class="tool-pills">
@@ -66,8 +77,8 @@ Return:
 - Surface uncertainty explicitly.
 - Separate codebase evidence from web evidence.
 
-<details>
-<summary>View Full Agent File</summary>
+<details class="source-disclosure">
+<summary>Full agent file</summary>
 
 ````yaml title="researcher.md"
 ---

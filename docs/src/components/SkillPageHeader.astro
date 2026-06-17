@@ -1,0 +1,41 @@
+---
+import { Badge } from '@astrojs/starlight/components';
+
+interface Props {
+  name: string;
+  description: string;
+  installCommand: string;
+  usage?: string;
+  badges?: Array<{ text: string; variant?: 'note' | 'success' | 'caution' | 'tip' | 'default' }>;
+}
+
+const { name, description, installCommand, usage, badges = [] } = Astro.props;
+---
+
+<div class="skill-page-header">
+  {badges.map((b) => (
+    <Badge text={b.text} variant={b.variant ?? 'note'} />
+  ))}
+
+  <blockquote>{description}</blockquote>
+
+  <div class="quick-start">
+    <h3>Quick Start</h3>
+    <p><strong>Install:</strong></p>
+    <pre class="agents-scrollbar"><code>{installCommand}</code></pre>
+    {usage && (
+      <>
+        <p><strong>Use:</strong> <code>{usage}</code></p>
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .skill-page-header blockquote {
+    margin: 0.75rem 0 1rem;
+  }
+  .skill-page-header .quick-start pre {
+    margin: 0.5rem 0 0;
+  }
+</style>

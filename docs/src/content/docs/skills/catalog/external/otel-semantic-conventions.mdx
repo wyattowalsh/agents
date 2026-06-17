@@ -1,7 +1,21 @@
 ---
 title: "otel-semantic-conventions"
 description: "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "otel-semantic-conventions"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "otel-semantic-conventions"
+composed_by: "compose-external-wave-9"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-se
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/otel-semantic-conventions.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/otel-semantic-conventions.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+otel-semantic-conventions is the authority for selecting and placing attributes according to the OTel semconv registry. Requires searching the registry first, preferring stable attributes, correct resource vs span placement, low-cardinality for metrics, and org.namespace.* for customs. Includes versioning/migration and Dash0-derived notes.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-otel-semantic-conventions is the authority for selecting and placing attributes according to the OTel semconv registry. Requires searching the registry first, preferring stable attributes, correct resource vs span placement, low-cardinality for metrics, and org.namespace.* for customs. Includes versioning/migration and Dash0-derived notes.
+Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Same bundle as the other otel skills.
-
-## Upstream Maintainer
-
-dash0 (https://github.com/dash0hq/agent-skills) with direct links to https://opentelemetry.io/docs/specs/semconv/registry/attributes/.
-
-## Comparable Alternatives
-
-Direct use of the OTel semantic conventions specification and registry browser.
-
-&gt; Evidence from public GitHub (raw skill). Summarizes risks; do not endorse without inspection.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Direct use of the OTel semantic conventions specification and registry browser.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/otel-semantic-conventions.mdx (full SSOT excerpt)"
 ---
 name: "otel-semantic-conventions"
 description: "Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Vendor-neutral OpenTelemetry instrumentation, semantic conventions, and Collector pipelines. Complements Phoenix/Arize vendor-specific tracing skills; optional Dash0 backend references are not required for OTLP export.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add dash0hq/agent-skills --skill otel-instrumentation --skill otel-semantic-conventions --skill otel-collector -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `dash0hq/agent-skills` |
+| source_url | `https://github.com/dash0hq/agent-skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

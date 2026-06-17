@@ -1,11 +1,25 @@
 ---
 title: "web-quality-audit"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "web-quality-audit"
+composed: true
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "web-quality-audit"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="web-quality-audit" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="web-quality-audit" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
@@ -24,10 +38,13 @@ npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill a
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/web-quality-audit.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/web-quality-audit.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Comprehensive quality review orchestrator across Performance, Accessibility, SEO, Best Practices, and Core Web Vitals. Uses Lighthouse guidelines. Triggered by phrases like "audit my site", "lighthouse audit". Checks 50+ perf patterns, 40+ a11y rules, 30+ SEO reqs, 20+ security/best-practice patterns + all CWV. Recommended when unsure which sub-area to target or for full-site audits.
 
 ## Harness Coverage
 
@@ -40,55 +57,24 @@ npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill a
 
 ## Trust / Audit
 
-Trust tier: **Curated** (`curated-trust-gated`)
+Curated install-now-after-trust-gate / curated-trust-gated. MIT licensed. Source by addyosmani (Chrome DevTools / web performance expert) with 2.4k GitHub stars. Unofficial collection encoding wisdom from 150+ Lighthouse audits, real-world perf engineering, WCAG 2.2, modern SEO. Stack-agnostic (React/Vue/Svelte/Next/Nuxt/Astro/plain). Skills activate on matching prompts. No specific per-skill hooks noted in config; provenance via verified npx command. Popular, reputable maintainer reduces baseline risk; still follow general audit-before-promotion guidance.
 
-Curated status: `install-now-after-trust-gate`
+Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="accessibility" href="/skills/catalog/external/accessibility/" description="Related curated external skill." />
+  <LinkCard title="seo" href="/skills/catalog/external/seo/" description="Related curated external skill." />
+  <LinkCard title="performance" href="/skills/catalog/external/performance/" description="Related curated external skill." />
+  <LinkCard title="core-web-vitals" href="/skills/catalog/external/core-web-vitals/" description="Related curated external skill." />
+  <LinkCard title="best-practices" href="/skills/catalog/external/best-practices/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-Comprehensive quality review orchestrator across Performance, Accessibility, SEO, Best Practices, and Core Web Vitals. Uses Lighthouse guidelines. Triggered by phrases like "audit my site", "lighthouse audit". Checks 50+ perf patterns, 40+ a11y rules, 30+ SEO reqs, 20+ security/best-practice patterns + all CWV. Recommended when unsure which sub-area to target or for full-site audits.
-
-## Install Prerequisites
-
-`npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode. status=install-now-after-trust-gate; selector=named (group install supports multiple). Supports Claude plugin, Codex marketplace, Gemini extensions, manual copy.`
-
-## Upstream Maintainer
-
-addyosmani (github.com/addyosmani/web-quality-skills). MIT License. Insights from Chrome DevTools team, web perf experts, a11y advocates. 2.4k stars, 216 forks. Resources link to Lighthouse, web.dev, WCAG, Agent Skills spec.
-
-## Comparable Alternatives
-
-Other skills in same bundle (e.g. performance, core-web-vitals, accessibility, seo, best-practices); general Lighthouse/web.dev guidance; framework-specific perf/a11y plugins; other curated quality skills like chrome-devtools-*.
-
-&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `addyosmani/web-quality-skills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `web-quality-audit` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/web-quality-audit.mdx (full SSOT excerpt)"
 ---
 name: "web-quality-audit"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -111,8 +97,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=web-quality-audit; re-run migration to refresh */}
 
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | addyosmani/web-quality-skills |
+| source_url | https://github.com/addyosmani/web-quality-skills |
+| trust_tier | curated-trust-gated |
+| curated_status | install-now-after-trust-gate |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +117,5 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

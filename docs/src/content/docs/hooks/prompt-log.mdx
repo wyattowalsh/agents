@@ -1,0 +1,71 @@
+---
+title: "prompt-log"
+description: "Write local prompt audit entries with short retention."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "prompt-log"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="UserPromptSubmit" variant="success" /> <Badge text="github-copilot" variant="default" />
+
+> Write local prompt audit entries with short retention.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `prompt-log` |
+| logical_event | `UserPromptSubmit` |
+| command | `./hooks/log-prompt.sh` |
+| timeout | `5` |
+| harnesses | `["github-copilot"]` |
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "prompt-log",
+  "description": "Write local prompt audit entries with short retention.",
+  "logical_event": "UserPromptSubmit",
+  "command": "./hooks/log-prompt.sh",
+  "timeout": 5,
+  "harnesses": [
+    "github-copilot"
+  ]
+}
+```
+
+```bash title="hooks/log-prompt.sh"
+#!/bin/bash
+command -v jq &>/dev/null || exit 0
+INPUT=$(cat)
+PROMPT=$(echo "$INPUT" | jq -r '.prompt // empty')
+TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+LOG_DIR="$HOME/.claude/logs"
+mkdir -p "$LOG_DIR" && chmod 700 "$LOG_DIR"
+printf '%s' "$PROMPT" | jq -Rs --arg ts "$TS" '{ts: $ts, prompt: .}' >> "${LOG_DIR}/prompts-$(date +%Y-%m-%d).jsonl"
+# Clean up logs older than 30 days
+find "$LOG_DIR" -name "prompts-*.jsonl" -mtime +30 -delete 2>/dev/null
+exit 0
+```
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

@@ -1,7 +1,18 @@
 ---
 title: "security-auditor"
 description: "Audit code and configuration for security risks without making changes."
+page_kind: "agent"
+source_kind: "repo"
+asset_id: "security-auditor"
+composed: true
+docs_density: standard
+tools: "all"
+permissionMode: "default"
+composed_by: "compose-batch-apply"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
 
@@ -9,8 +20,8 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside } from '@astrojs/
 
 > Audit code and configuration for security risks without making changes.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository agent file `agents/security-auditor.md` by `wagents docs generate`.
+<Aside type="note" title="Repo agent (hand-maintained)">
+Composed compose-batch-apply from `agents/security-auditor.md`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 <div class="tool-pills">
@@ -65,8 +76,8 @@ Return:
 - Prefer concrete mitigation over generic advice.
 - State uncertainty explicitly.
 
-<details>
-<summary>View Full Agent File</summary>
+<details class="source-disclosure">
+<summary>Full agent file</summary>
 
 ````yaml title="security-auditor.md"
 ---

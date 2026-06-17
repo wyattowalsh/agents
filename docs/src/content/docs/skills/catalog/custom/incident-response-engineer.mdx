@@ -1,7 +1,21 @@
 ---
 title: "incident-response-engineer"
 description: "Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "incident-response-engineer"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "incident-response-engineer"
+composed_by: "compose-custom-wave-4"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill incident-response-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/incident-response-engineer` `<mode> [incident]`
+**Use:** `/incident-response-engineer` `&lt;mode&gt; [incident]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/incident-response-engineer/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning.
+**Stack / assumptions:** on-demand references; eval fixtures
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning.
-
-**Stack / assumptions:** on-demand references; eval fixtures
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Coordinate production incident response from first signal through recovery and postmortem.
-
-&gt; Grounded in repository `skills/incident-response-engineer/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-4 from `skills/incident-response-engineer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -69,6 +73,132 @@ Coordinate production incident response from first signal through recovery and p
 4. Every live incident needs a single incident commander.
 5. Every meaningful action during response must land in the timeline.
 6. Postmortems must produce owned corrective actions, not vague lessons.
+
+## Canonical Vocabulary
+
+| Term | Definition |
+|------|------------|
+| **severity** | Incident priority level based on business impact |
+| **impact** | User-visible harm, revenue loss, or operational degradation |
+| **blast radius** | The systems, regions, tenants, or users affected |
+| **containment** | Short-term action that stops the incident from spreading |
+| **mitigation** | Action that reduces impact before root cause is fully fixed |
+| **recovery** | Restoring the service to accepted operating behavior |
+| **incident commander** | The single coordinator for decisions and timeline |
+| **stakeholder update** | Time-boxed status message for internal or external audiences |
+| **timeline** | Ordered record of facts, decisions, and actions |
+| **action item** | Concrete follow-up with owner and due date |
+
+## Mode Menu
+
+| # | Mode | Example |
+|---|------|---------|
+| 1 | Triage | `triage elevated 500s in eu-west checkout` |
+| 2 | Stabilize | `stabilize auth outage caused by bad deploy` |
+| 3 | Comms | `comms database failover affecting signups` |
+| 4 | Postmortem | `postmortem queue backlog incident` |
+| 5 | Review | `review incident timeline from 2026-03-12` |
+| 6 | Drill | `drill primary region outage` |
+
+## When To Use
+
+- A service is down, degraded, or violating its SLO
+- Multiple responders need a common incident structure
+- Stakeholder or customer updates must be issued on a cadence
+- A fix is known but risk must be managed during containment and recovery
+- The team needs a postmortem or tabletop exercise
+
+## Classification Gate
+
+- If the task is routine debugging or a one-off bug with no operational impact,
+  use investigate.
+- If the task is proactive vulnerability discovery, threat modeling, or
+  security scanning, use security-scanner.
+- If the task is code review, fix quality assessment, or pre-merge risk review,
+  use honest-review.
+- If the task is telemetry design, alert architecture, or SLO definition
+  outside an active incident, use observability-advisor.
+- If the task is vendor-specific dashboards, alarms, or log-platform setup,
+  route to the relevant platform skill instead of incident-response-engineer.
+
+## Instructions
+
+### Mode: Triage
+
+1. Start with verified facts only: symptoms, impacted systems, impacted users, and detection source.
+2. Estimate severity from impact and blast radius, not gut feel. Use `references/severity-matrix.md`.
+3. Name an incident commander and define the next decision checkpoint.
+4. Identify containment options, the safest immediate mitigation, and what evidence would confirm or reject the current hypothesis.
+5. Produce the first 15-minute response plan.
+
+### Mode: Stabilize
+
+1. Separate containment from root cause work.
+2. Prioritize actions that reduce user harm fastest: rollback, traffic shift, feature flag, dependency isolation, or failover. Use `references/containment-recovery-aids.md`.
+3. Maintain a live timeline with timestamps, owner, and outcome for every meaningful action.
+4. Reassess severity whenever blast radius changes.
+5. Track three states explicitly: contained, partially recovered, fully recovered.
+
+### Mode: Comms
+
+1. Identify audience: responders, executives, support, or customers.
+2. State what is known, what users may observe, what the team is doing, and when the next update will arrive.
+3. Avoid speculative root-cause claims.
+4. Keep customer updates crisp and plain language. Use `references/comms-templates.md`.
+
+### Mode: Postmortem
+
+1. Build the timeline from verified events, not memory alone. Use `references/timeline-postmortem-examples.md`.
+2. Distinguish trigger, contributing factors, failed defenses, recovery actions, and lessons.
+3. Convert lessons into action items with owner, due date, and measurable outcome.
+4. Focus on system fixes, not blame.
+
+### Mode: Review
+
+1. Read the timeline, updates, runbook, and follow-up actions. Compare against `references/severity-matrix.md`, `references/comms-templates.md`, and `references/timeline-postmortem-examples.md`.
+2. Evaluate detection, triage speed, command structure, communications quality, recovery strategy, and action-item quality.
+3. Present gaps as critical, warning, or info.
+
+### Mode: Drill
+
+1. Define scenario, objective, and stop condition.
+2. Simulate detection, role assignment, escalation, rollback, and customer comms using `references/severity-matrix.md`, `references/comms-templates.md`, and `references/containment-recovery-aids.md`.
+3. Capture decision bottlenecks and missing runbook steps.
+
+## Output Requirements
+
+- Triage and stabilize outputs must include severity, blast radius, commander, next checkpoint, and immediate actions.
+- Comms outputs must include audience and next update time.
+- Postmortems must include action items with owners.
+
+## Scaling Strategy
+
+- For a single-service incident, keep one commander, one timeline, one
+  response channel, and one short update cadence.
+- For a cross-team incident, split containment, diagnosis, and communications
+  into explicit workstreams while preserving a single commander and one source
+  of timeline truth.
+- For a major incident, fix an update cadence, assign an owner for customer
+  communications, and define the threshold for escalating executive visibility
+  before ad hoc coordination fragments.
+
+## Reference Files
+
+Use these only when the current mode needs deeper structure or reusable
+templates.
+
+| File | Purpose | Use when |
+|------|---------|----------|
+| `references/severity-matrix.md` | Severity calibration by impact, blast radius, and response posture | Triage, stabilize, drill, review |
+| `references/comms-templates.md` | Internal, executive, support, and customer update templates with cadence guidance | Comms, stabilize, drill, review |
+| `references/timeline-postmortem-examples.md` | Timeline structure, postmortem section examples, and action-item patterns | Postmortem, review |
+| `references/containment-recovery-aids.md` | Decision aids for rollback, failover, dependency isolation, degraded mode, and recovery confirmation | Triage, stabilize, drill |
+
+## Scope Boundaries
+
+**IS for:** live outage coordination, mitigation strategy, stakeholder updates, postmortems, incident drills.
+
+**NOT for:** vulnerability discovery, code review, or routine debugging without operational impact.
 
 <Tabs>
   <TabItem label="Public Metadata">

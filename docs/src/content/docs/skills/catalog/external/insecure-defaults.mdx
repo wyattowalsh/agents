@@ -1,7 +1,21 @@
 ---
 title: "insecure-defaults"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "insecure-defaults"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "insecure-defaults"
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add trailofbits/skills --skill differential-review --skill agentic-ac
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/insecure-defaults.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-7 using authoring SSOT (`docs/src/authoring/skills/insecure-defaults.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Detects insecure default configurations causing vulns: hardcoded secrets/fallbacks, default creds (admin/admin), weak crypto (MD5/DES/ECB), permissive access (CORS *), fail-open patterns vs fail-secure. Scans manifests, env handling, auth, third-party integrations. Trail of Bits.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Detects insecure default configurations causing vulns: hardcoded secrets/fallbacks, default creds (admin/admin), weak crypto (MD5/DES/ECB), permissive access (CORS *), fail-open patterns vs fail-secure. Scans manifests, env handling, auth, third-party integrations. Trail of Bits.
+Entry maintained via authoring + research for compose-external-wave-7; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Grouped in `npx skills add trailofbits/skills --skill ... insecure-defaults ...` status=inspect-then-install; selector=named.
-
-## Upstream Maintainer
-
-[trailofbits/skills](https://github.com/trailofbits/skills).
-
-## Comparable Alternatives
-
-`secrets-management`, `sast-configuration`, `semgrep`/`codeql`. General "insecure defaults" instruction.
-
-&gt; Web evidence from repo plugin README.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Grouped in `npx skills add trailofbits/skills --skill ... insecure-defaults ...`
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/insecure-defaults.mdx (full SSOT excerpt)"
 ---
 name: "insecure-defaults"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `trailofbits/skills` |
+| source_url | `https://github.com/trailofbits/skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

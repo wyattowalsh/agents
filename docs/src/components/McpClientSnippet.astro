@@ -1,0 +1,187 @@
+---
+interface Props {
+  serverKey: string;
+  package?: string;
+  jsonCommand?: string;
+  tomlCommand?: string;
+  opencodeCommand?: string;
+  copilotCommand?: string;
+  aitkCommand?: string;
+  chromeRepoPath?: string;
+}
+
+const {
+  serverKey,
+  package: pkg,
+  jsonCommand,
+  tomlCommand,
+  opencodeCommand,
+  copilotCommand,
+  aitkCommand,
+  chromeRepoPath = '<repo>',
+} = Astro.props;
+
+const isChrome = !!chromeRepoPath || serverKey === 'chrome-devtools' || !pkg;
+const repoPath = chromeRepoPath || '<repo>';
+const scriptPath = `${repoPath}/scripts/mcphub/chrome-devtools-browser-url.sh`;
+
+function jsonBlock(title: string, body: string) {
+  return `<h4>${title}</h4>\n<pre class="agents-scrollbar language-json"><code>${escape(body)}</code></pre>`;
+}
+
+function tomlBlock(title: string, body: string) {
+  return `<h4>${title}</h4>\n<pre class="agents-scrollbar language-toml"><code>${escape(body)}</code></pre>`;
+}
+
+function escape(s: string) {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function stdJson() {
+  if (jsonCommand) return jsonBlock('Standard JSON clients (`mcpServers`)', jsonCommand);
+  if (isChrome) {
+    const body = `{
+  "mcpServers": {
+    "${serverKey}": {
+      "command": "bash",
+      "args": ["${scriptPath}"]
+    }
+  }
+}`;
+    return jsonBlock('Standard JSON clients (`mcpServers`)', body);
+  }
+  const body = `{
+  "mcpServers": {
+    "${serverKey}": {
+      "command": "uvx",
+      "args": ["${pkg}"]
+    }
+  }
+}`;
+  return jsonBlock('Standard JSON clients (`mcpServers`)', body);
+}
+
+function codexToml() {
+  if (tomlCommand) return tomlBlock('Codex (`~/.codex/config.toml`)', tomlCommand);
+  if (isChrome) {
+    const body = `[mcp_servers.${serverKey}]
+command = "bash"
+args = ["${scriptPath}"]`;
+    return tomlBlock('Codex (`~/.codex/config.toml`)', body);
+  }
+  const body = `[mcp_servers.${serverKey}]
+command = "uvx"
+args = ["${pkg}"]`;
+  return tomlBlock('Codex (`~/.codex/config.toml`)', body);
+}
+
+function copilotJson() {
+  if (copilotCommand) return jsonBlock('GitHub Copilot CLI (`~/.copilot/mcp-config.json`)', copilotCommand);
+  if (isChrome) {
+    const body = `{
+  "mcpServers": {
+    "${serverKey}": {
+      "type": "stdio",
+      "command": "bash",
+      "args": ["${scriptPath}"],
+      "tools": ["*"]
+    }
+  }
+}`;
+    return jsonBlock('GitHub Copilot CLI (`~/.copilot/mcp-config.json`)', body);
+  }
+  const body = `{
+  "mcpServers": {
+    "${serverKey}": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["${pkg}"],
+      "tools": ["*"]
+    }
+  }
+}`;
+  return jsonBlock('GitHub Copilot CLI (`~/.copilot/mcp-config.json`)', body);
+}
+
+function opencodeJson() {
+  if (opencodeCommand) return jsonBlock('OpenCode (`~/.config/opencode/opencode.json`)', opencodeCommand);
+  if (isChrome) {
+    const body = `{
+  "mcp": {
+    "${serverKey}": {
+      "type": "local",
+      "command": ["bash", "${scriptPath}"],
+      "enabled": true
+    }
+  }
+}`;
+    return jsonBlock('OpenCode (`~/.config/opencode/opencode.json`)', body);
+  }
+  const body = `{
+  "mcp": {
+    "${serverKey}": {
+      "type": "local",
+      "command": ["uvx", "${pkg}"],
+      "enabled": true
+    }
+  }
+}`;
+  return jsonBlock('OpenCode (`~/.config/opencode/opencode.json`)', body);
+}
+
+function aitkJson() {
+  if (aitkCommand) return jsonBlock('AITK (`~/.aitk/mcp.json`)', aitkCommand);
+  const body = `{
+  "servers": {
+    "${serverKey}": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["${pkg}"]
+    }
+  }
+}`;
+  return jsonBlock('AITK (`~/.aitk/mcp.json`)', body);
+}
+
+function crushJson() {
+  const body = `{
+  "mcp": {
+    "${serverKey}": {
+      "type": "stdio",
+      "command": "bash",
+      "args": ["${scriptPath}"]
+    }
+  }
+}`;
+  return jsonBlock('Crush (`~/.config/crush/crush.json`)', body);
+}
+---
+
+<div class="mcp-client-snippet" set:html={stdJson() + codexToml() + copilotJson() + opencodeJson() + (isChrome ? crushJson() : (pkg ? aitkJson() : ''))} />
+
+<style>
+  .mcp-client-snippet h4 {
+    margin: 1.25rem 0 0.35rem;
+    font-size: 0.95rem;
+    color: var(--sl-color-gray-2);
+  }
+  .mcp-client-snippet pre {
+    max-width: 100%;
+    margin: 0 0 1rem;
+    overflow-x: auto;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-panel);
+    border-radius: var(--radius-md);
+    background: var(--surface-panel);
+  }
+  .mcp-client-snippet code {
+    display: block;
+    min-width: max-content;
+    white-space: pre;
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+</style>

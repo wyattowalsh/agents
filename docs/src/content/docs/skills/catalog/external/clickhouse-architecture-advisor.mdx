@@ -1,7 +1,21 @@
 ---
 title: "clickhouse-architecture-advisor"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "clickhouse-architecture-advisor"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "clickhouse-architecture-advisor"
+composed_by: "compose-external-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/clickhouse-architecture-advisor.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-2 using authoring SSOT (`docs/src/authoring/skills/clickhouse-architecture-advisor.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+clickhouse-architecture-advisor complements clickhouse-best-practices with workload-aware decision frameworks (ingestion strategy, partitioning for time-series, join enrichment, late-arriving upserts). It requires explicit provenance labeling (official / derived / field) on every recommendation and reading of workload-specific decision rules. Intended for architecture and modeling choices rather than day-to-day query/schema reviews.
 
 ## Harness Coverage
 
@@ -46,27 +63,13 @@ Curated status: `inspect-then-install`
 
 Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-clickhouse-architecture-advisor complements clickhouse-best-practices with workload-aware decision frameworks (ingestion strategy, partitioning for time-series, join enrichment, late-arriving upserts). It requires explicit provenance labeling (official / derived / field) on every recommendation and reading of workload-specific decision rules. Intended for architecture and modeling choices rather than day-to-day query/schema reviews.
+Entry maintained via authoring + research for compose-external-wave-2; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 `npx skills add clickhouse/agent-skills --skill clickhouse-architecture-advisor --skill clickhouse-best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
 
 Run external-skill-auditor on the source before promotion per curated policy.
-
-## Upstream Maintainer
-
-ClickHouse Inc. (https://github.com/ClickHouse/agent-skills). Official docs linked from skill.
-
-## Comparable Alternatives
-
-Direct use of ClickHouse official best-practices docs + architecture guides; vendor-neutral modeling patterns from other OLAP systems when not ClickHouse-specific.
-
-&gt; Evidence from public GitHub (raw SKILL.md and ClickHouse blog). Summarizes risks; do not endorse installation without inspection. Not authority.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -87,10 +90,10 @@ Direct use of ClickHouse official best-practices docs + architecture guides; ven
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/clickhouse-architecture-advisor.mdx (full SSOT excerpt)"
 ---
 name: "clickhouse-architecture-advisor"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -115,6 +118,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add clickhouse/agent-skills --skill clickhouse-best-practices --skill clickhouse-architecture-advisor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `clickhouse/agent-skills` |
+| source_url | `https://github.com/clickhouse/agent-skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

@@ -1,11 +1,25 @@
 ---
 title: "uv-package-manager"
-description: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies."
+description: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "uv-package-manager"
+composed: true
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "uv-package-manager"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="uv-package-manager" variant="note" /> <Badge text="32 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="uv-package-manager" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > `wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them.
 
@@ -24,10 +38,13 @@ npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-packag
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/uv-package-manager.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/uv-package-manager.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+uv package manager workflows (wshobson residual). From wshobson/agents (large multi-harness marketplace, 84 plugins/156 skills; one Markdown source to 5 harnesses).
 
 ## Harness Coverage
 
@@ -40,55 +57,22 @@ npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-packag
 
 ## Trust / Audit
 
-Trust tier: **Curated** (`curated-trust-gated`)
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command; risks=uv package manager workflows (wshobson residual).; policy=Install only after trust gate / inspect source/hooks/credentials/dedupe before promotion.; evidence=wshobson/agents batches (residual + patterns) in config/external-skills.md; upstream https://github.com/wshobson/agents (plugins/*, docs/agent-skills.md, high star count).
 
-Curated status: `install-now-after-trust-gate`
+Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: `wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="openapi-spec-generation" href="/skills/catalog/external/openapi-spec-generation/" description="Related curated external skill." />
+  <LinkCard title="changelog-automation" href="/skills/catalog/external/changelog-automation/" description="Related curated external skill." />
+  <LinkCard title="debugging-strategies" href="/skills/catalog/external/debugging-strategies/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-uv package manager workflows (wshobson residual). From wshobson/agents (large multi-harness marketplace, 84 plugins/156 skills; one Markdown source to 5 harnesses).
-
-## Install Prerequisites
-
-Install: `npx skills add wshobson/agents --skill uv-package-manager -y -g -a antigravity claude-code ...` status=install-now-after-trust-gate; selector=named. Review outputs for safety (esp. generators, k8s, tf, secrets).
-
-## Upstream Maintainer
-
-[wshobson/agents](https://github.com/wshobson/agents) — MIT, broad agentic patterns + quality eval (plugin-eval).
-
-## Comparable Alternatives
-
-Similar patterns in trailofbits, vercel, local skills/* or other curated (e.g. python from modern-python, k8s from hashicorp). General uv package manager instruction.
-
-&gt; Web evidence from wshobson/agents github (README, docs, example SKILLs 2026) + config notes. Evidence only.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `wshobson/agents` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `uv-package-manager` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/uv-package-manager.mdx (full SSOT excerpt)"
 ---
 name: "uv-package-manager"
 description: "`wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them."
@@ -111,8 +95,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=uv-package-manager; re-run migration to refresh */}
 
 `wshobson/agents` residual for API specs, `uv` workflows, changelog automation, and debugging strategies. `changelog-automation` may suggest git/release commands; review generated recipes before running them.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add wshobson/agents --skill openapi-spec-generation --skill uv-package-manager --skill changelog-automation --skill debugging-strategies -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | wshobson/agents |
+| source_url | https://github.com/wshobson/agents |
+| trust_tier | curated-trust-gated |
+| curated_status | install-now-after-trust-gate |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +115,5 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

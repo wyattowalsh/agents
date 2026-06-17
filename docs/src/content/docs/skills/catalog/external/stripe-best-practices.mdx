@@ -1,11 +1,25 @@
 ---
 title: "stripe-best-practices"
 description: "registry syntax and provenance still need verification before automated sync/install."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "stripe-best-practices"
+composed: true
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "global-only-or-avoid"
+curated_status: "global-only-or-avoid"
+install_command: ""
+target_agents: []
+research_slug: "stripe-best-practices"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="stripe-best-practices" variant="note" /> <Badge text="19 words" variant="default" /> <Badge text="Avoid default" variant="danger" /> <Badge text="global-only-or-avoid" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="stripe-best-practices" variant="note" /> <Badge text="Inspect first" variant="caution" /> <Badge text="global-only-or-avoid" variant="default" />
 
 > registry syntax and provenance still need verification before automated sync/install.
 
@@ -15,7 +29,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 
 **Install:**
 ```bash
-npx skills add docs.stripe.com@stripe-best-practices --skill stripe-best-practices -y -g
+
 ```
 
 **Use:** `/stripe-best-practices`
@@ -24,70 +38,39 @@ npx skills add docs.stripe.com@stripe-best-practices --skill stripe-best-practic
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/stripe-best-practices.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/stripe-best-practices.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Stripe API and integration best practices for payments, billing, subscriptions, and webhooks. Note: registry provenance verification recommended per catalog notes. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
 
 ## Harness Coverage
 
-Targets all supported agent harnesses via the install command below.
+Targets verified harnesses: .
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add docs.stripe.com@stripe-best-practices --skill stripe-best-practices -y -g
+
 ```
 
 ## Trust / Audit
 
-Trust tier: **Avoid default** (`global-only-or-avoid`)
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command (web-audited SKILL.md + repo); risks=Standard curated gating; some sources note pending registry/provenance details or API key prerequisites (e.g. RENDER_API_KEY, Stripe). Review before bulk use. policy=Install only after trust gate; re-audit on promotion.
 
-Curated status: `global-only-or-avoid`
+Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: registry syntax and provenance still need verification before automated sync/install.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
 
-## Purpose
+</CardGrid>
 
-Stripe API and integration best practices for payments, billing, subscriptions, and webhooks. Note: registry provenance verification recommended per catalog notes. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-## Install Prerequisites
-
-Install: `npx skills add stripe/ai --skill stripe-best-practices -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
-
-## Upstream Maintainer
-
-[stripe/ai](https://github.com/stripe/ai)
-
-## Comparable Alternatives
-
-A general-purpose agent instruction without a scoped skill contract
-
-&gt; Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `docs.stripe.com` |
-| Source Kind | `external` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `global-only-or-avoid` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `stripe-best-practices` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/stripe-best-practices.mdx (full SSOT excerpt)"
 ---
 name: "stripe-best-practices"
 description: "registry syntax and provenance still need verification before automated sync/install."
@@ -110,8 +93,18 @@ unresolved_reason: "registry syntax and provenance still need verification befor
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=stripe-best-practices; re-run migration to refresh */}
 
 registry syntax and provenance still need verification before automated sync/install.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `` |
+| source | docs.stripe.com |
+| source_url | https://docs.stripe.com |
+| trust_tier | global-only-or-avoid |
+| curated_status | global-only-or-avoid |
+| target_agents |  |
 
 </details>
 
@@ -120,4 +113,5 @@ registry syntax and provenance still need verification before automated sync/ins
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

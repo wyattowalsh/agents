@@ -1,7 +1,21 @@
 ---
 title: "data-pipeline-architect"
 description: "Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "data-pipeline-architect"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "data-pipeline-architect"
+composed_by: "compose-custom-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill data-pipeline-architect -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/data-pipeline-architect` `<mode> [pipeline]`
+**Use:** `/data-pipeline-architect` `&lt;mode&gt; [pipeline]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/data-pipeline-architect/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design.
+**Stack / assumptions:** on-demand references; eval fixtures
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design.
-
-**Stack / assumptions:** on-demand references; eval fixtures
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Design resilient data movement and transformation systems for batch, streaming, and hybrid workloads.
-
-&gt; Grounded in repository `skills/data-pipeline-architect/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-2 from `skills/data-pipeline-architect/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -67,6 +71,126 @@ Design resilient data movement and transformation systems for batch, streaming, 
 3. Backfills and replays must be designed separately from the live path.
 4. Freshness and quality targets must be measurable, not implied.
 5. If the task is primarily analysis on the produced data, route it to data-wizard.
+
+## Canonical Vocabulary
+
+| Term | Definition |
+|------|------------|
+| **source** | Upstream system producing data |
+| **sink** | Destination system receiving data |
+| **batch window** | Time slice processed as a single scheduled unit |
+| **watermark** | Progress marker used to reason about event-time completeness |
+| **data contract** | Agreement on schema, semantics, freshness, and quality |
+| **checkpoint** | Persisted progress state used for restart and recovery |
+| **late data** | Records arriving after their expected processing window |
+| **quarantine** | Isolated holding area for invalid or suspicious records |
+| **lineage** | Trace from source records through transformations to outputs |
+| **replay** | Reprocessing data from a prior point in time |
+
+## Mode Menu
+
+| # | Mode | Example |
+|---|------|---------|
+| 1 | Design | `design clickstream ingestion to warehouse and feature store` |
+| 2 | Review | `review nightly billing ETL architecture` |
+| 3 | Operate | `operate strategy for backfills and failed partitions` |
+| 4 | Migrate | `migrate from cron scripts to orchestrated pipeline` |
+| 5 | Contract | `contract orders fact table feed` |
+
+## When To Use
+
+- Designing ingestion from APIs, files, databases, or event streams
+- Choosing between batch, streaming, or hybrid data movement
+- Defining data contracts, lineage, and recovery strategy
+- Reviewing a pipeline with freshness, quality, or cost issues
+- Planning backfills, replays, or platform migrations
+
+## Classification Logic
+
+Use this gate before selecting a mode:
+
+1. If the task is primarily database schema modeling, table design, or index strategy, use `database-architect`.
+2. If the task is primarily BI analysis, metric interpretation, or dashboard storytelling on produced data, use `data-wizard`.
+3. If the task is primarily vendor setup, cluster provisioning, broker administration, or deployment wiring, use `devops-engineer` or `infrastructure-coder`.
+4. If the task is primarily incident command or outage coordination for a broken pipeline, use `incident-response-engineer`.
+5. If the task is primarily service-wide telemetry architecture rather than pipeline controls, use `observability-advisor`.
+
+## Instructions
+
+### Mode: Design
+
+1. Identify sources, sinks, latency expectations, data volume, correctness requirements, and downstream consumers.
+2. Choose the processing model: batch, streaming, or hybrid.
+3. Use `references/decision-matrix.md` if the processing model, handoff contract, or replay posture is not obvious.
+4. Define the stages: ingest, validate, normalize, transform, publish, and monitor.
+4. Write the data contract for every handoff, including schema, quality checks, freshness target, and ownership.
+5. Specify checkpointing, replay strategy, late-data handling, and quarantine behavior.
+6. Produce the architecture with observability and cost controls.
+
+### Mode: Review
+
+1. Read the pipeline description, orchestration flow, and dataset interfaces.
+2. Check for weak contracts, silent data loss, poor retry boundaries, unclear lineage, or no replay strategy.
+3. Flag reliability, quality, cost, and operability issues separately.
+4. Use `references/failure-modes.md` to pressure-test likely blind spots before concluding the review.
+
+### Mode: Operate
+
+1. Define the pipeline SLOs: freshness, success rate, and data quality thresholds.
+2. Specify what is checkpointed, what is retried, and what is quarantined.
+3. Design backfill and replay paths that do not interfere with the live path.
+4. Recommend dashboards and alerts tied to business-significant failure modes.
+5. Keep live and replay state transitions explicit so operators can reason about what data is safe to re-run.
+
+### Mode: Migrate
+
+1. Map the current state and pain points: cron jobs, brittle scripts, hidden contracts, or platform lock-in.
+2. Preserve source-of-truth semantics while moving stages one at a time.
+3. Define coexistence, validation, and rollback for the migration window.
+4. Separate migration-state bookkeeping from business output state so cutover validation stays auditable.
+
+### Mode: Contract
+
+1. Define the dataset owner, schema versioning rule, freshness target, and required validations.
+2. Name breaking and non-breaking changes explicitly.
+3. State what invalid records look like and how they are handled.
+4. Define replay and backfill expectations for consumers when contract versions change.
+
+## Output Requirements
+
+- Every design must name the processing model and the contract at each boundary.
+- Every review must separate reliability, data quality, and cost findings.
+- Every operate plan must include checkpointing, replay, and quarantine.
+- Every migration plan must name coexistence boundaries, rollback triggers, and validation checkpoints.
+- Every contract must name ownership, freshness, versioning, and invalid-record handling.
+
+## Scaling Strategy
+
+- Small: single-source or single-sink batch flow. Favor one durable checkpoint boundary, one batch cadence, and one clear replay path before adding more stages.
+- Medium: multi-stage batch or micro-batch flow. Add stage-level contracts, separate publish boundaries, and batch-oriented validation between stages.
+- Large: hybrid or streaming flow with multiple consumers. Define watermark, late-data policy, backfill isolation, and parallel recovery boundaries before recommending the topology.
+- Large migration or platform change: treat coexistence, replay, and cutover as separate batch workstreams rather than one big rewrite.
+
+## State Management
+
+- Persist checkpoint state at every recovery boundary so operators know what can be retried, replayed, or skipped safely.
+- Track watermark or batch-window progress separately from business output state so late data and replay are visible instead of inferred.
+- Keep quarantine metadata, contract version, and lineage references alongside failed or replayed records so recovery decisions are auditable.
+- Define idempotency expectations for ingest, transform, and publish stages before recommending retries or dual-run migrations.
+
+## Progressive Disclosure
+
+- Start with the mode contract in this file and only load the reference file that resolves the current uncertainty.
+- Use `references/decision-matrix.md` when the topology or replay posture is the open question.
+- Use `references/failure-modes.md` when reviewing reliability, quality drift, or operator burden.
+- Use `references/worked-examples.md` when the user needs a concrete pattern to adapt.
+- Use `references/output-templates.md` when the user needs a structured response shape.
+
+## Scope Boundaries
+
+**IS for:** ingestion architecture, orchestration boundaries, reliability strategy, data contracts, lineage, replay, migration planning.
+
+**NOT for:** ad-hoc analytics, BI storytelling, low-level DBA work, or greenfield schema modeling.
 
 <Tabs>
   <TabItem label="Public Metadata">

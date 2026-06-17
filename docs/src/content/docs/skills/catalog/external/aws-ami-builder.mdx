@@ -1,7 +1,21 @@
 ---
 title: "aws-ami-builder"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "aws-ami-builder"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "aws-ami-builder"
+composed_by: "compose-external-wave-1"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/aws-ami-builder.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-1 using authoring SSOT (`docs/src/authoring/skills/aws-ami-builder.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Build Amazon Machine Images (AMIs) with Packer using the amazon-ebs builder. Use when creating custom AMIs for EC2 instances. Note: incurs AWS costs.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Build Amazon Machine Images (AMIs) with Packer using the amazon-ebs builder. Use when creating custom AMIs for EC2 instances. Note: incurs AWS costs.
+Entry maintained via authoring + research for compose-external-wave-1; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
-
-## Upstream Maintainer
-
-[hashicorp/agent-skills](https://github.com/hashicorp/agent-skills)
-
-## Comparable Alternatives
-
-Other infra skills like `kubernetes-specialist`.
-
-&gt; Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Other infra skills like `kubernetes-specialist`.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/aws-ami-builder.mdx (full SSOT excerpt)"
 ---
 name: "aws-ami-builder"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `hashicorp/agent-skills` |
+| source_url | `https://github.com/hashicorp/agent-skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

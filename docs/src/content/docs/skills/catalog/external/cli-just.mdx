@@ -1,7 +1,21 @@
 ---
 title: "cli-just"
 description: "Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "cli-just"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "cli-just"
+composed_by: "compose-external-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f -
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/cli-just.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-2 using authoring SSOT (`docs/src/authoring/skills/cli-just.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Provides Just command runner guidance and Justfile workflows. Part of PRB collection of AI agent skills optimized primarily for Claude Code and Codex (also cross-agent). Helps with defining and using `just` recipes for common dev tasks, replacing or augmenting make/npm scripts. Install name `cli-just`. The source at the curated pinned commit exposes 20 skills total including biome, code review/simplify/polish, commit, tailwind, etc.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Provides Just command runner guidance and Justfile workflows. Part of PRB collection of AI agent skills optimized primarily for Claude Code and Codex (also cross-agent). Helps with defining and using `just` recipes for common dev tasks, replacing or augmenting make/npm scripts. Install name `cli-just`. The source at the curated pinned commit exposes 20 skills total including biome, code review/simplify/polish, commit, tailwind, etc.
+Entry maintained via authoring + research for compose-external-wave-2; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 `npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named. From curated source with pinned commit.
-
-## Upstream Maintainer
-
-PaulRBerg (github.com/PaulRBerg/agent-skills at pinned d3f5540). MIT License. Primary for personal Claude Code / Codex workflows. See also dot-claude and dot-agents from same author. Cross references to vercel-labs/skills.
-
-## Comparable Alternatives
-
-Other CLI runners in same source (e.g. cli-gh, cli-cast); general just/make guidance skills; commit + code-review from same bundle for TS workflow coverage; native just CLI docs or other agent skills like work/end-to-end-task.
-
-&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Other CLI runners in same source (e.g. cli-gh, cli-cast); general just/make guid
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/cli-just.mdx (full SSOT excerpt)"
 ---
 name: "cli-just"
 description: "Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Install only `cli-just` from `PaulRBerg/agent-skills` for Justfile and `just` command-runner workflows. The source at audited HEAD `d3f5540ed2fc0fa07f802bd925e06b9387cbe90f` exposes 26 skills, has MIT licensing, and the inspected `cli-just` skill has no observed hooks, `allowed-tools`, or skill-local scripts. Its references are documentation and examples, but include dotenv loading, package-manager, publish, network, and destructive cleanup snippets; review generated Just recipes as executable project code before running them.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `PaulRBerg/agent-skills` |
+| source_url | `https://github.com/PaulRBerg/agent-skills` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

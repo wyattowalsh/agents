@@ -1,0 +1,1133 @@
+---
+title: "mcp-registry"
+description: "Normalized registry for MCP servers, groups, client projections, and harness ownership rules."
+page_kind: "harness-config"
+source_kind: "registry"
+asset_id: "mcp-registry"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-configs-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="harness-config" variant="note" /> <Badge text="registry" variant="default" />
+
+> Single source of truth for all repo-managed MCP servers and their per-harness/client projections. Edit here; regenerate `mcp/mcphub/mcp_settings.json` and downstream harness configs.
+
+## Overview
+
+`config/mcp-registry.json` normalizes MCP server launch specs (stdio, transport, command/args, env placeholders, timeouts, tool allow/deny, platform_overrides, exclude_from_harnesses, ownership), groups them into logical bundles (research, reasoning, browser, harness-safe, etc.), and declares client-specific projection rules (which groups/servers are included for `opencode`, `grok`, `codex`, `chatgpt`, stdio_bridge, etc.).
+
+MCPHub uses this to produce `mcp_settings.json`; `scripts/sync_agent_stack.py` consumes it for per-client config emission (exact vs merge behavior documented in the registry and sync surfaces).
+
+## What It Controls
+
+- ~34 MCP servers (brave-search, tavily, chrome-devtools, context7, fetch, repomix, docling, ffmpeg, arxiv, wikipedia, gmail, linkedin, thinking servers, etc.)
+- Per-server: transport, command (often npx/uvx with repo wrappers for chrome-devtools), env (API keys via placeholders), enabled, timeouts, tools list or `*` + tools_allow_all, tool_approvals, platform_overrides, exclude_from_harnesses, ownership rules (plugin vs extension vs repo_mcp)
+- Named groups for targeting (all-managed, harness-safe, code, research, reasoning, browser, data, media, personal, local-ai, experimental)
+- Client defaults and overrides (transport, auth, included_groups, enable_server_endpoints, etc.)
+- Contributor policy defaults (tools_policy, wildcard opt-in)
+
+Chrome DevTools has special one-owner rules (Claude Code / Copilot plugins own their instances; repo MCP is fallback for others).
+
+## Harness Surfaces
+
+Projections target:
+- Codex, OpenCode, Grok, ChatGPT (via MCPHub or direct)
+- Claude Desktop, Cursor, Gemini, Cherry Studio, Crush, AITK, Copilot CLI shadow configs, etc.
+- Repo `mcp.json` (distribution manifest) and `~/.config/...` home merges/generates.
+
+See `config/sync-manifest.json` for which outputs are generated vs merged.
+
+## Key Fields (server entry)
+
+| Field                    | Purpose |
+|--------------------------|---------|
+| transport / command / args | Launch shape (stdio + npx/uv/node/bash wrapper) |
+| env                      | Env var map; values are either literals or `{ "env_var": "NAME" }` (secrets never committed) |
+| enabled                  | Boolean gate |
+| startup_timeout_sec, timeout_ms | Reliability |
+| tools / tools_allow_all  | Tool surface control |
+| exclude_from_harnesses   | Per-harness opt-outs |
+| ownership                | `{ "plugin": [...], "extension": [...], "repo_mcp": [...] }` for chrome-devtools etc. |
+| platform_overrides       | Client-specific arg/env tweaks |
+
+Groups and clients sections drive bundling and projection.
+
+## Secrets & Placeholders
+
+All API keys and tokens use env-var indirection or `${PLACEHOLDER}` in remote URLs. Real values live only in maintainer `.env.mcphub` (gitignored). Registry and public docs never contain secret values.
+
+## AGENTS.md Sections
+
+- [§2.6 MCPHub Local Control Plane](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#26-mcphub-local-control-plane): "Add or edit servers once in `config/mcp-registry.json`, regenerate `mcp/mcphub/mcp_settings.json`..."
+- [§2.4 Chrome DevTools MCP](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#24-chrome-devtools-mcp): details the attached-browser wrapper and one-owner rules encoded in this registry.
+- [§2.7 Bucket B](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog-semantics--bucket-a): MCP registry stays canonical under `config/`.
+
+## Related
+
+- MCPHub: `mcp/mcphub/`, `make mcphub-up`, `mcp/mcphub/mcp_settings.json` (generated)
+- Sync: `scripts/sync_agent_stack.py`
+- Root manifest: `mcp.json`
+- Schema: `config/schemas/mcp-registry.schema.json` (implied)
+- Harness config hub: `/harness-config/`
+
+<CardGrid>
+  <LinkCard title="AGENTS.md §2.6" href="https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#26-mcphub-local-control-plane" description="MCPHub usage and edit-once guidance." />
+  <LinkCard title="AGENTS.md §2.4" href="https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#24-chrome-devtools-mcp" description="Chrome DevTools ownership and launch shape." />
+  <LinkCard title="MCP Hub docs" href="/mcp/mcphub/" description="MCPHub server and control plane page." />
+  <LinkCard title="Hooks" href="/hooks/" description="Complementary safety surface (also registry-driven)." />
+</CardGrid>
+
+<details class="source-disclosure">
+<summary>Full registry (config/mcp-registry.json)</summary>
+
+```json title="config/mcp-registry.json"
+{
+  "version": 1,
+  "instruction_source": "${REPO_ROOT}/instructions/global.md",
+  "servers": {
+    "brave-search": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brave/brave-search-mcp-server"
+      ],
+      "env": {
+        "BRAVE_API_KEY": {
+          "env_var": "BRAVE_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "cascade-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "cascade-thinking-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "chrome-devtools": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/chrome-devtools-browser-url.sh"
+      ],
+      "env": {
+        "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": {
+          "value": "1"
+        },
+        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": {
+          "value": "1"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "exclude_from_harnesses": [
+        "claude-code",
+        "gemini-cli",
+        "github-copilot-web",
+        "vscode"
+      ],
+      "ownership": {
+        "plugin": [
+          "claude-code",
+          "github-copilot-web",
+          "vscode"
+        ],
+        "extension": [
+          "gemini-cli"
+        ],
+        "repo_mcp": [
+          "claude-desktop",
+          "chatgpt",
+          "codex",
+          "github-copilot-cli",
+          "opencode",
+          "cursor",
+          "grok",
+          "antigravity",
+          "perplexity-desktop",
+          "cherry-studio"
+        ]
+      },
+      "tools_allow_all": true
+    },
+    "context7": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp",
+        "--api-key",
+        "${CONTEXT7_API_KEY}"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": {
+          "env_var": "CONTEXT7_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "deepwiki": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.deepwiki.com/mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "docling": {
+      "transport": "stdio",
+      "command": "${REPO_ROOT}/scripts/mcphub/docling-stdio.sh",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "fetch": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-fetch-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "fetcher": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "fetcher-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "ossinsight": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "ossinsight-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "package-version": {
+      "transport": "stdio",
+      "command": "~/go/bin/mcp-package-version",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "check_docker_tags",
+        "check_github_actions",
+        "check_go_versions",
+        "check_npm_versions",
+        "check_pyproject_versions",
+        "check_python_versions"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {}
+    },
+    "penpot": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://design.penpot.app/mcp/stream?userToken=${PENPOT_MCP_USER_TOKEN}"
+      ],
+      "env": {
+        "PENPOT_MCP_USER_TOKEN": {
+          "env_var": "PENPOT_MCP_USER_TOKEN"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "repomix": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "repomix",
+        "--mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "sequential-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "structured-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "structured-thinking"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "supathings": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "supathings-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "tavily": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "tavily-mcp"
+      ],
+      "env": {
+        "TAVILY_API_KEY": {
+          "env_var": "TAVILY_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "trafilatura": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "${REPO_ROOT}/mcp/servers/trafilatura_mcp",
+        "run",
+        "python3",
+        "trafilatura_mcp.py"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "arxiv": {
+      "transport": "stdio",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "uvx --offline arxiv-mcp-server || uvx arxiv-mcp-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "atom-of-thoughts": {
+      "transport": "stdio",
+      "command": "node",
+      "args": [
+        "${REPO_ROOT}/mcp/servers/MCP_Atom_of_Thoughts/build/index.js"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "crash": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "crash-mcp"
+      ],
+      "env": {
+        "CRASH_STRICT_MODE": {
+          "env_var": "CRASH_STRICT_MODE"
+        },
+        "MAX_HISTORY_SIZE": {
+          "env_var": "MAX_HISTORY_SIZE"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "creative-thinking": {
+      "transport": "stdio",
+      "command": "${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "deep-lucid-3d": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:mushroomfleet/deeplucid3d-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "duckduckgo-search": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "duckduckgo-mcp-server"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "exa": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "exa-mcp-server"
+      ],
+      "env": {
+        "EXA_API_KEY": {
+          "env_var": "EXA_API_KEY"
+        }
+      },
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "ffmpeg": {
+      "transport": "stdio",
+      "command": "uv",
+      "args": [
+        "--directory",
+        "${REPO_ROOT}/mcp/servers/ffmpeg-mcp",
+        "run",
+        "ffmpeg-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "g-search": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "g-search-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "gmail": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@gongrzhe/server-gmail-autoauth-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "linkedin": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "linkedin-scraper-mcp",
+        "--no-headless"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "lotus-wisdom-mcp": {
+      "transport": "stdio",
+      "command": "node",
+      "args": [
+        "${REPO_ROOT}/mcp/servers/lotus-wisdom-mcp/dist/bundle.js"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "shannon-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "server-shannon-thinking@latest"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "think-strategies": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:aaronsb/think-strategies"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "wayback": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "mcp-wayback-machine"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    },
+    "wikipedia": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "--prefer-offline",
+        "wikipedia-mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "startup_timeout_sec": 90,
+      "timeout_ms": 600000,
+      "tools": [
+        "*"
+      ],
+      "tool_approvals": {},
+      "platform_overrides": {},
+      "tools_allow_all": true
+    }
+  },
+  "mcphub": {
+    "enabled": true,
+    "base_url": "http://127.0.0.1:46683",
+    "public_url": "https://mcp.w4w.dev/mcp",
+    "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
+    "startup_timeout_sec": 20,
+    "tool_timeout_sec": 90,
+    "projection_adapters": {
+      "grok": "http",
+      "opencode": "http"
+    },
+    "settings_path": "mcp/mcphub/mcp_settings.json",
+    "openapi_export_path": "mcp/mcphub/openapi.json",
+    "smart_routing": {
+      "enabled_env_var": "SMART_ROUTING_ENABLED",
+      "default_enabled": false,
+      "base_path": "/mcp/$smart",
+      "database_url_env_var": "DB_URL",
+      "embedding_provider_env_var": "SMART_ROUTING_EMBEDDING_PROVIDER",
+      "embedding_model_env_var": "SMART_ROUTING_EMBEDDING_MODEL"
+    },
+    "groups": {
+      "all-managed": {
+        "description": "All enabled servers managed by the repository MCP registry.",
+        "enabled": true,
+        "servers": [
+          "arxiv",
+          "atom-of-thoughts",
+          "brave-search",
+          "cascade-thinking",
+          "chrome-devtools",
+          "context7",
+          "crash",
+          "creative-thinking",
+          "deep-lucid-3d",
+          "deepwiki",
+          "docling",
+          "duckduckgo-search",
+          "exa",
+          "fetch",
+          "fetcher",
+          "ffmpeg",
+          "g-search",
+          "gmail",
+          "linkedin",
+          "lotus-wisdom-mcp",
+          "ossinsight",
+          "package-version",
+          "penpot",
+          "repomix",
+          "sequential-thinking",
+          "shannon-thinking",
+          "structured-thinking",
+          "supathings",
+          "tavily",
+          "think-strategies",
+          "trafilatura",
+          "wayback",
+          "wikipedia"
+        ]
+      },
+      "code": {
+        "description": "Code intelligence, repository inspection, docs lookup, and browser automation servers.",
+        "enabled": true,
+        "servers": [
+          "chrome-devtools",
+          "context7",
+          "deepwiki",
+          "docling",
+          "fetch",
+          "fetcher",
+          "ossinsight",
+          "package-version",
+          "repomix",
+          "supathings",
+          "trafilatura"
+        ]
+      },
+      "harness-safe": {
+        "description": "Safe shared harness MCP surface for search, docs, browser inspection, package metadata, repo packing, fetch, and Gmail.",
+        "enabled": true,
+        "servers": [
+          "brave-search",
+          "chrome-devtools",
+          "context7",
+          "deepwiki",
+          "fetch",
+          "fetcher",
+          "package-version",
+          "penpot",
+          "repomix",
+          "supathings",
+          "tavily",
+          "trafilatura",
+          "duckduckgo-search",
+          "gmail"
+        ]
+      },
+      "research": {
+        "description": "Search, retrieval, reference, and source inspection servers.",
+        "enabled": true,
+        "servers": [
+          "arxiv",
+          "brave-search",
+          "context7",
+          "deepwiki",
+          "duckduckgo-search",
+          "exa",
+          "fetch",
+          "g-search",
+          "ossinsight",
+          "tavily",
+          "trafilatura",
+          "wayback",
+          "wikipedia"
+        ]
+      },
+      "reasoning": {
+        "description": "Structured thinking and planning servers.",
+        "enabled": true,
+        "servers": [
+          "atom-of-thoughts",
+          "cascade-thinking",
+          "crash",
+          "creative-thinking",
+          "lotus-wisdom-mcp",
+          "sequential-thinking",
+          "shannon-thinking",
+          "structured-thinking",
+          "think-strategies"
+        ]
+      },
+      "browser": {
+        "description": "Browser and web UI automation servers.",
+        "enabled": true,
+        "servers": [
+          "chrome-devtools"
+        ]
+      },
+      "data": {
+        "description": "Data extraction, package metadata, and transform servers.",
+        "enabled": true,
+        "servers": [
+          "docling",
+          "ffmpeg",
+          "ossinsight",
+          "package-version",
+          "supathings",
+          "trafilatura"
+        ]
+      },
+      "media": {
+        "description": "Media, document, and 3D asset processing servers.",
+        "enabled": true,
+        "servers": [
+          "deep-lucid-3d",
+          "docling",
+          "ffmpeg"
+        ]
+      },
+      "personal": {
+        "description": "Personal-account connectors; treat as sensitive.",
+        "enabled": true,
+        "servers": [
+          "gmail",
+          "linkedin"
+        ]
+      },
+      "local-ai": {
+        "description": "Local AI helper and context-prep servers.",
+        "enabled": true,
+        "servers": [
+          "context7",
+          "package-version",
+          "repomix"
+        ]
+      },
+      "experimental": {
+        "description": "Newer or less-proven servers kept behind explicit group targeting.",
+        "enabled": true,
+        "servers": [
+          "crash",
+          "deep-lucid-3d",
+          "g-search",
+          "lotus-wisdom-mcp",
+          "supathings",
+          "think-strategies"
+        ]
+      }
+    },
+    "clients": {
+      "default": {
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "included_servers": [
+          "brave-search",
+          "chrome-devtools",
+          "context7",
+          "deepwiki",
+          "fetch",
+          "fetcher",
+          "package-version",
+          "penpot",
+          "repomix",
+          "supathings",
+          "tavily",
+          "trafilatura",
+          "duckduckgo-search",
+          "gmail"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "codex": {
+        "transport": "streamable-http",
+        "auth": "bearer_token_env_var",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "grok": {
+        "transport": "http",
+        "auth": "authorization-header-env-template",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "opencode": {
+        "transport": "remote-http",
+        "auth": "authorization-header-env-template",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "all-managed",
+          "browser",
+          "code",
+          "data",
+          "experimental",
+          "harness-safe",
+          "local-ai",
+          "media",
+          "personal",
+          "reasoning",
+          "research"
+        ],
+        "included_servers": [
+          "arxiv",
+          "atom-of-thoughts",
+          "brave-search",
+          "cascade-thinking",
+          "chrome-devtools",
+          "context7",
+          "crash",
+          "creative-thinking",
+          "deep-lucid-3d",
+          "deepwiki",
+          "docling",
+          "duckduckgo-search",
+          "exa",
+          "fetch",
+          "fetcher",
+          "ffmpeg",
+          "g-search",
+          "gmail",
+          "linkedin",
+          "lotus-wisdom-mcp",
+          "ossinsight",
+          "package-version",
+          "penpot",
+          "repomix",
+          "sequential-thinking",
+          "shannon-thinking",
+          "structured-thinking",
+          "supathings",
+          "tavily",
+          "think-strategies",
+          "trafilatura",
+          "wayback",
+          "wikipedia"
+        ],
+        "enabled_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "enabled_groups": [
+          "all-managed",
+          "browser",
+          "code",
+          "data",
+          "experimental",
+          "harness-safe",
+          "local-ai",
+          "media",
+          "personal",
+          "reasoning",
+          "research"
+        ],
+        "enable_server_endpoints": true,
+        "server_endpoint_name_style": "base"
+      },
+      "chatgpt": {
+        "transport": "remote-http",
+        "auth": "bearer_token_env_var",
+        "url_source": "public",
+        "included_endpoint_kinds": [
+          "group",
+          "server"
+        ],
+        "included_groups": [
+          "harness-safe"
+        ],
+        "enabled_endpoint_kinds": [
+          "group"
+        ],
+        "enabled_groups": [
+          "harness-safe"
+        ],
+        "enable_server_endpoints": true
+      },
+      "stdio_bridge": {
+        "transport": "stdio",
+        "command": "scripts/mcphub/remote-stdio.sh",
+        "clients": [
+          "claude-desktop",
+          "cursor",
+          "gemini-cli",
+          "antigravity",
+          "github-copilot-cli",
+          "crush",
+          "chatgpt"
+        ]
+      }
+    }
+  },
+  "contributor_defaults": {
+    "tools_policy": "deny-by-default",
+    "wildcard_requires_explicit_opt_in": true,
+    "new_server_tools_default": []
+  }
+}
+```
+
+</details>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/mcp-registry.json)

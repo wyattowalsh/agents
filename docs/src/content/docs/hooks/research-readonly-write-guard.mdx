@@ -1,0 +1,79 @@
+---
+title: "research-readonly-write-guard"
+description: "Prevent source-file write tools during active research sessions."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "research-readonly-write-guard"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Prevent source-file write tools during active research sessions.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `research-readonly-write-guard` |
+| mode | `enforce` |
+| degraded_behavior | `audit when the harness payload does not expose a tool name or writable path` |
+| logical_event | `PreToolUse` |
+| matcher | `Write\|Edit\|MultiEdit\|apply_patch\|edit\|create\|replace\|write_file\|run_shell_command` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex", "claude-code", "github-copilot", "gemini-cli"]` |
+
+<Aside type="note">
+Policy `_policy_readonly_write_guard` delegates to research_hook for state; blocks writes when research state active. Degraded = audit only.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "research-readonly-write-guard",
+  "description": "Prevent source-file write tools during active research sessions.",
+  "mode": "enforce",
+  "degraded_behavior": "audit when the harness payload does not expose a tool name or writable path",
+  "logical_event": "PreToolUse",
+  "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py research-readonly-write-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "github-copilot",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py + research_hook.py"
+def _policy_readonly_write_guard(payload: NormalizedPayload) -> int:
+    research_hook = _load_research_hook_module()
+    research_payload = _research_payload(payload, research_hook)
+    return research_hook._policy_readonly_write_guard(research_payload)
+```
+
+Full logic in `skills/research/scripts/research_hook.py`.
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="research skill" href="/skills/catalog/custom/research/" description="Pairs with research guards and ledger." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

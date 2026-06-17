@@ -1,7 +1,21 @@
 ---
 title: "plannotator-last"
 description: "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "plannotator-last"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "plannotator-last"
+composed_by: "compose-external-wave-9"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-revi
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/plannotator-last.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/plannotator-last.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Plannotator-last opens Plannotator on the latest rendered assistant message so the user can annotate it visually. The skill invokes `plannotator last`, suppresses an initial status preamble (to avoid annotating the preamble itself), waits for feedback, and incorporates annotations into the next response. Useful for targeted revision of the most recent agent output without re-specifying context.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh \| bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Plannotator-last opens Plannotator on the latest rendered assistant message so the user can annotate it visually. The skill invokes `plannotator last`, suppresses an initial status preamble (to avoid annotating the preamble itself), waits for feedback, and incorporates annotations into the next response. Useful for targeted revision of the most recent agent output without re-specifying context.
+Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Plannotator CLI must be present (`curl -fsSL https://plannotator.ai/install.sh \| bash`). Install the core skill bundle with the same npx skills add command used for plannotator-annotate / plannotator-review, targeting the listed agents.
-
-## Upstream Maintainer
-
-backnotprop (https://github.com/backnotprop/plannotator); https://plannotator.ai/
-
-## Comparable Alternatives
-
-Direct chat follow-ups with pasted excerpts; other annotation or diff-review skills; visual tools such as Excalidraw diagram skills for higher-level overviews.
-
-&gt; Evidence gathered from public GitHub sources, raw SKILL.md, and project site (plannotator.ai). Not an endorsement or authority; inspect the CLI binary, hooks, and network behavior before use.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Direct chat follow-ups with pasted excerpts; other annotation or diff-review ski
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/plannotator-last.mdx (full SSOT excerpt)"
 ---
 name: "plannotator-last"
 description: "Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`."
@@ -112,6 +115,16 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Install Plannotator core slash commands (`/plannotator-review`, `/plannotator-annotate`, `/plannotator-last`). Pair with `curl -fsSL https://plannotator.ai/install.sh | bash` or `uv run wagents grok plannotator install` for the `plannotator` CLI binary. Grok uses skills plus repo-synced hooks in `config/grok-plannotator-hooks.json`; there is no Grok npm plugin equivalent to OpenCode's `@plannotator/opencode`.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add backnotprop/plannotator/apps/skills/core --skill plannotator-review --skill plannotator-annotate --skill plannotator-last -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `backnotprop/plannotator/apps/skills/core` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

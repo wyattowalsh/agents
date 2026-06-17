@@ -77,7 +77,9 @@ Examples below omit the `uv run` prefix for brevity. Use `wagents ...` after `uv
 
 ## Command Reference
 
-### `wagents new` -- Create Assets
+<details class="cli-command-ref">
+<summary>`wagents new` — Create Assets</summary>
+
 
 Scaffold new skills, agents, or MCP servers from reference templates. Each template includes commented examples for all optional fields.
 
@@ -151,9 +153,12 @@ wagents new mcp my-server --no-docs
 All asset names must be kebab-case (`^[a-z0-9][a-z0-9-]*$`) and at most 64 characters. The name must match the directory name (for skills and MCP servers) or filename (for agents).
 </Aside>
 
----
+</details>
 
-### `wagents openspec` -- Spec Workflow Control
+
+<details class="cli-command-ref">
+<summary>`wagents openspec` — Spec Workflow Control</summary>
+
 
 Wrap OpenSpec CLI commands with repo defaults, downstream tool mappings, and `OPENSPEC_TELEMETRY=0` for automation. Use these wrappers when AI agents need JSON status or instructions.
 
@@ -181,9 +186,12 @@ wagents openspec validate
 OpenSpec-generated `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, and `.gemini` artifacts are local/generated unless a specific file is promoted to repo-owned source.
 </Aside>
 
----
+</details>
 
-### `wagents validate` -- Check All Assets
+
+<details class="cli-command-ref">
+<summary>`wagents validate` — Check All Assets</summary>
+
 
 Validate frontmatter and structure for every skill, agent, and MCP server in the repository. Also validates hook registry, harness paths, and lifecycle event names via `scripts/validate/validate_repo.py`.
 
@@ -209,9 +217,12 @@ The command exits with code 1 if any validation fails, printing each error to st
 Run `wagents validate` in your CI pipeline to catch frontmatter issues before merge. It is included in the repository's pre-commit and CI checks.
 </Aside>
 
----
+</details>
 
-### `wagents doctor` -- Environment Health Check
+
+<details class="cli-command-ref">
+<summary>`wagents doctor` — Environment Health Check</summary>
+
 
 Diagnose your local environment and toolchain. Checks for required tools, correct Python version, docs dependency status, and Playwright availability.
 
@@ -239,9 +250,12 @@ Exits with code 1 if any check has `fail` status. Warnings are informational and
 Run `wagents doctor` after cloning to verify your environment before working with skills or docs.
 </Aside>
 
----
+</details>
 
-### `wagents readme` -- Generate README
+
+<details class="cli-command-ref">
+<summary>`wagents readme` — Generate README</summary>
+
 
 Regenerate `README.md` from the current repository contents, or check if the existing README is up to date:
 
@@ -255,9 +269,12 @@ wagents readme --check
 
 The generated README includes tables for all skills, agents, and MCP servers, plus a development commands reference.
 
----
+</details>
 
-### `wagents install` -- Install Skills
+
+<details class="cli-command-ref">
+<summary>`wagents install` — Install Skills</summary>
+
 
 Install skills into agent platforms via `npx skills`:
 
@@ -306,9 +323,12 @@ npx skills add <source> --skill <name> -y -g --agent antigravity --agent claude-
 Skills CLI has no native `grok` adapter. `wagents install -a grok` and `wagents skills sync -a grok` install via the `claude-code` adapter, then mirror missing skills into `~/.grok/skills`.
 </Aside>
 
----
+</details>
 
-### `wagents grok plannotator install` -- Plannotator for Grok
+
+<details class="cli-command-ref">
+<summary>`wagents grok plannotator install` — Plannotator for Grok</summary>
+
 
 Install the Plannotator CLI, core slash skills, optional extras, mirror into `~/.grok/skills`, and sync repo-managed plan-review hooks to `~/.grok/hooks/plannotator.json`. Grok has no npm plugin like OpenCode's `@plannotator/opencode`.
 
@@ -321,9 +341,12 @@ wagents grok plannotator sync
 Grok home sync enables Plannotator hooks and skill overlays by default. Pass `--no-plannotator-hooks` to `sync_agent_stack.py` to skip hook refresh.
 
 
----
+</details>
 
-### `wagents grok doctor` -- Grok Build diagnostics
+
+<details class="cli-command-ref">
+<summary>`wagents grok doctor` — Grok Build diagnostics</summary>
+
 
 Report Grok config paths, managed MCP/policy blocks, experimental env vars, skill roots, and Plannotator binary/skills/hooks status:
 
@@ -345,9 +368,12 @@ uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets hom
 
 Repo-owned policy lives in `config/grok-config.toml`; project MCP projection is `.grok/config.toml`; full home merge targets `~/.grok/config.toml`. Blend-owned tables (`ui`, `features`, etc.) keep user-only keys while repo policy overrides shared keys.
 
----
+</details>
 
-### `wagents update` -- Refresh Installed Skills
+
+<details class="cli-command-ref">
+<summary>`wagents update` — Refresh Installed Skills</summary>
+
 
 Refresh installed skills from the sources recorded by the `skills` CLI. Use this after this repository changes so downstream agent installs pick up the latest committed skill files.
 
@@ -358,9 +384,12 @@ wagents update
 npx skills update
 ```
 
----
+</details>
 
-### `wagents skills sync` -- Additive Cross-Harness Sync
+
+<details class="cli-command-ref">
+<summary>`wagents skills sync` — Additive Cross-Harness Sync</summary>
+
 
 Build a normalized installed-skill inventory from `npx skills ls -g -a <agent> --json`, then preview or apply additive installs for the desired sync set.
 
@@ -394,9 +423,12 @@ By default, sync targets repo-owned custom skills plus verified curated external
 GitHub Copilot remains part of config and instruction sync, but the skills inventory reports only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`.
 </Aside>
 
----
+</details>
 
-### `wagents skills` -- On-Demand Skill Index
+
+<details class="cli-command-ref">
+<summary>`wagents skills` — On-Demand Skill Index</summary>
+
 
 Inspect repository, installed, curated, and plugin skills without loading every skill description into startup context. Use this when local skill inventory exceeds an agent's context budget or when you need additive sync diagnostics.
 
@@ -465,9 +497,12 @@ wagents skills doctor
 
 Each result includes `name`, `path`, `source`, `trust_tier`, `score`, matched fields, and warnings.
 
----
+</details>
 
-### `wagents package` -- Package Skills
+
+<details class="cli-command-ref">
+<summary>`wagents package` — Package Skills</summary>
+
 
 Package skills into portable ZIP files for distribution:
 
@@ -494,9 +529,12 @@ Packaged ZIPs are self-contained and can be distributed independently or attache
 The `release-skills.yml` CI workflow automatically packages and releases all skills when a version tag (`v*.*.*`) is pushed.
 </Aside>
 
----
+</details>
 
-### `wagents docs` -- Documentation Site
+
+<details class="cli-command-ref">
+<summary>`wagents docs` — Documentation Site</summary>
+
 
 Manage the [Starlight](https://starlight.astro.build/)-powered documentation site at [agents.w4w.dev](https://agents.w4w.dev).
 
@@ -582,9 +620,12 @@ Files containing `HAND-MAINTAINED` in their content are preserved during clean o
 For day-to-day development, `wagents docs dev` is the most common command -- it regenerates all content and launches a hot-reloading dev server in one step.
 </Aside>
 
----
+</details>
 
-### `wagents hooks` -- Lifecycle Hooks
+
+<details class="cli-command-ref">
+<summary>`wagents hooks` — Lifecycle Hooks</summary>
+
 
 Inspect and validate lifecycle hooks defined in `.claude/settings.json`, skill frontmatter, agent frontmatter, and the portable `config/hook-registry.json`.
 
@@ -616,9 +657,12 @@ Checks that every hook event is a known lifecycle event (`PreToolUse`, `PostTool
   </TabItem>
 </Tabs>
 
----
+</details>
 
-### `wagents eval` -- Skill Evals
+
+<details class="cli-command-ref">
+<summary>`wagents eval` — Skill Evals</summary>
+
 
 Manage and validate eval files stored in `skills/<name>/evals/*.json`. Evals define test queries and expected behaviors for skills.
 
@@ -659,9 +703,12 @@ Useful for identifying skills that lack test coverage.
   </TabItem>
 </Tabs>
 
----
+</details>
 
-### Structured Output <Badge text="All validation commands" variant="note" />
+
+<details class="cli-command-ref">
+<summary>Structured Output <Badge text="All validation commands" variant="note" /></summary>
+
 
 Most inspection and validation commands accept `--format` to control output:
 
@@ -673,7 +720,8 @@ Most inspection and validation commands accept `--format` to control output:
 
 Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks validate`, `eval list`, `eval validate`, `eval coverage`, `skills index`, `skills search`, `skills read`, `skills context`, `skills doctor`.
 
----
+</details>
+
 
 ## Common Workflows
 
@@ -777,21 +825,3 @@ Commands supporting `--format`: `validate`, `doctor`, `hooks list`, `hooks valid
   - docs.py
 - tests/
 </FileTree>
-
-## Related Pages
-
-<CardGrid>
-  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
-  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" description="Browse agent configurations in the repository." />
-  <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />
-</CardGrid>
-
-## Built With
-
-<CardGrid>
-  <LinkCard title="uv" href="https://docs.astral.sh/uv/" description="Fast Python package manager." />
-  <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />
-  <LinkCard title="ty" href="https://docs.astral.sh/ty/" description="Fast Python type checker." />
-  <LinkCard title="Starlight" href="https://starlight.astro.build/" description="Documentation framework for this site." />
-  <LinkCard title="ruff" href="https://docs.astral.sh/ruff/" description="Fast Python linter and formatter." />
-</CardGrid>

@@ -1,0 +1,74 @@
+---
+title: "codex-permission-request-guard"
+description: "Deny high-risk Codex permission requests and otherwise preserve the normal approval flow."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "codex-permission-request-guard"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PermissionRequest" variant="caution" /> <Badge text="codex" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Deny high-risk Codex permission requests and otherwise preserve the normal approval flow.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `codex-permission-request-guard` |
+| status_message | `Checking approval request safety` |
+| mode | `enforce` |
+| logical_event | `PermissionRequest` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex"]` |
+
+<Aside type="note">
+Policy `_policy_codex_permission_request_guard` denies on destructive shell or protected path signals; otherwise lets normal flow continue.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "codex-permission-request-guard",
+  "description": "Deny high-risk Codex permission requests and otherwise preserve the normal approval flow.",
+  "status_message": "Checking approval request safety",
+  "mode": "enforce",
+  "logical_event": "PermissionRequest",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py codex-permission-request-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy)"
+def _policy_codex_permission_request_guard(payload: NormalizedPayload) -> int:
+    reason = _destructive_shell_reason(payload.command) or _protected_payload_reason(payload)
+    if reason:
+        return _codex_permission_deny(payload, reason, "codex-permission-request-guard")
+    return 0
+```
+
+Command: `python3 .../wagents-hook.py codex-permission-request-guard --harness codex`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

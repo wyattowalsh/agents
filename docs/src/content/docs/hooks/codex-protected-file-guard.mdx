@@ -1,0 +1,76 @@
+---
+title: "codex-protected-file-guard"
+description: "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Codex."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "codex-protected-file-guard"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PreToolUse" variant="caution" /> <Badge text="codex" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Codex.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `codex-protected-file-guard` |
+| status_message | `Checking protected paths` |
+| mode | `enforce` |
+| logical_event | `PreToolUse` |
+| matcher | `Write\|Edit\|MultiEdit\|apply_patch\|edit\|create\|replace\|write_file\|Bash\|bash\|run_shell_command` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py codex-protected-file-guard --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex"]` |
+
+<Aside type="note">
+Dispatcher policy `_policy_codex_protected_file_guard` + shared `_protected_payload_reason` / `_path_block_reason` (covers secrets, .git, traversal, lockfiles).
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "codex-protected-file-guard",
+  "description": "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Codex.",
+  "status_message": "Checking protected paths",
+  "mode": "enforce",
+  "logical_event": "PreToolUse",
+  "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py codex-protected-file-guard --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy excerpt)"
+def _policy_codex_protected_file_guard(payload: NormalizedPayload) -> int:
+    reason = _protected_payload_reason(payload)
+    if reason:
+        return _deny(payload, reason, policy_id="codex-protected-file-guard")
+    return 0
+```
+
+Command (Codex): `python3 {repo_root}/hooks/wagents-hook.py codex-protected-file-guard --harness codex`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

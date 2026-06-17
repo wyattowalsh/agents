@@ -1,7 +1,19 @@
 ---
 title: "firecrawl-cli-all"
 description: "useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "firecrawl-cli-all"
+composed: true
+docs_density: standard
+trust_tier: "global-only-or-avoid"
+curated_status: "global-only-or-avoid"
+research_slug: "firecrawl-cli-all"
+composed_by: "compose-external-wave-5"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +36,13 @@ npx skills add firecrawl/cli --skill firecrawl-cli-all -y -g
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/firecrawl-cli-all.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-5 using authoring SSOT (`docs/src/authoring/skills/firecrawl-cli-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Firecrawl CLI skill bundle for live web capabilities inside agents: search, scrape single URLs, map site structure, crawl for bulk content, browser automation, structured extraction to LLM-friendly markdown/JSON. Enables agents to fetch fresh external data without leaving the editor/terminal.
 
 ## Harness Coverage
 
@@ -46,25 +61,11 @@ Curated status: `global-only-or-avoid`
 
 Risk notes: useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Firecrawl CLI skill bundle for live web capabilities inside agents: search, scrape single URLs, map site structure, crawl for bulk content, browser automation, structured extraction to LLM-friendly markdown/JSON. Enables agents to fetch fresh external data without leaving the editor/terminal.
+Entry maintained via authoring + research for compose-external-wave-5; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install (per listings): `npx skills add firecrawl/cli --skill firecrawl-cli-all` (or named selectors); may require API key / login; global-only per catalog rationale summary; policy=Inspect for usage policy, auth, and cost exposure before global or broad install.
-
-## Upstream Maintainer
-
-[firecrawl/cli](https://github.com/firecrawl/cli) (Firecrawl team)
-
-## Comparable Alternatives
-
-Other web-scrape/fetch skills (e.g. browserless, puppeteer skills); built-in search tools in some agents; tavily or similar search MCP/tools.
-
-&gt; Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -84,10 +85,10 @@ Other web-scrape/fetch skills (e.g. browserless, puppeteer skills); built-in sea
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/firecrawl-cli-all.mdx (full SSOT excerpt)"
 ---
 name: "firecrawl-cli-all"
 description: "useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested."
@@ -112,6 +113,15 @@ unresolved_reason: "useful for web research, but requires `FIRECRAWL_API_KEY` an
 useful for web research, but requires `FIRECRAWL_API_KEY` and broad network/CLI scope; keep global-only unless explicitly requested.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| source | `firecrawl/cli` |
+| source_url | `https://github.com/firecrawl/cli` |
+| trust_tier | `global-only-or-avoid` |
+| curated_status | `global-only-or-avoid` |
 
 </details>
 

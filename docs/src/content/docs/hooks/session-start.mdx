@@ -1,0 +1,90 @@
+---
+title: "session-start"
+description: "Report basic session environment and repository state."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "session-start"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="SessionStart" variant="success" /> <Badge text="github-copilot" variant="default" />
+
+> Report basic session environment and repository state.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `session-start` |
+| logical_event | `SessionStart` |
+| matcher | `startup\|resume\|clear` |
+| command | `./hooks/session-start.sh` |
+| timeout | `15` |
+| harnesses | `["github-copilot"]` |
+
+## Command Reference
+
+The handler is a simple shell script that reports branch, dirty state, and basic env warnings.
+
+<Aside type="note" title="Harness notes">
+Only active for github-copilot harness in the portable registry. Codex and others use `codex-session-start-context` instead.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "session-start",
+  "description": "Report basic session environment and repository state.",
+  "logical_event": "SessionStart",
+  "matcher": "startup|resume|clear",
+  "command": "./hooks/session-start.sh",
+  "timeout": 15,
+  "harnesses": [
+    "github-copilot"
+  ]
+}
+```
+
+```bash title="hooks/session-start.sh"
+#!/bin/bash
+ERRORS=""
+for tool in jq git uv node; do
+  command -v "$tool" &>/dev/null || ERRORS="${ERRORS}WARNING: '${tool}' not found"$'\n'
+done
+
+if [ -n "$CLAUDE_ENV_FILE" ]; then
+  echo 'export PYTHONDONTWRITEBYTECODE=1' >> "$CLAUDE_ENV_FILE"
+fi
+
+if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
+  BRANCH=$(git branch --show-current 2>/dev/null)
+  echo "Branch: ${BRANCH}"
+  DIRTY=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+  [ "$DIRTY" -gt 0 ] && echo "Uncommitted changes: ${DIRTY} files"
+fi
+
+[ -n "$ERRORS" ] && printf "%s" "$ERRORS"
+echo "Success"
+exit 0
+```
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

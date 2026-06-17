@@ -1,0 +1,92 @@
+---
+title: "post-edit-format"
+description: "Run best-effort formatter after edits."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "post-edit-format"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PostToolUse" variant="success" /> <Badge text="github-copilot" variant="default" />
+
+> Run best-effort formatter after edits.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `post-edit-format` |
+| logical_event | `PostToolUse` |
+| matcher | `Edit\|Write\|MultiEdit\|edit\|create\|write_file\|replace` |
+| command | `./hooks/auto-format.sh` |
+| timeout | `30` |
+| harnesses | `["github-copilot"]` |
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "post-edit-format",
+  "description": "Run best-effort formatter after edits.",
+  "logical_event": "PostToolUse",
+  "matcher": "Edit|Write|MultiEdit|edit|create|write_file|replace",
+  "command": "./hooks/auto-format.sh",
+  "timeout": 30,
+  "harnesses": [
+    "github-copilot"
+  ]
+}
+```
+
+```bash title="hooks/auto-format.sh"
+#!/bin/bash
+command -v jq &>/dev/null || exit 0
+INPUT=$(cat)
+FILE_PATH=$(echo "$INPUT" | jq -r '
+  .tool_input.file_path
+  // (
+    (.toolArgs | fromjson? // .toolArgs // {})
+    | if type == "object" then (.filePath // .path // .target_file // empty) else empty end
+  )
+  // empty
+')
+[ -z "$FILE_PATH" ] || [ ! -f "$FILE_PATH" ] && exit 0
+
+case "${FILE_PATH##*.}" in
+  py)
+    if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
+      uv run ruff format "$FILE_PATH" 2>/dev/null
+    elif command -v ruff &>/dev/null; then
+      ruff format "$FILE_PATH" 2>/dev/null
+    fi ;;
+  js|jsx|ts|tsx|css|scss|html|json|yaml|yml)
+    if [ -f "node_modules/.bin/prettier" ]; then
+      node_modules/.bin/prettier --write "$FILE_PATH" 2>/dev/null
+    elif command -v prettier &>/dev/null; then
+      prettier --write "$FILE_PATH" 2>/dev/null
+    fi ;;
+  rs) command -v rustfmt &>/dev/null && rustfmt "$FILE_PATH" 2>/dev/null ;;
+  go) command -v gofmt &>/dev/null && gofmt -w "$FILE_PATH" 2>/dev/null ;;
+esac
+exit 0
+```
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

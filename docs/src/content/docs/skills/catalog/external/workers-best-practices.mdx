@@ -1,11 +1,25 @@
 ---
 title: "workers-best-practices"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "workers-best-practices"
+composed: true
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "workers-best-practices"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="workers-best-practices" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="workers-best-practices" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
@@ -24,10 +38,13 @@ npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill wor
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/workers-best-practices.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/workers-best-practices.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+workers-best-practices encodes production rules and anti-patterns for authoring/reviewing Cloudflare Workers code: streaming responses, waitUntil usage, no global request state, no floating promises, binding access via generated types, crypto for randomness, secrets handling, observability config, and wrangler.jsonc practices. Retrieval-first; tells agents to fetch latest best-practices page and types before flagging.
 
 ## Harness Coverage
 
@@ -40,55 +57,23 @@ npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill wor
 
 ## Trust / Audit
 
-Trust tier: **Curated** (`curated-trust-gated`)
+install-now-after-trust-gate / curated-trust-gated. Official guidance. Following the rules reduces common runtime, memory, security, and debuggability issues on the Workers platform. The skill itself performs no actions; risk is in the reviewed code.
 
-Curated status: `install-now-after-trust-gate`
+Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="cloudflare" href="/skills/catalog/external/cloudflare/" description="Related curated external skill." />
+  <LinkCard title="wrangler" href="/skills/catalog/external/wrangler/" description="Related curated external skill." />
+  <LinkCard title="durable-objects" href="/skills/catalog/external/durable-objects/" description="Related curated external skill." />
+  <LinkCard title="agents-sdk" href="/skills/catalog/external/agents-sdk/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-workers-best-practices encodes production rules and anti-patterns for authoring/reviewing Cloudflare Workers code: streaming responses, waitUntil usage, no global request state, no floating promises, binding access via generated types, crypto for randomness, secrets handling, observability config, and wrangler.jsonc practices. Retrieval-first; tells agents to fetch latest best-practices page and types before flagging.
-
-## Install Prerequisites
-
-Part of `npx skills add cloudflare/skills --skill workers-best-practices ...`
-
-## Upstream Maintainer
-
-Cloudflare (https://github.com/cloudflare/skills). Canonical source: https://developers.cloudflare.com/workers/best-practices/
-
-## Comparable Alternatives
-
-General edge function best practices from other platforms when porting patterns; project-specific linters and review checklists.
-
-&gt; Evidence gathered from public GitHub (raw SKILL.md). Not an endorsement or authority.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `cloudflare/skills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `workers-best-practices` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/workers-best-practices.mdx (full SSOT excerpt)"
 ---
 name: "workers-best-practices"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -111,8 +96,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=workers-best-practices; re-run migration to refresh */}
 
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add cloudflare/skills --skill cloudflare --skill wrangler --skill workers-best-practices --skill durable-objects --skill agents-sdk -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | cloudflare/skills |
+| source_url | https://github.com/cloudflare/skills |
+| trust_tier | curated-trust-gated |
+| curated_status | install-now-after-trust-gate |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +116,5 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

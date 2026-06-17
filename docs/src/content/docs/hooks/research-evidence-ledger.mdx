@@ -1,0 +1,78 @@
+---
+title: "research-evidence-ledger"
+description: "Append lightweight provenance metadata for research retrieval tools."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "research-evidence-ledger"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PostToolUse" variant="success" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: audit" variant="tip" />
+
+> Append lightweight provenance metadata for research retrieval tools.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `research-evidence-ledger` |
+| mode | `audit` |
+| logical_event | `PostToolUse` |
+| matcher | `WebSearch\|web_search\|fetch\|fetcher\|trafilatura\|docling\|mcp__.*\|mcp_.*` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py research-evidence-ledger --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex", "claude-code", "github-copilot", "gemini-cli"]` |
+
+<Aside type="note">
+Mode=audit (non-blocking). `_policy_evidence_ledger` extracts URLs + tool context and appends to per-session ledger under `~/.codex/hook-ledger` (or equiv for harness). Supports later verification in stop-verifier.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "research-evidence-ledger",
+  "description": "Append lightweight provenance metadata for research retrieval tools.",
+  "mode": "audit",
+  "logical_event": "PostToolUse",
+  "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py research-evidence-ledger --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "github-copilot",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy)"
+def _policy_evidence_ledger(payload: NormalizedPayload) -> int:
+    if not _state_active(payload):
+        return 0
+    # extracts URLs from payload, writes JSONL provenance to audit ledger
+    ...
+```
+
+Full URL extraction + ledger append in `wagents-hook.py` (and mirrored in research_hook.py).
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="research skill" href="/skills/catalog/custom/research/" description="Evidence ledger supports the research workflow." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

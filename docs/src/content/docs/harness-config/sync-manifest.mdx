@@ -1,0 +1,409 @@
+---
+title: "sync-manifest"
+description: "Ledger for canonical, generated, merged, symlink, and symlinked-entry surfaces across repo and home harness configs."
+page_kind: "harness-config"
+source_kind: "registry"
+asset_id: "sync-manifest"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-configs-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="harness-config" variant="note" /> <Badge text="registry" variant="default" />
+
+> Central ledger declaring ownership and sync modes for harness configuration surfaces. Drives `scripts/sync_agent_stack.py` and platform adapters.
+
+## Overview
+
+`config/sync-manifest.json` (versioned registry) is the single source that classifies every managed path as `canonical` (edit in repo), `generated` (derive at sync), `merged` (baseline + preserve extras), `symlink`, or `symlinked-entries`.
+
+It is the authoritative map for keeping repo sources, project-local mirrors, and user home (`~`) projections consistent across agent harnesses without manual copy/paste.
+
+## What It Controls
+
+- Repo instruction files and their generated platform mirrors (`.github/copilot-instructions.md`, `instructions/*.md`, etc.)
+- MCP, plugin, and OpenCode/TUI/DCP/ensemble config projections
+- Skill roots (symlinked entries for `~/.codex/skills/`, `~/.copilot/skills/`, `~/.gemini/skills/`)
+- Hook files, plannotator hooks, and various bundle manifests
+- Grok, opencode, codex, copilot global and home configs
+
+## Harness Surfaces & Sync Modes
+
+`sync-manifest` feeds sync for nearly every harness listed in `config/harness-surface-registry.json` (Claude Code/Desktop, Codex, GitHub Copilot (web+cli), OpenCode, Gemini CLI, Antigravity, Cursor, Grok Build, Cherry Studio, Crush, Perplexity, etc.).
+
+Modes determine behavior:
+- `canonical`: edit only in `${REPO_ROOT}/...`
+- `generated`: never hand-edit (will be overwritten)
+- `merged`: write baseline but leave user additions intact (certain desktop apps)
+- `symlink` / `symlinked-entries`: link or directory entry sync (skills, instructions)
+
+## Key Fields
+
+| Field            | Description |
+|------------------|-------------|
+| `version`        | Integer schema version (1) |
+| `managed`        | Array of entries |
+| `managed[].path` | Target path; supports `${REPO_ROOT}` and `~` |
+| `managed[].mode` | `canonical` \| `generated` \| `merged` \| `symlink` \| `symlinked-entries` |
+
+See also `config/config-transaction-registry.json` for preview/backup/rollback policy expectations around writes.
+
+## AGENTS.md Sections
+
+- [§2.7 Curated External Skills (Bucket B)](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog-semantics--bucket-a): explicitly calls out `sync-manifest.json` as part of machine-first registry surfaces (Bucket B) that stay canonical under `config/`.
+- [§6 Supported Agents](https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#6-supported-agents): documents per-harness read/generated sources that are realized via this manifest.
+- OpenCode / Grok / Codex specific notes reference generated vs canonical paths tracked here.
+
+## Related
+
+- CLI / tooling: `uv run python scripts/sync_agent_stack.py --targets repo,home --check`, `wagents validate`
+- Other registries: `config/harness-surface-registry.json`, `config/mcp-registry.json`, `config/tooling-policy.json`
+- Harness support matrix: `/harness-support/`
+
+<CardGrid>
+  <LinkCard title="AGENTS.md §2.7" href="https://github.com/wyattowalsh/agents/blob/main/AGENTS.md#27-curated-external-skills-catalog-semantics--bucket-a" description="Bucket B classification for sync/harness registries." />
+  <LinkCard title="sync script" href="https://github.com/wyattowalsh/agents/blob/main/scripts/sync_agent_stack.py" description="Primary consumer of the manifest for apply/check flows." />
+  <LinkCard title="Harness Support" href="/harness-support/" description="Per-harness support tiers and validation status." />
+  <LinkCard title="Hooks Catalog" href="/hooks/" description="Related lifecycle hooks also managed via registry + sync." />
+</CardGrid>
+
+<details class="source-disclosure">
+<summary>Full registry (config/sync-manifest.json)</summary>
+
+```json title="config/sync-manifest.json"
+{
+	"version": 1,
+	"managed": [
+		{
+			"path": "${REPO_ROOT}/config/mcp-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/hook-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/tooling-policy.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/support-tier-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/harness-surface-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/config-transaction-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/docs-artifact-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/skill-registry-policy.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/docs/src/authoring/skills",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/external-skills.md",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/config/plugin-extension-registry.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/schemas",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/planning/manifests/repo-sync-inventory.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/planning/manifests/repo-drift-ledger.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/planning/manifests/harness-fixture-support.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/planning/manifests/external-skills/chrome-devtools-mcp.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-dcp.jsonc",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-notifier.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-large-image-optimizer.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-tui-plugins.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-quota-toast.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-token-monitor.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-ensemble.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/opencode-octto.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/sync-manifest.json",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/copilot-global.md",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/codex-global.md",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/opencode-global.md",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/opencode.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/config/codex-config.toml",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.grok/config.toml",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/mcp.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.vscode/mcp.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.github/copilot-instructions.md",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.github/instructions",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.github/hooks",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/hooks",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/platforms/copilot/agents",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/platforms/opencode/plugins",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/codex-global.md",
+			"mode": "symlink"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/global.md",
+			"mode": "symlink"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/copilot-global.md",
+			"mode": "symlink"
+		},
+		{
+			"path": "${REPO_ROOT}/platforms/copilot/agents",
+			"mode": "symlink"
+		},
+		{
+			"path": "~/.copilot/mcp-config.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.copilot/settings.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/copilot-subagents.env",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.codex/config.toml",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.grok/config.toml",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.codex/hooks.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.claude/settings.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.claude/settings.local.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/Library/Application Support/Claude/claude_desktop_config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.cursor/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.gemini/settings.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.gemini/GEMINI.md",
+			"mode": "generated"
+		},
+		{
+			"path": "~/Library/Application Support/ChatGPT/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/.copilot/mcp-config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.gemini/antigravity/mcp_config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/opencode/opencode.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/opencode/tui.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/opencode/dcp.jsonc",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/opencode/large-image-optimizer.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/opencode-quota/quota-toast.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/token-monitor.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/ensemble.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/octto.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/opencode-notifier.json",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/plugins/approval-notify.ts",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.config/opencode/plugins/credential-guard.ts",
+			"mode": "generated"
+		},
+		{
+			"path": "~/.aitk/mcp.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.config/crush/crush.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/Library/Application Support/CherryStudio/mcp-import/managed",
+			"mode": "generated"
+		},
+		{
+			"path": "~/Library/Application Support/CherryStudio/config.json",
+			"mode": "merged"
+		},
+		{
+			"path": "~/.codex/skills",
+			"mode": "symlinked-entries"
+		},
+		{
+			"path": "~/.copilot/skills",
+			"mode": "symlinked-entries"
+		},
+		{
+			"path": "~/.gemini/skills",
+			"mode": "symlinked-entries"
+		},
+		{
+			"path": "${REPO_ROOT}/config/grok-config.toml",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/instructions/grok-global.md",
+			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/grok-env.sh",
+			"mode": "canonical"
+		}
+	]
+}
+```
+
+</details>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/sync-manifest.json)

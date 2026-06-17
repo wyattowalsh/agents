@@ -1,7 +1,19 @@
 ---
 title: "microsoft-azure-skills-all"
 description: "massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "microsoft-azure-skills-all"
+composed: true
+docs_density: standard
+trust_tier: "global-only-or-avoid"
+curated_status: "global-only-or-avoid"
+research_slug: "microsoft-azure-skills-all"
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +36,13 @@ npx skills add microsoft/azure-skills --skill microsoft-azure-skills-all -y -g
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/microsoft-azure-skills-all.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/microsoft-azure-skills-all.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+microsoft/azure-skills (official Microsoft). Massive bundle covering many Azure topics (compute, prepare, upgrade, validate, reliability, entra, functions etc) via SKILL.md + references/global-rules. Intended for AI coding agents to have real Azure expertise. Per catalog: do not bulk-promote; cherry-pick only if concrete need.
 
 ## Harness Coverage
 
@@ -46,25 +61,11 @@ Curated status: `global-only-or-avoid`
 
 Risk notes: massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-microsoft/azure-skills (official Microsoft). Massive bundle covering many Azure topics (compute, prepare, upgrade, validate, reliability, entra, functions etc) via SKILL.md + references/global-rules. Intended for AI coding agents to have real Azure expertise. Per catalog: do not bulk-promote; cherry-pick only if concrete need.
+Entry maintained via authoring + research for compose-external-wave-8; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 npx skills add microsoft/azure-skills (but keep global-only; avoid bulk in curated install-now); status=keep-global-only-or-avoid.
-
-## Upstream Maintainer
-
-[microsoft/azure-skills](https://github.com/microsoft/azure-skills) (official).
-
-## Comparable Alternatives
-
-Focused Azure sub-skills; other cloud provider skills (e.g. if exist).
-
-&gt; Evidence from GitHub (mcp-use, microsoft, neondatabase 2026) + catalog; research evidence only - not authority or endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -84,10 +85,10 @@ Focused Azure sub-skills; other cloud provider skills (e.g. if exist).
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/microsoft-azure-skills-all.mdx (full SSOT excerpt)"
 ---
 name: "microsoft-azure-skills-all"
 description: "massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote."
@@ -112,6 +113,15 @@ unresolved_reason: "massive Azure bundle; cherry-pick only if a concrete need ap
 massive Azure bundle; cherry-pick only if a concrete need appears — do not bulk-promote.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| source | `microsoft/azure-skills` |
+| source_url | `https://github.com/microsoft/azure-skills` |
+| trust_tier | `global-only-or-avoid` |
+| curated_status | `global-only-or-avoid` |
 
 </details>
 

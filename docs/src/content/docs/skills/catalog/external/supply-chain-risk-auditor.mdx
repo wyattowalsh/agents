@@ -1,11 +1,25 @@
 ---
 title: "supply-chain-risk-auditor"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "supply-chain-risk-auditor"
+composed: true
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "supply-chain-risk-auditor"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="supply-chain-risk-auditor" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="supply-chain-risk-auditor" variant="note" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
 
 > Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
@@ -24,10 +38,13 @@ npx skills add trailofbits/skills --skill differential-review --skill agentic-ac
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/supply-chain-risk-auditor.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/supply-chain-risk-auditor.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Generates report on supply-chain threat landscape of direct dependencies (popularity, #maintainers, CVE history, update freq, security contacts). Flags high-risk; suggests alts where known. Uses `gh` CLI queries. Explicitly does NOT scan source for CVEs/creds. Trail of Bits (Spencer Michaels).
 
 ## Harness Coverage
 
@@ -40,55 +57,24 @@ npx skills add trailofbits/skills --skill differential-review --skill agentic-ac
 
 ## Trust / Audit
 
-Trust tier: **Inspect first** (`needs-inspection`)
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; risks=Depends on gh auth + public data quality; holistic flags not exhaustive CVE scanner; network calls via gh. policy=Inspect.; evidence=trailofbits batch + https://github.com/trailofbits/skills/plugins/supply-chain-risk-auditor .
 
-Curated status: `inspect-then-install`
+Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="differential-review" href="/skills/catalog/external/differential-review/" description="Related curated external skill." />
+  <LinkCard title="agentic-actions-auditor" href="/skills/catalog/external/agentic-actions-auditor/" description="Related curated external skill." />
+  <LinkCard title="variant-analysis" href="/skills/catalog/external/variant-analysis/" description="Related curated external skill." />
+  <LinkCard title="insecure-defaults" href="/skills/catalog/external/insecure-defaults/" description="Related curated external skill." />
+  <LinkCard title="modern-python" href="/skills/catalog/external/modern-python/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-Generates report on supply-chain threat landscape of direct dependencies (popularity, #maintainers, CVE history, update freq, security contacts). Flags high-risk; suggests alts where known. Uses `gh` CLI queries. Explicitly does NOT scan source for CVEs/creds. Trail of Bits (Spencer Michaels).
-
-## Install Prerequisites
-
-Inspect group install cmd. status=inspect-then-install; selector=named.
-
-## Upstream Maintainer
-
-[trailofbits/skills](https://github.com/trailofbits/skills).
-
-## Comparable Alternatives
-
-sast-configuration, secrets-management, general dep tools or wshobson patterns. Supply chain specific.
-
-&gt; Web README evidence.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `trailofbits/skills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `needs-inspection` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `supply-chain-risk-auditor` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/supply-chain-risk-auditor.mdx (full SSOT excerpt)"
 ---
 name: "supply-chain-risk-auditor"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -111,8 +97,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=supply-chain-risk-auditor; re-run migration to refresh */}
 
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add trailofbits/skills --skill differential-review --skill agentic-actions-auditor --skill variant-analysis --skill insecure-defaults --skill supply-chain-risk-auditor --skill modern-python -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | trailofbits/skills |
+| source_url | https://github.com/trailofbits/skills |
+| trust_tier | needs-inspection |
+| curated_status | inspect-then-install |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +117,5 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

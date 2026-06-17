@@ -1,7 +1,21 @@
 ---
 title: "devops-engineer"
 description: "Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "devops-engineer"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "devops-engineer"
+composed_by: "compose-custom-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/devops-engineer` `<mode> [target]`
+**Use:** `/devops-engineer` `&lt;mode&gt; [target]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/devops-engineer/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code.
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+**Comparable alternative:** `infrastructure-coder` for infrastructure provisioning
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code.
-
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-
-**Comparable alternative:** `infrastructure-coder` for infrastructure provisioning
-
-**Repo summary:**
-
-CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: generate workflows, optimize build times, design deployment strategies, review existing pipelines, debug CI failures.
-
-&gt; Grounded in repository `skills/devops-engineer/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-2 from `skills/devops-engineer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -77,6 +81,166 @@ CI/CD pipeline design, optimization, and deployment strategy. 6-mode pipeline: g
 12. Load ONE reference file at a time -- do not preload all references into context
 13. Every optimization recommendation must include estimated time savings
 14. Generated workflows must include inline comments explaining non-obvious configuration choices
+
+## Canonical Vocabulary
+
+Use these terms exactly throughout all modes:
+
+| Term | Definition |
+|------|------------|
+| **workflow** | A CI/CD pipeline definition file (.github/workflows/*.yml, .gitlab-ci.yml) |
+| **job** | A named unit of work within a workflow containing one or more steps |
+| **step** | A single action within a job (run command, uses action) |
+| **stage** | A logical grouping of jobs (build, test, deploy) |
+| **artifact** | Build output passed between jobs or stages |
+| **cache** | Dependency/build cache persisted across runs to reduce build time |
+| **matrix** | Parameterized job expansion across multiple configurations |
+| **concurrency group** | Mutual exclusion mechanism preventing parallel runs |
+| **environment** | Deployment target with protection rules (staging, production) |
+| **promotion** | Moving artifacts through environments (dev -&gt; staging -&gt; prod) |
+| **rollback** | Reverting a deployment to a previous known-good state |
+| **canary** | Incremental traffic shift to new version (1% -&gt; 5% -&gt; 25% -&gt; 100%) |
+| **blue/green** | Two identical environments with instant traffic switch |
+| **rolling** | Gradual instance-by-instance replacement |
+| **gate** | Manual or automated approval checkpoint before deployment proceeds |
+| **runner** | Execution environment for CI/CD jobs (GitHub-hosted, self-hosted) |
+| **reusable workflow** | Callable workflow template invoked from other workflows |
+| **composite action** | Multi-step action packaged as a single reusable unit |
+
+## Mode 1: Generate (`Pipeline`)
+
+Design and generate CI/CD workflow files from requirements.
+
+### Steps
+
+1. **Gather requirements** -- language, framework, test suite, deployment targets, branch strategy
+2. **Select platform** -- GitHub Actions (default), GitLab CI, or both
+3. **Load patterns** -- read `references/github-actions-patterns.md` or `references/gitlab-ci-patterns.md`
+4. **Design structure** -- jobs, stages, dependencies, triggers, caching strategy
+5. **Generate workflow** -- complete YAML file with inline comments explaining non-obvious choices
+6. **Validate** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py &lt;file&gt;` on generated output
+
+### Output
+
+Complete workflow YAML file written to the appropriate location.
+
+## Mode 2: Action (`Action`)
+
+Generate individual GitHub Action steps or jobs.
+
+1. **Parse description** -- what the action should accomplish
+2. **Load patterns** -- read `references/github-actions-patterns.md`
+3. **Generate** -- step or job YAML with correct `uses`, `with`, `env` configuration
+4. **Context check** -- if an existing workflow is referenced, read it and integrate the new action
+
+Output: YAML snippet ready for insertion into a workflow file.
+
+## Mode 3: Optimize (`Optimize`)
+
+Analyze and optimize pipeline build times.
+
+### Analysis
+
+1. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py &lt;workflow&gt;`
+2. **Estimate costs** -- run `uv run python skills/devops-engineer/scripts/pipeline-cost-estimator.py &lt;workflow&gt;`
+3. **Load techniques** -- read `references/pipeline-optimization.md`
+
+### Optimization Opportunities
+
+4. **Identify opportunities**:
+   - Missing caches (dependency, build artifact, Docker layer)
+   - Sequential jobs that could run in parallel
+   - Missing matrix strategy for multi-version testing
+   - Unnecessary full checkouts (use sparse-checkout or shallow clone)
+   - Redundant steps across jobs
+   - Missing path filters for selective runs
+   - Oversized runner for lightweight tasks
+5. **Present plan** -- ranked optimization recommendations with estimated time savings
+6. **Implement** -- apply approved optimizations to the workflow file
+
+## Mode 4: Deploy (`Deploy`)
+
+Design deployment strategies with rollback plans.
+
+1. **Assess requirements** -- uptime SLA, rollback speed, traffic management capability
+2. **Load strategies** -- read `references/deployment-strategies.md`
+3. **Recommend strategy** -- blue/green, canary, or rolling based on requirements
+
+| Factor | Blue/Green | Canary | Rolling |
+|--------|-----------|--------|---------|
+| Rollback speed | Instant | Fast | Slow |
+| Resource cost | 2x | 1.1-1.5x | 1x |
+| Risk exposure | None (pre-switch) | Gradual | Gradual |
+| Complexity | Medium | High | Low |
+| Best for | Critical services | High-traffic APIs | Cost-sensitive apps |
+
+4. **Generate** -- deployment workflow with health checks, gates, and rollback triggers
+5. **Document** -- runbook with rollback procedure and escalation path
+
+## Mode 5: Review (`Review`)
+
+Audit an existing CI/CD pipeline for issues and improvements.
+
+### Audit Process
+
+1. **Read workflow** -- parse the target workflow file(s)
+2. **Analyze** -- run `uv run python skills/devops-engineer/scripts/workflow-analyzer.py &lt;workflow&gt;`
+3. **Load checklists** -- read `references/pipeline-review-checklist.md`
+
+### Evaluation Dimensions
+
+4. **Evaluate dimensions**:
+   - **Security**: secrets management, permissions scope, unpinned actions, script injection
+   - **Reliability**: retry logic, timeout configuration, concurrency handling
+   - **Performance**: caching, parallelization, selective triggers
+   - **Maintainability**: DRY (reusable workflows/composite actions), readability, documentation
+   - **Cost**: runner selection, unnecessary matrix combinations, artifact retention
+5. **Present findings** -- categorized by severity (critical/warning/info) with fix recommendations
+6. **Implement** -- apply approved fixes
+
+## Mode 6: Debug (`Debug`)
+
+Analyze CI failure logs to identify root causes and fixes.
+
+1. **Ingest logs** -- read provided log file or inline content. For large logs (&gt;500 lines): truncate to last 200 lines + first 50 lines, then sample middle sections around error patterns
+2. **Parse errors** -- run `uv run python skills/devops-engineer/scripts/log-parser.py &lt;logfile&gt;`
+3. **Load triage protocol** -- read `references/ci-failure-triage.md`
+4. **Classify failures** by category:
+
+| Category | Examples | Common Fixes |
+|----------|----------|-------------|
+| dependency | Version conflict, missing package, registry timeout | Pin versions, add retry, use cache |
+| build | Compilation error, type error, out of memory | Fix code, increase runner memory |
+| test | Assertion failure, flaky test, timeout | Fix test, add retry for flaky, increase timeout |
+| lint | Format violation, rule violation | Run formatter, update config |
+| deploy | Permission denied, health check fail, resource limit | Fix permissions, check config, scale resources |
+
+5. **Trace root cause** -- follow error chain to the originating failure
+6. **Recommend fix** -- specific actionable steps with code/config changes
+
+## Reference Files
+
+Load ONE reference at a time. Do not preload all references into context.
+
+| File | Content | Read When |
+|------|---------|-----------|
+| `references/github-actions-patterns.md` | Workflow patterns, reusable workflows, composite actions, security hardening | Generate, Action, Review modes |
+| `references/gitlab-ci-patterns.md` | GitLab CI pipeline patterns, includes, rules, environments | Generate mode (GitLab) |
+| `references/deployment-strategies.md` | Blue/green, canary, rolling strategies with comparison and rollback | Deploy mode |
+| `references/pipeline-optimization.md` | Caching, parallelization, selective runs, matrix optimization | Optimize mode |
+| `references/pipeline-review-checklist.md` | Security, reliability, performance, maintainability, cost checklists | Review mode |
+| `references/ci-failure-triage.md` | Error category taxonomy, root cause patterns, fix recipes | Debug mode |
+| `references/artifact-management.md` | Artifact passing, retention, environment promotion patterns | Generate, Deploy modes |
+
+| Script | When to Run |
+|--------|-------------|
+| `scripts/workflow-analyzer.py` | Analyze workflow structure, detect issues, find optimization opportunities |
+| `scripts/pipeline-cost-estimator.py` | Estimate CI minutes and identify cost savings |
+| `scripts/log-parser.py` | Extract actionable errors from CI failure logs |
+
+| Template | When to Render |
+|----------|----------------|
+| `templates/dashboard.html` | After analysis -- inject pipeline health data into the dashboard |
 
 <Tabs>
   <TabItem label="Public Metadata">

@@ -1,7 +1,21 @@
 ---
 title: "notion-cli"
 description: "Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "notion-cli"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "notion-cli"
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/notion-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-8 using authoring SSOT (`docs/src/authoring/skills/notion-cli.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Official makenotion/skills (MIT, 121 stars). notion-cli wraps Notion CLI (ntn) for workers, public API requests, file uploads. Agent skill to use ntn CLI from coding agents. Requires Notion API token handling.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Official makenotion/skills (MIT, 121 stars). notion-cli wraps Notion CLI (ntn) for workers, public API requests, file uploads. Agent skill to use ntn CLI from coding agents. Requires Notion API token handling.
+Entry maintained via authoring + research for compose-external-wave-8; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 npx skills add makenotion/skills --skill notion-cli -y -g -a [agents]; status=inspect-then-install; selector=named. Provide API token.
-
-## Upstream Maintainer
-
-[makenotion/skills](https://github.com/makenotion/skills) (MIT, official).
-
-## Comparable Alternatives
-
-Third-party Notion REST skills; general API client skills.
-
-&gt; Evidence from public GitHub (official + community 2026) + catalog; research evidence, not authority/endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Third-party Notion REST skills; general API client skills.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/notion-cli.mdx (full SSOT excerpt)"
 ---
 name: "notion-cli"
 description: "Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Official Notion CLI skill from `makenotion/skills`. Wraps the `ntn` CLI and requires API token handling.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add makenotion/skills --skill notion-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `makenotion/skills` |
+| source_url | `https://github.com/makenotion/skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

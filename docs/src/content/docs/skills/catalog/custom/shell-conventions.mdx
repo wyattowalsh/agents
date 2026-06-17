@@ -1,7 +1,21 @@
 ---
 title: "shell-conventions"
 description: "Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "shell-conventions"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "shell-conventions"
+composed_by: "compose-custom-wave-6"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -22,26 +36,16 @@ npx skills add github:wyattowalsh/agents --skill shell-conventions -y -g --agent
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/shell-conventions/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD.
+**Stack / assumptions:** on-demand references; eval fixtures
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD.
-
-**Stack / assumptions:** on-demand references; eval fixtures
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Apply these conventions whenever shell work is the primary task.
-
-&gt; Grounded in repository `skills/shell-conventions/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-6 from `skills/shell-conventions/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -69,6 +73,100 @@ This is an **auto-invoke** skill -- it activates automatically when the agent de
 5. Validate required external commands before first use.
 6. Make or just tasks that mutate state must be named clearly and predictably.
 7. Route script generation and major refactors to `shell-scripter`; this skill is conventions only.
+
+## When To Use
+
+- Editing an existing shell script, shell snippet, `Makefile`, or `justfile`
+- Normalizing portability, quoting, shebangs, env usage, or task naming
+- Reviewing shell changes for baseline safety and repo shell habits
+- Checking whether shell code follows the repo's required conventions
+
+## Canonical Vocabulary
+
+| Canonical Term | Meaning |
+|----------------|---------|
+| **shell-primary** | The main task is editing or reviewing shell, `Make`, or `just` code rather than touching it incidentally |
+| **conventions-only** | Verify or tighten style, portability, and safety without redesigning the automation |
+| **env-based shebang** | A shebang that resolves the interpreter through the environment rather than a hardcoded path |
+| **incidental shell** | Shell appears only as a small supporting detail inside a larger non-shell task |
+| **target hygiene** | Clear task names, predictable behavior, and explicit treatment of destructive operations |
+
+## Operator Contract
+
+### Active Auto-Invoke
+
+1. Confirm shell work is primary, not incidental to a broader task.
+2. Apply shell-specific conventions to the file being edited.
+3. Read `references/script-baseline.md` for shell scripts and snippets.
+4. Read `references/make-just.md` for `Makefile` or `justfile` work.
+5. Read `references/redirection-boundaries.md` if the task mixes shell with CI, deployment, or code generation concerns.
+6. Keep the work limited to convention enforcement; do not broaden into script design or automation architecture.
+
+### Empty / Help
+
+1. Show the three public entry paths: active auto-invoke, empty summary, and `check`.
+2. Summarize what this skill covers: shell portability, quoting, env usage, and `Make` or `just` conventions.
+3. Name the main non-trigger cases: CI YAML, release automation design, Python, and script generation.
+4. Point to `shell-scripter` or `devops-engineer` when the request is outside convention enforcement.
+
+### Check
+
+1. Read `references/check-mode.md`.
+2. Review the relevant shell, `Make`, or `just` file for convention compliance only.
+3. Report violations, risks, and recommended fixes without widening scope into full rewrites.
+4. If the request is really generation, conversion, or CI workflow work, redirect instead of performing a conventions-only review.
+
+## Auto-Invocation Trigger Logic
+
+- Trigger when the main work is editing or reviewing an existing `.sh`, `.bash`, `.zsh`, `Makefile`, or `justfile`.
+- Trigger when the user asks for shell portability, quoting, shebang, env, `.PHONY`, `$` escaping, or task-name hygiene.
+- Do not trigger when shell appears only incidentally inside a larger Python, JS, or infrastructure task.
+- Do not trigger for CI workflow YAML, deploy pipelines, or release automation design; those belong to `devops-engineer`.
+- Do not trigger for creating new scripts, converting shell dialects, or deep shell refactors; those belong to `shell-scripter`.
+
+## Progressive Disclosure
+
+- Read reference files as indicated instead of loading everything at once.
+- Load `references/script-baseline.md` on demand for shell scripts and snippets.
+- Load `references/make-just.md` on demand for `Makefile` and `justfile` work.
+- Load `references/redirection-boundaries.md` on demand when shell work overlaps CI, release automation, or script generation.
+- Load `references/check-mode.md` on demand for `check`.
+
+## Core Conventions
+
+### Shell Scripts and Snippets
+
+- Prefer POSIX `sh` for simple automation that does not need arrays, `[[ ]]`, or process substitution.
+- Use `bash` only when the script clearly benefits from bash-only features.
+- Use env-based shebangs rather than hardcoded interpreter paths.
+- For `bash`, start with `set -euo pipefail` unless there is a clear reason not to.
+- For portable `sh`, use `set -eu` and avoid `pipefail`.
+- Quote variable expansions unless word splitting is intentionally required.
+- Use `command -v tool &gt;/dev/null 2&gt;&1` before depending on a non-guaranteed tool.
+- Prefer built-ins and standard utilities before adding dependencies.
+- Keep shell functions short and single-purpose.
+
+### Make and Just
+
+- Make targets must be task-oriented and documented through a `help` target when the file is substantial.
+- Use `.PHONY` for non-file Make targets.
+- Keep recipes idempotent where possible.
+- In Makefiles, escape `$` as `$$` inside recipes.
+- In justfiles, use parameters only when they materially simplify repeated tasks.
+- Do not hide destructive behavior behind vague target names.
+
+### Naming and Structure
+
+- Use lowercase, descriptive function names.
+- Prefer `project_root`, `target_path`, or `output_file` over one-letter names.
+- Keep environment variable names uppercase.
+- Favor early validation and explicit usage text over silent failure.
+
+## Scope Boundaries
+
+**IS for:** shell style, portability, shebangs, quoting, env usage, `Make` or `just` conventions, conventions-only review.
+
+**NOT for:** Python, CI workflow YAML, deploy automation design, script generation, or major shell rewrites.
 
 <Tabs>
   <TabItem label="Public Metadata">

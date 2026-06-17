@@ -1,7 +1,21 @@
 ---
 title: "data-wizard"
 description: "Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "data-wizard"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "data-wizard"
+composed_by: "compose-custom-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill data-wizard -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/data-wizard` `<mode> <data|task|question> [options]`
+**Use:** `/data-wizard` `&lt;mode&gt; &lt;data|task|question&gt; [options]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/data-wizard/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code.
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+**Comparable alternative:** `database-architect` for etl, database design
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code.
-
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-
-**Comparable alternative:** `database-architect` for etl, database design
-
-**Repo summary:**
-
-Full-stack data science and ML engineering — from exploratory data analysis through model deployment strategy. Adapts approach based on complexity classification.
-
-&gt; Grounded in repository `skills/data-wizard/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-2 from `skills/data-wizard/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -84,6 +88,121 @@ Full-stack data science and ML engineering — from exploratory data analysis th
 - Tiers: "Quick", "Standard", "Full Pipeline"
 - Quality dimensions: "Completeness", "Consistency", "Accuracy", "Timeliness", "Uniqueness"
 - MLOps levels: "Level 0" (manual), "Level 1" (pipeline), "Level 2" (CI/CD+CT), "Level 3" (full auto)
+
+## Canonical Vocabulary
+
+| Term | Definition |
+|------|-----------|
+| **EDA** | Exploratory Data Analysis — systematic profiling and summarization of a dataset |
+| **feature** | An individual measurable property used as input to a model |
+| **feature engineering** | Creating, transforming, or selecting features to improve model performance |
+| **hypothesis test** | A statistical procedure to determine if observed data supports a claim |
+| **p-value** | Probability of observing data at least as extreme as the actual results, assuming the null hypothesis is true |
+| **effect size** | Magnitude of a difference or relationship, independent of sample size |
+| **power analysis** | Determining sample size needed to detect an effect of a given size |
+| **CUPED** | Controlled-experiment Using Pre-Experiment Data — variance reduction technique for A/B tests |
+| **MLOps maturity** | Level 0 (manual), Level 1 (ML pipeline), Level 2 (CI/CD + CT), Level 3 (full automation) |
+| **data quality score** | Composite metric across completeness, consistency, accuracy, timeliness, uniqueness |
+| **profile** | Statistical summary of a dataset: types, distributions, missing patterns, correlations |
+| **anomaly** | Data point or pattern deviating significantly from expected behavior |
+
+## Complexity Classification
+
+Score the query on 4 dimensions (0-2 each, total 0-8):
+
+| Dimension | 0 | 1 | 2 |
+|-----------|---|---|---|
+| **Data complexity** | Single table, clean | Multi-table, some nulls | Messy, multi-source, mixed types |
+| **Analysis depth** | Descriptive stats | Inferential / predictive | Multi-stage pipeline, iteration |
+| **Domain specificity** | General / well-known | Domain conventions apply | Deep domain expertise needed |
+| **Tooling breadth** | Single library suffices | 2-3 libraries needed | Full ML stack integration |
+
+| Total | Tier | Strategy |
+|-------|------|----------|
+| 0-2 | **Quick** | Single inline analysis — eda, viz, stats |
+| 3-5 | **Standard** | Multi-step workflow — features, model, experiment, timeseries, anomaly |
+| 6-8 | **Full Pipeline** | Orchestrated — mlops, complex multi-stage analysis |
+
+Present the scoring to the user. User can override tier.
+
+## Mode Protocols
+
+### EDA (Quick)
+
+1. If file path provided, run: `!uv run python skills/data-wizard/scripts/data-profiler.py "$1"`
+2. Parse JSON output — present: row/col counts, dtypes, missing patterns, top correlations
+3. Highlight: data quality issues, distribution skews, potential target leakage
+4. Recommend next steps: cleaning, feature engineering, or modeling
+
+### Model Selection (Standard)
+
+1. Run: `!uv run python skills/data-wizard/scripts/model-recommender.py` with task JSON input
+2. Present ranked model recommendations with rationale
+3. Read `references/model-selection.md` for detailed guidance by data size and type
+4. Suggest: train/val/test split strategy, evaluation metrics, baseline approach
+
+### Feature Engineering (Standard)
+
+1. If file path, run data profiler first for column analysis
+2. Read `references/feature-engineering.md` for patterns by data type
+3. Load `data/feature-engineering-patterns.json` for structured recommendations
+4. Suggest: transformations, encodings, interaction features, selection methods
+
+### Stats (Quick)
+
+1. Run: `!uv run python skills/data-wizard/scripts/statistical-test-selector.py` with question parameters
+2. Load `data/statistical-tests-tree.json` for decision tree
+3. Read `references/statistical-tests.md` for assumptions and interpretation guidance
+4. Present: recommended test, alternatives, assumptions to verify, interpretation template
+
+### Visualization (Quick)
+
+1. Load `data/visualization-grammar.json` for chart type selection
+2. Match data characteristics to visualization types
+3. Recommend: chart type, encoding channels, color palette, layout
+
+### Experiment Design (Standard)
+
+1. Read `references/experiment-design.md` for A/B test patterns
+2. Design: hypothesis, metrics, sample size (power analysis), duration
+3. Address: novelty effects, multiple comparisons, CUPED variance reduction
+4. Output: experiment brief with decision criteria
+
+### Time Series (Standard)
+
+1. If file path, run data profiler for temporal patterns
+2. Assess: stationarity, seasonality, trend, autocorrelation
+3. Recommend: decomposition method, forecasting model, validation strategy
+4. Address: cross-validation for time series (walk-forward), feature lags
+
+### Anomaly Detection (Standard)
+
+1. Classify: point anomalies, contextual anomalies, collective anomalies
+2. Recommend: algorithm (Isolation Forest, LOF, DBSCAN, autoencoder, etc.)
+3. Address: threshold selection, false positive management, interpretability
+4. Suggest: alerting strategy, root cause investigation framework
+
+### MLOps (Full Pipeline)
+
+1. Read `references/mlops-maturity.md` for maturity model
+2. Assess current maturity level (0-3)
+3. Design: serving strategy (batch vs real-time), monitoring, retraining triggers
+4. Address: model versioning, A/B testing in production, rollback strategy
+5. Output: deployment architecture brief
+
+## Data Quality Assessment
+
+Run: `!uv run python skills/data-wizard/scripts/data-quality-scorer.py &lt;path&gt;`
+
+Dimensions scored:
+
+| Dimension | Weight | Checks |
+|-----------|--------|--------|
+| Completeness | 25% | Missing values, null patterns |
+| Consistency | 20% | Type uniformity, format violations |
+| Accuracy | 20% | Range violations, statistical outliers |
+| Timeliness | 15% | Stale records, temporal gaps |
+| Uniqueness | 20% | Duplicates, near-duplicates |
 
 <Tabs>
   <TabItem label="Public Metadata">

@@ -1,7 +1,21 @@
 ---
 title: "new-project"
 description: "Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "new-project"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "new-project"
+composed_by: "compose-custom-wave-5"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill new-project -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/new-project` `<plan|init|bootstrap|audit|repair|prefs|preset|docs|ai|github|doctor> [name|path]`
+**Use:** `/new-project` `&lt;plan|init|bootstrap|audit|repair|prefs|preset|docs|ai|github|doctor&gt; [name|path]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/new-project/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions. NOT for product features, agents, MCP servers, cloud provisioning, or destructive migrations.
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Initialize projects with safe, preference-driven scaffolds, docs, AI instructions, quality gates, GitHub setup, and design baselines. Use when starting a repo or non-destructively adding conventions. NOT for product features, agents, MCP servers, cloud provisioning, or destructive migrations.
-
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Plan and safely bootstrap modern software projects from typed presets and capability preferences.
-
-&gt; Grounded in repository `skills/new-project/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-5 from `skills/new-project/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -95,6 +99,105 @@ Plan and safely bootstrap modern software projects from typed presets and capabi
 10. Include mobile-first responsive UI requirements in web/docs/design profiles.
 11. Update evals when dispatch modes, presets, capabilities, or safety gates change.
 12. Keep this body under 500 lines; move details to references.
+
+## Operating Flow
+
+<Steps>
+
+1. **Step** -- Classify the request as new project, existing repo bootstrap, audit, repair, preferences, docs, AI instructions, GitHub, cloud/data, or refusal.
+
+2. **Step** -- Read `references/intake-and-routing.md` for ambiguous or natural-language requests.
+
+3. **Step** -- Run read-only preflight before any mutating mode.
+
+4. **Step** -- Resolve presets and capabilities from `data/`, not from ad hoc prose.
+
+5. **Step** -- Produce a blueprint with files, commands, skipped existing files, risks, approvals, and validation.
+
+6. **Step** -- Apply only after explicit approval, one module at a time.
+
+7. **Step** -- Run validation and summarize created, skipped, and deferred work.
+
+</Steps>
+
+## Pattern Implementation
+
+### Classification-Gating
+
+Classify every request before acting: new project, existing bootstrap, audit, repair, preferences, docs, AI instructions, GitHub, cloud/data, or refusal. Ambiguous requests stay read-only until the missing choice is resolved.
+
+### Progressive-Disclosure
+
+Keep `SKILL.md` as the routing contract. Load references for domain detail, data files for preferences, scripts for deterministic checks, and templates only for report rendering.
+
+### Scaling-Strategy
+
+Add future stacks as capabilities and presets first. Change the dispatch table only when a new top-level mode is needed.
+
+## Canonical Vocabulary
+
+Use these canonical terms exactly.
+
+| Term                 | Meaning                                                                             |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| Preset               | Curated setup bundle, such as `minimal`, `python-api`, `docs-lite`, or `monorepo`   |
+| Capability           | Atomic setup feature, such as `python.uv`, `docs.starlight`, or `github.actions-ci` |
+| Blueprint            | Read-only project setup plan with files, commands, risks, approvals, and checks     |
+| Apply step           | One approved mutation unit from a blueprint                                         |
+| External side effect | Cloud, deploy, release, DNS, account, or provider mutation                          |
+
+## Script Index
+
+| Script                        | Purpose                                                              |
+| ----------------------------- | -------------------------------------------------------------------- |
+| `scripts/preferences.py`      | List, validate, resolve, merge, and explain preferences              |
+| `scripts/preflight.py`        | Read-only project detection and risk flags                           |
+| `scripts/blueprint.py`        | Build a JSON blueprint from request, preset, and capabilities        |
+| `scripts/validate_catalog.py` | Validate schemas, dependencies, conflicts, templates, and references |
+| `scripts/validate_plan.py`    | Validate blueprint safety before apply                               |
+| `scripts/version_check.py`    | Query package/version facts for selected packages                    |
+| `scripts/doctor.py`           | Verify existing scaffold health without mutations                    |
+| `scripts/render_report.py`    | Render report data for HTML templates                                |
+
+Scripts use `argparse`, JSON stdout, diagnostics on stderr, and `--help`. They must not read secret files.
+
+## Safety Gates
+
+<Steps>
+
+1. **Step** -- Preflight first for scaffold, bootstrap, repair, docs, AI, GitHub, cloud, or apply modes.
+
+2. **Step** -- Blueprint before mutation or package install.
+
+3. **Step** -- Skip existing files by default; overwrite requires file-by-file approval.
+
+4. **Step** -- Preserve detected package managers unless migration is approved.
+
+5. **Step** -- Never ask users to paste secrets into chat, and never read secret files.
+
+6. **Step** -- Generate `.env.example` or `.env.template`, not real credentials.
+
+7. **Step** -- Cloud, deploy, release, DNS, Docker, and account mutations require explicit provider-specific approval.
+
+8. **Step** -- GitHub Actions default to `permissions: contents: read`; add only narrow permissions.
+
+9. **Step** -- Docker Compose templates must avoid privileged mode, host networking, Docker socket mounts, broad host mounts, root services, and public DB binds by default.
+
+10. **Step** -- Generated AI instructions must not bypass approvals, disable credential guards, auto-deploy, or ignore higher-priority instructions.
+
+</Steps>
+
+## Validation Contract
+
+Before declaring changes to this skill complete, run:
+
+```bash
+python skills/new-project/scripts/check.py
+uv run pytest tests/test_new_project.py
+uv run python skills/new-project/scripts/preflight.py --path . --format json
+```
+
+After changing skill definitions, public descriptions, references, or eval behavior, invoke `docs-steward` if available.
 
 <Tabs>
   <TabItem label="Public Metadata">

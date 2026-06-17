@@ -1,7 +1,21 @@
 ---
 title: "deep-agents-memory"
 description: "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "deep-agents-memory"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "deep-agents-memory"
+composed_by: "compose-external-wave-3"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill la
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/deep-agents-memory.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-3 using authoring SSOT (`docs/src/authoring/skills/deep-agents-memory.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Part of official langchain-ai/langchain-skills (early dev). Memory, persistence, filesystem middleware for Deep Agents. See README for LangChain/LangGraph/Deep Agents selection via primer.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Part of official langchain-ai/langchain-skills (early dev). Memory, persistence, filesystem middleware for Deep Agents. See README for LangChain/LangGraph/Deep Agents selection via primer.
+Entry maintained via authoring + research for compose-external-wave-3; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Group install via langchain-ai/langchain-skills npx ... --skill deep-agents-* etc; status=inspect-then-install.
-
-## Upstream Maintainer
-
-[langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)
-
-## Comparable Alternatives
-
-Custom deep agent skills or langgraph equivalents.
-
-&gt; Evidence from public web sources, GitHub (langchain-ai org Jun 2026), curated; research evidence only, not authority/endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Custom deep agent skills or langgraph equivalents.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/deep-agents-memory.mdx (full SSOT excerpt)"
 ---
 name: "deep-agents-memory"
 description: "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `langchain-ai/langchain-skills` |
+| source_url | `https://github.com/langchain-ai/langchain-skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

@@ -1,0 +1,74 @@
+---
+title: "research-stop-verifier"
+description: "Verify research skill invariants before an active research session completes."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "research-stop-verifier"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="Stop" variant="caution" /> <Badge text="codex,claude-code,gemini-cli" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Verify research skill invariants before an active research session completes.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `research-stop-verifier` |
+| mode | `enforce` |
+| logical_event | `Stop` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}` |
+| timeout | `30` |
+| harnesses | `["codex", "claude-code", "gemini-cli"]` |
+
+<Aside type="note">
+Longer timeout (30s). Policy `_policy_stop_verifier` loads research_hook and runs final invariant checks (ledger coverage, no unverified claims, state cleanup). Blocks stop on failure.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "research-stop-verifier",
+  "description": "Verify research skill invariants before an active research session completes.",
+  "mode": "enforce",
+  "logical_event": "Stop",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py research-stop-verifier --harness {harness}",
+  "timeout": 30,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy)"
+def _policy_stop_verifier(payload: NormalizedPayload) -> int:
+    research_hook = _load_research_hook_module()
+    research_payload = _research_payload(payload, research_hook)
+    return research_hook._policy_stop_verifier(research_payload)
+```
+
+Heavy verification implemented in `skills/research/scripts/research_hook.py`.
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="research skill" href="/skills/catalog/custom/research/" description="Stop verifier closes the research contract." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

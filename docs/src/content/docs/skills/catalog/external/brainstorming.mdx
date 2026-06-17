@@ -1,7 +1,21 @@
 ---
 title: "brainstorming"
 description: "Agent workflow discipline from `obra/superpowers`."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "brainstorming"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "brainstorming"
+composed_by: "compose-external-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add obra/superpowers --skill brainstorming --skill systematic-debuggi
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/brainstorming.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-2 using authoring SSOT (`docs/src/authoring/skills/brainstorming.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -&gt; writing-plans -&gt; executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -&gt; writing-plans -&gt; executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Entry maintained via authoring + research for compose-external-wave-2; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
-
-## Upstream Maintainer
-
-[obra/superpowers](https://github.com/obra/superpowers) (MIT, highly active)
-
-## Comparable Alternatives
-
-Local planning/debug/review skills; github/awesome-copilot planning skills; other TDD/methodology bundles.
-
-&gt; Web-aug from README + skills/ 2026. Evidence only.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Local planning/debug/review skills; github/awesome-copilot planning skills; othe
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/brainstorming.mdx (full SSOT excerpt)"
 ---
 name: "brainstorming"
 description: "Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Agent workflow discipline from `obra/superpowers`. Prompt-only skills with no observed hooks or scripts in source-list output; complements local `orchestrator`, `test-architect`, and `honest-review` without duplicating them.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add obra/superpowers --skill brainstorming --skill systematic-debugging --skill test-driven-development --skill writing-plans --skill executing-plans --skill verification-before-completion -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `obra/superpowers` |
+| source_url | `https://github.com/obra/superpowers` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

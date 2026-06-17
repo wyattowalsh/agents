@@ -1,7 +1,21 @@
 ---
 title: "shieldcn-badges"
 description: "Install `shieldcn-badges` from `jal-co/shieldcn` for local badge-generation workflows."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "shieldcn-badges"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder"
+target_agents: ["adal", "antigravity", "augment", "bob", "claude-code", "cline", "codearts-agent", "codebuddy", "codemaker", "codestudio", "codex", "command-code", "continue", "cortex", "crush", "cursor", "devin", "droid", "forgecode", "gemini-cli", "github-copilot", "goose", "hermes-agent", "iflow-cli", "junie", "kilo", "kiro-cli", "kode", "mcpjam", "mistral-vibe", "mux", "neovate", "opencode", "openhands", "pi", "pochi", "qoder", "qwen-code", "rovodev", "roo", "tabnine-cli", "trae", "trae-cn", "warp", "windsurf", "zencoder"]
+research_slug: "shieldcn-badges"
+composed_by: "compose-external-wave-11"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/shieldcn-badges.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-11 using authoring SSOT (`docs/src/authoring/skills/shieldcn-badges.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Install shieldcn-badges from jal-co/shieldcn for local badge-generation workflows. Source at audited HEAD exposes one skill, MIT license, no observed hooks.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Install `shieldcn-badges` from `jal-co/shieldcn` for local badge-generation workflows. The source at audited HEAD `55daa08d15c92dab7f443facd55a91b8c914c78d` exposes one skill, has MIT licensing, and no observed hooks, command substitutions, `allowed-tools`, or skill-local scripts; keep usage scoped to README/docs badge generation. Dynamic JSON badge patterns can embed arbitrary external JSON endpoints in documentation, so avoid adding badges for private or secret-bearing URLs. The command intentionally enumerates observed local Skills CLI adapters instead of using `--all`; current Skills CLI installs these adapters through the universal `~/.agents/skills/shieldcn-badges` root and symlinks Crush.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Install shieldcn-badges from jal-co/shieldcn for local badge-generation workflows. Source at audited HEAD exposes one skill, MIT license, no observed hooks.
+Entry maintained via authoring + research for compose-external-wave-11; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder` status=install-now-after-trust-gate; selector=named
-
-## Upstream Maintainer
-
-[jal-co/shieldcn](https://github.com/jal-co/shieldcn)
-
-## Comparable Alternatives
-
-General purpose agent skills in similar domain (see catalog for alternatives); e.g. other SQL or UI or infra skills.
-
-&gt; Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ General purpose agent skills in similar domain (see catalog for alternatives); e
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/shieldcn-badges.mdx (full SSOT excerpt)"
 ---
 name: "shieldcn-badges"
 description: "Install `shieldcn-badges` from `jal-co/shieldcn` for local badge-generation workflows. The source at audited HEAD `55daa08d15c92dab7f443facd55a91b8c914c78d` exposes one skill, has MIT licensing, and no observed hooks, command substitutions, `allowed-tools`, or skill-local scripts; keep usage scoped to README/docs badge generation. Dynamic JSON badge patterns can embed arbitrary external JSON endpoints in documentation, so avoid adding badges for private or secret-bearing URLs. The command intentionally enumerates observed local Skills CLI adapters instead of using `--all`; current Skills CLI installs these adapters through the universal `~/.agents/skills/shieldcn-badges` root and symlinks Crush."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Install `shieldcn-badges` from `jal-co/shieldcn` for local badge-generation workflows. The source at audited HEAD `55daa08d15c92dab7f443facd55a91b8c914c78d` exposes one skill, has MIT licensing, and no observed hooks, command substitutions, `allowed-tools`, or skill-local scripts; keep usage scoped to README/docs badge generation. Dynamic JSON badge patterns can embed arbitrary external JSON endpoints in documentation, so avoid adding badges for private or secret-bearing URLs. The command intentionally enumerates observed local Skills CLI adapters instead of using `--all`; current Skills CLI installs these adapters through the universal `~/.agents/skills/shieldcn-badges` root and symlinks Crush.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder` |
+| source | `jal-co/shieldcn` |
+| source_url | `https://github.com/jal-co/shieldcn` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `adal, antigravity, augment, bob, claude-code, cline, codearts-agent, codebuddy, codemaker, codestudio, codex, command-code, continue, cortex, crush, cursor, devin, droid, forgecode, gemini-cli, github-copilot, goose, hermes-agent, iflow-cli, junie, kilo, kiro-cli, kode, mcpjam, mistral-vibe, mux, neovate, opencode, openhands, pi, pochi, qoder, qwen-code, rovodev, roo, tabnine-cli, trae, trae-cn, warp, windsurf, zencoder` |
 
 </details>
 

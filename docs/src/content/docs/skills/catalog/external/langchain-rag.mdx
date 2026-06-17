@@ -1,7 +1,21 @@
 ---
 title: "langchain-rag"
 description: "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "langchain-rag"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "langchain-rag"
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill la
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/langchain-rag.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-7 using authoring SSOT (`docs/src/authoring/skills/langchain-rag.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Part of official langchain-ai/langchain-skills (early dev, ~800 stars). ecosystem-primer: start-here for choosing LangChain vs LangGraph vs Deep Agents, env setup, next skills. langchain-fundamentals: agents via create_agent, tools, structured output, middleware. langchain-middleware: HITL approval, custom middleware, Command resume. langchain-rag: RAG (loaders, embeddings, vector stores). langchain-dependencies: version pinning ref for py/ts.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Part of official langchain-ai/langchain-skills (early dev, ~800 stars). ecosystem-primer: start-here for choosing LangChain vs LangGraph vs Deep Agents, env setup, next skills. langchain-fundamentals: agents via create_agent, tools, structured output, middleware. langchain-middleware: HITL approval, custom middleware, Command resume. langchain-rag: RAG (loaders, embeddings, vector stores). langchain-dependencies: version pinning ref for py/ts.
+Entry maintained via authoring + research for compose-external-wave-7; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install (group): npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals ... --skill langchain-rag --skill deep-agents-* ... -y -g -a [agents]; status=inspect-then-install; selector=named. Set API keys post-install.
-
-## Upstream Maintainer
-
-[langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) (official LangChain AI org).
-
-## Comparable Alternatives
-
-langchain docs or custom agent building skills; other RAG/LLM framework skills.
-
-&gt; Evidence from public web sources, GitHub repositories (official orgs Jun 2026), curated catalog; treat as research evidence, not authority or endorsement. Use external-skill-auditor + live audit for promotion.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ langchain docs or custom agent building skills; other RAG/LLM framework skills.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/langchain-rag.mdx (full SSOT excerpt)"
 ---
 name: "langchain-rag"
 description: "Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Extended LangChain row with Deep Agents core/memory/orchestration, middleware/HITL, dependency pinning, and Managed Deep Agents ops. Confirm source-list slugs before apply.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add langchain-ai/langchain-skills --skill ecosystem-primer --skill langchain-fundamentals --skill langgraph-fundamentals --skill langgraph-human-in-the-loop --skill langgraph-persistence --skill langchain-rag --skill deep-agents-core --skill deep-agents-memory --skill deep-agents-orchestration --skill langchain-middleware --skill langchain-dependencies --skill managed-deep-agents -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `langchain-ai/langchain-skills` |
+| source_url | `https://github.com/langchain-ai/langchain-skills` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

@@ -1,7 +1,21 @@
 ---
 title: "plannotator-visual-explainer"
 description: "Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "plannotator-visual-explainer"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "plannotator-visual-explainer"
+composed_by: "compose-external-wave-9"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound 
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/plannotator-visual-explainer.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/plannotator-visual-explainer.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Optional Plannotator extra for visual explainer (planning visuals). Part of user-facing extras in apps/skills (not root). Complements core Plannotator skills for compound/structured planning workflows, goal setup, and visual explanations of plans. Installed as optional extras via the curated apps/skills subpath.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above. Do not install from the repo root (`backnotprop/plannotator`) — that path exposes maintainer-only skills (pierre-guard, release-plannotator, review-renovate, update-deps), not the user-facing extras.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Optional Plannotator extra for visual explainer (planning visuals). Part of user-facing extras in apps/skills (not root). Complements core Plannotator skills for compound/structured planning workflows, goal setup, and visual explanations of plans. Installed as optional extras via the curated apps/skills subpath.
+Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 `npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. status=install-now-after-trust-gate; selector=named (group). Notes: requires core Plannotator skills/CLI; do not use root path.
-
-## Upstream Maintainer
-
-backnotprop (github.com/backnotprop/plannotator/apps/skills). Skills under apps/skills/extra per structure. Config explicitly warns: do not install from repo root (exposes maintainer-only skills: pierre-guard, release-plannotator, review-renovate, update-deps). Use the apps/skills path for user-facing extras. Requires core Plannotator skills/CLI first.
-
-## Comparable Alternatives
-
-Core Plannotator skills (required prerequisite); other planning/roadmap or goal-setting skills (e.g. create-implementation-plan, brainstorm variants); general agent planning or visual explainer skills; native agent task decomposition without Plannotator-specific extras.
-
-&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Core Plannotator skills (required prerequisite); other planning/roadmap or goal-
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/plannotator-visual-explainer.mdx (full SSOT excerpt)"
 ---
 name: "plannotator-visual-explainer"
 description: "Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above. Do not install from the repo root (`backnotprop/plannotator`) — that path exposes maintainer-only skills (pierre-guard, release-plannotator, review-renovate, update-deps), not the user-facing extras."
@@ -112,6 +115,16 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Optional Plannotator extras (compound planning analysis, setup-goal, visual explainer). Requires the core Plannotator skills and CLI above. Do not install from the repo root (`backnotprop/plannotator`) — that path exposes maintainer-only skills (pierre-guard, release-plannotator, review-renovate, update-deps), not the user-facing extras.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add backnotprop/plannotator/apps/skills --skill plannotator-compound --skill plannotator-setup-goal --skill plannotator-visual-explainer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `backnotprop/plannotator/apps/skills` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

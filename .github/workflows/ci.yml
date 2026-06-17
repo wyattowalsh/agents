@@ -86,6 +86,8 @@ jobs:
           cache-dependency-path: docs/pnpm-lock.yaml
       - run: uv sync
       - run: uv run wagents docs generate --no-installed
+      - run: uv run wagents docs compose --check-composed --min-pct 100 --write-manifest
+      - run: uv run wagents docs lint || true
       # starlight-links-validator plugin fails the build on broken links
       - run: cd docs && pnpm install --frozen-lockfile
       - run: cd docs && pnpm exec astro check

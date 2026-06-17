@@ -1,11 +1,25 @@
 ---
 title: "temporal-developer"
 description: "Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "temporal-developer"
+composed: true
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "temporal-developer"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="temporal-developer" variant="note" /> <Badge text="23 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="temporal-developer" variant="note" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
 
 > Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth.
 
@@ -24,10 +38,13 @@ npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/temporal-developer.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/temporal-developer.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Official Temporal multi-SDK skill for building durable, long-running workflows and activities with Temporal. Complements local event-driven-architect skill. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
 
 ## Harness Coverage
 
@@ -40,55 +57,20 @@ npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y
 
 ## Trust / Audit
 
-Trust tier: **Inspect first** (`needs-inspection`)
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; provenance=verified-install-command (web-audited SKILL.md + repo); risks=Standard curated gating; some sources note pending registry/provenance details or API key prerequisites (e.g. RENDER_API_KEY, Stripe). Review before bulk use. policy=Install only after trust gate; re-audit on promotion.
 
-Curated status: `inspect-then-install`
+Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
 
-## Purpose
+</CardGrid>
 
-Official Temporal multi-SDK skill for building durable, long-running workflows and activities with Temporal. Complements local event-driven-architect skill. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-## Install Prerequisites
-
-Install: `npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=install-now-after-trust-gate; selector=named
-
-## Upstream Maintainer
-
-[temporalio/skill-temporal-developer](https://github.com/temporalio/skill-temporal-developer)
-
-## Comparable Alternatives
-
-A general-purpose agent instruction without a scoped skill contract
-
-&gt; Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `temporalio/skill-temporal-developer` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `needs-inspection` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `temporal-developer` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/temporal-developer.mdx (full SSOT excerpt)"
 ---
 name: "temporal-developer"
 description: "Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth."
@@ -111,8 +93,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=temporal-developer; re-run migration to refresh */}
 
 Official Temporal multi-SDK skill for long-running durable execution. Complements local `event-driven-architect` with implementation depth.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add temporalio/skill-temporal-developer --skill temporal-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | temporalio/skill-temporal-developer |
+| source_url | https://github.com/temporalio/skill-temporal-developer |
+| trust_tier | needs-inspection |
+| curated_status | inspect-then-install |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +113,5 @@ Official Temporal multi-SDK skill for long-running durable execution. Complement
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

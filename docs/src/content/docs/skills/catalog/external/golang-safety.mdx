@@ -1,7 +1,21 @@
 ---
 title: "golang-safety"
 description: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "golang-safety"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "golang-safety"
+composed_by: "compose-external-wave-6"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/golang-safety.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-6 using authoring SSOT (`docs/src/authoring/skills/golang-safety.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Go-specific agent skill providing best practices, patterns, and workflows for safety. Part of a larger curated set of 20+ Go skills from samber. Emphasizes production readiness, statistical rigor for perf, and cross-references other golang skills. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Go-specific agent skill providing best practices, patterns, and workflows for safety. Part of a larger curated set of 20+ Go skills from samber. Emphasizes production readiness, statistical rigor for perf, and cross-references other golang skills. Evidence gathered from upstream SKILL.md, READMEs, and repo structure via web research.
+Entry maintained via authoring + research for compose-external-wave-6; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add samber/cc-skills-golang --skill golang-safety -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named
-
-## Upstream Maintainer
-
-[samber/cc-skills-golang](https://github.com/samber/cc-skills-golang)
-
-## Comparable Alternatives
-
-A general-purpose agent instruction without a scoped skill contract
-
-&gt; Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ A general-purpose agent instruction without a scoped skill contract
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/golang-safety.mdx (full SSOT excerpt)"
 ---
 name: "golang-safety"
 description: "Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Extended `samber/cc-skills-golang` row for Go depth beyond the original six-skill subset. Keep `golang-google-wire`, `golang-uber-fx`, `golang-uber-dig`, and `golang-samber-do` global-only unless explicitly requested.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add samber/cc-skills-golang --skill golang-concurrency --skill golang-testing --skill golang-security --skill golang-how-to --skill golang-observability --skill golang-grpc --skill golang-error-handling --skill golang-cli --skill golang-spf13-cobra --skill golang-spf13-viper --skill golang-lint --skill golang-benchmark --skill golang-performance --skill golang-stretchr-testify --skill golang-database --skill golang-graphql --skill golang-project-layout --skill golang-modernize --skill golang-troubleshooting --skill golang-safety --skill golang-popular-libraries -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `samber/cc-skills-golang` |
+| source_url | `https://github.com/samber/cc-skills-golang` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

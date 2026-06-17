@@ -20,7 +20,7 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill wargame -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
 ```
 
-**Use:** `/wargame` `<scenario description>`
+**Use:** `/wargame` &lt;scenario description&gt;
 
 </div>
 
@@ -64,7 +64,7 @@ Domain-agnostic strategic decision analysis. Every output labeled exploratory.
 | Field | Value |
 | ----- | ----- |
 | Model | `opus` |
-| Argument Hint | `<scenario description>` |
+| Argument Hint | &lt;scenario description&gt; |
   </TabItem>
 </Tabs>
 
@@ -108,7 +108,7 @@ Use these terms exactly throughout all modes:
 | **actor** | An entity in the wargame with goals, resources, and constraints; may be user-controlled or AI-controlled |
 | **turn** | One cycle of the interactive wargame loop: situation brief, decision, adjudication, consequences |
 | **adjudication** | The process of resolving a turn's decisions into outcomes using probability and game state |
-| **monte carlo** | Randomized exploration of N outcome variations from a single decision point (N <= 25) |
+| **monte carlo** | Randomized exploration of N outcome variations from a single decision point (N &lt;= 25) |
 | **inject** | A pre-seeded unexpected event deployed mid-game to force trade-offs between competing objectives |
 | **tier** | Complexity classification: Clear (0-3), Complicated (4-6), Complex (7-10), Chaotic (9-10) |
 | **AAR** | After Action Review — mandatory end-of-game analysis extracting biases, insights, and transferable principles |
@@ -187,7 +187,7 @@ When uncertain whether input is vague, default to one clarifying question rather
 
 **`resume keyword` (text):** Search journal YAML frontmatter (`scenario`, `tags` fields) for case-insensitive substring match. If exactly one match, auto-resume. If multiple, show filtered list.
 
-**Resume flow:** Read YAML frontmatter (metadata) + last `<!-- STATE ... -->` block (game state) for fast resume. Fall back to full-journal reconstruction if no state snapshot found.
+**Resume flow:** Read YAML frontmatter (metadata) + last <!-- STATE ... --> block (game state) for fast resume. Fall back to full-journal reconstruction if no state snapshot found.
 
 ### Journal List
 
@@ -495,7 +495,7 @@ Pattern: `{YYYY-MM-DD}-{domain}-{slug}.md`
 - **Interactive Wargame:** Save after EVERY turn with `status: In Progress`. After AAR, update to `status: Complete`
 
 ### State Snapshot
-Append a `<!-- STATE ... -->` YAML block as an HTML comment after each turn save. Fields: `turn_number`, `difficulty`, `verbosity`, `criteria`, `branches`, `actors` (each with name, resources, stance, beliefs, information_state, relationships, risk_posture, attention_style), `active_injects`, `inject_history`. Resume reads frontmatter + last state block. Full schema and rewind/branch protocols in `references/session-commands.md` § State Snapshot and § Rewind Protocol.
+Append a <!-- STATE ... --> YAML block as an HTML comment after each turn save. Fields: `turn_number`, `difficulty`, `verbosity`, `criteria`, `branches`, `actors` (each with name, resources, stance, beliefs, information_state, relationships, risk_posture, attention_style), `active_injects`, `inject_history`. Resume reads frontmatter + last state block. Full schema and rewind/branch protocols in `references/session-commands.md` § State Snapshot and § Rewind Protocol.
 
 ### Sort Order
 Journals sorted by filename (reverse chronological — newest first). This ordering is canonical for both `list` and `resume N`.
@@ -895,7 +895,7 @@ Three tiers, with automatic fallback to the highest available:
   <TabItem label="Tier 3: Rich HTML">
     <Badge text="Dashboard template" variant="tip" /> Composable HTML dashboard (~600 lines) with JSON-in-script rendering.
 
-    **Pattern:** The LLM writes only the JSON data block. Template JS handles all rendering deterministically. Self-validating: malformed JSON falls back to a `<pre>` error display.
+    **Pattern:** The LLM writes only the JSON data block. Template JS handles all rendering deterministically. Self-validating: malformed JSON falls back to a <pre> error display.
 
     **12+ view types:**
 

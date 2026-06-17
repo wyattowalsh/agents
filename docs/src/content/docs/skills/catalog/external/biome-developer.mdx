@@ -1,7 +1,21 @@
 ---
 title: "biome-developer"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "biome-developer"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "biome-developer"
+composed_by: "compose-external-wave-2"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/biome-developer.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-2 using authoring SSOT (`docs/src/authoring/skills/biome-developer.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+biome-developer supplies internal best practices and gotchas for contributors working on the Biome (formatter/linter) codebase itself. It covers AST navigation, string extraction without allocation, embedded language handling, clippy/style rules (no emojis, let chains, path imports), dev-dependency path usage, comment guidelines, testing via quick_test, and common API confusion tables. Marked as compatibility: "Designed for coding agents working on the Biome codebase (github.com/biomejs/biome)."
 
 ## Harness Coverage
 
@@ -46,27 +63,13 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-biome-developer supplies internal best practices and gotchas for contributors working on the Biome (formatter/linter) codebase itself. It covers AST navigation, string extraction without allocation, embedded language handling, clippy/style rules (no emojis, let chains, path imports), dev-dependency path usage, comment guidelines, testing via quick_test, and common API confusion tables. Marked as compatibility: "Designed for coding agents working on the Biome codebase (github.com/biomejs/biome)."
+Entry maintained via authoring + research for compose-external-wave-2; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 `npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`
 
 Intended to be used while editing the Biome monorepo; requires familiarity with Rust, the parser/analyzer crates, and the project's justfile test helpers.
-
-## Upstream Maintainer
-
-biomejs (https://github.com/biomejs/biome). Main site and docs: https://biomejs.dev/
-
-## Comparable Alternatives
-
-General Rust or web-tooling contributor guidelines; local project-specific AGENTS.md or CLAUDE.md files when not working inside the Biome repo.
-
-&gt; Evidence gathered from public GitHub (raw .claude/skills/biome-developer/SKILL.md and repo files). Not an endorsement or authority; this skill encodes Biome-project conventions only.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -87,10 +90,10 @@ General Rust or web-tooling contributor guidelines; local project-specific AGENT
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/biome-developer.mdx (full SSOT excerpt)"
 ---
 name: "biome-developer"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -115,6 +118,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add biomejs/biome --skill biome-developer -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `biomejs/biome` |
+| source_url | `https://github.com/biomejs/biome` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

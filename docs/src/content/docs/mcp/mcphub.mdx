@@ -1,7 +1,18 @@
 ---
 title: "mcphub"
 description: "MCPHub control-plane metadata MCP server"
+page_kind: "mcp"
+source_kind: "repo"
+asset_id: "mcphub"
+composed: true
+docs_density: standard
+package: "mcp-mcphub"
+fastmcp: "true"
+composed_by: "compose-batch-apply"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Aside, Code, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
@@ -9,8 +20,8 @@ import { Badge, Tabs, TabItem, Aside, Code, CardGrid, LinkCard } from '@astrojs/
 
 > MCPHub control-plane metadata MCP server
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository MCP server directory `mcp/mcphub/` (source file `mcp/mcphub/server.py`).
+<Aside type="note" title="Repo MCP server (hand-maintained)">
+Composed compose-batch-apply from `mcp/mcphub/`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 <Aside type="tip" title="Usage">

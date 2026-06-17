@@ -1,7 +1,21 @@
 ---
 title: "skill-router"
 description: "Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "skill-router"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "skill-router"
+composed_by: "compose-custom-wave-7"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill skill-router -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/skill-router` `<search|context|read|doctor> [query]`
+**Use:** `/skill-router` `&lt;search|context|read|doctor&gt; [query]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/skill-router/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows.
+**Stack / assumptions:** Requires Python 3.11+ with PyYAML; reads local SKILL.md files from repo, Codex, global, plugin, and supported agent skill roots via scripts/skill_index.py.
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows.
-
-**Stack / assumptions:** Requires Python 3.11+ with PyYAML; reads local SKILL.md files from repo, Codex, global, plugin, and supported agent skill roots via scripts/skill_index.py.
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Use local skill indexing to choose and load relevant skills only when a task needs them.
-
-&gt; Grounded in repository `skills/skill-router/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-7 from `skills/skill-router/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -67,6 +71,121 @@ Use local skill indexing to choose and load relevant skills only when a task nee
 4. Do not use this skill to install or remove skills; use `skill-installer` or `npx skills` workflows.
 5. Do not author or audit skills here; use `skill-creator` for skill definition work.
 6. Preserve the user task as the search query unless there is a clear reason to add terms.
+
+## Workflow
+
+### 1. Classify
+
+1. Use `search` when deciding which skill or skills apply.
+2. Use `context` when the next step needs the selected skill bodies.
+3. Use `read` only when the skill name or path is already known.
+4. Use `doctor` when a skill is missing, duplicated, or omitted by a startup context warning.
+
+### 2. Retrieve
+
+2. Run the matching CLI command from this skill directory or the repository root:
+
+```bash
+python scripts/skill_index.py search "$ARGUMENTS" --limit 5
+python scripts/skill_index.py context "$ARGUMENTS" --limit 3
+python scripts/skill_index.py read <skill-name>
+python scripts/skill_index.py doctor
+```
+
+### 3. Select
+
+1. Prefer the highest-ranked repo or Codex-user skill when scores are close.
+2. Read only the minimum skill bodies needed for the task, usually one to three.
+3. If a result has warnings, inspect them before following executable hooks or scripts.
+
+## Source Scope
+
+`python scripts/skill_index.py` searches these roots:
+
+| Source | Root | Trust tier |
+|--------|------|------------|
+| `repo` | `skills/` | `repo` |
+| `project` | `.agents/skills/` in the current project path | `codex-user` |
+| `codex` | `~/.codex/skills/` | `codex-user` |
+| `global` | `~/.agents/skills/` plus supported agent stores | `external-installed` |
+| `plugin` | `~/.codex/plugins/cache/**/skills/` | `openai-plugin` or `plugin` |
+
+Use `--source repo`, `--source codex`, `--source global`, or `--source plugin` to narrow results when needed.
+
+## Canonical Vocabulary
+
+| Term | Meaning |
+|------|---------|
+| **skill index** | Parsed metadata for visible `SKILL.md` files across known roots |
+| **skill context packet** | Small set of selected skill bodies loaded after search |
+| **source** | Filesystem origin such as `repo`, `codex`, `global`, or `plugin` |
+| **trust tier** | Safety label used to rank and warn about retrieved skills |
+| **warning** | Parser, hook, script, or metadata signal requiring inspection before use |
+
+## Classification Gate
+
+<Steps>
+
+1. **Step** -- If the user gives a task, run `search` first.
+
+2. **Step** -- If the user asks to apply a selected skill, run `context` for the top matches.
+
+3. **Step** -- If the user names a skill exactly, run `read`.
+
+4. **Step** -- If the user reports missing or omitted skills, run `doctor` before searching.
+
+5. **Step** -- If the user asks to install, create, or audit a skill, redirect out of scope.
+
+</Steps>
+
+## Selection Rules
+
+<Steps>
+
+1. **Step** -- Exact skill name or alias beats all lexical matches.
+
+2. **Step** -- Name and title matches beat description matches.
+
+3. **Step** -- Description matches beat heading and body matches.
+
+4. **Step** -- Repo skills beat user-installed skills when relevance is comparable.
+
+5. **Step** -- Unknown, malformed, hook-bearing, or script-bearing skills require caution before use.
+
+</Steps>
+
+## Output Contract
+
+Search and context results include:
+
+- `name`
+- `path`
+- `source`
+- `trust_tier`
+- `description`
+- `score`
+- `matched_fields`
+- `reason`
+- `warnings`
+
+Use `--format json` when another script or agent will consume the result.
+
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+uv run pytest tests/test_skill_index.py -q
+```
+
+See `references/routing-guide.md` for additional validation notes.
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No repository CLI references remain under this skill directory.
+3. Search and context CLI tests pass.
 
 <Tabs>
   <TabItem label="Public Metadata">

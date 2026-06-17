@@ -1,7 +1,21 @@
 ---
 title: "learn"
 description: "Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "learn"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "learn"
+composed_by: "compose-custom-wave-5"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -22,26 +36,16 @@ npx skills add github:wyattowalsh/agents --skill learn -y -g --agent antigravity
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/learn/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review.
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Capture corrections and patterns as reusable knowledge. Routes to the right instruction file. Use when patterns repeat 3+ times or to save insights. NOT for one-time fixes or code review.
-
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Record corrections, insights, and patterns. Route them to the correct instruction file. Apply kaizen principles to keep instructions lean and effective.
-
-&gt; Grounded in repository `skills/learn/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-5 from `skills/learn/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -75,6 +79,63 @@ Record corrections, insights, and patterns. Route them to the correct instructio
 5. Keep always-loaded content under token budget
 6. Run `python scripts/check.py` after every instruction file modification
 7. Prefer hooks/rules over prose (poka-yoke principle)
+
+## Routing Protocol
+
+Route proposed updates to the correct target:
+
+| Scope | Target |
+|-------|--------|
+| Cross-project conventions | `instructions/global.md` |
+| Language-specific tooling | Convention skill (`python-conventions`, etc.) |
+| Orchestration/parallelism | `orchestrator` skill body |
+| Project-specific standards | Project's `AGENTS.md` |
+| File-scoped enforcement | `.claude/rules/&lt;topic&gt;.md` |
+| Skill behavior | The skill's own `SKILL.md` |
+
+### Routing Decision Steps
+
+1. Determine the scope: does this apply to all projects or just one?
+2. If cross-project, does it relate to a specific language or tool?
+3. If language-specific, route to the corresponding convention skill
+4. If general, route to `instructions/global.md`
+5. If project-only, route to the project's `AGENTS.md`
+6. If file-scoped enforcement only, create a `.claude/rules/` entry
+
+## Kaizen Principles
+
+<Steps>
+
+1. **Step** -- **Incremental &gt; revolutionary** — Smallest viable change, verify before next
+
+2. **Step** -- **Poka-yoke** — Prefer hooks/tooling over prose instructions (error-proof by design)
+
+3. **Step** -- **Standards work** — Follow existing patterns, document what works
+
+4. **Step** -- **JIT** — Build only what is needed, optimize when measured
+
+</Steps>
+
+## Canonical Terms
+
+- `instruction file` — any file that provides agent instructions (global.md, AGENTS.md, SKILL.md)
+- `routing` — the process of choosing the correct target file for a change
+- `correction pattern` — a repeated fix that indicates a missing or wrong instruction
+- `token budget` — the limit on always-loaded instruction content
+- `scope` — cross-project, language-specific, orchestration, project-specific, or file-scoped
+
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
 
 <Tabs>
   <TabItem label="Public Metadata">

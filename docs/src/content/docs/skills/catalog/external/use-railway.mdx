@@ -1,11 +1,25 @@
 ---
 title: "use-railway"
-description: "Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`)."
+description: "Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "use-railway"
+composed: true
+composed_by: "compose-external-wave-8"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "use-railway"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="use-railway" variant="note" /> <Badge text="36 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="use-railway" variant="note" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
 
 > Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.
 
@@ -24,10 +38,13 @@ npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravit
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/use-railway.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 8 using authoring SSOT (`docs/src/authoring/skills/use-railway.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Official Railway deploy/ops skill. Broad allowed-tools (railway CLI, curl, npm). Covers deploy, ops for Railway platform.
 
 ## Harness Coverage
 
@@ -40,55 +57,20 @@ npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravit
 
 ## Trust / Audit
 
-Trust tier: **Inspect first** (`needs-inspection`)
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command. Web-aug: github.com/railwayapp/railway-skills (official Railway). Catalog notes: High Snyk risk reported by Skills CLI; confirm credential handling and signup/deploy flows before promoting.
 
-Curated status: `inspect-then-install`
+Entry maintained via authoring + research for compose-external-wave-8; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
 
-## Purpose
+</CardGrid>
 
-Official Railway deploy/ops skill. Broad allowed-tools (railway CLI, curl, npm). Covers deploy, ops for Railway platform.
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-## Install Prerequisites
-
-Install: `npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` status=inspect-then-install; selector=named. Requires railway CLI + creds.
-
-## Upstream Maintainer
-
-[railwayapp/railway-skills](https://github.com/railwayapp/railway-skills) (official)
-
-## Comparable Alternatives
-
-Netlify/Vercel/Render deploy skills; general hosting CLIs.
-
-&gt; Web + config notes 2026.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `railwayapp/railway-skills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `needs-inspection` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `use-railway` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/use-railway.mdx (full SSOT excerpt)"
 ---
 name: "use-railway"
 description: "Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now."
@@ -111,8 +93,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=use-railway; re-run migration to refresh */}
 
 Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `curl`, `npm`). Skills CLI reports High Snyk risk; confirm credential handling and signup/deploy flows before promoting to install-now.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add railwayapp/railway-skills --skill use-railway -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | railwayapp/railway-skills |
+| source_url | https://github.com/railwayapp/railway-skills |
+| trust_tier | needs-inspection |
+| curated_status | inspect-then-install |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +113,5 @@ Official Railway deploy/ops skill with broad `allowed-tools` (`railway` CLI, `cu
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

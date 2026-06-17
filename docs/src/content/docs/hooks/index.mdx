@@ -1,0 +1,110 @@
+---
+title: "Hooks"
+description: "Repo-managed lifecycle hooks for agent harnesses (Claude, Codex, Copilot, Gemini, etc)."
+page_kind: "hooks-hub"
+source_kind: "registry"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
+
+> Repo-managed, portable lifecycle hooks declared in `config/hook-registry.json`. These provide safety, context, formatting, lint, research guards, and audit surfaces across harnesses. Hand-maintained catalog pages (composed).
+
+<Badge text="17 hooks" variant="note" size="large" />
+
+<Aside type="tip" title="Source of truth">
+All hooks are defined in `config/hook-registry.json`. Use `wagents hooks list` and `wagents hooks validate` to inspect at runtime. Individual hook pages live under `/hooks/<id>/`.
+</Aside>
+
+## Core (github-copilot baseline)
+
+These run for the GitHub Copilot harness via direct shell handlers.
+
+<CardGrid>
+  <Card title="session-start">
+    <Badge text="SessionStart" variant="success" /> Report basic session environment and repository state (branch, dirty files, tool presence).
+  </Card>
+  <Card title="prompt-log">
+    <Badge text="UserPromptSubmit" variant="success" /> Local prompt audit logging (short retention) for Copilot sessions.
+  </Card>
+  <Card title="destructive-shell-guard">
+    <Badge text="PreToolUse" variant="caution" /> Block rm -rf on critical paths, remote-pipe-to-shell, force-push to main, git reset --hard, git clean -f.
+  </Card>
+  <Card title="protected-file-guard">
+    <Badge text="PreToolUse" variant="caution" /> Deny edits to secrets (.env*, credentials, tokens), .git internals, lockfiles, and path traversal.
+  </Card>
+  <Card title="post-edit-format">
+    <Badge text="PostToolUse" variant="success" /> Best-effort auto-format for py (ruff), js/ts (prettier), rs, go after writes/edits.
+  </Card>
+  <Card title="post-edit-lint">
+    <Badge text="PostToolUse" variant="success" /> Return concise Ruff/Ty or tsc issues as additionalContext after edits (non-blocking).
+  </Card>
+</CardGrid>
+
+## Codex-specific
+
+Codex harness uses the Python dispatcher (`wagents-hook.py`) for richer policy + status messages. All are registry-sourced.
+
+<CardGrid>
+  <Card title="codex-session-start-context">
+    <Badge text="SessionStart" variant="success" /> <Badge text="context" variant="tip" /> Lightweight git + repo context for Codex sessions.
+  </Card>
+  <Card title="codex-destructive-shell-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Critical shell blocks tailored for Codex payloads.
+  </Card>
+  <Card title="codex-protected-file-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Expanded matcher covering writes + shell for Codex protected-path enforcement.
+  </Card>
+  <Card title="codex-permission-request-guard">
+    <Badge text="PermissionRequest" variant="caution" /> <Badge text="enforce" variant="tip" /> Deny high-risk permission requests while preserving normal approval flow.
+  </Card>
+  <Card title="codex-post-tool-verify-context">
+    <Badge text="PostToolUse" variant="success" /> <Badge text="context" variant="tip" /> Lightweight quality checks + guidance injected as context (no block).
+  </Card>
+  <Card title="codex-stop-truth-gate">
+    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Require validation evidence before allowing stop when code-change claims are present.
+  </Card>
+</CardGrid>
+
+## Research guards (multi-harness)
+
+Activated by research prompts. Span codex, claude-code, github-copilot, gemini-cli. Use state machine + ledger for invariants.
+
+<CardGrid>
+  <Card title="research-prompt-triage-context">
+    <Badge text="UserPromptSubmit" variant="success" /> <Badge text="context" variant="tip" /> Detects research intent, activates state, injects method reminders.
+  </Card>
+  <Card title="research-readonly-write-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Blocks source writes while research state is active (degraded=audit).
+  </Card>
+  <Card title="research-dangerous-shell-guard">
+    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Blocks dangerous shell during research (degraded=audit).
+  </Card>
+  <Card title="research-evidence-ledger">
+    <Badge text="PostToolUse" variant="success" /> <Badge text="audit" variant="tip" /> Appends provenance (URLs, retrieval tools) to per-session ledger for later verification.
+  </Card>
+  <Card title="research-stop-verifier">
+    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Final invariant checks (ledger, claims, state) before allowing research session to stop. 30s timeout.
+  </Card>
+</CardGrid>
+
+## Dispatcher & Implementation Notes
+
+- GitHub Copilot direct `.sh` handlers under `./hooks/`.
+- Codex + multi-harness research use `hooks/wagents-hook.py <policy-id> --harness <name>`. Payload normalization, state, ledger, and degraded modes live here.
+- Research policies also delegate to `skills/research/scripts/research_hook.py` for the full state machine and stop verifier.
+- All entries are validated by `wagents hooks validate` and `scripts/validate/validate_repo.py`.
+
+## Related
+
+- CLI: `wagents hooks list --format json`, `wagents hooks validate`
+- Registry: `config/hook-registry.json`
+- Safety surface also includes MCPHub groups and agent permissionMode settings.
+- Research skill: `/skills/catalog/custom/research/`
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

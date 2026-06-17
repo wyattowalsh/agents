@@ -1,7 +1,19 @@
 ---
 title: "find-skills"
 description: "duplicate of `harness-master` discover (systematic gap pipeline)."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "find-skills"
+composed: true
+docs_density: standard
+trust_tier: "global-only-or-avoid"
+curated_status: "global-only-or-avoid"
+research_slug: "find-skills"
+composed_by: "compose-external-wave-4"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +36,13 @@ npx skills add vercel-labs/skills@find-skills --skill find-skills -y -g
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/find-skills.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-4 using authoring SSOT (`docs/src/authoring/skills/find-skills.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Vercel find-skills; overlaps with harness-master Discover for systematic gap expansion. Marked global-only-or-avoid to avoid bloat and duplication in curated surface.
 
 ## Harness Coverage
 
@@ -46,25 +61,11 @@ Curated status: `global-only-or-avoid`
 
 Risk notes: duplicate of `harness-master` discover (systematic gap pipeline).
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Vercel find-skills; overlaps with harness-master Discover for systematic gap expansion. Marked global-only-or-avoid to avoid bloat and duplication in curated surface.
+Entry maintained via authoring + research for compose-external-wave-4; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Avoid; status=global-only-or-avoid; unresolved.
-
-## Upstream Maintainer
-
-[vercel-labs/skills](https://github.com/vercel-labs/skills) @find-skills tag.
-
-## Comparable Alternatives
-
-harness-master Discover (local canonical for systematic gap/MCP/plugin/hook expansion); find-skills for ad-hoc `npx skills find` queries.
-
-&gt; Config rationale + web vercel labs.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -84,10 +85,10 @@ harness-master Discover (local canonical for systematic gap/MCP/plugin/hook expa
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/find-skills.mdx (full SSOT excerpt)"
 ---
 name: "find-skills"
 description: "duplicate of `harness-master` discover (systematic gap pipeline)."
@@ -112,6 +113,15 @@ unresolved_reason: "duplicate of `harness-master` discover (systematic gap pipel
 duplicate of `harness-master` discover (systematic gap pipeline).
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| source | `vercel-labs/skills` |
+| source_url | `https://github.com/vercel-labs/skills` |
+| trust_tier | `global-only-or-avoid` |
+| curated_status | `global-only-or-avoid` |
 
 </details>
 

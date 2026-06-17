@@ -1,7 +1,21 @@
 ---
 title: "skill-creator"
 description: "Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "skill-creator"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "2.0.0"
+research_slug: "skill-creator"
+composed_by: "compose-custom-wave-7"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/skill-creator` `<mode> [name]`
+**Use:** `/skill-creator` `&lt;mode&gt; [name]`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/skill-creator/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills.
+**Stack / assumptions:** Requires Python 3.13+; optional uv for project tooling; optional Node.js/npm for install commands; hook support varies by agent client.
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills.
-
-**Stack / assumptions:** Requires Python 3.13+; optional uv for project tooling; optional Node.js/npm for install commands; hook support varies by agent client.
-
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-
-**Repo summary:**
-
-Create, improve, and audit AI agent skills. Every skill follows 14 proven structural patterns.
-
-&gt; Grounded in repository `skills/skill-creator/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-7 from `skills/skill-creator/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -144,6 +148,67 @@ python skills/skill-creator/scripts/package.py skills/<name>/            # Singl
 - Grade scale: "A" (90-100), "B" (75-89), "C" (60-74), "D" (40-59), "F" (&lt;40)
 - Patterns: "dispatch-table", "reference-file-index", "critical-rules", "canonical-vocabulary", "scope-boundaries", "classification-gating", "scaling-strategy", "state-management", "scripts", "templates", "hooks", "progressive-disclosure", "body-substitutions", "stop-hooks"
 - Audit dimensions: "frontmatter", "description", "dispatch-table", "body-structure", "pattern-coverage", "reference-quality", "critical-rules", "script-quality", "portability", "conciseness", "canonical-vocabulary", "evaluation-coverage", "validation-contract"
+
+## Repo-Wide / Multi-Skill Planning
+
+Use `plan &lt;name&gt;` for an existing-skill refinement plan without editing and `plan --all` or `plan repo` for a ranked repo-wide planning pass.
+
+Required planning output:
+
+1. baseline audit summary
+2. highest-value findings
+3. explicit file targets
+4. expected score impact
+5. approval gate before any edits
+
+For repo-wide planning, produce a ranked queue plus one standalone refinement plan per promoted skill or skill cluster. Do not edit any skill until the user approves the plan.
+
+Load `references/refinement-plan.md` when producing the standalone refinement-plan packet.
+
+## Dashboard
+
+Render visual creation process monitor or audit quality dashboard. Load `references/audit-guide.md` § Dashboard.
+
+Auto-detects mode from data: `phases` field → process monitor; `skills` array → audit overview.
+
+## Gallery (Empty Arguments)
+
+Present skill inventory with scores and available actions.
+Run `uv run python skills/skill-creator/scripts/audit.py --all --format table`, display results, offer mode menu.
+
+## Hooks
+
+PreToolUse hooks intercept tool calls during skill execution. The `hooks:` frontmatter field scopes hooks to this skill only — they activate when the skill is loaded and deactivate when it completes.
+
+Post-edit enforcement for this skill:
+
+- `SKILL.md` edits trigger `validate_skill.py`
+- `evals/*.json` edits trigger `validate_evals.py`
+- hook-bearing skill/settings edits trigger `validate_hooks.py`
+- failures surface to the agent instead of being swallowed
+
+Stop hook enforcement:
+
+- runs `uv run python skills/skill-creator/scripts/verify.py stop`
+- validates dirty skill-definition, eval, and hook surfaces before exit
+- exits immediately when hook input has `stop_hook_active: true` to avoid recursive Stop-hook loops
+
+## State Management
+
+Creation progress persists at `~/.{gemini\|copilot\|codex\|claude}/skill-progress/&lt;name&gt;.json`. Read/write via `scripts/progress.py`. Survives session restarts. Use `--state-dir` to override the default location.
+
+## Validation Contract
+
+Run from this skill directory before declaring changes complete:
+
+```bash
+python scripts/check.py
+```
+
+Completion criteria:
+
+1. `scripts/check.py` exits 0.
+2. No portable-CLI violations remain under this skill directory.
 
 <Tabs>
   <TabItem label="Public Metadata">

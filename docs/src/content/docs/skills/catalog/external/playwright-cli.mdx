@@ -1,7 +1,21 @@
 ---
 title: "playwright-cli"
 description: "Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "playwright-cli"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "playwright-cli"
+composed_by: "compose-external-wave-9"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigrav
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/playwright-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-9 using authoring SSOT (`docs/src/authoring/skills/playwright-cli.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Official microsoft/playwright-cli. CLI (with SKILL) for common Playwright browser actions: open/goto/type/click/fill/screenshot/pdf/eval, tabs, storage, network route, tracing, video, sessions, dashboard. Token-efficient (avoids full a11y trees). For coding agents (better than MCP for some high-throughput cases per README). Node 18+. Headed/persistent options.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Official microsoft/playwright-cli. CLI (with SKILL) for common Playwright browser actions: open/goto/type/click/fill/screenshot/pdf/eval, tabs, storage, network route, tracing, video, sessions, dashboard. Token-efficient (avoids full a11y trees). For coding agents (better than MCP for some high-throughput cases per README). Node 18+. Headed/persistent options.
+Entry maintained via authoring + research for compose-external-wave-9; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a [agents]; npm global or npx; status=inspect-then-install.
-
-## Upstream Maintainer
-
-[microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) (official).
-
-## Comparable Alternatives
-
-playwright-best-practices (curated internal); puppeteer/selenium skills.
-
-&gt; Evidence from GitHub (mcp-use, microsoft, neondatabase 2026) + catalog; research evidence only - not authority or endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ playwright-best-practices (curated internal); puppeteer/selenium skills.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/playwright-cli.mdx (full SSOT excerpt)"
 ---
 name: "playwright-cli"
 description: "Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Official Playwright CLI browser automation. Complements curated `playwright-best-practices` (test patterns) with operational CLI control.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `microsoft/playwright-cli` |
+| source_url | `https://github.com/microsoft/playwright-cli` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

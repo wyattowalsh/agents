@@ -1,0 +1,76 @@
+---
+title: "codex-post-tool-verify-context"
+description: "Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "codex-post-tool-verify-context"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="PostToolUse" variant="success" /> <Badge text="codex" variant="default" /> <Badge text="mode: context" variant="tip" />
+
+> Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `codex-post-tool-verify-context` |
+| status_message | `Checking post-edit quality` |
+| mode | `context` |
+| logical_event | `PostToolUse` |
+| matcher | `Write\|Edit\|MultiEdit\|apply_patch\|edit\|create\|replace\|write_file\|Bash\|bash\|run_shell_command` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py codex-post-tool-verify-context --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex"]` |
+
+<Aside type="note">
+Policy `_policy_codex_post_tool_verify_context` runs limited quality path checks (ruff/ty context) and injects guidance via additionalContext. Does not block.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "codex-post-tool-verify-context",
+  "description": "Run lightweight context-only post-edit quality checks and return verification guidance after Codex tool use.",
+  "status_message": "Checking post-edit quality",
+  "mode": "context",
+  "logical_event": "PostToolUse",
+  "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py codex-post-tool-verify-context --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy)"
+def _policy_codex_post_tool_verify_context(payload: NormalizedPayload) -> int:
+    repo_root, quality_paths = _quality_paths(payload)
+    paths = [str(path.relative_to(repo_root)) for path in quality_paths] or _candidate_paths(payload)
+    # ... runs fast ruff/ty on small set and emits additionalContext
+    ...
+```
+
+Command: `python3 ... codex-post-tool-verify-context --harness codex`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

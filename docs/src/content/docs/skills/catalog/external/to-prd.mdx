@@ -1,11 +1,25 @@
 ---
 title: "to-prd"
 description: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "to-prd"
+composed: true
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "to-prd"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="to-prd" variant="note" /> <Badge text="17 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="to-prd" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > Product-engineering workflow skills beyond the curated `obsidian-vault` row.
 
@@ -24,10 +38,13 @@ npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --s
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/to-prd.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/to-prd.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+From mattpocock/skills (MIT, 131k stars, respected TS educator Matt Pocock). Engineering: synthesize conversation to PRD, submit as GitHub issue. No extra interview. Part of composable engineering/productivity skills for real (non-vibe) engineering with agents. Setup skill recommended first. Small, adaptable, feedback-loop focused.
 
 ## Harness Coverage
 
@@ -40,55 +57,22 @@ npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --s
 
 ## Trust / Audit
 
-Trust tier: **Curated** (`curated-trust-gated`)
+trust_tier=curated-trust-gated; status=install-now-after-trust-gate; high community adoption/positive reports; MIT; focuses on process (grill, TDD, arch) rather than broad exec. Low risk per reviews.
 
-Curated status: `install-now-after-trust-gate`
+Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Product-engineering workflow skills beyond the curated `obsidian-vault` row.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="grill-me" href="/skills/catalog/external/grill-me/" description="Related curated external skill." />
+  <LinkCard title="tdd" href="/skills/catalog/external/tdd/" description="Related curated external skill." />
+  <LinkCard title="improve-codebase-architecture" href="/skills/catalog/external/improve-codebase-architecture/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-From mattpocock/skills (MIT, 131k stars, respected TS educator Matt Pocock). Engineering: synthesize conversation to PRD, submit as GitHub issue. No extra interview. Part of composable engineering/productivity skills for real (non-vibe) engineering with agents. Setup skill recommended first. Small, adaptable, feedback-loop focused.
-
-## Install Prerequisites
-
-npx skills add mattpocock/skills --skill to-prd -y -g -a [agents]; often with setup-matt-pocock-skills; status=install-now-after-trust-gate.
-
-## Upstream Maintainer
-
-[mattpocock/skills](https://github.com/mattpocock/skills) (MIT, very popular).
-
-## Comparable Alternatives
-
-GSD/BMAD process skills; other TDD/arch skills; kepano for obsidian.
-
-&gt; Evidence from public GitHub (official + community 2026) + catalog; research evidence, not authority/endorsement.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `mattpocock/skills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `to-prd` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/to-prd.mdx (full SSOT excerpt)"
 ---
 name: "to-prd"
 description: "Product-engineering workflow skills beyond the curated `obsidian-vault` row."
@@ -111,8 +95,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=to-prd; re-run migration to refresh */}
 
 Product-engineering workflow skills beyond the curated `obsidian-vault` row.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add mattpocock/skills --skill grill-me --skill tdd --skill to-prd --skill improve-codebase-architecture -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | mattpocock/skills |
+| source_url | https://github.com/mattpocock/skills |
+| trust_tier | curated-trust-gated |
+| curated_status | install-now-after-trust-gate |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +115,5 @@ Product-engineering workflow skills beyond the curated `obsidian-vault` row.
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

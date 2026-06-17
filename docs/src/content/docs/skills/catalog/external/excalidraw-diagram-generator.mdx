@@ -1,7 +1,21 @@
 ---
 title: "excalidraw-diagram-generator"
 description: "`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "excalidraw-diagram-generator"
+composed: true
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "excalidraw-diagram-generator"
+composed_by: "compose-external-wave-4"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/excalidraw-diagram-generator.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-4 using authoring SSOT (`docs/src/authoring/skills/excalidraw-diagram-generator.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+awesome-copilot / community skill (multiple origins) to generate editable Excalidraw diagrams (.excalidraw JSON) from natural language descriptions or codebase analysis. Supports flowcharts, ERDs, architecture, sequence, mindmaps, swimlanes etc. with layout and styling guidance. Often paired with Excalidraw MCP servers for live canvas.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `inspect-then-install`
 
 Risk notes: `excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-awesome-copilot / community skill (multiple origins) to generate editable Excalidraw diagrams (.excalidraw JSON) from natural language descriptions or codebase analysis. Supports flowcharts, ERDs, architecture, sequence, mindmaps, swimlanes etc. with layout and styling guidance. Often paired with Excalidraw MCP servers for live canvas.
+Entry maintained via authoring + research for compose-external-wave-4; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 Install: `npx skills add github/awesome-copilot --skill excalidraw-diagram-generator` or community variants; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
-
-## Upstream Maintainer
-
-[github/awesome-copilot](https://github.com/github/awesome-copilot) and community (e.g. excalidraw org, coleam00)
-
-## Comparable Alternatives
-
-Mermaid diagram skills, draw.io / plantuml skills; architecture doc skills; `figma-generate-design` for design-tool diagrams.
-
-&gt; Evidence synthesized from public web sources (GitHub repos, official docs, skill registries); confidence reflects source reputation and public signals only. Not an endorsement.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Mermaid diagram skills, draw.io / plantuml skills; architecture doc skills; `fig
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/excalidraw-diagram-generator.mdx (full SSOT excerpt)"
 ---
 name: "excalidraw-diagram-generator"
 description: "`excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 `excalidraw-diagram-generator` bundles three Python helper scripts with no scanner findings; still review executable surface before install-now promotion.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add github/awesome-copilot --skill excalidraw-diagram-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `github/awesome-copilot` |
+| source_url | `https://github.com/github/awesome-copilot` |
+| trust_tier | `needs-inspection` |
+| curated_status | `inspect-then-install` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

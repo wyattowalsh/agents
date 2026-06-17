@@ -1,11 +1,25 @@
 ---
 title: "swiftui-expert-skill"
-description: "SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns."
+description: "SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns. Complements `avdlee/swift-concurrency-agent-skill@swift-concurrency` and Flutter/Expo mobile coverage."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "swiftui-expert-skill"
+composed: true
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "swiftui-expert-skill"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="swiftui-expert-skill" variant="note" /> <Badge text="28 words" variant="default" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="swiftui-expert-skill" variant="note" /> <Badge text="Curated" variant="note" /> <Badge text="install-now-after-trust-gate" variant="default" />
 
 > SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns. Complements `avdlee/swift-concurrency-agent-skill@swift-concurrency` and Flutter/Expo mobile coverage.
 
@@ -24,10 +38,13 @@ npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a 
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/swiftui-expert-skill.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/swiftui-expert-skill.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+SwiftUI Expert Skill: expert best-practices guidance for AI coding tools in Agent Skills format. Covers state management (property wrappers, @Observable, data flow), view composition/extraction/identity, performance (hot paths, lazy, granularity), lists & ForEach (stable id, Table, filtering), navigation/sheets (NavigationStack/SplitView, Inspector, enum sheets), Swift Charts (marks/axes/selection/styling/a11y/Chart3D), animations (implicit/explicit, transitions, keyframes, @Animatable), macOS (scenes, multi-window, Table, styling, AppKit interop), iOS 26+ Liquid Glass effects + fallbacks, accessibility (VoiceOver, Dynamic Type, traits), image optimization (AsyncImage, downsampling, cache), latest APIs migration (iOS 15+), previews, focus/scroll/text/layout patterns, localization. Includes unique executable Python xctrace-based Instruments trace recorder/analyzer (time profiler, hangs, hitches, SwiftUI updates/causes) for diagnosing perf issues with structured JSON+md output. Non-opinionated, correctness/performance focus. 16.6k weekly installs, 3k stars. MIT. Complements author's Swift Concurrency skill.
 
 ## Harness Coverage
 
@@ -40,78 +57,20 @@ npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a 
 
 ## Trust / Audit
 
-Trust tier: **Curated** (`curated-trust-gated`)
+Curated install-now-after-trust-gate / curated-trust-gated. MIT. High adoption (16.6k weekly). Authors AvdLee (Antoine van der Lee, SwiftLee) + Omar Elsayed. 261 commits, frequent releases (4.0.0). Strong structure with SKILL.md + references/ + executable tools for traces. Maintenance workflow for API freshness (requires Sosumi MCP). Complements avdlee/swift-concurrency-agent-skill per config. Risks: domain-specific UI guidance; review generated SwiftUI for target iOS/macOS versions; trace tools require Xcode/xctrace and device/sim access; high visibility reduces unknown risk but always audit before broad adoption. npx provenance verified.
 
-Curated status: `install-now-after-trust-gate`
+Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns. Complements `avdlee/swift-concurrency-agent-skill@swift-concurrency` and Flutter/Expo mobile coverage.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
 
-## Purpose
+</CardGrid>
 
-SwiftUI Expert Skill: expert best-practices guidance for AI coding tools in Agent Skills format. Covers state management (property wrappers, @Observable, data flow), view composition/extraction/identity, performance (hot paths, lazy, granularity), lists & ForEach (stable id, Table, filtering), navigation/sheets (NavigationStack/SplitView, Inspector, enum sheets), Swift Charts (marks/axes/selection/styling/a11y/Chart3D), animations (implicit/explicit, transitions, keyframes, @Animatable), macOS (scenes, multi-window, Table, styling, AppKit interop), iOS 26+ Liquid Glass effects + fallbacks, accessibility (VoiceOver, Dynamic Type, traits), image optimization (AsyncImage, downsampling, cache), latest APIs migration (iOS 15+), previews, focus/scroll/text/layout patterns, localization. Includes unique executable Python xctrace-based Instruments trace recorder/analyzer (time profiler, hangs, hitches, SwiftUI updates/causes) for diagnosing perf issues with structured JSON+md output. Non-opinionated, correctness/performance focus. 16.6k weekly installs, 3k stars. MIT. Complements author's Swift Concurrency skill.
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-## Install Prerequisites
-
-[38;5;250m███████╗██╗  ██╗██╗██╗     ██╗     ███████╗[0m
-[38;5;248m██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝[0m
-[38;5;245m███████╗█████╔╝ ██║██║     ██║     ███████╗[0m
-[38;5;243m╚════██║██╔═██╗ ██║██║     ██║     ╚════██║[0m
-[38;5;240m███████║██║  ██╗██║███████╗███████╗███████║[0m
-[38;5;238m╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝[0m
-
-┌   skills 
-│
-│  Tip: use the --yes (-y) and --global (-g) flags to install without prompts.
-[?25l│
-◇  Source: https://github.com/avdlee/swiftui-agent-skill.git
-[?25h[?25l│
-◒  Cloning repository[999D[J◐  Cloning repository[999D[J◓  Cloning repository[999D[J◑  Cloning repository[999D[J◒  Cloning repository[999D[J◐  Cloning repository[999D[J◓  Cloning repository[999D[J◑  Cloning repository[999D[J◒  Cloning repository.[999D[J◐  Cloning repository.[999D[J◓  Cloning repository.[999D[J◑  Cloning repository.[999D[J◒  Cloning repository.[999D[J◇  Repository cloned
-[?25h[?25l│
-[999D[J◇  Found 2 skills
-[?25h│
-●  Selected 1 skill: swiftui-expert-skill
-│
-■  Invalid agents: grok
-│
-●  Valid agents: aider-desk, amp, antigravity, antigravity-cli, astrbot, autohand-code, augment, bob, claude-code, openclaw, cline, codearts-agent, codebuddy, codemaker, codestudio, codex, command-code, continue, cortex, crush, cursor, deepagents, devin, dexto, droid, firebender, forgecode, gemini-cli, github-copilot, goose, hermes-agent, inference-sh, jazz, junie, iflow-cli, kilo, kimi-code-cli, kiro-cli, kode, lingma, loaf, mcpjam, mistral-vibe, moxby, mux, opencode, openhands, ona, pi, qoder, qoder-cn, qwen-code, replit, reasonix, rovodev, roo, tabnine-cli, terramind, tinycloud, trae, trae-cn, warp, windsurf, zed, zencoder, zenflow, neovate, pochi, promptscript, adal, universal
-
-status=install-now-after-trust-gate; selector=source-spec/named. Plugin or manual options per README. Verification: agent should reference SKILL.md workflows/checklists and load references on demand. Node for some packaging; Xcode for trace tooling.
-
-## Upstream Maintainer
-
-AvdLee / Antoine van der Lee + Omar Elsayed (github.com/AvdLee/SwiftUI-Agent-Skill; avanderlee.com, swiftdifferently.com). MIT. 3k stars. Companion skills from author: Swift Concurrency, Core Data, Swift Testing. Inspired by Dimillian/Skills and jordibruin Swift Charts Examples. Includes AGENTS.md, CONTRIBUTING, release automation. Active sponsorship.
-
-## Comparable Alternatives
-
-Author's swift-concurrency (same maintainer); other SwiftUI or iOS UI skills (e.g. from Dimillian or antfu web-design); official Apple SwiftUI / Human Interface Guidelines docs + sample code; Instruments + SwiftUI inspector without agent skill layer; general mobile UI or design system skills.
-
-&gt; Web-augmented research; evidence only, not authority. Config in external-skills.md is authoritative for install.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `avdlee/swiftui-agent-skill` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `curated-trust-gated` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `swiftui-expert-skill` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/swiftui-expert-skill.mdx (full SSOT excerpt)"
 ---
 name: "swiftui-expert-skill"
 description: "SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns. Complements `avdlee/swift-concurrency-agent-skill@swift-concurrency` and Flutter/Expo mobile coverage."
@@ -134,8 +93,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=swiftui-expert-skill; re-run migration to refresh */}
 
 SwiftUI expert guidance for iOS/macOS including state, composition, performance, and Liquid Glass patterns. Complements `avdlee/swift-concurrency-agent-skill@swift-concurrency` and Flutter/Expo mobile coverage.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add avdlee/swiftui-agent-skill --skill swiftui-expert-skill -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | avdlee/swiftui-agent-skill |
+| source_url | https://github.com/avdlee/swiftui-agent-skill |
+| trust_tier | curated-trust-gated |
+| curated_status | install-now-after-trust-gate |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -144,4 +113,5 @@ SwiftUI expert guidance for iOS/macOS including state, composition, performance,
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

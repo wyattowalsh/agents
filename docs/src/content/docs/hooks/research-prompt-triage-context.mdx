@@ -1,0 +1,77 @@
+---
+title: "research-prompt-triage-context"
+description: "Activate research hook state and inject research-method reminders."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "research-prompt-triage-context"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-hooks-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="UserPromptSubmit" variant="success" /> <Badge text="multi-harness" variant="default" /> <Badge text="mode: context" variant="tip" />
+
+> Activate research hook state and inject research-method reminders.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `research-prompt-triage-context` |
+| mode | `context` |
+| logical_event | `UserPromptSubmit` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py research-prompt-triage-context --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["codex", "claude-code", "github-copilot", "gemini-cli"]` |
+
+<Aside type="note">
+Sets research active state (env + file state). Policy `_policy_prompt_triage`. Also loads `skills/research/scripts/research_hook.py` for some behaviors.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "research-prompt-triage-context",
+  "description": "Activate research hook state and inject research-method reminders.",
+  "mode": "context",
+  "logical_event": "UserPromptSubmit",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py research-prompt-triage-context --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "codex",
+    "claude-code",
+    "github-copilot",
+    "gemini-cli"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy)"
+def _policy_prompt_triage(payload: NormalizedPayload) -> int:
+    if not _is_research_prompt(payload.prompt):
+        return 0
+    # activate state + inject reminders
+    _write_state(payload)
+    return _additional_context(payload, "Research mode active. Use evidence-ledger, obey readonly guards, verify before stop.", "research-prompt-triage-context")
+```
+
+Dispatcher also falls back to `research_hook.py` for some surfaces.
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+  <LinkCard title="research skill" href="/skills/catalog/custom/research/" description="The research skill that pairs with these guards." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

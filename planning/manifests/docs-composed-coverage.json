@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-06-16",
+  "surface": "all",
+  "total": 418,
+  "composed": 418,
+  "scaffold": 0,
+  "missing": 0,
+  "composed_pct": 100.0,
+  "by_surface": {
+    "agents": {
+      "composed": 8,
+      "scaffold": 0,
+      "missing": 0
+    },
+    "mcp": {
+      "composed": 1,
+      "scaffold": 0,
+      "missing": 0
+    },
+    "skills": {
+      "composed": 389,
+      "scaffold": 0,
+      "missing": 0
+    },
+    "hooks": {
+      "composed": 17,
+      "scaffold": 0,
+      "missing": 0
+    },
+    "configs": {
+      "composed": 3,
+      "scaffold": 0,
+      "missing": 0
+    }
+  }
+}

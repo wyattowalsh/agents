@@ -1,7 +1,21 @@
 ---
 title: "api-designer"
 description: "Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs. NOT for MCP servers (mcp-creator) or frontend API calls."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "api-designer"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "api-designer"
+composed_by: "compose-custom-wave-1"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -18,30 +32,20 @@ import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@a
 npx skills add github:wyattowalsh/agents --skill api-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode
 ```
 
-**Use:** `/api-designer` `<mode> <input>`
+**Use:** `/api-designer` `&lt;mode&gt; &lt;input&gt;`
 
 </div>
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
-
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/api-designer/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Research context (evidence, not authority)">
+**Problem:** Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs. NOT for MCP servers (mcp-creator) or frontend API calls.
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+**Comparable alternative:** `mcp-creator` for mcp servers
 </Aside>
 
-<Aside type="note" title="Research context (evidence, not authority)">
-## Quick Answer
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Problem:** Contract-first API design for REST, GraphQL, gRPC. Design, spec, review, version, compat, sdk. Use for API architecture and OpenAPI specs. NOT for MCP servers (mcp-creator) or frontend API calls.
-
-**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-
-**Comparable alternative:** `mcp-creator` for mcp servers
-
-**Repo summary:**
-
-Contract-first API design across REST, GraphQL, and gRPC. Produces OpenAPI 3.1 specs, reviews existing APIs, analyzes backward compatibility, and scaffolds client code.
-
-&gt; Grounded in repository `skills/api-designer/SKILL.md`; treat as evidence, not authority.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed compose-custom-wave-1 from `skills/api-designer/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -73,6 +77,156 @@ Contract-first API design across REST, GraphQL, and gRPC. Produces OpenAPI 3.1 s
 8. Use the canonical vocabulary consistently — "spec" not "swagger", "endpoint" not "route"
 9. All specs target OpenAPI 3.1 — do not generate Swagger 2.0 or OpenAPI 3.0
 10. NOT for MCP servers (use mcp-creator) or frontend API client code
+
+## Canonical Vocabulary
+
+| Term | Definition |
+|------|-----------|
+| **spec** | An OpenAPI 3.1 document (YAML or JSON) describing an API's surface |
+| **endpoint** | A path + method combination in a REST API; a query/mutation in GraphQL; an RPC in gRPC |
+| **breaking change** | Any modification that causes existing clients to fail without code changes |
+| **non-breaking change** | A backward-compatible modification (additive fields, new endpoints, optional params) |
+| **resource** | A domain entity exposed through the API (noun-based URL segment in REST) |
+| **contract** | The formal agreement between API producer and consumer defined by the spec |
+| **protocol** | The API paradigm: REST, GraphQL, or gRPC |
+| **surface** | The complete set of endpoints, types, and operations an API exposes |
+| **versioning strategy** | How breaking changes are communicated: URL path, header, or query parameter |
+
+## Protocol Detection
+
+Detect the API protocol from input before entering any mode. Classification determines which conventions and patterns apply.
+
+**Detection signals:**
+
+| Signal | REST | GraphQL | gRPC |
+|--------|------|---------|------|
+| File extension | `.yaml`, `.json` (OpenAPI) | `.graphql`, `.gql` | `.proto` |
+| Keywords | endpoint, resource, CRUD, path | query, mutation, subscription, resolver | service, rpc, message, protobuf |
+| URL patterns | `/api/v1/resources` | `/graphql` | gRPC service names |
+| Code patterns | Express/FastAPI routes, controllers | Schema definitions, resolvers | Proto service definitions |
+
+**Routing:**
+- Clear signal for one protocol: proceed with that protocol's conventions
+- Mixed signals or ambiguous: ask user — "Which protocol? [REST / GraphQL / gRPC]"
+- No protocol context (pure requirements): default to REST, note assumption
+
+Load `references/rest-conventions.md`, `references/graphql-patterns.md`, or `references/grpc-patterns.md` based on detected protocol.
+
+## Mode A: Design
+
+New API from requirements. Read `references/rest-conventions.md` (or protocol-specific reference).
+
+### Design Steps
+
+1. **Parse requirements** — Extract resources, relationships, operations, auth needs, constraints
+2. **Resource modeling** — Define resources with attributes, relationships, cardinality
+3. **Endpoint design** — Map CRUD + custom operations to endpoints following protocol conventions
+4. **Request/response schemas** — Define payloads with types, validation rules, examples
+5. **Auth strategy** — Recommend auth approach (API key, OAuth2, JWT) based on use case
+6. **Error contract** — Define error response format with codes, messages, detail objects
+7. **Pagination & filtering** — Apply cursor or offset pagination, filter query patterns
+8. **Rate limiting** — Recommend limits based on endpoint sensitivity and expected load
+9. **Generate spec** — Output complete OpenAPI 3.1 YAML
+10. **Validate** — Run `scripts/api-spec-validator.py` on generated spec
+
+## Mode B: Spec
+
+Generate OpenAPI 3.1 from existing code.
+
+### Spec Steps
+
+1. **Scan codebase** — Read route definitions, controllers, handlers, decorators
+2. **Extract endpoints** — Map code to path + method + parameters + response types
+3. **Infer schemas** — Build request/response schemas from type annotations or runtime types
+4. **Generate spec** — Output OpenAPI 3.1 YAML with all discovered endpoints
+5. **Validate** — Run `scripts/api-spec-validator.py`
+6. **Gap report** — List endpoints missing descriptions, examples, or error responses
+
+## Mode C: Review
+
+Audit existing API design. Read-only analysis.
+
+### Review Steps
+
+1. **Parse spec** — Load and validate the OpenAPI document
+2. **Run validator** — `scripts/api-spec-validator.py` for structural issues
+3. **Run endpoint matrix** — `scripts/api-endpoint-matrix.py` for surface overview
+4. **Convention check** — Verify naming, HTTP method usage, status codes against `references/rest-conventions.md`
+5. **Security audit** — Check auth coverage, HTTPS enforcement, sensitive data exposure
+6. **Consistency check** — Verify naming patterns, response envelope consistency, error format uniformity
+7. **Report** — Present findings by severity (critical, warning, info) with specific fix recommendations
+
+## Mode D: Version
+
+Versioning and deprecation strategy.
+
+### Version Steps
+
+1. **Analyze current state** — Parse spec, identify version indicators
+2. **Recommend strategy** — Compare URL path vs header vs query param versioning (load `references/versioning-strategies.md`)
+3. **Deprecation plan** — Timeline, sunset headers, migration guides for deprecated endpoints
+4. **Version matrix** — Table showing which endpoints exist in which versions
+5. **Migration guide template** — Skeleton for consumer migration documentation
+
+## Mode E: Compat
+
+Backward compatibility diff between two spec versions.
+
+### Compat Steps
+
+1. **Load both specs** — Parse old and new OpenAPI documents
+2. **Run compat checker** — `scripts/compat-checker.py &lt;old&gt; &lt;new&gt;`
+3. **Classify changes** — Breaking vs non-breaking with change type and location
+4. **Impact assessment** — Which consumers are affected, estimated migration effort
+5. **Remediation** — For each breaking change, suggest backward-compatible alternatives
+
+## Mode F: Sdk
+
+Scaffold client code structure from a spec. NOT a publishable SDK package — a structural starting point.
+
+### SDK Steps
+
+1. **Parse spec** — Extract endpoints, schemas, auth requirements
+2. **Group by resource** — Organize endpoints into logical client modules
+3. **Generate client skeleton** — Method stubs with typed parameters and return types
+4. **Auth integration** — Wire auth mechanism into client constructor
+5. **Error handling** — Map API error codes to client exceptions
+6. **Usage examples** — One example per resource showing common operations
+
+## Scripts
+
+| Script | Purpose | Run When |
+|--------|---------|----------|
+| `scripts/api-spec-validator.py` | Validate OpenAPI 3.x for completeness and best practices | Design, Spec, Review |
+| `scripts/api-endpoint-matrix.py` | Extract endpoint inventory from spec | Review, Version, SDK |
+| `scripts/compat-checker.py` | Compare two specs for breaking changes | Compat |
+
+### Script Invocation
+
+```bash
+uv run python skills/api-designer/scripts/api-spec-validator.py <spec-path>
+uv run python skills/api-designer/scripts/api-endpoint-matrix.py <spec-path>
+uv run python skills/api-designer/scripts/compat-checker.py <old-spec> <new-spec>
+```
+
+All scripts output JSON to stdout, warnings to stderr.
+
+## Scope Boundaries
+
+**IS for:**
+- Designing new REST, GraphQL, or gRPC APIs from requirements
+- Generating OpenAPI specs from existing code
+- Reviewing and auditing API designs
+- Versioning strategy and deprecation planning
+- Breaking change analysis between spec versions
+- Scaffolding client code structure
+
+**NOT for:**
+- MCP server APIs (use `/mcp-creator`)
+- Frontend API client implementations
+- API gateway configuration
+- Runtime API testing or load testing
+- Database schema design (use `/database-architect`)
 
 <Tabs>
   <TabItem label="Public Metadata">

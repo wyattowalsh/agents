@@ -1,7 +1,21 @@
 ---
 title: "revops"
 description: "Marketing tier-2 residual beyond the two curated marketing rows."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "revops"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "revops"
+composed_by: "compose-external-wave-10"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add coreyhaines31/marketingskills --skill site-architecture --skill m
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/revops.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-10 using authoring SSOT (`docs/src/authoring/skills/revops.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Revenue operations: lead lifecycle, marketing-sales handoff, pipeline processes, and tooling alignment.
 
 ## Harness Coverage
 
@@ -46,27 +63,13 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Marketing tier-2 residual beyond the two curated marketing rows.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Revenue operations: lead lifecycle, marketing-sales handoff, pipeline processes, and tooling alignment.
+Entry maintained via authoring + research for compose-external-wave-10; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 npx skills add coreyhaines31/marketingskills --skill revops -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 
 The bundle installs many related skills; install only the needed subset when possible. Requires a product-marketing.md context file for best results.
-
-## Upstream Maintainer
-
-coreyhaines31 (https://github.com/coreyhaines31/marketingskills). Companion resources: Coding for Marketers, Swipe Files, Conversion Factory.
-
-## Comparable Alternatives
-
-Framework or channel-specific guides (Google Ads docs, Klaviyo/Mailchimp playbooks, traditional CRO resources, competitor tools such as Ahrefs/Semrush skills when available). Local playbooks and analytics-driven experimentation replace generic advice over time.
-
-&gt; Evidence gathered from public GitHub (repo README, skills/ sources, AGENTS.md). Not an endorsement or authority; marketing tactics must be validated against current platform policies, data, and legal requirements.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -87,10 +90,10 @@ Framework or channel-specific guides (Google Ads docs, Klaviyo/Mailchimp playboo
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/revops.mdx (full SSOT excerpt)"
 ---
 name: "revops"
 description: "Marketing tier-2 residual beyond the two curated marketing rows."
@@ -115,6 +118,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Marketing tier-2 residual beyond the two curated marketing rows.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add coreyhaines31/marketingskills --skill site-architecture --skill marketing-ideas --skill competitor-profiling --skill revops --skill churn-prevention --skill paywalls --skill launch --skill video -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `coreyhaines31/marketingskills` |
+| source_url | `https://github.com/coreyhaines31/marketingskills` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

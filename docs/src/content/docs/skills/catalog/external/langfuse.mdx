@@ -1,7 +1,21 @@
 ---
 title: "langfuse"
 description: "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "langfuse"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "langfuse"
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -24,10 +38,13 @@ npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/langfuse.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed compose-external-wave-7 using authoring SSOT (`docs/src/authoring/skills/langfuse.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Official langfuse/skills (MIT, 161 stars on skills repo). Main skill for Langfuse open-source LLM eng platform: tracing, prompt mgmt, eval, datasets, scores via API. Query docs/best-practices. Requires LANGFUSE_* keys (public/secret/base). Scoped tools. Complements OpenInference skills.
 
 ## Harness Coverage
 
@@ -46,25 +63,11 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
-
-## Purpose
-
-Official langfuse/skills (MIT, 161 stars on skills repo). Main skill for Langfuse open-source LLM eng platform: tracing, prompt mgmt, eval, datasets, scores via API. Query docs/best-practices. Requires LANGFUSE_* keys (public/secret/base). Scoped tools. Complements OpenInference skills.
+Entry maintained via authoring + research for compose-external-wave-7; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
 npx skills add langfuse/skills --skill langfuse -y -g -a [agents]; export keys; status=install-now-after-trust-gate; selector=named.
-
-## Upstream Maintainer
-
-[langfuse/skills](https://github.com/langfuse/skills) (MIT, official).
-
-## Comparable Alternatives
-
-Other observability: phoenix, arize, langsmith skills.
-
-&gt; Evidence from public web sources, GitHub (official orgs 2026), curated catalog; research evidence, not authority. External audit advised.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -85,10 +88,10 @@ Other observability: phoenix, arize, langsmith skills.
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/langfuse.mdx (full SSOT excerpt)"
 ---
 name: "langfuse"
 description: "Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them."
@@ -113,6 +116,17 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 Official Langfuse tracing, prompts, datasets, and CLI/API workflows. Scoped `allowed-tools` target `langfuse.com` and `langfuse-cli`; requires user-owned `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, and `LANGFUSE_BASE_URL`. Complements Phoenix/Arize OpenInference skills without duplicating them.
 
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add langfuse/skills --skill langfuse -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | `langfuse/skills` |
+| source_url | `https://github.com/langfuse/skills` |
+| trust_tier | `curated-trust-gated` |
+| curated_status | `install-now-after-trust-gate` |
+| target_agents | `antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode` |
 
 </details>
 

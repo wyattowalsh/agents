@@ -1,11 +1,25 @@
 ---
 title: "terraform-search-import"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "terraform-search-import"
+composed: true
+composed_by: "compose-external-wave-7"
+composed_at: "2026-06-16"
+docs_density: standard
+trust_tier: "needs-inspection"
+curated_status: "inspect-then-install"
+install_command: "npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
+research_slug: "terraform-search-import"
 ---
 
-import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+{/* HAND-MAINTAINED */}
 
-<Badge text="terraform-search-import" variant="note" /> <Badge text="18 words" variant="default" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="terraform-search-import" variant="note" /> <Badge text="Inspect first" variant="caution" /> <Badge text="inspect-then-install" variant="default" />
 
 > Curated third-party skill source. Run external-skill-auditor before repo promotion.
 
@@ -24,10 +38,13 @@ npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/terraform-search-import.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed Wave 7 using authoring SSOT (`docs/src/authoring/skills/terraform-search-import.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
 </Aside>
+
+## What It Does
+
+Terraform skill for searching and importing existing infrastructure resources into Terraform state and configuration.
 
 ## Harness Coverage
 
@@ -40,55 +57,21 @@ npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform
 
 ## Trust / Audit
 
-Trust tier: **Inspect first** (`needs-inspection`)
+trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-install-command; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.; evidence=Web-augmented from upstream SKILL.md + config/external-skills.md (fetched 2026-06-16).
 
-Curated status: `inspect-then-install`
+Entry maintained via authoring + research for compose-external-wave-7; authoritative install provenance in the collapsed details (config/external-skills.md is source of record for original curation).
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+## Related Skills
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+<CardGrid>
+  <LinkCard title="terraform-stacks" href="/skills/catalog/external/terraform-stacks/" description="Related curated external skill." />
+  <LinkCard title="aws-ami-builder" href="/skills/catalog/external/aws-ami-builder/" description="Related curated external skill." />
+</CardGrid>
 
-## Purpose
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-Terraform skill for searching and importing existing infrastructure resources into Terraform state and configuration.
-
-## Install Prerequisites
-
-Install: `npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named
-
-## Upstream Maintainer
-
-[hashicorp/agent-skills](https://github.com/hashicorp/agent-skills)
-
-## Comparable Alternatives
-
-Other infra skills like `kubernetes-specialist`.
-
-&gt; Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.
-
-<Tabs>
-  <TabItem label="Public Metadata">
-| Field | Value |
-| ----- | ----- |
-| Source Type | `curated-external` |
-| Display Source | `hashicorp/agent-skills` |
-| Source Kind | `github` |
-| Installability | portable command |
-| Review State | curated |
-| Trust Tier | `needs-inspection` |
-| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
-  </TabItem>
-  <TabItem label="General">
-| Field | Value |
-| ----- | ----- |
-| Name | `terraform-search-import` |
-  </TabItem>
-</Tabs>
-
-<details>
-<summary>View Full SKILL.md</summary>
-
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/terraform-search-import.mdx (full SSOT excerpt)"
 ---
 name: "terraform-search-import"
 description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
@@ -111,8 +94,18 @@ provenance_evidence: "Curated `npx skills add` command with named `--skill` sele
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=terraform-search-import; re-run migration to refresh */}
 
 Curated third-party skill source. Run external-skill-auditor before repo promotion.
-
 ````
+
+**Install / provenance (from authoring frontmatter + research):**
+
+| Field | Value |
+|-------|-------|
+| install_command | `npx skills add hashicorp/agent-skills --skill terraform-stacks --skill terraform-search-import --skill aws-ami-builder -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| source | hashicorp/agent-skills |
+| source_url | https://github.com/hashicorp/agent-skills |
+| trust_tier | needs-inspection |
+| curated_status | inspect-then-install |
+| target_agents | antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode |
 
 </details>
 
@@ -121,4 +114,5 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 <CardGrid>
   <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
   <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
 </CardGrid>

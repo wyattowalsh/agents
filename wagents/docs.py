@@ -5,6 +5,7 @@ import re
 import subprocess
 from pathlib import Path
 
+
 import typer
 from typer.models import OptionInfo
 
@@ -12,7 +13,7 @@ from wagents import CONTENT_DIR, DOCS_DIR, ROOT
 from wagents.catalog import collect_edges
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import escape_attr, truncate_sentence
-from wagents.rendering import render_page
+from wagents.rendering import escape_mdx, render_page
 from wagents.site_model import (
     SUPPORTED_AGENTS,
     VISUAL_ASSET_BY_ID,
@@ -33,6 +34,7 @@ from wagents.skill_docs import (
 from wagents.skill_research import (
     RESEARCH_DIR,
     build_batch_prompt,
+    load_skill_research,
     partition_skills_by_source,
     partition_skills_for_research,
     research_artifact_path,
@@ -346,6 +348,46 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     content_dir = ROOT / "docs" / "src" / "content" / "docs"
     content_dir.mkdir(parents=True, exist_ok=True)
     (content_dir / "index.mdx").write_text("\n".join(parts))
+
+
+def _accordionize_command_reference(parts: list[str]) -> list[str]:
+    """Wrap wagents command reference sections in collapsed details for scannability."""
+    out: list[str] = []
+    in_ref = False
+    in_details = False
+    for line in parts:
+        if line == "## Command Reference":
+            in_ref = True
+            out.append(line)
+            continue
+        if in_ref and line.startswith("## ") and line != "## Command Reference":
+            if in_details:
+                out.append("</details>")
+                out.append("")
+                in_details = False
+            in_ref = False
+            out.append(line)
+            continue
+        if in_ref and (line.startswith("### `wagents") or line.startswith("### Structured Output")):
+            if in_details:
+                out.append("</details>")
+                out.append("")
+            title = line.removeprefix("### ").replace(" -- ", " — ")
+            out.append('<details class="cli-command-ref">')
+            out.append(f"<summary>{title}</summary>")
+            out.append("")
+            in_details = True
+            continue
+        if in_ref and line == "---" and in_details:
+            out.append("</details>")
+            out.append("")
+            in_details = False
+            continue
+        out.append(line)
+    if in_details:
+        out.append("</details>")
+        out.append("")
+    return out
 
 
 def write_cli_page() -> None:
@@ -1306,48 +1348,7 @@ def write_cli_page() -> None:
     parts.append("- tests/")
     parts.append("</FileTree>")
     parts.append("")
-    parts.append("## Related Pages")
-    parts.append("")
-    parts.append("<CardGrid>")
-    parts.append('  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />')
-    if _has_repo_agents():
-        parts.append(
-            '  <LinkCard title="Agents Directory" href="https://github.com/wyattowalsh/agents/tree/main/agents" '
-            'description="Browse agent configurations in the repository." />'
-        )
-    else:
-        parts.append(
-            '  <LinkCard title="Bundle Manifest" '
-            'href="https://github.com/wyattowalsh/agents/blob/main/agent-bundle.json" '
-            'description="See the current bundle surface and generated docs inputs." />'
-        )
-    parts.append('  <LinkCard title="MCP Servers" href="/mcp/" description="Browse MCP server integrations." />')
-    parts.append("</CardGrid>")
-    parts.append("")
-
-    # Built With
-    parts.append("## Built With")
-    parts.append("")
-    parts.append("<CardGrid>")
-    parts.append(
-        '  <LinkCard title="uv" href="https://docs.astral.sh/uv/" description="Fast Python package manager." />'
-    )
-    parts.append(
-        '  <LinkCard title="Typer" href="https://typer.tiangolo.com/" description="CLI framework for Python." />'
-    )
-    parts.append('  <LinkCard title="ty" href="https://docs.astral.sh/ty/" description="Fast Python type checker." />')
-    parts.append(
-        '  <LinkCard title="Starlight"'
-        ' href="https://starlight.astro.build/"'
-        ' description="Documentation framework for this site." />'
-    )
-    parts.append(
-        '  <LinkCard title="ruff"'
-        ' href="https://docs.astral.sh/ruff/"'
-        ' description="Fast Python linter and formatter." />'
-    )
-    parts.append("</CardGrid>")
-    parts.append("")
+    parts = _accordionize_command_reference(parts)
 
     content_dir = ROOT / "docs" / "src" / "content" / "docs"
     content_dir.mkdir(parents=True, exist_ok=True)
@@ -1453,6 +1454,7 @@ def write_catalog_custom_index(nodes: list) -> None:
         "",
         "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';",
         f"import InstallCommand from '{custom_import_prefix}components/InstallCommand.astro';",
+        f"import CatalogSkillFilter from '{custom_import_prefix}components/CatalogSkillFilter.astro';",
         f"import {{ installCommands }} from '{custom_import_prefix}generated-site-data.mjs';",
         "",
         "These are the repo-owned skills in `./skills/`. Detail pages live under "
@@ -1474,6 +1476,8 @@ def write_catalog_custom_index(nodes: list) -> None:
         f'  <span class="stat stat-installed">{len(user_invocable)} User-Invocable</span>',
         f'  <span class="stat stat-agent">{len(auto_invoke)} Convention Skills</span>',
         "</div>",
+        "",
+        "<CatalogSkillFilter />",
         "",
         "## Skill Lanes",
         "",
@@ -1498,7 +1502,7 @@ def write_catalog_custom_index(nodes: list) -> None:
                 '<Badge text="Manual invocation" variant="tip" /> '
                 "Call these when you want a specialist on demand. They appear in the autocomplete menu.",
                 "",
-                '<div class="catalog-skill">',
+                '<div class="catalog-skill" data-skill-lane="user-invocable">',
                 "<CardGrid>",
                 *_render_skill_linkcards(user_invocable),
                 "</CardGrid>",
@@ -1515,7 +1519,7 @@ def write_catalog_custom_index(nodes: list) -> None:
                 '<Badge text="Auto-invoked" variant="caution" /> '
                 "The agent loads these automatically when repo context matches. They stay out of the `/` menu.",
                 "",
-                '<div class="catalog-skill">',
+                '<div class="catalog-skill" data-skill-lane="convention">',
                 "<CardGrid>",
                 *_render_skill_linkcards(auto_invoke),
                 "</CardGrid>",
@@ -1745,11 +1749,104 @@ def write_harness_support_page() -> None:
     out.write_text("\n".join(parts), encoding="utf-8")
 
 
+def write_skill_research_pages(nodes: list) -> None:
+    """Emit Starlight MDX pages for cached research artifacts at /skill-research/<id>/."""
+    out_dir = CONTENT_DIR / "skill-research"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for stale in out_dir.glob("*.mdx"):
+        stale.unlink()
+
+    if not RESEARCH_DIR.exists():
+        return
+
+    skill_nodes = {n.id: n for n in nodes if n.kind == "skill"}
+    written = 0
+    for path in sorted(RESEARCH_DIR.glob("*.md")):
+        skill_id = path.stem
+        body = load_skill_research(skill_id)
+        if body is None:
+            text = path.read_text(encoding="utf-8")
+            if text.startswith("---"):
+                parts = text.split("---", 2)
+                body = parts[2].strip() if len(parts) >= 3 else ""
+            else:
+                body = text.strip()
+        if not body:
+            continue
+
+        node = skill_nodes.get(skill_id)
+        if node:
+            group = skill_catalog_group(node=node)
+        else:
+            group = "external"
+        catalog_slug = f"{SKILL_CATALOG_PREFIX}/{group}/{skill_id}"
+        if re.search(r"[:*]", skill_id):
+            catalog_nav = f"Catalog entry: `{catalog_slug}` (special characters — open from Skill Catalog search)"
+        else:
+            catalog_nav = f"[Back to catalog page](/{catalog_slug}/)"
+
+        parts = [
+            "---",
+            f'title: "Research: {escape_attr(skill_id)}"',
+            f'description: "Cached research evidence for {escape_attr(skill_id)} (not authority)."',
+            "sidebar:",
+            "  hidden: true",
+            "---",
+            "",
+            "{/* GENERATED by wagents docs generate — do not edit */}",
+            "",
+            "import { Aside } from '@astrojs/starlight/components';",
+            "",
+            '<Aside type="caution" title="Evidence only">',
+            "Research cache for catalog enrichment. Not authoritative for install or trust decisions.",
+            catalog_nav,
+            "</Aside>",
+            "",
+            escape_mdx(body),
+            "",
+        ]
+        (out_dir / f"{skill_id}.mdx").write_text("\n".join(parts), encoding="utf-8")
+        written += 1
+
+    if written:
+        typer.echo(f"  Generated {written} skill-research/*.mdx pages")
+
+
+def _sidebar_custom_skill_lanes(nodes: list) -> list[str]:
+    """Emit explicit sidebar lane groups for repo-owned custom skills."""
+    custom = sorted(
+        (n for n in nodes if n.kind == "skill" and n.source == "custom"),
+        key=lambda item: item.id,
+    )
+    user_invocable = [n for n in custom if n.metadata.get("user-invocable") is not False]
+    auto_invoke = [n for n in custom if n.metadata.get("user-invocable") is False]
+    lines: list[str] = []
+
+    def _lane(label: str, lane_nodes: list) -> None:
+        if not lane_nodes:
+            return
+        lines.append("      {")
+        lines.append(f"        label: '{label}',")
+        lines.append("        collapsed: true,")
+        lines.append("        items: [")
+        for node in lane_nodes:
+            slug = f"skills/catalog/custom/{node.id}"
+            safe_label = escape_attr(node.id).replace("'", "\\'")
+            lines.append(f"          {{ slug: '{slug}', label: '{safe_label}' }},")
+        lines.append("        ],")
+        lines.append("      },")
+
+    _lane("User-Invocable", user_invocable)
+    _lane("Convention", auto_invoke)
+    return lines
+
+
 def write_sidebar(nodes: list) -> None:
     """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
     mcp_overview_path = CONTENT_DIR / "mcp" / "index.mdx"
+    custom_lane_lines = _sidebar_custom_skill_lanes(nodes)
 
     lines = []
     lines.append("// Auto-generated by wagents docs generate — do not edit")
@@ -1779,10 +1876,8 @@ def write_sidebar(nodes: list) -> None:
     lines.append("    items: [")
     lines.append("      { slug: 'skills/catalog', label: 'Catalog' },")
     lines.append("      { slug: 'skills/install', label: 'Install' },")
-    lines.append("      {")
-    lines.append("        label: 'Custom',")
-    lines.append("        autogenerate: { directory: 'skills/catalog/custom' },")
-    lines.append("      },")
+    lines.append("      { slug: 'skills/catalog/custom', label: 'Custom' },")
+    lines.extend(custom_lane_lines)
     lines.append("      {")
     lines.append("        label: 'External',")
     lines.append("        autogenerate: { directory: 'skills/catalog/external' },")
@@ -1807,6 +1902,17 @@ def write_sidebar(nodes: list) -> None:
         lines.append("    items: [")
         lines.append("      { slug: 'mcp', label: 'Overview' },")
         lines.append("    ],")
+        lines.append("  },")
+
+    if (CONTENT_DIR / "hooks").exists():
+        lines.append("  {")
+        lines.append("    label: 'Hooks',")
+        lines.append("    autogenerate: { directory: 'hooks' },")
+        lines.append("  },")
+    if (CONTENT_DIR / "harness-config").exists():
+        lines.append("  {")
+        lines.append("    label: 'Harness Config',")
+        lines.append("    autogenerate: { directory: 'harness-config' },")
         lines.append("  },")
 
     lines.append("  { slug: 'cli', label: 'CLI' },")
@@ -1847,11 +1953,13 @@ def regenerate_sidebar_and_indexes(*, include_installed: bool = False) -> None:
 
 
 def _is_hand_maintained_mdx(path: Path) -> bool:
-    """Return whether an MDX file should be preserved during clean."""
+    """Return whether an MDX file should be preserved during generate/clean."""
     if path.suffix != ".mdx":
         return False
     try:
-        return "HAND-MAINTAINED" in path.read_text(encoding="utf-8")
+        from wagents.docs_compose import is_composed_mdx
+
+        return is_composed_mdx(path.read_text(encoding="utf-8"))
     except (UnicodeDecodeError, OSError):
         return False
 
@@ -1996,6 +2104,8 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     typer.echo("  Generated cli.mdx")
     write_harness_support_page()
     typer.echo("  Generated harness-support.mdx")
+
+    write_skill_research_pages(nodes)
 
     write_sidebar(nodes)
     typer.echo("  Generated generated-sidebar.mjs")
@@ -2268,6 +2378,159 @@ def docs_research(
         update_research_manifest()
         typer.echo("Updated generated-skill-research-index.mjs")
 
+
+@docs_app.command("lint")
+def docs_lint(
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as errors"),
+    baseline: bool = typer.Option(True, "--baseline/--no-baseline", help="Compare against docs verbosity baseline"),
+    format_: str = typer.Option("text", "--format", help="Output format: text or json"),
+):
+    """Lint docs MDX for verbosity regressions (warn by default)."""
+    from wagents.docs_lint import compare_to_baseline, lint_docs_content
+
+    report = lint_docs_content(strict=strict)
+    if baseline:
+        manifest = ROOT / "planning" / "manifests" / "docs-verbosity-baseline.json"
+        compare_to_baseline(report, manifest_path=manifest)
+
+    if format_ == "json":
+        typer.echo(
+            json.dumps(
+                {
+                    "errors": report.error_count,
+                    "warnings": report.warn_count,
+                    "findings": [f.as_dict() for f in report.findings],
+                },
+                indent=2,
+            )
+        )
+    else:
+        if not report.findings:
+            typer.echo("docs lint: OK (no findings)")
+        else:
+            for finding in report.findings:
+                typer.echo(f"{finding.severity.upper()} [{finding.rule}] {finding.path}: {finding.message}")
+            typer.echo(f"docs lint: {report.error_count} error(s), {report.warn_count} warning(s)")
+
+    if report.error_count or (strict and report.warn_count):
+        raise typer.Exit(code=1)
+
+
+
+
+@docs_app.command("compose")
+def docs_compose(
+    surface: str = typer.Option("all", "--surface", help="skills|agents|mcp|hooks|configs|all"),
+    emit_waves: bool = typer.Option(False, "--emit-waves", help="Emit orchestrator batch prompts for pending pages"),
+    apply: bool = typer.Option(False, "--apply", help="Deterministically apply composed page contract to scaffolds"),
+    upgrade_custom: bool = typer.Option(False, "--upgrade-custom", help="Upgrade batch-composed custom skill pages to orchestrator depth"),
+    upgrade_external: bool = typer.Option(False, "--upgrade-external", help="Upgrade batch-composed external skill pages toward wrangler depth"),
+    wave_id: str = typer.Option("compose-batch-apply", "--wave-id", help="composed_by label for --apply"),
+    batch_size: int = typer.Option(8, "--batch-size", help="Targets per compose wave"),
+    custom_only: bool = typer.Option(True, "--custom-only/--all-skills", help="Limit skill waves to repo-owned custom skills"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Print prompts only; do not write manifest"),
+    check_composed: bool = typer.Option(False, "--check-composed", help="Exit 1 when composed coverage is below --min-pct"),
+    min_pct: float = typer.Option(100.0, "--min-pct", help="Minimum composed coverage percent for --check-composed"),
+    write_manifest: bool = typer.Option(True, "--write-manifest/--no-write-manifest", help="Write docs-composed-coverage.json"),
+):
+    """Track and emit orchestrator waves for composed catalog pages."""
+    from wagents.docs_compose import (
+        build_compose_batch_prompt,
+        check_composed_threshold,
+        collect_compose_targets,
+        partition_compose_targets,
+        partition_skills_for_compose,
+        write_compose_manifest,
+    )
+
+    allowed = {"all", "skills", "agents", "mcp", "hooks", "configs"}
+    if surface not in allowed:
+        typer.echo(f"Error: --surface must be one of {sorted(allowed)}", err=True)
+        raise typer.Exit(code=1)
+
+    if upgrade_external:
+        from wagents.docs_compose_upgrade_external import upgrade_external_batch
+
+        result = upgrade_external_batch(
+            wave_id=wave_id if wave_id != "compose-batch-apply" else None,
+            dry_run=dry_run,
+        )
+        typer.echo(
+            f"External upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}"
+        )
+        if not dry_run and write_manifest:
+            path = write_compose_manifest(surface="all")
+            typer.echo(f"Wrote {path.relative_to(ROOT)}")
+        return
+
+    if upgrade_custom:
+        from wagents.docs_compose_upgrade import upgrade_custom_batch
+
+        result = upgrade_custom_batch(wave_id=wave_id if wave_id != "compose-batch-apply" else None, dry_run=dry_run)
+        typer.echo(
+            f"Custom upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}"
+        )
+        if not dry_run and write_manifest:
+            path = write_compose_manifest(surface="all")
+            typer.echo(f"Wrote {path.relative_to(ROOT)}")
+        return
+
+    if apply:
+        from wagents.docs_compose_apply import apply_compose_batch
+
+        result = apply_compose_batch(surface=surface, wave_id=wave_id, dry_run=dry_run)  # type: ignore[arg-type]
+        typer.echo(
+            f"Compose apply: written={result.written} skipped={result.skipped} missing={result.missing} dry_run={dry_run}"
+        )
+        if dry_run and result.paths:
+            for rel in result.paths[:20]:
+                typer.echo(f"  would write {rel}")
+            if len(result.paths) > 20:
+                typer.echo(f"  ... and {len(result.paths) - 20} more")
+        if not dry_run and write_manifest:
+            path = write_compose_manifest(surface="all")
+            typer.echo(f"Wrote {path.relative_to(ROOT)}")
+        if check_composed and not dry_run:
+            ok, report = check_composed_threshold(surface="all", min_pct=min_pct)  # type: ignore[arg-type]
+            typer.echo(
+                f"Composed coverage: {report['composed']}/{report['total']} ({report['composed_pct']}%)"
+            )
+            if not ok:
+                typer.echo(f"Error: composed coverage {report['composed_pct']}% < {min_pct}%", err=True)
+                raise typer.Exit(code=1)
+        return
+
+    if emit_waves:
+        if surface in {"skills", "all"}:
+            batches = partition_skills_for_compose(batch_size=batch_size, custom_only=custom_only)
+        else:
+            targets = collect_compose_targets(surface=surface)  # type: ignore[arg-type]
+            batches = partition_compose_targets(targets, batch_size=batch_size)
+        typer.echo(f"Compose waves: {len(batches)} batch(es), batch_size={batch_size}")
+        for index, batch in enumerate(batches, start=1):
+            typer.echo(f"  Wave {index}: {len(batch)} target(s)")
+            prompt = build_compose_batch_prompt(batch, wave_id=f"compose-wave-{index}")
+            typer.echo(prompt)
+            typer.echo("")
+        if not dry_run and write_manifest:
+            write_compose_manifest(surface="all")
+        return
+
+    if write_manifest and not dry_run:
+        path = write_compose_manifest(surface="all")
+        typer.echo(f"Wrote {path.relative_to(ROOT)}")
+
+    ok, report = check_composed_threshold(surface="all", min_pct=min_pct)  # type: ignore[arg-type]
+    typer.echo(
+        f"Composed coverage: {report['composed']}/{report['total']} ({report['composed_pct']}%) "
+        f"[scaffold={report['scaffold']}, missing={report['missing']}]"
+    )
+    for surf, counts in sorted((report.get("by_surface") or {}).items()):
+        typer.echo(f"  {surf}: composed={counts['composed']} scaffold={counts['scaffold']} missing={counts['missing']}")
+
+    if check_composed and not ok:
+        typer.echo(f"Error: composed coverage {report['composed_pct']}% < {min_pct}%", err=True)
+        raise typer.Exit(code=1)
 
 @docs_app.command("clean")
 def docs_clean():
