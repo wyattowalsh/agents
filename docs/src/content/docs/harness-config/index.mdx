@@ -1,0 +1,44 @@
+---
+title: "Harness Config"
+description: "Canonical registry-driven harness configuration surfaces: sync manifest, MCP registry, and tooling policy."
+page_kind: "harness-config-hub"
+source_kind: "registry"
+composed: true
+composed_at: "2026-06-16"
+composed_by: "compose-configs-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';
+
+> Registry-driven configuration that projects repo sources into per-harness home and project surfaces. Edit canonical files under `config/`, then sync with `scripts/sync_agent_stack.py`.
+
+<Badge text="3 registries" variant="note" size="large" />
+
+<Aside type="tip" title="Source of truth">
+These pages document the machine-first registries in `config/`. Generated client configs are derived at sync time — do not hand-edit live `~/.config` mirrors unless you are debugging a one-off override.
+</Aside>
+
+## Registries
+
+<CardGrid>
+  <LinkCard title="sync-manifest" href="/harness-config/sync-manifest/" description="Ownership ledger for canonical, generated, merged, symlink, and symlinked-entry surfaces." />
+  <LinkCard title="mcp-registry" href="/harness-config/mcp-registry/" description="MCP server definitions, MCPHub endpoints, and client projection rules." />
+  <LinkCard title="tooling-policy" href="/harness-config/tooling-policy/" description="Instruction sources, tool allow/deny policy, and harness-specific runtime defaults." />
+</CardGrid>
+
+## Workflow
+
+1. Edit the canonical registry under `config/`.
+2. Preview drift: `uv run python scripts/sync_agent_stack.py --targets repo,home --check`
+3. Apply projections: `uv run python scripts/sync_agent_stack.py --targets repo,home --apply`
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Hooks" href="/hooks/" description="Lifecycle hooks declared in config/hook-registry.json." />
+  <LinkCard title="MCP servers" href="/mcp/" description="First-party MCP packages and MCPHub control plane." />
+  <LinkCard title="CLI" href="/cli/" description="wagents commands for validate, sync, and doctor workflows." />
+</CardGrid>
