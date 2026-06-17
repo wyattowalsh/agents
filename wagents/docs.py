@@ -1560,9 +1560,26 @@ def write_catalog_custom_index(nodes: list) -> None:
     (out_dir / "index.mdx").write_text("\n".join(parts))
 
 
+_EXTERNAL_LANE_BY_STATUS = {
+    "install-now-after-trust-gate": "install-now",
+    "inspect-then-install": "inspect",
+    "global-only-or-avoid": "avoid",
+}
+
+
+def _external_lane(node) -> str:
+    status = str((node.metadata or {}).get("_curated_status") or "")
+    return _EXTERNAL_LANE_BY_STATUS.get(status, "inspect")
+
+
 def write_catalog_external_index(nodes: list) -> None:
     """Write skills/catalog/external/index.mdx for curated and installed external skills."""
     external = [n for n in nodes if n.kind == "skill" and skill_catalog_group(node=n) == "external"]
+    external_import_prefix = _src_import_prefix(under_content_docs="skills/catalog/external")
+    lanes: dict[str, list] = {"install-now": [], "inspect": [], "avoid": []}
+    for node in external:
+        lanes.setdefault(_external_lane(node), []).append(node)
+
     parts = [
         "---",
         "title: External Skills",
@@ -1570,22 +1587,40 @@ def write_catalog_external_index(nodes: list) -> None:
         "---",
         "",
         "import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';",
+        f"import CatalogSkillFilter from '{external_import_prefix}components/CatalogSkillFilter.astro';",
         "",
-        "External skills come from the curated catalog in `config/external-skills.md` and, when generated with "
-        "`--include-installed`, from local harness skill directories.",
+        "External skills are authored in `docs/src/authoring/skills/*.mdx` and emitted to "
+        "`docs/public/generated-registries/skills-catalog-index.json`. Legacy `config/external-skills.md` "
+        "remains dual-read during migration. With `--include-installed`, local harness inventory may add rows.",
         "",
         '<Aside type="note" title="Trust and provenance">',
         "Audit third-party skills before install. Use [external-skill-auditor](/skills/catalog/custom/external-skill-auditor/) "
         "and the maintainer notes on each row.",
         "</Aside>",
         "",
+        '<div class="stats-bar">',
+        f'  <span class="stat stat-skill">{len(external)} External Skills</span>',
+        f'  <span class="stat stat-installed">{len(lanes.get("install-now", []))} Install now</span>',
+        f'  <span class="stat stat-agent">{len(lanes.get("inspect", []))} Inspect</span>',
+        "</div>",
+        "",
+        '<CatalogSkillFilter mode="external" />',
+        "",
     ]
-    if external:
-        parts.append(f"## External Skills ({len(external)})")
+    lane_titles = {
+        "install-now": "Install now (after trust gate)",
+        "inspect": "Inspect then install",
+        "avoid": "Global only or avoid",
+    }
+    for lane_id, title in lane_titles.items():
+        group = lanes.get(lane_id) or []
+        if not group:
+            continue
+        parts.append(f"## {title} ({len(group)})")
         parts.append("")
-        parts.append('<div class="catalog-skill">')
+        parts.append(f'<div class="catalog-skill" data-skill-lane="{lane_id}">')
         parts.append("<CardGrid>")
-        parts.extend(_render_skill_linkcards(external))
+        parts.extend(_render_skill_linkcards(group))
         parts.append("</CardGrid>")
         parts.append("</div>")
         parts.append("")
@@ -2425,6 +2460,13 @@ def docs_compose(
     apply: bool = typer.Option(False, "--apply", help="Deterministically apply composed page contract to scaffolds"),
     upgrade_custom: bool = typer.Option(False, "--upgrade-custom", help="Upgrade batch-composed custom skill pages to orchestrator depth"),
     upgrade_external: bool = typer.Option(False, "--upgrade-external", help="Upgrade batch-composed external skill pages toward wrangler depth"),
+    upgrade_agents: bool = typer.Option(False, "--upgrade-agents", help="Upgrade batch-composed agent pages"),
+    upgrade_mcp: bool = typer.Option(False, "--upgrade-mcp", help="Upgrade batch-composed MCP catalog pages"),
+    regen_configs: bool = typer.Option(False, "--regen-configs", help="Regenerate harness-config JSON embeds from config/*.json"),
+    enrich_rich_hand: bool = typer.Option(False, "--enrich-rich-hand", help="Add composed frontmatter to rich hand-maintained custom pages"),
+    config: str | None = typer.Option(None, "--config", help="Single harness-config stem for --regen-configs"),
+    skill_ids: str | None = typer.Option(None, "--skill-ids", help="Comma-separated skill ids for upgrade commands"),
+    force: bool = typer.Option(False, "--force", help="Rewrite pages even when already at target compose wave"),
     wave_id: str = typer.Option("compose-batch-apply", "--wave-id", help="composed_by label for --apply"),
     batch_size: int = typer.Option(8, "--batch-size", help="Targets per compose wave"),
     custom_only: bool = typer.Option(True, "--custom-only/--all-skills", help="Limit skill waves to repo-owned custom skills"),
@@ -2448,11 +2490,70 @@ def docs_compose(
         typer.echo(f"Error: --surface must be one of {sorted(allowed)}", err=True)
         raise typer.Exit(code=1)
 
+    parsed_skill_ids = [part.strip() for part in (skill_ids or "").split(",") if part.strip()] or None
+    resolved_wave = wave_id if wave_id != "compose-batch-apply" else None
+
+    if regen_configs:
+        from wagents.docs_compose_regen_configs import regen_configs_batch
+
+        stems = [config] if config else None
+        result = regen_configs_batch(config_stems=stems, dry_run=dry_run)
+        typer.echo(f"Config regen: written={result.written} skipped={result.skipped} dry_run={dry_run}")
+        return
+
+    if enrich_rich_hand:
+        from wagents.docs_compose_upgrade import CUSTOM_CATALOG, RICH_HAND_CUSTOM
+        from wagents.page_frontmatter import enrich_rich_hand_frontmatter
+        from wagents.skill_docs import collect_all_doc_nodes
+
+        nodes = collect_all_doc_nodes(include_installed=False, include_drafts=False)
+        by_id = {n.id: n for n in nodes if n.kind == "skill" and n.source == "custom"}
+        written = 0
+        skipped = 0
+        for skill_id in sorted(RICH_HAND_CUSTOM):
+            node = by_id.get(skill_id)
+            path = CUSTOM_CATALOG / f"{skill_id}.mdx"
+            if node is None or not path.exists():
+                skipped += 1
+                continue
+            existing = path.read_text(encoding="utf-8")
+            updated = enrich_rich_hand_frontmatter(existing, node)
+            if updated == existing:
+                skipped += 1
+                continue
+            if not dry_run:
+                path.write_text(updated, encoding="utf-8")
+            written += 1
+        typer.echo(f"Rich-hand enrich: written={written} skipped={skipped} dry_run={dry_run}")
+        return
+
+    if upgrade_agents:
+        from wagents.docs_compose_upgrade_agents import upgrade_agents_batch
+
+        result = upgrade_agents_batch(wave_id=resolved_wave, force=force, dry_run=dry_run)
+        typer.echo(f"Agent upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}")
+        if not dry_run and write_manifest:
+            path = write_compose_manifest(surface="all")
+            typer.echo(f"Wrote {path.relative_to(ROOT)}")
+        return
+
+    if upgrade_mcp:
+        from wagents.docs_compose_upgrade_mcp import upgrade_mcp_batch
+
+        result = upgrade_mcp_batch(wave_id=resolved_wave, force=force, dry_run=dry_run)
+        typer.echo(f"MCP upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}")
+        if not dry_run and write_manifest:
+            path = write_compose_manifest(surface="all")
+            typer.echo(f"Wrote {path.relative_to(ROOT)}")
+        return
+
     if upgrade_external:
         from wagents.docs_compose_upgrade_external import upgrade_external_batch
 
         result = upgrade_external_batch(
-            wave_id=wave_id if wave_id != "compose-batch-apply" else None,
+            skill_ids=parsed_skill_ids,
+            wave_id=resolved_wave,
+            force=force,
             dry_run=dry_run,
         )
         typer.echo(
@@ -2466,7 +2567,12 @@ def docs_compose(
     if upgrade_custom:
         from wagents.docs_compose_upgrade import upgrade_custom_batch
 
-        result = upgrade_custom_batch(wave_id=wave_id if wave_id != "compose-batch-apply" else None, dry_run=dry_run)
+        result = upgrade_custom_batch(
+            skill_ids=parsed_skill_ids,
+            wave_id=resolved_wave,
+            force=force,
+            dry_run=dry_run,
+        )
         typer.echo(
             f"Custom upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}"
         )

@@ -219,6 +219,58 @@ def _contains_local_path(value: str) -> bool:
     return any(marker in str(value or "") for marker in ("/Users/", "/home/", "/private/", "/tmp/", "~/"))
 
 
+def _skill_catalog_import_prefix() -> str:
+    """Relative import prefix from skills/catalog/{custom|external}/ to docs/src/."""
+    return "../../../../../"
+
+
+def _skill_header_badge_props(node: CatalogNode, fm: dict) -> list[tuple[str, str]]:
+    """Build up to four SkillPageHeader badge props."""
+    badges: list[tuple[str, str]] = [(node.id, "note")]
+    word_count = len(node.body.split()) if node.body else 0
+    badges.append((f"{word_count} words", "default"))
+    if fm.get("license"):
+        badges.append((str(fm["license"]), "success"))
+    trust_tier = resolve_trust_tier_for_node(node)
+    trust_badge, trust_variant = trust_badge_for_tier(trust_tier)
+    badges.append((trust_badge, trust_variant))
+    if node.source == "curated-external":
+        curated_status = str(node.metadata.get("_curated_status") or "")
+        if curated_status and len(badges) < 4:
+            badges.append((curated_status, "default"))
+    return badges[:4]
+
+
+def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
+    prefix = _skill_catalog_import_prefix()
+    if node.source == "custom":
+        install_command = build_install_command(skill=node.id)
+    else:
+        install_command = _installed_install_command(node) or (
+            "Discovered from local installed inventory; no portable install command is recorded."
+        )
+    usage = f"/{node.id}"
+    if fm.get("argument-hint"):
+        usage += f" {fm['argument-hint']}"
+    badge_props = _skill_header_badge_props(node, fm)
+    badge_jsx = ", ".join(
+        f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props
+    )
+    safe_install = install_command.replace("`", "\\`")
+    return [
+        f"import SkillPageHeader from '{prefix}components/SkillPageHeader.astro';",
+        "",
+        "<SkillPageHeader",
+        f'  name="{escape_attr(node.id)}"',
+        f'  description="{escape_attr(truncate_sentence(node.description, 200))}"',
+        f"  installCommand={{`{safe_install}`}}",
+        f'  usage="{escape_attr(usage)}"',
+        f"  badges={{[{badge_jsx}]}}",
+        "/>",
+        "",
+    ]
+
+
 def _installed_install_command(node: CatalogNode) -> str:
     metadata = node.metadata if isinstance(node.metadata, dict) else {}
     command = str(metadata.get("_skills_install_command") or "").strip()
@@ -562,6 +614,7 @@ def _render_curated_trust_section(node: CatalogNode) -> list[str]:
 
 def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[CatalogNode]) -> str:
     fm = node.metadata
+    meta = fm.get("metadata", {})
     parts = []
 
     is_stub = bool(node.metadata.get("_is_stub"))
@@ -581,63 +634,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("")
 
     # === TIER 1: Human summary ===
-
-    # Badge row — standardized: always show name + word count
-    badges = []
-    badges.append(f'<Badge text="{escape_attr(node.id)}" variant="note" />')
-    word_count = len(node.body.split()) if node.body else 0
-    badges.append(f'<Badge text="{word_count} words" variant="default" />')
-    if fm.get("license"):
-        badges.append(f'<Badge text="{escape_attr(fm["license"])}" variant="success" />')
-    meta = fm.get("metadata", {})
-    if isinstance(meta, dict):
-        if meta.get("version"):
-            badges.append(f'<Badge text="v{escape_attr(str(meta["version"]))}" variant="success" />')
-        if meta.get("author"):
-            badges.append(f'<Badge text="{escape_attr(meta["author"])}" variant="caution" />')
-    if fm.get("model"):
-        badges.append(f'<Badge text="{escape_attr(fm["model"])}" variant="tip" />')
-    # Emit single trust badge from site_model mapping (replaces legacy Custom/Curated/Installed)
-    trust_tier = resolve_trust_tier_for_node(node)
-    trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
-    badges.append(f'<Badge text="{escape_attr(trust_badge)}" variant="{trust_badge_variant}" />')
-    if node.source == "curated-external":
-        curated_status = str(node.metadata.get("_curated_status") or "")
-        if curated_status:
-            badges.append(f'<Badge text="{escape_attr(curated_status)}" variant="default" />')
-    parts.append(" ".join(badges))
-    parts.append("")
-
-    # Description
-    parts.append(f"> {escape_mdx(node.description)}")
-    parts.append("")
-
-    # Quick Start box
-    parts.append('<div class="quick-start">')
-    parts.append("")
-    parts.append("### Quick Start")
-    parts.append("")
-    parts.append("**Install:**")
-    if node.source == "custom":
-        parts.append("```bash")
-        parts.append(build_install_command(skill=node.id))
-        parts.append("```")
-    else:
-        install_command = _installed_install_command(node)
-        if install_command:
-            parts.append("```bash")
-            parts.append(install_command)
-            parts.append("```")
-        else:
-            parts.append("Discovered from local installed inventory; no portable install command is recorded.")
-    parts.append("")
-    use_line = f"**Use:** `/{node.id}`"
-    if fm.get("argument-hint"):
-        use_line += f" `{fm['argument-hint']}`"
-    parts.append(use_line)
-    parts.append("")
-    parts.append("</div>")
-    parts.append("")
+    parts.extend(_render_skill_page_header(node, fm))
     parts.append(
         "Works with "
         "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "

@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import re
+from datetime import date
 from typing import Any
 
 from wagents.catalog import CatalogNode
+from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
 from wagents.parsing import truncate_sentence
 from wagents.site_model import resolve_trust_tier_for_node
 
@@ -108,3 +111,21 @@ def render_catalog_frontmatter(
     """Render full YAML frontmatter block including --- delimiters."""
     inner = render_catalog_frontmatter_lines(node, description=description, composed=composed)
     return "---\n" + "\n".join(inner) + "\n---"
+
+
+def render_composed_frontmatter_block(node: CatalogNode, *, wave_id: str) -> str:
+    """Full frontmatter block with composed metadata and HAND-MAINTAINED sentinel."""
+    lines = render_catalog_frontmatter_lines(node, composed=True)
+    lines.append(f'composed_by: "{wave_id}"')
+    lines.append(f'composed_at: "{date.today().isoformat()}"')
+    return "---\n" + "\n".join(lines) + "\n---\n\n" + HAND_MAINTAINED_SENTINEL + "\n"
+
+
+def enrich_rich_hand_frontmatter(page_text: str, node: CatalogNode, *, wave_id: str = "compose-rich-hand-wave-1") -> str:
+    """Add composed frontmatter contract to rich hand-maintained pages without rewriting body."""
+    if "composed: true" in page_text[:400]:
+        return page_text
+    block = render_composed_frontmatter_block(node, wave_id=wave_id)
+    if page_text.startswith("---"):
+        return re.sub(r"^---\n.*?\n---\n", block, page_text, count=1, flags=re.DOTALL)
+    return block + page_text

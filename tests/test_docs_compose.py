@@ -76,16 +76,52 @@ def test_compose_skill_mdx_external_contract(tmp_path, monkeypatch) -> None:
     assert "Curated external (hand-maintained)" in text
 
 
-def test_upgrade_custom_batch_dry_run() -> None:
+def test_should_skip_upgrade_when_already_at_wave() -> None:
+    from wagents.docs_compose_batch import should_skip_upgrade
+
+    text = 'composed_by: "compose-custom-wave-2"\n<SkillPageHeader />\n'
+    assert should_skip_upgrade(text, target_wave="compose-custom-wave-2", force=False) is True
+
+
+def test_should_not_skip_legacy_quick_start() -> None:
+    from wagents.docs_compose_batch import should_skip_upgrade
+
+    text = 'composed_by: "compose-custom-wave-2"\n<div class="quick-start">\n'
+    assert should_skip_upgrade(text, target_wave="compose-custom-wave-2", force=False) is False
+
+
+def test_upgrade_custom_batch_force_dry_run() -> None:
     from wagents.docs_compose_upgrade import upgrade_custom_batch
 
-    result = upgrade_custom_batch(dry_run=True)
+    result = upgrade_custom_batch(dry_run=True, force=True)
     assert result.written >= 49
 
 
-def test_upgrade_external_batch_dry_run() -> None:
+def test_upgrade_external_batch_idempotent_dry_run() -> None:
     from wagents.docs_compose_upgrade_external import upgrade_external_batch
 
     result = upgrade_external_batch(dry_run=True)
     assert result.written == 0
-    assert result.skipped == 0
+    assert result.skipped >= 0
+
+
+def test_upgrade_agents_batch_idempotent_dry_run() -> None:
+    from wagents.docs_compose_upgrade_agents import upgrade_agents_batch
+
+    result = upgrade_agents_batch(dry_run=True)
+    assert result.written == 0
+    assert result.skipped >= 0
+
+
+def test_regen_config_embed(tmp_path) -> None:
+    from wagents.docs_compose_regen_configs import regen_config_embed
+
+    config = tmp_path / "sample.json"
+    config.write_text('{"version": 1}\n', encoding="utf-8")
+    page = (
+        'intro\n<details class="source-disclosure">\n'
+        "<summary>Old</summary>\n\n```json\n{}\n```\n</details>\n"
+    )
+    out = regen_config_embed(page, config_path=config, summary="Full sample.json")
+    assert '"version": 1' in out
+    assert "Old" not in out

@@ -13,6 +13,7 @@ HAND_MAINTAINED_SENTINEL = "{/* HAND-MAINTAINED */}"
 
 LINE_CAP_GENERATED_SKILL = 600
 LINE_CAP_HAND_SKILL = 650
+LINE_CAP_COMPOSED_HAND = 1200
 LINE_CAP_CLI = 900
 LINE_CAP_AGENT = 120
 
@@ -146,20 +147,25 @@ def lint_docs_content(*, strict: bool = False) -> LintReport:
             )
 
         outside, inside_blocks = _split_details_blocks(text)
+        composed = hand or _is_composed_frontmatter(text)
         for heading in _count_duplicate_headings(outside, inside_blocks):
             report.add(
                 path=path,
                 rule="duplicate-section",
                 message=f"{heading} appears both above and inside collapsed SKILL disclosure",
+                severity="error" if composed else "warn",
             )
 
-        composed = hand or _is_composed_frontmatter(text)
         cap = _resolve_line_cap(rel, hand=hand)
-        if cap is not None and line_count > cap and not composed:
+        if composed and hand:
+            cap = LINE_CAP_COMPOSED_HAND
+        elif composed:
+            cap = None
+        if cap is not None and line_count > cap:
             report.add(
                 path=path,
                 rule="line-cap",
-                message=f"{line_count} lines exceeds soft cap {cap} (scaffold only)",
+                message=f"{line_count} lines exceeds soft cap {cap}",
             )
 
     return report

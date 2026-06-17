@@ -1,12 +1,46 @@
 ---
-/** Client filter for custom skill catalog index sections. */
+/** Client filter for skill catalog index sections (custom or external lanes). */
+
+interface Lane {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  mode?: 'custom' | 'external';
+  lanes?: Lane[];
+}
+
+const { mode = 'custom', lanes } = Astro.props;
+
+const defaultCustom: Lane[] = [
+  { id: 'user-invocable', label: 'User-invocable' },
+  { id: 'convention', label: 'Convention' },
+];
+
+const defaultExternal: Lane[] = [
+  { id: 'install-now', label: 'Install now' },
+  { id: 'inspect', label: 'Inspect' },
+  { id: 'avoid', label: 'Avoid' },
+];
+
+const activeLanes = lanes ?? (mode === 'external' ? defaultExternal : defaultCustom);
+const toolbarLabel = mode === 'external' ? 'Filter external skills' : 'Filter custom skills';
 ---
 
 <div class="catalog-skill-filter" data-catalog-filter-root>
-  <div class="catalog-skill-filter__controls" role="toolbar" aria-label="Filter custom skills">
+  <div class="catalog-skill-filter__controls" role="toolbar" aria-label={toolbarLabel}>
     <button type="button" class="catalog-skill-filter__btn is-active" data-filter="all" aria-pressed="true">All</button>
-    <button type="button" class="catalog-skill-filter__btn" data-filter="user-invocable" aria-pressed="false">User-invocable</button>
-    <button type="button" class="catalog-skill-filter__btn" data-filter="convention" aria-pressed="false">Convention</button>
+    {activeLanes.map((lane) => (
+      <button
+        type="button"
+        class="catalog-skill-filter__btn"
+        data-filter={lane.id}
+        aria-pressed="false"
+      >
+        {lane.label}
+      </button>
+    ))}
   </div>
 </div>
 

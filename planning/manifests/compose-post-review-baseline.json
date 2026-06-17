@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-06-17",
+  "compose_coverage": {
+    "generated_at": "2026-06-17",
+    "surface": "all",
+    "total": 418,
+    "composed": 418,
+    "scaffold": 0,
+    "missing": 0,
+    "composed_pct": 100.0,
+    "by_surface": {
+      "agents": {
+        "composed": 8,
+        "scaffold": 0,
+        "missing": 0
+      },
+      "mcp": {
+        "composed": 1,
+        "scaffold": 0,
+        "missing": 0
+      },
+      "skills": {
+        "composed": 389,
+        "scaffold": 0,
+        "missing": 0
+      },
+      "hooks": {
+        "composed": 17,
+        "scaffold": 0,
+        "missing": 0
+      },
+      "configs": {
+        "composed": 3,
+        "scaffold": 0,
+        "missing": 0
+      }
+    }
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 63,
+    "duplicate_section": [
+      {
+        "path": "content/docs/skills/catalog/custom/add-badges.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/docs-steward.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/email-whiz.mdx",
+        "rule": "duplicate-section",
+        "message": "## Orchestration Patterns appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/honest-review.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/mcp-creator.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/nerdbot.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/opencode-ensemble.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      },
+      {
+        "path": "content/docs/skills/catalog/custom/orchestrator.mdx",
+        "rule": "duplicate-section",
+        "message": "## Dispatch appears both above and inside collapsed SKILL disclosure",
+        "severity": "warn"
+      }
+    ]
+  }
+}

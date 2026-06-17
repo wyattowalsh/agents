@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
-from datetime import date
+from pathlib import Path
 
 from wagents import ROOT
 from wagents.catalog import collect_edges
+from wagents.docs_compose_batch import UpgradeResult, run_upgrade_batch
 from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
-from wagents.page_frontmatter import render_catalog_frontmatter_lines
+from wagents.docs_mdx_safety import escape_composed_page_prose, strip_duplicate_details_headings
+from wagents.page_frontmatter import render_composed_frontmatter_block
 from wagents.rendering import (
     _catalog_prose,
     _extract_body_sections,
@@ -28,13 +29,6 @@ _RESEARCH_ASIDE = re.compile(
     re.DOTALL,
 )
 _OLD_DETAILS = re.compile(r"<details class=\"source-disclosure\">.*?</details>\s*", re.DOTALL)
-
-
-@dataclass(frozen=True)
-class UpgradeResult:
-    written: int
-    skipped: int
-    paths: list[str]
 
 
 def _wave_for_skill(skill_id: str, batch_ids: list[str], batch_size: int = 7) -> str:
@@ -66,13 +60,6 @@ def batch_composed_custom_ids() -> list[str]:
         if "composed: true" in text and HAND_MAINTAINED_SENTINEL in text:
             ids.append(path.stem)
     return ids
-
-
-def _composed_frontmatter_block(node, *, wave_id: str) -> str:
-    lines = render_catalog_frontmatter_lines(node, composed=True)
-    lines.append(f'composed_by: "{wave_id}"')
-    lines.append(f'composed_at: "{date.today().isoformat()}"')
-    return "---\n" + "\n".join(lines) + "\n---\n\n" + HAND_MAINTAINED_SENTINEL + "\n"
 
 
 def _condensed_research_aside(skill_id: str) -> str:
@@ -161,29 +148,23 @@ def _provenance_aside(source_path: str, wave_id: str) -> str:
     )
 
 
-def _escape_use_line(page: str) -> str:
-    out = []
-    for line in page.splitlines():
-        if line.strip().startswith("**Use:**") and "<" in line and "&lt;" not in line:
-            line = line.replace("<", "&lt;").replace(">", "&gt;")
-        out.append(line)
-    return "\n".join(out) + ("\n" if page.endswith("\n") else "")
-
-
 def upgrade_custom_skill_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
     page = render_skill_page(node, edges, all_nodes)
     page = re.sub(
         r"^---\n.*?\n---\n",
-        _composed_frontmatter_block(node, wave_id=wave_id),
+        render_composed_frontmatter_block(node, wave_id=wave_id),
         page,
         count=1,
         flags=re.DOTALL,
     )
     page = _RESEARCH_ASIDE.sub("", page, count=1)
     research_aside = _condensed_research_aside(node.id)
-    marker = "</div>\n\nWorks with"
-    if research_aside and marker in page:
-        page = page.replace(marker, f"</div>\n\n{research_aside}Works with", 1)
+    if research_aside:
+        for marker in ("/>\n\nWorks with", "</div>\n\nWorks with"):
+            if marker in page:
+                prefix = marker.split("\n\n", 1)[0]
+                page = page.replace(marker, f"{prefix}\n\n{research_aside}Works with", 1)
+                break
     page = re.sub(
         r'<Aside type="note" title="(?:Repo skill \(hand-maintained\)|Source & provenance)">.*?</Aside>\s*',
         _provenance_aside(node.source_path or f"skills/{node.id}/SKILL.md", wave_id),
@@ -193,7 +174,8 @@ def upgrade_custom_skill_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
     )
     page = _insert_missing_sections(page, node)
     page = _OLD_DETAILS.sub(_details_block(node), page, count=1)
-    page = _escape_use_line(page)
+    page = escape_composed_page_prose(page)
+    page = strip_duplicate_details_headings(page)
     return page
 
 
@@ -201,6 +183,7 @@ def upgrade_custom_batch(
     *,
     skill_ids: list[str] | None = None,
     wave_id: str | None = None,
+    force: bool = False,
     dry_run: bool = False,
 ) -> UpgradeResult:
     batch_ids = batch_composed_custom_ids()
@@ -208,19 +191,25 @@ def upgrade_custom_batch(
     nodes = collect_all_doc_nodes(include_installed=False, include_drafts=False)
     by_id = {n.id: n for n in nodes if n.kind == "skill" and n.source == "custom"}
     edges = collect_edges(nodes)
-    written = 0
-    skipped = 0
-    paths: list[str] = []
-    for skill_id in targets:
+
+    def resolve_wave(skill_id: str) -> str:
+        return wave_id or _wave_for_skill(skill_id, batch_ids)
+
+    def load_page(skill_id: str) -> Path | None:
+        path = CUSTOM_CATALOG / f"{skill_id}.mdx"
+        return path if path.exists() else None
+
+    def transform(skill_id: str, resolved_wave: str) -> str | None:
         node = by_id.get(skill_id)
         if node is None:
-            skipped += 1
-            continue
-        resolved_wave = wave_id or _wave_for_skill(skill_id, batch_ids)
-        content = upgrade_custom_skill_mdx(node, edges, nodes, wave_id=resolved_wave)
-        rel = CUSTOM_CATALOG / f"{skill_id}.mdx"
-        paths.append(str(rel.relative_to(ROOT)))
-        if not dry_run:
-            rel.write_text(content, encoding="utf-8")
-        written += 1
-    return UpgradeResult(written=written, skipped=skipped, paths=paths)
+            return None
+        return upgrade_custom_skill_mdx(node, edges, nodes, wave_id=resolved_wave)
+
+    return run_upgrade_batch(
+        target_ids=targets,
+        resolve_wave=resolve_wave,
+        load_page=load_page,
+        transform=transform,
+        force=force,
+        dry_run=dry_run,
+    )

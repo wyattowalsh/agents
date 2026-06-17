@@ -1,0 +1,151 @@
+{
+  "generated_at": "2026-06-17",
+  "ownership": {
+    "integrator": [
+      "wagents/docs.py"
+    ],
+    "render": [
+      "wagents/rendering.py"
+    ],
+    "frontmatter": [
+      "wagents/page_frontmatter.py"
+    ],
+    "content_only": [
+      "docs/src/content/docs/**"
+    ]
+  },
+  "custom": {
+    "total": 49,
+    "shards": [
+      {
+        "shard_id": "compose-custom-wave-1",
+        "skill_ids": [
+          "agent-conventions",
+          "agent-runtime-governance",
+          "api-designer",
+          "changelog-writer",
+          "chrome-devtools-a11y-debugging",
+          "chrome-devtools-cli",
+          "chrome-devtools-debug-optimize-lcp"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-2",
+        "skill_ids": [
+          "chrome-devtools-memory-leak-debugging",
+          "chrome-devtools-troubleshooting",
+          "chrome-devtools",
+          "data-pipeline-architect",
+          "data-wizard",
+          "database-architect",
+          "devops-engineer"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-3",
+        "skill_ids": [
+          "docling-graph",
+          "docs-steward",
+          "draw-thing",
+          "email-whiz",
+          "event-driven-architect",
+          "external-skill-auditor",
+          "files-buddy"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-4",
+        "skill_ids": [
+          "frontend-designer",
+          "git-workflow",
+          "harness-master",
+          "i18n-localization",
+          "incident-response-engineer",
+          "infrastructure-coder",
+          "javascript-conventions"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-5",
+        "skill_ids": [
+          "learn",
+          "namer",
+          "nerdbot",
+          "new-project",
+          "observability-advisor",
+          "opencode-ensemble",
+          "openspec-workflow"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-6",
+        "skill_ids": [
+          "performance-profiler",
+          "reasoning-router",
+          "release-pipeline-architect",
+          "research",
+          "schema-evolution-planner",
+          "security-scanner",
+          "shell-conventions"
+        ],
+        "count": 7
+      },
+      {
+        "shard_id": "compose-custom-wave-7",
+        "skill_ids": [
+          "shell-scripter",
+          "simplify",
+          "skill-creator",
+          "skill-router",
+          "tech-debt-analyzer",
+          "test-architect",
+          "things-manager"
+        ],
+        "count": 7
+      }
+    ]
+  },
+  "external": {
+    "total": 0,
+    "shards": []
+  },
+  "misc": {
+    "agents": {
+      "command": "docs compose --upgrade-agents",
+      "count": 8
+    },
+    "mcp": {
+      "command": "docs compose --upgrade-mcp",
+      "ids": [
+        "mcphub"
+      ]
+    },
+    "configs": {
+      "command": "docs compose --regen-configs",
+      "stems": [
+        "mcp-registry",
+        "sync-manifest",
+        "tooling-policy"
+      ]
+    },
+    "rich_hand": {
+      "command": "docs compose --enrich-rich-hand",
+      "ids": [
+        "add-badges",
+        "honest-review",
+        "host-panel",
+        "mcp-creator",
+        "orchestrator",
+        "prompt-engineer",
+        "python-conventions",
+        "wargame"
+      ],
+      "count": 8
+    }
+  }
+}

@@ -8,8 +8,12 @@ import yaml
 
 from wagents import ROOT
 from wagents.catalog import RELATED_SKILLS, collect_edges
+from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
+from pathlib import Path
+
 from wagents.docs_compose_apply import compose_skill_mdx
-from wagents.docs_compose_upgrade import UpgradeResult
+from wagents.docs_compose_batch import UpgradeResult, run_upgrade_batch
+from wagents.docs_mdx_safety import escape_composed_page_prose, strip_duplicate_details_headings
 from wagents.rendering import escape_attr, truncate_sentence
 from wagents.skill_docs import collect_all_doc_nodes, skill_detail_href
 
@@ -26,7 +30,8 @@ def batch_composed_external_ids() -> list[str]:
     for page in sorted(EXTERNAL_CATALOG.glob("*.mdx")):
         if page.name == "index.mdx":
             continue
-        if "compose-batch-apply" in page.read_text(encoding="utf-8"):
+        text = page.read_text(encoding="utf-8")
+        if "composed: true" in text and HAND_MAINTAINED_SENTINEL in text:
             ids.append(page.stem)
     return ids
 
@@ -169,13 +174,17 @@ def upgrade_external_skill_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
             idx = page.find("<details")
             if idx >= 0:
                 page = page[:idx] + rel + page[idx:]
-    return _append_provenance_table(page, node.id)
+    page = _append_provenance_table(page, node.id)
+    page = escape_composed_page_prose(page)
+    page = strip_duplicate_details_headings(page)
+    return page
 
 
 def upgrade_external_batch(
     *,
     skill_ids: list[str] | None = None,
     wave_id: str | None = None,
+    force: bool = False,
     dry_run: bool = False,
 ) -> UpgradeResult:
     batch_ids = batch_composed_external_ids()
@@ -183,19 +192,25 @@ def upgrade_external_batch(
     nodes = collect_all_doc_nodes(include_installed=False, include_drafts=False)
     by_id = {n.id: n for n in nodes if n.kind == "skill" and n.source == "curated-external"}
     edges = collect_edges(nodes)
-    written = 0
-    skipped = 0
-    paths: list[str] = []
-    for skill_id in targets:
+
+    def resolve_wave(skill_id: str) -> str:
+        return wave_id or _external_wave_for_skill(skill_id, batch_ids)
+
+    def load_page(skill_id: str) -> Path | None:
+        path = EXTERNAL_CATALOG / f"{skill_id}.mdx"
+        return path if path.exists() else None
+
+    def transform(skill_id: str, resolved_wave: str) -> str | None:
         node = by_id.get(skill_id)
         if node is None:
-            skipped += 1
-            continue
-        resolved_wave = wave_id or _external_wave_for_skill(skill_id, batch_ids)
-        content = upgrade_external_skill_mdx(node, edges, nodes, wave_id=resolved_wave)
-        rel = EXTERNAL_CATALOG / f"{skill_id}.mdx"
-        paths.append(str(rel.relative_to(ROOT)))
-        if not dry_run:
-            rel.write_text(content, encoding="utf-8")
-        written += 1
-    return UpgradeResult(written=written, skipped=skipped, paths=paths)
+            return None
+        return upgrade_external_skill_mdx(node, edges, nodes, wave_id=resolved_wave)
+
+    return run_upgrade_batch(
+        target_ids=targets,
+        resolve_wave=resolve_wave,
+        load_page=load_page,
+        transform=transform,
+        force=force,
+        dry_run=dry_run,
+    )
