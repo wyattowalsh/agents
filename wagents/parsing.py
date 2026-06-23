@@ -3,6 +3,7 @@
 import re
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any, cast
 
 import yaml
 
@@ -63,9 +64,7 @@ def sanitize_catalog_links(text: str, *, fence_aware: bool = False) -> str:
     """Neutralize links that cannot resolve on generated docs catalog pages."""
     if not fence_aware:
         return _LINK_PATTERN.sub(_neutralize_catalog_link, text)
-    return process_outside_fences(
-        text, lambda line: _LINK_PATTERN.sub(_neutralize_catalog_link, line)
-    )
+    return process_outside_fences(text, lambda line: _LINK_PATTERN.sub(_neutralize_catalog_link, line))
 
 
 def strip_relative_md_links(text: str) -> str:
@@ -129,9 +128,7 @@ def shift_headings(body: str, levels: int = 1) -> str:
     Fence-aware: skips headings inside fenced code blocks.
     """
     extra = "#" * levels
-    return process_outside_fences(
-        body, lambda line: re.sub(r"^(#{1,5})", lambda m: extra + m.group(1), line)
-    )
+    return process_outside_fences(body, lambda line: re.sub(r"^(#{1,5})", lambda m: extra + m.group(1), line))
 
 
 def escape_attr(text: str) -> str:
@@ -162,7 +159,10 @@ def parse_frontmatter(content: str) -> tuple[dict, str]:
 
 KNOWN_HOOK_EVENTS = {
     "SessionStart",
+    "sessionStart",
     "UserPromptSubmit",
+    "beforeSubmitPrompt",
+    "userPromptSubmitted",
     "PreToolUse",
     "PermissionRequest",
     "PostToolUse",
@@ -171,6 +171,7 @@ KNOWN_HOOK_EVENTS = {
     "SubagentStart",
     "SubagentStop",
     "Stop",
+    "stop",
     "TeammateIdle",
     "TaskCompleted",
     "ConfigChange",
@@ -196,7 +197,7 @@ class Hook:
     blocking_mode: str = ""
 
 
-def extract_hooks(source_name: str, hooks_dict: dict) -> list[Hook]:
+def extract_hooks(source_name: str, hooks_dict: object) -> list[Hook]:
     """Extract Hook objects from a hooks dictionary.
 
     Supports two formats per entry:
@@ -219,7 +220,7 @@ def extract_hooks(source_name: str, hooks_dict: dict) -> list[Hook]:
     if not isinstance(hooks_dict, dict):
         return results
 
-    for event, entries in hooks_dict.items():
+    for event, entries in cast("dict[str, Any]", hooks_dict).items():
         if not isinstance(entries, list):
             continue
         for entry in entries:

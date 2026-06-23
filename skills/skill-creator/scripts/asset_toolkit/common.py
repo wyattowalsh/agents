@@ -14,7 +14,10 @@ KEBAB_CASE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 KNOWN_HOOK_EVENTS = {
     "SessionStart",
+    "sessionStart",
     "UserPromptSubmit",
+    "beforeSubmitPrompt",
+    "userPromptSubmitted",
     "PreToolUse",
     "PermissionRequest",
     "PostToolUse",
@@ -23,6 +26,7 @@ KNOWN_HOOK_EVENTS = {
     "SubagentStart",
     "SubagentStop",
     "Stop",
+    "stop",
     "TeammateIdle",
     "TaskCompleted",
     "ConfigChange",
@@ -97,14 +101,12 @@ def emit_validation_output(
         for error in errors:
             print(json.dumps({"type": "error", **error}))
         print(
-            json.dumps(
-                {
-                    "type": "summary",
-                    "ok": not errors,
-                    "error_count": len(errors),
-                    "message": message,
-                }
-            )
+            json.dumps({
+                "type": "summary",
+                "ok": not errors,
+                "error_count": len(errors),
+                "message": message,
+            })
         )
         return
     if errors:

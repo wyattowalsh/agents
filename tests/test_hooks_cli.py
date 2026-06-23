@@ -13,7 +13,8 @@ from wagents.parsing import KNOWN_HOOK_EVENTS, extract_hooks
 
 _VERIFY_PATH = Path(__file__).parent.parent / "skills" / "skill-creator" / "scripts" / "verify.py"
 _VERIFY_SPEC = importlib.util.spec_from_file_location("skill_creator_verify", _VERIFY_PATH)
-assert _VERIFY_SPEC and _VERIFY_SPEC.loader
+assert _VERIFY_SPEC
+assert _VERIFY_SPEC.loader
 skill_creator_verify = importlib.util.module_from_spec(_VERIFY_SPEC)
 _VERIFY_SPEC.loader.exec_module(skill_creator_verify)
 
@@ -290,7 +291,7 @@ class TestKnownEvents:
     """Verify KNOWN_HOOK_EVENTS completeness."""
 
     def test_event_count(self):
-        assert len(KNOWN_HOOK_EVENTS) == 17
+        assert len(KNOWN_HOOK_EVENTS) == 21
 
     def test_key_events_present(self):
         for event in [
