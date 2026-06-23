@@ -1,0 +1,117 @@
+{
+  "skill_name": "research",
+  "evals": [
+    {
+      "id": "explicit-investigate-plan-gate",
+      "prompt": "/research --depth deep What are current best practices for LLM agent memory architectures?",
+      "expected_output": "Dispatches to Investigate, produces a triage packet with complexity score, sub-questions, source families, support-audit strategy, and a clear plan-gate decision before deep research.",
+      "assertions": [
+        "Agent treats explicit /research invocation as Investigate mode.",
+        "Agent presents a reviewable plan gate for deep research.",
+        "Agent includes source-support audit and cross-validation in the planned methodology."
+      ]
+    },
+    {
+      "id": "implicit-trigger-natural-language",
+      "prompt": "Please research the trade-offs of Postgres logical replication for a multi-tenant SaaS architecture.",
+      "expected_output": "Triggers research behavior from natural-language intent, classifies the query, decomposes it into sub-questions, and proceeds with source-backed investigation when the plan is clear.",
+      "assertions": [
+        "Agent recognizes an implicit research trigger.",
+        "Agent does not require a slash command when the intent is clear.",
+        "Agent records assumptions and methodology."
+      ]
+    },
+    {
+      "id": "negative-control-code-review",
+      "prompt": "/research review this pull request diff for security bugs",
+      "expected_output": "Does not run general research; redirects to /review because the task is code review, PR review, or diff analysis.",
+      "assertions": [
+        "Agent recognizes the negative-control code-review scope.",
+        "Agent redirects rather than researching the diff.",
+        "Agent preserves /research for evidence gathering and fact-finding."
+      ]
+    },
+    {
+      "id": "scope-refusal-malformed-delete",
+      "prompt": "/research delete",
+      "expected_output": "Refuses the malformed delete command, explains that delete requires a journal identifier, and asks for a valid journal number or keyword before any destructive journal action.",
+      "assertions": [
+        "Agent treats malformed journal commands as scope-refusal cases.",
+        "Agent does not delete journals without an explicit target.",
+        "Agent asks for the missing identifier."
+      ]
+    },
+    {
+      "id": "intake-vague-topic",
+      "prompt": "/research AI",
+      "expected_output": "Dispatches to Intake, asks concise clarifying questions, and does not start broad research until the user chooses a specific question or survey scope.",
+      "assertions": [
+        "Agent recognizes vague input.",
+        "Agent asks at least two clarifying questions.",
+        "Agent avoids unbounded research."
+      ]
+    },
+    {
+      "id": "fact-check-source-support",
+      "prompt": "/research check 90% of startups fail within the first year",
+      "expected_output": "Dispatches to Fact-check, uses at least three independent search engines or equivalent sources, reports a verdict with confidence, and includes source-support status for the claim.",
+      "assertions": [
+        "Agent uses fact-check mode.",
+        "Agent requires multi-engine or multi-source verification.",
+        "Agent distinguishes cited-source support from topical citation presence."
+      ]
+    },
+    {
+      "id": "compare-decision-matrix",
+      "prompt": "/research compare FastMCP v2 vs v3 for building MCP servers",
+      "expected_output": "Dispatches to Compare, produces a decision matrix, cites official or primary sources where available, and marks contradictions or partial citation support.",
+      "assertions": [
+        "Agent uses compare mode.",
+        "Agent produces a matrix with criteria and confidence.",
+        "Agent includes source-support and contradiction handling."
+      ]
+    },
+    {
+      "id": "survey-annotated-bibliography",
+      "prompt": "/research survey transformer attention mechanisms",
+      "expected_output": "Dispatches to Survey, maps the landscape into thematic clusters, and returns an annotated bibliography with relevance, limitations, and gaps.",
+      "assertions": [
+        "Agent uses survey mode.",
+        "Agent creates thematic clusters.",
+        "Agent records source limitations."
+      ]
+    },
+    {
+      "id": "track-prior-journal-first",
+      "prompt": "/research track AI regulation updates",
+      "expected_output": "Dispatches to Track, loads prior journal state before searching, then searches for updates since the previous session timestamp.",
+      "assertions": [
+        "Agent loads prior journal before new search.",
+        "Agent uses track mode rather than a fresh survey.",
+        "Agent records update scope and cutoff."
+      ]
+    },
+    {
+      "id": "resume-list-archive-delete-export-gallery",
+      "prompt": "/research resume; /research list active; /research archive; /research delete 3; /research export 3; /research",
+      "expected_output": "Covers Resume, List, Archive, Delete, Export, and Gallery journal actions: resume saved research, list show journal metadata, archive move journals older than 90 days, delete journal with confirmation, export render HTML dashboard, and gallery show topic examples.",
+      "assertions": [
+        "Agent can resume in-progress journals.",
+        "Agent can list active journals.",
+        "Agent asks for confirmation before delete or archive actions.",
+        "Agent can export a dashboard for a selected journal.",
+        "Agent shows the gallery on empty arguments."
+      ]
+    },
+    {
+      "id": "dispatch-action-coverage",
+      "prompt": "/research dispatch coverage smoke",
+      "expected_output": "Covers dispatch actions by name: Investigate classify complexity; Intake ask clarifying questions; Fact-check verify claim; Compare structured comparison; Survey landscape mapping; Track load prior journal; Resume saved research; List show journal metadata; Archive move journals; Delete journal; Export render HTML; Gallery show topic examples.",
+      "assertions": [
+        "Agent keeps eval coverage aligned with the dispatch table.",
+        "Agent names every dispatch branch in a stable regression case.",
+        "Agent treats this as a meta-eval rather than a real research query."
+      ]
+    }
+  ]
+}
