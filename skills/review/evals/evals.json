@@ -284,6 +284,28 @@
       ]
     },
     {
+      "id": "skill-asset-lens-applies-skill-creator-paradigms",
+      "prompt": "/review skills/review/SKILL.md --lens skill-assets",
+      "expected_output": "Dispatches to scoped review with the skill-assets lens, applies skill-creator structural gates such as dispatch table, reference index, critical rules, canonical vocabulary, scope boundaries, progressive disclosure, eval coverage, package portability, and generated docs/catalog consistency, and remains read-only unless approved finding IDs are supplied.",
+      "assertions": [
+        "Covers explicit skill-assets lens",
+        "Applies skill-creator structural patterns",
+        "Checks eval/package/docs evidence where available",
+        "Does not edit without approved findings"
+      ]
+    },
+    {
+      "id": "skill-path-auto-attaches-skill-assets-lens",
+      "prompt": "/review skills/design/",
+      "expected_output": "Recognizes the skill directory as a skill asset, runs scoped review with the skill-assets lens attached by default, checks skill-creator audit and packaging evidence when available, and does not widen to all skills or run live installs.",
+      "assertions": [
+        "Auto-detects skill asset scope",
+        "Attaches skill-assets lens by default",
+        "Keeps review scoped to the requested skill",
+        "Avoids live installs and sync apply"
+      ]
+    },
+    {
       "id": "source-scan-redacts-secrets",
       "prompt": "/review source scan /tmp/candidate-skill",
       "expected_output": "Scans source surfaces without executing candidate code, redacts secret-like excerpts, avoids broad KEY substring false positives, and treats output as first-pass evidence.",

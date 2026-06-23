@@ -16,12 +16,13 @@ Use specialist lenses as overlays on a concrete review scope. A lens changes wha
 | `web-quality` | sites/apps, SEO/perf/PWA/content quality | Core Web Vitals, metadata, crawlability, accessibility, resilience, content trust |
 | `mcp` | MCP servers, tools, schemas, auth | tool safety, prompt-injection boundaries, secret handling, schema clarity, side-effect gates |
 | `agentic` | agents, skills, hooks, automation, tool policies | instruction hierarchy, tool permission boundaries, executable surfaces, memory, unsafe autonomy |
+| `skill-assets` | `SKILL.md`, `skills/<name>/**`, skill evals, package output, skill catalog/research docs | skill-creator structural patterns, dispatch coverage, reference integrity, eval proof, package portability, generated-surface drift |
 | `docs` | docs, README, generated sites, API references | accuracy, freshness, source of truth, generated/manual boundaries, examples, broken links |
 
 ## Lens Rules
 
 1. Pick lenses from evidence: file types, changed paths, user request, public surfaces, and risk triggers.
-2. Security-sensitive code always gets `security`; external skills always get `source/provenance` plus `agentic`; dependency changes usually get `supply-chain`.
+2. Security-sensitive code always gets `security`; external skills always get `source/provenance` plus `agentic`; dependency changes usually get `supply-chain`; first-party skill assets get `skill-assets`.
 3. A lens must produce evidence or a clear no-finding statement. Do not list unused lenses for theater.
 4. When a specialist finding relies on a current standard or dependency behavior, validate with primary documentation or source.
 5. Keep each finding in the main finding contract; do not invent lens-specific output shapes unless requested by `--format`.

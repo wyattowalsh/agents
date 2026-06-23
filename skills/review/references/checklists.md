@@ -18,6 +18,7 @@ Read during analysis (Step 3) or when building teammate prompts.
 - [Backward Compatibility](#context-dependent-backward-compatibility)
 - [Infrastructure as Code](#context-dependent-infrastructure-as-code)
 - [Requirements Validation](#context-dependent-requirements-validation)
+- [Skill Assets](#context-dependent-skill-assets)
 
 ## Correctness Level (Lines, Expressions, Robustness)
 
@@ -218,6 +219,18 @@ Apply when reviewing changes against stated intent (PR description, ticket, sess
 - Check acceptance criteria are met: if criteria were specified, verify each one
 - Check nothing was silently dropped: compare requirements list against implementation, flag omissions
 - Check scope creep: flag code that goes beyond what was requested without justification
+
+## Context-Dependent: Skill Assets
+
+Apply when reviewing `SKILL.md`, skill references, evals, scripts, package behavior, skill research, authoring MDX, generated catalog pages, or skill sync behavior.
+
+- Check skill-creator structural patterns: dispatch table, empty-args handler, reference file index, critical rules, canonical vocabulary when useful, scope boundaries, classification gating, scaling strategy, progressive disclosure, body substitutions, and state management when the skill persists artifacts.
+- Check dispatch and eval alignment: every user-facing mode or mode modifier should have objective eval assertions; negative controls should prove adjacent non-scope requests do not trigger the skill.
+- Check reference integrity: no missing indexed references, no orphan reference files, no contradictions between body rules and reference depth.
+- Check portability: package dry-run should not report absolute paths, `@` imports, missing resource links, or repo-only command dependencies in packaged content.
+- Check script safety: scripts should use argparse, deterministic behavior, bounded filesystem reads, JSON-oriented output where practical, and no hidden network/install/credential behavior.
+- Check generated-surface consistency: authoring MDX, generated catalog pages, registry JSON, research pages, and README counts should reflect source after regeneration.
+- Check folded/deprecated skill policy: active installable or invocable routes should point to canonical replacement skills, leaving old names only in clearly historical or research evidence.
 
 ## Context-Dependent: Async and Concurrency
 
