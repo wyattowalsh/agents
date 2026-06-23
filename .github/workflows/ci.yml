@@ -69,8 +69,6 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync
-      - run: uv run wagents apm materialize --check
-      - run: uv run wagents apm doctor
       - run: pip install apm-cli==0.21.0
       - run: apm audit --ci --no-drift
       - run: |

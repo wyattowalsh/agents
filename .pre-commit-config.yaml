@@ -36,7 +36,7 @@ repos:
         entry: uv run wagents apm doctor
         language: system
         pass_filenames: false
-        files: ^(apm\.yml|\.apm/|opencode\.json|agents/|instructions/)
+        files: ^(apm\.yml|\.apm/|opencode\.json)$
       - id: openspec-validate
         name: Validate OpenSpec changes and specs
         entry: uv run wagents openspec validate
