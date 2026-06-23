@@ -9,8 +9,7 @@ Handles:
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from wagents.platforms.base import (
     HOME,
@@ -23,6 +22,9 @@ from wagents.platforms.base import (
     merge_hook_groups,
     merge_server_maps,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 CLAUDE_SETTINGS_PATH = HOME / ".claude" / "settings.json"
 CLAUDE_SETTINGS_LOCAL_PATH = HOME / ".claude" / "settings.local.json"

@@ -5,9 +5,12 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass, field
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents import CONTENT_DIR
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 HAND_MAINTAINED_SENTINEL = "{/* HAND-MAINTAINED */}"
 
@@ -64,9 +67,7 @@ class LintReport:
             rel = path.relative_to(CONTENT_DIR.parent.parent)
         except ValueError:
             rel = path
-        self.findings.append(
-            LintFinding(path=str(rel), rule=rule, message=message, severity=severity)
-        )
+        self.findings.append(LintFinding(path=str(rel), rule=rule, message=message, severity=severity))
 
 
 def _is_hand_maintained(text: str) -> bool:

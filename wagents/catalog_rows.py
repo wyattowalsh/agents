@@ -8,6 +8,7 @@ from typing import Any
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.site_model import (
     _promotion_policy_for_external_status,
+    _public_source_path,
     _source_kind,
     trust_badge_for_tier,
 )
@@ -37,7 +38,7 @@ CURATED_SECTION_HEADERS: tuple[str, ...] = (
 )
 
 
-def first_sentence(text: str) -> str:
+def first_sentence(text: str | None) -> str:
     """Extract the first sentence, skipping abbreviation periods (e.g. ``e.g.``, ``i.e.``)."""
     if not isinstance(text, str) or not text:
         return ""
@@ -76,7 +77,7 @@ def entry_to_public_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "trustTier": entry.trust_tier,
         "trustBadge": trust_badge,
         "trustBadgeVariant": trust_badge_variant,
-        "sourcePath": entry.source_path,
+        "sourcePath": _public_source_path(entry.source_path),
         "sourceUrl": entry.source_url,
         "installCommand": entry.install_command,
         "useCommand": f"/{entry.name}",

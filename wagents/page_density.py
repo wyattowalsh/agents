@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
-from wagents.catalog import CatalogNode
+if TYPE_CHECKING:
+    from wagents.catalog import CatalogNode
 
 PageDensity = Literal["summary", "standard"]
 DEFAULT_SKILL_DENSITY: PageDensity = "standard"

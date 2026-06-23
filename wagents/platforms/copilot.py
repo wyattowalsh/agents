@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from wagents.platforms.base import HOME, PlatformAdapter, SyncContext
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 COPILOT_SETTINGS_PATH = HOME / ".copilot" / "settings.json"
 COPILOT_MCP_PATH = HOME / ".copilot" / "mcp-config.json"
@@ -30,9 +32,10 @@ class Adapter(PlatformAdapter):
             generate_copilot_rule_instructions,
         )
 
-        generate_copilot_repo_instructions(ctx)
-        generate_copilot_rule_instructions(ctx)
-        generate_copilot_hooks(ctx, hook_registry)
+        sync_ctx = cast("Any", ctx)
+        generate_copilot_repo_instructions(sync_ctx)
+        generate_copilot_rule_instructions(sync_ctx)
+        generate_copilot_hooks(sync_ctx, hook_registry)
 
     def sync_home(
         self,
@@ -49,8 +52,8 @@ class Adapter(PlatformAdapter):
             sync_copilot_subagent_env,
         )
 
-        merge_copilot_config(ctx, policy)
-        sync_copilot_subagent_env(ctx, policy)
+        sync_ctx = cast("Any", ctx)
+        merge_copilot_config(sync_ctx, policy)
+        sync_copilot_subagent_env(sync_ctx, policy)
         ctx.write_json(COPILOT_MCP_PATH, render_copilot_mcp(registry, fallbacks, "github-copilot-cli"))
-        sync_copilot_agents(ctx)
-
+        sync_copilot_agents(sync_ctx)

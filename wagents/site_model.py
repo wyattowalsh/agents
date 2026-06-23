@@ -6,10 +6,13 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
-from wagents.catalog import CatalogNode
-from wagents.external_skills import ExternalSkillEntry
+from wagents import ROOT
+
+if TYPE_CHECKING:
+    from wagents.catalog import CatalogNode
+    from wagents.external_skills import ExternalSkillEntry
 
 NodeSourceType = Literal["custom", "curated-external", "installed"]
 BucketSourceType = Literal["custom", "external"]
@@ -276,7 +279,7 @@ def docs_src_asset_css_url(src: str) -> str:
 FEATURED_SKILLS: tuple[FeaturedSkill, ...] = (
     FeaturedSkill(
         "Enhance Code Reviews",
-        "/skills/catalog/custom/honest-review/",
+        "/skills/catalog/custom/review/",
         "Review a diff with evidence, structure, and severity instead of ad hoc feedback.",
     ),
     FeaturedSkill(
@@ -350,9 +353,7 @@ def skill_source_counts(skills: list[CatalogNode]) -> dict[str, int]:
     }
 
 
-def mcp_source_counts(
-    nodes: list[CatalogNode], *, mcp_config_count: int | None = None
-) -> dict[str, int]:
+def mcp_source_counts(nodes: list[CatalogNode], *, mcp_config_count: int | None = None) -> dict[str, int]:
     """Count MCP tools by repo packages vs configured external servers."""
     custom_mcp = len([node for node in nodes if node.kind == "mcp"])
     external_mcp = mcp_config_count or 0
@@ -393,7 +394,7 @@ def site_data(
         "supportedAgents": [agent.__dict__ for agent in SUPPORTED_AGENTS],
         "installCommands": {
             "all": build_install_command(all_skills=True),
-            "starter": build_install_command(skill="honest-review"),
+            "starter": build_install_command(skill="review"),
         },
         "counts": node_counts(nodes, mcp_config_count=mcp_config_count, has_mcp_overview=has_mcp_overview),
         "distributionPaths": [path.__dict__ for path in DISTRIBUTION_PATHS],
@@ -457,8 +458,7 @@ def skill_index_data(
     nodes: list[CatalogNode], *, external_skills: list[ExternalSkillEntry] | None = None
 ) -> list[dict[str, Any]]:
     """Return normalized skill rows for UI islands and generated docs."""
-    rows = skill_indexes(nodes, external_skills=external_skills or [])["allSkillIndex"]
-    return rows
+    return skill_indexes(nodes, external_skills=external_skills or [])["allSkillIndex"]
 
 
 def skill_indexes(
@@ -478,9 +478,7 @@ def skill_indexes(
         [
             _skill_node_row(node)
             for node in nodes
-            if node.kind == "skill"
-            and node.source == "curated-external"
-            and node.id.lower() not in custom_names
+            if node.kind == "skill" and node.source == "curated-external" and node.id.lower() not in custom_names
         ],
         key=lambda row: str(row["name"]),
     )
@@ -604,7 +602,7 @@ def _merge_external_rows(
         if target is not None:
             agents = sorted(set(target.get("installedAgents") or []) | set(installed.get("installedAgents") or []))
             target["installedAgents"] = agents
-            target["installedExternalPath"] = installed.get("sourcePath", "")
+            target["installedExternalPath"] = _public_source_path(str(installed.get("sourcePath", "")))
             target["installedProvenanceStatus"] = installed.get("provenanceStatus", "")
             target["installedLocalInventoryOnly"] = bool(installed.get("localInventoryOnly"))
             continue
@@ -686,7 +684,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "trustTier": trust_tier,
         "trustBadge": trust_badge,
         "trustBadgeVariant": trust_badge_variant,
-        "sourcePath": node.source_path if _is_public_path_like(node.source_path) else "",
+        "sourcePath": _public_source_path(node.source_path),
         "sourceUrl": _source_url_for_node(node),
         "installCommand": install_command,
         "useCommand": f"/{node.id}",
@@ -724,7 +722,7 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "trustTier": entry.trust_tier,
         "trustBadge": trust_badge,
         "trustBadgeVariant": trust_badge_variant,
-        "sourcePath": entry.source_path,
+        "sourcePath": _public_source_path(entry.source_path),
         "sourceUrl": entry.source_url,
         "installCommand": entry.install_command,
         "useCommand": f"/{entry.name}",
@@ -793,6 +791,20 @@ def _source_kind(value: str, *, source_type: str) -> str:
 def _is_public_path_like(value: str) -> bool:
     path = _strip(value)
     return bool(path) and not _is_local_path_like(path)
+
+
+def _public_source_path(value: str) -> str:
+    """Return a public-safe source path for generated catalog rows."""
+    path = _strip(value)
+    if not path:
+        return ""
+    raw = Path(path).expanduser()
+    if raw.is_absolute():
+        try:
+            return raw.resolve().relative_to(ROOT.resolve()).as_posix()
+        except ValueError:
+            return ""
+    return path if _is_public_path_like(path) else ""
 
 
 def _contains_local_path(value: str) -> bool:

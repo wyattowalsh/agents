@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents import ROOT
 from wagents.catalog import collect_edges
@@ -10,6 +10,9 @@ from wagents.docs_compose_apply import compose_mcp_mdx
 from wagents.docs_compose_batch import UpgradeResult, run_upgrade_batch
 from wagents.docs_mdx_safety import escape_composed_page_prose
 from wagents.skill_docs import collect_all_doc_nodes
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 MCP_DIR = ROOT / "docs" / "src" / "content" / "docs" / "mcp"
 MCP_WAVE_ID = "compose-mcp-wave-1"

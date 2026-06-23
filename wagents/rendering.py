@@ -137,9 +137,9 @@ def render_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list[Cat
     """Render a CatalogNode to MDX string."""
     if node.kind == "skill":
         return render_skill_page(node, edges, all_nodes)
-    elif node.kind == "agent":
+    if node.kind == "agent":
         return render_agent_page(node, edges, all_nodes)
-    elif node.kind == "mcp":
+    if node.kind == "mcp":
         return render_mcp_page(node, edges, all_nodes)
     return ""
 
@@ -225,12 +225,15 @@ def _skill_catalog_import_prefix() -> str:
 
 
 def _skill_header_badge_props(node: CatalogNode, fm: dict) -> list[tuple[str, str]]:
-    """Build up to four SkillPageHeader badge props."""
+    """Build SkillPageHeader badge props."""
     badges: list[tuple[str, str]] = [(node.id, "note")]
     word_count = len(node.body.split()) if node.body else 0
     badges.append((f"{word_count} words", "default"))
     if fm.get("license"):
         badges.append((str(fm["license"]), "success"))
+    meta = fm.get("metadata", {})
+    if isinstance(meta, dict) and meta.get("version"):
+        badges.append((f"v{meta['version']}", "tip"))
     trust_tier = resolve_trust_tier_for_node(node)
     trust_badge, trust_variant = trust_badge_for_tier(trust_tier)
     badges.append((trust_badge, trust_variant))
@@ -238,7 +241,7 @@ def _skill_header_badge_props(node: CatalogNode, fm: dict) -> list[tuple[str, st
         curated_status = str(node.metadata.get("_curated_status") or "")
         if curated_status and len(badges) < 4:
             badges.append((curated_status, "default"))
-    return badges[:4]
+    return badges[:5]
 
 
 def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
@@ -253,9 +256,7 @@ def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
     if fm.get("argument-hint"):
         usage += f" {fm['argument-hint']}"
     badge_props = _skill_header_badge_props(node, fm)
-    badge_jsx = ", ".join(
-        f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props
-    )
+    badge_jsx = ", ".join(f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props)
     safe_install = install_command.replace("`", "\\`")
     return [
         f"import SkillPageHeader from '{prefix}components/SkillPageHeader.astro';",
@@ -302,11 +303,9 @@ def _skill_source_kind(node: CatalogNode) -> str:
     sk = str(fm.get("source_kind") or fm.get("sourceKind") or "").strip().lower()
     if sk in ("custom", "repo"):
         return "repo"
-    if sk:
-        # if metadata specifies a concrete kind (e.g. 'github', 'curated-external' etc), honor for display
-        # but for high-level we still derive sub-kind below unless custom
-        if sk not in ("curated-external", "external", "installed"):
-            return sk
+    if sk and sk not in ("curated-external", "external", "installed"):
+        # Honor concrete metadata kinds for display unless high-level handling owns the source kind.
+        return sk
 
     source = _skill_display_source(node)
     if node.source == "custom" or source == REPO_SOURCE:
@@ -635,6 +634,8 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
 
     # === TIER 1: Human summary ===
     parts.extend(_render_skill_page_header(node, fm))
+    parts.append("{/* Quick Start is rendered by SkillPageHeader. */}")
+    parts.append("")
     parts.append(
         "Works with "
         "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
@@ -661,9 +662,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             "`docs/public/generated-registries/skills-catalog-index.json` by "
             "`wagents docs generate`."
         )
-        parts.append(
-            " Legacy projection `config/external-skills.md` remains dual-read during migration."
-        )
+        parts.append(" Legacy projection `config/external-skills.md` remains dual-read during migration.")
         if node.metadata.get("_is_stub"):
             if is_enriched_stub:
                 parts.append(
@@ -769,17 +768,9 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     # Extract and render additional body sections for richer docs pages
     body_sections = _extract_body_sections(node.body) if node.body else {}
     for section_key, section_content in body_sections.items():
-        if (
-            section_key in _SKIP_SECTIONS
-            or section_key not in _RENDERABLE_SECTIONS
-            or not section_content.strip()
-        ):
+        if section_key in _SKIP_SECTIONS or section_key not in _RENDERABLE_SECTIONS or not section_content.strip():
             continue
-        if (
-            node.source != "custom"
-            and section_key == "routing"
-            and _section_is_link_heavy(section_content)
-        ):
+        if node.source != "custom" and section_key == "routing" and _section_is_link_heavy(section_content):
             continue
         # Use the original casing from the body for the heading
         heading = section_key.title()
@@ -792,12 +783,10 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     tab_items = []
 
     # Public metadata tab
-    tab_items.append(
-        (
-            "Public Metadata",
-            "| Field | Value |\n| ----- | ----- |\n" + "\n".join(_skill_public_metadata_rows(node)),
-        )
-    )
+    tab_items.append((
+        "Public Metadata",
+        "| Field | Value |\n| ----- | ----- |\n" + "\n".join(_skill_public_metadata_rows(node)),
+    ))
 
     # General tab
     general_rows = []
@@ -810,12 +799,10 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     if isinstance(meta, dict) and meta.get("author"):
         general_rows.append(f"| Author | {meta['author']} |")
     if general_rows:
-        tab_items.append(
-            (
-                "General",
-                "| Field | Value |\n| ----- | ----- |\n" + "\n".join(general_rows),
-            )
-        )
+        tab_items.append((
+            "General",
+            "| Field | Value |\n| ----- | ----- |\n" + "\n".join(general_rows),
+        ))
 
     # Claude Code tab
     cc_rows = []
@@ -827,19 +814,17 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         cc_rows.append(f"| Agent | `{fm['agent']}` |")
     if fm.get("argument-hint"):
         # Replace angle brackets — MDX parses <word> as JSX inside TabItem
-        _hint = fm["argument-hint"].replace("<", "[").replace(">", "]")
-        cc_rows.append(f"| Argument Hint | `{_hint}` |")
+        hint = fm["argument-hint"].replace("<", "[").replace(">", "]")
+        cc_rows.append(f"| Argument Hint | `{hint}` |")
     if fm.get("user-invocable") is False:
         cc_rows.append("| User Invocable | No |")
     if fm.get("disable-model-invocation"):
         cc_rows.append("| Disable Model Invocation | Yes |")
     if cc_rows:
-        tab_items.append(
-            (
-                "Claude Code",
-                "| Field | Value |\n| ----- | ----- |\n" + "\n".join(cc_rows),
-            )
-        )
+        tab_items.append((
+            "Claude Code",
+            "| Field | Value |\n| ----- | ----- |\n" + "\n".join(cc_rows),
+        ))
 
     # Compatibility tab
     compat_rows = []
@@ -848,12 +833,10 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     if fm.get("allowed-tools"):
         compat_rows.append(f"| Allowed Tools | `{fm['allowed-tools']}` |")
     if compat_rows:
-        tab_items.append(
-            (
-                "Compatibility",
-                "| Field | Value |\n| ----- | ----- |\n" + "\n".join(compat_rows),
-            )
-        )
+        tab_items.append((
+            "Compatibility",
+            "| Field | Value |\n| ----- | ----- |\n" + "\n".join(compat_rows),
+        ))
 
     parts.extend(render_tabs(tab_items))
 
@@ -886,9 +869,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
                 desc = escape_attr(truncate_sentence(rel_node.description, 160))
                 href = skill_detail_href(rel_id, node=rel_node)
                 title = escape_attr(rel_id)
-                parts.append(
-                    f'  <LinkCard title="{title}" href="{href}" description="{desc}" />'
-                )
+                parts.append(f'  <LinkCard title="{title}" href="{href}" description="{desc}" />')
         parts.append("</CardGrid>")
         parts.append("")
 
@@ -916,7 +897,9 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.append("## Resources")
     parts.append("")
     parts.append("<CardGrid>")
-    parts.append('  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />')
+    parts.append(
+        '  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />'
+    )
     parts.append('  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />')
     if node.source == "custom":
         parts.append(
@@ -1023,12 +1006,10 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
         mcp_list = ", ".join(f"`{m}`" for m in fm["mcpServers"])
         int_rows.append(f"| MCP Servers | {mcp_list} |")
     if int_rows:
-        tab_items.append(
-            (
-                "Integrations",
-                "| Field | Value |\n| ----- | ----- |\n" + "\n".join(int_rows),
-            )
-        )
+        tab_items.append((
+            "Integrations",
+            "| Field | Value |\n| ----- | ----- |\n" + "\n".join(int_rows),
+        ))
 
     parts.extend(render_tabs(tab_items))
 
@@ -1047,7 +1028,8 @@ def render_agent_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
                 )
             else:
                 parts.append(
-                    f'  <LinkCard title="{escape_attr(skill_name)}" href="{skill_detail_href(skill_name, source="custom")}" />'
+                    f'  <LinkCard title="{escape_attr(skill_name)}"'
+                    f' href="{skill_detail_href(skill_name, source="custom")}" />'
                 )
         parts.append("</CardGrid>")
         parts.append("")
@@ -1184,12 +1166,10 @@ def render_mcp_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: list
     # FastMCP config tab
     fastmcp_config = fm.get("fastmcp_config", {})
     if fastmcp_config:
-        tab_items.append(
-            (
-                "FastMCP Config",
-                "```json\n" + json.dumps(fastmcp_config, indent=2) + "\n```",
-            )
-        )
+        tab_items.append((
+            "FastMCP Config",
+            "```json\n" + json.dumps(fastmcp_config, indent=2) + "\n```",
+        ))
 
     parts.extend(render_tabs(tab_items))
 

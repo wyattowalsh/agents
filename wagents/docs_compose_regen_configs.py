@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents import ROOT
 from wagents.rendering import safe_outer_fence
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 CONFIG_DIR = ROOT / "config"
 HARNESS_CONFIG_DIR = ROOT / "docs" / "src" / "content" / "docs" / "harness-config"
@@ -16,9 +19,7 @@ _CONFIG_STEM_TO_JSON = {
     "sync-manifest": "sync-manifest.json",
     "tooling-policy": "tooling-policy.json",
 }
-_MCP_SNIPPET_IMPORT = (
-    "import McpClientSnippet from '../../../components/McpClientSnippet.astro';"
-)
+_MCP_SNIPPET_IMPORT = "import McpClientSnippet from '../../../components/McpClientSnippet.astro';"
 _MCP_SNIPPET_SECTION = """## Client snippets
 
 Example MCP client blocks for commonly referenced servers:
@@ -82,7 +83,7 @@ def _ensure_mcp_snippets(page_text: str) -> str:
             page_text = page_text.replace(marker, f"{_MCP_SNIPPET_IMPORT}\n{marker}", 1)
     insert_at = page_text.find("## Key Fields")
     if insert_at < 0:
-        insert_at = page_text.find("<details class=\"source-disclosure\">")
+        insert_at = page_text.find('<details class="source-disclosure">')
     if insert_at < 0:
         return page_text + "\n\n" + build_mcp_registry_snippet_section()
     return page_text[:insert_at] + build_mcp_registry_snippet_section() + page_text[insert_at:]

@@ -10,8 +10,7 @@ from __future__ import annotations
 
 import copy
 import os
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from wagents.platforms.base import (
     HOME,
@@ -34,6 +33,9 @@ from wagents.platforms.base import (
     render_mcphub_stdio_server,
     replace_arg_placeholders,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 OPENCODE_CONFIG_PATH = HOME / ".config" / "opencode" / "opencode.json"
 OPENCODE_TUI_CONFIG_PATH = HOME / ".config" / "opencode" / "tui.json"

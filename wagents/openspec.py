@@ -7,12 +7,14 @@ import os
 import re
 import shutil
 import subprocess
-from collections.abc import Sequence
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from wagents import ROOT
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from pathlib import Path
 
 OPENSPEC_PACKAGE = "@fission-ai/openspec@latest"
 OPENSPEC_TELEMETRY_ENV = "OPENSPEC_TELEMETRY"
@@ -193,15 +195,13 @@ def build_doctor_report(
 
     if check_cli:
         result = run_openspec(["--version"], cwd=root, package=package)
-        report["checks"].append(
-            {
-                "name": "openspec-version",
-                "argv": result.argv,
-                "returncode": result.returncode,
-                "stdout": result.stdout.strip(),
-                "stderr": result.stderr.strip(),
-            }
-        )
+        report["checks"].append({
+            "name": "openspec-version",
+            "argv": result.argv,
+            "returncode": result.returncode,
+            "stdout": result.stdout.strip(),
+            "stderr": result.stderr.strip(),
+        })
 
     if validate:
         result = run_openspec(["validate", "--all", "--json"], cwd=root, package=package)

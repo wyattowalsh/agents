@@ -5,9 +5,10 @@ from __future__ import annotations
 import importlib
 from dataclasses import dataclass
 from importlib.metadata import entry_points
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-import typer
+if TYPE_CHECKING:
+    import typer
 
 COMMANDS_GROUP = "wagents.commands"
 
@@ -48,8 +49,6 @@ def load_command_plugins(app: typer.Typer) -> list[PluginLoadResult]:
             register = _resolve_register(entry)
             register(app)
             results.append(PluginLoadResult(entry.name, "ok", "Loaded"))
-        except Exception as exc:  # noqa: BLE001 - surface plugin failures in doctor
+        except Exception as exc:
             results.append(PluginLoadResult(entry.name, "warn", f"Failed to load: {exc}"))
     return results
-
-

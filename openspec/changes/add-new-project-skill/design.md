@@ -29,4 +29,4 @@ Future preferences are added by editing catalog data first, then presets, refere
 
 ## Reuse Of Existing Skills
 
-The skill routes or hands off specialized work instead of replacing existing skills: docs maintenance to `docs-steward`, feature UI work to `frontend-designer`, agent creation to `agent-conventions`, MCP creation to `mcp-creator`, cloud implementation to Cloudflare/Wrangler/infrastructure skills, and schema design to database skills.
+The skill routes or hands off specialized work instead of replacing existing skills: docs maintenance to `docs-steward`, feature UI work to `design`, agent creation to `agent-conventions`, MCP creation to `mcp-creator`, cloud implementation to Cloudflare/Wrangler/infrastructure skills, and schema design to database skills.

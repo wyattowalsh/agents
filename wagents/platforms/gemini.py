@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from wagents.platforms.base import HOME, REPO_ROOT, PlatformAdapter, SyncContext
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 GEMINI_SETTINGS_PATH = HOME / ".gemini" / "settings.json"
 GEMINI_ENTRYPOINT_PATH = HOME / ".gemini" / "GEMINI.md"
@@ -46,6 +48,6 @@ class Adapter(PlatformAdapter):
     ) -> None:
         from scripts.sync_agent_stack import ensure_symlink, merge_gemini_settings
 
-        ensure_symlink(ctx, GEMINI_ENTRYPOINT_PATH, GEMINI_GLOBAL_MD)
-        merge_gemini_settings(ctx, registry, policy, fallbacks, hook_registry)
-
+        sync_ctx = cast("Any", ctx)
+        ensure_symlink(sync_ctx, GEMINI_ENTRYPOINT_PATH, GEMINI_GLOBAL_MD)
+        merge_gemini_settings(sync_ctx, registry, policy, fallbacks, hook_registry)

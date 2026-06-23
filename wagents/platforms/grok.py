@@ -317,7 +317,7 @@ def apply_model_defaults(body: str, policy: dict[str, Any]) -> str:
             key = stripped.split("=", 1)[0].strip()
             seen.add(key)
             if key in defaults:
-                out.append(f'{key} = {toml_value(defaults[key])}')
+                out.append(f"{key} = {toml_value(defaults[key])}")
                 continue
         out.append(line)
     if "models" not in {ln.strip().strip("[]") for ln in out if ln.strip().startswith("[")}:
@@ -387,9 +387,7 @@ def assert_no_grok_config_drops(
     preview = ", ".join(dropped[:10])
     if len(dropped) > 10:
         preview += f", ... (+{len(dropped) - 10} more)"
-    raise GrokConfigDropError(
-        f"Refusing to update Grok config: sync would remove user-owned tables: {preview}"
-    )
+    raise GrokConfigDropError(f"Refusing to update Grok config: sync would remove user-owned tables: {preview}")
 
 
 def render_grok_config(

@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from dataclasses import dataclass
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents.docs_mdx_safety import has_legacy_quick_start, parse_composed_by
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -32,9 +35,7 @@ def should_skip_upgrade(
         return False
     if composed_by == target_wave:
         return True
-    if composed_by and composed_by.startswith("compose-"):
-        return True
-    return False
+    return bool(composed_by and composed_by.startswith("compose-"))
 
 
 def run_upgrade_batch(

@@ -7,8 +7,7 @@ possible adapter — it only writes repo-local MCP config.
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from wagents.context import get_repo_root
 from wagents.platforms.base import (
@@ -23,6 +22,9 @@ from wagents.platforms.base import (
     render_mcphub_stdio_server,
     replace_arg_placeholders,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def vscode_mcp_path() -> Path:

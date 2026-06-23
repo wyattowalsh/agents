@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents import ROOT
 from wagents.catalog import collect_edges
@@ -21,6 +21,9 @@ from wagents.rendering import (
 )
 from wagents.skill_docs import collect_all_doc_nodes
 from wagents.skill_research import load_skill_research
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 CUSTOM_CATALOG = ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom"
 _SKIP_INLINE = {"references", "reference file index", "dispatch"}
@@ -41,11 +44,10 @@ def _wave_for_skill(skill_id: str, batch_ids: list[str], batch_size: int = 7) ->
 
 RICH_HAND_CUSTOM = {
     "orchestrator",
-    "honest-review",
+    "review",
     "wargame",
     "prompt-engineer",
     "host-panel",
-    "add-badges",
     "python-conventions",
     "mcp-creator",
 }
@@ -71,18 +73,14 @@ def _condensed_research_aside(skill_id: str) -> str:
         s = ln.strip()
         if not s or s.startswith("#"):
             continue
-        if s.startswith("**") and s.endswith("**") or s.startswith("**") and ":" in s:
+        if (s.startswith("**") and s.endswith("**")) or (s.startswith("**") and ":" in s):
             bullets.append(s)
         if len(bullets) >= 3:
             break
     if not bullets:
         return ""
     inner = "\n".join(bullets)
-    return (
-        '<Aside type="note" title="Research context (evidence, not authority)">\n'
-        f"{escape_mdx(inner)}\n"
-        "</Aside>\n\n"
-    )
+    return f'<Aside type="note" title="Research context (evidence, not authority)">\n{escape_mdx(inner)}\n</Aside>\n\n'
 
 
 def _maybe_steps(content: str) -> str:
@@ -175,8 +173,7 @@ def upgrade_custom_skill_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
     page = _insert_missing_sections(page, node)
     page = _OLD_DETAILS.sub(_details_block(node), page, count=1)
     page = escape_composed_page_prose(page)
-    page = strip_duplicate_details_headings(page)
-    return page
+    return strip_duplicate_details_headings(page)
 
 
 def upgrade_custom_batch(

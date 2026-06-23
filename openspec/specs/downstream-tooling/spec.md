@@ -67,7 +67,7 @@ Because Skills CLI has no native `grok` adapter, `wagents install -a grok` and `
 
 #### Scenario: Install grok-targeted skills via alias
 
-- **GIVEN** a user runs `wagents install honest-review -a grok -y`
+- **GIVEN** a user runs `wagents install review -a grok -y`
 - **WHEN** the install subprocess invokes `npx skills add`
 - **THEN** the agent flag SHALL be `claude-code`, not `grok`
 - **AND** after success the CLI SHALL mirror missing skills into `~/.grok/skills`.
@@ -116,4 +116,3 @@ The repository SHALL support installing the `wagents` CLI globally via `uv tool 
 - **WHEN** the user runs `wagents validate`
 - **THEN** the command SHALL discover the repo root from the working directory
 - **AND** validation SHALL execute against that repository's `skills/`, `agents/`, and related assets.
-

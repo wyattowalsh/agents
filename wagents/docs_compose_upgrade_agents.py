@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-import re
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents import ROOT
 from wagents.catalog import collect_edges
@@ -14,6 +13,9 @@ from wagents.docs_mdx_safety import escape_composed_page_prose, strip_duplicate_
 from wagents.rendering import escape_mdx
 from wagents.site_model import SUPPORTED_AGENT_IDS
 from wagents.skill_docs import collect_all_doc_nodes
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 AGENTS_DIR = ROOT / "docs" / "src" / "content" / "docs" / "agents"
 AGENTS_WAVE_ID = "compose-agents-wave-1"
@@ -34,10 +36,7 @@ def batch_composed_agent_ids() -> list[str]:
 
 def _harness_coverage_block() -> str:
     names = ", ".join(f"`{agent}`" for agent in HARNESS_AGENTS)
-    return (
-        "## Harness Coverage\n\n"
-        f"Agent definitions sync to project and home harness surfaces including {names}.\n\n"
-    )
+    return f"## Harness Coverage\n\nAgent definitions sync to project and home harness surfaces including {names}.\n\n"
 
 
 def upgrade_agent_mdx(node, edges, all_nodes, *, wave_id: str = AGENTS_WAVE_ID) -> str:
@@ -45,20 +44,13 @@ def upgrade_agent_mdx(node, edges, all_nodes, *, wave_id: str = AGENTS_WAVE_ID) 
     if "## What It Does\n" not in page:
         what = f"## What It Does\n\n{escape_mdx(node.description)}\n\n"
         marker = "## System Prompt\n"
-        if marker in page:
-            page = page.replace(marker, what + marker, 1)
-        else:
-            page = page.rstrip() + "\n\n" + what
+        page = page.replace(marker, what + marker, 1) if marker in page else page.rstrip() + "\n\n" + what
     if "## Harness Coverage\n" not in page:
         insert = _harness_coverage_block()
         marker = "## System Prompt\n"
-        if marker in page:
-            page = page.replace(marker, insert + marker, 1)
-        else:
-            page = page.rstrip() + "\n\n" + insert
+        page = page.replace(marker, insert + marker, 1) if marker in page else page.rstrip() + "\n\n" + insert
     page = escape_composed_page_prose(page)
-    page = strip_duplicate_details_headings(page)
-    return page
+    return strip_duplicate_details_headings(page)
 
 
 def upgrade_agents_batch(

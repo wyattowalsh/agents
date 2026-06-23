@@ -3,19 +3,21 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 import yaml
 
 from wagents import ROOT
 from wagents.catalog import RELATED_SKILLS, collect_edges
-from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
-from pathlib import Path
-
 from wagents.docs_compose_apply import compose_skill_mdx
 from wagents.docs_compose_batch import UpgradeResult, run_upgrade_batch
+from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
 from wagents.docs_mdx_safety import escape_composed_page_prose, strip_duplicate_details_headings
 from wagents.rendering import escape_attr, truncate_sentence
 from wagents.skill_docs import collect_all_doc_nodes, skill_detail_href
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 EXTERNAL_CATALOG = ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external"
 AUTHORING_DIR = ROOT / "docs" / "src" / "authoring" / "skills"
@@ -81,9 +83,7 @@ def _related_skills_block(node, all_nodes) -> str:
         if rel_node:
             desc = escape_attr(truncate_sentence(rel_node.description, 160))
             href = skill_detail_href(rel_id, node=rel_node)
-            lines.append(
-                f'  <LinkCard title="{escape_attr(rel_id)}" href="{href}" description="{desc}" />'
-            )
+            lines.append(f'  <LinkCard title="{escape_attr(rel_id)}" href="{href}" description="{desc}" />')
         else:
             lines.append(
                 f'  <LinkCard title="{escape_attr(rel_id)}"'
@@ -153,7 +153,7 @@ def _curated_aside(skill_id: str, wave_id: str) -> str:
         f"Composed {wave_id} using authoring SSOT "
         f"(`docs/src/authoring/skills/{skill_id}.mdx`) + research. "
         "Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). "
-        "Run external-skill-auditor before using in production or promoting.\n"
+        "Run `/review source` before using in production or promoting.\n"
         "</Aside>\n\n"
     )
 
@@ -176,8 +176,7 @@ def upgrade_external_skill_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
                 page = page[:idx] + rel + page[idx:]
     page = _append_provenance_table(page, node.id)
     page = escape_composed_page_prose(page)
-    page = strip_duplicate_details_headings(page)
-    return page
+    return strip_duplicate_details_headings(page)
 
 
 def upgrade_external_batch(

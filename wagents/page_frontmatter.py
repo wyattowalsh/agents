@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import re
 from datetime import date
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from wagents.catalog import CatalogNode
 from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
 from wagents.parsing import truncate_sentence
 from wagents.site_model import resolve_trust_tier_for_node
+
+if TYPE_CHECKING:
+    from wagents.catalog import CatalogNode
 
 PAGE_KIND_BY_NODE = {
     "skill": "skill",
@@ -95,7 +97,8 @@ def render_catalog_frontmatter_lines(
         _append_optional(lines, "model", fm.get("model"))
 
     elif node.kind == "mcp":
-        proj = fm.get("project") if isinstance(fm.get("project"), dict) else {}
+        project_meta = fm.get("project")
+        proj = project_meta if isinstance(project_meta, dict) else {}
         _append_optional(lines, "package", proj.get("name"))
         _append_optional(lines, "fastmcp", "true")
 
@@ -121,7 +124,9 @@ def render_composed_frontmatter_block(node: CatalogNode, *, wave_id: str) -> str
     return "---\n" + "\n".join(lines) + "\n---\n\n" + HAND_MAINTAINED_SENTINEL + "\n"
 
 
-def enrich_rich_hand_frontmatter(page_text: str, node: CatalogNode, *, wave_id: str = "compose-rich-hand-wave-1") -> str:
+def enrich_rich_hand_frontmatter(
+    page_text: str, node: CatalogNode, *, wave_id: str = "compose-rich-hand-wave-1"
+) -> str:
     """Add composed frontmatter contract to rich hand-maintained pages without rewriting body."""
     if "composed: true" in page_text[:400]:
         return page_text

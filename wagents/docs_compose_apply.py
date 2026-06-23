@@ -53,7 +53,7 @@ def _external_provenance_aside(skill_id: str, wave_id: str) -> str:
         f"Composed {wave_id} using authoring SSOT "
         f"(`docs/src/authoring/skills/{skill_id}.mdx`) + research. "
         "Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). "
-        "Run external-skill-auditor before using in production or promoting.\n"
+        "Run `/review source` before using in production or promoting.\n"
         "</Aside>"
     )
 
@@ -144,21 +144,22 @@ def compose_agent_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
     body = _replace_frontmatter(body, _composed_frontmatter_block(node, wave_id=wave_id))
     source = node.source_path or f"agents/{node.id}.md"
     body = _PROVENANCE_ASIDE.sub(_agent_provenance_aside(source, wave_id), body, count=1)
-    body = _AGENT_DETAILS.sub(
-        lambda match: match.group(0)
-        .replace("<details>", '<details class="source-disclosure">', 1)
-        .replace("<summary>View Full Agent File</summary>", "<summary>Full agent file</summary>", 1),
+    return _AGENT_DETAILS.sub(
+        lambda match: (
+            match
+            .group(0)
+            .replace("<details>", '<details class="source-disclosure">', 1)
+            .replace("<summary>View Full Agent File</summary>", "<summary>Full agent file</summary>", 1)
+        ),
         body,
         count=1,
     )
-    return body
 
 
 def compose_mcp_mdx(node, edges, all_nodes, *, wave_id: str) -> str:
     body = render_mcp_page(node, edges, all_nodes)
     body = _replace_frontmatter(body, _composed_frontmatter_block(node, wave_id=wave_id))
-    body = _PROVENANCE_ASIDE.sub(_mcp_provenance_aside(node.id, wave_id), body, count=1)
-    return body
+    return _PROVENANCE_ASIDE.sub(_mcp_provenance_aside(node.id, wave_id), body, count=1)
 
 
 def _node_index(nodes) -> dict[tuple[str, str], object]:

@@ -6,15 +6,18 @@ import json
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import date
-from pathlib import Path
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 import yaml
 
 from wagents import CONTENT_DIR, ROOT
-from wagents.catalog import CatalogNode
 from wagents.docs_lint import HAND_MAINTAINED_SENTINEL
 from wagents.skill_docs import collect_all_doc_nodes
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from wagents.catalog import CatalogNode
 
 ComposeSurface = Literal["skills", "agents", "mcp", "hooks", "configs", "all"]
 

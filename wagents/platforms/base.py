@@ -11,12 +11,14 @@ from __future__ import annotations
 import json
 import os
 from abc import ABC, abstractmethod
-from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from wagents.context import REPO_ROOT_PROXY, get_repo_root
 from wagents.repo_paths import render_portable_path, resolve_portable_path
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 REPO_ROOT = REPO_ROOT_PROXY
 HOME = Path.home()
@@ -48,6 +50,8 @@ MANAGED_HEADER = "<!-- Managed by wagents. Do not edit directly. -->\n"
 HOOK_COMMAND_MARKER = "wagents-hook.py"
 MCPHUB_DEFAULT_URL = "http://127.0.0.1:46683/mcp"
 MCPHUB_PROJECTION_MODES = {"http", "remote-stdio"}
+
+
 def mcphub_remote_stdio() -> Path:
     return get_repo_root() / "scripts" / "mcphub" / "remote-stdio.sh"
 
@@ -260,7 +264,7 @@ def render_home_path(path: Path) -> str:
 
 
 def normalize_path_value(value: str) -> str:
-    if value.startswith("${REPO_ROOT}"):
+    if value.startswith(f"${REPO_ROOT}"):
         return resolve_portable_path(value, repo_root=get_repo_root(), home=HOME)
     if value == "~":
         return str(HOME.resolve())
@@ -415,14 +419,12 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
 
     specs: list[dict[str, Any]] = []
     if should_include("all"):
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "all"),
-                "url": hub_url,
-                "enabled": mcphub_endpoint_enabled(registry, harness, "all"),
-                "kind": "all",
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "all"),
+            "url": hub_url,
+            "enabled": mcphub_endpoint_enabled(registry, harness, "all"),
+            "kind": "all",
+        })
     for group_name, group in sorted(groups.items()):
         if not should_include("group"):
             continue
@@ -432,54 +434,46 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
             continue
         if not any(server in enabled_servers for server in group.get("servers", [])):
             continue
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "group", group_name),
-                "url": f"{hub_url}/{group_name}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "group", group_name),
-                "kind": "group",
-                "group": group_name,
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "group", group_name),
+            "url": f"{hub_url}/{group_name}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "group", group_name),
+            "kind": "group",
+            "group": group_name,
+        })
     for server in sorted(enabled_servers):
         if not should_include("server"):
             continue
         if included_servers is not None and server not in included_servers:
             continue
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "server", server),
-                "url": f"{hub_url}/{server}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
-                "kind": "server",
-                "server": server,
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "server", server),
+            "url": f"{hub_url}/{server}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
+            "kind": "server",
+            "server": server,
+        })
     smart_raw = mcphub_config(registry).get("smart_routing", {})
     smart = smart_raw if isinstance(smart_raw, dict) else {}
     smart_path = str(smart.get("path", smart.get("base_path", "$smart"))).strip("/")
     if smart_path.startswith("mcp/"):
         smart_path = smart_path.removeprefix("mcp/")
     if should_include("smart"):
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "smart"),
-                "url": f"{hub_url}/{smart_path}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "smart"),
-                "kind": "smart",
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "smart"),
+            "url": f"{hub_url}/{smart_path}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "smart"),
+            "kind": "smart",
+        })
         for spec in list(specs):
             if spec["kind"] == "group":
-                specs.append(
-                    {
-                        "name": mcphub_endpoint_name(registry, harness, "smart", spec["group"]),
-                        "url": f"{hub_url}/{smart_path}/{spec['group']}",
-                        "enabled": mcphub_endpoint_enabled(registry, harness, "smart", spec["group"]),
-                        "kind": "smart",
-                        "group": spec["group"],
-                    }
-                )
+                specs.append({
+                    "name": mcphub_endpoint_name(registry, harness, "smart", spec["group"]),
+                    "url": f"{hub_url}/{smart_path}/{spec['group']}",
+                    "enabled": mcphub_endpoint_enabled(registry, harness, "smart", spec["group"]),
+                    "kind": "smart",
+                    "group": spec["group"],
+                })
     return specs
 
 

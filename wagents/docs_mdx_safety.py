@@ -57,8 +57,10 @@ def escape_composed_page_prose(page: str) -> str:
         if stripped.startswith("</") and stripped.endswith(">"):
             out.append(line)
             continue
-        if stripped.startswith("<") and not stripped.startswith("<!--"):
-            if any(
+        if (
+            stripped.startswith("<")
+            and not stripped.startswith("<!--")
+            and any(
                 tag in stripped
                 for tag in (
                     "<Aside",
@@ -78,12 +80,12 @@ def escape_composed_page_prose(page: str) -> str:
                     "<div",
                     "</div>",
                 )
-            ):
-                out.append(line)
-                continue
-        if "<" in line or ">" in line:
-            if "&lt;" not in line:
-                line = escape_mdx_line(line)
+            )
+        ):
+            out.append(line)
+            continue
+        if ("<" in line or ">" in line) and "&lt;" not in line:
+            line = escape_mdx_line(line)
         out.append(line)
     result = "\n".join(out)
     if page.endswith("\n"):

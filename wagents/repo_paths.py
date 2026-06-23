@@ -12,6 +12,8 @@ HOME = Path.home()
 
 def _repo_root() -> Path:
     return get_repo_root()
+
+
 REPO_ROOT_TOKEN = "${REPO_ROOT}"
 
 
@@ -92,6 +94,3 @@ def contains_portable_path_leak(text: str) -> bool:
     if not isinstance(text, str):
         return False
     return bool(_PORTABLE_PATH_LEAK_RE.search(text) or _WINDOWS_DRIVE_PATH_RE.search(text))
-
-
-

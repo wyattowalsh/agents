@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from wagents.catalog import CatalogNode
 from wagents.site_model import LOCAL_INSTALLED_SOURCE_LABEL
+
+if TYPE_CHECKING:
+    from wagents.catalog import CatalogNode
 
 
 def _is_local_path_like(value: str) -> bool:
@@ -35,8 +38,7 @@ def provenance_one_liner(node: CatalogNode) -> str:
             return f"Generated from `{src}` via `wagents docs generate`."
         if node.source == "curated-external":
             return (
-                f"Generated from authoring `docs/src/authoring/skills/{node.id}.mdx` "
-                "and `skills-catalog-index.json`."
+                f"Generated from authoring `docs/src/authoring/skills/{node.id}.mdx` and `skills-catalog-index.json`."
             )
         return f"Generated from `{src}`."
     if node.kind == "agent":

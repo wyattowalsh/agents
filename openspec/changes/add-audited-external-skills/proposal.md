@@ -2,7 +2,7 @@
 
 ## Problem
 
-The repo has an approved curated external skill install set, but the requested `ljagiello/ctf-skills`, `nextlevelbuilder/ui-ux-pro-max-skill`, `jal-co/shieldcn`, and researched `Leonxlnx/taste-skill` sources are not represented in that source of truth or generated docs. The requested install coverage also extends beyond the current default target suffix, so applying the change directly would risk undocumented harness gaps, accidental installation of overlapping bundled skills, or live installs that are not traceable to the external-skill audit findings.
+The repo has an approved curated external skill install set, but the requested `ljagiello/ctf-skills`, `nextlevelbuilder/ui-ux-pro-max-skill`, and researched `Leonxlnx/taste-skill` sources are not represented in that source of truth or generated docs. The requested install coverage also extends beyond the current default target suffix, so applying the change directly would risk undocumented harness gaps, accidental installation of overlapping bundled skills, or live installs that are not traceable to the external-skill audit findings.
 
 ## Intent
 
@@ -12,7 +12,6 @@ Add the audited external skill sources to the curated external skill workflow, i
 
 - Add `ljagiello/ctf-skills` to the curated external install source after audit, selecting all 11 CTF skills.
 - Add `nextlevelbuilder/ui-ux-pro-max-skill` to the curated external install source after audit, selecting only `ui-ux-pro-max`.
-- Add `jal-co/shieldcn` to the curated external install source after audit, selecting only `shieldcn-badges`.
 - Add `Leonxlnx/taste-skill` to the curated external install source after audit, selecting only `design-taste-frontend`.
 - Expand or supplement target-harness documentation based on actual Skills CLI and harness support discovered on this machine.
 - Preserve an explicit avoid note for bundled `ckm:*` skills from `nextlevelbuilder/ui-ux-pro-max-skill` unless the user later requests them.
@@ -52,5 +51,4 @@ Add the audited external skill sources to the curated external skill workflow, i
 - Requested harness names may not all map to Skills CLI adapters; unsupported targets must be reported with evidence instead of silently skipped.
 - `ui-ux-pro-max-skill` bundles extra `ckm:*` skills with broader API/script surfaces and overlap with existing design workflows; install only `ui-ux-pro-max`.
 - `taste-skill` bundles many overlapping style, image-generation, Google Stitch, and output-behavior skills; install only `design-taste-frontend` unless explicitly requested.
-- ShieldCN adds remote badge URLs to documentation output; keep usage scoped to project README/docs badge generation and do not treat external badge content as trusted instruction text.
 - Generated docs/README may also include pre-existing unrelated dirty content; do not claim unrelated changes as part of this work.

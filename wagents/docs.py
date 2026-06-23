@@ -4,12 +4,15 @@ import json
 import re
 import subprocess
 from pathlib import Path
-
+from typing import Literal, TypeVar, cast
 
 import typer
 from typer.models import OptionInfo
 
 from wagents import CONTENT_DIR, DOCS_DIR, ROOT
+
+# Authoring SSOT + catalog index (W3)
+from wagents.authoring_sync import sync_custom_authoring_from_skills
 from wagents.catalog import collect_edges
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
 from wagents.parsing import escape_attr, truncate_sentence
@@ -31,6 +34,13 @@ from wagents.skill_docs import (
     skill_catalog_group,
     skill_detail_href,
 )
+from wagents.skill_index import (
+    build_catalog_index,
+    load_authoring_entries,
+)
+from wagents.skill_index import (
+    write_catalog_index as write_skills_catalog_index,
+)
 from wagents.skill_research import (
     RESEARCH_DIR,
     build_batch_prompt,
@@ -45,13 +55,9 @@ from wagents.skill_research import (
     validate_artifact,
 )
 
-# Authoring SSOT + catalog index (W3)
-from wagents.authoring_sync import sync_custom_authoring_from_skills
-from wagents.skill_index import (
-    build_catalog_index,
-    load_authoring_entries,
-    write_catalog_index as write_skills_catalog_index,
-)
+type ComposeSurface = Literal["skills", "agents", "mcp", "hooks", "configs", "all"]
+type ResearchSourceType = Literal["all", "custom", "installed", "curated-external"]
+T = TypeVar("T")
 
 # ---------------------------------------------------------------------------
 # Index and CLI pages
@@ -240,7 +246,7 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
     )
     parts.append("")
     parts.append(
-        "Then run `/honest-review`, `/wargame`, or `/mcp-creator` in Claude Code, "
+        "Then run `/review`, `/wargame`, or `/mcp-creator` in Claude Code, "
         "OpenCode, Grok Build, or any [agentskills.io](https://agentskills.io)-compatible harness."
     )
     parts.append("")
@@ -280,7 +286,9 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         skills_index_desc = (
             "Browse repository skills plus external skills from the curated catalog and local harness inventory."
         )
-    parts.append(f'  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="{escape_attr(skills_index_desc)}" />')
+    parts.append(
+        f'  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="{escape_attr(skills_index_desc)}" />'
+    )
     if has_mcp_overview:
         custom_mcp = int(counts.get("customMcp") or 0)
         external_mcp = int(counts.get("externalMcp") or 0)
@@ -1069,7 +1077,8 @@ def write_cli_page() -> None:
     parts.append("```")
     parts.append("")
     parts.append(
-        "By default, generation is deterministic and repository-only (`--no-installed`). Opt in with `--include-installed` for local harness inventory rows. The generator creates "
+        "By default, generation is deterministic and repository-only (`--no-installed`). "
+        "Opt in with `--include-installed` for local harness inventory rows. The generator creates "
         "individual pages for each skill, agent, and MCP server, plus category index pages "
         "and the sidebar navigation."
     )
@@ -1348,6 +1357,19 @@ def write_cli_page() -> None:
     parts.append("- tests/")
     parts.append("</FileTree>")
     parts.append("")
+    parts.append("## Related Pages")
+    parts.append("")
+    parts.append("<CardGrid>")
+    parts.append('  <LinkCard title="Start Here" href="/start-here/" description="Choose an entry path." />')
+    parts.append(
+        '  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse installable skills." />'
+    )
+    parts.append(
+        '  <LinkCard title="Bundle Manifest" href="https://github.com/wyattowalsh/agents/blob/main/agent-bundle.json" '
+        'description="current bundle surface and generated docs inputs." />'
+    )
+    parts.append("</CardGrid>")
+    parts.append("")
     parts = _accordionize_command_reference(parts)
 
     content_dir = ROOT / "docs" / "src" / "content" / "docs"
@@ -1358,7 +1380,6 @@ def write_cli_page() -> None:
 # ---------------------------------------------------------------------------
 # Category index pages
 # ---------------------------------------------------------------------------
-
 
 
 def _src_import_prefix(*, under_content_docs: str = "") -> str:
@@ -1386,9 +1407,7 @@ def _render_skill_linkcards(nodes: list, *, limit: int | None = None) -> list[st
         if _skill_id_is_linkable(node.id):
             href = skill_detail_href(node.id, node=node)
             title = escape_attr(node.id)
-            parts.append(
-                f'  <LinkCard title="{title}" href="{href}" description="{desc}" />'
-            )
+            parts.append(f'  <LinkCard title="{title}" href="{href}" description="{desc}" />')
         else:
             parts.append(f'  <Card title="{escape_attr(node.id)}">{desc}</Card>')
     return parts
@@ -1422,7 +1441,8 @@ def write_catalog_index(nodes: list) -> None:
         f'  <LinkCard title="Custom Skills ({custom_count})" href="/skills/catalog/custom/" '
         'description="Repo-owned skills from ./skills/ with install commands and convention-skill context." />',
         f'  <LinkCard title="External Skills ({external_count})" href="/skills/catalog/external/" '
-        'description="Curated third-party skills from config/external-skills.md and optional local harness inventory." />',
+        'description="Curated third-party skills from config/external-skills.md and optional local harness '
+        'inventory." />',
         '  <LinkCard title="Install Scripts" href="/skills/install/" '
         'description="Copyable install commands for custom and external skills." />',
         "</CardGrid>",
@@ -1482,78 +1502,73 @@ def write_catalog_custom_index(nodes: list) -> None:
         "## Skill Lanes",
         "",
         "<CardGrid>",
-        f'  <LinkCard title="Review & QA" href="{skill_detail_href("honest-review", source="custom")}" '
+        f'  <LinkCard title="Review & QA" href="{skill_detail_href("review", source="custom")}" '
         'description="Code review, docs QA, test strategy, performance, or security scanning." />',
-        f'  <LinkCard title="Build & Design" href="{skill_detail_href("frontend-designer", source="custom")}" '
+        f'  <LinkCard title="Build & Design" href="{skill_detail_href("design", source="custom")}" '
         'description="Use these when you are creating frontends, APIs, data systems, infra, or MCP servers." />',
         f'  <LinkCard title="Strategy & Research" href="{skill_detail_href("research", source="custom")}" '
         'description="Fuzzy problems, real trade-offs, or deeper investigation first." />',
         f'  <LinkCard title="Workflow & Utility" href="{skill_detail_href("orchestrator", source="custom")}" '
-        'description="Coordinate work, simplify code, git flow, releases, or local file tasks." />',
+        'description="Coordinate work, review or simplify code, git flow, releases, or local file tasks." />',
         "</CardGrid>",
         "",
     ]
 
     if user_invocable:
-        parts.extend(
-            [
-                f"## User-Invocable Skills ({len(user_invocable)})",
-                "",
-                '<Badge text="Manual invocation" variant="tip" /> '
-                "Call these when you want a specialist on demand. They appear in the autocomplete menu.",
-                "",
-                '<div class="catalog-skill" data-skill-lane="user-invocable">',
-                "<CardGrid>",
-                *_render_skill_linkcards(user_invocable),
-                "</CardGrid>",
-                "</div>",
-                "",
-            ]
-        )
+        parts.extend([
+            f"## User-Invocable Skills ({len(user_invocable)})",
+            "",
+            '<Badge text="Manual invocation" variant="tip" /> '
+            "Call these when you want a specialist on demand. They appear in the autocomplete menu.",
+            "",
+            '<div class="catalog-skill" data-skill-lane="user-invocable">',
+            "<CardGrid>",
+            *_render_skill_linkcards(user_invocable),
+            "</CardGrid>",
+            "</div>",
+            "",
+        ])
 
     if auto_invoke:
-        parts.extend(
-            [
-                f"## Convention Skills ({len(auto_invoke)})",
-                "",
-                '<Badge text="Auto-invoked" variant="caution" /> '
-                "The agent loads these automatically when repo context matches. They stay out of the `/` menu.",
-                "",
-                '<div class="catalog-skill" data-skill-lane="convention">',
-                "<CardGrid>",
-                *_render_skill_linkcards(auto_invoke),
-                "</CardGrid>",
-                "</div>",
-                "",
-            ]
-        )
+        parts.extend([
+            f"## Convention Skills ({len(auto_invoke)})",
+            "",
+            '<Badge text="Auto-invoked" variant="caution" /> '
+            "The agent loads these automatically when repo context matches. They stay out of the `/` menu.",
+            "",
+            '<div class="catalog-skill" data-skill-lane="convention">',
+            "<CardGrid>",
+            *_render_skill_linkcards(auto_invoke),
+            "</CardGrid>",
+            "</div>",
+            "",
+        ])
 
-    parts.extend(
-        [
-            "---",
-            "",
-            "## Installing Individual Skills",
-            "",
-            "You can also install specific skills rather than the full collection:",
-            "",
-            "```bash",
-            "# Install a single skill globally",
-            build_install_command(skill="honest-review"),
-            "",
-            "# Install multiple specific skills",
-            build_install_command(skills=("honest-review", "wargame")),
-            "",
-            "# Install to a specific agent only",
-            build_install_command(skill="orchestrator", agent_ids=("claude-code",)),
-            "```",
-            "",
-            '<Aside type="tip" title="Creating your own skills">',
-            f"Want to build a custom skill? Use the [skill-creator]({skill_detail_href('skill-creator', source='custom')}) "
-            "to scaffold, develop, audit, and package skills following proven structural patterns. "
-            "Or run `wagents new skill my-skill` from the [CLI](/cli/).",
-            "</Aside>",
-        ]
-    )
+    parts.extend([
+        "---",
+        "",
+        "## Installing Individual Skills",
+        "",
+        "You can also install specific skills rather than the full collection:",
+        "",
+        "```bash",
+        "# Install a single skill globally",
+        build_install_command(skill="review"),
+        "",
+        "# Install multiple specific skills",
+        build_install_command(skills=("review", "wargame")),
+        "",
+        "# Install to a specific agent only",
+        build_install_command(skill="orchestrator", agent_ids=("claude-code",)),
+        "```",
+        "",
+        '<Aside type="tip" title="Creating your own skills">',
+        "Want to build a custom skill? Use the "
+        f"[skill-creator]({skill_detail_href('skill-creator', source='custom')}) "
+        "to scaffold, develop, audit, and package skills following proven structural patterns. "
+        "Or run `wagents new skill my-skill` from the [CLI](/cli/).",
+        "</Aside>",
+    ])
 
     out_dir = CONTENT_DIR / SKILL_CATALOG_PREFIX / "custom"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1594,7 +1609,7 @@ def write_catalog_external_index(nodes: list) -> None:
         "remains dual-read during migration. With `--include-installed`, local harness inventory may add rows.",
         "",
         '<Aside type="note" title="Trust and provenance">',
-        "Audit third-party skills before install. Use [external-skill-auditor](/skills/catalog/custom/external-skill-auditor/) "
+        "Audit third-party skills before install. Use [review source](/skills/catalog/custom/review/) "
         "and the maintainer notes on each row.",
         "</Aside>",
         "",
@@ -1728,16 +1743,12 @@ def write_mcp_index(nodes: list) -> None:
     (index_path).write_text("\n".join(parts))
 
 
-
-
 def write_harness_support_page() -> None:
     """Generate public harness support honesty matrix."""
     import json
 
     harness_registry = json.loads((ROOT / "config" / "harness-surface-registry.json").read_text(encoding="utf-8"))
-    fixture_support = json.loads(
-        (ROOT / "planning/manifests/harness-fixture-support.json").read_text(encoding="utf-8")
-    )
+    fixture_support = json.loads((ROOT / "planning/manifests/harness-fixture-support.json").read_text(encoding="utf-8"))
     support_by_id = {record["harness_id"]: record for record in fixture_support.get("records", [])}
 
     parts = [
@@ -1746,14 +1757,16 @@ def write_harness_support_page() -> None:
         "description: Honest support tiers and fixture status for each agent harness",
         "---",
         "",
-        "{/* Auto-generated by wagents docs generate - do not edit */}",
-        "",
         "import { Aside, Badge } from '@astrojs/starlight/components';",
         "",
-        "Public honesty matrix for repo-managed harness surfaces. No harness is labeled **validated** until fixture-backed CI is green.",
+        "{/* Auto-generated by wagents docs generate - do not edit */}",
+        "",
+        "Public honesty matrix for repo-managed harness surfaces. No harness is labeled **validated** "
+        "until fixture-backed CI is green.",
         "",
         '<Aside type="caution" title="Stranger defaults">',
-        "Use MCPHub only when you explicitly opt in. Repo docs and public catalog default to repository + external catalog skills (`wagents docs generate --no-installed`).",
+        "Use MCPHub only when you explicitly opt in. Repo docs and public catalog default to repository "
+        "+ external catalog skills (`wagents docs generate --no-installed`).",
         "</Aside>",
         "",
         "| Harness | Support tier | Fixture status | Validation commands |",
@@ -1789,7 +1802,10 @@ def write_skill_research_pages(nodes: list) -> None:
     out_dir = CONTENT_DIR / "skill-research"
     out_dir.mkdir(parents=True, exist_ok=True)
     for stale in out_dir.glob("*.mdx"):
-        stale.unlink()
+        try:
+            stale.unlink()
+        except FileNotFoundError:
+            continue
 
     if not RESEARCH_DIR.exists():
         return
@@ -1810,10 +1826,7 @@ def write_skill_research_pages(nodes: list) -> None:
             continue
 
         node = skill_nodes.get(skill_id)
-        if node:
-            group = skill_catalog_group(node=node)
-        else:
-            group = "external"
+        group = skill_catalog_group(node=node) if node else "external"
         catalog_slug = f"{SKILL_CATALOG_PREFIX}/{group}/{skill_id}"
         if re.search(r"[:*]", skill_id):
             catalog_nav = f"Catalog entry: `{catalog_slug}` (special characters — open from Skill Catalog search)"
@@ -1911,11 +1924,14 @@ def write_sidebar(nodes: list) -> None:
     lines.append("    items: [")
     lines.append("      { slug: 'skills/catalog', label: 'Catalog' },")
     lines.append("      { slug: 'skills/install', label: 'Install' },")
-    lines.append("      { slug: 'skills/catalog/custom', label: 'Custom' },")
+    lines.append("      {")
+    lines.append("        label: 'Custom',")
+    lines.append("        items: [{ autogenerate: { directory: 'skills/catalog/custom' } }],")
+    lines.append("      },")
     lines.extend(custom_lane_lines)
     lines.append("      {")
     lines.append("        label: 'External',")
-    lines.append("        autogenerate: { directory: 'skills/catalog/external' },")
+    lines.append("        items: [{ autogenerate: { directory: 'skills/catalog/external' } }],")
     lines.append("      },")
     lines.append("    ],")
     lines.append("  },")
@@ -1923,13 +1939,13 @@ def write_sidebar(nodes: list) -> None:
     if agents:
         lines.append("  {")
         lines.append("    label: 'Agents',")
-        lines.append("    autogenerate: { directory: 'agents' },")
+        lines.append("    items: [{ autogenerate: { directory: 'agents' } }],")
         lines.append("  },")
 
     if mcps:
         lines.append("  {")
         lines.append("    label: 'MCP',")
-        lines.append("    autogenerate: { directory: 'mcp' },")
+        lines.append("    items: [{ autogenerate: { directory: 'mcp' } }],")
         lines.append("  },")
     elif mcp_overview_path.exists():
         lines.append("  {")
@@ -1942,12 +1958,12 @@ def write_sidebar(nodes: list) -> None:
     if (CONTENT_DIR / "hooks").exists():
         lines.append("  {")
         lines.append("    label: 'Hooks',")
-        lines.append("    autogenerate: { directory: 'hooks' },")
+        lines.append("    items: [{ autogenerate: { directory: 'hooks' } }],")
         lines.append("  },")
     if (CONTENT_DIR / "harness-config").exists():
         lines.append("  {")
         lines.append("    label: 'Harness Config',")
-        lines.append("    autogenerate: { directory: 'harness-config' },")
+        lines.append("    items: [{ autogenerate: { directory: 'harness-config' } }],")
         lines.append("  },")
 
     lines.append("  { slug: 'cli', label: 'CLI' },")
@@ -1999,17 +2015,18 @@ def _is_hand_maintained_mdx(path: Path) -> bool:
         return False
 
 
-def _resolve_typer_option(value: object, *, default: object = None) -> object:
+def _resolve_typer_option[T](value: T | OptionInfo | None, *, default: T) -> T:
     """Coerce Typer OptionInfo (seen on some direct-invocation/test paths) to resolved value.
 
     Extracts .default when an OptionInfo instance is passed instead of the
     concrete bool/int/str/etc; falls back to caller-supplied default when None.
     """
-    if isinstance(value, OptionInfo):
-        value = value.default
-    if value is None:
-        value = default
-    return value
+    resolved: object = value
+    if isinstance(resolved, OptionInfo):
+        resolved = resolved.default
+    if resolved is None:
+        resolved = default
+    return cast("T", resolved)
 
 
 def _clean_content_subdir(d: Path) -> bool:
@@ -2196,9 +2213,7 @@ def docs_preview():
     subprocess.run(["pnpm", "preview"], cwd=str(DOCS_DIR))
 
 
-
-
-def _research_coverage_types(resolved_source_type: str, *, include_installed: bool) -> list[str]:
+def _research_coverage_types(resolved_source_type: ResearchSourceType, *, include_installed: bool) -> list[str]:
     """Return source types to report when checking research cache coverage."""
     if resolved_source_type != "all":
         return [resolved_source_type]
@@ -2258,20 +2273,26 @@ def docs_research(
         help="Emit orchestrator batch packets using partition_skills_by_source (GROUP BY install_source)",
     ),
 ):
-    """Plan or refresh cached per-skill web research artifacts. Supports seed-from-repo/config, grouped waves, artifact validation."""
+    """Plan or refresh cached per-skill web research artifacts.
+
+    Supports seed-from-repo/config, grouped waves, and artifact validation.
+    """
     dry_run = _resolve_typer_option(dry_run, default=False)
     include_installed = _resolve_typer_option(include_installed, default=False)
     batch_size = _resolve_typer_option(batch_size, default=25) or 25
-    resolved_source_type = _resolve_typer_option(source_type, default="all") or "all"
-    resolved_skill = _resolve_typer_option(skill, default=None)
+    resolved_source_type_raw = _resolve_typer_option(source_type, default="all") or "all"
+    resolved_source_type = cast("ResearchSourceType", resolved_source_type_raw)
+    resolved_skill_raw = _resolve_typer_option(skill, default="")
+    resolved_skill = resolved_skill_raw.strip() or None
     check_research = _resolve_typer_option(check_research, default=False)
     seed_from_repo = _resolve_typer_option(seed_from_repo, default=False)
     seed_from_config = _resolve_typer_option(seed_from_config, default=False)
-    resolved_curated_status = _resolve_typer_option(curated_status, default=None)
+    resolved_curated_status_raw = _resolve_typer_option(curated_status, default="")
+    resolved_curated_status = resolved_curated_status_raw.strip() or None
     validate_artifacts = _resolve_typer_option(validate_artifacts, default=False)
     emit_waves = _resolve_typer_option(emit_waves, default=False)
 
-    allowed = {"all", "custom", "installed", "curated-external"}
+    allowed: set[ResearchSourceType] = {"all", "custom", "installed", "curated-external"}
     if resolved_source_type not in allowed:
         typer.echo(f"Error: --source-type must be one of {sorted(allowed)}", err=True)
         raise typer.Exit(code=1)
@@ -2321,7 +2342,9 @@ def docs_research(
             )
             typer.echo(f"Seeded {len(written)} curated research artifact(s) from config")
         cov_nodes = [n for n in doc_nodes if n.source_type == "curated-external"]
-        present, total = research_coverage(cov_nodes, source_type="curated-external", curated_status=resolved_curated_status)
+        present, total = research_coverage(
+            cov_nodes, source_type="curated-external", curated_status=resolved_curated_status
+        )
         typer.echo(f"Research cache coverage (curated-external): {present}/{total}")
         if check_research and total and present < total:
             typer.echo(f"Error: research cache incomplete for curated-external: {present}/{total}", err=True)
@@ -2341,7 +2364,9 @@ def docs_research(
         typer.echo(f"Emit waves (grouped by _skills_install_source): {len(batches)} batches")
         for index, batch in enumerate(batches, start=1):
             names = ", ".join(d.id for d in batch)
-            srcs = ", ".join(sorted({str((d.node.metadata or {}).get("_skills_install_source", ""))[:40] for d in batch}))
+            srcs = ", ".join(
+                sorted({str((d.node.metadata or {}).get("_skills_install_source", ""))[:40] for d in batch})
+            )
             typer.echo(f"  WaveBatch {index}: {len(batch)} skills (sources: {srcs}) — {names}")
             if dry_run:
                 typer.echo(build_batch_prompt(batch))
@@ -2359,12 +2384,12 @@ def docs_research(
                 if errs:
                     errors.append((str(p.relative_to(RESEARCH_DIR.parent.parent)), errs))
         # also check upstream if present (lazy) — simple local path scan
-        _local_re = re.compile(r"(/Users/|/home/|/private/)")
+        local_re = re.compile(r"(/Users/|/home/|/private/)")
         upstream_dir = DOCS_DIR / "src" / "skill-upstream"
         if upstream_dir.exists():
             for p in sorted(upstream_dir.glob("*.md")):
                 txt = p.read_text(encoding="utf-8")
-                if _local_re.search(txt):
+                if local_re.search(txt):
                     errors.append((str(p), ["contains local path (upstream)"]))
         if errors:
             for rel, es in errors:
@@ -2372,7 +2397,9 @@ def docs_research(
             if check_research or not dry_run:
                 raise typer.Exit(code=1)
         else:
-            typer.echo("All research (and upstream) artifacts validated (no local paths, required fields/sections present).")
+            typer.echo(
+                "All research (and upstream) artifacts validated (no local paths, required fields/sections present)."
+            )
         return
 
     batches = partition_skills_for_research(
@@ -2451,29 +2478,41 @@ def docs_lint(
         raise typer.Exit(code=1)
 
 
-
-
 @docs_app.command("compose")
 def docs_compose(
     surface: str = typer.Option("all", "--surface", help="skills|agents|mcp|hooks|configs|all"),
     emit_waves: bool = typer.Option(False, "--emit-waves", help="Emit orchestrator batch prompts for pending pages"),
     apply: bool = typer.Option(False, "--apply", help="Deterministically apply composed page contract to scaffolds"),
-    upgrade_custom: bool = typer.Option(False, "--upgrade-custom", help="Upgrade batch-composed custom skill pages to orchestrator depth"),
-    upgrade_external: bool = typer.Option(False, "--upgrade-external", help="Upgrade batch-composed external skill pages toward wrangler depth"),
+    upgrade_custom: bool = typer.Option(
+        False, "--upgrade-custom", help="Upgrade batch-composed custom skill pages to orchestrator depth"
+    ),
+    upgrade_external: bool = typer.Option(
+        False, "--upgrade-external", help="Upgrade batch-composed external skill pages toward wrangler depth"
+    ),
     upgrade_agents: bool = typer.Option(False, "--upgrade-agents", help="Upgrade batch-composed agent pages"),
     upgrade_mcp: bool = typer.Option(False, "--upgrade-mcp", help="Upgrade batch-composed MCP catalog pages"),
-    regen_configs: bool = typer.Option(False, "--regen-configs", help="Regenerate harness-config JSON embeds from config/*.json"),
-    enrich_rich_hand: bool = typer.Option(False, "--enrich-rich-hand", help="Add composed frontmatter to rich hand-maintained custom pages"),
+    regen_configs: bool = typer.Option(
+        False, "--regen-configs", help="Regenerate harness-config JSON embeds from config/*.json"
+    ),
+    enrich_rich_hand: bool = typer.Option(
+        False, "--enrich-rich-hand", help="Add composed frontmatter to rich hand-maintained custom pages"
+    ),
     config: str | None = typer.Option(None, "--config", help="Single harness-config stem for --regen-configs"),
     skill_ids: str | None = typer.Option(None, "--skill-ids", help="Comma-separated skill ids for upgrade commands"),
     force: bool = typer.Option(False, "--force", help="Rewrite pages even when already at target compose wave"),
     wave_id: str = typer.Option("compose-batch-apply", "--wave-id", help="composed_by label for --apply"),
     batch_size: int = typer.Option(8, "--batch-size", help="Targets per compose wave"),
-    custom_only: bool = typer.Option(True, "--custom-only/--all-skills", help="Limit skill waves to repo-owned custom skills"),
+    custom_only: bool = typer.Option(
+        True, "--custom-only/--all-skills", help="Limit skill waves to repo-owned custom skills"
+    ),
     dry_run: bool = typer.Option(False, "--dry-run", help="Print prompts only; do not write manifest"),
-    check_composed: bool = typer.Option(False, "--check-composed", help="Exit 1 when composed coverage is below --min-pct"),
+    check_composed: bool = typer.Option(
+        False, "--check-composed", help="Exit 1 when composed coverage is below --min-pct"
+    ),
     min_pct: float = typer.Option(100.0, "--min-pct", help="Minimum composed coverage percent for --check-composed"),
-    write_manifest: bool = typer.Option(True, "--write-manifest/--no-write-manifest", help="Write docs-composed-coverage.json"),
+    write_manifest: bool = typer.Option(
+        True, "--write-manifest/--no-write-manifest", help="Write docs-composed-coverage.json"
+    ),
 ):
     """Track and emit orchestrator waves for composed catalog pages."""
     from wagents.docs_compose import (
@@ -2485,12 +2524,18 @@ def docs_compose(
         write_compose_manifest,
     )
 
-    allowed = {"all", "skills", "agents", "mcp", "hooks", "configs"}
+    allowed: set[ComposeSurface] = {"all", "skills", "agents", "mcp", "hooks", "configs"}
     if surface not in allowed:
         typer.echo(f"Error: --surface must be one of {sorted(allowed)}", err=True)
         raise typer.Exit(code=1)
+    surface_value = cast("ComposeSurface", surface)
 
-    parsed_skill_ids = [part.strip() for part in (skill_ids or "").split(",") if part.strip()] or None
+    parsed_skill_ids_list: list[str] = []
+    for part in (skill_ids or "").split(","):
+        skill_id = part.strip()
+        if skill_id:
+            parsed_skill_ids_list.append(skill_id)
+    parsed_skill_ids: list[str] | None = parsed_skill_ids_list or None
     resolved_wave = wave_id if wave_id != "compose-batch-apply" else None
 
     if regen_configs:
@@ -2556,9 +2601,7 @@ def docs_compose(
             force=force,
             dry_run=dry_run,
         )
-        typer.echo(
-            f"External upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}"
-        )
+        typer.echo(f"External upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}")
         if not dry_run and write_manifest:
             path = write_compose_manifest(surface="all")
             typer.echo(f"Wrote {path.relative_to(ROOT)}")
@@ -2573,9 +2616,7 @@ def docs_compose(
             force=force,
             dry_run=dry_run,
         )
-        typer.echo(
-            f"Custom upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}"
-        )
+        typer.echo(f"Custom upgrade: written={result.written} skipped={result.skipped} dry_run={dry_run}")
         if not dry_run and write_manifest:
             path = write_compose_manifest(surface="all")
             typer.echo(f"Wrote {path.relative_to(ROOT)}")
@@ -2584,9 +2625,10 @@ def docs_compose(
     if apply:
         from wagents.docs_compose_apply import apply_compose_batch
 
-        result = apply_compose_batch(surface=surface, wave_id=wave_id, dry_run=dry_run)  # type: ignore[arg-type]
+        result = apply_compose_batch(surface=surface_value, wave_id=wave_id, dry_run=dry_run)
         typer.echo(
-            f"Compose apply: written={result.written} skipped={result.skipped} missing={result.missing} dry_run={dry_run}"
+            f"Compose apply: written={result.written} skipped={result.skipped} "
+            f"missing={result.missing} dry_run={dry_run}"
         )
         if dry_run and result.paths:
             for rel in result.paths[:20]:
@@ -2597,10 +2639,8 @@ def docs_compose(
             path = write_compose_manifest(surface="all")
             typer.echo(f"Wrote {path.relative_to(ROOT)}")
         if check_composed and not dry_run:
-            ok, report = check_composed_threshold(surface="all", min_pct=min_pct)  # type: ignore[arg-type]
-            typer.echo(
-                f"Composed coverage: {report['composed']}/{report['total']} ({report['composed_pct']}%)"
-            )
+            ok, report = check_composed_threshold(surface="all", min_pct=min_pct)
+            typer.echo(f"Composed coverage: {report['composed']}/{report['total']} ({report['composed_pct']}%)")
             if not ok:
                 typer.echo(f"Error: composed coverage {report['composed_pct']}% < {min_pct}%", err=True)
                 raise typer.Exit(code=1)
@@ -2610,7 +2650,7 @@ def docs_compose(
         if surface in {"skills", "all"}:
             batches = partition_skills_for_compose(batch_size=batch_size, custom_only=custom_only)
         else:
-            targets = collect_compose_targets(surface=surface)  # type: ignore[arg-type]
+            targets = collect_compose_targets(surface=surface_value)
             batches = partition_compose_targets(targets, batch_size=batch_size)
         typer.echo(f"Compose waves: {len(batches)} batch(es), batch_size={batch_size}")
         for index, batch in enumerate(batches, start=1):
@@ -2626,7 +2666,7 @@ def docs_compose(
         path = write_compose_manifest(surface="all")
         typer.echo(f"Wrote {path.relative_to(ROOT)}")
 
-    ok, report = check_composed_threshold(surface="all", min_pct=min_pct)  # type: ignore[arg-type]
+    ok, report = check_composed_threshold(surface="all", min_pct=min_pct)
     typer.echo(
         f"Composed coverage: {report['composed']}/{report['total']} ({report['composed_pct']}%) "
         f"[scaffold={report['scaffold']}, missing={report['missing']}]"
@@ -2637,6 +2677,7 @@ def docs_compose(
     if check_composed and not ok:
         typer.echo(f"Error: composed coverage {report['composed_pct']}% < {min_pct}%", err=True)
         raise typer.Exit(code=1)
+
 
 @docs_app.command("clean")
 def docs_clean():

@@ -9,13 +9,16 @@ from __future__ import annotations
 import re
 import urllib.request
 from datetime import UTC, datetime
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
 from wagents import DOCS_DIR
-from wagents.external_skills import ExternalSkillEntry
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from wagents.external_skills import ExternalSkillEntry
 
 UPSTREAM_DIR = DOCS_DIR / "src" / "skill-upstream"
 
@@ -50,11 +53,7 @@ def _candidate_paths(skill_id: str, subdir_hint: str = "") -> list[str]:
     ]
     if subdir_hint:
         hint = subdir_hint.strip("/\\")
-        cands = [
-            f"{hint}/skills/{sid}/SKILL.md",
-            f"{hint}/{sid}/SKILL.md",
-            f"{hint}/SKILL.md",
-        ] + cands
+        cands = [f"{hint}/skills/{sid}/SKILL.md", f"{hint}/{sid}/SKILL.md", f"{hint}/SKILL.md", *cands]
     # dedup preserve order
     seen: set[str] = set()
     uniq: list[str] = []

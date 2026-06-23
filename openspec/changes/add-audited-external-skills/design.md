@@ -8,7 +8,6 @@ Reuse the existing curated external skill mechanism instead of introducing a new
 
 - `ljagiello/ctf-skills` is accepted as `inspect then install` after audit because it provides useful CTF-domain skills, has an MIT license, and includes responsible-use framing, but it also contains offensive-security workflows, write-capable permissions, and a broad local tooling installer.
 - `nextlevelbuilder/ui-ux-pro-max-skill` is accepted as `inspect then install` for `ui-ux-pro-max` only because the main skill has useful design intelligence and no observed hooks, while bundled `ckm:*` skills overlap existing local skills and introduce broader API/script surfaces.
-- `jal-co/shieldcn` is accepted as `install now after trust gate` for `shieldcn-badges` only. The human docs URL does not expose a Skills CLI well-known index, but source-list found one skill from the GitHub repository at audited HEAD `0de7510cfcc994d2a928c5255480280e82eaebd4`; the repository has MIT licensing and the skill has no observed hooks, scripts, command substitutions, or `allowed-tools` field. Its useful surface is README/docs badge generation, with the main caution that Dynamic JSON badge examples can embed arbitrary external JSON endpoints in generated markdown.
 - `Leonxlnx/taste-skill` is accepted as `inspect then install` for `design-taste-frontend` only. Source-list found 12 skills at audited HEAD `60c2de19766019297287bd26a260275e499789a9`; the repository has MIT licensing and strong public adoption, but the bundle overlaps existing design/image-generation workflows and includes style variants, Google Stitch rules, and output-behavior overrides that should not be curated by default.
 
 ## Harness Coverage Strategy
@@ -23,8 +22,6 @@ Reuse the existing curated external skill mechanism instead of introducing a new
 ## Discovered Harness Mapping
 
 Current repo code exposes these Skills CLI-supported target IDs through `wagents.site_model.SUPPORTED_AGENT_IDS` and `wagents skills sync`: `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, and `opencode`.
-
-For ShieldCN's explicit local rollout, the current Skills CLI also reports valid adapters beyond the repo-managed sync set: `adal`, `antigravity`, `augment`, `bob`, `claude-code`, `cline`, `codearts-agent`, `codebuddy`, `codemaker`, `codestudio`, `codex`, `command-code`, `continue`, `cortex`, `crush`, `cursor`, `devin`, `droid`, `forgecode`, `gemini-cli`, `github-copilot`, `goose`, `hermes-agent`, `iflow-cli`, `junie`, `kilo`, `kiro-cli`, `kode`, `mcpjam`, `mistral-vibe`, `mux`, `neovate`, `opencode`, `openhands`, `pi`, `pochi`, `qoder`, `qwen-code`, `rovodev`, `roo`, `tabnine-cli`, `trae`, `trae-cn`, `warp`, `windsurf`, and `zencoder`. The install command intentionally enumerates these adapters instead of using `--all`. Current CLI output resolves Codex, OpenCode, Gemini CLI, GitHub Copilot, Cursor, Antigravity, and related adapters to the universal `~/.agents/skills/shieldcn-badges` install root, with Crush symlinked; absence from older target-specific roots is not a failure by itself.
 
 For the requested harness set, use these install targets in the next execution pass:
 
@@ -53,12 +50,6 @@ Base command for `ui-ux-pro-max-skill` after target discovery:
 npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot opencode
 ```
 
-Base command for `shieldcn` after target discovery:
-
-```bash
-npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder
-```
-
 Base command for `taste-skill` after target discovery:
 
 ```bash
@@ -70,7 +61,6 @@ npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antig
 - Promote external skill contents into this repo: rejected because the existing curated external source preserves provenance and avoids taking ownership of third-party code.
 - Install the whole `ui-ux-pro-max-skill` bundle: rejected because the `ckm:*` skills are not part of the approved install set and have broader overlap/risk.
 - Install the whole `taste-skill` bundle: rejected because only `design-taste-frontend` fills the broadest design-taste gap; the other bundle members overlap existing UI, image-generation, Stitch, or output-behavior skills.
-- Install ShieldCN with `--all`: rejected because the user explicitly requested an explicit adapter list and the current machine has many valid Skills CLI adapters.
 - Skip unsupported harness reporting: rejected because the user explicitly requested broad target coverage and unsupported results need evidence.
 - Skip docs generation: rejected because external skill lists and target coverage are generated public surfaces.
 

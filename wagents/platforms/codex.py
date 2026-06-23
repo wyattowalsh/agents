@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from wagents.platforms.base import HOME, PlatformAdapter, SyncContext
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 CODEX_CONFIG_PATH = HOME / ".codex" / "config.toml"
 
@@ -25,7 +27,8 @@ class Adapter(PlatformAdapter):
     ) -> None:
         from scripts.sync_agent_stack import generate_codex_global_instructions
 
-        generate_codex_global_instructions(ctx)
+        sync_ctx = cast("Any", ctx)
+        generate_codex_global_instructions(sync_ctx)
 
     def sync_home(
         self,
@@ -37,7 +40,7 @@ class Adapter(PlatformAdapter):
     ) -> None:
         from scripts.sync_agent_stack import merge_codex_config, merge_codex_hooks, sync_codex_entrypoint
 
-        sync_codex_entrypoint(ctx)
-        merge_codex_config(ctx, registry, policy, fallbacks)
-        merge_codex_hooks(ctx, hook_registry)
-
+        sync_ctx = cast("Any", ctx)
+        sync_codex_entrypoint(sync_ctx)
+        merge_codex_config(sync_ctx, registry, policy, fallbacks)
+        merge_codex_hooks(sync_ctx, hook_registry)

@@ -159,9 +159,7 @@ def query_harness_skills(
     if not ids:
         return ()
     if len(ids) == 1:
-        return (
-            _query_one_harness(ids[0], runner=runner, timeout_sec=timeout_sec, home=home_dir, repo_root=root),
-        )
+        return (_query_one_harness(ids[0], runner=runner, timeout_sec=timeout_sec, home=home_dir, repo_root=root),)
 
     workers = max_workers or min(len(ids), 8)
     by_agent: dict[str, HarnessQueryResult] = {}
@@ -455,9 +453,10 @@ def _run_harness_command(command: list[str], *, runner: Any, timeout_sec: int) -
         stdout_path = Path(tmpdir) / "stdout.json"
         stderr_path = Path(tmpdir) / "stderr.txt"
         timed_out = False
-        with stdout_path.open("w", encoding="utf-8") as stdout_file, stderr_path.open(
-            "w", encoding="utf-8"
-        ) as stderr_file:
+        with (
+            stdout_path.open("w", encoding="utf-8") as stdout_file,
+            stderr_path.open("w", encoding="utf-8") as stderr_file,
+        ):
             process = subprocess.Popen(
                 command,
                 stdout=stdout_file,
@@ -508,7 +507,7 @@ def _read_skill_metadata(skill_dir: Path) -> tuple[dict[str, object], dict[str, 
 def _metadata_value(frontmatter: dict[str, object], metadata_json: dict[str, object], key: str) -> str:
     meta = frontmatter.get("metadata")
     if isinstance(meta, dict):
-        typed_meta = cast(dict[str, object], meta)
+        typed_meta = cast("dict[str, object]", meta)
         value = typed_meta.get(key)
         if value:
             return str(value)

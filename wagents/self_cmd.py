@@ -107,6 +107,49 @@ def self_upgrade(
     )
 
 
+def _apm_self_doctor_checks(repo_root) -> list[dict[str, str]]:
+    """Non-fatal APM CLI + repo surface rows for wagents self doctor."""
+    rows: list[dict[str, str]] = []
+    apm_path = shutil.which("apm")
+    if apm_path:
+        try:
+            proc = subprocess.run(
+                ["apm", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=10,
+            )
+            raw = (proc.stdout or proc.stderr).strip()
+            version_line = raw.splitlines()[0] if raw else "unknown"
+        except Exception:
+            version_line = "unknown"
+        rows.append({
+            "name": "apm-cli",
+            "status": "ok",
+            "summary": f"{apm_path} — {version_line}",
+        })
+    else:
+        rows.append({
+            "name": "apm-cli",
+            "status": "warn",
+            "summary": "apm not on PATH; install with: pip install apm-cli (or pipx install apm-cli)",
+        })
+
+    if repo_root is not None and (repo_root / "apm.yml").exists():
+        from wagents.apm import doctor as apm_surface_doctor
+
+        surface = apm_surface_doctor(repo_root)
+        rows.append({
+            "name": "apm-surface",
+            "status": "ok" if surface.get("ok") else "warn",
+            "summary": "apm.yml + .apm/ OK"
+            if surface.get("ok")
+            else "run: uv run wagents apm materialize && uv run wagents apm doctor",
+        })
+    return rows
+
+
 @self_app.command("doctor")
 def self_doctor(
     format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
@@ -142,6 +185,7 @@ def self_doctor(
             "summary": str(repo_root) if repo_root else f"No repo found; set {REPO_ROOT_ENV} or run inside clone",
         },
     ]
+    checks.extend(_apm_self_doctor_checks(repo_root))
     emit_structured_output(
         format_,
         text_lines=[f"{item['name']}: {item['status']} — {item['summary']}" for item in checks],

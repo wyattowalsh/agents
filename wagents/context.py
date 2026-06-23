@@ -115,8 +115,7 @@ def require_repo_root() -> Path:
     import typer
 
     typer.echo(
-        "Error: agents repository not found. Clone the repo, run from inside it, "
-        f"or set {REPO_ROOT_ENV}.",
+        f"Error: agents repository not found. Clone the repo, run from inside it, or set {REPO_ROOT_ENV}.",
         err=True,
     )
     raise typer.Exit(code=EXIT_ENV_ERROR)
@@ -209,15 +208,9 @@ def bootstrap_cli_context(
     else:
         import wagents
 
-        resolved = (
-            wagents.ROOT.resolve()
-            if _is_agents_repo(wagents.ROOT)
-            else resolve_repo_root(cwd=cwd)
-        )
+        resolved = wagents.ROOT.resolve() if _is_agents_repo(wagents.ROOT) else resolve_repo_root(cwd=cwd)
     return set_cli_context(
         repo_root=resolved,
         explicit_repo_root=explicit,
         install_mode=detect_install_mode(),
     )
-
-

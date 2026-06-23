@@ -295,16 +295,14 @@ def summarize_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     summary: list[dict[str, Any]] = []
     for row in rows:
         data = row["data"]
-        summary.append(
-            {
-                "id": row["id"],
-                "time_created": row["time_created"],
-                "time_updated": row["time_updated"],
-                "role": data.get("role"),
-                "type": data.get("type"),
-                "finish": data.get("finish"),
-            }
-        )
+        summary.append({
+            "id": row["id"],
+            "time_created": row["time_created"],
+            "time_updated": row["time_updated"],
+            "role": data.get("role"),
+            "type": data.get("type"),
+            "finish": data.get("finish"),
+        })
     return summary
 
 
