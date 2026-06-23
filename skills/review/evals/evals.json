@@ -1,0 +1,319 @@
+{
+  "skill_name": "review",
+  "evals": [
+    {
+      "id": "session-review-active-diff",
+      "prompt": "/review",
+      "expected_output": "When a git diff is present, dispatches to session review, triages changed files, verifies citation anchors, validates non-trivial findings with evidence, and stops at an approval gate before fixes.",
+      "assertions": [
+        "Detects active diff before choosing mode",
+        "Does not run a full audit implicitly",
+        "Requires evidence and citation anchors"
+      ]
+    },
+    {
+      "id": "empty-no-diff-menu",
+      "prompt": "/review",
+      "expected_output": "When no changed files are present, shows a mode menu and requires the explicit audit keyword before a full repository audit.",
+      "assertions": [
+        "No implicit full audit",
+        "Offers audit, scoped, PR, source, simplify, history, delta, and learnings modes"
+      ]
+    },
+    {
+      "id": "scoped-path-review",
+      "prompt": "/review src/auth/session.py",
+      "expected_output": "Dispatches to scoped review of the path, reads the target, applies relevant lenses, verifies line citations, and reports findings with severity, confidence, reasoning, evidence, and recommendations.",
+      "assertions": [
+        "Uses scoped review",
+        "Keeps reasoning before finding statement",
+        "Does not edit files"
+      ]
+    },
+    {
+      "id": "full-audit-explicit",
+      "prompt": "/review audit",
+      "expected_output": "Runs full repository audit only because audit is explicit, using triage, non-overlapping reviewer ownership, specialist lenses, judge reconciliation, and an approval-gated report.",
+      "assertions": [
+        "Requires explicit audit",
+        "Uses parallel lanes when scope warrants",
+        "Waits for approval before fixes"
+      ]
+    },
+    {
+      "id": "pr-review-conventional",
+      "prompt": "/review 42 --format conventional",
+      "expected_output": "Recognizes PR #42, reviews PR changes and intent, and formats findings as Conventional Comments while preserving evidence, confidence, and citation requirements.",
+      "assertions": [
+        "Dispatches to PR review",
+        "Uses Conventional Comments output",
+        "Preserves finding contract"
+      ]
+    },
+    {
+      "id": "range-review-sarif",
+      "prompt": "/review HEAD~3..HEAD --format sarif",
+      "expected_output": "Recognizes the git range, reviews changed files in that range, and emits SARIF v2.1-compatible findings using verified anchors.",
+      "assertions": [
+        "Dispatches to range review",
+        "Uses SARIF output",
+        "Does not use format as scope"
+      ]
+    },
+    {
+      "id": "format-modifier-no-scope-selection",
+      "prompt": "/review src/auth/session.py --format sarif --format conventional",
+      "expected_output": "Dispatches to scoped path review for src/auth/session.py and treats each --format flag only as an output modifier; emits or describes SARIF v2.1 and Conventional Comments output without changing the selected scope or mode, without treating format values as targets, and without inferring PR, range, session, or audit behavior from the format flags.",
+      "assertions": [
+        "Covers output modifier dispatch",
+        "Keeps scoped path selection independent from format flags",
+        "Does not use format values as scope or mode",
+        "Does not infer PR, range, session, or audit from output format"
+      ]
+    },
+    {
+      "id": "format-modifier-no-target-falls-back-to-normal-dispatch",
+      "prompt": "/review --format sarif",
+      "expected_output": "Treats --format sarif only as an output preference, then chooses the normal empty-argument dispatch path: session review when git diff has changed files, or the no-diff mode menu when clean. It does not invent a SARIF review mode, target the word sarif, or start a full audit.",
+      "assertions": [
+        "Covers format-only dispatch",
+        "Uses empty-argument dispatch after parsing format",
+        "Does not use format as scope or mode",
+        "Does not start an implicit full audit"
+      ]
+    },
+    {
+      "id": "simplify-analyze",
+      "prompt": "/review simplify analyze src/routes/session.ts",
+      "expected_output": "Runs read-only simplification analysis, states behavior invariants and semantic-change boundaries, and reports only behavior-preserving opportunities without editing.",
+      "assertions": [
+        "Uses simplification lens",
+        "Keeps analyze read-only",
+        "Filters semantic changes"
+      ]
+    },
+    {
+      "id": "simplify-apply-gated",
+      "prompt": "/review simplify apply src/auth/session.py",
+      "expected_output": "Applies simplification only after target, intent, behavior invariants, validation basis, and scope-risk gates pass; otherwise asks or falls back to analysis.",
+      "assertions": [
+        "Checks apply eligibility",
+        "Preserves behavior",
+        "Avoids unrelated fixes"
+      ]
+    },
+    {
+      "id": "simplify-explain",
+      "prompt": "/review simplify explain src/auth/session.py",
+      "expected_output": "Explains why the target is complex and how to simplify it safely without editing files.",
+      "assertions": [
+        "Uses explain mode",
+        "Does not edit",
+        "Separates safe simplifications from risky changes"
+      ]
+    },
+    {
+      "id": "source-triage",
+      "prompt": "/review source triage getsentry/skills",
+      "expected_output": "Classifies source reputation, source-list evidence needs, install syntax, dedupe risk, provenance needs, and the next trust-gate step without installing.",
+      "assertions": [
+        "Requires source-list evidence",
+        "Does not run install",
+        "Classifies outcome path"
+      ]
+    },
+    {
+      "id": "source-commands-executable-surfaces",
+      "prompt": "/review source commands /tmp/candidate-skill",
+      "expected_output": "Dispatches specifically to source commands mode, reads candidate metadata and files only as needed, extracts and classifies executable surfaces such as hooks, scripts, executable bits, package-manager commands, shell snippets, backtick commands, command substitutions, allowed-tools, network or credential access, and filesystem writes without running candidate code, installing, syncing, vendoring, or issuing a promotion decision.",
+      "assertions": [
+        "Covers source commands dispatch",
+        "Classifies executable surfaces and risk categories",
+        "Does not execute candidate scripts or package commands",
+        "Does not install, sync, vendor, or emit a promotion decision"
+      ]
+    },
+    {
+      "id": "source-inspect-local-files",
+      "prompt": "/review source inspect /tmp/candidate-skill",
+      "expected_output": "Dispatches to source inspect mode, reads local source files, frontmatter, hooks, scripts, references, command substitutions, and bundled assets for review evidence without running candidate code or installing the source.",
+      "assertions": [
+        "Covers source inspect dispatch",
+        "Reviews local files and metadata",
+        "Does not execute or install candidate code"
+      ]
+    },
+    {
+      "id": "source-provenance-owner-license",
+      "prompt": "/review source provenance trailofbits/skills",
+      "expected_output": "Dispatches to source provenance mode and checks source owner, URL, license, commit or hash, source-list consistency, access date, and trust evidence before any source decision or install recommendation.",
+      "assertions": [
+        "Covers source provenance dispatch",
+        "Checks owner, license, and commit or hash evidence",
+        "Does not install or promote without provenance evidence"
+      ]
+    },
+    {
+      "id": "source-local-scan",
+      "prompt": "/review source scan /tmp/candidate-skill",
+      "expected_output": "Runs or describes the static source audit helper, interprets JSON findings, and treats script output as a first-pass signal rather than final approval.",
+      "assertions": [
+        "Uses scripts/source-audit.py",
+        "Keeps candidate scripts unexecuted",
+        "Inspects executable surfaces"
+      ]
+    },
+    {
+      "id": "source-decision",
+      "prompt": "/review source decision trailofbits/skills",
+      "expected_output": "Produces one install-now, inspect-then-install, keep-global-only, build-locally, or avoid decision with owner, license, provenance, executable-surface, credential, network, and dedupe evidence.",
+      "assertions": [
+        "Uses source/provenance lens",
+        "Selects exactly one outcome category",
+        "Does not vendor third-party files"
+      ]
+    },
+    {
+      "id": "security-lens",
+      "prompt": "/review src/payments/ --lens security",
+      "expected_output": "Overlays the security lens on the scoped review, checking auth, secrets, data exposure, injection, trust boundaries, and exploitability with verified evidence.",
+      "assertions": [
+        "Uses explicit lens",
+        "Does not widen scope without evidence",
+        "Reports security findings through standard finding contract"
+      ]
+    },
+    {
+      "id": "supply-chain-lens",
+      "prompt": "/review package.json --lens supply-chain",
+      "expected_output": "Checks dependency provenance, slopsquatting, scripts, lockfile drift, version pinning, and executable package surfaces without installing packages.",
+      "assertions": [
+        "Uses supply-chain lens",
+        "Avoids live installs",
+        "Separates evidence from inference"
+      ]
+    },
+    {
+      "id": "history-delta-learnings",
+      "prompt": "/review diff agents",
+      "expected_output": "Dispatches to stored review delta mode, compares current and previous review records, and reports new, resolved, and recurring findings without mixing in fix-report sections.",
+      "assertions": [
+        "Uses review-store state",
+        "Keeps mode read-only",
+        "Classifies changes since previous review"
+      ]
+    },
+    {
+      "id": "history-mode-read-only",
+      "prompt": "/review history agents",
+      "expected_output": "Dispatches to read-only history mode, lists stored review records for the requested project, and does not mix in a new review, delta comparison, or fix pass.",
+      "assertions": [
+        "Covers history dispatch",
+        "Keeps history mode read-only",
+        "Does not start a new review or fix pass"
+      ]
+    },
+    {
+      "id": "learnings-list-read-only",
+      "prompt": "/review learnings list",
+      "expected_output": "Dispatches to learnings list mode, reads false-positive review learnings, reports matching scope or project metadata, and does not add, clear, or apply suppressions unless the user explicitly selects that learnings subcommand.",
+      "assertions": [
+        "Covers learnings dispatch",
+        "Keeps list behavior read-only",
+        "Does not mutate learnings without explicit add or clear"
+      ]
+    },
+    {
+      "id": "approval-gated-fix-pass",
+      "prompt": "/review fix RV-S-001 RV-S-003",
+      "expected_output": "Treats fix as a post-review pass requiring selected approved finding IDs, loads the auto-fix protocol, previews diffs, requests explicit approval if not already given, and verifies after edits.",
+      "assertions": [
+        "Requires approved finding IDs",
+        "Previews diffs before writing",
+        "Runs focused verification after applying"
+      ]
+    },
+    {
+      "id": "harness-portable-frontmatter",
+      "prompt": "Install /review across Claude Code, Codex, OpenCode, Grok, Cursor, and Gemini CLI.",
+      "expected_output": "Explains that review uses portable prompt-first frontmatter, no root model override, no skill-scoped hooks by default, and validates harness behavior through wagents skills sync dry-runs rather than assuming one harness's semantics.",
+      "assertions": [
+        "Mentions no root model override",
+        "Mentions no blanket skill hooks",
+        "Mentions per-harness dry-run validation"
+      ]
+    },
+    {
+      "id": "explicit-mode-scoped",
+      "prompt": "/review --mode scoped skills/review/SKILL.md",
+      "expected_output": "Honors the explicit scoped mode, reviews only the requested target unless evidence requires a bounded dependency read, and reports findings through the standard finding contract.",
+      "assertions": [
+        "Parses --mode scoped",
+        "Uses explicit mode before inference",
+        "Does not widen to full audit"
+      ]
+    },
+    {
+      "id": "multi-mode-read-only-judge",
+      "prompt": "/review --mode scoped,source skills/review/",
+      "expected_output": "Runs scoped review and source/provenance review as separate read-only lanes, collects lane-local artifacts, and merges only through Judge-assigned canonical RV IDs.",
+      "assertions": [
+        "Parses comma-separated modes",
+        "Keeps read-only lanes independent",
+        "Uses Judge for dedupe and canonical IDs"
+      ]
+    },
+    {
+      "id": "mixed-mode-edit-gate",
+      "prompt": "/review --mode scoped --mode fix skills/review/",
+      "expected_output": "Runs the scoped review lane but does not infer or execute fix behavior from mixed modes without selected approved findings and explicit edit approval.",
+      "assertions": [
+        "Parses repeated --mode flags",
+        "Blocks edit-capable mode without approval",
+        "Does not edit from inference"
+      ]
+    },
+    {
+      "id": "browser-work-prefers-chrome-devtools-mcp",
+      "prompt": "/review docs --lens web-quality",
+      "expected_output": "For browser-grounded web-quality review, defaults to the repo-managed Chrome DevTools MCP attached-browser path, reports degraded mode if unavailable, and avoids adding a duplicate browser owner.",
+      "assertions": [
+        "Prefers Chrome DevTools MCP",
+        "Mentions degraded fallback when unavailable",
+        "Does not create duplicate MCP/browser config"
+      ]
+    },
+    {
+      "id": "source-scan-redacts-secrets",
+      "prompt": "/review source scan /tmp/candidate-skill",
+      "expected_output": "Scans source surfaces without executing candidate code, redacts secret-like excerpts, avoids broad KEY substring false positives, and treats output as first-pass evidence.",
+      "assertions": [
+        "Redacts credential-looking values",
+        "Avoids broad keyword false positives",
+        "Does not execute candidate scripts"
+      ]
+    },
+    {
+      "id": "ambiguous-arguments-clarify",
+      "prompt": "/review check this thing and maybe fix whatever is wrong",
+      "expected_output": "Treats the request as unrecognized or ambiguous, performs no review or fix implementation, does not infer edit approval from maybe fix, and asks one concise scope/mode question that gets the user to choose a reviewable target or mode and confirm whether approved finding IDs exist before any edit-capable path.",
+      "assertions": [
+        "Covers clarify dispatch",
+        "Asks one concise scope/mode question",
+        "Does not infer edit approval",
+        "Does not review, fix, or edit from ambiguous input"
+      ]
+    },
+    {
+      "id": "negative-feature-work",
+      "prompt": "/review build a new login page and wire it to the API",
+      "expected_output": "Negative control: identifies feature implementation as out of scope for /review, refuses to build or wire the login page, does not create or edit files, and asks for an existing diff, PR, path, or approved finding ID to review or for the user to make a separate implementation request outside review mode.",
+      "assertions": [
+        "Negative control should not trigger implementation",
+        "Does not create, edit, or propose code for the feature",
+        "Keeps /review boundary instead of running fix or simplify apply",
+        "Requests a concrete reviewable artifact before continuing"
+      ]
+    }
+  ]
+}
