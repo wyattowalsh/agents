@@ -11,17 +11,16 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   name="apm-cli"
   description="Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
   installCommand={`pip install apm-cli`}
-  usage="/apm-cli"
+  usage="apm --help"
   badges={[{ text: "apm-cli", variant: "note" }, { text: "107 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+Standalone **CLI tool** for supported agent harnesses (see Harness Coverage). Not an [agentskills.io](https://agentskills.io) slash skill.
 
 <Aside type="note" title="Source & provenance">
 This page is generated from authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
- Legacy projection `config/external-skills.md` remains dual-read during migration.
 </Aside>
 
 ## Harness Coverage
@@ -41,7 +40,7 @@ Curated status: `install-now-after-trust-gate`
 
 Risk notes: apm install mutates harness directories; run apm audit and review apm.lock.yaml. Never route repo skills/ through APM.
 
-Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained in authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json`; research context is advisory.
 
 <Tabs>
   <TabItem label="Public Metadata">

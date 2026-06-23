@@ -90,10 +90,6 @@
       "name": "files-buddy"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill frontend-designer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "frontend-designer"
-    },
-    {
       "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "git-workflow"
     },

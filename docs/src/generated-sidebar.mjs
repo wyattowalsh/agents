@@ -45,7 +45,6 @@ export default [
           { slug: 'skills/catalog/custom/email-whiz', label: 'email-whiz' },
           { slug: 'skills/catalog/custom/event-driven-architect', label: 'event-driven-architect' },
           { slug: 'skills/catalog/custom/files-buddy', label: 'files-buddy' },
-          { slug: 'skills/catalog/custom/frontend-designer', label: 'frontend-designer' },
           { slug: 'skills/catalog/custom/git-workflow', label: 'git-workflow' },
           { slug: 'skills/catalog/custom/harness-master', label: 'harness-master' },
           { slug: 'skills/catalog/custom/host-panel', label: 'host-panel' },
