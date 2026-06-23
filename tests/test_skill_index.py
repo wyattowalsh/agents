@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -17,6 +17,9 @@ from wagents.skill_index import (
     read_catalog_index,
     write_catalog_index,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Fixtures (tmp paths)
@@ -121,7 +124,9 @@ def test_build_catalog_index_separates_custom_and_external(tmp_authoring_dir: Pa
     )
     entries = load_authoring_entries(tmp_authoring_dir)
     idx = build_catalog_index(entries)
-    assert "customSkillIndex" in idx and "externalSkillIndex" in idx and "allSkillIndex" in idx
+    assert "customSkillIndex" in idx
+    assert "externalSkillIndex" in idx
+    assert "allSkillIndex" in idx
     custom_names = {r["name"] for r in idx["customSkillIndex"]}
     ext_names = {r["name"] for r in idx["externalSkillIndex"]}
     assert custom_names == {"custom-a"}
@@ -224,6 +229,7 @@ def test_authoring_entry_to_catalog_node_curated_produces_curated_stub(tmp_autho
     assert node.metadata.get("_skills_source") == "foo/bar"
     assert node.metadata.get("_curated_status") == "inspect-then-install"
 
+
 def test_catalog_index_stale_reason_none_when_index_matches_authoring(tmp_path, monkeypatch):
     from wagents.skill_index import (
         AUTHORING_SKILLS_DIR,
@@ -241,4 +247,3 @@ def test_catalog_index_stale_reason_none_when_index_matches_authoring(tmp_path, 
     write_catalog_index(build_catalog_index(entries), path=index_path)
     monkeypatch.setattr("wagents.skill_index.CATALOG_INDEX_PATH", index_path)
     assert catalog_index_stale_reason(index_path) is None
-

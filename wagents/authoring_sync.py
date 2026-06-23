@@ -8,20 +8,22 @@ Produces docs/src/authoring/skills/{id}.mdx with:
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents.skill_docs import collect_repo_skill_nodes
 from wagents.skill_index import AUTHORING_SKILLS_DIR, CatalogAuthoringEntry, load_authoring_entries
 
+if TYPE_CHECKING:
+    from pathlib import Path
+
 GENERATED_MARKER = (
-    "{{/* GENERATED-AUTHORING: source=skills/{name}/SKILL.md; "
-    "edit SKILL.md then re-run authoring sync */}}"
+    "{{/* GENERATED-AUTHORING: source=skills/{name}/SKILL.md; edit SKILL.md then re-run authoring sync */}}"
 )
 
 
 def _authoring_path_for(name: str, base: Path | None = None) -> Path:
     b = base or AUTHORING_SKILLS_DIR
-    return (b / f"{name}.mdx")
+    return b / f"{name}.mdx"
 
 
 def _render_frontmatter(fm: dict) -> str:
@@ -57,6 +59,14 @@ def _render_body_with_marker(name: str, body: str) -> str:
     return f"{marker}\n"
 
 
+def _is_generated_custom_authoring(path: Path) -> bool:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    return "GENERATED-AUTHORING: source=skills/" in text
+
+
 def sync_custom_authoring_from_skills(
     *,
     authoring_dir: Path | None = None,
@@ -69,8 +79,20 @@ def sync_custom_authoring_from_skills(
     base = authoring_dir or AUTHORING_SKILLS_DIR
     base.mkdir(parents=True, exist_ok=True)
 
-    nodes = collect_repo_skill_nodes()
+    nodes = list(collect_repo_skill_nodes())
+    live_names = {node.id for node in nodes}
     written: list[Path] = []
+
+    for stale in sorted(base.glob("*.mdx")):
+        if stale.stem in live_names:
+            continue
+        if not _is_generated_custom_authoring(stale):
+            continue
+        if dry_run:
+            written.append(stale)
+            continue
+        stale.unlink()
+        written.append(stale)
 
     for node in nodes:
         name = node.id

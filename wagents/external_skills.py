@@ -6,9 +6,12 @@ import os
 import re
 import shlex
 from dataclasses import asdict, dataclass, replace
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import wagents
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -113,40 +116,36 @@ def read_external_skill_entries(path: Path | None = None) -> list[ExternalSkillE
     Fall back to legacy ``config/external-skills.md`` when the index path is empty,
     or when ``WAGENTS_CATALOG_LEGACY_EXTERNAL_MD=1`` forces legacy reconciliation.
     """
+    default_path = wagents.ROOT / "config" / "external-skills.md"
+    if path is not None and path.resolve() != default_path.resolve():
+        if path.exists():
+            return parse_external_skill_entries_legacy(path.read_text(encoding="utf-8"))
+        return []
+
     # Try catalog index + authoring first (bundle-first / dual-read)
     combined: list[ExternalSkillEntry] = []
     try:
-        cat_entries = read_catalog_external_entries()
-        auth_entries = _load_authoring_external_entries()
         seen: set[tuple[str, str]] = set()
-        for e in (*cat_entries, *auth_entries):
-            key = (e.name.lower(), e.source.lower())
-            if key not in seen:
-                seen.add(key)
-                combined.append(e)
-        if combined:
-            return combined
+        for entry in (*read_catalog_external_entries(), *_load_authoring_external_entries()):
+            key = (entry.name.lower(), entry.source.lower())
+            if key in seen:
+                continue
+            seen.add(key)
+            combined.append(entry)
     except Exception:
-        pass
+        combined = []
+
+    if combined:
+        return combined
 
     # Legacy fallback while config/external-skills.md remains as projection (W6: remove when index-only)
-    if not combined or os.environ.get("WAGENTS_CATALOG_LEGACY_EXTERNAL_MD") == "1":
-        source_path = path or wagents.ROOT / "config" / "external-skills.md"
+    if os.environ.get("WAGENTS_CATALOG_LEGACY_EXTERNAL_MD") == "1" or not combined:
+        source_path = path or default_path
         if source_path.exists():
             legacy = parse_external_skill_entries_legacy(source_path.read_text(encoding="utf-8"))
             if legacy:
                 return legacy
     return combined
-
-
-def _catalog_index_missing() -> bool:
-    try:
-        from . import skill_index as si
-
-        p = si.CATALOG_INDEX_PATH
-        return not p.exists()
-    except Exception:
-        return True
 
 
 def _load_authoring_external_entries() -> list[ExternalSkillEntry]:
@@ -156,9 +155,7 @@ def _load_authoring_external_entries() -> list[ExternalSkillEntry]:
 
         auths = si.load_authoring_entries()
         return [
-            si.entry_to_external_skill_entry(e)
-            for e in auths
-            if getattr(e, "source_kind", "custom") != "custom"
+            si.entry_to_external_skill_entry(e) for e in auths if getattr(e, "source_kind", "custom") != "custom"
         ]
     except Exception:
         return []
@@ -472,7 +469,7 @@ def _command_note(selector_mode: str) -> str:
         return "Curated third-party source. This command installs every exposed skill from the source."
     if selector_mode == "source-spec":
         return "Curated third-party source. The source spec encodes the installable skill directly."
-    return "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+    return "Curated third-party skill source. Run /review source before repo promotion."
 
 
 def _wildcard_name(source: str) -> str:
@@ -505,8 +502,7 @@ def desired_install_now_entries(path: Path | None = None) -> list[ExternalSkillE
     return [
         entry
         for entry in read_external_skill_entries(path)
-        if entry.status == "install-now-after-trust-gate"
-        and entry.provenance_status == "verified-install-command"
+        if entry.status == "install-now-after-trust-gate" and entry.provenance_status == "verified-install-command"
     ]
 
 

@@ -25,11 +25,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-import wagents  # noqa: E402
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries  # noqa: E402
 from wagents.skill_index import AUTHORING_SKILLS_DIR  # noqa: E402
 
-GENERATED_MARKER = "{{/* GENERATED-AUTHORING: source=config/external-skills.md; entry={name}; re-run migration to refresh */}}"
+GENERATED_MARKER = (
+    "{{/* GENERATED-AUTHORING: source=config/external-skills.md; entry={name}; re-run migration to refresh */}}"
+)
 
 
 def _render_frontmatter(entry: ExternalSkillEntry) -> str:
@@ -57,7 +58,7 @@ def _render_frontmatter(entry: ExternalSkillEntry) -> str:
         lines.append(f'install_command: "{entry.install_command}"')
     if entry.target_agents:
         ta = ", ".join(entry.target_agents)
-        lines.append(f'target_agents: [{ta}]')
+        lines.append(f"target_agents: [{ta}]")
     if entry.source_url:
         lines.append(f'source_url: "{entry.source_url}"')
     if entry.notes:
@@ -79,7 +80,7 @@ def _render_frontmatter(entry: ExternalSkillEntry) -> str:
         lines.append(f'unresolved_reason: "{u}"')
     if entry.unsupported_target_agents:
         uta = ", ".join(entry.unsupported_target_agents)
-        lines.append(f'unsupported_target_agents: [{uta}]')
+        lines.append(f"unsupported_target_agents: [{uta}]")
     lines.append("---")
     return "\n".join(lines)
 
@@ -104,7 +105,8 @@ def migrate_external_skills_to_authoring_mdx(
     base = authoring_dir or AUTHORING_SKILLS_DIR
     base.mkdir(parents=True, exist_ok=True)
 
-    rows = entries if entries is not None else read_external_skill_entries()
+    source_rows = read_external_skill_entries() if entries is None else entries
+    rows = list(source_rows)
     written: list[Path] = []
 
     for entry in rows:

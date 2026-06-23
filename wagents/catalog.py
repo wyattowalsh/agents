@@ -30,7 +30,7 @@ class CatalogNode:
 @dataclass
 class CatalogEdge:
     from_id: str  # e.g., "agent:my-agent"
-    to_id: str  # e.g., "skill:honest-review"
+    to_id: str  # e.g., "skill:review"
     relation: str  # 'uses-skill' | 'uses-mcp'
 
 
@@ -38,17 +38,17 @@ class CatalogEdge:
 RELATED_SKILLS = {
     "wargame": ["host-panel", "prompt-engineer", "orchestrator"],
     "host-panel": ["wargame"],
-    "honest-review": ["add-badges", "orchestrator"],
-    "add-badges": ["honest-review"],
+    "review": ["design", "orchestrator", "security-scanner", "tech-debt-analyzer"],
+    "design": ["review"],
     "prompt-engineer": ["skill-creator", "wargame"],
     "skill-creator": ["prompt-engineer", "mcp-creator"],
     "mcp-creator": ["skill-creator"],
-    "orchestrator": ["honest-review", "wargame"],
+    "orchestrator": ["review", "wargame"],
     "python-conventions": ["javascript-conventions"],
     "javascript-conventions": ["python-conventions"],
     "learn": ["python-conventions", "javascript-conventions", "agent-conventions"],
     "release-pipeline-architect": ["devops-engineer", "incident-response-engineer", "changelog-writer"],
-    "incident-response-engineer": ["release-pipeline-architect", "security-scanner", "honest-review"],
+    "incident-response-engineer": ["release-pipeline-architect", "security-scanner", "review"],
     "observability-advisor": ["incident-response-engineer", "performance-profiler", "devops-engineer"],
     "shell-conventions": ["shell-scripter", "python-conventions", "javascript-conventions"],
     "schema-evolution-planner": ["database-architect", "api-designer", "data-pipeline-architect"],
@@ -183,6 +183,8 @@ def collect_nodes() -> list[CatalogNode]:
     agents_dir = ROOT / "agents"
     if agents_dir.exists():
         for agent_file in sorted(agents_dir.glob("*.md")):
+            if agent_file.name == "README.md":
+                continue
             try:
                 content = agent_file.read_text()
                 fm, body = parse_frontmatter(content)

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -12,6 +12,9 @@ from scripts.migrate_external_skills_to_authoring_mdx import (
 )
 from wagents.external_skills import ExternalSkillEntry, parse_external_skill_entries
 from wagents.parsing import parse_frontmatter
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @pytest.fixture

@@ -140,6 +140,9 @@ grok_app.add_typer(plannotator_app, name="plannotator")
 app.add_typer(grok_app, name="grok")
 app.add_typer(self_app, name="self")
 
+apm_app = typer.Typer(help="APM (Microsoft Agent Package Manager) facade: materialize .apm/ from repo SSOT and doctor")
+app.add_typer(apm_app, name="apm")
+
 _PLUGIN_RESULTS = load_command_plugins(app)
 
 PLANNOTATOR_CORE_SYNC_COMMAND = [
@@ -200,12 +203,15 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-def _command_telemetry_label() -> str:
+def _command_telemetry_label(ctx: typer.Context | None = None) -> str:
+    if ctx is not None and ctx.invoked_subcommand:
+        return ctx.invoked_subcommand
     return " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "wagents"
 
 
 @app.callback()
 def main(
+    ctx: typer.Context,
     version: bool | None = typer.Option(None, "--version", callback=version_callback, help="Show version and exit"),
     repo_root: Annotated[
         Path | None,
@@ -217,7 +223,7 @@ def main(
     ] = None,
 ):
     """CLI for managing centralized AI agent assets."""
-    begin_command_telemetry(_command_telemetry_label())
+    begin_command_telemetry(_command_telemetry_label(ctx))
     bootstrap_cli_context(repo_root)
 
 
@@ -807,6 +813,72 @@ def _collect_doctor_checks() -> list[dict[str, str]]:
         )
     checks.append(doctor_telemetry_check())
 
+    if pyproject_file.exists():
+        pyproject_data = tomllib.loads(pyproject_file.read_text())
+        tool_ruff = pyproject_data.get("tool", {}).get("ruff")
+        tool_ty = pyproject_data.get("tool", {}).get("ty")
+        checks.append(
+            _make_doctor_check(
+                "python-tooling-config",
+                "ok" if tool_ruff and tool_ty else "fail",
+                (
+                    "pyproject.toml defines [tool.ruff] and [tool.ty]"
+                    if tool_ruff and tool_ty
+                    else "Missing [tool.ruff] or [tool.ty] in pyproject.toml"
+                ),
+                "Add Ruff and ty configuration to pyproject.toml.",
+            )
+        )
+    else:
+        checks.append(
+            _make_doctor_check(
+                "python-tooling-config",
+                "fail",
+                "pyproject.toml is missing",
+                "Restore pyproject.toml with [tool.ruff] and [tool.ty] sections.",
+            )
+        )
+
+    for tool_name, version_args in (("ruff", ["--version"]), ("ty", ["--version"])):
+        if not tool_paths.get("uv"):
+            checks.append(
+                _make_doctor_check(
+                    f"{tool_name}-tooling",
+                    "warn",
+                    f"Cannot verify {tool_name} without uv on PATH",
+                    "Install uv and run uv sync before type-checking or linting.",
+                )
+            )
+            continue
+        try:
+            result = subprocess.run(
+                ["uv", "run", tool_name, *version_args],
+                capture_output=True,
+                text=True,
+                check=False,
+                cwd=ROOT,
+            )
+        except OSError:
+            checks.append(
+                _make_doctor_check(
+                    f"{tool_name}-tooling",
+                    "warn",
+                    f"Could not execute uv run {tool_name}",
+                    f"Run uv sync and verify {tool_name} is listed in dependency-groups.dev.",
+                )
+            )
+            continue
+        version_line = (result.stdout or result.stderr).strip().splitlines()[:1]
+        version_text = version_line[0] if version_line else "unknown version"
+        checks.append(
+            _make_doctor_check(
+                f"{tool_name}-tooling",
+                "ok" if result.returncode == 0 else "fail",
+                version_text if result.returncode == 0 else f"uv run {tool_name} failed",
+                f"Run uv sync and uv run {tool_name} --version to repair the dev toolchain.",
+            )
+        )
+
     return checks
 
 
@@ -1084,7 +1156,7 @@ def validate(
     raise typer.Exit(
         code=_run_python_script(
             script,
-            ["--format", format_, "--repo-root", str(get_repo_root())],
+            ["--format", format_, "--repo-root", str(ROOT)],
         )
     )
 
@@ -1137,7 +1209,7 @@ def _sync_command_groups(rows: list[InstalledSkillInventoryRow], agent_id: str) 
         if row.selector_mode == "named":
             grouped_named.setdefault(row.install_source, []).append(row.name)
             continue
-        grouped_modes[(row.install_source, row.selector_mode)] = row
+        grouped_modes[row.install_source, row.selector_mode] = row
 
     for install_source, names in sorted(grouped_named.items()):
         argv = ["npx", "skills", "add", install_source]
@@ -1188,17 +1260,15 @@ def _build_sync_report(
     for agent_id in target_agents:
         query = query_by_agent.get(agent_id)
         if query is not None and not query.ok:
-            report_agents.append(
-                {
-                    "agent": agent_id,
-                    "error": query.error,
-                    "missing": [],
-                    "already_present": [],
-                    "unresolved": [],
-                    "skipped": [],
-                    "commands": [],
-                }
-            )
+            report_agents.append({
+                "agent": agent_id,
+                "error": query.error,
+                "missing": [],
+                "already_present": [],
+                "unresolved": [],
+                "skipped": [],
+                "commands": [],
+            })
             continue
 
         missing: list[InstalledSkillInventoryRow] = []
@@ -1233,20 +1303,16 @@ def _build_sync_report(
                 skipped.append(row)
 
         command_groups = _sync_command_groups(missing, agent_id)
-        report_agents.append(
-            {
-                "agent": agent_id,
-                "error": "",
-                "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
-                "already_present": [
-                    _sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)
-                ],
-                "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
-                "skipped": [_sync_row_summary(row) for row in sorted(skipped, key=lambda item: item.name)],
-                "commands": [command["text"] for command in command_groups],
-                "_command_argvs": [command["argv"] for command in command_groups],
-            }
-        )
+        report_agents.append({
+            "agent": agent_id,
+            "error": "",
+            "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
+            "already_present": [_sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)],
+            "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
+            "skipped": [_sync_row_summary(row) for row in sorted(skipped, key=lambda item: item.name)],
+            "commands": [command["text"] for command in command_groups],
+            "_command_argvs": [command["argv"] for command in command_groups],
+        })
 
     return {
         "inventory_count": len(merged.rows),
@@ -1258,7 +1324,7 @@ def _build_sync_report(
 def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str = "text") -> None:
     """Emit a skills sync report in text, json, or jsonl format."""
     mode = "dry-run" if dry_run else "apply"
-    agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
+    agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
     json_payload: dict[str, object] = {
         "mode": mode,
         "inventory_count": report.get("inventory_count"),
@@ -1287,11 +1353,11 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
             typer.echo("")
             continue
         for key in ["missing", "already_present", "unresolved", "skipped"]:
-            rows = cast(list[str], agent_payload.get(key) or [])
+            rows = cast("list[str]", agent_payload.get(key) or [])
             typer.echo(f"  {key.replace('_', '-')} ({len(rows)})")
             for row in rows:
                 typer.echo(f"    - {row}")
-        commands = cast(list[str], agent_payload.get("commands") or [])
+        commands = cast("list[str]", agent_payload.get("commands") or [])
         typer.echo(f"  commands ({len(commands)})")
         for command in commands:
             typer.echo(f"    {command}")
@@ -1482,9 +1548,7 @@ def grok_doctor() -> None:
         lines.append(f"policy managed block: {'yes' if has_policy_managed else 'no'}")
         lines.append(f"mcphub harness-safe endpoint: {'yes' if has_mcphub else 'no'}")
         if not has_mcp_managed and has_mcphub:
-            warnings.append(
-                "MCP tables present without managed markers; run sync with --platforms grok --targets home"
-            )
+            warnings.append("MCP tables present without managed markers; run sync with --platforms grok --targets home")
         if not has_mcp_managed and not has_mcphub:
             issues.append("No MCPHub MCP projection found in ~/.grok/config.toml")
         if not has_policy_managed and has_mcphub:
@@ -1662,7 +1726,7 @@ def skills_sync(
     target_agents = _select_sync_agents(agent, all_agents)
     typer.echo("Collecting cross-harness skill inventory...", err=True)
     report = _build_sync_report(target_agents, include_installed=include_installed)
-    agent_reports = cast(list[dict[str, object]], report.get("agents") or [])
+    agent_reports = cast("list[dict[str, object]]", report.get("agents") or [])
     _emit_sync_report(report, dry_run=dry_run, format_=format_)
     if dry_run:
         return
@@ -1671,7 +1735,7 @@ def skills_sync(
     for payload in agent_reports:
         if payload.get("agent") == "grok" and payload.get("_command_argvs"):
             grok_mirror_needed = True
-        for argv in cast(list[list[str]], payload.get("_command_argvs") or []):
+        for argv in cast("list[list[str]]", payload.get("_command_argvs") or []):
             result = subprocess.run(argv, capture_output=False)
             if result.returncode != 0:
                 raise typer.Exit(code=result.returncode)
@@ -1711,9 +1775,7 @@ def catalog_index(
 
 @catalog_app.command("sync-authoring")
 def catalog_sync_authoring(
-    dry_run: bool = typer.Option(
-        False, "--dry-run", help="Show target authoring MDX paths without writing files"
-    ),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show target authoring MDX paths without writing files"),
 ):
     """Sync repo-owned skills/*/SKILL.md into docs/src/authoring/skills/*.mdx (source_kind: custom).
 
@@ -1741,13 +1803,34 @@ def _emit_openspec_command_result(result, format_: str, *, success_message: str)
     except json.JSONDecodeError:
         parsed_stdout = None
 
+    parsed_failure_count = 0
+    if isinstance(parsed_stdout, dict):
+        summary = parsed_stdout.get("summary")
+        if isinstance(summary, dict):
+            totals = summary.get("totals")
+            if isinstance(totals, dict):
+                failed = totals.get("failed")
+                if isinstance(failed, int):
+                    parsed_failure_count = failed
+        items = parsed_stdout.get("items")
+        if isinstance(items, list):
+            parsed_failure_count = max(
+                parsed_failure_count,
+                sum(1 for item in items if isinstance(item, dict) and item.get("valid") is False),
+            )
+    exit_code = result.returncode or (1 if parsed_failure_count else 0)
+
     payload: dict[str, object] = {
         "argv": result.argv,
-        "returncode": result.returncode,
+        "returncode": exit_code,
+        "subprocessReturncode": result.returncode,
+        "parsedFailureCount": parsed_failure_count,
         "stdout": parsed_stdout if parsed_stdout is not None else result.stdout.strip(),
         "stderr": result.stderr.strip(),
     }
-    text_lines = [success_message, f"command: {shlex.join(result.argv)}", f"exit: {result.returncode}"]
+    text_lines = [success_message, f"command: {shlex.join(result.argv)}", f"exit: {exit_code}"]
+    if exit_code != result.returncode:
+        text_lines.append(f"subprocess exit: {result.returncode}")
     if result.stdout.strip():
         text_lines.extend(["stdout:", result.stdout.strip()])
     if result.stderr.strip():
@@ -1758,8 +1841,8 @@ def _emit_openspec_command_result(result, format_: str, *, success_message: str)
         json_data=payload,
         jsonl_records=[{"type": "openspec-result", **payload}],
     )
-    if result.returncode != 0:
-        raise typer.Exit(code=result.returncode)
+    if exit_code != 0:
+        raise typer.Exit(code=exit_code)
 
 
 def _emit_openspec_dry_run(argv: list[str], format_: str) -> None:
@@ -1782,9 +1865,9 @@ def openspec_doctor(
 ):
     """Diagnose OpenSpec tooling, project state, and downstream tool mapping."""
     report = build_doctor_report(root=ROOT, package=package, check_cli=check_cli, validate=validate)
-    node = cast(dict[str, object], report["node"])
-    npx = cast(dict[str, object], report["npx"])
-    project = cast(dict[str, object], report["project"])
+    node = cast("dict[str, object]", report["node"])
+    npx = cast("dict[str, object]", report["npx"])
+    project = cast("dict[str, object]", report["project"])
     text_lines = [
         f"OpenSpec package: {report['package']}",
         f"Node: {node.get('version') or 'missing'} supported={node.get('supported')}",
@@ -1796,11 +1879,11 @@ def openspec_doctor(
         "tool mapping:",
     ]
     text_lines.extend(f"  {agent} -> {tool}" for agent, tool in sorted(OPENSPEC_TOOL_BY_AGENT.items()))
-    generated = cast(list[str], report.get("generatedArtifacts") or [])
+    generated = cast("list[str]", report.get("generatedArtifacts") or [])
     if generated:
         text_lines.append("generated artifacts present:")
         text_lines.extend(f"  {path}" for path in generated)
-    checks = cast(list[dict[str, object]], report.get("checks") or [])
+    checks = cast("list[dict[str, object]]", report.get("checks") or [])
     for check in checks:
         text_lines.append(f"check {check.get('name')}: exit={check.get('returncode')}")
     _emit_structured_output(
@@ -1956,30 +2039,30 @@ def openspec_archive(
 
 def _format_opencode_session_report(report: dict[str, Any]) -> list[str]:
     """Render a compact OpenCode session diagnosis."""
-    summary = cast(dict[str, Any], report.get("summary") or {})
+    summary = cast("dict[str, Any]", report.get("summary") or {})
     lines = [
         f"db: {report.get('db_path')}",
         f"logs: {report.get('log_dir')}",
         f"server_error events: {summary.get('event_count', 0)}",
     ]
-    request_ids = cast(list[str], summary.get("request_ids") or [])
+    request_ids = cast("list[str]", summary.get("request_ids") or [])
     if request_ids:
         lines.append("request IDs:")
         lines.extend(f"  {request_id}" for request_id in request_ids)
-    sessions = cast(dict[str, int], summary.get("sessions") or {})
+    sessions = cast("dict[str, int]", summary.get("sessions") or {})
     if sessions:
         lines.append("sessions:")
         lines.extend(f"  {session_id}: {count} event(s)" for session_id, count in sorted(sessions.items()))
     if summary.get("first_timestamp") or summary.get("last_timestamp"):
         lines.append(f"window: {summary.get('first_timestamp')} .. {summary.get('last_timestamp')}")
 
-    session_reports = cast(dict[str, dict[str, Any]], report.get("sessions") or {})
+    session_reports = cast("dict[str, dict[str, Any]]", report.get("sessions") or {})
     for session_id, session_report in sorted(session_reports.items()):
         lines.append(f"session {session_id}:")
         if not session_report.get("exists"):
             lines.append("  not found in opencode.db")
             continue
-        session = cast(dict[str, Any], session_report.get("session") or {})
+        session = cast("dict[str, Any]", session_report.get("session") or {})
         lines.append(f"  title: {session.get('title')}")
         lines.append(f"  directory: {session.get('directory')}")
         lines.append(f"  archived: {session.get('time_archived')}")
@@ -1988,11 +2071,11 @@ def _format_opencode_session_report(report: dict[str, Any]) -> list[str]:
         lines.append(f"  encrypted reasoning parts: {session_report.get('encrypted_reasoning_part_count')}")
         lines.append(f"  error parts: {session_report.get('error_part_count')}")
 
-    quarantine = cast(dict[str, Any], report.get("quarantine") or {})
+    quarantine = cast("dict[str, Any]", report.get("quarantine") or {})
     if quarantine.get("requested"):
         mode = "applied" if quarantine.get("applied") else "dry-run"
         lines.append(f"quarantine: {mode}")
-        archived_sessions = cast(list[str], quarantine.get("archived_sessions") or [])
+        archived_sessions = cast("list[str]", quarantine.get("archived_sessions") or [])
         if archived_sessions:
             lines.extend(f"  archive session: {session_id}" for session_id in archived_sessions)
         if quarantine.get("backup_path"):
@@ -2092,7 +2175,8 @@ def readme(
             if skill_file.exists():
                 try:
                     fm, _ = parse_frontmatter(skill_file.read_text())
-                    skills.append((fm.get("name", skill_dir.name), fm.get("description", "")))
+                    name = fm.get("name", skill_dir.name)
+                    skills.append((name, fm.get("description", "")))
                 except Exception as e:
                     typer.echo(f"Warning: skipping {skill_file}: {e}", err=True)
 
@@ -2100,6 +2184,8 @@ def readme(
     agents_dir = ROOT / "agents"
     if agents_dir.exists():
         for agent_file in sorted(agents_dir.glob("*.md")):
+            if agent_file.name == "README.md":
+                continue
             try:
                 fm, _ = parse_frontmatter(agent_file.read_text())
                 agents.append((fm.get("name", agent_file.stem), fm.get("description", "")))
@@ -2252,126 +2338,114 @@ def readme(
     ]
 
     if skills:
-        content_parts.extend(
-            [
-                "## 🧰 Skills",
-                "",
-                "Reusable actions and knowledge bases for AI agents.",
-                "",
-                "| Name | Description |",
-                "| ---- | ----------- |",
-            ]
-        )
+        content_parts.extend([
+            "## 🧰 Skills",
+            "",
+            "Reusable actions and knowledge bases for AI agents.",
+            "",
+            "| Name | Description |",
+            "| ---- | ----------- |",
+        ])
         for name, desc in skills:
             content_parts.append(f"| {name} | {desc} |")
         content_parts.append("")
 
     if agents:
-        content_parts.extend(
-            [
-                "## 🤖 Agents",
-                "",
-                "System prompts and context definitions for AI agents.",
-                "",
-                "| Name | Description |",
-                "| ---- | ----------- |",
-            ]
-        )
+        content_parts.extend([
+            "## 🤖 Agents",
+            "",
+            "System prompts and context definitions for AI agents.",
+            "",
+            "| Name | Description |",
+            "| ---- | ----------- |",
+        ])
         for name, desc in agents:
             content_parts.append(f"| {name} | {desc} |")
         content_parts.append("")
 
     if mcps:
-        content_parts.extend(
-            [
-                "## 🔌 MCP Servers",
-                "",
-                "Model Context Protocol servers for interacting with external tools.",
-                "",
-                "| Name | Description |",
-                "| ---- | ----------- |",
-            ]
-        )
+        content_parts.extend([
+            "## 🔌 MCP Servers",
+            "",
+            "Model Context Protocol servers for interacting with external tools.",
+            "",
+            "| Name | Description |",
+            "| ---- | ----------- |",
+        ])
         for name, desc in mcps:
             content_parts.append(f"| {name} | {desc} |")
         content_parts.append("")
 
     # Dev commands
-    content_parts.extend(
-        [
-            "## 🛠️ Development",
-            "",
-            "| Command | Description |",
-            "| ------- | ----------- |",
-            "| `wagents new skill <name>` | Create a new skill |",
-            "| `wagents new agent <name>` | Create a new agent |",
-            "| `wagents new mcp <name>` | Create a new MCP server |",
-            "| `wagents doctor` | Check local environment and toolchain health |",
-            "| `wagents validate` | Validate all skills and agents |",
-            "| `wagents openspec doctor` | Diagnose OpenSpec tooling, project state, and downstream tool mapping |",
-            "| `wagents openspec validate` | Validate OpenSpec specs and changes with JSON-backed output |",
-            (
-                "| `wagents skills sync --dry-run` | Preview additive cross-harness "
-                "skill sync from the normalized inventory |"
-            ),
-            "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
-            "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
-            "| `make typecheck` | Run ty across `wagents/` and `scripts/` |",
-            "| `wagents readme` | Regenerate this README |",
-            "| `wagents package <name>` | Package a skill into portable ZIP |",
-            "| `wagents package --all` | Package all skills |",
-            "| `wagents install` | Install all skills to all agents |",
-            "| `wagents install -a <agent>` | Install all skills to specific agent |",
-            "| `wagents install <name>` | Install specific skill to all agents |",
-            "| `wagents install <name> -a <agent>` | Install specific skill to specific agents |",
-            "| `wagents update` | Refresh installed skills from their recorded sources |",
-            "| `wagents docs init` | One-time setup: install docs dependencies |",
-            "| `wagents docs generate` | Generate MDX content pages from assets |",
-            (
-                "| `wagents docs generate --include-installed` | Include installed "
-                "skills discovered from the normalized harness inventory in generated docs |"
-            ),
-            "| `wagents docs dev` | Generate + launch dev server |",
-            "| `wagents docs build` | Generate + production build |",
-            "| `wagents docs preview` | Generate + build + preview server |",
-            "| `wagents docs clean` | Remove generated content pages |",
-            "",
-            "Third-party skill collections can be installed directly with "
-            "`npx skills add <source> --skill <name> -y -g --agent <agent>`. "
-            "Repeat `--skill` and `--agent` to target a curated subset.",
-            "",
-        ]
-    )
+    content_parts.extend([
+        "## 🛠️ Development",
+        "",
+        "| Command | Description |",
+        "| ------- | ----------- |",
+        "| `wagents new skill <name>` | Create a new skill |",
+        "| `wagents new agent <name>` | Create a new agent |",
+        "| `wagents new mcp <name>` | Create a new MCP server |",
+        "| `wagents doctor` | Check local environment and toolchain health |",
+        "| `wagents validate` | Validate all skills and agents |",
+        "| `wagents openspec doctor` | Diagnose OpenSpec tooling, project state, and downstream tool mapping |",
+        "| `wagents openspec validate` | Validate OpenSpec specs and changes with JSON-backed output |",
+        (
+            "| `wagents skills sync --dry-run` | Preview additive cross-harness "
+            "skill sync from the normalized inventory |"
+        ),
+        "| `wagents skills search <query>` | Search local repo, installed, and plugin skills on demand |",
+        "| `wagents skills context <query>` | Build a compact context packet for matching skills |",
+        "| `make typecheck` | Run ty across `wagents/` and `scripts/` |",
+        "| `wagents readme` | Regenerate this README |",
+        "| `wagents package <name>` | Package a skill into portable ZIP |",
+        "| `wagents package --all` | Package all skills |",
+        "| `wagents install` | Install all skills to all agents |",
+        "| `wagents install -a <agent>` | Install all skills to specific agent |",
+        "| `wagents install <name>` | Install specific skill to all agents |",
+        "| `wagents install <name> -a <agent>` | Install specific skill to specific agents |",
+        "| `wagents update` | Refresh installed skills from their recorded sources |",
+        "| `wagents docs init` | One-time setup: install docs dependencies |",
+        "| `wagents docs generate` | Generate MDX content pages from assets |",
+        (
+            "| `wagents docs generate --include-installed` | Include installed "
+            "skills discovered from the normalized harness inventory in generated docs |"
+        ),
+        "| `wagents docs dev` | Generate + launch dev server |",
+        "| `wagents docs build` | Generate + production build |",
+        "| `wagents docs preview` | Generate + build + preview server |",
+        "| `wagents docs clean` | Remove generated content pages |",
+        "",
+        "Third-party skill collections can be installed directly with "
+        "`npx skills add <source> --skill <name> -y -g --agent <agent>`. "
+        "Repeat `--skill` and `--agent` to target a curated subset.",
+        "",
+    ])
 
     # Supported agents
-    content_parts.extend(
-        [
-            "## 🤝 Supported Agents",
-            "",
-            "- [Antigravity](https://antigravity.google/)",
-            "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
-            "- [Codex](https://github.com/openai/codex)",
-            "- [Crush](https://github.com/crush-ai/crush)",
-            "- [Cursor](https://cursor.sh/)",
-            "- [Gemini CLI](https://github.com/google/gemini-cli)",
-            "- [GitHub Copilot](https://github.com/features/copilot)",
-            "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
-            "And other [agentskills.io](https://agentskills.io)-compatible agents.",
-            "",
-        ]
-    )
+    content_parts.extend([
+        "## 🤝 Supported Agents",
+        "",
+        "- [Antigravity](https://antigravity.google/)",
+        "- [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview)",
+        "- [Codex](https://github.com/openai/codex)",
+        "- [Crush](https://github.com/crush-ai/crush)",
+        "- [Cursor](https://cursor.sh/)",
+        "- [Gemini CLI](https://github.com/google/gemini-cli)",
+        "- [GitHub Copilot](https://github.com/features/copilot)",
+        "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
+        "And other [agentskills.io](https://agentskills.io)-compatible agents.",
+        "",
+    ])
 
-    content_parts.extend(
-        [
-            "## 📚 Documentation",
-            "",
-            (
-                "Explore the full catalog, installation guides, and generated reference pages "
-                "at [agents.w4w.dev](https://agents.w4w.dev)."
-            ),
-            "",
-        ]
-    )
+    content_parts.extend([
+        "## 📚 Documentation",
+        "",
+        (
+            "Explore the full catalog, installation guides, and generated reference pages "
+            "at [agents.w4w.dev](https://agents.w4w.dev)."
+        ),
+        "",
+    ])
 
     # License
     content_parts.extend(["## 📜 License", "", "[MIT](LICENSE)", ""])
@@ -2441,19 +2515,17 @@ def hooks_list(
 
     rows: list[dict[str, Any]] = []
     for hook in all_hooks:
-        rows.append(
-            {
-                "source": hook.source,
-                "event": hook.event,
-                "matcher": hook.matcher,
-                "handler_type": hook.handler_type,
-                "command": hook.command,
-                "prompt": hook.prompt,
-                "harness_support": hook.harness_support or [],
-                "rendered_event": hook.rendered_event,
-                "blocking_mode": hook.blocking_mode,
-            }
-        )
+        rows.append({
+            "source": hook.source,
+            "event": hook.event,
+            "matcher": hook.matcher,
+            "handler_type": hook.handler_type,
+            "command": hook.command,
+            "prompt": hook.prompt,
+            "harness_support": hook.harness_support or [],
+            "rendered_event": hook.rendered_event,
+            "blocking_mode": hook.blocking_mode,
+        })
 
     text_lines = [
         f"{'Source':<35} {'Event':<20} {'Matcher':<15} {'Harnesses':<28} {'Type':<10} {'Command/Prompt'}",
@@ -2483,7 +2555,7 @@ def hooks_validate(
 ):
     """Validate all hooks across skills, agents, and settings."""
     script = _skill_creator_scripts() / "asset_toolkit" / "validate_hooks.py"
-    raise typer.Exit(code=_run_python_script(script, ["--format", format_]))
+    raise typer.Exit(code=_run_python_script(script, ["--format", format_, "--repo-root", str(ROOT)]))
 
 
 # ---------------------------------------------------------------------------
@@ -2527,14 +2599,12 @@ def _expand_eval_cases(path: Path, data: dict) -> list[dict[str, object]]:
             if not isinstance(item, dict):
                 records.append({"skill": manifest_skill, "query": "", "source": path.name, "case_id": index})
                 continue
-            records.append(
-                {
-                    "skill": manifest_skill,
-                    "query": item.get("prompt", ""),
-                    "source": path.name,
-                    "case_id": item.get("id", index),
-                }
-            )
+            records.append({
+                "skill": manifest_skill,
+                "query": item.get("prompt", ""),
+                "source": path.name,
+                "case_id": item.get("id", index),
+            })
         return records
     return [{"skill": skill_name, "query": data.get("query", ""), "source": path.name, "case_id": path.stem}]
 
@@ -2586,7 +2656,7 @@ def eval_validate(
 ):
     """Validate all eval JSON files."""
     script = _skill_creator_scripts() / "asset_toolkit" / "validate_evals.py"
-    raise typer.Exit(code=_run_python_script(script, ["--format", format_]))
+    raise typer.Exit(code=_run_python_script(script, ["--format", format_, "--repo-root", str(ROOT)]))
 
 
 @eval_app.command("coverage")
@@ -2633,15 +2703,74 @@ def eval_coverage(
         rows.append({"skill": name, "has_evals": count > 0, "eval_count": count})
 
     text_lines = [f"{'Skill':<25} {'Has Evals':<12} {'Count':>5}", "-" * 45]
-    text_lines.extend(
-        [f"{row['skill']:<25} {('Yes' if row['has_evals'] else 'No'):<12} {row['eval_count']:>5}" for row in rows]
-    )
+    text_lines.extend([
+        f"{row['skill']:<25} {('Yes' if row['has_evals'] else 'No'):<12} {row['eval_count']:>5}" for row in rows
+    ])
     _emit_structured_output(
         format_,
         text_lines=text_lines,
         json_data={"count": len(rows), "skills": rows},
         jsonl_records=[{"type": "skill", **row} for row in rows],
     )
+
+
+# ---------------------------------------------------------------------------
+# apm (materialize + doctor)
+# ---------------------------------------------------------------------------
+
+
+@apm_app.command("materialize")
+def apm_materialize(
+    check: bool = typer.Option(False, "--check", help="Dry-run: compute changes without writing"),
+) -> None:
+    """Materialize agents/, instructions/, hooks and mcp fragment into .apm/ and update apm.yml (mcp only)."""
+    from wagents.apm import materialize as _materialize
+    from wagents.context import get_repo_root
+
+    repo = get_repo_root()
+    result = _materialize(repo, check=check)
+    if not result.get("ok", True):
+        raise typer.Exit(code=1)
+    if check:
+        changed = result.get("touched", [])
+        if changed:
+            typer.echo("APM materialize is stale. Run: uv run wagents apm materialize", err=True)
+            typer.echo("Would update:")
+            for p in changed:
+                typer.echo(f"  {p}")
+            raise typer.Exit(code=1)
+        typer.echo("APM materialize is up to date.")
+        raise typer.Exit(code=0)
+    touched = result.get("touched", [])
+    typer.echo(f"Materialized {len(touched)} path(s):")
+    for p in touched:
+        typer.echo(f"  {p}")
+    raise typer.Exit(code=0)
+
+
+@apm_app.command("doctor")
+def apm_doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
+    """Verify opencode.json contract, apm.yml presence, and that .apm/ was generated."""
+    from wagents.apm import doctor as _apm_doctor
+    from wagents.context import get_repo_root
+    from wagents.output import emit_structured_output, normalize_output_format
+
+    repo = get_repo_root()
+    report = _apm_doctor(repo)
+    fmt = normalize_output_format(format_)
+    if fmt == "text":
+        status = "ok" if report.get("ok") else "FAIL"
+        typer.echo(f"apm doctor: {status}")
+        for c in report.get("checks", []):
+            cstatus = "ok" if c.get("ok") else "FAIL"
+            msg = c.get("message", "")
+            suffix = f" ({msg})" if msg else ""
+            typer.echo(f"  {c['name']}: {cstatus}{suffix}")
+    else:
+        emit_structured_output(fmt, json_data=report)
+    raise typer.Exit(code=0 if report.get("ok") else 1)
 
 
 def run() -> None:

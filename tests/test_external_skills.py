@@ -2,8 +2,11 @@ from pathlib import Path
 
 import pytest
 
-# Retargeted after discovery move to harness-master; dedupe string (historical duplicate-of discover-skills) preserved as test data
-from wagents.external_skills import parse_external_skill_entries, read_catalog_external_entries, read_external_skill_entries  # minimal for W2 dual-read compat
+# Retargeted after discovery move to harness-master; dedupe string
+# (historical duplicate-of discover-skills) is preserved as test data.
+from wagents.external_skills import (  # minimal for W2 dual-read compat
+    parse_external_skill_entries,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXTERNAL_SKILLS_PATH = REPO_ROOT / "config" / "external-skills.md"
@@ -213,29 +216,20 @@ def test_curated_plannotator_entries_include_grok_target():
         assert "backnotprop/plannotator --skill" not in entry.install_command
 
 
-def test_curated_shadcn_install_now_single_source():
-    if not EXTERNAL_SKILLS_PATH.exists():
-        pytest.skip("external-skills.md missing")
+def test_curated_shadcn_install_now_is_folded_into_design():
+    from wagents.external_skills import desired_install_now_entries
 
-    text = EXTERNAL_SKILLS_PATH.read_text(encoding="utf-8")
-    install_now, _ = text.split("## Keep Global Only Or Avoid", maxsplit=1)
     shadcn_install_rows = [
-        line
-        for line in install_now.splitlines()
-        if "npx skills add" in line and "shadcn" in line and "--skill shadcn" in line
+        entry
+        for entry in desired_install_now_entries()
+        if entry.name == "shadcn" or ("shadcn" in entry.install_command and "--skill shadcn" in entry.install_command)
     ]
-    assert len(shadcn_install_rows) == 1
-    assert "shadcn-ui/ui" in shadcn_install_rows[0]
-    assert "shadcn/ui" not in shadcn_install_rows[0]
+    assert shadcn_install_rows == []
 
 
 def test_plannotator_extras_sync_command_uses_apps_skills_path():
     from wagents.cli import PLANNOTATOR_EXTRAS_SYNC_COMMAND
 
     assert "backnotprop/plannotator/apps/skills" in PLANNOTATOR_EXTRAS_SYNC_COMMAND
-    root_only = [
-        part
-        for part in PLANNOTATOR_EXTRAS_SYNC_COMMAND
-        if part == "backnotprop/plannotator"
-    ]
+    root_only = [part for part in PLANNOTATOR_EXTRAS_SYNC_COMMAND if part == "backnotprop/plannotator"]
     assert root_only == []

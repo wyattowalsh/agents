@@ -4,13 +4,15 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import wagents
 from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry
 from wagents.parsing import parse_frontmatter, to_title
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 AUTHORING_SKILLS_DIR = wagents.ROOT / "docs" / "src" / "authoring" / "skills"
 CATALOG_INDEX_PATH = wagents.ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
@@ -85,7 +87,6 @@ def load_authoring_entries(dir_path: Path | None = None) -> list[CatalogAuthorin
         description = str(fm.get("description") or "")
         title = str(fm.get("title") or to_title(name))
         source_kind = str(fm.get("source_kind") or fm.get("sourceKind") or "custom")
-
         entry = CatalogAuthoringEntry(
             name=name,
             description=description,
@@ -191,9 +192,7 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
             external_rows.append(row)
 
     custom_rows.sort(key=lambda r: str(r.get("name", "")))
-    external_rows.sort(
-        key=lambda r: (str(r.get("status", "")), str(r.get("sourceRoot", "")), str(r.get("name", "")))
-    )
+    external_rows.sort(key=lambda r: (str(r.get("status", "")), str(r.get("sourceRoot", "")), str(r.get("name", ""))))
     all_rows = sorted(
         [*custom_rows, *external_rows],
         key=lambda r: (str(r.get("sourceType", "")), str(r.get("name", ""))),
@@ -243,10 +242,7 @@ def catalog_index_stale_reason(path: Path | None = None) -> str | None:
     if existing is None:
         return f"{out.relative_to(wagents.ROOT)} missing; run `uv run wagents docs generate --no-installed`"
     if json.dumps(expected, indent=2, sort_keys=True) != json.dumps(existing, indent=2, sort_keys=True):
-        return (
-            f"{out.relative_to(wagents.ROOT)} is stale; "
-            "run `uv run wagents docs generate --no-installed`"
-        )
+        return f"{out.relative_to(wagents.ROOT)} is stale; run `uv run wagents docs generate --no-installed`"
     return None
 
 
