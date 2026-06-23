@@ -1,0 +1,6 @@
+---
+description: Platform overlay: claude-code-global.md
+globs: "**/*"
+---
+
+Compatibility shim only. Active configs should point directly at `global.md`.

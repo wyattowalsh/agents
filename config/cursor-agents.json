@@ -1,0 +1,46 @@
+{
+  "$schema": "./schemas/cursor-agents.schema.json",
+  "version": 1,
+  "agents": [
+    {
+      "name": "code-reviewer",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "docs-writer",
+      "readonly": false,
+      "model": "inherit"
+    },
+    {
+      "name": "orchestrator",
+      "readonly": false,
+      "model": "inherit"
+    },
+    {
+      "name": "performance-profiler",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "planner",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "release-manager",
+      "readonly": false,
+      "model": "inherit"
+    },
+    {
+      "name": "researcher",
+      "readonly": true,
+      "model": "inherit"
+    },
+    {
+      "name": "security-auditor",
+      "readonly": true,
+      "model": "inherit"
+    }
+  ]
+}

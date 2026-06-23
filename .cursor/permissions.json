@@ -1,0 +1,10 @@
+{
+  "autoRun": {
+    "block_instructions": [
+      "Ask before deleting files, rewriting git history, force-pushing, or running destructive shell commands.",
+      "Ask before reading .env files, credentials, private keys, service-account files, or token stores.",
+      "Ask before running migrations, deployments, or commands that change external services.",
+      "Ask before installing packages or executing unreviewed scripts from the network."
+    ]
+  }
+}

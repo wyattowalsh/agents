@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(AGENTS.md)",
+      "Read(instructions/**)",
+      "Read(config/**)",
+      "Read(agents/**)",
+      "Read(skills/**)",
+      "Shell(git:status*)",
+      "Shell(git:diff*)",
+      "Shell(rg:*)",
+      "Shell(ls:*)",
+      "Shell(uv:run wagents validate*)",
+      "Shell(uv:run wagents openspec validate*)",
+      "WebFetch(cursor.com)"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Read(**/.env*)",
+      "Read(**/*secret*)",
+      "Read(**/*token*)",
+      "Write(.env*)",
+      "Write(**/.env*)",
+      "Write(**/*.key)",
+      "Shell(git:reset*)",
+      "Shell(git:clean*)",
+      "Shell(git:push*)",
+      "Shell(rm)",
+      "Shell(sudo)",
+      "Shell(curl:*)",
+      "Shell(wget:*)"
+    ]
+  }
+}
