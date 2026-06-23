@@ -9,7 +9,6 @@ targets:
   - cursor
   - codex
   - gemini
-  - antigravity
   - opencode
 includes:
   - .apm/agents/
