@@ -145,10 +145,7 @@ def _apm_self_doctor_checks(repo_root) -> list[dict[str, str]]:
             "status": "ok" if surface.get("ok") else "warn",
             "summary": "apm.yml + .apm/ OK"
             if surface.get("ok")
-            else (
-                "apm surface drift; run: uv run wagents apm materialize && "
-                "uv run wagents apm doctor (hard gate)"
-            ),
+            else ("apm surface drift; run: uv run wagents apm materialize && uv run wagents apm doctor (hard gate)"),
         })
     return rows
 

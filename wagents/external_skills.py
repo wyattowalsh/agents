@@ -154,9 +154,7 @@ def _load_authoring_external_entries() -> list[ExternalSkillEntry]:
         from . import skill_index as si
 
         auths = si.load_authoring_entries()
-        return [
-            si.entry_to_external_skill_entry(e) for e in auths if getattr(e, "source_kind", "custom") != "custom"
-        ]
+        return [si.entry_to_external_skill_entry(e) for e in auths if getattr(e, "source_kind", "custom") != "custom"]
     except Exception:
         return []
 

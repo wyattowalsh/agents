@@ -19,7 +19,7 @@ def test_grok_doctor_report_shape(monkeypatch, tmp_path):
         "[mcp_servers.mcphub_group_harness-safe]\nenabled = true\n"
         "# END MANAGED BY sync_agent_stack.py: MCP_SERVERS\n"
         "# BEGIN MANAGED BY sync_agent_stack.py: GROK_POLICY\n"
-        "[models]\ndefault = \"grok-composer-2.5-fast\"\n"
+        '[models]\ndefault = "grok-composer-2.5-fast"\n'
         "# END MANAGED BY sync_agent_stack.py: GROK_POLICY\n",
         encoding="utf-8",
     )
