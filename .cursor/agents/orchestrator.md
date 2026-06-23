@@ -2,9 +2,11 @@
 name: orchestrator
 description: Coordinate multi-step work by decomposing, delegating, and synthesizing
   results.
-tools: all
-permissionMode: default
+model: inherit
+readonly: false
 ---
+
+<!-- Managed by wagents. Source: agents/orchestrator.md -->
 
 ## Role
 

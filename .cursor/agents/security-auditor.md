@@ -1,8 +1,11 @@
 ---
 name: security-auditor
 description: Audit code and configuration for security risks without making changes.
-tools: Read, Grep, Glob
+model: inherit
+readonly: true
 ---
+
+<!-- Managed by wagents. Source: agents/security-auditor.md -->
 
 ## Role
 

@@ -1,8 +1,8 @@
 ---
-description: 'Platform overlay: copilot-global.md'
-applyTo: '**/*'
+applyTo: "**/*"
 ---
 
+<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->
 # GitHub Copilot
 
 Copilot-specific extension only. Keep shared cross-platform instructions in `global.md`.

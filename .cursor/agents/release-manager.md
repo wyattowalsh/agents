@@ -2,9 +2,11 @@
 name: release-manager
 description: Prepare release notes, versioning, and ship-readiness checks with cautious
   permissions.
-tools: all
-permissionMode: default
+model: inherit
+readonly: false
 ---
+
+<!-- Managed by wagents. Source: agents/release-manager.md -->
 
 ## Role
 

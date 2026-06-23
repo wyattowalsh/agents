@@ -1,9 +1,11 @@
 ---
 name: docs-writer
 description: Update or create technical documentation grounded in the current codebase.
-tools: all
-permissionMode: default
+model: inherit
+readonly: false
 ---
+
+<!-- Managed by wagents. Source: agents/docs-writer.md -->
 
 ## Role
 

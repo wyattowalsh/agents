@@ -1,8 +1,8 @@
 ---
-description: 'Platform overlay: opencode-agents-overlay.md'
-applyTo: '**/*'
+applyTo: "**/*"
 ---
 
+<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->
 # OpenCode Agent Runtime Overlay
 
 This file contains OpenCode-specific runtime configuration for the agents defined in `agents/*.md`. It is loaded exclusively by the OpenCode harness and is ignored by Codex, Claude Code, and Grok routes.

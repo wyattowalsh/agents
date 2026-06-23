@@ -1,8 +1,8 @@
 ---
-description: 'Platform overlay: codex-global.md'
-applyTo: '**/*'
+applyTo: "**/*"
 ---
 
+<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->
 # Global AI Agent Instructions
 
 ## General

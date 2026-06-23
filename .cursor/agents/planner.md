@@ -1,9 +1,11 @@
 ---
 name: planner
 description: Create a codebase-grounded implementation plan before coding.
-tools: all
-permissionMode: default
+model: inherit
+readonly: true
 ---
+
+<!-- Managed by wagents. Source: agents/planner.md -->
 
 ## Role
 

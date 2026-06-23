@@ -2,9 +2,11 @@
 name: researcher
 description: Investigate a technical question deeply and return a concise evidence-backed
   summary.
-tools: all
-permissionMode: default
+model: inherit
+readonly: true
 ---
+
+<!-- Managed by wagents. Source: agents/researcher.md -->
 
 ## Role
 

@@ -1,8 +1,8 @@
 ---
-description: 'Platform overlay: gemini-cli-global.md'
-applyTo: '**/*'
+applyTo: "**/*"
 ---
 
+<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->
 # Gemini CLI
 
 Gemini-specific extension only. Keep shared cross-platform instructions in `global.md`.

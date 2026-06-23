@@ -2,9 +2,11 @@
 name: performance-profiler
 description: Investigate performance bottlenecks and recommend the highest-leverage
   fixes.
-tools: all
-permissionMode: default
+model: inherit
+readonly: true
 ---
+
+<!-- Managed by wagents. Source: agents/performance-profiler.md -->
 
 ## Role
 
