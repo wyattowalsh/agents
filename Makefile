@@ -70,6 +70,16 @@ check-python:             ## Lint, format-check, and type-check Python code
 	uv run ruff format --check
 	uv run ty check
 
+ci-check:                 ## Lint GitHub Actions workflows (actionlint + analyzer)
+	@command -v actionlint >/dev/null || { echo "actionlint not found (brew install actionlint)"; exit 1; }
+	actionlint .github/workflows/*.yml
+	@for wf in .github/workflows/*.yml; do \
+		uv run python skills/devops-engineer/scripts/workflow-analyzer.py "$$wf" | \
+		uv run python -c 'import json,sys; d=json.load(sys.stdin); s=d["summary"]; \
+		assert s["critical_issues"]==0 and s["warnings"]==0, d; \
+		print("workflow-analyzer OK:", d["file"])'; \
+	done
+
 audit:                    ## Audit all skill quality scores
 	uv run python skills/skill-creator/scripts/audit.py --all --format table
 
@@ -144,7 +154,7 @@ help:                     ## Show this help
 .PHONY: install install-agent install-skill list update help \
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
-        validate test lint format typecheck check-python audit package openspec-doctor \
+        validate test lint format typecheck check-python ci-check audit package openspec-doctor \
         openspec-validate openspec-update readme \
         mcphub-up mcphub-down mcphub-logs mcphub-doctor mcphub-validate \
         mcphub-openapi mcphub-smoke mcphub-install-launch-agent \

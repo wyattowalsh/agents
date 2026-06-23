@@ -17,10 +17,30 @@ except ImportError:
     sys.exit(1)
 
 
+def _step_uses_cache(step: dict) -> bool:
+    """Return True when a step enables dependency or build caching."""
+    uses = step.get("uses", "")
+    if uses.startswith("actions/cache"):
+        return True
+
+    with_block = step.get("with") or {}
+    if uses.startswith("astral-sh/setup-uv") and with_block.get("enable-cache"):
+        return True
+
+    if uses.startswith("actions/setup-node") and with_block.get("cache"):
+        return True
+
+    return (
+        (uses.startswith("actions/setup-python") and bool(with_block.get("cache")))
+        or (uses.startswith("actions/setup-go") and bool(with_block.get("cache")))
+        or uses.startswith("./.github/actions/")
+    )
+
+
 def analyze_job(name: str, job: dict) -> dict:
     """Analyze a single job for structure and issues."""
     steps = job.get("steps", [])
-    uses_cache = any(s.get("uses", "").startswith("actions/cache") for s in steps)
+    uses_cache = any(_step_uses_cache(s) for s in steps)
     uses_matrix = "matrix" in job.get("strategy", {})
     has_timeout = "timeout-minutes" in job
 

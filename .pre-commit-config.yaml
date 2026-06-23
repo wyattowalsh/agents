@@ -55,3 +55,9 @@ repos:
         language: system
         files: '^(docs/.*\.(mdx|css|mjs|astro)|skills/|agents/|mcp/)'
         pass_filenames: false
+      - id: actionlint
+        name: Lint GitHub Actions workflows
+        entry: actionlint
+        language: system
+        pass_filenames: false
+        files: ^\.github/workflows/.*\.ya?ml$

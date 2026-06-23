@@ -6,16 +6,20 @@ on:
   push:
     tags: ['v[0-9]+.[0-9]+.[0-9]+']
 
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-      - name: Install dependencies
-        run: uv sync
+      - uses: ./.github/actions/setup-uv
       - name: Validate assets
         run: uv run wagents validate
       - name: Audit skills (strict)
@@ -33,13 +37,14 @@ jobs:
     needs: validate
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
         with:
           enable-cache: true
       - name: Install dependencies
@@ -49,11 +54,11 @@ jobs:
       - name: Verify packaging artifacts
         run: |
           test -f dist/manifest.json || { echo "Missing dist/manifest.json"; exit 1; }
-          count=$(ls dist/*.zip 2>/dev/null | wc -l)
+          count=$(find dist -maxdepth 1 -name '*.zip' | wc -l | tr -d ' ')
           test "$count" -gt 0 || { echo "No .zip files in dist/"; exit 1; }
           echo "Found $count skill ZIP(s) and manifest.json"
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           files: |
             dist/*.zip
