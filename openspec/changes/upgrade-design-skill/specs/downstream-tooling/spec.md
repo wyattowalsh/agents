@@ -12,9 +12,9 @@ Automation SHALL consume OpenSpec JSON commands instead of scraping markdown or 
 - **THEN** they SHALL refer to `--skill design` and `/design`
 - **AND** `uv run wagents skills sync --dry-run --format json` SHALL preview the renamed custom skill without applying live installs.
 
-#### Scenario: Downstream surfaces do not advertise folded wrappers
+#### Scenario: Downstream surfaces preserve Chrome DevTools operational skills
 
-- **WHEN** downstream install, sync, README, or docs surfaces are generated after the fold
-- **THEN** they SHALL NOT advertise repo-owned custom skill commands for folded `chrome-devtools*` wrapper skills
+- **WHEN** downstream install, sync, README, or docs surfaces are generated after the `/design` upgrade
+- **THEN** they SHALL continue to advertise repo-owned custom skill commands for active `chrome-devtools*` operational skills
 - **AND** they SHALL NOT advertise active curated install rows for folded UI/design/frontend/browser-proof external rows
 - **AND** they SHALL continue to preserve the underlying Chrome DevTools MCP registry/config surfaces unchanged.

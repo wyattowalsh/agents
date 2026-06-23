@@ -21,18 +21,19 @@
        non-empty requests infer primary and secondary modes by default.
 14. [x] Add compound-mode guidance for Polish + Surface, Audit + AI Interface,
        Refactor + Chrome Proof, and Parallel Design Team + System.
-15. [x] Fold Chrome DevTools MCP page proof, accessibility snapshot/focus proof,
-       LCP/hero proof, memory/performance-smell checks, troubleshooting
-       fallback, and CLI fallback into `references/rendered-proof.md`.
-16. [x] Remove active custom Chrome DevTools wrapper skill directories and
-       their authoring, research, generated catalog, and generated research
-       surfaces.
+15. [x] Integrate Chrome DevTools MCP page proof, accessibility snapshot/focus
+       proof, LCP/hero proof, memory/performance-smell checks,
+       troubleshooting fallback, and CLI fallback into
+       `references/rendered-proof.md` as `/design` proof techniques.
+16. [x] Preserve active custom Chrome DevTools skill directories, authoring
+       rows, research pages, generated catalog pages, and registry rows as
+       standalone operational browser-debugging skills.
 17. [x] Fold overlapping curated external UI/design/frontend/browser-proof
        catalog rows into the design research note, then remove their active
        authoring, generated catalog, and research surfaces.
 18. [x] Add eval coverage for mode inference, explicit-mode precedence,
-       compound modes, Chrome-first proof, MCP-unavailable fallback, folded
-       Chrome workflows, and non-UI/browser-debug negative controls.
+       compound modes, Chrome-first proof, MCP-unavailable fallback,
+       Chrome-workflow boundaries, and non-UI/browser-debug negative controls.
 19. [x] Prove no MCP registry/config diffs and no review-consolidation diffs
        were introduced by this `/design` refactor.
 20. [x] Fold badge, ShieldCN, and shields-related skill logic into `/design`

@@ -73,36 +73,39 @@
       ]
     },
     {
-      "id": "folded-a11y-snapshot-focus",
+      "id": "chrome-a11y-snapshot-focus-boundary",
       "prompt": "/design check the modal accessibility on /billing with Chrome proof",
-      "expected_output": "An accessibility-facing design audit using snapshots, keyboard traversal, focus return, and visual focus evidence inside /design.",
+      "expected_output": "An accessibility-facing design audit using Chrome proof patterns, snapshots, keyboard traversal, focus return, and visual focus evidence inside /design while preserving Chrome DevTools skills for standalone browser debugging.",
       "files": [],
       "assertions": [
-        "Agent keeps the work inside /design instead of invoking a deleted chrome-devtools-a11y skill.",
+        "Agent keeps UI-facing accessibility design work inside /design when /design is explicitly invoked.",
+        "Agent does not describe chrome-devtools-a11y-debugging as deleted.",
         "Agent treats the accessibility tree as primary evidence for roles, names, headings, and state.",
         "Agent verifies keyboard traversal with repeated key movement and fresh snapshots.",
         "Agent checks focus trap or focus return for the modal."
       ]
     },
     {
-      "id": "folded-lcp-hero-proof",
+      "id": "chrome-lcp-hero-proof-boundary",
       "prompt": "/design audit the hero image because the landing page feels slow",
-      "expected_output": "A UI-facing LCP/hero proof workflow that identifies the actual visible hero or LCP candidate before recommending visual or loading fixes.",
+      "expected_output": "A UI-facing LCP/hero proof workflow that identifies the actual visible hero or LCP candidate before recommending visual or loading fixes while preserving Chrome DevTools LCP debugging as a separate operational skill.",
       "files": [],
       "assertions": [
-        "Agent keeps UI-facing hero/LCP proof inside /design instead of handing off to a deleted LCP Chrome skill.",
+        "Agent keeps UI-facing hero/LCP proof inside /design when /design is explicitly invoked.",
+        "Agent does not describe chrome-devtools-debug-optimize-lcp as deleted.",
         "Agent identifies the actual LCP or hero candidate before recommending fixes.",
         "Agent considers resource discovery, lazy loading, priority, render blocking, and main-thread delay.",
         "Agent routes deep non-UI performance profiling outside /design."
       ]
     },
     {
-      "id": "folded-memory-smell-proof",
+      "id": "chrome-memory-smell-proof-boundary",
       "prompt": "/design review this image preview drawer for memory leaks after repeated open and close",
-      "expected_output": "A UI lifecycle smell workflow that repeats the interaction, watches for retained UI resources, and avoids reading raw heap snapshots.",
+      "expected_output": "A UI lifecycle smell workflow that repeats the interaction, watches for retained UI resources, avoids reading raw heap snapshots, and preserves Chrome DevTools memory-leak debugging as a separate operational skill.",
       "files": [],
       "assertions": [
         "Agent keeps UI-facing lifecycle smell checks inside /design.",
+        "Agent does not describe chrome-devtools-memory-leak-debugging as deleted.",
         "Agent repeats the relevant interaction to amplify possible leaks.",
         "Agent checks detached DOM nodes, unremoved listeners, media/canvas cleanup, and animation loops.",
         "Agent refuses to read raw heap snapshots into context and routes deep profiling to performance-profiler."

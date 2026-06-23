@@ -37,10 +37,12 @@ custom catalog row, research source, eval skill IDs, install command, and
 handoff references are replaced with `design`. Any remaining old slug reference
 must be historical evidence, approved redirect text, or a bug.
 
-## Folded Skill Model
+## Chrome DevTools Boundary Model
 
-The repo-owned Chrome DevTools wrapper skills are folded into `/design` rendered
-proof references and removed as active custom skills:
+Chrome DevTools workflows are integrated into `/design` as proof techniques,
+not absorbed as ownership. Repo-owned Chrome DevTools skills remain active
+operational browser debugging skills with their directories, authoring rows,
+generated pages, research pages, and catalog rows intact:
 
 - `chrome-devtools`
 - `chrome-devtools-a11y-debugging`
@@ -49,9 +51,13 @@ proof references and removed as active custom skills:
 - `chrome-devtools-memory-leak-debugging`
 - `chrome-devtools-troubleshooting`
 
-The fold does not remove or weaken the underlying Chrome DevTools MCP registry
-or harness configuration. `/design` may use available MCP tools for interface
-proof, but setup/config mutation remains out of scope.
+`/design` uses available Chrome DevTools MCP tools for UI-facing rendered proof
+and records blockers when those tools are unavailable. Non-design browser
+debugging, MCP setup repair, generic browser automation, deep LCP/performance
+profiling, CLI automation, and memory-leak investigations remain valid
+handoffs to the Chrome DevTools skills or adjacent operational skills. The
+`/design` upgrade does not remove or weaken Chrome DevTools MCP registry or
+harness configuration.
 
 ## Research Model
 

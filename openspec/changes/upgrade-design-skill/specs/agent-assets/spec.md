@@ -26,8 +26,9 @@ The repository SHALL keep skill, agent, MCP, instruction, hook, and bundle metad
 - **AND** an explicit first mode word SHALL be treated as the primary hint
 - **AND** the skill SHALL attach relevant secondary modules for AI trust, accessibility, motion, 3D/canvas, shadcn/Radix, Tailwind, rendered proof, or parallel design-team work.
 
-#### Scenario: Folding Chrome DevTools wrapper skills
+#### Scenario: Integrating Chrome DevTools proof without deleting operational skills
 
 - **WHEN** Chrome DevTools-backed browser proof is part of the `design` skill
 - **THEN** `skills/design/references/rendered-proof.md` SHALL document page proof, accessibility tree/focus proof, LCP/hero proof, memory/performance-smell checks, troubleshooting fallback, and CLI fallback
-- **AND** no repo-owned custom skill directory SHALL remain for `chrome-devtools`, `chrome-devtools-a11y-debugging`, `chrome-devtools-cli`, `chrome-devtools-debug-optimize-lcp`, `chrome-devtools-memory-leak-debugging`, or `chrome-devtools-troubleshooting`.
+- **AND** repo-owned custom skill directories SHALL remain for `chrome-devtools`, `chrome-devtools-a11y-debugging`, `chrome-devtools-cli`, `chrome-devtools-debug-optimize-lcp`, `chrome-devtools-memory-leak-debugging`, and `chrome-devtools-troubleshooting`
+- **AND** `/design` SHALL route non-design browser debugging, MCP setup repair, generic browser automation, deep LCP/performance profiling, CLI automation, and memory-leak investigations outside the design skill.

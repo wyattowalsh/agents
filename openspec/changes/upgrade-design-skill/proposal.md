@@ -22,8 +22,10 @@ design/taste skills instead of making one repo-owned canonical entry point.
   signals, visual risk, and proof needs.
 - Keep the implementation as one compact skill body plus conditional reference
   files, not multiple overlapping local design skills.
-- Fold repo-owned Chrome DevTools browser-proof wrapper skills into `/design`
-  references, then remove those wrapper skill directories and catalog rows.
+- Integrate Chrome DevTools browser-proof workflows into `/design` references
+  while preserving repo-owned Chrome DevTools skills, directories, authoring
+  rows, generated pages, and catalog rows as standalone operational browser
+  debugging skills.
 - Fold badge, ShieldCN, and shields-related status indicator workflows into
   `/design` Badge Surface, then remove active wrapper/catalog surfaces.
 - Fold overlapping curated external UI/design/browser-proof catalog rows into
@@ -43,5 +45,8 @@ design/taste skills instead of making one repo-owned canonical entry point.
 - Do not run live external installs or `wagents skills sync --apply`.
 - Do not mutate MCP registry, harness config, browser launch config, or global
   Chrome DevTools installs from `/design`.
+- Do not remove or hide repo-owned Chrome DevTools skills as part of the
+  `/design` upgrade; `/design` consumes Chrome proof patterns but does not own
+  general browser debugging.
 - Do not hand-edit generated catalog registries or generated docs pages except
   as command output.

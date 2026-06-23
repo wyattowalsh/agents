@@ -18,10 +18,10 @@
 | Docs build | `uv run wagents docs build` | Passes. |
 | Sync preview | `uv run wagents skills sync --dry-run --format json` | No live install; preview succeeds. |
 | Diff whitespace | `git diff --check` | Passes. |
-| Folded custom skills | `for s in chrome-devtools chrome-devtools-a11y-debugging chrome-devtools-cli chrome-devtools-debug-optimize-lcp chrome-devtools-memory-leak-debugging chrome-devtools-troubleshooting; do test ! -d "skills/$s"; done` | Folded wrapper directories are removed. |
+| Chrome DevTools skills retained | `for s in chrome-devtools chrome-devtools-a11y-debugging chrome-devtools-cli chrome-devtools-debug-optimize-lcp chrome-devtools-memory-leak-debugging chrome-devtools-troubleshooting; do test -d "skills/$s"; done` | Operational Chrome DevTools skill directories remain active. |
 | Folded badge skills | `test ! -d skills/add-badges`; targeted scans for `add-badges` and `shieldcn-badges` in active catalog/docs routes | Badge and ShieldCN wrappers are folded into `/design` and not active as custom/external rows. |
 | Global badge mirrors | `find /Users/ww/.agents/skills -maxdepth 1 \( -name add-badges -o -name shieldcn-badges \) -print` | Empty after explicit user-local cleanup approval, or reported as approval-gated residual. |
-| Folded catalog rows | `jq` checks against `docs/public/generated-registries/skills-catalog-index.json` | Exactly one custom `design` row and zero active folded custom/external rows. |
+| Folded catalog rows | `jq` checks against `docs/public/generated-registries/skills-catalog-index.json` | Exactly one custom `design` row, active `chrome-devtools*` custom rows retained, and zero active folded non-Chrome custom/external rows. |
 | Chrome proof behavior | `rg -n "Chrome DevTools MCP|Inference First|compound mode|\\[mode\\] <request\\|path\\|url>" skills/design docs/src/skill-research/design.md docs/src/authoring/skills/design.mdx docs/src/content/docs/skills/catalog/custom/design.mdx` | Canonical sources and generated docs mention inference and Chrome proof. |
 | MCP config isolation | `git diff --name-only -- config/mcp-registry.json config/codex-config.toml config/sync-manifest.json` | No output from this task. |
 | Review consolidation isolation | `git diff --name-only -- skills/review skills/honest-review skills/simplify skills/external-skill-auditor openspec/changes/consolidate-review-skill` | No output from this task. |
@@ -34,11 +34,12 @@
 - `test ! -f docs/src/skill-research/frontend-designer.md`
 - Generated catalog JSON contains a custom `design` row and no stale custom
   `frontend-designer` row.
-- Generated catalog JSON contains no active custom rows for folded
-  `chrome-devtools*` wrapper skills.
+- Generated catalog JSON contains active custom rows for retained
+  `chrome-devtools*` operational skills.
 - Generated catalog/docs contain no active folded curated external UI/design
   rows after their useful synthesis is captured under `design`.
 - Remaining `frontend-designer` text hits are categorized as historical,
   approved redirect, or fixed.
-- Remaining folded-skill text hits are categorized as historical evidence,
-  research synthesis, or fixed.
+- Remaining folded-skill text hits are categorized as active retained
+  Chrome DevTools operational skills, historical evidence, research synthesis,
+  or fixed.
