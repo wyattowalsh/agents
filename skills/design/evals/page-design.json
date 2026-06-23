@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design build a hero section landing page with animated gradient background",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Surface mode for a landing/hero request",
+    "Agent states a visual thesis before code",
+    "Agent uses real product or brand-relevant media/assets rather than generic decoration",
+    "Agent treats animation as purposeful hierarchy or feedback and requires reduced-motion behavior",
+    "Agent verifies text contrast, responsive fit, and rendered proof"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design surface new onboarding page",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Surface mode",
+    "Agent chooses a domain-appropriate design register before implementation",
+    "Agent uses existing project routing, components, and tokens rather than inventing a new system",
+    "Agent includes loading, empty, error, and mobile states when relevant",
+    "Agent routes full project scaffolding to a project initialization skill if needed"
+  ]
+}

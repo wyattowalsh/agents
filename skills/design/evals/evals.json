@@ -1,0 +1,368 @@
+{
+  "skill_name": "design",
+  "evals": [
+    {
+      "id": "empty-args-gallery",
+      "prompt": "/design",
+      "expected_output": "A concise gallery of design modes and example invocations.",
+      "files": [],
+      "assertions": [
+        "Agent dispatches to the empty-args handler.",
+        "Agent lists Audit, Polish, Component, Surface, System, Refactor, AI Interface, Badge Surface, 3D Interface, and Parallel Design Team modes.",
+        "Agent does not guess a mode when no arguments are provided."
+      ]
+    },
+    {
+      "id": "natural-language-mode-inference",
+      "prompt": "/design make the checkout page feel clearer on mobile and verify it in browser",
+      "expected_output": "A Surface + Polish workflow inferred from the natural-language request, with Chrome DevTools MCP proof expected when available.",
+      "files": [],
+      "assertions": [
+        "Agent infers a primary mode without requiring an explicit mode token.",
+        "Agent names Surface as the primary mode and Polish or Rendered Proof as secondary modules.",
+        "Agent considers mobile layout, clarity, content resilience, and accessibility.",
+        "Agent uses Chrome DevTools MCP as the default browser proof path when available."
+      ]
+    },
+    {
+      "id": "explicit-mode-primary-hint",
+      "prompt": "/design audit /app/research-assistant for citation trust and keyboard bugs",
+      "expected_output": "An Audit + AI Interface workflow where the explicit audit hint remains primary while trust and keyboard modules are attached.",
+      "files": [],
+      "assertions": [
+        "Agent treats audit as the primary mode because it is explicit.",
+        "Agent attaches AI Interface trust/provenance checks from the target context.",
+        "Agent attaches accessibility and keyboard/focus checks from the request.",
+        "Agent keeps the audit read-only unless implementation is requested."
+      ]
+    },
+    {
+      "id": "compound-mode-refactor-chrome-proof",
+      "prompt": "/design refactor src/app/dashboard/page.tsx and prove the table does not overflow",
+      "expected_output": "A Refactor + Surface + Chrome Proof workflow that edits existing UI only after inspection and verifies overflow in the browser.",
+      "files": [],
+      "assertions": [
+        "Agent selects Refactor as the primary mode from the existing frontend path.",
+        "Agent attaches Surface/dashboard and rendered-proof modules.",
+        "Agent inspects existing tokens, components, table behavior, and responsive constraints before editing.",
+        "Agent expects Chrome DevTools MCP snapshot and desktop/mobile screenshot or equivalent proof for overflow."
+      ]
+    },
+    {
+      "id": "chrome-devtools-mcp-proof-default",
+      "prompt": "/design audit http://localhost:3000/settings for focus order and visual clipping",
+      "expected_output": "A Chrome DevTools MCP-first audit that selects or navigates the page, snapshots the accessibility tree, checks focus, console/network, and screenshots.",
+      "files": [],
+      "assertions": [
+        "Agent uses Chrome DevTools MCP before generic screenshots when the tools are available.",
+        "Agent includes page selection or navigation, wait, take_snapshot, console, and network checks.",
+        "Agent verifies focus order with keyboard interaction and fresh snapshots.",
+        "Agent captures desktop and mobile visual evidence or states the exact blocker."
+      ]
+    },
+    {
+      "id": "chrome-mcp-unavailable-fallback",
+      "prompt": "/design polish the landing page, but Chrome DevTools MCP is not available in this harness",
+      "expected_output": "A proof workflow that records the MCP blocker and falls back to the next available rendered proof without mutating MCP setup.",
+      "files": [],
+      "assertions": [
+        "Agent does not edit MCP registry, harness config, or install browser tooling from this skill.",
+        "Agent states Chrome DevTools MCP is unavailable as a proof blocker.",
+        "Agent falls back to local browser, Storybook, Playwright, screenshots, preview output, or static scanner evidence.",
+        "Agent reports the attempted proof path and fallback proof."
+      ]
+    },
+    {
+      "id": "folded-a11y-snapshot-focus",
+      "prompt": "/design check the modal accessibility on /billing with Chrome proof",
+      "expected_output": "An accessibility-facing design audit using snapshots, keyboard traversal, focus return, and visual focus evidence inside /design.",
+      "files": [],
+      "assertions": [
+        "Agent keeps the work inside /design instead of invoking a deleted chrome-devtools-a11y skill.",
+        "Agent treats the accessibility tree as primary evidence for roles, names, headings, and state.",
+        "Agent verifies keyboard traversal with repeated key movement and fresh snapshots.",
+        "Agent checks focus trap or focus return for the modal."
+      ]
+    },
+    {
+      "id": "folded-lcp-hero-proof",
+      "prompt": "/design audit the hero image because the landing page feels slow",
+      "expected_output": "A UI-facing LCP/hero proof workflow that identifies the actual visible hero or LCP candidate before recommending visual or loading fixes.",
+      "files": [],
+      "assertions": [
+        "Agent keeps UI-facing hero/LCP proof inside /design instead of handing off to a deleted LCP Chrome skill.",
+        "Agent identifies the actual LCP or hero candidate before recommending fixes.",
+        "Agent considers resource discovery, lazy loading, priority, render blocking, and main-thread delay.",
+        "Agent routes deep non-UI performance profiling outside /design."
+      ]
+    },
+    {
+      "id": "folded-memory-smell-proof",
+      "prompt": "/design review this image preview drawer for memory leaks after repeated open and close",
+      "expected_output": "A UI lifecycle smell workflow that repeats the interaction, watches for retained UI resources, and avoids reading raw heap snapshots.",
+      "files": [],
+      "assertions": [
+        "Agent keeps UI-facing lifecycle smell checks inside /design.",
+        "Agent repeats the relevant interaction to amplify possible leaks.",
+        "Agent checks detached DOM nodes, unremoved listeners, media/canvas cleanup, and animation loops.",
+        "Agent refuses to read raw heap snapshots into context and routes deep profiling to performance-profiler."
+      ]
+    },
+    {
+      "id": "negative-control-non-ui-chrome-debugging",
+      "prompt": "/design debug why Chrome DevTools MCP cannot connect to my Claude config",
+      "expected_output": "A redirect because MCP setup and harness configuration troubleshooting is not frontend interface design work.",
+      "files": [],
+      "assertions": [
+        "Agent detects MCP setup/config troubleshooting rather than UI design proof.",
+        "Agent does not mutate MCP config from /design.",
+        "Agent redirects to the appropriate harness or configuration workflow."
+      ]
+    },
+    {
+      "id": "negative-control-browser-automation-only",
+      "prompt": "/design use Chrome to scrape all links from this page",
+      "expected_output": "A refusal or redirect because generic browser automation and scraping are outside /design scope.",
+      "files": [],
+      "assertions": [
+        "Agent detects generic browser automation rather than user-facing interface design.",
+        "Agent does not route to Chrome proof merely because Chrome is mentioned.",
+        "Agent redirects or refuses the scraping task."
+      ]
+    },
+    {
+      "id": "implicit-trigger-dashboard-restraint",
+      "prompt": "/design build an admin dashboard for support ticket triage",
+      "expected_output": "A product interface workflow with restrained, dense, scannable dashboard defaults and rendered proof.",
+      "files": [],
+      "assertions": [
+        "Agent states a design thesis before implementation.",
+        "Agent classifies the surface as an operational product/dashboard.",
+        "Agent chooses restrained, dense, predictable defaults instead of marketing-style composition.",
+        "Agent includes loading, empty, error, long-content, and keyboard/focus states.",
+        "Agent requires rendered proof at desktop and mobile viewports when available."
+      ]
+    },
+    {
+      "id": "expressive-brand-surface",
+      "prompt": "/design build a launch hero for a new spatial audio instrument",
+      "expected_output": "A brand or marketing workflow with a distinct visual thesis, real media/assets, and accessibility constraints.",
+      "files": [],
+      "assertions": [
+        "Agent treats the request as brand/marketing or editorial rather than dashboard work.",
+        "Agent defines a visual thesis and signature design move.",
+        "Agent uses assets or product-specific media rather than generic abstract decoration.",
+        "Agent keeps text readable and verifies contrast.",
+        "Agent avoids generic purple-blue gradient/card-heavy AI defaults."
+      ]
+    },
+    {
+      "id": "component-library-first",
+      "prompt": "/design component settings dropdown in a shadcn project",
+      "expected_output": "A component workflow that checks components.json and existing shadcn/Radix primitives before custom UI.",
+      "files": [],
+      "assertions": [
+        "Agent detects or asks for project component-library context.",
+        "Agent checks components.json and existing components before inventing a new primitive.",
+        "Agent prefers shadcn/Radix for dropdown behavior.",
+        "Agent includes keyboard, focus, labels, and responsive behavior."
+      ]
+    },
+    {
+      "id": "ai-interface-trust-controls",
+      "prompt": "/design an AI research assistant result page with citations and follow-up controls",
+      "expected_output": "An AI interface design workflow with provenance, tuners, governors, status, and recovery affordances.",
+      "files": [],
+      "assertions": [
+        "Agent loads or applies AI UX patterns.",
+        "Agent includes source provenance and uncertainty handling.",
+        "Agent includes user controls for scope, follow-ups, and correction.",
+        "Agent avoids decorative trust theater not tied to real system behavior."
+      ]
+    },
+    {
+      "id": "motion-decision",
+      "prompt": "/design polish the command palette opening animation used hundreds of times per day",
+      "expected_output": "A motion audit that questions whether animation should exist and requires reduced-motion behavior.",
+      "files": [],
+      "assertions": [
+        "Agent considers frequency of use before adding motion.",
+        "Agent recommends feedback-only or very restrained motion for high-frequency controls.",
+        "Agent checks duration, origin, interruptibility, and reduced-motion behavior.",
+        "Agent rejects decorative infinite animation."
+      ]
+    },
+    {
+      "id": "rendered-proof-required",
+      "prompt": "/design refactor src/components/Hero.tsx",
+      "expected_output": "A refactor workflow that includes local scanning, a file-level plan, and rendered proof before completion.",
+      "files": [],
+      "assertions": [
+        "Agent treats the path as existing UI refactor work.",
+        "Agent inspects existing code and design-system conventions before editing.",
+        "Agent may use the read-only scanner as evidence.",
+        "Agent requires browser, Storybook, screenshot, or equivalent rendered proof when available.",
+        "Agent reports blockers if rendered proof cannot run."
+      ]
+    },
+    {
+      "id": "inspiration-no-copy",
+      "prompt": "/design make our pricing page look like Stripe's page",
+      "expected_output": "A visual inspiration workflow that extracts abstract traits without copying trade dress.",
+      "files": [],
+      "assertions": [
+        "Agent refuses to copy brand trade dress or distinctive proprietary layout.",
+        "Agent extracts abstract traits such as clarity, proof, hierarchy, and motion restraint.",
+        "Agent translates those traits into a project-specific design thesis.",
+        "Agent avoids copying logos, colors, screenshots, or signature component shapes."
+      ]
+    },
+    {
+      "id": "threejs-proof",
+      "prompt": "/design create a Three.js product configurator background",
+      "expected_output": "A conditional 3D interface workflow that uses current official docs and requires canvas proof.",
+      "files": [],
+      "assertions": [
+        "Agent routes to 3D Interface mode only because the prompt explicitly asks for Three.js.",
+        "Agent checks current official Three.js docs for API-sensitive details.",
+        "Agent includes resize, pixel-ratio, camera framing, loading, and reduced-motion considerations.",
+        "Agent requires screenshot or nonblank canvas proof across desktop and mobile."
+      ]
+    },
+    {
+      "id": "many-subagents-design-system-overhaul",
+      "prompt": "/design optimize this whole app redesign for many many subagents",
+      "expected_output": "A high-fanout design workflow with a merge captain, read-only exploration lanes, file locks, sequential shared-file edits, and final rendered proof.",
+      "files": [],
+      "assertions": [
+        "Agent routes to Parallel Design Team mode.",
+        "Agent establishes a merge captain before dispatching work.",
+        "Agent splits read-only discovery into many independent surface and concern lanes.",
+        "Agent prevents same-file parallel writes through explicit ownership or file locks.",
+        "Agent uses merge gates before generated docs, shared tokens, or central components are changed.",
+        "Agent requires final rendered proof across desktop, mobile, important states, and any canvas or motion surfaces."
+      ]
+    },
+    {
+      "id": "classification-gating-ambiguous-request",
+      "prompt": "/design clean up the project docs and maybe make the dashboard nicer",
+      "expected_output": "A gated response that separates docs-maintenance work from user-facing dashboard interface work before choosing a mode.",
+      "files": [],
+      "assertions": [
+        "Agent applies the Interface gate before loading broad design references.",
+        "Agent routes generic docs maintenance outside /design.",
+        "Agent keeps only the dashboard interface portion in /design scope.",
+        "Agent states the selected primary mode and any secondary modules."
+      ]
+    },
+    {
+      "id": "progressive-disclosure-small-task",
+      "prompt": "/design add a single npm version badge to README.md",
+      "expected_output": "A Badge Surface workflow that loads badge guidance without loading unrelated 3D, AI UX, or broad inspiration references.",
+      "files": [],
+      "assertions": [
+        "Agent routes the request to Badge Surface.",
+        "Agent uses badge-systems guidance and does not preload unrelated references.",
+        "Agent verifies marker placement, live endpoint suitability, link target, and placeholder removal.",
+        "Agent treats README prose rewriting as out of scope unless requested."
+      ]
+    },
+    {
+      "id": "state-management-proof-artifacts",
+      "prompt": "/design refactor the landing page and save screenshots if needed, but do not commit proof artifacts",
+      "expected_output": "A refactor/proof workflow that keeps browser artifacts, screenshots, traces, zips, and caches out of committed skill source.",
+      "files": [],
+      "assertions": [
+        "Agent names rendered proof needs before completion.",
+        "Agent avoids committing screenshots, HAR files, traces, heap snapshots, generated zips, and caches.",
+        "Agent cleans validation/package noise before finalizing.",
+        "Agent does not mutate MCP registry or browser launch configuration."
+      ]
+    },
+    {
+      "id": "review-style-audit-findings-first",
+      "prompt": "/design audit src/app/settings/page.tsx for clipping, focus, and badge/status truthfulness",
+      "expected_output": "A findings-first UI audit with severity, file/line evidence, proof status, and badge/status signal checks.",
+      "files": [],
+      "assertions": [
+        "Agent keeps the audit read-only.",
+        "Agent leads with findings before summary.",
+        "Agent includes concrete file/line references when source files are available.",
+        "Agent reports rendered proof status or the exact proof blocker.",
+        "Agent checks badge/status indicators for truthful data and source links."
+      ]
+    },
+    {
+      "id": "folded-badge-surface-dynamic-markers",
+      "prompt": "/design replace our stale README badges with live build, npm, license, and docs badges",
+      "expected_output": "A Badge Surface workflow folded into /design that previews changes, preserves BADGES markers, and uses truthful dynamic badge sources.",
+      "files": [],
+      "assertions": [
+        "Agent does not invoke or hand off to add-badges.",
+        "Agent inspects existing README badge style and markers before editing.",
+        "Agent prefers dynamic endpoints and meaningful links.",
+        "Agent skips private or unverifiable badges instead of fabricating status.",
+        "Agent preserves content outside the approved badge block."
+      ]
+    },
+    {
+      "id": "folded-shieldcn-badge-style",
+      "prompt": "/design use ShieldCN style badges for this public package README",
+      "expected_output": "A Badge Surface workflow that applies ShieldCN style as a provider option without installing or invoking the external shieldcn-badges skill.",
+      "files": [],
+      "assertions": [
+        "Agent keeps ShieldCN guidance inside /design.",
+        "Agent does not run live installs or hosted badge tooling.",
+        "Agent uses .svg badge URLs, accessible alt text, and meaningful links.",
+        "Agent checks dark/light readability and style consistency.",
+        "Agent removes or resolves placeholders before final output."
+      ]
+    },
+    {
+      "id": "folded-badge-validation-and-dead-services",
+      "prompt": "/design audit README badges for david-dm, godoc, broken shields, and stale placeholders",
+      "expected_output": "A Badge Surface audit folded into /design that detects dead badge services, placeholders, provider URLs, and bounded validation needs.",
+      "files": [],
+      "assertions": [
+        "Agent does not invoke or hand off to add-badges or shieldcn-badges.",
+        "Agent flags david-dm.org and godoc.org as stale badge services.",
+        "Agent checks badge URLs, alt text, marker boundaries, and unresolved placeholders.",
+        "Agent uses bounded validation and does not probe private or credentialed endpoints without approval.",
+        "Agent recommends maintained replacements such as pkg.go.dev or current dependency/security status when evidence supports them."
+      ]
+    },
+    {
+      "id": "negative-control-backend-api",
+      "prompt": "/design build a REST API for user authentication",
+      "expected_output": "A refusal or redirect because backend API work is outside design scope.",
+      "files": [],
+      "assertions": [
+        "Agent detects backend/API work.",
+        "Agent refuses or redirects to an appropriate backend/API skill.",
+        "Agent does not attempt to build the API."
+      ]
+    },
+    {
+      "id": "negative-control-non-ui-design-doc",
+      "prompt": "/design write a Mermaid architecture diagram for our event-driven backend",
+      "expected_output": "A refusal or redirect because architecture diagramming is outside this user-facing interface design skill.",
+      "files": [],
+      "assertions": [
+        "Agent detects this is architecture documentation rather than user-facing UI.",
+        "Agent redirects to a diagram or architecture skill.",
+        "Agent does not route to visual UI design."
+      ]
+    },
+    {
+      "id": "negative-control-web-quality-routing",
+      "prompt": "/design run a full Core Web Vitals and SEO audit",
+      "expected_output": "A redirect or scoped response because deep web-quality audits belong to dedicated performance/SEO/accessibility skills.",
+      "files": [],
+      "assertions": [
+        "Agent recognizes Core Web Vitals and SEO as broader web-quality work.",
+        "Agent keeps only UI-facing checks in scope.",
+        "Agent redirects deep audit work to performance, accessibility, SEO, or web-quality skills."
+      ]
+    }
+  ]
+}

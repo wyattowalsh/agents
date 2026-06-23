@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design component sidebar",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Component mode based on component keyword",
+    "Agent checks project framework and existing component-system conventions",
+    "Agent checks shadcn/Radix primitives before building interactive behavior from scratch",
+    "Agent gathers purpose, interactions, responsive behavior, and accessibility requirements",
+    "Agent requires rendered proof for a component demo or running surface when available"
+  ]
+}

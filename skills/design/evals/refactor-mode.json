@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design refactor src/components/",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Refactor mode based on refactor keyword with path",
+    "Agent inspects current UI code, tokens, components, and framework conventions before editing",
+    "Agent may run the local read-only scanner for static evidence",
+    "Agent presents a scoped file-level plan before changing code",
+    "Agent requires checks and rendered proof before declaring completion"
+  ]
+}

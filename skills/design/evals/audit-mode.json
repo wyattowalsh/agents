@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design audit",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Audit mode based on audit keyword",
+    "Agent keeps the pass read-only unless the user explicitly asks for edits",
+    "Agent reports findings with severity, file or path evidence, and proof status",
+    "Agent checks accessibility, motion, text resilience, component-system use, and rendered proof availability",
+    "Agent recommends scoped follow-up actions without live installs"
+  ]
+}

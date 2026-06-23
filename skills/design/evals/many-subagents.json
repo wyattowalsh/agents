@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design optimize this whole app redesign for many many subagents",
+  "files": [],
+  "expected_behavior": [
+    "Agent routes to Parallel Design Team mode",
+    "Agent creates a merge-captain role before dispatching subagents",
+    "Agent splits read-only discovery into many independent lanes by surface, component, design system, accessibility, responsive text, motion, AI UX, 3D or canvas, and rendered proof",
+    "Agent prevents same-file parallel writes with explicit file locks and sequential merge gates",
+    "Agent requires final rendered proof across desktop, mobile, and important UI states"
+  ]
+}

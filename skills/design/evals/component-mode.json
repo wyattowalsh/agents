@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design component data-table",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to Component mode",
+    "Agent treats the data table as utilitarian product UI, not expressive marketing UI",
+    "Agent prioritizes scan speed, keyboard behavior, sorting/filtering affordances, and tabular numbers",
+    "Agent avoids unnecessary aesthetic-guide loading by default",
+    "Agent preserves existing table/component primitives"
+  ]
+}

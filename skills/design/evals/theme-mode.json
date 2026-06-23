@@ -1,0 +1,12 @@
+{
+  "skills": ["design"],
+  "query": "/design tokens",
+  "files": [],
+  "expected_behavior": [
+    "Agent dispatches to System mode for token/theme work",
+    "Agent scans for existing design tokens, CSS variables, Tailwind v4 theme blocks, and raw values",
+    "Agent organizes tokens by primitive, semantic, and component scope",
+    "Agent preserves existing system decisions unless there is evidence of drift",
+    "Agent treats experimental CSS helpers as progressive enhancement with fallbacks"
+  ]
+}

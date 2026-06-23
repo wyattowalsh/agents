@@ -1,0 +1,11 @@
+{
+  "skills": ["design"],
+  "query": "/design build a REST API for user authentication",
+  "files": [],
+  "expected_behavior": [
+    "Agent detects backend API work",
+    "Agent refuses or redirects because this is outside design scope",
+    "Agent does not attempt to build an API",
+    "Agent offers an appropriate backend/API handoff"
+  ]
+}
