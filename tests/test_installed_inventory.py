@@ -72,14 +72,12 @@ npx skills add vercel-labs/agent-skills --skill curated-skill -y -g -a codex cla
             },
         ]
         if agent == "claude-code":
-            payload.append(
-                {
-                    "name": "curated-skill",
-                    "path": str(curated_skill_dir),
-                    "scope": "global",
-                    "agents": ["Codex", "Claude Code"],
-                }
-            )
+            payload.append({
+                "name": "curated-skill",
+                "path": str(curated_skill_dir),
+                "scope": "global",
+                "agents": ["Codex", "Claude Code"],
+            })
         payload.append(
             {
                 "name": "lock-skill",
@@ -249,16 +247,16 @@ def test_skills_cli_agent_id_maps_grok_to_claude_code():
 def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label(tmp_path):
     root = tmp_path / "repo"
     home = tmp_path / "home"
-    skill_dir = home / ".agents" / "skills" / "ui-ux-pro-max"
+    skill_dir = home / ".agents" / "skills" / "demo-installed-skill"
     skill_dir.mkdir(parents=True)
-    (skill_dir / "SKILL.md").write_text("---\nname: ui-ux-pro-max\ndescription: UI UX\n---\n")
+    (skill_dir / "SKILL.md").write_text("---\nname: demo-installed-skill\ndescription: Demo\n---\n")
 
     curated_entries = parse_external_skill_entries(
         """
         ## Install Now After Trust Gate
 
         ```bash
-        npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a opencode
+        npx skills add example/installed-skills --skill demo-installed-skill -y -g -a opencode
         ```
         """
     )
@@ -268,7 +266,7 @@ def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label
             cmd,
             [
                 {
-                    "name": "ui-ux-pro-max",
+                    "name": "demo-installed-skill",
                     "path": str(skill_dir),
                     "scope": "global",
                     "agents": ["Claude Code"],
@@ -285,7 +283,8 @@ def test_collect_installed_inventory_counts_queried_harness_with_stale_cli_label
     )
 
     by_name = {row.name: row for row in snapshot.rows}
-    assert by_name["ui-ux-pro-max"].installed_agents == ("claude-code", "opencode")
+    assert by_name["demo-installed-skill"].installed_agents == ("claude-code", "opencode")
+
 
 def test_query_grok_harness_includes_repo_project_skills(tmp_path):
     repo = tmp_path / "repo"
@@ -303,4 +302,3 @@ def test_query_grok_harness_includes_repo_project_skills(tmp_path):
     by_name = {entry.name: entry for entry in result.entries}
     assert by_name["shared-skill"].scope == "project"
     assert by_name["shared-skill"].path == str(project_skill)
-

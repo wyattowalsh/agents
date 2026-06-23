@@ -28,7 +28,7 @@ def test_desired_install_now_entries_excludes_inspect_tier(tmp_path):
 ## Install Now After Trust Gate
 
 ```bash
-npx skills add addyosmani/web-quality-skills --skill accessibility -y -g -a codex
+npx skills add addyosmani/web-quality-skills --skill performance -y -g -a codex
 ```
 
 ## Inspect Then Install
@@ -41,7 +41,7 @@ npx skills add openai/skills --skill security-best-practices -y -g -a codex
     )
     desired = desired_install_now_entries(config)
     names = {entry.name for entry in desired}
-    assert "accessibility" in names
+    assert "performance" in names
     assert "security-best-practices" not in names
 
 

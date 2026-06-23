@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from wagents.authoring_sync import (
     GENERATED_MARKER,
@@ -10,6 +10,9 @@ from wagents.authoring_sync import (
 )
 from wagents.parsing import parse_frontmatter
 from wagents.skill_index import load_authoring_entries
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def _write_skill(tmp_repo: Path, name: str, description: str, body: str = "Body.") -> Path:
@@ -74,6 +77,29 @@ def test_sync_dry_run_does_not_write(tmp_repo: Path, tmp_path: Path):
     targets = sync_custom_authoring_from_skills(authoring_dir=auth_dir, dry_run=True)
     assert len(targets) == 1
     assert not targets[0].exists()
+
+
+def test_sync_prunes_stale_generated_custom_authoring(tmp_repo: Path, tmp_path: Path):
+    _write_skill(tmp_repo, "live", "Live desc.")
+    auth_dir = tmp_path / "auth-prune"
+    auth_dir.mkdir()
+    stale = auth_dir / "stale.mdx"
+    stale.write_text(
+        f"---\nname: stale\ndescription: stale\nsource_kind: custom\n---\n\n{GENERATED_MARKER.format(name='stale')}\n",
+        encoding="utf-8",
+    )
+    curated = auth_dir / "curated.mdx"
+    curated.write_text(
+        "---\nname: curated\nsource_kind: curated-external\n---\n\nCurated external entry.\n",
+        encoding="utf-8",
+    )
+
+    written = sync_custom_authoring_from_skills(authoring_dir=auth_dir)
+
+    assert stale in written
+    assert not stale.exists()
+    assert curated.exists()
+    assert (auth_dir / "live.mdx").exists()
 
 
 def test_load_synced_authoring_entries_roundtrips_custom(tmp_repo: Path, tmp_path: Path, monkeypatch):

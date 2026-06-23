@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import jsonschema
 import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -45,6 +46,13 @@ def test_validate_repo_success_text(mini_repo: Path) -> None:
     assert "All validations passed" in result.stdout
 
 
+def test_cursor_agents_config_matches_schema() -> None:
+    schema = json.loads((REPO_ROOT / "config" / "schemas" / "cursor-agents.schema.json").read_text(encoding="utf-8"))
+    data = json.loads((REPO_ROOT / "config" / "cursor-agents.json").read_text(encoding="utf-8"))
+
+    jsonschema.Draft202012Validator(schema).validate(data)
+
+
 def test_validate_repo_success_json(mini_repo: Path) -> None:
     result = _run_validate_repo("--format", "json", cwd=mini_repo)
     assert result.returncode == 0, result.stderr
@@ -56,9 +64,7 @@ def test_validate_repo_success_json(mini_repo: Path) -> None:
 def test_validate_repo_bad_skill_jsonl(mini_repo: Path) -> None:
     bad_skill = mini_repo / "skills" / "bad-skill"
     bad_skill.mkdir()
-    (bad_skill / "SKILL.md").write_text(
-        "---\ndescription: Missing the name field\n---\n\n# Bad Skill\n\nBody.\n"
-    )
+    (bad_skill / "SKILL.md").write_text("---\ndescription: Missing the name field\n---\n\n# Bad Skill\n\nBody.\n")
     result = _run_validate_repo("--format", "jsonl", cwd=mini_repo)
     assert result.returncode == 1
     records = [json.loads(line) for line in result.stdout.strip().splitlines()]
@@ -104,6 +110,7 @@ def test_validate_mcp_skips_local_dirs(mini_repo: Path) -> None:
         check=False,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
 
 def test_validate_mcp_respects_cwd(mini_repo: Path) -> None:
     bad_mcp = mini_repo / "mcp" / "Bad_Name"
@@ -220,16 +227,14 @@ def test_quarantine_slug_in_external_skills(mini_repo: Path) -> None:
     qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
     qreg.parent.mkdir(parents=True, exist_ok=True)
     qreg.write_text(
-        json.dumps(
-            {
-                "external_repo_records": [
-                    {
-                        "repo": "snailsploit/claude-red",
-                        "default_action": "quarantine",
-                    }
-                ]
-            }
-        ),
+        json.dumps({
+            "external_repo_records": [
+                {
+                    "repo": "snailsploit/claude-red",
+                    "default_action": "quarantine",
+                }
+            ]
+        }),
         encoding="utf-8",
     )
     ext = mini_repo / "config" / "external-skills.md"

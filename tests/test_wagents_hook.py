@@ -7,7 +7,8 @@ from pathlib import Path
 
 HOOK_PATH = Path(__file__).parent.parent / "hooks" / "wagents-hook.py"
 SPEC = importlib.util.spec_from_file_location("wagents_hook", HOOK_PATH)
-assert SPEC and SPEC.loader
+assert SPEC
+assert SPEC.loader
 wagents_hook = importlib.util.module_from_spec(SPEC)
 sys.modules["wagents_hook"] = wagents_hook
 SPEC.loader.exec_module(wagents_hook)
@@ -168,12 +169,14 @@ def test_claude_readonly_guard_blocks_with_exit_2(monkeypatch, tmp_path):
     assert "read-only" in stderr
 
 
-def test_research_skill_frontmatter_uses_claude_harness():
+def test_research_skill_hooks_are_registry_projected():
     skill = (Path(__file__).parent.parent / "skills" / "research" / "SKILL.md").read_text(encoding="utf-8")
 
     frontmatter = skill.split("---", 2)[1]
-    assert "--harness claude-code" in frontmatter
-    assert "--harness auto" not in frontmatter
+    assert "hooks:" not in frontmatter
+    registry = (Path(__file__).parent.parent / "config" / "hook-registry.json").read_text(encoding="utf-8")
+    assert "research-readonly-write-guard" in registry
+    assert "research-stop-verifier" in registry
 
 
 def test_codex_dangerous_shell_guard_denies_recursive_remove(monkeypatch, tmp_path):
@@ -210,6 +213,44 @@ def test_codex_destructive_shell_guard_denies_critical_remove(monkeypatch, tmp_p
     assert payload["hookSpecificOutput"]["hookEventName"] == "PreToolUse"
     assert payload["hookSpecificOutput"]["permissionDecision"] == "deny"
     assert "critical path" in payload["hookSpecificOutput"]["permissionDecisionReason"]
+
+
+def test_cursor_destructive_shell_guard_uses_native_permission_shape(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {"hook_event_name": "preToolUse", "tool_name": "Bash", "tool_input": {"command": "git reset --hard"}},
+        ["cursor-destructive-shell-guard", "--harness", "cursor"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert payload == {
+        "permission": "deny",
+        "user_message": "git reset --hard is blocked because it destroys uncommitted work.",
+        "agent_message": "git reset --hard is blocked because it destroys uncommitted work.",
+    }
+
+
+def test_cursor_stop_truth_gate_returns_followup_message(monkeypatch, tmp_path):
+    monkeypatch.setattr(wagents_hook.Path, "home", lambda: tmp_path)
+
+    code, stdout, stderr = run_hook(
+        monkeypatch,
+        {
+            "session_id": "s1",
+            "hook_event_name": "stop",
+            "last_assistant_message": "Implemented the Cursor adapter changes in wagents/platforms/cursor.py.",
+        },
+        ["cursor-stop-truth-gate", "--harness", "cursor"],
+    )
+
+    payload = json.loads(stdout)
+    assert code == 0
+    assert stderr == ""
+    assert "validation evidence" in payload["followup_message"]
 
 
 def test_codex_protected_file_guard_blocks_apply_patch_secret(monkeypatch, tmp_path):

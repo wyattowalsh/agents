@@ -6,8 +6,6 @@ import importlib.util
 import sys
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS = ROOT / "skills" / "harness-master" / "scripts" / "discovery"
 
@@ -17,7 +15,8 @@ def _load():
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / "schemas.py"
     spec = importlib.util.spec_from_file_location("schemas", path)
-    assert spec and spec.loader
+    assert spec
+    assert spec.loader
     mod = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)

@@ -37,10 +37,10 @@ from scripts.sync_agent_stack import (
     sync_repo_targets,
 )
 from wagents.platforms import base as platform_base
-from wagents.platforms.grok import render_grok_mcp_block
 from wagents.platforms import cursor as cursor_platform
 from wagents.platforms import opencode as opencode_platform
 from wagents.platforms import vscode as vscode_platform
+from wagents.platforms.grok import render_grok_mcp_block
 
 
 def assert_opencode_model_matrix(payload: dict) -> None:
@@ -362,7 +362,7 @@ def test_merge_server_maps_strips_stale_mcphub_namespace_entries():
     platform_merged = platform_base.merge_server_maps(rendered, existing, known)
 
     for payload in (merged, platform_merged):
-        assert list(name for name in payload if name.startswith("mcphub")) == ["mcphub_group_harness-safe"]
+        assert [name for name in payload if name.startswith("mcphub")] == ["mcphub_group_harness-safe"]
         assert payload["custom-local"] == {"type": "local"}
 
 
@@ -456,15 +456,13 @@ def test_chrome_devtools_renderers_use_attached_browser_launcher():
         }
     }
 
-    rendered_text = json.dumps(
-        {
-            "repo": render_repo_mcp(registry),
-            "copilot": render_copilot_mcp(registry, {}),
-            "gemini": render_gemini_mcp(registry, {}),
-            "opencode": render_opencode_mcp(registry, {}),
-            "codex": render_codex_mcp_block(registry),
-        }
-    )
+    rendered_text = json.dumps({
+        "repo": render_repo_mcp(registry),
+        "copilot": render_copilot_mcp(registry, {}),
+        "gemini": render_gemini_mcp(registry, {}),
+        "opencode": render_opencode_mcp(registry, {}),
+        "codex": render_codex_mcp_block(registry),
+    })
 
     assert "/Users/ww/dev/projects/agents/scripts/mcphub/chrome-devtools-browser-url.sh" in rendered_text
     assert "--browserUrl" not in rendered_text
@@ -505,9 +503,13 @@ def test_docling_renderers_use_upstream_stdio_launch_shape():
     assert gemini["args"] == expected_args
     assert opencode["command"] == ["uvx", *expected_args]
     assert 'args = ["--from", "docling-mcp", "docling-mcp-server", "--transport", "stdio"]' in codex
-    assert "docling-mcp==" not in json.dumps(
-        {"repo": repo, "copilot": copilot, "gemini": gemini, "opencode": opencode, "codex": codex}
-    )
+    assert "docling-mcp==" not in json.dumps({
+        "repo": repo,
+        "copilot": copilot,
+        "gemini": gemini,
+        "opencode": opencode,
+        "codex": codex,
+    })
 
 
 def test_standard_hook_renderers_use_harness_specific_events():
@@ -623,14 +625,12 @@ def test_codex_hook_renderer_emits_only_official_command_fields():
 def test_merge_codex_hooks_preserves_local_and_replaces_generated(tmp_path, monkeypatch):
     hooks_path = tmp_path / "hooks.json"
     hooks_path.write_text(
-        json.dumps(
-            {
-                "hooks": {
-                    "UserPromptSubmit": [{"hooks": [{"command": "echo local"}]}],
-                    "PreToolUse": [{"hooks": [{"command": "python3 /old/hooks/wagents-hook.py old"}]}],
-                }
+        json.dumps({
+            "hooks": {
+                "UserPromptSubmit": [{"hooks": [{"command": "echo local"}]}],
+                "PreToolUse": [{"hooks": [{"command": "python3 /old/hooks/wagents-hook.py old"}]}],
             }
-        )
+        })
     )
     hook_registry = {
         "version": 1,
@@ -988,13 +988,11 @@ def test_merge_opencode_config_adds_managed_instructions_and_skills_path(tmp_pat
     (repo_root / "skills").mkdir()
 
     config_path.write_text(
-        json.dumps(
-            {
-                "instructions": ["~/.config/opencode/rules/shared.md"],
-                "skills": {"paths": ["~/.config/opencode/skills"]},
-                "mcp": {"custom": {"type": "local", "enabled": True}},
-            }
-        )
+        json.dumps({
+            "instructions": ["~/.config/opencode/rules/shared.md"],
+            "skills": {"paths": ["~/.config/opencode/skills"]},
+            "mcp": {"custom": {"type": "local", "enabled": True}},
+        })
     )
 
     monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
@@ -1046,16 +1044,14 @@ def test_merge_opencode_config_dedupes_equivalent_paths(tmp_path, monkeypatch):
     (repo_root / "skills").mkdir()
 
     config_path.write_text(
-        json.dumps(
-            {
-                "instructions": [
-                    str((repo_root / "instructions" / "global.md").resolve()),
-                    str((repo_root / "instructions" / "opencode-global.md").resolve()),
-                    str((repo_root / "instructions" / "opencode-agents-overlay.md").resolve()),
-                ],
-                "skills": {"paths": [str((repo_root / "skills").resolve())]},
-            }
-        )
+        json.dumps({
+            "instructions": [
+                str((repo_root / "instructions" / "global.md").resolve()),
+                str((repo_root / "instructions" / "opencode-global.md").resolve()),
+                str((repo_root / "instructions" / "opencode-agents-overlay.md").resolve()),
+            ],
+            "skills": {"paths": [str((repo_root / "skills").resolve())]},
+        })
     )
 
     monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
@@ -1084,17 +1080,15 @@ def test_merge_opencode_config_adds_lmstudio_provider_and_preserves_custom_model
     (repo_root / "skills").mkdir()
 
     config_path.write_text(
-        json.dumps(
-            {
-                "provider": {
-                    "lmstudio": {
-                        "models": {"custom-model": {"name": "Custom Local Model"}},
-                        "options": {"headers": {"X-Local": "1"}},
-                    }
-                },
-                "mcp": {},
-            }
-        )
+        json.dumps({
+            "provider": {
+                "lmstudio": {
+                    "models": {"custom-model": {"name": "Custom Local Model"}},
+                    "options": {"headers": {"X-Local": "1"}},
+                }
+            },
+            "mcp": {},
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1148,20 +1142,18 @@ def test_merge_opencode_config_enforces_requested_model_matrix(tmp_path, monkeyp
     (repo_root / "skills").mkdir()
 
     config_path.write_text(
-        json.dumps(
-            {
-                "model": "user/model",
-                "small_model": "user/small-model",
-                "mode": {
-                    "build": {"model": "user/build-model"},
-                    "plan": {"model": "user/plan-model"},
-                },
-                "agent": {
-                    "build": {"model": "user/agent-build-model", "description": "keep build description"},
-                    "plan": {"model": "user/agent-plan-model", "description": "keep plan description"},
-                },
-            }
-        )
+        json.dumps({
+            "model": "user/model",
+            "small_model": "user/small-model",
+            "mode": {
+                "build": {"model": "user/build-model"},
+                "plan": {"model": "user/plan-model"},
+            },
+            "agent": {
+                "build": {"model": "user/agent-build-model", "description": "keep build description"},
+                "plan": {"model": "user/agent-plan-model", "description": "keep plan description"},
+            },
+        })
     )
 
     monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
@@ -1226,14 +1218,12 @@ def test_merge_opencode_config_preserves_custom_agent_models(tmp_path, monkeypat
     (repo_root / "skills").mkdir()
 
     config_path.write_text(
-        json.dumps(
-            {
-                "agent": {
-                    "custom-agent-1": {"model": "user/custom-model"},
-                    "custom-agent-2": {"model": "user/another-model", "other": "value"},
-                },
-            }
-        )
+        json.dumps({
+            "agent": {
+                "custom-agent-1": {"model": "user/custom-model"},
+                "custom-agent-2": {"model": "user/another-model", "other": "value"},
+            },
+        })
     )
 
     monkeypatch.setattr(sync_agent_stack, "HOME", home_dir)
@@ -1266,18 +1256,16 @@ def test_merge_opencode_config_creates_model_neutral_dcp_config(tmp_path, monkey
 
     dcp_path.parent.mkdir(parents=True)
     template_path.write_text(
-        json.dumps(
-            {
-                "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
-                "enabled": True,
-                "debug": False,
-                "compress": {
-                    "mode": "range",
-                    "maxContextLimit": "85%",
-                    "minContextLimit": "55%",
-                },
-            }
-        )
+        json.dumps({
+            "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+            "enabled": True,
+            "debug": False,
+            "compress": {
+                "mode": "range",
+                "maxContextLimit": "85%",
+                "minContextLimit": "55%",
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1310,31 +1298,27 @@ def test_merge_opencode_config_preserves_safe_dcp_overrides(tmp_path, monkeypatc
 
     dcp_path.parent.mkdir(parents=True)
     template_path.write_text(
-        json.dumps(
-            {
-                "$schema": "schema",
-                "enabled": True,
-                "compress": {
-                    "mode": "range",
-                    "showCompression": False,
-                    "maxContextLimit": "85%",
-                },
-            }
-        )
+        json.dumps({
+            "$schema": "schema",
+            "enabled": True,
+            "compress": {
+                "mode": "range",
+                "showCompression": False,
+                "maxContextLimit": "85%",
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
     dcp_path.write_text(
-        json.dumps(
-            {
-                "$schema": "schema",
-                "enabled": False,
-                "customKey": "preserve",
-                "compress": {
-                    "showCompression": True,
-                },
-            }
-        )
+        json.dumps({
+            "$schema": "schema",
+            "enabled": False,
+            "customKey": "preserve",
+            "compress": {
+                "showCompression": True,
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1364,14 +1348,12 @@ def test_merge_opencode_config_errors_before_dropping_dcp_entries(tmp_path, monk
     dcp_path.parent.mkdir(parents=True)
     template_path.write_text(json.dumps({"compress": {"mode": "range"}}) + "\n", encoding="utf-8")
     dcp_path.write_text(
-        json.dumps(
-            {
-                "small_model": "local/model",
-                "compress": {
-                    "modelMaxLimits": {"openai/gpt-5.5": 200000},
-                },
-            }
-        )
+        json.dumps({
+            "small_model": "local/model",
+            "compress": {
+                "modelMaxLimits": {"openai/gpt-5.5": 200000},
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1558,7 +1540,7 @@ def test_sync_repo_targets_delegates_vscode_and_opencode_adapters(tmp_path, monk
 
     assert json.loads(registry_path.read_text(encoding="utf-8")) == registry
     assert json.loads(hook_path.read_text(encoding="utf-8")) == hook_registry
-    assert called == ["vscode", "opencode", "grok"]
+    assert called == ["vscode", "cursor", "opencode", "grok"]
 
 
 def test_vscode_adapter_render_mcp_preserves_env_placeholders(monkeypatch):
@@ -1629,19 +1611,161 @@ def test_vscode_adapter_render_mcphub_mcp_preserves_env_placeholders(monkeypatch
     assert rendered["mcpServers"]["mcphub_group_safe"]["env"] == {"MCPHUB_BEARER_TOKEN": "${MCPHUB_BEARER_TOKEN}"}
 
 
+def test_cursor_adapter_render_mcphub_mcp_uses_native_placeholders(monkeypatch):
+    monkeypatch.setenv("MCPHUB_BEARER_TOKEN", "real-secret")
+    adapter = cursor_platform.Adapter()
+    registry = {
+        "servers": {
+            "example": {
+                "command": "uvx",
+                "args": ["example-mcp"],
+                "enabled": True,
+            }
+        },
+        "mcphub": {
+            "enabled": True,
+            "base_url": "http://127.0.0.1:46683",
+            "bearer_token_env_var": "MCPHUB_BEARER_TOKEN",
+            "clients": {
+                "default": {
+                    "included_endpoint_kinds": ["group", "server"],
+                    "included_groups": ["harness-safe"],
+                    "enabled_endpoint_kinds": ["group"],
+                    "enabled_groups": ["harness-safe"],
+                }
+            },
+            "groups": {
+                "harness-safe": {
+                    "enabled": True,
+                    "servers": ["example"],
+                }
+            },
+        },
+    }
+
+    rendered = adapter.render_mcp(registry, {}, harness="cursor")
+    payload = json.dumps(rendered)
+
+    assert "real-secret" not in payload
+    assert rendered == {
+        "mcpServers": {
+            "mcphub_group_harness-safe": {
+                "type": "http",
+                "url": "http://127.0.0.1:46683/mcp/harness-safe",
+                "headers": {"Authorization": "Bearer ${env:MCPHUB_BEARER_TOKEN}"},
+            }
+        }
+    }
+
+
+def test_cursor_adapter_render_stdio_mcp_uses_workspace_and_env_interpolation():
+    adapter = cursor_platform.Adapter()
+    registry = {
+        "servers": {
+            "example": {
+                "transport": "stdio",
+                "command": "${REPO_ROOT}/scripts/example-mcp.sh",
+                "args": ["--repo", "${REPO_ROOT}", "--token", "${EXAMPLE_TOKEN}"],
+                "enabled": True,
+                "env": {"TOKEN": {"env_var": "EXAMPLE_TOKEN"}},
+                "startup_timeout_sec": 90,
+                "timeout_ms": 5000,
+                "tools": ["*"],
+                "tool_approvals": {},
+                "platform_overrides": {},
+            }
+        }
+    }
+
+    rendered = adapter.render_mcp(registry, {}, harness="cursor")
+
+    assert rendered["mcpServers"]["example"] == {
+        "type": "stdio",
+        "command": "${workspaceFolder}/scripts/example-mcp.sh",
+        "args": ["--repo", "${workspaceFolder}", "--token", "${env:EXAMPLE_TOKEN}"],
+        "env": {"TOKEN": "${env:EXAMPLE_TOKEN}"},
+        "timeout": 5000,
+    }
+
+
+def test_cursor_adapter_permissions_and_cli_do_not_override_ui_allowlists():
+    adapter = cursor_platform.Adapter()
+
+    permissions = adapter.render_permissions({})
+    cli_config = adapter.render_cli_config({})
+
+    assert "mcpAllowlist" not in permissions
+    assert "terminalAllowlist" not in permissions
+    assert set(permissions) == {"autoRun"}
+    assert set(cli_config) == {"permissions"}
+    assert "deny" in cli_config["permissions"]
+    assert "allow" in cli_config["permissions"]
+
+
+def test_cursor_adapter_render_hooks_uses_native_event_names():
+    adapter = cursor_platform.Adapter()
+    hook_registry = {
+        "hooks": [
+            {
+                "id": "cursor-destructive-shell-guard",
+                "logical_event": "PreToolUse",
+                "matcher": "Bash",
+                "mode": "enforce",
+                "command": (
+                    "python3 {repo_root}/hooks/wagents-hook.py cursor-destructive-shell-guard --harness {harness}"
+                ),
+                "timeout": 5,
+                "harnesses": ["cursor"],
+            }
+        ]
+    }
+
+    rendered = adapter.render_hooks(hook_registry)
+
+    assert rendered == {
+        "version": 1,
+        "hooks": {
+            "preToolUse": [
+                {
+                    "matcher": "Bash",
+                    "hooks": [
+                        {
+                            "type": "command",
+                            "command": (
+                                "python3 ${workspaceFolder}/hooks/wagents-hook.py "
+                                "cursor-destructive-shell-guard --harness cursor"
+                            ),
+                            "timeout": 5,
+                            "failClosed": True,
+                        }
+                    ],
+                }
+            ]
+        },
+    }
+
+
+def test_cursor_agent_overlay_matches_portable_agents():
+    overlays = {
+        entry["name"]
+        for entry in json.loads((sync_agent_stack.REPO_ROOT / "config" / "cursor-agents.json").read_text())["agents"]
+    }
+    agents = {path.stem for path in (sync_agent_stack.REPO_ROOT / "agents").glob("*.md") if path.name != "README.md"}
+
+    assert overlays == agents
+
+
 def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_path, monkeypatch):
     config_path = tmp_path / "mcp.json"
     config_path.write_text(
-        json.dumps(
-            {
-                "mcpServers": {"custom": {"command": "custom-mcp"}},
-                "other": True,
-            }
-        )
+        json.dumps({
+            "mcpServers": {"custom": {"command": "custom-mcp"}},
+            "other": True,
+        })
         + "\n",
         encoding="utf-8",
     )
-    monkeypatch.setattr(cursor_platform, "CURSOR_MCP_PATH", config_path)
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_MCP_PATH", config_path)
 
     adapter = cursor_platform.Adapter()
     ctx = cursor_platform.SyncContext(apply=True)
@@ -1664,6 +1788,7 @@ def test_cursor_adapter_sync_home_preserves_existing_unknown_mcp_servers(tmp_pat
             "command": "custom-mcp",
         },
         "managed": {
+            "type": "stdio",
             "command": "uvx",
             "args": ["managed-mcp"],
         },
@@ -1681,20 +1806,18 @@ def test_opencode_adapter_sync_home_adds_lmstudio_provider_and_preserves_custom_
     (repo_root / "skills").mkdir()
 
     config_path.write_text(
-        json.dumps(
-            {
-                "provider": {
-                    "lmstudio": {
-                        "models": {"custom-model": {"name": "Custom Local Model"}},
-                        "options": {"headers": {"X-Local": "1"}},
-                    },
+        json.dumps({
+            "provider": {
+                "lmstudio": {
+                    "models": {"custom-model": {"name": "Custom Local Model"}},
+                    "options": {"headers": {"X-Local": "1"}},
                 },
-                "agent": {
-                    "plan": {"model": "openai/gpt-5.5", "variant": "xhigh"},
-                },
-                "mcp": {},
-            }
-        )
+            },
+            "agent": {
+                "plan": {"model": "openai/gpt-5.5", "variant": "xhigh"},
+            },
+            "mcp": {},
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1752,29 +1875,25 @@ def test_opencode_adapter_sync_home_manages_dcp_config_without_model_limits(tmp_
     template_path.parent.mkdir(parents=True)
     config_path.write_text("{}\n", encoding="utf-8")
     template_path.write_text(
-        json.dumps(
-            {
-                "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
-                "enabled": True,
-                "compress": {
-                    "mode": "range",
-                    "maxContextLimit": "85%",
-                    "minContextLimit": "55%",
-                },
-            }
-        )
+        json.dumps({
+            "$schema": "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json",
+            "enabled": True,
+            "compress": {
+                "mode": "range",
+                "maxContextLimit": "85%",
+                "minContextLimit": "55%",
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
     dcp_path.write_text(
-        json.dumps(
-            {
-                "customKey": "preserve",
-                "compress": {
-                    "showCompression": True,
-                },
-            }
-        )
+        json.dumps({
+            "customKey": "preserve",
+            "compress": {
+                "showCompression": True,
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1841,50 +1960,44 @@ def test_opencode_adapter_sync_home_merges_repo_runtime_plugins(tmp_path, monkey
         encoding="utf-8",
     )
     octto_template_path.write_text(
-        json.dumps(
-            {
-                "port": 3765,
-                "agents": {
-                    "octto": {"variant": "xhigh"},
-                    "bootstrapper": {"model": "openai/gpt-5.5", "variant": "xhigh"},
-                    "probe": {"model": "openai/gpt-5.5", "variant": "xhigh"},
-                },
-            }
-        )
+        json.dumps({
+            "port": 3765,
+            "agents": {
+                "octto": {"variant": "xhigh"},
+                "bootstrapper": {"model": "openai/gpt-5.5", "variant": "xhigh"},
+                "probe": {"model": "openai/gpt-5.5", "variant": "xhigh"},
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
     repo_config_path.write_text(
-        json.dumps(
-            {
-                "plugin": [
-                    "@tarquinen/opencode-dcp@latest",
-                    [
-                        "@plannotator/opencode@latest",
-                        {"workflow": "plan-agent", "planningAgents": ["plan"]},
-                    ],
-                ]
-            }
-        )
+        json.dumps({
+            "plugin": [
+                "@tarquinen/opencode-dcp@latest",
+                [
+                    "@plannotator/opencode@latest",
+                    {"workflow": "plan-agent", "planningAgents": ["plan"]},
+                ],
+            ]
+        })
         + "\n",
         encoding="utf-8",
     )
     config_path.write_text(
-        json.dumps(
-            {
-                "plugin": [
-                    "user-plugin@latest",
-                    "custom-runtime-plugin@latest",
-                ],
-                "mcp": {
-                    "custom-local": {
-                        "type": "local",
-                        "command": ["custom-mcp"],
-                        "enabled": True,
-                    },
+        json.dumps({
+            "plugin": [
+                "user-plugin@latest",
+                "custom-runtime-plugin@latest",
+            ],
+            "mcp": {
+                "custom-local": {
+                    "type": "local",
+                    "command": ["custom-mcp"],
+                    "enabled": True,
                 },
-            }
-        )
+            },
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1949,14 +2062,12 @@ def test_opencode_adapter_sync_tui_preserves_existing_managed_plugin_options(tmp
     tui_config_path.parent.mkdir(parents=True)
     template_path.parent.mkdir(parents=True)
     tui_config_path.write_text(
-        json.dumps(
-            {
-                "keybinds": {"command_list": "ctrl+p"},
-                "plugin": [
-                    ["@slkiser/opencode-quota@latest", {"custom": True}],
-                ],
-            }
-        )
+        json.dumps({
+            "keybinds": {"command_list": "ctrl+p"},
+            "plugin": [
+                ["@slkiser/opencode-quota@latest", {"custom": True}],
+            ],
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -1987,12 +2098,10 @@ def test_opencode_adapter_sync_home_errors_before_dropping_runtime_entries(tmp_p
     (repo_root / "skills").mkdir()
     repo_config_path.write_text(json.dumps({"plugin": ["managed@latest"]}) + "\n", encoding="utf-8")
     config_path.write_text(
-        json.dumps(
-            {
-                "plugin": ["opencode-auto-resume@latest"],
-                "mcp": {"mcphub_group_all": {"type": "remote", "url": "http://127.0.0.1:46683/mcp/group/all"}},
-            }
-        )
+        json.dumps({
+            "plugin": ["opencode-auto-resume@latest"],
+            "mcp": {"mcphub_group_all": {"type": "remote", "url": "http://127.0.0.1:46683/mcp/group/all"}},
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -2019,27 +2128,25 @@ def test_legacy_opencode_tui_merge_preserves_existing_managed_plugin_options(tmp
     tui_config_path.parent.mkdir(parents=True)
     template_path.parent.mkdir(parents=True)
     tui_config_path.write_text(
-        json.dumps(
-            {
-                "keymap": {
-                    "leader": "ctrl+x",
-                    "sections": {
-                        "global": {
-                            "command.palette.show": "ctrl+p",
-                            "model.list": "<leader>m",
-                        },
+        json.dumps({
+            "keymap": {
+                "leader": "ctrl+x",
+                "sections": {
+                    "global": {
+                        "command.palette.show": "ctrl+p",
+                        "model.list": "<leader>m",
                     },
                 },
-                "keybinds": {
-                    "command_list": "ctrl+shift+p",
-                },
-                "plugin": [
-                    ["@slkiser/opencode-quota@latest", {"custom": True}],
-                    "opencode-subagent-statusline@latest",
-                    "@thiagos1lva/opencode-token-usage-chart@latest",
-                ],
-            }
-        )
+            },
+            "keybinds": {
+                "command_list": "ctrl+shift+p",
+            },
+            "plugin": [
+                ["@slkiser/opencode-quota@latest", {"custom": True}],
+                "opencode-subagent-statusline@latest",
+                "@thiagos1lva/opencode-token-usage-chart@latest",
+            ],
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -2072,20 +2179,18 @@ def test_merge_codex_config_removes_legacy_duckduckgo_alias_but_keeps_other_extr
     config_path = tmp_path / "config.toml"
     config_copy_path = tmp_path / "codex-config.toml"
     config_path.write_text(
-        "\n".join(
-            [
-                'model = "gpt-5.4"',
-                "",
-                "[mcp_servers.duckduckgo-search]",
-                'command = "uvx"',
-                'args = ["duckduckgo-mcp-server"]',
-                "",
-                "[mcp_servers.custom-extra]",
-                'command = "uvx"',
-                'args = ["custom-mcp"]',
-                "",
-            ]
-        ),
+        "\n".join([
+            'model = "gpt-5.4"',
+            "",
+            "[mcp_servers.duckduckgo-search]",
+            'command = "uvx"',
+            'args = ["duckduckgo-mcp-server"]',
+            "",
+            "[mcp_servers.custom-extra]",
+            'command = "uvx"',
+            'args = ["custom-mcp"]',
+            "",
+        ]),
         encoding="utf-8",
     )
 
@@ -2221,14 +2326,12 @@ enabled = true
 def test_merge_copilot_config_preserves_camel_case_settings_keys(tmp_path, monkeypatch):
     config_path = tmp_path / "config.json"
     config_path.write_text(
-        json.dumps(
-            {
-                "trustedFolders": ["/Users/ww"],
-                "model": "old-model",
-                "effortLevel": "medium",
-                "allowed_urls": ["https://docs.github.com"],
-            }
-        )
+        json.dumps({
+            "trustedFolders": ["/Users/ww"],
+            "model": "old-model",
+            "effortLevel": "medium",
+            "allowed_urls": ["https://docs.github.com"],
+        })
         + "\n",
         encoding="utf-8",
     )
@@ -2360,6 +2463,7 @@ def test_sync_codex_entrypoint_targets_codex_global_bridge(tmp_path, monkeypatch
     assert (codex_home / "AGENTS.md").is_symlink()
     assert (codex_home / "AGENTS.md").resolve() == repo_root / "instructions" / "codex-global.md"
 
+
 def test_platform_filter_allows_shared_grok_only():
     from scripts.sync_agent_stack import platform_filter_allows
 
@@ -2370,8 +2474,7 @@ def test_platform_filter_allows_shared_grok_only():
 
 
 def test_sync_platforms_grok_only_skips_opencode(monkeypatch):
-    from scripts.sync_agent_stack import sync_home_targets
-    from wagents.platforms.base import SyncContext
+    from scripts.sync_agent_stack import SyncContext, sync_home_targets
 
     called: list[str] = []
 
@@ -2383,4 +2486,3 @@ def test_sync_platforms_grok_only_skips_opencode(monkeypatch):
     sync_home_targets(ctx, {}, {}, {}, {}, platforms_filter={"grok"})
     assert called == ["grok"]
     assert "opencode" not in called
-

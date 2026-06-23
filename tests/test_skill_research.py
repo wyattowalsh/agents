@@ -1,5 +1,7 @@
 """Tests for wagents.skill_research helpers."""
 
+from typing import Literal
+
 from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry
 from wagents.skill_docs import SkillDocNode
@@ -19,7 +21,11 @@ from wagents.skill_research import (
 )
 
 
-def _doc_node(skill_id: str, source_type: str = "custom", curated_status: str = "") -> SkillDocNode:
+def _doc_node(
+    skill_id: str,
+    source_type: Literal["custom", "installed", "curated-external"] = "custom",
+    curated_status: str = "",
+) -> SkillDocNode:
     source = source_type if source_type != "curated-external" else "curated-external"
     return SkillDocNode(
         node=CatalogNode(
@@ -32,7 +38,7 @@ def _doc_node(skill_id: str, source_type: str = "custom", curated_status: str = 
             source_path=f"skills/{skill_id}/SKILL.md",
             source=source,
         ),
-        source_type=source_type,  # type: ignore[arg-type]
+        source_type=source_type,
         curated_status=curated_status,
     )
 
@@ -69,14 +75,12 @@ def test_build_repo_grounded_research_body_detects_scripts_dir(tmp_path, monkeyp
 
 
 def test_build_repo_grounded_research_body_uses_description_and_not_for():
-    doc = _doc_node("honest-review")
-    doc.node.description = (
-        "Review code with confidence-scored evidence. NOT for feature work (simplify)."
-    )
-    doc.node.body = "# Honest Review\n\nResearch-driven code review.\n"
+    doc = _doc_node("review")
+    doc.node.description = "Review code with confidence-scored evidence. NOT for feature work (build)."
+    doc.node.body = "# Review\n\nResearch-driven code review.\n"
     body = build_repo_grounded_research_body(doc)
     assert "Quick Answer" in body
-    assert "`simplify`" in body
+    assert "`build`" in body
     assert "Research-driven code review." in body
 
 
@@ -154,11 +158,11 @@ def test_curated_research_sections_constant():
 
 
 def test_build_curated_config_research_body_structured_sections():
-    entry = _curated_entry("shieldcn-badges", notes="Generate badges from templates.")
+    entry = _curated_entry("demo-curated-skill", notes="Generate trust-gated workflow guidance.")
     body = build_curated_config_research_body(entry)
     for section in CURATED_RESEARCH_SECTIONS:
         assert f"## {section}" in body, f"missing section {section}"
-    assert "shieldcn-badges" in body or "Purpose" in body
+    assert "demo-curated-skill" in body or "Purpose" in body
     assert "Target agents:" in body
     assert "trust_tier=low" in body
     assert "https://github.com/example/source" in body
@@ -190,12 +194,8 @@ def test_seed_curated_config_research_writes_and_manifest(tmp_path, monkeypatch)
         _curated_entry("inspect-me", status="inspect-then-install"),
     ]
     doc_nodes = [_curated_doc_node(entry) for entry in entries]
-    monkeypatch.setattr(
-        "wagents.skill_research.read_external_skill_entries", lambda path=None: entries
-    )
-    monkeypatch.setattr(
-        "wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: doc_nodes
-    )
+    monkeypatch.setattr("wagents.skill_research.read_external_skill_entries", lambda path=None: entries)
+    monkeypatch.setattr("wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: doc_nodes)
     monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
     written = seed_curated_config_research()
@@ -209,9 +209,7 @@ def test_seed_curated_config_research_writes_and_manifest(tmp_path, monkeypatch)
     # only the filtered one
     written2 = seed_curated_config_research(curated_status="install-now-after-trust-gate")
     assert len(written2) == 0  # already exist, no overwrite
-    written3 = seed_curated_config_research(
-        curated_status="install-now-after-trust-gate", overwrite=True
-    )
+    written3 = seed_curated_config_research(curated_status="install-now-after-trust-gate", overwrite=True)
     assert len(written3) == 1
 
 
@@ -243,12 +241,8 @@ def test_seed_curated_config_research_uses_catalog_install_source_for_duplicates
         ),
     ]
     doc_nodes = [_curated_doc_node(entries[0])]
-    monkeypatch.setattr(
-        "wagents.skill_research.read_external_skill_entries", lambda path=None: entries
-    )
-    monkeypatch.setattr(
-        "wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: doc_nodes
-    )
+    monkeypatch.setattr("wagents.skill_research.read_external_skill_entries", lambda path=None: entries)
+    monkeypatch.setattr("wagents.skill_research.collect_skill_doc_nodes", lambda **kwargs: doc_nodes)
     monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
     written = seed_curated_config_research(overwrite=True)
@@ -260,9 +254,7 @@ def test_seed_curated_config_research_uses_catalog_install_source_for_duplicates
 
 def test_seed_curated_config_research_skips_when_no_overwrite(tmp_path, monkeypatch):
     entry = _curated_entry("existing-one")
-    monkeypatch.setattr(
-        "wagents.skill_research.read_external_skill_entries", lambda path=None: [entry]
-    )
+    monkeypatch.setattr("wagents.skill_research.read_external_skill_entries", lambda path=None: [entry])
     monkeypatch.setattr(
         "wagents.skill_research.collect_skill_doc_nodes",
         lambda **kwargs: [_curated_doc_node(entry)],
@@ -270,7 +262,9 @@ def test_seed_curated_config_research_skips_when_no_overwrite(tmp_path, monkeypa
     monkeypatch.setattr("wagents.skill_research.RESEARCH_DIR", tmp_path)
     monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", tmp_path / "manifest.mjs")
     # pre-create
-    (tmp_path / "existing-one.md").write_text("---\nskill: existing-one\nsource_type: curated-external\n---\n\n## Purpose\n\nx", encoding="utf-8")
+    (tmp_path / "existing-one.md").write_text(
+        "---\nskill: existing-one\nsource_type: curated-external\n---\n\n## Purpose\n\nx", encoding="utf-8"
+    )
     written = seed_curated_config_research(overwrite=False)
     assert written == []
 

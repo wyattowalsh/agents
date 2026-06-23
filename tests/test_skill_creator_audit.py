@@ -362,6 +362,53 @@ def test_cross_skill_tooling_references_do_not_reduce_portability_score(tmp_path
     assert not any("skill-creator/scripts/audit.py" in finding for finding in portability["findings"])
 
 
+def test_nonportable_frontmatter_hook_command_reduces_portability_score(tmp_path: Path):
+    skill_dir = _write_skill(
+        tmp_path,
+        "hooked-skill",
+        """
+        # Hooked Skill
+
+        ## Dispatch
+
+        | $ARGUMENTS | Action |
+        |------------|--------|
+        | `audit` | Audit |
+        | Empty | Show help |
+
+        ## Critical Rules
+
+        1. Always validate before exit
+        2. Never modify unrelated files
+        3. Always report command failures
+        4. Never invent missing tool output
+        5. Keep packaging portable
+        """,
+        frontmatter="""\
+        ---
+        name: hooked-skill
+        description: Audit hooked skill work. Use when checking skill quality. NOT for agents.
+        license: MIT
+        metadata:
+          author: tester
+          version: "1.0.0"
+        hooks:
+          Stop:
+            - hooks:
+                - type: command
+                  command: "uv run python skills/hooked-skill/scripts/verify.py stop"
+        ---
+        """,
+    )
+
+    result = audit_skill(str(skill_dir))
+
+    portability = _dimension(result, "portability")
+    assert portability["score"] < portability["max"]
+    assert any("Non-portable frontmatter command paths found" in finding for finding in portability["findings"])
+    assert any("skills/hooked-skill/scripts/verify.py" in finding for finding in portability["findings"])
+
+
 def test_audit_table_never_reports_legacy_103_scale(tmp_path: Path):
     skill_dir = _write_skill(
         tmp_path,

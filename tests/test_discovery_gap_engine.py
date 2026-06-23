@@ -18,7 +18,8 @@ def _load(name: str, filename: str):
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / filename
     spec = importlib.util.spec_from_file_location(name, path)
-    assert spec and spec.loader
+    assert spec
+    assert spec.loader
     mod = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
@@ -37,7 +38,9 @@ def taxonomy():
 
 
 def test_web_quality_is_high_priority(gap_mod, taxonomy) -> None:
-    report = gap_mod.build_gap_report(taxonomy=taxonomy, inventory={"repo_count": 10, "installed_count": 5, "skills": []})
+    report = gap_mod.build_gap_report(
+        taxonomy=taxonomy, inventory={"repo_count": 10, "installed_count": 5, "skills": []}
+    )
     web = next(d for d in report.domains if d.id == "web-quality")
     assert web.coverage == "none"
     assert web.classification == "high"

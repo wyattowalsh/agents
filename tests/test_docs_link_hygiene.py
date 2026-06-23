@@ -5,9 +5,7 @@ import re
 from wagents.catalog import CatalogNode
 from wagents.rendering import render_skill_page
 
-_BAD_LINK = re.compile(
-    r"(?<![`])\[[^\]]+\]\((?:#|references/|assets/|[^)/\s#]+\.(?:md|py|go|ts|js|json|yaml)(?:#|\)))"
-)
+_BAD_LINK = re.compile(r"(?<![`])\[[^\]]+\]\((?:#|references/|assets/|[^)/\s#]+\.(?:md|py|go|ts|js|json|yaml)(?:#|\)))")
 
 
 def _prose_outside_details(mdx: str) -> str:
@@ -51,13 +49,7 @@ class TestDocsLinkHygiene:
         assert _BAD_LINK.search(prose) is None
 
     def test_golang_cli_asset_links_neutralized_in_prose(self):
-        body = (
-            "# Golang CLI\n"
-            "\n"
-            "## Core Principles\n"
-            "\n"
-            "See [main.go](assets/examples/main.go) for layout.\n"
-        )
+        body = "# Golang CLI\n\n## Core Principles\n\nSee [main.go](assets/examples/main.go) for layout.\n"
         mdx = render_skill_page(_node(body), [], [])
         prose = _prose_outside_details(mdx)
         assert "`main.go`" in prose
@@ -65,13 +57,7 @@ class TestDocsLinkHygiene:
 
     def test_custom_routing_table_links_neutralized(self):
         body = (
-            "# Custom Skill\n"
-            "\n"
-            "## Routing\n"
-            "\n"
-            "| need | doc |\n"
-            "| --- | --- |\n"
-            "| debug | [guide](references/guide.md) |\n"
+            "# Custom Skill\n\n## Routing\n\n| need | doc |\n| --- | --- |\n| debug | [guide](references/guide.md) |\n"
         )
         mdx = render_skill_page(_node(body, source="custom"), [], [])
         prose = _prose_outside_details(mdx)

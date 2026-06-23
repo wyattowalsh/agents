@@ -6,7 +6,7 @@ from wagents.repo_paths import contains_portable_path_leak
 
 
 @pytest.mark.parametrize(
-    "text,expected",
+    ("text", "expected"),
     [
         ("Use ~/projects/agents for local work.", False),
         ("Path: /Users/alice/dev/agents/skills/foo", True),

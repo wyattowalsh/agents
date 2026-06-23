@@ -37,9 +37,7 @@ def test_exit_plan_hook_maps_block_to_deny(tmp_path):
 def test_exit_plan_hook_passes_through_non_block(tmp_path):
     fake_plannotator = tmp_path / "plannotator"
     fake_plannotator.write_text(
-        "#!/usr/bin/env python3\n"
-        "import json, sys\n"
-        'json.dump({"decision": "approve"}, sys.stdout)\n',
+        '#!/usr/bin/env python3\nimport json, sys\njson.dump({"decision": "approve"}, sys.stdout)\n',
         encoding="utf-8",
     )
     fake_plannotator.chmod(fake_plannotator.stat().st_mode | 0o111)

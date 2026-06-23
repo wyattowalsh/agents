@@ -193,7 +193,9 @@ class TestRenderSkillPage:
                 "_curated_status": "install-now-after-trust-gate",
                 "_skills_trust_tier": "curated-trust-gated",
                 "_skills_target_agents": ["claude-code", "opencode", "cursor"],
-                "_skills_install_command": "npx skills add example/curated --skill curated-enrich -y -g -a claude-code cursor",
+                "_skills_install_command": (
+                    "npx skills add example/curated --skill curated-enrich -y -g -a claude-code cursor"
+                ),
             },
         )
         fake_research = (
@@ -201,14 +203,17 @@ class TestRenderSkillPage:
             "## Trust Posture\n\nAudited; safe under gate.\n\n"
             "## Harness Notes\n\nBroad target set."
         )
-        monkeypatch.setattr("wagents.rendering.load_skill_research", lambda sid: fake_research if sid == node.id else None)
+        monkeypatch.setattr(
+            "wagents.rendering.load_skill_research", lambda sid: fake_research if sid == node.id else None
+        )
 
         result = render_skill_page(node, [], [node])
         # Guard: still no View Full SKILL.md (even when enriched via research)
         assert "View Full SKILL.md" not in result
         # Harness + trust sections
         assert "## Harness Coverage" in result
-        assert "claude-code" in result and "opencode" in result
+        assert "claude-code" in result
+        assert "opencode" in result
         assert "Portable multi-harness install command" in result
         assert "## Trust / Audit" in result
         assert "curated-trust-gated" in result or "Curated" in result

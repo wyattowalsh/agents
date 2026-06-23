@@ -45,7 +45,7 @@ class TestWriteIndexPage:
         # Use featured skill IDs so the curated section renders
         nodes = [
             _make_node("skill", id="wargame"),
-            _make_node("skill", id="honest-review"),
+            _make_node("skill", id="review"),
             _make_node("skill", id="skill-creator"),
             _make_node("agent", source_path="agents/test-agent.md"),
             _make_node(
@@ -182,7 +182,7 @@ class TestWriteCatalogIndexes:
         assert "## Skill Lanes" in text
         assert "/skills/catalog/custom/test-skill/" in text
         assert "generated-site-data.mjs" in text
-        assert "npx skills add github:wyattowalsh/agents --skill honest-review -y -g" in text
+        assert "npx skills add github:wyattowalsh/agents --skill review -y -g" in text
 
     def test_custom_index_excludes_external(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -215,7 +215,6 @@ class TestWriteCatalogIndexes:
         assert '<InstallScripts src="/generated-skill-indexes/install-scripts.json" />' in text
 
 
-
 class TestDocsGenerate:
     def test_excludes_installed_skills_by_default(self, tmp_repo, monkeypatch):
         custom = _make_node("skill")
@@ -231,8 +230,12 @@ class TestDocsGenerate:
         docs_generate()
 
         assert (tmp_repo / "docs" / "src" / "generated-visual-assets.css").exists()
-        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external" / "ext-skill.mdx").exists()
-        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "test-skill.mdx").exists()
+        assert not (
+            tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external" / "ext-skill.mdx"
+        ).exists()
+        assert (
+            tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "test-skill.mdx"
+        ).exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "index.mdx").exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "install.mdx").exists()
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "harness-support.mdx").exists()
@@ -250,7 +253,9 @@ class TestDocsGenerate:
 
         docs_generate(include_installed=True)
 
-        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external" / "ext-skill.mdx").exists()
+        assert (
+            tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external" / "ext-skill.mdx"
+        ).exists()
 
     def test_can_exclude_installed_skills_explicitly(self, tmp_repo, monkeypatch):
         custom = _make_node("skill")
@@ -265,8 +270,12 @@ class TestDocsGenerate:
 
         docs_generate(include_installed=False)
 
-        assert not (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external" / "ext-skill.mdx").exists()
-        assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "test-skill.mdx").exists()
+        assert not (
+            tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "external" / "ext-skill.mdx"
+        ).exists()
+        assert (
+            tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "test-skill.mdx"
+        ).exists()
 
     def test_preserves_hand_maintained_skill_page(self, tmp_repo, monkeypatch):
         monkeypatch.setattr(
@@ -288,13 +297,22 @@ class TestDocsGenerate:
     def test_emits_skills_catalog_json_index_on_generate(self, tmp_repo, monkeypatch):
         """W3: docs generate now emits the skills-catalog-index.json from authoring entries at start."""
         from wagents import docs as docs_mod
-        from wagents.skill_index import write_catalog_index as real_write_index
 
         calls = {"sync": 0, "load": 0, "build": 0, "write_json": 0}
-        monkeypatch.setattr(docs_mod, "sync_custom_authoring_from_skills", lambda: calls.__setitem__("sync", calls["sync"] + 1) or [])
-        monkeypatch.setattr(docs_mod, "load_authoring_entries", lambda: (calls.__setitem__("load", calls["load"] + 1) or []))
-        monkeypatch.setattr(docs_mod, "build_catalog_index", lambda entries: (calls.__setitem__("build", calls["build"] + 1) or {}))
-        monkeypatch.setattr(docs_mod, "write_skills_catalog_index", lambda idx: calls.__setitem__("write_json", calls["write_json"] + 1) or None)
+        monkeypatch.setattr(
+            docs_mod, "sync_custom_authoring_from_skills", lambda: calls.__setitem__("sync", calls["sync"] + 1) or []
+        )
+        monkeypatch.setattr(
+            docs_mod, "load_authoring_entries", lambda: calls.__setitem__("load", calls["load"] + 1) or []
+        )
+        monkeypatch.setattr(
+            docs_mod, "build_catalog_index", lambda entries: calls.__setitem__("build", calls["build"] + 1) or {}
+        )
+        monkeypatch.setattr(
+            docs_mod,
+            "write_skills_catalog_index",
+            lambda idx: calls.__setitem__("write_json", calls["write_json"] + 1) or None,
+        )
 
         monkeypatch.setattr(
             "wagents.docs.collect_all_doc_nodes",
@@ -395,8 +413,8 @@ class TestWriteSidebar:
         write_sidebar([_make_node("skill")])
         text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
         assert "collapsed: true" in text
-        assert "autogenerate: { directory: 'skills/catalog/custom' }" in text
-        assert "autogenerate: { directory: 'skills/catalog/external' }" in text
+        assert "items: [{ autogenerate: { directory: 'skills/catalog/custom' } }]" in text
+        assert "items: [{ autogenerate: { directory: 'skills/catalog/external' } }]" in text
 
 
 class TestWriteHarnessSupportPage:
@@ -407,31 +425,27 @@ class TestWriteHarnessSupportPage:
 
         # Overwrite seeded empty fixtures from conftest with 1 harness + 1 executable record
         (tmp_repo / "config" / "harness-surface-registry.json").write_text(
-            json.dumps(
-                {
-                    "harnesses": [
-                        {
-                            "id": "claude-code",
-                            "label": "Claude Code",
-                            "support_tier": "repo-present-validation-required",
-                        }
-                    ]
-                }
-            ),
+            json.dumps({
+                "harnesses": [
+                    {
+                        "id": "claude-code",
+                        "label": "Claude Code",
+                        "support_tier": "repo-present-validation-required",
+                    }
+                ]
+            }),
             encoding="utf-8",
         )
         (tmp_repo / "planning" / "manifests" / "harness-fixture-support.json").write_text(
-            json.dumps(
-                {
-                    "records": [
-                        {
-                            "harness_id": "claude-code",
-                            "fixture_status": "fixture-executable",
-                            "promotion_blocker": "CI green required.",
-                        }
-                    ]
-                }
-            ),
+            json.dumps({
+                "records": [
+                    {
+                        "harness_id": "claude-code",
+                        "fixture_status": "fixture-executable",
+                        "promotion_blocker": "CI green required.",
+                    }
+                ]
+            }),
             encoding="utf-8",
         )
 

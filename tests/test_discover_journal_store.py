@@ -15,10 +15,13 @@ import pytest
 # Load the module from its file path (not a normal importable package)
 # ---------------------------------------------------------------------------
 
-_SCRIPT_PATH = Path(__file__).resolve().parent.parent / "skills" / "harness-master" / "scripts" / "discovery" / "journal-store.py"
+_SCRIPT_PATH = (
+    Path(__file__).resolve().parent.parent / "skills" / "harness-master" / "scripts" / "discovery" / "journal-store.py"
+)
 
 _spec = importlib.util.spec_from_file_location("journal_store", _SCRIPT_PATH)
-assert _spec is not None and _spec.loader is not None, f"Cannot find {_SCRIPT_PATH}"
+assert _spec is not None, f"Cannot find {_SCRIPT_PATH}"
+assert _spec.loader is not None, f"Cannot load {_SCRIPT_PATH}"
 jmod = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(jmod)
 
@@ -141,7 +144,7 @@ def test_cmd_init_creates_journal(journal_dir):
     assert path.parent == journal_dir
 
     text = path.read_text(encoding="utf-8")
-    meta, body = jmod.parse_frontmatter(text)
+    meta, _body = jmod.parse_frontmatter(text)
     assert meta["session_type"] == "discovery"
     assert meta["session_version"] == jmod.SESSION_VERSION
     assert meta["artifact_root"] == ""

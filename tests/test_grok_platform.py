@@ -54,14 +54,14 @@ def test_parse_toml_table_kv_extracts_header_and_keys():
     header, values = parse_toml_table_kv(chunk)
     assert header == "ui"
     assert values["yolo"] == "true"
-    assert values['theme'] == '"dark"'
+    assert values["theme"] == '"dark"'
 
 
 def test_blend_owned_table_policy_overrides_shared_keys():
     policy = '[ui]\nyolo = true\npermission_mode = "always-approve"\n'
     user = '[ui]\nyolo = false\ntheme = "dark"\n'
     blended = blend_owned_table(policy, user)
-    assert 'yolo = true' in blended
+    assert "yolo = true" in blended
     assert 'theme = "dark"' in blended
     assert 'permission_mode = "always-approve"' in blended
     assert "yolo = false" not in blended
@@ -69,7 +69,7 @@ def test_blend_owned_table_policy_overrides_shared_keys():
 
 def test_blend_owned_table_keeps_user_only_keys():
     policy = "[ui]\nyolo = true\n"
-    user = '[ui]\nnotifications = false\n'
+    user = "[ui]\nnotifications = false\n"
     blended = blend_owned_table(policy, user)
     assert "yolo = true" in blended
     assert "notifications = false" in blended
@@ -150,7 +150,7 @@ def test_render_grok_config_home_includes_policy_and_preserves_user(tmp_path, mo
     registry = load_json(MCP_REGISTRY_PATH)
     policy_path = tmp_path / "config" / "grok-config.toml"
     policy_path.parent.mkdir(parents=True)
-    policy_path.write_text("[models]\ndefault = \"grok-composer-2.5-fast\"\n", encoding="utf-8")
+    policy_path.write_text('[models]\ndefault = "grok-composer-2.5-fast"\n', encoding="utf-8")
     monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", policy_path)
 
     current = "[cli]\nauto_update = false\n"
@@ -177,7 +177,7 @@ def test_render_grok_config_home_blend_ui(tmp_path, monkeypatch):
 
 
 def test_apply_model_defaults_from_tooling_policy():
-    body = "[models]\ndefault = \"old\"\n"
+    body = '[models]\ndefault = "old"\n'
     policy = {"model_defaults": {"grok": {"default": "grok-composer-2.5-fast", "web_search": "grok-4.20-multi-agent"}}}
     rendered = apply_model_defaults(body, policy)
     assert 'default = "grok-composer-2.5-fast"' in rendered
@@ -196,7 +196,7 @@ def test_grok_config_copy_matches_sanitized_template():
 
 def test_grok_adapter_is_available_when_config_exists(monkeypatch, tmp_path):
     cfg = tmp_path / "config.toml"
-    cfg.write_text("[models]\ndefault = \"x\"\n", encoding="utf-8")
+    cfg.write_text('[models]\ndefault = "x"\n', encoding="utf-8")
     monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_PATH", cfg)
     monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "missing-grok")
     assert Adapter().is_available()

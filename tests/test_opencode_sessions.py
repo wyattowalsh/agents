@@ -3,7 +3,7 @@ import sqlite3
 import subprocess
 from pathlib import Path
 
-from pytest import MonkeyPatch
+import pytest
 from typer.testing import CliRunner
 
 from wagents import opencode_sessions
@@ -89,12 +89,10 @@ def write_sample_db(db_path: Path) -> None:
                 "prt_reasoning",
                 "msg_assistant",
                 SESSION_ID,
-                json.dumps(
-                    {
-                        "type": "reasoning",
-                        "metadata": {"openai": {"reasoningEncryptedContent": "encrypted"}},
-                    }
-                ),
+                json.dumps({
+                    "type": "reasoning",
+                    "metadata": {"openai": {"reasoningEncryptedContent": "encrypted"}},
+                }),
             ),
         )
         conn.commit()
@@ -238,19 +236,17 @@ def test_cli_rejects_invalid_format_before_quarantine_mutates(tmp_path: Path) ->
         assert conn.execute("SELECT time_archived FROM session WHERE id = ?", (SESSION_ID,)).fetchone()[0] is None
 
 
-def test_collect_opencode_processes_excludes_diagnostic_command(monkeypatch: MonkeyPatch) -> None:
+def test_collect_opencode_processes_excludes_diagnostic_command(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(opencode_sessions.os, "getpid", lambda: 100)
     monkeypatch.setattr(opencode_sessions.os, "getppid", lambda: 99)
 
     def fake_run(*_args: object, **_kwargs: object) -> subprocess.CompletedProcess[str]:
-        stdout = "\n".join(
-            [
-                f" 99 uv run wagents opencode diagnose-session --session-id {SESSION_ID}",
-                f"100 python -m wagents opencode diagnose-session --session-id {SESSION_ID}",
-                f"200 opencode run --session {SESSION_ID}",
-                "300 opencode run --session ses_other",
-            ]
-        )
+        stdout = "\n".join([
+            f" 99 uv run wagents opencode diagnose-session --session-id {SESSION_ID}",
+            f"100 python -m wagents opencode diagnose-session --session-id {SESSION_ID}",
+            f"200 opencode run --session {SESSION_ID}",
+            "300 opencode run --session ses_other",
+        ])
         return subprocess.CompletedProcess(args=["ps"], returncode=0, stdout=stdout)
 
     monkeypatch.setattr(opencode_sessions.subprocess, "run", fake_run)

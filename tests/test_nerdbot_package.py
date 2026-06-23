@@ -17,8 +17,8 @@ SRC_DIR = NERDBOT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from nerdbot.cli import build_parser, build_plan_payload, main  # noqa: E402
-from nerdbot.contracts import (  # noqa: E402
+from nerdbot.cli import build_parser, build_plan_payload, main
+from nerdbot.contracts import (
     CLAIM_RECORD_FIELDS,
     GENERATED_ARTIFACTS,
     GRAPH_EDGE_FIELDS,
@@ -34,13 +34,13 @@ from nerdbot.contracts import (  # noqa: E402
     VERSION,
     WATCH_EVENT_FIELDS,
 )
-from nerdbot.evidence import ClaimRecord, ReviewItem, apply_confidence_cap  # noqa: E402
-from nerdbot.graph import build_graph, extract_edges, render_graph_report  # noqa: E402
-from nerdbot.replay import dry_run_replay  # noqa: E402
-from nerdbot.research import ResearchJournalEntry, should_ingest_from_research  # noqa: E402
-from nerdbot.retrieval import query_lexical  # noqa: E402
-from nerdbot.sources import build_source_record, plan_local_file_source, pointer_stub_text  # noqa: E402
-from nerdbot.watch import classify_watch_event, review_item_for_watch_event  # noqa: E402
+from nerdbot.evidence import ClaimRecord, ReviewItem, apply_confidence_cap
+from nerdbot.graph import build_graph, extract_edges, render_graph_report
+from nerdbot.replay import dry_run_replay
+from nerdbot.research import ResearchJournalEntry, should_ingest_from_research
+from nerdbot.retrieval import query_lexical
+from nerdbot.sources import build_source_record, plan_local_file_source, pointer_stub_text
+from nerdbot.watch import classify_watch_event, review_item_for_watch_event
 
 
 def _venv_executable(venv_dir: Path, name: str) -> Path:

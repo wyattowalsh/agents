@@ -131,11 +131,7 @@ class TestExtractWhatItDoes:
         assert _extract_what_it_does(body) == "Domain expertise for serverless on AWS."
 
     def test_rejects_toc_paragraph(self):
-        body = (
-            "# Flutter App\n"
-            "## Contents\n"
-            "- [Layers](#architectural-layers)\n"
-        )
+        body = "# Flutter App\n## Contents\n- [Layers](#architectural-layers)\n"
         assert _extract_what_it_does(body) == ""
 
 

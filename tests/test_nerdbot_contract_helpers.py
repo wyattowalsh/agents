@@ -14,12 +14,12 @@ SRC_DIR = NERDBOT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from nerdbot.evidence import apply_confidence_cap  # noqa: E402
-from nerdbot.graph import extract_alias_edges, extract_edges, split_obsidian_reference  # noqa: E402
-from nerdbot.operations import OperationEntry, append_operation_entry, build_operation_entry  # noqa: E402
-from nerdbot.safety import normalize_vault_relative_path  # noqa: E402
-from nerdbot.sources import build_source_record, pointer_stub_text  # noqa: E402
-from nerdbot.watch import classify_watch_event  # noqa: E402
+from nerdbot.evidence import apply_confidence_cap
+from nerdbot.graph import extract_alias_edges, extract_edges, split_obsidian_reference
+from nerdbot.operations import OperationEntry, append_operation_entry, build_operation_entry
+from nerdbot.safety import normalize_vault_relative_path
+from nerdbot.sources import build_source_record, pointer_stub_text
+from nerdbot.watch import classify_watch_event
 
 
 def test_watch_event_actions_cover_stability_obsidian_kb_and_external_paths() -> None:
@@ -113,7 +113,7 @@ def test_normalize_vault_relative_path_accepts_safe_paths(path: str) -> None:
 
 @pytest.mark.parametrize("path", ["", "../escape.md", "/tmp/escape.md", r"C:\\tmp\\escape.md"])
 def test_normalize_vault_relative_path_rejects_unsafe_paths(path: str) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=r"."):
         normalize_vault_relative_path(path)
 
 
@@ -138,7 +138,7 @@ def test_pointer_stub_text_flattens_untrusted_multiline_fields() -> None:
 
 @pytest.mark.parametrize("confidence", [-0.01, 1.01, math.nan])
 def test_apply_confidence_cap_rejects_invalid_confidence(confidence: float) -> None:
-    with pytest.raises(ValueError, match="confidence must be between 0.0 and 1.0"):
+    with pytest.raises(ValueError, match=r"confidence must be between 0\.0 and 1\.0"):
         apply_confidence_cap(confidence, "static")
 
 

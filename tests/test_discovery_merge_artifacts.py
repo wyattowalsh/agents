@@ -16,7 +16,8 @@ def _load():
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / "merge_artifacts.py"
     spec = importlib.util.spec_from_file_location("merge_artifacts", path)
-    assert spec and spec.loader
+    assert spec
+    assert spec.loader
     mod = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
@@ -36,49 +37,45 @@ def test_merge_candidates_dedup_and_existing_filter(tmp_path: Path) -> None:
     artifacts = tmp_path / "wave2"
     artifacts.mkdir()
     (artifacts / "W2-RS-00.json").write_text(
-        json.dumps(
-            {
-                "task_id": "W2-RS-00",
-                "role": "registry-scout",
-                "status": "success",
-                "candidates": [
-                    {
-                        "name": "redis-cache",
-                        "source": "owner/redis-skills",
-                        "install_count": 1200,
-                        "fills_gap": "caching",
-                    },
-                    {
-                        "name": "honest-review",
-                        "source": "wyattowalsh/agents",
-                        "install_count": 50,
-                    },
-                ],
-            }
-        ),
+        json.dumps({
+            "task_id": "W2-RS-00",
+            "role": "registry-scout",
+            "status": "success",
+            "candidates": [
+                {
+                    "name": "redis-cache",
+                    "source": "owner/redis-skills",
+                    "install_count": 1200,
+                    "fills_gap": "caching",
+                },
+                {
+                    "name": "review",
+                    "source": "wyattowalsh/agents",
+                    "install_count": 50,
+                },
+            ],
+        }),
         encoding="utf-8",
     )
     (artifacts / "W2-RS-01.json").write_text(
-        json.dumps(
-            {
-                "task_id": "W2-RS-01",
-                "role": "registry-scout",
-                "status": "success",
-                "candidates": [
-                    {
-                        "name": "redis-cache",
-                        "source": "owner/redis-skills",
-                        "install_count": 800,
-                    }
-                ],
-            }
-        ),
+        json.dumps({
+            "task_id": "W2-RS-01",
+            "role": "registry-scout",
+            "status": "success",
+            "candidates": [
+                {
+                    "name": "redis-cache",
+                    "source": "owner/redis-skills",
+                    "install_count": 800,
+                }
+            ],
+        }),
         encoding="utf-8",
     )
 
     result = mod.merge_candidates(
         artifacts,
-        existing_names={"honest-review"},
+        existing_names={"review"},
         agents=["codex", "cursor"],
     )
 

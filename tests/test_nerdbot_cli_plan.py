@@ -13,8 +13,8 @@ SRC_DIR = NERDBOT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from nerdbot.cli import build_plan_payload, main  # noqa: E402
-from nerdbot.contracts import VERSION  # noqa: E402
+from nerdbot.cli import build_plan_payload, main
+from nerdbot.contracts import VERSION
 
 
 def test_query_and_audit_plan_gates_remain_read_only() -> None:

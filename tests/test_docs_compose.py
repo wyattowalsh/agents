@@ -2,8 +2,7 @@
 
 from pathlib import Path
 
-from wagents.docs_compose import build_compose_batch_prompt, compose_coverage, is_composed_mdx
-from wagents.docs_compose import ComposeTarget
+from wagents.docs_compose import ComposeTarget, build_compose_batch_prompt, compose_coverage, is_composed_mdx
 
 
 def test_is_composed_mdx_hand_maintained() -> None:
@@ -91,10 +90,10 @@ def test_should_not_skip_legacy_quick_start() -> None:
 
 
 def test_upgrade_custom_batch_force_dry_run() -> None:
-    from wagents.docs_compose_upgrade import upgrade_custom_batch
+    from wagents.docs_compose_upgrade import batch_composed_custom_ids, upgrade_custom_batch
 
     result = upgrade_custom_batch(dry_run=True, force=True)
-    assert result.written >= 49
+    assert result.written >= len(batch_composed_custom_ids())
 
 
 def test_upgrade_external_batch_idempotent_dry_run() -> None:
@@ -118,10 +117,7 @@ def test_regen_config_embed(tmp_path) -> None:
 
     config = tmp_path / "sample.json"
     config.write_text('{"version": 1}\n', encoding="utf-8")
-    page = (
-        'intro\n<details class="source-disclosure">\n'
-        "<summary>Old</summary>\n\n```json\n{}\n```\n</details>\n"
-    )
+    page = 'intro\n<details class="source-disclosure">\n<summary>Old</summary>\n\n```json\n{}\n```\n</details>\n'
     out = regen_config_embed(page, config_path=config, summary="Full sample.json")
     assert '"version": 1' in out
     assert "Old" not in out

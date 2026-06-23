@@ -1,5 +1,6 @@
 """Tests for wagents.catalog_rows — public row builders, curated lookup, and text helpers (3-4 core tests)."""
 
+from wagents import ROOT
 from wagents.catalog_rows import (
     curated_catalog_parity_gaps,
     curated_entry_by_name,
@@ -69,17 +70,17 @@ npx skills add example/skills --skill demo-skill -y -g -a claude-code
 def test_entry_to_public_row_includes_full_external_fields_and_badges():
     """entry_to_public_row must emit the expected public row keys and computed badge/status."""
     entry = ExternalSkillEntry(
-        name="shieldcn-badges",
-        source="jal-co/shieldcn",
-        install_source="jal-co/shieldcn",
+        name="demo-curated-skill",
+        source="example/curated-skills",
+        install_source="example/curated-skills",
         status="install-now-after-trust-gate",
         trust_tier="curated-trust-gated",
         provenance_status="verified-install-command",
-        install_command="npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g",
+        install_command="npx skills add example/curated-skills --skill demo-curated-skill -y -g",
         target_agents=("claude-code", "codex"),
-        source_url="https://github.com/jal-co/shieldcn",
-        notes="Install shieldcn-badges for local badge-generation workflows.",
-        risk_notes="Dynamic JSON badge patterns can embed arbitrary external JSON endpoints.",
+        source_url="https://github.com/example/curated-skills",
+        notes="Install demo-curated-skill for local trust-gated workflows.",
+        risk_notes="Dynamic inputs can embed arbitrary external endpoints.",
         promotion_policy="Install only after trust gate; audit again before repo promotion.",
         provenance_evidence=(
             "Curated `npx skills add` command with named `--skill` selectors "
@@ -91,7 +92,7 @@ def test_entry_to_public_row_includes_full_external_fields_and_badges():
     )
     row = entry_to_public_row(entry)
 
-    assert row["name"] == "shieldcn-badges"
+    assert row["name"] == "demo-curated-skill"
     assert row["sourceType"] == "curated-external"
     assert row["status"] == "install-now-after-trust-gate"
     assert row["trustTier"] == "curated-trust-gated"
@@ -101,10 +102,30 @@ def test_entry_to_public_row_includes_full_external_fields_and_badges():
     assert row["selectorMode"] == "named"
     assert row["installedAgents"] == []
     assert "Install only after trust gate" in str(row.get("promotionPolicy", ""))
-    assert row.get("riskNotes", "").startswith("Dynamic JSON")
-    assert row["sourceUrl"] == "https://github.com/jal-co/shieldcn"
+    assert row.get("riskNotes", "").startswith("Dynamic inputs")
+    assert row["sourceUrl"] == "https://github.com/example/curated-skills"
     # knowledge skeleton present
     assert "resourceLinks" in row["knowledge"]
+
+
+def test_entry_to_public_row_makes_repo_absolute_source_path_relative():
+    entry = ExternalSkillEntry(
+        name="demo-skill",
+        source="example/skills",
+        install_source="example/skills",
+        status="install-now-after-trust-gate",
+        trust_tier="curated-trust-gated",
+        provenance_status="verified-install-command",
+        install_command="npx skills add example/skills --skill demo-skill -y -g",
+        target_agents=("codex",),
+        source_url="",
+        notes="Demo skill.",
+        source_path=str(ROOT / "docs/src/authoring/skills/demo-skill.mdx"),
+    )
+
+    row = entry_to_public_row(entry)
+
+    assert row["sourcePath"] == "docs/src/authoring/skills/demo-skill.mdx"
 
 
 def test_merge_installed_agents_merges_from_node_metadata():
@@ -117,13 +138,13 @@ def test_merge_installed_agents_merges_from_node_metadata():
     node_metadata = {
         "_skills_installed_agents": ["claude-code", "grok", "codex"],
         "_skills_provenance_status": "verified-curated-external",
-        "_skills_source": "jal-co/shieldcn",
+        "_skills_source": "example/curated-skills",
     }
-    merge_installed_agents(row, node_metadata)
+    merge_installed_agents(row, dict(node_metadata))
 
     assert sorted(row["installedAgents"]) == ["claude-code", "codex", "grok"]
     assert row.get("installedProvenanceStatus") == "verified-curated-external"
-    assert row.get("installedExternalPath") == "jal-co/shieldcn"
+    assert row.get("installedExternalPath") == "example/curated-skills"
 
 
 def test_curated_catalog_parity_gaps_reports_repo_superseded_ids():
@@ -134,7 +155,6 @@ def test_curated_catalog_parity_gaps_reports_repo_superseded_ids():
     supersede detection without depending on global config/skills overlap state, we patch read
     to inject a colliding entry while letting collect see the real repo custom.
     """
-    from pathlib import Path
     from unittest.mock import patch
 
     from wagents.external_skills import ExternalSkillEntry
@@ -175,4 +195,4 @@ def test_first_sentence_skips_abbreviations_and_splits_on_sentence_boundaries():
     assert first_sentence("no punctuation here") == "no punctuation here"
     # Empty / non-str
     assert first_sentence("") == ""
-    assert first_sentence(None) == ""  # type: ignore[arg-type]
+    assert first_sentence(None) == ""

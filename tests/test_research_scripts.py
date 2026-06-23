@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 def _load_module(name: str, rel_path: str):
     path = ROOT / rel_path
     spec = importlib.util.spec_from_file_location(name, path)
-    assert spec is not None and spec.loader is not None
+    assert spec is not None
+    assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -173,13 +174,11 @@ def test_journal_update_appends_state_and_preserves_body(journal_dir, capsys):
             findings=json.dumps(findings),
             update=str(path),
             wave=1,
-            state=json.dumps(
-                {
-                    "next_action": "Wave 2",
-                    "leads_pending": ["https://example.com/a", "https://example.com/b"],
-                    "gaps": ["topic X needs more sources"],
-                }
-            ),
+            state=json.dumps({
+                "next_action": "Wave 2",
+                "leads_pending": ["https://example.com/a", "https://example.com/b"],
+                "gaps": ["topic X needs more sources"],
+            }),
         ),
         capsys,
     )

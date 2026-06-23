@@ -6,8 +6,6 @@ import importlib.util
 import sys
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS = ROOT / "skills" / "harness-master" / "scripts" / "discovery"
 
@@ -17,7 +15,8 @@ def _load():
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / "classify_intent.py"
     spec = importlib.util.spec_from_file_location("classify_intent", path)
-    assert spec and spec.loader
+    assert spec
+    assert spec.loader
     mod = importlib.util.module_from_spec(spec)
     # Register before exec so that module-level decorators (e.g. dataclass)
     # can resolve sys.modules[cls.__module__] during definition.

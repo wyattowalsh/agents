@@ -21,9 +21,9 @@ from wagents.site_model import (
 
 
 def test_install_commands_use_shared_supported_agents():
-    command = build_install_command(skill="honest-review")
+    command = build_install_command(skill="review")
 
-    assert command.startswith("npx skills add github:wyattowalsh/agents --skill honest-review -y -g")
+    assert command.startswith("npx skills add github:wyattowalsh/agents --skill review -y -g")
     for agent_id in SUPPORTED_AGENT_IDS:
         assert f"--agent {agent_id}" in command
     assert "claude-code --agent codex --agent gemini-cli" not in command
@@ -225,7 +225,7 @@ npx skills add example/skills --skill external-one -y -g -a codex
 
 
 @pytest.mark.parametrize(
-    "tier,expected",
+    ("tier", "expected"),
     [
         ("repo", ("Repo-owned", "tip")),
         ("curated-trust-gated", ("Curated", "note")),

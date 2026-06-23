@@ -13,8 +13,9 @@ SKILL_DIR = ROOT / "skills" / "docling-graph"
 def load_script(name: str):
     path = SKILL_DIR / "scripts" / name
     spec = importlib.util.spec_from_file_location(name.replace("-", "_"), path)
+    assert spec is not None
+    assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
-    assert spec and spec.loader
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module

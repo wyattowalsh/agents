@@ -121,7 +121,11 @@ def test_validate_skips_gitignored_mcp_cache_dirs(patched_repo):
 
 def test_doctor_json_success(patched_repo, monkeypatch):
     """Doctor should emit structured JSON with successful checks when the environment is healthy."""
-    (patched_repo / "pyproject.toml").write_text('[project]\nname = "wagents"\nrequires-python = ">=3.13"\n')
+    (patched_repo / "pyproject.toml").write_text(
+        '[project]\nname = "wagents"\nrequires-python = ">=3.13"\n\n'
+        "[tool.ruff]\nline-length = 120\n\n"
+        '[tool.ty.src]\ninclude = ["wagents"]\n'
+    )
     docs_dir = patched_repo / "docs"
     docs_dir.mkdir()
     (docs_dir / "package.json").write_text(
@@ -138,15 +142,18 @@ def test_doctor_json_success(patched_repo, monkeypatch):
     monkeypatch.setattr("wagents.cli.Path.home", lambda: home_dir)
     monkeypatch.setattr("shutil.which", lambda name: f"/usr/bin/{name}")
     monkeypatch.setattr("importlib.util.find_spec", lambda name: object() if name == "playwright" else None)
-    monkeypatch.setattr(
-        "wagents.cli.subprocess.run",
-        lambda cmd, **kwargs: subprocess.CompletedProcess(
+
+    def _fake_subprocess_run(cmd, **kwargs):
+        if cmd[:2] == ["uv", "run"] and len(cmd) >= 3:
+            return subprocess.CompletedProcess(cmd, 0, stdout=f"{cmd[2]} 0.0.0\n", stderr="")
+        return subprocess.CompletedProcess(
             cmd,
             0,
             stdout={"node": "v22.12.0\n", "pnpm": "10.11.1\n"}[cmd[0]],
             stderr="",
-        ),
-    )
+        )
+
+    monkeypatch.setattr("wagents.cli.subprocess.run", _fake_subprocess_run)
 
     result = runner.invoke(app, ["doctor", "--format", "json"])
     assert result.exit_code == 0, f"doctor json failed:\n{result.output}"
@@ -160,6 +167,9 @@ def test_doctor_json_success(patched_repo, monkeypatch):
     assert checks["docs-deps"]["status"] == "ok"
     assert checks["pre-commit"]["status"] == "ok"
     assert checks["playwright-browsers"]["status"] == "ok"
+    assert checks["python-tooling-config"]["status"] == "ok"
+    assert checks["ruff-tooling"]["status"] == "ok"
+    assert checks["ty-tooling"]["status"] == "ok"
 
 
 def test_doctor_jsonl_failure_and_warnings(patched_repo, monkeypatch):
@@ -253,7 +263,7 @@ def test_new_agent(patched_repo):
     assert agent_file.exists()
 
     content = agent_file.read_text()
-    fm, body = parse_frontmatter(content)
+    fm, _body = parse_frontmatter(content)
     assert fm["name"] == "tmp-test-agent"
     assert "description" in fm
 
@@ -371,7 +381,8 @@ class TestInstall:
         result = runner.invoke(app, ["install", "-y"])
         assert result.exit_code == 0
         cmd = calls[0]
-        assert "--skill" in cmd and "*" in cmd
+        assert "--skill" in cmd
+        assert "*" in cmd
         assert "--agent" in cmd
         assert "-g" in cmd
         assert "-y" in cmd
@@ -388,14 +399,14 @@ class TestInstall:
 
         _mock_npx_available(monkeypatch)
         monkeypatch.setattr("subprocess.run", mock_run)
-        result = runner.invoke(app, ["install", "honest-review", "wargame", "-y"])
+        result = runner.invoke(app, ["install", "review", "wargame", "-y"])
         assert result.exit_code == 0
         cmd = calls[0]
-        # Should have --skill honest-review --skill wargame
+        # Should have --skill review --skill wargame
         skill_indices = [i for i, v in enumerate(cmd) if v == "--skill"]
         assert len(skill_indices) == 2
         skill_values = [cmd[i + 1] for i in skill_indices]
-        assert "honest-review" in skill_values
+        assert "review" in skill_values
         assert "wargame" in skill_values
 
     def test_install_specific_agent(self, monkeypatch):
@@ -434,7 +445,6 @@ class TestInstall:
         assert result.exit_code == 0
         assert "-g" not in calls[0]
 
-
     def test_install_grok_uses_claude_adapter_and_mirrors(self, monkeypatch):
         import subprocess
 
@@ -453,7 +463,7 @@ class TestInstall:
         monkeypatch.setattr("subprocess.run", mock_run)
         monkeypatch.setattr("wagents.cli.mirror_grok_skills_from_claude", mock_mirror)
 
-        result = runner.invoke(app, ["install", "honest-review", "-a", "grok", "-y"])
+        result = runner.invoke(app, ["install", "review", "-a", "grok", "-y"])
 
         assert result.exit_code == 0
         assert calls[0].count("-a") >= 1
@@ -769,6 +779,7 @@ class TestSkillsSync:
         assert "missing (1)" in result.output
         assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a codex" in result.output
 
+
 class TestGrokDoctor:
     def test_grok_doctor_reports_missing_env(self, monkeypatch, tmp_path):
         grok_cfg = tmp_path / "config.toml"
@@ -782,6 +793,7 @@ class TestGrokDoctor:
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_REPO_PATH", tmp_path / "repo.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", tmp_path / "policy.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "grok")
+
         def fake_which(cmd: str) -> str | None:
             if cmd == "grok":
                 return str(tmp_path / "grok")
@@ -805,6 +817,7 @@ class TestGrokDoctor:
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_REPO_PATH", tmp_path / "repo.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", tmp_path / "policy.toml")
         monkeypatch.setattr("wagents.platforms.grok.GROK_BINARY_PATH", tmp_path / "grok")
+
         def fake_which(cmd: str) -> str | None:
             if cmd == "grok":
                 return str(tmp_path / "grok")
@@ -816,4 +829,3 @@ class TestGrokDoctor:
         assert result.exit_code == 0
         assert "managed markers" in result.output or "managed block" in result.output
         assert "warnings:" in result.output
-

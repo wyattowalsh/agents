@@ -18,7 +18,7 @@ ROUTES = [
     SmokeRoute("/skills/catalog/custom/"),
     SmokeRoute("/skills/catalog/external/"),
     SmokeRoute("/skills/install/"),
-    SmokeRoute("/skills/catalog/custom/honest-review/"),
+    SmokeRoute("/skills/catalog/custom/review/"),
     SmokeRoute("/skills/catalog/custom/wargame/"),
     SmokeRoute("/skills/catalog/custom/orchestrator/"),
     SmokeRoute("/skills/catalog/custom/mcp-creator/"),
@@ -31,6 +31,7 @@ VIEWPORTS = {
     "tablet": {"width": 1024, "height": 768},
     "mobile": {"width": 390, "height": 844},
 }
+
 
 def _slug(route: str) -> str:
     if route == "/":
@@ -81,6 +82,7 @@ def main() -> int:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         try:
+
             def _screenshot_with_retry(page, path: Path, *, full_page: bool) -> None:
                 """Take a screenshot with one retry on transient errors."""
                 try:

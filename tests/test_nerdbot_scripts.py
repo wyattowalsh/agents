@@ -11,10 +11,10 @@ SCRIPT_DIR = Path(__file__).resolve().parents[1] / "skills" / "nerdbot" / "scrip
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
-import kb_bootstrap  # noqa: E402
-import kb_inventory  # noqa: E402
-import kb_lint  # noqa: E402
-from kb_inventory import STARTER_FILES  # noqa: E402
+import kb_bootstrap
+import kb_inventory
+import kb_lint
+from kb_inventory import STARTER_FILES
 
 
 def test_parse_bootstrap_packet_sections_exposes_activity_log_template() -> None:

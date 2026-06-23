@@ -5,8 +5,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMAS_DIR = ROOT / "config" / "schemas"
 
@@ -21,6 +19,7 @@ def _load_json(p: Path) -> dict:
 def _try_jsonschema():
     try:
         from jsonschema import Draft202012Validator
+
         return Draft202012Validator
     except Exception:
         return None
@@ -79,7 +78,8 @@ def test_index_minimal_valid_structural() -> None:
     }
     schema = _load_json(INDEX_SCHEMA)
     assert data["version"] == schema["properties"]["version"]["const"]
-    assert isinstance(data["entries"], list) and len(data["entries"]) > 0
+    assert isinstance(data["entries"], list)
+    assert len(data["entries"]) > 0
     entry0 = data["entries"][0]
     for k in ["skill_id", "source_kind", "body_path"]:
         assert k in entry0

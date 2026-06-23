@@ -29,7 +29,7 @@ def _curated_entry(name: str, install_source: str, source: str = "") -> External
 
 
 def test_parse_github_source_variants():
-    assert _parse_github_source("jal-co/shieldcn") == ("jal-co", "shieldcn")
+    assert _parse_github_source("example-org/example-skills") == ("example-org", "example-skills")
     assert _parse_github_source("github:PaulRBerg/agent-skills@d3f5540") == ("PaulRBerg", "agent-skills")
     assert _parse_github_source("backnotprop/plannotator/apps/skills/core") == ("backnotprop", "plannotator")
     assert _parse_github_source("https://example.com") is None
@@ -37,8 +37,8 @@ def test_parse_github_source_variants():
 
 
 def test_candidate_paths_includes_skills_and_fallbacks():
-    c = _candidate_paths("shieldcn-badges", "jal-co/shieldcn")
-    assert any("skills/shieldcn-badges/SKILL.md" in p for p in c)
+    c = _candidate_paths("demo-skill", "example-org/example-skills")
+    assert any("skills/demo-skill/SKILL.md" in p for p in c)
     assert any(p.endswith("/SKILL.md") for p in c)
     assert "SKILL.md" in c
 

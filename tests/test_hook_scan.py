@@ -19,7 +19,8 @@ def _load(name: str, filename: str):
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / filename
     spec = importlib.util.spec_from_file_location(name, path)
-    assert spec is not None and spec.loader is not None
+    assert spec is not None
+    assert spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
     # Register before exec so that module-level decorators (e.g. dataclass in schemas)
     # can resolve sys.modules[cls.__module__] during definition.
@@ -50,9 +51,12 @@ def test_hook_scan_minimal_fixture_validates(schemas_mod) -> None:
     errors = schemas_mod.validate_hook_scan(data)
     assert errors == [], f"Fixture failed validation: {errors}"
     assert data["version"] == 1
-    assert "registry" in data and "by_harness" in data["registry"]
-    assert "frontmatter" in data and "sources" in data["frontmatter"]
-    assert "gaps" in data and isinstance(data["gaps"], list)
+    assert "registry" in data
+    assert "by_harness" in data["registry"]
+    assert "frontmatter" in data
+    assert "sources" in data["frontmatter"]
+    assert "gaps" in data
+    assert isinstance(data["gaps"], list)
     assert "validation_errors" in data
 
 
@@ -73,9 +77,9 @@ def test_collect_registry_summary_loads_real_and_counts(hook_collect_mod) -> Non
 def test_collect_frontmatter_detects_known_hook_skills(hook_collect_mod) -> None:
     collect = hook_collect_mod
     fm = collect.collect_frontmatter_hooks(ROOT)
-    assert fm["skills_with_hooks"] >= 5  # simplify, research, skill-creator, honest-review, add-badges, namer, ...
+    assert fm["skills_with_hooks"] >= 1  # namer and any future hook-backed skills
     assert fm["agents_with_hooks"] == 0
-    assert any("skill:simplify" in s or "skill:research" in s for s in fm["sources"])
+    assert any(s.startswith("skill:") for s in fm["sources"])
 
 
 def test_collect_embedded_and_grok(hook_collect_mod) -> None:

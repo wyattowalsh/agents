@@ -16,7 +16,8 @@ def _load():
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / "parity_check.py"
     spec = importlib.util.spec_from_file_location("parity_check", path)
-    assert spec and spec.loader
+    assert spec
+    assert spec.loader
     mod = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)

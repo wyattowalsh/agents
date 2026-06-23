@@ -18,6 +18,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import ClassVar
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -30,8 +31,9 @@ for _path in (_SCRIPT_DIR, _SRC_DIR):
     if str(_path) not in sys.path:
         sys.path.insert(0, str(_path))
 
-from kb_bootstrap import render_activity_log, render_packet_starter  # noqa: E402
-from nerdbot import contracts  # noqa: E402
+from kb_bootstrap import render_activity_log, render_packet_starter
+
+from nerdbot import contracts
 
 KB_ARCHITECTURE = _NERDBOT / "references" / "kb-architecture.md"
 PAGE_TEMPLATES = _NERDBOT / "references" / "page-templates.md"
@@ -372,7 +374,7 @@ class TestRenderedBootstrapSourceNote:
 class TestActivityLogModeVocabulary:
     """Activity-log examples list runtime mode tokens from contracts.py."""
 
-    EXPECTED_OPTIONS = list(contracts.ACTIVITY_LOG_MODES)
+    EXPECTED_OPTIONS: ClassVar[list[str]] = list(contracts.ACTIVITY_LOG_MODES)
 
     def test_activity_log_template_uses_runtime_mode_tokens(self) -> None:
         modes = _extract_mode_options(_read(ACTIVITY_LOG_TEMPLATE))

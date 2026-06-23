@@ -45,8 +45,5 @@ def test_write_catalog_index_roundtrip_external_count() -> None:
 
 def test_read_external_skill_entries_non_empty_with_authoring_or_legacy() -> None:
     rows = read_external_skill_entries()
-    if (
-        (AUTHORING_SKILLS_DIR.exists() and any(AUTHORING_SKILLS_DIR.glob("*.mdx")))
-        or EXTERNAL_SKILLS_PATH.exists()
-    ):
+    if (AUTHORING_SKILLS_DIR.exists() and any(AUTHORING_SKILLS_DIR.glob("*.mdx"))) or EXTERNAL_SKILLS_PATH.exists():
         assert len(rows) > 0

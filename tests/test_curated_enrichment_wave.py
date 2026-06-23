@@ -12,7 +12,8 @@ ROOT = Path(__file__).resolve().parent.parent
 def _load_wave_module():
     path = ROOT / "scripts" / "curated_catalog_enrichment_wave.py"
     spec = importlib.util.spec_from_file_location("curated_enrichment_wave", path)
-    assert spec is not None and spec.loader is not None
+    assert spec is not None
+    assert spec.loader is not None
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod

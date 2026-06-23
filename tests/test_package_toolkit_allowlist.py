@@ -10,7 +10,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "skills" / "skill-c
 
 from package import PORTABLE_TOOLKIT_MODULES, package_skill
 
-
 VALID_SKILL_MD = """\
 ---
 name: toolkit-allowlist
@@ -40,11 +39,7 @@ def test_package_vendors_only_allowlisted_toolkit_modules(tmp_path: Path) -> Non
 
     zip_path = Path(result["output_path"])
     with zipfile.ZipFile(zip_path) as zf:
-        toolkit_names = {
-            Path(name).name
-            for name in zf.namelist()
-            if "/scripts/asset_toolkit/" in name
-        }
+        toolkit_names = {Path(name).name for name in zf.namelist() if "/scripts/asset_toolkit/" in name}
 
     assert toolkit_names == set(PORTABLE_TOOLKIT_MODULES)
     assert "validate_repo.py" not in toolkit_names

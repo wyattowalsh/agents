@@ -15,10 +15,10 @@ SRC_DIR = NERDBOT_ROOT / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from nerdbot.cli import build_parser, main  # noqa: E402
-from nerdbot.contracts import MODES, OPERATION_JOURNAL_PATH  # noqa: E402
-from nerdbot.graph import build_graph  # noqa: E402
-from nerdbot.retrieval import build_fts_index, query, query_fts  # noqa: E402
+from nerdbot.cli import build_parser, main
+from nerdbot.contracts import MODES, OPERATION_JOURNAL_PATH
+from nerdbot.graph import build_graph
+from nerdbot.retrieval import build_fts_index, query, query_fts
 
 
 def _payload(capsys) -> dict[str, Any]:  # type: ignore[no-untyped-def]
@@ -103,18 +103,16 @@ def test_ingest_local_binary_source_preserves_bytes_and_checksum(tmp_path: Path,
     capsys.readouterr()
 
     assert (
-        main(
-            [
-                "ingest",
-                "--root",
-                str(root),
-                "--source",
-                str(source),
-                "--copy-outside-root",
-                "--apply",
-                "--compact",
-            ]
-        )
+        main([
+            "ingest",
+            "--root",
+            str(root),
+            "--source",
+            str(source),
+            "--copy-outside-root",
+            "--apply",
+            "--compact",
+        ])
         == 0
     )
     payload = _payload(capsys)
@@ -169,7 +167,7 @@ def test_query_fts_graph_watch_and_replay_surfaces(tmp_path: Path, capsys) -> No
     assert not (root / "indexes" / "generated" / "nerdbot-fts.sqlite3").exists()
 
     graph = build_graph(root)
-    assert cast(int, graph.metrics["edge_count"]) >= 2
+    assert cast("int", graph.metrics["edge_count"]) >= 2
     assert any(edge.edge_type == "aliases" for edge in graph.edges)
 
     assert main(["query", "--root", str(root), "alpha", "--compact"]) == 0

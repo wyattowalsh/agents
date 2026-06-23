@@ -91,15 +91,13 @@ def write_healthy_server_tools(tools: Path) -> None:
 
 def base_env(tmp_path: Path, tools: Path) -> dict[str, str]:
     env = os.environ.copy()
-    env.update(
-        {
-            "OC_STATE_DIR": str(tmp_path / "state"),
-            "OPENCODE_SERVER_USERNAME": "user",
-            "OPENCODE_SERVER_PASSWORD": "secret",
-            "OPENCODE_SERVER_URL": "http://127.0.0.1:4096",
-            "PATH": f"{tools}:{env['PATH']}",
-        }
-    )
+    env.update({
+        "OC_STATE_DIR": str(tmp_path / "state"),
+        "OPENCODE_SERVER_USERNAME": "user",
+        "OPENCODE_SERVER_PASSWORD": "secret",
+        "OPENCODE_SERVER_URL": "http://127.0.0.1:4096",
+        "PATH": f"{tools}:{env['PATH']}",
+    })
     return env
 
 
@@ -215,15 +213,13 @@ def test_status_no_start_renders_all_lan_urls(tmp_path: Path) -> None:
     )
 
     env = os.environ.copy()
-    env.update(
-        {
-            "OC_STATE_DIR": str(state),
-            "OPENCODE_SERVER_USERNAME": "user",
-            "OPENCODE_SERVER_PASSWORD": "secret",
-            "OPENCODE_SERVER_URL": "http://127.0.0.1:4096",
-            "PATH": f"{tools}:{env['PATH']}",
-        }
-    )
+    env.update({
+        "OC_STATE_DIR": str(state),
+        "OPENCODE_SERVER_USERNAME": "user",
+        "OPENCODE_SERVER_PASSWORD": "secret",
+        "OPENCODE_SERVER_URL": "http://127.0.0.1:4096",
+        "PATH": f"{tools}:{env['PATH']}",
+    })
 
     result = subprocess.run(
         [str(OC), "status", "--no-start"],

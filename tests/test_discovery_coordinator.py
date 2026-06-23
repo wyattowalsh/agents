@@ -18,7 +18,8 @@ def _load(name: str, filename: str):
         sys.path.insert(0, str(SCRIPTS))
     path = SCRIPTS / filename
     spec = importlib.util.spec_from_file_location(name, path)
-    assert spec and spec.loader
+    assert spec
+    assert spec.loader
     mod = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = mod
     spec.loader.exec_module(mod)
@@ -97,14 +98,12 @@ def test_write_checkpoint_includes_journal_v2_fields(coord_mod, tmp_path) -> Non
 def test_verify_counts_success(coord_mod, tmp_path) -> None:
     artifact = tmp_path / "W2-RS-00.json"
     artifact.write_text(
-        json.dumps(
-            {
-                "task_id": "W2-RS-00",
-                "role": "registry-scout",
-                "status": "success",
-                "candidates": [],
-            }
-        ),
+        json.dumps({
+            "task_id": "W2-RS-00",
+            "role": "registry-scout",
+            "status": "success",
+            "candidates": [],
+        }),
         encoding="utf-8",
     )
     manifest = {

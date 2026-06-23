@@ -21,6 +21,13 @@ def tmp_repo(tmp_path, monkeypatch):
     monkeypatch.setattr("wagents.cli.ROOT", tmp_path)
     monkeypatch.setattr("wagents.rendering.ROOT", tmp_path)
     monkeypatch.setattr("wagents.rendering.CONTENT_DIR", tmp_path / "docs/src/content/docs")
+    monkeypatch.setattr("wagents.site_model.ROOT", tmp_path)
+    monkeypatch.setattr("wagents.skill_index.AUTHORING_SKILLS_DIR", tmp_path / "docs/src/authoring/skills")
+    monkeypatch.setattr(
+        "wagents.skill_index.CATALOG_INDEX_PATH",
+        tmp_path / "docs/public/generated-registries/skills-catalog-index.json",
+    )
+    monkeypatch.setattr("wagents.authoring_sync.AUTHORING_SKILLS_DIR", tmp_path / "docs/src/authoring/skills")
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
     monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")

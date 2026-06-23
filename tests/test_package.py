@@ -275,6 +275,50 @@ class TestDryRun:
 
         assert data["manifest"]["skills"][0]["zip"] is None
 
+    def test_dry_run_blocks_nonportable_frontmatter_hook_command(self, tmp_path: Path):
+        skill_md = """\
+---
+name: test-pkg
+description: A test skill for packaging
+license: MIT
+metadata:
+  author: tester
+  version: "1.0.0"
+hooks:
+  Stop:
+    - hooks:
+        - type: command
+          command: "uv run python skills/test-pkg/scripts/verify.py stop"
+---
+
+# Test Pkg
+
+Body content here.
+"""
+        skill_dir = _make_skill(tmp_path, skill_md)
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, dry_run=True)
+
+        failed_checks = {c["check"]: c for c in result["portability_checks"] if not c["passed"]}
+        assert result["blocked"] is True
+        assert result["portable"] is False
+        assert "frontmatter_commands_portable" in failed_checks
+        assert "skills/test-pkg/scripts/verify.py" in failed_checks["frontmatter_commands_portable"]["details"]
+
+    def test_body_repo_validation_command_remains_allowed(self, tmp_path: Path):
+        skill_md = VALID_SKILL_MD.replace(
+            "Body content here.",
+            "Run `uv run python skills/skill-creator/scripts/audit.py skills/test-pkg/ --format json`.",
+        )
+        skill_dir = _make_skill(tmp_path, skill_md)
+        output_dir = tmp_path / "dist"
+
+        result = package_skill(skill_dir, output_dir, dry_run=True)
+
+        failed_checks = {c["check"] for c in result["portability_checks"] if not c["passed"]}
+        assert "frontmatter_commands_portable" not in failed_checks
+
 
 # ---------------------------------------------------------------------------
 # Missing fields
@@ -397,14 +441,12 @@ Body.
             "errors": ["blocked"],
         }
         data["results"].append(blocked_result)
-        data["manifest"]["skills"].append(
-            {
-                "name": "blocked-skill",
-                "version": "0.0.0",
-                "description": "Blocked skill",
-                "zip": None,
-            }
-        )
+        data["manifest"]["skills"].append({
+            "name": "blocked-skill",
+            "version": "0.0.0",
+            "description": "Blocked skill",
+            "zip": None,
+        })
 
         monkeypatch.setattr("package.package_all", lambda *args, **kwargs: data)
         monkeypatch.setattr(sys, "argv", ["package.py", "--all"])

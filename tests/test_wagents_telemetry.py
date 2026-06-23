@@ -50,10 +50,7 @@ def test_run_entrypoint_records_telemetry(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("WAGENTS_TELEMETRY_PATH", str(telemetry_file))
     monkeypatch.setattr(sys, "argv", ["wagents", "self", "doctor"])
 
-    try:
-        run()
-    except SystemExit as exc:
-        assert exc.code == 0
+    run()
 
     lines = telemetry_file.read_text(encoding="utf-8").strip().splitlines()
     assert len(lines) == 1

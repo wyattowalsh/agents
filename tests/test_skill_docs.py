@@ -23,9 +23,9 @@ def _skill(id_suffix: str, *, source: str = "custom") -> CatalogNode:
 
 
 def test_skill_detail_paths():
-    assert skill_detail_href("honest-review", source="custom") == "/skills/catalog/custom/honest-review/"
-    assert skill_detail_slug("honest-review", source="custom") == "skills/catalog/custom/honest-review"
-    assert skill_detail_href("baseline-ui", source="curated-external") == "/skills/catalog/external/baseline-ui/"
+    assert skill_detail_href("review", source="custom") == "/skills/catalog/custom/review/"
+    assert skill_detail_slug("review", source="custom") == "skills/catalog/custom/review"
+    assert skill_detail_href("demo-external", source="curated-external") == "/skills/catalog/external/demo-external/"
 
 
 def test_merge_prefers_custom_over_installed():

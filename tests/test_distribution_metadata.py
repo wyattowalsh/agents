@@ -93,6 +93,18 @@ def test_agent_bundle_points_to_canonical_sources():
     assert bundle["adapters"]["openspec"]["minimumNode"] == format_min_node_version()
     assert bundle["adapters"]["openspec"]["toolMapping"] == OPENSPEC_TOOL_BY_AGENT
 
+    # apm adapter (Wave 4) - assert structure when present
+    if "apm" in bundle.get("adapters", {}):
+        apm = bundle["adapters"]["apm"]
+        assert "install" in apm
+        assert "update" in apm
+        assert "audit" in apm
+        assert "compile" in apm
+        assert "materialize" in apm
+        assert apm["install"]  # non-empty command
+        # explicit keys per Wave 4 polish
+        assert {"install", "audit", "materialize"} <= set(apm.keys())
+
 
 def test_claude_plugin_manifest_uses_repo_root_components():
     manifest = load_json(".claude-plugin/plugin.json")
@@ -405,15 +417,19 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
         "gemini-cli",
         "antigravity",
         "cursor-editor",
-        "cursor-agent-web",
-        "cursor-agent-cli",
+        "cursor-cli",
+        "cursor-cloud-agent",
+        "cursor-cloud-subagent",
+        "cursor-bugbot",
+        "cursor-acp",
+        "grok-build",
         "perplexity-desktop",
         "cherry-studio",
     }
 
     assert expected_ids.issubset(harnesses)
-    assert harnesses["cursor-agent-web"]["support_tier"] == "planned-research-backed"
-    assert harnesses["cursor-agent-cli"]["support_tier"] == "planned-research-backed"
+    assert harnesses["cursor-cloud-agent"]["support_tier"] == "planned-research-backed"
+    assert harnesses["cursor-cli"]["support_tier"] == "repo-present-validation-required"
     assert harnesses["perplexity-desktop"]["support_tier"] == "experimental"
     assert harnesses["cherry-studio"]["support_tier"] == "experimental"
     assert "skills" not in harnesses["claude-desktop"]["projection_surfaces"]

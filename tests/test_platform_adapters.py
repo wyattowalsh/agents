@@ -31,4 +31,3 @@ def test_gemini_adapter_dry_run_home_notes_when_settings_missing(monkeypatch):
     adapter.sync_home(ctx, {}, {}, {}, {})
     # no settings file: merge_gemini_settings returns early without changes
     assert isinstance(ctx.changes, list)
-

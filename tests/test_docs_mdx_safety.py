@@ -26,7 +26,7 @@ def test_escape_composed_page_prose_escapes_angle_brackets_outside_fences() -> N
 
 
 def test_escape_composed_page_prose_preserves_jsx_closing_tags() -> None:
-    page = "<CardGrid>\n  <LinkCard title=\"x\" href=\"/\" />\n</CardGrid>\n"
+    page = '<CardGrid>\n  <LinkCard title="x" href="/" />\n</CardGrid>\n'
     out = escape_composed_page_prose(page)
     assert "</CardGrid>" in out
     assert "&lt;/CardGrid&gt;" not in out
