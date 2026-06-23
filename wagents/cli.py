@@ -2723,7 +2723,7 @@ def eval_coverage(
 def apm_materialize(
     check: bool = typer.Option(False, "--check", help="Dry-run: compute changes without writing"),
 ) -> None:
-    """Materialize agents/, instructions/, hooks and mcp fragment into .apm/ and update apm.yml (mcp only)."""
+    """Materialize agents/, instructions/, hooks into .apm/ and keep apm.yml mcp: [] (MCPHub-owned)."""
     from wagents.apm import materialize as _materialize
     from wagents.context import get_repo_root
 

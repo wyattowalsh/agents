@@ -12,7 +12,6 @@ from wagents.apm import (
     materialize_agents,
     materialize_hooks,
     materialize_instructions,
-    materialize_mcp_fragment,
 )
 
 
@@ -162,20 +161,6 @@ def test_materialize_hooks_emits_shapes(tmp_path: Path):
     assert cur.get("version") == 1
     cop = json.loads((apm_h / "github-copilot.json").read_text())
     assert "hooks" in cop
-
-
-def test_materialize_mcp_fragment_filters_and_local(tmp_path: Path):
-    _write_mcp_registry(tmp_path)
-    frag = materialize_mcp_fragment(tmp_path)
-    names = [e.get("name") if isinstance(e, dict) else e for e in frag]
-    # brave is public -> included (object form)
-    assert any(n == "brave-search" for n in names)
-    # internal tagged excluded
-    assert not any(n == "internal-only" for n in names)
-    # docling-local -> registry:false
-    local = next(e for e in frag if isinstance(e, dict) and e.get("name") == "docling-local")
-    assert local.get("registry") is False
-    assert "command" in local
 
 
 def test_materialize_orchestrates_and_updates_apm_yml(tmp_path: Path):
