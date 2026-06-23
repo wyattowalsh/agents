@@ -13,22 +13,25 @@ interface design skill for UI implementation, UX judgment, visual taste,
 accessibility, motion, AI-interface patterns, and rendered proof. External
 sources are evidence only, not authority or install approval.
 
-## Fold And Remove Matrix
+## Fold And Retain Matrix
 
 This change makes `/design` the single active skill/catalog row for
 frontend/product interface design, UI/UX taste, accessibility-facing UI proof,
 rendered browser proof, and Chrome DevTools-backed interface verification.
-Folded sources are removed as active skills or curated rows after their useful
-patterns are represented here and in `skills/design/references/`.
+Chrome DevTools skills are retained as active operational browser-debugging
+skills; `/design` uses their proof patterns for UI work but does not own or
+remove general browser debugging. Folded non-Chrome sources are removed as
+active skills or curated rows after their useful patterns are represented here
+and in `skills/design/references/`.
 
 | Folded source | Previous primary purpose | Useful synthesis retained in `/design` | Removal decision |
 | --- | --- | --- | --- |
-| `chrome-devtools` | General Chrome DevTools MCP page debugging, snapshots, screenshots, console and network checks. | Chrome proof default: select/create page, navigate, wait, snapshot before interaction, inspect console/network, screenshot when visual evidence matters. | Remove custom skill directory, authoring row, generated catalog page, and research page. |
-| `chrome-devtools-a11y-debugging` | Browser-grounded accessibility audit through snapshots, Lighthouse, focus, labels, contrast, and tap targets. | Accessibility tree as primary evidence, keyboard/focus traversal, fresh snapshots after state changes, visual focus/contrast support. | Remove custom skill directory, authoring row, generated catalog page, and research page. |
-| `chrome-devtools-debug-optimize-lcp` | LCP trace workflow, hero element discovery, waterfalls, render blocking, fix verification. | UI-facing hero/LCP proof for perceived load: identify actual visible candidate, inspect discovery/priority/lazy-loading/render delay, verify comparable conditions. | Remove custom skill directory, authoring row, generated catalog page, and research page. |
-| `chrome-devtools-memory-leak-debugging` | Browser and JavaScript memory-leak reproduction with snapshots and bounded analysis. | UI lifecycle smell checks for repeated open/close surfaces, retained DOM/media/canvas resources, animation loops, and raw heap artifact guardrails. | Remove custom skill directory, authoring row, generated catalog page, and research page. |
-| `chrome-devtools-troubleshooting` | MCP setup, initialization, connection, page listing, missing tools, and profile issues. | Troubleshooting fallback only: record missing tools or connection blockers, do not mutate MCP config from `/design`, and route setup repair outside this skill. | Remove custom skill directory, authoring row, generated catalog page, and research page. |
-| `chrome-devtools-cli` | Terminal-driven `chrome-devtools` CLI usage and scripts. | Optional CLI fallback when MCP tools are unavailable or the user explicitly asks for shell automation; no global installs. | Remove custom skill directory, authoring row, generated catalog page, and research page. |
+| `chrome-devtools` | General Chrome DevTools MCP page debugging, snapshots, screenshots, console and network checks. | Chrome proof default: select/create page, navigate, wait, snapshot before interaction, inspect console/network, screenshot when visual evidence matters. | Retain active custom skill directory, authoring row, generated catalog page, registry row, and research page. |
+| `chrome-devtools-a11y-debugging` | Browser-grounded accessibility audit through snapshots, Lighthouse, focus, labels, contrast, and tap targets. | Accessibility tree as primary evidence, keyboard/focus traversal, fresh snapshots after state changes, visual focus/contrast support. | Retain active custom skill; `/design` uses these patterns for UI-facing a11y proof and hands off standalone a11y browser debugging. |
+| `chrome-devtools-debug-optimize-lcp` | LCP trace workflow, hero element discovery, waterfalls, render blocking, fix verification. | UI-facing hero/LCP proof for perceived load: identify actual visible candidate, inspect discovery/priority/lazy-loading/render delay, verify comparable conditions. | Retain active custom skill; `/design` uses UI-facing LCP heuristics and routes deep performance work outside design. |
+| `chrome-devtools-memory-leak-debugging` | Browser and JavaScript memory-leak reproduction with snapshots and bounded analysis. | UI lifecycle smell checks for repeated open/close surfaces, retained DOM/media/canvas resources, animation loops, and raw heap artifact guardrails. | Retain active custom skill; `/design` only performs UI lifecycle smell checks and routes deep heap analysis outside design. |
+| `chrome-devtools-troubleshooting` | MCP setup, initialization, connection, page listing, missing tools, and profile issues. | Troubleshooting fallback only: record missing tools or connection blockers, do not mutate MCP config from `/design`, and route setup repair outside this skill. | Retain active custom skill for MCP/browser setup troubleshooting. |
+| `chrome-devtools-cli` | Terminal-driven `chrome-devtools` CLI usage and scripts. | Optional CLI fallback when MCP tools are unavailable or the user explicitly asks for shell automation; no global installs from `/design`. | Retain active custom skill for terminal-driven Chrome DevTools CLI work. |
 | `baseline-ui` | External baseline UI/frontend quality guidance. | Baseline UI heuristics folded into design thesis, accessibility, responsive layout, and proof gates. | Remove curated external row and research page. |
 | `fixing-accessibility` | External accessibility-fix workflow. | Labels, focus, keyboard, contrast, and semantic remediation remain in `/design` for UI-facing work. | Remove curated external row and research page. |
 | `fixing-metadata` | External page metadata/SEO-adjacent UI polish. | Keep only UI-facing document/title/social-preview awareness; route deep SEO outside `/design`. | Remove curated external row and research page. |
