@@ -135,7 +135,9 @@ def test_codex_plugin_manifest_and_marketplace_are_git_backed():
     assert manifest["name"] == "agents"
     assert "version" not in manifest
     assert manifest["skills"] == "./skills/"
+    assert manifest["agents"] == "./agents/"
     assert (ROOT / manifest["skills"]).is_dir()
+    assert (ROOT / manifest["agents"]).is_dir()
     assert (ROOT / manifest["mcpServers"]).is_file()
 
     assert marketplace["name"] == "agents"

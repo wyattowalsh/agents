@@ -1,0 +1,88 @@
+---
+title: "cursor-session-start-context"
+description: "Report lightweight Cursor session and repository context."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-session-start-context"
+composed: true
+composed_at: "2026-06-23"
+composed_by: "compose-hooks-cursor-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="SessionStart" variant="success" /> <Badge text="cursor" variant="default" /> <Badge text="mode: context" variant="tip" />
+
+> Report lightweight Cursor session and repository context.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-session-start-context` |
+| status_message | `Gathering Cursor session context` |
+| mode | `context` |
+| logical_event | `SessionStart` |
+| matcher | `startup\|resume\|clear` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-session-start-context --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Uses the shared `wagents-hook.py` dispatcher (policy: `_policy_codex_session_start_context`). Provides git context + note that hooks are sourced from registry.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-session-start-context",
+  "description": "Report lightweight Cursor session and repository context.",
+  "status_message": "Gathering Cursor session context",
+  "mode": "context",
+  "logical_event": "SessionStart",
+  "matcher": "startup|resume|clear",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-session-start-context --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (relevant policy + dispatcher)"
+# ... (full file at repo root; key entrypoints below)
+def _policy_codex_session_start_context(payload: NormalizedPayload) -> int:
+    message = (
+        f"Cursor session context: {_git_session_context(payload.cwd)}; managed hooks source=config/hook-registry.json."
+    )
+    return _additional_context(payload, message, policy_id="cursor-session-start-context")
+
+# main dispatch
+POLICIES = {
+    "cursor-session-start-context": _policy_codex_session_start_context,
+    ...
+}
+if __name__ == "__main__":
+    raise SystemExit(main())
+```
+
+Command executed (after template expansion for Cursor harness):
+`python3 /path/to/repo/hooks/wagents-hook.py cursor-session-start-context --harness cursor`
+
+See full `wagents-hook.py` and `_git_session_context` for implementation.
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

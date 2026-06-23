@@ -314,6 +314,21 @@ def cmd_validate(args: argparse.Namespace) -> int:
     return _emit_command_result(result, format_=args.format, success_message="OpenSpec validation")
 
 
+def cmd_archive(args: argparse.Namespace) -> int:
+    openspec_args = ["archive", args.change]
+    if args.yes:
+        openspec_args.append("--yes")
+    if args.skip_specs:
+        openspec_args.append("--skip-specs")
+    if not args.validate:
+        openspec_args.append("--no-validate")
+    argv = build_openspec_argv(openspec_args, package=args.package)
+    if not args.apply:
+        return _emit_dry_run(argv, format_=args.format)
+    result = run_openspec(openspec_args, cwd=REPO_ROOT, package=args.package, capture=False)
+    return result.returncode
+
+
 def cmd_init(args: argparse.Namespace) -> int:
     openspec_args = ["init"]
     if args.path is not None:
@@ -398,6 +413,21 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--strict", action=argparse.BooleanOptionalAction, default=True)
     validate.add_argument("--concurrency", type=int, help="Validation concurrency")
     validate.set_defaults(handler=cmd_validate)
+
+    archive = subparsers.add_parser("archive", help="Archive a completed OpenSpec change")
+    _add_format_argument(archive)
+    archive.add_argument("change", help="OpenSpec change name to archive")
+    archive.add_argument("-y", "--yes", action="store_true", help="Skip OpenSpec confirmation prompts")
+    archive.add_argument("--skip-specs", action="store_true", help="Skip spec update operations")
+    archive.add_argument(
+        "--no-validate",
+        dest="validate",
+        action="store_false",
+        help="Skip OpenSpec validation before archive",
+    )
+    archive.set_defaults(validate=True)
+    archive.add_argument("--apply", action="store_true", help="Execute instead of printing the command")
+    archive.set_defaults(handler=cmd_archive)
 
     return parser
 

@@ -20,6 +20,7 @@
 		"developer-tools"
 	],
 	"skills": "./skills/",
+	"agents": "./agents/",
 	"mcpServers": "./mcp.json",
 	"interface": {
 		"displayName": "Agents",

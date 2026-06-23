@@ -22,14 +22,14 @@
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
-      "validation": "uv run wagents docs generate"
+      "validation": "uv run wagents docs generate --no-installed --check"
     },
     {
       "path": "docs/src/generated-sidebar.mjs",
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
-      "validation": "uv run wagents docs generate"
+      "validation": "uv run wagents docs generate --no-installed --check"
     },
     {
       "path": "docs/src/content/docs/skills/",
@@ -43,7 +43,7 @@
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
-      "validation": "uv run wagents docs generate"
+      "validation": "uv run wagents docs generate --no-installed --check"
     }
   ],
   "docs_truth_rules": [

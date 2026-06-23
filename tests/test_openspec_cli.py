@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import subprocess
+from pathlib import Path
 
 from typer.testing import CliRunner
 
@@ -74,6 +75,19 @@ def test_openspec_archive_dry_run_prints_command(tmp_repo):
 
     assert result.exit_code == 0, result.output
     assert "npx -y @fission-ai/openspec@latest archive demo-change --yes --skip-specs --no-validate" in result.output
+
+
+def test_portable_openspec_cli_archive_dry_run_prints_command():
+    script = Path(__file__).resolve().parents[1] / "skills" / "openspec-workflow" / "scripts" / "openspec_cli.py"
+    result = subprocess.run(
+        ["python3", str(script), "archive", "demo-change", "--yes", "--skip-specs", "--no-validate"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "npx -y @fission-ai/openspec@latest archive demo-change --yes --skip-specs --no-validate" in result.stdout
 
 
 def test_openspec_doctor_reports_project_state(tmp_repo, monkeypatch):

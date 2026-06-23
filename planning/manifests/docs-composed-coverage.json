@@ -1,11 +1,11 @@
 {
   "generated_at": "2026-06-23",
   "surface": "all",
-  "total": 388,
-  "composed": 381,
-  "scaffold": 2,
-  "missing": 5,
-  "composed_pct": 98.2,
+  "total": 397,
+  "composed": 386,
+  "scaffold": 11,
+  "missing": 0,
+  "composed_pct": 97.2,
   "by_surface": {
     "agents": {
       "composed": 8,
@@ -19,13 +19,13 @@
     },
     "skills": {
       "composed": 352,
-      "scaffold": 2,
+      "scaffold": 11,
       "missing": 0
     },
     "hooks": {
-      "composed": 17,
+      "composed": 22,
       "scaffold": 0,
-      "missing": 5
+      "missing": 0
     },
     "configs": {
       "composed": 3,

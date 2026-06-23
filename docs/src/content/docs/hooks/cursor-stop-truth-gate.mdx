@@ -1,0 +1,77 @@
+---
+title: "cursor-stop-truth-gate"
+description: "Ask Cursor for one more pass when final code-change claims omit validation evidence."
+page_kind: "hook"
+source_kind: "registry"
+asset_id: "cursor-stop-truth-gate"
+composed: true
+composed_at: "2026-06-23"
+composed_by: "compose-hooks-cursor-wave-1"
+docs_density: standard
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, CardGrid, LinkCard, Aside } from '@astrojs/starlight/components';
+
+<Badge text="hook" variant="note" /> <Badge text="Stop" variant="caution" /> <Badge text="cursor" variant="default" /> <Badge text="mode: enforce" variant="tip" />
+
+> Ask Cursor for one more pass when final code-change claims omit validation evidence.
+
+## Registry Entry
+
+| Field | Value |
+|-------|-------|
+| id | `cursor-stop-truth-gate` |
+| status_message | `Checking final-answer evidence` |
+| mode | `enforce` |
+| logical_event | `Stop` |
+| command | `python3 {repo_root}/hooks/wagents-hook.py cursor-stop-truth-gate --harness {harness}` |
+| timeout | `5` |
+| harnesses | `["cursor"]` |
+
+<Aside type="note">
+Stop hook policy `_policy_codex_stop_truth_gate`. Uses regexes for change claims vs. validation evidence; respects stop_hook_active guard. Emits block+reason for Cursor.
+</Aside>
+
+<details class="source-disclosure">
+<summary>Full hook config + command reference</summary>
+
+```json title="config/hook-registry.json (entry)"
+{
+  "id": "cursor-stop-truth-gate",
+  "description": "Ask Cursor for one more pass when final code-change claims omit validation evidence.",
+  "status_message": "Checking final-answer evidence",
+  "mode": "enforce",
+  "logical_event": "Stop",
+  "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-stop-truth-gate --harness {harness}",
+  "timeout": 5,
+  "harnesses": [
+    "cursor"
+  ]
+}
+```
+
+```python title="hooks/wagents-hook.py (policy + guard)"
+def _policy_codex_stop_truth_gate(payload: NormalizedPayload) -> int:
+    if payload.stop_hook_active:
+        return 0
+    ...
+    # checks last assistant message for claims without evidence
+    if has_claim and not has_evidence:
+        return _stop_retry(payload, "Add explicit validation evidence (tests, commands, diffs) before stopping.")
+    return 0
+```
+
+Command: `python3 .../wagents-hook.py cursor-stop-truth-gate --harness cursor`
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Hooks Hub" href="/hooks/" description="All repo-managed lifecycle hooks." />
+  <LinkCard title="wagents hooks" href="/cli/" description="Inspect and validate hooks via CLI." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/hook-registry.json)

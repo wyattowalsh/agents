@@ -592,3 +592,36 @@ class TestDocsResearchCommand:
         assert "research cache incomplete for curated-external" in result.output
         assert "Research cache coverage (custom):" in result.output
         assert "Research cache coverage (curated-external):" in result.output
+
+
+def test_docs_generate_check_reports_stale_site_data(tmp_repo, monkeypatch):
+    import pytest
+    from typer import Exit
+
+    from wagents import docs as docs_mod
+
+    monkeypatch.setattr("wagents.skill_index.catalog_index_stale_reason", lambda: None)
+    monkeypatch.setattr(
+        docs_mod,
+        "collect_all_doc_nodes",
+        lambda **kwargs: [_make_node("skill")],
+    )
+    monkeypatch.setattr(
+        docs_mod,
+        "read_external_skill_entries",
+        lambda: [],
+    )
+    monkeypatch.setattr(docs_mod, "_count_mcp_servers_from_config", lambda: 0)
+    monkeypatch.setattr(docs_mod, "_has_mcp_overview_page", lambda: False)
+    monkeypatch.setattr(docs_mod, "render_sidebar_module", lambda nodes: "// sidebar\n")
+
+    site_path = tmp_repo / "docs" / "src" / "generated-site-data.mjs"
+    site_path.parent.mkdir(parents=True, exist_ok=True)
+    site_path.write_text("export const stale = true;\n", encoding="utf-8")
+
+    sidebar_path = tmp_repo / "docs" / "src" / "generated-sidebar.mjs"
+    sidebar_path.write_text("// sidebar\n", encoding="utf-8")
+
+    with pytest.raises(Exit) as excinfo:
+        docs_generate(check=True, include_installed=False)
+    assert excinfo.value.exit_code == 1

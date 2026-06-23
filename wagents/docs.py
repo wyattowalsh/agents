@@ -1895,8 +1895,8 @@ def _sidebar_custom_skill_lanes(nodes: list) -> list[str]:
     return lines
 
 
-def write_sidebar(nodes: list) -> None:
-    """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
+def render_sidebar_module(nodes: list) -> str:
+    """Render docs/src/generated-sidebar.mjs content without writing to disk."""
     agents = [n for n in nodes if n.kind == "agent"]
     mcps = [n for n in nodes if n.kind == "mcp"]
     mcp_overview_path = CONTENT_DIR / "mcp" / "index.mdx"
@@ -1979,10 +1979,14 @@ def write_sidebar(nodes: list) -> None:
         lines.append("  { slug: 'harness-support', label: 'Harness Support' },")
     lines.append("];")
     lines.append("")
+    return "\n".join(lines)
 
+
+def write_sidebar(nodes: list) -> None:
+    """Write docs/src/generated-sidebar.mjs with dynamic sidebar config."""
     sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     sidebar_path.parent.mkdir(parents=True, exist_ok=True)
-    sidebar_path.write_text("\n".join(lines))
+    sidebar_path.write_text(render_sidebar_module(nodes), encoding="utf-8")
 
 
 def regenerate_sidebar_and_indexes(*, include_installed: bool = False) -> None:
@@ -2087,6 +2091,48 @@ def docs_init():
     typer.echo("Done.")
 
 
+def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: bool) -> list[str]:
+    """Return remediation messages when key generated docs artifacts drift from sources."""
+    from wagents.skill_index import catalog_index_stale_reason
+
+    reasons: list[str] = []
+    catalog_reason = catalog_index_stale_reason()
+    if catalog_reason:
+        reasons.append(catalog_reason)
+
+    nodes = collect_all_doc_nodes(include_installed=include_installed, include_drafts=include_drafts)
+    external_entries = read_external_skill_entries()
+    expected_site = render_site_data_module(
+        site_data(
+            nodes,
+            mcp_config_count=_count_mcp_servers_from_config(),
+            has_mcp_overview=_has_mcp_overview_page(),
+            external_skills=external_entries,
+        )
+    )
+    site_path = DOCS_DIR / "src" / "generated-site-data.mjs"
+    if not site_path.exists():
+        reasons.append(
+            "docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`"
+        )
+    elif site_path.read_text(encoding="utf-8") != expected_site:
+        reasons.append(
+            "docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`"
+        )
+
+    expected_sidebar = render_sidebar_module(nodes)
+    sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
+    if not sidebar_path.exists():
+        reasons.append(
+            "docs/src/generated-sidebar.mjs missing; run `uv run wagents docs generate --no-installed`"
+        )
+    elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
+        reasons.append(
+            "docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`"
+        )
+    return reasons
+
+
 def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> None:
     """Generate MDX content pages from repo assets."""
     # W3: at start of generate, sync custom authoring from repo skills/ (populates docs/src/authoring/skills/),
@@ -2177,6 +2223,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
 
 @docs_app.command("generate")
 def docs_generate(
+    check: bool = typer.Option(False, "--check", help="Exit 1 when generated docs artifacts are stale"),
     include_drafts: bool = typer.Option(False, "--include-drafts", help="Include draft skills"),
     include_installed: bool = typer.Option(
         False,
@@ -2187,6 +2234,17 @@ def docs_generate(
     """Generate MDX content pages from repo assets."""
     include_drafts = _resolve_typer_option(include_drafts, default=False)
     include_installed = _resolve_typer_option(include_installed, default=False)
+    if check:
+        reasons = _docs_generate_stale_reasons(
+            include_drafts=include_drafts,
+            include_installed=include_installed,
+        )
+        if reasons:
+            for reason in reasons:
+                typer.echo(reason, err=True)
+            raise typer.Exit(code=1)
+        typer.echo("Generated docs artifacts are up to date")
+        return
     _docs_generate_impl(include_drafts=include_drafts, include_installed=include_installed)
 
 
