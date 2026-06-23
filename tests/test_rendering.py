@@ -228,6 +228,25 @@ class TestRenderSkillPage:
         assert "Enriched from research cache (stub)" in result
         assert "SKILL.md is not available locally" not in result
 
+    def test_pip_cli_catalog_row_skips_agentskills_blurb(self, tmp_repo):
+        node = _make_node(
+            "apm-cli",
+            source="curated-external",
+            source_path="docs/src/authoring/skills/apm-cli.mdx",
+            metadata={
+                "_skills_install_command": "pip install apm-cli",
+                "_skills_target_agents": ["claude-code", "opencode"],
+                "_curated_status": "install-now-after-trust-gate",
+            },
+            body="Microsoft Agent Package Manager CLI.\n",
+        )
+        result = render_skill_page(node, [], [node])
+        assert "agentskills.io" not in result.split("Standalone")[0] or "Not an" in result
+        assert "Standalone **CLI tool**" in result
+        assert 'usage="apm --help"' in result
+        assert "config/external-skills.md" not in result
+        assert "docs/src/authoring/skills/apm-cli.mdx" in result
+
     def test_installed_skill_badge(self, tmp_repo):
         node = _make_node("skill", source="installed", source_path="/tmp/fake/SKILL.md")
         result = render_skill_page(node, [], [node])

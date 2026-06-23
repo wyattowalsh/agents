@@ -21,6 +21,14 @@ REPO_SOURCE = "github:wyattowalsh/agents"
 LOCAL_INSTALLED_SOURCE_LABEL = "local installed inventory"
 
 
+def use_command_for_catalog_row(install_command: str, name: str) -> str:
+    """Slash skill vs CLI tool invocation label for catalog indexes."""
+    cmd = (install_command or "").strip().lower()
+    if cmd.startswith("pip install ") or cmd.startswith("pipx install "):
+        return "apm --help"
+    return f"/{name}"
+
+
 @dataclass(frozen=True)
 class SupportedAgent:
     id: str
@@ -687,7 +695,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "sourcePath": _public_source_path(node.source_path),
         "sourceUrl": _source_url_for_node(node),
         "installCommand": install_command,
-        "useCommand": f"/{node.id}",
+        "useCommand": use_command_for_catalog_row(install_command, node.id),
         "provenanceStatus": provenance_status,
         "status": provenance_status,
         "reviewStatus": review_status,
@@ -725,7 +733,7 @@ def _external_skill_row(entry: ExternalSkillEntry) -> dict[str, Any]:
         "sourcePath": _public_source_path(entry.source_path),
         "sourceUrl": entry.source_url,
         "installCommand": entry.install_command,
-        "useCommand": f"/{entry.name}",
+        "useCommand": use_command_for_catalog_row(entry.install_command, entry.name),
         "provenanceStatus": entry.provenance_status,
         "reviewStatus": "curated" if entry.provenance_status == "verified-install-command" else "unresolved",
         "selectorMode": entry.selector_mode,

@@ -252,9 +252,12 @@ def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
         install_command = _installed_install_command(node) or (
             "Discovered from local installed inventory; no portable install command is recorded."
         )
-    usage = f"/{node.id}"
-    if fm.get("argument-hint"):
-        usage += f" {fm['argument-hint']}"
+    if _is_pip_cli_catalog_row(node):
+        usage = "apm --help"
+    else:
+        usage = f"/{node.id}"
+        if fm.get("argument-hint"):
+            usage += f" {fm['argument-hint']}"
     badge_props = _skill_header_badge_props(node, fm)
     badge_jsx = ", ".join(f'{{ text: "{escape_attr(text)}", variant: "{variant}" }}' for text, variant in badge_props)
     safe_install = install_command.replace("`", "\\`")
@@ -270,6 +273,36 @@ def _render_skill_page_header(node: CatalogNode, fm: dict) -> list[str]:
         "/>",
         "",
     ]
+
+
+def _catalog_install_command(node: CatalogNode) -> str:
+    """Return the portable install command recorded for a catalog node."""
+    if node.source == "custom":
+        return build_install_command(skill=node.id)
+    return _installed_install_command(node)
+
+
+def _is_pip_cli_catalog_row(node: CatalogNode) -> bool:
+    """True when the catalog row installs a CLI tool (pip/pipx), not a slash skill."""
+    cmd = _catalog_install_command(node).strip().lower()
+    return cmd.startswith("pip install ") or cmd.startswith("pipx install ")
+
+
+def _catalog_compatibility_blurb(node: CatalogNode) -> str:
+    """Harness compatibility line for generated catalog pages."""
+    if _is_pip_cli_catalog_row(node):
+        return (
+            "Standalone **CLI tool** for supported agent harnesses (see Harness Coverage). "
+            "Not an [agentskills.io](https://agentskills.io) slash skill."
+        )
+    return (
+        "Works with "
+        "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
+        "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
+        "[OpenCode](https://github.com/anomalyco/opencode), "
+        "and other "
+        "[agentskills.io](https://agentskills.io)-compatible agents."
+    )
 
 
 def _installed_install_command(node: CatalogNode) -> str:
@@ -604,8 +637,10 @@ def _render_curated_trust_section(node: CatalogNode) -> list[str]:
         parts.append(f"Risk notes: {escape_mdx_line(_sanitize_what_it_does(str(risk)))}")
     parts.append("")
     parts.append(
-        "Entry maintained in `config/external-skills.md`; provenance and audit notes are "
-        "authoritative there (research context is advisory)."
+        "Entry maintained in authoring SSOT "
+        f"`docs/src/authoring/skills/{node.id}.mdx` and "
+        "`docs/public/generated-registries/skills-catalog-index.json`; "
+        "research context is advisory."
     )
     parts.append("")
     return parts
@@ -636,14 +671,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     parts.extend(_render_skill_page_header(node, fm))
     parts.append("{/* Quick Start is rendered by SkillPageHeader. */}")
     parts.append("")
-    parts.append(
-        "Works with "
-        "[Claude Code](https://docs.anthropic.com/en/docs/claude-code), "
-        "[Gemini CLI](https://github.com/google-gemini/gemini-cli), "
-        "[OpenCode](https://github.com/anomalyco/opencode), "
-        "and other "
-        "[agentskills.io](https://agentskills.io)-compatible agents."
-    )
+    parts.append(_catalog_compatibility_blurb(node))
     parts.append("")
 
     research_body = load_skill_research(node.id)
@@ -662,7 +690,8 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
             "`docs/public/generated-registries/skills-catalog-index.json` by "
             "`wagents docs generate`."
         )
-        parts.append(" Legacy projection `config/external-skills.md` remains dual-read during migration.")
+        if not _is_pip_cli_catalog_row(node):
+            parts.append(" Legacy projection `config/external-skills.md` remains dual-read during migration.")
         if node.metadata.get("_is_stub"):
             if is_enriched_stub:
                 parts.append(

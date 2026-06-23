@@ -10,6 +10,7 @@ import wagents
 from wagents.catalog import CatalogNode
 from wagents.external_skills import ExternalSkillEntry
 from wagents.parsing import parse_frontmatter, to_title
+from wagents.site_model import use_command_for_catalog_row
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -150,7 +151,7 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
             "sourcePath": e.path,
             "sourceUrl": e.source_url,
             "installCommand": e.install_command,
-            "useCommand": f"/{e.name}",
+            "useCommand": use_command_for_catalog_row(e.install_command, e.name),
             "provenanceStatus": e.provenance_status or ("repo-owned" if e.source_kind == "custom" else ""),
             "status": e.status or ("repo-owned" if e.source_kind == "custom" else e.status),
             "reviewStatus": (
