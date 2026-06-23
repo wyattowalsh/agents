@@ -23,7 +23,10 @@ This repo keeps OpenCode plugin specs on `@latest` and configures thinking level
 
 ```text
 opencode-ensemble/
+├── README.md
 ├── SKILL.md
+├── scripts/
+│   └── check.py
 └── references/
     ├── coordination-patterns.md
     ├── prompt-recipes.md

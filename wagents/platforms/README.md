@@ -15,6 +15,7 @@ wagents/platforms/
 ├── copilot.py       # GitHub Copilot: settings, MCP, rules (placeholder)
 ├── cursor.py        # Cursor: standard client MCP JSON merge
 ├── gemini.py        # Gemini CLI: settings + antigravity MCP (placeholder)
+├── grok.py          # Grok Build CLI adapter
 ├── opencode.py      # OpenCode: complex JSON merge, providers, plugins
 └── vscode.py        # VSCode: repo-local standard MCP JSON
 ```
