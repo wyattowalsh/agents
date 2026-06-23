@@ -15,7 +15,10 @@ from pathlib import Path
 ERROR_PATTERNS = {
     "dependency": [
         (r"(?:npm |yarn |pnpm )?ERR!.*(?:peer dep|ERESOLVE|404|registry)", "Package resolution or registry error"),
-        (r"(?:pip|uv).*(?:Could not find|No matching distribution|ResolutionImpossible)", "Python package not found or version conflict"),
+        (
+            r"(?:pip|uv).*(?:Could not find|No matching distribution|ResolutionImpossible)",
+            "Python package not found or version conflict",
+        ),
         (r"error\[E\d+\].*(?:unresolved|not found).*crate", "Rust crate dependency error"),
         (r"(?:go|module).*(?:cannot find|ambiguous import|unknown revision)", "Go module resolution error"),
         (r"Could not resolve dependencies", "Dependency resolution failure"),
@@ -112,8 +115,7 @@ def parse_log(content: str) -> dict:
 
                     seen_messages.add(key)
                     suggested_fix = SUGGESTED_FIXES.get(category, {}).get(
-                        description,
-                        f"Review the {category} configuration and error context."
+                        description, f"Review the {category} configuration and error context."
                     )
 
                     error_index[key] = len(errors)
@@ -183,7 +185,10 @@ def main():
                 middle_deduped.append(line)
         truncated_lines = head + middle_deduped + tail
         content = "\n".join(truncated_lines)
-        print(f"Log truncated: {len(lines)} -> {len(truncated_lines)} lines (kept head/tail + error context)", file=sys.stderr)
+        print(
+            f"Log truncated: {len(lines)} -> {len(truncated_lines)} lines (kept head/tail + error context)",
+            file=sys.stderr,
+        )
 
     result = parse_log(content)
     print(json.dumps(result, indent=2))

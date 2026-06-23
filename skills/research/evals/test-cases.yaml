@@ -96,7 +96,7 @@ test_cases:
     input: "/research review the authentication module for security issues"
     expected_mode: redirect
     expected_output_contains:
-      - suggestion to use /honest-review
+      - suggestion to use /review
 
   - id: eval-010
     description: "Skill awareness redirect - strategic decision"
@@ -319,7 +319,7 @@ test_cases:
     input: "/research audit this pull request for security bugs"
     expected_mode: redirect
     expected_output_contains:
-      - suggestion to use /honest-review
+      - suggestion to use /review
       - no source-file edits
 
   - id: eval-033

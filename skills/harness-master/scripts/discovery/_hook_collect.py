@@ -7,8 +7,10 @@ import json
 import re
 import subprocess
 import sys
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 HARNESS_ALIASES: dict[str, str] = {
     "copilot": "github-copilot",
@@ -83,7 +85,7 @@ def collect_registry_summary(repo_root: Path) -> dict[str, Any]:
         cmd = str(entry.get("command") or "")
         harness_list = entry.get("harnesses") or []
 
-        if "wagents-hook.py" in cmd or "{repo_root}/hooks/wagents-hook.py" in cmd:
+        if "wagents-hook.py" in cmd or f"{repo_root}/hooks/wagents-hook.py" in cmd:
             wagents_count += 1
 
         for raw_h in harness_list if isinstance(harness_list, (list, tuple)) else []:
@@ -94,7 +96,7 @@ def collect_registry_summary(repo_root: Path) -> dict[str, Any]:
     # dedup + sort lists for stability
     for d in (by_harness, by_logical_event):
         for k in list(d.keys()):
-            d[k] = sorted(set(x for x in d[k] if x))
+            d[k] = sorted({x for x in d[k] if x})
 
     return {
         "by_harness": {k: by_harness[k] for k in sorted(by_harness)},
@@ -196,21 +198,12 @@ def collect_grok_managed(repo_root: Path) -> dict[str, Any]:
 
 def collect_validation_errors(repo_root: Path) -> list[dict[str, str]]:
     """Run the asset_toolkit hook validator via subprocess (cwd=repo_root) and return its errors list."""
-    script = (
-        repo_root
-        / "skills"
-        / "skill-creator"
-        / "scripts"
-        / "asset_toolkit"
-        / "validate_hooks.py"
-    )
+    script = repo_root / "skills" / "skill-creator" / "scripts" / "asset_toolkit" / "validate_hooks.py"
     if not script.is_file():
         return [{"source": "validate_hooks.py", "message": "validator script missing"}]
 
     cmd = [sys.executable, str(script), "--format", "json"]
-    proc = subprocess.run(
-        cmd, cwd=str(repo_root), capture_output=True, text=True, check=False
-    )
+    proc = subprocess.run(cmd, cwd=str(repo_root), capture_output=True, text=True, check=False)
     stdout = (proc.stdout or "").strip()
     if not stdout:
         return [{"source": "validate_hooks", "message": proc.stderr.strip() or "no output"}]

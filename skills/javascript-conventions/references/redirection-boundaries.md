@@ -10,7 +10,7 @@ workstream.
 | Python files, `pyproject.toml`, or Python tooling are primary | `python-conventions` |
 | Shell scripts, Makefiles, or portable shell behavior are primary | `shell-conventions` |
 | CI workflow architecture or deployment pipelines are primary | `devops-engineer` |
-| Frontend UX, visual polish, or component design is primary | `frontend-designer` |
+| Frontend UX, visual polish, or component design is primary | `design` |
 | Docs framework structure or generated docs artifacts are primary | `docs-steward` |
 | JS/TS is incidental inside a larger domain-specific task | The domain skill plus JS/TS conventions only for the JS/TS-owned seam |
 

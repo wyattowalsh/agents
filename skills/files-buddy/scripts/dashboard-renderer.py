@@ -20,7 +20,6 @@ def get_agent_dir(skill_name: str) -> Path:
     return Path.home() / ".claude" / skill_name
 
 
-
 def error_exit(msg: str) -> None:
     """Print an error JSON object and exit with code 1."""
     print(json.dumps({"error": msg}))
@@ -74,7 +73,8 @@ def resolve_output(output_arg: str | None) -> Path:
 def render_data_script(data: object) -> str:
     """Encode JSON safely for embedding inside a script tag."""
     safe_json = (
-        json.dumps(data)
+        json
+        .dumps(data)
         .replace("&", "\\u0026")
         .replace("<", "\\u003c")
         .replace(">", "\\u003e")
@@ -133,10 +133,10 @@ def main(argv: list[str] | None = None) -> None:
     # --- open ---
     opened = False
     if args.open_browser:
-        import subprocess  # noqa: PLC0415
+        import subprocess
 
         cmd = "open" if sys.platform == "darwin" else "xdg-open"
-        subprocess.run([cmd, str(output_path)], check=False)  # noqa: S603
+        subprocess.run([cmd, str(output_path)], check=False)
         opened = True
 
     print(json.dumps({"output": str(output_path), "opened": opened}))

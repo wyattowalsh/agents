@@ -4,13 +4,16 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import PurePosixPath
+from typing import TYPE_CHECKING
 
 from nerdbot.evidence import ReviewItem
 from nerdbot.safety import normalize_vault_relative_path
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 VOLATILE_OBSIDIAN_FILES = {"app.json", "graph.json", "workspace.json", "workspace-mobile.json", "workspace"}
 

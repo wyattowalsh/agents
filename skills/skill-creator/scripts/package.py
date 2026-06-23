@@ -15,19 +15,22 @@ import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
 
-from _shared import parse_frontmatter
+from _shared import (
+    ABSOLUTE_PATH_RE,
+    find_nonportable_frontmatter_commands,
+    format_frontmatter_command_issues,
+    parse_frontmatter,
+)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ASSET_TOOLKIT_SRC = SCRIPT_DIR / "asset_toolkit"
-PORTABLE_TOOLKIT_MODULES = frozenset(
-    {
-        "__init__.py",
-        "common.py",
-        "validate_skill.py",
-        "validate_evals.py",
-        "validate_hooks.py",
-    }
-)
+PORTABLE_TOOLKIT_MODULES = frozenset({
+    "__init__.py",
+    "common.py",
+    "validate_skill.py",
+    "validate_evals.py",
+    "validate_hooks.py",
+})
 WAGENTS_RE = re.compile(r"\bwagents\b", re.IGNORECASE)
 
 # ---------------------------------------------------------------------------
@@ -50,9 +53,6 @@ EXCLUDE_DIRS = {
 }
 EXCLUDE_EXTENSIONS = {".pyc", ".tmp"}
 EXCLUDE_NAMES = {".DS_Store", "manifest.json"}
-
-# Regex: absolute paths (start with /) that are NOT URLs (not preceded by ://)
-ABSOLUTE_PATH_RE = re.compile(r"(?<!:/)(?<!:/)(/(?:usr|tmp|home|etc|var|opt|Users|mnt|root|private)[^\s)*\]]*)")
 
 # Regex: @ imports at the start of a line (repo-specific path assumptions)
 AT_IMPORT_RE = re.compile(r"^@\S+", re.MULTILINE)
@@ -160,31 +160,25 @@ def check_frontmatter_fields(fm: dict) -> list[dict]:
     meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
 
     license_val = fm.get("license", "")
-    checks.append(
-        {
-            "check": "frontmatter_license",
-            "passed": bool(license_val),
-            "details": str(license_val) if license_val else "Missing license field",
-        }
-    )
+    checks.append({
+        "check": "frontmatter_license",
+        "passed": bool(license_val),
+        "details": str(license_val) if license_val else "Missing license field",
+    })
 
     author_val = meta.get("author", "")
-    checks.append(
-        {
-            "check": "frontmatter_author",
-            "passed": bool(author_val),
-            "details": str(author_val) if author_val else "Missing metadata.author field",
-        }
-    )
+    checks.append({
+        "check": "frontmatter_author",
+        "passed": bool(author_val),
+        "details": str(author_val) if author_val else "Missing metadata.author field",
+    })
 
     version_val = meta.get("version", "")
-    checks.append(
-        {
-            "check": "frontmatter_version",
-            "passed": bool(version_val),
-            "details": str(version_val) if version_val else "Missing metadata.version field",
-        }
-    )
+    checks.append({
+        "check": "frontmatter_version",
+        "passed": bool(version_val),
+        "details": str(version_val) if version_val else "Missing metadata.version field",
+    })
 
     return checks
 
@@ -222,6 +216,16 @@ def check_referenced_files(skill_dir: Path, body: str) -> dict:
         "details": (
             f"Missing: {', '.join(missing)}" if missing else f"All {len(mentioned)} packaged resource paths resolve"
         ),
+    }
+
+
+def check_frontmatter_commands_portable(fm: dict) -> dict:
+    """Check executable frontmatter commands for repo-root path assumptions."""
+    issues = find_nonportable_frontmatter_commands(fm)
+    return {
+        "check": "frontmatter_commands_portable",
+        "passed": len(issues) == 0,
+        "details": format_frontmatter_command_issues(issues),
     }
 
 
@@ -286,13 +290,11 @@ def check_required_fields(fm: dict) -> list[dict]:
     checks = []
     for field in ("name", "description"):
         val = fm.get(field, "")
-        checks.append(
-            {
-                "check": f"required_{field}",
-                "passed": bool(val),
-                "details": f"OK ({val[:60]})" if val else f"Missing required field: {field}",
-            }
-        )
+        checks.append({
+            "check": f"required_{field}",
+            "passed": bool(val),
+            "details": f"OK ({val[:60]})" if val else f"Missing required field: {field}",
+        })
     return checks
 
 
@@ -301,6 +303,7 @@ def run_portability_checks(skill_dir: Path, fm: dict, body: str) -> list[dict]:
     checks: list[dict] = []
     checks.extend(check_required_fields(fm))
     checks.extend(check_frontmatter_fields(fm))
+    checks.append(check_frontmatter_commands_portable(fm))
     checks.append(check_no_absolute_paths(body))
     checks.append(check_referenced_files(skill_dir, body))
     checks.append(check_no_wagents_reference(body))

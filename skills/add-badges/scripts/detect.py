@@ -4,6 +4,7 @@
 Outputs structured JSON to stdout; warnings to stderr.
 Pure stdlib — zero pip dependencies.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -95,6 +96,7 @@ DEAD_SERVICES: dict[str, str] = {
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _warn(msg: str) -> None:
     print(f"[detect] {msg}", file=sys.stderr)
 
@@ -165,6 +167,7 @@ def _glob_any(root: Path, pattern: str) -> list[Path]:
 # ---------------------------------------------------------------------------
 # Detectors
 # ---------------------------------------------------------------------------
+
 
 def detect_readme(root: Path) -> dict:
     candidates = [
@@ -278,10 +281,9 @@ def detect_languages(root: Path, pkg_managers: list[dict]) -> list[dict]:
         "deno.json": "typescript",
     }
     for fname, lang in manifest_lang.items():
-        if (root / fname).is_file():
-            if lang in LANG_MAP:
-                icon, color = LANG_MAP[lang]
-                langs[lang] = {"name": lang, "icon": icon, "color": color}
+        if (root / fname).is_file() and lang in LANG_MAP:
+            icon, color = LANG_MAP[lang]
+            langs[lang] = {"name": lang, "icon": icon, "color": color}
 
     # .csproj files → csharp (check root + one level deep, avoid recursive glob)
     if _glob_any(root, "*.csproj") or _glob_any(root, "*/*.csproj"):
@@ -692,6 +694,7 @@ def detect_code_quality(root: Path) -> dict:
         if pyp.is_file():
             pyp_data = _load_toml_cached(pyp)
             if pyp_data:
+
                 def _record_dep_names(values: object) -> None:
                     if not isinstance(values, list):
                         return
@@ -713,7 +716,14 @@ def detect_code_quality(root: Path) -> dict:
         # Linters
         if (root / "ruff.toml").is_file() or (pyp_data and pyp_data.get("tool", {}).get("ruff")):
             result["linters"].append("ruff")
-        eslint_patterns = [".eslintrc", ".eslintrc.js", ".eslintrc.json", ".eslintrc.yml", ".eslintrc.yaml", ".eslintrc.cjs"]
+        eslint_patterns = [
+            ".eslintrc",
+            ".eslintrc.js",
+            ".eslintrc.json",
+            ".eslintrc.yml",
+            ".eslintrc.yaml",
+            ".eslintrc.cjs",
+        ]
         eslint_found = any((root / p).is_file() for p in eslint_patterns)
         if not eslint_found:
             eslint_found = bool(_glob_any(root, "eslint.config.*"))
@@ -723,9 +733,19 @@ def detect_code_quality(root: Path) -> dict:
             result["linters"].append("biome")
 
         # Formatters
-        prettier_patterns = [".prettierrc", ".prettierrc.js", ".prettierrc.json", ".prettierrc.yml",
-                             ".prettierrc.yaml", ".prettierrc.cjs", ".prettierrc.mjs", ".prettierrc.toml",
-                             "prettier.config.js", "prettier.config.cjs", "prettier.config.mjs"]
+        prettier_patterns = [
+            ".prettierrc",
+            ".prettierrc.js",
+            ".prettierrc.json",
+            ".prettierrc.yml",
+            ".prettierrc.yaml",
+            ".prettierrc.cjs",
+            ".prettierrc.mjs",
+            ".prettierrc.toml",
+            "prettier.config.js",
+            "prettier.config.cjs",
+            "prettier.config.mjs",
+        ]
         if any((root / p).is_file() for p in prettier_patterns):
             result["formatters"].append("prettier")
         if pyp_data and pyp_data.get("tool", {}).get("black"):
@@ -817,14 +837,25 @@ def detect_release(root: Path) -> dict:
         "changelog": False,
     }
     try:
-        if (root / ".releaserc").is_file() or (root / ".releaserc.json").is_file() or (root / ".releaserc.yml").is_file():
+        if (
+            (root / ".releaserc").is_file()
+            or (root / ".releaserc.json").is_file()
+            or (root / ".releaserc.yml").is_file()
+        ):
             result["semantic_release"] = True
         if (root / ".changeset").is_dir():
             result["changesets"] = True
         if (root / ".release-please-manifest.json").is_file():
             result["release_please"] = True
-        commit_lint_patterns = ["commitlint.config.js", "commitlint.config.cjs", "commitlint.config.mjs",
-                                "commitlint.config.ts", ".commitlintrc", ".commitlintrc.json", ".commitlintrc.yml"]
+        commit_lint_patterns = [
+            "commitlint.config.js",
+            "commitlint.config.cjs",
+            "commitlint.config.mjs",
+            "commitlint.config.ts",
+            ".commitlintrc",
+            ".commitlintrc.json",
+            ".commitlintrc.yml",
+        ]
         if any((root / p).is_file() for p in commit_lint_patterns):
             result["conventional_commits"] = True
         if (root / "CHANGELOG.md").is_file() or (root / "changelog.md").is_file():
@@ -1115,6 +1146,7 @@ def detect_existing_badges(root: Path, readme_info: dict) -> dict:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Scan a codebase and output metadata as JSON")

@@ -20,9 +20,7 @@ def parse_coverage_json(data: dict) -> list[dict]:
         coverage_pct = round(executed / total * 100, 1)
         missing_lines = info.get("missing_lines", [])
         # Estimate complexity: more missing lines in longer files = higher risk
-        complexity_weighted_risk = round(
-            missing * (1 + len(missing_lines) / max(total, 1)), 2
-        )
+        complexity_weighted_risk = round(missing * (1 + len(missing_lines) / max(total, 1)), 2)
         files.append({
             "path": filepath,
             "coverage_pct": coverage_pct,
@@ -62,9 +60,7 @@ def parse_lcov(content: str) -> list[dict]:
                 continue
             coverage_pct = round(lines_hit / lines_found * 100, 1)
             missing_count = lines_found - lines_hit
-            complexity_weighted_risk = round(
-                missing_count * (1 + len(missing_lines) / max(lines_found, 1)), 2
-            )
+            complexity_weighted_risk = round(missing_count * (1 + len(missing_lines) / max(lines_found, 1)), 2)
             files.append({
                 "path": current_file,
                 "coverage_pct": coverage_pct,
@@ -107,9 +103,7 @@ def analyze(report_path: str) -> dict:
     total_statements = sum(f["statements"] for f in files)
     total_missing = sum(f["missing_count"] for f in files)
     overall_coverage = (
-        round((total_statements - total_missing) / total_statements * 100, 1)
-        if total_statements > 0
-        else 0.0
+        round((total_statements - total_missing) / total_statements * 100, 1) if total_statements > 0 else 0.0
     )
 
     # Identify gaps (files below 80% coverage)
@@ -129,9 +123,7 @@ def analyze(report_path: str) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Analyze coverage reports for gaps ranked by complexity-weighted risk"
-    )
+    parser = argparse.ArgumentParser(description="Analyze coverage reports for gaps ranked by complexity-weighted risk")
     parser.add_argument("report", help="Path to coverage report (JSON or lcov)")
     args = parser.parse_args()
 

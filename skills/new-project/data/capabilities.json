@@ -267,7 +267,7 @@
 			"commands": [],
 			"artifacts": ["DESIGN.md"],
 			"validation": ["test -f DESIGN.md"],
-			"handoff_skills": ["design-consultation", "frontend-designer"],
+			"handoff_skills": ["design-consultation", "design"],
 			"docs_sources": [],
 			"notes": "Do not generate a bloated token system without product context."
 		},
@@ -884,7 +884,7 @@
 			"commands": ["pnpm add react react-dom"],
 			"artifacts": ["src/"],
 			"validation": ["pnpm exec tsc --noEmit"],
-			"handoff_skills": ["frontend-designer"],
+			"handoff_skills": ["design"],
 			"docs_sources": ["https://react.dev/"],
 			"notes": "Use Astro client directives for islands."
 		},
@@ -904,7 +904,7 @@
 			"commands": ["pnpm add tailwindcss @tailwindcss/vite"],
 			"artifacts": ["src/styles/global.css"],
 			"validation": ["pnpm exec tsc --noEmit"],
-			"handoff_skills": ["frontend-designer", "tailwind-design-system"],
+				"handoff_skills": ["design"],
 			"docs_sources": [
 				"https://tailwindcss.com/docs/installation/framework-guides/astro"
 			],
@@ -926,7 +926,7 @@
 			"commands": ["pnpm dlx shadcn@latest init"],
 			"artifacts": ["components.json", "components/"],
 			"validation": ["pnpm exec tsc --noEmit"],
-			"handoff_skills": ["frontend-designer"],
+			"handoff_skills": ["design"],
 			"docs_sources": ["https://ui.shadcn.com/docs/installation"],
 			"notes": "Add individual components only after a concrete need exists."
 		},
@@ -977,7 +977,7 @@
 				"pnpm --dir <docs-root> astro check",
 				"pnpm --dir <docs-root> astro build"
 			],
-			"handoff_skills": ["docs-steward", "frontend-designer"],
+			"handoff_skills": ["docs-steward", "design"],
 			"docs_sources": [
 				"https://starlight.astro.build/guides/css-and-tailwind/"
 			],
@@ -1002,7 +1002,7 @@
 				"pnpm --dir <docs-root> astro check",
 				"pnpm --dir <docs-root> astro build"
 			],
-			"handoff_skills": ["docs-steward", "frontend-designer"],
+			"handoff_skills": ["docs-steward", "design"],
 			"docs_sources": [
 				"https://docs.astro.build/en/guides/integrations-guide/react/"
 			],

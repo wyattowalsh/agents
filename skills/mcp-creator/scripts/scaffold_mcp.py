@@ -52,7 +52,9 @@ def update_workspace_members(root_pyproject: Path, workspace_member: str) -> Non
     members_match = re.search(r"(?ms)^members\s*=\s*\[(?P<members>.*?)\]", body)
     if members_match:
         members = members_match.group("members").strip()
-        replacement = f'members = ["{workspace_member}"]' if not members else f"members = [{members}, \"{workspace_member}\"]"
+        replacement = (
+            f'members = ["{workspace_member}"]' if not members else f'members = [{members}, "{workspace_member}"]'
+        )
         start = workspace_match.start("body") + members_match.start()
         end = workspace_match.start("body") + members_match.end()
         content = content[:start] + replacement + content[end:]

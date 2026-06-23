@@ -6,12 +6,12 @@ Generated from `skills/harness-master/data/discovery/discovery-taxonomy.json`. D
 
 | Domain | Existing Skills | Coverage |
 |--------|-----------------|----------|
-| Code Quality | honest-review, tech-debt-analyzer | medium |
+| Code Quality | review, tech-debt-analyzer | medium |
 | Testing | test-architect, playwright-best-practices | medium |
 | DevOps/CI | devops-engineer, infrastructure-coder | medium |
 | API/Backend | api-designer, database-architect, mcp-creator | good |
-| Frontend | frontend-designer | low |
-| Documentation | docs-steward, changelog-writer, add-badges | good |
+| Frontend | design | low |
+| Documentation | docs-steward, changelog-writer, design | good |
 | Research/Analysis | research, data-wizard, wargame, host-panel | good |
 | Workflow | orchestrator, git-workflow, shell-scripter | good |
 | AI/Prompting | prompt-engineer, skill-creator, reasoning-router | good |

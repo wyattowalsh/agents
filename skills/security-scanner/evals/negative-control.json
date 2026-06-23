@@ -5,7 +5,7 @@
   "expected_behavior": [
     "Agent does NOT activate security-scanner skill",
     "Agent recognizes this as a code review task, not a security audit",
-    "Agent redirects to honest-review skill instead",
+    "Agent redirects to review skill instead",
     "Agent does NOT run secrets detection or SAST patterns for this request"
   ]
 }

@@ -16,6 +16,7 @@ Usage:
   python journal-store.py resume
   python journal-store.py resume 1
 """
+
 from __future__ import annotations
 
 import argparse
@@ -95,11 +96,7 @@ def _parse_yaml_simple(text: str) -> dict[str, Any]:
             continue
 
         # List item under current key
-        if (
-            stripped.startswith("- ")
-            and current_key is not None
-            and current_list is not None
-        ):
+        if stripped.startswith("- ") and current_key is not None and current_list is not None:
             current_list.append(_parse_yaml_value(stripped[2:].strip()))
             result[current_key] = current_list
             continue
@@ -119,9 +116,7 @@ def _parse_yaml_simple(text: str) -> dict[str, Any]:
                 if not inner:
                     result[key] = []
                 else:
-                    items = [
-                        _parse_yaml_value(s.strip()) for s in _split_yaml_list(inner)
-                    ]
+                    items = [_parse_yaml_value(s.strip()) for s in _split_yaml_list(inner)]
                     result[key] = items
                 current_list = None
             else:
@@ -162,7 +157,7 @@ def _parse_yaml_value(val: str) -> Any:
     # Remove quotes
     if val.startswith('"') and val.endswith('"'):
         inner = val[1:-1]
-        return inner.replace('\\"', '"').replace('\\\\', '\\')
+        return inner.replace('\\"', '"').replace("\\\\", "\\")
     if val.startswith("'") and val.endswith("'"):
         return val[1:-1]
     # Booleans
@@ -216,8 +211,8 @@ def _yaml_scalar(val: Any) -> str:
     if val is None:
         return "null"
     s = str(val)
-    _yaml_special = set(':#[]{},"&*?|-<>=!%@`')
-    if any(ch in _yaml_special for ch in s) or not s:
+    yaml_special = set(':#[]{},"&*?|-<>=!%@`')
+    if any(ch in yaml_special for ch in s) or not s:
         escaped = s.replace("\\", "\\\\").replace('"', '\\"')
         return f'"{escaped}"'
     return f'"{s}"'
@@ -236,12 +231,8 @@ def parse_state_blocks(body: str) -> list[dict[str, Any]]:
     return blocks
 
 
-_CANDIDATES_PATTERN = re.compile(
-    r"<!-- CANDIDATES_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL
-)
-_PROPOSALS_PATTERN = re.compile(
-    r"<!-- PROPOSALS_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL
-)
+_CANDIDATES_PATTERN = re.compile(r"<!-- CANDIDATES_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL)
+_PROPOSALS_PATTERN = re.compile(r"<!-- PROPOSALS_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL)
 
 
 def parse_data_blocks(body: str) -> dict[str, Any]:
@@ -342,9 +333,7 @@ def make_filename(focus: str | None, base_dir: Path) -> str:
 # --- Journal listing ---
 
 
-def list_journals(
-    base_dir: Path, filter_val: str | None = None
-) -> list[dict[str, Any]]:
+def list_journals(base_dir: Path, filter_val: str | None = None) -> list[dict[str, Any]]:
     """List journals with metadata, reverse chronological."""
     if not base_dir.exists():
         return []
@@ -370,11 +359,7 @@ def list_journals(
     if filter_val:
         fl = filter_val.lower()
         if fl == "active":
-            journals = [
-                j
-                for j in journals
-                if str(j.get("status", "")).lower() in ("in progress", "in_progress")
-            ]
+            journals = [j for j in journals if str(j.get("status", "")).lower() in ("in progress", "in_progress")]
         else:
             journals = [
                 j
@@ -617,15 +602,11 @@ def cmd_save(args: argparse.Namespace) -> None:
     data_sections: list[str] = []
     if parsed_candidates is not None:
         data_sections.append(
-            f"<!-- CANDIDATES_WAVE_{args.wave or 0} -->\n```json\n"
-            + json.dumps(parsed_candidates, indent=2)
-            + "\n```"
+            f"<!-- CANDIDATES_WAVE_{args.wave or 0} -->\n```json\n" + json.dumps(parsed_candidates, indent=2) + "\n```"
         )
     if parsed_proposals is not None:
         data_sections.append(
-            f"<!-- PROPOSALS_WAVE_{args.wave or 0} -->\n```json\n"
-            + json.dumps(parsed_proposals, indent=2)
-            + "\n```"
+            f"<!-- PROPOSALS_WAVE_{args.wave or 0} -->\n```json\n" + json.dumps(parsed_proposals, indent=2) + "\n```"
         )
 
     # Append state block + data to body
@@ -841,9 +822,7 @@ def main() -> None:
 
     # init
     sp_init = sub.add_parser("init", help="Create a new discovery journal.")
-    sp_init.add_argument(
-        "--focus", default=None, help="Optional domain focus for this discovery session."
-    )
+    sp_init.add_argument("--focus", default=None, help="Optional domain focus for this discovery session.")
     sp_init.add_argument(
         "--artifact-root",
         default=None,
@@ -852,22 +831,12 @@ def main() -> None:
 
     # save
     sp_save = sub.add_parser("save", help="Update an existing discovery journal.")
-    sp_save.add_argument(
-        "--target", required=True, help="Path or number of existing journal to update."
-    )
+    sp_save.add_argument("--target", required=True, help="Path or number of existing journal to update.")
     sp_save.add_argument("--status", default=None, help="Journal status.")
-    sp_save.add_argument(
-        "--wave", type=int, default=None, help="Last completed wave number."
-    )
-    sp_save.add_argument(
-        "--candidates", default=None, help="JSON string of candidates array."
-    )
-    sp_save.add_argument(
-        "--proposals", default=None, help="JSON string of proposals array."
-    )
-    sp_save.add_argument(
-        "--installed", default=None, help="JSON string of installed skills array."
-    )
+    sp_save.add_argument("--wave", type=int, default=None, help="Last completed wave number.")
+    sp_save.add_argument("--candidates", default=None, help="JSON string of candidates array.")
+    sp_save.add_argument("--proposals", default=None, help="JSON string of proposals array.")
+    sp_save.add_argument("--installed", default=None, help="JSON string of installed skills array.")
     sp_save.add_argument(
         "--artifact-root",
         default=None,
@@ -880,14 +849,10 @@ def main() -> None:
 
     # list
     sp_list = sub.add_parser("list", help="List journals with metadata.")
-    sp_list.add_argument(
-        "--filter", default=None, help="Filter: 'active', keyword, or focus domain."
-    )
+    sp_list.add_argument("--filter", default=None, help="Filter: 'active', keyword, or focus domain.")
 
     # resume
-    sp_resume = sub.add_parser(
-        "resume", help="Find the most recent in-progress journal."
-    )
+    sp_resume = sub.add_parser("resume", help="Find the most recent in-progress journal.")
     sp_resume.add_argument(
         "target",
         nargs="?",
@@ -907,9 +872,7 @@ def main() -> None:
     # delete
     sp_delete = sub.add_parser("delete", help="Delete a journal.")
     sp_delete.add_argument("target", help="Journal path, number, or keyword.")
-    sp_delete.add_argument(
-        "--force", action="store_true", help="Skip confirmation prompt."
-    )
+    sp_delete.add_argument("--force", action="store_true", help="Skip confirmation prompt.")
 
     args = ap.parse_args()
 

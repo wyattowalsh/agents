@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Parse lockfiles and manifests for outdated/deprecated packages. Outputs JSON to stdout."""
+
 from __future__ import annotations
 
 import argparse
@@ -40,8 +41,8 @@ def parse_pyproject(filepath: Path) -> list[dict]:
 
         # Parse PEP 508 strings from array: "package>=1.0",
         if in_array and (stripped.startswith('"') or stripped.startswith("'")):
-            dep_str = stripped.strip('",\' ')
-            match = re.match(r'([a-zA-Z0-9_-]+)([><=!~]+)?([\d.]*)', dep_str)
+            dep_str = stripped.strip("\",' ")
+            match = re.match(r"([a-zA-Z0-9_-]+)([><=!~]+)?([\d.]*)", dep_str)
             if match and match.group(1):
                 packages.append({
                     "name": match.group(1),
@@ -106,7 +107,7 @@ def parse_requirements_txt(filepath: Path) -> list[dict]:
         line = line.strip()
         if not line or line.startswith("#") or line.startswith("-"):
             continue
-        name_match = re.match(r'([a-zA-Z0-9_-]+)', line)
+        name_match = re.match(r"([a-zA-Z0-9_-]+)", line)
         ver_match = VERSION_RE.search(line)
         if name_match:
             packages.append({
@@ -140,9 +141,11 @@ def scan_directory(root: Path) -> dict:
         except (PermissionError, OSError):
             children = []
         for child in children:
-            if child.is_dir() and not child.name.startswith(".") and child.name not in {
-                "node_modules", "__pycache__", ".venv", "venv", "dist", "build"
-            }:
+            if (
+                child.is_dir()
+                and not child.name.startswith(".")
+                and child.name not in {"node_modules", "__pycache__", ".venv", "venv", "dist", "build"}
+            ):
                 sub_manifest = child / manifest_name
                 if sub_manifest.is_file():
                     packages.extend(parser_fn(sub_manifest))

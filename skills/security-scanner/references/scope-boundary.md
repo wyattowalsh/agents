@@ -6,7 +6,7 @@ Clear delineation between security-scanner and adjacent skills/activities.
 
 1. [Security-Scanner IS For](#security-scanner-is-for)
 2. [Security-Scanner is NOT For](#security-scanner-is-not-for)
-3. [Boundary with honest-review](#boundary-with-honest-review)
+3. [Boundary with review](#boundary-with-review)
 4. [Redirect Table](#redirect-table)
 
 ---
@@ -28,7 +28,7 @@ Clear delineation between security-scanner and adjacent skills/activities.
 
 | Activity | Why Not | Redirect To |
 |----------|---------|-------------|
-| Code review (quality, design, efficiency) | Different scope — reactive per-change review | honest-review |
+| Code review (quality, design, efficiency) | Different scope — reactive per-change review | review |
 | Penetration testing | Requires runtime testing, not static analysis | External tooling (Burp Suite, OWASP ZAP) |
 | Runtime security monitoring | Requires deployed infrastructure | External tooling (Falco, Datadog) |
 | Supply chain deep analysis | Requires runtime dependency resolution | External tooling (Snyk, Dependabot) |
@@ -39,9 +39,9 @@ Clear delineation between security-scanner and adjacent skills/activities.
 
 ---
 
-## Boundary with honest-review
+## Boundary with review
 
-| Dimension | security-scanner | honest-review |
+| Dimension | security-scanner | review |
 |-----------|-----------------|---------------|
 | **Timing** | Pre-deployment audit | Per-change review |
 | **Trigger** | Explicit invocation or scheduled scan | Code changes (git diff, PR) |
@@ -54,7 +54,7 @@ Clear delineation between security-scanner and adjacent skills/activities.
 | **Compliance** | SOC2/GDPR/HIPAA heuristics | Not in scope |
 
 **When both should run:**
-- Pre-release: run security-scanner first for security audit, then honest-review for quality
+- Pre-release: run security-scanner first for security audit, then review for quality
 - The skills are complementary, not overlapping
 
 ---
@@ -65,7 +65,7 @@ When a user request falls outside scope, respond with:
 
 | Request Pattern | Response |
 |----------------|----------|
-| "Review this code" / "What do you think of this PR" | "For code review, use `/honest-review`. Security-scanner is for pre-deployment security audits." |
+| "Review this code" / "What do you think of this PR" | "For code review, use `/review`. Security-scanner is for pre-deployment security audits." |
 | "Pen test this" / "Try to hack this" | "Security-scanner performs static analysis only. For penetration testing, use dedicated tools like Burp Suite or OWASP ZAP." |
 | "Monitor for attacks" | "Security-scanner is a pre-deployment tool. For runtime monitoring, consider Falco, Datadog, or similar." |
 | "Fix this vulnerability" | Present the finding and remediation guidance, but do not modify files. State: "This skill is read-only. Apply the suggested fix manually or ask for implementation assistance." |

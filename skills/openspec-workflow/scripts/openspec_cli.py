@@ -15,10 +15,12 @@ import shlex
 import shutil
 import subprocess
 import sys
-from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 OPENSPEC_PACKAGE = "@fission-ai/openspec@latest"
@@ -175,15 +177,13 @@ def build_doctor_report(
 
     if check_cli:
         result = run_openspec(["--version"], cwd=root, package=package)
-        report["checks"].append(
-            {
-                "name": "openspec-version",
-                "argv": result.argv,
-                "returncode": result.returncode,
-                "stdout": result.stdout.strip(),
-                "stderr": result.stderr.strip(),
-            }
-        )
+        report["checks"].append({
+            "name": "openspec-version",
+            "argv": result.argv,
+            "returncode": result.returncode,
+            "stdout": result.stdout.strip(),
+            "stderr": result.stderr.strip(),
+        })
 
     if validate:
         result = run_openspec(["validate", "--all", "--json"], cwd=root, package=package)

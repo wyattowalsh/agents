@@ -84,14 +84,12 @@ def parse_find_output(stdout: str) -> list[dict[str, Any]]:
         match = LINE_RE.search(stripped)
         if match:
             installs = match.group("installs")
-            candidates.append(
-                {
-                    "name": match.group("name"),
-                    "source": match.group("source"),
-                    "install_count": int(installs) if installs else None,
-                    "raw_line": stripped,
-                }
-            )
+            candidates.append({
+                "name": match.group("name"),
+                "source": match.group("source"),
+                "install_count": int(installs) if installs else None,
+                "raw_line": stripped,
+            })
         else:
             candidates.append({"raw_line": stripped})
     return candidates

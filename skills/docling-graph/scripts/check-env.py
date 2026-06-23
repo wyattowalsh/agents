@@ -12,9 +12,7 @@ import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
-
 
 TARGET_DOCLING_GRAPH_VERSION = "1.5.0"
 PYTHON_MIN = (3, 10)
@@ -221,13 +219,11 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
 
     legacy_provider_env = []
     for item in args.provider_env:
-        legacy_provider_env.append(
-            {
-                "name": item,
-                "ok": bool(os.environ.get(item)),
-                "status": env_status(item),
-            }
-        )
+        legacy_provider_env.append({
+            "name": item,
+            "ok": bool(os.environ.get(item)),
+            "status": env_status(item),
+        })
 
     ok = all(check.ok or check.severity != "error" for check in checks)
     ok = ok and all(report["ok"] for report in provider_reports)

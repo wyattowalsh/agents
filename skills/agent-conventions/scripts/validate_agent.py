@@ -90,27 +90,21 @@ def find_readme_entries(agents_dir: Path) -> list[str]:
 def validate_index(agents_dir: Path) -> list[dict[str, str]]:
     errors: list[dict[str, str]] = []
     agents = sorted(
-        p.stem
-        for p in agents_dir.glob("*.md")
-        if p.stem.lower() != "readme" and not p.name.startswith(".")
+        p.stem for p in agents_dir.glob("*.md") if p.stem.lower() != "readme" and not p.name.startswith(".")
     )
     entries = find_readme_entries(agents_dir)
     for name in agents:
         if name not in entries:
-            errors.append(
-                {
-                    "source": str(agents_dir / "README.md"),
-                    "message": f"agent '{name}' missing from README index table",
-                }
-            )
+            errors.append({
+                "source": str(agents_dir / "README.md"),
+                "message": f"agent '{name}' missing from README index table",
+            })
     for entry in entries:
         if entry not in agents:
-            errors.append(
-                {
-                    "source": str(agents_dir / "README.md"),
-                    "message": f"orphan README entry '{entry}' has no agent file",
-                }
-            )
+            errors.append({
+                "source": str(agents_dir / "README.md"),
+                "message": f"orphan README entry '{entry}' has no agent file",
+            })
     return errors
 
 

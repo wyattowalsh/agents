@@ -13,7 +13,6 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES_PATH = ROOT / "data" / "research-sources.json"
 
@@ -61,14 +60,11 @@ def _render_templates(source: dict[str, Any], *, query: str, candidate: str, har
     rendered: list[str] = []
     category = str(source.get("category", "all"))
     templates = source.get("query_templates", {})
-    if isinstance(templates, dict):
-        values = templates.values()
-    else:
-        values = _as_list(templates)
+    values = templates.values() if isinstance(templates, dict) else _as_list(templates)
     for value in values:
         for template in _as_list(value):
             if isinstance(template, str):
-                if not candidate and ("{candidate}" in template or "{source}" in template):
+                if not candidate and (f"{candidate}" in template or f"{source}" in template):
                     continue
                 rendered.append(
                     _format_template(
@@ -175,7 +171,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--candidate", default="", help="Candidate URL, package, repo, or source string.")
     parser.add_argument("--harness", default="all", help="Target harness ID or all.")
     parser.add_argument("--category", help="Optional source category filter, such as mcp, skill, package, or security.")
-    parser.add_argument("--dry-run", action="store_true", default=True, help="Print planned access. This is the default.")
+    parser.add_argument(
+        "--dry-run", action="store_true", default=True, help="Print planned access. This is the default."
+    )
     parser.add_argument("--execute", action="store_true", help="Execute low-risk read-only HTTP probes.")
     parser.add_argument("--json", action="store_true", help="Emit JSON.")
     args = parser.parse_args(argv)
@@ -220,7 +218,10 @@ def main(argv: list[str] | None = None) -> int:
             elif plan["access_method"] in {"http-api", "http-fetch", "openapi"}:
                 plan["execution"] = _execute_http_get(plan)
             else:
-                plan["execution"] = {"executed": False, "reason": "Execution is not enabled for command, local-file, GraphQL, or web-search sources."}
+                plan["execution"] = {
+                    "executed": False,
+                    "reason": "Execution is not enabled for command, local-file, GraphQL, or web-search sources.",
+                }
 
     payload = {
         "harness": args.harness,

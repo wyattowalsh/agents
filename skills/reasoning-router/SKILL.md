@@ -3,7 +3,7 @@ name: reasoning-router
 description: >-
   Classify problems and route to optimal thinking MCP (11 available). Monitor
   confidence, re-route on stall. Use for complex reasoning. NOT for simple
-  questions (answer directly) or code review (honest-review).
+  questions (answer directly) or code review (review).
 license: MIT
 argument-hint: "[problem or question]"
 model: opus
@@ -221,7 +221,7 @@ Load ONE reference at a time. Do not preload.
 re-routing, composition pattern selection, method comparison.
 
 **Out of scope:** Actually performing the reasoning (the thinking MCP does that),
-running tools or writing code (use appropriate skills), code review (honest-review),
+running tools or writing code (use appropriate skills), code review (review),
 research (research), debugging implementation (use crash MCP directly).
 
 ---

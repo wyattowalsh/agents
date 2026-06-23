@@ -56,7 +56,9 @@ def classify_step(step: dict) -> str:
         return "upload_artifact"
     if "download-artifact" in uses:
         return "download_artifact"
-    if any(kw in run for kw in ["npm install", "pip install", "yarn install", "pnpm install", "uv sync", "bundle install"]):
+    if any(
+        kw in run for kw in ["npm install", "pip install", "yarn install", "pnpm install", "uv sync", "bundle install"]
+    ):
         return "install"
     if any(kw in run for kw in ["build", "compile", "make", "cargo build", "go build"]):
         return "build"
@@ -105,7 +107,7 @@ def estimate_job(job: dict) -> dict:
     # Matrix multiplier
     matrix = job.get("strategy", {}).get("matrix", {})
     matrix_combinations = 1
-    for key, values in matrix.items():
+    for _key, values in matrix.items():
         if isinstance(values, list):
             matrix_combinations *= len(values)
 
@@ -154,7 +156,9 @@ def estimate_caching_savings(jobs: list[dict]) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description="Estimate CI/CD pipeline cost")
-    parser.add_argument("file", nargs="?", help="Path to workflow YAML (requires pyyaml) or workflow-analyzer JSON output")
+    parser.add_argument(
+        "file", nargs="?", help="Path to workflow YAML (requires pyyaml) or workflow-analyzer JSON output"
+    )
     parser.add_argument("--from-analysis", action="store_true", help="Input is workflow-analyzer.py JSON output")
     args = parser.parse_args()
 
@@ -174,19 +178,28 @@ def main():
 
         # Reconstruct minimal job dicts from analysis
         jobs = analysis.get("jobs", [])
-        print(json.dumps({
-            "estimated_minutes_per_run": sum(j.get("estimated_duration_weight", 1) for j in jobs),
-            "parallelizable_steps": sum(1 for j in jobs if not j.get("needs")),
-            "total_jobs": len(jobs),
-            "note": "Use --from-analysis with workflow-analyzer.py output for detailed estimates. Pass raw YAML for full analysis.",
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "estimated_minutes_per_run": sum(j.get("estimated_duration_weight", 1) for j in jobs),
+                    "parallelizable_steps": sum(1 for j in jobs if not j.get("needs")),
+                    "total_jobs": len(jobs),
+                    "note": "Use --from-analysis with workflow-analyzer.py output for detailed estimates. Pass raw YAML for full analysis.",
+                },
+                indent=2,
+            )
+        )
         return
 
     # Direct YAML analysis
     try:
         import yaml
     except ImportError:
-        print(json.dumps({"error": "pyyaml required for direct YAML analysis. Use --from-analysis with workflow-analyzer output instead."}))
+        print(
+            json.dumps({
+                "error": "pyyaml required for direct YAML analysis. Use --from-analysis with workflow-analyzer output instead."
+            })
+        )
         sys.exit(1)
 
     try:

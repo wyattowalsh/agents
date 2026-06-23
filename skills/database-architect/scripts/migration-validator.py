@@ -137,7 +137,7 @@ def classify_sql(sql: str) -> list[dict]:
             # Adjust for NOT NULL without default
             backwards_compat = rules.get("backwards_compatible", True)
             if op_type == "ADD COLUMN":
-                context = sql_clean[match.start():match.start() + 200]
+                context = sql_clean[match.start() : match.start() + 200]
                 if "NOT NULL" in context.upper() and "DEFAULT" not in context.upper():
                     backwards_compat = False
                     details += " (NOT NULL without DEFAULT breaks existing inserts)"
@@ -156,7 +156,7 @@ def classify_sql(sql: str) -> list[dict]:
 
 def extract_details(sql: str, match: re.Match, op_type: str) -> str:
     """Extract human-readable details for an operation."""
-    context = sql[match.start():min(match.start() + 150, len(sql))]
+    context = sql[match.start() : min(match.start() + 150, len(sql))]
     # Truncate at semicolon
     semi = context.find(";")
     if semi > 0:

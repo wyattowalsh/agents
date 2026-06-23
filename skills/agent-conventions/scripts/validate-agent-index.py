@@ -9,6 +9,7 @@ Usage:
 
 Output: JSON with validation results to stdout.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,11 +23,7 @@ def find_agents(agents_dir: Path) -> list[str]:
     """Return sorted list of agent names from .md files in directory."""
     if not agents_dir.is_dir():
         return []
-    return sorted(
-        p.stem
-        for p in agents_dir.glob("*.md")
-        if p.stem.lower() != "readme" and not p.name.startswith(".")
-    )
+    return sorted(p.stem for p in agents_dir.glob("*.md") if p.stem.lower() != "readme" and not p.name.startswith("."))
 
 
 def find_readme_entries(agents_dir: Path) -> list[str]:
@@ -64,9 +61,7 @@ def validate(agents_dir: Path) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Validate agent directories have README.md index entries"
-    )
+    parser = argparse.ArgumentParser(description="Validate agent directories have README.md index entries")
     parser.add_argument(
         "--dir",
         default="agents",

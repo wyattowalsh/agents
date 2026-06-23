@@ -14,8 +14,7 @@ def _toolkit_path() -> Path:
     bundled = SKILL_DIR / "scripts" / "asset_toolkit" / "validate_skill.py"
     if bundled.is_file():
         return SKILL_DIR / "scripts" / "asset_toolkit"
-    repo_toolkit = SKILL_DIR.parent / "skill-creator" / "scripts" / "asset_toolkit"
-    return repo_toolkit
+    return SKILL_DIR.parent / "skill-creator" / "scripts" / "asset_toolkit"
 
 
 def _run(command: list[str]) -> int:

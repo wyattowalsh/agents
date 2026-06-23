@@ -28,7 +28,11 @@ DECISION_TREE = {
     ("continuous", 2, False, "yes"): {
         "test": "Independent Samples t-test",
         "alternatives": ["Welch's t-test (unequal variances)", "Mann-Whitney U (non-normal)"],
-        "assumptions": ["Both groups normally distributed", "Independent observations", "Equal variances (Levene's test)"],
+        "assumptions": [
+            "Both groups normally distributed",
+            "Independent observations",
+            "Equal variances (Levene's test)",
+        ],
         "when_to_use": "Compare means of two independent groups",
         "effect_size": "Cohen's d = (mean1 - mean2) / pooled_sd",
     },
@@ -56,7 +60,11 @@ DECISION_TREE = {
     ("continuous", 3, False, "yes"): {
         "test": "One-Way ANOVA",
         "alternatives": ["Welch's ANOVA (unequal variances)", "Kruskal-Wallis (non-normal)"],
-        "assumptions": ["Normal distribution within groups", "Equal variances (Levene's test)", "Independent observations"],
+        "assumptions": [
+            "Normal distribution within groups",
+            "Equal variances (Levene's test)",
+            "Independent observations",
+        ],
         "when_to_use": "Compare means of 3+ independent groups",
         "effect_size": "Eta-squared = SS_between / SS_total",
         "post_hoc": "Tukey HSD for pairwise comparisons",

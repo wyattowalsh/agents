@@ -31,8 +31,8 @@ vlm = [
 [dependency-groups]
 dev = [
     "pytest>=8",
-    "ruff>=0.9",
-    "ty==0.0.29",
+    "ruff>=0.11",
+    "ty==0.0.52",
 ]
 
 [build-system]
@@ -51,11 +51,9 @@ packages = ["src/nerdbot"]
 "scripts/kb_path_policy.py" = "nerdbot/scripts/kb_path_policy.py"
 
 [tool.ruff]
+extend = "../../pyproject.toml"
 target-version = "py311"
 line-length = 120
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.ty.environment]
 python-version = "3.11"

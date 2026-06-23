@@ -21,26 +21,22 @@ def load_data(path: str, max_rows: int | None = None) -> pd.DataFrame:
     suffix = p.suffix.lower()
     if suffix == ".csv":
         return pd.read_csv(p, nrows=max_rows)
-    elif suffix in (".json", ".jsonl"):
+    if suffix in (".json", ".jsonl"):
         df = pd.read_json(p, lines=suffix == ".jsonl")
         if max_rows is not None:
             df = df.head(max_rows)
         return df
-    elif suffix in (".xlsx", ".xls"):
-        df = pd.read_excel(p, nrows=max_rows)
-        return df
-    elif suffix == ".parquet":
+    if suffix in (".xlsx", ".xls"):
+        return pd.read_excel(p, nrows=max_rows)
+    if suffix == ".parquet":
         df = pd.read_parquet(p)
         if max_rows is not None:
             df = df.head(max_rows)
         return df
-    elif suffix == ".tsv":
+    if suffix == ".tsv":
         return pd.read_csv(p, sep="\t", nrows=max_rows)
-    else:
-        print(
-            json.dumps({"error": f"Unsupported format: {suffix}"}), file=sys.stderr
-        )
-        sys.exit(1)
+    print(json.dumps({"error": f"Unsupported format: {suffix}"}), file=sys.stderr)
+    sys.exit(1)
 
 
 def profile_column(series: pd.Series) -> dict:
@@ -86,9 +82,7 @@ def compute_correlations(df: pd.DataFrame) -> dict:
         for c2 in numeric_cols[i + 1 :]:
             val = corr.loc[c1, c2]
             if pd.notna(val) and abs(val) > 0.3:
-                pairs.append(
-                    {"col1": c1, "col2": c2, "correlation": round(float(val), 4)}
-                )
+                pairs.append({"col1": c1, "col2": c2, "correlation": round(float(val), 4)})
     pairs.sort(key=lambda x: abs(x["correlation"]), reverse=True)
     return pairs[:20]
 
@@ -118,9 +112,7 @@ def detect_missing_patterns(df: pd.DataFrame) -> dict:
             for c2 in missing_cols[i + 1 :]:
                 both = (co_missing[c1] & co_missing[c2]).sum()
                 if both > 0:
-                    co_occur.append(
-                        {"col1": str(c1), "col2": str(c2), "co_missing": int(both)}
-                    )
+                    co_occur.append({"col1": str(c1), "col2": str(c2), "co_missing": int(both)})
         categories["co_occurrence"] = co_occur[:10]
     return categories
 
@@ -177,12 +169,8 @@ def profile_dataset(path: str, selected_columns: list[str] | None = None, max_ro
 def main():
     parser = argparse.ArgumentParser(description="Profile a dataset for EDA")
     parser.add_argument("path", help="Path to CSV, JSON, JSONL, XLSX, Parquet, or TSV file")
-    parser.add_argument(
-        "--columns", nargs="*", help="Specific columns to profile (default: all)"
-    )
-    parser.add_argument(
-        "--max-rows", type=int, default=None, help="Maximum rows to read (for large files)"
-    )
+    parser.add_argument("--columns", nargs="*", help="Specific columns to profile (default: all)")
+    parser.add_argument("--max-rows", type=int, default=None, help="Maximum rows to read (for large files)")
     args = parser.parse_args()
 
     try:

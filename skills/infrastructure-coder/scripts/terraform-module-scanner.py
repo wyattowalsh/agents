@@ -16,7 +16,7 @@ def _build_line_index(content: str) -> list[int]:
     """Build a list of newline positions for O(log n) line number lookups."""
     positions = [-1]
     for i, ch in enumerate(content):
-        if ch == '\n':
+        if ch == "\n":
             positions.append(i)
     return positions
 
@@ -54,10 +54,10 @@ def extract_blocks(content: str, block_types: list[str], line_index: list[int] |
             elif block_type == "variable":
                 # Extract type and default from block body
                 block_end = find_block_end(content, match.end() - 1)
-                block_body = content[match.end():block_end] if block_end else ""
+                block_body = content[match.end() : block_end] if block_end else ""
 
                 var_type = "string"
-                type_match = re.search(r'type\s*=\s*(\S+)', block_body)
+                type_match = re.search(r"type\s*=\s*(\S+)", block_body)
                 if type_match:
                     var_type = type_match.group(1)
 
@@ -83,7 +83,7 @@ def extract_blocks(content: str, block_types: list[str], line_index: list[int] |
             elif block_type == "module":
                 # Extract source
                 block_end = find_block_end(content, match.end() - 1)
-                block_body = content[match.end():block_end] if block_end else ""
+                block_body = content[match.end() : block_end] if block_end else ""
 
                 source_match = re.search(r'source\s*=\s*"([^"]*)"', block_body)
                 source = source_match.group(1) if source_match else ""
@@ -113,12 +113,11 @@ def find_block_end(content: str, start: int) -> int | None:
 def extract_providers(content: str) -> list[dict]:
     """Extract required_providers block."""
     providers = []
-    match = re.search(r'required_providers\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}', content)
+    match = re.search(r"required_providers\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}", content)
     if match:
         block = match.group(1)
         for provider_match in re.finditer(
-            r'(\w+)\s*=\s*\{[^}]*source\s*=\s*"([^"]*)"[^}]*version\s*=\s*"([^"]*)"',
-            block, re.DOTALL
+            r'(\w+)\s*=\s*\{[^}]*source\s*=\s*"([^"]*)"[^}]*version\s*=\s*"([^"]*)"', block, re.DOTALL
         ):
             providers.append({
                 "name": provider_match.group(1),

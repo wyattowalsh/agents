@@ -18,11 +18,13 @@ import os
 import re
 import sys
 from collections import Counter, defaultdict
-from collections.abc import Iterator
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from kb_path_policy import normalize_requested_root
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 DEFAULT_LAYER_PATHS: dict[str, str] = {
     "raw": "raw",
@@ -666,12 +668,10 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
     alias_count = 0
     top_level_entries = []
     for entry in sorted(root.iterdir(), key=lambda item: item.name.lower()):
-        top_level_entries.append(
-            {
-                "path": relative_posix(root, entry),
-                "kind": "directory" if entry.is_dir() else "file",
-            }
-        )
+        top_level_entries.append({
+            "path": relative_posix(root, entry),
+            "kind": "directory" if entry.is_dir() else "file",
+        })
     directory_count = 0
     file_count = 0
     for path, is_dir in iter_repo_entries(root):
@@ -726,14 +726,12 @@ def build_inventory(root: Path, *, max_examples: int = 5) -> dict[str, Any]:
         ):
             headings = extract_headings(text) if text else []
             aliases = extract_frontmatter_aliases(text) if text else []
-            canonical_candidates.append(
-                {
-                    "path": rel_path,
-                    "classification": classification,
-                    "title": headings[0] if headings else path.stem,
-                    "aliases": aliases[:3],
-                }
-            )
+            canonical_candidates.append({
+                "path": rel_path,
+                "classification": classification,
+                "title": headings[0] if headings else path.stem,
+                "aliases": ", ".join(aliases[:3]),
+            })
         role = infer_index_role(root, path, text)
         if role and rel_path not in seen_index_paths:
             seen_index_paths.add(rel_path)

@@ -29,9 +29,11 @@ def presets() -> list[dict]:
 def list_preferences() -> dict:
     grouped: dict[str, list[dict]] = {}
     for capability in capabilities():
-        grouped.setdefault(capability["category"], []).append(
-            {"id": capability["id"], "label": capability["label"], "risk_level": capability["risk_level"]}
-        )
+        grouped.setdefault(capability["category"], []).append({
+            "id": capability["id"],
+            "label": capability["label"],
+            "risk_level": capability["risk_level"],
+        })
     return {"ok": True, "categories": grouped}
 
 

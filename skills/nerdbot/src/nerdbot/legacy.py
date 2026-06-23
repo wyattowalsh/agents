@@ -5,7 +5,10 @@ from __future__ import annotations
 import sys
 from importlib import resources
 from pathlib import Path
-from types import ModuleType
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from types import ModuleType
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_SCRIPTS_DIR = PACKAGE_ROOT / "scripts"

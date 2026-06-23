@@ -199,7 +199,7 @@
       },
       "evidence_fields": ["source-list truth", "available skill names", "installable paths", "source resolution"],
       "confidence_role": "Truth source before installing or auditing external skills.",
-      "failure_mode": "If the source cannot list skills, route through external-skill-auditor or keep candidate inspect-only."
+      "failure_mode": "If the source cannot list skills, route through /review source or keep candidate inspect-only."
     },
     {
       "id": "npm-registry",

@@ -188,10 +188,7 @@ def validate_spec(spec: dict) -> dict:
                 })
             else:
                 # Check for error responses
-                has_error = any(
-                    str(code).startswith(("4", "5")) or code == "default"
-                    for code in responses
-                )
+                has_error = any(str(code).startswith(("4", "5")) or code == "default" for code in responses)
                 if not has_error:
                     issues.append({
                         "path": path_str,
@@ -203,15 +200,20 @@ def validate_spec(spec: dict) -> dict:
 
                 # Check for success response content
                 for code, resp in responses.items():
-                    if isinstance(resp, dict) and str(code).startswith("2"):
-                        if method != "delete" and not resp.get("content") and not resp.get("$ref"):
-                            issues.append({
-                                "path": path_str,
-                                "method": method.upper(),
-                                "rule": "response-content",
-                                "severity": "info",
-                                "message": f"Response {code} has no content schema",
-                            })
+                    if (
+                        isinstance(resp, dict)
+                        and str(code).startswith("2")
+                        and method != "delete"
+                        and not resp.get("content")
+                        and not resp.get("$ref")
+                    ):
+                        issues.append({
+                            "path": path_str,
+                            "method": method.upper(),
+                            "rule": "response-content",
+                            "severity": "info",
+                            "message": f"Response {code} has no content schema",
+                        })
 
             # Check request body for POST/PUT/PATCH
             if method in ("post", "put", "patch") and not operation.get("requestBody"):
@@ -284,13 +286,15 @@ def main():
         result = {
             "spec_version": "",
             "paths_count": 0,
-            "issues": [{
-                "path": "/",
-                "method": "-",
-                "rule": "parse-error",
-                "severity": "critical",
-                "message": f"Could not parse spec file: {args.spec_path}",
-            }],
+            "issues": [
+                {
+                    "path": "/",
+                    "method": "-",
+                    "rule": "parse-error",
+                    "severity": "critical",
+                    "message": f"Could not parse spec file: {args.spec_path}",
+                }
+            ],
         }
     else:
         result = validate_spec(spec)

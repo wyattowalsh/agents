@@ -101,7 +101,7 @@
       "files": [],
       "assertions": [
         "Agent recognizes that reviewing a code diff for bugs is outside incident-response-engineer scope.",
-        "Agent redirects to honest-review.",
+        "Agent redirects to review.",
         "Agent does not pretend a code review request is incident review mode."
       ]
     },

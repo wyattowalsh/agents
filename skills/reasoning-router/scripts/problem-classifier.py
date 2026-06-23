@@ -13,41 +13,100 @@ import sys
 # ---------------------------------------------------------------------------
 STRUCTURE_SIGNALS: dict[str, list[str]] = {
     "decomposable": [
-        "break down", "sub-questions", "parts", "components", "decompose",
-        "separate", "individually", "each aspect", "multi-hop", "chain of",
+        "break down",
+        "sub-questions",
+        "parts",
+        "components",
+        "decompose",
+        "separate",
+        "individually",
+        "each aspect",
+        "multi-hop",
+        "chain of",
         "depends on previous",
     ],
     "sequential": [
-        "step by step", "first then", "process", "procedure", "workflow",
-        "in order", "sequence", "one at a time", "walk through", "trace through",
+        "step by step",
+        "first then",
+        "process",
+        "procedure",
+        "workflow",
+        "in order",
+        "sequence",
+        "one at a time",
+        "walk through",
+        "trace through",
     ],
     "branching": [
-        "explore options", "what if", "alternatives", "compare", "versus",
-        "trade-offs", "pros and cons", "different angles", "perspectives",
+        "explore options",
+        "what if",
+        "alternatives",
+        "compare",
+        "versus",
+        "trade-offs",
+        "pros and cons",
+        "different angles",
+        "perspectives",
         "scenarios",
     ],
     "constrained": [
-        "given that", "requirements", "constraints", "must satisfy",
-        "specifications", "formal", "prove", "guarantee", "invariant",
+        "given that",
+        "requirements",
+        "constraints",
+        "must satisfy",
+        "specifications",
+        "formal",
+        "prove",
+        "guarantee",
+        "invariant",
         "bounded by",
     ],
     "interconnected": [
-        "dependencies", "circular", "complex system", "feedback loop",
-        "coupled", "emergent", "interrelated", "web of", "network of",
+        "dependencies",
+        "circular",
+        "complex system",
+        "feedback loop",
+        "coupled",
+        "emergent",
+        "interrelated",
+        "web of",
+        "network of",
         "entangled",
     ],
     "creative": [
-        "brainstorm", "novel", "innovative", "stuck", "reframe",
-        "outside the box", "unconventional", "imagine",
-        "what would happen if", "new approach",
+        "brainstorm",
+        "novel",
+        "innovative",
+        "stuck",
+        "reframe",
+        "outside the box",
+        "unconventional",
+        "imagine",
+        "what would happen if",
+        "new approach",
     ],
     "contradictory": [
-        "paradox", "both true", "tension", "dilemma", "seemingly opposite",
-        "reconcile", "on one hand", "conflict between", "contradiction",
+        "paradox",
+        "both true",
+        "tension",
+        "dilemma",
+        "seemingly opposite",
+        "reconcile",
+        "on one hand",
+        "conflict between",
+        "contradiction",
     ],
     "investigative": [
-        "why did", "root cause", "what caused", "debug", "investigate",
-        "diagnose", "troubleshoot", "figure out why", "trace back", "bisect",
+        "why did",
+        "root cause",
+        "what caused",
+        "debug",
+        "investigate",
+        "diagnose",
+        "troubleshoot",
+        "figure out why",
+        "trace back",
+        "bisect",
     ],
 }
 
@@ -57,20 +116,48 @@ STRUCTURE_SIGNALS: dict[str, list[str]] = {
 COMPLEXITY_KEYWORDS: dict[str, list[str]] = {
     "simple": ["quick", "simple", "basic", "trivial", "straightforward"],
     "moderate": [
-        "several", "multiple", "a few", "some", "requirements",
-        "constraints", "trade-off", "considerations", "factors",
-        "tried", "approaches", "options", "scenarios",
+        "several",
+        "multiple",
+        "a few",
+        "some",
+        "requirements",
+        "constraints",
+        "trade-off",
+        "considerations",
+        "factors",
+        "tried",
+        "approaches",
+        "options",
+        "scenarios",
     ],
     "complex": [
-        "many", "numerous", "cross-domain", "cross domain", "interdisciplinary",
-        "uncertain", "ambiguous", "multi-region", "compliance",
-        "simultaneously", "concurrent", "interacting", "cascading",
-        "guarantee", "consistency", "failover", "latency",
+        "many",
+        "numerous",
+        "cross-domain",
+        "cross domain",
+        "interdisciplinary",
+        "uncertain",
+        "ambiguous",
+        "multi-region",
+        "compliance",
+        "simultaneously",
+        "concurrent",
+        "interacting",
+        "cascading",
+        "guarantee",
+        "consistency",
+        "failover",
+        "latency",
     ],
     "wicked": [
-        "no clear solution", "contested", "values",
-        "fundamental disagreement", "impossible to fully solve",
-        "paradox", "irreconcilable", "both true",
+        "no clear solution",
+        "contested",
+        "values",
+        "fundamental disagreement",
+        "impossible to fully solve",
+        "paradox",
+        "irreconcilable",
+        "both true",
     ],
 }
 
@@ -79,41 +166,101 @@ COMPLEXITY_KEYWORDS: dict[str, list[str]] = {
 # ---------------------------------------------------------------------------
 DOMAIN_SIGNALS: dict[str, list[str]] = {
     "engineering": [
-        "architecture", "system design", "scalability", "infrastructure",
-        "deployment", "performance", "optimization", "service",
-        "microservice", "api",
+        "architecture",
+        "system design",
+        "scalability",
+        "infrastructure",
+        "deployment",
+        "performance",
+        "optimization",
+        "service",
+        "microservice",
+        "api",
     ],
     "debugging": [
-        "bug", "error", "exception", "crash", "failing", "broken",
-        "regression", "unexpected behavior", "stack trace", "log",
+        "bug",
+        "error",
+        "exception",
+        "crash",
+        "failing",
+        "broken",
+        "regression",
+        "unexpected behavior",
+        "stack trace",
+        "log",
     ],
     "research": [
-        "literature", "state of the art", "survey", "compare approaches",
-        "evidence", "study", "findings", "analysis",
+        "literature",
+        "state of the art",
+        "survey",
+        "compare approaches",
+        "evidence",
+        "study",
+        "findings",
+        "analysis",
     ],
     "math": [
-        "prove", "theorem", "equation", "algorithm", "complexity",
-        "formula", "mathematical", "compute", "calculate",
+        "prove",
+        "theorem",
+        "equation",
+        "algorithm",
+        "complexity",
+        "formula",
+        "mathematical",
+        "compute",
+        "calculate",
     ],
     "strategy": [
-        "decision", "choose", "prioritize", "trade-off", "risk",
-        "roadmap", "plan", "strategy", "evaluate options",
+        "decision",
+        "choose",
+        "prioritize",
+        "trade-off",
+        "risk",
+        "roadmap",
+        "plan",
+        "strategy",
+        "evaluate options",
     ],
     "creative": [
-        "design", "ux", "user experience", "visual", "aesthetic",
-        "brand", "creative direction", "ideate",
+        "design",
+        "ux",
+        "user experience",
+        "visual",
+        "aesthetic",
+        "brand",
+        "creative direction",
+        "ideate",
     ],
     "philosophy": [
-        "ethical", "moral", "meaning", "consciousness", "free will",
-        "justice", "rights", "values", "existential",
+        "ethical",
+        "moral",
+        "meaning",
+        "consciousness",
+        "free will",
+        "justice",
+        "rights",
+        "values",
+        "existential",
     ],
     "planning": [
-        "roadmap", "timeline", "milestones", "phases", "schedule",
-        "project plan", "sprint", "backlog", "prioritize tasks",
+        "roadmap",
+        "timeline",
+        "milestones",
+        "phases",
+        "schedule",
+        "project plan",
+        "sprint",
+        "backlog",
+        "prioritize tasks",
     ],
     "patterns": [
-        "recurring", "pattern", "across sessions", "remember",
-        "track over time", "historical", "trend",
+        "recurring",
+        "pattern",
+        "across sessions",
+        "remember",
+        "track over time",
+        "historical",
+        "trend",
     ],
 }
 
@@ -121,38 +268,38 @@ DOMAIN_SIGNALS: dict[str, list[str]] = {
 # Method mapping (structure → primary, fallback)
 # ---------------------------------------------------------------------------
 METHOD_MAP: dict[str, tuple[str, str]] = {
-    "decomposable":   ("atom-of-thoughts",    "cascade-thinking"),
-    "sequential":     ("sequential-thinking",  "crash"),
-    "branching":      ("cascade-thinking",     "think-strategies"),
-    "constrained":    ("shannon-thinking",     "sequential-thinking"),
-    "interconnected": ("atom-of-thoughts",     "cascade-thinking"),
-    "creative":       ("creative-thinking",    "deep-lucid-3d"),
-    "contradictory":  ("lotus-wisdom",         "cascade-thinking"),
-    "investigative":  ("crash",                "sequential-thinking"),
+    "decomposable": ("atom-of-thoughts", "cascade-thinking"),
+    "sequential": ("sequential-thinking", "crash"),
+    "branching": ("cascade-thinking", "think-strategies"),
+    "constrained": ("shannon-thinking", "sequential-thinking"),
+    "interconnected": ("atom-of-thoughts", "cascade-thinking"),
+    "creative": ("creative-thinking", "deep-lucid-3d"),
+    "contradictory": ("lotus-wisdom", "cascade-thinking"),
+    "investigative": ("crash", "sequential-thinking"),
 }
 
 # Tier 1 (cheap) methods for simple-complexity efficiency override
 TIER1_FOR_STRUCTURE: dict[str, str] = {
-    "decomposable":   "aot-light",
-    "sequential":     "sequential-thinking",
-    "branching":      "sequential-thinking",
-    "constrained":    "sequential-thinking",
+    "decomposable": "aot-light",
+    "sequential": "sequential-thinking",
+    "branching": "sequential-thinking",
+    "constrained": "sequential-thinking",
     "interconnected": "aot-light",
-    "creative":       "aot-light",
-    "contradictory":  "sequential-thinking",
-    "investigative":  "sequential-thinking",
+    "creative": "aot-light",
+    "contradictory": "sequential-thinking",
+    "investigative": "sequential-thinking",
 }
 
 DOMAIN_METHOD_MAP: dict[str, str] = {
     "engineering": "shannon-thinking",
-    "debugging":   "crash",
-    "research":    "cascade-thinking",
-    "math":        "atom-of-thoughts",
-    "strategy":    "think-strategies",
-    "creative":    "creative-thinking",
-    "philosophy":  "lotus-wisdom",
-    "planning":    "sequential-thinking",
-    "patterns":    "structured-thinking",
+    "debugging": "crash",
+    "research": "cascade-thinking",
+    "math": "atom-of-thoughts",
+    "strategy": "think-strategies",
+    "creative": "creative-thinking",
+    "philosophy": "lotus-wisdom",
+    "planning": "sequential-thinking",
+    "patterns": "structured-thinking",
 }
 
 TOKEN_TIER: dict[str, int] = {
@@ -164,14 +311,14 @@ TOKEN_TIER: dict[str, int] = {
 
 # Composition pattern for wicked complexity
 WICKED_FALLBACK: dict[str, str] = {
-    "decomposable":   "cascade-thinking",
-    "sequential":     "cascade-thinking",
-    "branching":      "deep-lucid-3d",
-    "constrained":    "deep-lucid-3d",
+    "decomposable": "cascade-thinking",
+    "sequential": "cascade-thinking",
+    "branching": "deep-lucid-3d",
+    "constrained": "deep-lucid-3d",
     "interconnected": "deep-lucid-3d",
-    "creative":       "lotus-wisdom",
-    "contradictory":  "deep-lucid-3d",
-    "investigative":  "cascade-thinking",
+    "creative": "lotus-wisdom",
+    "contradictory": "deep-lucid-3d",
+    "investigative": "cascade-thinking",
 }
 
 
@@ -179,12 +326,12 @@ WICKED_FALLBACK: dict[str, str] = {
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _normalize(text: str) -> str:
     """Lowercase and strip non-alphanumeric characters (keep spaces/hyphens)."""
     text = text.lower()
     text = re.sub(r"[^\w\s-]", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _first_sentence(text: str) -> str:
@@ -303,6 +450,7 @@ def _classify_complexity(
 # Main classifier
 # ---------------------------------------------------------------------------
 
+
 def classify(problem_text: str) -> dict[str, object]:
     """Classify a problem along 3 axes and suggest a reasoning method."""
     normalized = _normalize(problem_text)
@@ -323,7 +471,9 @@ def classify(problem_text: str) -> dict[str, object]:
     # Axis 2 — Complexity (boosted by structure signal richness)
     total_struct_signals = sum(1 for _, sigs in structure_scored.values() if sigs)
     comp_val, comp_conf, comp_signals = _classify_complexity(
-        normalized, word_count, total_struct_signals,
+        normalized,
+        word_count,
+        total_struct_signals,
     )
 
     # Axis 3 — Domain
@@ -383,8 +533,7 @@ if __name__ == "__main__":
     import argparse
 
     ap = argparse.ArgumentParser(
-        description="Deterministic problem classifier for reasoning-router. "
-        "Keyword/pattern matching — no LLM calls.",
+        description="Deterministic problem classifier for reasoning-router. Keyword/pattern matching — no LLM calls.",
     )
     ap.add_argument("problem_text", help="The problem text to classify.")
     args = ap.parse_args()

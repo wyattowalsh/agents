@@ -41,7 +41,7 @@ Compare official MCP Registry, Glama, PulseMCP, Smithery, and Docker MCP Catalog
 
 ### Agent Skill Sources
 
-Use skills.sh API for search, details, tree, and audit metadata. Use `npx skills add <source> --list` as source-list truth before installing or auditing external skills. Route third-party adoption through `external-skill-auditor` and `config/external-skills.md`.
+Use skills.sh API for search, details, tree, and audit metadata. Use `npx skills add <source> --list` as source-list truth before installing or auditing external skills. Route third-party adoption through `/review source` and the curated external authoring catalog.
 
 ### Package And Extension Registries
 

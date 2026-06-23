@@ -10,7 +10,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-
 ENTITY_NAME_HINTS = {
     "account",
     "asset",
@@ -123,10 +122,7 @@ def imported_edge_names(tree: ast.Module) -> set[str]:
 def has_field_description(value: ast.AST | None) -> bool:
     if not isinstance(value, ast.Call) or call_name(value.func) != "Field":
         return False
-    for keyword in value.keywords:
-        if keyword.arg == "description" and not is_empty_constant(keyword.value):
-            return True
-    return False
+    return any(keyword.arg == "description" and not is_empty_constant(keyword.value) for keyword in value.keywords)
 
 
 def is_empty_constant(node: ast.AST) -> bool:
@@ -136,10 +132,7 @@ def is_empty_constant(node: ast.AST) -> bool:
 def uses_edge_helper(value: ast.AST | None, edge_names: set[str]) -> bool:
     if value is None:
         return False
-    for node in ast.walk(value):
-        if isinstance(node, ast.Call) and call_name(node.func) in edge_names:
-            return True
-    return False
+    return any(isinstance(node, ast.Call) and call_name(node.func) in edge_names for node in ast.walk(value))
 
 
 def list_depth(annotation: ast.AST | None) -> int:
@@ -168,7 +161,7 @@ def extract_graph_id_fields(value: ast.AST | None) -> list[str]:
 
     for node in ast.walk(value):
         if isinstance(node, ast.Dict):
-            for key, item in zip(node.keys, node.values):
+            for key, item in zip(node.keys, node.values, strict=False):
                 if isinstance(key, ast.Constant) and key.value == "graph_id_fields":
                     return string_list(item)
     return []
@@ -239,8 +232,7 @@ def collect_models(tree: ast.Module) -> list[ModelInfo]:
                     FieldInfo(
                         name=stmt.target.id,
                         annotation=unparse(stmt.annotation),
-                        has_field_call=isinstance(stmt.value, ast.Call)
-                        and call_name(stmt.value.func) == "Field",
+                        has_field_call=isinstance(stmt.value, ast.Call) and call_name(stmt.value.func) == "Field",
                         has_description=has_field_description(stmt.value),
                         uses_edge_helper=uses_edge_helper(stmt.value, edge_names),
                         references_models=references_models(stmt.annotation, model_names),

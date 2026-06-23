@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Static analysis for algorithmic complexity estimation via AST parsing."""
+
 from __future__ import annotations
 
 import argparse
@@ -43,9 +44,9 @@ def estimate_complexity(node: ast.AST, depth: int = 0) -> tuple[str, list[str]]:
                 evidence.append(f"nested comprehension depth {comp_depth} at line {child.lineno}")
 
     if has_recursion and max_depth == 0:
-        return "O(n)", evidence + ["recursive without loop — likely O(n) or O(log n)"]
+        return "O(n)", [*evidence, "recursive without loop — likely O(n) or O(log n)"]
     if has_recursion and max_depth >= 1:
-        return f"O(n^{max_depth + 1})", evidence + ["recursion with loops"]
+        return f"O(n^{max_depth + 1})", [*evidence, "recursion with loops"]
 
     complexity_map = {0: "O(1)", 1: "O(n)", 2: "O(n^2)", 3: "O(n^3)"}
     complexity = complexity_map.get(max_depth, f"O(n^{max_depth})")
@@ -86,8 +87,12 @@ def _get_call_name(node: ast.Call) -> str:
 def _hotspot_score(complexity: str, loc: int) -> float:
     """Score hotspot risk based on complexity and function size."""
     complexity_weights = {
-        "O(1)": 0.1, "O(log n)": 0.2, "O(n)": 0.4,
-        "O(n log n)": 0.6, "O(n^2)": 0.8, "O(n^3)": 1.0,
+        "O(1)": 0.1,
+        "O(log n)": 0.2,
+        "O(n)": 0.4,
+        "O(n log n)": 0.6,
+        "O(n^2)": 0.8,
+        "O(n^3)": 1.0,
     }
     base = complexity_weights.get(complexity, 0.9)
     size_factor = min(loc / 100, 1.0)
@@ -130,8 +135,10 @@ def analyze_path(path: Path) -> list[dict]:
     results = []
     if path.is_dir():
         for py_file in sorted(path.rglob("*.py")):
-            if any(part.startswith(".") or part in {"node_modules", "__pycache__", ".venv", "venv"}
-                   for part in py_file.parts):
+            if any(
+                part.startswith(".") or part in {"node_modules", "__pycache__", ".venv", "venv"}
+                for part in py_file.parts
+            ):
                 continue
             results.extend(analyze_file(py_file))
     return results
@@ -140,10 +147,10 @@ def analyze_path(path: Path) -> list[dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Estimate algorithmic complexity via AST analysis")
     parser.add_argument("path", help="Python file or directory to analyze")
-    parser.add_argument("--min-score", type=float, default=0.0,
-                        help="Minimum hotspot score to include (0.0-1.0)")
-    parser.add_argument("--sort", choices=["complexity", "hotspot", "name"], default="hotspot",
-                        help="Sort results by field")
+    parser.add_argument("--min-score", type=float, default=0.0, help="Minimum hotspot score to include (0.0-1.0)")
+    parser.add_argument(
+        "--sort", choices=["complexity", "hotspot", "name"], default="hotspot", help="Sort results by field"
+    )
     args = parser.parse_args()
 
     target = Path(args.path)
@@ -169,9 +176,7 @@ def main() -> None:
         "functions": functions,
         "summary": {
             "by_complexity": {},
-            "avg_hotspot_score": round(
-                sum(f["hotspot_score"] for f in functions) / max(len(functions), 1), 2
-            ),
+            "avg_hotspot_score": round(sum(f["hotspot_score"] for f in functions) / max(len(functions), 1), 2),
         },
     }
     for f in functions:

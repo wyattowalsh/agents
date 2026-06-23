@@ -10,6 +10,7 @@ Usage:
   cat subagent-results.json | python source-deduplicator.py --verbose
   cat subagent-results.json | python source-deduplicator.py --threshold 0.9
 """
+
 import argparse
 import json
 import re
@@ -23,8 +24,7 @@ def normalize_claim(claim: str) -> str:
     """Normalize a claim for comparison: lowercase, strip punctuation, collapse whitespace."""
     text = claim.lower().strip()
     text = text.translate(str.maketrans("", "", string.punctuation))
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def jaccard_similarity(a: str, b: str) -> float:
@@ -46,7 +46,7 @@ def merge_confidence(confidences: list[float]) -> float:
         return 0.0
     product = 1.0
     for c in confidences:
-        product *= (1.0 - max(0.0, min(1.0, c)))
+        product *= 1.0 - max(0.0, min(1.0, c))
     return min(0.99, round(1.0 - product, 4))
 
 

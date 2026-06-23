@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+from pathlib import Path
 
 
 def get_agent_dir(skill_name: str) -> Path:
@@ -21,6 +22,7 @@ def get_agent_dir(skill_name: str) -> Path:
         if os.environ.get(cli) == "1" or folder.strip(".") in agent:
             return Path.home() / folder / skill_name
     return Path.home() / ".claude" / skill_name
+
 
 import sys
 import tempfile
@@ -336,8 +338,11 @@ def save_rejection(
 
     # Upsert by pattern + type
     existing = next(
-        (r for r in data["rejections"]
-         if r.get("pattern") == truncated_pattern and r.get("type") == rejection_type.value),
+        (
+            r
+            for r in data["rejections"]
+            if r.get("pattern") == truncated_pattern and r.get("type") == rejection_type.value
+        ),
         None,
     )
     if existing:
@@ -379,9 +384,7 @@ def save_inspiration(
     truncated_name = _truncate(name)
 
     # Upsert by name
-    existing = next(
-        (i for i in data["inspirations"] if i.get("name") == truncated_name), None
-    )
+    existing = next((i for i in data["inspirations"] if i.get("name") == truncated_name), None)
     if existing:
         existing["cited"] = today
         if context:
@@ -546,10 +549,7 @@ def stats() -> None:
             "phonetic_dislikes": len(sp.get("phonetic_dislikes", [])),
             "vibe_words": len(sp.get("vibe_words", [])),
             "archetype_affinities": len(sp.get("archetype_affinities", {})),
-            "has_weight_overrides": any(
-                v is not None and v != {}
-                for v in data.get("weight_overrides", {}).values()
-            ),
+            "has_weight_overrides": any(v is not None and v != {} for v in data.get("weight_overrides", {}).values()),
             "has_length_prefs": bool(sp.get("preferred_length")),
             "session_count": data.get("context_defaults", {}).get("session_count", 0),
         },

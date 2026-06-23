@@ -4,6 +4,7 @@
 Outputs JSON to stdout; warnings to stderr.
 Pure stdlib — zero pip dependencies. Uses ThreadPoolExecutor for parallel requests.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -80,7 +81,7 @@ def _check_url(url: str) -> dict:
             elapsed_ms = int((time.monotonic() - start) * 1000)
             last_status = e.code
             if e.code in _RETRYABLE_CODES and attempt < MAX_RETRIES:
-                wait = 2 ** attempt
+                wait = 2**attempt
                 _warn(f"Retryable {e.code} on {url}, retrying in {wait}s")
                 time.sleep(wait)
                 continue
@@ -88,7 +89,7 @@ def _check_url(url: str) -> dict:
         except (URLError, TimeoutError, OSError) as e:
             elapsed_ms = int((time.monotonic() - start) * 1000)
             if attempt < MAX_RETRIES:
-                time.sleep(2 ** attempt)
+                time.sleep(2**attempt)
                 continue
             return {"url": url, "status": 0, "ms": elapsed_ms, "error": str(e)}
     return {"url": url, "status": last_status, "ms": 0, "error": "max retries exceeded"}
@@ -119,8 +120,14 @@ def main() -> None:
             results.append(future.result())
 
     valid = [r for r in results if 200 <= r.get("status", 0) < 400]
-    broken = [{"url": r["url"], "status": r.get("status", 0)} for r in results if r.get("status", 0) >= 400 or r.get("status", 0) == 0]
-    slow = [{"url": r["url"], "ms": r["ms"]} for r in results if r["ms"] >= SLOW_THRESHOLD_MS and r.get("status", 0) < 400]
+    broken = [
+        {"url": r["url"], "status": r.get("status", 0)}
+        for r in results
+        if r.get("status", 0) >= 400 or r.get("status", 0) == 0
+    ]
+    slow = [
+        {"url": r["url"], "ms": r["ms"]} for r in results if r["ms"] >= SLOW_THRESHOLD_MS and r.get("status", 0) < 400
+    ]
 
     output = {
         "total": len(urls),

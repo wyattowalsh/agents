@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Parse textual cProfile/pstats output into structured JSON."""
+
 from __future__ import annotations
 
 import argparse
@@ -11,15 +12,9 @@ from pathlib import Path
 CPROFILE_HEADER_RE = re.compile(
     r"^\s*(\d+)\s+function\s+calls?\s+(?:\((\d+)\s+primitive\s+calls?\)\s+)?in\s+([\d.]+)\s+seconds"
 )
-CPROFILE_ROW_RE = re.compile(
-    r"^\s*([\d/]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+(.+)$"
-)
-PYSPY_RE = re.compile(
-    r"^\s*([\d.]+)%\s+([\d.]+)s\s+(.+?)(?:\s+\((.+?):(\d+)\))?$"
-)
-PERF_RE = re.compile(
-    r"^\s*([\d.]+)%\s+(\S+)\s+\[(\S+)\]\s+(.+)$"
-)
+CPROFILE_ROW_RE = re.compile(r"^\s*([\d/]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+(.+)$")
+PYSPY_RE = re.compile(r"^\s*([\d.]+)%\s+([\d.]+)s\s+(.+?)(?:\s+\((.+?):(\d+)\))?$")
+PERF_RE = re.compile(r"^\s*([\d.]+)%\s+(\S+)\s+\[(\S+)\]\s+(.+)$")
 
 
 def parse_cprofile(text: str) -> dict:
@@ -97,8 +92,13 @@ def parse_pyspy(text: str) -> dict:
         "format": "py-spy",
         "functions": functions,
         "hotspots": [
-            {"rank": i + 1, "name": f["name"], "percent": f["percent"],
-             "total_time": f["total_time"], "file": f["file"]}
+            {
+                "rank": i + 1,
+                "name": f["name"],
+                "percent": f["percent"],
+                "total_time": f["total_time"],
+                "file": f["file"],
+            }
             for i, f in enumerate(functions[:10])
         ],
         "total_functions": len(functions),
@@ -122,8 +122,7 @@ def parse_perf(text: str) -> dict:
         "format": "perf",
         "functions": functions,
         "hotspots": [
-            {"rank": i + 1, "name": f["name"], "percent": f["percent"],
-             "command": f["command"]}
+            {"rank": i + 1, "name": f["name"], "percent": f["percent"], "command": f["command"]}
             for i, f in enumerate(functions[:10])
         ],
         "total_functions": len(functions),
@@ -154,8 +153,13 @@ def detect_format(text: str) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Parse profiler output to structured JSON")
     parser.add_argument("--input", "-i", required=True, help="Path to profiler output file")
-    parser.add_argument("--format", "-f", choices=["cprofile", "pyspy", "perf", "auto"],
-                        default="auto", help="Profiler output format (default: auto-detect)")
+    parser.add_argument(
+        "--format",
+        "-f",
+        choices=["cprofile", "pyspy", "perf", "auto"],
+        default="auto",
+        help="Profiler output format (default: auto-detect)",
+    )
     args = parser.parse_args()
 
     path = Path(args.input)

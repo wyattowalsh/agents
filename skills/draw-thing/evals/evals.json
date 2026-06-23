@@ -98,12 +98,12 @@
 		{
 			"id": "negative-control-ui-work",
 			"prompt": "/draw-thing design a React landing page UI for this product",
-			"expected_output": "Refuses or redirects because UI implementation belongs to frontend-designer, not draw-thing.",
+			"expected_output": "Refuses or redirects because UI implementation belongs to design, not draw-thing.",
 			"files": ["skills/draw-thing/SKILL.md"],
 			"assertions": [
 				"Agent does not generate UI implementation code under draw-thing.",
 				"Agent cites the NOT for UI implementation scope boundary.",
-				"Agent redirects to frontend-designer or asks whether the user wants an image mockup instead."
+				"Agent redirects to design or asks whether the user wants an image mockup instead."
 			]
 		},
 		{

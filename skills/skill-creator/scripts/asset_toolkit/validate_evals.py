@@ -104,6 +104,7 @@ def validate_evals(skills_dir: Path) -> list[dict[str, str]]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate skill eval JSON files")
     parser.add_argument("path", nargs="?", default="", help="skills/ root or single skill dir")
+    parser.add_argument("--repo-root", default="", help="Repository root to validate when path is omitted")
     parser.add_argument("--format", choices=["text", "json", "jsonl"], default="text")
     args = parser.parse_args(argv)
 
@@ -114,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             errors = validate_evals(target)
     else:
-        repo_root = find_repo_root()
+        repo_root = Path(args.repo_root).resolve() if args.repo_root else find_repo_root()
         if repo_root is None:
             print("Could not find repo skills/ directory", file=sys.stderr)
             return 1

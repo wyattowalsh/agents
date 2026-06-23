@@ -4,7 +4,7 @@
   "files": [],
   "expected_behavior": [
     "Agent does NOT activate tech-debt-analyzer",
-    "Agent activates honest-review or performs code review instead",
+    "Agent activates review or performs code review instead",
     "tech-debt-analyzer is for debt inventory, not per-change code review"
   ]
 }

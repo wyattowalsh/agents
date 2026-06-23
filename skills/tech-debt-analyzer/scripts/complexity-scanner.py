@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Multi-language AST complexity analysis. Outputs JSON to stdout."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,9 +11,23 @@ import sys
 from pathlib import Path
 
 SKIP_DIRS = {
-    ".git", "node_modules", "__pycache__", ".venv", "venv", ".tox",
-    "dist", "build", ".next", ".nuxt", "target", "vendor", ".mypy_cache",
-    ".eggs", ".pytest_cache", ".ruff_cache", "site-packages",
+    ".git",
+    "node_modules",
+    "__pycache__",
+    ".venv",
+    "venv",
+    ".tox",
+    "dist",
+    "build",
+    ".next",
+    ".nuxt",
+    "target",
+    "vendor",
+    ".mypy_cache",
+    ".eggs",
+    ".pytest_cache",
+    ".ruff_cache",
+    "site-packages",
 }
 
 THRESHOLDS = {"HIGH": 10, "MEDIUM": 5}
@@ -49,8 +64,7 @@ def cognitive_complexity(node: ast.AST, depth: int = 0) -> int:
 
         total += increment + nesting
 
-        if isinstance(child, (ast.If, ast.While, ast.For, ast.ExceptHandler,
-                              ast.With, ast.AsyncWith, ast.AsyncFor)):
+        if isinstance(child, (ast.If, ast.While, ast.For, ast.ExceptHandler, ast.With, ast.AsyncWith, ast.AsyncFor)):
             total += cognitive_complexity(child, depth + 1)
         else:
             total += cognitive_complexity(child, depth)

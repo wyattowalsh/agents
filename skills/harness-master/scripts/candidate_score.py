@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 DIMENSIONS = [
     "authority",
     "programmatic_evidence",
@@ -134,15 +133,35 @@ def _infer_scores(candidate: dict[str, Any], harness: str | None) -> dict[str, i
     scores.setdefault("authority", _score_authority(candidate))
     scores.setdefault("programmatic_evidence", _score_programmatic(candidate))
     scores.setdefault("harness_fit", _score_harness_fit(candidate, harness))
-    scores.setdefault("overlap_dry", 1 if candidate.get("duplicates_existing_owner") else 3 if candidate.get("canonical_home") else 2)
-    scores.setdefault("install_friction", 1 if _truthy(candidate, "requires_manual_ui", "requires_compilation") else 2 if candidate.get("auth_env") else 3)
-    scores.setdefault("maintenance", 3 if _truthy(candidate, "recent_release", "active_maintainers") else 2 if candidate.get("pushed_recently") else 1)
+    scores.setdefault(
+        "overlap_dry", 1 if candidate.get("duplicates_existing_owner") else 3 if candidate.get("canonical_home") else 2
+    )
+    scores.setdefault(
+        "install_friction",
+        1
+        if _truthy(candidate, "requires_manual_ui", "requires_compilation")
+        else 2
+        if candidate.get("auth_env")
+        else 3,
+    )
+    scores.setdefault(
+        "maintenance",
+        3
+        if _truthy(candidate, "recent_release", "active_maintainers")
+        else 2
+        if candidate.get("pushed_recently")
+        else 1,
+    )
     stars = _int_value(candidate.get("stars", 0))
     scores.setdefault("popularity", 3 if stars >= 1000 else 2 if stars >= 100 else 1)
     scores.setdefault("security", _score_security(candidate))
     scores.setdefault("permissions_auth_risk", _score_permissions(candidate))
-    scores.setdefault("validation_path", 3 if candidate.get("validation_fixtures") else 2 if candidate.get("validation_plan") else 0)
-    scores.setdefault("rollback_path", 3 if candidate.get("rollback_tested") else 2 if candidate.get("rollback_plan") else 0)
+    scores.setdefault(
+        "validation_path", 3 if candidate.get("validation_fixtures") else 2 if candidate.get("validation_plan") else 0
+    )
+    scores.setdefault(
+        "rollback_path", 3 if candidate.get("rollback_tested") else 2 if candidate.get("rollback_plan") else 0
+    )
     return scores
 
 

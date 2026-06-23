@@ -78,7 +78,12 @@ PROJECT_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "cursor rules", "path": ".cursor/rules/*", "kind": "rules", "role": "authoritative"},
         {"label": "project mcp", "path": ".cursor/mcp.json", "kind": "mcp", "role": "authoritative"},
         {"label": "project skills", "path": ".cursor/skills/**/SKILL.md", "kind": "skills", "role": "authoritative"},
-        {"label": "compatible project skills", "path": ".agents/skills/**/SKILL.md", "kind": "skills", "role": "secondary"},
+        {
+            "label": "compatible project skills",
+            "path": ".agents/skills/**/SKILL.md",
+            "kind": "skills",
+            "role": "secondary",
+        },
         {"label": "project subagents", "path": ".cursor/agents/*.md", "kind": "agents", "role": "authoritative"},
         {"label": "project hooks", "path": ".cursor/hooks.json", "kind": "hooks", "role": "authoritative"},
         {"label": "project cli config", "path": ".cursor/cli.json", "kind": "config", "role": "authoritative"},
@@ -171,8 +176,18 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "role": "secondary",
         },
         # explicit hook-labeled surfaces for settings files (embedded hooks)
-        {"label": "global settings (embedded hooks)", "path": "~/.claude/settings.json", "kind": "hooks", "role": "authoritative"},
-        {"label": "global local settings (embedded hooks)", "path": "~/.claude/settings.local.json", "kind": "hooks", "role": "secondary"},
+        {
+            "label": "global settings (embedded hooks)",
+            "path": "~/.claude/settings.json",
+            "kind": "hooks",
+            "role": "authoritative",
+        },
+        {
+            "label": "global local settings (embedded hooks)",
+            "path": "~/.claude/settings.local.json",
+            "kind": "hooks",
+            "role": "secondary",
+        },
     ],
     "claude-desktop": [
         {
@@ -210,7 +225,12 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
         {"label": "global settings", "path": "~/.gemini/settings.json", "kind": "config", "role": "authoritative"},
         {"label": "installed skills", "path": "~/.gemini/skills", "kind": "skills", "role": "secondary"},
         # explicit hook-labeled surface for settings file (embedded hooks)
-        {"label": "global settings (embedded hooks)", "path": "~/.gemini/settings.json", "kind": "hooks", "role": "authoritative"},
+        {
+            "label": "global settings (embedded hooks)",
+            "path": "~/.gemini/settings.json",
+            "kind": "hooks",
+            "role": "authoritative",
+        },
     ],
     "grok-build": [
         # hook surfaces per spec: global ~/.grok/hooks/*.json
@@ -252,7 +272,12 @@ GLOBAL_SURFACES: dict[str, list[dict[str, str]]] = {
             "role": "authoritative",
         },
         {"label": "global settings", "path": "~/.copilot/settings.json", "kind": "config", "role": "authoritative"},
-        {"label": "global subagent caps", "path": "~/.config/copilot-subagents.env", "kind": "config", "role": "authoritative"},
+        {
+            "label": "global subagent caps",
+            "path": "~/.config/copilot-subagents.env",
+            "kind": "config",
+            "role": "authoritative",
+        },
         {"label": "global mcp", "path": "~/.copilot/mcp-config.json", "kind": "mcp", "role": "authoritative"},
         {"label": "alt global mcp", "path": "~/.config/.copilot/mcp-config.json", "kind": "mcp", "role": "secondary"},
         {"label": "global agents", "path": "~/.copilot/agents", "kind": "agents", "role": "secondary"},
@@ -320,8 +345,16 @@ BLIND_SPOTS: dict[str, list[tuple[str, str, str]]] = {
     "cursor": [
         ("global", "Cursor user rules in settings UI", "User rules may exist only in the UI unless exported."),
         ("global", "Cursor team rules/dashboard", "Team-managed rules are not observable from local files by default."),
-        ("global", "Cursor cloud agent settings", "Cloud Agent settings, secrets, MCP dropdowns, and API state are dashboard-managed blind spots."),
-        ("global", "Cursor team hooks", "Team or enterprise hooks may be distributed from admin surfaces outside local files."),
+        (
+            "global",
+            "Cursor cloud agent settings",
+            "Cloud Agent settings, secrets, MCP dropdowns, and API state are dashboard-managed blind spots.",
+        ),
+        (
+            "global",
+            "Cursor team hooks",
+            "Team or enterprise hooks may be distributed from admin surfaces outside local files.",
+        ),
     ],
     "chatgpt": [
         (
@@ -461,14 +494,12 @@ def _load_hook_surface_registry(repo_root: Path) -> None:
                     and spec.get("label")
                     and spec.get("label") not in existing
                 ):
-                    target[harness].append(
-                        {
-                            "label": spec["label"],
-                            "path": spec.get("path"),
-                            "kind": "hooks",
-                            "role": spec.get("role", "secondary"),
-                        }
-                    )
+                    target[harness].append({
+                        "label": spec["label"],
+                        "path": spec.get("path"),
+                        "kind": "hooks",
+                        "role": spec.get("role", "secondary"),
+                    })
                     existing.add(spec["label"])
 
 
@@ -498,10 +529,7 @@ def _emit_surface(
     manifest_entries: list[dict[str, Any]],
 ) -> Surface:
     pattern = spec["path"]
-    if level == "project":
-        matches = _project_matches(repo_root, pattern)
-    else:
-        matches = _global_matches(pattern)
+    matches = _project_matches(repo_root, pattern) if level == "project" else _global_matches(pattern)
 
     if matches:
         management_modes = {

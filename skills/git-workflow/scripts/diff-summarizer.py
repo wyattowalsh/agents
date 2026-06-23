@@ -14,13 +14,9 @@ import json
 import re
 import sys
 
-STAT_LINE_PATTERN = re.compile(
-    r"^\s*(?P<path>.+?)\s*\|\s*(?P<changes>\d+)\s*(?P<chart>[+-]*)\s*$"
-)
+STAT_LINE_PATTERN = re.compile(r"^\s*(?P<path>.+?)\s*\|\s*(?P<changes>\d+)\s*(?P<chart>[+-]*)\s*$")
 
-BINARY_PATTERN = re.compile(
-    r"^\s*(?P<path>.+?)\s*\|\s*Bin\s+(?P<before>\d+)\s*->\s*(?P<after>\d+)\s+bytes\s*$"
-)
+BINARY_PATTERN = re.compile(r"^\s*(?P<path>.+?)\s*\|\s*Bin\s+(?P<before>\d+)\s*->\s*(?P<after>\d+)\s+bytes\s*$")
 
 SUMMARY_PATTERN = re.compile(
     r"^\s*(?P<files>\d+)\s+files?\s+changed"
@@ -56,16 +52,40 @@ def classify_file_type(path: str) -> str:
         return "test"
     if any(p in path_lower for p in [".md", "readme", "docs/", "doc/"]):
         return "documentation"
-    if any(p in path_lower for p in [
-        ".yml", ".yaml", ".toml", ".json", ".ini", ".cfg", ".conf", ".env",
-        "dockerfile", ".docker", "makefile", ".github/", ".gitlab-ci",
-        "jenkinsfile", ".circleci",
-    ]):
+    if any(
+        p in path_lower
+        for p in [
+            ".yml",
+            ".yaml",
+            ".toml",
+            ".json",
+            ".ini",
+            ".cfg",
+            ".conf",
+            ".env",
+            "dockerfile",
+            ".docker",
+            "makefile",
+            ".github/",
+            ".gitlab-ci",
+            "jenkinsfile",
+            ".circleci",
+        ]
+    ):
         return "configuration"
-    if any(p in path_lower for p in [
-        "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "uv.lock",
-        "poetry.lock", "cargo.lock", "go.sum", "gemfile.lock",
-    ]):
+    if any(
+        p in path_lower
+        for p in [
+            "package-lock.json",
+            "yarn.lock",
+            "pnpm-lock.yaml",
+            "uv.lock",
+            "poetry.lock",
+            "cargo.lock",
+            "go.sum",
+            "gemfile.lock",
+        ]
+    ):
         return "lockfile"
     return "source"
 
@@ -132,20 +152,23 @@ def generate_summary(files: list[dict], total_insertions: int, total_deletions: 
     else:
         character = "minimal changes"
 
-    summary = f"Changes across {len(files)} files ({', '.join(parts)}). {character.capitalize()}."
-    return summary
+    return f"Changes across {len(files)} files ({', '.join(parts)}). {character.capitalize()}."
 
 
 def main():
     text = sys.stdin.read()
     if not text.strip():
-        json.dump({
-            "files_changed": 0,
-            "insertions": 0,
-            "deletions": 0,
-            "files": [],
-            "summary": "No changes detected.",
-        }, sys.stdout, indent=2)
+        json.dump(
+            {
+                "files_changed": 0,
+                "insertions": 0,
+                "deletions": 0,
+                "files": [],
+                "summary": "No changes detected.",
+            },
+            sys.stdout,
+            indent=2,
+        )
         sys.stdout.write("\n")
         return
 

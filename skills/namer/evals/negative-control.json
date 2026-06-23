@@ -5,6 +5,6 @@
   "expected_behavior": [
     "Agent does NOT activate namer skill",
     "Agent treats this as a code review / codebase analysis task",
-    "Agent may suggest honest-review or similar skill instead"
+    "Agent may suggest review or similar skill instead"
   ]
 }

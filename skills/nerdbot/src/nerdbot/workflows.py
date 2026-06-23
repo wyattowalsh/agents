@@ -4,9 +4,8 @@ from __future__ import annotations
 
 import json
 import shlex
-from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from nerdbot.contracts import GENERATED_ARTIFACTS, OPERATION_JOURNAL_PATH, READ_ONLY_MODES, REVIEW_QUEUE_PATH
 from nerdbot.evidence import detect_untrusted_instruction_patterns, review_item_for_suspicious_evidence
@@ -24,6 +23,9 @@ from nerdbot.safety import (
 )
 from nerdbot.sources import plan_local_file_source, plan_text_source, render_source_map_row
 from nerdbot.watch import classify_watch_event, render_watch_checkpoint
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 def command_envelope(
@@ -114,7 +116,7 @@ def build_create_result(*, root: Path, apply: bool, force: bool, bootstrap_modul
     )
     changed_paths = planned_paths
     if apply:
-        changed_paths = planned_paths + [OPERATION_JOURNAL_PATH]
+        changed_paths = [*planned_paths, OPERATION_JOURNAL_PATH]
         operation = append_operation(
             root,
             mode="create",
@@ -165,7 +167,7 @@ def build_ingest_result(args: Any) -> tuple[int, dict[str, object]]:
         write_bytes_atomic_no_follow(root / plan.record.raw_path, plan.raw_bytes(), overwrite=False)
         _ensure_source_map(root)
         append_text_no_follow(root / "indexes" / "source-map.md", render_source_map_row(plan.record) + "\n")
-        changed_paths = rel_paths + [OPERATION_JOURNAL_PATH]
+        changed_paths = [*rel_paths, OPERATION_JOURNAL_PATH]
         operation = append_operation(
             root,
             mode="ingest",
@@ -209,7 +211,7 @@ def build_enrich_result(args: Any) -> dict[str, object]:
             root / REVIEW_QUEUE_PATH,
             f"- [ ] Review draft `{draft_path}` against `{source_path}` before canonical use.\n",
         )
-        changed_paths = rel_paths + [OPERATION_JOURNAL_PATH]
+        changed_paths = [*rel_paths, OPERATION_JOURNAL_PATH]
         operation = append_operation(
             root,
             mode="enrich",
@@ -289,7 +291,7 @@ def build_derive_result(args: Any) -> dict[str, object]:
                 root / GENERATED_ARTIFACTS["graph_report"], render_graph_report(graph), overwrite=True
             )
             payload["graph"] = graph.to_dict()
-        changed_paths = artifacts + [OPERATION_JOURNAL_PATH]
+        changed_paths = [*artifacts, OPERATION_JOURNAL_PATH]
         operation = append_operation(
             root,
             mode="derive",
@@ -321,7 +323,7 @@ def build_improve_result(args: Any, *, lint_module: Any, inventory_module: Any) 
     changed_paths: list[str] = []
     if args.apply and review_lines:
         append_text_no_follow(root / REVIEW_QUEUE_PATH, "\n".join(review_lines) + "\n")
-        changed_paths = rel_paths + [OPERATION_JOURNAL_PATH]
+        changed_paths = [*rel_paths, OPERATION_JOURNAL_PATH]
         operation = append_operation(
             root,
             mode="improve",

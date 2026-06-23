@@ -14,6 +14,8 @@ Condensed from Anthropic's official skill-writing guidance and superpowers metho
 8. [Common Anti-Patterns](#8-common-anti-patterns)
 9. [Cross-Agent Awareness](#9-cross-agent-awareness)
 10. [Context7 Integration](#10-context7-integration)
+11. [Source-Grounded Creation](#11-source-grounded-creation)
+12. [Trigger And Benchmark Discipline](#12-trigger-and-benchmark-discipline)
 
 ---
 
@@ -58,7 +60,7 @@ Match instruction specificity to task fragility.
 
 | Level | Fragility | Style | Example |
 |-------|-----------|-------|---------|
-| **Narrow bridge** | High | Exact steps, exact format, exact tools | "Run `python scripts/check.py` -- if exit code is non-zero, fix all errors before proceeding." |
+| **Narrow bridge** | High | Exact steps, exact format, exact tools | "Run `uv run python scripts/check.py` -- if exit code is non-zero, fix all errors before proceeding." |
 | **Guided path** | Medium | Structure with room for judgment | "Generate 3-5 expert personas. Each must have distinct intellectual traditions and genuine points of disagreement." |
 | **Open field** | Low | State the goal, let the agent choose | "Organize the reference material into logical sections." |
 
@@ -148,7 +150,7 @@ TDD for skills: write test cases before writing the skill body.
 }
 ```
 
-No built-in runner exists -- evals serve as manual test cases and documentation of intent. Run them by pasting the query into a fresh session with the skill installed and checking behavior against expected outcomes.
+Static eval manifests serve as documentation and validation inputs. Behavioral runners are optional and must be explicit because they may call live agents, write artifacts, or consume credentials.
 
 The negative control eval is the most commonly skipped and the most valuable. It prevents the skill from becoming a catch-all.
 
@@ -212,6 +214,10 @@ Different models need different levels of structure in skill instructions.
 | Missing empty-args handler | User invokes `/skill` with no args -- confusion | Always define default behavior in dispatch table |
 | Vague scope boundaries | No "NOT for" clause -- skill fires on tangential requests | Add explicit exclusions to description and body |
 | No reference index | References exist but body doesn't list them | Add a table mapping filenames to purposes |
+| Generic "expert" skill | Broad role prompt with no workflow, outputs, or proof | Narrow to one repeated workflow with triggers and evals |
+| Skill slop | Bulk-generated skill with vague description, no provenance, no tests | Mark `needs-inspection`; require source evidence and security review |
+| Trigger stuffing | Description tries to match everything | Add near-miss negatives and optimize for precision |
+| Unsafe examples | Docs/templates include commands users may execute blindly | Treat examples like code; add safety review and dry-run alternatives |
 
 ---
 
@@ -239,3 +245,46 @@ Use Context7 to validate domain-specific assumptions during skill development:
 Always cite Context7 sources when the validation changes the skill's guidance.
 
 ---
+
+## 11. Source-Grounded Creation
+
+The best skills come from real work, not generic model prior.
+
+Good source evidence includes:
+
+- task transcripts where the agent needed correction
+- repeated review comments or incident fixes
+- runbooks, schemas, API docs, or codebase conventions
+- benchmark failures and trace diagnoses
+- a trusted skill being adapted with provenance
+- user-provided examples of desired output
+
+Weak evidence includes:
+
+- broad role labels such as "senior expert"
+- generic best-practice lists with no task context
+- copied web docs with no synthesis
+- generated skills from converters with no human reduction
+
+When evidence is weak, create a lifecycle packet marked `needs-evidence` and
+ask for representative tasks before building a broad skill.
+
+## 12. Trigger And Benchmark Discipline
+
+Descriptions are routing contracts. Optimize them with:
+
+1. realistic should-trigger queries
+2. near-miss should-not-trigger queries
+3. repeated trials when a harness supports them
+4. held-out validation queries
+5. explicit false-positive and false-negative reporting
+
+Behavioral improvement requires comparison:
+
+- new skill: compare `with_skill` against `without_skill`
+- existing skill: compare `new_skill` against `old_skill`
+- subjective output: use blind comparison when practical
+- safety-sensitive skill: run adversarial evals before publishing
+
+Report negative deltas. A skill that improves one task but breaks routing,
+security, or portability is not done.

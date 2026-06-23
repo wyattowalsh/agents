@@ -15,9 +15,6 @@ from pathlib import Path
 def parse_yaml_documents(content: str) -> list[dict]:
     """Simple YAML parser for K8s manifests (stdlib only, no PyYAML dependency)."""
     documents = []
-    current_doc = {}
-    current_path = []
-    indent_stack = [(-1, current_doc)]
 
     for raw_line in content.split("---"):
         doc_lines = raw_line.strip().splitlines()
@@ -30,7 +27,7 @@ def parse_yaml_documents(content: str) -> list[dict]:
             if not stripped or stripped.startswith("#"):
                 continue
 
-            indent = len(line) - len(line.lstrip())
+            len(line) - len(line.lstrip())
 
             if ":" in stripped:
                 key, _, value = stripped.partition(":")
@@ -39,7 +36,7 @@ def parse_yaml_documents(content: str) -> list[dict]:
 
                 if key == "kind":
                     doc["kind"] = value
-                elif key == "name" and "metadata" not in doc or key == "name":
+                elif (key == "name" and "metadata" not in doc) or key == "name":
                     doc.setdefault("metadata", {})["name"] = value
                 elif key == "namespace":
                     doc.setdefault("metadata", {})["namespace"] = value
@@ -203,7 +200,7 @@ def validate_file(path: Path) -> dict:
     resources = []
     issues = []
 
-    for doc, doc_text in zip(documents, doc_slices):
+    for doc, doc_text in zip(documents, doc_slices, strict=False):
         kind = doc.get("kind", "Unknown")
         name = doc.get("metadata", {}).get("name", "unnamed")
         namespace = doc.get("metadata", {}).get("namespace", "default")

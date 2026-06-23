@@ -16,7 +16,7 @@ metadata:
 
 Generate changelogs, release notes, breaking change summaries, migration guides, and version bump recommendations from git history.
 
-**Scope:** Changelog and release documentation only. NOT for git operations (git-workflow), documentation sites (docs-steward), or code review (honest-review).
+**Scope:** Changelog and release documentation only. NOT for git operations (git-workflow), documentation sites (docs-steward), or code review (review).
 
 ## Dispatch
 

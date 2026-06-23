@@ -82,13 +82,11 @@ class SkillSearchResult:
 
     def public_dict(self, *, include_body: bool = False) -> dict[str, object]:
         data = self.record.public_dict(include_body=include_body)
-        data.update(
-            {
-                "score": round(self.score, 3),
-                "matched_fields": self.matched_fields,
-                "reason": self.reason,
-            }
-        )
+        data.update({
+            "score": round(self.score, 3),
+            "matched_fields": self.matched_fields,
+            "reason": self.reason,
+        })
         return data
 
 
@@ -133,16 +131,14 @@ def default_skill_roots(
         if parent == repo_root:
             break
 
-    roots.extend(
-        [
-            SkillRoot(home_dir / ".codex" / "skills", "codex", "codex-user"),
-            SkillRoot(home_dir / ".agents" / "skills", "global", "external-installed"),
-            SkillRoot(home_dir / ".claude" / "skills", "claude-code", "external-installed"),
-            SkillRoot(home_dir / ".gemini" / "skills", "gemini-cli", "external-installed"),
-            SkillRoot(home_dir / ".copilot" / "skills", "github-copilot", "external-installed"),
-            SkillRoot(home_dir / ".config" / "opencode" / "skills", "opencode", "external-installed"),
-        ]
-    )
+    roots.extend([
+        SkillRoot(home_dir / ".codex" / "skills", "codex", "codex-user"),
+        SkillRoot(home_dir / ".agents" / "skills", "global", "external-installed"),
+        SkillRoot(home_dir / ".claude" / "skills", "claude-code", "external-installed"),
+        SkillRoot(home_dir / ".gemini" / "skills", "gemini-cli", "external-installed"),
+        SkillRoot(home_dir / ".copilot" / "skills", "github-copilot", "external-installed"),
+        SkillRoot(home_dir / ".config" / "opencode" / "skills", "opencode", "external-installed"),
+    ])
 
     plugin_cache = home_dir / ".codex" / "plugins" / "cache"
     if plugin_cache.exists():
@@ -259,15 +255,13 @@ def doctor_report(*, root: Path | None = None, home: Path | None = None, cwd: Pa
     records = collect_skill_records(root=root, home=home, cwd=cwd, include_body=False)
     for skill_root in roots:
         files = list(_iter_skill_files(skill_root.path)) if skill_root.path.exists() else []
-        root_rows.append(
-            {
-                "path": str(skill_root.path),
-                "source": skill_root.source,
-                "trust_tier": skill_root.trust_tier,
-                "exists": skill_root.path.exists(),
-                "skill_count": len(files),
-            }
-        )
+        root_rows.append({
+            "path": str(skill_root.path),
+            "source": skill_root.source,
+            "trust_tier": skill_root.trust_tier,
+            "exists": skill_root.path.exists(),
+            "skill_count": len(files),
+        })
 
     warning_count = sum(len(record.warnings or []) for record in records)
     return {
@@ -350,7 +344,7 @@ def _extract_aliases(fm: dict[str, object]) -> list[str]:
     metadata = fm.get("metadata")
     candidates: object = None
     if isinstance(metadata, dict):
-        metadata_dict = cast(dict[object, object], metadata)
+        metadata_dict = cast("dict[object, object]", metadata)
         candidates = metadata_dict.get("aliases") or metadata_dict.get("alias")
     if candidates is None:
         candidates = fm.get("aliases") or fm.get("alias")
@@ -543,7 +537,10 @@ def _cmd_index(args: argparse.Namespace) -> int:
 def _cmd_search(args: argparse.Namespace) -> int:
     root, home, cwd = _runtime_paths(args)
     source = _normalize_skill_source(args.source)
-    results = [result.public_dict() for result in search_skills(args.query, root=root, home=home, cwd=cwd, source=source, limit=args.limit)]
+    results = [
+        result.public_dict()
+        for result in search_skills(args.query, root=root, home=home, cwd=cwd, source=source, limit=args.limit)
+    ]
     text_lines = [f"{len(results)} matches for {args.query!r}"]
     for result in results:
         matched_fields = result.get("matched_fields")
@@ -607,13 +604,11 @@ def _cmd_context(args: argparse.Namespace) -> int:
     for result in records:
         warnings = result.get("warnings")
         warning_text = ", ".join(str(warning) for warning in warnings) if isinstance(warnings, list) else ""
-        text_lines.extend(
-            [
-                f"## {result['name']} score={result['score']} [{result['source']}:{result['trust_tier']}]",
-                f"Path: {result['path']}",
-                f"Reason: {result['reason']}",
-            ]
-        )
+        text_lines.extend([
+            f"## {result['name']} score={result['score']} [{result['source']}:{result['trust_tier']}]",
+            f"Path: {result['path']}",
+            f"Reason: {result['reason']}",
+        ])
         if warning_text:
             text_lines.append(f"Warnings: {warning_text}")
         text_lines.extend(["", str(result.get("body") or ""), ""])
@@ -633,7 +628,7 @@ def _cmd_doctor(args: argparse.Namespace) -> int:
     roots = report.get("roots")
     root_rows: list[dict[str, object]] = []
     if isinstance(roots, list):
-        root_rows = [cast(dict[str, object], row) for row in roots if isinstance(row, dict)]
+        root_rows = [cast("dict[str, object]", row) for row in roots if isinstance(row, dict)]
     text_lines = [
         f"Skill roots: {report['root_count']}",
         f"Skills found: {report['skill_count']}",

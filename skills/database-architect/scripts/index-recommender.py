@@ -42,7 +42,7 @@ def parse_schema_indexes(sql: str) -> list[dict]:
         # Primary key
         pk_match = re.search(r"PRIMARY\s+KEY\s*\(([^)]+)\)", body, re.IGNORECASE)
         if pk_match:
-            cols = [c.strip().strip("`\"") for c in pk_match.group(1).split(",")]
+            cols = [c.strip().strip('`"') for c in pk_match.group(1).split(",")]
             indexes.append({"table": table, "name": f"pk_{table}", "columns": cols})
 
         # Inline column PKs
@@ -51,7 +51,7 @@ def parse_schema_indexes(sql: str) -> list[dict]:
 
         # UNIQUE constraints
         for uq_match in re.finditer(r"UNIQUE\s*\(([^)]+)\)", body, re.IGNORECASE):
-            cols = [c.strip().strip("`\"") for c in uq_match.group(1).split(",")]
+            cols = [c.strip().strip('`"') for c in uq_match.group(1).split(",")]
             indexes.append({"table": table, "name": f"uq_{table}_{'_'.join(cols)}", "columns": cols})
 
     # Standalone CREATE INDEX
@@ -62,7 +62,7 @@ def parse_schema_indexes(sql: str) -> list[dict]:
     for match in idx_pattern.finditer(sql):
         name = match.group(1)
         table = match.group(2).lower()
-        cols = [c.strip().strip("`\"").split()[0] for c in match.group(3).split(",")]
+        cols = [c.strip().strip('`"').split()[0] for c in match.group(3).split(",")]
         indexes.append({"table": table, "name": name, "columns": cols})
 
     return indexes
@@ -168,7 +168,7 @@ def recommend_indexes(patterns: list[dict], existing: list[dict]) -> list[dict]:
             # Check if existing index covers these columns (leftmost prefix)
             covered = False
             for idx in table_indexes:
-                if idx["columns"][:len(where_cols)] == where_cols:
+                if idx["columns"][: len(where_cols)] == where_cols:
                     covered = True
                     break
 
@@ -195,7 +195,7 @@ def recommend_indexes(patterns: list[dict], existing: list[dict]) -> list[dict]:
             composite = where_cols + [c for c in order_cols if c not in where_cols]
             covered = False
             for idx in table_indexes:
-                if idx["columns"][:len(composite)] == composite:
+                if idx["columns"][: len(composite)] == composite:
                     covered = True
                     break
             if not covered:
@@ -237,7 +237,9 @@ def recommend_indexes(patterns: list[dict], existing: list[dict]) -> list[dict]:
 def main():
     parser = argparse.ArgumentParser(description="Recommend indexes based on schema and queries")
     parser.add_argument("--schema", required=True, help="Path to schema DDL file")
-    parser.add_argument("--queries", required=True, help="Path to file with SQL queries (one per line), or '-' for stdin")
+    parser.add_argument(
+        "--queries", required=True, help="Path to file with SQL queries (one per line), or '-' for stdin"
+    )
     args = parser.parse_args()
 
     # Read schema
@@ -272,7 +274,7 @@ def main():
             continue
         table = pattern["table"]
         for idx in existing:
-            if idx["table"] == table and idx["columns"][:len(where_cols)] == where_cols:
+            if idx["table"] == table and idx["columns"][: len(where_cols)] == where_cols:
                 covered += 1
                 break
 

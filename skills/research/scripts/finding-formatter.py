@@ -10,6 +10,7 @@ Usage:
   python finding-formatter.py --input - --format html
   echo '[{"claim":"test","confidence":0.8,"evidence":[]}]' | python finding-formatter.py
 """
+
 import argparse
 import html
 import json

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Detect inconsistent patterns across a Python codebase. Outputs JSON to stdout."""
+
 from __future__ import annotations
 
 import argparse
@@ -11,9 +12,23 @@ from collections import defaultdict
 from pathlib import Path
 
 SKIP_DIRS = {
-    ".git", "node_modules", "__pycache__", ".venv", "venv", ".tox",
-    "dist", "build", ".next", ".nuxt", "target", "vendor", ".mypy_cache",
-    ".eggs", ".pytest_cache", ".ruff_cache", "site-packages",
+    ".git",
+    "node_modules",
+    "__pycache__",
+    ".venv",
+    "venv",
+    ".tox",
+    "dist",
+    "build",
+    ".next",
+    ".nuxt",
+    "target",
+    "vendor",
+    ".mypy_cache",
+    ".eggs",
+    ".pytest_cache",
+    ".ruff_cache",
+    "site-packages",
 }
 
 # Pattern categories to check

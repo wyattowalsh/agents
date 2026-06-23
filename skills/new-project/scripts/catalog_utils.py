@@ -143,13 +143,11 @@ def detect_conflicts(
             key = tuple(sorted(matched))
             if key not in seen:
                 seen.add(key)
-                conflicts.append(
-                    {
-                        "id": rule.get("id", "catalog.conflict"),
-                        "capabilities": matched,
-                        "resolution": rule.get("resolution"),
-                    }
-                )
+                conflicts.append({
+                    "id": rule.get("id", "catalog.conflict"),
+                    "capabilities": matched,
+                    "resolution": rule.get("resolution"),
+                })
     return conflicts
 
 

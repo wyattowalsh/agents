@@ -20,9 +20,7 @@ except ImportError:
 def analyze_job(name: str, job: dict) -> dict:
     """Analyze a single job for structure and issues."""
     steps = job.get("steps", [])
-    uses_cache = any(
-        s.get("uses", "").startswith("actions/cache") for s in steps
-    )
+    uses_cache = any(s.get("uses", "").startswith("actions/cache") for s in steps)
     uses_matrix = "matrix" in job.get("strategy", {})
     has_timeout = "timeout-minutes" in job
 
@@ -151,7 +149,7 @@ def find_optimizations(jobs_analysis: list[dict]) -> list[dict]:
     # Find chains longer than 2
     for name, deps in all_needs.items():
         for dep in deps:
-            if dep in all_needs and all_needs[dep]:
+            if all_needs.get(dep):
                 optimizations.append({
                     "type": "parallelization",
                     "impact": "medium",
@@ -206,7 +204,9 @@ def main():
     result = {
         "file": str(path),
         "name": workflow.get("name", path.stem),
-        "triggers": list(workflow.get("on", workflow.get(True, {})).keys()) if isinstance(workflow.get("on", workflow.get(True, {})), dict) else [str(workflow.get("on", "unknown"))],
+        "triggers": list(workflow.get("on", workflow.get(True, {})).keys())
+        if isinstance(workflow.get("on", workflow.get(True, {})), dict)
+        else [str(workflow.get("on", "unknown"))],
         "jobs": jobs_analysis,
         "issues": issues,
         "optimization_opportunities": optimizations,

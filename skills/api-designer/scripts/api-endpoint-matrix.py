@@ -20,6 +20,7 @@ def load_spec(path: str) -> dict:
     if p.suffix in (".yaml", ".yml"):
         try:
             import yaml
+
             return yaml.safe_load(text) or {}
         except ImportError:
             try:
@@ -71,7 +72,7 @@ def extract_endpoints(spec: dict) -> list[dict]:
 
             # Collect response codes
             responses = operation.get("responses", {})
-            response_codes = sorted(str(c) for c in responses.keys())
+            response_codes = sorted(str(c) for c in responses)
 
             endpoints.append({
                 "path": path_str,
@@ -93,10 +94,7 @@ def main():
     args = parser.parse_args()
 
     spec = load_spec(args.spec_path)
-    if not spec:
-        result = {"endpoints": []}
-    else:
-        result = {"endpoints": extract_endpoints(spec)}
+    result = {"endpoints": []} if not spec else {"endpoints": extract_endpoints(spec)}
 
     json.dump(result, sys.stdout, indent=2)
     print()

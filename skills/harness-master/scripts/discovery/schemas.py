@@ -7,10 +7,12 @@ import json
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from functools import lru_cache
-from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from _paths import data_dir
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 try:
     from jsonschema import Draft202012Validator
@@ -18,19 +20,17 @@ except ImportError:  # pragma: no cover - repo depends on jsonschema
     Draft202012Validator = None  # type: ignore[misc, assignment]
 
 COVERAGE_VALUES = frozenset({"none", "low", "medium", "good", "full"})
-SCOUT_ROLES = frozenset(
-    {
-        "repo-auditor",
-        "registry-scout",
-        "web-researcher",
-        "mcp-scout",
-        "harness-scout",
-        "plugin-scout",
-        "hook-scout",
-        "policy-scout",
-        "ideator",
-    }
-)
+SCOUT_ROLES = frozenset({
+    "repo-auditor",
+    "registry-scout",
+    "web-researcher",
+    "mcp-scout",
+    "harness-scout",
+    "plugin-scout",
+    "hook-scout",
+    "policy-scout",
+    "ideator",
+})
 
 
 @dataclass

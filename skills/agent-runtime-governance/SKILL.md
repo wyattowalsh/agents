@@ -19,7 +19,7 @@ observable, and safe to operate.
 
 **Scope:** Runtime governance for agents that use tools, memory, approvals,
 subagents, evals, or external systems. NOT for generic vulnerability scanning
-(`security-scanner`), normal code review (`honest-review`), prompt-only
+(`security-scanner`), normal code review (`review`), prompt-only
 optimization (`prompt-engineer`), or MCP implementation details (`mcp-creator`).
 
 ## Dispatch
@@ -66,7 +66,7 @@ Use these canonical terms exactly when producing governance reports.
 Classify the request before choosing a mode:
 
 1. If it asks for app vulnerability scanning, route to `security-scanner`.
-2. If it asks for code review, route to `honest-review`.
+2. If it asks for code review, route to `review`.
 3. If it asks for prompt wording only, route to `prompt-engineer`.
 4. If it asks how to implement an MCP server, route to `mcp-creator`.
 5. Otherwise, choose the closest runtime governance mode from the dispatch table.
@@ -139,7 +139,7 @@ Classify the request before choosing a mode:
 4. Require telemetry for tool calls, approvals, denials, failures, and containment actions.
 5. Add evals for unsafe tool use, missing approval, stale memory, and rollback behavior.
 6. Separate policy from enforcement; name the hook, wrapper, test, or runtime gate that enforces each rule.
-7. Do not replace `security-scanner`, `honest-review`, `prompt-engineer`, or `mcp-creator`; route to them when the request is outside runtime governance.
+7. Do not replace `security-scanner`, `review`, `prompt-engineer`, or `mcp-creator`; route to them when the request is outside runtime governance.
 8. Do not mark a governance change ready without rollout, rollback, and monitoring criteria.
 
 ## Validation Contract

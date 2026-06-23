@@ -25,17 +25,16 @@ def load_data(path: str) -> pd.DataFrame:
     suffix = p.suffix.lower()
     if suffix == ".csv":
         return pd.read_csv(p)
-    elif suffix in (".json", ".jsonl"):
+    if suffix in (".json", ".jsonl"):
         return pd.read_json(p, lines=suffix == ".jsonl")
-    elif suffix in (".xlsx", ".xls"):
+    if suffix in (".xlsx", ".xls"):
         return pd.read_excel(p)
-    elif suffix == ".parquet":
+    if suffix == ".parquet":
         return pd.read_parquet(p)
-    elif suffix == ".tsv":
+    if suffix == ".tsv":
         return pd.read_csv(p, sep="\t")
-    else:
-        print(json.dumps({"error": f"Unsupported format: {suffix}"}), file=sys.stderr)
-        sys.exit(1)
+    print(json.dumps({"error": f"Unsupported format: {suffix}"}), file=sys.stderr)
+    sys.exit(1)
 
 
 def score_completeness(df: pd.DataFrame) -> dict:
@@ -229,14 +228,13 @@ def score_uniqueness(df: pd.DataFrame) -> dict:
     # Check for potential ID columns with non-unique values
     id_issues = []
     for col in df.columns:
-        if any(hint in col.lower() for hint in ["id", "key", "uuid", "code"]):
-            if df[col].nunique() < total * 0.99:
-                id_issues.append({
-                    "column": col,
-                    "unique_count": int(df[col].nunique()),
-                    "total_rows": total,
-                    "unique_pct": round(df[col].nunique() / total * 100, 2),
-                })
+        if any(hint in col.lower() for hint in ["id", "key", "uuid", "code"]) and df[col].nunique() < total * 0.99:
+            id_issues.append({
+                "column": col,
+                "unique_count": int(df[col].nunique()),
+                "total_rows": total,
+                "unique_pct": round(df[col].nunique() / total * 100, 2),
+            })
 
     score = max(0, 100 - dup_pct * 2)
     return {
@@ -256,14 +254,16 @@ def compute_overall(dimensions: dict) -> dict:
         "timeliness": 0.15,
         "uniqueness": 0.20,
     }
-    weighted_sum = sum(
-        dimensions[dim]["score"] * weights[dim] for dim in weights
-    )
+    weighted_sum = sum(dimensions[dim]["score"] * weights[dim] for dim in weights)
     grade = (
-        "A" if weighted_sum >= 90
-        else "B" if weighted_sum >= 75
-        else "C" if weighted_sum >= 60
-        else "D" if weighted_sum >= 40
+        "A"
+        if weighted_sum >= 90
+        else "B"
+        if weighted_sum >= 75
+        else "C"
+        if weighted_sum >= 60
+        else "D"
+        if weighted_sum >= 40
         else "F"
     )
     return {

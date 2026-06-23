@@ -10,15 +10,6 @@ license: MIT
 metadata:
   author: wyattowalsh
   version: "1.0.0"
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit|MultiEdit"
-      hooks:
-        - command: 'bash -lc ''RESEARCH_SKILL_ACTIVE=1 python3 skills/research/scripts/research_hook.py research-readonly-write-guard --harness claude-code'''
-  Stop:
-    - hooks:
-        - type: command
-          command: 'bash -lc ''RESEARCH_SKILL_ACTIVE=1 python3 skills/research/scripts/research_hook.py research-stop-verifier --harness claude-code'''
 ---
 
 # Deep Research
@@ -98,7 +89,7 @@ Before starting research, check if another skill is a better fit:
 
 | Signal | Redirect |
 |--------|----------|
-| Code review, PR review, diff analysis | Suggest `/honest-review` |
+| Code review, PR review, diff analysis | Suggest `/review` |
 | Strategic decision with adversaries, game theory | Suggest `/wargame` |
 | Multi-perspective expert debate | Suggest `/host-panel` |
 | Prompt optimization, model-specific prompting | Suggest `/prompt-engineer` |

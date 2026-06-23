@@ -21,60 +21,132 @@ MODEL_CATALOG = {
     "classification": {
         "small": {
             "interpretable": [
-                {"model": "Logistic Regression", "library": "scikit-learn", "rationale": "Strong baseline, interpretable coefficients, fast training"},
-                {"model": "Decision Tree", "library": "scikit-learn", "rationale": "Fully interpretable, handles mixed types"},
-                {"model": "Naive Bayes", "library": "scikit-learn", "rationale": "Works well with small data, probabilistic output"},
+                {
+                    "model": "Logistic Regression",
+                    "library": "scikit-learn",
+                    "rationale": "Strong baseline, interpretable coefficients, fast training",
+                },
+                {
+                    "model": "Decision Tree",
+                    "library": "scikit-learn",
+                    "rationale": "Fully interpretable, handles mixed types",
+                },
+                {
+                    "model": "Naive Bayes",
+                    "library": "scikit-learn",
+                    "rationale": "Works well with small data, probabilistic output",
+                },
             ],
             "flexible": [
-                {"model": "Random Forest", "library": "scikit-learn", "rationale": "Robust to overfitting on small data, feature importance"},
+                {
+                    "model": "Random Forest",
+                    "library": "scikit-learn",
+                    "rationale": "Robust to overfitting on small data, feature importance",
+                },
                 {"model": "SVM (RBF)", "library": "scikit-learn", "rationale": "Effective in high-dimensional spaces"},
                 {"model": "Logistic Regression", "library": "scikit-learn", "rationale": "Always include as baseline"},
             ],
         },
         "medium": {
             "interpretable": [
-                {"model": "Logistic Regression", "library": "scikit-learn", "rationale": "Baseline with regularization"},
-                {"model": "Explainable Boosting Machine", "library": "interpret", "rationale": "Glass-box model, near-GBDT performance"},
-                {"model": "LightGBM + SHAP", "library": "lightgbm + shap", "rationale": "High performance with post-hoc explanations"},
+                {
+                    "model": "Logistic Regression",
+                    "library": "scikit-learn",
+                    "rationale": "Baseline with regularization",
+                },
+                {
+                    "model": "Explainable Boosting Machine",
+                    "library": "interpret",
+                    "rationale": "Glass-box model, near-GBDT performance",
+                },
+                {
+                    "model": "LightGBM + SHAP",
+                    "library": "lightgbm + shap",
+                    "rationale": "High performance with post-hoc explanations",
+                },
             ],
             "flexible": [
-                {"model": "LightGBM", "library": "lightgbm", "rationale": "Fast training, handles categorical natively"},
+                {
+                    "model": "LightGBM",
+                    "library": "lightgbm",
+                    "rationale": "Fast training, handles categorical natively",
+                },
                 {"model": "XGBoost", "library": "xgboost", "rationale": "Mature, extensive hyperparameter control"},
                 {"model": "Random Forest", "library": "scikit-learn", "rationale": "Robust baseline, parallelizable"},
             ],
         },
         "large": {
             "interpretable": [
-                {"model": "LightGBM + SHAP", "library": "lightgbm + shap", "rationale": "Scales well, post-hoc interpretability"},
-                {"model": "Linear Model + Feature Engineering", "library": "scikit-learn", "rationale": "Interpretable if features are meaningful"},
+                {
+                    "model": "LightGBM + SHAP",
+                    "library": "lightgbm + shap",
+                    "rationale": "Scales well, post-hoc interpretability",
+                },
+                {
+                    "model": "Linear Model + Feature Engineering",
+                    "library": "scikit-learn",
+                    "rationale": "Interpretable if features are meaningful",
+                },
             ],
             "flexible": [
                 {"model": "LightGBM", "library": "lightgbm", "rationale": "Best speed/performance ratio at scale"},
                 {"model": "XGBoost", "library": "xgboost", "rationale": "Distributed training support"},
                 {"model": "CatBoost", "library": "catboost", "rationale": "Best for high-cardinality categoricals"},
-                {"model": "Deep Learning (TabNet)", "library": "pytorch-tabnet", "rationale": "Attention-based, self-supervised pretraining"},
+                {
+                    "model": "Deep Learning (TabNet)",
+                    "library": "pytorch-tabnet",
+                    "rationale": "Attention-based, self-supervised pretraining",
+                },
             ],
         },
         "very_large": {
             "interpretable": [
-                {"model": "LightGBM + SHAP", "library": "lightgbm + shap", "rationale": "Distributed mode handles billions of rows"},
+                {
+                    "model": "LightGBM + SHAP",
+                    "library": "lightgbm + shap",
+                    "rationale": "Distributed mode handles billions of rows",
+                },
             ],
             "flexible": [
                 {"model": "LightGBM (distributed)", "library": "lightgbm", "rationale": "Native distributed training"},
-                {"model": "Deep Learning", "library": "PyTorch / TensorFlow", "rationale": "Can learn complex representations"},
-                {"model": "XGBoost (distributed)", "library": "xgboost + dask/ray", "rationale": "Distributed gradient boosting"},
+                {
+                    "model": "Deep Learning",
+                    "library": "PyTorch / TensorFlow",
+                    "rationale": "Can learn complex representations",
+                },
+                {
+                    "model": "XGBoost (distributed)",
+                    "library": "xgboost + dask/ray",
+                    "rationale": "Distributed gradient boosting",
+                },
             ],
         },
     },
     "regression": {
         "small": {
             "interpretable": [
-                {"model": "Linear Regression", "library": "scikit-learn", "rationale": "Interpretable coefficients, fast"},
-                {"model": "Ridge / Lasso", "library": "scikit-learn", "rationale": "Regularization prevents overfitting on small data"},
-                {"model": "Decision Tree Regressor", "library": "scikit-learn", "rationale": "Non-linear, fully interpretable"},
+                {
+                    "model": "Linear Regression",
+                    "library": "scikit-learn",
+                    "rationale": "Interpretable coefficients, fast",
+                },
+                {
+                    "model": "Ridge / Lasso",
+                    "library": "scikit-learn",
+                    "rationale": "Regularization prevents overfitting on small data",
+                },
+                {
+                    "model": "Decision Tree Regressor",
+                    "library": "scikit-learn",
+                    "rationale": "Non-linear, fully interpretable",
+                },
             ],
             "flexible": [
-                {"model": "Random Forest Regressor", "library": "scikit-learn", "rationale": "Handles non-linearity, robust"},
+                {
+                    "model": "Random Forest Regressor",
+                    "library": "scikit-learn",
+                    "rationale": "Handles non-linearity, robust",
+                },
                 {"model": "SVR", "library": "scikit-learn", "rationale": "Effective for small, high-dimensional data"},
                 {"model": "Linear Regression", "library": "scikit-learn", "rationale": "Always include as baseline"},
             ],
@@ -82,7 +154,11 @@ MODEL_CATALOG = {
         "medium": {
             "interpretable": [
                 {"model": "Ridge / Lasso", "library": "scikit-learn", "rationale": "Baseline with feature selection"},
-                {"model": "Explainable Boosting Machine", "library": "interpret", "rationale": "Glass-box with near-GBDT accuracy"},
+                {
+                    "model": "Explainable Boosting Machine",
+                    "library": "interpret",
+                    "rationale": "Glass-box with near-GBDT accuracy",
+                },
             ],
             "flexible": [
                 {"model": "LightGBM Regressor", "library": "lightgbm", "rationale": "Fast, handles missing values"},
@@ -91,21 +167,37 @@ MODEL_CATALOG = {
         },
         "large": {
             "interpretable": [
-                {"model": "LightGBM + SHAP", "library": "lightgbm + shap", "rationale": "Scales well with interpretability"},
+                {
+                    "model": "LightGBM + SHAP",
+                    "library": "lightgbm + shap",
+                    "rationale": "Scales well with interpretability",
+                },
             ],
             "flexible": [
                 {"model": "LightGBM Regressor", "library": "lightgbm", "rationale": "Best speed/accuracy at scale"},
-                {"model": "CatBoost Regressor", "library": "catboost", "rationale": "Ordered boosting, categorical support"},
+                {
+                    "model": "CatBoost Regressor",
+                    "library": "catboost",
+                    "rationale": "Ordered boosting, categorical support",
+                },
                 {"model": "Neural Network", "library": "PyTorch", "rationale": "For complex non-linear relationships"},
             ],
         },
         "very_large": {
             "interpretable": [
-                {"model": "LightGBM + SHAP", "library": "lightgbm + shap", "rationale": "Distributed interpretable modeling"},
+                {
+                    "model": "LightGBM + SHAP",
+                    "library": "lightgbm + shap",
+                    "rationale": "Distributed interpretable modeling",
+                },
             ],
             "flexible": [
                 {"model": "LightGBM (distributed)", "library": "lightgbm", "rationale": "Native distributed training"},
-                {"model": "Deep Learning", "library": "PyTorch / TensorFlow", "rationale": "Learns complex representations at scale"},
+                {
+                    "model": "Deep Learning",
+                    "library": "PyTorch / TensorFlow",
+                    "rationale": "Learns complex representations at scale",
+                },
             ],
         },
     },
@@ -113,11 +205,23 @@ MODEL_CATALOG = {
         "small": {
             "interpretable": [
                 {"model": "K-Means", "library": "scikit-learn", "rationale": "Simple, interpretable centroids"},
-                {"model": "Hierarchical (Agglomerative)", "library": "scikit-learn", "rationale": "Dendrogram shows cluster relationships"},
+                {
+                    "model": "Hierarchical (Agglomerative)",
+                    "library": "scikit-learn",
+                    "rationale": "Dendrogram shows cluster relationships",
+                },
             ],
             "flexible": [
-                {"model": "DBSCAN", "library": "scikit-learn", "rationale": "No need to specify k, finds arbitrary shapes"},
-                {"model": "Gaussian Mixture Model", "library": "scikit-learn", "rationale": "Soft assignments, probabilistic"},
+                {
+                    "model": "DBSCAN",
+                    "library": "scikit-learn",
+                    "rationale": "No need to specify k, finds arbitrary shapes",
+                },
+                {
+                    "model": "Gaussian Mixture Model",
+                    "library": "scikit-learn",
+                    "rationale": "Soft assignments, probabilistic",
+                },
             ],
         },
         "medium": {
@@ -126,7 +230,11 @@ MODEL_CATALOG = {
             ],
             "flexible": [
                 {"model": "HDBSCAN", "library": "hdbscan", "rationale": "Robust density-based, auto-selects clusters"},
-                {"model": "Gaussian Mixture Model", "library": "scikit-learn", "rationale": "Handles elliptical clusters"},
+                {
+                    "model": "Gaussian Mixture Model",
+                    "library": "scikit-learn",
+                    "rationale": "Handles elliptical clusters",
+                },
             ],
         },
         "large": {
@@ -150,8 +258,16 @@ MODEL_CATALOG = {
     "forecasting": {
         "small": {
             "interpretable": [
-                {"model": "ARIMA / SARIMA", "library": "statsmodels", "rationale": "Classical, well-understood, interpretable"},
-                {"model": "Exponential Smoothing", "library": "statsmodels", "rationale": "Simple, handles trend + seasonality"},
+                {
+                    "model": "ARIMA / SARIMA",
+                    "library": "statsmodels",
+                    "rationale": "Classical, well-understood, interpretable",
+                },
+                {
+                    "model": "Exponential Smoothing",
+                    "library": "statsmodels",
+                    "rationale": "Simple, handles trend + seasonality",
+                },
                 {"model": "Prophet", "library": "prophet", "rationale": "Handles holidays, missing data, changepoints"},
             ],
             "flexible": [
@@ -165,8 +281,16 @@ MODEL_CATALOG = {
                 {"model": "SARIMAX", "library": "statsmodels", "rationale": "Includes exogenous variables"},
             ],
             "flexible": [
-                {"model": "LightGBM (lag features)", "library": "lightgbm", "rationale": "Feature-engineered time series"},
-                {"model": "NeuralProphet", "library": "neuralprophet", "rationale": "Prophet + neural network components"},
+                {
+                    "model": "LightGBM (lag features)",
+                    "library": "lightgbm",
+                    "rationale": "Feature-engineered time series",
+                },
+                {
+                    "model": "NeuralProphet",
+                    "library": "neuralprophet",
+                    "rationale": "Prophet + neural network components",
+                },
             ],
         },
         "large": {
@@ -174,9 +298,21 @@ MODEL_CATALOG = {
                 {"model": "Prophet", "library": "prophet", "rationale": "Scales reasonably, interpretable"},
             ],
             "flexible": [
-                {"model": "LightGBM (lag features)", "library": "lightgbm", "rationale": "Scales well with engineered features"},
-                {"model": "Temporal Fusion Transformer", "library": "pytorch-forecasting", "rationale": "Multi-horizon, attention-based"},
-                {"model": "N-BEATS", "library": "pytorch-forecasting", "rationale": "Pure deep learning, no feature engineering"},
+                {
+                    "model": "LightGBM (lag features)",
+                    "library": "lightgbm",
+                    "rationale": "Scales well with engineered features",
+                },
+                {
+                    "model": "Temporal Fusion Transformer",
+                    "library": "pytorch-forecasting",
+                    "rationale": "Multi-horizon, attention-based",
+                },
+                {
+                    "model": "N-BEATS",
+                    "library": "pytorch-forecasting",
+                    "rationale": "Pure deep learning, no feature engineering",
+                },
             ],
         },
         "very_large": {
@@ -184,8 +320,16 @@ MODEL_CATALOG = {
                 {"model": "LightGBM + SHAP", "library": "lightgbm + shap", "rationale": "Interpretable at scale"},
             ],
             "flexible": [
-                {"model": "Temporal Fusion Transformer", "library": "pytorch-forecasting", "rationale": "Handles multiple time series"},
-                {"model": "TimesFM / Chronos", "library": "google/amazon", "rationale": "Foundation models for time series"},
+                {
+                    "model": "Temporal Fusion Transformer",
+                    "library": "pytorch-forecasting",
+                    "rationale": "Handles multiple time series",
+                },
+                {
+                    "model": "TimesFM / Chronos",
+                    "library": "google/amazon",
+                    "rationale": "Foundation models for time series",
+                },
             ],
         },
     },
@@ -193,26 +337,46 @@ MODEL_CATALOG = {
         "small": {
             "interpretable": [
                 {"model": "Z-Score / IQR", "library": "scipy / numpy", "rationale": "Simple statistical thresholds"},
-                {"model": "Isolation Forest", "library": "scikit-learn", "rationale": "Feature importance for anomalies"},
+                {
+                    "model": "Isolation Forest",
+                    "library": "scikit-learn",
+                    "rationale": "Feature importance for anomalies",
+                },
             ],
             "flexible": [
                 {"model": "Isolation Forest", "library": "scikit-learn", "rationale": "Handles high-dimensional data"},
-                {"model": "Local Outlier Factor", "library": "scikit-learn", "rationale": "Density-based, local context"},
+                {
+                    "model": "Local Outlier Factor",
+                    "library": "scikit-learn",
+                    "rationale": "Density-based, local context",
+                },
                 {"model": "One-Class SVM", "library": "scikit-learn", "rationale": "Effective boundary learning"},
             ],
         },
         "medium": {
             "interpretable": [
-                {"model": "Isolation Forest + SHAP", "library": "scikit-learn + shap", "rationale": "Explainable anomaly scores"},
+                {
+                    "model": "Isolation Forest + SHAP",
+                    "library": "scikit-learn + shap",
+                    "rationale": "Explainable anomaly scores",
+                },
             ],
             "flexible": [
                 {"model": "Isolation Forest", "library": "scikit-learn", "rationale": "Scales linearly"},
-                {"model": "Autoencoder", "library": "PyTorch / TensorFlow", "rationale": "Learns normal patterns, reconstruction error as score"},
+                {
+                    "model": "Autoencoder",
+                    "library": "PyTorch / TensorFlow",
+                    "rationale": "Learns normal patterns, reconstruction error as score",
+                },
             ],
         },
         "large": {
             "interpretable": [
-                {"model": "Isolation Forest + SHAP", "library": "scikit-learn + shap", "rationale": "Scalable with explanations"},
+                {
+                    "model": "Isolation Forest + SHAP",
+                    "library": "scikit-learn + shap",
+                    "rationale": "Scalable with explanations",
+                },
             ],
             "flexible": [
                 {"model": "Autoencoder", "library": "PyTorch", "rationale": "Deep learning for complex patterns"},
@@ -221,10 +385,18 @@ MODEL_CATALOG = {
         },
         "very_large": {
             "interpretable": [
-                {"model": "Statistical Process Control", "library": "custom", "rationale": "Simple rules, streaming-compatible"},
+                {
+                    "model": "Statistical Process Control",
+                    "library": "custom",
+                    "rationale": "Simple rules, streaming-compatible",
+                },
             ],
             "flexible": [
-                {"model": "Streaming Autoencoder", "library": "PyTorch", "rationale": "Online learning for anomaly detection"},
+                {
+                    "model": "Streaming Autoencoder",
+                    "library": "PyTorch",
+                    "rationale": "Online learning for anomaly detection",
+                },
             ],
         },
     },

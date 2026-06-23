@@ -14,7 +14,7 @@ import re
 import sys
 from pathlib import Path
 
-from _shared import parse_frontmatter
+from _shared import find_nonportable_frontmatter_commands, format_frontmatter_command_issues, parse_frontmatter
 
 try:
     from rich.console import Console
@@ -920,11 +920,18 @@ def score_portability(fm: dict, body: str, dir_path: Path) -> dict:
             continue
         if not in_code and re.match(r"\s*@", ln):
             repo_refs.append(ln)
-    if not repo_refs:
+    frontmatter_command_issues = find_nonportable_frontmatter_commands(fm)
+    if not repo_refs and not frontmatter_command_issues:
         s += 1
         f.append("No repo-specific path assumptions")
     else:
-        f.append(f"Repo-specific references found in {len(repo_refs)} lines")
+        if repo_refs:
+            f.append(f"Repo-specific references found in {len(repo_refs)} lines")
+        if frontmatter_command_issues:
+            f.append(
+                "Non-portable frontmatter command paths found: "
+                + format_frontmatter_command_issues(frontmatter_command_issues)
+            )
     mentioned = _mentioned_resource_paths(dir_path, body)
     missing_resources = sorted(rel_path for rel_path in mentioned if not (dir_path / rel_path).is_file())
     if missing_resources:

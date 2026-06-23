@@ -58,14 +58,12 @@ def parse_ddl(sql: str) -> dict:
     for match in index_pattern.finditer(sql):
         idx_name = match.group(1)
         tbl_name = match.group(2).lower()
-        cols = [c.strip().strip("`\"").split()[0] for c in match.group(3).split(",")]
+        cols = [c.strip().strip('`"').split()[0] for c in match.group(3).split(",")]
         is_unique = "UNIQUE" in match.group(0).upper().split("INDEX")[0]
 
         for table in tables:
             if table["name"] == tbl_name:
-                table["indexes"].append(
-                    {"name": idx_name, "columns": cols, "unique": is_unique}
-                )
+                table["indexes"].append({"name": idx_name, "columns": cols, "unique": is_unique})
                 break
 
     normalization = assess_normalization(tables, issues)
@@ -97,9 +95,7 @@ def parse_table_body(table_name: str, body: str, issues: list) -> dict:
         if upper.startswith("PRIMARY KEY"):
             pk_match = re.search(r"\(([^)]+)\)", part)
             if pk_match:
-                primary_key = [
-                    c.strip().strip("`\"") for c in pk_match.group(1).split(",")
-                ]
+                primary_key = [c.strip().strip('`"') for c in pk_match.group(1).split(",")]
         elif upper.startswith("FOREIGN KEY") or (upper.startswith("CONSTRAINT") and "FOREIGN KEY" in upper):
             fk = parse_foreign_key(part)
             if fk:
@@ -107,9 +103,7 @@ def parse_table_body(table_name: str, body: str, issues: list) -> dict:
         elif upper.startswith("UNIQUE"):
             uq_match = re.search(r"\(([^)]+)\)", part)
             if uq_match:
-                cols = [
-                    c.strip().strip("`\"") for c in uq_match.group(1).split(",")
-                ]
+                cols = [c.strip().strip('`"') for c in uq_match.group(1).split(",")]
                 name = f"uq_{table_name}_{'_'.join(cols)}"
                 indexes.append({"name": name, "columns": cols, "unique": True})
         elif upper.startswith("CONSTRAINT") and "UNIQUE" in upper:
@@ -124,7 +118,7 @@ def parse_table_body(table_name: str, body: str, issues: list) -> dict:
         elif upper.startswith("INDEX") or upper.startswith("KEY"):
             idx_match = re.search(r"(?:INDEX|KEY)\s+[`\"]?(\w+)[`\"]?\s*\(([^)]+)\)", part, re.IGNORECASE)
             if idx_match:
-                cols = [c.strip().strip("`\"").split()[0] for c in idx_match.group(2).split(",")]
+                cols = [c.strip().strip('`"').split()[0] for c in idx_match.group(2).split(",")]
                 indexes.append({"name": idx_match.group(1), "columns": cols, "unique": False})
         else:
             col = parse_column(part)
@@ -159,7 +153,11 @@ def parse_column(definition: str) -> dict | None:
 
     nullable = "NOT NULL" not in upper
     default = None
-    default_match = re.search(r"DEFAULT\s+(.+?)(?:\s+(?:NOT\s+NULL|NULL|PRIMARY|UNIQUE|CHECK|REFERENCES|CONSTRAINT)|$)", definition, re.IGNORECASE)
+    default_match = re.search(
+        r"DEFAULT\s+(.+?)(?:\s+(?:NOT\s+NULL|NULL|PRIMARY|UNIQUE|CHECK|REFERENCES|CONSTRAINT)|$)",
+        definition,
+        re.IGNORECASE,
+    )
     if default_match:
         default = default_match.group(1).strip().rstrip(",")
 
@@ -192,12 +190,14 @@ def parse_foreign_key(definition: str) -> dict | None:
     if not fk_match:
         return None
 
-    cols = [c.strip().strip("`\"") for c in fk_match.group(1).split(",")]
+    cols = [c.strip().strip('`"') for c in fk_match.group(1).split(",")]
     ref_table = fk_match.group(2).lower()
-    ref_cols = [c.strip().strip("`\"") for c in fk_match.group(3).split(",")]
+    ref_cols = [c.strip().strip('`"') for c in fk_match.group(3).split(",")]
 
     on_delete = "NO ACTION"
-    del_match = re.search(r"ON\s+DELETE\s+(CASCADE|SET\s+NULL|SET\s+DEFAULT|RESTRICT|NO\s+ACTION)", definition, re.IGNORECASE)
+    del_match = re.search(
+        r"ON\s+DELETE\s+(CASCADE|SET\s+NULL|SET\s+DEFAULT|RESTRICT|NO\s+ACTION)", definition, re.IGNORECASE
+    )
     if del_match:
         on_delete = del_match.group(1).upper()
 
@@ -243,14 +243,18 @@ def assess_normalization(tables: list, issues: list) -> str:
 
         # Check 1NF: comma-separated values (heuristic: columns named *_list, *_csv, tags)
         for col in table["columns"]:
-            if any(pattern in col["name"] for pattern in ["_list", "_csv", "_tags", "_ids"]):
-                if col["type"].startswith(("TEXT", "VARCHAR", "CHARACTER VARYING", "NVARCHAR")):
-                    issues.append({
-                        "severity": "warning",
-                        "table": table["name"],
-                        "message": f"Column '{col['name']}' may contain comma-separated values (1NF violation). Consider a junction table.",
-                    })
-                    level = "1NF"
+            if any(pattern in col["name"] for pattern in ["_list", "_csv", "_tags", "_ids"]) and col["type"].startswith((
+                "TEXT",
+                "VARCHAR",
+                "CHARACTER VARYING",
+                "NVARCHAR",
+            )):
+                issues.append({
+                    "severity": "warning",
+                    "table": table["name"],
+                    "message": f"Column '{col['name']}' may contain comma-separated values (1NF violation). Consider a junction table.",
+                })
+                level = "1NF"
 
         # Check for repeated column groups (1NF violation)
         numbered = re.findall(r"(\w+?)(\d+)$", " ".join(col_names))

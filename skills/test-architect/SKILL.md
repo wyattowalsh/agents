@@ -3,7 +3,7 @@ name: test-architect
 description: >-
   Test strategy, coverage analysis, edge case identification, flaky test
   diagnosis. Use when designing test suites. NOT for running tests
-  (devops-engineer), TDD, or code review (honest-review).
+  (devops-engineer), TDD, or code review (review).
 argument-hint: "<mode> [target]"
 model: opus
 license: MIT
@@ -16,7 +16,7 @@ metadata:
 
 Design test strategies, analyze coverage gaps, identify edge cases, diagnose flaky tests, and audit test suite architecture.
 
-**Scope:** Test design and analysis only. NOT for running tests or CI/CD (devops-engineer), code review (honest-review), or TDD workflow.
+**Scope:** Test design and analysis only. NOT for running tests or CI/CD (devops-engineer), code review (review), or TDD workflow.
 
 ## Dispatch
 

@@ -56,7 +56,7 @@ def detect(path: Path) -> dict:
 
     for candidate in ("docs", "apps/docs", "website"):
         root = path / candidate
-        if root.exists() and (root / "astro.config.mjs").exists() or (root / "astro.config.ts").exists():
+        if (root.exists() and (root / "astro.config.mjs").exists()) or (root / "astro.config.ts").exists():
             docs_roots.append(candidate)
         elif root.exists() and any(root.iterdir()):
             docs_roots.append(candidate)

@@ -14,9 +14,18 @@ JEST_PASS = re.compile(r"^\s*[✓✔]\s+(.+?)(?:\s+\(\d+\s*m?s\))?$")
 JEST_FAIL = re.compile(r"^\s*[✕✖×]\s+(.+?)(?:\s+\(\d+\s*m?s\))?$")
 TIMING_PATTERN = re.compile(r"(\d+(?:\.\d+)?)\s*(?:s|ms|seconds?)")
 FLAKY_MARKERS = [
-    "flaky", "intermittent", "retry", "retried", "unstable",
-    "timeout", "timed out", "connection refused", "connection reset",
-    "race condition", "deadlock", "order dependent",
+    "flaky",
+    "intermittent",
+    "retry",
+    "retried",
+    "unstable",
+    "timeout",
+    "timed out",
+    "connection refused",
+    "connection reset",
+    "race condition",
+    "deadlock",
+    "order dependent",
 ]
 
 CAUSE_PATTERNS = {
@@ -54,7 +63,7 @@ def parse_log(content: str) -> dict:
             else:
                 test_results[test_name]["failures"] += 1
                 # Capture context lines for cause analysis
-                context = lines[max(0, i - 2):min(len(lines), i + 5)]
+                context = lines[max(0, i - 2) : min(len(lines), i + 5)]
                 test_results[test_name]["messages"].append(" ".join(context))
             continue
 
@@ -66,7 +75,7 @@ def parse_log(content: str) -> dict:
         m = JEST_FAIL.match(line)
         if m:
             test_results[m.group(1)]["failures"] += 1
-            context = lines[max(0, i - 2):min(len(lines), i + 5)]
+            context = lines[max(0, i - 2) : min(len(lines), i + 5)]
             test_results[m.group(1)]["messages"].append(" ".join(context))
 
     # Identify flaky tests: tests with both passes and failures
@@ -78,9 +87,7 @@ def parse_log(content: str) -> dict:
                 "name": name,
                 "pass_count": results["passes"],
                 "failure_count": results["failures"],
-                "failure_rate": round(
-                    results["failures"] / (results["passes"] + results["failures"]) * 100, 1
-                ),
+                "failure_rate": round(results["failures"] / (results["passes"] + results["failures"]) * 100, 1),
                 "likely_cause": cause,
                 "failure_patterns": results["messages"][:3],
             })
@@ -118,9 +125,7 @@ def parse_log(content: str) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Analyze test logs for flaky test indicators"
-    )
+    parser = argparse.ArgumentParser(description="Analyze test logs for flaky test indicators")
     parser.add_argument("log", help="Path to test result log file")
     args = parser.parse_args()
 

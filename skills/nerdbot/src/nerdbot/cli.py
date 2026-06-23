@@ -5,9 +5,8 @@ from __future__ import annotations
 import argparse
 import json
 import shlex
-from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from nerdbot.contracts import (
     MODE_SUMMARIES,
@@ -31,6 +30,9 @@ from nerdbot.workflows import (
     build_watch_classify_result,
     command_envelope,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 def emit_json(payload: dict[str, Any], *, compact: bool = False) -> None:
@@ -376,14 +378,12 @@ def render_modes_guide(payload: dict[str, Any]) -> str:
     for item in payload["modes"]:
         access = "read-only" if item["read_only_default"] else "mutating after gates"
         lines.append(f"{item['visual']:<7} {item['mode']:<10} {access:<21} {item['summary']}")
-    lines.extend(
-        [
-            render_rule(),
-            "",
-            "Safe starts:",
-            "Review these dry-run/read-only commands before any `--apply` workflow.",
-        ]
-    )
+    lines.extend([
+        render_rule(),
+        "",
+        "Safe starts:",
+        "Review these dry-run/read-only commands before any `--apply` workflow.",
+    ])
     lines.extend(render_command_card(command) for command in payload["safe_start"])
     return "\n".join(lines)
 

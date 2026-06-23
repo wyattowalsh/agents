@@ -27,18 +27,16 @@ def render_markdown(taxonomy: dict) -> str:
         skills = ", ".join(domain.get("existing_skills", [])) or "—"
         lines.append(f"| {domain.get('name', '')} | {skills} | {domain.get('coverage', '')} |")
 
-    lines.extend(
-        [
-            "",
-            "## Priority Formula",
-            "",
-            "`priority = gap_severity × domain_relevance × solution_availability`",
-            "",
-            "See `skills/harness-master/data/discovery/discovery-taxonomy.json`",
-            "for severity weights and scout queries.",
-            "",
-        ]
-    )
+    lines.extend([
+        "",
+        "## Priority Formula",
+        "",
+        "`priority = gap_severity × domain_relevance × solution_availability`",
+        "",
+        "See `skills/harness-master/data/discovery/discovery-taxonomy.json`",
+        "for severity weights and scout queries.",
+        "",
+    ])
     return "\n".join(lines)
 
 

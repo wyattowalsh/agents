@@ -35,6 +35,7 @@ def _truncate(s: str) -> str:
     """Truncate string to MAX_STRING_LEN to prevent unbounded storage."""
     return s[:MAX_STRING_LEN] if len(s) > MAX_STRING_LEN else s
 
+
 # Mode → topics mapping
 MODE_TOPICS: dict[str, list[str]] = {
     "triage": ["senders", "triage", "corrections"],
@@ -472,9 +473,7 @@ def remove(
     if topic == "senders" and email:
         for sender_type in ("vip", "noise"):
             before = len(data["senders"][sender_type])
-            data["senders"][sender_type] = [
-                s for s in data["senders"][sender_type] if s.get("email") != email
-            ]
+            data["senders"][sender_type] = [s for s in data["senders"][sender_type] if s.get("email") != email]
             if len(data["senders"][sender_type]) < before:
                 removed = True
 
@@ -485,18 +484,14 @@ def remove(
 
     elif topic == "triage" and pattern:
         before = len(data["triage"]["overrides"])
-        data["triage"]["overrides"] = [
-            o for o in data["triage"]["overrides"] if o.get("pattern") != pattern
-        ]
+        data["triage"]["overrides"] = [o for o in data["triage"]["overrides"] if o.get("pattern") != pattern]
         removed = len(data["triage"]["overrides"]) < before
 
     elif topic == "filters" and filter_id:
         for ftype in ("effective", "failed"):
             before = len(data["filters"][ftype])
             key = "filter_id" if ftype == "effective" else "criteria"
-            data["filters"][ftype] = [
-                f for f in data["filters"][ftype] if f.get(key) != filter_id
-            ]
+            data["filters"][ftype] = [f for f in data["filters"][ftype] if f.get(key) != filter_id]
             if len(data["filters"][ftype]) < before:
                 removed = True
 
@@ -605,10 +600,7 @@ def stats() -> None:
             "has_inbox_patterns": bool(data["inbox_patterns"]),
         },
         "oldest_entry": _oldest(
-            data["senders"]["vip"]
-            + data["senders"]["noise"]
-            + data["triage"]["overrides"]
-            + data["corrections"],
+            data["senders"]["vip"] + data["senders"]["noise"] + data["triage"]["overrides"] + data["corrections"],
             "first_seen",
         )
         or _oldest(

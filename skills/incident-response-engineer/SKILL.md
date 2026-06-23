@@ -17,7 +17,7 @@ Coordinate production incident response from first signal through recovery and
 postmortem.
 
 **Scope:** Live operational incidents and service degradation. NOT for general
-code review (honest-review), proactive vulnerability scanning
+code review (review), proactive vulnerability scanning
 (security-scanner), or one-off bug fixing without incident coordination.
 
 ## Canonical Vocabulary
@@ -74,7 +74,7 @@ code review (honest-review), proactive vulnerability scanning
 - If the task is proactive vulnerability discovery, threat modeling, or
   security scanning, use security-scanner.
 - If the task is code review, fix quality assessment, or pre-merge risk review,
-  use honest-review.
+  use review.
 - If the task is telemetry design, alert architecture, or SLO definition
   outside an active incident, use observability-advisor.
 - If the task is vendor-specific dashboards, alarms, or log-platform setup,

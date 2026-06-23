@@ -52,7 +52,7 @@ RULES = {
         "pattern": r'^CMD\s+["\']?(?:sh|bash)\s+-c',
         "severity": "low",
         "message": "Using shell form for CMD",
-        "fix": "Use exec form: CMD [\"executable\", \"arg1\"]",
+        "fix": 'Use exec form: CMD ["executable", "arg1"]',
     },
     "SC1001": {
         "pattern": r"^COPY\s+\.\s+\.",

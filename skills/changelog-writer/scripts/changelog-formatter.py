@@ -107,7 +107,7 @@ def format_github(commits, version=None, release_date=None):
         lines.append("")
 
     # Contributors
-    authors = sorted(set(c.get("author", "") for c in commits))
+    authors = sorted({c.get("author", "") for c in commits})
     if authors:
         lines.extend(["## Contributors", ""])
         for a in authors:
@@ -139,8 +139,9 @@ FORMATTERS = {
 def main():
     parser = argparse.ArgumentParser(description="Format classified commits as changelog")
     parser.add_argument("--input", help="Classified commits JSON file (default: stdin)")
-    parser.add_argument("--format", choices=FORMATTERS.keys(), default="keepachangelog",
-                        help="Output format (default: keepachangelog)")
+    parser.add_argument(
+        "--format", choices=FORMATTERS.keys(), default="keepachangelog", help="Output format (default: keepachangelog)"
+    )
     parser.add_argument("--version", help="Version string for the release")
     parser.add_argument("--date", help="Release date (YYYY-MM-DD)")
     args = parser.parse_args()

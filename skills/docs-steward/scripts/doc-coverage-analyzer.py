@@ -43,12 +43,15 @@ def analyze_python_file(filepath: str) -> dict:
 
     # Check module-level docstring
     module_doc = ast.get_docstring(tree) is not None
-    items.insert(0, {
-        "name": os.path.basename(filepath),
-        "type": "module",
-        "line": 1,
-        "documented": module_doc,
-    })
+    items.insert(
+        0,
+        {
+            "name": os.path.basename(filepath),
+            "type": "module",
+            "line": 1,
+            "documented": module_doc,
+        },
+    )
 
     return {"path": filepath, "items": items}
 
@@ -96,8 +99,16 @@ LANG_EXTENSIONS = {
 }
 
 SKIP_DIRS = {
-    "node_modules", ".git", "__pycache__", ".venv", "venv",
-    "dist", "build", ".next", ".astro", "coverage",
+    "node_modules",
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "dist",
+    "build",
+    ".next",
+    ".astro",
+    "coverage",
 }
 
 

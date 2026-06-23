@@ -9,7 +9,6 @@ import shlex
 import sys
 from typing import Any
 
-
 FORMATS = {"roundtable", "oxford", "socratic"}
 DEFAULT_FORMAT = "roundtable"
 DEFAULT_COUNT = 4
@@ -74,7 +73,7 @@ def parse(raw_args: list[str]) -> dict[str, Any]:
     if not topic:
         errors.append("topic is required")
     elif not quoted_topic and len(remaining) > 1 and not any(" " in arg for arg in raw_args):
-        warnings.append("topic appears unquoted; prefer /host-panel \"topic\" [format] [num-experts]")
+        warnings.append('topic appears unquoted; prefer /host-panel "topic" [format] [num-experts]')
 
     if trailing_unknowns:
         errors.append(f"unsupported format or extra argument: {' '.join(trailing_unknowns)}")

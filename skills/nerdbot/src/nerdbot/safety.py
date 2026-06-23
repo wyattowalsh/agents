@@ -5,10 +5,12 @@ from __future__ import annotations
 import os
 import stat
 import tempfile
-from collections.abc import Iterable
 from contextlib import suppress
 from pathlib import Path, PurePosixPath, PureWindowsPath
-from typing import TextIO
+from typing import TYPE_CHECKING, TextIO
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 WINDOWS_REPARSE_ATTRIBUTE = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0)
 

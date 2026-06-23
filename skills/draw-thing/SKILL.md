@@ -4,7 +4,7 @@ description: >-
   Generate local AI images and short media with Draw Things CLI on macOS. Use
   when you need local txt2img, img2img, model setup, imports, prompt refinement,
   or rig-aware best-model selection. NOT for UI implementation
-  (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool
+  (design), ad copy iteration (ad-creative), or broad vendor/tool
   research (research).
 argument-hint: "<mode> [prompt or path] [--model qwen|z-image|flux2|video]"
 model: opus
@@ -19,7 +19,7 @@ allowed-tools: Bash Read Glob
 
 Local AI image and media generation through `draw-things-cli`. Use the current Draw Things command surface: `generate`, `models list`, `models ensure`, `models import`, and `train lora`.
 
-**Scope:** Local Draw Things image generation, image editing, model setup, model inventory, imports, and short local media generation. NOT for UI implementation (frontend-designer), ad creative strategy (ad-creative), cloud image APIs, or general AI-model market research.
+**Scope:** Local Draw Things image generation, image editing, model setup, model inventory, imports, and short local media generation. NOT for UI implementation (design), ad creative strategy (ad-creative), cloud image APIs, or general AI-model market research.
 
 ---
 

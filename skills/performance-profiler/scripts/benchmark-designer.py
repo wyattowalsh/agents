@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate benchmark skeleton from function signature."""
+
 from __future__ import annotations
 
 import argparse
@@ -38,7 +39,7 @@ print(f"Stddev: {{(sum((t-sum(times)/len(times))**2 for t in times)/len(times))*
             "// Setup: create representative test data\n"
             "const data = {setup_data};"
         ),
-        "benchmark": '''// Warmup
+        "benchmark": """// Warmup
 for (let i = 0; i < {warmup}; i++) {{
   {function}({call_args});
 }}
@@ -54,7 +55,7 @@ for (let r = 0; r < {repeats}; r++) {{
 }}
 const mean = times.reduce((a, b) => a + b) / times.length / {iterations};
 console.log(`Mean: ${{mean.toFixed(4)}} ms/call`);
-console.log(`Min:  ${{Math.min(...times) / {iterations}}} ms/call`);''',
+console.log(`Min:  ${{Math.min(...times) / {iterations}}} ms/call`);""",
         "iterations": 1000,
         "warmup": 100,
         "repeats": 5,
@@ -65,15 +66,15 @@ console.log(`Min:  ${{Math.min(...times) / {iterations}}} ms/call`);''',
 def generate_skeleton(function: str, language: str, module: str = "__main__") -> dict:
     """Generate a benchmark skeleton for the given function."""
     tmpl = TEMPLATES.get(language, TEMPLATES["python"])
-    setup_data = '[]  # TODO: replace with representative test data'
-    call_args = 'data  # TODO: replace with actual arguments'
+    setup_data = "[]  # TODO: replace with representative test data"
+    call_args = "data  # TODO: replace with actual arguments"
 
-    setup_code = tmpl["setup"].format(
-        module=module, function=function, setup_data=setup_data
-    )
+    setup_code = tmpl["setup"].format(module=module, function=function, setup_data=setup_data)
     benchmark_code = tmpl["benchmark"].format(
-        function=function, call_args=call_args,
-        warmup=tmpl["warmup"], iterations=tmpl["iterations"],
+        function=function,
+        call_args=call_args,
+        warmup=tmpl["warmup"],
+        iterations=tmpl["iterations"],
         repeats=tmpl["repeats"],
     )
 
@@ -105,8 +106,7 @@ def generate_skeleton(function: str, language: str, module: str = "__main__") ->
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate benchmark skeleton")
     parser.add_argument("--function", "-f", required=True, help="Function name to benchmark")
-    parser.add_argument("--language", "-l", default="python",
-                        choices=["python", "javascript"], help="Target language")
+    parser.add_argument("--language", "-l", default="python", choices=["python", "javascript"], help="Target language")
     parser.add_argument("--module", "-m", default="__main__", help="Module containing the function")
     args = parser.parse_args()
 

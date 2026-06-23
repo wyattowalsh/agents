@@ -59,7 +59,9 @@ HEURISTIC_KEYWORDS = {
 def run_git_log(since=None, until=None, path=None):
     """Run git log and return raw commit data."""
     cmd = [
-        "git", "log", "--format=%H%x00%an <%ae>%x00%ai%x00%s%x00%b%x1e",
+        "git",
+        "log",
+        "--format=%H%x00%an <%ae>%x00%ai%x00%s%x00%b%x1e",
     ]
     if since:
         cmd.append(f"{since}..{until or 'HEAD'}")
@@ -88,9 +90,7 @@ def has_breaking_signals(subject, body):
     breaking_words = ["breaking", "incompatible", "removed", "renamed", "dropped"]
     if any(w in lower_subject for w in breaking_words):
         return True
-    if BREAKING_FOOTER_RE.search(body):
-        return True
-    return False
+    return bool(BREAKING_FOOTER_RE.search(body))
 
 
 def parse_commits(raw, breaking_only=False):

@@ -128,8 +128,7 @@ class Classification:
 
 
 def _normalize_token(t: str) -> str:
-    t = t.strip().lower().replace("_", "-")
-    return t
+    return t.strip().lower().replace("_", "-")
 
 
 def _resolve_harness(token: str) -> list[str]:
@@ -252,7 +251,7 @@ def classify_intent(argstr: str | None) -> dict[str, Any]:
             cls.mode = "apply"
 
     if is_all and harnesses:
-        unresolved = ["all+named"] + unresolved
+        unresolved = ["all+named", *unresolved]
 
     cls.harnesses = harnesses
     cls.level = level
@@ -303,11 +302,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--args", dest="args_string", help="Full argument string (alternative to positional tokens)")
     parser.add_argument("--json", action="store_true", help="Output JSON")
     parsed = parser.parse_args(argv)
-    argstr = (
-        parsed.args_string
-        if parsed.args_string is not None
-        else (" ".join(parsed.args) if parsed.args else "")
-    )
+    argstr = parsed.args_string if parsed.args_string is not None else (" ".join(parsed.args) if parsed.args else "")
     result = classify_intent(argstr)
     print(json.dumps(result, indent=2))
     return 0

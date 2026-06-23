@@ -109,7 +109,7 @@ Explicit statements of what the skill is NOT for. Prevents misapplication to adj
 
 **When to use:** Always. Place in both the frontmatter description and the body.
 
-**Snippet (honest-review):**
+**Snippet (review):**
 
 ```
 NOT for writing new code, explaining code, or benchmarking.
@@ -158,11 +158,11 @@ Score each dimension 0-2, sum for tier:
 
 ## 7. Scaling Strategy
 
-A table mapping input size to execution strategy, including when to use subagents or teams.
+A table mapping input size to execution strategy, including when to use subagents or teams. The goal is maximum verified independence, not maximum fan-out.
 
 **When to use:** Skills that process variable-sized inputs where strategy should adapt.
 
-**Snippet (honest-review):**
+**Snippet (review):**
 
 ```markdown
 | Scope | Strategy |
@@ -172,7 +172,7 @@ A table mapping input size to execution strategy, including when to use subagent
 | 6+ files | Spawn a team with domain-specific reviewers |
 ```
 
-**Guidance:** Define at least 3 tiers. For team-based tiers, sketch the structure showing roles and wave patterns. Enforce file ownership boundaries -- no two agents edit the same file. Use concrete thresholds, not vague qualifiers.
+**Guidance:** Define at least 3 tiers. For team-based tiers, sketch the structure showing roles, wave patterns, owned paths, artifacts, validation commands, and judge criteria. Enforce file ownership boundaries -- no two agents edit the same file unless a lock/arbiter protocol exists. Use concrete thresholds, not vague qualifiers. Load `references/orchestration-graph.md` for repo-wide or multi-skill work.
 
 ---
 
@@ -203,18 +203,17 @@ Python scripts invoked via Bash from SKILL.md. Follow the argparse + JSON-to-std
 
 **When to use:** Detection or analysis better handled by deterministic code. Validation steps needing consistent results. Structured output parsing.
 
-**Snippet (add-badges SKILL.md):**
+**Snippet (design SKILL.md):**
 
-```markdown
-## Phase 1 -- Detect
-Run the detection script via the Bash tool:
+Run the read-only scanner via the Bash tool:
+
+```bash
+uv run python skills/design/scripts/scan_frontend.py <path>
 ```
-uv run python skills/add-badges/scripts/detect.py <path>
-```
+
 Parse the JSON output.
-```
 
-**Guidance:** Place in `skills/<name>/scripts/`. Use `argparse`. JSON to stdout, diagnostics to stderr. Include a manual fallback in the body for when the script fails. Follow add-badges/detect.py as reference.
+**Guidance:** Place in `skills/<name>/scripts/`. Use `argparse`. JSON to stdout, diagnostics to stderr. Include a manual fallback in the body for when the script fails. Follow `design/scripts/scan_frontend.py` as reference.
 
 ---
 
@@ -241,11 +240,11 @@ Self-contained HTML files with JSON-in-script data injection for visual dashboar
 
 ## 11. Hooks
 
-Lifecycle hooks in frontmatter guarding against dangerous operations.
+Runtime-projected lifecycle hooks guarding against dangerous operations.
 
-**When to use:** Skills modifying important files (README, configs). Guards against overwriting uncommitted changes.
+**When to use:** Skills or harness workflows modifying important files (README, configs). Guards against overwriting uncommitted changes.
 
-**Snippet -- PreToolUse (add-badges):**
+**Snippet -- PreToolUse (README guard in runtime config):**
 
 ```yaml
 hooks:
@@ -255,14 +254,14 @@ hooks:
         - command: "git diff --quiet HEAD -- README.md 2>/dev/null || echo 'WARNING: README.md has uncommitted changes'"
 ```
 
-**Snippet -- PostToolUse (validation after write):**
+**Snippet -- PostToolUse (validation after write in runtime config):**
 
 ```yaml
 hooks:
   PostToolUse:
     - matcher: Write
       hooks:
-        - command: "python scripts/check.py 2>&1 | tail -5"
+        - command: "uv run python scripts/check.py 2>&1 | tail -5"
 ```
 
 **Exit codes:**
@@ -274,6 +273,11 @@ hooks:
 | 2 | Block with feedback -- same as 1, but stderr is shown to the agent as guidance |
 
 **Guidance:** Use `PreToolUse` with a `matcher` for the guarded tool (Edit, Write, Bash). Use `PostToolUse` for validation or cleanup after tool execution. Hooks should warn, not block, unless safety-critical. Keep commands fast (<1s) since they run on every matched invocation.
+
+Portable skill source should document expected hook behavior, not depend on
+repo-root hook commands in `SKILL.md` frontmatter. Put commands that require
+`skills/<name>/...`, `{repo_root}`, `${workspaceFolder}`, or harness settings in
+repo-managed projection config such as `config/hook-registry.json`.
 
 ---
 
@@ -329,7 +333,7 @@ Session-end verification gates that run automatically when the agent is about to
         "hooks": [
           {
             "type": "command",
-            "command": "INPUT=$(cat); if [ \"$(echo \"$INPUT\" | jq -r '.stop_hook_active')\" = \"true\" ]; then exit 0; fi; python scripts/check.py 2>/dev/null && uv run pytest -x --tb=short 2>/dev/null || { echo 'Verification failed' >&2; exit 2; }"
+            "command": "INPUT=$(cat); if [ \"$(echo \"$INPUT\" | jq -r '.stop_hook_active')\" = \"true\" ]; then exit 0; fi; uv run python scripts/check.py 2>/dev/null && uv run pytest -x --tb=short 2>/dev/null || { echo 'Verification failed' >&2; exit 2; }"
           }
         ]
       }
@@ -368,3 +372,21 @@ Session-end verification gates that run automatically when the agent is about to
 - **Must Have** -- omitting these is a defect in the skill design.
 - **Should Have** -- include unless there is a clear reason not to.
 - **Optional** -- include when the skill's domain calls for it.
+
+## Security Governance Companion
+
+Security governance is a release gate that complements the 14 structural
+patterns. It is mandatory when a skill includes third-party source intake,
+scripts, hooks, network behavior, credentials, installs, destructive actions,
+body substitutions, or generated executable examples.
+
+| Signal | Required Response |
+| --- | --- |
+| `--from <source>` points at external material | Treat as untrusted evidence; run provenance and hidden-instruction review |
+| Skill uses scripts or hooks | Document permission posture and add safety evals |
+| Skill uses runtime-specific invocation controls | Add body-level fallback and compatibility note |
+| Skill can write files or run commands | Require approval gate, dry-run where possible, and validation command |
+| Skill claims behavioral improvement | Require eval or benchmark plan, not audit score alone |
+
+Load `references/security-governance.md` and `references/runtime-compatibility.md`
+when any signal applies.

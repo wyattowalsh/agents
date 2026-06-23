@@ -48,8 +48,15 @@ Keep `mypy` only as a temporary migration exception with owner, scope, exit crit
 ## Ruff Configuration
 
 1. Configure Ruff in `pyproject.toml` under `[tool.ruff]`, `[tool.ruff.lint]`, and `[tool.ruff.format]` when the project needs explicit settings.
-2. Keep lint and format commands separate unless a local script intentionally combines them.
-3. Use `uv run ruff check` for lint validation and `uv run ruff format` for formatting.
+2. Declare gated Python scope in `[tool.ruff].include` / `extend-exclude`; do not duplicate path lists in Makefile, CI, or pre-commit.
+3. Keep lint and format commands separate unless a local script intentionally combines them.
+4. Use `uv run ruff check` for lint validation and `uv run ruff format` for formatting.
+
+## ty Configuration
+
+1. Configure ty in `pyproject.toml` under `[tool.ty.environment]`, `[tool.ty.src]`, and optional `[[tool.ty.overrides]]`.
+2. Declare type-check scope in `[tool.ty.src].include` / `exclude`; run `uv run ty check` without path arguments in repo gates.
+3. Use `[[tool.ty.overrides]]` to relax specific rules for tests or generated paths instead of excluding entire trees.
 
 ## Exception Gate
 

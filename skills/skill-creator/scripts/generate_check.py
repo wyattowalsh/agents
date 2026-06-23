@@ -65,12 +65,12 @@ VALIDATION_CONTRACT = """
 Run from this skill directory before declaring changes complete:
 
 ```bash
-python scripts/check.py
+uv run python scripts/check.py
 ```
 
 Completion criteria:
 
-1. `scripts/check.py` exits 0.
+1. `uv run python scripts/check.py` exits 0.
 2. No portable-CLI violations remain under this skill directory.
 """
 

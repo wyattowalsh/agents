@@ -8,13 +8,29 @@ HEURISTICS = {
     "str": [
         {"category": "null/empty", "input": '""', "rationale": "Empty string may bypass validation"},
         {"category": "null/empty", "input": "None", "rationale": "None instead of string may cause TypeError"},
-        {"category": "boundary", "input": '"a" * 10000', "rationale": "Very long string may exceed limits or cause performance issues"},
-        {"category": "boundary", "input": '" "', "rationale": "Whitespace-only string may pass empty checks but cause logic errors"},
+        {
+            "category": "boundary",
+            "input": '"a" * 10000',
+            "rationale": "Very long string may exceed limits or cause performance issues",
+        },
+        {
+            "category": "boundary",
+            "input": '" "',
+            "rationale": "Whitespace-only string may pass empty checks but cause logic errors",
+        },
         {"category": "unicode", "input": '"\\u200b"', "rationale": "Zero-width space is invisible but non-empty"},
-        {"category": "unicode", "input": '"\\U0001f600"', "rationale": "Emoji may break length calculations or encoding"},
+        {
+            "category": "unicode",
+            "input": '"\\U0001f600"',
+            "rationale": "Emoji may break length calculations or encoding",
+        },
         {"category": "unicode", "input": '"\\u202e"', "rationale": "RTL override can cause display/security issues"},
         {"category": "type_coercion", "input": "123", "rationale": "Integer instead of string tests type handling"},
-        {"category": "type_coercion", "input": "b'bytes'", "rationale": "Bytes instead of string tests encoding handling"},
+        {
+            "category": "type_coercion",
+            "input": "b'bytes'",
+            "rationale": "Bytes instead of string tests encoding handling",
+        },
     ],
     "int": [
         {"category": "null/empty", "input": "None", "rationale": "None instead of int may cause TypeError"},
@@ -23,7 +39,11 @@ HEURISTICS = {
         {"category": "boundary", "input": "-(2**31)", "rationale": "Min 32-bit signed integer"},
         {"category": "boundary", "input": "-1", "rationale": "Negative values may not be handled"},
         {"category": "overflow", "input": "2**63", "rationale": "Exceeds 64-bit signed integer range"},
-        {"category": "overflow", "input": "10**100", "rationale": "Very large integer may cause memory or performance issues"},
+        {
+            "category": "overflow",
+            "input": "10**100",
+            "rationale": "Very large integer may cause memory or performance issues",
+        },
         {"category": "type_coercion", "input": '"123"', "rationale": "String instead of int tests type handling"},
         {"category": "type_coercion", "input": "1.5", "rationale": "Float instead of int tests truncation behavior"},
         {"category": "type_coercion", "input": "True", "rationale": "Boolean is a subclass of int in Python"},
@@ -33,7 +53,11 @@ HEURISTICS = {
         {"category": "null/empty", "input": "0.0", "rationale": "Zero float is falsy"},
         {"category": "boundary", "input": "float('inf')", "rationale": "Infinity may propagate through calculations"},
         {"category": "boundary", "input": "float('-inf')", "rationale": "Negative infinity"},
-        {"category": "boundary", "input": "float('nan')", "rationale": "NaN is not equal to itself, breaks comparisons"},
+        {
+            "category": "boundary",
+            "input": "float('nan')",
+            "rationale": "NaN is not equal to itself, breaks comparisons",
+        },
         {"category": "boundary", "input": "sys.float_info.min", "rationale": "Smallest positive float"},
         {"category": "boundary", "input": "sys.float_info.max", "rationale": "Largest finite float"},
         {"category": "overflow", "input": "1e308 * 2", "rationale": "Overflow to infinity"},
@@ -50,7 +74,11 @@ HEURISTICS = {
     "dict": [
         {"category": "null/empty", "input": "None", "rationale": "None instead of dict may cause TypeError"},
         {"category": "null/empty", "input": "{}", "rationale": "Empty dict may not be handled"},
-        {"category": "boundary", "input": "{k: v for k, v in zip(range(100000), range(100000))}", "rationale": "Very large dict tests performance"},
+        {
+            "category": "boundary",
+            "input": "{k: v for k, v in zip(range(100000), range(100000))}",
+            "rationale": "Very large dict tests performance",
+        },
         {"category": "type_coercion", "input": "{'key': None}", "rationale": "None value may cause downstream errors"},
         {"category": "unicode", "input": "{'\\u200b': 'value'}", "rationale": "Zero-width space key is invisible"},
     ],
@@ -93,14 +121,12 @@ def generate_edge_cases(function_name: str, params: str) -> dict:
         "parameters": param_list,
         "edge_cases": edge_cases,
         "total_cases": len(edge_cases),
-        "categories": sorted(set(c["category"] for c in edge_cases)),
+        "categories": sorted({c["category"] for c in edge_cases}),
     }
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate edge case categories for a function"
-    )
+    parser = argparse.ArgumentParser(description="Generate edge case categories for a function")
     parser.add_argument("--name", required=True, help="Function name")
     parser.add_argument(
         "--params",

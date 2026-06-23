@@ -8,7 +8,6 @@ import json
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 
 DEFAULT_REPO_SOURCE = "github:wyattowalsh/agents"
 SUPPORTED_AGENTS = (

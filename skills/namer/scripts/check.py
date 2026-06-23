@@ -69,7 +69,10 @@ async def _check_url(
             return {"available": available_on_404, "method": "api", "confidence": "high", "status": 404}
         if 200 <= resp.status_code < 300:
             return {
-                "available": not available_on_404, "method": "api", "confidence": "high", "status": resp.status_code,
+                "available": not available_on_404,
+                "method": "api",
+                "confidence": "high",
+                "status": resp.status_code,
             }
         if resp.status_code == 429:
             logger.warning(f"Rate limited on {url}")
@@ -267,6 +270,7 @@ async def _run_checks(names: list[str], checker) -> dict:
     results: dict[str, dict] = {}
 
     async with _client() as shared_client:
+
         async def _bounded(name: str):
             async with semaphore:
                 try:

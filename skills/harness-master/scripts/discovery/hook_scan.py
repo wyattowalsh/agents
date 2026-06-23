@@ -15,7 +15,7 @@ _script_dir = Path(__file__).resolve().parent
 if str(_script_dir) not in sys.path:
     sys.path.insert(0, str(_script_dir))
 
-from _hook_collect import (  # noqa: E402
+from _hook_collect import (
     HARNESS_ALIASES,
     collect_embedded_settings,
     collect_frontmatter_hooks,
@@ -24,8 +24,8 @@ from _hook_collect import (  # noqa: E402
     collect_validation_errors,
     load_hook_surface_registry,
 )
-from _paths import default_repo_root  # noqa: E402
-from schemas import write_json  # noqa: E402
+from _paths import default_repo_root
+from schemas import write_json
 
 
 def _load_harness_surface_projections(repo_root: Path) -> dict[str, list[str]]:
@@ -84,8 +84,7 @@ def scan_hooks(*, repo_root: Path) -> dict[str, Any]:
     }
 
     gaps: list[str] = [
-        f"harness:{h}:hooks-projected-in-harness-registry-but-missing-from-hook-registry"
-        for h in missing_in_registry
+        f"harness:{h}:hooks-projected-in-harness-registry-but-missing-from-hook-registry" for h in missing_in_registry
     ]
 
     # Cross-ref hook-surface-registry for additional gap signals (e.g. declared hook surfaces without registry coverage)

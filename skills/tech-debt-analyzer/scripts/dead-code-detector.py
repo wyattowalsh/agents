@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Find unused functions, classes, and imports in Python codebases. Outputs JSON to stdout."""
+
 from __future__ import annotations
 
 import argparse
@@ -10,21 +11,73 @@ import sys
 from pathlib import Path
 
 SKIP_DIRS = {
-    ".git", "node_modules", "__pycache__", ".venv", "venv", ".tox",
-    "dist", "build", ".next", ".nuxt", "target", "vendor", ".mypy_cache",
-    ".eggs", ".pytest_cache", ".ruff_cache", "site-packages",
+    ".git",
+    "node_modules",
+    "__pycache__",
+    ".venv",
+    "venv",
+    ".tox",
+    "dist",
+    "build",
+    ".next",
+    ".nuxt",
+    "target",
+    "vendor",
+    ".mypy_cache",
+    ".eggs",
+    ".pytest_cache",
+    ".ruff_cache",
+    "site-packages",
 }
 
 # Names that are conventionally used and should not be flagged
 IGNORE_NAMES = {
-    "__init__", "__main__", "__all__", "__str__", "__repr__", "__eq__",
-    "__hash__", "__len__", "__iter__", "__next__", "__enter__", "__exit__",
-    "__getitem__", "__setitem__", "__delitem__", "__contains__", "__call__",
-    "__get__", "__set__", "__delete__", "__new__", "__del__", "__bool__",
-    "__lt__", "__le__", "__gt__", "__ge__", "__ne__", "__add__", "__sub__",
-    "__mul__", "__truediv__", "__floordiv__", "__mod__", "__pow__",
-    "setUp", "tearDown", "setUpClass", "tearDownClass", "main",
-    "app", "cli", "server", "setup", "configure", "register",
+    "__init__",
+    "__main__",
+    "__all__",
+    "__str__",
+    "__repr__",
+    "__eq__",
+    "__hash__",
+    "__len__",
+    "__iter__",
+    "__next__",
+    "__enter__",
+    "__exit__",
+    "__getitem__",
+    "__setitem__",
+    "__delitem__",
+    "__contains__",
+    "__call__",
+    "__get__",
+    "__set__",
+    "__delete__",
+    "__new__",
+    "__del__",
+    "__bool__",
+    "__lt__",
+    "__le__",
+    "__gt__",
+    "__ge__",
+    "__ne__",
+    "__add__",
+    "__sub__",
+    "__mul__",
+    "__truediv__",
+    "__floordiv__",
+    "__mod__",
+    "__pow__",
+    "setUp",
+    "tearDown",
+    "setUpClass",
+    "tearDownClass",
+    "main",
+    "app",
+    "cli",
+    "server",
+    "setup",
+    "configure",
+    "register",
 }
 
 
@@ -83,7 +136,6 @@ class ReferenceCollector(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-
 def collect_unused_imports(tree: ast.AST) -> list[dict]:
     """Find imports that are never referenced in the module."""
     imports: list[dict] = []
@@ -100,8 +152,11 @@ def collect_unused_imports(tree: ast.AST) -> list[dict]:
                     if alias.name == "*":
                         continue
                     name = alias.asname or alias.name
-                    imports.append({"name": f"{node.module}.{alias.name}" if node.module else alias.name,
-                                    "local_name": name, "line": node.lineno})
+                    imports.append({
+                        "name": f"{node.module}.{alias.name}" if node.module else alias.name,
+                        "local_name": name,
+                        "line": node.lineno,
+                    })
         elif isinstance(node, ast.Name):
             references.add(node.id)
         elif isinstance(node, ast.Attribute):
@@ -198,8 +253,7 @@ def scan_directory(root: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Detect dead code in Python projects")
     parser.add_argument("path", nargs="?", default=".", help="Directory to scan")
-    parser.add_argument("--min-confidence", type=float, default=0.5,
-                        help="Minimum confidence to report (0.0-1.0)")
+    parser.add_argument("--min-confidence", type=float, default=0.5, help="Minimum confidence to report (0.0-1.0)")
     args = parser.parse_args()
 
     root = Path(args.path).resolve()

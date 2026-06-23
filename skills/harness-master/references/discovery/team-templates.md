@@ -33,7 +33,7 @@ Output format (JSON to stdout):
     {
       "name": "Frontend",
       "coverage": "Low",
-      "existing_skills": ["frontend-designer"],
+      "existing_skills": ["design"],
       "gaps": ["React patterns", "Next.js", "Svelte", "Tailwind", "Component libraries"],
       "priority": 18
     }

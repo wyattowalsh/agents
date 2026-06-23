@@ -248,40 +248,34 @@ def cmd_init(args: argparse.Namespace) -> None:
         # For improve mode, scaffold is pre-skipped
         if args.mode == "improve" and p["id"] == "scaffold":
             status = "skipped"
-        phases.append(
-            {
-                "id": p["id"],
-                "label": p["label"],
-                "status": status,
-                "started_at": None,
-                "completed_at": None,
-                "notes": None,
-                "artifacts": [],
-            }
-        )
+        phases.append({
+            "id": p["id"],
+            "label": p["label"],
+            "status": status,
+            "started_at": None,
+            "completed_at": None,
+            "notes": None,
+            "artifacts": [],
+        })
 
     waves = []
     for w in DEFAULT_WAVES:
         agents = []
         for a in w["agents"]:
-            agents.append(
-                {
-                    **a,
-                    "status": "pending",
-                    "started_at": None,
-                    "completed_at": None,
-                    "output_summary": None,
-                }
-            )
-        waves.append(
-            {
-                "id": w["id"],
-                "label": w["label"],
-                "phase": w["phase"],
+            agents.append({
+                **a,
                 "status": "pending",
-                "agents": agents,
-            }
-        )
+                "started_at": None,
+                "completed_at": None,
+                "output_summary": None,
+            })
+        waves.append({
+            "id": w["id"],
+            "label": w["label"],
+            "phase": w["phase"],
+            "status": "pending",
+            "agents": agents,
+        })
 
     state = {
         "session_id": session_id,
@@ -565,7 +559,7 @@ def _create_live_dashboard_server(
         def _current_payload(self) -> dict:
             return _dashboard_payload(_read_state(skill_name, state_dir))
 
-        def do_GET(self) -> None:  # noqa: N802 - stdlib handler API
+        def do_GET(self) -> None:
             if self.path in {"/", "/index.html"}:
                 html = _inject_dashboard_payload(template, self._current_payload(), poll_url="/data.json")
                 self._send(200, html.encode("utf-8"), "text/html; charset=utf-8")

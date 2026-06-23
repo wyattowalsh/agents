@@ -3,7 +3,7 @@ name: tech-debt-analyzer
 description: >-
   Systematic tech debt inventory with complexity analysis, dead code detection,
   and remediation planning. Track debt over time. NOT for code review
-  (honest-review) or refactoring.
+  (review) or refactoring.
 argument-hint: "<mode> [path]"
 model: opus
 license: MIT
@@ -17,7 +17,7 @@ metadata:
 Systematic technical debt inventory, prioritization, and remediation planning.
 Multi-pass analysis with confidence scoring and evidence-based findings.
 
-**Scope:** Debt inventory and tracking only. NOT for code review (honest-review), refactoring execution, or dependency updates.
+**Scope:** Debt inventory and tracking only. NOT for code review (review), refactoring execution, or dependency updates.
 
 ## Canonical Vocabulary
 

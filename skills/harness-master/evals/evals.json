@@ -148,7 +148,7 @@
 			"id": "skills-source-audit-route",
 			"prompt": "/harness-master candidate github:example/external-skills codex global",
 			"files": ["evals/skills-source-audit-route.json"],
-			"expected_output": "Route third-party Agent Skill adoption through `config/external-skills.md`, `npx skills add <source> --list`, and external-skill-auditor before any install recommendation.",
+			"expected_output": "Route third-party Agent Skill adoption through `config/external-skills.md`, `npx skills add <source> --list`, and /review source before any install recommendation.",
 			"assertions": [
 				"Enters Candidate Dossier mode.",
 				"Uses skills.sh and skills CLI list evidence where relevant.",

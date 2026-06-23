@@ -5,11 +5,12 @@ Complete field reference for SKILL.md YAML frontmatter in this repository.
 ## Contents
 
 1. [Required Fields](#1-required-fields)
-2. [Cross-Platform Fields](#2-cross-platform-fields-agentskillsio-spec)
-3. [Claude Code Extensions](#3-claude-code-extensions)
-4. [Invocation Control Matrix](#4-invocation-control-matrix)
-5. [Decision Tree](#5-decision-tree)
-6. [Golden Example](#6-golden-example)
+2. [Compatibility Tiers](#2-compatibility-tiers)
+3. [Cross-Platform Fields](#3-cross-platform-fields-agentskillsio-spec)
+4. [Runtime-Specific Extensions](#4-runtime-specific-extensions)
+5. [Invocation Control Matrix](#5-invocation-control-matrix)
+6. [Decision Tree](#6-decision-tree)
+7. [Golden Example](#7-golden-example)
 
 ---
 
@@ -28,7 +29,22 @@ Complete field reference for SKILL.md YAML frontmatter in this repository.
 
 ---
 
-## 2. Cross-Platform Fields (agentskills.io spec)
+## 2. Compatibility Tiers
+
+Use `references/runtime-compatibility.md` for the full runtime matrix.
+
+| Tier | Fields / Behavior | Guidance |
+|------|-------------------|----------|
+| `portable-core` | `name`, `description`, `license`, `compatibility`, `metadata` | Safe default for all new skills |
+| `portable-but-variable` | `allowed-tools`, scripts, references, assets | Support varies; document fallback behavior |
+| `runtime-specific` | Claude `user-invocable`, `disable-model-invocation`, `context`, `agent`, `hooks`; Cursor `paths`; Codex `agents/openai.yaml`; plugins/settings | Add only when needed and include a body-level fallback |
+
+Unknown fields should degrade harmlessly. Do not rely on a runtime-specific field
+as the only safety or invocation control.
+
+---
+
+## 3. Cross-Platform Fields (agentskills.io spec)
 
 Always populate for multi-agent installability via `npx skills add`.
 
@@ -36,7 +52,7 @@ Always populate for multi-agent installability via `npx skills add`.
 |-------|------|---------|-------------|
 | `license` | string | -- | SPDX identifier (e.g., `MIT`, `Apache-2.0`) or `SEE LICENSE IN <filename>` |
 | `compatibility` | string | -- | Environment requirements, max 500 chars |
-| `allowed-tools` | string | -- | Space-delimited tool allowlist; experimental |
+| `allowed-tools` | string | -- | Space-delimited tool allowlist; experimental and runtime-dependent |
 | `metadata.author` | string | -- | Skill author name or handle |
 | `metadata.version` | string | -- | Semantic version string (e.g., `"1.0.0"`) |
 | `metadata.internal` | boolean | `false` | If true, hidden unless `INSTALL_INTERNAL_SKILLS=1` |
@@ -49,7 +65,7 @@ metadata:
 
 ---
 
-## 3. Claude Code Extensions
+## 4. Runtime-Specific Extensions
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
@@ -59,25 +75,33 @@ metadata:
 | `agent` | string | -- | Subagent type when `context: fork` (e.g., `Explore`) |
 | `user-invocable` | boolean | `true` | Set `false` to hide from `/` menu |
 | `disable-model-invocation` | boolean | `false` | Set `true` to prevent auto-invocation |
-| `hooks` | object | -- | Lifecycle hooks scoped to this skill |
+| `hooks` | object | -- | Runtime-specific lifecycle hooks scoped to this skill |
+| `paths` | list/string | -- | Cursor-style file scope; use only for runtimes that document it |
 
 - **`model`** -- `opus` for complex multi-step skills; `sonnet` for focused tasks. Omit to inherit session default.
 - **`context: fork`** -- Use when skill produces verbose output or needs isolation from the user's state.
 - **`agent`** -- Only meaningful when `context: fork` is set. Names the agent definition the subagent loads.
 - **`argument-hint`** -- Angle brackets for required args (`<mode>`), square brackets for optional (`[path]`).
-- **`hooks`** -- `PreToolUse` / `PostToolUse` matchers. Each matcher names a tool and provides hook commands.
+- **`hooks`** -- `PreToolUse` / `PostToolUse` matchers for runtimes that support skill-scoped hooks. Prefer repo-managed hook projection for portable distribution.
+- **`disable-model-invocation`** -- Supported by some runtimes for manual-only skills. Codex uses external policy config instead of this field.
+- **`allowed-tools`** -- Treat as a permission request or hint unless the target runtime documents enforcement.
 
 ```yaml
 hooks:
   PreToolUse:
     - matcher: Bash
       hooks:
-        - command: "echo 'pre-check'"
+        - command: "test -f SKILL.md || (echo 'ERROR: SKILL.md not found' >&2; exit 2)"
 ```
+
+Do not put repo-root commands such as `uv run python skills/<name>/scripts/...`,
+`{repo_root}`, or `${workspaceFolder}` in portable skill frontmatter. Keep those
+commands in runtime projection config, or make the command resolve from inside
+the packaged skill folder.
 
 ---
 
-## 4. Invocation Control Matrix
+## 5. Invocation Control Matrix
 
 | `user-invocable` | `disable-model-invocation` | Visibility | Use Case |
 |---|---|---|---|
@@ -90,26 +114,27 @@ Defaults are correct for most skills. Override only when a skill has side effect
 
 ---
 
-## 5. Decision Tree
+## 6. Decision Tree
 
 ```
-Modifies files / side effects?  YES --> Add hooks (PreToolUse guard)
+Modifies files / side effects?  YES --> Document hook behavior or add runtime-projected hooks
 Complex / multi-step?           YES --> model: opus
 Verbose output?                 YES --> context: fork
 Background knowledge only?      YES --> user-invocable: false
 Manual-only invocation?         YES --> disable-model-invocation: true
 Accepts arguments?              YES --> Add argument-hint
 Distributed to other agents?    YES --> Populate cross-platform fields
-Restrict available tools?       YES --> Set allowed-tools (space-delimited list)
+Restrict available tools?       YES --> Set allowed-tools and document fallback
+Runtime-specific invocation?    YES --> Add field plus body fallback
 ```
 
-- **`allowed-tools`:** Set to a space-delimited list of tool names the agent is permitted to use while the skill is active (e.g., `Read Grep Glob Bash`). Omit to allow all tools.
+- **`allowed-tools`:** Set to a space-delimited list of tool names the agent is permitted to use while the skill is active when the runtime supports it (e.g., `Read Grep Glob Bash`). Omit when no restriction is needed. Never present it as a universal security guarantee.
 
 All NO answers mean omit that field (use defaults).
 
 ---
 
-## 6. Golden Example
+## 7. Golden Example
 
 ```yaml
 ---
@@ -124,15 +149,10 @@ argument-hint: "<mode> [path]"
 model: opus
 license: MIT
 compatibility: "Requires git. Python 3.10+ for optional scripts."
-allowed-tools: Read Grep Glob Bash
 metadata:
   author: username
   version: "1.0.0"
-hooks:
-  PreToolUse:
-    - matcher: Bash
-      hooks:
-        - command: "test -d .git || (echo 'ERROR: Not in a git repository' && exit 2)"
+allowed-tools: Read Grep Glob Bash
 ---
 ```
 
@@ -140,6 +160,7 @@ hooks:
 
 - `model: opus` -- multi-mode skill with deep analysis requires strong reasoning.
 - `argument-hint` -- `<mode>` is required (scan/deep/compare), `[path]` is optional (defaults to cwd).
-- `hooks` -- pre-check before shell commands; extend with uncommitted-changes guard if skill writes files.
 - Cross-platform fields populated for distribution via `npx skills add`.
+- `allowed-tools` -- documents the intended tool boundary, but the body must still describe fallback behavior for runtimes that ignore it.
+- Hook behavior belongs in the body or runtime projection config unless the target runtime and package format both support portable skill-scoped hooks.
 - `user-invocable` / `disable-model-invocation` omitted -- defaults are correct for a user-facing interactive skill.

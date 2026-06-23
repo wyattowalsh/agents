@@ -220,51 +220,44 @@ def incomplete_downloads(
         model_id = partial.removesuffix(".part")
         recommended = recommended_by_id.get(model_id)
         if recommended:
-            items.append(
-                {
-                    "file": partial,
-                    "model_id": model_id,
-                    "recommended": True,
-                    "status": "interrupted_recommended_download",
-                    "reason": recommended.reason,
-                    "action": recommended.ensure_command,
-                }
-            )
+            items.append({
+                "file": partial,
+                "model_id": model_id,
+                "recommended": True,
+                "status": "interrupted_recommended_download",
+                "reason": recommended.reason,
+                "action": recommended.ensure_command,
+            })
             continue
 
         optional = optional_by_id.get(model_id)
         if optional:
-            items.append(
-                {
-                    "file": partial,
-                    "model_id": model_id,
-                    "recommended": False,
-                    "status": "interrupted_optional_download",
-                    "reason": optional.reason,
-                    "action": (
-                        "Retry only if the user explicitly wants Qwen Layered despite prior install failures; "
-                        "prune only after separate approval."
-                    ),
-                }
-            )
-            continue
-
-        items.append(
-            {
+            items.append({
                 "file": partial,
                 "model_id": model_id,
                 "recommended": False,
-                "status": "stale_or_unclassified_partial" if model_id in STALE_PARTIALS else "unclassified_partial",
-                "reason": STALE_PARTIALS.get(
-                    model_id,
-                    "Incomplete partial file is not in the current recommended pack; do not treat it as installed.",
-                ),
+                "status": "interrupted_optional_download",
+                "reason": optional.reason,
                 "action": (
-                    "Do not resume unless the user explicitly asks for this model; prune only after separate "
-                    "approval."
+                    "Retry only if the user explicitly wants Qwen Layered despite prior install failures; "
+                    "prune only after separate approval."
                 ),
-            }
-        )
+            })
+            continue
+
+        items.append({
+            "file": partial,
+            "model_id": model_id,
+            "recommended": False,
+            "status": "stale_or_unclassified_partial" if model_id in STALE_PARTIALS else "unclassified_partial",
+            "reason": STALE_PARTIALS.get(
+                model_id,
+                "Incomplete partial file is not in the current recommended pack; do not treat it as installed.",
+            ),
+            "action": (
+                "Do not resume unless the user explicitly asks for this model; prune only after separate approval."
+            ),
+        })
 
     return items
 
@@ -289,15 +282,13 @@ def auxiliary_or_dependency_files(
             or model_id in legacy_set
         ):
             continue
-        auxiliary.append(
-            {
-                "model_id": model_id,
-                "reason": (
-                    "Local helper, dependency, or manually imported file; not part of the current best "
-                    "generation/media pack."
-                ),
-            }
-        )
+        auxiliary.append({
+            "model_id": model_id,
+            "reason": (
+                "Local helper, dependency, or manually imported file; not part of the current best "
+                "generation/media pack."
+            ),
+        })
     return auxiliary
 
 

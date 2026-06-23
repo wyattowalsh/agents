@@ -14,8 +14,18 @@ import textwrap
 from pathlib import Path
 
 SKIP_DIRS = {
-    "node_modules", ".git", "__pycache__", ".venv", "venv",
-    "dist", "build", ".next", ".astro", "coverage", "tests", "test",
+    "node_modules",
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "dist",
+    "build",
+    ".next",
+    ".astro",
+    "coverage",
+    "tests",
+    "test",
 }
 
 
@@ -85,13 +95,16 @@ def extract_python_exports(filepath: str) -> list[dict]:
     for node in ast.iter_child_nodes(tree):
         if isinstance(node, ast.Assign):
             for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "__all__":
-                    if isinstance(node.value, (ast.List, ast.Tuple)):
-                        explicit_all = {
-                            elt.value
-                            for elt in node.value.elts
-                            if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
-                        }
+                if (
+                    isinstance(target, ast.Name)
+                    and target.id == "__all__"
+                    and isinstance(node.value, (ast.List, ast.Tuple))
+                ):
+                    explicit_all = {
+                        elt.value
+                        for elt in node.value.elts
+                        if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
+                    }
 
     exports = []
     for node in ast.iter_child_nodes(tree):
@@ -123,9 +136,7 @@ def extract_python_exports(filepath: str) -> list[dict]:
                     methods.append({
                         "name": item.name,
                         "signature": format_signature(item),
-                        "docstring": textwrap.shorten(
-                            ast.get_docstring(item) or "", width=200, placeholder="..."
-                        ),
+                        "docstring": textwrap.shorten(ast.get_docstring(item) or "", width=200, placeholder="..."),
                     })
             entry = {
                 "name": node.name,
@@ -232,11 +243,15 @@ def main():
         ext = target.suffix
         if ext in EXTRACTORS:
             exports = EXTRACTORS[ext](str(target))
-            result = {"modules": [{
-                "name": target.stem,
-                "path": str(target),
-                "exports": exports,
-            }]}
+            result = {
+                "modules": [
+                    {
+                        "name": target.stem,
+                        "path": str(target),
+                        "exports": exports,
+                    }
+                ]
+            }
         else:
             print(f"Unsupported file type: {ext}", file=sys.stderr)
             sys.exit(1)

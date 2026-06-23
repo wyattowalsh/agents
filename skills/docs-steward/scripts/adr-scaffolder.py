@@ -75,26 +75,32 @@ def generate_adr(args: argparse.Namespace) -> str:
     negative = format_list(args.negative.split("|") if args.negative else [])
     neutral = format_list(args.neutral.split("|") if args.neutral else [])
 
-    return TEMPLATE.format(
-        number=number,
-        title=title,
-        date=overrides.get("date_format", str(date.today())),
-        status=status,
-        context=context,
-        decision=decision,
-        positive=positive,
-        negative=negative,
-        neutral=neutral,
-    ).strip() + "\n"
+    return (
+        TEMPLATE.format(
+            number=number,
+            title=title,
+            date=overrides.get("date_format", str(date.today())),
+            status=status,
+            context=context,
+            decision=decision,
+            positive=positive,
+            negative=negative,
+            neutral=neutral,
+        ).strip()
+        + "\n"
+    )
 
 
 def main():
     parser = argparse.ArgumentParser(description="Generate MADR-format ADR")
     parser.add_argument("title", help="Decision title")
     parser.add_argument("--number", help="ADR sequence number (e.g. 0042)")
-    parser.add_argument("--status", default="Proposed",
-                        choices=["Proposed", "Accepted", "Deprecated", "Superseded"],
-                        help="Decision status")
+    parser.add_argument(
+        "--status",
+        default="Proposed",
+        choices=["Proposed", "Accepted", "Deprecated", "Superseded"],
+        help="Decision status",
+    )
     parser.add_argument("--context", help="Context paragraph")
     parser.add_argument("--decision", help="Decision paragraph")
     parser.add_argument("--positive", help="Positive consequences (pipe-separated)")

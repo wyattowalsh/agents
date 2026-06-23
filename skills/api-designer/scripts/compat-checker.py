@@ -20,6 +20,7 @@ def load_spec(path: str) -> dict:
     if p.suffix in (".yaml", ".yml"):
         try:
             import yaml
+
             return yaml.safe_load(text) or {}
         except ImportError:
             try:
@@ -112,16 +113,8 @@ def compare_specs(old: dict, new: dict) -> dict:
                 continue
 
             # Check parameters
-            old_params = {
-                (p.get("name"), p.get("in")): p
-                for p in old_op.get("parameters", [])
-                if isinstance(p, dict)
-            }
-            new_params = {
-                (p.get("name"), p.get("in")): p
-                for p in new_op.get("parameters", [])
-                if isinstance(p, dict)
-            }
+            old_params = {(p.get("name"), p.get("in")): p for p in old_op.get("parameters", []) if isinstance(p, dict)}
+            new_params = {(p.get("name"), p.get("in")): p for p in new_op.get("parameters", []) if isinstance(p, dict)}
 
             # Removed parameters
             for key in old_params:
@@ -178,8 +171,8 @@ def compare_specs(old: dict, new: dict) -> dict:
                         })
 
             # Check response codes removed
-            old_responses = set(str(c) for c in old_op.get("responses", {}).keys())
-            new_responses = set(str(c) for c in new_op.get("responses", {}).keys())
+            old_responses = {str(c) for c in old_op.get("responses", {})}
+            new_responses = {str(c) for c in new_op.get("responses", {})}
 
             for code in old_responses - new_responses:
                 if code.startswith("2"):

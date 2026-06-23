@@ -149,6 +149,7 @@ def resolve_manifest(name_or_path):
     if len(matches) > 1:
         output_error(f"Ambiguous manifest '{name_or_path}': {[str(m.name) for m in matches]}")
     output_error(f"Manifest not found: {name_or_path}")
+    return None
 
 
 def cmd_create(args):

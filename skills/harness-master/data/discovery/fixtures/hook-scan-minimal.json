@@ -76,14 +76,13 @@
     "managed_wagents_hook_count": 12
   },
   "frontmatter": {
-    "skills_with_hooks": 6,
+    "skills_with_hooks": 5,
     "agents_with_hooks": 0,
     "sources": [
-      "skill:add-badges",
+      "skill:design",
       "skill:namer",
-      "skill:honest-review",
+      "skill:review",
       "skill:research",
-      "skill:simplify",
       "skill:skill-creator"
     ]
   },

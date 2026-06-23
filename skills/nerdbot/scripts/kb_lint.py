@@ -19,7 +19,7 @@ import math
 import re
 import subprocess
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from difflib import SequenceMatcher
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -65,13 +65,11 @@ PROVENANCE_FIELD_PATTERN = re.compile(
 )
 KB_SCAN_PREFIXES = tuple(f"{layer}/" for layer in DEFAULT_LAYER_PATHS)
 KB_ROOT_LAYERS = frozenset(DEFAULT_LAYER_PATHS)
-OVERVIEW_PROVENANCE_PATHS = frozenset(
-    {
-        STARTER_FILES["source_map"],
-        STARTER_FILES["coverage_index"],
-        STARTER_FILES["activity_log"],
-    }
-)
+OVERVIEW_PROVENANCE_PATHS = frozenset({
+    STARTER_FILES["source_map"],
+    STARTER_FILES["coverage_index"],
+    STARTER_FILES["activity_log"],
+})
 MIN_PAGE_WORDS = 5
 MIN_INDEX_NARRATIVE_WORDS = 20
 
@@ -96,9 +94,9 @@ class MarkdownPage:
     is_wiki: bool
     is_index_like: bool
     plain_excerpt: str
-    aliases: set[str] = None  # type: ignore[assignment]
-    block_ids: set[str] = None  # type: ignore[assignment]
-    frontmatter_keys: set[str] = None  # type: ignore[assignment]
+    aliases: set[str] = field(default_factory=set)
+    block_ids: set[str] = field(default_factory=set)
+    frontmatter_keys: set[str] = field(default_factory=set)
     has_frontmatter: bool = False
 
     def __post_init__(self) -> None:
@@ -193,7 +191,7 @@ def collect_markdown_pages(root: Path, *, include_unlayered: bool = False) -> di
             plain_excerpt=markdown_to_plain_text(text),
             aliases=set(extract_frontmatter_aliases(text)),
             block_ids=extract_block_ids(text),
-            frontmatter_keys=set(key.lower() for key in extract_frontmatter_keys(text)),
+            frontmatter_keys={key.lower() for key in extract_frontmatter_keys(text)},
             has_frontmatter=extract_frontmatter_block(text) is not None,
         )
     return pages
@@ -573,9 +571,11 @@ def resolve_link_target(
     if normalized_target.startswith(("./", "../", "/")) or Path(normalized_target.split("#", 1)[0]).suffix:
         path_part = normalized_target.split("#", 1)[0]
         first_part = PurePosixPath(path_part).parts[0] if PurePosixPath(path_part).parts else ""
-        root_relative = first_part in (*KB_ROOT_LAYERS, ".obsidian") and not normalized_target.startswith(
-            ("./", "../", "/")
-        )
+        root_relative = first_part in (*KB_ROOT_LAYERS, ".obsidian") and not normalized_target.startswith((
+            "./",
+            "../",
+            "/",
+        ))
         resolved_path, anchor = resolve_path_like_target(
             source_page, normalized_target, root=root if root_relative else None
         )

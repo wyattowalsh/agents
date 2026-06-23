@@ -16,7 +16,7 @@
     {
       "id": "code-quality",
       "name": "Code Quality",
-      "existing_skills": ["honest-review", "tech-debt-analyzer"],
+      "existing_skills": ["review", "tech-debt-analyzer"],
       "coverage": "medium",
       "scout_queries": ["code review", "tech debt", "refactoring"]
     },
@@ -44,14 +44,14 @@
     {
       "id": "frontend",
       "name": "Frontend",
-      "existing_skills": ["frontend-designer"],
+      "existing_skills": ["design"],
       "coverage": "low",
       "scout_queries": ["react", "tailwind", "frontend design", "shadcn"]
     },
     {
       "id": "documentation",
       "name": "Documentation",
-      "existing_skills": ["docs-steward", "changelog-writer", "add-badges"],
+      "existing_skills": ["docs-steward", "changelog-writer", "design"],
       "coverage": "good",
       "scout_queries": ["documentation", "changelog", "readme"]
     },

@@ -7,9 +7,12 @@ import json
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from nerdbot.safety import append_text_no_follow, normalize_vault_relative_path
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @dataclass(frozen=True, slots=True)

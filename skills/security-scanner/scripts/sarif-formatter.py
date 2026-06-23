@@ -43,12 +43,14 @@ def convert_to_sarif(findings_data, base_dir=None):
             "ruleId": rule_id,
             "level": SEVERITY_TO_SARIF.get(finding.get("severity", "MEDIUM"), "warning"),
             "message": {"text": finding.get("description", finding.get("name", "Security finding detected"))},
-            "locations": [{
-                "physicalLocation": {
-                    "artifactLocation": {"uri": os.path.relpath(finding.get("file", "unknown"), base_dir)},
-                    "region": {"startLine": finding.get("line", 1)},
-                },
-            }],
+            "locations": [
+                {
+                    "physicalLocation": {
+                        "artifactLocation": {"uri": os.path.relpath(finding.get("file", "unknown"), base_dir)},
+                        "region": {"startLine": finding.get("line", 1)},
+                    },
+                }
+            ],
             "properties": {
                 "confidence": finding.get("confidence", 0.5),
                 "severity": finding.get("severity", "MEDIUM"),
@@ -58,22 +60,23 @@ def convert_to_sarif(findings_data, base_dir=None):
             result["properties"]["cwe"] = finding["cwe"]
         results.append(result)
 
-    sarif = {
+    return {
         "$schema": SARIF_SCHEMA,
         "version": SARIF_VERSION,
-        "runs": [{
-            "tool": {
-                "driver": {
-                    "name": "security-scanner",
-                    "version": "1.0.0",
-                    "informationUri": "https://github.com/wyattowalsh/agents",
-                    "rules": list(rules.values()),
+        "runs": [
+            {
+                "tool": {
+                    "driver": {
+                        "name": "security-scanner",
+                        "version": "1.0.0",
+                        "informationUri": "https://github.com/wyattowalsh/agents",
+                        "rules": list(rules.values()),
+                    },
                 },
-            },
-            "results": results,
-        }],
+                "results": results,
+            }
+        ],
     }
-    return sarif
 
 
 def main():

@@ -198,15 +198,13 @@ def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny
     if payload.harness == "github-copilot":
         return _emit_json({"permissionDecision": "deny", "permissionDecisionReason": reason})
     if payload.harness == "codex":
-        return _emit_json(
-            {
-                "hookSpecificOutput": {
-                    "hookEventName": "PreToolUse",
-                    "permissionDecision": "deny",
-                    "permissionDecisionReason": reason,
-                }
+        return _emit_json({
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "deny",
+                "permissionDecisionReason": reason,
             }
-        )
+        })
     if payload.harness == "gemini-cli":
         return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     print(reason, file=sys.stderr)

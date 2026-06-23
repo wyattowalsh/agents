@@ -5,6 +5,7 @@ The research skill is read-only with respect to repository source files. This
 script is intentionally small: it only verifies that tracked files under the
 repo-owned research skill directory were not modified during a research run.
 """
+
 from __future__ import annotations
 
 import argparse

@@ -25,9 +25,7 @@ CONVENTIONAL_PATTERN = re.compile(
 
 ONELINE_PATTERN = re.compile(r"^(?P<hash>[0-9a-f]{7,40})\s+(?P<subject>.+)$")
 
-FULL_PATTERN = re.compile(
-    r"^commit\s+(?P<hash>[0-9a-f]{40})"
-)
+FULL_PATTERN = re.compile(r"^commit\s+(?P<hash>[0-9a-f]{40})")
 
 AUTHOR_PATTERN = re.compile(r"^Author:\s+(?P<author>.+)$")
 DATE_PATTERN = re.compile(r"^Date:\s+(?P<date>.+)$")
@@ -168,7 +166,8 @@ def main():
         help="Input format (default: auto-detect)",
     )
     parser.add_argument(
-        "--input", "-i",
+        "--input",
+        "-i",
         help="Input file (default: stdin)",
     )
     args = parser.parse_args()
@@ -187,10 +186,7 @@ def main():
     if fmt == "auto":
         fmt = "full" if text.strip().startswith("commit ") else "oneline"
 
-    if fmt == "full":
-        commits = parse_full(text)
-    else:
-        commits = parse_oneline(text.strip().split("\n"))
+    commits = parse_full(text) if fmt == "full" else parse_oneline(text.strip().split("\n"))
 
     result = {
         "commits": commits,

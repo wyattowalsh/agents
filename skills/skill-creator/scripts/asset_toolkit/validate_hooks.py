@@ -88,7 +88,7 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
                 frontmatter, _ = parse_frontmatter(skill_file.read_text(encoding="utf-8"))
                 hooks_dict = frontmatter.get("hooks", {})
                 if hooks_dict:
-                    _validate_hooks(f"skill:{skill_dir.name}", cast(dict, hooks_dict), add_error)
+                    _validate_hooks(f"skill:{skill_dir.name}", cast("dict", hooks_dict), add_error)
             except Exception:
                 pass
 
@@ -99,7 +99,7 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
                 frontmatter, _ = parse_frontmatter(agent_file.read_text(encoding="utf-8"))
                 hooks_dict = frontmatter.get("hooks", {})
                 if hooks_dict:
-                    _validate_hooks(f"agent:{agent_file.stem}", cast(dict, hooks_dict), add_error)
+                    _validate_hooks(f"agent:{agent_file.stem}", cast("dict", hooks_dict), add_error)
             except Exception:
                 pass
 
@@ -110,7 +110,7 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
         except json.JSONDecodeError as exc:
             add_error("hook-registry.json", f"invalid JSON: {exc}")
         else:
-            supported_harnesses = {"codex", "claude-code", "github-copilot", "gemini-cli"}
+            supported_harnesses = {"codex", "claude-code", "cursor", "github-copilot", "gemini-cli"}
             hooks = data.get("hooks", [])
             if not isinstance(hooks, list):
                 add_error("hook-registry.json", "hooks must be a list")
@@ -120,7 +120,7 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
                     if not isinstance(hook, dict):
                         add_error(source, "hook entry must be a mapping")
                         continue
-                    hook_dict = cast(dict[str, object], hook)
+                    hook_dict = cast("dict[str, object]", hook)
                     hook_id = hook_dict.get("id")
                     if not isinstance(hook_id, str) or not hook_id:
                         add_error(source, "hook id is required")
@@ -150,10 +150,11 @@ def validate_hooks(repo_root: Path) -> list[dict[str, str]]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate skill and agent hooks")
+    parser.add_argument("--repo-root", default="", help="Repository root to validate")
     parser.add_argument("--format", choices=["text", "json", "jsonl"], default="text")
     args = parser.parse_args(argv)
 
-    repo_root = find_repo_root()
+    repo_root = Path(args.repo_root).resolve() if args.repo_root else find_repo_root()
     if repo_root is None:
         print("Could not find repo root", file=sys.stderr)
         return 1

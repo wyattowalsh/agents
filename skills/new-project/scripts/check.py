@@ -14,8 +14,7 @@ def _toolkit_path() -> Path:
     bundled = SKILL_DIR / "scripts" / "asset_toolkit" / "validate_skill.py"
     if bundled.is_file():
         return SKILL_DIR / "scripts" / "asset_toolkit"
-    repo_toolkit = SKILL_DIR.parent / "skill-creator" / "scripts" / "asset_toolkit"
-    return repo_toolkit
+    return SKILL_DIR.parent / "skill-creator" / "scripts" / "asset_toolkit"
 
 
 def _run(command: list[str]) -> int:
@@ -41,12 +40,10 @@ def main() -> int:
         commands.append([sys.executable, str(audit_script), str(SKILL_DIR)])
 
     scripts_dir = SKILL_DIR / "scripts"
-    commands.extend(
-        [
-            [sys.executable, str(scripts_dir / "validate_catalog.py"), "--format", "json"],
-            [sys.executable, str(scripts_dir / "preferences.py"), "validate", "--format", "json"],
-        ]
-    )
+    commands.extend([
+        [sys.executable, str(scripts_dir / "validate_catalog.py"), "--format", "json"],
+        [sys.executable, str(scripts_dir / "preferences.py"), "validate", "--format", "json"],
+    ])
     openspec_cli = scripts_dir / "openspec_cli.py"
     if (SKILL_DIR.parents[1] / "openspec").is_dir() and openspec_cli.is_file():
         commands.append([sys.executable, str(openspec_cli), "validate"])

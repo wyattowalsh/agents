@@ -15,6 +15,7 @@ Usage:
   python journal-store.py archive --days 90
   python journal-store.py delete 1 --force
 """
+
 from __future__ import annotations
 
 import argparse
@@ -36,10 +37,12 @@ def get_agent_dir(skill_name: str) -> Path:
             return Path.home() / folder / skill_name
     return Path.home() / ".claude" / skill_name
 
+
 JOURNAL_DIR = get_agent_dir("research")
 ARCHIVE_DIR = JOURNAL_DIR / "archive"
 
 # --- YAML frontmatter parsing (stdlib only, no pyyaml) ---
+
 
 def parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
     """Parse YAML frontmatter from markdown text. Returns (metadata, body)."""
@@ -130,7 +133,7 @@ def _parse_yaml_value(val: str) -> Any:
     # Remove quotes
     if val.startswith('"') and val.endswith('"'):
         inner = val[1:-1]
-        return inner.replace('\\"', '"').replace('\\\\', '\\')
+        return inner.replace('\\"', '"').replace("\\\\", "\\")
     if val.startswith("'") and val.endswith("'"):
         return val[1:-1]
     # Booleans
@@ -187,8 +190,8 @@ def _yaml_scalar(val: Any) -> str:
     if val is None:
         return "null"
     s = str(val)
-    _yaml_special = set(':#[]{},"&*?|-<>=!%@`')
-    if any(ch in _yaml_special for ch in s) or not s:
+    yaml_special = set(':#[]{},"&*?|-<>=!%@`')
+    if any(ch in yaml_special for ch in s) or not s:
         escaped = s.replace("\\", "\\\\").replace('"', '\\"')
         return f'"{escaped}"'
     return f'"{s}"'
@@ -207,9 +210,7 @@ def parse_state_blocks(body: str) -> list[dict[str, Any]]:
     return blocks
 
 
-_FINDINGS_PATTERN = re.compile(
-    r"<!-- FINDINGS_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL
-)
+_FINDINGS_PATTERN = re.compile(r"<!-- FINDINGS_WAVE_(\d+) -->\n```json\n(.*?)\n```", re.DOTALL)
 
 
 def parse_findings_blocks(body: str) -> dict[int, Any]:
@@ -236,10 +237,44 @@ def _atomic_write(path: Path, content: str) -> None:
 
 # --- Slug generation ---
 
-_SLUG_STOP = {"what", "how", "why", "when", "where", "which", "who", "is", "are",
-              "does", "do", "the", "a", "an", "for", "to", "of", "in", "on",
-              "and", "or", "but", "with", "from", "by", "at", "it", "this",
-              "that", "be", "was", "were", "been", "has", "have", "had"}
+_SLUG_STOP = {
+    "what",
+    "how",
+    "why",
+    "when",
+    "where",
+    "which",
+    "who",
+    "is",
+    "are",
+    "does",
+    "do",
+    "the",
+    "a",
+    "an",
+    "for",
+    "to",
+    "of",
+    "in",
+    "on",
+    "and",
+    "or",
+    "but",
+    "with",
+    "from",
+    "by",
+    "at",
+    "it",
+    "this",
+    "that",
+    "be",
+    "was",
+    "were",
+    "been",
+    "has",
+    "have",
+    "had",
+}
 
 _MODE_TO_DOMAIN: dict[str, str] = {
     "factcheck": "factcheck",
@@ -264,8 +299,19 @@ def detect_domain_tag(query: str, mode: str) -> str:
 
     ql = query.lower()
     domain_keywords = {
-        "tech": ["api", "framework", "library", "software", "code", "programming",
-                 "llm", "ai", "machine learning", "database", "cloud"],
+        "tech": [
+            "api",
+            "framework",
+            "library",
+            "software",
+            "code",
+            "programming",
+            "llm",
+            "ai",
+            "machine learning",
+            "database",
+            "cloud",
+        ],
         "academic": ["paper", "study", "evidence", "research", "journal", "peer-reviewed"],
         "market": ["market", "competitor", "revenue", "pricing", "business"],
         "policy": ["law", "regulation", "policy", "legislation", "compliance"],
@@ -299,6 +345,7 @@ def make_filename(query: str, mode: str, base_dir: Path) -> str:
 
 # --- Journal listing ---
 
+
 def list_journals(base_dir: Path, filter_val: str | None = None) -> list[dict[str, Any]]:
     """List journals with metadata, reverse chronological."""
     if not base_dir.exists():
@@ -310,7 +357,7 @@ def list_journals(base_dir: Path, filter_val: str | None = None) -> list[dict[st
             text = f.read_text(encoding="utf-8")
         except OSError:
             continue
-        meta, body = parse_frontmatter(text)
+        meta, _body = parse_frontmatter(text)
         if not meta:
             continue
 
@@ -328,7 +375,8 @@ def list_journals(base_dir: Path, filter_val: str | None = None) -> list[dict[st
             journals = [j for j in journals if str(j.get("status", "")).lower() in ("in progress", "in_progress")]
         else:
             journals = [
-                j for j in journals
+                j
+                for j in journals
                 if fl in str(j.get("domain_tags", [])).lower()
                 or fl in str(j.get("tier", "")).lower()
                 or fl in str(j.get("mode", "")).lower()
@@ -339,6 +387,7 @@ def list_journals(base_dir: Path, filter_val: str | None = None) -> list[dict[st
 
 
 # --- Subcommands ---
+
 
 def cmd_save(args: argparse.Namespace) -> None:
     """Create or update a research journal."""
@@ -388,8 +437,7 @@ def cmd_save(args: argparse.Namespace) -> None:
         if findings_data:
             meta["findings_count"] = len(findings_data)
             confidences = [
-                f.get("confidence", 0) for f in findings_data
-                if isinstance(f.get("confidence"), (int, float))
+                f.get("confidence", 0) for f in findings_data if isinstance(f.get("confidence"), (int, float))
             ]
             if confidences:
                 meta["mean_confidence"] = round(sum(confidences) / len(confidences), 2)
@@ -416,9 +464,7 @@ def cmd_save(args: argparse.Namespace) -> None:
         if findings_data:
             wave = args.wave if args.wave is not None else meta.get("last_wave", 0)
             append_sections.append(
-                f"<!-- FINDINGS_WAVE_{wave} -->\n```json\n"
-                + json.dumps(findings_data, indent=2)
-                + "\n```"
+                f"<!-- FINDINGS_WAVE_{wave} -->\n```json\n" + json.dumps(findings_data, indent=2) + "\n```"
             )
 
         if append_sections:
@@ -546,8 +592,7 @@ def cmd_diff(args: argparse.Namespace) -> None:
             "findings_count_delta": (meta2.get("findings_count", 0) or 0) - (meta1.get("findings_count", 0) or 0),
             "mean_confidence_delta": round(mean2 - mean1, 2),
             "sources_consulted_delta": (
-                (meta2.get("sources_consulted", 0) or 0)
-                - (meta1.get("sources_consulted", 0) or 0)
+                (meta2.get("sources_consulted", 0) or 0) - (meta1.get("sources_consulted", 0) or 0)
             ),
             "status_changed": meta1.get("status") != meta2.get("status"),
             "status_from": meta1.get("status"),
@@ -625,6 +670,7 @@ def cmd_delete(args: argparse.Namespace) -> None:
 
 
 # --- Helpers ---
+
 
 def _resolve_path(target: str) -> Path | None:
     """Resolve a journal target: path, number, or keyword."""

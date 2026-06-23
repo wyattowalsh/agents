@@ -13,7 +13,6 @@ from typing import Any
 
 import discover_surfaces
 
-
 SENSITIVE_NAMES = {
     ".env",
     ".env.local",
@@ -100,12 +99,10 @@ def _safe_file_metadata(repo_root: Path, relative_path: str) -> dict[str, Any]:
     except OSError as exc:
         metadata["status"] = f"stat-error: {exc}"
         return metadata
-    metadata.update(
-        {
-            "size_bytes": stat.st_size,
-            "json_top_level_keys": _top_level_json_keys(path) if path.suffix == ".json" else [],
-        }
-    )
+    metadata.update({
+        "size_bytes": stat.st_size,
+        "json_top_level_keys": _top_level_json_keys(path) if path.suffix == ".json" else [],
+    })
     return metadata
 
 
@@ -130,42 +127,38 @@ def _opencode_plugin_names(repo_root: Path) -> list[str]:
 def _planned_commands(harnesses: list[str], days: int) -> list[dict[str, Any]]:
     commands: list[dict[str, Any]] = []
     if "opencode" in harnesses:
-        commands.extend(
-            [
-                {
-                    "id": "opencode-stats",
-                    "command_shape": "opencode stats",
-                    "privacy_class": "aggregate-safe",
-                    "execution": "planned-only",
-                },
-                {
-                    "id": "opencode-session-list",
-                    "command_shape": "opencode session list",
-                    "privacy_class": "metadata-safe",
-                    "execution": "planned-only",
-                },
-                {
-                    "id": "opencode-export-sanitize",
-                    "command_shape": "opencode export --sanitize",
-                    "privacy_class": "sanitized-export",
-                    "execution": "planned-only",
-                },
-                {
-                    "id": "opencode-db-path",
-                    "command_shape": "opencode db path",
-                    "privacy_class": "metadata-safe",
-                    "execution": "planned-only",
-                },
-            ]
-        )
-    commands.append(
-        {
-            "id": "token-history",
-            "command_shape": f"token_history(from=<now-{days}d>, to=<now>, scope=session)",
-            "privacy_class": "aggregate-safe",
-            "execution": "runtime-tool-if-requested",
-        }
-    )
+        commands.extend([
+            {
+                "id": "opencode-stats",
+                "command_shape": "opencode stats",
+                "privacy_class": "aggregate-safe",
+                "execution": "planned-only",
+            },
+            {
+                "id": "opencode-session-list",
+                "command_shape": "opencode session list",
+                "privacy_class": "metadata-safe",
+                "execution": "planned-only",
+            },
+            {
+                "id": "opencode-export-sanitize",
+                "command_shape": "opencode export --sanitize",
+                "privacy_class": "sanitized-export",
+                "execution": "planned-only",
+            },
+            {
+                "id": "opencode-db-path",
+                "command_shape": "opencode db path",
+                "privacy_class": "metadata-safe",
+                "execution": "planned-only",
+            },
+        ])
+    commands.append({
+        "id": "token-history",
+        "command_shape": f"token_history(from=<now-{days}d>, to=<now>, scope=session)",
+        "privacy_class": "aggregate-safe",
+        "execution": "runtime-tool-if-requested",
+    })
     return commands
 
 

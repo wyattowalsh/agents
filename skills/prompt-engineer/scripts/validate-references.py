@@ -16,7 +16,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 REFERENCE_RE = re.compile(r"`(references/[^`]+\.md|scripts/[^`]+\.py)`")
 URL_RE = re.compile(r"https?://[^\s`,|)]+")
 
@@ -145,14 +144,12 @@ def check_provider_metadata(model_playbook: Path, today: dt.date) -> tuple[list[
         verified = dt.date.fromisoformat(heading.group(1))
         age_days = (today - verified).days
         source_urls = set(provider_matrix_urls(text, aliases)) | set(URL_RE.findall(section_text(text, heading)))
-        meta["sections"].append(
-            {
-                "provider": provider,
-                "last_verified": verified.isoformat(),
-                "age_days": age_days,
-                "source_url_count": len(source_urls),
-            }
-        )
+        meta["sections"].append({
+            "provider": provider,
+            "last_verified": verified.isoformat(),
+            "age_days": age_days,
+            "source_url_count": len(source_urls),
+        })
         if not source_urls:
             errors.append(f"Missing source URL for provider guidance: {provider}")
         if age_days > 90:
@@ -186,7 +183,9 @@ def validate(skill_dir: Path) -> dict[str, Any]:
     for path in orphan_refs:
         errors.append(f"Reference file missing from index: {path}")
 
-    provider_errors, provider_warnings, provider_meta = check_provider_metadata(skill_dir / "references" / "model-playbooks.md", today)
+    provider_errors, provider_warnings, provider_meta = check_provider_metadata(
+        skill_dir / "references" / "model-playbooks.md", today
+    )
     errors.extend(provider_errors)
     warnings.extend(provider_warnings)
 
