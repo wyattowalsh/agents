@@ -1,4 +1,8 @@
-<!-- Managed by scripts/sync_agent_stack.py. Do not edit directly. -->
+---
+description: Global cross-platform AI agent instructions
+applyTo: '**/*'
+---
+
 # Global AI Agent Instructions
 
 ## General
@@ -96,18 +100,3 @@ Use this flow when adding or updating trust-gated third-party skills (full detai
 5. Regenerate: `uv run wagents readme`, `uv run wagents docs generate`, `uv run wagents docs build`.
 
 Public docs publish the catalog landing at `/skills/catalog/`, custom skill detail pages at `/skills/catalog/custom/<name>/`, and curated external detail pages at `/skills/catalog/external/<name>/`. The curated install hub remains `/external-skills/`. Use `--include-installed` only for maintainer previews of local harness inventory rows.
-# GitHub Copilot
-
-Copilot-specific extension only. Keep shared cross-platform instructions in `global.md`.
-
-## Fleet Planning
-
-- All plans must be `/fleet`-optimized per `/orchestrator` for maximum efficiency and robustness.
-- Default to the highest applicable `/orchestrator` tier; do not collapse parallelizable work into a single-session plan.
-- Maximize independent subagent dispatch, preserve clear file ownership, and keep synthesis gated on all dispatched work completing.
-
-## Fleet Model Policy
-
-- Default to the globally managed profile: `gpt-5.4`, high reasoning effort, `continueOnAutoMode=false`, and no explicit `COPILOT_SUBAGENT_MAX_CONCURRENT` or `COPILOT_SUBAGENT_MAX_DEPTH` caps.
-- Use heavier or lighter models only when explicitly requested or when a bounded plan identifies a concrete need.
-- Keep `/fleet` dispatch accountable. Do not invent artificial fan-out limits in instructions unless the user asks for them.
