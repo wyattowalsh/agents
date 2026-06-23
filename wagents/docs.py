@@ -2112,24 +2112,16 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     )
     site_path = DOCS_DIR / "src" / "generated-site-data.mjs"
     if not site_path.exists():
-        reasons.append(
-            "docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("docs/src/generated-site-data.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif site_path.read_text(encoding="utf-8") != expected_site:
-        reasons.append(
-            "docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("docs/src/generated-site-data.mjs is stale; run `uv run wagents docs generate --no-installed`")
 
     expected_sidebar = render_sidebar_module(nodes)
     sidebar_path = DOCS_DIR / "src" / "generated-sidebar.mjs"
     if not sidebar_path.exists():
-        reasons.append(
-            "docs/src/generated-sidebar.mjs missing; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("docs/src/generated-sidebar.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
-        reasons.append(
-            "docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`"
-        )
+        reasons.append("docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`")
     return reasons
 
 
@@ -2232,6 +2224,7 @@ def docs_generate(
     ),
 ):
     """Generate MDX content pages from repo assets."""
+    check = _resolve_typer_option(check, default=False)
     include_drafts = _resolve_typer_option(include_drafts, default=False)
     include_installed = _resolve_typer_option(include_installed, default=False)
     if check:
