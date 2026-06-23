@@ -2223,8 +2223,8 @@ def readme(
         "  <p><b>Portable AI agent skills, MCP config, and shared instructions</b></p>",
         "  <p>",
         (
-            '    <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml">'
-            '<img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/'
+            '    <a href="https://github.com/wyattowalsh/agents/actions/workflows/CI">'
+            '<img src="https://github.com/wyattowalsh/agents/actions/workflows/CI/'
             'badge.svg" alt="CI"></a>'
         ),
         (
@@ -2367,7 +2367,11 @@ def readme(
         content_parts.extend([
             "## 🔌 MCP Servers",
             "",
-            "Model Context Protocol servers for interacting with external tools.",
+            (
+                "First-party MCP servers authored in this repository (see `AGENTS.md` §2). "
+                "Curated external servers are configured in `config/mcp-registry.json` "
+                "and exposed via MCPHub."
+            ),
             "",
             "| Name | Description |",
             "| ---- | ----------- |",
@@ -2432,7 +2436,9 @@ def readme(
         "- [Cursor](https://cursor.sh/)",
         "- [Gemini CLI](https://github.com/google/gemini-cli)",
         "- [GitHub Copilot](https://github.com/features/copilot)",
+        "- [Grok Build](https://x.ai/)",
         "- [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config",
+        "- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry",
         "And other [agentskills.io](https://agentskills.io)-compatible agents.",
         "",
     ])

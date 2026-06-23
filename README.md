@@ -3,7 +3,7 @@
   <h1>agents</h1>
   <p><b>Portable AI agent skills, MCP config, and shared instructions</b></p>
   <p>
-    <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="https://github.com/wyattowalsh/agents/actions/workflows/CI"><img src="https://github.com/wyattowalsh/agents/actions/workflows/CI/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
     <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-55-0f766e?style=flat-square" alt="Skills"></a>
@@ -105,7 +105,7 @@ Reusable actions and knowledge bases for AI agents.
 | python-conventions | Enforce Python tooling conventions for uv, ty, Ruff, pytest, and pyproject.toml. Use when working on .py files or Python project config. NOT for JS/TS, shell scripts, CI design, profiling, or test architecture. |
 | reasoning-router | Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (review). |
 | release-pipeline-architect | Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure. |
-| research | Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A. |
+| research | Deep multi-source research with reviewable plans, source-support auditing, and confidence scoring. Use for technical, academic, market, or fact-checking investigation. NOT for code review, simple Q&A, or unsupported opinion. |
 | review | Use for session, scoped, PR, range, full audit, simplification, and source/provenance reviews with evidence-first findings. NOT for feature implementation or benchmarking. |
 | schema-evolution-planner | Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops. |
 | security-scanner | Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (review) or pen testing. |
@@ -135,7 +135,7 @@ System prompts and context definitions for AI agents.
 
 ## 🔌 MCP Servers
 
-Model Context Protocol servers for interacting with external tools.
+First-party MCP servers authored in this repository (see `AGENTS.md` §2). Curated external servers are configured in `config/mcp-registry.json` and exposed via MCPHub.
 
 | Name | Description |
 | ---- | ----------- |
@@ -183,7 +183,9 @@ Third-party skill collections can be installed directly with `npx skills add <so
 - [Cursor](https://cursor.sh/)
 - [Gemini CLI](https://github.com/google/gemini-cli)
 - [GitHub Copilot](https://github.com/features/copilot)
+- [Grok Build](https://x.ai/)
 - [OpenCode](https://github.com/anomalyco/opencode) — native AGENTS.md support with repo-level config
+- [Cherry Studio](https://www.cherry-ai.com/) — MCP-only via MCPHub registry
 And other [agentskills.io](https://agentskills.io)-compatible agents.
 
 ## 📚 Documentation
