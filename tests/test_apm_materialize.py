@@ -12,6 +12,7 @@ from wagents.apm import (
     materialize_agents,
     materialize_hooks,
     materialize_instructions,
+    materialize_scoped_rules,
 )
 
 
@@ -130,6 +131,29 @@ def test_materialize_agents_strips_readme_and_stale(tmp_path: Path):
     stale.write_text("old", encoding="utf-8")
     materialize_agents(tmp_path)
     assert not stale.exists()
+
+
+def _write_claude_rule(tmp: Path, name: str, paths: list[str], body: str) -> Path:
+    rules = tmp / ".claude" / "rules"
+    rules.mkdir(parents=True, exist_ok=True)
+    lines = ["---", "paths:"]
+    lines.extend(f'  - "{p}"' for p in paths)
+    lines.append("---")
+    lines.append(body)
+    p = rules / f"{name}.md"
+    p.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return p
+
+
+def test_materialize_scoped_rules_projects_path_rules(tmp_path: Path):
+    _write_claude_rule(tmp_path, "docs-verify", ["docs/**/*.mdx"], "Run docs build.\n")
+    _write_claude_rule(tmp_path, "global", ["**/*"], "Always on.\n")
+    touched = materialize_scoped_rules(tmp_path)
+    apm_i = tmp_path / ".apm" / "instructions"
+    assert (apm_i / "docs-verify.instructions.md").exists()
+    assert "applyTo: docs/**/*.mdx" in (apm_i / "docs-verify.instructions.md").read_text()
+    assert not (apm_i / "global.instructions.md").exists()
+    assert any("docs-verify.instructions.md" in str(p) for p in touched)
 
 
 def test_materialize_instructions_global_and_overlays(tmp_path: Path):

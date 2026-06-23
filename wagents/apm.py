@@ -102,6 +102,84 @@ def materialize_agents(repo_root: Path, *, check: bool = False) -> list[Path]:
     return sorted(set(written))
 
 
+def _parse_claude_rule(path: Path) -> tuple[list[str], str]:
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        return [], text
+    _, frontmatter, body = text.split("---\n", 2)
+    patterns: list[str] = []
+    for line in frontmatter.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("- "):
+            patterns.append(stripped[2:].strip().strip('"'))
+    return patterns, body.lstrip()
+
+
+def _is_path_scoped_rule(patterns: list[str]) -> bool:
+    if not patterns:
+        return False
+    return not (len(patterns) == 1 and patterns[0] == "**/*")
+
+
+def materialize_scoped_rules(repo_root: Path, *, check: bool = False) -> list[Path]:
+    """Project path-scoped .claude/rules/*.md into .apm/instructions/*.instructions.md."""
+    rules_dir = repo_root / ".claude" / "rules"
+    dst_dir = repo_root / ".apm" / "instructions"
+    written: list[Path] = []
+    if not rules_dir.exists():
+        return written
+
+    live: set[str] = set()
+    for rule_path in sorted(rules_dir.glob("*.md")):
+        patterns, body = _parse_claude_rule(rule_path)
+        if not _is_path_scoped_rule(patterns):
+            continue
+        dst_name = f"{rule_path.stem}.instructions.md"
+        live.add(dst_name)
+        apply_to = ",".join(patterns) if patterns else "**/*"
+        fm = {
+            "description": f"Path-scoped rule: {rule_path.name}",
+            "applyTo": apply_to,
+        }
+        content = (
+            "---\n"
+            + yaml.safe_dump(fm, sort_keys=False, allow_unicode=False).strip()
+            + "\n---\n\n"
+            + (body.strip() + "\n" if body.strip() else "\n")
+        )
+        tgt = dst_dir / dst_name
+        if _write_text_if_changed(tgt, content, check=check):
+            written.append(tgt)
+
+    overlay_names = {
+        "global.instructions.md",
+        "claude-code.instructions.md",
+        "codex.instructions.md",
+        "copilot.instructions.md",
+        "gemini-cli.instructions.md",
+        "grok.instructions.md",
+        "opencode.instructions.md",
+        "opencode-agents-overlay.instructions.md",
+    }
+    if dst_dir.exists():
+        for dst in sorted(dst_dir.glob("*.instructions.md")):
+            if dst.name in overlay_names or dst.name in live:
+                continue
+            rule_stem = dst.name.removesuffix(".instructions.md")
+            rule_path = rules_dir / f"{rule_stem}.md"
+            if rule_path.exists():
+                patterns, _ = _parse_claude_rule(rule_path)
+                if _is_path_scoped_rule(patterns):
+                    continue
+            if check:
+                written.append(dst)
+            else:
+                with contextlib.suppress(OSError):
+                    dst.unlink()
+                written.append(dst)
+    return sorted(set(written))
+
+
 def _resolve_global_body(root: Path) -> str:
     """Return global.md content. For overlays we keep simple (no deep @ resolve here)."""
     gm = root / "instructions" / "global.md"
@@ -369,6 +447,7 @@ def materialize(repo_root: Path, check: bool = False) -> dict[str, Any]:
     touched: list[Path] = []
     touched.extend(materialize_agents(repo_root, check=check))
     touched.extend(materialize_instructions(repo_root, check=check))
+    touched.extend(materialize_scoped_rules(repo_root, check=check))
     touched.extend(materialize_hooks(repo_root, check=check))
     # MCP stays wagents/MCPHub-owned; keep apm.yml lock-audit clean with an empty mcp list.
     mcp_frag: list[dict[str, Any]] = []
