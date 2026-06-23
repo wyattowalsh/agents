@@ -16,7 +16,7 @@ source_count: 2
 
 ## Summary
 
-GitHub Actions and pre-commit enforce validation, docs freshness, catalog parity, and release packaging. CI uses `uv run wagents ...` directly; the Makefile provides local shorthand equivalents.
+GitHub Actions and pre-commit enforce validation, docs freshness, catalog parity, and release packaging. CI jobs bootstrap through composite `.github/actions/setup-uv`, then run `uv run wagents ...` gates. The Makefile provides local shorthand equivalents plus `make ci-check` (actionlint + workflow-analyzer).
 
 ## Why it matters
 
@@ -28,8 +28,8 @@ GitHub Actions and pre-commit enforce validation, docs freshness, catalog parity
 
 | Workflow | Trigger | Notable gates |
 |----------|---------|---------------|
-| `ci.yml` | push/PR main | lint, ty, pytest, validate slice, apm, wagents-wheel, docs build |
-| `release-skills.yml` | PR + version tags | strict skill audit, full pytest; zip release on tags |
+| `ci.yml` | push/PR main | lint, ty, pytest, validate slice, apm, wagents-wheel, docs build (SHA-pinned actions, timeouts, least-privilege permissions) |
+| `release-skills.yml` | PR + version tags | strict skill audit, full pytest; zip release on tags (PR-only concurrency cancel) |
 
 **Validate job sequence:** `wagents validate` → `readme --check` → `apm materialize --check` → `apm doctor` → curated pytest → `openspec validate` → `skills sync --dry-run` → `catalog index --check`.
 
@@ -40,6 +40,7 @@ GitHub Actions and pre-commit enforce validation, docs freshness, catalog parity
 - CI validate does not run full pytest or strict skill audit (release-skills does on PR).
 - `wagents docs lint` in CI uses `|| true` (non-blocking).
 - No CI invocation of `scripts/validate_codex_config.py` as of 2026-06-23.
+- Workflow hardening regression tests live in `tests/test_github_workflows.py`; Dependabot updates action SHAs via `.github/dependabot.yml`.
 
 ## Provenance
 

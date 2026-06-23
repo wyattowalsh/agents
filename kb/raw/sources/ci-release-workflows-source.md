@@ -30,11 +30,13 @@ source_count: 1
 
 ## Summary
 
-CI runs seven jobs on push/PR to `main`: lint, typecheck, test, validate, apm, wagents-wheel, and docs. The validate job runs `wagents validate`, `wagents readme --check`, `wagents apm materialize --check`, `wagents apm doctor`, a curated pytest slice (catalog/authoring/APM parity), `wagents openspec validate`, `wagents skills sync --dry-run`, and `wagents catalog index --check`.
+CI runs seven parallel jobs on push/PR to `main`: lint, typecheck, test, validate, apm, wagents-wheel, and docs. Jobs bootstrap via composite action `.github/actions/setup-uv` (checkout, SHA-pinned `setup-uv` with cache, `uv sync`). Workflows use top-level `permissions: {}`, per-job least privilege, job `timeout-minutes`, SHA-pinned third-party actions, and PR concurrency (`cancel-in-progress: true`; release workflow cancels only on PRs).
 
-The docs job runs `wagents docs generate --no-installed`, catalog index check, `wagents docs compose --check-composed --min-pct 100`, docs lint, Astro check, and `pnpm build`. Release-skills validates on every PR with strict skill audit + full pytest; package-and-release runs only on version tags.
+The validate job runs `wagents validate`, `wagents readme --check`, `wagents apm materialize --check`, `wagents apm doctor`, a curated pytest slice (catalog/authoring/APM parity), `wagents openspec validate`, `wagents skills sync --dry-run`, and `wagents catalog index --check`.
 
-Pre-commit adds path-filtered hooks for validate, apm check/doctor, openspec validate, catalog index check, and docs build check.
+The docs job runs `wagents docs generate --no-installed`, catalog index check, `wagents docs compose --check-composed --min-pct 100`, non-blocking `wagents docs lint || true`, Astro check, and `pnpm build`. Release-skills validates on every PR with strict skill audit + full pytest; package-and-release runs only on version tags.
+
+Pre-commit adds path-filtered hooks for validate, apm check/doctor, openspec validate, catalog index check, docs build check, and `actionlint` on `.github/workflows/`. Local workflow lint: `make ci-check`. Dependabot watches `github-actions` weekly. Regression tests: `tests/test_github_workflows.py`.
 
 ## Provenance
 
