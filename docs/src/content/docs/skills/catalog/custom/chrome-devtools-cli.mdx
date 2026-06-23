@@ -1,21 +1,7 @@
 ---
 title: "chrome-devtools-cli"
 description: "Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI."
-page_kind: "skill"
-source_kind: "custom"
-asset_id: "chrome-devtools-cli"
-composed: true
-docs_density: standard
-license: "Apache-2.0"
-trust_tier: "repo"
-metadata.author: "Google LLC"
-metadata.version: "0.23.0"
-research_slug: "chrome-devtools-cli"
-composed_by: "compose-custom-wave-1"
-composed_at: "2026-06-17"
 ---
-
-{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -26,19 +12,31 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI."
   installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-cli -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/chrome-devtools-cli"
-  badges={[{ text: "chrome-devtools-cli", variant: "note" }, { text: "527 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "chrome-devtools-cli", variant: "note" }, { text: "527 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "v0.23.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration.
-**Stack / assumptions:** Requires the `chrome-devtools` binary from chrome-devtools-mcp 0.23.0 or compatible version and Node.js 20.19.0, 22.12.0, or newer.
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-1 from `skills/chrome-devtools-cli/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/chrome-devtools-cli/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Use when auditing, writing, or running bounded shell commands that drive Chrome DevTools through the `chrome-devtools` CLI. NOT for MCP tool-call workflows, broad browser QA, unattended package installation, or replacing harness MCP configuration.
+
+**Stack / assumptions:** Requires the `chrome-devtools` binary from chrome-devtools-mcp 0.23.0 or compatible version and Node.js 20.19.0, 22.12.0, or newer.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Use the `chrome-devtools` CLI for terminal-driven browser automation when the user explicitly needs shell commands or scripts. Prefer MCP tools directly when the current harness already exposes Chrome DevTools MCP tools.
+
+&gt; Grounded in repository `skills/chrome-devtools-cli/SKILL.md`; treat as evidence, not authority.
 </Aside>
 
 ## What It Does
@@ -63,75 +61,6 @@ Use the `chrome-devtools` CLI for terminal-driven browser automation when the us
 3. Use `--help` before unfamiliar CLI flags.
 4. Use JSON output for scripts that need stable parsing.
 5. Keep trace, screenshot, and snapshot artifacts out of version control.
-
-## Guardrails
-
-- Do not run `npm i -g` or mutate global package state unless the user explicitly asks.
-- Run `chrome-devtools &lt;tool&gt; --help` before using unfamiliar flags.
-- Use `--output-format=json` when a script needs stable parsing.
-- Do not read raw trace, screenshot, or heap snapshot artifacts into the context.
-- Quote file paths and URLs in shell commands.
-
-## Command Shape
-
-```sh
-chrome-devtools <tool> [arguments] [flags]
-```
-
-## Common Commands
-
-```bash
-chrome-devtools list_pages
-chrome-devtools new_page "https://example.com"
-chrome-devtools navigate_page --url "https://example.com"
-chrome-devtools take_snapshot
-chrome-devtools click "uid"
-chrome-devtools fill "uid" "text"
-chrome-devtools press_key "Enter"
-chrome-devtools list_console_messages --types error
-chrome-devtools list_network_requests --pageSize 50 --pageIdx 0
-chrome-devtools lighthouse_audit --mode "navigation" --device "desktop"
-chrome-devtools performance_start_trace true true --filePath "trace.json.gz"
-chrome-devtools take_screenshot --fullPage true --filePath "page.png"
-```
-
-## Workflow
-
-<Steps>
-
-1. **Step** -- Verify the CLI exists with `chrome-devtools --help` or provide setup guidance if it does not.
-
-2. **Step** -- Navigate or select a page.
-
-3. **Step** -- Take a snapshot to obtain `uid`s.
-
-4. **Step** -- Act with focused commands such as `click`, `fill`, `press_key`, or `upload_file`.
-
-5. **Step** -- Verify with a fresh snapshot, console messages, network requests, or screenshot.
-
-</Steps>
-
-## Canonical Vocabulary
-
-| Term | Meaning |
-| --- | --- |
-| CLI | The `chrome-devtools` executable installed from `chrome-devtools-mcp` |
-| Tool command | A bounded `chrome-devtools &lt;tool&gt;` invocation |
-| JSON output | Stable machine-readable CLI output for scripts |
-| Service lifecycle | `start`, `status`, and `stop` commands for diagnosing the CLI service |
-
-## Validation Contract
-
-Run from this skill directory before declaring changes complete:
-
-```bash
-python scripts/check.py
-```
-
-Completion criteria:
-
-1. `scripts/check.py` exits 0.
-2. No portable-CLI violations remain under this skill directory.
 
 <Tabs>
   <TabItem label="Public Metadata">

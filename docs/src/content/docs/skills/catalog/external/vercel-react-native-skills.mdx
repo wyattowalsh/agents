@@ -1,6 +1,6 @@
 ---
 title: "vercel-react-native-skills"
-description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "vercel-react-native-skills"
@@ -8,11 +8,11 @@ composed: true
 docs_density: standard
 trust_tier: "curated-trust-gated"
 curated_status: "install-now-after-trust-gate"
-install_command: "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "vercel-react-native-skills"
-composed_by: "compose-external-wave-13"
-composed_at: "2026-06-17"
+composed_by: "compose-external-wave-12"
+composed_at: "2026-06-23"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -23,16 +23,18 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 <SkillPageHeader
   name="vercel-react-native-skills"
-  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
-  installCommand={`npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  description="Curated third-party skill source. Run /review source before repo promotion."
+  installCommand={`npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/vercel-react-native-skills"
-  badges={[{ text: "vercel-react-native-skills", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+  badges={[{ text: "vercel-react-native-skills", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-13 using authoring SSOT (`docs/src/authoring/skills/vercel-react-native-skills.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-12 using authoring SSOT (`docs/src/authoring/skills/vercel-react-native-skills.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -45,7 +47,7 @@ Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cur
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
 ## Trust / Audit
@@ -54,9 +56,9 @@ Trust tier: **Curated** (`curated-trust-gated`)
 
 Curated status: `install-now-after-trust-gate`
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Risk notes: Curated third-party skill source. Run /review source before repo promotion.
 
-Entry maintained via authoring + research for compose-external-wave-13; provenance and audit notes are authoritative there (research context is advisory).
+Entry maintained via authoring + research for compose-external-wave-12; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
@@ -87,7 +89,7 @@ Part of vercel agent-skills named install. status=install-now-after-trust-gate.
 ````mdx title="docs/src/authoring/skills/vercel-react-native-skills.mdx (full SSOT excerpt)"
 ---
 name: "vercel-react-native-skills"
-description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 title: "Vercel React Native Skills"
 source_kind: "curated-external"
 source: "vercel-labs/agent-skills"
@@ -95,18 +97,18 @@ install_source: "vercel-labs/agent-skills"
 status: "install-now-after-trust-gate"
 trust_tier: "curated-trust-gated"
 provenance_status: "verified-install-command"
-install_command: "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/vercel-labs/agent-skills"
-notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
-risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+notes: "Curated third-party skill source. Run /review source before repo promotion."
+risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
 provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
 ---
 
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=vercel-react-native-skills; re-run migration to refresh */}
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Curated third-party skill source. Run /review source before repo promotion.
 
 ````
 
@@ -114,7 +116,7 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 
 | Field | Value |
 |-------|-------|
-| install_command | `npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| install_command | `npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
 | source | `vercel-labs/agent-skills` |
 | source_url | `https://github.com/vercel-labs/agent-skills` |
 | trust_tier | `curated-trust-gated` |

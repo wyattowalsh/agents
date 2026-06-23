@@ -30,4 +30,4 @@ Install: `npx skills add github/awesome-copilot --skill sql-optimization --skill
 
 `sql-optimization` complements for perf; `code-review` for general.
 
-> Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use external-skill-auditor for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.
+> Web-augmented from public upstream SKILL.md (github raw fetches) and curated config/external-skills.md; use /review source for live evidence and script/hook audit. Not an endorsement. Confidence 0.75 derived from metadata alignment + source inspection depth.

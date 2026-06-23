@@ -8,11 +8,11 @@ mean_confidence: 0.78
 
 ## Quick Answer
 
-**Problem:** Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring.
+**Problem:** Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring.
 
 **Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
 
-**Comparable alternative:** `honest-review` for code review
+**Comparable alternative:** `review` for code review
 
 **Repo summary:**
 

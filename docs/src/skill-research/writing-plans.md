@@ -8,7 +8,7 @@ mean_confidence: 0.77
 
 ## Purpose
 
-Breaks work into bite-sized tasks (2-5 min each). Every task has exact file paths, complete code, verification steps. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Breaks work into bite-sized tasks (2-5 min each). Every task has exact file paths, complete code, verification steps. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/review.
 
 ## Harness Coverage
 

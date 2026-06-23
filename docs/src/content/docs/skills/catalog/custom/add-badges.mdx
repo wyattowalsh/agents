@@ -1,149 +1,80 @@
 ---
 title: "add-badges"
 description: "Detect stack and generate shields.io README badges with icons, colors, live endpoints. Use when adding or updating badges. NOT for README writing, docs, or CI/CD setup."
-page_kind: "skill"
-source_kind: "custom"
-asset_id: "add-badges"
-composed: true
-docs_density: standard
-license: "MIT"
-trust_tier: "repo"
-metadata.author: "wyattowalsh"
-metadata.version: "1.0.0"
-research_slug: "add-badges"
-composed_by: "compose-rich-hand-wave-1"
-composed_at: "2026-06-17"
 ---
-
-{/* HAND-MAINTAINED */}
-
-{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
-<Badge text="add-badges" variant="note" /> <Badge text="1448 words" variant="default" /> <Badge text="MIT" variant="success" /> <Badge text="v1.0.0" variant="success" /> <Badge text="wyattowalsh" variant="caution" />
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
-> Detect stack and generate shields.io README badges with icons, colors, and live endpoints. Use when adding or updating badges. NOT for README writing, docs, or CI/CD setup.
+<SkillPageHeader
+  name="add-badges"
+  description="Detect stack and generate shields.io README badges with icons, colors, live endpoints. Use when adding or updating badges. NOT for README writing, docs, or CI/CD setup."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/add-badges [--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]"
+  badges={[{ text: "add-badges", variant: "note" }, { text: "1832 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
 
-<div class="quick-start">
+{/* Quick Start is rendered by SkillPageHeader. */}
 
-### Quick Start
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-**Install:**
-```bash
-npx skills add github:wyattowalsh/agents --skill add-badges -y -g --agent claude-code --agent codex --agent gemini-cli --agent antigravity --agent github-copilot --agent opencode
-```
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/add-badges/SKILL.md` by `wagents docs generate`.
+</Aside>
 
-**Use:** `/add-badges` `[--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]`
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
 
-</div>
+**Problem:** Detect stack and generate shields.io README badges with icons, colors, live endpoints. Use when adding or updating badges. NOT for README writing, docs, or CI/CD setup.
 
-Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), and other [agentskills.io](https://agentskills.io)-compatible agents.
+**Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Generate and update README badge blocks without drifting into general README editing.
+
+&gt; Grounded in repository `skills/add-badges/SKILL.md`; treat as evidence, not authority.
+</Aside>
 
 ## What It Does
 
-The skill runs a 4-phase pipeline to detect project metadata, select appropriate badges from a catalog, present a grouped preview, and insert the badge block into your README.
+Generate and update README badge blocks without drifting into general README editing.
 
-<Aside type="note" title="Current contract">
-The public contract is dispatch-first: empty/help, full workflow, `--dry-run`, and removal-only requests route first, while Detect/Select/Present/Insert remain the internal execution phases.
-</Aside>
+## Modes
 
-<Steps>
-
-1. **Detect** -- Run `uv run python skills/add-badges/scripts/detect.py <path>` to scan the repo for languages, package managers, frameworks, CI/CD, infrastructure, code quality tools, testing, docs, license, security, databases, and existing badges. Falls back to manual glob-based detection if the script fails.
-
-2. **Select** -- Read `references/badge-catalog-core.md` (always) and `references/badge-catalog-extended.md` (for non-basic signals). Apply profile presets, include/exclude filters, and deduplication against existing badges. Target 8-15 badges grouped by display super-groups.
-
-3. **Present** -- Show a grouped preview with diff indicators (`[+]` new, `[=]` kept, `[-]` removed). Accept natural-language adjustments before finalizing. Ask for approval unless `--yes` was passed.
-
-4. **Insert** -- Place badges between `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers, grouped by super-group. Preserve all content outside the markers.
-
-</Steps>
-
-## Profiles
-
-Preset badge selections by project maturity:
-
-| Profile | Badge Count | Scope |
-|---------|-------------|-------|
-| `new` | 3-5 | Status, license, language |
-| `active` | 8-12 | Core + quality, code-style, frameworks |
-| `mature` | 12-18 | Core + all extended except developer-tooling |
-| `enterprise` | 15-20 | ALL 16 categories including OpenSSF |
-
-No profile = auto-select based on detected features.
-
-## Dispatch
-
-| Input | Behavior |
-|------|----------|
-| `/add-badges` (no flags) | Auto-detect stack, auto-select badges, preview, then ask approval before writing |
-| `--profile <new\|active\|mature\|enterprise>` | Use maturity preset; overrides `--include` / `--exclude` |
-| `--include <categories>` | Generate badges only from listed categories (**mutually exclusive with `--exclude`**) |
-| `--exclude <categories>` | Skip listed categories (supports `tech-stack` alias) (**mutually exclusive with `--include`**) |
-| `--dry-run` | Show proposed block + diff indicators, then exit without file changes |
-| `--yes` | Skip approval prompt before write (but still prompts for missing required info) |
-| `--replace` | Replace marker block and consolidate scattered badges into it |
-| Removal-only request (e.g., "remove social badges") | Skip detection and update only the existing badge block |
-
-## Display Super-Groups
-
-Badges are organized and displayed in this order:
-
-| Super-group | Categories |
-|-------------|------------|
-| Status | status |
-| Quality | quality, code-style, security |
-| Package | package, license |
-| Tech Stack | language, frameworks, infrastructure, docs, release, databases, monorepo, developer-tooling |
-| Social | social, community |
-
-## Flag Reference
-
-| Flag | Effect |
-|------|--------|
-| `--profile <name>` | Preset badge selection (`new`, `active`, `mature`, `enterprise`) |
-| `--include <cats>` | Only generate from named categories (mutually exclusive with `--exclude`) |
-| `--exclude <cats>` | Skip named categories (mutually exclusive with `--include`) |
-| `--style <style>` | Override badge style (`flat`, `flat-square`, `plastic`, `for-the-badge`, `social`) |
-| `--layout <layout>` | Badge arrangement (`inline`, `centered`, `grouped`, `table`, `collapsible`) |
-| `--readme <path>` | Target a specific file instead of auto-detected README |
-| `--dark-mode` | Generate `<picture>` elements for theme-aware badges |
-| `--dry-run` | Preview proposed block without modifying files |
-| `--yes` | Skip approval prompt |
-| `--replace` | Consolidate scattered badges into the marker block |
-
-## Golden Example
-
-```markdown
-<!-- BADGES:START -->
-<!-- generated by add-badges 2025-01-15 -->
-[![CI](https://github.com/owner/repo/actions/workflows/ci.yml/badge.svg)](https://github.com/owner/repo/actions)
-[![PyPI](https://img.shields.io/pypi/v/package?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/package/)
-[![License](https://img.shields.io/github/license/owner/repo?style=flat-square)](https://github.com/owner/repo/blob/main/LICENSE)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/owner/repo/badge)](https://scorecard.dev/viewer/?uri=github.com/owner/repo)
-<!-- BADGES:END -->
-```
-
-<Aside type="tip" title="Icon slugs">
-Common Simple Icons gotchas: `gnubash` not `bash`, `nodedotjs` not `node`, `vuedotjs` not `vue`, `nextdotjs` not `next`, `.env` is `dotenv`. Check simpleicons.org when uncertain.
-</Aside>
+| $ARGUMENTS | Action |
+|------------|--------|
+| Empty | Show the empty/help gallery and ask for the target repo or README path |
+| Flags or natural-language badge request | Run the full badge workflow: detect -&gt; select -&gt; present -&gt; insert |
+| `--dry-run` with any request | Run through preview only and stop before file edits |
+| removal-only request | Skip detection, inspect the existing badge block, and present the reduced set |
 
 ## Critical Rules
 
 Non-negotiable constraints for every badge operation:
 
 1. **Never hardcode dynamic values.** Always use shields.io dynamic endpoints for versions, coverage, and download counts.
-2. **Always include logo parameters.** Every badge with a Simple Icons slug must have `?logo=&#123;slug&#125;&logoColor=&#123;white|black&#125;`.
+2. **Always include logo parameters.** Every badge with a Simple Icons slug must have `?logo={slug}&logoColor={white\|black}`.
 3. **Respect existing style.** Match the style of badges already present in the README; default to `flat-square` only when no badges exist.
-4. **Never modify content outside markers.** Preserve all manual content outside `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers.
+4. **Never modify content outside markers.** Preserve all manual content outside `&lt;!-- BADGES:START --&gt;` / `&lt;!-- BADGES:END --&gt;` markers.
 5. **Always ask before writing.** Never modify the README without user approval unless `--yes` was explicitly passed.
 6. **Check icon slugs carefully.** Use the Tricky Icon Slugs list; verify against simpleicons.org when uncertain.
 7. **Skip private-incompatible badges.** When `repo.visibility` is `"private"`, never generate badges marked `requires: public-api`.
 
----
-
 <Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
   <TabItem label="General">
 | Field | Value |
 | ----- | ----- |
@@ -158,12 +89,6 @@ Non-negotiable constraints for every badge operation:
 | Argument Hint | `[--profile active] [--include status,package] [--exclude social] [--style flat-square] [--layout centered] [--yes] [--replace] [--dry-run] [--readme PATH] [--dark-mode]` |
   </TabItem>
 </Tabs>
-
-## Related Skills
-
-<CardGrid>
-  <LinkCard title="honest-review" href="/skills/catalog/custom/honest-review/" description="Confidence-scored code review with evidence validation for session diffs and full codebase audits." />
-</CardGrid>
 
 <details>
 <summary>View Full SKILL.md</summary>
@@ -275,9 +200,9 @@ Read `references/style-guide.md` for layout, ordering, and URL conventions.
 - `--include <categories>`: only generate badges from named categories (comma-separated). Category names: status, quality, package, license, language, social, code-style, frameworks, infrastructure, docs, release, databases, monorepo, community, security, developer-tooling. **Mutually exclusive with `--exclude`** — error if both provided
 - `--exclude <categories>`: skip named categories. Same names as `--include`. Also accepts display group alias: `tech-stack` expands to language,frameworks,infrastructure,docs,release,databases,monorepo,developer-tooling. **Mutually exclusive with `--include`**
 - `--style <style>`: override badge style (flat, flat-square, plastic, for-the-badge, social)
-- `--layout <layout>`: badge arrangement — inline (default), centered, grouped, table, collapsible. `collapsible` wraps secondary groups (Tech Stack, Social) in <details><summary> elements — ideal for 15+ badges. See style-guide.md
+- `--layout <layout>`: badge arrangement — inline (default), centered, grouped, table, collapsible. `collapsible` wraps secondary groups (Tech Stack, Social) in `<details><summary>` elements — ideal for 15+ badges. See style-guide.md
 - `--readme <path>`: target a specific file instead of auto-detected README
-- `--dark-mode`: generate <picture> elements with <source media="(prefers-color-scheme: dark)"> for theme-aware badges on GitHub. Produce HTML instead of pure markdown
+- `--dark-mode`: generate `<picture>` elements with `<source media="(prefers-color-scheme: dark)">` for theme-aware badges on GitHub. Produce HTML instead of pure markdown
 - `--dry-run`: output proposed badge block and diff without modifying any file. Exit after preview
 - `--yes`: skip approval prompt before modifying files
 - `--replace`: replace content within markers AND consolidate scattered badges into the marker block
@@ -303,9 +228,9 @@ If `--dry-run`, output the proposed block and exit without modifying files.
 
 ## Internal Phase 4 — Insert
 
-Find existing <!-- BADGES:START --> / <!-- BADGES:END --> markers or create them.
+Find existing `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers or create them.
 
-Insert approved badges grouped by display super-group (Status, Quality, Package, Tech Stack, Social). Separate groups with a blank line. Add <!-- generated by add-badges YYYY-MM-DD --> comment inside the marker block.
+Insert approved badges grouped by display super-group (Status, Quality, Package, Tech Stack, Social). Separate groups with a blank line. Add `<!-- generated by add-badges YYYY-MM-DD -->` comment inside the marker block.
 
 Insertion point priority:
 1. Existing markers (replace content between them)
@@ -314,7 +239,7 @@ Insertion point priority:
 
 If no README exists, create one with `# {repo-name}` heading then add badges.
 
-If `--dark-mode`, wrap each badge in <picture> elements per style-guide.md.
+If `--dark-mode`, wrap each badge in `<picture>` elements per style-guide.md.
 
 `--replace` consolidates any scattered badges found outside markers into the marker block. Show user exactly what will be moved — nothing silently deleted.
 
@@ -360,13 +285,13 @@ Common Simple Icons gotchas: `gnubash` not `bash`, `nodedotjs` not `node`, `vued
 ## Golden Example
 
 ```markdown
-`<!-- BADGES:START -->`
-`<!-- generated by add-badges 2025-01-15 -->`
+<!-- BADGES:START -->
+<!-- generated by add-badges 2025-01-15 -->
 [![CI](https://github.com/{owner}/{repo}/actions/workflows/ci.yml/badge.svg)](https://github.com/{owner}/{repo}/actions)
 [![PyPI](https://img.shields.io/pypi/v/{package}?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/{package}/)
 [![License](https://img.shields.io/github/license/{owner}/{repo}?style=flat-square)](https://github.com/{owner}/{repo}/blob/main/LICENSE)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/{owner}/{repo}/badge)](https://scorecard.dev/viewer/?uri=github.com/{owner}/{repo})
-`<!-- BADGES:END -->`
+<!-- BADGES:END -->
 ```
 
 ## Reference File Index
@@ -386,7 +311,7 @@ Common Simple Icons gotchas: `gnubash` not `bash`, `nodedotjs` not `node`, `vued
 | style | Visual variant: flat, flat-square, plastic, for-the-badge, social |
 | super-group | Display grouping: Status, Quality, Package, Tech Stack, Social |
 | category | Classification of a badge type (e.g., license, language, frameworks) |
-| marker | HTML comments (&lt;!-- BADGES:START/END --&gt;) delimiting the badge block |
+| marker | HTML comments (`<!-- BADGES:START/END -->`) delimiting the badge block |
 | slug | Simple Icons identifier used in `?logo=` parameter (e.g., `gnubash`) |
 | profile | Preset badge selection by project maturity: new, active, mature, enterprise |
 | dynamic badge | Badge that fetches live data from an endpoint (version, coverage, downloads) |
@@ -405,7 +330,7 @@ Non-negotiable constraints for every badge operation:
 1. **Never hardcode dynamic values.** Always use shields.io dynamic endpoints for versions, coverage, and download counts.
 2. **Always include logo parameters.** Every badge with a Simple Icons slug must have `?logo={slug}&logoColor={white|black}`.
 3. **Respect existing style.** Match the style of badges already present in the README; default to `flat-square` only when no badges exist.
-4. **Never modify content outside markers.** Preserve all manual content outside <!-- BADGES:START --> / <!-- BADGES:END --> markers.
+4. **Never modify content outside markers.** Preserve all manual content outside `<!-- BADGES:START -->` / `<!-- BADGES:END -->` markers.
 5. **Always ask before writing.** Never modify the README without user approval unless `--yes` was explicitly passed.
 6. **Check icon slugs carefully.** Use the Tricky Icon Slugs list; verify against simpleicons.org when uncertain.
 7. **Skip private-incompatible badges.** When `repo.visibility` is `"private"`, never generate badges marked `requires: public-api`.

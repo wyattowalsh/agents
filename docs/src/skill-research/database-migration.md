@@ -16,7 +16,7 @@ Target agents: antigravity, claude-code, codex, crush, cursor, gemini-cli, githu
 
 ## Trust And Risks
 
-trust_tier=curated-trust-gated; status=inspect-then-install; provenance=verified-install-command; risks=Database migration patterns and safety. Summarize risks (destructive ops, data loss, lock contention).; policy=Install only after trust gate; audit again before repo promotion or use external-skill-auditor.; evidence=Curated wshobson/agents install/inspect batches in config/external-skills.md (multiple residual groups); upstream https://github.com/wshobson/agents (docs/agent-skills.md, plugins/*/skills).
+trust_tier=curated-trust-gated; status=inspect-then-install; provenance=verified-install-command; risks=Database migration patterns and safety. Summarize risks (destructive ops, data loss, lock contention).; policy=Install only after trust gate; audit again before repo promotion or use `/review source`.; evidence=Curated wshobson/agents install/inspect batches in config/external-skills.md (multiple residual groups); upstream https://github.com/wshobson/agents (docs/agent-skills.md, plugins/*/skills).
 
 ## Install Prerequisites
 

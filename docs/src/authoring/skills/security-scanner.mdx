@@ -1,6 +1,6 @@
 ---
 name: "security-scanner"
-description: "Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (honest-review) or pen testing."
+description: "Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (review) or pen testing."
 license: "MIT"
 model: "opus"
 source_kind: "custom"
@@ -13,7 +13,7 @@ source_kind: "custom"
 Proactive pre-deployment security assessment. SAST pattern matching, secrets detection,
 dependency scanning, OWASP/CWE mapping, and compliance heuristics.
 
-**Scope:** Pre-deployment security audit only. NOT for code review (use honest-review),
+**Scope:** Pre-deployment security audit only. NOT for code review (use review),
 penetration testing, runtime security monitoring, or supply chain deep analysis.
 
 ## Canonical Vocabulary
@@ -177,7 +177,7 @@ Load ONE reference at a time. Do not preload all references into context.
 | references/dependency-audit.md | Dependency audit protocol and CVE lookup workflow | During deps mode |
 | references/compliance-checklists.md | SOC2/GDPR/HIPAA control checklists with scoring | During compliance mode |
 | references/triage-protocol.md | Risk stratification methodology for security files | During triage (Step 1) |
-| references/scope-boundary.md | Boundary with honest-review, pen testing, runtime monitoring | When scope is unclear |
+| references/scope-boundary.md | Boundary with review, pen testing, runtime monitoring | When scope is unclear |
 
 | Script | When to Run |
 |--------|-------------|
@@ -203,6 +203,6 @@ Load ONE reference at a time. Do not preload all references into context.
 9. Present findings before suggesting fixes — always use an approval gate
 10. Cross-reference with .gitignore — secrets in untracked files are INFO, in tracked files are CRITICAL
 11. Load ONE reference file at a time — do not preload all references into context
-12. This skill is for pre-deployment audit only — redirect to honest-review for code review, refuse pen testing requests
+12. This skill is for pre-deployment audit only — redirect to review for code review, refuse pen testing requests
 13. SARIF output must conform to SARIF v2.1 schema — validate with sarif-formatter.py
 14. Never modify source files — this skill is read-only analysis

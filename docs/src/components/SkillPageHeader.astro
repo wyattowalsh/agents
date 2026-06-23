@@ -17,6 +17,7 @@ const { name, description, installCommand, usage, badges = [] } = Astro.props;
     <Badge text={b.text} variant={b.variant ?? 'note'} />
   ))}
 
+  <h2>{name}</h2>
   <blockquote>{description}</blockquote>
 
   <div class="quick-start">

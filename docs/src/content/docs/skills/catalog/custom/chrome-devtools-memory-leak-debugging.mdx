@@ -1,21 +1,7 @@
 ---
 title: "chrome-devtools-memory-leak-debugging"
 description: "Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces."
-page_kind: "skill"
-source_kind: "custom"
-asset_id: "chrome-devtools-memory-leak-debugging"
-composed: true
-docs_density: standard
-license: "Apache-2.0"
-trust_tier: "repo"
-metadata.author: "Google LLC"
-metadata.version: "0.23.0"
-research_slug: "chrome-devtools-memory-leak-debugging"
-composed_by: "compose-custom-wave-2"
-composed_at: "2026-06-17"
 ---
-
-{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -26,19 +12,31 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces."
   installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-memory-leak-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/chrome-devtools-memory-leak-debugging"
-  badges={[{ text: "chrome-devtools-memory-leak-debugging", variant: "note" }, { text: "565 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "chrome-devtools-memory-leak-debugging", variant: "note" }, { text: "565 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "v0.23.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots.
-**Stack / assumptions:** Requires Chrome DevTools MCP 0.23.0 or compatible `take_memory_snapshot` support; memlab is optional and must be invoked with user-approved commands.
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-2 from `skills/chrome-devtools-memory-leak-debugging/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/chrome-devtools-memory-leak-debugging/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Use when auditing JavaScript, browser, or Node.js memory leaks with Chrome DevTools MCP heap snapshots, repeated interactions, memlab, and retainer traces. NOT for generic profiling, CPU regressions, or reading raw heap snapshots.
+
+**Stack / assumptions:** Requires Chrome DevTools MCP 0.23.0 or compatible `take_memory_snapshot` support; memlab is optional and must be invoked with user-approved commands.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Use Chrome DevTools MCP to reproduce memory growth, capture heap snapshots, and analyze leaks without loading raw heap artifacts into the conversation.
+
+&gt; Grounded in repository `skills/chrome-devtools-memory-leak-debugging/SKILL.md`; treat as evidence, not authority.
 </Aside>
 
 ## What It Does
@@ -70,61 +68,6 @@ Use Chrome DevTools MCP to reproduce memory growth, capture heap snapshots, and 
 3. Repeat suspected interactions to amplify leaks before analysis.
 4. Treat detached DOM nodes as suspect until the user confirms they are not intentional caches.
 5. Verify fixes by repeating the same snapshot workflow.
-
-## Browser Workflow
-
-<Steps>
-
-1. **Step** -- Navigate to the target page and reach a stable baseline state.
-
-2. **Step** -- Capture a baseline heap snapshot with `take_memory_snapshot` to a file path outside version control.
-
-3. **Step** -- Perform the suspected interaction repeatedly, usually 10 times.
-
-4. **Step** -- Capture the target heap snapshot.
-
-5. **Step** -- Revert the interaction if possible, such as closing a modal or navigating away.
-
-6. **Step** -- Capture the final heap snapshot.
-
-7. **Step** -- Analyze snapshots with memlab or another bounded tool.
-
-8. **Step** -- Map retainer traces back to source code and propose the smallest fix.
-
-9. **Step** -- Verify by repeating the same workflow after the fix.
-
-</Steps>
-
-## Common Leak Patterns
-
-- Event listeners not removed from long-lived objects.
-- Detached DOM nodes retained by variables, caches, closures, or listeners.
-- Accidental globals or `window` attachments.
-- Closures retaining large objects after they are no longer needed.
-- Unbounded arrays, maps, or application caches.
-
-## Canonical Vocabulary
-
-| Term | Meaning |
-| --- | --- |
-| Heap snapshot | Browser or Node.js memory graph saved as an external artifact |
-| Baseline snapshot | Snapshot before the suspected leak action |
-| Target snapshot | Snapshot after repeating the suspected leak action |
-| Final snapshot | Snapshot after reverting the action when possible |
-| Retainer trace | Analysis output showing why an object remains reachable |
-
-## Validation Contract
-
-Run from this skill directory before declaring changes complete:
-
-```bash
-python scripts/check.py
-```
-
-Completion criteria:
-
-1. `scripts/check.py` exits 0.
-2. No portable-CLI violations remain under this skill directory.
 
 <Tabs>
   <TabItem label="Public Metadata">

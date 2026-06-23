@@ -1,6 +1,6 @@
 ---
 title: "prisma-upgrade-v7"
-description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+description: "Curated third-party skill source. Run `/review source` before repo promotion."
 page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "prisma-upgrade-v7"
@@ -23,7 +23,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 <SkillPageHeader
   name="prisma-upgrade-v7"
-  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
+  description="Curated third-party skill source. Run `/review source` before repo promotion."
   installCommand={`npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/prisma-upgrade-v7"
   badges={[{ text: "prisma-upgrade-v7", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
@@ -32,7 +32,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-10 using authoring SSOT (`docs/src/authoring/skills/prisma-upgrade-v7.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-10 using authoring SSOT (`docs/src/authoring/skills/prisma-upgrade-v7.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -54,7 +54,7 @@ Trust tier: **Curated** (`curated-trust-gated`)
 
 Curated status: `install-now-after-trust-gate`
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Risk notes: Curated third-party skill source. Run `/review source` before repo promotion.
 
 Entry maintained via authoring + research for compose-external-wave-10; provenance and audit notes are authoritative there (research context is advisory).
 
@@ -87,7 +87,7 @@ Install: `npx skills add prisma/skills --skill prisma-client-api --skill prisma-
 ````mdx title="docs/src/authoring/skills/prisma-upgrade-v7.mdx (full SSOT excerpt)"
 ---
 name: "prisma-upgrade-v7"
-description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+description: "Curated third-party skill source. Run `/review source` before repo promotion."
 title: "Prisma Upgrade V7"
 source_kind: "curated-external"
 source: "prisma/skills"
@@ -98,15 +98,15 @@ provenance_status: "verified-install-command"
 install_command: "npx skills add prisma/skills --skill prisma-client-api --skill prisma-cli --skill prisma-upgrade-v7 -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/prisma/skills"
-notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
-risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+notes: "Curated third-party skill source. Run `/review source` before repo promotion."
+risk_notes: "Curated third-party skill source. Run `/review source` before repo promotion."
 promotion_policy: "Install only after trust gate; audit again before repo promotion."
 provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `install-now-after-trust-gate` in config/external-skills.md."
 ---
 
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=prisma-upgrade-v7; re-run migration to refresh */}
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Curated third-party skill source. Run `/review source` before repo promotion.
 
 ````
 

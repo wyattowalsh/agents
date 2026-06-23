@@ -34,9 +34,9 @@ import InstallCommand from '../../components/InstallCommand.astro';
 import { installCommands } from '../../generated-site-data.mjs';
 
 <div class="stats-bar">
-  <span class="stat stat-total">389 Skills</span>
-  <span class="stat stat-skill">57 Custom Skills</span>
-  <span class="stat stat-external">332 External Skills</span>
+  <span class="stat stat-total">363 Skills</span>
+  <span class="stat stat-skill">56 Custom Skills</span>
+  <span class="stat stat-external">307 External Skills</span>
   <span class="stat stat-harness">9 Supported Harnesses</span>
   <span class="stat stat-mcp">1 Custom MCP</span>
 </div>
@@ -54,7 +54,7 @@ Install the catalog once, then invoke a focused skill inside your agent. For the
 
 <InstallCommand command={installCommands.all} title="Install the full catalog" note="Globally installs repo skills across supported agent harnesses." />
 
-Then run `/honest-review`, `/wargame`, or `/mcp-creator` in Claude Code, OpenCode, Grok Build, or any [agentskills.io](https://agentskills.io)-compatible harness.
+Then run `/review`, `/wargame`, or `/mcp-creator` in Claude Code, OpenCode, Grok Build, or any [agentskills.io](https://agentskills.io)-compatible harness.
 
 ## What skills are
 
@@ -78,7 +78,7 @@ Then run `/honest-review`, `/wargame`, or `/mcp-creator` in Claude Code, OpenCod
 ## Explore
 
 <CardGrid>
-  <LinkCard title="Enhance Code Reviews" href="/skills/catalog/custom/honest-review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
+  <LinkCard title="Enhance Code Reviews" href="/skills/catalog/custom/review/" description="Review a diff with evidence, structure, and severity instead of ad hoc feedback." />
   <LinkCard title="Strategic Decision Analysis" href="/skills/catalog/custom/wargame/" description="Pressure-test a product or engineering decision before you commit to it." />
   <LinkCard title="Host Expert Panels" href="/skills/catalog/custom/host-panel/" description="Get multiple expert perspectives in one session when the problem has real trade-offs." />
   <LinkCard title="Run Spec Workflows" href="/skills/catalog/custom/openspec-workflow/" description="Plan, inspect, validate, and archive OpenSpec changes with repo-aware wrapper commands." />

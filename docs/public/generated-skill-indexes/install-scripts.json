@@ -58,6 +58,10 @@
       "name": "database-architect"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill design -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "design"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "devops-engineer"
     },
@@ -82,10 +86,6 @@
       "name": "event-driven-architect"
     },
     {
-      "command": "npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "external-skill-auditor"
-    },
-    {
       "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "files-buddy"
     },
@@ -100,10 +100,6 @@
     {
       "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "harness-master"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "honest-review"
     },
     {
       "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
@@ -186,6 +182,10 @@
       "name": "research"
     },
     {
+      "command": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+      "name": "review"
+    },
+    {
       "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "schema-evolution-planner"
     },
@@ -200,10 +200,6 @@
     {
       "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
       "name": "shell-scripter"
-    },
-    {
-      "command": "npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-      "name": "simplify"
     },
     {
       "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
@@ -232,16 +228,6 @@
   ],
   "externalCommands": [
     {
-      "command": "npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "design-taste-frontend"
-      ],
-      "source": "Leonxlnx/taste-skill",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
       "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "cli-just"
@@ -263,9 +249,8 @@
       "trustTier": "curated-trust-gated"
     },
     {
-      "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
-        "accessibility",
         "best-practices",
         "core-web-vitals",
         "performance",
@@ -342,16 +327,6 @@
         "rust-best-practices"
       ],
       "source": "apollographql/skills",
-      "sourceType": "curated-external",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
-    },
-    {
-      "command": "npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "extract-design-system"
-      ],
-      "source": "arvindrk/extract-design-system",
       "sourceType": "curated-external",
       "status": "install-now-after-trust-gate",
       "trustTier": "curated-trust-gated"
@@ -518,10 +493,8 @@
       "trustTier": "curated-trust-gated"
     },
     {
-      "command": "npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "command": "npx skills add crewaiinc/skills --skill getting-started -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
-        "design-agent",
-        "design-task",
         "getting-started"
       ],
       "source": "crewaiinc/skills",
@@ -584,37 +557,14 @@
       "trustTier": "curated-trust-gated"
     },
     {
-      "command": "npx skills add emilkowalski/skill --skill emil-design-eng -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
-        "emil-design-eng"
-      ],
-      "source": "emilkowalski/skill",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "building-native-ui",
         "expo-cicd-workflows",
         "expo-deployment",
         "expo-dev-client",
         "upgrading-expo"
       ],
       "source": "expo/skills",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add figma/mcp-server-guide --skill figma-implement-design --skill figma-generate-design --skill figma-code-connect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "figma-code-connect",
-        "figma-generate-design",
-        "figma-implement-design"
-      ],
-      "source": "figma/mcp-server-guide",
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
@@ -775,19 +725,6 @@
       "trustTier": "needs-inspection"
     },
     {
-      "command": "npx skills add google-labs-code/stitch-skills --skill design-md --skill react:components --skill stitch-loop --skill stitch::generate-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "design-md",
-        "react:components",
-        "stitch-loop",
-        "stitch::generate-design"
-      ],
-      "source": "google-labs-code/stitch-skills",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
       "command": "npx skills add google/skills --skill gemini-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "gemini-api"
@@ -831,18 +768,6 @@
       "trustTier": "curated-trust-gated"
     },
     {
-      "command": "npx skills add ibelick/ui-skills --skill baseline-ui --skill fixing-accessibility --skill fixing-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "baseline-ui",
-        "fixing-accessibility",
-        "fixing-metadata"
-      ],
-      "source": "ibelick/ui-skills",
-      "sourceType": "curated-external",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
-    },
-    {
       "command": "npx skills add inngest/inngest-skills --skill inngest-setup --skill inngest-durable-functions --skill inngest-events --skill inngest-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "inngest-durable-functions",
@@ -854,16 +779,6 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder",
-      "skills": [
-        "shieldcn-badges"
-      ],
-      "source": "jal-co/shieldcn",
-      "sourceType": "curated-external",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
     },
     {
       "command": "npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -1005,6 +920,16 @@
       "trustTier": "needs-inspection"
     },
     {
+      "command": "pip install apm-cli",
+      "skills": [
+        "apm-cli"
+      ],
+      "source": "microsoft/apm",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
       "command": "npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "playwright-cli"
@@ -1051,16 +976,6 @@
       "trustTier": "needs-inspection"
     },
     {
-      "command": "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "ui-ux-pro-max"
-      ],
-      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
       "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "link-workspace-packages",
@@ -1096,16 +1011,6 @@
         "security-threat-model"
       ],
       "source": "openai/skills",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add pbakaus/impeccable --skill impeccable -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "impeccable"
-      ],
-      "source": "pbakaus/impeccable",
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
@@ -1306,26 +1211,6 @@
       "trustTier": "needs-inspection"
     },
     {
-      "command": "npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "sleek-design-mobile-apps"
-      ],
-      "source": "sleekdotdesign/agent-skills",
-      "sourceType": "curated-external",
-      "status": "inspect-then-install",
-      "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add spillwavesolutions/design-doc-mermaid --skill design-doc-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "design-doc-mermaid"
-      ],
-      "source": "spillwavesolutions/design-doc-mermaid",
-      "sourceType": "curated-external",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
-    },
-    {
       "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "upgrade-stripe"
@@ -1395,13 +1280,12 @@
       "trustTier": "needs-inspection"
     },
     {
-      "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
       "skills": [
         "vercel-composition-patterns",
         "vercel-react-best-practices",
         "vercel-react-native-skills",
-        "vercel-react-view-transitions",
-        "web-design-guidelines"
+        "vercel-react-view-transitions"
       ],
       "source": "vercel-labs/agent-skills",
       "sourceType": "curated-external",
@@ -1431,6 +1315,20 @@
         "on-call-handoff-patterns",
         "postmortem-writing",
         "turborepo-caching"
+      ],
+      "source": "wshobson/agents",
+      "sourceType": "curated-external",
+      "status": "install-now-after-trust-gate",
+      "trustTier": "curated-trust-gated"
+    },
+    {
+      "command": "npx skills add wshobson/agents --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+      "skills": [
+        "gitops-workflow",
+        "helm-chart-scaffolding",
+        "k8s-manifest-generator",
+        "k8s-security-policies",
+        "sql-optimization-patterns"
       ],
       "source": "wshobson/agents",
       "sourceType": "curated-external",
@@ -1471,21 +1369,6 @@
       "sourceType": "curated-external",
       "status": "inspect-then-install",
       "trustTier": "needs-inspection"
-    },
-    {
-      "command": "npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-      "skills": [
-        "gitops-workflow",
-        "helm-chart-scaffolding",
-        "k8s-manifest-generator",
-        "k8s-security-policies",
-        "sql-optimization-patterns",
-        "tailwind-design-system"
-      ],
-      "source": "wshobson/agents",
-      "sourceType": "curated-external",
-      "status": "install-now-after-trust-gate",
-      "trustTier": "curated-trust-gated"
     }
   ],
   "syncApply": "uv run wagents skills sync --apply",

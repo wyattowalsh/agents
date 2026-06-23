@@ -1,6 +1,6 @@
 ---
 title: "expo-deployment"
-description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 page_kind: "skill"
 source_kind: "curated-external"
 asset_id: "expo-deployment"
@@ -8,11 +8,11 @@ composed: true
 docs_density: standard
 trust_tier: "needs-inspection"
 curated_status: "inspect-then-install"
-install_command: "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: ["antigravity", "claude-code", "codex", "crush", "cursor", "gemini-cli", "github-copilot", "grok", "opencode"]
 research_slug: "expo-deployment"
 composed_by: "compose-external-wave-4"
-composed_at: "2026-06-17"
+composed_at: "2026-06-23"
 ---
 
 {/* HAND-MAINTAINED */}
@@ -23,16 +23,18 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 <SkillPageHeader
   name="expo-deployment"
-  description="Curated third-party skill source. Run external-skill-auditor before repo promotion."
-  installCommand={`npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
+  description="Curated third-party skill source. Run /review source before repo promotion."
+  installCommand={`npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`}
   usage="/expo-deployment"
-  badges={[{ text: "expo-deployment", variant: "note" }, { text: "18 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
+  badges={[{ text: "expo-deployment", variant: "note" }, { text: "19 words", variant: "default" }, { text: "Inspect first", variant: "caution" }, { text: "inspect-then-install", variant: "default" }]}
 />
+
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
 <Aside type="note" title="Curated external (hand-maintained)">
-Composed compose-external-wave-4 using authoring SSOT (`docs/src/authoring/skills/expo-deployment.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run external-skill-auditor before using in production or promoting.
+Composed compose-external-wave-4 using authoring SSOT (`docs/src/authoring/skills/expo-deployment.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## What It Does
@@ -45,7 +47,7 @@ Targets verified harnesses: `antigravity`, `claude-code`, `codex`, `crush`, `cur
 
 **Portable multi-harness install command:**
 ```bash
-npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
+npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode
 ```
 
 ## Trust / Audit
@@ -54,13 +56,13 @@ Trust tier: **Inspect first** (`needs-inspection`)
 
 Curated status: `inspect-then-install`
 
-Risk notes: Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Risk notes: Curated third-party skill source. Run /review source before repo promotion.
 
 Entry maintained via authoring + research for compose-external-wave-4; provenance and audit notes are authoritative there (research context is advisory).
 
 ## Install Prerequisites
 
-Install: `npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
+Install: `npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`; status=inspect-then-install; selector=named; policy=Inspect source, hooks, scripts, credentials, and dedupe before install.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -87,7 +89,7 @@ Install: `npx skills add expo/skills --skill building-native-ui --skill expo-dev
 ````mdx title="docs/src/authoring/skills/expo-deployment.mdx (full SSOT excerpt)"
 ---
 name: "expo-deployment"
-description: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+description: "Curated third-party skill source. Run /review source before repo promotion."
 title: "Expo Deployment"
 source_kind: "curated-external"
 source: "expo/skills"
@@ -95,18 +97,18 @@ install_source: "expo/skills"
 status: "inspect-then-install"
 trust_tier: "needs-inspection"
 provenance_status: "verified-install-command"
-install_command: "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
+install_command: "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode"
 target_agents: [antigravity, claude-code, codex, crush, cursor, gemini-cli, github-copilot, grok, opencode]
 source_url: "https://github.com/expo/skills"
-notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
-risk_notes: "Curated third-party skill source. Run external-skill-auditor before repo promotion."
+notes: "Curated third-party skill source. Run /review source before repo promotion."
+risk_notes: "Curated third-party skill source. Run /review source before repo promotion."
 promotion_policy: "Inspect source, hooks, scripts, credentials, and dedupe before install."
 provenance_evidence: "Curated `npx skills add` command with named `--skill` selectors under `inspect-then-install` in config/external-skills.md."
 ---
 
 {/* GENERATED-AUTHORING: source=config/external-skills.md; entry=expo-deployment; re-run migration to refresh */}
 
-Curated third-party skill source. Run external-skill-auditor before repo promotion.
+Curated third-party skill source. Run /review source before repo promotion.
 
 ````
 
@@ -114,7 +116,7 @@ Curated third-party skill source. Run external-skill-auditor before repo promoti
 
 | Field | Value |
 |-------|-------|
-| install_command | `npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
+| install_command | `npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` |
 | source | `expo/skills` |
 | source_url | `https://github.com/expo/skills` |
 | trust_tier | `needs-inspection` |

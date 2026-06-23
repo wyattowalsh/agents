@@ -162,7 +162,7 @@ Audit IaC files for correctness, best practices, and reliability.
    - `.tf` files: `terraform-module-scanner.py`
    - K8s YAML: `k8s-manifest-validator.py`
    - Dockerfile: `dockerfile-analyzer.py`
-3. Multi-pass analysis (adapted from honest-review pipeline):
+3. Multi-pass analysis (adapted from review pipeline):
    - **Pass 1 — Correctness**: syntax, valid references, API version compatibility
    - **Pass 2 — Best practices**: patterns from reference files, anti-patterns
    - **Pass 3 — Reliability**: failure modes, blast radius, recovery paths
@@ -397,7 +397,7 @@ Audit IaC files for correctness, best practices, and reliability.
    - `.tf` files: `terraform-module-scanner.py`
    - K8s YAML: `k8s-manifest-validator.py`
    - Dockerfile: `dockerfile-analyzer.py`
-3. Multi-pass analysis (adapted from honest-review pipeline):
+3. Multi-pass analysis (adapted from review pipeline):
    - **Pass 1 — Correctness**: syntax, valid references, API version compatibility
    - **Pass 2 — Best practices**: patterns from reference files, anti-patterns
    - **Pass 3 — Reliability**: failure modes, blast radius, recovery paths

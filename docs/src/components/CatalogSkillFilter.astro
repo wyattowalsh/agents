@@ -50,7 +50,7 @@ const toolbarLabel = mode === 'external' ? 'Filter external skills' : 'Filter cu
     const buttons = root.querySelectorAll("[data-filter]");
     const sections = document.querySelectorAll("[data-skill-lane]");
 
-    const apply = (lane) => {
+    const apply = (lane: string) => {
       for (const section of sections) {
         const value = section.getAttribute("data-skill-lane");
         const show = lane === "all" || value === lane;

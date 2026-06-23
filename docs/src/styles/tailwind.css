@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @source not "../content/docs/**/*.mdx";
+@source not "../authoring/**/*.mdx";
+@source not "../skill-research/**/*.{md,mdx}";
+@source not "../../skills/**/*.{md,mdx}";
 
 @theme {
   --font-sans: var(--sl-font);

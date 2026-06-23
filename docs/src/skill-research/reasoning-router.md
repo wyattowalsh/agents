@@ -8,7 +8,7 @@ mean_confidence: 0.78
 
 ## Quick Answer
 
-**Problem:** Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (honest-review).
+**Problem:** Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (review).
 
 **Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references
 

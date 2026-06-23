@@ -1,0 +1,122 @@
+---
+title: "apm-cli"
+description: "Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="apm-cli"
+  description="Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
+  installCommand={`pip install apm-cli`}
+  usage="/apm-cli"
+  badges={[{ text: "apm-cli", variant: "note" }, { text: "107 words", variant: "default" }, { text: "Curated", variant: "note" }, { text: "install-now-after-trust-gate", variant: "default" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+ Legacy projection `config/external-skills.md` remains dual-read during migration.
+</Aside>
+
+## Harness Coverage
+
+Targets verified harnesses: `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot`, `opencode`.
+
+**Portable multi-harness install command:**
+```bash
+pip install apm-cli
+```
+
+## Trust / Audit
+
+Trust tier: **Curated** (`curated-trust-gated`)
+
+Curated status: `install-now-after-trust-gate`
+
+Risk notes: apm install mutates harness directories; run apm audit and review apm.lock.yaml. Never route repo skills/ through APM.
+
+Entry maintained in `config/external-skills.md`; provenance and audit notes are authoritative there (research context is advisory).
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `curated-external` |
+| Display Source | `microsoft/apm` |
+| Source Kind | `github` |
+| Installability | portable command |
+| Review State | curated |
+| Trust Tier | `curated-trust-gated` |
+| Target Agents | `claude-code`, `codex`, `cursor`, `gemini-cli`, `github-copilot`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `apm-cli` |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: "apm-cli"
+description: "Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
+title: "APM CLI"
+source_kind: "curated-external"
+source: "microsoft/apm"
+install_source: "microsoft/apm"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "pip install apm-cli"
+target_agents: [claude-code, codex, cursor, gemini-cli, github-copilot, opencode]
+source_url: "https://github.com/microsoft/apm"
+notes: "Remote third-party packages only. This repo bundle: uv tool install wagents --from git+https://github.com/wyattowalsh/agents or apm install wyattowalsh/agents. MCP stays MCPHub/wagents-owned."
+risk_notes: "apm install mutates harness directories; run apm audit and review apm.lock.yaml. Never route repo skills/ through APM."
+promotion_policy: "Official Microsoft tooling; verify apm audit --ci before promoting harness deploy changes."
+provenance_evidence: "microsoft/apm on GitHub; apm-cli on PyPI; repo documents adapters.apm in agent-bundle.json."
+---
+
+Microsoft **Agent Package Manager** (APM)—not Azure Monitor / application performance monitoring.
+
+## Scope
+
+- **APM**: install remote skills, agents, instructions, hooks, and MCP from third-party `apm.yml` packages.
+- **This repo bundle**: `wagents`, Skills CLI, or `apm install wyattowalsh/agents` for agents/instructions/hooks materialized from repo SSOT.
+- **MCP**: owned by `config/mcp-registry.json` and MCPHub; not locked through APM in this repository.
+
+## Maintainer commands
+
+```bash
+pip install apm-cli          # or: pipx install apm-cli
+uv run wagents apm materialize
+uv run wagents apm doctor
+apm audit --ci --no-drift
+apm install --only apm       # deploy primitives without resolving external MCP registry
+```
+
+## Consumer install
+
+```bash
+apm install wyattowalsh/agents
+apm update
+```
+
+````
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+</CardGrid>

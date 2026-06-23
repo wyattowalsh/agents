@@ -730,6 +730,14 @@ export const skillResearchIndex = [
   },
   {
     "mean_confidence": 0.78,
+    "name": "design",
+    "research_tier": "standard",
+    "researched_at": "2026-06-22T07:43:12Z",
+    "source_type": "custom",
+    "stale": false
+  },
+  {
+    "mean_confidence": 0.78,
     "name": "devops-engineer",
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
@@ -886,14 +894,6 @@ export const skillResearchIndex = [
     "research_tier": "standard",
     "researched_at": "2026-06-16T08:35:57Z",
     "source_type": "curated-external",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "external-skill-auditor",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
     "stale": false
   },
   {
@@ -1334,14 +1334,6 @@ export const skillResearchIndex = [
     "research_tier": "standard",
     "researched_at": "2026-06-16T20:30:00Z",
     "source_type": "curated-external",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "honest-review",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
     "stale": false
   },
   {
@@ -1930,6 +1922,14 @@ export const skillResearchIndex = [
   },
   {
     "mean_confidence": 0.78,
+    "name": "opencode-ensemble",
+    "research_tier": "quick",
+    "researched_at": "2026-06-22T07:58:35Z",
+    "source_type": "custom",
+    "stale": false
+  },
+  {
+    "mean_confidence": 0.78,
     "name": "openspec-workflow",
     "research_tier": "quick",
     "researched_at": "2026-06-16T01:14:01Z",
@@ -2345,6 +2345,14 @@ export const skillResearchIndex = [
     "stale": false
   },
   {
+    "mean_confidence": 0.86,
+    "name": "review",
+    "research_tier": "comprehensive",
+    "researched_at": "2026-06-22T07:55:00Z",
+    "source_type": "custom",
+    "stale": false
+  },
+  {
     "mean_confidence": 0.73,
     "name": "revops",
     "research_tier": "standard",
@@ -2566,14 +2574,6 @@ export const skillResearchIndex = [
     "research_tier": "standard",
     "researched_at": "2026-06-16T08:46:52Z",
     "source_type": "curated-external",
-    "stale": false
-  },
-  {
-    "mean_confidence": 0.78,
-    "name": "simplify",
-    "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
-    "source_type": "custom",
     "stale": false
   },
   {

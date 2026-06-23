@@ -3,11 +3,11 @@ const baseSiteData = {
   "counts": {
     "bundledAgents": 8,
     "customMcp": 1,
-    "customSkills": 57,
+    "customSkills": 56,
     "externalMcp": 15,
-    "externalSkills": 332,
+    "externalSkills": 307,
     "mcpTools": 16,
-    "skills": 389,
+    "skills": 363,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -45,13 +45,6 @@ const baseSiteData = {
   "externalSkillGroups": {
     "bySource": [
       {
-        "count": 1,
-        "skills": [
-          "design-taste-frontend"
-        ],
-        "source": "Leonxlnx/taste-skill"
-      },
-      {
         "count": 3,
         "skills": [
           "cli-just",
@@ -61,9 +54,8 @@ const baseSiteData = {
         "source": "PaulRBerg/agent-skills"
       },
       {
-        "count": 6,
+        "count": 5,
         "skills": [
-          "accessibility",
           "best-practices",
           "core-web-vitals",
           "performance",
@@ -111,13 +103,6 @@ const baseSiteData = {
           "rust-best-practices"
         ],
         "source": "apollographql/skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "extract-design-system"
-        ],
-        "source": "arvindrk/extract-design-system"
       },
       {
         "count": 1,
@@ -237,10 +222,8 @@ const baseSiteData = {
         "source": "coreyhaines31/marketingskills"
       },
       {
-        "count": 3,
+        "count": 1,
         "skills": [
-          "design-agent",
-          "design-task",
           "getting-started"
         ],
         "source": "crewaiinc/skills"
@@ -292,31 +275,14 @@ const baseSiteData = {
         "source": "ejirocodes/agent-skills"
       },
       {
-        "count": 1,
+        "count": 4,
         "skills": [
-          "emil-design-eng"
-        ],
-        "source": "emilkowalski/skill"
-      },
-      {
-        "count": 5,
-        "skills": [
-          "building-native-ui",
           "expo-cicd-workflows",
           "expo-deployment",
           "expo-dev-client",
           "upgrading-expo"
         ],
         "source": "expo/skills"
-      },
-      {
-        "count": 3,
-        "skills": [
-          "figma-code-connect",
-          "figma-generate-design",
-          "figma-implement-design"
-        ],
-        "source": "figma/mcp-server-guide"
       },
       {
         "count": 3,
@@ -400,16 +366,6 @@ const baseSiteData = {
         "source": "giuseppe-trisciuoglio/developer-kit"
       },
       {
-        "count": 4,
-        "skills": [
-          "design-md",
-          "react:components",
-          "stitch-loop",
-          "stitch::generate-design"
-        ],
-        "source": "google-labs-code/stitch-skills"
-      },
-      {
         "count": 1,
         "skills": [
           "gemini-api"
@@ -442,15 +398,6 @@ const baseSiteData = {
         "source": "hyf0/vue-skills"
       },
       {
-        "count": 3,
-        "skills": [
-          "baseline-ui",
-          "fixing-accessibility",
-          "fixing-metadata"
-        ],
-        "source": "ibelick/ui-skills"
-      },
-      {
         "count": 4,
         "skills": [
           "inngest-durable-functions",
@@ -466,13 +413,6 @@ const baseSiteData = {
           "notion-api"
         ],
         "source": "intellectronica/agent-skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "shieldcn-badges"
-        ],
-        "source": "jal-co/shieldcn"
       },
       {
         "count": 1,
@@ -577,6 +517,13 @@ const baseSiteData = {
       {
         "count": 1,
         "skills": [
+          "apm-cli"
+        ],
+        "source": "microsoft/apm"
+      },
+      {
+        "count": 1,
+        "skills": [
           "microsoft-azure-skills-all"
         ],
         "source": "microsoft/azure-skills"
@@ -612,14 +559,6 @@ const baseSiteData = {
       {
         "count": 2,
         "skills": [
-          "ckm:*",
-          "ui-ux-pro-max"
-        ],
-        "source": "nextlevelbuilder/ui-ux-pro-max-skill"
-      },
-      {
-        "count": 2,
-        "skills": [
           "link-workspace-packages",
           "nx-generate"
         ],
@@ -647,13 +586,6 @@ const baseSiteData = {
           "security-threat-model"
         ],
         "source": "openai/skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "impeccable"
-        ],
-        "source": "pbakaus/impeccable"
       },
       {
         "count": 2,
@@ -757,13 +689,6 @@ const baseSiteData = {
         "source": "samber/cc-skills-golang"
       },
       {
-        "count": 1,
-        "skills": [
-          "shadcn"
-        ],
-        "source": "shadcn/ui"
-      },
-      {
         "count": 3,
         "skills": [
           "shopify-dev",
@@ -778,20 +703,6 @@ const baseSiteData = {
           "docker-expert"
         ],
         "source": "sickn33/antigravity-awesome-skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "sleek-design-mobile-apps"
-        ],
-        "source": "sleekdotdesign/agent-skills"
-      },
-      {
-        "count": 1,
-        "skills": [
-          "design-doc-mermaid"
-        ],
-        "source": "spillwavesolutions/design-doc-mermaid"
       },
       {
         "count": 1,
@@ -838,15 +749,14 @@ const baseSiteData = {
         "source": "vercel-labs/agent-browser"
       },
       {
-        "count": 7,
+        "count": 6,
         "skills": [
           "deploy-to-vercel",
           "vercel-composition-patterns",
           "vercel-optimize",
           "vercel-react-best-practices",
           "vercel-react-native-skills",
-          "vercel-react-view-transitions",
-          "web-design-guidelines"
+          "vercel-react-view-transitions"
         ],
         "source": "vercel-labs/agent-skills"
       },
@@ -867,7 +777,7 @@ const baseSiteData = {
         "source": "vercel-labs/skills"
       },
       {
-        "count": 31,
+        "count": 30,
         "skills": [
           "changelog-automation",
           "database-migration",
@@ -896,7 +806,6 @@ const baseSiteData = {
           "slo-implementation",
           "sql-optimization-patterns",
           "stride-analysis-patterns",
-          "tailwind-design-system",
           "terraform-module-library",
           "turborepo-caching",
           "uv-package-manager"
@@ -913,10 +822,9 @@ const baseSiteData = {
     ],
     "byStatus": [
       {
-        "count": 12,
+        "count": 10,
         "skills": [
           "anthropics-skills-all",
-          "ckm:*",
           "coleam00-excalidraw-diagram-skill-all",
           "find-skills",
           "firecrawl-cli-all",
@@ -924,14 +832,13 @@ const baseSiteData = {
           "huggingface-skills-all",
           "microsoft-azure-skills-all",
           "notion-api",
-          "shadcn",
           "stripe-best-practices",
           "vercel-labs-agent-browser-all"
         ],
         "status": "global-only-or-avoid"
       },
       {
-        "count": 185,
+        "count": 170,
         "skills": [
           "agent-governance",
           "agent-owasp-compliance",
@@ -947,7 +854,6 @@ const baseSiteData = {
           "aws-ami-builder",
           "aws-iam",
           "aws-serverless",
-          "building-native-ui",
           "building-pydantic-ai-agents",
           "chatgpt-app-builder",
           "chatgpt-apps",
@@ -974,25 +880,17 @@ const baseSiteData = {
           "deep-agents-orchestration",
           "deploy-to-vercel",
           "deployment-pipeline-design",
-          "design-agent",
-          "design-md",
-          "design-task",
-          "design-taste-frontend",
           "differential-review",
           "docker-expert",
           "drizzle-orm-patterns",
           "e2e-testing-patterns",
           "ecosystem-primer",
-          "emil-design-eng",
           "eval-driven-dev",
           "excalidraw-diagram-generator",
           "expo-cicd-workflows",
           "expo-deployment",
           "expo-dev-client",
           "fastmcp-client-cli",
-          "figma-code-connect",
-          "figma-generate-design",
-          "figma-implement-design",
           "find-bugs",
           "firebase-ai-logic-basics",
           "firebase-app-hosting-basics",
@@ -1021,7 +919,6 @@ const baseSiteData = {
           "golang-stretchr-testify",
           "golang-testing",
           "golang-troubleshooting",
-          "impeccable",
           "incident-runbook-templates",
           "inngest-durable-functions",
           "inngest-events",
@@ -1072,7 +969,6 @@ const baseSiteData = {
           "pydantic-ai-harness",
           "python-observability",
           "python-testing-patterns",
-          "react:components",
           "redis-clustering",
           "redis-observability",
           "redis-security",
@@ -1097,12 +993,9 @@ const baseSiteData = {
           "shopify-liquid",
           "shopify-storefront-graphql",
           "skill-scanner",
-          "sleek-design-mobile-apps",
           "slo-implementation",
           "solve-challenge",
           "sql-code-review",
-          "stitch-loop",
-          "stitch::generate-design",
           "stride-analysis-patterns",
           "supply-chain-risk-auditor",
           "temporal-developer",
@@ -1112,7 +1005,6 @@ const baseSiteData = {
           "terraform-stacks",
           "testing-python",
           "threat-model-analyst",
-          "ui-ux-pro-max",
           "upgrading-expo",
           "use-railway",
           "variant-analysis",
@@ -1122,19 +1014,18 @@ const baseSiteData = {
         "status": "inspect-then-install"
       },
       {
-        "count": 135,
+        "count": 127,
         "skills": [
           "ab-testing",
-          "accessibility",
           "ads",
           "agents-sdk",
           "ai-seo",
           "analytics",
+          "apm-cli",
           "apollo-client",
           "apollo-connectors",
           "apollo-federation",
           "apollo-server",
-          "baseline-ui",
           "best-practices",
           "better-auth-best-practices",
           "biome-developer",
@@ -1152,14 +1043,10 @@ const baseSiteData = {
           "cro",
           "debugging-strategies",
           "deno-expert",
-          "design-doc-mermaid",
           "durable-objects",
           "emails",
           "executing-plans",
-          "extract-design-system",
           "fastapi-templates",
-          "fixing-accessibility",
-          "fixing-metadata",
           "flutter-add-integration-test",
           "flutter-add-widget-test",
           "flutter-apply-architecture-best-practices",
@@ -1221,7 +1108,6 @@ const baseSiteData = {
           "schema",
           "seo",
           "seo-audit",
-          "shieldcn-badges",
           "signup",
           "site-architecture",
           "slidev",
@@ -1233,7 +1119,6 @@ const baseSiteData = {
           "swift-concurrency",
           "swiftui-expert-skill",
           "systematic-debugging",
-          "tailwind-design-system",
           "tanstack-query-best-practices",
           "tanstack-router-best-practices",
           "tanstack-start-best-practices",
@@ -1254,7 +1139,6 @@ const baseSiteData = {
           "vite",
           "vitest",
           "vue-best-practices",
-          "web-design-guidelines",
           "web-quality-audit",
           "workers-best-practices",
           "wrangler",
@@ -1290,7 +1174,7 @@ const baseSiteData = {
   "featuredSkills": [
     {
       "description": "Review a diff with evidence, structure, and severity instead of ad hoc feedback.",
-      "href": "/skills/catalog/custom/honest-review/",
+      "href": "/skills/catalog/custom/review/",
       "title": "Enhance Code Reviews"
     },
     {
@@ -1316,7 +1200,7 @@ const baseSiteData = {
   ],
   "installCommands": {
     "all": "npx skills add github:wyattowalsh/agents --all -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-    "starter": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode"
+    "starter": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode"
   },
   "repoSource": "github:wyattowalsh/agents",
   "skillInstallScripts": {
@@ -1379,6 +1263,10 @@ const baseSiteData = {
         "name": "database-architect"
       },
       {
+        "command": "npx skills add github:wyattowalsh/agents --skill design -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+        "name": "design"
+      },
+      {
         "command": "npx skills add github:wyattowalsh/agents --skill devops-engineer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "devops-engineer"
       },
@@ -1403,10 +1291,6 @@ const baseSiteData = {
         "name": "event-driven-architect"
       },
       {
-        "command": "npx skills add github:wyattowalsh/agents --skill external-skill-auditor -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-        "name": "external-skill-auditor"
-      },
-      {
         "command": "npx skills add github:wyattowalsh/agents --skill files-buddy -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "files-buddy"
       },
@@ -1421,10 +1305,6 @@ const baseSiteData = {
       {
         "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "harness-master"
-      },
-      {
-        "command": "npx skills add github:wyattowalsh/agents --skill honest-review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-        "name": "honest-review"
       },
       {
         "command": "npx skills add github:wyattowalsh/agents --skill host-panel -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
@@ -1507,6 +1387,10 @@ const baseSiteData = {
         "name": "research"
       },
       {
+        "command": "npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+        "name": "review"
+      },
+      {
         "command": "npx skills add github:wyattowalsh/agents --skill schema-evolution-planner -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "schema-evolution-planner"
       },
@@ -1521,10 +1405,6 @@ const baseSiteData = {
       {
         "command": "npx skills add github:wyattowalsh/agents --skill shell-scripter -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "shell-scripter"
-      },
-      {
-        "command": "npx skills add github:wyattowalsh/agents --skill simplify -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
-        "name": "simplify"
       },
       {
         "command": "npx skills add github:wyattowalsh/agents --skill skill-creator -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
@@ -1553,16 +1433,6 @@ const baseSiteData = {
     ],
     "externalCommands": [
       {
-        "command": "npx skills add Leonxlnx/taste-skill --skill design-taste-frontend -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "design-taste-frontend"
-        ],
-        "source": "Leonxlnx/taste-skill",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
         "command": "npx skills add PaulRBerg/agent-skills@d3f5540ed2fc0fa07f802bd925e06b9387cbe90f --skill cli-just -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "cli-just"
@@ -1584,9 +1454,8 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill accessibility --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add addyosmani/web-quality-skills --skill web-quality-audit --skill seo --skill performance --skill core-web-vitals --skill best-practices -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
-          "accessibility",
           "best-practices",
           "core-web-vitals",
           "performance",
@@ -1663,16 +1532,6 @@ const baseSiteData = {
           "rust-best-practices"
         ],
         "source": "apollographql/skills",
-        "sourceType": "curated-external",
-        "status": "install-now-after-trust-gate",
-        "trustTier": "curated-trust-gated"
-      },
-      {
-        "command": "npx skills add arvindrk/extract-design-system --skill extract-design-system -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "extract-design-system"
-        ],
-        "source": "arvindrk/extract-design-system",
         "sourceType": "curated-external",
         "status": "install-now-after-trust-gate",
         "trustTier": "curated-trust-gated"
@@ -1839,10 +1698,8 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add crewaiinc/skills --skill getting-started --skill design-agent --skill design-task -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add crewaiinc/skills --skill getting-started -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
-          "design-agent",
-          "design-task",
           "getting-started"
         ],
         "source": "crewaiinc/skills",
@@ -1905,37 +1762,14 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add emilkowalski/skill --skill emil-design-eng -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add expo/skills --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
-          "emil-design-eng"
-        ],
-        "source": "emilkowalski/skill",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
-        "command": "npx skills add expo/skills --skill building-native-ui --skill expo-dev-client --skill expo-deployment --skill expo-cicd-workflows --skill upgrading-expo -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "building-native-ui",
           "expo-cicd-workflows",
           "expo-deployment",
           "expo-dev-client",
           "upgrading-expo"
         ],
         "source": "expo/skills",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
-        "command": "npx skills add figma/mcp-server-guide --skill figma-implement-design --skill figma-generate-design --skill figma-code-connect -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "figma-code-connect",
-          "figma-generate-design",
-          "figma-implement-design"
-        ],
-        "source": "figma/mcp-server-guide",
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
@@ -2096,19 +1930,6 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add google-labs-code/stitch-skills --skill design-md --skill react:components --skill stitch-loop --skill stitch::generate-design -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "design-md",
-          "react:components",
-          "stitch-loop",
-          "stitch::generate-design"
-        ],
-        "source": "google-labs-code/stitch-skills",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
         "command": "npx skills add google/skills --skill gemini-api -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "gemini-api"
@@ -2152,18 +1973,6 @@ const baseSiteData = {
         "trustTier": "curated-trust-gated"
       },
       {
-        "command": "npx skills add ibelick/ui-skills --skill baseline-ui --skill fixing-accessibility --skill fixing-metadata -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "baseline-ui",
-          "fixing-accessibility",
-          "fixing-metadata"
-        ],
-        "source": "ibelick/ui-skills",
-        "sourceType": "curated-external",
-        "status": "install-now-after-trust-gate",
-        "trustTier": "curated-trust-gated"
-      },
-      {
         "command": "npx skills add inngest/inngest-skills --skill inngest-setup --skill inngest-durable-functions --skill inngest-events --skill inngest-steps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "inngest-durable-functions",
@@ -2175,16 +1984,6 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
-      },
-      {
-        "command": "npx skills add jal-co/shieldcn --skill shieldcn-badges -y -g -a adal antigravity augment bob claude-code cline codearts-agent codebuddy codemaker codestudio codex command-code continue cortex crush cursor devin droid forgecode gemini-cli github-copilot goose hermes-agent iflow-cli junie kilo kiro-cli kode mcpjam mistral-vibe mux neovate opencode openhands pi pochi qoder qwen-code rovodev roo tabnine-cli trae trae-cn warp windsurf zencoder",
-        "skills": [
-          "shieldcn-badges"
-        ],
-        "source": "jal-co/shieldcn",
-        "sourceType": "curated-external",
-        "status": "install-now-after-trust-gate",
-        "trustTier": "curated-trust-gated"
       },
       {
         "command": "npx skills add jeffallan/claude-skills --skill kubernetes-specialist -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
@@ -2326,6 +2125,16 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
+        "command": "pip install apm-cli",
+        "skills": [
+          "apm-cli"
+        ],
+        "source": "microsoft/apm",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
         "command": "npx skills add microsoft/playwright-cli --skill playwright-cli -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "playwright-cli"
@@ -2372,16 +2181,6 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "ui-ux-pro-max"
-        ],
-        "source": "nextlevelbuilder/ui-ux-pro-max-skill",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
         "command": "npx skills add nrwl/nx-ai-agents-config --skill nx-generate --skill link-workspace-packages -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "link-workspace-packages",
@@ -2417,16 +2216,6 @@ const baseSiteData = {
           "security-threat-model"
         ],
         "source": "openai/skills",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
-        "command": "npx skills add pbakaus/impeccable --skill impeccable -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "impeccable"
-        ],
-        "source": "pbakaus/impeccable",
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
@@ -2627,26 +2416,6 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add sleekdotdesign/agent-skills --skill sleek-design-mobile-apps -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "sleek-design-mobile-apps"
-        ],
-        "source": "sleekdotdesign/agent-skills",
-        "sourceType": "curated-external",
-        "status": "inspect-then-install",
-        "trustTier": "needs-inspection"
-      },
-      {
-        "command": "npx skills add spillwavesolutions/design-doc-mermaid --skill design-doc-mermaid -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "design-doc-mermaid"
-        ],
-        "source": "spillwavesolutions/design-doc-mermaid",
-        "sourceType": "curated-external",
-        "status": "install-now-after-trust-gate",
-        "trustTier": "curated-trust-gated"
-      },
-      {
         "command": "npx skills add stripe/ai --skill stripe-best-practices --skill upgrade-stripe -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "upgrade-stripe"
@@ -2716,13 +2485,12 @@ const baseSiteData = {
         "trustTier": "needs-inspection"
       },
       {
-        "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill web-design-guidelines --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "command": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --skill vercel-composition-patterns --skill vercel-react-view-transitions --skill vercel-react-native-skills -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
         "skills": [
           "vercel-composition-patterns",
           "vercel-react-best-practices",
           "vercel-react-native-skills",
-          "vercel-react-view-transitions",
-          "web-design-guidelines"
+          "vercel-react-view-transitions"
         ],
         "source": "vercel-labs/agent-skills",
         "sourceType": "curated-external",
@@ -2752,6 +2520,20 @@ const baseSiteData = {
           "on-call-handoff-patterns",
           "postmortem-writing",
           "turborepo-caching"
+        ],
+        "source": "wshobson/agents",
+        "sourceType": "curated-external",
+        "status": "install-now-after-trust-gate",
+        "trustTier": "curated-trust-gated"
+      },
+      {
+        "command": "npx skills add wshobson/agents --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
+        "skills": [
+          "gitops-workflow",
+          "helm-chart-scaffolding",
+          "k8s-manifest-generator",
+          "k8s-security-policies",
+          "sql-optimization-patterns"
         ],
         "source": "wshobson/agents",
         "sourceType": "curated-external",
@@ -2792,21 +2574,6 @@ const baseSiteData = {
         "sourceType": "curated-external",
         "status": "inspect-then-install",
         "trustTier": "needs-inspection"
-      },
-      {
-        "command": "npx skills add wshobson/agents --skill tailwind-design-system --skill k8s-security-policies --skill sql-optimization-patterns --skill helm-chart-scaffolding --skill gitops-workflow --skill k8s-manifest-generator -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode",
-        "skills": [
-          "gitops-workflow",
-          "helm-chart-scaffolding",
-          "k8s-manifest-generator",
-          "k8s-security-policies",
-          "sql-optimization-patterns",
-          "tailwind-design-system"
-        ],
-        "source": "wshobson/agents",
-        "sourceType": "curated-external",
-        "status": "install-now-after-trust-gate",
-        "trustTier": "curated-trust-gated"
       }
     ],
     "syncApply": "uv run wagents skills sync --apply",

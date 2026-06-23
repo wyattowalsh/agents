@@ -8,7 +8,7 @@ mean_confidence: 0.74
 
 ## Purpose
 
-Structured debugging methodology complementing TDD and plans. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Structured debugging methodology complementing TDD and plans. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/review.
 
 ## Harness Coverage
 

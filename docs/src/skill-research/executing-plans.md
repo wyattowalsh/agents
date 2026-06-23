@@ -8,7 +8,7 @@ mean_confidence: 0.73
 
 ## Purpose
 
-Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes in batches with human checkpoints. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Dispatches fresh subagent per task with two-stage review (spec compliance, then code quality), or executes in batches with human checkpoints. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/review.
 
 ## Harness Coverage
 

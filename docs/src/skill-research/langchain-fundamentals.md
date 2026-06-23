@@ -30,4 +30,4 @@ Install (group): npx skills add langchain-ai/langchain-skills --skill ecosystem-
 
 langchain docs or custom agent building skills; other RAG/LLM framework skills.
 
-> Evidence from public web sources, GitHub repositories (official orgs Jun 2026), curated catalog; treat as research evidence, not authority or endorsement. Use external-skill-auditor + live audit for promotion.
+> Evidence from public web sources, GitHub repositories (official orgs Jun 2026), curated catalog; treat as research evidence, not authority or endorsement. Use `/review source` + live audit for promotion.

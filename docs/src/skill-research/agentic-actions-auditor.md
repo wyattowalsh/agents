@@ -20,7 +20,7 @@ trust_tier=needs-inspection; status=inspect-then-install; provenance=verified-in
 
 ## Install Prerequisites
 
-Install: `npx skills add trailofbits/skills --skill agentic-actions-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named. Best with .github/ workflows present. Run external-skill-auditor first per policy.
+Install: `npx skills add trailofbits/skills --skill agentic-actions-auditor -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode` status=inspect-then-install; selector=named. Best with .github/ workflows present. Run `/review source` first per policy.
 
 ## Upstream Maintainer
 
@@ -28,6 +28,6 @@ Install: `npx skills add trailofbits/skills --skill agentic-actions-auditor -y -
 
 ## Comparable Alternatives
 
-`differential-review` for security PR/diff analysis with history; `static-analysis` (codeql/semgrep) or `insecure-defaults` for other vuln classes; general `honest-review`. A general-purpose agent instruction without a scoped skill contract for GitHub Actions AI agent security audits.
+`differential-review` for security PR/diff analysis with history; `static-analysis` (codeql/semgrep) or `insecure-defaults` for other vuln classes; general `review`. A general-purpose agent instruction without a scoped skill contract for GitHub Actions AI agent security audits.
 
 > Web evidence from github.com/trailofbits/skills README + plugin/agentic-actions-auditor/README.md + SKILL structure (fetched 2026-06); cross-ref config/external-skills.md. Evidence only; not an endorsement.

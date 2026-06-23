@@ -8,7 +8,7 @@ mean_confidence: 0.76
 
 ## Purpose
 
-Final verification of tests, plan compliance before branch finish/merge. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Final verification of tests, plan compliance before branch finish/merge. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/review.
 
 ## Harness Coverage
 

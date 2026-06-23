@@ -1,6 +1,6 @@
 ---
 title: "tech-debt-analyzer"
-description: "Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring."
+description: "Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring."
 page_kind: "skill"
 source_kind: "custom"
 asset_id: "tech-debt-analyzer"
@@ -23,16 +23,16 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 <SkillPageHeader
   name="tech-debt-analyzer"
-  description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring."
+  description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring."
   installCommand={`npx skills add github:wyattowalsh/agents --skill tech-debt-analyzer -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/tech-debt-analyzer &lt;mode&gt; [path]"
   badges={[{ text: "tech-debt-analyzer", variant: "note" }, { text: "1330 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 <Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring.
+**Problem:** Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring.
 **Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
-**Comparable alternative:** `honest-review` for code review
+**Comparable alternative:** `review` for code review
 </Aside>
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
@@ -268,7 +268,7 @@ name: tech-debt-analyzer
 description: >-
   Systematic tech debt inventory with complexity analysis, dead code detection,
   and remediation planning. Track debt over time. NOT for code review
-  (honest-review) or refactoring.
+  (review) or refactoring.
 argument-hint: "<mode> [path]"
 model: opus
 license: MIT
@@ -282,7 +282,7 @@ metadata:
 Systematic technical debt inventory, prioritization, and remediation planning.
 Multi-pass analysis with confidence scoring and evidence-based findings.
 
-**Scope:** Debt inventory and tracking only. NOT for code review (honest-review), refactoring execution, or dependency updates.
+**Scope:** Debt inventory and tracking only. NOT for code review (review), refactoring execution, or dependency updates.
 
 ## Canonical Vocabulary
 

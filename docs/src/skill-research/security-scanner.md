@@ -8,11 +8,11 @@ mean_confidence: 0.78
 
 ## Quick Answer
 
-**Problem:** Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (honest-review) or pen testing.
+**Problem:** Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (review) or pen testing.
 
 **Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
 
-**Comparable alternative:** `honest-review` for code review
+**Comparable alternative:** `review` for code review
 
 **Repo summary:**
 

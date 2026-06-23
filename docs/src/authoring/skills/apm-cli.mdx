@@ -1,0 +1,43 @@
+---
+name: "apm-cli"
+description: "Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
+title: "APM CLI"
+source_kind: "curated-external"
+source: "microsoft/apm"
+install_source: "microsoft/apm"
+status: "install-now-after-trust-gate"
+trust_tier: "curated-trust-gated"
+provenance_status: "verified-install-command"
+install_command: "pip install apm-cli"
+target_agents: [claude-code, codex, cursor, gemini-cli, github-copilot, opencode]
+source_url: "https://github.com/microsoft/apm"
+notes: "Remote third-party packages only. This repo bundle: uv tool install wagents --from git+https://github.com/wyattowalsh/agents or apm install wyattowalsh/agents. MCP stays MCPHub/wagents-owned."
+risk_notes: "apm install mutates harness directories; run apm audit and review apm.lock.yaml. Never route repo skills/ through APM."
+promotion_policy: "Official Microsoft tooling; verify apm audit --ci before promoting harness deploy changes."
+provenance_evidence: "microsoft/apm on GitHub; apm-cli on PyPI; repo documents adapters.apm in agent-bundle.json."
+---
+
+Microsoft **Agent Package Manager** (APM)—not Azure Monitor / application performance monitoring.
+
+## Scope
+
+- **APM**: install remote skills, agents, instructions, hooks, and MCP from third-party `apm.yml` packages.
+- **This repo bundle**: `wagents`, Skills CLI, or `apm install wyattowalsh/agents` for agents/instructions/hooks materialized from repo SSOT.
+- **MCP**: owned by `config/mcp-registry.json` and MCPHub; not locked through APM in this repository.
+
+## Maintainer commands
+
+```bash
+pip install apm-cli          # or: pipx install apm-cli
+uv run wagents apm materialize
+uv run wagents apm doctor
+apm audit --ci --no-drift
+apm install --only apm       # deploy primitives without resolving external MCP registry
+```
+
+## Consumer install
+
+```bash
+apm install wyattowalsh/agents
+apm update
+```

@@ -1,21 +1,7 @@
 ---
 title: "chrome-devtools-a11y-debugging"
 description: "Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures."
-page_kind: "skill"
-source_kind: "custom"
-asset_id: "chrome-devtools-a11y-debugging"
-composed: true
-docs_density: standard
-license: "Apache-2.0"
-trust_tier: "repo"
-metadata.author: "Google LLC"
-metadata.version: "0.23.0"
-research_slug: "chrome-devtools-a11y-debugging"
-composed_by: "compose-custom-wave-1"
-composed_at: "2026-06-17"
 ---
-
-{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -26,19 +12,31 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures."
   installCommand={`npx skills add github:wyattowalsh/agents --skill chrome-devtools-a11y-debugging -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/chrome-devtools-a11y-debugging"
-  badges={[{ text: "chrome-devtools-a11y-debugging", variant: "note" }, { text: "535 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "chrome-devtools-a11y-debugging", variant: "note" }, { text: "535 words", variant: "default" }, { text: "Apache-2.0", variant: "success" }, { text: "v0.23.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
-<Aside type="note" title="Research context (evidence, not authority)">
-**Problem:** Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization.
-**Stack / assumptions:** Requires Chrome DevTools MCP 0.23.0 or compatible tools with `lighthouse_audit`, `take_snapshot`, `press_key`, `evaluate_script`, and console issue access.
-**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
-</Aside>
+{/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Repo skill (hand-maintained)">
-Composed compose-custom-wave-1 from `skills/chrome-devtools-a11y-debugging/SKILL.md` with full SKILL disclosure. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/chrome-devtools-a11y-debugging/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+<Aside type="note" title="Research context (evidence, not authority)">
+## Quick Answer
+
+**Problem:** Use when auditing web accessibility through Chrome DevTools MCP: semantic HTML, ARIA labels, focus order, keyboard navigation, tap targets, contrast, and Lighthouse failures. NOT for generic page debugging, non-browser policy writing, or performance optimization.
+
+**Stack / assumptions:** Requires Chrome DevTools MCP 0.23.0 or compatible tools with `lighthouse_audit`, `take_snapshot`, `press_key`, `evaluate_script`, and console issue access.
+
+**Comparable alternative:** A general-purpose agent instruction without a scoped skill contract
+
+**Repo summary:**
+
+Use Chrome DevTools MCP to validate what assistive technologies can see and how keyboard users move through the page. The accessibility tree is the primary source of truth; screenshots are supporting evidence.
+
+&gt; Grounded in repository `skills/chrome-devtools-a11y-debugging/SKILL.md`; treat as evidence, not authority.
 </Aside>
 
 ## What It Does
@@ -63,62 +61,6 @@ Use Chrome DevTools MCP to validate what assistive technologies can see and how 
 3. Do not load entire Lighthouse reports into context; extract failed audits.
 4. Verify keyboard navigation with repeated key movement and fresh snapshots.
 5. Report accessibility findings with observed behavior, expected behavior, and remediation.
-
-## Core Concepts
-
-- The accessibility tree differs from the DOM. Elements hidden visually may still be exposed, and visible elements may be hidden from assistive tech.
-- `take_snapshot` shows roles, names, heading levels, and focused elements.
-- Lighthouse finds broad classes of failures; snapshots and focused checks confirm user impact.
-
-## Workflow
-
-<Steps>
-
-1. **Step** -- Navigate to the target page and wait for the relevant UI state.
-
-2. **Step** -- Run `lighthouse_audit` in `navigation` mode for a baseline when page reload is safe.
-
-3. **Step** -- Inspect browser issues with `list_console_messages` using `types: ["issue"]` and preserved messages.
-
-4. **Step** -- Capture `take_snapshot` and check headings, landmarks, names, and order.
-
-5. **Step** -- Test keyboard navigation with `press_key` and fresh snapshots.
-
-6. **Step** -- Use snippets only for data missing from the accessibility tree, such as tap target dimensions or manual contrast estimates.
-
-7. **Step** -- Report failures with selector or `uid`, observed behavior, expected behavior, and remediation.
-
-</Steps>
-
-## Large Report Handling
-
-If Lighthouse writes a report, do not load the entire JSON into context. Extract failed audits with a targeted parser, for example:
-
-```bash
-node -e "const r=require('./report.json'); Object.values(r.audits).filter(a=>a.score!==null && a.score<1).forEach(a=>console.log(JSON.stringify({id:a.id,title:a.title,items:a.details?.items})))"
-```
-
-## Canonical Vocabulary
-
-| Term | Meaning |
-| --- | --- |
-| Accessibility tree | Snapshot representation exposed to assistive technologies |
-| Accessible name | Text label announced for an interactive or semantic element |
-| Focus order | Keyboard traversal order observed through repeated snapshots |
-| Lighthouse failure | Accessibility audit item with a failing score and remediation guidance |
-
-## Validation Contract
-
-Run from this skill directory before declaring changes complete:
-
-```bash
-python scripts/check.py
-```
-
-Completion criteria:
-
-1. `scripts/check.py` exits 0.
-2. No portable-CLI violations remain under this skill directory.
 
 <Tabs>
   <TabItem label="Public Metadata">

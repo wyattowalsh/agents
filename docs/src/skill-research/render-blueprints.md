@@ -30,4 +30,4 @@ Install: `npx skills add render-oss/skills --skill render-blueprints -y -g -a an
 
 A general-purpose agent instruction without a scoped skill contract
 
-> Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use external-skill-auditor for live verification before install or promotion. Not an endorsement.
+> Web research of upstream repo (SKILL.md/contents); evidence only, not authority. Use /review source for live verification before install or promotion. Not an endorsement.

@@ -8,7 +8,7 @@ mean_confidence: 0.75
 
 ## Purpose
 
-Enforces RED-GREEN-REFACTOR: write failing test, watch fail, minimal code, pass, commit. Deletes pre-test code. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Enforces RED-GREEN-REFACTOR: write failing test, watch fail, minimal code, pass, commit. Deletes pre-test code. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/review.
 
 ## Harness Coverage
 

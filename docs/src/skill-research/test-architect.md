@@ -8,7 +8,7 @@ mean_confidence: 0.78
 
 ## Quick Answer
 
-**Problem:** Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (honest-review).
+**Problem:** Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (review).
 
 **Stack / assumptions:** portable skill scripts under `scripts/`; on-demand references; eval fixtures
 

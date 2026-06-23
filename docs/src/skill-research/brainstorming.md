@@ -8,7 +8,7 @@ mean_confidence: 0.72
 
 ## Purpose
 
-Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/honest-review.
+Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document. Part of obra/superpowers agentic skills framework & software development methodology. Prompt-only skills (no observed hooks/scripts in source-list); composable workflow: brainstorming -> writing-plans -> executing-plans + test-driven-development + verification-before-completion. Complements local orchestrator/test-architect/review.
 
 ## Harness Coverage
 
