@@ -8,11 +8,11 @@ Current doctor and catalog surfaces do not recognize the `apm` CLI. Without trac
 
 ## What Changes
 
-- Treat Microsoft APM as optional companion CLI for **remote** catalog packages only.
+- Treat Microsoft APM as **primary deploy path** for repo agents/instructions/hooks on supported harnesses; **remote-only** for third-party packages (never repo `skills/`).
 - Add `apm` CLI awareness to `wagents self doctor` (presence, version, policy notes optional).
 - Add curated catalog row (authored MDX under docs + generate) documenting APM usage, install, and repo policy.
 - Extend `agent-bundle.json` update/doctor commands with APM notes (no change to bundle components).
-- Add `wagents apm` facade (thin delegation with repo policy guardrails) in follow-up wave.
+- Add `wagents apm materialize` + `wagents apm doctor` (materialize SSOT → `.apm/`; MCP stays MCPHub-owned with `mcp: []`).
 - Document SSOT split: repo bundle via wagents/Skills CLI; remote packages via APM; no duplication of repo trees into `apm/` or vice-versa.
 - Add harness instruction overlay guidance (AGENTS.md import pattern for `apm/AGENTS.md` where present) without altering bundle projection.
 - Clarify OpenCode MCP: APM `apm-servers/` (or mcp: in apm.yml) remains separate from repo `config/mcp-registry.json` + MCPHub unless a later explicit merge is approved.
@@ -35,8 +35,7 @@ Current doctor and catalog surfaces do not recognize the `apm` CLI. Without trac
 ## Out Of Scope
 
 - Routing repo `skills/` or bundle through `apm install` (never).
-- Creating `apm.yml` or `.apm/` in this repo root as primary SSOT.
-- Duplicating MCP registry into APM mcp declarations in first pass.
+- Duplicating MCP registry into APM `dependencies.mcp` (MCPHub + `config/mcp-registry.json` remain SSOT; `apm.yml` keeps `mcp: []`).
 - Adding Grok/Crush as APM targets (defer to APM upstream or explicit follow-up).
 - Live `apm install` of arbitrary packages during this change unless explicitly scoped in waves.
 - Changing `wagents skills sync` primary path.
