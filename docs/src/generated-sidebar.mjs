@@ -110,4 +110,6 @@ export default [
     items: [{ autogenerate: { directory: 'harness-config' } }],
   },
   { slug: 'cli', label: 'CLI' },
+  { slug: 'contributing', label: 'Contributing' },
+  { slug: 'harness-support', label: 'Harness Support' },
 ];
