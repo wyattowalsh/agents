@@ -6,7 +6,7 @@
     <a href="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml"><img src="https://github.com/wyattowalsh/agents/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="https://github.com/wyattowalsh/agents/blob/main/LICENSE"><img src="https://img.shields.io/github/license/wyattowalsh/agents?style=flat-square&color=5D6D7E" alt="License"></a>
     <a href="https://github.com/wyattowalsh/agents/releases"><img src="https://img.shields.io/github/v/release/wyattowalsh/agents?style=flat-square&color=2E86C1" alt="Release"></a>
-    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-57-0f766e?style=flat-square" alt="Skills"></a>
+    <a href="https://agents.w4w.dev/skills/catalog/"><img src="https://img.shields.io/badge/skills-56-0f766e?style=flat-square" alt="Skills"></a>
     <a href="https://agents.w4w.dev"><img src="https://img.shields.io/badge/docs-agents.w4w.dev-00b4d8?style=flat-square&logo=read-the-docs&logoColor=white" alt="Docs"></a>
   </p>
   <img src="https://raw.githubusercontent.com/wyattowalsh/agents/main/docs/public/social-card.png" alt="Agents social preview" width="640">
@@ -76,18 +76,17 @@ Reusable actions and knowledge bases for AI agents.
 | data-pipeline-architect | Analyzes and designs batch and streaming data pipelines with contracts, lineage, reliability, and cost controls. Use for ingestion and transformation systems. NOT for ad-hoc analysis or schema design. |
 | data-wizard | Analyze data and guide ML: EDA, model selection, feature engineering, stats, visualization, MLOps. Use for data work. NOT for ETL, database design (database-architect), or frontend viz code. |
 | database-architect | Design schemas, plan migrations, and optimize queries. Six modes from modeling to evolution. Use for database architecture. NOT for DBA ops, backups, or deployment (devops-engineer). |
+| design | Design, build, refactor, and audit user-facing interfaces. Use for UI/UX, accessibility, motion, design systems, AI interfaces, badges/status indicators, and rendered proof. NOT for backend APIs, tests, DevOps, routing, architecture diagrams, or non-UI docs. |
 | devops-engineer | Design, optimize, and debug CI/CD pipelines. GitHub Actions and GitLab CI patterns. Use for pipeline work. NOT for infrastructure provisioning (infrastructure-coder) or app code. |
 | docling-graph | Use when designing/reviewing Docling Graph knowledge-graph workflows: templates, contracts, CLI/API configs, inspect reports, exports, traces. NOT for generic Docling parsing, vector-only RAG, graph DB admin, or ontology-only work. |
 | docs-steward | Maintain docs across Starlight, Docusaurus, MkDocs. Sync, health checks, migrations, ADRs, runbooks, README, and AGENTS.md. Use when docs change. NOT for backend code, skill definition edits (skill-creator), or MCP servers (mcp-creator). |
-| draw-thing | Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (frontend-designer), ad copy iteration (ad-creative), or broad vendor/tool research (research). |
+| draw-thing | Generate local AI images and short media with Draw Things CLI on macOS. Use when you need local txt2img, img2img, model setup, imports, prompt refinement, or rig-aware best-model selection. NOT for UI implementation (design), ad copy iteration (ad-creative), or broad vendor/tool research (research). |
 | email-whiz | Gmail copilot via MCP. Triage, inbox-zero, filters, analytics, labels, cleanup. Use when managing email or automating Gmail. NOT for composing emails, calendar, or non-Gmail. |
 | event-driven-architect | Design event-driven systems: contracts, topics, consumers, retries, idempotency, and sagas. Use for asynchronous workflows. NOT for CRUD APIs or ETL pipelines. |
-| external-skill-auditor | Audit third-party Agent Skills before install or repo promotion. Use when evaluating external skill sources, hooks, scripts, provenance, credentials, network behavior, or destructive commands. NOT for creating skills, code review, or appsec scans. |
 | files-buddy | Use when safely auditing, organizing, deduplicating, renaming, archiving, offloading, or reclaiming storage on macOS file systems and cloud-drive folders. NOT for shell script generation, CI/CD, databases, or non-macOS platform cleanup. |
 | frontend-designer | Build and audit React, Tailwind, shadcn/ui interfaces. Scaffold, create components/pages, theme, refactor, verify rendered UI. Use when building UI. NOT for backend, tests, state, routing, or DevOps. |
 | git-workflow | Git operations: conventional commits, PR descriptions, branch strategy, conflict resolution, code archaeology, bisect. Use for git workflow tasks. NOT for code review, CI/CD, or changelogs. |
 | harness-master | Audit harness configs, discover gaps, usage signals, apply approved fixes. Use when tuning Claude, Codex, Copilot, Cursor, Gemini, Grok, OpenCode, or Cherry. NOT agents, MCP, or app telemetry. |
-| honest-review | Review code with confidence-scored evidence. Session, scoped, PR, or full audit; optional approved fix pass. Use when reviewing changes or quality. NOT for feature work or benchmarking. |
 | host-panel | Facilitate research-grounded panels in roundtable, Oxford, and Socratic formats. Use when exploring contested topics from multiple angles. NOT for Q&A, code review, or real human opinion simulation. |
 | i18n-localization | Plan and review localization changes across app, docs, and web surfaces. Use for string extraction, locale routing, plural/date/number formatting, RTL, pseudo-locale QA, message catalogs, and translation readiness. NOT for generic copy editing, frontend visual design, SEO, or JavaScript conventions. |
 | incident-response-engineer | Operational incident response for triage, containment, communications, recovery, and postmortems. Use when coordinating outages or service degradation. NOT for code review or proactive security scanning. |
@@ -105,18 +104,18 @@ Reusable actions and knowledge bases for AI agents.
 | performance-profiler | Performance analysis: complexity estimation, profiler output parsing, caching design, regression risk. Use for optimization guidance. NOT for running profilers, load tests, or monitoring. |
 | prompt-engineer | Prompt engineering. Craft, analyze, harden, convert, design tool prompts, and build PromptOps/eval plans. Use for system, agent, tool, RAG prompts. NOT for running prompts or building agents. |
 | python-conventions | Enforce Python tooling conventions for uv, ty, Ruff, pytest, and pyproject.toml. Use when working on .py files or Python project config. NOT for JS/TS, shell scripts, CI design, profiling, or test architecture. |
-| reasoning-router | Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (honest-review). |
+| reasoning-router | Classify problems and route to optimal thinking MCP (11 available). Monitor confidence, re-route on stall. Use for complex reasoning. NOT for simple questions (answer directly) or code review (review). |
 | release-pipeline-architect | Release workflow architecture for versioning, artifact promotion, rollout safety, and rollback design. Use for release pipelines. NOT for generic CI tuning or infrastructure. |
 | research | Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A. |
+| review | Use for session, scoped, PR, range, full audit, simplification, and source/provenance reviews with evidence-first findings. NOT for feature implementation or benchmarking. |
 | schema-evolution-planner | Plan zero-downtime schema changes across code, data backfills, and cutovers. Use for expand-contract database changes. NOT for fresh schema design or DBA ops. |
-| security-scanner | Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (honest-review) or pen testing. |
+| security-scanner | Proactive security assessment with SAST, secrets detection, dependency scanning, and compliance checks. Use for pre-deployment audit. NOT for code review (review) or pen testing. |
 | shell-conventions | Apply and review shell tooling conventions. Enforce portable bash and sh practices, quoting, env usage, and Make or just patterns. Use when editing shell files. NOT for Python or CI/CD. |
 | shell-scripter | Shell script generation, review, and dialect conversion. Makefile and justfile generation. ShellCheck rules. Use for shell work. NOT for Python (python-conventions) or CI/CD (devops-engineer). |
-| simplify | Simplify working code without changing behavior. Analyze, apply, or explain clarity fixes. Use when recent code feels complex. NOT for review (honest-review) or debt scans (tech-debt-analyzer). |
 | skill-creator | Create, improve, and audit AI agent skills. 14 structural patterns, deterministic scoring. Use when building or reviewing skills. NOT for agents, MCP servers, or running skills. |
 | skill-router | Route tasks to local skills. Use when choosing skills, recovering omitted skills after context warnings, or preparing a small skill context packet. NOT for install, authoring, or audit workflows. |
-| tech-debt-analyzer | Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (honest-review) or refactoring. |
-| test-architect | Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (honest-review). |
+| tech-debt-analyzer | Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time. NOT for code review (review) or refactoring. |
+| test-architect | Test strategy, coverage analysis, edge case identification, flaky test diagnosis. Use when designing test suites. NOT for running tests (devops-engineer), TDD, or code review (review). |
 | things-manager | Use when reviewing/managing Things 3 via SupaThings MCP: tasks, projects, headings, tags, deadlines, triage, capture, cleanup, and GTD. NOT for calendars, Gmail, database edits, MCP setup, or secrets. |
 | wargame | Strategic decision analysis and wargaming. Auto-classifies complexity for analysis or simulation. Use for decisions under uncertainty. NOT for simple pros/cons or code review. |
 

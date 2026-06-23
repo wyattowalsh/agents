@@ -4,6 +4,10 @@
 
 This file is the source of truth for asset formats, naming conventions, and workflows in this repository.
 
+<!-- apm:start -->
+<!-- APM-managed harness integration section (populated/updated by `apm compile` when compilation.agents_md.mode=managed_section; edit outside markers for hand-authored content) -->
+<!-- apm:end -->
+
 ---
 
 ## 1. Asset Formats
@@ -228,7 +232,7 @@ repo-owned skill.
 
 ### Adding / updating a curated external (or custom catalog) entry
 
-1. **Audit before record** — Use `/external-skill-auditor` (or `/harness-master discover` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing authored catalog rows.
+1. **Audit before record** — Use `/review source` (or `/harness-master discover` for gap research). Require read-only `npx skills add <source> --list` evidence. Inspect hooks, scripts, command substitutions, `allowed-tools`, credential handling, network egress, license, and dedupe against repo `skills/` plus existing authored catalog rows.
 2. **Choose outcome** — `install now` / endorse → set appropriate status + trust_tier (e.g. install-now-after-trust-gate + curated-trust-gated) in the authoring frontmatter. `keep global only` / `avoid` → set status + notes with rationale. Do not copy third-party trees into `skills/`.
 3. **Author the mdx** — Create/update `docs/src/authoring/skills/<skill-id>.mdx` (kebab id matches name). Populate YAML frontmatter with the structured fields (install_command using standard target suffix, pinned @commit when practical, source, provenance_evidence, etc.). Document audited HEAD, license, executable-surface notes, dedupe, harness caveats in the body or notes field. (During transition: may still append temporarily to legacy `config/external-skills.md` then migrate via script to authoring mdx.)
 4. **OpenSpec when non-trivial** — Create or update an OpenSpec change when the work touches public catalog shape, sync behavior, trust tiers, validation, or multi-harness install policy.
@@ -291,7 +295,7 @@ wagents package --dry-run           # Check portability without creating ZIPs
 # Install skills into agent platforms (requires Node.js)
 wagents install                              # All skills → all agents (global)
 wagents install -y                           # All skills → all agents (no prompts)
-wagents install honest-review skill-creator  # Specific skills → all agents
+wagents install review skill-creator  # Specific skills → all agents
 wagents install -a claude-code               # All skills → Claude only
 wagents install -a cursor -a github-copilot  # All skills → Cursor + Copilot
 wagents install --list                       # List available skills
@@ -303,7 +307,7 @@ wagents skills sync --apply                  # Execute the verified additive syn
 # Or use make targets (see Makefile)
 make install                                 # All skills → all agents
 make install-claude                          # All skills → Claude
-make install-skill SKILL=honest-review       # Specific skill → all agents
+make install-skill SKILL=review              # Specific skill → all agents
 make update                                  # Refresh installed skills
 make help                                    # Show all make targets
 ```
@@ -311,7 +315,7 @@ make help                                    # Show all make targets
 > **CI/CD:** The `release-skills.yml` workflow validates on every PR and automatically packages + releases skills when a version tag (`v*.*.*`) is pushed.
 
 Curated third-party skills follow **§2.7 Curated External Skills**: audit with
-`/external-skill-auditor`, author the entry under `docs/src/authoring/skills/<id>.mdx`
+`/review source`, author the entry under `docs/src/authoring/skills/<id>.mdx`
 (legacy: may record in `config/external-skills.md` during transition), preview with
 `wagents skills sync --dry-run`, then `wagents docs generate` (emits index) + README/docs
 as needed.
@@ -343,7 +347,7 @@ Everything situational uses **skills as context loaders** — Claude sees skill 
 
 Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but descriptions remain in context for Claude's auto-discovery.
 
-> Repository and installed skill descriptions are loaded at startup. The table above highlights the auto-invoke convention skills; user-invocable repository skills include `simplify` and `orchestrator`.
+> Repository and installed skill descriptions are loaded at startup. The table above highlights the auto-invoke convention skills; user-invocable repository skills include `/review simplify` and `orchestrator`.
 
 ### Token Budget
 

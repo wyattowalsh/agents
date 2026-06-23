@@ -69,6 +69,13 @@
 				"github-copilot": "github-copilot",
 				"opencode": "opencode"
 			}
+		},
+		"apm": {
+			"install": "apm install wyattowalsh/agents",
+			"update": "apm update",
+			"audit": "apm audit --ci --no-drift",
+			"compile": "apm compile",
+			"materialize": "uv run wagents apm materialize"
 		}
 	}
 }

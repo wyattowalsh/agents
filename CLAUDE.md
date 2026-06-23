@@ -7,5 +7,5 @@
 - Prefer: loguru, tenacity, tqdm, fastapi, typer, sqlmodel, fastmcp.
 - Run `uv run wagents validate` before committing changes.
 - Run `uv run pytest` before committing changes.
-- Run `uv run ruff check wagents/` to lint.
-- Run `uv run ty check` to type-check `wagents/` and `scripts/`.
+- Run `uv run ruff check` to lint.
+- Run `uv run ty check` to type-check gated Python sources (see pyproject.toml).

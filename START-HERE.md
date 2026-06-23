@@ -21,7 +21,7 @@ uv run wagents validate
 
 ```bash
 npx -y skills add github:wyattowalsh/agents --list
-uv run wagents install honest-review -y -a claude-code   # example single-skill install
+uv run wagents install review -y -a claude-code   # example single-skill install
 ```
 
 ## 10–15 min: Preview harness sync (no writes)

@@ -55,7 +55,7 @@ pnpm build
 
 Follow `AGENTS.md` §2.7 **Curated External Skills** for the full promotion workflow. Summary:
 
-1. Audit with `/external-skill-auditor` and `npx skills add <source> --list` (read-only).
+1. Audit with `/review source` and `npx skills add <source> --list` (read-only).
 2. Record audited install commands or avoid notes in `config/external-skills.md` — do not copy third-party trees into `skills/`.
 3. Run `uv run wagents validate` (includes quarantine checks on curated sources).
 4. Preview with `uv run wagents skills sync --dry-run`; do not run `--apply` unless the maintainer explicitly requests live installs.
