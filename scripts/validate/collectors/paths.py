@@ -46,4 +46,3 @@ def collect_path_portability_errors(repo_root: Path) -> list[dict[str, str]]:
                     "message": "Portable-path leak (absolute /Users/... or /home/... path)",
                 })
     return errors
-

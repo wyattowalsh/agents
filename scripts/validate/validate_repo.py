@@ -9,10 +9,10 @@ from pathlib import Path
 from _toolkit import ensure_validate_importable, repo_root_from_validate
 from collectors.agents import collect_agent_errors
 from collectors.hooks import collect_hook_errors
+from collectors.mcp import collect_mcp_validation_errors
 from collectors.mcp_registry import collect_mcp_registry_errors
 from collectors.paths import collect_path_portability_errors
 from collectors.quarantine import collect_quarantine_errors
-from collectors.mcp import collect_mcp_validation_errors
 from collectors.skills import collect_skill_errors
 
 ensure_validate_importable()

@@ -8,7 +8,7 @@
 - Use llms.txt, Context7, and relevant tools for up-to-date context; prefer latest dependency versions.
 - After changes to public APIs, file structure, agent definitions, or skill definitions, invoke `/docs-steward` if available.
 - When skills need installing, surface the command to the user: `npx skills add <source> --skill <name> -y -g -a antigravity claude-code codex crush cursor gemini-cli github-copilot grok opencode`. When reconciling harness installs, prefer `uv run wagents skills sync --dry-run` before `--apply`. Do not run `--apply` or live installs unless the maintainer explicitly requests them.
-- Curated external skills: follow `AGENTS.md` §2.7 — audit with `/external-skill-auditor`, record in `./config/external-skills.md` (not `skills/`), validate with `uv run wagents validate`, preview sync, then `uv run wagents readme` and `uv run wagents docs generate` (default `--no-installed` for CI parity).
+- Curated external skills: follow `AGENTS.md` §2.7 — audit with `/review source`, record in `docs/src/authoring/skills/<id>.mdx` (legacy fallback: `./config/external-skills.md`, not `skills/`), validate with `uv run wagents validate`, preview sync, then `uv run wagents readme` and `uv run wagents docs generate` (default `--no-installed` for CI parity).
 - Never sign or add self-attribution.
 - Use hooks for deterministic enforcement; reserve instructions for intent and heuristics that require judgment.
 - Use OpenSpec for non-trivial changes to repo workflows, public asset formats, downstream agent tooling, docs generation, or validation behavior. Prefer `uv run wagents openspec ... --format json` when AI tools need machine-readable OpenSpec state.
@@ -88,7 +88,7 @@ For unfamiliar tools/APIs, check `{docs_url}/llms.txt` (index) and `llms-full.tx
 
 Use this flow when adding or updating trust-gated third-party skills (full detail in `AGENTS.md` §2.7):
 
-1. Audit: `/external-skill-auditor` plus `npx skills add <source> --list` (read-only).
+1. Audit: `/review source` plus `npx skills add <source> --list` (read-only).
 2. Record: add the audited `npx skills add ...` command to `config/external-skills.md` under **Install Now After Trust Gate**, or an avoid note under **Keep Global Only Or Avoid**. Do not vendor copies into `skills/`.
 3. Validate: `uv run wagents validate` (quarantine policy on curated sources).
 4. Preview: `uv run wagents skills sync --dry-run`.

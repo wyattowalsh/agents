@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from _mcp_local import is_local_mcp_dir
 from _toolkit import ensure_validate_importable
 
 ensure_validate_importable()
 
+from typing import TYPE_CHECKING
+
 from asset_toolkit.common import KEBAB_CASE_PATTERN
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def collect_mcp_errors(repo_root: Path) -> list[dict[str, str]]:

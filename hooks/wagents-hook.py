@@ -181,6 +181,7 @@ def _agent_home(harness: str) -> Path:
         "claude-code": ".claude",
         "github-copilot": ".copilot",
         "gemini-cli": ".gemini",
+        "cursor": ".cursor",
     }.get(harness, ".agents")
     return Path.home() / folder / "research"
 
@@ -262,6 +263,8 @@ def _additional_context(
     if payload.harness == "github-copilot":
         return 0
     _record_decision(payload, policy_id, "context", message)
+    if payload.harness == "cursor":
+        return _emit_json({"additional_context": message, "user_message": message})
     if payload.harness == "gemini-cli":
         return _emit_json({"hookSpecificOutput": {"additionalContext": message}, "suppressOutput": True})
     event = payload.event or "UserPromptSubmit"
@@ -273,15 +276,15 @@ def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny
     if payload.harness == "github-copilot":
         return _emit_json({"permissionDecision": "deny", "permissionDecisionReason": reason})
     if payload.harness == "codex":
-        return _emit_json(
-            {
-                "hookSpecificOutput": {
-                    "hookEventName": "PreToolUse",
-                    "permissionDecision": "deny",
-                    "permissionDecisionReason": reason,
-                }
+        return _emit_json({
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "deny",
+                "permissionDecisionReason": reason,
             }
-        )
+        })
+    if payload.harness == "cursor":
+        return _emit_json({"permission": "deny", "user_message": reason, "agent_message": reason})
     if payload.harness == "gemini-cli":
         return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     print(reason, file=sys.stderr)
@@ -290,19 +293,19 @@ def _deny(payload: NormalizedPayload, reason: str, policy_id: str = "policy-deny
 
 def _codex_permission_deny(payload: NormalizedPayload, reason: str, policy_id: str) -> int:
     _record_decision(payload, policy_id, "deny", reason)
-    return _emit_json(
-        {
-            "hookSpecificOutput": {
-                "hookEventName": "PermissionRequest",
-                "decision": {"behavior": "deny", "message": reason},
-            }
+    return _emit_json({
+        "hookSpecificOutput": {
+            "hookEventName": "PermissionRequest",
+            "decision": {"behavior": "deny", "message": reason},
         }
-    )
+    })
 
 
 def _stop_retry(payload: NormalizedPayload, reason: str) -> int:
     if payload.harness == "codex":
         return _emit_json({"decision": "block", "reason": reason})
+    if payload.harness == "cursor":
+        return _emit_json({"followup_message": reason, "user_message": reason})
     if payload.harness == "gemini-cli":
         return _emit_json({"decision": "deny", "reason": reason, "suppressOutput": True})
     print(reason, file=sys.stderr)
@@ -712,8 +715,9 @@ def _has_code_work_claim(message: str) -> bool:
 
 
 def _policy_codex_session_start_context(payload: NormalizedPayload) -> int:
+    label = "Cursor" if payload.harness == "cursor" else "Codex"
     message = (
-        f"Codex session context: {_git_session_context(payload.cwd)}; managed hooks source=config/hook-registry.json."
+        f"{label} session context: {_git_session_context(payload.cwd)}; managed hooks source=config/hook-registry.json."
     )
     return _additional_context(payload, message, "codex-session-start-context")
 
@@ -850,6 +854,11 @@ POLICIES = {
     "codex-permission-request-guard": _policy_codex_permission_request_guard,
     "codex-post-tool-verify-context": _policy_codex_post_tool_verify_context,
     "codex-stop-truth-gate": _policy_codex_stop_truth_gate,
+    "cursor-session-start-context": _policy_codex_session_start_context,
+    "cursor-destructive-shell-guard": _policy_codex_destructive_shell_guard,
+    "cursor-protected-file-guard": _policy_codex_protected_file_guard,
+    "cursor-post-tool-verify-context": _policy_codex_post_tool_verify_context,
+    "cursor-stop-truth-gate": _policy_codex_stop_truth_gate,
     "research-prompt-triage-context": _policy_prompt_triage,
     "research-readonly-write-guard": _policy_readonly_write_guard,
     "research-dangerous-shell-guard": _policy_dangerous_shell_guard,

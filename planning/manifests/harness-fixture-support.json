@@ -177,7 +177,23 @@
       "promotion_blocker": "Requires Cursor editor rules, skills, MCP, and rollback fixtures before validated support claims."
     },
     {
-      "harness_id": "cursor-agent-web",
+      "harness_id": "cursor-cli",
+      "owner_change": "agents-c04-cursor-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": [
+        "cli-permissions-fixture",
+        "mcp-fixture",
+        "agents-fixture"
+      ],
+      "validation_commands": [
+        "uv run wagents validate"
+      ],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires Cursor CLI permissions, MCP, and agent overlay fixtures before validated support claims."
+    },
+    {
+      "harness_id": "cursor-cloud-agent",
       "owner_change": "agents-c04-cursor-harness",
       "current_support_tier": "planned-research-backed",
       "fixture_status": "docs-ledger-required",
@@ -189,22 +205,52 @@
         "uv run wagents validate"
       ],
       "rollback_coverage": "not-applicable",
-      "promotion_blocker": "Requires first-party Cursor Agent Web evidence and cloud-agent fixture coverage; do not inherit Cursor Editor behavior by default."
+      "promotion_blocker": "Requires first-party Cursor Cloud Agent evidence and cloud-agent fixture coverage; do not inherit Cursor Editor behavior by default."
     },
     {
-      "harness_id": "cursor-agent-cli",
+      "harness_id": "cursor-cloud-subagent",
       "owner_change": "agents-c04-cursor-harness",
       "current_support_tier": "planned-research-backed",
       "fixture_status": "docs-ledger-required",
       "fixture_classes": [
-        "first-party-docs-ledger",
-        "cli-config-fixture"
+        "subagent-overlay-fixture",
+        "cloud-dashboard-mcp-caveat-fixture"
+      ],
+      "validation_commands": [
+        "uv run wagents validate"
+      ],
+      "rollback_coverage": "not-applicable",
+      "promotion_blocker": "Requires cloud subagent overlay and dashboard MCP caveat fixtures before support claims."
+    },
+    {
+      "harness_id": "cursor-bugbot",
+      "owner_change": "agents-c04-cursor-harness",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-plan-only",
+      "fixture_classes": [
+        "bugbot-project-rules-fixture",
+        "admin-api-out-of-scope-caveat-fixture"
       ],
       "validation_commands": [
         "uv run wagents validate"
       ],
       "rollback_coverage": "planned",
-      "promotion_blocker": "Requires first-party Cursor Agent CLI evidence and CLI config fixture coverage; do not inherit Cursor Editor behavior by default."
+      "promotion_blocker": "Requires BUGBOT.md render and admin API out-of-scope caveat fixtures before validated support claims."
+    },
+    {
+      "harness_id": "cursor-acp",
+      "owner_change": "agents-c04-cursor-harness",
+      "current_support_tier": "planned-research-backed",
+      "fixture_status": "docs-ledger-required",
+      "fixture_classes": [
+        "first-party-docs-ledger",
+        "acp-non-mutating-smoke-fixture"
+      ],
+      "validation_commands": [
+        "uv run wagents validate"
+      ],
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Requires first-party ACP docs ledger and non-mutating smoke fixtures before support claims."
     },
     {
       "harness_id": "perplexity-desktop",

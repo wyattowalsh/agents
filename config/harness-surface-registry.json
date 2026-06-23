@@ -245,55 +245,160 @@
       "support_tier": "repo-present-validation-required",
       "repo_evidence": [
         ".cursor/",
-        "config/sync-manifest.json:Cursor MCP config"
+        ".cursor/mcp.json",
+        ".cursor/hooks.json",
+        ".cursor/permissions.json",
+        ".cursor/agents/",
+        ".cursor/rules/",
+        ".cursor/skills/repo/",
+        "config/cursor-agents.json",
+        "wagents/platforms/cursor.py"
       ],
       "projection_surfaces": [
         "instructions",
+        "rules",
         "skills",
         "agents",
         "mcp",
-        "plugins",
+        "permissions",
         "hooks"
       ],
       "validation_requirements": [
         "rules fixture",
         "skills fixture",
         "MCP fixture",
+        "permissions fixture",
+        "hooks fixture",
+        "subagent overlay fixture",
         "rollback fixture"
+      ],
+      "caveats": [
+        "Repo sync writes only project-local .cursor surfaces; global ~/.cursor and dashboard/team state are not mutated."
       ]
     },
     {
-      "id": "cursor-agent-web",
-      "label": "Cursor Agent Web",
+      "id": "cursor-cli",
+      "label": "Cursor CLI",
+      "brand": "Cursor",
+      "surface_kind": "cli",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [
+        ".cursor/cli.json",
+        ".cursor/mcp.json",
+        ".cursor/agents/",
+        "config/cursor-agents.json",
+        "wagents/platforms/cursor.py"
+      ],
+      "projection_surfaces": [
+        "cli-permissions",
+        "mcp",
+        "agents"
+      ],
+      "validation_requirements": [
+        "CLI permissions fixture",
+        "no global-only CLI fields fixture",
+        "MCP fixture",
+        "optional Cursor CLI smoke when real Cursor agent binary is available"
+      ],
+      "caveats": [
+        "Project .cursor/cli.json is CLI-only; global ~/.cursor/cli-config.json is user-owned and out of scope."
+      ]
+    },
+    {
+      "id": "cursor-cloud-agent",
+      "label": "Cursor Cloud Agent",
       "brand": "Cursor",
       "surface_kind": "web-cloud-agent",
       "owner_change": "agents-c04-cursor-harness",
       "support_tier": "planned-research-backed",
-      "repo_evidence": [],
-      "projection_surfaces": [],
+      "repo_evidence": [
+        ".cursor/rules/",
+        ".cursor/hooks.json",
+        ".cursor/BUGBOT.md",
+        "openspec/specs/cursor-harness/spec.md"
+      ],
+      "projection_surfaces": [
+        "rules",
+        "hooks"
+      ],
       "validation_requirements": [
         "first-party docs ledger",
-        "cloud agent config fixture before claims"
+        "cloud-supported hook fixture",
+        "dashboard/team MCP caveat fixture"
       ],
       "caveats": [
-        "Blind spot until verified; do not inherit Cursor Editor behavior by default."
+        "Cloud Agent MCP setup, secrets, OAuth, and team settings are dashboard-managed and not written by repo sync.",
+        "Cloud Agent hook support is narrower than local Cursor hooks."
       ]
     },
     {
-      "id": "cursor-agent-cli",
-      "label": "Cursor Agent CLI",
+      "id": "cursor-cloud-subagent",
+      "label": "Cursor Cloud Subagent",
+      "brand": "Cursor",
+      "surface_kind": "web-cloud-agent-subagent",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "planned-research-backed",
+      "repo_evidence": [
+        ".cursor/agents/",
+        "config/cursor-agents.json",
+        "openspec/specs/cursor-harness/spec.md"
+      ],
+      "projection_surfaces": [
+        "agents"
+      ],
+      "validation_requirements": [
+        "subagent overlay fixture",
+        "cloud dashboard MCP caveat fixture"
+      ],
+      "caveats": [
+        "Cloud subagents can use project subagent files, but Cloud Agent MCP and secrets come from Cursor dashboard/team settings."
+      ]
+    },
+    {
+      "id": "cursor-bugbot",
+      "label": "Cursor Bugbot",
+      "brand": "Cursor",
+      "surface_kind": "code-review-agent",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "repo-present-validation-required",
+      "repo_evidence": [
+        ".cursor/BUGBOT.md",
+        "wagents/platforms/cursor.py"
+      ],
+      "projection_surfaces": [
+        "bugbot-project-rules"
+      ],
+      "validation_requirements": [
+        "BUGBOT.md render fixture",
+        "Admin API out-of-scope caveat fixture"
+      ],
+      "caveats": [
+        "Bugbot Admin API, dashboard settings, and autofix execution state are not mutated by repo sync."
+      ]
+    },
+    {
+      "id": "cursor-acp",
+      "label": "Cursor Agent Client Protocol",
       "brand": "Cursor",
       "surface_kind": "cli",
       "owner_change": "agents-c04-cursor-harness",
       "support_tier": "planned-research-backed",
-      "repo_evidence": [],
-      "projection_surfaces": [],
+      "repo_evidence": [
+        ".cursor/cli.json",
+        ".cursor/mcp.json",
+        "openspec/specs/cursor-harness/spec.md"
+      ],
+      "projection_surfaces": [
+        "cli-permissions",
+        "mcp"
+      ],
       "validation_requirements": [
         "first-party docs ledger",
-        "CLI config fixture before claims"
+        "ACP non-mutating plan/print smoke when real Cursor agent binary is available"
       ],
       "caveats": [
-        "Blind spot until verified; do not inherit Cursor Editor behavior by default."
+        "ACP runs through the Cursor `agent acp` CLI path; this repo does not create editor, OAuth, or dashboard state."
       ]
     },
     {

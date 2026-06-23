@@ -10,6 +10,10 @@
 			"mode": "canonical"
 		},
 		{
+			"path": "${REPO_ROOT}/config/cursor-agents.json",
+			"mode": "canonical"
+		},
+		{
 			"path": "${REPO_ROOT}/config/tooling-policy.json",
 			"mode": "canonical"
 		},
@@ -132,6 +136,38 @@
 		{
 			"path": "${REPO_ROOT}/.vscode/mcp.json",
 			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/mcp.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/hooks.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/permissions.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/cli.json",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/BUGBOT.md",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/agents",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/rules",
+			"mode": "generated"
+		},
+		{
+			"path": "${REPO_ROOT}/.cursor/skills/repo",
+			"mode": "symlinked-entries"
 		},
 		{
 			"path": "${REPO_ROOT}/.github/copilot-instructions.md",

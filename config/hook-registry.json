@@ -143,6 +143,70 @@
       ]
     },
     {
+      "id": "cursor-session-start-context",
+      "description": "Report lightweight Cursor session and repository context.",
+      "status_message": "Gathering Cursor session context",
+      "mode": "context",
+      "logical_event": "SessionStart",
+      "matcher": "startup|resume|clear",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-session-start-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-destructive-shell-guard",
+      "description": "Block critical destructive shell commands in Cursor.",
+      "status_message": "Checking shell safety",
+      "mode": "enforce",
+      "logical_event": "PreToolUse",
+      "matcher": "Bash|bash|run_shell_command|shell|terminal",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-destructive-shell-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-protected-file-guard",
+      "description": "Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits in Cursor.",
+      "status_message": "Checking protected paths",
+      "mode": "enforce",
+      "logical_event": "PreToolUse",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-protected-file-guard --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-post-tool-verify-context",
+      "description": "Run lightweight context-only post-edit quality checks and return verification guidance after Cursor tool use.",
+      "status_message": "Checking post-edit quality",
+      "mode": "context",
+      "logical_event": "PostToolUse",
+      "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-post-tool-verify-context --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
+      "id": "cursor-stop-truth-gate",
+      "description": "Ask Cursor for one more pass when final code-change claims omit validation evidence.",
+      "status_message": "Checking final-answer evidence",
+      "mode": "enforce",
+      "logical_event": "Stop",
+      "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-stop-truth-gate --harness {harness}",
+      "timeout": 5,
+      "harnesses": [
+        "cursor"
+      ]
+    },
+    {
       "id": "research-prompt-triage-context",
       "description": "Activate research hook state and inject research-method reminders.",
       "mode": "context",
@@ -152,6 +216,7 @@
       "harnesses": [
         "codex",
         "claude-code",
+        "cursor",
         "github-copilot",
         "gemini-cli"
       ]
@@ -168,6 +233,7 @@
       "harnesses": [
         "codex",
         "claude-code",
+        "cursor",
         "github-copilot",
         "gemini-cli"
       ]
@@ -184,6 +250,7 @@
       "harnesses": [
         "codex",
         "claude-code",
+        "cursor",
         "github-copilot",
         "gemini-cli"
       ]
@@ -199,6 +266,7 @@
       "harnesses": [
         "codex",
         "claude-code",
+        "cursor",
         "github-copilot",
         "gemini-cli"
       ]
@@ -213,6 +281,7 @@
       "harnesses": [
         "codex",
         "claude-code",
+        "cursor",
         "gemini-cli"
       ]
     }

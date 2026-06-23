@@ -12,8 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from wagents.docs_compose_upgrade import RICH_HAND_CUSTOM, batch_composed_custom_ids, _wave_for_skill  # noqa: E402
-from wagents.docs_compose_upgrade_external import batch_composed_external_ids, _external_wave_for_skill  # noqa: E402
+from wagents.docs_compose_upgrade import RICH_HAND_CUSTOM, _wave_for_skill, batch_composed_custom_ids  # noqa: E402
+from wagents.docs_compose_upgrade_external import _external_wave_for_skill, batch_composed_external_ids  # noqa: E402
 
 COMPOSED_BY_RE = re.compile(r'^composed_by:\s*"?([^"\n]+)"?', re.M)
 CUSTOM_DIR = ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom"
@@ -36,13 +36,11 @@ def _split_wave(wave_id: str, ids: list[str], *, chunk: int = 25) -> list[dict]:
     for index, start in enumerate(range(0, len(ids), chunk)):
         part = ids[start : start + chunk]
         suffix = chr(ord("a") + index)
-        shards.append(
-            {
-                "shard_id": f"{wave_id}-{suffix}",
-                "skill_ids": part,
-                "count": len(part),
-            }
-        )
+        shards.append({
+            "shard_id": f"{wave_id}-{suffix}",
+            "skill_ids": part,
+            "count": len(part),
+        })
     return shards
 
 
@@ -54,9 +52,7 @@ def build_manifest() -> dict:
 
     custom_shards = []
     for wave in sorted(custom_waves):
-        custom_shards.append(
-            {"shard_id": wave, "skill_ids": custom_waves[wave], "count": len(custom_waves[wave])}
-        )
+        custom_shards.append({"shard_id": wave, "skill_ids": custom_waves[wave], "count": len(custom_waves[wave])})
 
     external_shards: list[dict] = []
     for wave in sorted(external_waves):

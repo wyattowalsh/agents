@@ -27,13 +27,23 @@ case "${FILE_PATH##*.}" in
     fi
     if [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
       case "$FILE_PATH" in
-        wagents/*|scripts/*)
-          TYPECHECK=$(uv run ty check --output-format concise --no-progress "$FILE_PATH" 2>&1)
-          TYPECHECK_EXIT=$?
-          TYPECHECK=$(echo "$TYPECHECK" | head -20)
-          [ $TYPECHECK_EXIT -ne 0 ] && printf -v DETAILS "%sTy issues in %s:\n%s\n" "$DETAILS" "$FILE_PATH" "$TYPECHECK"
+        wagents/*|tests/*|skills/nerdbot/src/*|skills/nerdbot/scripts/*)
+          RUN_TY=1
           ;;
+        scripts/*)
+          case "$FILE_PATH" in
+            scripts/validate/*) RUN_TY=0 ;;
+            *) RUN_TY=1 ;;
+          esac
+          ;;
+        *) RUN_TY=0 ;;
       esac
+      if [ "${RUN_TY:-0}" = "1" ]; then
+        TYPECHECK=$(uv run ty check --output-format concise --no-progress "$FILE_PATH" 2>&1)
+        TYPECHECK_EXIT=$?
+        TYPECHECK=$(echo "$TYPECHECK" | head -20)
+        [ $TYPECHECK_EXIT -ne 0 ] && printf -v DETAILS "%sTy issues in %s:\n%s\n" "$DETAILS" "$FILE_PATH" "$TYPECHECK"
+      fi
     fi
     [ -n "$DETAILS" ] && jq -n --arg msg "$DETAILS" '{"hookSpecificOutput":{"hookEventName":"PostToolUse"},"additionalContext":$msg}' ;;
   ts|tsx)

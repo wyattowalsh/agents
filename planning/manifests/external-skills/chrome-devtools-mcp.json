@@ -25,17 +25,12 @@
     ]
   },
   "promotion": {
-    "outcome": "promote-adapted-skills",
+    "outcome": "folded-into-design",
     "repo_skill_names": [
-      "chrome-devtools",
-      "chrome-devtools-cli",
-      "chrome-devtools-a11y-debugging",
-      "chrome-devtools-debug-optimize-lcp",
-      "chrome-devtools-memory-leak-debugging",
-      "chrome-devtools-troubleshooting"
+      "design"
     ],
-    "executable_surface": "No promoted skill has hooks or automatic command substitutions. Upstream CLI examples are retained as user-approved commands. The upstream memory fallback script was not vendored.",
-    "credential_behavior": "No credentials are requested by the skills. MCP server browser artifacts, traces, screenshots, Lighthouse reports, and heap snapshots must be kept out of version control.",
+    "executable_surface": "No Chrome DevTools wrapper skills remain active. Source evidence is retained here, and the useful browser proof workflows now live in skills/design/references/rendered-proof.md.",
+    "credential_behavior": "No credentials are requested by the folded guidance. MCP browser artifacts, traces, screenshots, Lighthouse reports, and heap snapshots must be kept out of version control.",
     "network_behavior": "MCP browser navigation and performance tooling can contact target pages; repo MCP config disables usage statistics and update checks. CrUX is disabled in repo-managed MCP config unless explicitly re-enabled."
   }
 }

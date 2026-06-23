@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def collect_mcp_registry_errors(repo_root: Path) -> list[dict[str, str]]:

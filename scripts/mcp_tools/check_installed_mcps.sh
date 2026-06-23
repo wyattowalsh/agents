@@ -31,7 +31,7 @@ const checks = [
     name: "lotus-wisdom-mcp",
     command: "node",
     args: [`${mcpRoot}/servers/lotus-wisdom-mcp/dist/bundle.js`],
-    expect: "lotus-wisdom-server",
+    expect: "lotus-wisdom",
   },
   {
     name: "creative-thinking",

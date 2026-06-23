@@ -59,11 +59,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"hook discovery parity failure: {f}", file=sys.stderr)
         return 1
 
-    checked = [
-        h.get("id")
-        for h in harness_reg.get("harnesses", [])
-        if "hooks" in (h.get("projection_surfaces") or [])
-    ]
+    checked = [h.get("id") for h in harness_reg.get("harnesses", []) if "hooks" in (h.get("projection_surfaces") or [])]
     print(json.dumps({"ok": True, "checked": checked}))
     return 0
 

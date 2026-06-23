@@ -2,13 +2,16 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from _toolkit import ensure_validate_importable
 
 ensure_validate_importable()
 
+from typing import TYPE_CHECKING
+
 from asset_toolkit.validate_hooks import validate_hooks
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def collect_hook_errors(repo_root: Path) -> list[dict[str, str]]:

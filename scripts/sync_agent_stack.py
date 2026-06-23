@@ -183,14 +183,12 @@ CODEX_OWNED_TABLES = {
     "tools.web_search.location",
     "tui",
 }
-CODEX_AUTO_REVIEW_POLICY = "\n".join(
-    [
-        "Approve routine read-only inspection and bounded edits inside trusted workspaces.",
-        "Reject or escalate destructive filesystem operations, credential exposure, global package manager mutations,",
-        "privilege escalation, broad network side effects, and irreversible VCS operations unless explicitly",
-        "requested.",
-    ]
-)
+CODEX_AUTO_REVIEW_POLICY = "\n".join([
+    "Approve routine read-only inspection and bounded edits inside trusted workspaces.",
+    "Reject or escalate destructive filesystem operations, credential exposure, global package manager mutations,",
+    "privilege escalation, broad network side effects, and irreversible VCS operations unless explicitly",
+    "requested.",
+])
 NAME_MAP = {
     "atom of thoughts": "atom-of-thoughts",
     "apple_mail": "apple-mail",
@@ -473,7 +471,7 @@ def render_home_path(path: Path) -> str:
 
 
 def normalize_path_value(value: str) -> str:
-    if value.startswith("${REPO_ROOT}") or value == "~" or value.startswith("~/"):
+    if value.startswith(f"${REPO_ROOT}") or value == "~" or value.startswith("~/"):
         return resolve_portable_path(value, repo_root=REPO_ROOT, home=HOME)
     if value.startswith("/"):
         return str(Path(value).resolve())
@@ -578,7 +576,7 @@ def render_codex_lmstudio_blocks(
 
 def resolve_registry_path(value: str) -> str:
     text = value.strip()
-    if text.startswith("${REPO_ROOT}") or text == "~" or text.startswith("~/"):
+    if text.startswith(f"${REPO_ROOT}") or text == "~" or text.startswith("~/"):
         return resolve_portable_path(text, repo_root=REPO_ROOT, home=HOME)
     return value
 
@@ -636,15 +634,13 @@ def seed_registry_from_current_state() -> dict[str, Any]:
         else {}
     )
     codex_servers = parse_codex_servers()
-    names = sorted(
-        {
-            *repo_servers.keys(),
-            *vscode_servers.keys(),
-            *copilot_servers.keys(),
-            *gemini_servers.keys(),
-            *codex_servers.keys(),
-        }
-    )
+    names = sorted({
+        *repo_servers.keys(),
+        *vscode_servers.keys(),
+        *copilot_servers.keys(),
+        *gemini_servers.keys(),
+        *codex_servers.keys(),
+    })
 
     servers: dict[str, Any] = {}
     for name in names:
@@ -856,42 +852,36 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
     included_servers = set(included_servers_raw) if isinstance(included_servers_raw, list) else None
     specs: list[dict[str, Any]] = []
     if should_include("all"):
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "all"),
-                "url": hub_url,
-                "enabled": mcphub_endpoint_enabled(registry, harness, "all"),
-                "kind": "all",
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "all"),
+            "url": hub_url,
+            "enabled": mcphub_endpoint_enabled(registry, harness, "all"),
+            "kind": "all",
+        })
     for group in sorted(mcphub_groups(registry, harness)):
         if not should_include("group"):
             continue
         if included_groups is not None and group not in included_groups:
             continue
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "group", group),
-                "url": f"{hub_url}/{group}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "group", group),
-                "kind": "group",
-                "group": group,
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "group", group),
+            "url": f"{hub_url}/{group}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "group", group),
+            "kind": "group",
+            "group": group,
+        })
     for server in sorted(enabled_registry_servers(registry, harness)):
         if not should_include("server"):
             continue
         if included_servers is not None and server not in included_servers:
             continue
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "server", server),
-                "url": f"{hub_url}/{server}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
-                "kind": "server",
-                "server": server,
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "server", server),
+            "url": f"{hub_url}/{server}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "server", server),
+            "kind": "server",
+            "server": server,
+        })
     smart = mcphub_config(registry).get("smart_routing", {})
     if isinstance(smart, dict):
         smart_path = str(smart.get("path", smart.get("base_path", "$smart"))).strip("/")
@@ -900,33 +890,29 @@ def mcphub_endpoint_specs(registry: dict[str, Any], harness: str | None = None) 
     else:
         smart_path = "$smart"
     if should_include("smart"):
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "smart"),
-                "url": f"{hub_url}/{smart_path}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "smart"),
-                "kind": "smart",
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "smart"),
+            "url": f"{hub_url}/{smart_path}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "smart"),
+            "kind": "smart",
+        })
     for group in sorted(mcphub_groups(registry, harness)):
         if not should_include("smart"):
             continue
-        specs.append(
-            {
-                "name": mcphub_endpoint_name(registry, harness, "smart", group),
-                "url": f"{hub_url}/{smart_path}/{group}",
-                "enabled": mcphub_endpoint_enabled(registry, harness, "smart", group),
-                "kind": "smart",
-                "group": group,
-            }
-        )
+        specs.append({
+            "name": mcphub_endpoint_name(registry, harness, "smart", group),
+            "url": f"{hub_url}/{smart_path}/{group}",
+            "enabled": mcphub_endpoint_enabled(registry, harness, "smart", group),
+            "kind": "smart",
+            "group": group,
+        })
     return specs
 
 
 def render_mcphub_stdio_server(registry: dict[str, Any], url: str, *, enabled: bool = True) -> dict[str, Any]:
     token_env = mcphub_bearer_env_var(registry)
     return {
-        "command": "${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
+        "command": f"${REPO_ROOT}/scripts/mcphub/remote-stdio.sh",
         "args": [url],
         "env": {token_env: "${" + token_env + "}"},
         "disabled": not enabled,
@@ -1099,7 +1085,6 @@ def render_codex_mcp_block(registry: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-
 def render_grok_config(current: str, registry: dict[str, Any], *, repo_only: bool) -> str:
     policy = load_json(TOOLING_POLICY_PATH)
     return _render_grok_config(
@@ -1140,15 +1125,13 @@ def render_copilot_hooks(hook_registry: dict[str, Any]) -> dict[str, Any]:
         event = event_map.get(str(hook.get("logical_event")))
         if not event:
             continue
-        rendered.setdefault(event, []).append(
-            {
-                "type": "command",
-                "bash": render_hook_command(hook, "github-copilot", repo_relative=True),
-                "cwd": ".",
-                "timeoutSec": int(hook.get("timeout", 5)),
-                "comment": hook.get("description", hook["id"]),
-            }
-        )
+        rendered.setdefault(event, []).append({
+            "type": "command",
+            "bash": render_hook_command(hook, "github-copilot", repo_relative=True),
+            "cwd": ".",
+            "timeoutSec": int(hook.get("timeout", 5)),
+            "comment": hook.get("description", hook["id"]),
+        })
     return {"version": int(hook_registry.get("version", 1)), "hooks": rendered}
 
 
@@ -1219,13 +1202,11 @@ def render_standard_hooks(hook_registry: dict[str, Any], harness: str) -> dict[s
             "command": render_hook_command(hook, harness, repo_relative=False),
         }
         if harness == "gemini-cli":
-            config.update(
-                {
-                    "name": hook["id"],
-                    "timeout": int(hook.get("timeout", 5)) * 1000,
-                    "description": hook.get("description", hook["id"]),
-                }
-            )
+            config.update({
+                "name": hook["id"],
+                "timeout": int(hook.get("timeout", 5)) * 1000,
+                "description": hook.get("description", hook["id"]),
+            })
         group: dict[str, Any] = {"hooks": [config]}
         if hook.get("matcher"):
             group["matcher"] = hook["matcher"]
@@ -1619,7 +1600,7 @@ def merge_codex_config(
     ctx: SyncContext, registry: dict[str, Any], policy: dict[str, Any], fallbacks: dict[str, str]
 ) -> None:
     current = CODEX_CONFIG_PATH.read_text(encoding="utf-8")
-    current, current_data = load_codex_config_source(current, registry)
+    current, _current_data = load_codex_config_source(current, registry)
     write_text(
         ctx,
         CODEX_CONFIG_PATH,
@@ -1779,12 +1760,10 @@ def sync_platform_home_target(
     load_platform_adapter(name).sync_home(ctx, registry, policy, fallbacks, hook_registry)
 
 
-
 def platform_filter_allows(platforms_filter: set[str] | None, *names: str) -> bool:
     if platforms_filter is None:
         return True
     return any(name in platforms_filter for name in names)
-
 
 
 def sync_repo_targets(
@@ -1799,6 +1778,8 @@ def sync_repo_targets(
         write_json(ctx, HOOK_REGISTRY_PATH, hook_registry)
     if platform_filter_allows(platforms_filter, "vscode"):
         sync_platform_repo_target("vscode", ctx, registry, hook_registry, policy)
+    if platform_filter_allows(platforms_filter, "cursor"):
+        sync_platform_repo_target("cursor", ctx, registry, hook_registry, policy)
     if platform_filter_allows(platforms_filter, "repo-core"):
         generate_codex_global_instructions(ctx)
         generate_copilot_repo_instructions(ctx)

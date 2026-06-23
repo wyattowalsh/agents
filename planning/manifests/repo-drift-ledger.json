@@ -7,49 +7,130 @@
   ],
   "records": [
     {
-      "path": "${REPO_ROOT}/config/mcp-registry.json",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
+      "path": "${REPO_ROOT}/.cursor/BUGBOT.md",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
       "drift_risk": "medium",
-      "owner_change": "agents-c03-mcp-audit",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run wagents openspec validate"
-    },
-    {
-      "path": "${REPO_ROOT}/config/hook-registry.json",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c06-config-safety",
-      "next_action": "validate-before-sync",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "${REPO_ROOT}/config/tooling-policy.json",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
-      "drift_risk": "low",
-      "owner_change": "agents-c01-registry-core",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+      "path": "${REPO_ROOT}/.cursor/agents",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
     },
     {
-      "path": "${REPO_ROOT}/config/support-tier-registry.json",
-      "expected_mode": "canonical",
-      "current_state": "tracked-dirty",
-      "drift_risk": "low",
-      "owner_change": "agents-c01-registry-core",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+      "path": "${REPO_ROOT}/.cursor/cli.json",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
     },
     {
-      "path": "${REPO_ROOT}/config/harness-surface-registry.json",
-      "expected_mode": "canonical",
+      "path": "${REPO_ROOT}/.cursor/hooks.json",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/mcp.json",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/permissions.json",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/rules",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/skills/repo",
+      "expected_mode": "symlinked-entries",
+      "current_state": "tracked-clean",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "verify-sync-manifest",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.github/copilot-instructions.md",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.github/hooks",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.github/instructions",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/.grok/config.toml",
+      "expected_mode": "generated",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
-      "owner_change": "agents-c01-registry-core",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+      "owner_change": "agents-c04-grok-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "${REPO_ROOT}/.vscode/mcp.json",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c03-mcp-audit",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/config/codex-config.toml",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-openai-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
     },
     {
       "path": "${REPO_ROOT}/config/config-transaction-registry.json",
@@ -61,6 +142,15 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
+      "path": "${REPO_ROOT}/config/cursor-agents.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-clean",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "verify-sync-manifest",
+      "validation_command": "uv run wagents validate"
+    },
+    {
       "path": "${REPO_ROOT}/config/docs-artifact-registry.json",
       "expected_mode": "canonical",
       "current_state": "tracked-dirty",
@@ -70,17 +160,8 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
-      "path": "${REPO_ROOT}/config/skill-registry-policy.json",
-      "expected_mode": "canonical",
-      "current_state": "tracked-dirty",
-      "drift_risk": "medium",
-      "owner_change": "agents-c02-skills-lifecycle",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
-    },
-    {
       "path": "${REPO_ROOT}/config/external-skills.md",
-      "expected_mode": "canonical",
+      "expected_mode": "generated",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
       "owner_change": "add-audited-external-skills",
@@ -88,7 +169,25 @@
       "validation_command": "uv run wagents docs generate"
     },
     {
-      "path": "${REPO_ROOT}/config/plugin-extension-registry.json",
+      "path": "${REPO_ROOT}/config/grok-config.toml",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-grok-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_sync_agent_stack.py"
+    },
+    {
+      "path": "${REPO_ROOT}/config/grok-env.sh",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-grok-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_sync_agent_stack.py"
+    },
+    {
+      "path": "${REPO_ROOT}/config/harness-surface-registry.json",
       "expected_mode": "canonical",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
@@ -97,52 +196,22 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
-      "path": "${REPO_ROOT}/config/schemas",
+      "path": "${REPO_ROOT}/config/hook-registry.json",
       "expected_mode": "canonical",
-      "current_state": "tracked-dirty",
+      "current_state": "not-checked",
       "drift_risk": "medium",
-      "owner_change": "agents-c01-registry-core",
+      "owner_change": "agents-c06-config-safety",
       "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py",
-      "notes": [
-        "New schema files are intentionally staged as part of the foundation change."
-      ]
+      "validation_command": "uv run wagents validate"
     },
     {
-      "path": "${REPO_ROOT}/planning/manifests/repo-sync-inventory.json",
+      "path": "${REPO_ROOT}/config/mcp-registry.json",
       "expected_mode": "canonical",
-      "current_state": "tracked-dirty",
+      "current_state": "not-checked",
       "drift_risk": "medium",
-      "owner_change": "agents-c00-repo-sync",
+      "owner_change": "agents-c03-mcp-audit",
       "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
-      "path": "${REPO_ROOT}/planning/manifests/repo-drift-ledger.json",
-      "expected_mode": "canonical",
-      "current_state": "tracked-dirty",
-      "drift_risk": "medium",
-      "owner_change": "agents-c00-repo-sync",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
-      "path": "${REPO_ROOT}/planning/manifests/harness-fixture-support.json",
-      "expected_mode": "canonical",
-      "current_state": "tracked-dirty",
-      "drift_risk": "medium",
-      "owner_change": "agents-c01-registry-core",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_harness_fixture_support_covers_every_harness_without_tier_promotion"
-    },
-    {
-      "path": "${REPO_ROOT}/planning/manifests/external-skills/chrome-devtools-mcp.json",
-      "expected_mode": "canonical",
-      "current_state": "untracked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c10-external-repo-intake",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+      "validation_command": "uv run wagents openspec validate"
     },
     {
       "path": "${REPO_ROOT}/config/opencode-dcp.jsonc",
@@ -154,11 +223,11 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-notifier.json",
+      "path": "${REPO_ROOT}/config/opencode-ensemble.json",
       "expected_mode": "canonical",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
-      "owner_change": "agents-c04-opencode-gemini-harness",
+      "owner_change": "opencode-plugin-expansion",
       "next_action": "validate-before-sync",
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
@@ -172,7 +241,16 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-tui-plugins.json",
+      "path": "${REPO_ROOT}/config/opencode-notifier.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "${REPO_ROOT}/config/opencode-octto.json",
       "expected_mode": "canonical",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
@@ -199,7 +277,7 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-ensemble.json",
+      "path": "${REPO_ROOT}/config/opencode-tui-plugins.json",
       "expected_mode": "canonical",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
@@ -208,13 +286,43 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-octto.json",
+      "path": "${REPO_ROOT}/config/plugin-extension-registry.json",
       "expected_mode": "canonical",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
-      "owner_change": "opencode-plugin-expansion",
+      "owner_change": "agents-c01-registry-core",
       "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+    },
+    {
+      "path": "${REPO_ROOT}/config/schemas",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c01-registry-core",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py",
+      "notes": [
+        "New schema files are intentionally staged as part of the foundation change."
+      ]
+    },
+    {
+      "path": "${REPO_ROOT}/config/skill-registry-policy.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c02-skills-lifecycle",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+    },
+    {
+      "path": "${REPO_ROOT}/config/support-tier-registry.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "low",
+      "owner_change": "agents-c01-registry-core",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
       "path": "${REPO_ROOT}/config/sync-manifest.json",
@@ -226,130 +334,22 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
     {
-      "path": "${REPO_ROOT}/instructions/copilot-global.md",
+      "path": "${REPO_ROOT}/config/tooling-policy.json",
       "expected_mode": "canonical",
       "current_state": "not-checked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-copilot-harness",
+      "drift_risk": "low",
+      "owner_change": "agents-c01-registry-core",
       "next_action": "validate-before-sync",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/codex-global.md",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-openai-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/opencode-global.md",
-      "expected_mode": "generated",
-      "current_state": "tracked-dirty",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/opencode.json",
-      "expected_mode": "generated",
-      "current_state": "tracked-dirty",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "regenerate-from-canonical-source",
       "validation_command": "uv run pytest tests/test_distribution_metadata.py"
     },
     {
-      "path": "${REPO_ROOT}/.grok/config.toml",
-      "expected_mode": "generated",
+      "path": "${REPO_ROOT}/docs/src/authoring/skills",
+      "expected_mode": "canonical",
       "current_state": "tracked-dirty",
       "drift_risk": "medium",
-      "owner_change": "agents-c04-grok-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
-      "path": "${REPO_ROOT}/config/grok-config.toml",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-grok-harness",
+      "owner_change": "oss-friendly-codebase-standardization",
       "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_sync_agent_stack.py"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/grok-global.md",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-grok-harness",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_sync_agent_stack.py"
-    },
-    {
-      "path": "${REPO_ROOT}/config/grok-env.sh",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-grok-harness",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run pytest tests/test_sync_agent_stack.py"
-    },
-    {
-      "path": "${REPO_ROOT}/config/codex-config.toml",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-openai-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/mcp.json",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c03-mcp-audit",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/.vscode/mcp.json",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c03-mcp-audit",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/copilot-instructions.md",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/instructions",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/hooks",
-      "expected_mode": "generated",
-      "current_state": "generated-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
+      "validation_command": "uv run wagents catalog index --check"
     },
     {
       "path": "${REPO_ROOT}/hooks",
@@ -361,21 +361,12 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "${REPO_ROOT}/platforms/copilot/agents",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
+      "path": "${REPO_ROOT}/instructions/codex-global.md",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
       "drift_risk": "medium",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "validate-before-sync",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "${REPO_ROOT}/platforms/opencode/plugins",
-      "expected_mode": "canonical",
-      "current_state": "not-checked",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "validate-before-sync",
+      "owner_change": "agents-c04-openai-harness",
+      "next_action": "regenerate-from-canonical-source",
       "validation_command": "uv run wagents validate"
     },
     {
@@ -384,6 +375,24 @@
       "current_state": "external-live",
       "drift_risk": "medium",
       "owner_change": "agents-c04-openai-harness",
+      "next_action": "verify-symlink-target",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/copilot-global.md",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/copilot-global.md",
+      "expected_mode": "symlink",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-copilot-harness",
       "next_action": "verify-symlink-target",
       "validation_command": "uv run wagents validate"
     },
@@ -397,12 +406,84 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "${REPO_ROOT}/instructions/copilot-global.md",
-      "expected_mode": "symlink",
-      "current_state": "external-live",
+      "path": "${REPO_ROOT}/instructions/grok-global.md",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-grok-harness",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_sync_agent_stack.py"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/opencode-global.md",
+      "expected_mode": "generated",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/mcp.json",
+      "expected_mode": "generated",
+      "current_state": "generated-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c03-mcp-audit",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "${REPO_ROOT}/opencode.json",
+      "expected_mode": "generated",
+      "current_state": "tracked-dirty",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/external-skills/chrome-devtools-mcp.json",
+      "expected_mode": "canonical",
+      "current_state": "untracked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c10-external-repo-intake",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/harness-fixture-support.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c01-registry-core",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_harness_fixture_support_covers_every_harness_without_tier_promotion"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/repo-drift-ledger.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c00-repo-sync",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/repo-sync-inventory.json",
+      "expected_mode": "canonical",
+      "current_state": "tracked-dirty",
+      "drift_risk": "medium",
+      "owner_change": "agents-c00-repo-sync",
+      "next_action": "validate-before-sync",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "${REPO_ROOT}/platforms/copilot/agents",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
       "drift_risk": "medium",
       "owner_change": "agents-c04-copilot-harness",
-      "next_action": "verify-symlink-target",
+      "next_action": "validate-before-sync",
       "validation_command": "uv run wagents validate"
     },
     {
@@ -415,57 +496,21 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.copilot/mcp-config.json",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "merge-with-redaction",
+      "path": "${REPO_ROOT}/platforms/opencode/plugins",
+      "expected_mode": "canonical",
+      "current_state": "not-checked",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "validate-before-sync",
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.copilot/settings.json",
+      "path": "~/.aitk/mcp.json",
       "expected_mode": "merged",
       "current_state": "external-live",
       "drift_risk": "high",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.config/copilot-subagents.env",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.codex/config.toml",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-openai-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.grok/config.toml",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-grok-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
-      "path": "~/.codex/hooks.json",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-openai-harness",
-      "next_action": "merge-with-redaction",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "next_action": "document-experimental-state",
       "validation_command": "uv run wagents validate"
     },
     {
@@ -487,48 +532,30 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/Library/Application Support/Claude/claude_desktop_config.json",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-claude-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.cursor/mcp.json",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-cursor-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.gemini/settings.json",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.gemini/GEMINI.md",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/Library/Application Support/ChatGPT/mcp.json",
+      "path": "~/.codex/config.toml",
       "expected_mode": "merged",
       "current_state": "external-live",
       "drift_risk": "high",
       "owner_change": "agents-c04-openai-harness",
       "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.codex/hooks.json",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-openai-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.codex/skills",
+      "expected_mode": "symlinked-entries",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-openai-harness",
+      "next_action": "verify-symlink-target",
       "validation_command": "uv run wagents validate"
     },
     {
@@ -541,40 +568,22 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.gemini/antigravity/mcp_config.json",
-      "expected_mode": "merged",
+      "path": "~/.config/copilot-subagents.env",
+      "expected_mode": "generated",
       "current_state": "external-live",
       "drift_risk": "high",
-      "owner_change": "agents-c04-opencode-gemini-harness",
+      "owner_change": "agents-c04-copilot-harness",
       "next_action": "merge-with-redaction",
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+      "path": "~/.config/crush/crush.json",
       "expected_mode": "merged",
       "current_state": "external-live",
       "drift_risk": "high",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "merge-with-redaction",
+      "owner_change": "agents-c04-experimental-harnesses",
+      "next_action": "document-experimental-state",
       "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.config/opencode/opencode.json",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "high",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.config/opencode/tui.json",
-      "expected_mode": "merged",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "opencode-plugin-expansion",
-      "next_action": "merge-with-redaction",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
     {
       "path": "~/.config/opencode/dcp.jsonc",
@@ -586,38 +595,20 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.config/opencode/large-image-optimizer.json",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
-      "path": "~/.config/opencode/opencode-quota/quota-toast.json",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "opencode-plugin-expansion",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
-      "path": "~/.config/opencode/token-monitor.json",
-      "expected_mode": "generated",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "opencode-plugin-expansion",
-      "next_action": "regenerate-from-canonical-source",
-      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-    },
-    {
       "path": "~/.config/opencode/ensemble.json",
       "expected_mode": "generated",
       "current_state": "external-live",
       "drift_risk": "medium",
       "owner_change": "opencode-plugin-expansion",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "~/.config/opencode/large-image-optimizer.json",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
       "next_action": "regenerate-from-canonical-source",
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
@@ -640,6 +631,24 @@
       "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
     },
     {
+      "path": "~/.config/opencode/opencode-quota/quota-toast.json",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "opencode-plugin-expansion",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "~/.config/opencode/opencode.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
       "path": "~/.config/opencode/plugins/approval-notify.ts",
       "expected_mode": "generated",
       "current_state": "external-live",
@@ -658,16 +667,124 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.aitk/mcp.json",
+      "path": "~/.config/opencode/token-monitor.json",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "opencode-plugin-expansion",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "~/.config/opencode/tui.json",
       "expected_mode": "merged",
       "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "opencode-plugin-expansion",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "~/.copilot/mcp-config.json",
+      "expected_mode": "generated",
+      "current_state": "external-live",
       "drift_risk": "high",
-      "owner_change": "agents-c04-experimental-harnesses",
-      "next_action": "document-experimental-state",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "merge-with-redaction",
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/.config/crush/crush.json",
+      "path": "~/.copilot/settings.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.copilot/skills",
+      "expected_mode": "symlinked-entries",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-copilot-harness",
+      "next_action": "verify-symlink-target",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.cursor/mcp.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-cursor-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.gemini/GEMINI.md",
+      "expected_mode": "generated",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "regenerate-from-canonical-source",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.gemini/antigravity/mcp_config.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.gemini/settings.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.gemini/skills",
+      "expected_mode": "symlinked-entries",
+      "current_state": "external-live",
+      "drift_risk": "medium",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "next_action": "verify-symlink-target",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/.grok/config.toml",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-grok-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+    },
+    {
+      "path": "~/Library/Application Support/ChatGPT/mcp.json",
+      "expected_mode": "merged",
+      "current_state": "external-live",
+      "drift_risk": "high",
+      "owner_change": "agents-c04-openai-harness",
+      "next_action": "merge-with-redaction",
+      "validation_command": "uv run wagents validate"
+    },
+    {
+      "path": "~/Library/Application Support/CherryStudio/config.json",
       "expected_mode": "merged",
       "current_state": "external-live",
       "drift_risk": "high",
@@ -685,39 +802,12 @@
       "validation_command": "uv run wagents validate"
     },
     {
-      "path": "~/Library/Application Support/CherryStudio/config.json",
+      "path": "~/Library/Application Support/Claude/claude_desktop_config.json",
       "expected_mode": "merged",
       "current_state": "external-live",
       "drift_risk": "high",
-      "owner_change": "agents-c04-experimental-harnesses",
-      "next_action": "document-experimental-state",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.codex/skills",
-      "expected_mode": "symlinked-entries",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-openai-harness",
-      "next_action": "verify-symlink-target",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.copilot/skills",
-      "expected_mode": "symlinked-entries",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-copilot-harness",
-      "next_action": "verify-symlink-target",
-      "validation_command": "uv run wagents validate"
-    },
-    {
-      "path": "~/.gemini/skills",
-      "expected_mode": "symlinked-entries",
-      "current_state": "external-live",
-      "drift_risk": "medium",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "next_action": "verify-symlink-target",
+      "owner_change": "agents-c04-claude-harness",
+      "next_action": "merge-with-redaction",
       "validation_command": "uv run wagents validate"
     }
   ]

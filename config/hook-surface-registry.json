@@ -17,16 +17,19 @@
     "copilot-cloud": "github-copilot-web",
     "copilot-coding-agent": "github-copilot-web",
     "copilot-cli": "github-copilot-cli",
-    "cursor-agent-cli": "cursor",
-    "cursor-agent": "cursor",
-    "cursor-editor": "cursor",
-    "cursor-desktop": "cursor",
-    "cursor-cli": "cursor",
-    "cursor-cloud": "cursor",
-    "cursor-cloud-agent": "cursor",
-    "cursor-background-agent": "cursor",
-    "cursor-web": "cursor",
-    "cursor": "cursor",
+    "cursor-agent-cli": "cursor-cli",
+    "cursor-agent": "cursor-cli",
+    "cursor-editor": "cursor-editor",
+    "cursor-desktop": "cursor-editor",
+    "cursor-cli": "cursor-cli",
+    "cursor-cloud": "cursor-cloud-agent",
+    "cursor-cloud-agent": "cursor-cloud-agent",
+    "cursor-background-agent": "cursor-cloud-agent",
+    "cursor-cloud-subagent": "cursor-cloud-subagent",
+    "cursor-bugbot": "cursor-bugbot",
+    "cursor-acp": "cursor-acp",
+    "cursor-web": "cursor-editor",
+    "cursor": "cursor-editor",
     "claude": "claude-code",
     "claude-code": "claude-code",
     "gemini": "gemini-cli",
@@ -146,9 +149,44 @@
       ],
       "blind_spot": "Cursor team/enterprise hooks and cloud agent hook config may be UI/dashboard managed and not visible in local .cursor/hooks.json files.",
       "repo_evidence": [
-        "skills/harness-master/scripts/discover_surfaces.py",
-        "skills/harness-master/references/harness-surfaces.md",
-        ".cursor/hooks.json (if present)"
+        "config/hook-registry.json (harnesses include 'cursor')",
+        "wagents/platforms/cursor.py",
+        ".cursor/hooks.json (generated on sync)"
+      ]
+    },
+    {
+      "id": "cursor-cloud-agent",
+      "label": "Cursor Cloud Agent",
+      "brand": "Cursor",
+      "surface_kind": "web-cloud-agent",
+      "owner_change": "agents-c04-cursor-harness",
+      "support_tier": "planned-research-backed",
+      "hook_surfaces": [
+        {
+          "level": "project",
+          "label": "project hooks",
+          "path": ".cursor/hooks.json",
+          "kind": "hooks",
+          "role": "secondary",
+          "notes": "Cloud agents load supported project command hooks, but not every local Cursor hook event is supported in cloud execution."
+        }
+      ],
+      "blind_spots": [
+        {
+          "level": "global",
+          "label": "Cursor team hooks",
+          "notes": "Team or enterprise hooks may be distributed from admin surfaces / dashboard outside local files."
+        },
+        {
+          "level": "global",
+          "label": "Cursor cloud agent hook settings",
+          "notes": "Cloud agent hook configuration and secrets may be dashboard-managed and not present in local ~/.cursor/hooks.json."
+        }
+      ],
+      "repo_evidence": [
+        "config/hook-registry.json (harnesses include 'cursor')",
+        "wagents/platforms/cursor.py",
+        ".cursor/hooks.json (generated on sync)"
       ]
     },
     {

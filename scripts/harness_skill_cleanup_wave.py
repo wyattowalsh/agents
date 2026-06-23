@@ -120,13 +120,11 @@ def build_parity_gaps(
             if harness == "grok" and name in grok_present:
                 continue
             if harness in targets and harness not in installed_agents:
-                gaps[harness].append(
-                    {
-                        "name": name,
-                        "provenance_status": desired.get("provenance_status"),
-                        "install_command": desired.get("install_command", ""),
-                    }
-                )
+                gaps[harness].append({
+                    "name": name,
+                    "provenance_status": desired.get("provenance_status"),
+                    "install_command": desired.get("install_command", ""),
+                })
     return gaps
 
 
@@ -141,30 +139,26 @@ def build_dedup_candidates(inventory_rows: list[dict], external_policy: list[dic
             continue
         sources = sorted({r.get("source") or r.get("install_source") or r.get("path") for r in rows})
         canonical = sorted(rows, key=lambda r: _provenance_rank(str(r.get("provenance_status", ""))))[0]
-        candidates.append(
-            {
-                "name": name,
-                "count": len(rows),
-                "sources": sources,
-                "canonical_provenance": canonical.get("provenance_status"),
-                "canonical_path": canonical.get("path"),
-                "action": "dedupe_source",
-            }
-        )
+        candidates.append({
+            "name": name,
+            "count": len(rows),
+            "sources": sources,
+            "canonical_provenance": canonical.get("provenance_status"),
+            "canonical_path": canonical.get("path"),
+            "action": "dedupe_source",
+        })
 
     for slug, _sources in KNOWN_DEDUP_SLUGS.items():
         matching = [e for e in external_policy if e.get("name") == slug or slug in (e.get("source") or "")]
         if len(matching) > 1:
-            candidates.append(
-                {
-                    "name": slug,
-                    "count": len(matching),
-                    "sources": [m.get("source") for m in matching],
-                    "canonical_provenance": "verified-curated-external",
-                    "note": "policy collision — pick one source in external-skills.md",
-                    "action": "dedupe_source",
-                }
-            )
+            candidates.append({
+                "name": slug,
+                "count": len(matching),
+                "sources": [m.get("source") for m in matching],
+                "canonical_provenance": "verified-curated-external",
+                "note": "policy collision — pick one source in external-skills.md",
+                "action": "dedupe_source",
+            })
     return candidates
 
 
@@ -176,10 +170,7 @@ def merge_ledger(
     dedup_candidates: list[dict],
 ) -> list[dict]:
     repo_skill_names = {
-        r["name"]
-        for rows in (desired_rows, inventory_rows)
-        for r in rows
-        if r.get("provenance_status") == "repo-owned"
+        r["name"] for rows in (desired_rows, inventory_rows) for r in rows if r.get("provenance_status") == "repo-owned"
     }
     desired_by_name = {r["name"]: r for r in desired_rows}
     inventory_by_name: dict[str, list[dict]] = defaultdict(list)
@@ -210,18 +201,16 @@ def merge_ledger(
         if name in multiroot_names:
             notes.append("opencode multi-root collision (informational)")
 
-        ledger.append(
-            {
-                "name": name,
-                "action": action,
-                "provenance_status": row.get("provenance_status"),
-                "installed_agents": row.get("installed_agents"),
-                "target_agents": row.get("target_agents"),
-                "path": row.get("path"),
-                "install_command": row.get("install_command", ""),
-                "notes": notes,
-            }
-        )
+        ledger.append({
+            "name": name,
+            "action": action,
+            "provenance_status": row.get("provenance_status"),
+            "installed_agents": row.get("installed_agents"),
+            "target_agents": row.get("target_agents"),
+            "path": row.get("path"),
+            "install_command": row.get("install_command", ""),
+            "notes": notes,
+        })
     return ledger
 
 
@@ -372,7 +361,7 @@ def _load_or_collect_inventory(
         payload = _load_json(inv_path)
         if isinstance(payload, dict):
             payload = payload["rows"]
-        return cast(list[dict], payload)
+        return cast("list[dict]", payload)
 
     sys.path.insert(0, str(REPO))
     from wagents.installed_inventory import collect_installed_inventory
@@ -382,9 +371,7 @@ def _load_or_collect_inventory(
         query_timeout_sec=query_timeout_sec,
     )
     rows = [r.public_dict() for r in snap.rows]
-    queries = [
-        {"agent": q.agent_id, "ok": q.ok, "error": q.error, "count": len(q.entries)} for q in snap.queries
-    ]
+    queries = [{"agent": q.agent_id, "ok": q.ok, "error": q.error, "count": len(q.entries)} for q in snap.queries]
     inv_path.write_text(json.dumps({"rows": rows, "queries": queries}, indent=2), encoding="utf-8")
     return rows
 
@@ -408,10 +395,10 @@ def main() -> int:
         refresh=args.refresh_inventory,
         query_timeout_sec=args.query_timeout_sec,
     )
-    desired_rows = cast(list[dict], _load_json(wave0 / "desired-rows.json"))
-    external_policy = cast(list[dict], _load_json(wave0 / "external-policy.json"))
-    symlink_audit = cast(dict, _load_json(wave0 / "symlink-audit-grok.json"))
-    multiroot = cast(dict, _load_json(wave0 / "multiroot-opencode.json"))
+    desired_rows = cast("list[dict]", _load_json(wave0 / "desired-rows.json"))
+    external_policy = cast("list[dict]", _load_json(wave0 / "external-policy.json"))
+    symlink_audit = cast("dict", _load_json(wave0 / "symlink-audit-grok.json"))
+    multiroot = cast("dict", _load_json(wave0 / "multiroot-opencode.json"))
 
     parity_gaps = build_parity_gaps(
         inventory_rows,

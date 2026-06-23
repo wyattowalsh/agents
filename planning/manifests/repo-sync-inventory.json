@@ -3,62 +3,170 @@
   "source_ref": "config/sync-manifest.json",
   "records": [
     {
-      "path": "${REPO_ROOT}/config/mcp-registry.json",
-      "mode": "canonical",
+      "path": "${REPO_ROOT}/.cursor/BUGBOT.md",
+      "mode": "generated",
       "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c03-mcp-audit",
-      "drift_policy": "canonical",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
-        "uv run wagents openspec validate"
+        "uv run wagents validate"
       ],
-      "secret_handling": "not-secret-bearing"
+      "secret_handling": "redacted"
     },
     {
-      "path": "${REPO_ROOT}/config/hook-registry.json",
-      "mode": "canonical",
+      "path": "${REPO_ROOT}/.cursor/agents",
+      "mode": "generated",
       "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c06-config-safety",
-      "drift_policy": "canonical",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/cli.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/hooks.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/mcp.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/permissions.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/rules",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.cursor/skills/repo",
+      "mode": "symlinked-entries",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "symlinked-entries",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "${REPO_ROOT}/.github/copilot-instructions.md",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
         "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/tooling-policy.json",
-      "mode": "canonical",
+      "path": "${REPO_ROOT}/.github/hooks",
+      "mode": "generated",
       "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c01-registry-core",
-      "drift_policy": "canonical",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py"
+        "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/support-tier-registry.json",
-      "mode": "canonical",
+      "path": "${REPO_ROOT}/.github/instructions",
+      "mode": "generated",
       "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c01-registry-core",
-      "drift_policy": "canonical",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py"
+        "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/harness-surface-registry.json",
-      "mode": "canonical",
+      "path": "${REPO_ROOT}/.grok/config.toml",
+      "mode": "generated",
       "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c01-registry-core",
-      "drift_policy": "canonical",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-grok-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py"
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "${REPO_ROOT}/.vscode/mcp.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c03-mcp-audit",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/config/codex-config.toml",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-openai-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
@@ -75,6 +183,18 @@
       "secret_handling": "not-secret-bearing"
     },
     {
+      "path": "${REPO_ROOT}/config/cursor-agents.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
       "path": "${REPO_ROOT}/config/docs-artifact-registry.json",
       "mode": "canonical",
       "location_class": "repo",
@@ -87,24 +207,12 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/skill-registry-policy.json",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c02-skills-lifecycle",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
       "path": "${REPO_ROOT}/config/external-skills.md",
-      "mode": "canonical",
+      "mode": "generated",
       "location_class": "repo",
-      "source_tier": "canonical-source",
+      "source_tier": "generated-output",
       "owner_change": "add-audited-external-skills",
-      "drift_policy": "canonical",
+      "drift_policy": "generated",
       "validation_evidence": [
         "uv run wagents docs generate",
         "uv run pytest tests/test_distribution_metadata.py"
@@ -112,7 +220,33 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/plugin-extension-registry.json",
+      "path": "${REPO_ROOT}/config/grok-config.toml",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-grok-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_sync_agent_stack.py",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/config/grok-env.sh",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-grok-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_sync_agent_stack.py",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "${REPO_ROOT}/config/harness-surface-registry.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
@@ -124,62 +258,26 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/schemas",
+      "path": "${REPO_ROOT}/config/hook-registry.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
-      "owner_change": "agents-c01-registry-core",
+      "owner_change": "agents-c06-config-safety",
       "drift_policy": "canonical",
       "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py"
+        "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/planning/manifests/repo-sync-inventory.json",
+      "path": "${REPO_ROOT}/config/mcp-registry.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
-      "owner_change": "agents-c00-repo-sync",
+      "owner_change": "agents-c03-mcp-audit",
       "drift_policy": "canonical",
       "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/planning/manifests/repo-drift-ledger.json",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c00-repo-sync",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/planning/manifests/harness-fixture-support.json",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c01-registry-core",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_harness_fixture_support_covers_every_harness_without_tier_promotion"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/planning/manifests/external-skills/chrome-devtools-mcp.json",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c10-external-repo-intake",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py"
+        "uv run wagents openspec validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
@@ -196,11 +294,11 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-notifier.json",
+      "path": "${REPO_ROOT}/config/opencode-ensemble.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
-      "owner_change": "agents-c04-opencode-gemini-harness",
+      "owner_change": "opencode-plugin-expansion",
       "drift_policy": "canonical",
       "validation_evidence": [
         "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
@@ -220,7 +318,19 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-tui-plugins.json",
+      "path": "${REPO_ROOT}/config/opencode-notifier.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/config/opencode-octto.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
@@ -256,7 +366,7 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-ensemble.json",
+      "path": "${REPO_ROOT}/config/opencode-tui-plugins.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
@@ -268,14 +378,50 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/config/opencode-octto.json",
+      "path": "${REPO_ROOT}/config/plugin-extension-registry.json",
       "mode": "canonical",
       "location_class": "repo",
       "source_tier": "canonical-source",
-      "owner_change": "opencode-plugin-expansion",
+      "owner_change": "agents-c01-registry-core",
       "drift_policy": "canonical",
       "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+        "uv run pytest tests/test_distribution_metadata.py"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/config/schemas",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c01-registry-core",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/config/skill-registry-policy.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c02-skills-lifecycle",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/config/support-tier-registry.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c01-registry-core",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py"
       ],
       "secret_handling": "not-secret-bearing"
     },
@@ -292,173 +438,27 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/instructions/copilot-global.md",
-      "mode": "symlink",
+      "path": "${REPO_ROOT}/config/tooling-policy.json",
+      "mode": "canonical",
       "location_class": "repo",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c01-registry-core",
       "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/codex-global.md",
-      "mode": "symlink",
-      "location_class": "repo",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/opencode-global.md",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/opencode.json",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "generated",
       "validation_evidence": [
         "uv run pytest tests/test_distribution_metadata.py"
       ],
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/.grok/config.toml",
-      "mode": "generated",
+      "path": "${REPO_ROOT}/docs/src/authoring/skills",
+      "mode": "canonical",
       "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-grok-harness",
-      "drift_policy": "generated",
+      "source_tier": "canonical-source",
+      "owner_change": "oss-friendly-codebase-standardization",
+      "drift_policy": "canonical",
       "validation_evidence": [
+        "uv run wagents catalog index --check",
         "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "${REPO_ROOT}/config/grok-config.toml",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c04-grok-harness",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_sync_agent_stack.py",
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/instructions/grok-global.md",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c04-grok-harness",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_sync_agent_stack.py",
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/config/grok-env.sh",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c04-grok-harness",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run pytest tests/test_sync_agent_stack.py",
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "${REPO_ROOT}/config/codex-config.toml",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/mcp.json",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c03-mcp-audit",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/.vscode/mcp.json",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c03-mcp-audit",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/copilot-instructions.md",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/instructions",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/.github/hooks",
-      "mode": "generated",
-      "location_class": "repo",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
       ],
       "secret_handling": "not-secret-bearing"
     },
@@ -475,24 +475,12 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/platforms/copilot/agents",
+      "path": "${REPO_ROOT}/instructions/codex-global.md",
       "mode": "symlink",
       "location_class": "repo",
       "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "canonical",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "${REPO_ROOT}/platforms/opencode/plugins",
-      "mode": "canonical",
-      "location_class": "repo",
-      "source_tier": "canonical-source",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "canonical",
+      "owner_change": "agents-c04-openai-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
         "uv run wagents validate"
       ],
@@ -504,6 +492,30 @@
       "location_class": "home",
       "source_tier": "symlink-target",
       "owner_change": "agents-c04-openai-harness",
+      "drift_policy": "symlink",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/copilot-global.md",
+      "mode": "symlink",
+      "location_class": "repo",
+      "source_tier": "symlink-target",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/copilot-global.md",
+      "mode": "symlink",
+      "location_class": "home",
+      "source_tier": "symlink-target",
+      "owner_change": "agents-c04-copilot-harness",
       "drift_policy": "symlink",
       "validation_evidence": [
         "uv run wagents validate"
@@ -523,12 +535,109 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "${REPO_ROOT}/instructions/copilot-global.md",
+      "path": "${REPO_ROOT}/instructions/grok-global.md",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-grok-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_sync_agent_stack.py",
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/instructions/opencode-global.md",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/mcp.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c03-mcp-audit",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/opencode.json",
+      "mode": "generated",
+      "location_class": "repo",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/external-skills/chrome-devtools-mcp.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c10-external-repo-intake",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/harness-fixture-support.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c01-registry-core",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_harness_fixture_support_covers_every_harness_without_tier_promotion"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/repo-drift-ledger.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c00-repo-sync",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/planning/manifests/repo-sync-inventory.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c00-repo-sync",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "${REPO_ROOT}/platforms/copilot/agents",
       "mode": "symlink",
-      "location_class": "home",
+      "location_class": "repo",
       "source_tier": "symlink-target",
       "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "symlink",
+      "drift_policy": "canonical",
       "validation_evidence": [
         "uv run wagents validate"
       ],
@@ -547,76 +656,28 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "~/.copilot/mcp-config.json",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
+      "path": "${REPO_ROOT}/platforms/opencode/plugins",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "canonical",
       "validation_evidence": [
         "uv run wagents validate"
       ],
-      "secret_handling": "redacted"
+      "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "~/.copilot/settings.json",
+      "path": "~/.aitk/mcp.json",
       "mode": "merged",
       "location_class": "home",
       "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-copilot-harness",
+      "owner_change": "agents-c04-experimental-harnesses",
       "drift_policy": "merged",
       "validation_evidence": [
         "uv run wagents validate"
       ],
       "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.config/copilot-subagents.env",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "redacted"
-    },
-    {
-      "path": "~/.codex/config.toml",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.grok/config.toml",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-grok-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.codex/hooks.json",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "redacted"
     },
     {
       "path": "~/.claude/settings.json",
@@ -643,57 +704,9 @@
       "secret_handling": "path-only"
     },
     {
-      "path": "~/Library/Application Support/Claude/claude_desktop_config.json",
-      "mode": "merged",
-      "location_class": "application-support",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-claude-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.cursor/mcp.json",
+      "path": "~/.codex/config.toml",
       "mode": "merged",
       "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-cursor-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.gemini/settings.json",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.gemini/GEMINI.md",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "~/Library/Application Support/ChatGPT/mcp.json",
-      "mode": "merged",
-      "location_class": "application-support",
       "source_tier": "merged-live-config",
       "owner_change": "agents-c04-openai-harness",
       "drift_policy": "merged",
@@ -701,6 +714,30 @@
         "uv run wagents validate"
       ],
       "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.codex/hooks.json",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-openai-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "~/.codex/skills",
+      "mode": "symlinked-entries",
+      "location_class": "home",
+      "source_tier": "symlink-target",
+      "owner_change": "agents-c04-openai-harness",
+      "drift_policy": "symlinked-entries",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
     },
     {
       "path": "~/.config/.copilot/mcp-config.json",
@@ -715,50 +752,26 @@
       "secret_handling": "path-only"
     },
     {
-      "path": "~/.gemini/antigravity/mcp_config.json",
-      "mode": "merged",
+      "path": "~/.config/copilot-subagents.env",
+      "mode": "generated",
       "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "merged",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "generated",
       "validation_evidence": [
         "uv run wagents validate"
       ],
-      "secret_handling": "path-only"
+      "secret_handling": "redacted"
     },
     {
-      "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+      "path": "~/.config/crush/crush.json",
       "mode": "merged",
       "location_class": "home",
       "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
+      "owner_change": "agents-c04-experimental-harnesses",
       "drift_policy": "merged",
       "validation_evidence": [
         "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.config/opencode/opencode.json",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.config/opencode/tui.json",
-      "mode": "merged",
-      "location_class": "home",
-      "source_tier": "merged-live-config",
-      "owner_change": "opencode-plugin-expansion",
-      "drift_policy": "merged",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
       ],
       "secret_handling": "path-only"
     },
@@ -775,47 +788,23 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "~/.config/opencode/large-image-optimizer.json",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "~/.config/opencode/opencode-quota/quota-toast.json",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "opencode-plugin-expansion",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "~/.config/opencode/token-monitor.json",
-      "mode": "generated",
-      "location_class": "home",
-      "source_tier": "generated-output",
-      "owner_change": "opencode-plugin-expansion",
-      "drift_policy": "generated",
-      "validation_evidence": [
-        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
       "path": "~/.config/opencode/ensemble.json",
       "mode": "generated",
       "location_class": "home",
       "source_tier": "generated-output",
       "owner_change": "opencode-plugin-expansion",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "~/.config/opencode/large-image-optimizer.json",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-opencode-gemini-harness",
       "drift_policy": "generated",
       "validation_evidence": [
         "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
@@ -847,6 +836,30 @@
       "secret_handling": "not-secret-bearing"
     },
     {
+      "path": "~/.config/opencode/opencode-quota/quota-toast.json",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "opencode-plugin-expansion",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "~/.config/opencode/opencode.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
       "path": "~/.config/opencode/plugins/approval-notify.ts",
       "mode": "generated",
       "location_class": "home",
@@ -871,11 +884,47 @@
       "secret_handling": "not-secret-bearing"
     },
     {
-      "path": "~/.aitk/mcp.json",
+      "path": "~/.config/opencode/token-monitor.json",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "opencode-plugin-expansion",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "~/.config/opencode/tui.json",
       "mode": "merged",
       "location_class": "home",
       "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-experimental-harnesses",
+      "owner_change": "opencode-plugin-expansion",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.copilot/mcp-config.json",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "redacted"
+    },
+    {
+      "path": "~/.copilot/settings.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-copilot-harness",
       "drift_policy": "merged",
       "validation_evidence": [
         "uv run wagents validate"
@@ -883,9 +932,117 @@
       "secret_handling": "path-only"
     },
     {
-      "path": "~/.config/crush/crush.json",
+      "path": "~/.copilot/skills",
+      "mode": "symlinked-entries",
+      "location_class": "home",
+      "source_tier": "symlink-target",
+      "owner_change": "agents-c04-copilot-harness",
+      "drift_policy": "symlinked-entries",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "~/.cursor/mcp.json",
       "mode": "merged",
       "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-cursor-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.gemini/GEMINI.md",
+      "mode": "generated",
+      "location_class": "home",
+      "source_tier": "generated-output",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "generated",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "~/.gemini/antigravity/mcp_config.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.gemini/extensions/outline-driven-development/antigravity/mcp_config.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.gemini/settings.json",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/.gemini/skills",
+      "mode": "symlinked-entries",
+      "location_class": "home",
+      "source_tier": "symlink-target",
+      "owner_change": "agents-c04-opencode-gemini-harness",
+      "drift_policy": "symlinked-entries",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
+      "path": "~/.grok/config.toml",
+      "mode": "merged",
+      "location_class": "home",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-grok-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run pytest tests/test_distribution_metadata.py::test_repo_sync_inventory_covers_sync_manifest_paths"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/Library/Application Support/ChatGPT/mcp.json",
+      "mode": "merged",
+      "location_class": "application-support",
+      "source_tier": "merged-live-config",
+      "owner_change": "agents-c04-openai-harness",
+      "drift_policy": "merged",
+      "validation_evidence": [
+        "uv run wagents validate"
+      ],
+      "secret_handling": "path-only"
+    },
+    {
+      "path": "~/Library/Application Support/CherryStudio/config.json",
+      "mode": "merged",
+      "location_class": "application-support",
       "source_tier": "merged-live-config",
       "owner_change": "agents-c04-experimental-harnesses",
       "drift_policy": "merged",
@@ -907,52 +1064,16 @@
       "secret_handling": "redacted"
     },
     {
-      "path": "~/Library/Application Support/CherryStudio/config.json",
+      "path": "~/Library/Application Support/Claude/claude_desktop_config.json",
       "mode": "merged",
       "location_class": "application-support",
       "source_tier": "merged-live-config",
-      "owner_change": "agents-c04-experimental-harnesses",
+      "owner_change": "agents-c04-claude-harness",
       "drift_policy": "merged",
       "validation_evidence": [
         "uv run wagents validate"
       ],
       "secret_handling": "path-only"
-    },
-    {
-      "path": "~/.codex/skills",
-      "mode": "symlinked-entries",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-openai-harness",
-      "drift_policy": "symlinked-entries",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "~/.copilot/skills",
-      "mode": "symlinked-entries",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-copilot-harness",
-      "drift_policy": "symlinked-entries",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
-    },
-    {
-      "path": "~/.gemini/skills",
-      "mode": "symlinked-entries",
-      "location_class": "home",
-      "source_tier": "symlink-target",
-      "owner_change": "agents-c04-opencode-gemini-harness",
-      "drift_policy": "symlinked-entries",
-      "validation_evidence": [
-        "uv run wagents validate"
-      ],
-      "secret_handling": "not-secret-bearing"
     }
   ]
 }

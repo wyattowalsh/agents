@@ -25,7 +25,7 @@ if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null 2>&1; then
       CRITICAL=$(echo "$PY" | xargs ruff check --select E9,F63,F7,F82 2>/dev/null)
       [ -n "$CRITICAL" ] && { printf "Critical lint errors. Fix before going idle:\n%s\n" "$CRITICAL" >&2; exit 2; }
     fi
-    TYPED_PY=$(echo "$PY" | grep -E '^(wagents|scripts)/')
+    TYPED_PY=$(echo "$PY" | grep -E '^(wagents|tests|skills/nerdbot/(src|scripts))/|^scripts/' | grep -v '^scripts/validate/')
     if [ -n "$TYPED_PY" ] && [ -f "pyproject.toml" ] && command -v uv &>/dev/null; then
       TYPE_ERRS=$(echo "$TYPED_PY" | xargs uv run ty check --output-format concise --no-progress 2>&1)
       TYPE_EXIT=$?

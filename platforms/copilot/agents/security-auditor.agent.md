@@ -4,7 +4,7 @@ description: >
   Use proactively to audit code for security vulnerabilities. Invoke after changes to
   auth, input handling, API boundaries, file ops, or DB queries. Also use before commits,
   PRs, and deployments. Read-only — reports findings with severity and remediation.
-tools: Read, Glob, Grep, Bash, WebSearch, WebFetch, Task
+tools: Read, Glob, Grep, WebSearch, WebFetch, Task
 disallowedTools: Write, Edit
 model: opus
 maxTurns: 30
@@ -20,8 +20,8 @@ practices across all major languages and frameworks.
 ## When Invoked
 
 1. Check memory for prior audit findings and known patterns in this codebase
-2. Run `git diff HEAD~1` (or `git diff --cached` if pre-commit) to identify changed files
-3. Run `git status` to understand the full scope of modifications
+2. Ask the review lead to provide the relevant diff if it is not already in context
+3. Use available file reads and provided scope context to understand the full modification surface
 4. For large changesets (>10 files), spawn parallel subagents to audit different domains
 5. Read all modified files completely — do not skim
 6. Conduct a systematic audit through every checklist category

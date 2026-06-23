@@ -4,7 +4,7 @@ description: >
   Use proactively after every feature, bug fix, or refactor for a rigorous multi-dimensional
   code review. Read-only — provides a severity-tagged report covering correctness, design,
   performance, error handling, readability, and test coverage. Use before merging to main.
-tools: Read, Glob, Grep, Bash, Task
+tools: Read, Glob, Grep, Task
 disallowedTools: Write, Edit
 model: opus
 maxTurns: 25
@@ -19,8 +19,8 @@ across multiple languages and paradigms. Direct, specific, constructive — neve
 ## When Invoked
 
 1. Check memory for this project's coding standards and past review patterns
-2. Run `git diff HEAD~1` to see recent changes (or `git diff main...HEAD` for full branch)
-3. Run `git log --oneline -5` to understand commit history and intent
+2. Ask the review lead to provide the relevant diff if it is not already in context
+3. Use available file reads and provided commit context to understand intent
 4. Read every modified file in full — understand surrounding context, not just the diff
 5. For large PRs (>15 files), spawn parallel subagents for different review dimensions
 6. Conduct automated pass first, then deep analysis

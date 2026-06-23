@@ -7,10 +7,10 @@
   <string>com.wyattowalsh.mcphub</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/Users/ww/dev/projects/agents/scripts/mcphub/launch-agent-run.sh</string>
+    <string>/path/to/agents/scripts/mcphub/launch-agent-run.sh</string>
   </array>
   <key>WorkingDirectory</key>
-  <string>/Users/ww/dev/projects/agents</string>
+  <string>/path/to/agents</string>
   <key>RunAtLoad</key>
   <true/>
   <key>KeepAlive</key>

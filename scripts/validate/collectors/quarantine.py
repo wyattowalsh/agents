@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 def _quarantined_repo_slugs(repo_root: Path) -> set[str]:
@@ -62,7 +65,10 @@ def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
                                 name = row.get("name") or row.get("id") or "?"
                                 errors.append({
                                     "source": str(cat_index),
-                                    "message": f"Hard-quarantined source '{slug}' must not appear in catalog index entry {name} (field {fld})",
+                                    "message": (
+                                        f"Hard-quarantined source '{slug}' must not appear in catalog index entry "
+                                        f"{name} (field {fld})"
+                                    ),
                                 })
         except Exception:
             pass
