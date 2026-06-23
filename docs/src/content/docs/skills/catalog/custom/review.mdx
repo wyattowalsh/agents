@@ -12,7 +12,7 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use for session, scoped, PR, range, full audit, simplification, and source/provenance reviews with evidence-first findings. NOT for feature implementation or benchmarking."
   installCommand={`npx skills add github:wyattowalsh/agents --skill review -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/review [--mode &lt;mode[,mode]&gt; | path | audit | PR# | simplify &lt;target&gt; | source &lt;source-or-path&gt;]"
-  badges={[{ text: "review", variant: "note" }, { text: "2253 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "review", variant: "note" }, { text: "2506 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
@@ -123,7 +123,8 @@ Use `/review` as the canonical first-party review entrypoint. It covers code rev
 | `source provenance &lt;source&gt;` | source provenance | Check owner, URL, license, commit/hash, registry/source-list consistency, and access date |
 | `source decision &lt;source-or-path&gt;` | source decision | Recommend install-now, inspect, keep-global, build-local, or avoid |
 | `source scan &lt;path&gt;` | source scan | Run static source audit helper and interpret JSON output |
-| `--lens security\|supply-chain\|ci\|sql\|data\|frontend\|a11y\|web-quality\|mcp\|agentic\|docs` | specialist | Overlay an explicit specialist lens on the selected scope |
+| `--lens security\|supply-chain\|ci\|sql\|data\|frontend\|a11y\|web-quality\|mcp\|agentic\|docs\|skill-assets` | specialist | Overlay an explicit specialist lens on the selected scope |
+| path under `skills/&lt;name&gt;/`, `SKILL.md`, `evals/*.json`, or skill catalog/research docs | scoped + skill-assets | Review as a skill asset using skill-creator structural patterns, portability, eval, package, and generated-surface gates |
 | `--format sarif` | output modifier | Emit SARIF v2.1 findings in addition to or instead of text |
 | `--format conventional` | output modifier | Emit Conventional Comments-compatible PR review output |
 | `history [project]` | history | Read stored review history |
@@ -143,6 +144,7 @@ Use `/review` as the canonical first-party review entrypoint. It covers code rev
 7. Always separate evidence from inference.
 8. Always preserve unrelated dirty work.
 9. Do not present `honest-review`, `simplify`, or `external-skill-auditor` as installable or invocable skills. Rewrite active references to `/review`, `/review simplify`, or `/review source`; leave only clearly historical or research evidence mentions.
+10. For skill assets, apply skill-creator paradigms before reporting a no-finding result: run or cite audit/package/eval evidence when available, inspect references and eval coverage, and classify generated docs/catalog drift separately from source defects.
 
 <Tabs>
   <TabItem label="Public Metadata">
@@ -219,6 +221,7 @@ Use these canonical terms exactly.
 | **reasoning chain** | Why the finding matters, written before the finding statement |
 | **evidence** | Tool, source, test, docs, grep, dependency, or research proof that supports or rejects a finding |
 | **lens** | Specialist perspective such as security, supply chain, CI, SQL, data, frontend, a11y, web quality, MCP, agentic, or docs |
+| **skill asset** | A `SKILL.md`, skill directory, skill eval, skill script, reference, package, catalog row, or generated skill doc reviewed through skill-creator structural patterns |
 | **simplification lens** | Behavior-preserving review of complexity, invariants, semantic-change risk, and clarity opportunities |
 | **source/provenance lens** | Review of external skill/source trust, executable surfaces, owner, license, credentials, network behavior, and dedupe |
 | **approval gate** | Mandatory pause before editing files or applying fixes |
@@ -249,7 +252,8 @@ Classify `$ARGUMENTS` before reading widely.
 | `source provenance <source>` | source provenance | Check owner, URL, license, commit/hash, registry/source-list consistency, and access date |
 | `source decision <source-or-path>` | source decision | Recommend install-now, inspect, keep-global, build-local, or avoid |
 | `source scan <path>` | source scan | Run static source audit helper and interpret JSON output |
-| `--lens security|supply-chain|ci|sql|data|frontend|a11y|web-quality|mcp|agentic|docs` | specialist | Overlay an explicit specialist lens on the selected scope |
+| `--lens security|supply-chain|ci|sql|data|frontend|a11y|web-quality|mcp|agentic|docs|skill-assets` | specialist | Overlay an explicit specialist lens on the selected scope |
+| path under `skills/<name>/`, `SKILL.md`, `evals/*.json`, or skill catalog/research docs | scoped + skill-assets | Review as a skill asset using skill-creator structural patterns, portability, eval, package, and generated-surface gates |
 | `--format sarif` | output modifier | Emit SARIF v2.1 findings in addition to or instead of text |
 | `--format conventional` | output modifier | Emit Conventional Comments-compatible PR review output |
 | `history [project]` | history | Read stored review history |
@@ -263,11 +267,12 @@ Classify `$ARGUMENTS` before reading widely.
 1. Parse explicit `--mode` flags first. Split comma-separated values and preserve repeated flags.
 2. If explicit modes are present, run only those modes. Infer the target when safe, but never infer edit approval.
 3. If no explicit mode is present, infer from args: empty changed diff -> session, empty clean tree -> menu, path -> scoped, PR number/URL -> PR, git range -> range, `audit` -> full audit, `simplify` -> simplification, `source` or external skill/source language -> source/provenance.
-4. Multiple read-only modes run as separate lanes and reconcile through Judge.
-5. `fix` and `simplify apply` are edit-capable. Never run them from inference alone and never mix them into a read-only bundle without explicit approved finding IDs.
-6. `--lens` modifies the selected mode; it does not invent scope.
-7. `--format` modifies output only; it does not choose scope.
-8. Feature work, benchmarking, broad refactors, installs, or implementation requests without approved findings are out of scope.
+4. When the selected scope is a skill asset, automatically attach the `skill-assets` lens unless the user explicitly asks for a different lens only.
+5. Multiple read-only modes run as separate lanes and reconcile through Judge.
+6. `fix` and `simplify apply` are edit-capable. Never run them from inference alone and never mix them into a read-only bundle without explicit approved finding IDs.
+7. `--lens` modifies the selected mode; it does not invent scope.
+8. `--format` modifies output only; it does not choose scope.
+9. Feature work, benchmarking, broad refactors, installs, or implementation requests without approved findings are out of scope.
 
 ## Scope Boundaries
 
@@ -280,7 +285,8 @@ Out of scope: new features, product implementation, benchmark design, broad refa
 1. Decide whether the request is review, simplification, source/provenance, state/history, output formatting, or implementation.
 2. Reject implementation unless it is an approved finding fix or a `simplify apply` target that passes the eligibility gate.
 3. Reject source installs unless the user separately requests a live install after the source/provenance decision.
-4. When two modes could apply, prefer the read-only mode first and ask one concise question only if the target or approval state is unclear.
+4. For skill assets, require skill-creator structural evidence before accepting or rejecting a skill change: dispatch table, empty-args handler, reference index, critical rules, canonical vocabulary when needed, scope boundaries, progressive disclosure, script/eval/package proof, portability, and generated docs/catalog consistency.
+5. When two modes could apply, prefer the read-only mode first and ask one concise question only if the target or approval state is unclear.
 
 ## Scaling Strategy
 
@@ -348,6 +354,7 @@ Load references only when the selected mode needs them.
 | dependency graph and blast radius | `references/dependency-context.md` |
 | supply-chain security | `references/supply-chain-security.md` |
 | specialist lens map | `references/specialist-lenses.md` |
+| skill asset and skill-creator paradigms | `references/skill-asset-review.md` |
 | simplification lens | `references/simplification-lens.md` |
 | simplification taxonomy | `references/simplification-taxonomy.md` |
 | source/provenance lens | `references/source-provenance-lens.md` |
@@ -372,6 +379,12 @@ Never run candidate scripts during audit except static/syntax checks in a staged
 ## Browser-Grounded Review
 
 For frontend, a11y, web-quality, docs UI, and other browser-dependent review, prefer Chrome DevTools MCP through the repo-managed `chrome-devtools` MCPHub attached-browser configuration. Use browser snapshots, console/network evidence, and screenshots from Chrome DevTools MCP when available. If Chrome DevTools MCP is unavailable, state degraded mode before falling back to existing smoke tests or Playwright-oriented project checks.
+
+## Skill-Asset Review
+
+When the scope is a skill asset, load `references/skill-asset-review.md` and apply skill-creator paradigms as review evidence. Use deterministic `skill-creator` scripts when available, but do not treat a high audit score as the whole review. Check whether the skill's structure, dispatch behavior, evals, references, scripts, package portability, public docs, and generated catalog surfaces match the intended behavior.
+
+Skill-asset review is read-only unless the user invokes a valid fix pass or a separately approved implementation request. Do not run live installs, live behavioral evals, or sync apply while reviewing skill assets.
 
 ## Harness Portability
 
@@ -408,6 +421,7 @@ This `SKILL.md` is portable and prompt-first. It deliberately omits a root model
 7. Always separate evidence from inference.
 8. Always preserve unrelated dirty work.
 9. Do not present `honest-review`, `simplify`, or `external-skill-auditor` as installable or invocable skills. Rewrite active references to `/review`, `/review simplify`, or `/review source`; leave only clearly historical or research evidence mentions.
+10. For skill assets, apply skill-creator paradigms before reporting a no-finding result: run or cite audit/package/eval evidence when available, inspect references and eval coverage, and classify generated docs/catalog drift separately from source defects.
 
 ## Validation Contract
 
