@@ -37,8 +37,9 @@ def test_index_schema_file_exists_and_loads() -> None:
     assert INDEX_SCHEMA.exists()
     schema = _load_json(INDEX_SCHEMA)
     assert schema["title"] == "SkillsCatalogIndex"
-    assert schema["properties"]["version"]["const"] == 1
-    assert "entries" in schema["properties"]
+    assert "allSkillIndex" in schema["properties"]
+    assert "customSkillIndex" in schema["properties"]
+    assert "externalSkillIndex" in schema["properties"]
 
 
 def test_authoring_minimal_valid_structural() -> None:
@@ -62,28 +63,36 @@ def test_authoring_minimal_valid_structural() -> None:
 
 
 def test_index_minimal_valid_structural() -> None:
+    row = {
+        "name": "example-skill",
+        "description": "Example.",
+        "sourceKind": "curated-external",
+        "sourcePath": "docs/src/authoring/skills/example-skill.mdx",
+        "installCommand": "npx skills add owner/repo --skill example-skill",
+    }
     data = {
-        "version": 1,
-        "generated_at": "2026-06-16T12:00:00Z",
-        "entries": [
-            {
-                "skill_id": "example-skill",
-                "source_kind": "external",
-                "name": "example-skill",
-                "description": "Example.",
-                "body_path": "docs/src/authoring/skills/external/example-skill.mdx",
-                "install_command": "npx skills add owner/repo --skill example-skill",
-            }
-        ],
+        "customSkillIndex": [],
+        "externalSkillIndex": [row],
+        "allSkillIndex": [row],
     }
     schema = _load_json(INDEX_SCHEMA)
-    assert data["version"] == schema["properties"]["version"]["const"]
-    assert isinstance(data["entries"], list)
-    assert len(data["entries"]) > 0
-    entry0 = data["entries"][0]
-    for k in ["skill_id", "source_kind", "body_path"]:
+    assert isinstance(data["allSkillIndex"], list)
+    assert len(data["allSkillIndex"]) > 0
+    entry0 = data["allSkillIndex"][0]
+    for k in ["name", "description", "sourcePath", "sourceKind"]:
         assert k in entry0
     Validator = _try_jsonschema()
     if Validator:
         v = Validator(schema)
         v.validate(data)
+
+
+def test_committed_catalog_index_matches_schema() -> None:
+    index_path = ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
+    if not index_path.exists():
+        return
+    data = _load_json(index_path)
+    schema = _load_json(INDEX_SCHEMA)
+    Validator = _try_jsonschema()
+    if Validator:
+        Validator(schema).validate(data)
