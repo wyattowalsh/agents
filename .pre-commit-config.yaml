@@ -1,26 +1,48 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.2
-    hooks:
-      - id: ruff
-        args: [check, wagents/, tests/, skills/skill-creator/scripts/]
-      - id: ruff-format
-        args: [wagents/, tests/, skills/skill-creator/scripts/]
-
   - repo: local
     hooks:
+      - id: ruff
+        name: Ruff lint (config-driven)
+        entry: uv run ruff check
+        language: system
+        pass_filenames: false
+        files: \.py$
+      - id: ruff-format
+        name: Ruff format (config-driven)
+        entry: uv run ruff format --check
+        language: system
+        pass_filenames: false
+        files: \.py$
       - id: ty
         name: Type-check Python code
         entry: uv run ty check
         language: system
         pass_filenames: false
-        files: ^(wagents/|scripts/)
+        files: \.py$
       - id: wagents-validate
         name: Validate skills and agents
         entry: uv run wagents validate
         language: system
         pass_filenames: false
         files: ^(skills/|agents/)
+      - id: apm-materialize-check
+        name: Check APM materialize freshness
+        entry: uv run wagents apm materialize --check
+        language: system
+        pass_filenames: false
+        files: ^(agents/|instructions/|config/hook-registry\.json|config/hook-surface-registry\.json|apm\.yml|\.apm/)
+      - id: apm-doctor
+        name: APM surface doctor
+        entry: uv run wagents apm doctor
+        language: system
+        pass_filenames: false
+        files: ^(apm\.yml|\.apm/|opencode\.json|agents/|instructions/)
+      - id: openspec-validate
+        name: Validate OpenSpec changes and specs
+        entry: uv run wagents openspec validate
+        language: system
+        pass_filenames: false
+        files: ^openspec/
       - id: catalog-index-check
         name: Check skills catalog index freshness
         entry: uv run wagents catalog index --check

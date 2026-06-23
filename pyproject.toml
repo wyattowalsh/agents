@@ -27,15 +27,48 @@ Documentation = "https://github.com/wyattowalsh/agents/tree/main/docs"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.agents",
+    "/.claude",
+    "/.cursor",
+    "/.mcphub",
+    "/.mypy_cache",
+    "/.opencode",
+    "/.playwright-mcp",
+    "/.pytest_cache",
+    "/.ruff_cache",
+    "/.venv",
+    "/.vscode",
+    "/artifacts",
+    "/dist",
+    "/docs/.astro",
+    "/docs/.vercel",
+    "/docs/dist",
+    "/docs/node_modules",
+    "/goals",
+    "/mcp/archives",
+    "/mcp/cache",
+    "/mcp/notes",
+    "/mcp/secrets",
+    "/mcp/servers",
+    "**/.DS_Store",
+    "**/__pycache__",
+    "**/*.pyc",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["wagents"]
+
 [dependency-groups]
 dev = [
     "jsonschema>=4.25.1",
     "playwright>=1.58.0",
     "pytest>=8",
     "pytest-cov>=6",
-    "ruff>=0.9",
+    "ruff>=0.11",
     # Canonical Ty version pin for repo workflows, hooks, and docs.
-    "ty==0.0.29",
+    "ty==0.0.52",
 ]
 
 [tool.pytest.ini_options]
@@ -44,22 +77,50 @@ testpaths = ["tests"]
 [tool.ruff]
 target-version = "py313"
 line-length = 120
+required-version = ">=0.11"
+preview = true
+include = [
+    "wagents/**/*.py",
+    "tests/**/*.py",
+    "scripts/**/*.py",
+    "skills/**/scripts/**/*.py",
+    "skills/nerdbot/src/**/*.py",
+    "hooks/wagents-hook.py",
+]
+extend-exclude = ["mcp/**", "skills/**/evals/**"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM"]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "RUF", "TC", "PT", "RET"]
 
 [tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "PT004", "PT007", "FBT", "RUF069"]
+"wagents/__init__.py" = ["RUF067"]
+"wagents/platforms/__init__.py" = ["RUF067"]
 "scripts/validate/**" = ["E402"]
-"skills/skill-creator/scripts/asset_toolkit/**" = ["E402"]
+"skills/**/scripts/**" = ["E402", "E501", "E701", "E702", "E741", "RUF001"]
+"tests/test_nerdbot*.py" = ["E402"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["wagents", "nerdbot"]
 
 # Keep Ty explicitly declared for config discovery, scoped checks, and tooling detection.
 [tool.ty.environment]
 python-version = "3.13"
+root = [".", "skills/nerdbot/src"]
+extra-paths = ["skills/skill-creator/scripts", "skills/nerdbot/scripts"]
+
+[tool.ty.analysis]
+allowed-unresolved-imports = ["audit", "progress", "package", "asset_toolkit.**", "kb_bootstrap", "kb_inventory", "kb_lint"]
 
 [tool.ty.src]
-include = ["wagents", "scripts"]
+include = ["wagents", "scripts", "tests", "skills/nerdbot/src", "skills/nerdbot/scripts"]
 # scripts/validate uses runtime sys.path bootstrap (ruff E402 ignored); exclude from ty.
-exclude = ["scripts/validate/**"]
+exclude = ["scripts/validate/**", "tests/docs_ui/**"]
+
+[[tool.ty.overrides]]
+include = ["tests/**"]
+[tool.ty.overrides.rules]
+possibly-unresolved-reference = "warn"
 
 [tool.ty.terminal]
 error-on-warning = true

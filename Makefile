@@ -12,9 +12,9 @@ ifndef AGENT
 endif
 	npx -y skills add $(REPO) --skill '*' -a $(AGENT) -g -y
 
-install-skill:            ## Install specific skill(s) to all agents: make install-skill SKILL=honest-review
+install-skill:            ## Install specific skill(s) to all agents: make install-skill SKILL=review
 ifndef SKILL
-	$(error SKILL is required: make install-skill SKILL=honest-review)
+	$(error SKILL is required: make install-skill SKILL=review)
 endif
 	npx -y skills add $(REPO) --skill $(SKILL) --agent '*' -g -y
 
@@ -57,9 +57,17 @@ test:                     ## Run test suite
 	uv run pytest
 
 lint:                     ## Lint Python code
-	uv run ruff check wagents/ tests/ scripts/validate/ skills/skill-creator/scripts/
+	uv run ruff check
+
+format:                   ## Check Python formatting
+	uv run ruff format --check
 
 typecheck:                ## Type-check Python code
+	uv run ty check
+
+check-python:             ## Lint, format-check, and type-check Python code
+	uv run ruff check
+	uv run ruff format --check
 	uv run ty check
 
 audit:                    ## Audit all skill quality scores
@@ -112,6 +120,21 @@ mcphub-uninstall-launch-agent: ## Uninstall local LaunchAgent
 	-launchctl bootout "gui/$$(id -u)" "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
 	rm -f "$$HOME/Library/LaunchAgents/com.wyattowalsh.mcphub.plist"
 
+apm-materialize:          ## Materialize via apm (installs to apm_modules/ and harness dirs)
+	-apm install --frozen || -apm install
+
+apm-install:              ## Install bundle via apm (primary path)
+	-apm install wyattowalsh/agents
+
+apm-compile:              ## Compile context with apm
+	-apm compile
+
+apm-audit:                ## Run apm audit in CI mode (no-drift for local tolerance)
+	-apm audit --ci --no-drift
+
+apm-doctor:               ## Diagnose apm CLI presence and version
+	@command -v apm >/dev/null && apm --version || echo "apm CLI not found (pip install apm-cli)"
+
 help:                     ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}'
@@ -121,8 +144,9 @@ help:                     ## Show this help
 .PHONY: install install-agent install-skill list update help \
         install-claude install-cursor install-copilot install-gemini \
         install-codex install-opencode install-crush install-antigravity \
-        validate test lint typecheck audit package openspec-doctor \
+        validate test lint format typecheck check-python audit package openspec-doctor \
         openspec-validate openspec-update readme \
         mcphub-up mcphub-down mcphub-logs mcphub-doctor mcphub-validate \
         mcphub-openapi mcphub-smoke mcphub-install-launch-agent \
-        mcphub-uninstall-launch-agent
+        mcphub-uninstall-launch-agent \
+        apm-materialize apm-install apm-compile apm-audit apm-doctor

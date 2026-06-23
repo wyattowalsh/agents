@@ -1,0 +1,17 @@
+{
+  "captured_at": "2026-06-23",
+  "ruff": {
+    "command": "uv run ruff check wagents/ tests/ skills/skill-creator/scripts/",
+    "errors": 8,
+    "fixable": 1
+  },
+  "ty": {
+    "command": "uv run ty check",
+    "status": "pass",
+    "note": "tests/ excluded from ty src.include before change"
+  },
+  "ty_version_before": "0.0.29",
+  "ty_version_after": "0.0.52",
+  "ruff_version_lock": "0.15.2",
+  "post_change_status": "ruff check pass, ty check pass, pytest pass"
+}

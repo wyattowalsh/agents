@@ -5,6 +5,10 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -17,8 +21,8 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync
-      - run: uv run ruff check wagents/ tests/ skills/skill-creator/scripts/
-      - run: uv run ruff format --check wagents/ tests/ skills/skill-creator/scripts/
+      - run: uv run ruff check
+      - run: uv run ruff format --check
 
   typecheck:
     runs-on: ubuntu-latest
@@ -50,10 +54,31 @@ jobs:
       - run: uv sync
       - run: uv run wagents validate
       - run: uv run wagents readme --check
-      - run: uv run pytest tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_skill_index.py tests/test_authoring_sync.py -q --tb=line
+      - run: uv run wagents apm materialize --check
+      - run: uv run wagents apm doctor
+      - run: uv run pytest tests/test_skills_catalog_schemas.py tests/test_catalog_index_parity.py tests/test_skill_index.py tests/test_authoring_sync.py tests/test_apm_materialize.py tests/test_wagents_self.py -q --tb=line
       - run: uv run wagents openspec validate
       - run: uv run wagents skills sync --dry-run
       - run: uv run wagents catalog index --check
+
+  apm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync
+      - run: uv run wagents apm materialize --check
+      - run: uv run wagents apm doctor
+      - run: pip install apm-cli==0.21.0
+      - run: apm audit --ci --no-drift
+      - run: |
+          if [ -f apm.lock.yaml ]; then
+            apm install --frozen --only apm
+          else
+            echo "No apm.lock.yaml; skipping frozen install"
+          fi
 
   wagents-wheel:
     runs-on: ubuntu-latest
@@ -86,9 +111,9 @@ jobs:
           cache-dependency-path: docs/pnpm-lock.yaml
       - run: uv sync
       - run: uv run wagents docs generate --no-installed
+      - run: uv run wagents catalog index --check
       - run: uv run wagents docs compose --check-composed --min-pct 100 --write-manifest
       - run: uv run wagents docs lint || true
-      # starlight-links-validator plugin fails the build on broken links
       - run: cd docs && pnpm install --frozen-lockfile
       - run: cd docs && pnpm exec astro check
       - run: cd docs && pnpm build
