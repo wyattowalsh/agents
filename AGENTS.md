@@ -334,6 +334,20 @@ Docs-facing authority follows the same pattern: keep repo policy and workflow tr
 
 **Scoped rules** (`.claude/rules/*.md`) provide path-conditional instructions that load automatically when matching files are edited. Each rule uses YAML frontmatter with `paths` globs to declare its trigger scope. Rules cost zero tokens until a path match activates them, making them the lightest layer in the progressive disclosure hierarchy — between always-loaded instructions and on-demand skills.
 
+### Instruction surface map
+
+| Surface | Role | Source | Sync / generation |
+| ------- | ---- | ------ | ----------------- |
+| `instructions/global.md` | Canonical cross-platform instructions | Hand-authored SSOT | Entrypoint for bridges that support `@` imports |
+| `instructions/*-global.md` | Platform overlays | Hand-authored; `@./instructions/global.md` where supported | `scripts/sync_agent_stack.py` for generated mirrors |
+| `.claude/rules/*.md` | Claude Code scoped rules (global + platform + path rules) | Hand-authored copies composed for Claude's rule loader | Not generated; edit here, then run `sync_agent_stack.py --targets repo` for Copilot projection |
+| `.github/instructions/*.instructions.md` | GitHub Copilot scoped rules | Generated from `.claude/rules/*.md` | `uv run python scripts/sync_agent_stack.py --apply --targets repo` |
+| `.github/copilot-instructions.md` | Copilot home instructions | Generated from `instructions/copilot-global.md` | Same sync command |
+| `.cursor/rules/*.mdc` | Cursor scoped rules | Hand-authored (independent from `.claude/rules/`) | Copied to `~/.cursor/rules/` on home sync |
+| `.apm/instructions/*.instructions.md` | Microsoft APM instruction primitives | Generated from `instructions/` + path-scoped `.claude/rules/` | `uv run wagents apm materialize` |
+
+Claude's `.claude/rules/` tree intentionally duplicates `instructions/global.md` and platform overlays without `@` imports because Claude composes scoped rules natively. Keep path-scoped rules (`agents/*.md`, `skills/*/SKILL.md`, `docs/**`, `**/*.py`, etc.) synchronized when editing shared policy. Cursor rules use a separate `.mdc` schema and content set; do not assume parity with `.claude/rules/`.
+
 Everything situational uses **skills as context loaders** — Claude sees skill descriptions at startup and auto-invokes relevant ones on demand:
 
 | Skill                    | Type                             | Description in context | Body loads when                                   |
@@ -365,7 +379,7 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 
 | Agent              | Reads                                                          | Bridge / Generated Source                                        |
 | ------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Claude Code        | `CLAUDE.md` → `instructions/global.md`                         | `instructions/claude-code-global.md` is compatibility only       |
+| Claude Code        | `CLAUDE.md` → `@AGENTS.md` → `@instructions/global.md`       | `instructions/claude-code-global.md` is compatibility only       |
 | Claude Code plugin | `.claude-plugin/marketplace.json` → repo root plugin           | `.claude-plugin/plugin.json`                                     |
 | Gemini CLI         | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md`       | `GEMINI.md`                                                      |
 | Antigravity        | `GEMINI.md` → `@./AGENTS.md` → `@instructions/global.md`       | `GEMINI.md`                                                      |
@@ -376,6 +390,7 @@ Auto-invoke skills use `user-invocable: false` — hidden from `/` menu but desc
 | Cursor             | `AGENTS.md` → `@instructions/global.md`                        | `AGENTS.md`                                                      |
 | Grok Build         | `AGENTS.md` → `@instructions/global.md`                        | `instructions/grok-global.md`, `config/grok-config.toml`, `~/.grok/config.toml`, `.grok/config.toml`; MCP via sync; Plannotator via CLI + skills + `config/grok-plannotator-hooks.json` (not OpenCode plugin); `wagents grok doctor`, `wagents grok plannotator install` |
 | GitHub Copilot     | Generated `.github/copilot-instructions.md` + repo `AGENTS.md` | Generated from `instructions/copilot-global.md`                  |
+| Cherry Studio      | MCP registry via MCPHub (MCP-only harness)                     | `config/mcp-registry.json`; no dedicated instruction bridge    |
 
 Grok Build discovers skills from `~/.grok/skills/`, repo `.grok/skills/`, and `~/.claude/skills/`. The Skills CLI has no native `grok` adapter; `wagents skills sync` installs Grok-targeted curated skills via the Claude Code adapter and mirrors them into `~/.grok/skills`. Plannotator on Grok uses `wagents grok plannotator install` (CLI + core skills + optional hooks synced from `config/grok-plannotator-hooks.json`); there is no Grok npm plugin like OpenCode's `@plannotator/opencode`.
 
