@@ -8,8 +8,8 @@ aliases:
   - Repository glossary
 kind: index
 status: active
-updated: 2026-05-01
-source_count: 25
+updated: 2026-06-23
+source_count: 31
 ---
 
 # Glossary
@@ -51,3 +51,10 @@ source_count: 25
 | Eval coverage tier | KB shorthand for how deeply a skill's evals cover invocation, refusal, approval, no-mutation, and boundary behavior. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` |
 | Docs artifact registry | Config registry for selected generated docs artifacts and their validation commands. | `kb/raw/sources/docs-artifact-freshness.md`; `kb/raw/sources/docs-site-architecture.md` |
 | Docs freshness check | Non-mutating or low-risk check that proves generated docs outputs match source inputs. | `kb/raw/sources/docs-artifact-freshness.md` |
+| Bucket A catalog | Curated/custom skill catalog semantics where authoring SSOT lives in `docs/src/authoring/skills/*.mdx` and the generated `skills-catalog-index.json` is the machine bundle. | `kb/raw/sources/skills-catalog-authoring-lifecycle-source.md` |
+| MCPHub | Local MCP control plane; registry in `config/mcp-registry.json`, settings under `mcp/mcphub/`, bearer auth and secrets in `.env.mcphub`. | `kb/raw/sources/mcphub-control-plane-source.md` |
+| Platform adapter | Per-harness sync implementation under `wagents/platforms/` projecting repo assets into harness-specific config. | `kb/raw/sources/wagents-platform-adapters-source.md` |
+| Config-drop guard | Sync safety refusal when a merged render would drop user-owned keys (`ConfigDropError`). | `kb/raw/sources/wagents-platform-adapters-source.md` |
+| Compose coverage | Docs compose manifest tracking which registry rows have composed MDX pages under `docs/src/content/docs/`. | `kb/raw/sources/docs-artifact-freshness.md` |
+| CI validate job | GitHub Actions job running `wagents validate`, readme check, openspec validate, skills sync dry-run, and catalog index check. | `kb/raw/sources/ci-release-workflows-source.md` |
+| Phase 4 fix candidate | Documented repo fix outside `kb/` queued after KB enrichment (docs badge, plugin files, compose pages, CLI gaps). | `kb/wiki/topics/known-risks-and-open-gaps.md` |

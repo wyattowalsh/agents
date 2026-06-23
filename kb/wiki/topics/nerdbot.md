@@ -50,6 +50,7 @@ For this repository's KB, inventory and lint are the completion gates. Inventory
 - [[developer-commands]]
 - [[validation-and-test-coverage]]
 - [[external-primary-source-map]]
+- [[obsidian-vault-conventions]]
 - [[known-risks-and-open-gaps]]
 - [[coverage]]
 

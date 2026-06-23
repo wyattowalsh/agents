@@ -9,8 +9,8 @@ aliases:
   - Known risks
 kind: overview
 status: active
-updated: 2026-05-01
-source_count: 16
+updated: 2026-06-23
+source_count: 22
 ---
 
 # Known Risks And Open Gaps
@@ -19,44 +19,58 @@ source_count: 16
 
 | Risk | Status | Why it matters | Next action |
 |------|--------|----------------|-------------|
-| Dirty worktree | Observed | There were many modified and untracked files before KB creation; unrelated user work must be preserved. | Do not infer repo health from this KB; inspect diffs before future code changes. |
-| Local secret-looking MCP area | Gap | `mcp/secrets/` was identified as a sensitive local area and was not ingested. | Keep pointer-only; never capture secret values into KB. |
-| `agent-bundle.json` description drift | Gap | Bundle description says `agents/` is reserved, while inventory found eight agent definitions and public generated docs publish agents. | Reconcile source text, tests, docs rendering, and plugin manifests in a future batch. |
-| Full CI status unknown | Gap | This KB batch only runs targeted Nerdbot checks, not full CI. | Run full validation matrix separately when requested. |
-| Docs/generated surfaces not exhaustively audited | Partial | README has a check path, but docs generation lacks a non-mutating check mode and at least one hand-maintained MCP docs count appears stale. | Use [[docs-generation-and-site]] and add a docs check/freshness gate before making public docs claims. |
-| External standards are context-only | Observed | External docs were fetched as pointer-summary source notes; repo-local files still govern repo behavior. | Keep [[external-primary-source-map]] marked contextual and avoid treating upstream docs as local authority. |
-| Non-Markdown vault assets skipped | Intentional | Current session allowed Markdown mutations only. | Add CSS snippets or other non-Markdown assets only in a later approved execution context. |
-| OpenCode generated/canonical tension | Gap | `opencode.json` is repo-managed canonical config while some sync surfaces are generated or merged; ownership must be checked before edits. | Use [[canonical-generated-surfaces]] and [[opencode-runtime-policy]] before touching OpenCode config. |
-| Sync rollback completeness | Gap | Sync transaction safety is documented but full rollback coverage is not proven for every path. | Use [[sync-transaction-safety]] and run targeted tests before claiming rollback guarantees. |
-| Harness fixture coverage | Gap | Fixture/support-tier coverage is not proven for every harness projection. | Use [[harness-fixture-gaps]] before changing sync support tiers. |
-| Planning manifest freshness | Partial | Planning manifests record drift and fixture requirements, but they are snapshots and do not prove the current worktree or live config still matches. | Re-run targeted distribution metadata tests before promoting planning claims into support guarantees. |
-| OpenSpec archive state can drift from task state | Gap | Active change tasks may be checked before archive readiness evidence and archive execution are complete. | Use [[openspec-change-archive-status]] before any archive or release-readiness claim. |
-| Risk-adjusted skill eval adequacy | Gap | Eval presence is uneven, and some higher-risk integration skills lack eval coverage by current research. | Use [[skill-catalog-risk-and-eval-coverage]] before treating eval counts as sufficient. |
-| Agent publication drift | Gap | Bundle metadata, generated docs, plugin manifests, docs artifact registry, and platform-specific agent corpora do not fully agree. | Use [[agent-publication-and-drift-coverage]] before changing agent publication behavior. |
+| Dirty worktree | Observed | Unrelated modified and untracked files outside `kb/` remain; KB enrichment must stay additive. | Inspect diffs before non-KB code changes; do not infer repo health from KB alone. |
+| Local secret-looking MCP area | Gap | `mcp/secrets/` is sensitive and was not ingested. | Keep pointer-only; never capture secret values into KB. |
+| Agent publication drift | Partial | Eight canonical agents under `agents/`; bundle lists `./agents/`; Codex plugin files missing; Copilot corpus has 11 files with partial overlap. | Use [[agent-publication-and-drift-coverage]]; fix in separate repo batch. |
+| Full CI status unknown for this session | Gap | KB batch ran targeted Nerdbot lint/inventory, not full CI matrix. | Run `.github/workflows/ci.yml` locally or on PR when release-blocking. |
+| Docs/generated surfaces partially audited | Partial | Compose 98.2%; five Cursor hook pages missing; MCP index badge stale; no `wagents docs generate --check`. | Use [[docs-generation-and-site]]; fix candidates below. |
+| External standards are context-only | Observed | External docs are pointer-summary source notes. | Keep [[external-primary-source-map]] contextual. |
+| OpenCode generated/canonical tension | Gap | `opencode.json` is repo-managed while some sync surfaces are generated or merged. | Use [[canonical-generated-surfaces]] and [[opencode-runtime-policy]] before edits. |
+| Sync rollback completeness | Gap | Config-drop and merge preservation exist; full merged-home rollback not proven. | Use [[sync-transaction-safety]] and [[wagents-platform-adapters]]. |
+| Harness fixture coverage | Gap | Rollback fixtures mostly `planned`; Codex plugin paths missing; compose hook gap. | Use [[harness-fixture-gaps]] before raising support tiers. |
+| Planning manifest freshness | Partial | Planning manifests are snapshots, not live config proof. | Re-run targeted tests before promotion claims. |
+| OpenSpec archive state can drift | Partial | ~32 active / ~28 archived; four actives with unchecked tasks; portable CLI lacks `archive` subcommand. | Use [[openspec-change-archive-status]]. |
+| Risk-adjusted skill eval adequacy | Gap | 29/56 skills have `evals/evals.json`; many R3/R4 workflows lack E3/E4 coverage. | Use [[skill-catalog-risk-and-eval-coverage]]. |
+| MCPHub topology changes | Partial | Registry, tunnel, and smart-routing surfaces documented in KB but not live-verified here. | Use [[mcphub-control-plane]] before topology edits. |
+
+## Phase 4 Fix Candidates (repo, not KB)
+
+Documented here for a separate atomic fix batch outside `kb/`:
+
+1. Refresh stale MCP count badge in `docs/src/content/docs/mcp/index.mdx`.
+2. Add or restore missing Codex plugin manifest files referenced by harness registry/tests.
+3. Compose the five missing Cursor hook docs pages (registry rows without MDX).
+4. Add `wagents docs generate --check` or extend docs artifact registry coverage.
+5. Implement or wire portable `openspec archive` CLI handler if SKILL dispatch should remain truthful.
+6. Reconcile Copilot agent corpus size/names with canonical eight agents (if publication parity is required).
 
 ## Recommended Follow-Ups
 
-1. Reconcile `agent-bundle.json` wording about `agents/` with actual tracked agent definitions.
-2. Run full repo health commands only if the parent user asks for CI/quality status.
-3. Add deeper source notes for concrete `wagents/platforms/*.py` implementations if a future sync change targets those files.
-4. Expand harness fixtures/support-tier validation before changing projection ownership or generated config behavior.
-5. Re-run README/docs freshness checks before making public docs claims, and add a docs generation check mode if docs freshness becomes release-blocking.
-6. Keep [[planning-corpus-and-drift-ledgers]] updated when sync manifests, harness fixtures, or drift ledgers change.
-7. Archive OpenSpec task-complete changes only after checklist evidence and validation/status commands pass.
-8. Add eval coverage for higher-risk skills before raising confidence in risk-adjusted coverage.
+1. Run full CI or pre-commit slice when the parent user asks for release readiness.
+2. Execute Phase 4 items as separate conventional commits, not mixed with KB-only work.
+3. Add eval coverage for higher-risk skills before raising confidence in risk-adjusted coverage.
+4. Archive OpenSpec task-complete changes only after checklist evidence and validation pass.
+5. Keep [[planning-corpus-and-drift-ledgers]] updated when sync manifests or fixture ledgers change.
+6. Re-run README/docs/catalog freshness checks before public docs claims.
 
 ## Evidence
 
 | Claim | Source | Type | Notes |
 |-------|--------|------|-------|
-| Worktree was dirty and branch was ahead by one at inventory time. | `kb/raw/captures/local-inventory-summary.md` | raw capture | Derived from git status tool output. |
-| `mcp/secrets/` is sensitive and should not be ingested. | `kb/raw/sources/code-surface-inventory.md`; local inventory result | raw source note | Pointer-only treatment. |
-| `agent-bundle.json` currently describes `agents/` as reserved while local inventory found agent files. | `kb/raw/sources/agent-bundle-and-sync.md`; `kb/raw/sources/code-surface-inventory.md` | raw source notes | Drift candidate. |
-| Nerdbot recommends pointer stubs for secret-looking or unsafe sources. | `kb/raw/sources/nerdbot-skill-contract.md` | raw source note | Safety model. |
-| External upstream docs are captured as contextual source notes, not authoritative repo policy. | `kb/raw/sources/external-agent-skill-docs.md`; `kb/raw/sources/external-harness-docs.md`; `kb/raw/sources/external-tooling-docs.md`; `kb/raw/sources/external-obsidian-markdown-docs.md` | external source notes | Context-only. |
-| Sync rollback, generated-surface ownership, and harness fixture coverage remain explicit gaps. | `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/tests-and-validation.md`; `kb/raw/sources/opencode-policy-and-runtime-plugins.md` | raw source notes | Follow-up queue. |
-| Planning manifests capture sync inventory, drift state, fixture blockers, and support promotion constraints. | `kb/raw/sources/planning-corpus-drift-source.md` | raw source note | Snapshot evidence, not a live support guarantee; completed prose docs are archived in git/OpenSpec evidence. |
-| Active OpenSpec changes require archive-readiness evidence beyond checked task boxes before archive execution. | `kb/raw/sources/openspec-change-archive-source.md` | raw source note | Agents-platform archive completed later in `841b9b1`. |
-| Agent publication drift spans bundle metadata, generated docs, plugin manifests, and platform-specific agent corpora. | `kb/raw/sources/agent-publication-drift-coverage.md` | raw source note | Drift map. |
-| Skill eval coverage should be interpreted relative to skill risk. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Eval adequacy gap. |
-| Docs artifact freshness includes registry coverage gaps and stale hand-maintained derived counts. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | Docs health remains partial. |
+| Worktree dirty at 2026-06-23 enrichment start. | `kb/raw/captures/local-inventory-summary.md` | raw capture | Git snapshot. |
+| `mcp/secrets/` is sensitive and should not be ingested. | `kb/raw/sources/code-surface-inventory.md` | raw source note | Pointer-only treatment. |
+| Agent publication drift spans bundle, plugins, docs, platform corpora. | `kb/raw/sources/agent-publication-drift-coverage.md`; `kb/raw/sources/wagents-platform-adapters-source.md` | raw source notes | 2026-06-23 refresh. |
+| Nerdbot recommends pointer stubs for secret-looking sources. | `kb/raw/sources/nerdbot-skill-contract.md` | raw source note | Safety model. |
+| Sync rollback and fixture gaps remain explicit. | `kb/raw/sources/wagents-platform-adapters-source.md`; `kb/raw/sources/planning-corpus-drift-source.md` | raw source notes | Conservative posture. |
+| OpenSpec active/archive snapshot and incomplete actives. | `kb/raw/sources/openspec-active-lifecycle-source.md` | raw source note | Validation not rerun. |
+| Skill eval manifest count vs skill tree size. | `kb/raw/captures/local-inventory-summary.md`; `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw capture; raw source note | 29/56. |
+| Docs freshness gaps including MCP badge and compose holes. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | Fix candidates. |
+| CI validates docs compose at 100% on PR/push. | `kb/raw/sources/ci-release-workflows-source.md` | raw source note | External gate exists. |
+| MCPHub control plane documented from registry/scripts. | `kb/raw/sources/mcphub-control-plane-source.md` | raw source note | Topology reference. |
+
+## Related
+
+- [[docs-generation-and-site]]
+- [[agent-publication-and-drift-coverage]]
+- [[ci-and-release-workflows]]
+- [[mcphub-control-plane]]

@@ -8,8 +8,8 @@ aliases:
   - Repository KB
 kind: overview
 status: active
-updated: 2026-05-01
-source_count: 14
+updated: 2026-06-23
+source_count: 20
 ---
 
 # Agents Repository Operating Knowledge Base
@@ -61,6 +61,12 @@ Treat these repo files and directories as primary evidence before using generate
 | [[openspec-change-archive-status]] | Active OpenSpec change inventory and archive-readiness distinction. |
 | [[agent-publication-and-drift-coverage]] | Agent publication paths, docs/plugin surfaces, and drift candidates. |
 | [[skill-catalog-risk-and-eval-coverage]] | Risk-adjusted interpretation of skill eval coverage. |
+| [[obsidian-vault-conventions]] | Obsidian-native vault conventions for this KB. |
+| [[curated-catalog-authoring]] | Bucket A catalog authoring SSOT and index generation pipeline. |
+| [[mcphub-control-plane]] | MCPHub registry, groups, tunnel, and client projection. |
+| [[wagents-platform-adapters]] | Per-harness platform adapters and sync safety guards. |
+| [[ci-and-release-workflows]] | CI seven-job matrix and release-skills workflow gates. |
+| [[scripts-and-validation-tooling]] | `scripts/` validation helpers and CI/pre-commit alignment. |
 
 ## Related Indexes
 
@@ -72,7 +78,7 @@ Treat these repo files and directories as primary evidence before using generate
 
 ## Current Confidence
 
-Confidence is high for repository purpose, asset format, command surfaces, OpenSpec policy, Nerdbot KB structure, `wagents` command families, and registry/sync ownership because these are backed by local canonical files. Confidence is partial for full harness behavior, generated docs health, rollback completeness, OpenSpec archive readiness, risk-adjusted skill eval adequacy, and CI status because this batch did not run the full test/CI matrix and did not inspect every generated surface execution path.
+Confidence is high for repository purpose, asset format, command surfaces, OpenSpec policy, Nerdbot KB structure, `wagents` command families, Bucket A catalog semantics, MCPHub registry topology, CI workflow structure, and registry/sync ownership because these are backed by local canonical files and 2026-06-23 read-only research. Confidence is partial for full harness behavior, generated docs health (compose 98.2%, stale MCP badge), rollback completeness, OpenSpec archive readiness (~32 active changes), risk-adjusted skill eval adequacy (29/56 manifests), and live CI pass status because this batch did not run the full test/CI matrix.
 
 ## Evidence
 
@@ -84,3 +90,4 @@ Confidence is high for repository purpose, asset format, command surfaces, OpenS
 | Expanded coverage includes `wagents`, validation/tests, docs generation, MCP, OpenCode, and sync ownership. | `kb/raw/sources/wagents-internals.md`; `kb/raw/sources/tests-and-validation.md`; `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/mcp-surfaces.md`; `kb/raw/sources/opencode-policy-and-runtime-plugins.md` | raw source notes | Added in the enrichment batch. |
 | Planning manifests constrain sync and harness support claims. | `kb/raw/sources/planning-corpus-drift-source.md` | raw source note | Added after subagent gap audit. |
 | Additional research coverage now maps hooks/evals, OpenSpec archive state, agent publication drift, risk-adjusted skill evals, and docs freshness gaps. | `kb/raw/sources/hooks-evals-control-source.md`; `kb/raw/sources/openspec-change-archive-source.md`; `kb/raw/sources/agent-publication-drift-coverage.md`; `kb/raw/sources/skill-catalog-risk-eval-coverage.md`; `kb/raw/sources/docs-artifact-freshness.md` | raw source notes | Added in autoresearch batch. |
+| 2026-06-23 maximal enrichment adds catalog authoring, MCPHub, platform adapters, CI, scripts validation, and OpenSpec lifecycle sources. | `kb/raw/sources/skills-catalog-authoring-lifecycle-source.md`; `kb/raw/sources/mcphub-control-plane-source.md`; `kb/raw/sources/wagents-platform-adapters-source.md`; `kb/raw/sources/ci-release-workflows-source.md`; `kb/raw/sources/scripts-validation-tooling-source.md`; `kb/raw/sources/openspec-active-lifecycle-source.md` | raw source notes | Exhaustive-tier research batch. |

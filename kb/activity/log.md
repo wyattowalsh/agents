@@ -7,7 +7,7 @@ aliases:
   - KB activity log
 kind: index
 status: active
-updated: 2026-05-01
+updated: 2026-06-23
 source_count: 1
 ---
 
@@ -169,3 +169,23 @@ source_count: 1
 - Risks / rollback: additive Markdown-only verification/fix batch under `kb/`; rollback should preserve the raw/wiki basename separation if the pages remain.
 - Follow-up:
   - Keep future raw source basenames distinct from wiki page basenames to avoid ambiguous Obsidian links.
+
+### [2026-06-23] Maximal KB enrichment batch
+
+- Mode: research + ingest + enrich + audit
+- Summary: Completed exhaustive-tier parallel research and additive KB enrichment for catalog authoring, MCPHub, platform adapters, CI/scripts, OpenSpec lifecycle, and refreshed partial wiki pages with Phase 4 fix-candidate queue.
+- `raw`: added six source notes (`skills-catalog-authoring-lifecycle-source`, `mcphub-control-plane-source`, `wagents-platform-adapters-source`, `ci-release-workflows-source`, `scripts-validation-tooling-source`, `openspec-active-lifecycle-source`); refreshed `raw/captures/local-inventory-summary.md`.
+- `wiki`: added [[obsidian-vault-conventions]], [[curated-catalog-authoring]], [[mcphub-control-plane]], [[wagents-platform-adapters]], [[ci-and-release-workflows]], [[scripts-and-validation-tooling]]; deep-enriched [[docs-generation-and-site]], [[sync-transaction-safety]], [[openspec-change-archive-status]], [[agent-publication-and-drift-coverage]], [[harness-fixture-gaps]], [[skill-catalog-risk-and-eval-coverage]], [[known-risks-and-open-gaps]]; refreshed [[wiki/index]].
+- `indexes`: updated `source-map`, `coverage`, `repo-map`, and `glossary` for new sources, topics, paths, and glossary terms.
+- `schema`: unchanged.
+- `config`: unchanged.
+- `canonical material`: unchanged; repo files outside `kb/` were read as evidence only.
+- `provenance`: wiki claims cite `kb/raw/sources/*` and `kb/raw/captures/local-inventory-summary.md`; no secrets captured.
+- `derived output`: none.
+- `vault`: removed `kb/.DS_Store`; Markdown-only mutations under `kb/`.
+- `path map`: none.
+- `link/backlink impact`: resolved missing obsidian-vault wiki target as [[obsidian-vault-conventions]]; new topics linked from root index and coverage index.
+- Risks / rollback: additive `kb/` batch only; Phase 4 repo fixes documented in [[known-risks-and-open-gaps]] for separate commits.
+- Follow-up:
+  - Run Nerdbot lint and inventory with `--fail-on warning`.
+  - Execute Phase 4 fix candidates outside `kb/` when maintainer requests repo fixes.

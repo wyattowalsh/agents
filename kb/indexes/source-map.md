@@ -8,8 +8,8 @@ aliases:
   - KB source map
 kind: index
 status: active
-updated: 2026-05-01
-source_count: 29
+updated: 2026-06-23
+source_count: 35
 ---
 
 # Source Map
@@ -38,13 +38,19 @@ source_count: 29
 | `external-agent-skill-docs` | `raw/sources/external-agent-skill-docs.md` | external source pointer summary | [[external-primary-source-map]], [[agent-frontmatter-dialects]], [[skill-authoring-and-validation]] | no | linked | active |
 | `external-harness-docs` | `raw/sources/external-harness-docs.md` | external source pointer summary | [[external-primary-source-map]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]] | no | linked | active |
 | `external-tooling-docs` | `raw/sources/external-tooling-docs.md` | external source pointer summary | [[external-primary-source-map]], [[wagents-cli-and-automation]], [[validation-and-test-coverage]], [[docs-generation-and-site]] | no | linked | active |
-| `external-obsidian-markdown-docs` | `raw/sources/external-obsidian-markdown-docs.md` | external source pointer summary | [[external-primary-source-map]], [[nerdbot]], [[obsidian-vault]] | no | linked | active |
+| `external-obsidian-markdown-docs` | `raw/sources/external-obsidian-markdown-docs.md` | external source pointer summary | [[external-primary-source-map]], [[nerdbot]], [[obsidian-vault-conventions]] | no | linked | active |
 | `planning-corpus-and-drift-ledgers` | `raw/sources/planning-corpus-drift-source.md` | repo planning pointer summary | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]], [[known-risks-and-open-gaps]] | no | linked | active |
 | `hooks-evals-control-plane` | `raw/sources/hooks-evals-control-source.md` | repo pointer summary | [[hooks-evals-control-plane]], [[validation-and-test-coverage]], [[wagents-cli-and-automation]], [[harness-and-platform-sync]] | no | linked | active |
 | `openspec-change-archive-status` | `raw/sources/openspec-change-archive-source.md` | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
 | `agent-publication-drift-coverage` | `raw/sources/agent-publication-drift-coverage.md` | repo pointer summary | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] | no | linked | active |
 | `skill-catalog-risk-eval-coverage` | `raw/sources/skill-catalog-risk-eval-coverage.md` | repo pointer summary | [[skill-catalog-risk-and-eval-coverage]], [[skill-authoring-and-validation]], [[validation-and-test-coverage]], [[known-risks-and-open-gaps]] | no | linked | active |
 | `docs-artifact-freshness` | `raw/sources/docs-artifact-freshness.md` | repo pointer summary | [[docs-generation-and-site]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] | no | linked | active |
+| `skills-catalog-authoring-lifecycle` | `raw/sources/skills-catalog-authoring-lifecycle-source.md` | repo pointer summary | [[curated-catalog-authoring]], [[skill-authoring-and-validation]], [[docs-generation-and-site]] | no | linked | active |
+| `mcphub-control-plane` | `raw/sources/mcphub-control-plane-source.md` | repo pointer summary | [[mcphub-control-plane]], [[mcp-configuration-and-safety]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `wagents-platform-adapters` | `raw/sources/wagents-platform-adapters-source.md` | repo pointer summary | [[wagents-platform-adapters]], [[sync-transaction-safety]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
+| `ci-release-workflows` | `raw/sources/ci-release-workflows-source.md` | repo pointer summary | [[ci-and-release-workflows]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
+| `scripts-validation-tooling` | `raw/sources/scripts-validation-tooling-source.md` | repo pointer summary | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
+| `openspec-active-lifecycle` | `raw/sources/openspec-active-lifecycle-source.md` | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
 
 ## External Sources
 
