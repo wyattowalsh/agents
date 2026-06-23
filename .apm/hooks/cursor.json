@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-session-start-context --harness cursor",
+            "timeout": 5
+          }
+        ],
+        "matcher": "startup|resume|clear"
+      }
+    ],
+    "preToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-destructive-shell-guard --harness cursor",
+            "timeout": 5,
+            "failClosed": true
+          }
+        ],
+        "matcher": "Bash|bash|run_shell_command|shell|terminal"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-protected-file-guard --harness cursor",
+            "timeout": 5,
+            "failClosed": true
+          }
+        ],
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-readonly-write-guard --harness cursor",
+            "timeout": 5,
+            "failClosed": true
+          }
+        ],
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-dangerous-shell-guard --harness cursor",
+            "timeout": 5,
+            "failClosed": true
+          }
+        ],
+        "matcher": "Bash|bash|run_shell_command"
+      }
+    ],
+    "postToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-post-tool-verify-context --harness cursor",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|Bash|bash|run_shell_command"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-evidence-ledger --harness cursor",
+            "timeout": 5
+          }
+        ],
+        "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*"
+      }
+    ],
+    "stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py cursor-stop-truth-gate --harness cursor",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-stop-verifier --harness cursor",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${workspaceFolder}/hooks/wagents-hook.py research-prompt-triage-context --harness cursor",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+name: agents
+version: 0.1.0
+description: Canonical agent bundle (skills, agents, instructions, mcp) with harness integration via APM v0.3
+author: wyattowalsh / agents maintainers
+license: Apache-2.0
+targets:
+  - copilot
+  - claude
+  - cursor
+  - codex
+  - gemini
+  - antigravity
+  - opencode
+includes:
+  - .apm/agents/
+  - .apm/instructions/
+  - .apm/hooks/
+scripts:
+  materialize: uv run wagents apm materialize
+  doctor: uv run wagents apm doctor
+  compile-validate: apm compile --validate
+  install-all: apm install
+compilation:
+  agents_md:
+    mode: managed_section
+    start_marker: "<!-- apm:start -->"
+    end_marker: "<!-- apm:end -->"
+  strategy: distributed
+  exclude:
+    - "apm_modules/**"
+    - ".git/**"
+    - "openspec/**"
+dependencies:
+  apm: []
+# BEGIN WAGENTS-MCP: managed by `uv run wagents apm materialize` -- edit config/mcp-registry.json
+  mcp: []
+# END WAGENTS-MCP
+policy:
+  fetch_failure_default: warn

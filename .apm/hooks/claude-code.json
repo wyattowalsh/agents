@@ -1,0 +1,60 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-prompt-triage-context --harness claude-code",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-readonly-write-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Write|Edit|MultiEdit|apply_patch|edit|create|replace|write_file|run_shell_command"
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-dangerous-shell-guard --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Bash|bash|run_shell_command"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-evidence-ledger --harness claude-code",
+            "timeout": 5
+          }
+        ],
+        "matcher": "WebSearch|web_search|fetch|fetcher|trafilatura|docling|mcp__.*|mcp_.*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ./hooks/wagents-hook.py research-stop-verifier --harness claude-code",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

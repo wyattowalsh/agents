@@ -1,0 +1,139 @@
+lockfile_version: '1'
+generated_at: '2026-06-23T07:16:03.914598+00:00'
+dependencies: []
+local_deployed_files:
+- .claude/agents/code-reviewer.md
+- .claude/agents/docs-writer.md
+- .claude/agents/orchestrator.md
+- .claude/agents/performance-profiler.md
+- .claude/agents/planner.md
+- .claude/agents/release-manager.md
+- .claude/agents/researcher.md
+- .claude/agents/security-auditor.md
+- .claude/rules/claude-code.md
+- .claude/rules/codex.md
+- .claude/rules/copilot.md
+- .claude/rules/gemini-cli.md
+- .claude/rules/global.md
+- .claude/rules/grok.md
+- .claude/rules/opencode-agents-overlay.md
+- .claude/rules/opencode.md
+- .codex/agents/code-reviewer.toml
+- .codex/agents/docs-writer.toml
+- .codex/agents/orchestrator.toml
+- .codex/agents/performance-profiler.toml
+- .codex/agents/planner.toml
+- .codex/agents/release-manager.toml
+- .codex/agents/researcher.toml
+- .codex/agents/security-auditor.toml
+- .cursor/agents/code-reviewer.md
+- .cursor/agents/docs-writer.md
+- .cursor/agents/orchestrator.md
+- .cursor/agents/performance-profiler.md
+- .cursor/agents/planner.md
+- .cursor/agents/release-manager.md
+- .cursor/agents/researcher.md
+- .cursor/agents/security-auditor.md
+- .cursor/rules/claude-code.mdc
+- .cursor/rules/codex.mdc
+- .cursor/rules/copilot.mdc
+- .cursor/rules/gemini-cli.mdc
+- .cursor/rules/global.mdc
+- .cursor/rules/grok.mdc
+- .cursor/rules/opencode-agents-overlay.mdc
+- .cursor/rules/opencode.mdc
+- .github/agents/code-reviewer.agent.md
+- .github/agents/docs-writer.agent.md
+- .github/agents/orchestrator.agent.md
+- .github/agents/performance-profiler.agent.md
+- .github/agents/planner.agent.md
+- .github/agents/release-manager.agent.md
+- .github/agents/researcher.agent.md
+- .github/agents/security-auditor.agent.md
+- .github/hooks/agents-claude-code.json
+- .github/hooks/agents-cursor.json
+- .github/hooks/agents-github-copilot.json
+- .github/instructions/claude-code.instructions.md
+- .github/instructions/codex.instructions.md
+- .github/instructions/copilot.instructions.md
+- .github/instructions/gemini-cli.instructions.md
+- .github/instructions/global.instructions.md
+- .github/instructions/grok.instructions.md
+- .github/instructions/opencode-agents-overlay.instructions.md
+- .github/instructions/opencode.instructions.md
+- .opencode/agents/code-reviewer.md
+- .opencode/agents/docs-writer.md
+- .opencode/agents/orchestrator.md
+- .opencode/agents/performance-profiler.md
+- .opencode/agents/planner.md
+- .opencode/agents/release-manager.md
+- .opencode/agents/researcher.md
+- .opencode/agents/security-auditor.md
+local_deployed_file_hashes:
+  .claude/agents/code-reviewer.md: sha256:f31d8f17cf9a2e6b84b8aec03d7fe09734939fd993f7adee2fc350ef9132c00e
+  .claude/agents/docs-writer.md: sha256:b25c9ccd8cc945cd7c185a597e36ce3bbddc65dc53323944a5510a96339640f3
+  .claude/agents/orchestrator.md: sha256:65a95cbfd9c74ff515d537cd17c6c84b8c2bd72ef03a567e4b644c183c969d60
+  .claude/agents/performance-profiler.md: sha256:417b54c4590a02e7886e32b15b3f2ee0c1e5e4930a519aa1b4ce52c5ad877903
+  .claude/agents/planner.md: sha256:1683de94933dabc1fb76b8aa94e5fc189d9b9a1a6e753b5391c5f462de7bbcff
+  .claude/agents/release-manager.md: sha256:5cfbcc8ce9b9288c18d7ccdd006a0331c3c6ebd6675887fc87324bcb976b63cb
+  .claude/agents/researcher.md: sha256:bb91b965a0ce0c9ff4e12a42252a22783a310d2137fa2afdd48baabedd118e95
+  .claude/agents/security-auditor.md: sha256:e7f7e234371dc7f7dd669feeebeb49fad012306b808da90a4d37f80a216080a4
+  .claude/rules/claude-code.md: sha256:56716ef81103c428f477d6cc3a6bbcf7f68155d6efccd6078d2db2f2f7161c37
+  .claude/rules/codex.md: sha256:4a2dd03b4d472b9b04ca5a018cf4bee2bfa762dc684aa6d2be29dbb3de19c70c
+  .claude/rules/copilot.md: sha256:03ce7164f8c3e879658a5ea024e76d37aab519e2c7206f6fa106c3a05f6466a9
+  .claude/rules/gemini-cli.md: sha256:d6517f490a9471360596d7a86f8d291564a0860171b343e0744beec24ddb75b0
+  .claude/rules/global.md: sha256:303a506ff9301db3cb29c1abe1330401645a14ab780db36740fb5152e59e9a77
+  .claude/rules/grok.md: sha256:a918f1ed7cedcd551edec9912bec2ea66df6e256791b8015d4da8ab3d6024927
+  .claude/rules/opencode-agents-overlay.md: sha256:6acc1602cd438e86e2a91434e5de65d4527d6cdaa4629a95b2bbadd3e1b18c9e
+  .claude/rules/opencode.md: sha256:2b764ccdcd86072cb794204c55f3c9ce73f9fe2079e7d6d85a9a1c97d4c74700
+  .codex/agents/code-reviewer.toml: sha256:acebe6490466e2ee0ecb6c82efd383c6c8bff508a64e6d3b17008083b678a3bf
+  .codex/agents/docs-writer.toml: sha256:d46dc687cdd4938106bbb96d06ff7f2b60a1c21e6a8655671db07ca10bbd78d6
+  .codex/agents/orchestrator.toml: sha256:b1cbb6d0590e1c5e6724433ccdf9a06a6c9adb1251347f6c149f5d2c6a7371af
+  .codex/agents/performance-profiler.toml: sha256:a5b19558a14ef011c6bb60b0e011e112d2826ff7d8f128b1e840888b9b0b9614
+  .codex/agents/planner.toml: sha256:bcc1f5100a2f7c933991814e390fc81f59403e10d778b3ad555df2ee18edb39a
+  .codex/agents/release-manager.toml: sha256:b69a4cb7641787538c78f93ab3478408b8622ae5afd8cf5a85831827d9515159
+  .codex/agents/researcher.toml: sha256:8bb371711a42ce79acca00611990c54ff30b6b03234715c92b3fbbefba2bbf1d
+  .codex/agents/security-auditor.toml: sha256:fe8689def0bdb5f5cd3ca1a032618b68c3ce994940308374f0a9b21231c4ffde
+  .cursor/agents/code-reviewer.md: sha256:f31d8f17cf9a2e6b84b8aec03d7fe09734939fd993f7adee2fc350ef9132c00e
+  .cursor/agents/docs-writer.md: sha256:b25c9ccd8cc945cd7c185a597e36ce3bbddc65dc53323944a5510a96339640f3
+  .cursor/agents/orchestrator.md: sha256:65a95cbfd9c74ff515d537cd17c6c84b8c2bd72ef03a567e4b644c183c969d60
+  .cursor/agents/performance-profiler.md: sha256:417b54c4590a02e7886e32b15b3f2ee0c1e5e4930a519aa1b4ce52c5ad877903
+  .cursor/agents/planner.md: sha256:1683de94933dabc1fb76b8aa94e5fc189d9b9a1a6e753b5391c5f462de7bbcff
+  .cursor/agents/release-manager.md: sha256:5cfbcc8ce9b9288c18d7ccdd006a0331c3c6ebd6675887fc87324bcb976b63cb
+  .cursor/agents/researcher.md: sha256:bb91b965a0ce0c9ff4e12a42252a22783a310d2137fa2afdd48baabedd118e95
+  .cursor/agents/security-auditor.md: sha256:e7f7e234371dc7f7dd669feeebeb49fad012306b808da90a4d37f80a216080a4
+  .cursor/rules/claude-code.mdc: sha256:a8885b0a23d2b0cce09d4927eeee8b7efa11336aa9918334128fb555a5f67429
+  .cursor/rules/codex.mdc: sha256:e2037e62b23847b6f3e3a99994f7d088fe4d1cee81ecf62cb79e92ac74d77312
+  .cursor/rules/copilot.mdc: sha256:d1003b9939b603676a3c8a208212b5cdfb5062b57098012b3f6fb7c50a84e719
+  .cursor/rules/gemini-cli.mdc: sha256:55383a46804f8897ed770f95c5fb62a2e041362dac3d2ebbf76361b5646c912c
+  .cursor/rules/global.mdc: sha256:303504ccbd5bea8d8c9af3e1ff30b276aa6851a2429e11b8f0565bf82785a9a2
+  .cursor/rules/grok.mdc: sha256:8fbd8120c8b77bda9fc8e69c2ccb38aeab70d0a7de68cae76130ce9fde30cd86
+  .cursor/rules/opencode-agents-overlay.mdc: sha256:b65e8dd3bff2d994aaa76a9e4db851b60fca69cbec929732d31ad7a832e5518f
+  .cursor/rules/opencode.mdc: sha256:ea1bd48fd91acab6d357803f844cd8cd56b78fd7d666f26457b92c97b67cc6ef
+  .github/agents/code-reviewer.agent.md: sha256:f31d8f17cf9a2e6b84b8aec03d7fe09734939fd993f7adee2fc350ef9132c00e
+  .github/agents/docs-writer.agent.md: sha256:b25c9ccd8cc945cd7c185a597e36ce3bbddc65dc53323944a5510a96339640f3
+  .github/agents/orchestrator.agent.md: sha256:65a95cbfd9c74ff515d537cd17c6c84b8c2bd72ef03a567e4b644c183c969d60
+  .github/agents/performance-profiler.agent.md: sha256:417b54c4590a02e7886e32b15b3f2ee0c1e5e4930a519aa1b4ce52c5ad877903
+  .github/agents/planner.agent.md: sha256:1683de94933dabc1fb76b8aa94e5fc189d9b9a1a6e753b5391c5f462de7bbcff
+  .github/agents/release-manager.agent.md: sha256:5cfbcc8ce9b9288c18d7ccdd006a0331c3c6ebd6675887fc87324bcb976b63cb
+  .github/agents/researcher.agent.md: sha256:bb91b965a0ce0c9ff4e12a42252a22783a310d2137fa2afdd48baabedd118e95
+  .github/agents/security-auditor.agent.md: sha256:e7f7e234371dc7f7dd669feeebeb49fad012306b808da90a4d37f80a216080a4
+  .github/hooks/agents-claude-code.json: sha256:7e79ba457e4c1300613e3a066772524fde9ebbf6d2957285dca55320732605ca
+  .github/hooks/agents-cursor.json: sha256:883ac17ead01ab310ee23f9566fe718df1a3d257c5ad089a70c89f7f84be94b1
+  .github/hooks/agents-github-copilot.json: sha256:d8fdfddafee05f2ada01abef5640b4f206fad94c6a83235b4b43d1a361aaad09
+  .github/instructions/claude-code.instructions.md: sha256:42e11d128ced4254547cacc3f8aeba25983998cdd142a88f66e94b194f553ad0
+  .github/instructions/codex.instructions.md: sha256:af4733eec0564ee29d6d79111ed7783de957f03fdbda1bfa79b68307655e0ade
+  .github/instructions/copilot.instructions.md: sha256:b8990d2d8ff6a463514b2355e620f8cba766100e4f632217cba08fa102d59622
+  .github/instructions/gemini-cli.instructions.md: sha256:683414b59d5b5fd0fbe5c826fd42384d6020b0a80a755c1e9f21f3e39893d0aa
+  .github/instructions/global.instructions.md: sha256:8fc323bb39848dc538434bac999c0c661ed5122ac8de0fa575197d5c915c68ed
+  .github/instructions/grok.instructions.md: sha256:1915dae758bf8c51d0eadafba954178864ac7d1ef7e8acf8d723e87e80d83d00
+  .github/instructions/opencode-agents-overlay.instructions.md: sha256:3b66db528ebc29bf074202d834d8d0adac017cccbffe31e1ba13332d712b2673
+  .github/instructions/opencode.instructions.md: sha256:64ebd4ef671724457f1cd4fdb259ae9f3d606299b6a7cfc1dbf294b55d58ae53
+  .opencode/agents/code-reviewer.md: sha256:f31d8f17cf9a2e6b84b8aec03d7fe09734939fd993f7adee2fc350ef9132c00e
+  .opencode/agents/docs-writer.md: sha256:b25c9ccd8cc945cd7c185a597e36ce3bbddc65dc53323944a5510a96339640f3
+  .opencode/agents/orchestrator.md: sha256:65a95cbfd9c74ff515d537cd17c6c84b8c2bd72ef03a567e4b644c183c969d60
+  .opencode/agents/performance-profiler.md: sha256:417b54c4590a02e7886e32b15b3f2ee0c1e5e4930a519aa1b4ce52c5ad877903
+  .opencode/agents/planner.md: sha256:1683de94933dabc1fb76b8aa94e5fc189d9b9a1a6e753b5391c5f462de7bbcff
+  .opencode/agents/release-manager.md: sha256:5cfbcc8ce9b9288c18d7ccdd006a0331c3c6ebd6675887fc87324bcb976b63cb
+  .opencode/agents/researcher.md: sha256:bb91b965a0ce0c9ff4e12a42252a22783a310d2137fa2afdd48baabedd118e95
+  .opencode/agents/security-auditor.md: sha256:e7f7e234371dc7f7dd669feeebeb49fad012306b808da90a4d37f80a216080a4
