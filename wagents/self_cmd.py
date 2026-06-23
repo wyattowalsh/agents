@@ -122,7 +122,7 @@ def _apm_self_doctor_checks(repo_root) -> list[dict[str, str]]:
             )
             raw = (proc.stdout or proc.stderr).strip()
             version_line = raw.splitlines()[0] if raw else "unknown"
-        except Exception:
+        except (OSError, subprocess.TimeoutExpired):
             version_line = "unknown"
         rows.append({
             "name": "apm-cli",
@@ -145,7 +145,10 @@ def _apm_self_doctor_checks(repo_root) -> list[dict[str, str]]:
             "status": "ok" if surface.get("ok") else "warn",
             "summary": "apm.yml + .apm/ OK"
             if surface.get("ok")
-            else "run: uv run wagents apm materialize && uv run wagents apm doctor",
+            else (
+                "apm surface drift; run: uv run wagents apm materialize && "
+                "uv run wagents apm doctor (hard gate)"
+            ),
         })
     return rows
 
