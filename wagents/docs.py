@@ -1828,8 +1828,13 @@ def write_skill_research_pages(nodes: list) -> None:
         node = skill_nodes.get(skill_id)
         group = skill_catalog_group(node=node) if node else "external"
         catalog_slug = f"{SKILL_CATALOG_PREFIX}/{group}/{skill_id}"
-        if re.search(r"[:*]", skill_id):
-            catalog_nav = f"Catalog entry: `{catalog_slug}` (special characters — open from Skill Catalog search)"
+        catalog_page = CONTENT_DIR / f"{catalog_slug}.mdx"
+        if re.search(r"[:*]", skill_id) or not catalog_page.is_file():
+            if re.search(r"[:*]", skill_id):
+                catalog_note = " (special characters — open from Skill Catalog search)"
+            else:
+                catalog_note = " (no catalog page yet)"
+            catalog_nav = f"Catalog entry: `{catalog_slug}`{catalog_note}"
         else:
             catalog_nav = f"[Back to catalog page](/{catalog_slug}/)"
 
@@ -1967,6 +1972,10 @@ def write_sidebar(nodes: list) -> None:
         lines.append("  },")
 
     lines.append("  { slug: 'cli', label: 'CLI' },")
+    if (CONTENT_DIR / "contributing.mdx").exists():
+        lines.append("  { slug: 'contributing', label: 'Contributing' },")
+    if (CONTENT_DIR / "harness-support.mdx").exists():
+        lines.append("  { slug: 'harness-support', label: 'Harness Support' },")
     lines.append("];")
     lines.append("")
 
