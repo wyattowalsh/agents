@@ -1,0 +1,10 @@
+{
+  "skills": ["grok-delegate"],
+  "query": "/grok-delegate wave 1 — dispatch builders for api and ui in parallel with file ownership",
+  "files": [],
+  "expected_behavior": [
+    "Agent shows wave 1 command templates with distinct -w worktree names",
+    "Agent requires --no-auto-update and explicit --cwd",
+    "Agent mentions parent orchestrator gate before verify wave"
+  ]
+}

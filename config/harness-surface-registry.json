@@ -477,7 +477,9 @@
         "config/grok-config.toml",
         "instructions/grok-global.md",
         ".grok/config.toml",
-        "wagents/platforms/grok.py"
+        "wagents/platforms/grok.py",
+        "skills/grok-delegate/SKILL.md",
+        "wagents/grok_doctor.py"
       ],
       "projection_surfaces": [
         "instructions",

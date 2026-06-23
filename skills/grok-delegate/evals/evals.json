@@ -1,0 +1,60 @@
+{
+  "skill_name": "grok-delegate",
+  "evals": [
+    {
+      "id": "implicit-trigger",
+      "prompt": "OpenCode should run three parallel Grok scouts on different modules, then tune the API branch when tests fail. Use native grok CLI only.",
+      "expected_output": "Native grok -p scouts, worktrees, and -r tune loop without custom wrapper.",
+      "files": [],
+      "assertions": [
+        "Agent uses grok-delegate or equivalent native CLI guidance",
+        "Agent does not propose bin/gk or a new MCP control server",
+        "Agent mentions sessionId from JSON for tune passes"
+      ]
+    },
+    {
+      "id": "parallel-wave-dispatch",
+      "prompt": "/grok-delegate wave 1 — dispatch builders for api and ui in parallel",
+      "expected_output": "Wave 1 templates with distinct worktrees and gates.",
+      "files": [],
+      "assertions": [
+        "Agent shows --no-auto-update and explicit --cwd",
+        "Agent assigns distinct -w worktree names per builder",
+        "Agent references parent verify gate before completion"
+      ]
+    },
+    {
+      "id": "tune-resume-loop",
+      "prompt": "/grok-delegate tune — integration tests failed; bump the same Grok session",
+      "expected_output": "grok -r sessionId tune command and ledger cap.",
+      "files": [],
+      "assertions": [
+        "Agent documents -r with sessionId from ledger",
+        "Agent caps parent_tune_count",
+        "Agent does not default --always-approve"
+      ]
+    },
+    {
+      "id": "negative-control-skills-sync",
+      "prompt": "Run wagents skills sync --apply to install grok-delegate on all harnesses now.",
+      "expected_output": "Refuses live apply; points to dry-run preview and maintainer-only apply policy.",
+      "files": [],
+      "assertions": [
+        "Agent refuses wagents skills sync --apply without explicit maintainer request",
+        "Agent recommends uv run wagents skills sync --dry-run instead",
+        "Agent cites grok-delegate NOT-for boundary for live skill installs"
+      ]
+    },
+    {
+      "id": "scope-refusal-malformed-wave",
+      "prompt": "/grok-delegate wave",
+      "expected_output": "Refuses malformed wave dispatch; shows valid wave 0, 1, or 2 tiers or empty-args gallery.",
+      "files": [],
+      "assertions": [
+        "Agent treats missing wave tier as malformed input",
+        "Agent shows valid wave 0, 1, or 2 dispatch guidance",
+        "Agent does not invent a default wave tier"
+      ]
+    }
+  ]
+}

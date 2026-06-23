@@ -1,0 +1,10 @@
+{
+  "skills": ["grok-delegate"],
+  "query": "/grok-delegate wave",
+  "files": [],
+  "expected_behavior": [
+    "Agent treats /grok-delegate wave without a tier as malformed dispatch input",
+    "Agent shows valid wave 0, 1, or 2 command templates or empty-args help gallery",
+    "Agent does not assume a default wave tier or start fleet dispatch"
+  ]
+}

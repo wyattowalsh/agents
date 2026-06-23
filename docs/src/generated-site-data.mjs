@@ -3,11 +3,11 @@ const baseSiteData = {
   "counts": {
     "bundledAgents": 8,
     "customMcp": 1,
-    "customSkills": 55,
+    "customSkills": 56,
     "externalMcp": 15,
     "externalSkills": 307,
     "mcpTools": 16,
-    "skills": 362,
+    "skills": 363,
     "supportedHarnesses": 9
   },
   "distributionPaths": [
@@ -1297,6 +1297,10 @@ const baseSiteData = {
       {
         "command": "npx skills add github:wyattowalsh/agents --skill git-workflow -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
         "name": "git-workflow"
+      },
+      {
+        "command": "npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",
+        "name": "grok-delegate"
       },
       {
         "command": "npx skills add github:wyattowalsh/agents --skill harness-master -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode",

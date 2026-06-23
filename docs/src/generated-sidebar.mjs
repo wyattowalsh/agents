@@ -46,6 +46,7 @@ export default [
           { slug: 'skills/catalog/custom/event-driven-architect', label: 'event-driven-architect' },
           { slug: 'skills/catalog/custom/files-buddy', label: 'files-buddy' },
           { slug: 'skills/catalog/custom/git-workflow', label: 'git-workflow' },
+          { slug: 'skills/catalog/custom/grok-delegate', label: 'grok-delegate' },
           { slug: 'skills/catalog/custom/harness-master', label: 'harness-master' },
           { slug: 'skills/catalog/custom/host-panel', label: 'host-panel' },
           { slug: 'skills/catalog/custom/i18n-localization', label: 'i18n-localization' },

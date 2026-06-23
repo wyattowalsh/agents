@@ -825,6 +825,7 @@ def write_cli_page() -> None:
     parts.append("")
     parts.append("```bash")
     parts.append("wagents grok doctor")
+    parts.append("wagents grok doctor --format json")
     parts.append("```")
     parts.append("")
     parts.append("Source optional env defaults before sessions:")

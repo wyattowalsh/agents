@@ -1502,112 +1502,28 @@ def grok_plannotator_sync() -> None:
 
 
 @grok_app.command("doctor")
-def grok_doctor() -> None:
+def grok_doctor(
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+) -> None:
     """Report Grok config paths, env vars, MCP block, and skill roots."""
-    import os
-    import shutil
+    from wagents.grok_doctor import collect_grok_doctor_checks, grok_doctor_report
 
-    from wagents.platforms.grok import (
-        GROK_BINARY_PATH,
-        GROK_CONFIG_PATH,
-        GROK_CONFIG_POLICY_PATH,
-        GROK_CONFIG_REPO_PATH,
-        GROK_MCP_BEGIN,
-        GROK_PLANNOTATOR_HOOKS_PATH,
-        GROK_POLICY_BEGIN,
-        PLANNOTATOR_BIN_PATH,
-        PLANNOTATOR_CORE_SKILLS,
-        missing_plannotator_core_skills,
-        resolve_plannotator_binary,
-    )
+    format_ = _normalize_output_format(format_)
 
-    home = Path.home()
-    issues: list[str] = []
-    warnings: list[str] = []
+    if format_ in {"json", "jsonl"}:
+        report = grok_doctor_report()
+        checks = report["checks"]
+        _emit_doctor_report(format_, checks)
+        if not report["ok"]:
+            raise typer.Exit(code=1)
+        return
+
+    checks = collect_grok_doctor_checks()
+    issues = [check["summary"] for check in checks if check["status"] == "fail"]
+    warnings = [check["summary"] for check in checks if check["status"] == "warn"]
     lines: list[str] = ["Grok Build doctor", ""]
-
-    binary = shutil.which("grok") or (str(GROK_BINARY_PATH) if GROK_BINARY_PATH.exists() else None)
-    lines.append(f"binary: {binary or 'missing'}")
-    if not binary:
-        issues.append("Grok CLI binary not found")
-
-    for label, cfg in (
-        ("home config", GROK_CONFIG_PATH),
-        ("repo project config", GROK_CONFIG_REPO_PATH),
-        ("policy template", GROK_CONFIG_POLICY_PATH),
-    ):
-        state = "present" if cfg.exists() else "missing"
-        lines.append(f"{label}: {cfg} ({state})")
-
-    if GROK_CONFIG_PATH.exists():
-        content = GROK_CONFIG_PATH.read_text(encoding="utf-8")
-        has_mcp_managed = GROK_MCP_BEGIN in content
-        has_policy_managed = GROK_POLICY_BEGIN in content
-        has_mcphub = "mcp_servers.mcphub_group_harness-safe" in content
-        lines.append(f"mcp managed block: {'yes' if has_mcp_managed else 'no'}")
-        lines.append(f"policy managed block: {'yes' if has_policy_managed else 'no'}")
-        lines.append(f"mcphub harness-safe endpoint: {'yes' if has_mcphub else 'no'}")
-        if not has_mcp_managed and has_mcphub:
-            warnings.append("MCP tables present without managed markers; run sync with --platforms grok --targets home")
-        if not has_mcp_managed and not has_mcphub:
-            issues.append("No MCPHub MCP projection found in ~/.grok/config.toml")
-        if not has_policy_managed and has_mcphub:
-            warnings.append(
-                "Policy managed block missing; run sync with --platforms grok --targets home to refresh policy"
-            )
-    else:
-        issues.append("~/.grok/config.toml missing")
-
-    for env_name in ("GROK_WEB_FETCH", "GROK_MEMORY", "GROK_SUBAGENTS", "GROK_LSP_TOOLS"):
-        value = os.environ.get(env_name)
-        lines.append(f"{env_name}: {value if value else 'unset'}")
-        if not value:
-            warnings.append(f"{env_name} is unset (source config/grok-env.sh)")
-
-    for skill_root in (home / ".grok" / "skills", home / ".claude" / "skills", ROOT / ".grok" / "skills"):
-        count = len(list(skill_root.glob("*/SKILL.md"))) if skill_root.is_dir() else 0
-        lines.append(f"skills at {skill_root}: {count}")
-
-    preferred_plannotator = resolve_plannotator_binary()
-    plannotator_bin = shutil.which("plannotator") or (
-        str(preferred_plannotator) if preferred_plannotator.exists() else None
-    )
-    lines.append(f"plannotator binary: {plannotator_bin or 'missing'}")
-    if not plannotator_bin:
-        warnings.append(
-            "plannotator CLI missing; run `uv run wagents grok plannotator install` or the Plannotator install script"
-        )
-    else:
-        version_result = subprocess.run(
-            [plannotator_bin, "--version"],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        version = (version_result.stdout or version_result.stderr).strip()
-        if version:
-            lines.append(f"plannotator version: {version}")
-
-    missing_core = missing_plannotator_core_skills(home=home)
-    if missing_core:
-        warnings.append(
-            "Missing Plannotator core skills: "
-            + ", ".join(missing_core)
-            + "; run `uv run wagents grok plannotator install` or `wagents skills sync -a grok --apply`"
-        )
-    else:
-        lines.append(f"plannotator core skills: {', '.join(PLANNOTATOR_CORE_SKILLS)}")
-
-    hooks_state = "present" if GROK_PLANNOTATOR_HOOKS_PATH.exists() else "missing"
-    lines.append(f"plannotator hooks: {GROK_PLANNOTATOR_HOOKS_PATH} ({hooks_state})")
-    if not GROK_PLANNOTATOR_HOOKS_PATH.exists():
-        warnings.append(
-            "Plannotator hooks missing; run `uv run wagents grok plannotator install --hooks` "
-            "or `uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets home`"
-        )
-    elif not PLANNOTATOR_BIN_PATH.exists() and not shutil.which("plannotator"):
-        warnings.append("Plannotator hooks present but CLI binary is missing")
-
+    for check in checks:
+        lines.append(f"{check['name']}: {check['summary']}")
     if warnings:
         lines.append("")
         lines.append("warnings:")

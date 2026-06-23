@@ -1,0 +1,10 @@
+{
+  "skills": ["grok-delegate"],
+  "query": "/grok-delegate tune — the Grok session finished but integration tests failed; bump the same session with new instructions",
+  "files": [],
+  "expected_behavior": [
+    "Agent documents grok -r sessionId -p Tune: ... pattern",
+    "Agent references session ledger parent_tune_count cap",
+    "Agent does not suggest --always-approve for cross-harness delegation"
+  ]
+}

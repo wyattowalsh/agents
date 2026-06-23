@@ -30,7 +30,11 @@ Some toggles are env-only. Source `config/grok-env.sh` in your shell:
 source /path/to/agents/config/grok-env.sh
 ```
 
-Required exports: `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS`. Run `uv run wagents grok doctor` to verify.
+Required exports: `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS`. Run `uv run wagents grok doctor --format json` to verify.
+
+### Cross-harness delegation
+
+Other harnesses (Codex, OpenCode) may dispatch task-graph nodes to Grok via `/grok-delegate` using native headless CLI only. Grok itself should not re-orchestrate nested graphs beyond platform subagent depth 1.
 
 ### Plannotator (plan review)
 

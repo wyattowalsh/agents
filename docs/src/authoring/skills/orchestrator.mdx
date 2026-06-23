@@ -276,6 +276,10 @@ All orchestrated work must produce structured progress indicators via TaskCreate
 - Update tasks to `in_progress` before starting, `completed` immediately after.
 - After wave completion + accounting, summarize all agent outcomes before dispatching the next wave.
 
+## External harness delegation (Grok Build)
+
+When the macro graph assigns nodes to **Grok Build**, the parent still owns waves, gates, and synthesis. Delegate execution via `/grok-delegate` — native `grok -p`, `-r`, worktrees, and leader only (no custom wrapper). Parent dispatches parallel Grok nodes as independent bash subprocesses (Pattern A/E). Tune in-flight branches with `-r <sessionId>` after parent gates fail.
+
 ## Scope Boundaries
 
 **IS for:** decomposition, orchestration topology, pattern selection, progress accounting, recovery/reporting, and multi-agent execution rules.

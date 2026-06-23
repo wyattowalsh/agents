@@ -92,7 +92,8 @@ If the user invokes `/harness-master` with no arguments:
 - **Ownership:** replace-owned (`models`, `mcp_servers`, `plugins`, `compat`, `telemetry`) vs blend-owned (`ui`, `features`, `session`, `tools`, `toolset`, `subagents`, `memory`)
 - **Skills:** no native Skills CLI adapter; install/sync uses `claude-code` alias + mirror to `~/.grok/skills`; inventory also scans repo `.grok/skills` (project scope)
 - **Plannotator:** CLI + skills + hooks (no Grok npm plugin). Install: `grok plannotator install` (repo CLI). Policy: `config/grok-plannotator-hooks.json` -> `~/.grok/hooks/plannotator.json`; home shim maps `block` -> `deny`. Curated in `config/external-skills.md`. Contrast OpenCode `@plannotator/opencode@latest`.
-- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; check with `grok doctor`
+- **Env (not in TOML):** `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` — document in `config/grok-env.sh`; check with `uv run wagents grok doctor --format json`
+- **Cross-harness delegate:** `/grok-delegate` — native headless `grok -p` / `-r` / worktrees / leader for Codex/OpenCode task graphs (not config sync)
 - **Isolated sync:** repo stack sync with `--platforms grok --targets home` (skips other harness home merges; includes Plannotator hook refresh)
 
 ## Classification Gate

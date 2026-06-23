@@ -1,0 +1,277 @@
+---
+title: "grok-delegate"
+description: "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops."
+---
+
+import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
+
+import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
+
+<SkillPageHeader
+  name="grok-delegate"
+  description="Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops."
+  installCommand={`npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
+  usage="/grok-delegate"
+  badges={[{ text: "grok-delegate", variant: "note" }, { text: "874 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+/>
+
+{/* Quick Start is rendered by SkillPageHeader. */}
+
+Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
+
+<Aside type="note" title="Source & provenance">
+This page is generated from the repository file `skills/grok-delegate/SKILL.md` by `wagents docs generate`.
+</Aside>
+
+## What It Does
+
+Cross-harness orchestration of **Grok Build native CLI only**. Parent harness owns the macro graph; Grok executes micro nodes.
+
+## Modes
+
+| $ARGUMENTS | Action |
+| --- | --- |
+| *(empty)* | Show pre-flight, wave taxonomy, critical rules, and reference index |
+| `preflight` | Run `uv run wagents grok doctor --format json`; stop on `fail` checks |
+| `wave &lt;0\\|1\\|2&gt;` | Show command templates for scout / build / verify waves |
+| `tune` | Show session resume / delta prompt loop |
+| `leader` | Show leader pool lifecycle |
+| `ledger` | Show session ledger schema |
+| `patterns` | Show orchestrator Pattern A–F → Grok flag mapping |
+
+## Critical Rules
+
+1. **Native CLI only** — no `bin/gk`, MCP control server, or `wagents grok run`.
+2. **Pre-flight mandatory** — `uv run wagents grok doctor --format json` before fleet dispatch.
+3. **Parent owns the graph** — Grok depth is 1; parallelize siblings via parent bash, not nested Grok orchestration.
+4. **Never default `--always-approve`** for cross-harness delegation.
+5. **Always `--no-auto-update` and explicit `--cwd`** on automation paths.
+6. **Accounting** — N dispatched nodes = N terminal ledger rows before the next gate.
+7. **One writer per worktree** — non-overlapping file ownership across parallel wave 1 nodes.
+
+<Tabs>
+  <TabItem label="Public Metadata">
+| Field | Value |
+| ----- | ----- |
+| Source Type | `repo-owned` |
+| Display Source | `github:wyattowalsh/agents` |
+| Source Kind | `repo` |
+| Installability | portable command |
+| Review State | reviewed |
+| Target Agents | `antigravity`, `claude-code`, `codex`, `crush`, `cursor`, `gemini-cli`, `github-copilot`, `grok`, `opencode` |
+  </TabItem>
+  <TabItem label="General">
+| Field | Value |
+| ----- | ----- |
+| Name | `grok-delegate` |
+| License | MIT |
+| Version | 1.0.0 |
+| Author | wyattowalsh |
+  </TabItem>
+</Tabs>
+
+<details>
+<summary>View Full SKILL.md</summary>
+
+````yaml title="SKILL.md"
+---
+name: grok-delegate
+description: >-
+  Use when delegating Grok Build task-graph nodes via native headless CLI (-p,
+  resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops.
+  NOT for config sync (harness-master) or custom wrappers.
+license: MIT
+metadata:
+  author: wyattowalsh
+  version: "1.0.0"
+user-invocable: true
+---
+
+# Grok Delegate
+
+Cross-harness orchestration of **Grok Build native CLI only**. Parent harness owns the macro graph; Grok executes micro nodes.
+
+## Dispatch
+
+| $ARGUMENTS | Action |
+| --- | --- |
+| *(empty)* | Show pre-flight, wave taxonomy, critical rules, and reference index |
+| `preflight` | Run `uv run wagents grok doctor --format json`; stop on `fail` checks |
+| `wave <0\|1\|2>` | Show command templates for scout / build / verify waves |
+| `tune` | Show session resume / delta prompt loop |
+| `leader` | Show leader pool lifecycle |
+| `ledger` | Show session ledger schema |
+| `patterns` | Show orchestrator Pattern A–F → Grok flag mapping |
+
+## Canonical Vocabulary
+
+| Term | Meaning |
+| --- | --- |
+| **parent harness** | Codex, OpenCode, or Claude session owning the macro DAG |
+| **node** | One `grok` subprocess invocation for a graph task |
+| **wave** | Staged batch of nodes (0 scout, 1 build, 2 verify) |
+| **gate** | Parent checkpoint before the next wave |
+| **tune** | `-r <sessionId> -p "Tune: ..."` delta on an existing node |
+| **ledger** | `grok-delegate-ledger.jsonl` tracking `sessionId` per node |
+| **worktree** | `-w w<wave>-<role>-<n>` git isolation per parallel builder |
+| **leader pool** | Shared `grok agent leader` backend for dense graphs |
+
+## Critical Rules
+
+1. **Native CLI only** — no `bin/gk`, MCP control server, or `wagents grok run`.
+2. **Pre-flight mandatory** — `uv run wagents grok doctor --format json` before fleet dispatch.
+3. **Parent owns the graph** — Grok depth is 1; parallelize siblings via parent bash, not nested Grok orchestration.
+4. **Never default `--always-approve`** for cross-harness delegation.
+5. **Always `--no-auto-update` and explicit `--cwd`** on automation paths.
+6. **Accounting** — N dispatched nodes = N terminal ledger rows before the next gate.
+7. **One writer per worktree** — non-overlapping file ownership across parallel wave 1 nodes.
+
+## When to use
+
+- Parent dispatches independent Grok nodes via bash (Pattern A/E).
+- Tune-in-place after gate failure: `-r <sessionId>`.
+- Parallel builders with `-w` worktrees or hypothesis `--best-of-n`.
+
+## When NOT to use
+
+- Single-session work the parent can do directly.
+- Grok config/MCP sync — `/harness-master` or `wagents grok doctor`.
+- Skill installs — `wagents skills sync --dry-run`.
+- Nested Grok-in-Grok graphs beyond platform depth 1.
+
+## Pre-flight
+
+### Doctor JSON
+
+```bash
+uv run wagents grok doctor --format json
+```
+
+Stop when `ok` is false or `grok-binary` fails.
+
+### Inspect
+
+```bash
+cd <target-repo> && grok inspect --json
+```
+
+`grok inspect` has no `--cwd` flag; change directory first.
+
+## Three-tier model
+
+1. **Parent** — `/orchestrator` or OpenCode Ensemble owns waves and gates.
+2. **This skill** — templates, ledger, safety, recovery.
+3. **Grok CLI** — `-p`, `-r`, worktrees, leader, optional `grok agent stdio`.
+
+## Wave taxonomy
+
+| Wave | Purpose | Typical `--agent` | `--max-turns` |
+| --- | --- | --- | --- |
+| 0 scout | Read-only exploration | `researcher` | 8 |
+| 1 build | Implementation | repo agent | 25 |
+| 2 verify | Tests, review | `code-reviewer` | 10 |
+| tune | Delta on session | inherit | 10 |
+| hypothesis | Competing theories | `researcher` | 12 |
+
+Templates: [references/command-templates.md](references/command-templates.md).
+
+## Single node
+
+```bash
+grok --no-auto-update \
+  -p "<self-contained task>" \
+  --cwd "<absolute-repo-path>" \
+  --output-format json \
+  --max-turns 25 \
+  --agent "<agent-name>"
+```
+
+Parse JSON per [references/output-json.md](references/output-json.md). Append ledger row per [references/session-ledger.md](references/session-ledger.md).
+
+## Tune loop
+
+```bash
+grok --no-auto-update \
+  -r "<sessionId>" \
+  -p "Tune: <delta only>" \
+  --cwd "<same cwd>" \
+  --output-format json \
+  --max-turns 10
+```
+
+Cap `parent_tune_count` at 3 per `node_id`.
+
+## Parallel wave dispatch
+
+Dispatch **N independent bash subprocesses** in one parent message. Each node gets unique `-w w<wave>-<role>-<n>` and non-overlapping ownership. See [references/concurrency.md](references/concurrency.md).
+
+## Leader pool
+
+```bash
+grok agent leader --no-exit-on-disconnect --no-auto-update
+```
+
+Clients attach with `grok agent --leader`. Details: [references/leader-lifecycle.md](references/leader-lifecycle.md).
+
+## Recovery ladder
+
+1. Node fail → one retry; else ledger `failed`.
+2. JSON parse fail → `--output-format plain` triage.
+3. Leader dead → `grok leader list`; restart pool.
+4. Auth fail → stop fleet; fix doctor `fail` checks.
+
+## Completion criteria
+
+- Pre-flight doctor JSON `ok: true`
+- Every dispatched node has terminal ledger status
+- Parent gate passed or explicit user abort recorded
+- Orphan leaders killed: `grok leader kill`
+
+## Validation
+
+```bash
+uv run python skills/grok-delegate/scripts/check.py
+uv run python skills/skill-creator/scripts/audit.py skills/grok-delegate
+uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/grok-delegate
+uv run python skills/skill-creator/scripts/package.py skills/grok-delegate --dry-run
+uv run python skills/grok-delegate/scripts/parse_grok_json.py <<< '<json>'
+```
+
+## Reference index
+
+| File | Content |
+| --- | --- |
+| [wave-dag.md](references/wave-dag.md) | Wave gates on bash dispatch |
+| [graph-patterns.md](references/graph-patterns.md) | Orchestrator A–F mapping |
+| [command-templates.md](references/command-templates.md) | Copy-paste invocations |
+| [output-json.md](references/output-json.md) | Headless JSON fields |
+| [session-ledger.md](references/session-ledger.md) | Ledger schema |
+| [agent-map.md](references/agent-map.md) | Repo agents → `--agent` |
+| [concurrency.md](references/concurrency.md) | Budgets, naming |
+| [leader-lifecycle.md](references/leader-lifecycle.md) | Leader start/stop |
+| [acp-driver.md](references/acp-driver.md) | Official ACP stdio excerpt |
+| [safety-permissions.md](references/safety-permissions.md) | Permission matrix |
+
+Official docs: https://docs.x.ai/build/cli/headless-scripting
+
+## Scope boundaries
+
+**IS for:** native Grok CLI delegation, wave templates, session tune loops, parallel worktree dispatch, leader pool policy.
+
+**NOT for:** Grok config sync, custom wrappers, MCP servers, or live `skills sync --apply` unless the maintainer requests it.
+````
+
+[Download from GitHub](https://raw.githubusercontent.com/wyattowalsh/agents/main/skills/grok-delegate/SKILL.md)
+
+</details>
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="Skill Catalog" href="/skills/catalog/" description="Browse custom and external skills." />
+  <LinkCard title="CLI Reference" href="/cli/" description="Install and manage skills." />
+  <LinkCard title="agentskills.io" href="https://agentskills.io" description="The open ecosystem for cross-agent skills." />
+</CardGrid>
+
+---
+[View source on GitHub](https://github.com/wyattowalsh/agents/blob/main/skills/grok-delegate/SKILL.md)
