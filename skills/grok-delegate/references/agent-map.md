@@ -1,6 +1,6 @@
 # Repo agents → Grok `--agent`
 
-Repo agents in `agents/*.md` sync to `~/.grok/agents/` via `wagents/platforms/grok.py`. Invoke by frontmatter `name` (kebab-case).
+Repo agents in `agents/*.md` sync to `~/.grok/agents/` via the repo Grok platform adapter. Invoke by frontmatter `name` (kebab-case).
 
 | Repo agent | Grok `--agent` | Typical wave |
 | --- | --- | --- |

@@ -20,7 +20,7 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 | $ARGUMENTS | Action |
 | --- | --- |
 | *(empty)* | Show pre-flight, wave taxonomy, critical rules, and reference index |
-| `preflight` | Run `uv run wagents grok doctor --format json`; stop on `fail` checks |
+| `preflight` | Run `scripts/preflight.sh`; stop on `fail` checks |
 | `wave <0\|1\|2>` | Show command templates for scout / build / verify waves |
 | `tune` | Show session resume / delta prompt loop |
 | `leader` | Show leader pool lifecycle |
@@ -42,8 +42,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 ## Critical Rules
 
-1. **Native CLI only** — no `bin/gk`, MCP control server, or `wagents grok run`.
-2. **Pre-flight mandatory** — `uv run wagents grok doctor --format json` before fleet dispatch.
+1. **Native CLI only** — no `bin/gk`, MCP control server, or custom headless wrapper scripts.
+2. **Pre-flight mandatory** — run `scripts/preflight.sh` before fleet dispatch.
 3. **Parent owns the graph** — Grok depth is 1; parallelize siblings via parent bash, not nested Grok orchestration.
 4. **Never default `--always-approve`** for cross-harness delegation.
 5. **Always `--no-auto-update` and explicit `--cwd`** on automation paths.
@@ -59,8 +59,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 ## When NOT to use
 
 - Single-session work the parent can do directly.
-- Grok config/MCP sync — `/harness-master` or `wagents grok doctor`.
-- Skill installs — `wagents skills sync --dry-run`.
+- Grok config/MCP sync — `/harness-master` or `scripts/preflight.sh`.
+- Skill installs — Skills CLI dry-run preview only (no live `--apply` unless maintainer requests).
 - Nested Grok-in-Grok graphs beyond platform depth 1.
 
 ## Pre-flight
@@ -68,7 +68,7 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 ### Doctor JSON
 
 ```bash
-uv run wagents grok doctor --format json
+bash skills/grok-delegate/scripts/preflight.sh
 ```
 
 Stop when `ok` is false or `grok-binary` fails.

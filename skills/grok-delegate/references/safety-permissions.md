@@ -25,4 +25,4 @@ Parent must approve before Grok nodes run: `git push`, `rm -rf`, production depl
 
 ## Auth
 
-If `wagents grok doctor --format json` reports `grok-binary` fail, stop all dispatch. Use `grok login` or `XAI_API_KEY` per x.ai docs.
+If `scripts/preflight.sh` reports `grok-binary` fail, stop all dispatch. Use `grok login` or `XAI_API_KEY` per x.ai docs.
