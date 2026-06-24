@@ -1,5 +1,26 @@
 /* Auto-extracted from custom.css for modular maintenance: 70-a11y.css */
 
+/* ===== SKIP LINK ===== */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10000;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--sl-color-black);
+  color: var(--sl-color-text-accent);
+  border: 1px solid var(--primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 0.15s ease;
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 /* ===== FOCUS ACCESSIBILITY ===== */
 *:focus-visible {
   outline: 2px solid var(--ring);

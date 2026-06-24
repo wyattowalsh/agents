@@ -420,9 +420,36 @@ wagents skills sync --apply
 By default, sync targets repo-owned custom skills plus verified curated external skills. It never removes user-installed skills.
 </Aside>
 
+<Aside type="tip" title="Inventory fallback">
+When a Skills CLI inventory query fails, times out, or emits unusable JSON for a harness with a known local skill root, dry-run reports may continue from a read-only local `SKILL.md` scan. The report prints a warning whenever fallback evidence is used.
+</Aside>
+
 <Aside type="caution" title="GitHub Copilot caveat">
 GitHub Copilot remains part of config and instruction sync, but the skills inventory reports only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`.
 </Aside>
+
+</details>
+
+
+<details class="cli-command-ref">
+<summary>`wagents catalog` — Catalog SSOT Checks</summary>
+
+
+Inspect the source-authored skill catalog and generated index without installing external skills. `audit` measures curated external evidence gaps; it is read-only and exits zero by default so teams can plan remediation before enabling strict gates.
+
+```bash
+wagents catalog index --check
+wagents catalog audit
+wagents catalog audit --status install-now-after-trust-gate --format json
+wagents catalog audit --strict
+```
+
+| Command | Purpose |
+|---------|---------|
+| `index --check` | Fail when the committed catalog index is stale relative to authoring MDX |
+| `audit` | Report missing license, pin, source-list, executable-surface, credential, live-action, and dedupe evidence |
+| `audit --strict` | Exit nonzero when warning or error audit issues are present |
+| `sync-authoring` | Project repo-owned `skills/*/SKILL.md` into custom authoring MDX |
 
 </details>
 

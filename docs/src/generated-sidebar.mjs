@@ -4,7 +4,8 @@ export const navLinks = [
   { label: 'Skills', link: '/skills/catalog/' },
   { label: 'Agents', link: '/agents/' },
   { label: 'MCP', link: '/mcp/' },
-  { label: 'CLI', link: '/cli/' }
+  { label: 'CLI', link: '/cli/' },
+  { label: 'Harness Support', link: '/harness-support/' }
 ];
 
 export default [
@@ -90,6 +91,7 @@ export default [
       },
       {
         label: 'External',
+        collapsed: true,
         items: [{ autogenerate: { directory: 'skills/catalog/external' } }],
       },
     ],

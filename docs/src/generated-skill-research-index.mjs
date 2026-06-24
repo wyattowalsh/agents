@@ -2340,7 +2340,7 @@ export const skillResearchIndex = [
     "mean_confidence": 0.78,
     "name": "research",
     "research_tier": "quick",
-    "researched_at": "2026-06-16T01:14:01Z",
+    "researched_at": "2026-06-23T22:12:37Z",
     "source_type": "custom",
     "stale": false
   },

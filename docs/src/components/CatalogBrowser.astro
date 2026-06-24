@@ -1,0 +1,275 @@
+---
+/**
+ * Searchable, progressively rendered catalog for large external skill lists.
+ * Avoids mounting hundreds of LinkCard nodes on first paint.
+ */
+
+interface SkillRow {
+  name: string;
+  description?: string;
+  status?: string;
+  sourceType?: string;
+}
+
+interface Props {
+  skills: SkillRow[];
+  pageSize?: number;
+}
+
+const { skills, pageSize = 48 } = Astro.props;
+
+const laneByStatus: Record<string, string> = {
+  'install-now-after-trust-gate': 'install-now',
+  'inspect-then-install': 'inspect',
+  'global-only-or-avoid': 'avoid',
+};
+
+const serialized = skills.map((skill) => ({
+  name: skill.name,
+  description: (skill.description || '').slice(0, 160),
+  href: `/skills/catalog/external/${skill.name}/`,
+  lane: laneByStatus[String(skill.status || '')] || 'inspect',
+  sourceType: skill.sourceType || 'curated-external',
+}));
+---
+
+<div class="catalog-browser" data-catalog-browser data-page-size={pageSize}>
+  <div class="catalog-browser__toolbar" role="toolbar" aria-label="Browse external skills">
+    <label class="catalog-browser__search">
+      <span class="sr-only">Search external skills</span>
+      <input
+        type="search"
+        class="catalog-browser__input"
+        placeholder="Search by name or description…"
+        autocomplete="off"
+        spellcheck="false"
+        data-catalog-search
+      />
+    </label>
+    <div class="catalog-browser__filters" role="group" aria-label="Filter by trust lane">
+      <button type="button" class="catalog-browser__filter is-active" data-lane="all" aria-pressed="true">All</button>
+      <button type="button" class="catalog-browser__filter" data-lane="install-now" aria-pressed="false">Install now</button>
+      <button type="button" class="catalog-browser__filter" data-lane="inspect" aria-pressed="false">Inspect</button>
+      <button type="button" class="catalog-browser__filter" data-lane="avoid" aria-pressed="false">Avoid</button>
+    </div>
+  </div>
+
+  <p class="catalog-browser__meta" data-catalog-meta aria-live="polite"></p>
+
+  <div class="catalog-browser__grid" data-catalog-grid></div>
+
+  <div class="catalog-browser__footer">
+    <button type="button" class="catalog-browser__more" data-catalog-more hidden>Load more</button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ serialized, pageSize }}>
+  const root = document.querySelector('[data-catalog-browser]');
+  if (!root) {
+    // no-op when component is not mounted
+  } else {
+    const skills = serialized;
+    const grid = root.querySelector('[data-catalog-grid]');
+    const meta = root.querySelector('[data-catalog-meta]');
+    const searchInput = root.querySelector('[data-catalog-search]');
+    const moreBtn = root.querySelector('[data-catalog-more]');
+    const filterButtons = root.querySelectorAll('[data-lane]');
+
+    let activeLane = 'all';
+    let query = '';
+    let visibleCount = pageSize;
+    let filtered = skills;
+
+    const normalize = (value) => String(value || '').toLowerCase();
+
+    const applyFilters = () => {
+      const needle = normalize(query);
+      filtered = skills.filter((skill) => {
+        const laneMatch = activeLane === 'all' || skill.lane === activeLane;
+        if (!laneMatch) return false;
+        if (!needle) return true;
+        return normalize(skill.name).includes(needle) || normalize(skill.description).includes(needle);
+      });
+      visibleCount = pageSize;
+    };
+
+    const renderCard = (skill) => {
+      const article = document.createElement('article');
+      article.className = 'catalog-browser__card sl-link-card';
+      article.innerHTML = `
+        <a class="catalog-browser__card-link sl-link-card__link" href="${skill.href}">
+          <span class="catalog-browser__card-title sl-link-card__title">${skill.name}</span>
+          <span class="catalog-browser__card-desc sl-link-card__description">${skill.description || ''}</span>
+        </a>
+      `;
+      return article;
+    };
+
+    const render = () => {
+      if (!(grid instanceof HTMLElement) || !(meta instanceof HTMLElement)) return;
+      grid.replaceChildren();
+      const slice = filtered.slice(0, visibleCount);
+      for (const skill of slice) {
+        grid.appendChild(renderCard(skill));
+      }
+      const showing = slice.length;
+      const total = filtered.length;
+      meta.textContent =
+        total === 0
+          ? 'No skills match the current filters.'
+          : `Showing ${showing} of ${total} external skill${total === 1 ? '' : 's'}.`;
+      if (moreBtn instanceof HTMLButtonElement) {
+        const hasMore = showing < total;
+        moreBtn.hidden = !hasMore;
+        moreBtn.disabled = !hasMore;
+      }
+    };
+
+    const setLane = (lane) => {
+      activeLane = lane;
+      for (const btn of filterButtons) {
+        if (!(btn instanceof HTMLButtonElement)) continue;
+        const active = btn.dataset.lane === lane;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      }
+      applyFilters();
+      render();
+    };
+
+    if (searchInput instanceof HTMLInputElement) {
+      searchInput.addEventListener('input', () => {
+        query = searchInput.value;
+        applyFilters();
+        render();
+      });
+    }
+
+    for (const btn of filterButtons) {
+      btn.addEventListener('click', () => {
+        if (!(btn instanceof HTMLButtonElement)) return;
+        setLane(btn.dataset.lane || 'all');
+      });
+    }
+
+    if (moreBtn instanceof HTMLButtonElement) {
+      moreBtn.addEventListener('click', () => {
+        visibleCount += pageSize;
+        render();
+      });
+    }
+
+    applyFilters();
+    render();
+  }
+</script>
+
+<style>
+  .catalog-browser {
+    margin: 1rem 0 2rem;
+  }
+  .catalog-browser__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .catalog-browser__search {
+    flex: 1 1 16rem;
+    min-width: 12rem;
+  }
+  .catalog-browser__input {
+    width: 100%;
+    border: 1px solid var(--sl-color-gray-5);
+    background: var(--sl-color-black);
+    color: var(--sl-color-text);
+    border-radius: var(--radius-md, 0.5rem);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  .catalog-browser__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .catalog-browser__filter {
+    border: 1px solid var(--sl-color-gray-5);
+    background: transparent;
+    color: var(--sl-color-text);
+    border-radius: var(--radius-pill, 999px);
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .catalog-browser__filter.is-active,
+  .catalog-browser__filter:hover {
+    border-color: var(--primary);
+    color: var(--sl-color-text-accent);
+  }
+  .catalog-browser__meta {
+    margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-3);
+  }
+  .catalog-browser__grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  }
+  .catalog-browser__card {
+    border: 1px solid var(--sl-color-gray-6);
+    border-radius: var(--radius-md, 0.5rem);
+    padding: 0;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .catalog-browser__card:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+  .catalog-browser__card-link {
+    display: block;
+    padding: 1rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .catalog-browser__card-title {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  .catalog-browser__card-desc {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--sl-color-gray-3);
+    line-height: 1.45;
+  }
+  .catalog-browser__footer {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .catalog-browser__more {
+    border: 1px solid var(--sl-color-gray-5);
+    background: transparent;
+    color: var(--sl-color-text);
+    border-radius: var(--radius-pill, 999px);
+    padding: 0.45rem 1.1rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .catalog-browser__more:hover {
+    border-color: var(--primary);
+    color: var(--sl-color-text-accent);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

@@ -70,7 +70,9 @@ export default defineConfig({
           navLinks,
         }),
         starlightLinksValidator(),
-        starlightLlmsTxt(),
+        starlightLlmsTxt({
+          rawContent: true,
+        }),
       ],
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/wyattowalsh/agents' }],
       customCss: [
