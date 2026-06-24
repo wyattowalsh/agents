@@ -1,0 +1,60 @@
+{
+  "skill_name": "shell-scripter",
+  "evals": [
+    {
+      "id": "explicit-create",
+      "prompt": "/shell-scripter create backup script that uses rsync with deletion protection",
+      "files": [],
+      "expected_output": "Generated shell using env shebang, set -euo pipefail, quoted expansions, error handling; no eval.",
+      "assertions": [
+        "Agent dispatches to create.",
+        "Uses env-based shebangs.",
+        "Defaults to set -euo pipefail.",
+        "Quotes variables; explains SC2086.",
+        "Includes error handling for external cmds; no eval unless justified."
+      ]
+    },
+    {
+      "id": "review-with-sc",
+      "prompt": "/shell-scripter review scripts/deploy.sh",
+      "files": ["scripts/deploy.sh"],
+      "expected_output": "Review references exact SC rule IDs + line + concrete fix; does not run ShellCheck.",
+      "assertions": [
+        "Agent does not claim to run ShellCheck.",
+        "Each finding includes SC rule ID, line, fix.",
+        "Pattern-based analysis only."
+      ]
+    },
+    {
+      "id": "negative-python",
+      "prompt": "Write a python script to parse logs",
+      "files": [],
+      "expected_output": "Handoff to python-conventions; shell-scripter does not own .py .",
+      "assertions": [
+        "Agent refuses shell generation for Python.",
+        "Names python-conventions.",
+        "Does not generate shell for py tasks."
+      ]
+    },
+    {
+      "id": "makefile-generation",
+      "prompt": "/shell-scripter makefile build test clean",
+      "files": [],
+      "expected_output": "Generates Makefile with .PHONY, help target, proper recipes.",
+      "assertions": [
+        "Includes .PHONY and help target.",
+        "Follows conventions for make."
+      ]
+    },
+    {
+      "id": "convert-dialect",
+      "prompt": "/shell-scripter convert scripts/run.sh to zsh",
+      "files": ["scripts/run.sh"],
+      "expected_output": "Dialect conversion that preserves logic and updates idioms.",
+      "assertions": [
+        "Agent handles convert mode.",
+        "Does not claim execution or lint running."
+      ]
+    }
+  ]
+}

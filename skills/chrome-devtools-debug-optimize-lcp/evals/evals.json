@@ -1,0 +1,72 @@
+{
+  "skill_name": "chrome-devtools-debug-optimize-lcp",
+  "evals": [
+    {
+      "id": "explicit-lcp-trace",
+      "prompt": "/chrome-devtools-debug-optimize-lcp https://example.com",
+      "files": [],
+      "expected_output": "LCP debugging that records trace, identifies LCP element and subpart (TTFB/load/render), suggests fixes.",
+      "assertions": [
+        "Agent dispatches to LCP mode.",
+        "Records trace with performance trace tools.",
+        "Identifies LCP subpart before recommending changes.",
+        "Compares before/after under same conditions for verification."
+      ]
+    },
+    {
+      "id": "implicit-lcp",
+      "prompt": "The hero banner is slow to render, find the LCP resource and why it's delayed.",
+      "files": [],
+      "expected_output": "LCP concern routes to specialized LCP debugging skill.",
+      "assertions": [
+        "Agent classifies as LCP / largest contentful paint work.",
+        "Activates this skill (not generic chrome-devtools).",
+        "Focuses on waterfalls, resource discovery, render delay."
+      ]
+    },
+    {
+      "id": "negative-memory-leak",
+      "prompt": "Investigate growing JS heap on repeated navigation.",
+      "files": [],
+      "expected_output": "Handoff to memory leak debugging skill.",
+      "assertions": [
+        "Does not use LCP skill for heap growth.",
+        "Routes to chrome-devtools-memory-leak-debugging.",
+        "Does not start LCP trace for memory symptom."
+      ]
+    },
+    {
+      "id": "boundary-keep-trace-out-vc",
+      "prompt": "/chrome-devtools-debug-optimize-lcp record the trace to analyze LCP",
+      "files": [],
+      "expected_output": "Trace saved to explicit filePath outside version control.",
+      "assertions": [
+        "Agent always specifies filePath for trace.",
+        "Advises not to commit trace files.",
+        "Cites: Keep trace files out of version control."
+      ]
+    },
+    {
+      "id": "subpart-first-then-fix",
+      "prompt": "Speed up LCP by inlining the hero CSS",
+      "files": [],
+      "expected_output": "Requires identifying which subpart (e.g. resource load vs render) is slow before suggesting inline.",
+      "assertions": [
+        "Agent checks TTFB, resource load delay, render blocking before fix advice.",
+        "Cites: Identify the slow LCP subpart before recommending a fix.",
+        "Does not optimize bytes without load/render analysis."
+      ]
+    },
+    {
+      "id": "same-conditions-verification",
+      "prompt": "I applied the fix, re-analyze LCP now",
+      "files": [],
+      "expected_output": "Re-runs trace under identical network/CPU conditions to compare subparts.",
+      "assertions": [
+        "Agent insists on same conditions for before/after comparison.",
+        "Compares specific subpart timings.",
+        "Cites critical rule on verification."
+      ]
+    }
+  ]
+}

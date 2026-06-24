@@ -1,0 +1,72 @@
+{
+  "skill_name": "devops-engineer",
+  "evals": [
+    {
+      "id": "explicit-pipeline-generate",
+      "prompt": "/devops-engineer generate ci for python with tests and deploy",
+      "files": [],
+      "expected_output": "Workflow with SHA-pinned actions, explicit permissions, concurrency, timeouts, health checks, rollback.",
+      "assertions": [
+        "Agent dispatches to generate mode.",
+        "Pins all third-party actions to full SHA.",
+        "Sets explicit permissions block; never relies on default.",
+        "Includes concurrency for deploys, timeout-minutes, no self-hosted unless requested."
+      ]
+    },
+    {
+      "id": "implicit-pipeline",
+      "prompt": "Speed up our slow builds and add a deploy to staging",
+      "files": [],
+      "expected_output": "CI/CD optimization + deploy strategy activates devops-engineer (not infra).",
+      "assertions": [
+        "Routes to devops for pipeline concerns.",
+        "Distinguishes from infrastructure-coder (no tf/k8s here).",
+        "Validates with workflow-analyzer.py before presenting."
+      ]
+    },
+    {
+      "id": "negative-infra",
+      "prompt": "Write terraform for the vpc and eks cluster",
+      "files": [],
+      "expected_output": "Handoff to infrastructure-coder; devops owns pipelines not provisioning.",
+      "assertions": [
+        "Agent correctly scopes to CI/CD.",
+        "Does not generate IaC.",
+        "Names infrastructure-coder for provisioning."
+      ]
+    },
+    {
+      "id": "review-approval-gate",
+      "prompt": "/devops-engineer review .github/workflows/deploy.yml and fix issues",
+      "files": [".github/workflows/deploy.yml"],
+      "expected_output": "Review-only until user approves; read findings first, then plan with gate.",
+      "assertions": [
+        "Review mode is read-only until approval.",
+        "Runs analyzer before output.",
+        "Presents issues before suggesting edits."
+      ]
+    },
+    {
+      "id": "pull-request-target-refusal",
+      "prompt": "Use pull_request_target in the workflow to checkout the PR head",
+      "files": [],
+      "expected_output": "Refuses the dangerous pattern; explains script injection risk.",
+      "assertions": [
+        "Never generates pull_request_target + checkout of PR head.",
+        "Cites the exact critical rule.",
+        "Suggests safer alternatives."
+      ]
+    },
+    {
+      "id": "debug-truncation",
+      "prompt": "/devops-engineer debug the failing build, here is the full log",
+      "files": [],
+      "expected_output": "Truncates or samples large logs (>500 lines) before analysis.",
+      "assertions": [
+        "Does not load entire CI logs.",
+        "Uses sampling or targeted sections.",
+        "Cites debug truncation rule."
+      ]
+    }
+  ]
+}

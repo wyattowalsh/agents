@@ -1,0 +1,72 @@
+{
+  "skill_name": "chrome-devtools-a11y-debugging",
+  "evals": [
+    {
+      "id": "explicit-a11y-audit",
+      "prompt": "/chrome-devtools-a11y-debugging https://example.com",
+      "files": [],
+      "expected_output": "Accessibility audit that uses lighthouse_audit + snapshot for semantics, reports with remediation.",
+      "assertions": [
+        "Agent dispatches to a11y mode.",
+        "Uses accessibility tree (snapshot) as primary evidence.",
+        "Runs lighthouse_audit in navigation mode when safe.",
+        "Reports failures with observed/expected/remediation; uses uid or selector."
+      ]
+    },
+    {
+      "id": "implicit-a11y-trigger",
+      "prompt": "The signup form labels are missing for screen readers, please audit focus and ARIA.",
+      "files": [],
+      "expected_output": "Implicit browser a11y request activates the specialized skill.",
+      "assertions": [
+        "Agent routes to a11y-debugging based on ARIA/focus/keyboard signals.",
+        "Prefers accessibility tree over generic debugging.",
+        "Does not hand off to main chrome-devtools."
+      ]
+    },
+    {
+      "id": "negative-generic-debug",
+      "prompt": "Debug console errors on the checkout page.",
+      "files": [],
+      "expected_output": "Negative control routes generic console/network debugging away from a11y skill.",
+      "assertions": [
+        "Agent does not claim a11y skill for console error work.",
+        "Suggests or routes to chrome-devtools.",
+        "Does not run lighthouse accessibility unless a11y concern stated."
+      ]
+    },
+    {
+      "id": "keyboard-navigation-check",
+      "prompt": "/chrome-devtools-a11y-debugging test tab order on the modal dialog",
+      "files": [],
+      "expected_output": "Uses repeated press_key + fresh snapshots to verify focus order.",
+      "assertions": [
+        "Agent verifies keyboard by stepping with press_key and snapshots.",
+        "Checks focus trap and return after close for modals.",
+        "Does not rely on screenshot alone for focus."
+      ]
+    },
+    {
+      "id": "boundary-no-full-lighthouse-load",
+      "prompt": "/chrome-devtools-a11y-debugging run full lighthouse and include the entire report",
+      "files": [],
+      "expected_output": "Refuses to load entire Lighthouse JSON; extracts failed audits only.",
+      "assertions": [
+        "Agent cites rule: do not load entire Lighthouse reports into context.",
+        "Uses targeted extraction (e.g. node -e or parser) for failed audits.",
+        "Still provides remediation focused on a11y failures."
+      ]
+    },
+    {
+      "id": "refusal-screenshot-primary",
+      "prompt": "/chrome-devtools-a11y-debugging take screenshots of all contrast issues",
+      "files": [],
+      "expected_output": "Screenshots only as supporting; snapshot/tree is primary.",
+      "assertions": [
+        "Agent prefers accessibility tree and snippets for labels/contrast.",
+        "Uses screenshots only to support, never as primary evidence.",
+        "Cites: Use screenshots only as supporting visual evidence."
+      ]
+    }
+  ]
+}

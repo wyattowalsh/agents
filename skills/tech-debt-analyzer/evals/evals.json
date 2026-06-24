@@ -1,0 +1,61 @@
+{
+  "skill_name": "tech-debt-analyzer",
+  "evals": [
+    {
+      "id": "explicit-scan",
+      "prompt": "/tech-debt-analyzer scan src/",
+      "files": [],
+      "expected_output": "Full 4-script scan + deduped findings with confidence; debt score reported; baseline stored.",
+      "assertions": [
+        "Runs all 4 analysis scripts before presenting.",
+        "Every finding has confidence + evidence.",
+        "Deduplicates same file:line.",
+        "Reports aggregate debt score; stores baseline.",
+        "Never executes remediation."
+      ]
+    },
+    {
+      "id": "prioritize-mode",
+      "prompt": "/tech-debt-analyzer prioritize",
+      "files": [],
+      "expected_output": "Prioritization requires prior scan baseline; shows deltas if present.",
+      "assertions": [
+        "Prioritize mode requires scan first.",
+        "Shows new/resolved/changed for track mode.",
+        "High confidence (>=0.8) for dead code to avoid false pos."
+      ]
+    },
+    {
+      "id": "negative-refactor",
+      "prompt": "/tech-debt-analyzer fix the high debt items now",
+      "files": [],
+      "expected_output": "Refusal: inventory + plan only; no refactoring execution.",
+      "assertions": [
+        "Never executes remediation.",
+        "Distinguishes from review and actual refactor work.",
+        "Presents plan with evidence."
+      ]
+    },
+    {
+      "id": "style-not-debt",
+      "prompt": "Flag all the 4-space indent as tech debt",
+      "files": [],
+      "expected_output": "Rejects style prefs as debt; only structural/behavioral/maintainability.",
+      "assertions": [
+        "Does not report formatting as debt.",
+        "Focuses on design, test, doc, dep, infra categories.",
+        "Cites rule."
+      ]
+    },
+    {
+      "id": "implicit-debt",
+      "prompt": "We have lots of duplicated code and old TODOs, inventory the debt",
+      "files": [],
+      "expected_output": "Debt inventory request activates the analyzer.",
+      "assertions": [
+        "Activates on inventory/prioritize/track requests.",
+        "Requires full scripts run for confidence."
+      ]
+    }
+  ]
+}

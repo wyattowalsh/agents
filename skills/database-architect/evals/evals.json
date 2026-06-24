@@ -1,0 +1,62 @@
+{
+  "skill_name": "database-architect",
+  "evals": [
+    {
+      "id": "explicit-design",
+      "prompt": "/database-architect design user events table for analytics",
+      "files": [],
+      "expected_output": "Schema DDL (raw, not ORM) with normalization cited; assumes Postgres unless specified.",
+      "assertions": [
+        "Agent dispatches to design.",
+        "Default PostgreSQL stated.",
+        "Cites specific normal form.",
+        "Does not generate ORM code; raw DDL/SQL.",
+        "Every index rec includes write overhead."
+      ]
+    },
+    {
+      "id": "migrate-with-rollback",
+      "prompt": "/database-architect migrate add email_verified to users",
+      "files": [],
+      "expected_output": "Migration SQL + explicit rollback plan; flags data loss risk.",
+      "assertions": [
+        "Every migration has rollback plan.",
+        "Explicit data loss risk callout.",
+        "Never recommend drop without preservation strategy.",
+        "Runs schema-analyzer.py or migration-validator before output."
+      ]
+    },
+    {
+      "id": "approval-gate",
+      "prompt": "/database-architect evolve the schema and apply changes",
+      "files": [],
+      "expected_output": "Analysis + plan with approval gate; no execution without ack.",
+      "assertions": [
+        "Always present before executing.",
+        "Approval gate before schema modification.",
+        "Zero-downtime means schema compat, not deploy coord."
+      ]
+    },
+    {
+      "id": "negative-dba-ops",
+      "prompt": "Backup the prod db and run vacuum",
+      "files": [],
+      "expected_output": "Out of scope: DBA ops and deployment; route to devops-engineer.",
+      "assertions": [
+        "Does not own backups, ops, deploys.",
+        "Names devops-engineer for those.",
+        "Stays in architecture decisions."
+      ]
+    },
+    {
+      "id": "implicit-optimize",
+      "prompt": "The orders query is slow on join, suggest indexes",
+      "files": ["migrations/003_orders.sql"],
+      "expected_output": "Optimize mode with trade-off analysis.",
+      "assertions": [
+        "Runs analyzer script before advice.",
+        "Covers write overhead."
+      ]
+    }
+  ]
+}

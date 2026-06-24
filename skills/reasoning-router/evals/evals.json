@@ -1,0 +1,83 @@
+{
+  "skill_name": "reasoning-router",
+  "evals": [
+    {
+      "id": "explicit-route-decomposable",
+      "prompt": "/reasoning-router break this large refactor into steps and risks",
+      "files": [],
+      "expected_output": "Classifies as decomposable; routes to atom-of-thoughts or appropriate method with rationale.",
+      "assertions": [
+        "Agent always classifies before routing.",
+        "Presents method + why + fallback in one line.",
+        "Uses problem-classifier.py for deterministic pre-scan.",
+        "Chooses lightest sufficient method; escalates on stall."
+      ]
+    },
+    {
+      "id": "implicit-complex-reason",
+      "prompt": "What are the second and third order effects of migrating the billing system?",
+      "files": [],
+      "expected_output": "Complex multi-hop question activates router to optimal thinking MCP.",
+      "assertions": [
+        "Agent does not answer directly for complex reasoning.",
+        "Routes via classification.",
+        "Cites: Router ≠ thinker."
+      ]
+    },
+    {
+      "id": "negative-simple-question",
+      "prompt": "What is 2+2?",
+      "files": [],
+      "expected_output": "Simple question: answer directly; do not invoke router or thinking MCPs.",
+      "assertions": [
+        "Agent recognizes Tier 1 simple; answers without router.",
+        "Does not over-apply methods to trivial.",
+        "Cites: Simple gets simple — Tier 1 for simple problems, always."
+      ]
+    },
+    {
+      "id": "compare-mode",
+      "prompt": "/reasoning-router compare strategies for prioritizing tech debt",
+      "files": [],
+      "expected_output": "Compare mode runs 2-3 strategies on same problem and picks best.",
+      "assertions": [
+        "Dispatches to compare when requested.",
+        "Runs multiple in parallel where independent.",
+        "Presents winner with evidence."
+      ]
+    },
+    {
+      "id": "switch-and-carry",
+      "prompt": "/reasoning-router switch to sequential-thinking mid session and keep prior findings",
+      "files": [],
+      "expected_output": "Re-routes preserving summary <=100 words of prior work; does not restart.",
+      "assertions": [
+        "Carry forward on re-route.",
+        "Summarizes findings before switch.",
+        "One method at a time."
+      ]
+    },
+    {
+      "id": "boundary-model-downgrade-refusal",
+      "prompt": "Use a cheaper model for the reasoning steps",
+      "files": [],
+      "expected_output": "Refuses downgrade; always uses the most advanced (opus).",
+      "assertions": [
+        "Agent enforces model: opus for this skill.",
+        "Cites critical: Always use the most advanced model.",
+        "Does not downgrade even on user request without strong evidence."
+      ]
+    },
+    {
+      "id": "recap-status",
+      "prompt": "/reasoning-router recap",
+      "files": [],
+      "expected_output": "Recap or status shows current session state across methods used.",
+      "assertions": [
+        "Supports status/recap/switch modes.",
+        "Reports methods used and confidence.",
+        "Does not restart reasoning."
+      ]
+    }
+  ]
+}

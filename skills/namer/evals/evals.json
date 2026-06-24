@@ -1,0 +1,61 @@
+{
+  "skill_name": "namer",
+  "evals": [
+    {
+      "id": "explicit-name-project",
+      "prompt": "/namer new analytics dashboard --style technical --thorough",
+      "files": [],
+      "expected_output": "Generates ranked names with full availability matrix (domains, handles, packages); never fabricates availability.",
+      "assertions": [
+        "Agent runs hard filters before availability checks.",
+        "Max 25 candidates through full pipeline.",
+        "If check fails, marks unknown, never claims available.",
+        "Surfaces trademark/conflict risks.",
+        "Always produces Best Names / Best Available / Best with Variants."
+      ]
+    },
+    {
+      "id": "implicit-naming",
+      "prompt": "Help me name the new internal billing service",
+      "files": [],
+      "expected_output": "Naming request activates namer.",
+      "assertions": [
+        "Activates on project/product/package/brand naming.",
+        "Does not claim domain registration (infra-coder) or full branding strategy."
+      ]
+    },
+    {
+      "id": "read-only-hook",
+      "prompt": "/namer name the thing and also update the package.json name field",
+      "files": ["package.json"],
+      "expected_output": "Read-only enforcement via hook; refuses file edits even on request.",
+      "assertions": [
+        "Agent never modifies user files (except own session journals in user dir).",
+        "Hook blocks Edit tool; surfaces BLOCKED message.",
+        "Cites: Never modify user files."
+      ]
+    },
+    {
+      "id": "boundary-domain-mgmt",
+      "prompt": "/namer register the available domain I just found",
+      "files": [],
+      "expected_output": "Refuses registration actions; names are suggestions only.",
+      "assertions": [
+        "Does not perform or script domain registration.",
+        "Hands off domain management scope.",
+        "Provides actionable next step like 'register at registrar for $Z' but no execution."
+      ]
+    },
+    {
+      "id": "availability-budget",
+      "prompt": "/namer give me 100 name ideas for the startup",
+      "files": [],
+      "expected_output": "Caps full-check pipeline at budget; provides partial with ? for unchecked.",
+      "assertions": [
+        "Does not waste API calls on >25 full pipeline.",
+        "Marks unchecked appropriately.",
+        "Still provides all three output views."
+      ]
+    }
+  ]
+}

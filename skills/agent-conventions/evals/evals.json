@@ -1,0 +1,61 @@
+{
+  "skill_name": "agent-conventions",
+  "evals": [
+    {
+      "id": "active-on-agent-file",
+      "prompt": "Add a new support agent with tools for search and memory",
+      "files": ["agents/support-agent.md"],
+      "expected_output": "Auto-invoked application of agent frontmatter and body conventions when editing agent files.",
+      "assertions": [
+        "Agent auto-invokes when primary file is under agents/ or *.md agent definition.",
+        "Enforces kebab-case name matching filename.",
+        "Requires name + description in frontmatter.",
+        "Keeps system prompt under 500 lines."
+      ]
+    },
+    {
+      "id": "explicit-check",
+      "prompt": "/agent-conventions check",
+      "files": ["agents/foo.md"],
+      "expected_output": "Compliance-only response validating frontmatter, indexes, and naming.",
+      "assertions": [
+        "Dispatches to check mode.",
+        "Runs or references validate_agent.py --check-index.",
+        "Reports violations without editing."
+      ]
+    },
+    {
+      "id": "empty-help",
+      "prompt": "/agent-conventions",
+      "files": [],
+      "expected_output": "Summary of conventions and required update of README index.",
+      "assertions": [
+        "Agent shows empty handler.",
+        "Reminds to update agents/README.md index on add/modify.",
+        "Lists canonical requirements."
+      ]
+    },
+    {
+      "id": "negative-skill-file",
+      "prompt": "Create a new skill for foo using the conventions",
+      "files": ["skills/foo/SKILL.md"],
+      "expected_output": "Negative control: agent-conventions does not apply to SKILL.md; routes to skill authoring surfaces.",
+      "assertions": [
+        "Agent does not apply agent frontmatter rules to skills.",
+        "Correctly scopes to agents/ only.",
+        "May reference skill-creator or AGENTS.md for skills."
+      ]
+    },
+    {
+      "id": "index-update-requirement",
+      "prompt": "I added agents/new-thing.md; make sure the index is current",
+      "files": ["agents/README.md", "agents/new-thing.md"],
+      "expected_output": "Requires or performs update to the README.md index per conventions.",
+      "assertions": [
+        "Agent enforces: Always update the README.md index when adding or modifying an agent.",
+        "Uses imperative voice in agent bodies.",
+        "Validates name/dir match."
+      ]
+    }
+  ]
+}

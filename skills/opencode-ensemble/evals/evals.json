@@ -1,0 +1,72 @@
+{
+  "skill_name": "opencode-ensemble",
+  "evals": [
+    {
+      "id": "explicit-team-planning",
+      "prompt": "/opencode-ensemble parallel work on api and tests",
+      "files": [],
+      "expected_output": "Team planning that decides if Ensemble justified, creates lead-owned team with role groups and tasks.",
+      "assertions": [
+        "Agent dispatches to team planning / ensemble mode.",
+        "Lead owns decomposition and verification; teammates get narrow verifiable work.",
+        "Uses team_create, team_tasks_add with depends_on.",
+        "Keeps lead-only tools (spawn, merge, shutdown) with lead session."
+      ]
+    },
+    {
+      "id": "wave-planning",
+      "prompt": "/opencode-ensemble waves for refactor then review",
+      "files": [],
+      "expected_output": "Models as staged parallel waves with DAG dependencies and lead gates.",
+      "assertions": [
+        "Agent uses team_tasks_add.depends_on for wave DAG.",
+        "Gates dependent waves behind completed + integrated tasks.",
+        "Scouts use agent: explore, worktree false where appropriate."
+      ]
+    },
+    {
+      "id": "negative-single-agent",
+      "prompt": "Fix the one bug in utils.py",
+      "files": ["utils.py"],
+      "expected_output": "Suitability check: single tight action does not warrant Ensemble; prefer single session.",
+      "assertions": [
+        "Agent refuses to force team for single-action tightly coupled work.",
+        "Explains when Ensemble helps vs one scout or inline.",
+        "Does not spawn unnecessary teammates."
+      ]
+    },
+    {
+      "id": "review-merge-gate",
+      "prompt": "/opencode-ensemble review teammate output and merge",
+      "files": [],
+      "expected_output": "Integration mode: read results, require review of diff before team_merge, verify.",
+      "assertions": [
+        "Agent requires reading teammate result and inspecting diff before merge.",
+        "Does not call team_merge without lead verification step.",
+        "Cites: Review before merging. Verify before claiming completion."
+      ]
+    },
+    {
+      "id": "boundary-teammate-cannot-spawn",
+      "prompt": "Have the QA teammate spawn additional reviewers for the PR",
+      "files": [],
+      "expected_output": "Refusal: teammates cannot use team_spawn etc; subagents are isolated.",
+      "assertions": [
+        "Agent states teammates must not call team_spawn, team_merge, team_shutdown.",
+        "Teammate subagents cannot access team_* tools.",
+        "Keeps coordination with lead only."
+      ]
+    },
+    {
+      "id": "model-guidance-inherit",
+      "prompt": "/opencode-ensemble what model for the build teammates",
+      "files": [],
+      "expected_output": "Inherits repo defaults; only overrides with explicit justification.",
+      "assertions": [
+        "Agent explains model pool / inherit rules.",
+        "Does not set team_spawn.model unless deliberate need shown.",
+        "Cites compatibility with repo-managed OpenCode agent variants."
+      ]
+    }
+  ]
+}

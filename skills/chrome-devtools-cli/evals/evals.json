@@ -1,0 +1,61 @@
+{
+  "skill_name": "chrome-devtools-cli",
+  "evals": [
+    {
+      "id": "explicit-cli-example",
+      "prompt": "/chrome-devtools-cli list pages and take snapshot",
+      "files": [],
+      "expected_output": "Bounded CLI command examples using chrome-devtools binary with proper quoting and output handling.",
+      "assertions": [
+        "Agent dispatches to CLI mode.",
+        "Provides `chrome-devtools list_pages` etc without suggesting global npm i -g.",
+        "Recommends --output-format=json where stable parse needed.",
+        "Quotes paths and URLs."
+      ]
+    },
+    {
+      "id": "negative-mcp-workflow",
+      "prompt": "Use the devtools to click the login button using MCP tools directly",
+      "files": [],
+      "expected_output": "Negative control: this is MCP workflow, not CLI; route to chrome-devtools not CLI skill.",
+      "assertions": [
+        "Agent refuses to treat as CLI request.",
+        "Routes to main chrome-devtools for MCP tool calls.",
+        "Cites: Prefer MCP tools directly unless user specifically needs CLI commands or scripts."
+      ]
+    },
+    {
+      "id": "guardrail-no-global-install",
+      "prompt": "/chrome-devtools-cli install the chrome-devtools binary globally",
+      "files": [],
+      "expected_output": "Refusal to run global install; surfaces guidance from references/installation.md only if user explicitly asks.",
+      "assertions": [
+        "Agent does not execute or recommend `npm i -g`.",
+        "If setup needed, provides bounded guidance only.",
+        "Cites guardrail: Do not run npm i -g or mutate global package state unless the user explicitly asks."
+      ]
+    },
+    {
+      "id": "script-output-files",
+      "prompt": "Write a shell script to drive chrome-devtools for taking screenshots of multiple URLs",
+      "files": ["scripts/screenshot-all.sh"],
+      "expected_output": "Script that calls chrome-devtools with filePath for artifacts and handles errors.",
+      "assertions": [
+        "Generated script uses chrome-devtools ... --filePath.",
+        "Does not read raw trace/screenshot into script context.",
+        "Includes error handling and --help before new flags."
+      ]
+    },
+    {
+      "id": "boundary-large-output",
+      "prompt": "/chrome-devtools-cli capture the full trace and print it",
+      "files": [],
+      "expected_output": "Refuses to dump large trace/snapshot; uses files + bounded output.",
+      "assertions": [
+        "Agent keeps large artifacts out of conversation.",
+        "Advises using file output and targeted parsing.",
+        "Cites: Do not read raw trace, screenshot, or heap snapshot artifacts into the context."
+      ]
+    }
+  ]
+}

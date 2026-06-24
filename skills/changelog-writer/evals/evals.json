@@ -1,0 +1,60 @@
+{
+  "skill_name": "changelog-writer",
+  "evals": [
+    {
+      "id": "explicit-generate",
+      "prompt": "/changelog-writer generate",
+      "files": [],
+      "expected_output": "Changelog from committed git history using commit-classifier.py; raw commits rewritten for users; breaking changes called out.",
+      "assertions": [
+        "Agent runs commit-classifier.py before formatting.",
+        "Never modifies git history.",
+        "Breaking changes prominently called out.",
+        "Only committed history; no uncommitted changes.",
+        "Identifies previous tag as baseline."
+      ]
+    },
+    {
+      "id": "release-notes",
+      "prompt": "/changelog-writer release v2.3.0",
+      "files": [],
+      "expected_output": "User-facing release notes for the version; cites specific commits.",
+      "assertions": [
+        "Dispatches to release mode.",
+        "Version bump cites evidence from commits.",
+        "Includes migration if breaking."
+      ]
+    },
+    {
+      "id": "negative-git-ops",
+      "prompt": "create a feature branch and commit the changes",
+      "files": [],
+      "expected_output": "Out of scope for git ops; routes to git-workflow.",
+      "assertions": [
+        "Does not perform branch or commit ops.",
+        "Limits to log/tag read + generation.",
+        "Names git-workflow for ops."
+      ]
+    },
+    {
+      "id": "migration-guide",
+      "prompt": "/changelog-writer migration from 1.0 to 2.0",
+      "files": [],
+      "expected_output": "Migration guide with before/after examples for each breaking change.",
+      "assertions": [
+        "Includes code examples for breaks.",
+        "Cites commits as evidence."
+      ]
+    },
+    {
+      "id": "non-conventional-fallback",
+      "prompt": "/changelog-writer generate",
+      "files": [],
+      "expected_output": "Uses best-effort heuristics for non-conventional commits and flags uncertainty.",
+      "assertions": [
+        "Flags when commits are non-conventional.",
+        "Does not fabricate conventional structure."
+      ]
+    }
+  ]
+}

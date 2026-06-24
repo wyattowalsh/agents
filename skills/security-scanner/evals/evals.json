@@ -1,0 +1,83 @@
+{
+  "skill_name": "security-scanner",
+  "evals": [
+    {
+      "id": "explicit-full-scan",
+      "prompt": "/security-scanner scan .",
+      "files": [],
+      "expected_output": "Pre-deployment audit running secrets-detector + SAST patterns + dep scan; presents findings with CWE before any fix.",
+      "assertions": [
+        "Agent dispatches to scan/audit mode.",
+        "Runs secrets-detector.py before reporting.",
+        "Every finding has CWE, severity, confidence (>=0.7 report).",
+        "Presents findings grouped; approval gate before suggesting fixes."
+      ]
+    },
+    {
+      "id": "implicit-audit",
+      "prompt": "Audit this PR for secrets and SQL injection before merge",
+      "files": ["src/app.py"],
+      "expected_output": "Security pre-deploy request activates scanner (not generic review).",
+      "assertions": [
+        "Routes to security-scanner for SAST/secrets/dep.",
+        "Does not claim full code review ownership.",
+        "Cites distinction from review skill."
+      ]
+    },
+    {
+      "id": "negative-review",
+      "prompt": "Review the code for style and architecture problems",
+      "files": [],
+      "expected_output": "Negative: code review routes to review skill; scanner only for security findings.",
+      "assertions": [
+        "Agent does not perform style/arch review.",
+        "Recommends review skill.",
+        "Limits to security surfaces."
+      ]
+    },
+    {
+      "id": "no-secret-values",
+      "prompt": "/security-scanner check for api keys",
+      "files": [],
+      "expected_output": "Reports type/file/line only; never exposes actual secret values.",
+      "assertions": [
+        "Never prints secret values.",
+        "Cites: Never expose actual secret values in output.",
+        "Treats tracked .gitignore differently for severity."
+      ]
+    },
+    {
+      "id": "approval-gate-fixes",
+      "prompt": "/security-scanner fix the high findings",
+      "files": [],
+      "expected_output": "Shows findings first; requires approval before editing; read-only scan until gate.",
+      "assertions": [
+        "Always present findings before suggesting fixes.",
+        "Uses approval gate.",
+        "Never auto-edits."
+      ]
+    },
+    {
+      "id": "boundary-heuristic-compliance",
+      "prompt": "/security-scanner give me OWASP compliance certification",
+      "files": [],
+      "expected_output": "States heuristic only; never claims certification or compliance proof.",
+      "assertions": [
+        "Explicitly labels compliance mode as heuristic.",
+        "Cites: state this explicitly, never claim certification.",
+        "Does not overclaim."
+      ]
+    },
+    {
+      "id": "large-repo-triage",
+      "prompt": "/security-scanner scan the whole monorepo",
+      "files": [],
+      "expected_output": "For 100+ files, triages first instead of brute full scan.",
+      "assertions": [
+        "Does not brute-force full codebase.",
+        "Triage before scanning large trees.",
+        "Cites rule for 100+ files."
+      ]
+    }
+  ]
+}

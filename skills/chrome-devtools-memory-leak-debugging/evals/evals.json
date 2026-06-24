@@ -1,0 +1,61 @@
+{
+  "skill_name": "chrome-devtools-memory-leak-debugging",
+  "evals": [
+    {
+      "id": "explicit-heap-snapshot-flow",
+      "prompt": "/chrome-devtools-memory-leak-debugging reproduce the leak on the dashboard",
+      "files": [],
+      "expected_output": "Baseline + repeated-interaction target snapshot + final; analysis without loading raw heapsnapshot.",
+      "assertions": [
+        "Agent dispatches to memory leak mode.",
+        "Captures baseline, target, final snapshots around repeated loop.",
+        "Never loads/reads raw .heapsnapshot content into context.",
+        "Uses memlab or bounded analyzer when appropriate, with user-approved commands."
+      ]
+    },
+    {
+      "id": "negative-lcp-or-generic",
+      "prompt": "Page is slow due to memory bloat after 50 navigations.",
+      "files": [],
+      "expected_output": "Activates memory specific debugging not LCP or generic devtools.",
+      "assertions": [
+        "Classifies symptom as memory leak / heap growth.",
+        "Routes to this skill.",
+        "Does not start performance trace for LCP."
+      ]
+    },
+    {
+      "id": "refusal-raw-heapsnapshot",
+      "prompt": "/chrome-devtools-memory-leak-debugging analyze the attached memory.heapsnapshot file",
+      "files": ["memory.heapsnapshot"],
+      "expected_output": "Refusal to read raw heapsnapshot; requires memlab or summary commands.",
+      "assertions": [
+        "Agent refuses direct read of raw .heapsnapshot.",
+        "Cites: Never read raw .heapsnapshot files into context.",
+        "Suggests memlab-compatible or analyzer command with approval."
+      ]
+    },
+    {
+      "id": "detached-dom-caution",
+      "prompt": "There are many detached DOM nodes, clean them up",
+      "files": [],
+      "expected_output": "Treats detached as suspect; asks for confirmation they are not intentional caches before recommending removal.",
+      "assertions": [
+        "Agent treats detached DOM as not automatically wrong.",
+        "Asks user before advising cache changes.",
+        "Cites critical rule on detached nodes."
+      ]
+    },
+    {
+      "id": "boundary-node-vs-browser",
+      "prompt": "Node process RSS keeps growing under load, diagnose leak",
+      "files": [],
+      "expected_output": "Distinguishes Node.js memory from browser; prefers runtime-native or memlab.",
+      "assertions": [
+        "Agent isolates client vs server-side leak possibility.",
+        "For Node prefers non-browser heap capture.",
+        "Still refuses to load raw snapshots directly."
+      ]
+    }
+  ]
+}

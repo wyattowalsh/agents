@@ -1,0 +1,62 @@
+{
+  "skill_name": "wargame",
+  "evals": [
+    {
+      "id": "explicit-scenario",
+      "prompt": "/wargame competitor launches cheaper tier and we risk losing 30% enterprise",
+      "files": [],
+      "expected_output": "Exploratory wargame: classifies complexity, runs turns with injects, AAR, always labeled exploratory.",
+      "assertions": [
+        "Agent labels ALL outputs as exploratory, not predictive.",
+        "Auto-classifies tier; allows user override.",
+        "Forces trade-offs; every option has downsides.",
+        "Ends with Probe/Position/Commit when criteria set.",
+        "Saves journal after turns in interactive mode."
+      ]
+    },
+    {
+      "id": "implicit-strategy",
+      "prompt": "Should we acquire the small startup or build in house given the uncertainty?",
+      "files": [],
+      "expected_output": "Strategic decision under uncertainty activates wargame.",
+      "assertions": [
+        "Not simple pros/cons.",
+        "Uses monte carlo or injects for uncertainty.",
+        "Names biases explicitly."
+      ]
+    },
+    {
+      "id": "negative-simple",
+      "prompt": "List pros and cons of using postgres vs mysql",
+      "files": [],
+      "expected_output": "Declines full wargame for simple comparison; may offer light classification or redirect.",
+      "assertions": [
+        "Detects not high-uncertainty strategic.",
+        "Does not force 8-turn simulation.",
+        "Cites NOT for simple pros/cons."
+      ]
+    },
+    {
+      "id": "max-turns-boundary",
+      "prompt": "/wargame run 20 turns on market entry scenario",
+      "files": [],
+      "expected_output": "Caps at default 8 (override to 12 max with warning); does not run excessive turns.",
+      "assertions": [
+        "Enforces max 8 default; context warning for override up to 12.",
+        "Does not silently accept 20.",
+        "Always includes AAR."
+      ]
+    },
+    {
+      "id": "a ar-required",
+      "prompt": "/wargame finish the session without after action",
+      "files": [],
+      "expected_output": "Refuses to end without AAR in interactive mode.",
+      "assertions": [
+        "Never skips AAR.",
+        "Requires journal save.",
+        "Cites critical rules."
+      ]
+    }
+  ]
+}

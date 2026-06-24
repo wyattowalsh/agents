@@ -1,0 +1,96 @@
+{
+  "skill_name": "mcp-creator",
+  "evals": [
+    {
+      "id": "explicit-new-server",
+      "prompt": "/mcp-creator GitHub",
+      "files": [],
+      "expected_output": "New MCP server plan: research FastMCP v3, design tools from GitHub API, scaffold under mcp/github/.",
+      "assertions": [
+        "Agent dispatches to New server mode for service name.",
+        "Loads references/tool-design.md and server-composition before coding.",
+        "Uses live docs fetch (Context7 or gofastmcp) first; bundled refs as fallback.",
+        "Follows repo convention: mcp/<kebab>/ , fastmcp.json, uv workspace."
+      ]
+    },
+    {
+      "id": "implicit-existing-extend",
+      "prompt": "Extend the existing stripe integration in mcp/stripe/ to add new customer tools",
+      "files": ["mcp/stripe/server.py", "mcp/stripe/SKILL.md"],
+      "expected_output": "Auto-detects Extend mode from path to first-party server; audits then plans additions.",
+      "assertions": [
+        "Agent detects path to existing mcp/ server as Develop/Extend.",
+        "Audits current components before proposing.",
+        "Does not confuse with new-server create.",
+        "Respects phase boundaries: research before scaffold."
+      ]
+    },
+    {
+      "id": "openapi-convert",
+      "prompt": "/mcp-creator https://petstore.swagger.io/v2/swagger.json",
+      "files": [],
+      "expected_output": "Convert OpenAPI path: scaffolds then uses server-composition OpenAPIProvider.",
+      "assertions": [
+        "Detects OpenAPI spec input.",
+        "Starts Phase 2 scaffold then loads composition reference.",
+        "Uses OpenAPIProvider pattern, not manual tool impl for all."
+      ]
+    },
+    {
+      "id": "negative-non-mcp",
+      "prompt": "Create a FastAPI endpoint for user auth",
+      "files": [],
+      "expected_output": "Refusal or redirect: NOT for REST/CLI; this is MCP server creation skill.",
+      "assertions": [
+        "Agent states scope is MCP servers only.",
+        "Suggests other skills for REST APIs or CLI.",
+        "Does not start MCP scaffolding for non-MCP request."
+      ]
+    },
+    {
+      "id": "approval-gate-before-write",
+      "prompt": "/mcp-creator Stripe and implement the server now",
+      "files": [],
+      "expected_output": "Presents full plan/audit first; waits for approval before writing files or code.",
+      "assertions": [
+        "Agent produces research + component inventory + plan with approval gate.",
+        "Does not create mcp/ dir or server.py until explicit approval.",
+        "Separates planning from implementation phases."
+      ]
+    },
+    {
+      "id": "security-boundary-no-secrets",
+      "prompt": "/mcp-creator create an MCP that takes api_key as a tool param for the payment service",
+      "files": [],
+      "expected_output": "Refuses secret as tool param; requires env var only + auth patterns from references.",
+      "assertions": [
+        "Agent enforces: Secrets in env vars only. Never accept tokens as tool parameters.",
+        "Routes auth design to references/auth-and-security.md .",
+        "Requires annotations including destructiveHint etc.",
+        "Insists on ToolError for failures, no stdout."
+      ]
+    },
+    {
+      "id": "critical-no-stdout",
+      "prompt": "/mcp-creator debug why my server prints during tool calls",
+      "files": ["mcp/broken/server.py"],
+      "expected_output": "Diagnosis: print() is invalid because stdout is the transport; use ctx.info and ToolError.",
+      "assertions": [
+        "Agent identifies stdout misuse as critical violation.",
+        "Cites the 10 critical rules verbatim for no stdout, ToolError, annotations.",
+        "Does not suggest fixes that would still print."
+      ]
+    },
+    {
+      "id": "empty-gallery",
+      "prompt": "/mcp-creator",
+      "files": [],
+      "expected_output": "Gallery/help that lists modes (New, Extend, Convert OpenAPI/FastAPI, Debug, Learn) with examples.",
+      "assertions": [
+        "Agent shows dispatch table for empty args.",
+        "Mentions live docs priority.",
+        "Does not start any implementation without arguments."
+      ]
+    }
+  ]
+}

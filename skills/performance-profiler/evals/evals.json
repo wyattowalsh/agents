@@ -1,0 +1,60 @@
+{
+  "skill_name": "performance-profiler",
+  "evals": [
+    {
+      "id": "explicit-analyze",
+      "prompt": "/performance-profiler analyze the hot path in parser.py",
+      "files": ["parser.py"],
+      "expected_output": "Complexity + hotspot analysis with trade-offs; cites evidence; no measurement claim.",
+      "assertions": [
+        "Agent dispatches to analyze.",
+        "Never claims to measure — analysis only.",
+        "Every rec includes trade-offs.",
+        "Acknowledges uncertainty in static estimates.",
+        "Confirms hot path before premature opt advice."
+      ]
+    },
+    {
+      "id": "negative-execute-profiler",
+      "prompt": "/performance-profiler run py-spy on the server and give me the flamegraph",
+      "files": [],
+      "expected_output": "Refusal to run profilers or load tests; provides design for benchmark or interpretation guidance only.",
+      "assertions": [
+        "States: provides analysis, not measurement.",
+        "Suggests benchmark design (warmup, stats, variance) but does not execute.",
+        "Routes execution concerns elsewhere."
+      ]
+    },
+    {
+      "id": "cache-invalidation",
+      "prompt": "/performance-profiler recommend caching for the user profile lookup",
+      "files": [],
+      "expected_output": "Cache strategy that addresses invalidation explicitly.",
+      "assertions": [
+        "Mentions 'cache invalidation is hard' not as strategy.",
+        "Covers when and how to invalidate.",
+        "Trade-offs included."
+      ]
+    },
+    {
+      "id": "regression-risk",
+      "prompt": "/performance-profiler assess regression risk after the refactor in query.py",
+      "files": ["query.py"],
+      "expected_output": "Traces risk to specific changes; no general hand-waving.",
+      "assertions": [
+        "Regression assessment traces to concrete diffs/changes.",
+        "Cites data points from any provided profiler output."
+      ]
+    },
+    {
+      "id": "implicit-perf",
+      "prompt": "This function got 5x slower after the last change, what should I look for?",
+      "files": ["slow.py"],
+      "expected_output": "Perf analysis request activates the profiler skill for guidance.",
+      "assertions": [
+        "Activates on perf/regression/leak pattern questions.",
+        "Recommends actual profiling for confirmation of leak patterns."
+      ]
+    }
+  ]
+}

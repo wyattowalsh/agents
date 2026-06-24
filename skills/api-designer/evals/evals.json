@@ -1,0 +1,61 @@
+{
+  "skill_name": "api-designer",
+  "evals": [
+    {
+      "id": "explicit-rest-spec",
+      "prompt": "/api-designer design rest api for orders with pagination",
+      "files": [],
+      "expected_output": "OpenAPI 3.1 spec; every list has pagination; every endpoint has error responses.",
+      "assertions": [
+        "Detects protocol before mode.",
+        "Targets OpenAPI 3.1 exactly (not swagger 2).",
+        "List endpoints include pagination.",
+        "Every endpoint defines at least one 4xx/5xx response.",
+        "Runs api-spec-validator.py before presenting."
+      ]
+    },
+    {
+      "id": "implicit-graphql",
+      "prompt": "Design the schema for product search queries and mutations",
+      "files": [],
+      "expected_output": "GraphQL contract design activates API designer.",
+      "assertions": [
+        "Detects GraphQL signals and dispatches correctly.",
+        "Does not assume REST.",
+        "If ambiguous, asks user."
+      ]
+    },
+    {
+      "id": "negative-mcp",
+      "prompt": "Design the MCP tools for the payment provider",
+      "files": [],
+      "expected_output": "Refusal: MCP is mcp-creator scope; api-designer is contract for REST/GraphQL/gRPC.",
+      "assertions": [
+        "Scopes away from MCP servers.",
+        "Names mcp-creator for MCP.",
+        "Does not produce MCP tool defs."
+      ]
+    },
+    {
+      "id": "compat-breaking",
+      "prompt": "/api-designer check compatibility of v2 vs v1 spec",
+      "files": ["specs/v1.yaml", "specs/v2.yaml"],
+      "expected_output": "Breaking change analysis with remediation for any breaks.",
+      "assertions": [
+        "Detects breaking vs non-breaking.",
+        "For breaks, includes remediation suggestions.",
+        "Uses validator."
+      ]
+    },
+    {
+      "id": "sdk-scaffold-boundary",
+      "prompt": "/api-designer generate typescript sdk for the spec",
+      "files": [],
+      "expected_output": "Produces structural scaffold only; does not claim production-ready.",
+      "assertions": [
+        "Labels SDK output as scaffold.",
+        "Cites rule: never claim production-ready for SDK mode."
+      ]
+    }
+  ]
+}

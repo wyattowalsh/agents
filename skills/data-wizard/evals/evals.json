@@ -1,0 +1,60 @@
+{
+  "skill_name": "data-wizard",
+  "evals": [
+    {
+      "id": "explicit-eda-first",
+      "prompt": "/data-wizard analyze sales.csv and recommend model",
+      "files": ["sales.csv"],
+      "expected_output": "Runs data profiler first; classifies complexity; recommends starting with baseline model; includes split strategy.",
+      "assertions": [
+        "Always runs data profiler before model/feature advice.",
+        "Presents classification scoring; allows override.",
+        "Starts with simplest viable baseline.",
+        "Specifies train/test split and leakage checks.",
+        "Includes effect size + assumptions for stats."
+      ]
+    },
+    {
+      "id": "negative-etl",
+      "prompt": "Build the airflow dag to load the warehouse",
+      "files": [],
+      "expected_output": "Handoff: ETL to other (data-pipeline-architect or devops); not this skill.",
+      "assertions": [
+        "Scopes to EDA/ML/model; not ETL or DB design.",
+        "Names appropriate alternatives.",
+        "Does not generate pipeline code."
+      ]
+    },
+    {
+      "id": "power-analysis",
+      "prompt": "/data-wizard design an A/B test for the new checkout",
+      "files": [],
+      "expected_output": "Includes power analysis, CUPED if applicable, walk-forward for time series.",
+      "assertions": [
+        "Experiment design has power analysis.",
+        "Flags target leakage for features.",
+        "Uses walk-forward CV for temporal."
+      ]
+    },
+    {
+      "id": "mlops-maturity",
+      "prompt": "/data-wizard recommend MLOps for our team",
+      "files": [],
+      "expected_output": "Assesses current maturity; does not recommend Level 3 for Level 0.",
+      "assertions": [
+        "MLOps recs match assessed maturity.",
+        "Does not over-automate."
+      ]
+    },
+    {
+      "id": "boundary-leakage-flag",
+      "prompt": "Use yesterday's outcome as a feature for tomorrow's prediction",
+      "files": [],
+      "expected_output": "Flags post-outcome / leakage risk; refuses to treat as valid feature.",
+      "assertions": [
+        "Explicitly flags features derived from post-outcome data as leakage.",
+        "Rejects invalid feature proposals."
+      ]
+    }
+  ]
+}

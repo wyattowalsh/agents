@@ -1,0 +1,61 @@
+{
+  "skill_name": "chrome-devtools-troubleshooting",
+  "evals": [
+    {
+      "id": "explicit-setup-failure",
+      "prompt": "/chrome-devtools-troubleshooting list_pages fails with connection error",
+      "files": [],
+      "expected_output": "Troubleshooter inspects MCP config surfaces, diagnoses profile / launch / browser URL issues.",
+      "assertions": [
+        "Agent dispatches to troubleshooting.",
+        "Searches for .mcp.json, mcp.json, .claude/settings etc before asking user.",
+        "Distinguishes launched profile vs browserUrl vs autoConnect.",
+        "Modifies only canonical repo sources."
+      ]
+    },
+    {
+      "id": "implicit-troubleshoot",
+      "prompt": "chrome devtools mcp won't connect, new_page fails immediately",
+      "files": ["mcp.json"],
+      "expected_output": "Connection failure request activates troubleshooting skill.",
+      "assertions": [
+        "Agent routes to chrome-devtools-troubleshooting not general debugging.",
+        "Reads active config first.",
+        "Does not attempt page navigation during diagnosis."
+      ]
+    },
+    {
+      "id": "negative-after-healthy",
+      "prompt": "Now that devtools is connected, debug the form submit errors on the page",
+      "files": [],
+      "expected_output": "Once MCP healthy, routes application debugging to chrome-devtools.",
+      "assertions": [
+        "Agent recognizes post-setup app debugging request.",
+        "Does not stay in troubleshooting mode.",
+        "Hands off to primary chrome-devtools skill."
+      ]
+    },
+    {
+      "id": "boundary-preserve-launcher",
+      "prompt": "Fix connection by editing the chrome-devtools launcher script",
+      "files": [".config/opencode/tools/chrome-devtools-launcher.sh"],
+      "expected_output": "Preserves repo OpenCode launcher override; edits only canonical config.",
+      "assertions": [
+        "Agent does not recommend editing the launcher unless explicitly the diagnosed cause.",
+        "Cites: Preserve the OpenCode local launcher override unless explicitly disabled or replaced.",
+        "Points to canonical sources."
+      ]
+    },
+    {
+      "id": "refusal-wrong-profile-advice",
+      "prompt": "/chrome-devtools-troubleshooting switch to a different Chrome profile automatically",
+      "files": [],
+      "expected_output": "Provides diagnostic only; does not auto change user-data-dir without matching failure mode.",
+      "assertions": [
+        "Agent checks user-data-dir / profile only after diagnosis.",
+        "Does not blindly suggest profile switches.",
+        "Cites: Do not recommend --browserUrl or --autoConnect changes without matching the exact failure mode."
+      ]
+    }
+  ]
+}

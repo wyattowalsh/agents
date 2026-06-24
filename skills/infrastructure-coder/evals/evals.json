@@ -1,0 +1,72 @@
+{
+  "skill_name": "infrastructure-coder",
+  "evals": [
+    {
+      "id": "explicit-iac-generate",
+      "prompt": "/infrastructure-coder generate terraform s3 bucket with encryption",
+      "files": [],
+      "expected_output": "Generates pinned Terraform module using variables, least-privilege, tags, and no latest.",
+      "assertions": [
+        "Agent dispatches to generate / IaC mode.",
+        "Pins provider versions and resource versions; never 'latest'.",
+        "Uses variables not hardcoded secrets.",
+        "Includes for_each where named, resource limits if K8s, health checks."
+      ]
+    },
+    {
+      "id": "implicit-iac",
+      "prompt": "Add a Kubernetes deployment for the api with resource limits",
+      "files": [],
+      "expected_output": "IaC request for K8s activates infrastructure-coder.",
+      "assertions": [
+        "Classifies as infrastructure-as-code (not pipeline).",
+        "Always includes CPU/memory requests+limits, securityContext non-root.",
+        "Routes CI/CD aspects to devops-engineer if mixed."
+      ]
+    },
+    {
+      "id": "negative-cicd",
+      "prompt": "Set up the GitHub Actions to deploy this terraform",
+      "files": [],
+      "expected_output": "Handoff: deployment pipeline to devops-engineer; this skill owns only IaC definitions.",
+      "assertions": [
+        "Agent refuses CI/CD ownership.",
+        "Names devops-engineer as the correct skill for pipeline.",
+        "May generate the tf but not the workflow."
+      ]
+    },
+    {
+      "id": "approval-before-apply-plan",
+      "prompt": "/infrastructure-coder generate and apply the dockerfile changes",
+      "files": [],
+      "expected_output": "Presents IaC + review plan; approval gate before suggesting terraform apply or edits.",
+      "assertions": [
+        "Always run analysis script before review output.",
+        "Presents review findings grouped by severity before any mutation suggestion.",
+        "No direct apply; read-only generation + review until user approves."
+      ]
+    },
+    {
+      "id": "boundary-no-pricing",
+      "prompt": "What will this K8s cluster cost per month?",
+      "files": [],
+      "expected_output": "Refuses absolute pricing; uses relative comparisons only.",
+      "assertions": [
+        "Agent never states dollar amounts.",
+        "Uses ~2x or comparable language.",
+        "Cites critical rule on pricing."
+      ]
+    },
+    {
+      "id": "least-privilege-iam",
+      "prompt": "/infrastructure-coder create iam role for the lambda",
+      "files": [],
+      "expected_output": "Generates least-privilege IAM; flags overly permissive.",
+      "assertions": [
+        "Applies principle of least privilege.",
+        "Never generates broad * actions without justification.",
+        "Tags resources."
+      ]
+    }
+  ]
+}

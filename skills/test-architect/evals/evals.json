@@ -1,0 +1,61 @@
+{
+  "skill_name": "test-architect",
+  "evals": [
+    {
+      "id": "explicit-design",
+      "prompt": "/test-architect design the auth module tests",
+      "files": [],
+      "expected_output": "Test strategy with pyramid (unit/integration/e2e), edge cases with rationale, framework match to stack.",
+      "assertions": [
+        "Agent dispatches to design mode.",
+        "Never executes tests; only designs and analyzes.",
+        "Recommends correct layers for each case.",
+        "Edge cases include 'why this matters'."
+      ]
+    },
+    {
+      "id": "gaps-analysis",
+      "prompt": "/test-architect gaps from coverage.json",
+      "files": ["coverage.json"],
+      "expected_output": "Coverage gap analysis prioritized by risk, not raw line count.",
+      "assertions": [
+        "Prioritizes by risk.",
+        "Does not just list uncovered lines.",
+        "Keeps advisory; no source edits."
+      ]
+    },
+    {
+      "id": "negative-run-tests",
+      "prompt": "/test-architect run the test suite and fix failures",
+      "files": [],
+      "expected_output": "Refusal to run tests or edit code; stays in design/analysis.",
+      "assertions": [
+        "Agent never runs tests.",
+        "Never modifies source.",
+        "Suggests commands but does not execute; routes execution to devops if needed."
+      ]
+    },
+    {
+      "id": "flaky-diagnosis",
+      "prompt": "/test-architect flaky test in checkout flow from these logs",
+      "files": ["logs/ci.txt"],
+      "expected_output": "Flaky diagnosis that identifies root cause category before fixes.",
+      "assertions": [
+        "Identifies root cause category (timing, env, data, etc).",
+        "Does not jump to 'add sleep'.",
+        "Advisory output only."
+      ]
+    },
+    {
+      "id": "implicit-strategy",
+      "prompt": "How should we test the new payment retry logic across unit and integration?",
+      "files": [],
+      "expected_output": "Test architecture request activates the skill for strategy design.",
+      "assertions": [
+        "Activates on strategy/edge/coverage questions.",
+        "Recommends property-based only when invariants clear.",
+        "Matches project's existing stack."
+      ]
+    }
+  ]
+}

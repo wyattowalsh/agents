@@ -1,0 +1,71 @@
+{
+  "skill_name": "openspec-workflow",
+  "evals": [
+    {
+      "id": "explicit-empty",
+      "prompt": "/openspec-workflow",
+      "files": [],
+      "expected_output": "Shows repo OpenSpec quick path and when to use vs skip.",
+      "assertions": [
+        "Agent dispatches to empty / gallery.",
+        "Lists doctor, init, status, instructions, validate, archive.",
+        "Explains surfaces that require OpenSpec (skills, AGENTS, hooks, docs gen, etc)."
+      ]
+    },
+    {
+      "id": "explicit-status",
+      "prompt": "/openspec-workflow status my-change",
+      "files": [],
+      "expected_output": "Uses the openspec_cli.py wrapper with --format json to get change status.",
+      "assertions": [
+        "Agent calls the repo script: uv run python skills/openspec-workflow/scripts/openspec_cli.py status ...",
+        "Prefers JSON output for machine use.",
+        "Does not bypass the wrapper."
+      ]
+    },
+    {
+      "id": "negative-small-edit",
+      "prompt": "Fix a typo in the README",
+      "files": ["README.md"],
+      "expected_output": "Declines OpenSpec: isolated typo or single-file where conventions fully determine outcome.",
+      "assertions": [
+        "Agent applies the decision gate: skip OpenSpec for small isolated changes.",
+        "Does not create change/ or force spec for trivial edit.",
+        "Cites: Skip OpenSpec for small, isolated typo fixes..."
+      ]
+    },
+    {
+      "id": "validate-before-archive",
+      "prompt": "/openspec-workflow archive my-change",
+      "files": [],
+      "expected_output": "Runs validate first; refuses to archive if unresolved gaps.",
+      "assertions": [
+        "Agent invokes validate before archive.",
+        "Refuses archive with unresolved task/spec/validation gaps.",
+        "Cites critical: Validate before archive."
+      ]
+    },
+    {
+      "id": "no-generated-artifacts-commit",
+      "prompt": "After running init, commit the generated .claude skills",
+      "files": [],
+      "expected_output": "Refusal to commit generated harness artifacts by default; only if explicitly promoted.",
+      "assertions": [
+        "Agent states generated .claude/.cursor etc are local by default.",
+        "Requires explicit promotion decision before commit.",
+        "Does not run --apply unless user confirms for local materialization."
+      ]
+    },
+    {
+      "id": "doctor-mode",
+      "prompt": "/openspec-workflow doctor",
+      "files": [],
+      "expected_output": "Diagnoses toolchain and project state using the wrapper script.",
+      "assertions": [
+        "Dispatches to doctor.",
+        "Reports missing Node or OpenSpec tooling with exact retry command.",
+        "Uses the repo's openspec_cli.py doctor."
+      ]
+    }
+  ]
+}

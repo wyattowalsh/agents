@@ -1,0 +1,61 @@
+{
+  "skill_name": "learn",
+  "evals": [
+    {
+      "id": "explicit-capture",
+      "prompt": "/learn \"always quote variable expansions in shell scripts unless splitting is required\"",
+      "files": [],
+      "expected_output": "Captures the correction and routes it to the narrowest applicable instruction file (shell-conventions).",
+      "assertions": [
+        "Agent dispatches to capture route.",
+        "Requires 3+ occurrences before promoting.",
+        "Routes to narrowest scope (rule before skill).",
+        "Never modifies instruction files without explicit user approval."
+      ]
+    },
+    {
+      "id": "review-mode",
+      "prompt": "/learn review",
+      "files": [],
+      "expected_output": "Shows pending learnings and their frequency counts.",
+      "assertions": [
+        "Agent dispatches to review.",
+        "Surfaces frequency and pending promotions.",
+        "Does not auto-promote."
+      ]
+    },
+    {
+      "id": "promote-gate",
+      "prompt": "/learn promote",
+      "files": [],
+      "expected_output": "Promotes only high-frequency (>=3 across >=2 sessions) learnings after audit for contradictions.",
+      "assertions": [
+        "Agent checks frequency threshold.",
+        "Runs contradiction check before write.",
+        "After edit, runs scripts/check.py ."
+      ]
+    },
+    {
+      "id": "negative-one-off",
+      "prompt": "remember that this one time the db migration failed on nulls",
+      "files": [],
+      "expected_output": "Declines to capture: one-time fixes are not for learn (needs pattern repeat).",
+      "assertions": [
+        "Agent states learn is for patterns repeating 3+ times.",
+        "Does not pollute instructions with single incidents.",
+        "Suggests other handling for one-offs."
+      ]
+    },
+    {
+      "id": "audit-contradiction",
+      "prompt": "/learn audit",
+      "files": [],
+      "expected_output": "Audit surfaces stale, contradictory, or duplicate learnings.",
+      "assertions": [
+        "Agent runs audit mode.",
+        "Reports contradictions with existing instructions.",
+        "Does not auto-resolve without approval."
+      ]
+    }
+  ]
+}
