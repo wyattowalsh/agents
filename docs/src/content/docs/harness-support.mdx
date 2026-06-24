@@ -20,9 +20,9 @@ Use MCPHub only when you explicitly opt in. Repo docs and public catalog default
 | ChatGPT | `repo-present-validation-required` | `docs-ledger-required` | `uv run wagents validate` |
 | Codex | `repo-present-validation-required` | `fixture-executable` | `uv run pytest tests/test_distribution_metadata.py`<br />`uv run wagents validate`<br />`uv run pytest tests/test_platform_adapters.py -q` |
 | GitHub Copilot Web and Coding Agent | `repo-present-validation-required` | `fixture-plan-only` | `uv run wagents validate` |
-| GitHub Copilot CLI | `repo-present-validation-required` | `fixture-plan-only` | `uv run wagents validate` |
+| GitHub Copilot CLI | `repo-present-validation-required` | `fixture-executable` | `uv run wagents validate`<br />`uv run pytest tests/test_harness_plan_fixtures.py -q -k 'copilot or merge_copilot'` |
 | OpenCode | `repo-present-validation-required` | `fixture-executable` | `uv run pytest tests/test_distribution_metadata.py`<br />`uv run wagents validate`<br />`uv run pytest tests/test_platform_adapters.py -q` |
-| Gemini CLI | `repo-present-validation-required` | `fixture-plan-only` | `uv run wagents validate`<br />`uv run wagents openspec validate` |
+| Gemini CLI | `repo-present-validation-required` | `fixture-executable` | `uv run wagents validate`<br />`uv run wagents openspec validate`<br />`uv run pytest tests/test_harness_plan_fixtures.py -q -k 'gemini or render_gemini'` |
 | Antigravity | `repo-present-validation-required` | `docs-ledger-required` | `uv run wagents validate` |
 | Cursor Editor | `repo-present-validation-required` | `fixture-plan-only` | `uv run wagents validate` |
 | Cursor CLI | `repo-present-validation-required` | `fixture-plan-only` | `uv run wagents validate` |
@@ -41,4 +41,6 @@ These harnesses have **fixture-executable** status in `planning/manifests/harnes
 
 - `claude-code` — Executable adapter + validate fixtures present; promote to validated after CI matrix green.
 - `codex` — Executable adapter + validate fixtures present; promote to validated after CI matrix green.
+- `github-copilot-cli` — Requires CLI config, MCP, and installed-skill inventory fixtures before validated support claims.
 - `opencode` — Executable adapter + validate fixtures present; promote to validated after CI matrix green.
+- `gemini-cli` — Requires Gemini CLI instruction, skills, MCP, and OpenSpec wrapper fixtures before validated support claims.

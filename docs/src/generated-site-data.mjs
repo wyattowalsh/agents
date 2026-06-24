@@ -25419,6 +25419,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/agent-creation-trigger.json",
+          "evals/evals.json",
           "evals/readme-sync.json"
         ],
         "headings": [
@@ -25611,6 +25612,7 @@ const skillIndexes = {
         "evals": [
           "evals/api-design.json",
           "evals/compat-mode.json",
+          "evals/evals.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json"
@@ -25722,6 +25724,7 @@ const skillIndexes = {
           "data/changelog-formats.json"
         ],
         "evals": [
+          "evals/evals.json",
           "evals/generate-changelog.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -25828,7 +25831,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools MCP",
           "Dispatch",
@@ -25913,7 +25918,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools Accessibility Debugging",
           "Dispatch",
@@ -25998,7 +26005,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools CLI",
           "Dispatch",
@@ -26086,7 +26095,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools LCP Debugging",
           "Dispatch",
@@ -26175,7 +26186,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools Memory Leak Debugging",
           "Dispatch",
@@ -26261,7 +26274,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools MCP Troubleshooting",
           "Dispatch",
@@ -26454,6 +26469,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/eda-mode.json",
+          "evals/evals.json",
           "evals/experiment-design.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
@@ -26566,6 +26582,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/migrate-mode.json",
           "evals/negative-control.json",
@@ -26803,6 +26820,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/debug-mode.json",
+          "evals/evals.json",
           "evals/explicit-pipeline.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -27263,7 +27281,8 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
-          "evals/dispatch-routing.md"
+          "evals/dispatch-routing.md",
+          "evals/evals.json"
         ],
         "headings": [
           "Email Whiz",
@@ -27585,6 +27604,7 @@ const skillIndexes = {
           "evals/bisect-assist.json",
           "evals/branch-strategy.json",
           "evals/commit-message.json",
+          "evals/evals.json",
           "evals/negative-control.json",
           "evals/pr-description.json"
         ],
@@ -28273,6 +28293,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/docker-optimize.json",
+          "evals/evals.json",
           "evals/explicit-terraform.json",
           "evals/implicit-trigger.json",
           "evals/kubernetes-manifest.json",
@@ -28478,6 +28499,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/correction-routing.json",
+          "evals/evals.json",
           "evals/promote-mode.json",
           "evals/review-mode.json"
         ],
@@ -28568,6 +28590,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/server-scaffolding.json",
           "evals/tool-definition.json"
         ],
@@ -28689,6 +28712,7 @@ const skillIndexes = {
           "evals/check-mode.json",
           "evals/compare-mode.json",
           "evals/context-presets.json",
+          "evals/evals.json",
           "evals/expand-mode.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
@@ -29192,7 +29216,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "OpenCode Ensemble",
           "Core Principle",
@@ -29284,7 +29310,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "OpenSpec Workflow",
           "Dispatch",
@@ -29480,6 +29508,7 @@ const skillIndexes = {
           "evals/analyze-complexity.json",
           "evals/cache-design.json",
           "evals/complexity-analysis.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/profile-interpretation.json",
@@ -29800,7 +29829,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Reasoning Router",
           "Dispatch",
@@ -30336,6 +30367,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/compliance-mode.json",
+          "evals/evals.json",
           "evals/explicit-scan.json",
           "evals/full-scan.json",
           "evals/implicit-trigger.json",
@@ -30543,6 +30575,7 @@ const skillIndexes = {
         "evals": [
           "evals/convert-dialect.json",
           "evals/create-script.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/review-script.json"
@@ -30859,6 +30892,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/explicit-scan.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -30974,6 +31008,7 @@ const skillIndexes = {
           "evals/coverage-gaps.json",
           "evals/design-strategy.json",
           "evals/edge-cases.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/test-design.json"
@@ -31183,6 +31218,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/complexity-classification.json",
+          "evals/evals.json",
           "evals/scenario-setup.json"
         ],
         "headings": [
@@ -31401,6 +31437,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/agent-creation-trigger.json",
+          "evals/evals.json",
           "evals/readme-sync.json"
         ],
         "headings": [
@@ -31593,6 +31630,7 @@ const skillIndexes = {
         "evals": [
           "evals/api-design.json",
           "evals/compat-mode.json",
+          "evals/evals.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json"
@@ -31704,6 +31742,7 @@ const skillIndexes = {
           "data/changelog-formats.json"
         ],
         "evals": [
+          "evals/evals.json",
           "evals/generate-changelog.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -31810,7 +31849,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools MCP",
           "Dispatch",
@@ -31895,7 +31936,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools Accessibility Debugging",
           "Dispatch",
@@ -31980,7 +32023,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools CLI",
           "Dispatch",
@@ -32068,7 +32113,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools LCP Debugging",
           "Dispatch",
@@ -32157,7 +32204,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools Memory Leak Debugging",
           "Dispatch",
@@ -32243,7 +32292,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools MCP Troubleshooting",
           "Dispatch",
@@ -32436,6 +32487,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/eda-mode.json",
+          "evals/evals.json",
           "evals/experiment-design.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
@@ -32548,6 +32600,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/migrate-mode.json",
           "evals/negative-control.json",
@@ -32785,6 +32838,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/debug-mode.json",
+          "evals/evals.json",
           "evals/explicit-pipeline.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -33245,7 +33299,8 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
-          "evals/dispatch-routing.md"
+          "evals/dispatch-routing.md",
+          "evals/evals.json"
         ],
         "headings": [
           "Email Whiz",
@@ -33567,6 +33622,7 @@ const skillIndexes = {
           "evals/bisect-assist.json",
           "evals/branch-strategy.json",
           "evals/commit-message.json",
+          "evals/evals.json",
           "evals/negative-control.json",
           "evals/pr-description.json"
         ],
@@ -34255,6 +34311,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/docker-optimize.json",
+          "evals/evals.json",
           "evals/explicit-terraform.json",
           "evals/implicit-trigger.json",
           "evals/kubernetes-manifest.json",
@@ -34460,6 +34517,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/correction-routing.json",
+          "evals/evals.json",
           "evals/promote-mode.json",
           "evals/review-mode.json"
         ],
@@ -34550,6 +34608,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/server-scaffolding.json",
           "evals/tool-definition.json"
         ],
@@ -34671,6 +34730,7 @@ const skillIndexes = {
           "evals/check-mode.json",
           "evals/compare-mode.json",
           "evals/context-presets.json",
+          "evals/evals.json",
           "evals/expand-mode.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
@@ -35174,7 +35234,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "OpenCode Ensemble",
           "Core Principle",
@@ -35266,7 +35328,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "OpenSpec Workflow",
           "Dispatch",
@@ -35462,6 +35526,7 @@ const skillIndexes = {
           "evals/analyze-complexity.json",
           "evals/cache-design.json",
           "evals/complexity-analysis.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/profile-interpretation.json",
@@ -35782,7 +35847,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Reasoning Router",
           "Dispatch",
@@ -36318,6 +36385,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/compliance-mode.json",
+          "evals/evals.json",
           "evals/explicit-scan.json",
           "evals/full-scan.json",
           "evals/implicit-trigger.json",
@@ -36525,6 +36593,7 @@ const skillIndexes = {
         "evals": [
           "evals/convert-dialect.json",
           "evals/create-script.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/review-script.json"
@@ -36841,6 +36910,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/explicit-scan.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -36956,6 +37026,7 @@ const skillIndexes = {
           "evals/coverage-gaps.json",
           "evals/design-strategy.json",
           "evals/edge-cases.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/test-design.json"
@@ -37165,6 +37236,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/complexity-classification.json",
+          "evals/evals.json",
           "evals/scenario-setup.json"
         ],
         "headings": [
@@ -82591,6 +82663,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/agent-creation-trigger.json",
+          "evals/evals.json",
           "evals/readme-sync.json"
         ],
         "headings": [
@@ -82783,6 +82856,7 @@ const skillIndexes = {
         "evals": [
           "evals/api-design.json",
           "evals/compat-mode.json",
+          "evals/evals.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json"
@@ -82894,6 +82968,7 @@ const skillIndexes = {
           "data/changelog-formats.json"
         ],
         "evals": [
+          "evals/evals.json",
           "evals/generate-changelog.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -83000,7 +83075,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools MCP",
           "Dispatch",
@@ -83085,7 +83162,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools Accessibility Debugging",
           "Dispatch",
@@ -83170,7 +83249,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools CLI",
           "Dispatch",
@@ -83258,7 +83339,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools LCP Debugging",
           "Dispatch",
@@ -83347,7 +83430,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools Memory Leak Debugging",
           "Dispatch",
@@ -83433,7 +83518,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Chrome DevTools MCP Troubleshooting",
           "Dispatch",
@@ -83626,6 +83713,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/eda-mode.json",
+          "evals/evals.json",
           "evals/experiment-design.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
@@ -83738,6 +83826,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/migrate-mode.json",
           "evals/negative-control.json",
@@ -83975,6 +84064,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/debug-mode.json",
+          "evals/evals.json",
           "evals/explicit-pipeline.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -84435,7 +84525,8 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
-          "evals/dispatch-routing.md"
+          "evals/dispatch-routing.md",
+          "evals/evals.json"
         ],
         "headings": [
           "Email Whiz",
@@ -84757,6 +84848,7 @@ const skillIndexes = {
           "evals/bisect-assist.json",
           "evals/branch-strategy.json",
           "evals/commit-message.json",
+          "evals/evals.json",
           "evals/negative-control.json",
           "evals/pr-description.json"
         ],
@@ -85445,6 +85537,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/docker-optimize.json",
+          "evals/evals.json",
           "evals/explicit-terraform.json",
           "evals/implicit-trigger.json",
           "evals/kubernetes-manifest.json",
@@ -85650,6 +85743,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/correction-routing.json",
+          "evals/evals.json",
           "evals/promote-mode.json",
           "evals/review-mode.json"
         ],
@@ -85740,6 +85834,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/server-scaffolding.json",
           "evals/tool-definition.json"
         ],
@@ -85861,6 +85956,7 @@ const skillIndexes = {
           "evals/check-mode.json",
           "evals/compare-mode.json",
           "evals/context-presets.json",
+          "evals/evals.json",
           "evals/expand-mode.json",
           "evals/explicit-invocation.json",
           "evals/implicit-trigger.json",
@@ -86364,7 +86460,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "OpenCode Ensemble",
           "Core Principle",
@@ -86456,7 +86554,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "OpenSpec Workflow",
           "Dispatch",
@@ -86652,6 +86752,7 @@ const skillIndexes = {
           "evals/analyze-complexity.json",
           "evals/cache-design.json",
           "evals/complexity-analysis.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/profile-interpretation.json",
@@ -86972,7 +87073,9 @@ const skillIndexes = {
       "installedAgents": [],
       "knowledge": {
         "data": [],
-        "evals": [],
+        "evals": [
+          "evals/evals.json"
+        ],
         "headings": [
           "Reasoning Router",
           "Dispatch",
@@ -87508,6 +87611,7 @@ const skillIndexes = {
         ],
         "evals": [
           "evals/compliance-mode.json",
+          "evals/evals.json",
           "evals/explicit-scan.json",
           "evals/full-scan.json",
           "evals/implicit-trigger.json",
@@ -87715,6 +87819,7 @@ const skillIndexes = {
         "evals": [
           "evals/convert-dialect.json",
           "evals/create-script.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/review-script.json"
@@ -88031,6 +88136,7 @@ const skillIndexes = {
       "knowledge": {
         "data": [],
         "evals": [
+          "evals/evals.json",
           "evals/explicit-scan.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
@@ -88146,6 +88252,7 @@ const skillIndexes = {
           "evals/coverage-gaps.json",
           "evals/design-strategy.json",
           "evals/edge-cases.json",
+          "evals/evals.json",
           "evals/implicit-trigger.json",
           "evals/negative-control.json",
           "evals/test-design.json"
@@ -88355,6 +88462,7 @@ const skillIndexes = {
         "data": [],
         "evals": [
           "evals/complexity-classification.json",
+          "evals/evals.json",
           "evals/scenario-setup.json"
         ],
         "headings": [
