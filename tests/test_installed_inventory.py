@@ -181,14 +181,35 @@ def test_collect_installed_inventory_reports_query_errors(tmp_path):
     assert errors["github-copilot"] == "Invalid agents: github-copilot"
 
 
-def test_query_harness_skills_reports_timeout():
+def test_query_harness_skills_reports_timeout(tmp_path):
     def runner(cmd, **kwargs):
         raise subprocess.TimeoutExpired(cmd, kwargs["timeout"])
 
-    (result,) = query_harness_skills(agent_ids=("claude-code",), runner=runner, timeout_sec=3)
+    (result,) = query_harness_skills(agent_ids=("claude-code",), runner=runner, timeout_sec=3, home=tmp_path)
 
     assert not result.ok
     assert result.error.startswith("Timed out after 3s:")
+
+
+def test_query_harness_skills_falls_back_to_local_root_on_timeout(tmp_path):
+    skill_dir = tmp_path / ".claude" / "skills" / "fallback-skill"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "SKILL.md").write_text("---\nname: fallback-skill\ndescription: Local fallback\n---\n")
+
+    def runner(cmd, **kwargs):
+        raise subprocess.TimeoutExpired(cmd, kwargs["timeout"])
+
+    (result,) = query_harness_skills(agent_ids=("claude-code",), runner=runner, timeout_sec=3, home=tmp_path)
+
+    assert result.ok
+    assert result.error.startswith("Fallback local skill-root inventory after timeout:")
+    assert len(result.entries) == 1
+    entry = result.entries[0]
+    assert entry.queried_agent == "claude-code"
+    assert entry.name == "fallback-skill"
+    assert entry.path == str(skill_dir)
+    assert entry.scope == "global"
+    assert entry.raw_agents == ("Claude Code",)
 
 
 def test_run_harness_command_captures_large_stdout():

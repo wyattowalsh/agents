@@ -246,6 +246,29 @@ def test_quarantine_slug_in_external_skills(mini_repo: Path) -> None:
     assert "quarantined" in combined or "snailsploit/claude-red" in combined
 
 
+def test_quarantine_register_rejects_undeclared_trigger(mini_repo: Path) -> None:
+    """Every quarantine record trigger must be declared in quarantine_triggers."""
+    qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
+    qreg.parent.mkdir(parents=True, exist_ok=True)
+    qreg.write_text(
+        json.dumps({
+            "quarantine_triggers": ["credential-sharing"],
+            "external_repo_records": [
+                {
+                    "id": "EXT-TEST",
+                    "repo": "example/repo",
+                    "trigger": "credential reuse",
+                    "default_action": "local-user-owned-reference-only",
+                }
+            ],
+        }),
+        encoding="utf-8",
+    )
+    result = _run_validate_repo(cwd=mini_repo)
+    assert result.returncode == 1
+    assert "undeclared trigger" in result.stdout + result.stderr
+
+
 def test_mcp_missing_defaults_and_tools(mini_repo: Path) -> None:
     """Missing contributor_defaults + missing tools field aggregates 2+ errors."""
     reg = mini_repo / "config" / "mcp-registry.json"

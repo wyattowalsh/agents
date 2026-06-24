@@ -31,6 +31,7 @@ def test_authoring_schema_file_exists_and_loads() -> None:
     assert schema["title"] == "SkillsCatalogAuthoring"
     assert "skill_id" in schema["properties"]
     assert "source_kind" in schema["properties"]
+    assert "skill_id" not in schema["required"]
 
 
 def test_index_schema_file_exists_and_loads() -> None:
@@ -46,13 +47,28 @@ def test_authoring_minimal_valid_structural() -> None:
     # Structural assert fallback (jsonschema used if available in full run)
     data = {
         "skill_id": "plannotator-review",
-        "source_kind": "external",
+        "source_kind": "curated-external",
         "name": "plannotator-review",
         "description": "Review plans with structured critique.",
+        "audit_date": "2026-06-23",
+        "audited_head": "abc123",
+        "pin_policy": "pin where practical",
+        "source_list_evidence": "npx skills add owner/repo --list",
+        "executable_surface": "No hooks.",
+        "allowed_tools": "Read",
+        "hook_surface": "none",
+        "script_surface": "none",
+        "credential_behavior": "No credentials.",
+        "network_access": "No network access.",
+        "file_access": "Reads requested files.",
+        "live_action_risk": "No live actions.",
+        "risk_category": "low",
+        "dedupe_notes": "No overlap.",
+        "unsupported_target_agents": ["grok"],
     }
     schema = _load_json(AUTHORING_SCHEMA)
     # basic required + enum checks manually for structural path
-    assert data["source_kind"] in ["custom", "external"]
+    assert data["source_kind"] in ["custom", "curated-external", "external"]
     for k in schema.get("required", []):
         assert k in data
     # if jsonschema present, also run it
@@ -69,6 +85,21 @@ def test_index_minimal_valid_structural() -> None:
         "sourceKind": "curated-external",
         "sourcePath": "docs/src/authoring/skills/example-skill.mdx",
         "installCommand": "npx skills add owner/repo --skill example-skill",
+        "auditDate": "2026-06-23",
+        "auditedHead": "abc123",
+        "pinPolicy": "pin where practical",
+        "sourceListEvidence": "npx skills add owner/repo --list",
+        "executableSurface": "No hooks.",
+        "allowedTools": "Read",
+        "hookSurface": "none",
+        "scriptSurface": "none",
+        "credentialBehavior": "No credentials.",
+        "networkAccess": "No network access.",
+        "fileAccess": "Reads requested files.",
+        "liveActionRisk": "No live actions.",
+        "riskCategory": "low",
+        "dedupeNotes": "No overlap.",
+        "unsupportedTargetAgents": ["grok"],
     }
     data = {
         "customSkillIndex": [],

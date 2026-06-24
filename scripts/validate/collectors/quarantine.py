@@ -26,13 +26,37 @@ def _quarantined_repo_slugs(repo_root: Path) -> set[str]:
     return {s.lower() for s in slugs}
 
 
+def _register_policy_errors(repo_root: Path) -> list[dict[str, str]]:
+    path = repo_root / "planning/manifests/security-quarantine-register.json"
+    if not path.is_file():
+        return []
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # pragma: no cover - JSON syntax errors are already obvious in focused tests
+        return [{"source": str(path), "message": f"Invalid quarantine register JSON: {exc}"}]
+
+    triggers = {str(t).strip() for t in payload.get("quarantine_triggers", []) if str(t).strip()}
+    errors: list[dict[str, str]] = []
+    for record in payload.get("external_repo_records", []):
+        if not isinstance(record, dict):
+            continue
+        trigger = str(record.get("trigger") or "").strip()
+        if trigger and trigger not in triggers:
+            record_id = str(record.get("id") or record.get("repo") or "?")
+            errors.append({
+                "source": str(path),
+                "message": f"Quarantine record {record_id} uses undeclared trigger '{trigger}'",
+            })
+    return errors
+
+
 def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
     """Fail when curated external skill sources reference hard-quarantined repos.
 
     Dual-read (W2): scan catalog index JSON entry fields (install_source, source, name, camel variants)
     + legacy md.
     """
-    errors: list[dict[str, str]] = []
+    errors: list[dict[str, str]] = _register_policy_errors(repo_root)
     slugs = sorted(_quarantined_repo_slugs(repo_root))
     if not slugs:
         return errors

@@ -41,6 +41,14 @@ GROK_SKILL_SCAN_SOURCES: tuple[tuple[Path, str], ...] = (
     (Path(".claude") / "skills", "Claude Code"),
 )
 
+LOCAL_SKILL_ROOT_FALLBACKS: dict[str, tuple[tuple[Path, str], ...]] = {
+    "claude-code": ((Path(".claude") / "skills", "Claude Code"),),
+    "codex": ((Path(".codex") / "skills", "Codex"),),
+    "gemini-cli": ((Path(".gemini") / "skills", "Gemini CLI"),),
+    "github-copilot": ((Path(".copilot") / "skills", "GitHub Copilot"),),
+    "opencode": ((Path(".config") / "opencode" / "skills", "OpenCode"),),
+}
+
 
 @dataclass(frozen=True)
 class HarnessSkillEntry:
@@ -327,6 +335,13 @@ def _query_one_harness(
     try:
         result = _run_harness_command(command, runner=runner, timeout_sec=timeout_sec)
     except subprocess.TimeoutExpired:
+        fallback = _query_local_harness_roots(
+            agent_id,
+            home=home,
+            reason=f"Fallback local skill-root inventory after timeout: {' '.join(command)}",
+        )
+        if fallback is not None:
+            return fallback
         return HarnessQueryResult(
             agent_id=agent_id,
             ok=False,
@@ -334,17 +349,39 @@ def _query_one_harness(
             error=f"Timed out after {timeout_sec}s: {' '.join(command)}",
         )
     except OSError as exc:
+        fallback = _query_local_harness_roots(
+            agent_id,
+            home=home,
+            reason=f"Fallback local skill-root inventory after query error: {exc}",
+        )
+        if fallback is not None:
+            return fallback
         return HarnessQueryResult(agent_id=agent_id, ok=False, entries=(), error=str(exc))
     if result.returncode != 0:
+        error = (result.stderr or result.stdout or "").strip()
+        fallback = _query_local_harness_roots(
+            agent_id,
+            home=home,
+            reason=f"Fallback local skill-root inventory after query failure: {error}",
+        )
+        if fallback is not None:
+            return fallback
         return HarnessQueryResult(
             agent_id=agent_id,
             ok=False,
             entries=(),
-            error=(result.stderr or result.stdout or "").strip(),
+            error=error,
         )
     try:
         payload = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
+        fallback = _query_local_harness_roots(
+            agent_id,
+            home=home,
+            reason=f"Fallback local skill-root inventory after invalid JSON: {exc}",
+        )
+        if fallback is not None:
+            return fallback
         return HarnessQueryResult(agent_id=agent_id, ok=False, entries=(), error=f"Invalid JSON: {exc}")
     entries: list[HarnessSkillEntry] = []
     if isinstance(payload, list):
@@ -361,6 +398,58 @@ def _query_one_harness(
                 )
             )
     return HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries))
+
+
+def _append_local_skill_root_entries(
+    entries: list[HarnessSkillEntry],
+    entries_by_name: dict[str, HarnessSkillEntry],
+    *,
+    agent_id: str,
+    skill_root: Path,
+    label: str,
+    scope: str,
+) -> None:
+    if not skill_root.is_dir():
+        return
+    for skill_dir in sorted(skill_root.iterdir()):
+        if not skill_dir.is_dir() or not (skill_dir / "SKILL.md").exists():
+            continue
+        frontmatter, _ = _read_skill_metadata(skill_dir)
+        name = str(frontmatter.get("name") or skill_dir.name).strip()
+        if not name:
+            continue
+        entry = HarnessSkillEntry(
+            queried_agent=agent_id,
+            name=name,
+            path=str(skill_dir),
+            scope=scope,
+            raw_agents=(label,),
+        )
+        existing = entries_by_name.get(name)
+        if existing is not None:
+            continue
+        entries_by_name[name] = entry
+        entries.append(entry)
+
+
+def _query_local_harness_roots(agent_id: str, *, home: Path, reason: str) -> HarnessQueryResult | None:
+    root_specs = LOCAL_SKILL_ROOT_FALLBACKS.get(agent_id)
+    if not root_specs:
+        return None
+    entries: list[HarnessSkillEntry] = []
+    entries_by_name: dict[str, HarnessSkillEntry] = {}
+    for relative_root, label in root_specs:
+        _append_local_skill_root_entries(
+            entries,
+            entries_by_name,
+            agent_id=agent_id,
+            skill_root=(home / relative_root).expanduser(),
+            label=label,
+            scope="global",
+        )
+    if not entries:
+        return None
+    return HarnessQueryResult(agent_id=agent_id, ok=True, entries=tuple(entries), error=reason)
 
 
 def _append_grok_skill_entries(

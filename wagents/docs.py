@@ -47,6 +47,7 @@ from wagents.skill_research import (
     load_skill_research,
     partition_skills_by_source,
     partition_skills_for_research,
+    render_research_manifest,
     research_artifact_path,
     research_coverage,
     seed_curated_config_research,
@@ -307,10 +308,6 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         '  <LinkCard title="CLI Reference" href="/cli/"'
         ' description="Commands for scaffolding, validation, packaging,'
         ' installation, and docs generation workflows." />'
-    )
-    parts.append(
-        '  <LinkCard title="OpenSpec Workflow" href="/skills/catalog/custom/openspec-workflow/"'
-        ' description="Spec/change workflow for non-trivial repo and downstream-tooling changes." />'
     )
     parts.append(
         '  <LinkCard title="Create Your Own" href="/skills/catalog/custom/skill-creator/"'
@@ -910,12 +907,49 @@ def write_cli_page() -> None:
     )
     parts.append("</Aside>")
     parts.append("")
+    parts.append('<Aside type="tip" title="Inventory fallback">')
+    parts.append(
+        "When a Skills CLI inventory query fails, times out, or emits unusable JSON for a harness "
+        "with a known local skill root, dry-run reports may continue from a read-only local "
+        "`SKILL.md` scan. The report prints a warning whenever fallback evidence is used."
+    )
+    parts.append("</Aside>")
+    parts.append("")
     parts.append('<Aside type="caution" title="GitHub Copilot caveat">')
     parts.append(
         "GitHub Copilot remains part of config and instruction sync, but the skills inventory reports "
         "only what the Skills CLI returns. A legitimate `0` installed-skills result stays `0`."
     )
     parts.append("</Aside>")
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+
+    # --- wagents catalog ---
+    parts.append("### `wagents catalog` -- Catalog SSOT Checks")
+    parts.append("")
+    parts.append(
+        "Inspect the source-authored skill catalog and generated index without installing external skills. "
+        "`audit` measures curated external evidence gaps; it is read-only and exits zero by default so teams can "
+        "plan remediation before enabling strict gates."
+    )
+    parts.append("")
+    parts.append("```bash")
+    parts.append("wagents catalog index --check")
+    parts.append("wagents catalog audit")
+    parts.append("wagents catalog audit --status install-now-after-trust-gate --format json")
+    parts.append("wagents catalog audit --strict")
+    parts.append("```")
+    parts.append("")
+    parts.append("| Command | Purpose |")
+    parts.append("|---------|---------|")
+    parts.append("| `index --check` | Fail when the committed catalog index is stale relative to authoring MDX |")
+    parts.append(
+        "| `audit` | Report missing license, pin, source-list, executable-surface, "
+        "credential, live-action, and dedupe evidence |"
+    )
+    parts.append("| `audit --strict` | Exit nonzero when warning or error audit issues are present |")
+    parts.append("| `sync-authoring` | Project repo-owned `skills/*/SKILL.md` into custom authoring MDX |")
     parts.append("")
     parts.append("---")
     parts.append("")
@@ -1582,6 +1616,9 @@ _EXTERNAL_LANE_BY_STATUS = {
     "global-only-or-avoid": "avoid",
 }
 
+# Above this count, external catalog index uses client-side CatalogBrowser instead of LinkCard grids.
+CATALOG_BROWSER_THRESHOLD = 40
+
 
 def _external_lane(node) -> str:
     status = str((node.metadata or {}).get("_curated_status") or "")
@@ -1596,14 +1633,23 @@ def write_catalog_external_index(nodes: list) -> None:
     for node in external:
         lanes.setdefault(_external_lane(node), []).append(node)
 
+    use_catalog_browser = len(external) >= CATALOG_BROWSER_THRESHOLD
+    imports = [
+        "import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';",
+    ]
+    if use_catalog_browser:
+        imports.append(f"import CatalogBrowser from '{external_import_prefix}components/CatalogBrowser.astro';")
+        imports.append(f"import {{ externalSkillIndex }} from '{external_import_prefix}generated-site-data.mjs';")
+    else:
+        imports.append(f"import CatalogSkillFilter from '{external_import_prefix}components/CatalogSkillFilter.astro';")
+
     parts = [
         "---",
         "title: External Skills",
         "description: Curated and installed external agent skills",
         "---",
         "",
-        "import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';",
-        f"import CatalogSkillFilter from '{external_import_prefix}components/CatalogSkillFilter.astro';",
+        *imports,
         "",
         "External skills are authored in `docs/src/authoring/skills/*.mdx` and emitted to "
         "`docs/public/generated-registries/skills-catalog-index.json`. Legacy `config/external-skills.md` "
@@ -1620,26 +1666,36 @@ def write_catalog_external_index(nodes: list) -> None:
         f'  <span class="stat stat-agent">{len(lanes.get("inspect", []))} Inspect</span>',
         "</div>",
         "",
-        '<CatalogSkillFilter mode="external" />',
-        "",
     ]
-    lane_titles = {
-        "install-now": "Install now (after trust gate)",
-        "inspect": "Inspect then install",
-        "avoid": "Global only or avoid",
-    }
-    for lane_id, title in lane_titles.items():
-        group = lanes.get(lane_id) or []
-        if not group:
-            continue
-        parts.append(f"## {title} ({len(group)})")
-        parts.append("")
-        parts.append(f'<div class="catalog-skill" data-skill-lane="{lane_id}">')
-        parts.append("<CardGrid>")
-        parts.extend(_render_skill_linkcards(group))
-        parts.append("</CardGrid>")
-        parts.append("</div>")
-        parts.append("")
+    if use_catalog_browser:
+        parts.extend([
+            "Use search and lane filters to browse the external catalog without loading every card at once.",
+            "",
+            "<CatalogBrowser skills={externalSkillIndex} />",
+            "",
+        ])
+    else:
+        parts.extend([
+            '<CatalogSkillFilter mode="external" />',
+            "",
+        ])
+        lane_titles = {
+            "install-now": "Install now (after trust gate)",
+            "inspect": "Inspect then install",
+            "avoid": "Global only or avoid",
+        }
+        for lane_id, title in lane_titles.items():
+            group = lanes.get(lane_id) or []
+            if not group:
+                continue
+            parts.append(f"## {title} ({len(group)})")
+            parts.append("")
+            parts.append(f'<div class="catalog-skill" data-skill-lane="{lane_id}">')
+            parts.append("<CardGrid>")
+            parts.extend(_render_skill_linkcards(group))
+            parts.append("</CardGrid>")
+            parts.append("</div>")
+            parts.append("")
 
     out_dir = CONTENT_DIR / SKILL_CATALOG_PREFIX / "external"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -1655,8 +1711,6 @@ def write_skill_install_scripts_page() -> None:
         "---",
         "",
         "import InstallScripts from '../../../components/InstallScripts.astro';",
-        "",
-        "# Skill Install Scripts",
         "",
         "The canonical portable install path is `npx skills add`. `uv run wagents ...` commands are repo-local "
         "control-plane commands for validation and reconciliation, not a replacement for Skills CLI installation.",
@@ -1915,6 +1969,8 @@ def render_sidebar_module(nodes: list) -> str:
     if mcp_content_dir.exists():
         nav_items.append("  { label: 'MCP', link: '/mcp/' }")
     nav_items.append("  { label: 'CLI', link: '/cli/' }")
+    if (CONTENT_DIR / "harness-support.mdx").exists():
+        nav_items.append("  { label: 'Harness Support', link: '/harness-support/' }")
     lines.append(",\n".join(nav_items))
     lines.append("];")
     lines.append("")
@@ -1937,6 +1993,7 @@ def render_sidebar_module(nodes: list) -> str:
     lines.extend(custom_lane_lines)
     lines.append("      {")
     lines.append("        label: 'External',")
+    lines.append("        collapsed: true,")
     lines.append("        items: [{ autogenerate: { directory: 'skills/catalog/external' } }],")
     lines.append("      },")
     lines.append("    ],")
@@ -2122,6 +2179,58 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
         reasons.append("docs/src/generated-sidebar.mjs missing; run `uv run wagents docs generate --no-installed`")
     elif sidebar_path.read_text(encoding="utf-8") != expected_sidebar:
         reasons.append("docs/src/generated-sidebar.mjs is stale; run `uv run wagents docs generate --no-installed`")
+
+    expected_install_scripts = json.dumps(
+        site_data(
+            nodes,
+            mcp_config_count=_count_mcp_servers_from_config(),
+            has_mcp_overview=_has_mcp_overview_page(),
+            external_skills=external_entries,
+        )["skillInstallScripts"],
+        indent=2,
+        sort_keys=True,
+    )
+    install_scripts_path = DOCS_DIR / "public" / "generated-skill-indexes" / "install-scripts.json"
+    if not install_scripts_path.exists():
+        reasons.append(
+            "docs/public/generated-skill-indexes/install-scripts.json missing; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+    elif install_scripts_path.read_text(encoding="utf-8") != expected_install_scripts + "\n":
+        actual = install_scripts_path.read_text(encoding="utf-8").strip()
+        if actual != expected_install_scripts.strip():
+            reasons.append(
+                "docs/public/generated-skill-indexes/install-scripts.json is stale; "
+                "run `uv run wagents docs generate --no-installed`"
+            )
+
+    expected_visual_css = render_visual_assets_css()
+    visual_css_path = DOCS_DIR / "src" / "generated-visual-assets.css"
+    if not visual_css_path.exists():
+        reasons.append(
+            "docs/src/generated-visual-assets.css missing; run `uv run wagents docs generate --no-installed`"
+        )
+    elif visual_css_path.read_text(encoding="utf-8") != expected_visual_css:
+        reasons.append(
+            "docs/src/generated-visual-assets.css is stale; run `uv run wagents docs generate --no-installed`"
+        )
+
+    from wagents.skill_research import MANIFEST_PATH as research_manifest_path
+
+    expected_manifest = render_research_manifest()
+    if not research_manifest_path.exists():
+        reasons.append(
+            "docs/src/generated-skill-research-index.mjs missing; "
+            "run `uv run wagents docs generate --no-installed`"
+        )
+    else:
+        actual_manifest = research_manifest_path.read_text(encoding="utf-8")
+        if actual_manifest != expected_manifest:
+            reasons.append(
+                "docs/src/generated-skill-research-index.mjs is stale; "
+                "run `uv run wagents docs generate --no-installed`"
+            )
+
     return reasons
 
 

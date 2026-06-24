@@ -1263,6 +1263,7 @@ def _build_sync_report(
             report_agents.append({
                 "agent": agent_id,
                 "error": query.error,
+                "warning": "",
                 "missing": [],
                 "already_present": [],
                 "unresolved": [],
@@ -1306,6 +1307,7 @@ def _build_sync_report(
         report_agents.append({
             "agent": agent_id,
             "error": "",
+            "warning": query.error if query is not None and query.ok else "",
             "missing": [_sync_row_summary(row) for row in sorted(missing, key=lambda item: item.name)],
             "already_present": [_sync_row_summary(row) for row in sorted(already_present, key=lambda item: item.name)],
             "unresolved": [_sync_row_summary(row) for row in sorted(unresolved, key=lambda item: item.name)],
@@ -1352,6 +1354,9 @@ def _emit_sync_report(report: dict[str, object], *, dry_run: bool, format_: str 
             typer.echo(f"  error: {error}")
             typer.echo("")
             continue
+        warning = str(agent_payload.get("warning") or "")
+        if warning:
+            typer.echo(f"  warning: {warning}")
         for key in ["missing", "already_present", "unresolved", "skipped"]:
             rows = cast("list[str]", agent_payload.get(key) or [])
             typer.echo(f"  {key.replace('_', '-')} ({len(rows)})")
@@ -1687,6 +1692,34 @@ def catalog_index(
         typer.echo(reason)
     else:
         typer.echo(f"{CATALOG_INDEX_PATH.relative_to(ROOT)} is up to date")
+
+
+@catalog_app.command("audit")
+def catalog_audit(
+    status: str | None = typer.Option(None, "--status", help="Filter curated external rows by status"),
+    strict: bool = typer.Option(
+        False,
+        "--strict",
+        help="Exit 1 when warning or error audit issues are present",
+    ),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+):
+    """Report curated external skill evidence gaps without mutating catalog sources."""
+    from wagents.catalog_audit import build_catalog_audit, render_catalog_audit_text
+
+    normalized_format = _normalize_output_format(format_)
+    report = build_catalog_audit(status=status)
+    issue_counts = cast("dict[str, int]", report.get("issue_counts") or {})
+    strict_failed = bool(strict and (issue_counts.get("error") or issue_counts.get("warning")))
+    payload = {**report, "strict": strict, "strict_failed": strict_failed}
+    _emit_structured_output(
+        normalized_format,
+        text_lines=render_catalog_audit_text(payload, strict=strict),
+        json_data=payload,
+        jsonl_records=[{"type": "catalog-audit", **payload}],
+    )
+    if strict_failed:
+        raise SystemExit(1)
 
 
 @catalog_app.command("sync-authoring")

@@ -635,6 +635,30 @@ def _render_curated_trust_section(node: CatalogNode) -> list[str]:
     if risk:
         parts.append("")
         parts.append(f"Risk notes: {escape_mdx_line(_sanitize_what_it_does(str(risk)))}")
+    audit_rows = [
+        ("Audit date", fm.get("_audit_date")),
+        ("Audited HEAD", fm.get("_audited_head")),
+        ("Pin policy", fm.get("_pin_policy")),
+        ("No-pin rationale", fm.get("_no_pin_rationale")),
+        ("Source-list evidence", fm.get("_source_list_evidence")),
+        ("Executable surface", fm.get("_executable_surface")),
+        ("Allowed tools", fm.get("_allowed_tools")),
+        ("Hook surface", fm.get("_hook_surface")),
+        ("Script surface", fm.get("_script_surface")),
+        ("Credential behavior", fm.get("_credential_behavior")),
+        ("Network access", fm.get("_network_access")),
+        ("File access", fm.get("_file_access")),
+        ("Live-action risk", fm.get("_live_action_risk")),
+        ("Risk category", fm.get("_risk_category")),
+        ("Dedupe notes", fm.get("_dedupe_notes")),
+    ]
+    present_audit_rows = [(label, str(value).strip()) for label, value in audit_rows if str(value or "").strip()]
+    if present_audit_rows:
+        parts.append("")
+        parts.append("| Field | Evidence |")
+        parts.append("| --- | --- |")
+        for label, value in present_audit_rows:
+            parts.append(f"| {escape_mdx_line(label)} | {escape_mdx_line(_sanitize_what_it_does(value))} |")
     parts.append("")
     parts.append(
         "Entry maintained in authoring SSOT "

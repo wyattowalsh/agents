@@ -89,6 +89,23 @@ def test_entry_to_public_row_includes_full_external_fields_and_badges():
         selector_mode="named",
         unresolved_reason="",
         unsupported_target_agents=(),
+        license="MIT",
+        license_status="declared",
+        audit_date="2026-06-23",
+        audited_head="abc123",
+        pin_policy="pin where practical",
+        no_pin_rationale="",
+        source_list_evidence="npx skills add example/curated-skills --list",
+        executable_surface="No hooks.",
+        allowed_tools="Read",
+        hook_surface="none",
+        script_surface="none",
+        credential_behavior="No credential access.",
+        network_access="No runtime network access.",
+        file_access="Reads requested files.",
+        live_action_risk="No live actions.",
+        risk_category="low",
+        dedupe_notes="No stronger repo-owned skill.",
     )
     row = entry_to_public_row(entry)
 
@@ -104,6 +121,21 @@ def test_entry_to_public_row_includes_full_external_fields_and_badges():
     assert "Install only after trust gate" in str(row.get("promotionPolicy", ""))
     assert row.get("riskNotes", "").startswith("Dynamic inputs")
     assert row["sourceUrl"] == "https://github.com/example/curated-skills"
+    assert row["license"] == "MIT"
+    assert row["licenseStatus"] == "declared"
+    assert row["auditDate"] == "2026-06-23"
+    assert row["auditedHead"] == "abc123"
+    assert row["sourceListEvidence"].startswith("npx skills add")
+    assert row["executableSurface"] == "No hooks."
+    assert row["allowedTools"] == "Read"
+    assert row["hookSurface"] == "none"
+    assert row["scriptSurface"] == "none"
+    assert row["credentialBehavior"] == "No credential access."
+    assert row["networkAccess"] == "No runtime network access."
+    assert row["fileAccess"] == "Reads requested files."
+    assert row["liveActionRisk"] == "No live actions."
+    assert row["riskCategory"] == "low"
+    assert row["dedupeNotes"] == "No stronger repo-owned skill."
     # knowledge skeleton present
     assert "resourceLinks" in row["knowledge"]
 

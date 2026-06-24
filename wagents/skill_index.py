@@ -17,6 +17,19 @@ if TYPE_CHECKING:
 
 AUTHORING_SKILLS_DIR = wagents.ROOT / "docs" / "src" / "authoring" / "skills"
 CATALOG_INDEX_PATH = wagents.ROOT / "docs" / "public" / "generated-registries" / "skills-catalog-index.json"
+EXTERNAL_AUTHORING_SOURCE_KINDS = {"curated-external", "external"}
+
+
+def _is_external_authoring_source_kind(source_kind: str) -> bool:
+    return source_kind in EXTERNAL_AUTHORING_SOURCE_KINDS
+
+
+def _catalog_source_type(source_kind: str) -> str:
+    if source_kind == "custom":
+        return "custom"
+    if _is_external_authoring_source_kind(source_kind):
+        return "curated-external"
+    return source_kind
 
 
 @dataclass(frozen=True)
@@ -31,8 +44,8 @@ class CatalogAuthoringEntry:
     title: str = ""
     body: str = ""
     path: str = ""  # relative path under repo or absolute filesystem path to the mdx
-    source_kind: str = "custom"  # "custom" | "curated-external" | "installed" (authoring is typically custom/curated)
-    # Curated-external projected fields (populated for curated-external source_kind)
+    source_kind: str = "custom"  # "custom" | "curated-external" | "external"
+    # External projected fields (populated for supported external source_kind values)
     source: str = ""
     install_source: str = ""
     status: str = ""
@@ -48,6 +61,21 @@ class CatalogAuthoringEntry:
     selector_mode: str = "named"
     unresolved_reason: str = ""
     unsupported_target_agents: tuple[str, ...] = ()
+    audit_date: str = ""
+    audited_head: str = ""
+    pin_policy: str = ""
+    no_pin_rationale: str = ""
+    source_list_evidence: str = ""
+    executable_surface: str = ""
+    allowed_tools: str = ""
+    hook_surface: str = ""
+    script_surface: str = ""
+    credential_behavior: str = ""
+    network_access: str = ""
+    file_access: str = ""
+    live_action_risk: str = ""
+    risk_category: str = ""
+    dedupe_notes: str = ""
     # Raw frontmatter for extensibility (any extra keys)
     frontmatter: dict[str, Any] = field(default_factory=dict)
 
@@ -112,6 +140,21 @@ def load_authoring_entries(dir_path: Path | None = None) -> list[CatalogAuthorin
             unsupported_target_agents=_as_tuple_strs(
                 _frontmatter_get(fm, "unsupported_target_agents", "unsupportedTargetAgents", default=())
             ),
+            audit_date=str(_frontmatter_get(fm, "audit_date", "auditDate", default="")),
+            audited_head=str(_frontmatter_get(fm, "audited_head", "auditedHead", default="")),
+            pin_policy=str(_frontmatter_get(fm, "pin_policy", "pinPolicy", default="")),
+            no_pin_rationale=str(_frontmatter_get(fm, "no_pin_rationale", "noPinRationale", default="")),
+            source_list_evidence=str(_frontmatter_get(fm, "source_list_evidence", "sourceListEvidence", default="")),
+            executable_surface=str(_frontmatter_get(fm, "executable_surface", "executableSurface", default="")),
+            allowed_tools=str(_frontmatter_get(fm, "allowed_tools", "allowed-tools", "allowedTools", default="")),
+            hook_surface=str(_frontmatter_get(fm, "hook_surface", "hookSurface", default="")),
+            script_surface=str(_frontmatter_get(fm, "script_surface", "scriptSurface", default="")),
+            credential_behavior=str(_frontmatter_get(fm, "credential_behavior", "credentialBehavior", default="")),
+            network_access=str(_frontmatter_get(fm, "network_access", "networkAccess", default="")),
+            file_access=str(_frontmatter_get(fm, "file_access", "fileAccess", default="")),
+            live_action_risk=str(_frontmatter_get(fm, "live_action_risk", "liveActionRisk", default="")),
+            risk_category=str(_frontmatter_get(fm, "risk_category", "riskCategory", default="")),
+            dedupe_notes=str(_frontmatter_get(fm, "dedupe_notes", "dedupeNotes", default="")),
             frontmatter=dict(fm),
         )
         entries.append(entry)
@@ -130,11 +173,7 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
             "name": e.name,
             "title": e.title or to_title(e.name),
             "description": e.description,
-            "sourceType": (
-                "custom"
-                if e.source_kind == "custom"
-                else ("curated-external" if e.source_kind == "curated-external" else e.source_kind)
-            ),
+            "sourceType": _catalog_source_type(e.source_kind),
             "sourceRoot": e.source or (wagents.ROOT.name if e.source_kind == "custom" else ""),
             "displaySource": e.source or ("repo" if e.source_kind == "custom" else e.source),
             "sourceKind": e.source_kind,
@@ -164,9 +203,26 @@ def build_catalog_index(entries: list[CatalogAuthoringEntry]) -> dict[str, Any]:
             "riskNotes": e.risk_notes or e.notes,
             "promotionPolicy": e.promotion_policy,
             "provenanceEvidence": e.provenance_evidence or ("repo-owned" if e.source_kind == "custom" else ""),
+            "auditDate": e.audit_date,
+            "auditedHead": e.audited_head,
+            "pinPolicy": e.pin_policy,
+            "noPinRationale": e.no_pin_rationale,
+            "sourceListEvidence": e.source_list_evidence,
+            "executableSurface": e.executable_surface,
+            "allowedTools": e.allowed_tools,
+            "hookSurface": e.hook_surface,
+            "scriptSurface": e.script_surface,
+            "credentialBehavior": e.credential_behavior,
+            "networkAccess": e.network_access,
+            "fileAccess": e.file_access,
+            "liveActionRisk": e.live_action_risk,
+            "riskCategory": e.risk_category,
+            "dedupeNotes": e.dedupe_notes,
             "selectorMode": e.selector_mode,
             "unresolvedReason": e.unresolved_reason,
+            "unsupportedTargetAgents": list(e.unsupported_target_agents),
             "license": e.frontmatter.get("license", ""),
+            "licenseStatus": e.frontmatter.get("license_status", e.frontmatter.get("licenseStatus", "")),
             "version": e.frontmatter.get("version", ""),
             "author": e.frontmatter.get("author", ""),
             "model": e.frontmatter.get("model", ""),
@@ -282,6 +338,23 @@ def entry_to_external_skill_entry(entry: CatalogAuthoringEntry) -> ExternalSkill
         selector_mode=entry.selector_mode or "named",
         unresolved_reason=entry.unresolved_reason,
         unsupported_target_agents=entry.unsupported_target_agents,
+        license=str(entry.frontmatter.get("license", "")),
+        license_status=str(entry.frontmatter.get("license_status", entry.frontmatter.get("licenseStatus", ""))),
+        audit_date=entry.audit_date,
+        audited_head=entry.audited_head,
+        pin_policy=entry.pin_policy,
+        no_pin_rationale=entry.no_pin_rationale,
+        source_list_evidence=entry.source_list_evidence,
+        executable_surface=entry.executable_surface,
+        allowed_tools=entry.allowed_tools,
+        hook_surface=entry.hook_surface,
+        script_surface=entry.script_surface,
+        credential_behavior=entry.credential_behavior,
+        network_access=entry.network_access,
+        file_access=entry.file_access,
+        live_action_risk=entry.live_action_risk,
+        risk_category=entry.risk_category,
+        dedupe_notes=entry.dedupe_notes,
     )
 
 
@@ -296,7 +369,7 @@ def authoring_entry_to_catalog_node(entry: CatalogAuthoringEntry) -> CatalogNode
     # Ensure core keys
     metadata.setdefault("name", entry.name)
     metadata.setdefault("description", entry.description)
-    if entry.source_kind == "curated-external":
+    if _is_external_authoring_source_kind(entry.source_kind):
         if entry.install_command:
             metadata["_skills_install_command"] = entry.install_command
         if entry.provenance_status:
@@ -321,6 +394,31 @@ def authoring_entry_to_catalog_node(entry: CatalogAuthoringEntry) -> CatalogNode
             metadata["_selector_mode"] = entry.selector_mode
         if entry.risk_notes:
             metadata["_risk_notes"] = entry.risk_notes
+        license_status = entry.frontmatter.get("license_status") or entry.frontmatter.get("licenseStatus")
+        if license_status:
+            metadata["license_status"] = str(license_status)
+        for attr, key in (
+            ("audit_date", "_audit_date"),
+            ("audited_head", "_audited_head"),
+            ("pin_policy", "_pin_policy"),
+            ("no_pin_rationale", "_no_pin_rationale"),
+            ("source_list_evidence", "_source_list_evidence"),
+            ("executable_surface", "_executable_surface"),
+            ("allowed_tools", "_allowed_tools"),
+            ("hook_surface", "_hook_surface"),
+            ("script_surface", "_script_surface"),
+            ("credential_behavior", "_credential_behavior"),
+            ("network_access", "_network_access"),
+            ("file_access", "_file_access"),
+            ("live_action_risk", "_live_action_risk"),
+            ("risk_category", "_risk_category"),
+            ("dedupe_notes", "_dedupe_notes"),
+        ):
+            value = getattr(entry, attr)
+            if value:
+                metadata[key] = value
+        if entry.unsupported_target_agents:
+            metadata["_unsupported_target_agents"] = list(entry.unsupported_target_agents)
         if entry.notes:
             metadata["_notes_full"] = entry.notes
         if entry.status:

@@ -35,6 +35,23 @@ class ExternalSkillEntry:
     selector_mode: str = "named"
     unresolved_reason: str = ""
     unsupported_target_agents: tuple[str, ...] = ()
+    license: str = ""
+    license_status: str = ""
+    audit_date: str = ""
+    audited_head: str = ""
+    pin_policy: str = ""
+    no_pin_rationale: str = ""
+    source_list_evidence: str = ""
+    executable_surface: str = ""
+    allowed_tools: str = ""
+    hook_surface: str = ""
+    script_surface: str = ""
+    credential_behavior: str = ""
+    network_access: str = ""
+    file_access: str = ""
+    live_action_risk: str = ""
+    risk_category: str = ""
+    dedupe_notes: str = ""
 
     def public_dict(self) -> dict[str, object]:
         data = asdict(self)
@@ -195,6 +212,23 @@ def read_catalog_external_entries() -> list[ExternalSkillEntry]:
                     unsupported_target_agents=tuple(
                         r.get("unsupportedTargetAgents") or r.get("unsupported_target_agents") or ()
                     ),
+                    license=str(r.get("license") or ""),
+                    license_status=str(r.get("licenseStatus") or r.get("license_status") or ""),
+                    audit_date=str(r.get("auditDate") or r.get("audit_date") or ""),
+                    audited_head=str(r.get("auditedHead") or r.get("audited_head") or ""),
+                    pin_policy=str(r.get("pinPolicy") or r.get("pin_policy") or ""),
+                    no_pin_rationale=str(r.get("noPinRationale") or r.get("no_pin_rationale") or ""),
+                    source_list_evidence=str(r.get("sourceListEvidence") or r.get("source_list_evidence") or ""),
+                    executable_surface=str(r.get("executableSurface") or r.get("executable_surface") or ""),
+                    allowed_tools=str(r.get("allowedTools") or r.get("allowed_tools") or ""),
+                    hook_surface=str(r.get("hookSurface") or r.get("hook_surface") or ""),
+                    script_surface=str(r.get("scriptSurface") or r.get("script_surface") or ""),
+                    credential_behavior=str(r.get("credentialBehavior") or r.get("credential_behavior") or ""),
+                    network_access=str(r.get("networkAccess") or r.get("network_access") or ""),
+                    file_access=str(r.get("fileAccess") or r.get("file_access") or ""),
+                    live_action_risk=str(r.get("liveActionRisk") or r.get("live_action_risk") or ""),
+                    risk_category=str(r.get("riskCategory") or r.get("risk_category") or ""),
+                    dedupe_notes=str(r.get("dedupeNotes") or r.get("dedupe_notes") or ""),
                 )
             )
         return entries

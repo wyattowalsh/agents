@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from wagents.catalog import CatalogNode
-from wagents.external_skills import parse_external_skill_entries
+from wagents.external_skills import ExternalSkillEntry, parse_external_skill_entries
 from wagents.site_model import (
     SUPPORTED_AGENT_IDS,
     VISUAL_ASSET_BY_ID,
@@ -75,6 +75,7 @@ def test_render_site_data_module_exports_runtime_constants():
     assert "export const supportedAgents = baseSiteData.supportedAgents;" in rendered
     assert "export const installCommands = baseSiteData.installCommands;" in rendered
     assert "export const visualAssets = baseSiteData.visualAssets;" in rendered
+    assert "export const externalSkillIndex = skillIndexes.externalSkillIndex;" in rendered
 
 
 def test_visual_assets_are_manifest_backed():
@@ -129,6 +130,53 @@ npx skills add example/skills --skill external-one -y -g -a codex
     assert {row["name"] for row in data["externalSkillIndex"]} == {"external-one", "installed-one"}
     assert {row["name"] for row in data["allSkillIndex"]} == {"custom-one", "external-one", "installed-one"}
     assert data["skillIndex"] == data["allSkillIndex"]
+
+
+def test_external_skill_rows_preserve_structured_audit_fields():
+    entry = ExternalSkillEntry(
+        name="audited-external",
+        source="owner/repo",
+        install_source="owner/repo",
+        status="install-now-after-trust-gate",
+        trust_tier="curated-trust-gated",
+        provenance_status="verified-install-command",
+        install_command="npx skills add owner/repo --skill audited-external -y -g -a codex",
+        target_agents=("codex",),
+        source_url="https://github.com/owner/repo",
+        notes="Audited external skill.",
+        source_path="docs/src/authoring/skills/audited-external.mdx",
+        license="MIT",
+        license_status="declared",
+        audit_date="2026-06-23",
+        audited_head="abc123",
+        pin_policy="pin where practical",
+        source_list_evidence="npx skills add owner/repo --list",
+        executable_surface="No hooks.",
+        allowed_tools="Read",
+        hook_surface="none",
+        script_surface="none",
+        credential_behavior="No credentials.",
+        network_access="No network access.",
+        file_access="Reads requested files.",
+        live_action_risk="No live actions.",
+        risk_category="low",
+        dedupe_notes="No repo-owned overlap.",
+        unsupported_target_agents=("grok",),
+    )
+
+    data = site_data([], external_skills=[entry])
+    row = data["externalSkillIndex"][0]
+
+    assert row["license"] == "MIT"
+    assert row["licenseStatus"] == "declared"
+    assert row["auditDate"] == "2026-06-23"
+    assert row["auditedHead"] == "abc123"
+    assert row["sourceListEvidence"].startswith("npx skills add")
+    assert row["executableSurface"] == "No hooks."
+    assert row["credentialBehavior"] == "No credentials."
+    assert row["liveActionRisk"] == "No live actions."
+    assert row["dedupeNotes"] == "No repo-owned overlap."
+    assert row["unsupportedTargetAgents"] == ["grok"]
 
 
 def test_installed_local_inventory_rows_use_public_safe_source_labels():

@@ -29,7 +29,7 @@
     {
       "id": "EXT-017",
       "repo": "griffinmartin/opencode-claude-auth",
-      "trigger": "credential reuse",
+      "trigger": "credential-sharing",
       "default_action": "local-user-owned-reference-only",
       "required_review": ["threat model", "local config boundary", "no repo default enablement"]
     },

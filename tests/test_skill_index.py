@@ -91,6 +91,21 @@ def test_load_authoring_entries_handles_curated_fields(tmp_authoring_dir: Path):
             "status": "install-now-after-trust-gate",
             "trust_tier": "curated-trust-gated",
             "target_agents": ["claude-code", "codex"],
+            "audit_date": "2026-06-23",
+            "audited_head": "abc123",
+            "pin_policy": "pinned commit preferred",
+            "source_list_evidence": "npx skills add owner/repo --list",
+            "executable_surface": "No hooks; one helper script.",
+            "allowed_tools": "Bash Read",
+            "hook_surface": "none",
+            "script_surface": "helper.py --json --dry-run",
+            "credential_behavior": "No credentials requested.",
+            "network_access": "No network access during normal use.",
+            "file_access": "Reads workspace files only.",
+            "live_action_risk": "No live actions.",
+            "risk_category": "low",
+            "dedupe_notes": "No overlap with repo-owned skills.",
+            "unsupported_target_agents": ["grok"],
         },
         "{/* marker */}",
     )
@@ -103,6 +118,20 @@ def test_load_authoring_entries_handles_curated_fields(tmp_authoring_dir: Path):
     assert e.status == "install-now-after-trust-gate"
     assert e.trust_tier == "curated-trust-gated"
     assert e.target_agents == ("claude-code", "codex")
+    assert e.audit_date == "2026-06-23"
+    assert e.audited_head == "abc123"
+    assert e.source_list_evidence.startswith("npx skills add")
+    assert e.executable_surface == "No hooks; one helper script."
+    assert e.allowed_tools == "Bash Read"
+    assert e.hook_surface == "none"
+    assert e.script_surface == "helper.py --json --dry-run"
+    assert e.credential_behavior == "No credentials requested."
+    assert e.network_access == "No network access during normal use."
+    assert e.file_access == "Reads workspace files only."
+    assert e.live_action_risk == "No live actions."
+    assert e.risk_category == "low"
+    assert e.dedupe_notes == "No overlap with repo-owned skills."
+    assert e.unsupported_target_agents == ("grok",)
 
 
 def test_load_authoring_entries_returns_empty_for_missing_dir(tmp_path: Path):
@@ -134,6 +163,104 @@ def test_build_catalog_index_separates_custom_and_external(tmp_authoring_dir: Pa
     # all should contain both
     all_names = {r["name"] for r in idx["allSkillIndex"]}
     assert all_names == {"custom-a", "ext-b"}
+
+
+def test_build_catalog_index_preserves_curated_audit_fields(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "ext-audit",
+        {
+            "name": "ext-audit",
+            "description": "External with audit evidence",
+            "source_kind": "curated-external",
+            "audit_date": "2026-06-23",
+            "audited_head": "abc123",
+            "pin_policy": "pin where source supports commit refs",
+            "no_pin_rationale": "registry source has no commit selector",
+            "source_list_evidence": "npx skills add owner/repo --list",
+            "executable_surface": "No hooks.",
+            "allowed_tools": "Read",
+            "hook_surface": "none",
+            "script_surface": "none",
+            "credential_behavior": "No credential access.",
+            "network_access": "No runtime network access.",
+            "file_access": "Reads requested files.",
+            "live_action_risk": "None.",
+            "risk_category": "low",
+            "dedupe_notes": "Fold if a repo-owned equivalent appears.",
+            "unsupported_target_agents": ["grok"],
+        },
+    )
+    idx = build_catalog_index(load_authoring_entries(tmp_authoring_dir))
+    row = idx["externalSkillIndex"][0]
+    assert row["auditDate"] == "2026-06-23"
+    assert row["auditedHead"] == "abc123"
+    assert row["pinPolicy"].startswith("pin where")
+    assert row["noPinRationale"].startswith("registry source")
+    assert row["sourceListEvidence"].startswith("npx skills add")
+    assert row["executableSurface"] == "No hooks."
+    assert row["allowedTools"] == "Read"
+    assert row["hookSurface"] == "none"
+    assert row["scriptSurface"] == "none"
+    assert row["credentialBehavior"] == "No credential access."
+    assert row["networkAccess"] == "No runtime network access."
+    assert row["fileAccess"] == "Reads requested files."
+    assert row["liveActionRisk"] == "None."
+    assert row["riskCategory"] == "low"
+    assert row["dedupeNotes"].startswith("Fold if")
+    assert row["unsupportedTargetAgents"] == ["grok"]
+
+
+def test_external_source_kind_receives_curated_catalog_metadata(tmp_authoring_dir: Path):
+    _write_mdx(
+        tmp_authoring_dir,
+        "external-spelling",
+        {
+            "name": "external-spelling",
+            "description": "External source_kind spelling",
+            "source_kind": "external",
+            "source": "owner/repo",
+            "install_source": "owner/repo@abc123",
+            "install_command": "npx skills add owner/repo --skill external-spelling -y -g -a codex",
+            "status": "install-now-after-trust-gate",
+            "trust_tier": "curated-trust-gated",
+            "provenance_status": "verified-install-command",
+            "target_agents": ["codex"],
+            "audit_date": "2026-06-23",
+            "audited_head": "abc123",
+            "source_list_evidence": "npx skills add owner/repo --list",
+            "dedupe_notes": "No repo-owned overlap.",
+            "unsupported_target_agents": ["grok"],
+        },
+    )
+    entry = load_authoring_entries(tmp_authoring_dir)[0]
+
+    idx = build_catalog_index([entry])
+    row = idx["externalSkillIndex"][0]
+    assert row["sourceType"] == "curated-external"
+    assert row["sourceKind"] == "external"
+    assert row["installCommand"].startswith("npx skills add owner/repo")
+    assert row["targetAgents"] == ["codex"]
+    assert row["auditDate"] == "2026-06-23"
+    assert row["auditedHead"] == "abc123"
+    assert row["sourceListEvidence"].startswith("npx skills add")
+    assert row["dedupeNotes"] == "No repo-owned overlap."
+    assert row["unsupportedTargetAgents"] == ["grok"]
+
+    node = authoring_entry_to_catalog_node(entry)
+    assert node.source == "curated-external"
+    assert node.metadata["_skills_install_command"].startswith("npx skills add owner/repo")
+    assert node.metadata["_skills_target_agents"] == ["codex"]
+    assert node.metadata["_skills_source"] == "owner/repo"
+    assert node.metadata["_skills_install_source"] == "owner/repo@abc123"
+    assert node.metadata["_skills_provenance_status"] == "verified-install-command"
+    assert node.metadata["_skills_trust_tier"] == "curated-trust-gated"
+    assert node.metadata["_curated_status"] == "install-now-after-trust-gate"
+    assert node.metadata["_audit_date"] == "2026-06-23"
+    assert node.metadata["_audited_head"] == "abc123"
+    assert node.metadata["_source_list_evidence"].startswith("npx skills add")
+    assert node.metadata["_dedupe_notes"] == "No repo-owned overlap."
+    assert node.metadata["_unsupported_target_agents"] == ["grok"]
 
 
 # ---------------------------------------------------------------------------
@@ -220,6 +347,11 @@ def test_authoring_entry_to_catalog_node_curated_produces_curated_stub(tmp_autho
             "install_command": "npx ...",
             "status": "inspect-then-install",
             "trust_tier": "needs-inspection",
+            "license_status": "declared",
+            "audit_date": "2026-06-23",
+            "audited_head": "abc123",
+            "executable_surface": "No executable hooks.",
+            "dedupe_notes": "No repo-owned overlap.",
         },
     )
     e = load_authoring_entries(tmp_authoring_dir)[0]
@@ -228,6 +360,11 @@ def test_authoring_entry_to_catalog_node_curated_produces_curated_stub(tmp_autho
     assert node.metadata.get("_is_stub") is True  # empty body
     assert node.metadata.get("_skills_source") == "foo/bar"
     assert node.metadata.get("_curated_status") == "inspect-then-install"
+    assert node.metadata.get("license_status") == "declared"
+    assert node.metadata.get("_audit_date") == "2026-06-23"
+    assert node.metadata.get("_audited_head") == "abc123"
+    assert node.metadata.get("_executable_surface") == "No executable hooks."
+    assert node.metadata.get("_dedupe_notes") == "No repo-owned overlap."
 
 
 def test_catalog_index_stale_reason_none_when_index_matches_authoring(tmp_path, monkeypatch):

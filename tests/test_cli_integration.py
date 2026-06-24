@@ -620,6 +620,28 @@ class TestSkillsSync:
         assert "skipped (1)" in result.output
         assert "npx skills add github:wyattowalsh/agents --skill repo-skill -y -g -a codex" in result.output
 
+    def test_sync_dry_run_reports_inventory_fallback_warning(self, monkeypatch):
+        base = self._snapshot()
+        snapshot = InstalledInventorySnapshot(
+            rows=base.rows,
+            queries=(
+                HarnessQueryResult(
+                    agent_id="codex",
+                    ok=True,
+                    entries=(),
+                    error="Fallback local skill-root inventory after timeout: npx skills ls",
+                ),
+            ),
+        )
+        monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
+        self._patch_sync_inventory(monkeypatch, snapshot)
+
+        result = runner.invoke(app, ["skills", "sync", "--agent", "codex"])
+
+        assert result.exit_code == 0
+        assert "warning: Fallback local skill-root inventory after timeout: npx skills ls" in result.output
+        assert "missing (1)" in result.output
+
     def test_sync_apply_executes_verified_commands_only(self, monkeypatch):
         calls = []
         monkeypatch.setattr("shutil.which", lambda _: "/usr/bin/npx")
