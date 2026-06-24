@@ -1425,7 +1425,7 @@ def write_cli_page() -> None:
     parts.append("- tests/")
     parts.append("</FileTree>")
     parts.append("")
-    parts.append("## Related Pages")
+    parts.append("## See also")
     parts.append("")
     parts.append("<CardGrid>")
     parts.append('  <LinkCard title="Start Here" href="/start-here/" description="Choose an entry path." />')

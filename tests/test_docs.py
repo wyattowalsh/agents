@@ -146,7 +146,7 @@ class TestWriteCliPage:
         assert "uv run wagents doctor" in text
         assert "wagents hooks validate" in text
         assert "wagents eval coverage" in text
-        assert "## Related Pages" in text
+        assert "## See also" in text
         assert "<FileTree>" in text
         assert "wagents docs generate --include-installed" in text
         assert "local agent skill directories" in text
