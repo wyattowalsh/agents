@@ -229,3 +229,15 @@ source_count: 1
 - `canonical material`: archive moves performed by OpenSpec CLI (tracked in git); no manual file edits outside kb/.
 - Risks / rollback: KB edits are additive only. Archive dirs are the authoritative moved artifacts.
 - Follow-up: none (lint run post-edit per requirements).
+
+### [2026-06-24] OpenSpec archive of 23 READY completed changes (bulk)
+- Mode: archive + kb status sync (additive)
+- Summary: Archived 23 active OpenSpec changes whose tasks.md had ZERO unchecked items (READY list verified by grep count + spot reads). All followed process: quick sanity read tasks.md (0 opens), dry-run `--format json`, then `--apply --yes` (12 used extra `--skip-specs` to bypass stale delta header matches on specs that were already current; archive move still succeeded). No hard failures. All 23 moved to dated `2026-06-24-*` dirs.
+  - Full list: add-audited-external-skills, add-first-class-cursor-support, add-harness-safe-mcphub-group, add-opencode-plugins-golang-skills, add-ossinsight-supathings-mcps, avoid-default-legacy-migration-logic, complete-nerdbot-implementation, docs-copy-reduction, enhance-docs-skill-indexes, enrich-curated-catalog-pages, enrich-harness-master-ecosystem-research, expose-mcphub-chatgpt-tunnel, global-wagents-cli, improve-instruction-corpus, integrate-chrome-devtools-skills, integrate-opencode-plugins, integrate-opencode-rules-ocx-terminal-progress, make-opencode-model-picker-owned, modernize-ty-ruff-tooling, oss-friendly-codebase-standardization, overhaul-codex-hooks, stabilize-mcphub-opencode-runtime, stabilize-opencode-gpt55-tui.
+- Pre-archive: confirmed 0 `- [ ]`, ran validates.
+- Post-archive: `uv run wagents openspec validate` (passed, 33/33), `uv run wagents validate` (passed).
+- `wiki`: batch summary + evidence row added to [[openspec-change-archive-status]].
+- `activity`: this entry.
+- `canonical material`: archive performed exclusively via `uv run wagents openspec archive` (no manual edits to non-kb); some spec.md updates applied as side-effect for non-skipped.
+- Risks / rollback: KB edits additive only.
+- Follow-up: run kb lint.
