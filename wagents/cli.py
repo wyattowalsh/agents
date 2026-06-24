@@ -48,6 +48,13 @@ from wagents.openspec import (
 )
 from wagents.output import emit_structured_output, normalize_output_format
 from wagents.parsing import parse_frontmatter, to_title
+
+# Eval adequacy (structural E3/E4 grader)
+from wagents.eval_adequacy import (
+    assess_eval_adequacy,
+    build_adequacy_report,
+    filter_high_risk,
+)
 from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
 from wagents.self_cmd import self_app
@@ -2667,6 +2674,104 @@ def eval_coverage(
         json_data={"count": len(rows), "skills": rows},
         jsonl_records=[{"type": "skill", **row} for row in rows],
     )
+
+
+@eval_app.command("adequacy")
+def eval_adequacy(
+    skill: str | None = typer.Option(None, "--skill", help="Limit to a single skill name"),
+    format_: str = typer.Option("text", "--format", help="Output format: text, json, jsonl"),
+    strict: bool = typer.Option(False, "--strict", help="Exit 1 if any R3/R4 skill lacks E4 signals"),
+) -> None:
+    """Report structural E3/E4 adequacy of skill evals (risk-adjusted)."""
+    if skill:
+        # Single skill
+        target = get_repo_root() / "skills" / skill
+        if not (target / "SKILL.md").is_file():
+            _emit_structured_output(
+                format_,
+                text_lines=[f"Skill not found: {skill}"],
+                json_data={"error": "skill_not_found", "skill": skill},
+                jsonl_records=[{"type": "error", "skill": skill}],
+            )
+            raise typer.Exit(code=1)
+        rep = assess_eval_adequacy(target)
+        if format_ in ("text",):
+            tier = rep["risk_tier"]
+            adeq = rep["adequacy"]
+            e4s = ",".join(rep["e4_signals"]) or "-"
+            lines = [
+                f"Skill: {rep['skill']}",
+                f"Risk: {tier}",
+                f"Adequacy: {adeq} (E3={rep['has_e3']} E4={rep['has_e4']})",
+                f"E4 signals: {e4s}",
+                f"Eval count: {rep['eval_count']}",
+            ]
+            if rep["needs_e4"]:
+                lines.append("WARNING: R3/R4 skill lacks E4 signals")
+            _emit_structured_output(
+                format_,
+                text_lines=lines,
+                json_data=rep,
+                jsonl_records=[{"type": "adequacy", **rep}],
+            )
+        else:
+            _emit_structured_output(
+                format_,
+                text_lines=[],
+                json_data=rep,
+                jsonl_records=[{"type": "adequacy", **rep}],
+            )
+        if strict and rep["needs_e4"]:
+            raise typer.Exit(code=1)
+        return
+
+    # Full report
+    report = build_adequacy_report()
+    high = filter_high_risk(report)
+    failing = [s for s in high if s["needs_e4"]]
+
+    if format_ == "json" or format_ == "jsonl":
+        payload = {
+            "count": report["count"],
+            "high_risk": high,
+            "failing_strict": [s["skill"] for s in failing],
+            "summary": report["summary"],
+        }
+        if format_ == "json":
+            _emit_structured_output(format_, text_lines=[], json_data=payload, jsonl_records=[])
+        else:
+            for rec in high:
+                _emit_structured_output("jsonl", text_lines=[], json_data=None, jsonl_records=[{"type": "skill", **rec}])
+            _emit_structured_output(
+                "jsonl",
+                text_lines=[],
+                json_data=None,
+                jsonl_records=[{"type": "summary", "failing": [s["skill"] for s in failing], **report["summary"]}],
+            )
+    else:
+        # text
+        lines: list[str] = ["Skill Adequacy Report (E3/E4 structural)", "-" * 60]
+        lines.append(f"{'Skill':<30} {'Risk':<5} {'Adeq':<5} {'E3':<5} {'E4':<5}  E4 signals")
+        lines.append("-" * 80)
+        for s in sorted(high, key=lambda x: (x["risk_tier"], x["skill"])):
+            sig = ",".join(s["e4_signals"][:3]) or "-"
+            lines.append(
+                f"{s['skill']:<30} {s['risk_tier']:<5} {s['adequacy']:<5} {'Y' if s['has_e3'] else 'N':<5} {'Y' if s['has_e4'] else 'N':<5}  {sig}"
+            )
+        if failing:
+            lines.append("")
+            lines.append("STRICT FAIL: R3/R4 skills missing E4:")
+            for f in failing:
+                lines.append(f"  - {f['skill']}")
+        _emit_structured_output(
+            format_,
+            text_lines=lines,
+            json_data={"count": len(high), "high_risk": high, "failing": [f["skill"] for f in failing]},
+            jsonl_records=[{"type": "skill", **s} for s in high],
+        )
+
+    if strict and failing:
+        raise typer.Exit(code=1)
 
 
 # ---------------------------------------------------------------------------
