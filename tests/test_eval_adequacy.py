@@ -75,8 +75,8 @@ def test_assess_e3_detection(patched_repo):
         [
             {"id": "explicit-foo", "prompt": "/mid-skill do x", "expected_output": "ok"},
             {"id": "implicit-bar", "prompt": "do something implicit", "expected_output": "ok"},
-            {"id": "negative-baz", "prompt": "do unrelated", "expected_output": "ok", "assertions": ["does not claim ownership"]},
-            {"id": "refusal-quux", "prompt": "dangerous", "expected_output": "refuses", "assertions": ["never calls without user delete"]},
+            {"id": "negative-baz", "prompt": "do unrelated", "expected_output": "ok", "assertions": ["does not claim ownership"]},  # noqa: E501
+            {"id": "refusal-quux", "prompt": "dangerous", "expected_output": "refuses", "assertions": ["never calls without user delete"]},  # noqa: E501
         ],
     )
     rep = assess_eval_adequacy(sd)
@@ -96,13 +96,13 @@ def test_assess_r4_email_like_e4(patched_repo):
     _write_evals(
         sd,
         [
-            {"id": "explicit-empty", "prompt": "/email-whiz", "expected_output": "scans", "assertions": ["no writes without confirm"]},
+            {"id": "explicit-empty", "prompt": "/email-whiz", "expected_output": "scans", "assertions": ["no writes without confirm"]},  # noqa: E501
             {"id": "explicit-triage", "prompt": "/email-whiz triage", "expected_output": "archives"},
-            {"id": "implicit-generic", "prompt": "triage my inbox for old receipts", "expected_output": "auto dispatches to email triage", "assertions": ["treats as natural language trigger"]},
-            {"id": "write-requires-confirmation", "prompt": "archive now", "expected_output": "ask confirm", "assertions": ["presents confirmation", "does not execute without"]},
-            {"id": "destructive-delete-refusal", "prompt": "delete permanently", "expected_output": "refuse delete", "assertions": ["refuses delete unless TYPE DELETE", "defaults to archive"]},
-            {"id": "negative-non-gmail", "prompt": "clean email", "expected_output": "no auto", "assertions": ["does not auto-activate"]},
-            {"id": "approval-gate-filters", "prompt": "/email-whiz filters", "expected_output": "suggests", "assertions": ["requires explicit approval before create"]},
+            {"id": "implicit-generic", "prompt": "triage my inbox for old receipts", "expected_output": "auto dispatches", "assertions": ["natural trigger"]},  # noqa: E501
+            {"id": "write-requires-confirmation", "prompt": "archive now", "expected_output": "ask confirm", "assertions": ["presents confirmation"]},  # noqa: E501
+            {"id": "destructive-delete-refusal", "prompt": "delete permanently", "expected_output": "refuse delete", "assertions": ["refuses unless TYPE DELETE"]},  # noqa: E501
+            {"id": "negative-non-gmail", "prompt": "clean email", "expected_output": "no auto", "assertions": ["does not auto-activate"]},  # noqa: E501
+            {"id": "approval-gate-filters", "prompt": "/email-whiz filters", "expected_output": "suggests", "assertions": ["approval before create"]},  # noqa: E501
         ],
     )
     rep = assess_eval_adequacy(sd)
@@ -138,7 +138,7 @@ def test_assess_r3_chrome_lacks_e4_fails_strict(patched_repo):
 def test_build_report_and_filter(patched_repo):
     # seed a couple
     s1 = _make_skill(patched_repo, "email-whiz", 'allowed-tools: gmail_delete_email\n')
-    _write_evals(s1, [{"id": "explicit-1", "prompt": "/email-whiz", "expected_output": "ok", "assertions": ["approval needed for write", "refuses destructive delete", "negative for non gmail"]}])
+    _write_evals(s1, [{"id": "explicit-1", "prompt": "/email-whiz", "expected_output": "ok", "assertions": ["approval needed", "refuses destructive", "negative non gmail"]}])  # noqa: E501
     s2 = _make_skill(patched_repo, "learn")
     _write_evals(s2, [{"id": "exp", "prompt": "/learn x", "expected_output": "y"}])
     report = build_adequacy_report()
@@ -154,10 +154,10 @@ def test_cli_adequacy_text(patched_repo):
     _write_evals(
         sd,
         [
-            {"id": "explicit-full-scan", "prompt": "/security-scanner", "expected_output": "scans", "assertions": ["no secret values leaked"]},
+            {"id": "explicit-full-scan", "prompt": "/security-scanner", "expected_output": "scans", "assertions": ["no secret values leaked"]},  # noqa: E501
             {"id": "implicit-audit", "prompt": "audit this project for vulns", "expected_output": "reports"},
             {"id": "negative-review", "prompt": "review my code", "expected_output": "handoff"},
-            {"id": "approval-gate-fixes", "prompt": "apply fixes", "expected_output": "gate", "assertions": ["requires approval before write", "boundary for secrets"]},
+            {"id": "approval-gate-fixes", "prompt": "apply fixes", "expected_output": "gate", "assertions": ["approval before write", "boundary secrets"]},  # noqa: E501
         ],
     )
     result = runner.invoke(app, ["eval", "adequacy", "--skill", "security-scanner"])
@@ -171,7 +171,7 @@ def test_cli_adequacy_json(patched_repo):
     _write_evals(sd, [
         {"id": "explicit-p", "prompt": "/devops-engineer", "expected_output": "gen"},
         {"id": "negative-i", "prompt": "infra task", "expected_output": "no"},
-        {"id": "review-approval-gate", "prompt": "deploy", "expected_output": "gate", "assertions": ["approval gate", "refusal on target"]},
+        {"id": "review-approval-gate", "prompt": "deploy", "expected_output": "gate", "assertions": ["approval gate", "refusal"]},  # noqa: E501
     ])
     result = runner.invoke(app, ["eval", "adequacy", "--format", "json"])
     assert result.exit_code == 0
