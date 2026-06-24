@@ -3,9 +3,7 @@
 ## Purpose
 
 Define OpenCode, Gemini CLI, and Antigravity harness requirements for model-neutral configuration, skills, MCP projection, and plugin placement.
-
 ## Requirements
-
 ### Requirement: OpenCode and Gemini projection
 
 The OpenCode/Gemini lane SHALL preserve repo-managed OpenCode model-neutral policy while defining skills, MCP, plugin, and instruction projections.
@@ -14,10 +12,20 @@ The OpenCode/Gemini lane SHALL preserve repo-managed OpenCode model-neutral poli
 
 - **GIVEN** repo-managed OpenCode config is updated
 - **WHEN** plugin entries are reviewed
-- **THEN** npm plugin specs remain on `@latest` unless an explicit rollback is requested.
+- **THEN** npm plugin specs remain on `@latest` unless an explicit rollback is requested
+- **AND** npm runtime plugins that affect prompt context or terminal UX SHALL be documented in repo OpenCode plugin notes.
 
-#### Scenario: OpenCode Ensemble inherits agent defaults
+#### Scenario: OCX-managed components remain outside runtime plugin config
 
-- **GIVEN** OpenCode Ensemble is enabled for team orchestration
-- **WHEN** teammates are spawned without an explicit model override
-- **THEN** Ensemble leaves its model fields empty so teammates inherit the repo-managed `openai/gpt-5.5` agent variants: `plan` on `xhigh`, and `build`, `explore`, and `general` on `high`.
+- **GIVEN** OCX-managed components are present under `.opencode/` with receipts under `.ocx/`
+- **WHEN** OpenCode runtime plugin entries are updated
+- **THEN** OCX itself SHALL NOT be added to `opencode.json`
+- **AND** OCX-managed component package names SHALL NOT be added as bare runtime plugins unless the user explicitly chooses that package path over the component path.
+
+#### Scenario: Rule injection avoids duplicated always-loaded instructions
+
+- **GIVEN** `opencode-rules` is enabled as a runtime plugin
+- **WHEN** repo or user rule files are documented or added
+- **THEN** broad always-on repo policy SHALL remain in canonical instruction files
+- **AND** OpenCode rule files SHOULD be reserved for conditional path, prompt, tool, command, project, branch, operating-system, or CI-specific guidance.
+

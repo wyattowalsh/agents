@@ -6,13 +6,25 @@ Define how this repository exposes the same asset bundle and OpenSpec workflows 
 ## Requirements
 ### Requirement: Supported Agent Mapping Is Stable
 
-The repository SHALL maintain a deterministic mapping from repo-supported agent IDs to OpenSpec tool IDs.
+The repository SHALL maintain a deterministic mapping from repo-supported agent IDs to OpenSpec tool IDs and Skills CLI install targets, while documenting requested harness facets that do not have direct Skills CLI adapters.
 
-#### Scenario: Generating OpenSpec artifacts for repo-supported tools
+#### Scenario: Installing curated external skills across supported harnesses
 
-- **WHEN** a user runs `uv run wagents openspec init --apply`
-- **THEN** the command SHALL configure OpenSpec tools for the supported repo agents by default
-- **AND** the command SHALL expose an option to pass raw OpenSpec tool IDs for tools outside the repo support matrix.
+- **WHEN** a curated external skill command is added for global rollout
+- **THEN** the command SHALL use only Skills CLI target IDs supported by the repo install/sync tooling
+- **AND** desktop, cloud, or app UI harness facets without direct Skills CLI target IDs SHALL be reported as config or blind-spot surfaces rather than invented install adapters.
+
+#### Scenario: Installing a user-requested local harness rollout
+
+- **WHEN** a user explicitly requests installation across every locally installed client that supports Skills CLI adapters
+- **THEN** the rollout command SHALL enumerate the current Skills CLI target IDs with observed local skill roots instead of using `--all`
+- **AND** repo-managed sync MAY continue to target only the repository-supported agent set.
+
+#### Scenario: Mapping split GitHub Copilot facets
+
+- **WHEN** a user requests installation for GitHub Copilot web, CLI, or aggregate Copilot surfaces
+- **THEN** the repository SHALL use the single `github-copilot` Skills CLI target for install/sync
+- **AND** documentation or reports SHALL keep web and CLI audit facets separate when discussing observable surfaces and blind spots.
 
 ### Requirement: JSON Interfaces Are Preferred For Automation
 
@@ -173,4 +185,60 @@ The repo Grok diagnostic surface SHALL support automation-safe JSON output for p
 - **WHEN** `uv run wagents grok doctor --format json` runs
 - **THEN** it SHALL emit a machine-readable result with required checks and statuses
 - **AND** it SHALL exit nonzero when required checks fail.
+
+### Requirement: ChatGPT remote MCP handoff is stable and source-traceable
+
+ChatGPT remote MCP access SHALL use the MCPHub public URL declared in local
+MCPHub environment configuration and documented by repo-owned MCPHub docs.
+
+#### Scenario: MCPHub tunnel reports the public URL
+
+- **GIVEN** `MCPHUB_TUNNEL_ENABLED=true`
+- **AND** `MCPHUB_PUBLIC_URL` is set
+- **WHEN** MCPHub starts and passes its health check
+- **THEN** the tunnel sidecar SHALL expose the same public `/mcp` URL for ChatGPT
+- **AND** optional Zapier handoff SHALL report that public URL without including bearer tokens.
+
+### Requirement: Chrome DevTools Source Ownership Is Singular Per Harness
+
+Each supported harness SHALL have at most one active `chrome-devtools` MCP owner.
+
+#### Scenario: Harness uses upstream plugin ownership
+
+- **WHEN** a harness is marked as using the upstream Chrome DevTools plugin
+- **THEN** repo sync SHALL NOT also project an active standalone `chrome-devtools` MCP entry into that harness
+- **AND** the registry SHALL identify the source as `plugin`.
+
+#### Scenario: Harness uses upstream extension ownership
+
+- **WHEN** a harness is marked as using the upstream Chrome DevTools extension
+- **THEN** repo sync SHALL NOT also project an active standalone `chrome-devtools` MCP entry into that harness
+- **AND** the registry SHALL identify the source as `extension`.
+
+#### Scenario: Harness lacks verified plugin support
+
+- **WHEN** no concrete plugin or extension surface has been verified for a harness
+- **THEN** the harness SHALL use `repo-mcp`, `manual-ui`, or `blind-spot` status
+- **AND** documentation SHALL avoid claiming native plugin installation support.
+
+### Requirement: Imported Chrome DevTools Skills Preserve Provenance
+
+Imported Chrome DevTools skills SHALL retain clear provenance and local adaptation notes.
+
+#### Scenario: A Chrome DevTools skill is promoted into `skills/`
+
+- **WHEN** a skill derived from `ChromeDevTools/chrome-devtools-mcp` is added to the repository
+- **THEN** its frontmatter SHALL include `license: Apache-2.0`
+- **AND** its metadata SHALL identify `Google LLC` as upstream author and `0.23.0` as upstream package version
+- **AND** its body or references SHALL include source URL, commit SHA, access date, and adaptation notes.
+
+### Requirement: Chrome DevTools Runtime Artifacts Stay Out Of Version Control
+
+Chrome DevTools workflows SHALL warn users away from committing runtime artifacts.
+
+#### Scenario: A skill describes traces, screenshots, Lighthouse reports, heap snapshots, or browser profiles
+
+- **WHEN** a promoted Chrome DevTools skill instructs the user to generate browser debugging artifacts
+- **THEN** it SHALL include guidance to keep those artifacts local unless the user explicitly asks to save or share them
+- **AND** generated runtime artifact paths SHALL NOT be added to committed source by default.
 

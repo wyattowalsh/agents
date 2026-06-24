@@ -2,11 +2,10 @@
 
 ## Purpose
 Define Cursor harness requirements for editor, CLI, Cloud Agent, cloud subagent, Bugbot, and ACP surfaces without fabricating support across distinct runtimes or mutating user/dashboard state.
-
 ## Requirements
 ### Requirement: Cursor harness projection
 
-The Cursor harness lane SHALL define repo-owned Cursor editor and CLI projections for rules, skills, subagents, MCP, hooks, permissions, CLI config, Bugbot rules, and rollback fixtures.
+The Cursor harness lane SHALL define repo-owned Cursor editor and CLI projections for rules, skills, subagents, MCP, hooks, permissions, CLI config, Bugbot rules, and rollback fixtures, while documenting Cloud Agent, cloud subagent, Bugbot Admin API, and ACP boundaries.
 
 #### Scenario: Cursor projection is validated
 
@@ -49,3 +48,4 @@ The Cursor harness lane SHALL define repo-owned Cursor editor and CLI projection
 - **GIVEN** support registries are validated
 - **WHEN** Cursor Cloud Agent, cloud subagent, Bugbot, or ACP support is described
 - **THEN** dashboard/team MCP, OAuth, secrets, Bugbot Admin API, and Cloud Agent settings are documented as out of scope for repo sync.
+

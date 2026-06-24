@@ -3,12 +3,10 @@
 ## Purpose
 
 Define repository-owned assets that can be consumed by multiple AI coding tools without duplicating source-of-truth instructions.
-
 ## Requirements
-
 ### Requirement: Asset Formats Stay Canonical
 
-The repository SHALL keep skill, agent, MCP, instruction, hook, and bundle metadata formats documented in `AGENTS.md` and validated by `wagents` commands.
+The repository SHALL keep skill, agent, MCP, instruction, hook, and bundle metadata formats documented in `AGENTS.md` and validated by `wagents` commands. Public skill contracts SHALL describe implemented behavior or explicitly label unavailable behavior as non-public design work.
 
 #### Scenario: Creating a skill
 
@@ -21,6 +19,11 @@ The repository SHALL keep skill, agent, MCP, instruction, hook, and bundle metad
 - **WHEN** skill, agent, MCP, or docs-generation behavior changes
 - **THEN** generated README and docs outputs SHALL be refreshed or checked with the documented `wagents` commands.
 
+#### Scenario: Completing a skill product surface
+
+- **WHEN** a skill advertises CLI modes, safety guarantees, generated outputs, evals, or package entry points
+- **THEN** those surfaces SHALL have matching source implementation, tests or evals, and user-facing documentation before the work is marked complete.
+
 ### Requirement: Generated Surfaces Are Explicit
 
 The repository SHALL distinguish tracked source-of-truth assets from generated or local-only downstream tool artifacts.
@@ -29,3 +32,4 @@ The repository SHALL distinguish tracked source-of-truth assets from generated o
 
 - **WHEN** `openspec init` or `openspec update` creates `.claude`, `.cursor`, `.opencode`, `.github`, `.agent`, `.crush`, `.codex`, or `.gemini` OpenSpec artifacts
 - **THEN** those artifacts SHALL be treated as generated unless explicitly promoted to repo-owned source.
+

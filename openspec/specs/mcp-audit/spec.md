@@ -7,8 +7,11 @@ Define MCP audit requirements for server conformance, transport, auth, secrets h
 
 The MCP audit lane SHALL keep MCP servers only when live or dynamic external state is required and SHALL record transport, auth, secrets, sandbox, and smoke fixture requirements.
 
-#### Scenario: Static MCP is identified
+#### Scenario: MCPHub exposes ChatGPT remote access through an opt-in tunnel
 
-- **GIVEN** an MCP server only wraps static instructions or local deterministic scripts
-- **WHEN** it is audited
-- **THEN** the lane records a skill-replacement recommendation.
+- **GIVEN** ChatGPT requires a remote HTTPS MCP URL
+- **WHEN** MCPHub tunnel exposure is enabled
+- **THEN** MCPHub SHALL remain bound to localhost
+- **AND** the tunnel sidecar SHALL use local-only Cloudflare credentials or tokens
+- **AND** tracked files SHALL not contain real tunnel credentials, bearer tokens, or Zapier webhook URLs.
+
