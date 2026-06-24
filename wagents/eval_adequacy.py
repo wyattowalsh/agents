@@ -63,17 +63,41 @@ _R1_KEYWORDS = {
     "detect",
 }
 
-# E3 signals (by id/prompt/assertions) - use prefixes/phrases to avoid substring false positives like "no-explicit"
+# E3 signals (prefix/phrase, avoid "no-explicit" substr etc)
 _E3_EXPLICIT = {"explicit-", "explicit ", "explicit invocation"}
-_E3_IMPLICIT = {"implicit", "implicit trigger", "natural language", "without slash", "non /", "generic request activates"}
-_E3_NEGATIVE = {"negative", "negative control", "negative-", "does not auto-activate", "does not claim", "does not treat", "handoff to", "not auto-activate"}
+_E3_IMPLICIT = {
+    "implicit",
+    "implicit trigger",
+    "natural language",
+    "without slash",
+    "generic request activates",
+}
+_E3_NEGATIVE = {
+    "negative",
+    "negative control",
+    "negative-",
+    "does not auto-activate",
+    "does not claim",
+    "does not treat",
+    "handoff to",
+    "not auto-activate",
+}
 _E3_REFUSAL = {"refus", "refusal", "do not", "never call", "forbidden unless", "refuses to"}
 
 # E4 boundary signals
 _E4_APPROVAL = {"approval", "approve", "confirm", "confirmation", "gate", "requires .* approval", "before write"}
 _E4_NO_MUTATION = {"no mutation", "no write", "read-only", "does not execute", "without confirmation", "plan only"}
 _E4_DESTRUCTIVE = {"destructive", "delete", "destroy", "permanent", "cleanup that deletes"}
-_E4_BOUNDARY = {"boundary", "out of scope", "not for", "untrusted", "credential", "secret", "network boundary", "no config change"}
+_E4_BOUNDARY = {
+    "boundary",
+    "out of scope",
+    "not for",
+    "untrusted",
+    "credential",
+    "secret",
+    "network boundary",
+    "no config change",
+}
 _E4_CRED_NET = {"credential", "secret", "token", "password", "api key", "network", "mcp.json", "launch config"}
 
 
@@ -148,23 +172,21 @@ def _detect_e3_cases(evals: list[dict[str, Any]]) -> dict[str, list[str]]:
         txt = _collect_eval_text(e)
         iid = str(e.get("id", "") or "")
         pid = str(e.get("prompt", "") or "")[:40]
-        # Prefer id prefix for classification to avoid phrase cross-matches
-        classified = False
-        if iid.startswith("explicit-") or iid == "explicit" or any(k in txt for k in _E3_EXPLICIT):
-            buckets["explicit"].append(iid or pid)
-            classified = True
-        if iid.startswith("implicit-") or any(k in txt for k in _E3_IMPLICIT):
-            buckets["implicit"].append(iid or pid)
-            classified = True
+        # Prefer id-based buckets first (negative/refusal/destructive are strong signals even if text mentions "explicit")
         if iid.startswith("negative-") or any(k in txt for k in _E3_NEGATIVE):
             buckets["negative"].append(iid or pid)
-            classified = True
         if iid.startswith(("refusal-", "destructive-")) or "refus" in iid or any(k in txt for k in _E3_REFUSAL):
             buckets["refusal"].append(iid or pid)
-            classified = True
-        # Fallback: if prompt has no leading / and no other buckets yet, treat as potential implicit trigger
-        if not classified and not (pid or "").strip().startswith("/") and any(k in txt for k in ("activate", "trigger", "natural")):
+        if iid.startswith("implicit-") or any(k in txt for k in _E3_IMPLICIT):
             buckets["implicit"].append(iid or pid)
+        # Explicit only if id-prefixed or phrase and NOT already classified as negative/refusal style (avoid "need explicit" phrases in neg tests)
+        is_neg_ref = iid.startswith(("negative-", "refusal-", "destructive-")) or any(x in iid for x in ("negative", "refus", "destructive", "boundary"))
+        if (iid.startswith("explicit-") or iid == "explicit" or any(k in txt for k in _E3_EXPLICIT)) and not is_neg_ref:
+            buckets["explicit"].append(iid or pid)
+        # Fallback implicit for non-/ prompts that look like natural activation (only if no negative/refusal id)
+        if not any(iid.startswith(p) for p in ("negative-", "refusal-", "destructive-", "boundary-", "explicit-")) and not (pid or "").strip().startswith("/") and any(k in txt for k in ("activate", "trigger", "natural")):
+            if iid not in buckets["implicit"]:
+                buckets["implicit"].append(iid or pid)
     # Dedup preserve order
     for k in buckets:
         seen: set[str] = set()
