@@ -189,3 +189,21 @@ source_count: 1
 - Follow-up:
   - Run Nerdbot lint and inventory with `--fail-on warning`.
   - Execute Phase 4 fix candidates outside `kb/` when maintainer requests repo fixes.
+
+## 2026-06-24 — Phase 4 shipped + catalog hardening follow-up
+
+- `raw`: unchanged.
+- `wiki`: refreshed [[known-risks-and-open-gaps]] and [[agent-publication-and-drift-coverage]] to mark Phase 4 items shipped.
+- `indexes`: unchanged.
+- `schema`: unchanged.
+- `config`: unchanged.
+- `canonical material`: repo commits `69e2d6e` through `85a5589` shipped compose parity, Copilot agent corpus reconciliation, catalog audit CLI, docs browser, and CI docs gates.
+- `provenance`: status updates cite shipped commits and existing tests; no live installs.
+- `derived output`: none under `kb/`.
+- `vault`: unchanged.
+- `path map`: none.
+- `link/backlink impact`: none.
+- Risks / rollback: KB-only status refresh; repo fixes already on `main`.
+- Follow-up:
+  - Expand skill eval coverage for R3/R4 workflows.
+  - Promote harness rollback fixtures from `planned` to executable.

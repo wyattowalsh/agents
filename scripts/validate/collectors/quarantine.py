@@ -9,11 +9,24 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 
-def _quarantined_repo_slugs(repo_root: Path) -> set[str]:
-    path = repo_root / "planning/manifests/security-quarantine-register.json"
+def _quarantine_register_path(repo_root: Path) -> Path:
+    return repo_root / "planning/manifests/security-quarantine-register.json"
+
+
+def _load_quarantine_register(repo_root: Path) -> tuple[Path, dict | None, list[dict[str, str]]]:
+    path = _quarantine_register_path(repo_root)
     if not path.is_file():
-        return set()
-    payload = json.loads(path.read_text(encoding="utf-8"))
+        return path, None, []
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:  # pragma: no cover - exercised through integration tests
+        return path, None, [{"source": str(path), "message": f"Invalid quarantine register JSON: {exc}"}]
+    if not isinstance(payload, dict):
+        return path, None, [{"source": str(path), "message": "Invalid quarantine register JSON: expected object"}]
+    return path, payload, []
+
+
+def _quarantined_repo_slugs(payload: dict) -> set[str]:
     slugs: set[str] = set()
     for record in payload.get("external_repo_records", []):
         if not isinstance(record, dict):
@@ -26,23 +39,20 @@ def _quarantined_repo_slugs(repo_root: Path) -> set[str]:
     return {s.lower() for s in slugs}
 
 
-def _register_policy_errors(repo_root: Path) -> list[dict[str, str]]:
-    path = repo_root / "planning/manifests/security-quarantine-register.json"
-    if not path.is_file():
-        return []
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:  # pragma: no cover - JSON syntax errors are already obvious in focused tests
-        return [{"source": str(path), "message": f"Invalid quarantine register JSON: {exc}"}]
-
+def _register_policy_errors(path: Path, payload: dict) -> list[dict[str, str]]:
     triggers = {str(t).strip() for t in payload.get("quarantine_triggers", []) if str(t).strip()}
     errors: list[dict[str, str]] = []
     for record in payload.get("external_repo_records", []):
         if not isinstance(record, dict):
             continue
         trigger = str(record.get("trigger") or "").strip()
-        if trigger and trigger not in triggers:
-            record_id = str(record.get("id") or record.get("repo") or "?")
+        record_id = str(record.get("id") or record.get("repo") or "?")
+        if not trigger:
+            errors.append({
+                "source": str(path),
+                "message": f"Quarantine record {record_id} is missing a trigger",
+            })
+        elif trigger not in triggers:
             errors.append({
                 "source": str(path),
                 "message": f"Quarantine record {record_id} uses undeclared trigger '{trigger}'",
@@ -56,8 +66,12 @@ def collect_quarantine_errors(repo_root: Path) -> list[dict[str, str]]:
     Dual-read (W2): scan catalog index JSON entry fields (install_source, source, name, camel variants)
     + legacy md.
     """
-    errors: list[dict[str, str]] = _register_policy_errors(repo_root)
-    slugs = sorted(_quarantined_repo_slugs(repo_root))
+    _register_path, payload, errors = _load_quarantine_register(repo_root)
+    if payload is None:
+        return errors
+
+    errors.extend(_register_policy_errors(_register_path, payload))
+    slugs = sorted(_quarantined_repo_slugs(payload))
     if not slugs:
         return errors
 

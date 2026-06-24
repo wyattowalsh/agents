@@ -269,6 +269,45 @@ def test_quarantine_register_rejects_undeclared_trigger(mini_repo: Path) -> None
     assert "undeclared trigger" in result.stdout + result.stderr
 
 
+def test_quarantine_register_invalid_json_reports_validation_error(mini_repo: Path) -> None:
+    """Invalid quarantine-register JSON must not traceback during validation."""
+    qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
+    qreg.parent.mkdir(parents=True, exist_ok=True)
+    qreg.write_text("{not json", encoding="utf-8")
+
+    result = _run_validate_repo(cwd=mini_repo)
+
+    combined = result.stdout + result.stderr
+    assert result.returncode == 1
+    assert "Invalid quarantine register JSON" in combined
+    assert "Traceback" not in combined
+
+
+def test_quarantine_register_rejects_missing_trigger(mini_repo: Path) -> None:
+    """Every quarantine record must include a non-blank trigger."""
+    qreg = mini_repo / "planning" / "manifests" / "security-quarantine-register.json"
+    qreg.parent.mkdir(parents=True, exist_ok=True)
+    qreg.write_text(
+        json.dumps({
+            "quarantine_triggers": ["credential-sharing"],
+            "external_repo_records": [
+                {
+                    "id": "EXT-TEST",
+                    "repo": "example/repo",
+                    "trigger": " ",
+                    "default_action": "local-user-owned-reference-only",
+                }
+            ],
+        }),
+        encoding="utf-8",
+    )
+
+    result = _run_validate_repo(cwd=mini_repo)
+
+    assert result.returncode == 1
+    assert "missing a trigger" in result.stdout + result.stderr
+
+
 def test_mcp_missing_defaults_and_tools(mini_repo: Path) -> None:
     """Missing contributor_defaults + missing tools field aggregates 2+ errors."""
     reg = mini_repo / "config" / "mcp-registry.json"

@@ -21,28 +21,30 @@ source_count: 22
 |------|--------|----------------|-------------|
 | Dirty worktree | Observed | Unrelated modified and untracked files outside `kb/` remain; KB enrichment must stay additive. | Inspect diffs before non-KB code changes; do not infer repo health from KB alone. |
 | Local secret-looking MCP area | Gap | `mcp/secrets/` is sensitive and was not ingested. | Keep pointer-only; never capture secret values into KB. |
-| Agent publication drift | Partial | Eight canonical agents under `agents/`; bundle lists `./agents/`; Codex plugin files missing; Copilot corpus has 11 files with partial overlap. | Use [[agent-publication-and-drift-coverage]]; fix in separate repo batch. |
+| Agent publication drift | Resolved (2026-06-24) | Canonical eight now present in `platforms/copilot/agents/` plus five Copilot specialists; Codex plugin `agents` path restored. | Monitor via `tests/test_copilot_agents.py` and [[agent-publication-and-drift-coverage]]. |
 | Full CI status unknown for this session | Gap | KB batch ran targeted Nerdbot lint/inventory, not full CI matrix. | Run `.github/workflows/ci.yml` locally or on PR when release-blocking. |
-| Docs/generated surfaces partially audited | Partial | Compose 98.2%; five Cursor hook pages missing; MCP index badge stale; no `wagents docs generate --check`. | Use [[docs-generation-and-site]]; fix candidates below. |
+| Docs/generated surfaces partially audited | Resolved (2026-06-24) | Compose 100%; Cursor hook pages composed; MCP badge refreshed; `wagents docs generate --check` wired in CI. | Use [[docs-generation-and-site]] for ongoing freshness discipline. |
 | External standards are context-only | Observed | External docs are pointer-summary source notes. | Keep [[external-primary-source-map]] contextual. |
 | OpenCode generated/canonical tension | Gap | `opencode.json` is repo-managed while some sync surfaces are generated or merged. | Use [[canonical-generated-surfaces]] and [[opencode-runtime-policy]] before edits. |
 | Sync rollback completeness | Gap | Config-drop and merge preservation exist; full merged-home rollback not proven. | Use [[sync-transaction-safety]] and [[wagents-platform-adapters]]. |
 | Harness fixture coverage | Gap | Rollback fixtures mostly `planned`; Codex plugin paths missing; compose hook gap. | Use [[harness-fixture-gaps]] before raising support tiers. |
 | Planning manifest freshness | Partial | Planning manifests are snapshots, not live config proof. | Re-run targeted tests before promotion claims. |
-| OpenSpec archive state can drift | Partial | ~32 active / ~28 archived; four actives with unchecked tasks; portable CLI lacks `archive` subcommand. | Use [[openspec-change-archive-status]]. |
+| OpenSpec archive state can drift | Partial | Portable `openspec archive` wired; active/archive counts still need periodic hygiene. | Use [[openspec-change-archive-status]] before bulk archives. |
 | Risk-adjusted skill eval adequacy | Gap | 29/56 skills have `evals/evals.json`; many R3/R4 workflows lack E3/E4 coverage. | Use [[skill-catalog-risk-and-eval-coverage]]. |
 | MCPHub topology changes | Partial | Registry, tunnel, and smart-routing surfaces documented in KB but not live-verified here. | Use [[mcphub-control-plane]] before topology edits. |
 
 ## Phase 4 Fix Candidates (repo, not KB)
 
-Documented here for a separate atomic fix batch outside `kb/`:
+Shipped 2026-06-23 through 2026-06-24 (commits `d4af41f`, `69e2d6e`, `5dc7ec1`, `00d064e`, `f242a5e`):
 
-1. Refresh stale MCP count badge in `docs/src/content/docs/mcp/index.mdx`.
-2. Add or restore missing Codex plugin manifest files referenced by harness registry/tests.
-3. Compose the five missing Cursor hook docs pages (registry rows without MDX).
-4. Add `wagents docs generate --check` or extend docs artifact registry coverage.
-5. Implement or wire portable `openspec archive` CLI handler if SKILL dispatch should remain truthful.
-6. Reconcile Copilot agent corpus size/names with canonical eight agents (if publication parity is required).
+1. ~~Refresh stale MCP count badge~~ — done.
+2. ~~Restore Codex plugin `agents` component~~ — done.
+3. ~~Compose five missing Cursor hook docs pages~~ — done.
+4. ~~Add `wagents docs generate --check` + CI enforcement~~ — done.
+5. ~~Wire portable `openspec archive` CLI handler~~ — done.
+6. ~~Reconcile Copilot agent corpus with canonical eight~~ — done (plus five Copilot specialists documented).
+
+Remaining repo follow-ups outside this batch: skill eval coverage expansion, OpenSpec archive hygiene, harness fixture promotion.
 
 ## Recommended Follow-Ups
 
