@@ -93,14 +93,15 @@
       "harness_id": "github-copilot-cli",
       "owner_change": "agents-c04-copilot-harness",
       "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "cli-config-fixture",
         "mcp-fixture",
         "no-fabricated-installed-skill-inventory-fixture"
       ],
       "validation_commands": [
-        "uv run wagents validate"
+        "uv run wagents validate",
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k 'copilot or merge_copilot'"
       ],
       "rollback_coverage": "present",
       "promotion_blocker": "Requires CLI config, MCP, and installed-skill inventory fixtures before validated support claims."
@@ -129,7 +130,7 @@
       "harness_id": "gemini-cli",
       "owner_change": "agents-c04-opencode-gemini-harness",
       "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "instruction-fixture",
         "skills-fixture",
@@ -138,9 +139,10 @@
       ],
       "validation_commands": [
         "uv run wagents validate",
-        "uv run wagents openspec validate"
+        "uv run wagents openspec validate",
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k 'gemini or render_gemini'"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Requires Gemini CLI instruction, skills, MCP, and OpenSpec wrapper fixtures before validated support claims."
     },
     {
