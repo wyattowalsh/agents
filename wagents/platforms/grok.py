@@ -27,6 +27,8 @@ from wagents.platforms.base import (
 GROK_CONFIG_PATH = HOME / ".grok" / "config.toml"
 GROK_CONFIG_REPO_PATH = REPO_ROOT / ".grok" / "config.toml"
 GROK_CONFIG_POLICY_PATH = REPO_ROOT / "config" / "grok-config.toml"
+GROK_LSP_POLICY_PATH = REPO_ROOT / "config" / "grok-lsp.json"
+GROK_LSP_HOME_PATH = HOME / ".grok" / "lsp.json"
 GROK_BINARY_PATH = HOME / ".grok" / "bin" / "grok"
 GROK_AGENTS_HOME_DIR = HOME / ".grok" / "agents"
 GROK_HOOKS_DIR = HOME / ".grok" / "hooks"
@@ -525,6 +527,20 @@ def sync_grok_plannotator_hooks(ctx: SyncContext, *, repo_root: Path | None = No
     sync_grok_plannotator(ctx)
 
 
+def sync_grok_lsp(ctx: SyncContext) -> None:
+    """Copy repo LSP policy to ~/.grok/lsp.json when bytes differ."""
+    if not GROK_LSP_POLICY_PATH.is_file():
+        return
+    source = GROK_LSP_POLICY_PATH.read_text(encoding="utf-8")
+    destination = GROK_LSP_HOME_PATH
+    if destination.exists() and destination.read_text(encoding="utf-8") == source:
+        return
+    ctx.note(f"write {destination}")
+    if ctx.apply:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(source, encoding="utf-8")
+
+
 def sync_grok_agents(ctx: SyncContext) -> None:
     if not AGENTS_DIR.is_dir():
         return
@@ -580,6 +596,7 @@ class Adapter(PlatformAdapter):
         rendered = render_grok_config(current, registry, repo_only=False, repo_root=get_repo_root(), policy=policy)
         assert_no_grok_config_drops(current, rendered, registry)
         ctx.write_text(GROK_CONFIG_PATH, rendered)
+        sync_grok_lsp(ctx)
         sync_grok_agents(ctx)
         if ctx.grok_plannotator_hooks:
             sync_grok_plannotator(ctx)

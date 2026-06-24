@@ -475,6 +475,7 @@
       "support_tier": "repo-present-validation-required",
       "repo_evidence": [
         "config/grok-config.toml",
+        "config/grok-lsp.json",
         "instructions/grok-global.md",
         ".grok/config.toml",
         "wagents/platforms/grok.py",

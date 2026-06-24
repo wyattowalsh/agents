@@ -28,6 +28,29 @@ source /path/to/agents/config/grok-env.sh
 
 Required exports: `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS`. Run `uv run wagents grok doctor --format json` to verify.
 
+This repo expects a **local** direnv file (`.envrc` is gitignored) with `source_env "${PWD}/config/grok-env.sh"`. Grok policy sets `[session] load_envrc = true` so that file loads when you work inside the clone. Without direnv, run `source config/grok-env.sh` manually.
+
+### LSP (global)
+
+Repo SSOT: `config/grok-lsp.json` — synced to `~/.grok/lsp.json` on home sync (all projects inherit unless a project overrides).
+
+| Server | Strategy | Install hint |
+|--------|----------|--------------|
+| typescript | `npx -y typescript-language-server` | `npm i -g typescript-language-server typescript` |
+| python | `npx -y pyright-langserver` | `npm i -g pyright` |
+| json / yaml / toml / bash | `npx -y` wrappers | Usually no global install needed |
+| markdown | `marksman server` (PATH) | `brew install marksman` |
+| rust | `rust-analyzer` (PATH) | `rustup component add rust-analyzer` |
+| go | `gopls` (PATH) | `go install golang.org/x/tools/gopls@latest` |
+
+Sync command:
+
+```bash
+uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets home
+```
+
+`wagents grok doctor` warns when `~/.grok/lsp.json` is missing or PATH-only binaries are absent; missing `npx` servers are resolved on first use.
+
 ### Cross-harness delegation
 
 Other harnesses (Codex, OpenCode) may dispatch task-graph nodes to Grok via `/grok-delegate` using native headless CLI only. Grok itself should not re-orchestrate nested graphs beyond platform subagent depth 1.

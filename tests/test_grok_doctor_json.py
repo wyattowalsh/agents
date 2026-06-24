@@ -7,7 +7,7 @@ import json
 from typer.testing import CliRunner
 
 from wagents.cli import app
-from wagents.grok_doctor import collect_grok_doctor_checks, grok_doctor_report
+from wagents.grok_doctor import grok_doctor_report
 
 runner = CliRunner()
 
@@ -73,7 +73,9 @@ def test_grok_doctor_json_cli(monkeypatch, tmp_path):
     assert result.exit_code == 0, result.output
     payload = json.loads(result.output)
     assert payload["ok"] is True
-    assert payload["summary"]["total"] == len(collect_grok_doctor_checks(home=tmp_path))
+    names = {check["name"] for check in payload["checks"]}
+    assert "grok-lsp-config" in names
+    assert payload["summary"]["total"] == len(payload["checks"])
 
 
 def test_grok_doctor_json_uppercase_format(monkeypatch, tmp_path):

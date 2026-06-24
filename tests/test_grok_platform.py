@@ -8,6 +8,7 @@ from scripts.sync_agent_stack import MCP_REGISTRY_PATH, load_json
 from wagents.platforms.base import SyncContext
 from wagents.platforms.grok import (
     GROK_CONFIG_POLICY_PATH,
+    GROK_LSP_POLICY_PATH,
     GROK_PLANNOTATOR_HOOKS_PATH,
     PLANNOTATOR_CORE_SKILLS,
     PLANNOTATOR_EXIT_PLAN_HOOK_HOME_NAME,
@@ -30,6 +31,7 @@ from wagents.platforms.grok import (
     render_preserved_grok_config,
     resolve_plannotator_binary,
     strip_registry_mcp_tables,
+    sync_grok_lsp,
     sync_grok_plannotator,
 )
 
@@ -341,3 +343,52 @@ def test_grok_plannotator_policy_template_exists_in_repo():
 def test_grok_plannotator_hooks_path_under_home_hooks():
     assert GROK_PLANNOTATOR_HOOKS_PATH.name == "plannotator.json"
     assert GROK_PLANNOTATOR_HOOKS_PATH.parent.name == "hooks"
+
+
+def test_grok_lsp_policy_json_valid():
+    assert GROK_LSP_POLICY_PATH.is_file(), "config/grok-lsp.json must be tracked in the repo"
+    import json
+
+    payload = json.loads(GROK_LSP_POLICY_PATH.read_text(encoding="utf-8"))
+    required = {"command", "extensionToLanguage", "startupTimeout"}
+    for key, server in payload.items():
+        assert required.issubset(server), key
+
+
+def test_grok_config_policy_includes_subagent_composer_pins():
+    if not GROK_CONFIG_POLICY_PATH.is_file():
+        pytest.skip("grok policy template missing")
+    text = GROK_CONFIG_POLICY_PATH.read_text(encoding="utf-8")
+    assert 'explore = "grok-composer-2.5-fast"' in text
+    assert 'plan = "grok-composer-2.5-fast"' in text
+    assert 'general-purpose = "grok-composer-2.5-fast"' in text
+    assert 'fork_secondary_model = "grok-composer-2.5-fast"' in text
+    assert "load_envrc = true" in text
+
+
+def test_sync_grok_lsp_copies_policy_to_home(tmp_path, monkeypatch):
+    policy = tmp_path / "grok-lsp.json"
+    policy.write_text('{"typescript":{"command":"npx"}}\n', encoding="utf-8")
+    destination = tmp_path / "home-lsp.json"
+    monkeypatch.setattr("wagents.platforms.grok.GROK_LSP_POLICY_PATH", policy)
+    monkeypatch.setattr("wagents.platforms.grok.GROK_LSP_HOME_PATH", destination)
+
+    ctx = SyncContext(apply=True)
+    sync_grok_lsp(ctx)
+
+    assert destination.exists()
+    assert destination.read_text(encoding="utf-8") == policy.read_text(encoding="utf-8")
+
+
+def test_sync_grok_lsp_idempotent(tmp_path, monkeypatch):
+    policy = tmp_path / "grok-lsp.json"
+    policy.write_text('{"go":{"command":"gopls"}}\n', encoding="utf-8")
+    destination = tmp_path / "home-lsp.json"
+    destination.write_text(policy.read_text(encoding="utf-8"), encoding="utf-8")
+    monkeypatch.setattr("wagents.platforms.grok.GROK_LSP_POLICY_PATH", policy)
+    monkeypatch.setattr("wagents.platforms.grok.GROK_LSP_HOME_PATH", destination)
+
+    ctx = SyncContext(apply=True)
+    sync_grok_lsp(ctx)
+
+    assert ctx.changes == []

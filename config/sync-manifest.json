@@ -356,6 +356,10 @@
 		{
 			"path": "${REPO_ROOT}/config/grok-env.sh",
 			"mode": "canonical"
+		},
+		{
+			"path": "${REPO_ROOT}/config/grok-lsp.json",
+			"mode": "canonical"
 		}
 	]
 }

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -14,6 +15,7 @@ from wagents.platforms.grok import (
     GROK_CONFIG_PATH,
     GROK_CONFIG_POLICY_PATH,
     GROK_CONFIG_REPO_PATH,
+    GROK_LSP_POLICY_PATH,
     GROK_MCP_BEGIN,
     GROK_PLANNOTATOR_HOOKS_PATH,
     GROK_POLICY_BEGIN,
@@ -24,6 +26,18 @@ from wagents.platforms.grok import (
 )
 
 GROK_ENV_VARS = ("GROK_WEB_FETCH", "GROK_MEMORY", "GROK_SUBAGENTS", "GROK_LSP_TOOLS")
+
+LSP_INSTALL_HINTS: dict[str, str] = {
+    "typescript": "npm i -g typescript-language-server typescript",
+    "python": "npm i -g pyright",
+    "json": "npm i -g vscode-langservers-extracted",
+    "yaml": "npm i -g yaml-language-server",
+    "toml": "npm i -g @taplo/cli",
+    "bash": "npm i -g bash-language-server",
+    "markdown": "brew install marksman",
+    "rust": "rustup component add rust-analyzer",
+    "go": "go install golang.org/x/tools/gopls@latest",
+}
 
 
 def _make_check(
@@ -36,6 +50,88 @@ def _make_check(
     if remediation:
         check["remediation"] = remediation
     return check
+
+
+def _load_lsp_config(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _lsp_executable_available(server: dict[str, Any]) -> tuple[bool, str]:
+    command = str(server.get("command", "")).strip()
+    if not command:
+        return False, "missing command"
+    if command == "npx":
+        if shutil.which("npx"):
+            return True, "npx"
+        return False, "npx not found"
+    if shutil.which(command):
+        return True, command
+    return False, f"{command} not found"
+
+
+def _collect_grok_lsp_checks(home: Path | None = None) -> list[dict[str, str]]:
+    home_dir = home or Path.home()
+    checks: list[dict[str, str]] = []
+    lsp_home = home_dir / ".grok" / "lsp.json"
+
+    if lsp_home.is_file():
+        checks.append(_make_check("grok-lsp-config", "ok", f"LSP config present at {lsp_home}"))
+    else:
+        checks.append(
+            _make_check(
+                "grok-lsp-config",
+                "warn",
+                f"LSP config missing at {lsp_home}",
+                "Run sync with --platforms grok --targets home",
+            )
+        )
+
+    config_path = lsp_home if lsp_home.is_file() else GROK_LSP_POLICY_PATH
+    lsp_config = _load_lsp_config(config_path)
+    missing: list[str] = []
+    for key, server in sorted(lsp_config.items()):
+        if not isinstance(server, dict):
+            continue
+        available, detail = _lsp_executable_available(server)
+        check_name = f"grok-lsp-{key}"
+        if available:
+            checks.append(_make_check(check_name, "ok", f"{key}: {detail} available"))
+        else:
+            missing.append(key)
+            checks.append(
+                _make_check(
+                    check_name,
+                    "warn",
+                    f"{key}: {detail}",
+                    LSP_INSTALL_HINTS.get(key, "Install the language server for this key"),
+                )
+            )
+
+    if lsp_config:
+        if missing:
+            checks.append(
+                _make_check(
+                    "grok-lsp-binaries",
+                    "warn",
+                    f"Missing LSP binaries: {', '.join(missing)}",
+                    "Install PATH-only servers or ensure npx is available",
+                )
+            )
+        else:
+            checks.append(
+                _make_check(
+                    "grok-lsp-binaries",
+                    "ok",
+                    f"All {len(lsp_config)} configured LSP servers have launch tooling",
+                )
+            )
+    return checks
 
 
 def collect_grok_doctor_checks(home: Path | None = None) -> list[dict[str, str]]:
@@ -134,6 +230,8 @@ def collect_grok_doctor_checks(home: Path | None = None) -> list[dict[str, str]]
                     "Source config/grok-env.sh in your shell",
                 )
             )
+
+    checks.extend(_collect_grok_lsp_checks(home=home))
 
     for skill_root in (home / ".grok" / "skills", home / ".claude" / "skills", REPO_ROOT / ".grok" / "skills"):
         count = len(list(skill_root.glob("*/SKILL.md"))) if skill_root.is_dir() else 0

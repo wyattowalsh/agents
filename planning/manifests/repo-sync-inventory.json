@@ -246,6 +246,19 @@
       "secret_handling": "path-only"
     },
     {
+      "path": "${REPO_ROOT}/config/grok-lsp.json",
+      "mode": "canonical",
+      "location_class": "repo",
+      "source_tier": "canonical-source",
+      "owner_change": "agents-c04-grok-harness",
+      "drift_policy": "canonical",
+      "validation_evidence": [
+        "uv run pytest tests/test_grok_platform.py -q",
+        "uv run pytest tests/test_sync_agent_stack.py -q -k grok"
+      ],
+      "secret_handling": "not-secret-bearing"
+    },
+    {
       "path": "${REPO_ROOT}/config/harness-surface-registry.json",
       "mode": "canonical",
       "location_class": "repo",

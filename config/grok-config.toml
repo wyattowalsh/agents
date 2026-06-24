@@ -9,6 +9,19 @@ web_search = "grok-4.20-multi-agent"
 [ui]
 yolo = true
 permission_mode = "always-approve"
+fork_secondary_model = "grok-composer-2.5-fast"
+
+[ui.notifications]
+method = "auto"
+condition = "unfocused"
+idle_threshold_secs = 3
+events = ["turn_complete", "approval_required"]
+sleep_prevention = true
+progress_bar = true
+
+[ui.notifications.title]
+enabled = true
+items = ["action-required", "spinner", "activity", "session-name", "grok"]
 
 [features]
 telemetry = false
@@ -18,6 +31,7 @@ codebase_indexing = true
 
 [session]
 auto_compact_threshold_percent = 95
+load_envrc = true
 
 [tools]
 respect_gitignore = false
@@ -34,9 +48,9 @@ explore = true
 plan = true
 
 [subagents.models]
-explore = "grok-build"
-plan = "grok-build"
-general-purpose = "grok-build"
+explore = "grok-composer-2.5-fast"
+plan = "grok-composer-2.5-fast"
+general-purpose = "grok-composer-2.5-fast"
 
 [memory]
 enabled = true
