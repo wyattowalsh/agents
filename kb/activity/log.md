@@ -7,7 +7,7 @@ aliases:
   - KB activity log
 kind: index
 status: active
-updated: 2026-06-23
+updated: 2026-06-24
 source_count: 1
 ---
 
@@ -207,3 +207,17 @@ source_count: 1
 - Follow-up:
   - Expand skill eval coverage for R3/R4 workflows.
   - Promote harness rollback fixtures from `planned` to executable.
+
+### [2026-06-24] OpenSpec archive hygiene for completed changes
+
+- Mode: archive + kb status sync (additive)
+- Summary: Archived two completed OpenSpec changes (tasks.md all [x], shipped on main) using `wagents openspec archive` (dry-run then --apply --yes). Updated KB wiki and this log minimally.
+  - `harden-skill-catalog-quality` → `openspec/changes/archive/2026-06-24-harden-skill-catalog-quality/`
+  - `add-grok-delegate-skill` → `openspec/changes/archive/2026-06-24-add-grok-delegate-skill/`
+- Pre-archive: `uv run wagents openspec validate` (passed, 58 items), `uv run wagents validate` (passed).
+- Post-archive: `uv run wagents openspec validate` (passed, 56 items), `uv run wagents validate` (passed). Archive command updated specs as side-effect (downstream-tooling, etc.).
+- `wiki`: noted archived changes in [[openspec-change-archive-status]].
+- `activity`: this entry (short hygiene batch record).
+- `canonical material`: archive moves performed by OpenSpec CLI (tracked in git); no manual file edits outside kb/.
+- Risks / rollback: KB edits are additive only. Archive dirs are the authoritative moved artifacts.
+- Follow-up: none (lint run post-edit per requirements).
