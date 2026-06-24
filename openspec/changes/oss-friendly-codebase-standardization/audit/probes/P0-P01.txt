@@ -1,6 +1,0 @@
-{
-  "ok": true,
-  "error_count": 0,
-  "errors": [],
-  "message": "All validations passed"
-}
