@@ -172,21 +172,35 @@ def _detect_e3_cases(evals: list[dict[str, Any]]) -> dict[str, list[str]]:
         txt = _collect_eval_text(e)
         iid = str(e.get("id", "") or "")
         pid = str(e.get("prompt", "") or "")[:40]
-        # Prefer id-based buckets first (negative/refusal/destructive are strong signals even if text mentions "explicit")
+        # id-based first; neg/ref override phrase matches
         if iid.startswith("negative-") or any(k in txt for k in _E3_NEGATIVE):
             buckets["negative"].append(iid or pid)
-        if iid.startswith(("refusal-", "destructive-")) or "refus" in iid or any(k in txt for k in _E3_REFUSAL):
+        if (
+            iid.startswith(("refusal-", "destructive-"))
+            or "refus" in iid
+            or any(k in txt for k in _E3_REFUSAL)
+        ):
             buckets["refusal"].append(iid or pid)
         if iid.startswith("implicit-") or any(k in txt for k in _E3_IMPLICIT):
             buckets["implicit"].append(iid or pid)
-        # Explicit only if id-prefixed or phrase and NOT already classified as negative/refusal style (avoid "need explicit" phrases in neg tests)
-        is_neg_ref = iid.startswith(("negative-", "refusal-", "destructive-")) or any(x in iid for x in ("negative", "refus", "destructive", "boundary"))
-        if (iid.startswith("explicit-") or iid == "explicit" or any(k in txt for k in _E3_EXPLICIT)) and not is_neg_ref:
+        # explicit only if not neg/ref style (avoid "need explicit" in neg)
+        is_neg_ref = (
+            iid.startswith(("negative-", "refusal-", "destructive-", "boundary-"))
+            or any(x in iid for x in ("negative", "refus", "destructive", "boundary"))
+        )
+        if (
+            (iid.startswith("explicit-") or iid == "explicit" or any(k in txt for k in _E3_EXPLICIT))
+            and not is_neg_ref
+        ):
             buckets["explicit"].append(iid or pid)
-        # Fallback implicit for non-/ prompts that look like natural activation (only if no negative/refusal id)
-        if not any(iid.startswith(p) for p in ("negative-", "refusal-", "destructive-", "boundary-", "explicit-")) and not (pid or "").strip().startswith("/") and any(k in txt for k in ("activate", "trigger", "natural")):
-            if iid not in buckets["implicit"]:
-                buckets["implicit"].append(iid or pid)
+        # fallback for natural non-/ if not neg/ref id
+        fb = (
+            not any(iid.startswith(p) for p in ("negative-", "refusal-", "destructive-", "boundary-", "explicit-"))
+            and not (pid or "").strip().startswith("/")
+            and any(k in txt for k in ("activate", "trigger", "natural"))
+        )
+        if fb and iid not in buckets["implicit"]:
+            buckets["implicit"].append(iid or pid)
     # Dedup preserve order
     for k in buckets:
         seen: set[str] = set()
@@ -222,15 +236,12 @@ def _detect_e4_signals(evals: list[dict[str, Any]]) -> list[str]:
     for e in evals or []:
         iid = str(e.get("id", "")).lower()
         txt = _collect_eval_text(e)
-        if "approval" in iid or "gate" in iid or "confirm" in iid:
-            if "approval-gate" not in signals:
-                signals.append("approval-gate")
-        if "boundary" in iid or "refusal" in iid:
-            if "boundary-handling" not in signals:
-                signals.append("boundary-handling")
-        if ("destructive" in txt or "delete" in txt) and "destructive" in iid:
-            if "destructive-refusal" not in signals:
-                signals.append("destructive-refusal")
+        if ("approval" in iid or "gate" in iid or "confirm" in iid) and "approval-gate" not in signals:
+            signals.append("approval-gate")
+        if ("boundary" in iid or "refusal" in iid) and "boundary-handling" not in signals:
+            signals.append("boundary-handling")
+        if ("destructive" in txt or "delete" in txt) and "destructive" in iid and "destructive-refusal" not in signals:
+            signals.append("destructive-refusal")
     return sorted(set(signals))
 
 
