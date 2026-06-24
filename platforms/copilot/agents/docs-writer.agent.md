@@ -1,5 +1,5 @@
 ---
-name: documenter
+name: docs-writer
 description: >
   Use when you need to generate or update documentation from code: READMEs, API references,
   architecture guides, inline docs, changelogs, onboarding guides, or OpenAPI specs. This

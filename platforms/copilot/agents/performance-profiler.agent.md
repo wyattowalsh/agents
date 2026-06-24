@@ -1,5 +1,5 @@
 ---
-name: perf-profiler
+name: performance-profiler
 description: >
   Use when you need to identify performance bottlenecks, optimize slow code, or validate
   performance improvements. This agent measures before optimizing — never guesses. Use when

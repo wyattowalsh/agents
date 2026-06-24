@@ -1,7 +1,21 @@
 ---
 title: "grok-delegate"
 description: "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "grok-delegate"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "grok-delegate"
+composed_by: "phase4-skill-compose"
+composed_at: "2026-06-24"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -12,15 +26,15 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
   description="Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops."
   installCommand={`npx skills add github:wyattowalsh/agents --skill grok-delegate -y -g --agent antigravity --agent claude-code --agent codex --agent crush --agent cursor --agent gemini-cli --agent github-copilot --agent grok --agent opencode`}
   usage="/grok-delegate"
-  badges={[{ text: "grok-delegate", variant: "note" }, { text: "874 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
+  badges={[{ text: "grok-delegate", variant: "note" }, { text: "864 words", variant: "default" }, { text: "MIT", variant: "success" }, { text: "v1.0.0", variant: "tip" }, { text: "Repo-owned", variant: "tip" }]}
 />
 
 {/* Quick Start is rendered by SkillPageHeader. */}
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/grok-delegate/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed phase4-skill-compose from `skills/grok-delegate/SKILL.md`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 ## What It Does
@@ -32,7 +46,7 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 | $ARGUMENTS | Action |
 | --- | --- |
 | *(empty)* | Show pre-flight, wave taxonomy, critical rules, and reference index |
-| `preflight` | Run `uv run wagents grok doctor --format json`; stop on `fail` checks |
+| `preflight` | Run `scripts/preflight.sh`; stop on `fail` checks |
 | `wave &lt;0\\|1\\|2&gt;` | Show command templates for scout / build / verify waves |
 | `tune` | Show session resume / delta prompt loop |
 | `leader` | Show leader pool lifecycle |
@@ -41,8 +55,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 ## Critical Rules
 
-1. **Native CLI only** — no `bin/gk`, MCP control server, or `wagents grok run`.
-2. **Pre-flight mandatory** — `uv run wagents grok doctor --format json` before fleet dispatch.
+1. **Native CLI only** — no `bin/gk`, MCP control server, or custom headless wrapper scripts.
+2. **Pre-flight mandatory** — run `scripts/preflight.sh` before fleet dispatch.
 3. **Parent owns the graph** — Grok depth is 1; parallelize siblings via parent bash, not nested Grok orchestration.
 4. **Never default `--always-approve`** for cross-harness delegation.
 5. **Always `--no-auto-update` and explicit `--cwd`** on automation paths.
@@ -70,8 +84,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Full SKILL.md</summary>
 
 ````yaml title="SKILL.md"
 ---
@@ -96,7 +110,7 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 | $ARGUMENTS | Action |
 | --- | --- |
 | *(empty)* | Show pre-flight, wave taxonomy, critical rules, and reference index |
-| `preflight` | Run `uv run wagents grok doctor --format json`; stop on `fail` checks |
+| `preflight` | Run `scripts/preflight.sh`; stop on `fail` checks |
 | `wave <0\|1\|2>` | Show command templates for scout / build / verify waves |
 | `tune` | Show session resume / delta prompt loop |
 | `leader` | Show leader pool lifecycle |
@@ -118,8 +132,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 ## Critical Rules
 
-1. **Native CLI only** — no `bin/gk`, MCP control server, or `wagents grok run`.
-2. **Pre-flight mandatory** — `uv run wagents grok doctor --format json` before fleet dispatch.
+1. **Native CLI only** — no `bin/gk`, MCP control server, or custom headless wrapper scripts.
+2. **Pre-flight mandatory** — run `scripts/preflight.sh` before fleet dispatch.
 3. **Parent owns the graph** — Grok depth is 1; parallelize siblings via parent bash, not nested Grok orchestration.
 4. **Never default `--always-approve`** for cross-harness delegation.
 5. **Always `--no-auto-update` and explicit `--cwd`** on automation paths.
@@ -135,8 +149,8 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 ## When NOT to use
 
 - Single-session work the parent can do directly.
-- Grok config/MCP sync — `/harness-master` or `wagents grok doctor`.
-- Skill installs — `wagents skills sync --dry-run`.
+- Grok config/MCP sync — `/harness-master` or `scripts/preflight.sh`.
+- Skill installs — Skills CLI dry-run preview only (no live `--apply` unless maintainer requests).
 - Nested Grok-in-Grok graphs beyond platform depth 1.
 
 ## Pre-flight
@@ -144,7 +158,7 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 ### Doctor JSON
 
 ```bash
-uv run wagents grok doctor --format json
+bash skills/grok-delegate/scripts/preflight.sh
 ```
 
 Stop when `ok` is false or `grok-binary` fails.

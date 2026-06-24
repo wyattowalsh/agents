@@ -1,7 +1,21 @@
 ---
 title: "review"
 description: "Use for session, scoped, PR, range, full audit, simplification, and source/provenance reviews with evidence-first findings. NOT for feature implementation or benchmarking."
+page_kind: "skill"
+source_kind: "custom"
+asset_id: "review"
+composed: true
+docs_density: standard
+license: "MIT"
+trust_tier: "repo"
+metadata.author: "wyattowalsh"
+metadata.version: "1.0.0"
+research_slug: "review"
+composed_by: "phase4-skill-compose"
+composed_at: "2026-06-24"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -19,8 +33,8 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 Works with [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [OpenCode](https://github.com/anomalyco/opencode), and other [agentskills.io](https://agentskills.io)-compatible agents.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from the repository file `skills/review/SKILL.md` by `wagents docs generate`.
+<Aside type="note" title="Repo skill (hand-maintained)">
+Composed phase4-skill-compose from `skills/review/SKILL.md`. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
 </Aside>
 
 <Aside type="note" title="Research context (evidence, not authority)">
@@ -181,8 +195,8 @@ Use `/review` as the canonical first-party review entrypoint. It covers code rev
   <LinkCard title="tech-debt-analyzer" href="/skills/catalog/custom/tech-debt-analyzer/" description="Systematic tech debt inventory with complexity analysis, dead code detection, and remediation planning. Track debt over time." />
 </CardGrid>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Full SKILL.md</summary>
 
 ````yaml title="SKILL.md"
 ---

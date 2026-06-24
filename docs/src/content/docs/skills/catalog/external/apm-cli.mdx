@@ -1,7 +1,21 @@
 ---
 title: "apm-cli"
 description: "Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
+page_kind: "skill"
+source_kind: "curated-external"
+asset_id: "apm-cli"
+composed: true
+docs_density: standard
+trust_tier: "curated-trust-gated"
+curated_status: "install-now-after-trust-gate"
+install_command: "pip install apm-cli"
+target_agents: ["claude-code", "codex", "cursor", "gemini-cli", "github-copilot", "opencode"]
+research_slug: "apm-cli"
+composed_by: "phase4-skill-compose"
+composed_at: "2026-06-24"
 ---
+
+{/* HAND-MAINTAINED */}
 
 import { Badge, Tabs, TabItem, Card, CardGrid, LinkCard, Aside, Steps } from '@astrojs/starlight/components';
 
@@ -19,8 +33,8 @@ import SkillPageHeader from '../../../../../components/SkillPageHeader.astro';
 
 Standalone **CLI tool** for supported agent harnesses (see Harness Coverage). Not an [agentskills.io](https://agentskills.io) slash skill.
 
-<Aside type="note" title="Source & provenance">
-This page is generated from authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `docs/public/generated-registries/skills-catalog-index.json` by `wagents docs generate`.
+<Aside type="note" title="Curated external (hand-maintained)">
+Composed phase4-skill-compose using authoring SSOT (`docs/src/authoring/skills/apm-cli.mdx`) + research. Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel). Run `/review source` before using in production or promoting.
 </Aside>
 
 ## Harness Coverage
@@ -61,10 +75,10 @@ Entry maintained in authoring SSOT `docs/src/authoring/skills/apm-cli.mdx` and `
   </TabItem>
 </Tabs>
 
-<details>
-<summary>View Full SKILL.md</summary>
+<details class="source-disclosure">
+<summary>Curated catalog entry</summary>
 
-````yaml title="SKILL.md"
+````mdx title="docs/src/authoring/skills/apm-cli.mdx (full SSOT excerpt)"
 ---
 name: "apm-cli"
 description: "Microsoft Agent Package Manager for remote agent packages—install, sync, audit, harness deploy. NOT observability APM. Repo bundle uses wagents/Skills CLI."
@@ -110,7 +124,6 @@ apm update
 ```
 
 ````
-
 </details>
 
 ## Resources
