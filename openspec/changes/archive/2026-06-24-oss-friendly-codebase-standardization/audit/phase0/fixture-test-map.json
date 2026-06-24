@@ -1,0 +1,45 @@
+{
+  "test_sync_agent_stack.py": {
+    "tests": 76,
+    "harnesses": [
+      "claude-code",
+      "codex",
+      "opencode",
+      "grok-build",
+      "gemini-cli",
+      "cursor-editor",
+      "github-copilot-cli",
+      "vscode"
+    ]
+  },
+  "test_grok_platform.py": {
+    "tests": 18,
+    "harnesses": [
+      "grok-build"
+    ]
+  },
+  "test_distribution_metadata.py": {
+    "tests": 26,
+    "harnesses": [
+      "all-registry"
+    ]
+  },
+  "test_installed_inventory.py": {
+    "tests": 10,
+    "harnesses": [
+      "skills-discovery"
+    ]
+  },
+  "test_opencode_sessions.py": {
+    "tests": 6,
+    "harnesses": [
+      "opencode"
+    ]
+  },
+  "test_cli_integration.py": {
+    "tests": 12,
+    "harnesses": [
+      "cli"
+    ]
+  }
+}
