@@ -931,7 +931,7 @@ def render_skill_page(node: CatalogNode, edges: list[CatalogEdge], all_nodes: li
     # Agents show system prompts inline (read-to-understand artifacts). This is intentional.
     if not is_stub:
         outer_fence = safe_outer_fence(raw_content)
-        parts.append("<details>")
+        parts.append('<details class="source-disclosure">')
         parts.append("<summary>View Full SKILL.md</summary>")
         parts.append("")
         parts.append(f'{outer_fence}yaml title="SKILL.md"')
