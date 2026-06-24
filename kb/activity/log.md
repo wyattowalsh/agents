@@ -208,6 +208,14 @@ source_count: 1
   - Expand skill eval coverage for R3/R4 workflows.
   - Promote harness rollback fixtures from `planned` to executable.
 
+## 2026-06-24 — Eval coverage, rollback fixtures, OpenSpec archive (subagent batch)
+
+- `raw`: unchanged.
+- `wiki`: refreshed [[skill-catalog-risk-and-eval-coverage]], [[harness-fixture-gaps]], [[known-risks-and-open-gaps]] for 56/56 eval manifests, rollback fixture tests, and archived OpenSpec changes.
+- `canonical material`: repo commits `13d90e66` (27 eval manifests), `4415258` (rollback fixtures), `8172c4f` (OpenSpec archives), `903489f9` (prior KB archive note).
+- `provenance`: counts from eval inventory + harness-fixture-support.json + openspec validate output.
+- Follow-up: live E4 eval runs for highest-risk skills; promote plan-only harness fixtures.
+
 ### [2026-06-24] OpenSpec archive hygiene for completed changes
 
 - Mode: archive + kb status sync (additive)

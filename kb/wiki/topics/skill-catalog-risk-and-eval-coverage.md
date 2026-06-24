@@ -9,8 +9,8 @@ aliases:
   - Skill risk coverage
   - Eval coverage matrix
 kind: concept
-status: partial
-updated: 2026-06-23
+status: active
+updated: 2026-06-24
 source_count: 3
 ---
 
@@ -39,9 +39,9 @@ This page defines a practical risk-adjusted way to discuss skill eval coverage. 
 
 Eval presence should be interpreted relative to skill risk. A low-risk prompt-only skill can have lighter coverage, but browser, Gmail, filesystem cleanup, external-skill audit, security, and research workflows should target stronger behavior and boundary coverage.
 
-**2026-06-23 inventory:** 56 skills under `skills/`, 29 with canonical `evals/evals.json` (~52% manifest presence). The portable hook registry defines 22 hook entries as the parallel runtime control plane. `wagents eval list`, `validate`, and `coverage` report manifest shape and counts; they do not grade risk-adjusted adequacy across all skills.
+**2026-06-24 inventory:** 56 skills under `skills/`, all 56 with canonical `evals/evals.json` (100% manifest presence; commit `13d90e66`). The portable hook registry defines 22 hook entries as the parallel runtime control plane. `wagents eval list`, `validate`, and `coverage` report manifest shape and counts; they do not grade risk-adjusted adequacy across all skills.
 
-Skills with eval manifests today skew toward conventions, orchestration, governance, and docs-adjacent workflows. Many integration-heavy skills (browser MCP, Gmail, draw-thing, harness tuning, curated external install flows) remain E0 or lack E3/E4 boundary cases — treat as open gaps, not silent approval.
+The 2026-06-24 batch added E3/E4-oriented manifests for previously uncovered high-risk skills (email-whiz, chrome-devtools family, mcp-creator, opencode-ensemble, openspec-workflow, security-scanner, infrastructure-coder, devops-engineer, reasoning-router) and key convention skills. Treat manifest presence as baseline regression coverage, not proof every skill meets full E4 boundary depth in live runs.
 
 The current CLI can report eval coverage and validate manifest shape. It does not by itself grade risk-adjusted adequacy across all skills, so the KB uses this page to preserve that distinction for future authoring and audit work.
 

@@ -8,7 +8,7 @@ aliases:
   - Fixture gaps
 kind: concept
 status: partial
-updated: 2026-06-23
+updated: 2026-06-24
 source_count: 4
 ---
 
@@ -22,12 +22,11 @@ This page records what should not be over-claimed about harness support and wher
 
 The repo supports many harnesses, but support tiers and fixture coverage differ. `planning/manifests/harness-fixture-support.json` marks many surfaces as fixture-plan-only or docs-ledger-required, so the KB should not imply every harness projection is fully validated end to end.
 
-**2026-06-23 snapshot:**
-- Platform adapters under `wagents/platforms/` (cursor, codex, grok, opencode, copilot, gemini, vscode) coexist with the legacy `scripts/sync_agent_stack.py` monolith; both paths must be considered when claiming sync coverage.
-- Rollback fixtures in the harness fixture manifest remain mostly `planned`, not executable proof.
-- Docs compose manifest reports 98.2% composed (381/388); five missing pages are Cursor hooks present in `config/hook-registry.json` but without composed MDX.
-- Codex plugin manifest paths (`.codex-plugin/plugin.json`, `.agents/plugins/marketplace.json`) are referenced in registry/tests but missing on disk — a publication/fixture gap distinct from portable agent files under `agents/`.
-- CI enforces `wagents docs compose --check-composed --min-pct 100` in the docs job; local KB work did not rerun that gate.
+**2026-06-24 snapshot:**
+- Platform adapters under `wagents/platforms/` coexist with `scripts/sync_agent_stack.py`; both paths matter for sync claims.
+- Executable rollback tests now live in `tests/test_harness_rollback_fixtures.py` (`.bak` backup/restore via `ensure_symlink`, config-drop negative). `planning/manifests/harness-fixture-support.json` marks `rollback_coverage: present` for claude-code, codex, cursor-editor, grok-build, github-copilot-cli, and opencode.
+- Docs compose is 100% (397/397); Cursor hook compose gap closed in Phase 4.
+- Codex plugin `agents` path restored; remaining fixture gaps are plan-only harnesses (claude-desktop, chatgpt, etc.).
 
 Future harness work should name the exact surface being changed, the registry row or sync manifest row backing it, the fixture/test that verifies it, and the rollback path for any live config mutation.
 

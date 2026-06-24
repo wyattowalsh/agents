@@ -27,10 +27,10 @@ source_count: 22
 | External standards are context-only | Observed | External docs are pointer-summary source notes. | Keep [[external-primary-source-map]] contextual. |
 | OpenCode generated/canonical tension | Gap | `opencode.json` is repo-managed while some sync surfaces are generated or merged. | Use [[canonical-generated-surfaces]] and [[opencode-runtime-policy]] before edits. |
 | Sync rollback completeness | Gap | Config-drop and merge preservation exist; full merged-home rollback not proven. | Use [[sync-transaction-safety]] and [[wagents-platform-adapters]]. |
-| Harness fixture coverage | Gap | Rollback fixtures mostly `planned`; Codex plugin paths missing; compose hook gap. | Use [[harness-fixture-gaps]] before raising support tiers. |
+| Harness fixture coverage | Partial | Executable rollback tests added (`tests/test_harness_rollback_fixtures.py`); several harnesses now `rollback_coverage: present`. Fixture promotion still incomplete for plan-only harnesses. | Use [[harness-fixture-gaps]] before raising support tiers. |
 | Planning manifest freshness | Partial | Planning manifests are snapshots, not live config proof. | Re-run targeted tests before promotion claims. |
 | OpenSpec archive state can drift | Partial | Portable `openspec archive` wired; active/archive counts still need periodic hygiene. | Use [[openspec-change-archive-status]] before bulk archives. |
-| Risk-adjusted skill eval adequacy | Gap | 29/56 skills have `evals/evals.json`; many R3/R4 workflows lack E3/E4 coverage. | Use [[skill-catalog-risk-and-eval-coverage]]. |
+| Risk-adjusted skill eval adequacy | Partial | 56/56 skills have `evals/evals.json`; live E4 boundary depth not graded by CLI alone. | Use [[skill-catalog-risk-and-eval-coverage]] for manifest vs adequacy distinction. |
 | MCPHub topology changes | Partial | Registry, tunnel, and smart-routing surfaces documented in KB but not live-verified here. | Use [[mcphub-control-plane]] before topology edits. |
 
 ## Phase 4 Fix Candidates (repo, not KB)
