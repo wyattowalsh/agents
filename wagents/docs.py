@@ -83,6 +83,33 @@ def _has_mcp_overview_page() -> bool:
     return (CONTENT_DIR / "mcp" / "index.mdx").exists()
 
 
+def _mcp_overview_badge_stale_reason() -> str | None:
+    """Return remediation when hand-maintained MCP overview badge disagrees with mcp.json."""
+    mcp_index = CONTENT_DIR / "mcp" / "index.mdx"
+    if not mcp_index.exists():
+        return None
+    text = mcp_index.read_text(encoding="utf-8")
+    if "HAND-MAINTAINED" not in text:
+        return None
+    count = _count_mcp_servers_from_config()
+    if count is None:
+        return None
+    match = re.search(r'<Badge text="(\d+) configured servers"', text)
+    expected_badge = f'<Badge text="{count} configured servers"'
+    if not match:
+        return (
+            "docs/src/content/docs/mcp/index.mdx MCP badge is missing or malformed; "
+            f'update hand-maintained badge to `{expected_badge} ...`'
+        )
+    badge_count = int(match.group(1))
+    if badge_count != count:
+        return (
+            f"docs/src/content/docs/mcp/index.mdx MCP badge shows {badge_count} servers but "
+            f"mcp.json defines {count}; update the hand-maintained badge"
+        )
+    return None
+
+
 def _has_repo_agents() -> bool:
     """Whether the repository currently contains any bundled agent definitions."""
     return any((ROOT / "agents").glob("*.md"))
@@ -309,6 +336,12 @@ def write_index_page(nodes: list, external_entries: list[ExternalSkillEntry] | N
         ' description="Commands for scaffolding, validation, packaging,'
         ' installation, and docs generation workflows." />'
     )
+    if (CONTENT_DIR / "harness-support.mdx").exists():
+        parts.append(
+            '  <LinkCard title="Harness Support" href="/harness-support/"'
+            ' description="Fixture-backed support matrix for repo-managed harness surfaces,'
+            ' sync commands, and validation gates." />'
+        )
     parts.append(
         '  <LinkCard title="Create Your Own" href="/skills/catalog/custom/skill-creator/"'
         ' description="Build, improve, and audit skills with skill-creator." />'
@@ -1476,15 +1509,17 @@ def write_catalog_index(nodes: list) -> None:
         f'  <LinkCard title="Custom Skills ({custom_count})" href="/skills/catalog/custom/" '
         'description="Repo-owned skills from ./skills/ with install commands and convention-skill context." />',
         f'  <LinkCard title="External Skills ({external_count})" href="/skills/catalog/external/" '
-        'description="Curated third-party skills from config/external-skills.md and optional local harness '
-        'inventory." />',
+        'description="Curated third-party skills from authoring MDX plus optional local harness inventory." />',
         '  <LinkCard title="Install Scripts" href="/skills/install/" '
         'description="Copyable install commands for custom and external skills." />',
+        '  <LinkCard title="Harness Support" href="/harness-support/" '
+        'description="Support tiers, fixture status, and validation commands for managed harness surfaces." />',
         "</CardGrid>",
         "",
         '<Aside type="note" title="Generation modes">',
         "Public docs default to repo-owned custom skills plus curated external catalog entries "
-        "(`wagents docs generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows.",
+        "(`wagents docs generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows. "
+        "See [Harness Support](/harness-support/) for per-harness validation and sync coverage.",
         "</Aside>",
         "",
     ]
@@ -1657,7 +1692,8 @@ def write_catalog_external_index(nodes: list) -> None:
         "",
         '<Aside type="note" title="Trust and provenance">',
         "Audit third-party skills before install. Use [review source](/skills/catalog/custom/review/) "
-        "and the maintainer notes on each row.",
+        "and the maintainer notes on each row. For harness install/sync policy, see "
+        "[Harness Support](/harness-support/).",
         "</Aside>",
         "",
         '<div class="stats-bar">',
@@ -2065,8 +2101,8 @@ def regenerate_sidebar_and_indexes(*, include_installed: bool = False) -> None:
     if mcps:
         write_mcp_index(mcps)
     write_site_data(nodes, external_entries)
-    write_index_page(nodes, external_entries)
     write_harness_support_page()
+    write_index_page(nodes, external_entries)
 
 
 # ---------------------------------------------------------------------------
@@ -2156,6 +2192,10 @@ def _docs_generate_stale_reasons(*, include_drafts: bool, include_installed: boo
     catalog_reason = catalog_index_stale_reason()
     if catalog_reason:
         reasons.append(catalog_reason)
+
+    mcp_badge_reason = _mcp_overview_badge_stale_reason()
+    if mcp_badge_reason:
+        reasons.append(mcp_badge_reason)
 
     nodes = collect_all_doc_nodes(include_installed=include_installed, include_drafts=include_drafts)
     external_entries = read_external_skill_entries()
@@ -2307,12 +2347,12 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
         typer.echo("  Generated mcp/index.mdx")
 
     write_site_data(nodes, external_entries)
+    write_harness_support_page()
+    typer.echo("  Generated harness-support.mdx")
     write_index_page(nodes, external_entries)
     typer.echo("  Generated index.mdx")
     write_cli_page()
     typer.echo("  Generated cli.mdx")
-    write_harness_support_page()
-    typer.echo("  Generated harness-support.mdx")
 
     write_skill_research_pages(nodes)
 

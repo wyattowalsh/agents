@@ -25339,7 +25339,7 @@
       "author": "",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.",
+      "description": "Deep multi-source research with reviewable plans, source-support auditing, and confidence scoring. Use for technical, academic, market, fact-checking investigation. NOT for code review or simple Q&A.",
       "displaySource": "repo",
       "executableSurface": "",
       "fileAccess": "",
@@ -25356,7 +25356,7 @@
         "resourceLinks": [],
         "scripts": [],
         "templates": [],
-        "wordCount": 3434
+        "wordCount": 4116
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -28813,7 +28813,7 @@
       "author": "",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.",
+      "description": "Deep multi-source research with reviewable plans, source-support auditing, and confidence scoring. Use for technical, academic, market, fact-checking investigation. NOT for code review or simple Q&A.",
       "displaySource": "repo",
       "executableSurface": "",
       "fileAccess": "",
@@ -28830,7 +28830,7 @@
         "resourceLinks": [],
         "scripts": [],
         "templates": [],
-        "wordCount": 3434
+        "wordCount": 4116
       },
       "license": "MIT",
       "licenseStatus": "",

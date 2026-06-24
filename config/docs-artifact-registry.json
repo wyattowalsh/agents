@@ -32,14 +32,77 @@
       "validation": "uv run wagents docs generate --no-installed --check"
     },
     {
+      "path": "docs/src/generated-visual-assets.css",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/src/generated-skill-research-index.mjs",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/public/generated-skill-indexes/install-scripts.json",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/public/generated-registries/skills-catalog-index.json",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents catalog index --check"
+    },
+    {
       "path": "docs/src/content/docs/skills/",
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
-      "validation": "uv run wagents docs generate"
+      "validation": "uv run wagents docs generate --no-installed --check"
     },
     {
-      "path": "docs/public/generated-registries/skills-catalog-index.json",
+      "path": "docs/src/content/docs/agents/",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/src/content/docs/mcp/",
+      "mode": "mixed",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": false,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/src/skill-research/",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/src/content/docs/harness-support.mdx",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/src/content/docs/cli.mdx",
+      "mode": "generated",
+      "owner_change": "agents-c08-docs-instructions",
+      "must_not_hand_edit": true,
+      "validation": "uv run wagents docs generate --no-installed --check"
+    },
+    {
+      "path": "docs/src/content/docs/index.mdx",
       "mode": "generated",
       "owner_change": "agents-c08-docs-instructions",
       "must_not_hand_edit": true,
@@ -51,6 +114,8 @@
     "Generated docs must label blind spots and experimental support explicitly.",
     "Install commands must be generated only from supported adapter records.",
     "External repositories must not appear as promoted capabilities until intake gates pass.",
-    "Skill catalog detail URLs must use grouped paths under skills/catalog/custom/ or skills/catalog/external/; do not document flat skills/catalog/<id>/, /skills/, or /skills/all/ hubs."
+    "Skill catalog detail URLs must use grouped paths under skills/catalog/custom/ or skills/catalog/external/; do not document flat skills/catalog/<id>/, /skills/, or /skills/all/ hubs.",
+    "Skill research manifest authority lives in wagents/skill_research.py MANIFEST_PATH; regenerate via wagents docs generate, never hand-edit generated-skill-research-index.mjs.",
+    "Hand-maintained MCP overview badges must match mcp.json server count; docs generate --check enforces parity."
   ]
 }

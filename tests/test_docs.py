@@ -1,11 +1,13 @@
 """Tests for wagents.docs — index pages, sidebar, and docs subcommands."""
 
 import json
+from pathlib import Path
 
 from wagents.catalog import CatalogNode
 from wagents.docs import (
     CATALOG_BROWSER_THRESHOLD,
     _docs_generate_stale_reasons,
+    _mcp_overview_badge_stale_reason,
     docs_generate,
     write_agents_index,
     write_catalog_custom_index,
@@ -18,6 +20,8 @@ from wagents.docs import (
     write_sidebar,
     write_skill_install_scripts_page,
 )
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def _make_node(kind, id_suffix="test", **overrides):
@@ -44,6 +48,7 @@ class TestWriteIndexPage:
     def test_creates_index_file(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
         content_dir.mkdir(parents=True, exist_ok=True)
+        (content_dir / "harness-support.mdx").write_text("---\ntitle: Harness Support\n---\n")
         # Use featured skill IDs so the curated section renders
         nodes = [
             _make_node("skill", id="wargame"),
@@ -69,6 +74,7 @@ class TestWriteIndexPage:
         assert "catalogMeshArt" not in text
         assert "## Popular Starting Points" not in text
         assert 'title="Start Here"' in text
+        assert 'title="Harness Support"' in text
         assert "npx skills add github:wyattowalsh/agents --all -y -g" in text
         assert "OpenCode" in text
         assert "Run Spec Workflows" in text
@@ -172,6 +178,8 @@ class TestWriteCatalogIndexes:
         assert "Skill Catalog" in text
         assert "/skills/catalog/custom/" in text
         assert "/skills/catalog/external/" in text
+        assert "/harness-support/" in text
+        assert "authoring MDX" in text
 
     def test_creates_custom_index(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -345,6 +353,18 @@ class TestDocsGenerate:
         assert calls["write_json"] >= 1
         # also the mdx catalog index still emitted
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "index.mdx").exists()
+
+    def test_hand_maintained_research_page_embeds_current_skill_source(self):
+        skill_source = (REPO_ROOT / "skills" / "research" / "SKILL.md").read_text(encoding="utf-8").strip()
+        page = (
+            REPO_ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "research.mdx"
+        ).read_text(encoding="utf-8")
+        marker = '````yaml title="SKILL.md"\n'
+        start = page.index(marker) + len(marker)
+        end = page.index("\n````", start)
+
+        assert page.count("{/* HAND-MAINTAINED */}") == 1
+        assert page[start:end].strip() == skill_source
 
 
 # ---------------------------------------------------------------------------
@@ -677,3 +697,30 @@ def test_docs_generate_check_does_not_rewrite_research_manifest(tmp_repo, monkey
 
     assert _docs_generate_stale_reasons(include_drafts=False, include_installed=False) == []
     assert manifest.read_text(encoding="utf-8") == "research"
+
+
+def test_mcp_overview_badge_stale_reason_detects_drift(tmp_repo):
+    content_dir = tmp_repo / "docs" / "src" / "content" / "docs" / "mcp"
+    content_dir.mkdir(parents=True, exist_ok=True)
+    (content_dir / "index.mdx").write_text(
+        '---\ntitle: MCP\n---\n{/* HAND-MAINTAINED */}\n<Badge text="9 configured servers" />\n',
+        encoding="utf-8",
+    )
+    (tmp_repo / "mcp.json").write_text('{"mcpServers": {"a": {}, "b": {}, "c": {}}}', encoding="utf-8")
+
+    reason = _mcp_overview_badge_stale_reason()
+    assert reason is not None
+    assert "shows 9 servers" in reason
+    assert "defines 3" in reason
+
+
+def test_mcp_overview_badge_stale_reason_passes_when_aligned(tmp_repo):
+    content_dir = tmp_repo / "docs" / "src" / "content" / "docs" / "mcp"
+    content_dir.mkdir(parents=True, exist_ok=True)
+    (content_dir / "index.mdx").write_text(
+        '---\ntitle: MCP\n---\n{/* HAND-MAINTAINED */}\n<Badge text="2 configured servers" />\n',
+        encoding="utf-8",
+    )
+    (tmp_repo / "mcp.json").write_text('{"mcpServers": {"a": {}, "b": {}}}', encoding="utf-8")
+
+    assert _mcp_overview_badge_stale_reason() is None

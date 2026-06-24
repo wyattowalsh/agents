@@ -15,10 +15,11 @@ Browse repo-owned skills and curated external skills. Detail pages live under `/
 
 <CardGrid>
   <LinkCard title="Custom Skills (56)" href="/skills/catalog/custom/" description="Repo-owned skills from ./skills/ with install commands and convention-skill context." />
-  <LinkCard title="External Skills (307)" href="/skills/catalog/external/" description="Curated third-party skills from config/external-skills.md and optional local harness inventory." />
+  <LinkCard title="External Skills (307)" href="/skills/catalog/external/" description="Curated third-party skills from authoring MDX plus optional local harness inventory." />
   <LinkCard title="Install Scripts" href="/skills/install/" description="Copyable install commands for custom and external skills." />
+  <LinkCard title="Harness Support" href="/harness-support/" description="Support tiers, fixture status, and validation commands for managed harness surfaces." />
 </CardGrid>
 
 <Aside type="note" title="Generation modes">
-Public docs default to repo-owned custom skills plus curated external catalog entries (`wagents docs generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows.
+Public docs default to repo-owned custom skills plus curated external catalog entries (`wagents docs generate --no-installed`). Use `--include-installed` locally to add harness-discovered rows. See [Harness Support](/harness-support/) for per-harness validation and sync coverage.
 </Aside>

@@ -29979,7 +29979,7 @@ const skillIndexes = {
       "author": "wyattowalsh",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.",
+      "description": "Deep multi-source research with reviewable plans, source-support auditing, and confidence scoring. Use for technical, academic, market, fact-checking investigation. NOT for code review or simple Q&A.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -29996,9 +29996,10 @@ const skillIndexes = {
         ],
         "headings": [
           "Deep Research",
-          "Vocabulary",
+          "Canonical Vocabulary",
           "Dispatch",
           "Auto-Detection Heuristic",
+          "Plan Gate",
           "Gallery (Empty Arguments)",
           "Skill Awareness",
           "Complexity Classification",
@@ -30008,7 +30009,7 @@ const skillIndexes = {
           "Wave 1: Broad Sweep (parallel)",
           "Wave 1.5: Perspective Expansion (Deep/Exhaustive only)",
           "Wave 2: Deep Dive (parallel, targeted)",
-          "Wave 3: Cross-Validation (parallel)",
+          "Wave 3: Cross-Validation and Source-Support Audit (parallel)",
           "Wave 4: Synthesis (always inline, lead only)",
           "Confidence Scoring",
           "Evidence Chain Structure",
@@ -30017,8 +30018,7 @@ const skillIndexes = {
           "Bias Detection",
           "State Management",
           "In-Session Commands (Deep/Exhaustive)",
-          "Reference File Index",
-          "Validation Contract"
+          "Reference File Index"
         ],
         "references": [
           "references/bias-detection.md",
@@ -30047,7 +30047,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 3424
+        "wordCount": 4106
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -35961,7 +35961,7 @@ const skillIndexes = {
       "author": "wyattowalsh",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.",
+      "description": "Deep multi-source research with reviewable plans, source-support auditing, and confidence scoring. Use for technical, academic, market, fact-checking investigation. NOT for code review or simple Q&A.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -35978,9 +35978,10 @@ const skillIndexes = {
         ],
         "headings": [
           "Deep Research",
-          "Vocabulary",
+          "Canonical Vocabulary",
           "Dispatch",
           "Auto-Detection Heuristic",
+          "Plan Gate",
           "Gallery (Empty Arguments)",
           "Skill Awareness",
           "Complexity Classification",
@@ -35990,7 +35991,7 @@ const skillIndexes = {
           "Wave 1: Broad Sweep (parallel)",
           "Wave 1.5: Perspective Expansion (Deep/Exhaustive only)",
           "Wave 2: Deep Dive (parallel, targeted)",
-          "Wave 3: Cross-Validation (parallel)",
+          "Wave 3: Cross-Validation and Source-Support Audit (parallel)",
           "Wave 4: Synthesis (always inline, lead only)",
           "Confidence Scoring",
           "Evidence Chain Structure",
@@ -35999,8 +36000,7 @@ const skillIndexes = {
           "Bias Detection",
           "State Management",
           "In-Session Commands (Deep/Exhaustive)",
-          "Reference File Index",
-          "Validation Contract"
+          "Reference File Index"
         ],
         "references": [
           "references/bias-detection.md",
@@ -36029,7 +36029,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 3424
+        "wordCount": 4106
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -87151,7 +87151,7 @@ const skillIndexes = {
       "author": "wyattowalsh",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Deep multi-source research with confidence scoring. Auto-classifies complexity. Use for technical investigation, fact-checking. NOT for code review or simple Q&A.",
+      "description": "Deep multi-source research with reviewable plans, source-support auditing, and confidence scoring. Use for technical, academic, market, fact-checking investigation. NOT for code review or simple Q&A.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -87168,9 +87168,10 @@ const skillIndexes = {
         ],
         "headings": [
           "Deep Research",
-          "Vocabulary",
+          "Canonical Vocabulary",
           "Dispatch",
           "Auto-Detection Heuristic",
+          "Plan Gate",
           "Gallery (Empty Arguments)",
           "Skill Awareness",
           "Complexity Classification",
@@ -87180,7 +87181,7 @@ const skillIndexes = {
           "Wave 1: Broad Sweep (parallel)",
           "Wave 1.5: Perspective Expansion (Deep/Exhaustive only)",
           "Wave 2: Deep Dive (parallel, targeted)",
-          "Wave 3: Cross-Validation (parallel)",
+          "Wave 3: Cross-Validation and Source-Support Audit (parallel)",
           "Wave 4: Synthesis (always inline, lead only)",
           "Confidence Scoring",
           "Evidence Chain Structure",
@@ -87189,8 +87190,7 @@ const skillIndexes = {
           "Bias Detection",
           "State Management",
           "In-Session Commands (Deep/Exhaustive)",
-          "Reference File Index",
-          "Validation Contract"
+          "Reference File Index"
         ],
         "references": [
           "references/bias-detection.md",
@@ -87219,7 +87219,7 @@ const skillIndexes = {
         "templates": [
           "templates/dashboard.html"
         ],
-        "wordCount": 3424
+        "wordCount": 4106
       },
       "license": "MIT",
       "licenseStatus": "",

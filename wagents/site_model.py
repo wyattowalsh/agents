@@ -21,6 +21,12 @@ REPO_SOURCE = "github:wyattowalsh/agents"
 LOCAL_INSTALLED_SOURCE_LABEL = "local installed inventory"
 
 
+def _as_str_list(value: object) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(item) for item in value]
+
+
 def use_command_for_catalog_row(install_command: str, name: str) -> str:
     """Slash skill vs CLI tool invocation label for catalog indexes."""
     cmd = (install_command or "").strip().lower()
@@ -674,9 +680,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         fm.get("_skills_installed_agents") if isinstance(fm.get("_skills_installed_agents"), list) else []
     )
     target_agents = (
-        list(SUPPORTED_AGENT_IDS)
-        if source_type == "custom"
-        else list(fm.get("_skills_target_agents") if isinstance(fm.get("_skills_target_agents"), list) else [])
+        list(SUPPORTED_AGENT_IDS) if source_type == "custom" else _as_str_list(fm.get("_skills_target_agents"))
     )
     trust_tier = resolve_trust_tier_for_node(node)
     trust_badge, trust_badge_variant = trust_badge_for_tier(trust_tier)
@@ -721,9 +725,7 @@ def _skill_node_row(node: CatalogNode) -> dict[str, Any]:
         "liveActionRisk": fm.get("_live_action_risk", ""),
         "riskCategory": fm.get("_risk_category", ""),
         "dedupeNotes": fm.get("_dedupe_notes", ""),
-        "unsupportedTargetAgents": list(
-            fm.get("_unsupported_target_agents") if isinstance(fm.get("_unsupported_target_agents"), list) else []
-        ),
+        "unsupportedTargetAgents": _as_str_list(fm.get("_unsupported_target_agents")),
         "license": fm.get("license", ""),
         "licenseStatus": fm.get("license_status", fm.get("licenseStatus", "")),
         "version": meta.get("version", ""),
