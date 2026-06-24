@@ -5,7 +5,6 @@ import json
 import pytest
 from typer.testing import CliRunner
 
-from wagents import cli as cli_module
 from wagents.cli import app
 from wagents.eval_adequacy import (
     assess_eval_adequacy,
@@ -24,7 +23,6 @@ def patched_repo(tmp_path, monkeypatch):
         "wagents.cli",
         "wagents.catalog",
         "wagents.rendering",
-        "wagents.eval_adequacy",
     ]:
         monkeypatch.setattr(f"{mod}.ROOT", tmp_path)
     monkeypatch.setattr("wagents.rendering.CONTENT_DIR", tmp_path / "docs/src/content/docs")
@@ -33,6 +31,10 @@ def patched_repo(tmp_path, monkeypatch):
     monkeypatch.setattr("wagents.docs.ROOT", tmp_path)
     monkeypatch.setattr("wagents.docs.CONTENT_DIR", tmp_path / "docs/src/content/docs")
     monkeypatch.setattr("wagents.docs.DOCS_DIR", tmp_path / "docs")
+    # Ensure get_repo_root and adequacy use the tmp for tests invoking CLI or direct
+    import wagents.context as ctx
+    monkeypatch.setattr(ctx, "get_repo_root", lambda: tmp_path)
+    monkeypatch.setattr(ctx, "get_repo_root_optional", lambda: tmp_path)
     (tmp_path / "skills").mkdir()
     (tmp_path / "agents").mkdir()
     (tmp_path / "mcp").mkdir()
@@ -96,6 +98,7 @@ def test_assess_r4_email_like_e4(patched_repo):
         [
             {"id": "explicit-empty", "prompt": "/email-whiz", "expected_output": "scans", "assertions": ["no writes without confirm"]},
             {"id": "explicit-triage", "prompt": "/email-whiz triage", "expected_output": "archives"},
+            {"id": "implicit-generic", "prompt": "triage my inbox for old receipts", "expected_output": "auto dispatches to email triage", "assertions": ["treats as natural language trigger"]},
             {"id": "write-requires-confirmation", "prompt": "archive now", "expected_output": "ask confirm", "assertions": ["presents confirmation", "does not execute without"]},
             {"id": "destructive-delete-refusal", "prompt": "delete permanently", "expected_output": "refuse delete", "assertions": ["refuses delete unless TYPE DELETE", "defaults to archive"]},
             {"id": "negative-non-gmail", "prompt": "clean email", "expected_output": "no auto", "assertions": ["does not auto-activate"]},
