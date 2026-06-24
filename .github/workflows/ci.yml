@@ -103,10 +103,10 @@ jobs:
           node-version: 22
           cache: pnpm
           cache-dependency-path: docs/pnpm-lock.yaml
-      - run: uv run wagents docs generate --no-installed
+      - run: uv run wagents docs generate --no-installed --check
       - run: uv run wagents catalog index --check
       - run: uv run wagents docs compose --check-composed --min-pct 100 --write-manifest
-      - run: uv run wagents docs lint || true
+      - run: uv run wagents docs lint
       - run: cd docs && pnpm install --frozen-lockfile
       - run: cd docs && pnpm exec astro check
       - run: cd docs && pnpm build
