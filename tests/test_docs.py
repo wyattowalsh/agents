@@ -479,6 +479,7 @@ class TestWriteHarnessSupportPage:
                         "harness_id": "claude-code",
                         "fixture_status": "fixture-executable",
                         "promotion_blocker": "CI green required.",
+                        "notes": ["Fixture evidence present for adapter + validate paths."],
                     }
                 ]
             }),
@@ -499,7 +500,8 @@ class TestWriteHarnessSupportPage:
         assert "repo-present-validation-required" in text
         # executable section
         assert "## Executable fixtures today" in text
-        assert "`claude-code` — CI green required." in text
+        assert "`claude-code` — Fixture evidence present for adapter + validate paths." in text
+        assert "CI green required." not in text
 
 
 class TestSkillHubPages:

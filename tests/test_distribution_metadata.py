@@ -430,8 +430,12 @@ def test_harness_surface_registry_splits_cloud_desktop_cli_and_editor_variants()
     }
 
     assert expected_ids.issubset(harnesses)
-    assert harnesses["cursor-cloud-agent"]["support_tier"] == "planned-research-backed"
-    assert harnesses["cursor-cli"]["support_tier"] == "repo-present-validation-required"
+    assert harnesses["cursor-editor"]["support_tier"] == "validated"
+    assert harnesses["cursor-cli"]["support_tier"] == "validated"
+    assert harnesses["cursor-bugbot"]["support_tier"] == "repo-present-validation-required"
+    assert harnesses["cursor-cloud-agent"]["support_tier"] == "repo-present-validation-required"
+    assert harnesses["cursor-cloud-subagent"]["support_tier"] == "repo-present-validation-required"
+    assert harnesses["cursor-acp"]["support_tier"] == "repo-present-validation-required"
     assert harnesses["perplexity-desktop"]["support_tier"] == "experimental"
     assert harnesses["cherry-studio"]["support_tier"] == "experimental"
     assert "skills" not in harnesses["claude-desktop"]["projection_surfaces"]

@@ -242,7 +242,7 @@
       "brand": "Cursor",
       "surface_kind": "editor",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "repo-present-validation-required",
+      "support_tier": "validated",
       "repo_evidence": [
         ".cursor/",
         ".cursor/mcp.json",
@@ -282,7 +282,7 @@
       "brand": "Cursor",
       "surface_kind": "cli",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "repo-present-validation-required",
+      "support_tier": "validated",
       "repo_evidence": [
         ".cursor/cli.json",
         ".cursor/mcp.json",
@@ -311,7 +311,7 @@
       "brand": "Cursor",
       "surface_kind": "web-cloud-agent",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "planned-research-backed",
+      "support_tier": "repo-present-validation-required",
       "repo_evidence": [
         ".cursor/rules/",
         ".cursor/hooks.json",
@@ -338,7 +338,7 @@
       "brand": "Cursor",
       "surface_kind": "web-cloud-agent-subagent",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "planned-research-backed",
+      "support_tier": "repo-present-validation-required",
       "repo_evidence": [
         ".cursor/agents/",
         "config/cursor-agents.json",
@@ -383,7 +383,7 @@
       "brand": "Cursor",
       "surface_kind": "cli",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "planned-research-backed",
+      "support_tier": "repo-present-validation-required",
       "repo_evidence": [
         ".cursor/cli.json",
         ".cursor/mcp.json",

@@ -182,6 +182,41 @@ def test_cli_adequacy_json(patched_repo):
     assert any(s.get("skill") == "devops-engineer" for s in skills)
 
 
+def test_infer_risk_keeps_inline_backticks_but_skips_field_doc_bullets(patched_repo):
+    """Field-doc bullets with backticks are excluded; inline code in prose is kept."""
+    sd = _make_skill(
+        patched_repo,
+        "inline-code-skill",
+        body_extra=(
+            "Launch MCP servers over the network when configuring integrations.\n"
+            "- `mcpServers` -- list of MCP servers available to this agent\n"
+        ),
+    )
+    rep = assess_eval_adequacy(sd)
+    assert rep["risk_tier"] == "R3"
+
+
+def test_infer_risk_ignores_not_for_exclusions(patched_repo):
+    """Cross-skill NOT-for references must not inflate risk tier."""
+    sd = _make_skill(
+        patched_repo,
+        "shell-helper",
+        "description: Shell scripts and Makefiles. NOT for Python (python-conventions) or CI/CD (devops-engineer).\n",
+        body_extra="**Scope:** bash only. NOT for CI/CD pipelines (use devops-engineer).",
+    )
+    rep = assess_eval_adequacy(sd)
+    assert rep["risk_tier"] not in ("R3", "R4")
+
+    sd2 = _make_skill(
+        patched_repo,
+        "agent-helper",
+        "description: Agent definitions. NOT for skills, MCP servers, or CLAUDE.md.\n",
+        body_extra="- `mcpServers` -- list of MCP servers available to this agent",
+    )
+    rep2 = assess_eval_adequacy(sd2)
+    assert rep2["risk_tier"] not in ("R3", "R4")
+
+
 def test_cli_adequacy_strict_fails(patched_repo):
     # A R4 without E4 signals
     sd = _make_skill(patched_repo, "email-whiz", 'allowed-tools: gmail_delete_email Write\n')

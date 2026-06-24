@@ -23,6 +23,7 @@ from scripts.sync_agent_stack import (
     merge_copilot_config,
     render_gemini_mcp,
 )
+from wagents.platforms.cursor import Adapter as CursorAdapter
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -166,9 +167,162 @@ def test_config_transaction_registry_alignment_manifest_validation_commands_matc
                 )
 
 
+def test_cursor_adapter_render_surfaces_smoke() -> None:
+    """Cursor editor adapter renders MCP, hooks, permissions, and CLI without UI allowlist overrides."""
+    adapter = CursorAdapter()
+    registry = {
+        "servers": {
+            "example-stdio": {
+                "command": "${REPO_ROOT}/scripts/run-mcp.sh",
+                "args": ["--stdio"],
+                "enabled": True,
+                "env": {"TOKEN": {"env_var": "EXAMPLE_TOKEN"}},
+            }
+        }
+    }
+    hook_registry = {
+        "hooks": [
+            {
+                "id": "cursor-guard",
+                "logical_event": "PreToolUse",
+                "command": "python3 {repo_root}/hooks/wagents-hook.py cursor-guard --harness {harness}",
+                "harnesses": ["cursor"],
+            }
+        ]
+    }
+    policy: dict = {}
+
+    mcp = adapter.render_mcp(registry, {}, harness="cursor")
+    assert "example-stdio" in mcp["mcpServers"]
+    assert mcp["mcpServers"]["example-stdio"]["command"] == "${workspaceFolder}/scripts/run-mcp.sh"
+    assert mcp["mcpServers"]["example-stdio"]["env"]["TOKEN"] == "${env:EXAMPLE_TOKEN}"
+
+    hooks = adapter.render_hooks(hook_registry)
+    assert hooks is not None
+    assert "preToolUse" in hooks["hooks"]
+
+    permissions = adapter.render_permissions(policy)
+    assert "autoRun" in permissions
+    assert "mcpAllowlist" not in permissions["autoRun"]
+    assert "terminalAllowlist" not in permissions["autoRun"]
+
+    cli = adapter.render_cli_config(policy)
+    assert "permissions" in cli
+    assert "allow" in cli["permissions"]
+
+
+def test_cursor_bugbot_render_documents_admin_api_out_of_scope() -> None:
+    """BUGBOT.md render includes project rules and documents Admin API out-of-scope."""
+    adapter = CursorAdapter()
+    rendered = adapter.render_bugbot({})
+    assert "Bugbot Admin API" in rendered
+    assert "AGENTS.md" in rendered
+    assert "dashboard" in rendered.lower()
+
+
+def test_cursor_cloud_agent_repo_evidence_surfaces_exist() -> None:
+    """Cloud Agent consumes repo-owned project rules and native hook projection (dashboard MCP out of scope)."""
+    adapter = CursorAdapter()
+    rules_dir = ROOT / ".cursor" / "rules"
+    assert rules_dir.is_dir()
+    rule_files = list(rules_dir.glob("*.mdc"))
+    assert rule_files
+    assert any("globs:" in path.read_text(encoding="utf-8") for path in rule_files)
+
+    hook_registry = json.loads((ROOT / "config" / "hook-registry.json").read_text(encoding="utf-8"))
+    cursor_hooks = [
+        entry
+        for entry in hook_registry.get("hooks", [])
+        if "cursor" in (entry.get("harnesses") or [])
+    ]
+    assert cursor_hooks
+    rendered = adapter.render_hooks(hook_registry)
+    assert rendered is not None
+    assert "preToolUse" in rendered["hooks"]
+    assert "${workspaceFolder}" in rendered["hooks"]["preToolUse"][0]["hooks"][0]["command"]
+
+
+def test_cursor_cloud_subagent_repo_evidence_and_overlay_alignment() -> None:
+    """Cloud subagents use generated .cursor/agents overlays aligned with portable agents."""
+    agents_dir = ROOT / ".cursor" / "agents"
+    overlay_path = ROOT / "config" / "cursor-agents.json"
+    assert agents_dir.is_dir()
+    assert overlay_path.is_file()
+    managed_agents = [
+        path
+        for path in agents_dir.glob("*.md")
+        if "Managed by wagents" in path.read_text(encoding="utf-8")
+    ]
+    assert managed_agents
+    overlays = {entry["name"] for entry in json.loads(overlay_path.read_text(encoding="utf-8"))["agents"]}
+    generated = {path.stem for path in managed_agents}
+    assert overlays == generated
+
+    sample = managed_agents[0]
+    frontmatter = re.search(r"^---\n(.*?)\n---", sample.read_text(encoding="utf-8"), re.DOTALL)
+    assert frontmatter is not None
+    assert "model: inherit" in frontmatter.group(1)
+    assert "readonly:" in frontmatter.group(1)
+    overlay_by_name = {
+        entry["name"]: entry
+        for entry in json.loads(overlay_path.read_text(encoding="utf-8"))["agents"]
+    }
+    assert overlay_by_name[sample.stem]["model"] == "inherit"
+    assert "readonly" in overlay_by_name[sample.stem]
+
+
+def test_cursor_acp_project_scoped_cli_and_mcp_paths_exist() -> None:
+    """ACP path uses project-scoped CLI permissions and MCP without global-only CLI fields."""
+    adapter = CursorAdapter()
+    policy: dict = {}
+    cli = adapter.render_cli_config(policy)
+    mcp_registry = json.loads((ROOT / "config" / "mcp-registry.json").read_text(encoding="utf-8"))
+    mcp = adapter.render_mcp(mcp_registry, {}, harness="cursor-acp")
+
+    assert set(cli) == {"permissions"}
+    assert "allow" in cli["permissions"]
+    assert "deny" in cli["permissions"]
+    assert isinstance(mcp.get("mcpServers"), dict)
+
+    on_disk_cli = json.loads((ROOT / ".cursor" / "cli.json").read_text(encoding="utf-8"))
+    on_disk_mcp = json.loads((ROOT / ".cursor" / "mcp.json").read_text(encoding="utf-8"))
+    assert set(on_disk_cli) == set(cli)
+    assert "permissions" in on_disk_cli
+    assert isinstance(on_disk_mcp.get("mcpServers"), dict)
+    assert isinstance(mcp.get("mcpServers"), dict)
+
+
+def test_cursor_harness_fixture_manifest_records_all_surfaces_executable() -> None:
+    """All Cursor harness rows are fixture-executable with runnable validation commands."""
+    fixture_support = load_manifest("planning/manifests/harness-fixture-support.json")
+    cursor_ids = {
+        "cursor-editor",
+        "cursor-cli",
+        "cursor-cloud-agent",
+        "cursor-cloud-subagent",
+        "cursor-bugbot",
+        "cursor-acp",
+    }
+    by_id = {record["harness_id"]: record for record in fixture_support["records"]}
+    assert cursor_ids.issubset(by_id)
+    for harness_id in cursor_ids:
+        record = by_id[harness_id]
+        assert record["fixture_status"] == "fixture-executable"
+        assert any("pytest" in cmd for cmd in record["validation_commands"])
+
+    assert by_id["cursor-bugbot"]["current_support_tier"] == "repo-present-validation-required"
+    assert by_id["cursor-bugbot"]["rollback_coverage"] == "planned"
+    assert "project-config-fixture" in by_id["cursor-acp"]["fixture_classes"]
+
+
 def test_harness_plan_fixtures_covers_promoted_merge_paths() -> None:
     """Smoke that the module itself defines the required executable tests for promotion."""
     src = (ROOT / "tests" / "test_harness_plan_fixtures.py").read_text(encoding="utf-8")
     assert "test_merge_copilot_config_preserves_user_keys_applies_policy_defaults" in src
     assert "test_render_gemini_mcp_structure_smoke" in src
+    assert "test_cursor_adapter_render_surfaces_smoke" in src
+    assert "test_cursor_bugbot_render_documents_admin_api_out_of_scope" in src
+    assert "test_cursor_cloud_agent_repo_evidence_surfaces_exist" in src
+    assert "test_cursor_cloud_subagent_repo_evidence_and_overlay_alignment" in src
+    assert "test_cursor_acp_project_scoped_cli_and_mcp_paths_exist" in src
     assert "test_config_transaction_registry_alignment" in src

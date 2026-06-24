@@ -241,3 +241,21 @@ source_count: 1
 - `canonical material`: archive performed exclusively via `uv run wagents openspec archive` (no manual edits to non-kb); some spec.md updates applied as side-effect for non-skipped.
 - Risks / rollback: KB edits additive only.
 - Follow-up: run kb lint.
+
+### [2026-06-24] Push batch 2 + eval adequacy + grok fixture promotion
+
+- Mode: ship + fix (additive KB)
+- Summary: Pushed 17 local commits (`d3c4063b..a6eaf259`) covering bulk OpenSpec archive, `wagents eval adequacy`, plan fixture tests (Copilot merge + Gemini MCP), and docs fixes. Post-push validation: `wagents validate`, `wagents openspec validate` (33/33), targeted pytest green.
+- `canonical material`: `f9496f22` eval adequacy CLI; `7cd67b6a` plan fixtures; `a6eaf259` bulk archive; follow-up fix strips NOT-for exclusions from risk-tier inference (`agent-conventions`, `shell-scripter` no longer false R3); `grok-build` promoted to `fixture-executable` with `test_grok_platform.py` + grok rollback tests.
+- `wiki`: refresh [[harness-fixture-gaps]] and [[skill-catalog-risk-and-eval-coverage]] if stale after promotion.
+- Risks / rollback: KB-only delta; repo changes are additive tests + manifest rows.
+- Follow-up: remaining plan-only harnesses (claude-desktop, cherry-studio); active OpenSpec waves (`compose-harness-catalog-pages`).
+
+### [2026-06-24] Cursor harness review remediation (RV-001–RV-007)
+
+- Mode: fix + docs + kb enrich (additive)
+- Summary: Closed session review findings RV-001–RV-007 after promoting Cursor surfaces: docs intro no longer contradicts validated rows; `cursor-bugbot` downgraded to `repo-present-validation-required` with `rollback: planned`; manifest `notes[]` drives executable-list copy; ACP fixture renamed `project-config-fixture`; eval adequacy narrows backtick stripping to field-doc bullets; cloud/ACP tests exercise adapter render paths.
+- `canonical material`: `wagents/docs.py`, `wagents/eval_adequacy.py`, `config/harness-surface-registry.json`, `planning/manifests/harness-fixture-support.json`, targeted tests, regenerated `docs/src/content/docs/harness-support.mdx`.
+- `wiki`: refreshed [[harness-fixture-gaps]] and [[skill-catalog-risk-and-eval-coverage]].
+- Risks / rollback: tier downgrade is honesty-only; no runtime behavior change.
+- Follow-up: add cursor-specific rollback fixtures before re-promoting `cursor-bugbot` to validated.

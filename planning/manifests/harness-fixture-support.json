@@ -164,95 +164,133 @@
     {
       "harness_id": "cursor-editor",
       "owner_change": "agents-c04-cursor-harness",
-      "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "current_support_tier": "validated",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "rules-fixture",
         "skills-fixture",
         "mcp-fixture",
+        "hooks-fixture",
+        "permissions-fixture",
+        "agents-fixture",
         "rollback-fixture"
       ],
       "validation_commands": [
+        "uv run pytest tests/test_sync_agent_stack.py -q -k cursor",
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor",
+        "uv run pytest tests/test_wagents_hook.py -q -k cursor",
+        "uv run pytest tests/test_validate_repo.py -q -k cursor_agents",
         "uv run wagents validate"
       ],
       "rollback_coverage": "present",
-      "promotion_blocker": "Requires Cursor editor rules, skills, MCP, and rollback fixtures before validated support claims."
+      "promotion_blocker": "Global ~/.cursor and dashboard/team state are user-owned; keep CI matrix green.",
+      "notes": [
+        "Repo-owned editor surfaces via wagents/platforms/cursor.py (rules, skills, MCP, hooks, permissions, agents)."
+      ]
     },
     {
       "harness_id": "cursor-cli",
       "owner_change": "agents-c04-cursor-harness",
-      "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "current_support_tier": "validated",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "cli-permissions-fixture",
         "mcp-fixture",
-        "agents-fixture"
+        "agents-fixture",
+        "rollback-fixture"
       ],
       "validation_commands": [
+        "uv run pytest tests/test_sync_agent_stack.py -q -k cursor",
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor",
+        "uv run pytest tests/test_validate_repo.py -q -k cursor_agents",
         "uv run wagents validate"
       ],
-      "rollback_coverage": "planned",
-      "promotion_blocker": "Requires Cursor CLI permissions, MCP, and agent overlay fixtures before validated support claims."
+      "rollback_coverage": "present",
+      "promotion_blocker": "Global ~/.cursor/cli-config.json is user-owned; keep CI matrix green.",
+      "notes": [
+        "Project .cursor/cli.json permissions, MCP, and agent overlays are repo-synced."
+      ]
     },
     {
       "harness_id": "cursor-cloud-agent",
       "owner_change": "agents-c04-cursor-harness",
-      "current_support_tier": "planned-research-backed",
-      "fixture_status": "docs-ledger-required",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
-        "first-party-docs-ledger",
-        "cloud-agent-config-fixture"
+        "rules-fixture",
+        "hooks-fixture",
+        "cloud-dashboard-mcp-caveat-fixture"
       ],
       "validation_commands": [
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor_cloud",
         "uv run wagents validate"
       ],
       "rollback_coverage": "not-applicable",
-      "promotion_blocker": "Requires first-party Cursor Cloud Agent evidence and cloud-agent fixture coverage; do not inherit Cursor Editor behavior by default."
+      "promotion_blocker": "Cloud Agent MCP, secrets, OAuth, and team settings are dashboard-managed and out of scope.",
+      "notes": [
+        "Repo-owned project rules and hooks are synced for cloud execution."
+      ]
     },
     {
       "harness_id": "cursor-cloud-subagent",
       "owner_change": "agents-c04-cursor-harness",
-      "current_support_tier": "planned-research-backed",
-      "fixture_status": "docs-ledger-required",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "subagent-overlay-fixture",
         "cloud-dashboard-mcp-caveat-fixture"
       ],
       "validation_commands": [
+        "uv run pytest tests/test_sync_agent_stack.py -q -k cursor_agent",
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor_cloud_subagent",
+        "uv run pytest tests/test_validate_repo.py -q -k cursor_agents",
         "uv run wagents validate"
       ],
       "rollback_coverage": "not-applicable",
-      "promotion_blocker": "Requires cloud subagent overlay and dashboard MCP caveat fixtures before support claims."
+      "promotion_blocker": "Cloud subagent MCP and secrets come from Cursor dashboard/team settings.",
+      "notes": [
+        "Repo-owned .cursor/agents overlays are synced with portable agents."
+      ]
     },
     {
       "harness_id": "cursor-bugbot",
       "owner_change": "agents-c04-cursor-harness",
       "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "bugbot-project-rules-fixture",
         "admin-api-out-of-scope-caveat-fixture"
       ],
       "validation_commands": [
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor_bugbot",
         "uv run wagents validate"
       ],
       "rollback_coverage": "planned",
-      "promotion_blocker": "Requires BUGBOT.md render and admin API out-of-scope caveat fixtures before validated support claims."
+      "promotion_blocker": "Requires cursor-specific rollback fixtures before validated tier; Bugbot Admin API and dashboard settings remain out of scope.",
+      "notes": [
+        "Repo-owned .cursor/BUGBOT.md render fixture present."
+      ]
     },
     {
       "harness_id": "cursor-acp",
       "owner_change": "agents-c04-cursor-harness",
-      "current_support_tier": "planned-research-backed",
-      "fixture_status": "docs-ledger-required",
+      "current_support_tier": "repo-present-validation-required",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
-        "first-party-docs-ledger",
-        "acp-non-mutating-smoke-fixture"
+        "cli-permissions-fixture",
+        "mcp-fixture",
+        "project-config-fixture"
       ],
       "validation_commands": [
+        "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor_acp",
+        "uv run pytest tests/test_sync_agent_stack.py -q -k 'cursor_adapter_sync_home or cursor_adapter_render'",
         "uv run wagents validate"
       ],
-      "rollback_coverage": "planned",
-      "promotion_blocker": "Requires first-party ACP docs ledger and non-mutating smoke fixtures before support claims."
+      "rollback_coverage": "present",
+      "promotion_blocker": "Live ACP smoke requires local Cursor agent binary and stays non-mutating.",
+      "notes": [
+        "Repo-owned project MCP and CLI permissions for agent acp."
+      ]
     },
     {
       "harness_id": "perplexity-desktop",
@@ -306,7 +344,7 @@
       "harness_id": "grok-build",
       "owner_change": "agents-c04-grok-harness",
       "current_support_tier": "repo-present-validation-required",
-      "fixture_status": "fixture-plan-only",
+      "fixture_status": "fixture-executable",
       "fixture_classes": [
         "config-merge-fixture",
         "skills-install-alias-fixture",
@@ -314,7 +352,9 @@
         "rollback-fixture"
       ],
       "validation_commands": [
-        "uv run pytest tests/test_sync_agent_stack.py",
+        "uv run pytest tests/test_grok_platform.py -q",
+        "uv run pytest tests/test_sync_agent_stack.py -q -k grok",
+        "uv run pytest tests/test_harness_rollback_fixtures.py -q -k grok",
         "uv run wagents validate"
       ],
       "rollback_coverage": "present",

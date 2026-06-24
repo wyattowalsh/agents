@@ -26,7 +26,11 @@ The repo supports many harnesses, but support tiers and fixture coverage differ.
 - Platform adapters under `wagents/platforms/` coexist with `scripts/sync_agent_stack.py`; both paths matter for sync claims.
 - Executable rollback tests now live in `tests/test_harness_rollback_fixtures.py` (`.bak` backup/restore via `ensure_symlink`, config-drop negative). `planning/manifests/harness-fixture-support.json` marks `rollback_coverage: present` for claude-code, codex, cursor-editor, grok-build, github-copilot-cli, and opencode.
 - Docs compose is 100% (397/397); Cursor hook compose gap closed in Phase 4.
-- Codex plugin `agents` path restored; remaining fixture gaps are plan-only harnesses (claude-desktop, chatgpt, etc.).
+- Codex plugin `agents` path restored.
+- **2026-06-24 plan fixtures:** Copilot CLI (`merge_copilot_config`) and Gemini MCP (`render_gemini_mcp`) promoted to `fixture-executable` via `tests/test_harness_plan_fixtures.py`.
+- **2026-06-24 grok promotion:** `grok-build` promoted to `fixture-executable` using existing `tests/test_grok_platform.py`, grok slices of `test_sync_agent_stack.py`, and grok rollback coverage in `test_harness_rollback_fixtures.py`.
+- **2026-06-24 Cursor lane (all surfaces):** All six Cursor harness rows are `fixture-executable`. `cursor-editor` and `cursor-cli` are **`validated`** with rollback fixtures; `cursor-bugbot` stays **`repo-present-validation-required`** until cursor-specific rollback proof lands (`rollback: planned`). `cursor-cloud-agent`, `cursor-cloud-subagent`, and `cursor-acp` are **`repo-present-validation-required`** with repo-owned project surfaces and documented dashboard/OAuth/Admin API out-of-scope caveats. Manifest `notes[]` carries executable success copy; `promotion_blocker` stays gap-oriented. Adapter: `wagents/platforms/cursor.py`.
+- Remaining fixture gaps are non-Cursor plan-only harnesses (claude-desktop, cherry-studio, crush, etc.).
 
 Future harness work should name the exact surface being changed, the registry row or sync manifest row backing it, the fixture/test that verifies it, and the rollback path for any live config mutation.
 

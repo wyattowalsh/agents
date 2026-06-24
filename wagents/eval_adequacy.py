@@ -8,6 +8,7 @@ no-mutation, credential/network, destructive) signals from eval manifests.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -101,6 +102,29 @@ _E4_BOUNDARY = {
 _E4_CRED_NET = {"credential", "secret", "token", "password", "api key", "network", "mcp.json", "launch config"}
 
 
+def _strip_not_for_description(description: str) -> str:
+    """Keep the primary description clause; drop trailing NOT-for exclusions."""
+    text = description
+    for pattern in (r"\.\s*NOT for\b", r"\s+NOT for\b"):
+        text = re.split(pattern, text, maxsplit=1, flags=re.IGNORECASE)[0]
+    return text
+
+
+_FIELD_DOC_LINE = re.compile(r"^\s*[-*]?\s*`[^`]+`\s*--")
+
+
+def _body_for_risk_scan(body: str) -> str:
+    """Body text for risk keyword scan, minus scope exclusions and field-doc bullets."""
+    lines: list[str] = []
+    for line in body.splitlines():
+        if re.search(r"\bNOT for\b", line, re.IGNORECASE):
+            continue
+        if _FIELD_DOC_LINE.match(line):
+            continue
+        lines.append(line)
+    return "\n".join(lines)
+
+
 def _read_skill_text(skill_dir: Path) -> tuple[dict[str, Any], str]:
     """Return (frontmatter, body) for SKILL.md or empty."""
     skill_file = skill_dir / "SKILL.md"
@@ -120,8 +144,8 @@ def _infer_risk_tier(skill_dir: Path) -> str:
     name = skill_dir.name.lower()
     fm, body = _read_skill_text(skill_dir)
     allowed = str(fm.get("allowed-tools", "") or "").lower()
-    desc = str(fm.get("description", "") or "").lower()
-    combined = f"{name} {allowed} {desc} {body.lower()}"
+    desc = _strip_not_for_description(str(fm.get("description", "") or "")).lower()
+    combined = f"{name} {allowed} {desc} {_body_for_risk_scan(body).lower()}"
 
     # Name-based hard rules for known high-risk
     r4_names = {"email-whiz"}

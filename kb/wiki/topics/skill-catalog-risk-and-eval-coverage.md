@@ -43,7 +43,9 @@ Eval presence should be interpreted relative to skill risk. A low-risk prompt-on
 
 The 2026-06-24 batch added E3/E4-oriented manifests for previously uncovered high-risk skills (email-whiz, chrome-devtools family, mcp-creator, opencode-ensemble, openspec-workflow, security-scanner, infrastructure-coder, devops-engineer, reasoning-router) and key convention skills. Treat manifest presence as baseline regression coverage, not proof every skill meets full E4 boundary depth in live runs.
 
-The current CLI can report eval coverage and validate manifest shape. It does not by itself grade risk-adjusted adequacy across all skills, so the KB uses this page to preserve that distinction for future authoring and audit work.
+**2026-06-24 adequacy CLI:** `uv run wagents eval adequacy [--skill NAME] [--strict] [--format json]` reports structural E3/E4 signals and `needs_e4` for inferred R3/R4 skills. Risk inference ignores NOT-for exclusion clauses and backtick field-doc lines so cross-skill references (e.g. `devops-engineer` in shell-scripter scope) do not inflate tiers.
+
+The adequacy command grades manifest structure, not live LLM eval runs. `wagents eval list` / `validate` / `coverage` remain shape/count tools; this page preserves the distinction between manifest presence, structural adequacy, and executed eval passes.
 
 ## Evidence
 
@@ -54,6 +56,7 @@ The current CLI can report eval coverage and validate manifest shape. It does no
 | Some higher-risk integration skills lack eval coverage and need future work. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Research finding; not fixed here. |
 | 29/56 skills have canonical eval manifests; 22 hook registry entries. | `kb/raw/captures/local-inventory-summary.md`; `kb/raw/sources/hooks-evals-control-source.md` | raw capture; raw source note | 2026-06-23 counts. |
 | Hooks and evals form complementary control-plane surfaces. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Runtime vs regression. |
+| Risk inference strips trailing NOT-for clauses and field-doc bullets (`\`field\` --`) but keeps inline backticks in prose. | `wagents/eval_adequacy.py` | canonical repo path | 2026-06-24 RV-007 fix; avoids false R3 from agent frontmatter docs. |
 
 ## Related
 
