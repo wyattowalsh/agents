@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-primary text-primary-foreground hover:opacity-90',
         secondary:
-          'border-border bg-[color:var(--surface-panel)] text-foreground hover:bg-[color:var(--surface-panel-strong,var(--surface-panel))]',
+          'border-border bg-[color:var(--surface-panel)] text-foreground hover:bg-[color:var(--surface-panel-hover)]',
         ghost: 'text-foreground hover:bg-[color:var(--surface-panel)]',
         outline: 'border-border bg-transparent text-foreground hover:bg-[color:var(--surface-panel)]',
       },

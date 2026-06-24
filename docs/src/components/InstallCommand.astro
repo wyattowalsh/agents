@@ -19,20 +19,3 @@ const id = `install-${Math.random().toString(36).slice(2)}`;
   </div>
   <pre class="agents-scrollbar"><code>{command}</code></pre>
 </section>
-
-<script>
-  document.querySelectorAll('[data-copy-command]').forEach((button) => {
-    button.addEventListener('click', async () => {
-      const id = button.getAttribute('data-copy-command');
-      const root = document.querySelector(`[data-install-command="${id}"]`);
-      const command = root?.querySelector('code')?.textContent ?? '';
-      if (!command) return;
-      await navigator.clipboard.writeText(command);
-      const previous = button.textContent;
-      button.textContent = 'Copied';
-      window.setTimeout(() => {
-        button.textContent = previous;
-      }, 1600);
-    });
-  });
-</script>

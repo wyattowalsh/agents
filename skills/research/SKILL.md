@@ -1,9 +1,9 @@
 ---
 name: research
 description: >-
-  Deep multi-source research with confidence scoring. Auto-classifies
-  complexity. Use for technical investigation, fact-checking. NOT for code
-  review or simple Q&A.
+  Deep multi-source research with reviewable plans, source-support auditing,
+  and confidence scoring. Use for technical, academic, market, fact-checking
+  investigation. NOT for code review or simple Q&A.
 argument-hint: "<question or topic> [--depth quick|standard|deep|exhaustive] [--format brief|deep|bib|matrix]"
 model: opus
 license: MIT
@@ -14,9 +14,11 @@ metadata:
 
 # Deep Research
 
-General-purpose deep research with multi-source synthesis, confidence scoring, and anti-hallucination verification. Adopts SOTA patterns from OpenAI Deep Research (multi-agent triage pipeline), Google Gemini Deep Research (user-reviewable plans), STORM (perspective-guided conversations), Perplexity (source confidence ratings), and LangChain ODR (supervisor-researcher with reflection).
+General-purpose deep research with multi-source synthesis, confidence scoring, source-support auditing, and anti-hallucination verification. The design follows current deep-research patterns: plan before retrieval, start broad then narrow, coordinate parallel workers through a lead agent, audit whether cited sources actually support each claim, use perspective expansion for breadth, and synthesize into a report rather than a source dump.
 
-## Vocabulary
+## Canonical Vocabulary
+
+Use these canonical terms exactly in plans, journals, delegated task prompts, and final reports.
 
 | Term | Definition |
 |------|-----------|
@@ -30,6 +32,12 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 | **triangulation** | Confirming a finding using 3+ methodologically diverse sources |
 | **contradiction** | When two credible sources assert incompatible claims; must be surfaced explicitly |
 | **synthesis** | The final research product: not a summary but a novel integration of evidence with analysis |
+| **plan gate** | A compact, reviewable research plan produced after triage and before substantial retrieval |
+| **source-support audit** | Statement-level check that each cited source actually supports the claim attached to it |
+| **support matrix** | Table mapping each claim to each cited source with `supports`, `partial`, `contradicts`, or `irrelevant` |
+| **citation anchor** | The specific excerpt, section, or data row used to connect a source to a claim |
+| **support status** | Per-claim/per-source classification: `supports`, `partial`, `contradicts`, or `irrelevant` |
+| **effort budget** | Bounded search/delegation plan covering expected workers, source count, depth, and stop conditions |
 | **journal** | The saved markdown record of a research session, stored in `~/.{gemini|copilot|codex|claude}/research/` |
 | **sweep** | Wave 1: broad parallel search across multiple tools and sources |
 | **deep dive** | Wave 2: targeted follow-up on specific leads from the sweep |
@@ -52,7 +60,7 @@ General-purpose deep research with multi-source synthesis, confidence scoring, a
 | `survey <field or topic>` | **Survey** — landscape mapping, annotated bibliography |
 | `track <topic>` | **Track** — load prior journal, search for updates since last session |
 | `resume [number or keyword]` | **Resume** — resume a saved research session |
-| `list [active\|domain\|tier]` | **List** — show journal metadata table |
+| `list [active, domain, tier]` | **List** — show journal metadata table |
 | `archive` | **Archive** — move journals older than 90 days |
 | `delete <N>` | **Delete** — delete journal N with confirmation |
 | `export [N]` | **Export** — render HTML dashboard for journal N (default: current) |
@@ -67,6 +75,18 @@ If no mode keyword matches:
 3. Declarative statement with factual claim, no question syntax → **Fact-check**
 4. Broad field name with no specific question → ask: "Investigate a specific question, or survey the entire field?"
 5. Ambiguous → ask: "Would you like me to investigate this question, verify this claim, or survey this field?"
+
+### Plan Gate
+
+Produce a triage packet before substantial retrieval for Standard, Deep, and Exhaustive research:
+
+1. Restate the research question, audience, assumptions, constraints, and high-stakes or private-source risks.
+2. Show complexity score, tier, mode, source difficulty, verification complexity, and effort budget.
+3. List sub-questions, source families, planned worker lanes, retrieval/extraction capabilities, and degraded-mode limits.
+4. State the source-support audit strategy, including how citation anchors and support statuses will be checked.
+5. State whether execution continues immediately or pauses for user review.
+
+Pause conditions override continue conditions. Pause for user input when the topic is high-stakes, ambiguous after triage, asks for private or credentialed sources, or the user explicitly requests plan review. In noninteractive harnesses, emit the Plan Gate with blockers and stop before substantial retrieval for those pause cases. Continue without waiting only when the question is clear, non-sensitive, and has no pause condition. Quick tier may skip the formal gate but must include a short methodology note in the answer.
 
 ### Gallery (Empty Arguments)
 
@@ -115,7 +135,7 @@ Score the query on 5 dimensions (0-2 each, total 0-10):
 | 6-8 | **Deep** | Agent team (TeamCreate), 3-5 teammates, interactive session |
 | 9-10 | **Exhaustive** | Agent team, 4-6 teammates + nested subagent waves, interactive |
 
-Present the scoring to the user. User can override tier with `--depth <tier>`.
+Present the scoring through the Plan Gate for Standard, Deep, and Exhaustive work. User can override tier with `--depth <tier>`.
 
 ## Scaling Strategy
 
@@ -130,6 +150,8 @@ Scale work by query complexity and available orchestration capabilities:
 
 **Capability resolution:** Treat named tools and orchestration APIs as preferred capabilities. Claude Code may use `Task`/`TeamCreate`; Codex may use dynamic subagents or parallel tool calls; other agents may use their native delegation or run the wave pipeline serially. If no delegation equivalent exists, use degraded orchestration: preserve wave order, reduce breadth, and report the limitation in methodology. Apply confidence ceilings only when source or retrieval capabilities are unavailable, per `references/source-selection.md`.
 
+**Effort budgeting:** Bound every Standard+ run before retrieval. State target worker count, expected source count, search depth, extraction depth, and stop conditions. Start broad, then narrow: Wave 1 maximizes source and perspective coverage; Wave 2 spends depth only on high-value leads; Wave 3 spends verification budget on claims likely to survive synthesis.
+
 ## Wave Pipeline
 
 All non-Quick research follows this 5-wave pipeline. Quick merges Waves 0+1+4 inline.
@@ -139,10 +161,10 @@ All non-Quick research follows this 5-wave pipeline. Quick merges Waves 0+1+4 in
 1. Run `!uv run python skills/research/scripts/research-scanner.py "$ARGUMENTS"` for deterministic pre-scan
 2. Decompose query into 2-5 sub-questions
 3. Score complexity on the 5-dimension rubric
-4. Check tool availability — probe key MCP tools; set degraded mode flags and confidence ceilings per `references/source-selection.md`
+4. Check tool availability — probe key retrieval, extraction, and delegation capabilities; set degraded mode flags and confidence ceilings per `references/source-selection.md`
 5. Select tools per domain signals — read `references/source-selection.md`
 6. Check for existing journals — if `track` or `resume`, load prior state
-7. **Present triage to user** — show: complexity score, sub-questions, planned strategy, estimated tier. User may override.
+7. **Run the Plan Gate** — show: complexity score, sub-questions, source families, worker lanes, support-audit strategy, effort budget, estimated tier, and whether execution continues immediately or pauses. User may override.
 
 ### Wave 1: Broad Sweep (parallel)
 
@@ -181,6 +203,7 @@ Each subagent/teammate returns structured findings:
     "confidence": 0.6,
     "evidence": [{"tool": "brave-search", "url": "https://...", "timestamp": "2026-04-24T12:00:00Z", "excerpt": "..."}],
     "cross_validation": "unknown",
+    "source_support": [{"url": "https://...", "support_status": "supports|partial|contradicts|irrelevant", "citation_anchor": "...", "support_note": "..."}],
     "bias_markers": [],
     "gaps": []
   }],
@@ -208,14 +231,15 @@ Each perspective agent reviews Wave 1 findings and generates 2-3 additional sub-
 2. Dispatch deep-read subagents — use fetcher/trafilatura/docling to extract full content from top leads
 3. Follow citation chains — if a source cites another, fetch the original
 4. Fill gaps — for each gap identified in Wave 1, dispatch targeted searches
-5. Use thinking MCPs:
+5. Build preliminary claim-to-source support rows for each source-backed finding
+6. Use thinking MCPs:
    - `cascade-thinking` for multi-perspective analysis of complex findings
    - `structured-thinking` for tracking evidence chains and contradictions
    - `think-strategies` for complex question decomposition (Standard+ only)
 
-### Wave 3: Cross-Validation (parallel)
+### Wave 3: Cross-Validation and Source-Support Audit (parallel)
 
-The anti-hallucination wave. Read `references/confidence-rubric.md` and `references/self-verification.md`.
+The anti-hallucination wave. Read `references/evidence-chain.md`, `references/confidence-rubric.md`, and `references/self-verification.md`.
 
 For every claim surviving Waves 1-2:
 
@@ -223,8 +247,10 @@ For every claim surviving Waves 1-2:
 2. **Counter-search** — explicitly search for evidence AGAINST each major claim using a different search engine
 3. **Freshness check** — verify sources are current (flag if >1 year old for time-sensitive topics)
 4. **Contradiction scan** — read `references/contradiction-protocol.md`, identify and classify disagreements
-5. **Confidence scoring** — assign 0.0-1.0 per `references/confidence-rubric.md`
-6. **Bias sweep** — check each finding against 10 bias categories (7 core + 3 LLM-specific) per `references/bias-detection.md`
+5. **Source-support audit** — classify each claim/source pair as `supports`, `partial`, `contradicts`, or `irrelevant`
+6. **Citation anchor verification** — fetch cited URLs when possible and confirm the cited passage supports the exact claim, not merely the broad topic
+7. **Confidence scoring** — assign 0.0-1.0 per `references/confidence-rubric.md`, then cap confidence when support is partial, single-source, contradictory, or degraded
+8. **Bias sweep** — check each finding against 10 bias categories (7 core + 3 LLM-specific) per `references/bias-detection.md`
 
 **Self-Verification (3+ findings survive):** Spawn devil's advocate subagent per `references/self-verification.md`:
 > For each finding, attempt to disprove it. Search for counterarguments. Check if evidence is outdated. Verify claims actually follow from cited evidence. Flag LLM confabulations.
@@ -240,12 +266,13 @@ The synthesis is NOT a summary. It must:
 
 1. **Answer directly** — answer the user's question clearly
 2. **Map evidence** — all verified findings with confidence and citations
-3. **Surface contradictions** — where sources disagree, with analysis of why
-4. **Show confidence landscape** — what is known confidently, what is uncertain, what is unknown
-5. **Audit biases** — biases detected during research
-6. **Identify gaps** — what evidence is missing, what further research would help
-7. **Distill takeaways** — 3-7 numbered key findings
-8. **Cite sources** — full bibliography with provenance
+3. **Show source support** — summarize citation anchor status and unsupported or partially supported statements
+4. **Surface contradictions** — where sources disagree, with analysis of why
+5. **Show confidence landscape** — what is known confidently, what is uncertain, what is unknown
+6. **Audit biases** — biases detected during research
+7. **Identify gaps** — what evidence is missing, what further research would help
+8. **Distill takeaways** — 3-7 numbered key findings
+9. **Cite sources** — full bibliography with provenance
 
 **Output format** adapts to mode:
 - Investigate → Research Brief (Standard) or Deep Report (Deep/Exhaustive)
@@ -253,6 +280,7 @@ The synthesis is NOT a summary. It must:
 - Compare → Decision Matrix
 - Survey → Annotated Bibliography
 - User can override with `--format brief|deep|bib|matrix`
+- Add a chart, matrix, or dashboard artifact only when it clarifies numeric, comparative, temporal, or source-coverage evidence.
 
 ## Confidence Scoring
 
@@ -285,6 +313,7 @@ FINDING RR-{seq:03d}: [claim statement]
     1. [source_tool] [url] [access_timestamp] — [relevant excerpt, max 100 words]
     2. [source_tool] [url] [access_timestamp] — [relevant excerpt, max 100 words]
   CROSS-VALIDATION: [agrees|contradicts|partial] across [N] independent sources
+  SOURCE SUPPORT SUMMARY: [verified|partial|unsupported|contradicted] derived from per-source `support_status` rows
   BIAS MARKERS: [none | list of detected biases with category]
   GAPS: [none | what additional evidence would strengthen this finding]
 ```
@@ -303,10 +332,10 @@ Read `references/source-selection.md` during Wave 0 for the full tool-to-domain 
 | GitHub repos/OSS | deepwiki, repomix | brave-search |
 | General knowledge | wikipedia, wikidata, brave-search | fetcher |
 | Historical content | wayback, brave-search | fetcher |
-| Fact-checking | 3+ search engines mandatory | wikidata for structured claims |
+| Fact-checking | 3+ search engines mandatory when available | wikidata for structured claims |
 | PDF/document analysis | docling | trafilatura |
 
-**Multi-engine protocol:** For any claim requiring verification, use minimum 2 different search engines. Different engines have different indices and biases. Agreement across engines increases confidence.
+**Multi-engine protocol:** For any claim requiring verification, use minimum 2 different search engines or independent source families. Fact-checking mode requires 3+ search engines when available. If fewer engines are available, report degraded mode, use the fallback confidence ceilings in `references/source-selection.md`, and explain the missing retrieval capabilities.
 
 ## Progressive Disclosure
 
@@ -314,7 +343,7 @@ Load only the next required reference:
 
 1. Start with this file for routing, classification, and wave order.
 2. Load `references/source-selection.md` during Wave 0 only.
-3. Load validation references during Wave 3 only: confidence, contradiction, self-verification, and bias files as needed.
+3. Load validation references during Wave 3 only: evidence-chain, confidence, contradiction, self-verification, and bias files as needed.
 4. Load `references/output-formats.md` or `references/dashboard-schema.md` only when producing final output or exports.
 5. Never preload all references; summarize tool limitations instead of filling context with unused mappings.
 
@@ -400,30 +429,40 @@ Read `references/session-commands.md` for full protocols.
 
 **Loading rule:** Load ONE reference at a time per the "Read When" column. Do not preload.
 
+## Stop Hooks
+
+Research-mode stop verification is mandatory when runtime hooks are active. `research_hook.py research-stop-verifier` delegates to `verify.py stop`; it confirms tracked research-source files stayed clean, journal state was saved when required, and no source-file write occurred during research mode. If stop verification fails, report the exact reason and do not claim the run is complete.
+
 ## Validation Contract
 
-Run from this skill directory before declaring changes complete:
+Run from the repository root before declaring changes complete:
 
 ```bash
-python scripts/check.py
-pytest tests/test_research_hook.py -q -k "readonly_guard or stop_verifier or shell_write_guard"
+uv run python skills/research/scripts/check.py
+uv run python skills/skill-creator/scripts/audit.py skills/research --format json
+uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/research --format json
+uv run python skills/skill-creator/scripts/package.py skills/research --dry-run
+uv run pytest tests/test_wagents_hook.py -q -k "readonly_guard or stop_verifier or shell_write_guard"
 ```
 
 Completion criteria:
 
 1. `scripts/check.py` exits 0.
-2. Research hook smoke tests pass for readonly guard and stop verifier behavior.
-3. Skill directory stays free of repo control-plane CLI references.
+2. `audit.py skills/research --format json` remains grade A with explicit eval and validation proof.
+3. `validate_evals.py skills/research --format json` reports zero errors.
+4. `package.py skills/research --dry-run` reports `portable: true`.
+5. Research hook smoke tests pass for readonly guard and stop verifier behavior.
+6. Portable package checks remain free of absolute paths and repo control-plane CLI requirements.
 
 ## Critical Rules
 
 1. **No claim >= 0.7 unless supported by 2+ independent sources** — single-source claims cap at 0.6
 2. **Never fabricate citations** — if URL, author, title, or date cannot be verified, use vague attribution ("a study in this tradition") rather than inventing specifics
 3. **Always surface contradictions explicitly** — never silently resolve disagreements; present both sides with evidence
-4. **Always present triage scoring before executing research** — user must see and can override complexity tier
+4. **Always produce triage scoring before substantial research** — user must see and can override complexity tier; wait only when the Plan Gate says approval or clarification is required
 5. **Save journal after every wave in Deep/Exhaustive mode** — enables resume after interruption
-6. **Never skip Wave 3 (cross-validation) for Standard/Deep/Exhaustive tiers** — this is the anti-hallucination mechanism
-7. **Multi-engine search is mandatory for fact-checking** — use minimum 3 different search tools (e.g., brave-search + duckduckgo-search + exa)
+6. **Never skip Wave 3 (cross-validation and source-support audit) for Standard/Deep/Exhaustive tiers** — this is the anti-hallucination mechanism
+7. **Multi-engine search is mandatory for fact-checking when available** — use minimum 3 different search tools (e.g., brave-search + duckduckgo-search + exa); if fewer tools are available, enter degraded mode and cap confidence
 8. **Apply the Accounting Rule after every parallel dispatch** — N dispatched = N accounted for before proceeding to next wave
 9. **Distinguish facts from interpretations in all output** — factual claims carry evidence; interpretive claims are explicitly labeled as analysis
 10. **Flag all LLM-prior findings** — claims matching common training data but lacking fresh evidence must be flagged with bias marker
@@ -434,3 +473,4 @@ Completion criteria:
 15. **PreToolUse write guard is non-negotiable** — `research_hook.py research-readonly-write-guard` blocks source-file writes; journals stay under `~/.{gemini|copilot|codex|claude}/research/`
 16. **Stop hook must pass** — `research_hook.py research-stop-verifier` delegates to `verify.py stop` and confirms tracked research-source files stayed clean
 17. **Normalize legacy findings before synthesis** — top-level `source_url`, `source_tool`, and `confidence_raw` must be converted into the canonical `evidence[]` + `confidence` shape
+18. **A citation is not proof by itself** — cited source text must support the exact statement; unsupported or merely topical citations lower confidence and appear in the source-support audit

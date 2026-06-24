@@ -95,29 +95,6 @@ const installCommand = skillName
 
 <Default><slot /></Default>
 
-<script is:inline>
-  (() => {
-    const buttons = document.querySelectorAll('.skill-install-copy');
-    for (const button of buttons) {
-      button.addEventListener('click', async () => {
-        const command = button.getAttribute('data-install-command') ?? '';
-        if (!command) return;
-
-        try {
-          await navigator.clipboard.writeText(command);
-          button.textContent = 'Copied';
-        } catch {
-          button.textContent = 'Failed';
-        }
-
-        window.setTimeout(() => {
-          button.textContent = 'Copy';
-        }, 1500);
-      });
-    }
-  })();
-</script>
-
 <style>
   .category-nav {
     border-top: 1px solid var(--sl-color-gray-5);
