@@ -19,7 +19,7 @@
         "uv run wagents package --dry-run",
         "uv run pytest tests/test_platform_adapters.py -q"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Executable adapter + validate fixtures present; promote to validated after CI matrix green."
     },
     {
@@ -70,7 +70,7 @@
         "uv run wagents validate",
         "uv run pytest tests/test_platform_adapters.py -q"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Executable adapter + validate fixtures present; promote to validated after CI matrix green."
     },
     {
@@ -102,7 +102,7 @@
       "validation_commands": [
         "uv run wagents validate"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Requires CLI config, MCP, and installed-skill inventory fixtures before validated support claims."
     },
     {
@@ -122,7 +122,7 @@
         "uv run wagents validate",
         "uv run pytest tests/test_platform_adapters.py -q"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Executable adapter + validate fixtures present; promote to validated after CI matrix green."
     },
     {
@@ -173,7 +173,7 @@
       "validation_commands": [
         "uv run wagents validate"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Requires Cursor editor rules, skills, MCP, and rollback fixtures before validated support claims."
     },
     {
@@ -315,7 +315,7 @@
         "uv run pytest tests/test_sync_agent_stack.py",
         "uv run wagents validate"
       ],
-      "rollback_coverage": "planned",
+      "rollback_coverage": "present",
       "promotion_blocker": "Requires executable Grok config merge, skills install alias, platform filter, and rollback fixtures before validated support claims."
     }
   ]
