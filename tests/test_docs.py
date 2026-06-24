@@ -4,6 +4,8 @@ import json
 
 from wagents.catalog import CatalogNode
 from wagents.docs import (
+    CATALOG_BROWSER_THRESHOLD,
+    _docs_generate_stale_reasons,
     docs_generate,
     write_agents_index,
     write_catalog_custom_index,
@@ -69,7 +71,8 @@ class TestWriteIndexPage:
         assert 'title="Start Here"' in text
         assert "npx skills add github:wyattowalsh/agents --all -y -g" in text
         assert "OpenCode" in text
-        assert "OpenSpec Workflow" in text
+        assert "Run Spec Workflows" in text
+        assert text.count("openspec-workflow") == 1
         assert "uv run wagents openspec doctor" not in text
 
     def test_no_skills_no_featured_section(self, tmp_repo):
@@ -204,6 +207,19 @@ class TestWriteCatalogIndexes:
         text = (content_dir / "skills" / "catalog" / "external" / "index.mdx").read_text()
         assert "/skills/catalog/external/ext-skill/" in text
         assert "test-skill" not in text
+
+    def test_external_index_uses_catalog_browser_above_threshold(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        nodes = [
+            _make_node("skill", id_suffix=f"ext-{index}", source="curated-external")
+            for index in range(CATALOG_BROWSER_THRESHOLD)
+        ]
+        write_catalog_external_index(nodes)
+        text = (content_dir / "skills" / "catalog" / "external" / "index.mdx").read_text()
+        assert "<CatalogBrowser skills={externalSkillIndex} />" in text
+        assert "CatalogSkillFilter" not in text
+        assert "<LinkCard" not in text
 
     def test_install_scripts_page_groups_commands(self, tmp_repo):
         content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
@@ -625,3 +641,39 @@ def test_docs_generate_check_reports_stale_site_data(tmp_repo, monkeypatch):
     with pytest.raises(Exit) as excinfo:
         docs_generate(check=True, include_installed=False)
     assert excinfo.value.exit_code == 1
+
+
+def test_docs_generate_check_does_not_rewrite_research_manifest(tmp_repo, monkeypatch):
+    from wagents import docs as docs_mod
+
+    docs_src = tmp_repo / "docs" / "src"
+    public_indexes = tmp_repo / "docs" / "public" / "generated-skill-indexes"
+    docs_src.mkdir(parents=True, exist_ok=True)
+    public_indexes.mkdir(parents=True, exist_ok=True)
+
+    (docs_src / "generated-site-data.mjs").write_text("site", encoding="utf-8")
+    (docs_src / "generated-sidebar.mjs").write_text("sidebar", encoding="utf-8")
+    (docs_src / "generated-visual-assets.css").write_text("css", encoding="utf-8")
+    (public_indexes / "install-scripts.json").write_text("[]\n", encoding="utf-8")
+    manifest = docs_src / "generated-skill-research-index.mjs"
+    manifest.write_text("research", encoding="utf-8")
+
+    monkeypatch.setattr("wagents.skill_index.catalog_index_stale_reason", lambda: None)
+    monkeypatch.setattr(docs_mod, "collect_all_doc_nodes", lambda **kwargs: [])
+    monkeypatch.setattr(docs_mod, "read_external_skill_entries", lambda: [])
+    monkeypatch.setattr(docs_mod, "_count_mcp_servers_from_config", lambda: 0)
+    monkeypatch.setattr(docs_mod, "_has_mcp_overview_page", lambda: False)
+    monkeypatch.setattr(docs_mod, "site_data", lambda *args, **kwargs: {"skillInstallScripts": []})
+    monkeypatch.setattr(docs_mod, "render_site_data_module", lambda data: "site")
+    monkeypatch.setattr(docs_mod, "render_sidebar_module", lambda nodes: "sidebar")
+    monkeypatch.setattr(docs_mod, "render_visual_assets_css", lambda: "css")
+    monkeypatch.setattr(docs_mod, "render_research_manifest", lambda: "research")
+    monkeypatch.setattr("wagents.skill_research.MANIFEST_PATH", manifest)
+    monkeypatch.setattr(
+        docs_mod,
+        "update_research_manifest",
+        lambda: (_ for _ in ()).throw(AssertionError("check path must not write manifest")),
+    )
+
+    assert _docs_generate_stale_reasons(include_drafts=False, include_installed=False) == []
+    assert manifest.read_text(encoding="utf-8") == "research"
