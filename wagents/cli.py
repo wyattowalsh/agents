@@ -24,6 +24,13 @@ from wagents.context import (
     resolve_repo_script,
 )
 from wagents.docs import docs_app, regenerate_sidebar_and_indexes
+
+# Eval adequacy (structural E3/E4 grader)
+from wagents.eval_adequacy import (
+    assess_eval_adequacy,
+    build_adequacy_report,
+    filter_high_risk,
+)
 from wagents.installed_inventory import (
     InstalledSkillInventoryRow,
     collect_desired_sync_rows,
@@ -48,13 +55,6 @@ from wagents.openspec import (
 )
 from wagents.output import emit_structured_output, normalize_output_format
 from wagents.parsing import parse_frontmatter, to_title
-
-# Eval adequacy (structural E3/E4 grader)
-from wagents.eval_adequacy import (
-    assess_eval_adequacy,
-    build_adequacy_report,
-    filter_high_risk,
-)
 from wagents.plugins import load_command_plugins
 from wagents.rendering import scaffold_doc_page
 from wagents.self_cmd import self_app
@@ -2741,13 +2741,10 @@ def eval_adequacy(
             _emit_structured_output(format_, text_lines=[], json_data=payload, jsonl_records=[])
         else:
             for rec in high:
-                _emit_structured_output("jsonl", text_lines=[], json_data=None, jsonl_records=[{"type": "skill", **rec}])
-            _emit_structured_output(
-                "jsonl",
-                text_lines=[],
-                json_data=None,
-                jsonl_records=[{"type": "summary", "failing": [s["skill"] for s in failing], **report["summary"]}],
-            )
+                recs = [{"type": "skill", **rec}]
+                _emit_structured_output("jsonl", text_lines=[], json_data=None, jsonl_records=recs)
+            sum_rec = {"type": "summary", "failing": [s["skill"] for s in failing], **report["summary"]}
+            _emit_structured_output("jsonl", text_lines=[], json_data=None, jsonl_records=[sum_rec])
     else:
         # text
         lines: list[str] = ["Skill Adequacy Report (E3/E4 structural)", "-" * 60]
@@ -2755,9 +2752,9 @@ def eval_adequacy(
         lines.append("-" * 80)
         for s in sorted(high, key=lambda x: (x["risk_tier"], x["skill"])):
             sig = ",".join(s["e4_signals"][:3]) or "-"
-            lines.append(
-                f"{s['skill']:<30} {s['risk_tier']:<5} {s['adequacy']:<5} {'Y' if s['has_e3'] else 'N':<5} {'Y' if s['has_e4'] else 'N':<5}  {sig}"
-            )
+            e3s = "Y" if s["has_e3"] else "N"
+            e4s = "Y" if s["has_e4"] else "N"
+            lines.append(f"{s['skill']:<30} {s['risk_tier']:<5} {s['adequacy']:<5} {e3s:<5} {e4s:<5}  {sig}")
         if failing:
             lines.append("")
             lines.append("STRICT FAIL: R3/R4 skills missing E4:")
