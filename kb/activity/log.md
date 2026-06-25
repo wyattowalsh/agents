@@ -13,6 +13,17 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 18 — pass 2 stop: OpenCode harness policy topic
+
+- Journal: `~/.grok/research/kb-wave18-pass2-stop-2026-06-25.md`
+- Mode: research + ingest + enrich + audit
+- Summary: New [[opencode-harness-policy]] topic; **pass 2 stop** — waves 17–18 consecutive `<3` net-new.
+- `raw`: added 1 capture (`opencode-harness-policy-capture-w18`).
+- `wiki`: new topic + [[wiki/index]] link; alias deduped vs [[opencode-runtime-policy]].
+- Metrics: **net-new raw sources: 1**; pages enriched: 2; lint: pass (exit 0).
+- **Pass 2 gap sweep complete** (waves 15–18).
+- Note: waves 17–18 landed in one commit `77721170` (batched deviation).
+
 ### [2026-06-25] Wave 17 — pass 2: Nerdbot scripts and sync manifest
 
 - Journal: `~/.grok/research/kb-wave17-pass2-2026-06-25.md`

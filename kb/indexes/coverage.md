@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 88
+source_count: 91
 ---
 
 # Coverage Index
@@ -21,7 +21,7 @@ source_count: 88
 | `wiki/topics/agent-asset-model.md` | concept | `raw/sources/agents-md.md`; `raw/sources/agent-bundle-and-sync.md`; `raw/sources/code-surface-inventory.md`; `raw/sources/agent-definitions-inventory.md`; `raw/sources/external-agent-skill-docs.md`; `raw/captures/agent-definitions-inventory-capture-w16.md` | covered | 2026-06-25 | Eight canonical agents; bundle drift note. |
 | `wiki/topics/skill-authoring-and-validation.md` | concept | `raw/sources/agents-md.md`; `raw/sources/pyproject-and-makefile.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/openspec-config.md`; `raw/sources/readme.md`; `raw/sources/code-surface-inventory.md`; `raw/sources/asset-validation-coverage.md`; `raw/sources/tests-and-validation.md`; `raw/sources/wagents-internals.md`; `raw/sources/external-agent-skill-docs.md`; `raw/sources/skill-catalog-risk-eval-coverage.md` | covered | 2026-05-01 | Now distinguishes validation, packaging, docs, risk, evals, and external format context. |
 | `wiki/topics/harness-and-platform-sync.md` | concept | `raw/sources/agent-bundle-and-sync.md`; `raw/sources/readme.md`; `raw/sources/agents-md.md`; `raw/sources/config-registries-and-sync.md`; `raw/sources/instructions-hierarchy.md`; `raw/sources/external-harness-docs.md`; `raw/captures/harness-surface-registry-capture-w03.md`; `raw/captures/config-transaction-registry-capture-w03.md`; `raw/captures/hook-surface-registry-capture-w03.md`; `raw/captures/harness-policy-templates-capture-w12.md`; `raw/captures/grok-harness-policy-capture-w15.md`; `raw/captures/codex-harness-policy-capture-w15.md`; `raw/sources/antigravity-crush-harness-capture-w16.md` | covered | 2026-06-25 | Antigravity/Crush/Gemini bridge capture (pass 2). |
-| `wiki/topics/nerdbot.md` | concept | `raw/sources/nerdbot-skill-contract.md`; `raw/sources/nerdbot-runtime-contracts.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/external-obsidian-markdown-docs.md` | covered | 2026-05-01 | Documents Markdown-only constraint and runtime checks. |
+| `wiki/topics/nerdbot.md` | concept | `raw/sources/nerdbot-skill-contract.md`; `raw/sources/nerdbot-runtime-contracts.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/external-obsidian-markdown-docs.md`; `raw/captures/nerdbot-kb-scripts-capture-w17.md` | covered | 2026-06-25 | Five KB scripts; lint/inventory CLI paths. |
 | `wiki/topics/openspec-workflow.md` | concept | `raw/sources/agents-md.md`; `raw/sources/openspec-config.md`; `raw/sources/wagents-internals.md`; `raw/sources/openspec-change-archive-source.md`; `raw/captures/openspec-validate-snapshot-capture-w16.md` | covered | 2026-06-25 | Validate gate snapshot exit 0. |
 | `wiki/topics/developer-commands.md` | concept | `raw/sources/pyproject-and-makefile.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/nerdbot-skill-contract.md`; `raw/sources/openspec-config.md`; `raw/sources/wagents-internals.md`; `raw/sources/docs-site-architecture.md`; `raw/sources/tests-and-validation.md`; `raw/captures/makefile-dev-targets-capture-w13.md` | covered | 2026-06-25 | Makefile install + dev target matrix. |
 
@@ -31,7 +31,8 @@ source_count: 88
 | `wiki/topics/mcp-configuration-and-safety.md` | concept | `raw/sources/mcp-surfaces.md`; `raw/sources/external-harness-docs.md`; `raw/captures/mcphub-settings-validation-capture-w07.md`; `raw/captures/mcphub-launch-tunnel-capture-w07.md`; `raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | covered | 2026-06-25 | Registry/workspace safety plus MCPHub validate, tunnel, and PID guards. |
 
 | `wiki/topics/opencode-runtime-policy.md` | concept | `raw/sources/opencode-policy-and-runtime-plugins.md`; `instructions/opencode-global.md`; `raw/sources/external-harness-docs.md`; `raw/captures/opencode-platform-adapter-capture-w08.md`; `raw/captures/instructions-hierarchy-capture-w08.md`; `raw/captures/harness-config-templates-capture-w08.md` | covered | 2026-06-25 | Adapter surfaces, plugin count, frontmatter vs root model exception; Wave 08. |
-| `wiki/topics/canonical-generated-surfaces.md` | concept | `raw/sources/agents-md.md`; `raw/sources/agent-bundle-and-sync.md`; `raw/sources/config-registries-and-sync.md`; `raw/sources/opencode-policy-and-runtime-plugins.md` | covered | 2026-05-01 | Canonical/generated/source-of-truth map. |
+| `wiki/topics/canonical-generated-surfaces.md` | concept | `raw/sources/agents-md.md`; `raw/sources/agent-bundle-and-sync.md`; `raw/sources/config-registries-and-sync.md`; `raw/sources/opencode-policy-and-runtime-plugins.md`; `raw/captures/sync-manifest-snapshot-capture-w17.md` | covered | 2026-06-25 | sync-manifest 90 managed records anchor. |
+| `wiki/topics/opencode-harness-policy.md` | concept | `raw/captures/opencode-harness-policy-capture-w18.md`; `raw/captures/opencode-platform-adapter-capture-w08.md`; `instructions/opencode-global.md` | covered | 2026-06-25 | Dedicated OpenCode policy topic (pass 2 stop wave). |
 
 | `wiki/topics/plugin-and-mcp-ownership.md` | concept | `raw/sources/config-registries-and-sync.md`; `raw/sources/opencode-policy-and-runtime-plugins.md`; `raw/sources/mcp-surfaces.md`; `raw/sources/external-harness-docs.md`; `raw/captures/mcp-registry-capture-w03.md`; `raw/captures/hook-surface-registry-capture-w03.md` | covered | 2026-06-25 | Chrome DevTools lanes; MCPHub client exposure; hook cross-link. |
 

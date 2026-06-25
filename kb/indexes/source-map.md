@@ -106,6 +106,7 @@ source_count: 35
 | `openspec-validate-snapshot-capture-w16` | `raw/captures/openspec-validate-snapshot-capture-w16.md` | tool-output capture | [[openspec-workflow]], [[openspec-change-archive-status]] | no | linked | active |
 | `nerdbot-kb-scripts-capture-w17` | `raw/captures/nerdbot-kb-scripts-capture-w17.md` | tool-output capture | [[nerdbot]] | no | linked | active |
 | `sync-manifest-snapshot-capture-w17` | `raw/captures/sync-manifest-snapshot-capture-w17.md` | tool-output capture | [[canonical-generated-surfaces]], [[sync-transaction-safety]] | no | linked | active |
+| `opencode-harness-policy-capture-w18` | `raw/captures/opencode-harness-policy-capture-w18.md` | tool-output capture | [[opencode-harness-policy]], [[opencode-runtime-policy]] | no | linked | active |
 
 ## External Sources
 

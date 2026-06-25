@@ -9,7 +9,7 @@ aliases:
 kind: overview
 status: active
 updated: 2026-06-25
-source_count: 22
+source_count: 23
 ---
 
 # Agents Repository Operating Knowledge Base
@@ -53,6 +53,7 @@ Treat these repo files and directories as primary evidence before using generate
 | [[mcp-configuration-and-safety]] | MCP registries, local MCP areas, secret boundaries, and safe ingestion rules. |
 | [[docs-generation-and-site]] | README/docs generation, Starlight site structure, and generated data surfaces. |
 | [[opencode-runtime-policy]] | OpenCode model-neutral config, runtime plugins, telemetry, and Chrome DevTools policy. |
+| [[opencode-harness-policy]] | OpenCode adapter scale, canonical config files, and plugin/DCP policy summary. |
 | [[canonical-generated-surfaces]] | Canonical, generated, merged, and symlinked surface ownership. |
 | [[sync-transaction-safety]] | Sync transaction behavior, rollback limits, and safety gaps. |
 | [[plugin-and-mcp-ownership]] | Plugin and MCP ownership rules that prevent duplicate projections. |
