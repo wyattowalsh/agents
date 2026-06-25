@@ -13,6 +13,14 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 21 — gemini, cursor, and copilot harness policy
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave21-pass3-2026-06-25.md`
+- `raw`: added 3 captures (`gemini-harness-policy-capture-w21`, `cursor-harness-policy-capture-w21`, `copilot-harness-policy-capture-w21`).
+- `wiki`: new [[gemini-harness-policy]], [[cursor-harness-policy]], [[copilot-harness-policy]].
+- Metrics: **net-new raw sources: 3**; lint pass before commit.
+
 ### [2026-06-25] Wave 20 — hook registry and wagents typer map
 
 - Mode: research + ingest + enrich + audit

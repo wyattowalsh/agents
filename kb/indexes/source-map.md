@@ -113,6 +113,9 @@ source_count: 35
 | `instruction-overlay-matrix-capture-w19` | `raw/captures/instruction-overlay-matrix-capture-w19.md` | tool-output capture | [[harness-and-platform-sync]] | no | linked | active |
 | `hook-registry-capture-w20` | `raw/captures/hook-registry-capture-w20.md` | tool-output capture | [[hooks-evals-control-plane]] | no | linked | active |
 | `wagents-typer-map-capture-w20` | `raw/captures/wagents-typer-map-capture-w20.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
+| `gemini-harness-policy-capture-w21` | `raw/captures/gemini-harness-policy-capture-w21.md` | tool-output capture | [[gemini-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
+| `cursor-harness-policy-capture-w21` | `raw/captures/cursor-harness-policy-capture-w21.md` | tool-output capture | [[cursor-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
+| `copilot-harness-policy-capture-w21` | `raw/captures/copilot-harness-policy-capture-w21.md` | tool-output capture | [[copilot-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
 
 ## External Sources
 

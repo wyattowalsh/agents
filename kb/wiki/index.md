@@ -9,7 +9,7 @@ aliases:
 kind: overview
 status: active
 updated: 2026-06-25
-source_count: 23
+source_count: 28
 ---
 
 # Agents Repository Operating Knowledge Base
@@ -43,6 +43,11 @@ Treat these repo files and directories as primary evidence before using generate
 | [[harness-and-platform-sync]] | How repo-owned assets reach Claude, Codex, OpenCode, Gemini, Copilot, and related harnesses. |
 | [[grok-harness-policy]] | Grok Build models, memory, subagents, compat layers, and sync surfaces. |
 | [[codex-harness-policy]] | Codex model/search/sandbox policy and thin adapter delegation model. |
+| [[gemini-harness-policy]] | Gemini CLI / Antigravity GEMINI.md bridge and tool-efficiency overlay. |
+| [[cursor-harness-policy]] | Cursor AGENTS.md bridge, .mdc rules, subagent registry, and hooks. |
+| [[copilot-harness-policy]] | Copilot generated instructions, fleet model policy, and shell hooks. |
+| [[antigravity-harness-policy]] | Antigravity Gemini bridge and fixture tier summary. |
+| [[crush-harness-policy]] | Crush minimal instruction bridge and experimental fixture tier. |
 | [[nerdbot]] | How this KB is structured and how to maintain it safely. |
 | [[openspec-workflow]] | When OpenSpec is required and how wrapper commands are used. |
 | [[developer-commands]] | Verified commands for validation, tests, docs, packaging, OpenSpec, and KB lint. |
