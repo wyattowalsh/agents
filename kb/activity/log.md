@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 20 — hook registry and wagents typer map
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave20-pass3-2026-06-25.md`
+- `raw`: added 2 captures (`hook-registry-capture-w20`, `wagents-typer-map-capture-w20`).
+- Metrics: **net-new raw sources: 2**; lint pass before commit.
+
 ### [2026-06-25] Wave 19 — instructions layer and skill authoring refresh
 
 - Mode: research + ingest + enrich + audit

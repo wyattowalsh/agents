@@ -111,6 +111,8 @@ source_count: 35
 | `skill-creator-scripts-capture-w19` | `raw/captures/skill-creator-scripts-capture-w19.md` | tool-output capture | [[skill-authoring-and-validation]] | no | linked | active |
 | `agent-frontmatter-refresh-capture-w19` | `raw/captures/agent-frontmatter-refresh-capture-w19.md` | tool-output capture | [[agent-frontmatter-dialects]], [[agent-asset-model]] | no | linked | active |
 | `instruction-overlay-matrix-capture-w19` | `raw/captures/instruction-overlay-matrix-capture-w19.md` | tool-output capture | [[harness-and-platform-sync]] | no | linked | active |
+| `hook-registry-capture-w20` | `raw/captures/hook-registry-capture-w20.md` | tool-output capture | [[hooks-evals-control-plane]] | no | linked | active |
+| `wagents-typer-map-capture-w20` | `raw/captures/wagents-typer-map-capture-w20.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
 
 ## External Sources
 
