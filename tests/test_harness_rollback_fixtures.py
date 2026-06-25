@@ -15,8 +15,10 @@ from pathlib import Path
 
 import pytest
 
-from scripts.sync_agent_stack import SyncContext, ensure_symlink, load_json, write_local_json_config
+from scripts.sync_agent_stack import MCP_REGISTRY_PATH, SyncContext, ensure_symlink, load_json, write_local_json_config
 from wagents.platforms import base as platform_base
+from wagents.platforms import cursor as cursor_platform
+from wagents.platforms.grok import assert_no_grok_config_drops, render_grok_config
 
 
 def test_ensure_symlink_replacement_creates_bak_backup_when_apply_true(tmp_path: Path) -> None:
@@ -155,3 +157,79 @@ def test_write_local_json_config_preserves_and_writes_when_no_drops(tmp_path: Pa
     assert "managed" in written["mcpServers"]
     assert "existing" in written["mcpServers"]
     assert any("update" in ch for ch in ctx.changes)
+
+
+def test_cursor_rollback_home_mcp_merge_preserves_unknown_servers(tmp_path, monkeypatch) -> None:
+    """Home MCP sync merges managed servers without dropping user-owned entries (rollback-safe merge)."""
+    config_path = tmp_path / "mcp.json"
+    config_path.write_text(
+        json.dumps({
+            "mcpServers": {"custom": {"command": "custom-mcp"}},
+            "other": True,
+        })
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(cursor_platform, "CURSOR_HOME_MCP_PATH", config_path)
+
+    adapter = cursor_platform.Adapter()
+    ctx = cursor_platform.SyncContext(apply=True)
+    registry = {
+        "servers": {
+            "managed": {
+                "command": "uvx",
+                "args": ["managed-mcp"],
+                "enabled": True,
+            }
+        }
+    }
+
+    adapter.sync_home(ctx, registry, {}, {}, {})
+    payload = json.loads(config_path.read_text(encoding="utf-8"))
+
+    assert payload["other"] is True
+    assert payload["mcpServers"]["custom"] == {"command": "custom-mcp"}
+    assert payload["mcpServers"]["managed"]["command"] == "uvx"
+
+
+def test_cursor_rollback_cli_sync_repo_writes_stable_cli_json(tmp_path, monkeypatch) -> None:
+    """Project CLI is repo-managed full replace; repeat sync_repo is idempotent on disk."""
+    monkeypatch.setattr(cursor_platform, "cursor_project_dir", lambda: tmp_path / ".cursor")
+    adapter = cursor_platform.Adapter()
+    cli_path = tmp_path / ".cursor" / "cli.json"
+    cli_path.parent.mkdir(parents=True)
+    cli_path.write_text('{"user": true}\n', encoding="utf-8")
+
+    ctx = cursor_platform.SyncContext(apply=True)
+    adapter.sync_repo(ctx, {"servers": {}}, {}, {})
+    expected = adapter.render_cli_config({})
+    assert json.loads(cli_path.read_text(encoding="utf-8")) == expected
+    assert expected["permissions"]["allow"]
+    assert expected["permissions"]["deny"]
+
+    ctx2 = cursor_platform.SyncContext(apply=True)
+    adapter.sync_repo(ctx2, {"servers": {}}, {}, {})
+    assert json.loads(cli_path.read_text(encoding="utf-8")) == expected
+    assert not ctx2.changes
+
+
+def test_grok_rollback_merge_preserves_user_owned_tables(tmp_path, monkeypatch) -> None:
+    """Grok config merge preserves user-owned TOML tables (merge-preservation rollback model)."""
+    registry = load_json(MCP_REGISTRY_PATH)
+    policy_path = tmp_path / "config" / "grok-config.toml"
+    policy_path.parent.mkdir(parents=True)
+    policy_path.write_text("[ui]\nyolo = true\n", encoding="utf-8")
+    monkeypatch.setattr("wagents.platforms.grok.GROK_CONFIG_POLICY_PATH", policy_path)
+
+    current = """
+[user_custom]
+flag = true
+
+[ui]
+theme = "dark"
+"""
+    rendered = render_grok_config(current, registry, repo_only=False, repo_root=tmp_path)
+    assert_no_grok_config_drops(current, rendered, registry)
+    assert "[user_custom]" in rendered
+    assert "flag = true" in rendered
+    assert 'theme = "dark"' in rendered

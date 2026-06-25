@@ -178,6 +178,7 @@
       "validation_commands": [
         "uv run pytest tests/test_sync_agent_stack.py -q -k cursor",
         "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor",
+        "uv run pytest tests/test_harness_rollback_fixtures.py -q -k cursor_rollback",
         "uv run pytest tests/test_wagents_hook.py -q -k cursor",
         "uv run pytest tests/test_validate_repo.py -q -k cursor_agents",
         "uv run wagents validate"
@@ -202,6 +203,7 @@
       "validation_commands": [
         "uv run pytest tests/test_sync_agent_stack.py -q -k cursor",
         "uv run pytest tests/test_harness_plan_fixtures.py -q -k cursor",
+        "uv run pytest tests/test_harness_rollback_fixtures.py -q -k cursor_rollback",
         "uv run pytest tests/test_validate_repo.py -q -k cursor_agents",
         "uv run wagents validate"
       ],
@@ -286,8 +288,8 @@
         "uv run pytest tests/test_sync_agent_stack.py -q -k 'cursor_adapter_sync_home or cursor_adapter_render'",
         "uv run wagents validate"
       ],
-      "rollback_coverage": "present",
-      "promotion_blocker": "Live ACP smoke requires local Cursor agent binary and stays non-mutating.",
+      "rollback_coverage": "planned",
+      "promotion_blocker": "Live ACP smoke requires local Cursor agent binary; home/global rollback fixtures pending.",
       "notes": [
         "Repo-owned project MCP and CLI permissions for agent acp."
       ]
@@ -358,7 +360,10 @@
         "uv run wagents validate"
       ],
       "rollback_coverage": "present",
-      "promotion_blocker": "Requires executable Grok config merge, skills install alias, platform filter, and rollback fixtures before validated support claims."
+      "promotion_blocker": "Global ~/.grok state is user-owned; validated tier requires additional CI matrix coverage.",
+      "notes": [
+        "Fixture-executable via test_grok_platform.py, sync_agent_stack grok slices, and grok rollback merge tests."
+      ]
     }
   ]
 }
