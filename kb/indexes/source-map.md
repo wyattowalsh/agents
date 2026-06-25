@@ -135,6 +135,8 @@ source_count: 35
 | `repo-map-evidence-refresh-capture-w28` | `raw/captures/repo-map-evidence-refresh-capture-w28.md` | tool-output capture | [[repo-map]] | no | linked | active |
 | `glossary-harness-terms-capture-w28` | `raw/captures/glossary-harness-terms-capture-w28.md` | tool-output capture | [[glossary]] | no | linked | active |
 | `known-risks-refresh-capture-w28` | `raw/captures/known-risks-refresh-capture-w28.md` | tool-output capture | [[known-risks-and-open-gaps]] | no | linked | active |
+| `developer-commands-refresh-capture-w29` | `raw/captures/developer-commands-refresh-capture-w29.md` | tool-output capture | [[developer-commands]], [[nerdbot]] | no | linked | active |
+| `kb-index-metadata-capture-w29` | `raw/captures/kb-index-metadata-capture-w29.md` | tool-output capture | [[source-map]], [[coverage]] | no | linked | active |
 
 ## External Sources
 

@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 29 — developer commands and kb index metadata
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave29-pass5-2026-06-25.md`
+- `raw`: added 2 captures (`developer-commands-refresh-capture-w29`, `kb-index-metadata-capture-w29`).
+- Metrics: **net-new raw sources: 2**; lint pass before commit.
+
 ### [2026-06-25] Wave 28 — repo map, glossary, and known risks refresh
 
 - Mode: research + ingest + enrich + audit
