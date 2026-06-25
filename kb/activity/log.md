@@ -13,6 +13,18 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 08 — platforms, instructions, harness config templates
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave08-platforms-2026-06-25.md`
+- Summary: Read-only ingest of `instructions/*`, `wagents/platforms/*`, and harness config templates (`config/grok-config.toml`, `config/codex-config.toml`, `opencode.json` metadata; no secrets).
+- `raw`: added 4 captures (`instructions-hierarchy-capture-w08`, `platform-adapters-fleet-capture-w08`, `harness-config-templates-capture-w08`, `opencode-platform-adapter-capture-w08`).
+- `wiki`: enriched [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[harness-fixture-gaps]].
+- `indexes`: updated `source-map`, `coverage` (62 sources).
+- Metrics: **net-new raw sources: 4**; pages enriched: 3; lint: pass (0 issues).
+- Canonical material: unchanged; repo paths read as evidence only.
+- Risks / rollback: KB-only additive batch; codex MCP block names only, no credential values captured.
+
 ### [2026-06-25] Wave 07 — MCPHub scripts and launch fleet
 
 - Mode: research + ingest + enrich + audit

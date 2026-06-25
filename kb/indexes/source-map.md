@@ -77,6 +77,10 @@ source_count: 35
 | `mcphub-scripts-lifecycle-capture-w07` | `raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[developer-commands]] | no | linked | active |
 | `mcphub-launch-tunnel-capture-w07` | `raw/captures/mcphub-launch-tunnel-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
 | `mcphub-settings-validation-capture-w07` | `raw/captures/mcphub-settings-validation-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `instructions-hierarchy-capture-w08` | `raw/captures/instructions-hierarchy-capture-w08.md` | tool-output capture | [[harness-and-platform-sync]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
+| `platform-adapters-fleet-capture-w08` | `raw/captures/platform-adapters-fleet-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
+| `harness-config-templates-capture-w08` | `raw/captures/harness-config-templates-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
+| `opencode-platform-adapter-capture-w08` | `raw/captures/opencode-platform-adapter-capture-w08.md` | tool-output capture | [[opencode-runtime-policy]], [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
 
 ## External Sources
 

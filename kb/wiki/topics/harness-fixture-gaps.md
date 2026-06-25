@@ -9,7 +9,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 5
+source_count: 8
 ---
 
 # Harness Fixture Gaps
@@ -32,6 +32,16 @@ The repo supports many harnesses, but support tiers and fixture coverage differ.
 - **2026-06-24 Cursor lane (all surfaces):** All six Cursor harness rows are `fixture-executable`. `cursor-editor` and `cursor-cli` are **`validated`** with rollback fixtures; `cursor-bugbot` and `cursor-acp` stay **`repo-present-validation-required`** until cursor-specific rollback proof lands (`rollback: planned`). `cursor-cloud-agent` and `cursor-cloud-subagent` are **`repo-present-validation-required`** with repo-owned project surfaces and documented dashboard/OAuth/Admin API out-of-scope caveats. Manifest `notes[]` carries executable success copy; `promotion_blocker` stays gap-oriented. Adapter: `wagents/platforms/cursor.py`.
 - Remaining fixture gaps are non-Cursor plan-only harnesses (claude-desktop, cherry-studio, crush, etc.).
 
+**2026-06-25 adapter-backed harnesses (Wave 08):**
+
+| Harness | Adapter | Fixture status | Rollback | Promotion blocker |
+|---------|---------|----------------|----------|-------------------|
+| grok-build | `grok.py` (602 LOC, native) | `fixture-executable` | `present` | Global `~/.grok` user-owned; CI matrix |
+| codex | `codex.py` (delegator → monolith) | `fixture-executable` | `present` | CI matrix green |
+| opencode | `opencode.py` (849 LOC, native) | `fixture-executable` | `present` | CI matrix green |
+
+Grok tests: 34 collected in `test_grok_platform.py` + `test_sync_agent_stack.py -k grok` + `test_harness_rollback_fixtures.py -k grok`. Codex/opencode share `test_platform_adapters.py` dry-run smoke plus distribution metadata validation. Thin codex adapter (46 LOC) means rollback proof still exercises monolith `merge_codex_config`, not adapter-only paths.
+
 Future harness work should name the exact surface being changed, the registry row or sync manifest row backing it, the fixture/test that verifies it, and the rollback path for any live config mutation.
 
 ## Evidence
@@ -45,6 +55,9 @@ Future harness work should name the exact surface being changed, the registry ro
 | Compose coverage gap: five Cursor hook pages missing from composed docs. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | 98.2% compose snapshot. |
 | CI docs job runs compose check at 100% minimum. | `kb/raw/sources/ci-release-workflows-source.md` | raw source note | Fixture gate exists in CI. |
 | 2026-06-25 fixture manifest: 12 executable, 8 rollback present. | `kb/raw/captures/harness-fixture-capture-w01.md` | raw capture | 19 harness records. |
+| Adapter fleet LOC and delegator vs native split. | `kb/raw/captures/platform-adapters-fleet-capture-w08.md` | raw capture | Wave 08 platforms cluster. |
+| Grok/codex config templates and OpenCode JSON metadata. | `kb/raw/captures/harness-config-templates-capture-w08.md` | raw capture | No secrets ingested. |
+| OpenCode adapter surfaces and fixture classes. | `kb/raw/captures/opencode-platform-adapter-capture-w08.md` | raw capture | 40 runtime plugins. |
 
 ## Related
 
