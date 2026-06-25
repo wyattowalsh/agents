@@ -84,6 +84,9 @@ source_count: 35
 | `agentskills-spec-capture-w09` | `raw/sources/agentskills-spec-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
 | `mcp-spec-index-capture-w09` | `raw/sources/mcp-spec-index-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[mcp-configuration-and-safety]] | no | linked | active |
 | `agentskills-llms-index-extract-w09` | `raw/extracts/agentskills-llms-index-extract-w09.md` | normalized extract | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
+| `opencode-docs-capture-w10` | `raw/sources/opencode-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]], [[opencode-runtime-policy]] | no | linked | active |
+| `cursor-docs-capture-w10` | `raw/sources/cursor-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
+| `copilot-harness-docs-capture-w10` | `raw/sources/copilot-harness-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
 
 ## External Sources
 

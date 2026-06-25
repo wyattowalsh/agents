@@ -13,6 +13,15 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 10 — external harness doc pointers
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave10-harness-docs-2026-06-25.md`
+- Summary: Full-capture pointers for OpenCode, Cursor, and GitHub Copilot harness docs (explicit URLs; no globs).
+- `raw`: added 3 sources (`opencode-docs-capture-w10`, `cursor-docs-capture-w10`, `copilot-harness-docs-capture-w10`).
+- `wiki`: enriched [[external-primary-source-map]], [[harness-and-platform-sync]].
+- Metrics: **net-new raw sources: 3**; pages enriched: 2; lint: pass.
+
 ### [2026-06-25] Wave 09 — external Agent Skills and MCP spec indexes
 
 - Mode: research + ingest + enrich + audit
