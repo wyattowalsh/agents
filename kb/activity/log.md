@@ -13,6 +13,15 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 09 — external Agent Skills and MCP spec indexes
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave09-external-specs-2026-06-25.md`
+- Summary: Fetched `agentskills.io/llms.txt` and `modelcontextprotocol.io/llms.txt`; stub + extract for portable skills spec index.
+- `raw`: added 2 sources + 1 extract (`agentskills-spec-capture-w09`, `mcp-spec-index-capture-w09`, `agentskills-llms-index-extract-w09`).
+- `wiki`: enriched [[external-primary-source-map]], [[skill-authoring-and-validation]].
+- Metrics: **net-new raw sources: 3**; pages enriched: 2; lint: pass.
+
 ### [2026-06-25] Wave 08 — platforms, instructions, harness config templates
 
 - Mode: research + ingest + enrich + audit

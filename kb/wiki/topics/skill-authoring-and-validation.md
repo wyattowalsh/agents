@@ -10,7 +10,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-05-01
-source_count: 11
+source_count: 13
 ---
 
 # Skill Authoring And Validation
@@ -66,3 +66,4 @@ Skill eval coverage should also be read against skill risk. Use [[skill-catalog-
 | `wagents` exposes validation, docs, packaging, install/sync, OpenSpec, hooks, and eval command families. | `kb/raw/sources/wagents-internals.md` | raw source note | CLI implementation source. |
 | Upstream agent-skill docs are contextual and do not supersede repo-local frontmatter requirements. | `kb/raw/sources/external-agent-skill-docs.md` | external source note | External context only. |
 | Eval presence should be interpreted relative to skill risk. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Risk-adjusted coverage model. |
+| agentskills.io portable spec index (context). | `kb/raw/sources/agentskills-spec-capture-w09.md`; `kb/raw/extracts/agentskills-llms-index-extract-w09.md` | external fetch | Wave 09; repo AGENTS.md authoritative. |

@@ -81,6 +81,9 @@ source_count: 35
 | `platform-adapters-fleet-capture-w08` | `raw/captures/platform-adapters-fleet-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
 | `harness-config-templates-capture-w08` | `raw/captures/harness-config-templates-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
 | `opencode-platform-adapter-capture-w08` | `raw/captures/opencode-platform-adapter-capture-w08.md` | tool-output capture | [[opencode-runtime-policy]], [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `agentskills-spec-capture-w09` | `raw/sources/agentskills-spec-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
+| `mcp-spec-index-capture-w09` | `raw/sources/mcp-spec-index-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `agentskills-llms-index-extract-w09` | `raw/extracts/agentskills-llms-index-extract-w09.md` | normalized extract | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
 
 ## External Sources
 
