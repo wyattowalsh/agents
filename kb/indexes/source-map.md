@@ -61,6 +61,10 @@ source_count: 35
 | `wagents-validate-capture-w02` | `raw/captures/wagents-validate-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
 | `wagents-docs-cli-capture-w02` | `raw/captures/wagents-docs-cli-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[docs-generation-and-site]] | no | linked | active |
 | `wagents-eval-cli-capture-w02` | `raw/captures/wagents-eval-cli-capture-w02.md` | tool-output capture | [[hooks-evals-control-plane]], [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
+| `mcp-registry-capture-w03` | `raw/captures/mcp-registry-capture-w03.md` | tool-output capture | [[mcphub-control-plane]], [[plugin-and-mcp-ownership]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `harness-surface-registry-capture-w03` | `raw/captures/harness-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
+| `config-transaction-registry-capture-w03` | `raw/captures/config-transaction-registry-capture-w03.md` | tool-output capture | [[sync-transaction-safety]], [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
+| `hook-surface-registry-capture-w03` | `raw/captures/hook-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[hooks-evals-control-plane]], [[plugin-and-mcp-ownership]] | no | linked | active |
 
 ## External Sources
 

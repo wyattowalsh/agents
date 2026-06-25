@@ -13,6 +13,17 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 03 — config registry fleet
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave03-config-2026-06-25.md`
+- Summary: Read-only ingest of five `config/*-registry.json` files into four captures; enriched MCPHub, harness sync, and MCP/plugin ownership wiki pages with 2026-06-25 registry counts.
+- `raw`: added 4 captures (`mcp-registry-capture-w03`, `harness-surface-registry-capture-w03`, `config-transaction-registry-capture-w03`, `hook-surface-registry-capture-w03`).
+- `wiki`: enriched [[mcphub-control-plane]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]].
+- `indexes`: updated `source-map`, `coverage` (45 sources).
+- Metrics: **net-new raw sources: 4**; pages enriched: 3; lint: pass (0 issues).
+- Risks / rollback: KB-only additive batch; no canonical config edits.
+
 ### [2026-06-25] Wave 02 — wagents automation fleet
 
 - Mode: research + ingest + enrich + audit
