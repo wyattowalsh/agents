@@ -28,6 +28,20 @@ from wagents.platforms.cursor import Adapter as CursorAdapter
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def _cursor_hook_command(rendered: dict, hook_id: str) -> str:
+    """Find a rendered Cursor hook command by stable hook id substring."""
+    hooks_root = rendered.get("hooks") or {}
+    for event_blocks in hooks_root.values():
+        if not isinstance(event_blocks, list):
+            continue
+        for block in event_blocks:
+            for hook in block.get("hooks") or []:
+                command = str(hook.get("command") or "")
+                if hook_id in command:
+                    return command
+    raise AssertionError(f"hook command containing {hook_id!r} not found in rendered hooks")
+
+
 def load_manifest(path: str) -> dict:
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
@@ -238,8 +252,8 @@ def test_cursor_cloud_agent_repo_evidence_surfaces_exist() -> None:
     assert cursor_hooks
     rendered = adapter.render_hooks(hook_registry)
     assert rendered is not None
-    assert "preToolUse" in rendered["hooks"]
-    assert "${workspaceFolder}" in rendered["hooks"]["preToolUse"][0]["hooks"][0]["command"]
+    guard_command = _cursor_hook_command(rendered, "cursor-destructive-shell-guard")
+    assert "${workspaceFolder}" in guard_command
 
 
 def test_cursor_cloud_subagent_repo_evidence_and_overlay_alignment() -> None:
@@ -287,9 +301,12 @@ def test_cursor_acp_project_scoped_cli_and_mcp_paths_exist() -> None:
     on_disk_cli = json.loads((ROOT / ".cursor" / "cli.json").read_text(encoding="utf-8"))
     on_disk_mcp = json.loads((ROOT / ".cursor" / "mcp.json").read_text(encoding="utf-8"))
     assert set(on_disk_cli) == set(cli)
-    assert "permissions" in on_disk_cli
-    assert isinstance(on_disk_mcp.get("mcpServers"), dict)
-    assert isinstance(mcp.get("mcpServers"), dict)
+    assert cli["permissions"] == on_disk_cli["permissions"]
+    rendered_servers = mcp.get("mcpServers") or {}
+    on_disk_servers = on_disk_mcp.get("mcpServers") or {}
+    for name, spec in rendered_servers.items():
+        assert name in on_disk_servers, f"managed server {name} missing from on-disk mcp.json"
+        assert on_disk_servers[name] == spec
 
 
 def test_cursor_harness_fixture_manifest_records_all_surfaces_executable() -> None:
@@ -312,6 +329,8 @@ def test_cursor_harness_fixture_manifest_records_all_surfaces_executable() -> No
 
     assert by_id["cursor-bugbot"]["current_support_tier"] == "repo-present-validation-required"
     assert by_id["cursor-bugbot"]["rollback_coverage"] == "planned"
+    assert by_id["cursor-acp"]["current_support_tier"] == "repo-present-validation-required"
+    assert by_id["cursor-acp"]["rollback_coverage"] == "planned"
     assert "project-config-fixture" in by_id["cursor-acp"]["fixture_classes"]
 
 
