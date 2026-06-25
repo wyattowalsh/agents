@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 26 — pass 4 diminishing returns stop
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave26-pass4-stop-2026-06-25.md`
+- `raw`: added 1 capture (`pass4-thin-refresh-capture-w26`).
+- Metrics: **net-new raw sources: 1**; lint pass before commit; waves 25–26 consecutive `<3`.
+
 ### [2026-06-25] Wave 25 — catalog schema and sync transaction registry
 
 - Mode: research + ingest + enrich + audit

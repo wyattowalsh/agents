@@ -127,6 +127,7 @@ source_count: 35
 | `harness-surface-refresh-capture-w24` | `raw/captures/harness-surface-refresh-capture-w24.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
 | `catalog-schema-registry-capture-w25` | `raw/captures/catalog-schema-registry-capture-w25.md` | tool-output capture | [[curated-catalog-authoring]] | no | linked | active |
 | `sync-transaction-registry-capture-w25` | `raw/captures/sync-transaction-registry-capture-w25.md` | tool-output capture | [[sync-transaction-safety]] | no | linked | active |
+| `pass4-thin-refresh-capture-w26` | `raw/captures/pass4-thin-refresh-capture-w26.md` | tool-output capture | [[log]] | no | linked | active |
 
 ## External Sources
 
