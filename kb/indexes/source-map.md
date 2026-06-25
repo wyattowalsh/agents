@@ -104,6 +104,8 @@ source_count: 35
 | `antigravity-crush-harness-capture-w16` | `raw/sources/antigravity-crush-harness-capture-w16.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
 | `agent-definitions-inventory-capture-w16` | `raw/captures/agent-definitions-inventory-capture-w16.md` | tool-output capture | [[agent-asset-model]], [[agent-frontmatter-dialects]] | no | linked | active |
 | `openspec-validate-snapshot-capture-w16` | `raw/captures/openspec-validate-snapshot-capture-w16.md` | tool-output capture | [[openspec-workflow]], [[openspec-change-archive-status]] | no | linked | active |
+| `nerdbot-kb-scripts-capture-w17` | `raw/captures/nerdbot-kb-scripts-capture-w17.md` | tool-output capture | [[nerdbot]] | no | linked | active |
+| `sync-manifest-snapshot-capture-w17` | `raw/captures/sync-manifest-snapshot-capture-w17.md` | tool-output capture | [[canonical-generated-surfaces]], [[sync-transaction-safety]] | no | linked | active |
 
 ## External Sources
 

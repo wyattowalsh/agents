@@ -8,8 +8,8 @@ aliases:
   - Canonical surfaces
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 4
+updated: 2026-06-25
+source_count: 5
 ---
 
 # Canonical Generated Surfaces
@@ -31,6 +31,7 @@ The repo root is the bundle root. Source authority is concentrated in `AGENTS.md
 | The repo root is the bundle root and should not duplicate asset directories into plugin folders. | `kb/raw/sources/agents-md.md`; `kb/raw/sources/agent-bundle-and-sync.md` | raw source notes | Existing repo policy. |
 | `sync-manifest.json` tracks surface roles. | `kb/raw/sources/config-registries-and-sync.md` | raw source note | Ledger for generated/merged/symlinked surfaces. |
 | `opencode.json` has canonical/generated classification tension. | `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/opencode-policy-and-runtime-plugins.md` | raw source notes | Open gap. |
+| `sync-manifest.json` lists 90 managed surface records (version 1). | `kb/raw/captures/sync-manifest-snapshot-capture-w17.md` | raw capture | Pass 2 anchor. |
 
 ## Related
 

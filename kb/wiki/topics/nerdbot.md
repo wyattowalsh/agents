@@ -8,8 +8,8 @@ aliases:
   - Nerdbot KB maintenance
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 4
+updated: 2026-06-25
+source_count: 5
 ---
 
 # Nerdbot In This Repository
@@ -64,3 +64,4 @@ For this repository's KB, inventory and lint are the completion gates. Inventory
 | Shared `.obsidian/` surfaces should exclude volatile workspace state by default. | `kb/raw/sources/nerdbot-skill-contract.md` | raw source note | Derived from loaded Obsidian vault guidance. |
 | Nerdbot inventory and lint are the targeted KB verification commands for this work. | `kb/raw/sources/nerdbot-runtime-contracts.md`; `kb/raw/extracts/developer-commands-extract.md` | raw source notes | Runtime contract and command extract. |
 | Obsidian and Markdown upstream docs are contextual syntax references only. | `kb/raw/sources/external-obsidian-markdown-docs.md` | external source note | Local Nerdbot contract remains authoritative. |
+| Five scripts under `skills/nerdbot/scripts/` including kb_lint and kb_inventory. | `kb/raw/captures/nerdbot-kb-scripts-capture-w17.md` | raw capture | Pass 2. |

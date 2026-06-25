@@ -13,6 +13,15 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 17 — pass 2: Nerdbot scripts and sync manifest
+
+- Journal: `~/.grok/research/kb-wave17-pass2-2026-06-25.md`
+- Mode: research + ingest + enrich + audit
+- Summary: Five nerdbot KB scripts enumerated; sync-manifest 90 managed records anchor.
+- `raw`: added 2 captures (`nerdbot-kb-scripts-capture-w17`, `sync-manifest-snapshot-capture-w17`).
+- `wiki`: enriched [[nerdbot]], [[canonical-generated-surfaces]].
+- Metrics: **net-new raw sources: 2**; pages enriched: 2; lint: pass (exit 0).
+
 ### [2026-06-25] Wave 16 — pass 2: Antigravity/Crush, agents, OpenSpec validate
 
 - Journal: `~/.grok/research/kb-wave16-pass2-2026-06-25.md`
