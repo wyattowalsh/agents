@@ -8,8 +8,8 @@ aliases:
   - KB source map
 kind: index
 status: active
-updated: 2026-06-23
-source_count: 35
+updated: 2026-06-25
+source_count: 71
 ---
 
 # Source Map
@@ -57,30 +57,30 @@ source_count: 35
 | `openspec-lifecycle-capture-w01` | `raw/captures/openspec-lifecycle-capture-w01.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
 | `agent-pub-drift-capture-w01` | `raw/captures/agent-pub-drift-capture-w01.md` | tool-output capture | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]] | no | linked | active |
 | `harness-fixture-capture-w01` | `raw/captures/harness-fixture-capture-w01.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
-| `wagents-cli-surface-capture-w02` | `raw/captures/wagents-cli-surface-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]] | no | linked | active |
-| `wagents-validate-capture-w02` | `raw/captures/wagents-validate-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
-| `wagents-docs-cli-capture-w02` | `raw/captures/wagents-docs-cli-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[docs-generation-and-site]] | no | linked | active |
-| `wagents-eval-cli-capture-w02` | `raw/captures/wagents-eval-cli-capture-w02.md` | tool-output capture | [[hooks-evals-control-plane]], [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
 | `mcp-registry-capture-w03` | `raw/captures/mcp-registry-capture-w03.md` | tool-output capture | [[mcphub-control-plane]], [[plugin-and-mcp-ownership]], [[mcp-configuration-and-safety]] | no | linked | active |
 | `harness-surface-registry-capture-w03` | `raw/captures/harness-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
 | `config-transaction-registry-capture-w03` | `raw/captures/config-transaction-registry-capture-w03.md` | tool-output capture | [[sync-transaction-safety]], [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
 | `hook-surface-registry-capture-w03` | `raw/captures/hook-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[hooks-evals-control-plane]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `wagents-cli-surface-capture-w02` | `raw/captures/wagents-cli-surface-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]] | no | linked | active |
+| `wagents-validate-capture-w02` | `raw/captures/wagents-validate-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
+| `wagents-docs-cli-capture-w02` | `raw/captures/wagents-docs-cli-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[docs-generation-and-site]] | no | linked | active |
+| `wagents-eval-cli-capture-w02` | `raw/captures/wagents-eval-cli-capture-w02.md` | tool-output capture | [[hooks-evals-control-plane]], [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
 | `openspec-active-changes-capture-w04` | `raw/captures/openspec-active-changes-capture-w04.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
 | `planning-sync-inventory-capture-w04` | `raw/captures/planning-sync-inventory-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
 | `drift-ledger-capture-w04` | `raw/captures/drift-ledger-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `hooks-runtime-inventory-capture-w05` | `raw/captures/hooks-runtime-inventory-capture-w05.md` | tool-output capture | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] | no | linked | active |
-| `hooks-tests-cluster-capture-w05` | `raw/captures/hooks-tests-cluster-capture-w05.md` | tool-output capture | [[validation-and-test-coverage]], [[hooks-evals-control-plane]] | no | linked | active |
-| `skill-eval-files-capture-w05` | `raw/captures/skill-eval-files-capture-w05.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
-| `catalog-authoring-mdx-capture-w06` | `raw/captures/catalog-authoring-mdx-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[docs-generation-and-site]] | no | linked | active |
-| `skills-catalog-index-capture-w06` | `raw/captures/skills-catalog-index-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[skill-authoring-and-validation]] | no | linked | active |
-| `docs-generate-check-capture-w06` | `raw/captures/docs-generate-check-capture-w06.md` | tool-output capture | [[docs-generation-and-site]], [[curated-catalog-authoring]] | no | linked | active |
 | `mcphub-scripts-lifecycle-capture-w07` | `raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[developer-commands]] | no | linked | active |
 | `mcphub-launch-tunnel-capture-w07` | `raw/captures/mcphub-launch-tunnel-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
 | `mcphub-settings-validation-capture-w07` | `raw/captures/mcphub-settings-validation-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `hooks-runtime-inventory-capture-w05` | `raw/captures/hooks-runtime-inventory-capture-w05.md` | tool-output capture | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] | no | linked | active |
+| `hooks-tests-cluster-capture-w05` | `raw/captures/hooks-tests-cluster-capture-w05.md` | tool-output capture | [[validation-and-test-coverage]], [[hooks-evals-control-plane]] | no | linked | active |
+| `skill-eval-files-capture-w05` | `raw/captures/skill-eval-files-capture-w05.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
 | `instructions-hierarchy-capture-w08` | `raw/captures/instructions-hierarchy-capture-w08.md` | tool-output capture | [[harness-and-platform-sync]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
 | `platform-adapters-fleet-capture-w08` | `raw/captures/platform-adapters-fleet-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
 | `harness-config-templates-capture-w08` | `raw/captures/harness-config-templates-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
 | `opencode-platform-adapter-capture-w08` | `raw/captures/opencode-platform-adapter-capture-w08.md` | tool-output capture | [[opencode-runtime-policy]], [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `catalog-authoring-mdx-capture-w06` | `raw/captures/catalog-authoring-mdx-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[docs-generation-and-site]] | no | linked | active |
+| `skills-catalog-index-capture-w06` | `raw/captures/skills-catalog-index-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[skill-authoring-and-validation]] | no | linked | active |
+| `docs-generate-check-capture-w06` | `raw/captures/docs-generate-check-capture-w06.md` | tool-output capture | [[docs-generation-and-site]], [[curated-catalog-authoring]] | no | linked | active |
 | `agentskills-spec-capture-w09` | `raw/sources/agentskills-spec-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
 | `mcp-spec-index-capture-w09` | `raw/sources/mcp-spec-index-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[mcp-configuration-and-safety]] | no | linked | active |
 | `agentskills-llms-index-extract-w09` | `raw/extracts/agentskills-llms-index-extract-w09.md` | normalized extract | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
@@ -137,6 +137,8 @@ source_count: 35
 | `known-risks-refresh-capture-w28` | `raw/captures/known-risks-refresh-capture-w28.md` | tool-output capture | [[known-risks-and-open-gaps]] | no | linked | active |
 | `developer-commands-refresh-capture-w29` | `raw/captures/developer-commands-refresh-capture-w29.md` | tool-output capture | [[developer-commands]], [[nerdbot]] | no | linked | active |
 | `kb-index-metadata-capture-w29` | `raw/captures/kb-index-metadata-capture-w29.md` | tool-output capture | [[source-map]], [[coverage]] | no | linked | active |
+| `pass5-final-stop-capture-w30` | `raw/captures/pass5-final-stop-capture-w30.md` | tool-output capture | [[log]] | no | linked | active |
+
 
 ## External Sources
 

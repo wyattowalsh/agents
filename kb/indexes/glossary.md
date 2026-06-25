@@ -8,8 +8,8 @@ aliases:
   - Repository glossary
 kind: index
 status: active
-updated: 2026-06-23
-source_count: 31
+updated: 2026-06-25
+source_count: 33
 ---
 
 # Glossary
@@ -60,3 +60,5 @@ source_count: 31
 | Compose coverage | Docs compose manifest tracking which registry rows have composed MDX pages under `docs/src/content/docs/`. | `kb/raw/sources/docs-artifact-freshness.md` |
 | CI validate job | GitHub Actions job running `wagents validate`, readme check, openspec validate, skills sync dry-run, and catalog index check. | `kb/raw/sources/ci-release-workflows-source.md` |
 | Phase 4 fix candidate | Documented repo fix outside `kb/` queued after KB enrichment (docs badge, plugin files, compose pages, CLI gaps). | `kb/wiki/topics/known-risks-and-open-gaps.md` |
+| Harness policy topic | Per-harness wiki synthesis page (grok, codex, opencode, gemini, cursor, copilot, antigravity, crush) summarizing repo-managed bridges and overlays. | `kb/raw/captures/glossary-harness-terms-capture-w28.md` |
+| Support tier vocabulary | Seven-tier label set from `support-tier-registry.json` governing docs/support matrices and promotion gates. | `kb/raw/captures/support-tier-registry-capture-w23.md` |
