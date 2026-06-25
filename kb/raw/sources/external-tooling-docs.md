@@ -9,8 +9,8 @@ aliases:
   - Tooling external sources
 kind: source-summary
 status: active
-updated: 2026-05-01
-source_count: 1
+updated: 2026-06-25
+source_count: 3
 ---
 
 # External Tooling Docs
@@ -43,3 +43,5 @@ Verified details include Typer's explicit `typer.Typer()` app and `@app.command(
 | PyPA documents `pyproject.toml` build/project/tool tables. | `https://packaging.python.org/en/latest/specifications/pyproject-toml/` | external official spec | Verified 2026-05-01 by web fetch. |
 | uv docs provide project and workspace reference material. | `https://docs.astral.sh/uv/llms.txt` | external official docs | Verified 2026-05-01 by web fetch. |
 | Starlight docs describe config through `astro.config.mjs`. | `https://starlight.astro.build/reference/configuration/` | external official docs | Verified 2026-05-01 by web fetch. |
+| 2026-06-25 repo pyproject aligns Ruff include/exclude with CI lint job and ty src scopes with typecheck job. | `kb/raw/captures/pyproject-tooling-capture-w11.md` | raw capture | Wave 11 alignment capture. |
+| uv llms.txt indexes project/workspace/guides/reference sections. | `kb/raw/extracts/uv-llms-index-extract-w11.md` | external extract | Wave 11 fetch. |

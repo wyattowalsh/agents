@@ -87,6 +87,10 @@ source_count: 35
 | `opencode-docs-capture-w10` | `raw/sources/opencode-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]], [[opencode-runtime-policy]] | no | linked | active |
 | `cursor-docs-capture-w10` | `raw/sources/cursor-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
 | `copilot-harness-docs-capture-w10` | `raw/sources/copilot-harness-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
+| `uv-llms-index-extract-w11` | `raw/extracts/uv-llms-index-extract-w11.md` | normalized extract | [[external-primary-source-map]], [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
+| `pyproject-tooling-capture-w11` | `raw/captures/pyproject-tooling-capture-w11.md` | tool-output capture | [[validation-and-test-coverage]], [[external-primary-source-map]] | no | linked | active |
+| `ci-workflow-jobs-capture-w11` | `raw/captures/ci-workflow-jobs-capture-w11.md` | tool-output capture | [[ci-and-release-workflows]], [[validation-and-test-coverage]] | no | linked | active |
+| `obsidian-properties-capture-w11` | `raw/sources/obsidian-properties-capture-w11.md` | external source pointer | [[obsidian-vault-conventions]], [[nerdbot]], [[external-primary-source-map]] | no | linked | active |
 
 ## External Sources
 

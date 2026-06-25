@@ -13,6 +13,18 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 11 — tooling docs and thin page refresh
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave11-gap-sweep-2026-06-25.md`
+- Summary: Gap sweep deepened uv/ruff/ty tooling evidence, Obsidian properties pointers, and fresh CI job capture; refreshed repo-map evidence for waves 03–10.
+- `raw`: added 4 sources (`uv-llms-index-extract-w11`, `pyproject-tooling-capture-w11`, `ci-workflow-jobs-capture-w11`, `obsidian-properties-capture-w11`).
+- `wiki`: enriched [[external-primary-source-map]], [[validation-and-test-coverage]], [[ci-and-release-workflows]], [[obsidian-vault-conventions]].
+- `indexes`: updated `source-map`, `coverage` (75 sources), `repo-map` evidence.
+- Metrics: **net-new raw sources: 4**; pages enriched: 5; lint: pass (exit 0).
+- Stop rule: waves 09–10 were 3 each; wave 11 = 4 → gap sweep continues.
+- Risks / rollback: KB-only additive batch.
+
 ### [2026-06-25] Wave 10 — external harness doc pointers
 
 - Mode: research + ingest + enrich + audit

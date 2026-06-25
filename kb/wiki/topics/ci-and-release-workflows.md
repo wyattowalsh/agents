@@ -8,8 +8,8 @@ aliases:
   - CI pipelines
 kind: concept
 status: active
-updated: 2026-06-23
-source_count: 2
+updated: 2026-06-25
+source_count: 3
 ---
 
 # CI And Release Workflows
@@ -42,11 +42,16 @@ GitHub Actions and pre-commit enforce validation, docs freshness, catalog parity
 - No CI invocation of `scripts/validate_codex_config.py` as of 2026-06-23.
 - Workflow hardening regression tests live in `tests/test_github_workflows.py`; Dependabot updates action SHAs via `.github/dependabot.yml`.
 
+## 2026-06-25 refresh (Wave 11)
+
+Fresh capture confirms seven CI jobs with explicit command pairing: `lint` runs Ruff check + format check; `typecheck` runs `ty check`; `test` runs full pytest with coverage; `validate` runs the wagents/openspec/catalog slice plus a six-file curated pytest subset (not the full suite).
+
 ## Provenance
 
 | Claim or section | Raw or canonical material | Notes |
 |------------------|---------------------------|-------|
-| Job definitions and command lists | `kb/raw/sources/ci-release-workflows-source.md` | Primary |
+| Job definitions and command lists | `kb/raw/sources/ci-release-workflows-source.md` | Primary summary |
+| Fresh job/command table | `kb/raw/captures/ci-workflow-jobs-capture-w11.md` | Wave 11 read-only capture |
 | Developer command aliases | `kb/raw/sources/pyproject-and-makefile.md` | Makefile |
 | Validation collector details | `kb/raw/sources/scripts-validation-tooling-source.md` | Scripts layer |
 

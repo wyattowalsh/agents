@@ -9,7 +9,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 9
+source_count: 11
 ---
 
 # Validation And Test Coverage
@@ -40,6 +40,8 @@ Hooks and evals are related but distinct: hooks enforce runtime/projection polic
 | Skill eval coverage should be interpreted relative to skill risk. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Adequacy gap. |
 | Hooks/eval pytest cluster: 106 core tests across six files; 108 with Plannotator. | `kb/raw/captures/hooks-tests-cluster-capture-w05.md` | raw capture | Wave 05 cluster inventory. |
 | Eval file layout: 602 manifest cases + 189 legacy JSON files → CLI count 791. | `kb/raw/captures/skill-eval-files-capture-w05.md` | raw capture | Manifest vs legacy reconciliation. |
+| Ruff scoped `include`/`extend-exclude`; ty `src.include`/`exclude`/`allowed-unresolved-imports`; CI lint+typecheck jobs. | `kb/raw/captures/pyproject-tooling-capture-w11.md` | raw capture | Wave 11 pyproject alignment. |
+| uv llms.txt project/workspace reference map. | `kb/raw/extracts/uv-llms-index-extract-w11.md` | external extract | Context for `uv run` / workspace member `mcp/mcphub`. |
 
 ## Related
 

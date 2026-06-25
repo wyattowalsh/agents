@@ -9,8 +9,8 @@ aliases:
   - Vault conventions
 kind: concept
 status: active
-updated: 2026-06-23
-source_count: 3
+updated: 2026-06-25
+source_count: 4
 ---
 
 # Obsidian Vault Conventions
@@ -48,6 +48,7 @@ source_count: 3
 | Layered KB model and vault rules | `kb/raw/sources/nerdbot-skill-contract.md` | Nerdbot contract |
 | Shared vs volatile `.obsidian/` surfaces | `kb/config/obsidian-vault.md` | Config contract |
 | Obsidian syntax context | `kb/raw/sources/external-obsidian-markdown-docs.md` | External pointer only |
+| Properties, aliases, links | `kb/raw/sources/obsidian-properties-capture-w11.md` | Wave 11 official help pointers |
 
 ## Related wiki pages
 
