@@ -13,6 +13,15 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 16 — pass 2: Antigravity/Crush, agents, OpenSpec validate
+
+- Journal: `~/.grok/research/kb-wave16-pass2-2026-06-25.md`
+- Mode: research + ingest + enrich + audit
+- Summary: Antigravity/Crush/Gemini bridge pointer; eight-agent inventory; OpenSpec validate exit-0 snapshot.
+- `raw`: added 3 sources (`antigravity-crush-harness-capture-w16`, `agent-definitions-inventory-capture-w16`, `openspec-validate-snapshot-capture-w16`).
+- `wiki`: enriched [[agent-asset-model]], [[harness-and-platform-sync]], [[openspec-workflow]].
+- Metrics: **net-new raw sources: 3**; pages enriched: 3; lint: pass (exit 0).
+
 ### [2026-06-25] Wave 15 — pass 2: Grok/Codex policy topics and inventory
 
 - Mode: research + ingest + enrich + audit

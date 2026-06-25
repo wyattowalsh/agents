@@ -91,3 +91,4 @@ Use [[canonical-generated-surfaces]] to find the source-of-truth path before edi
 | Gemini CLI official repo + GEMINI.md bridge. | `kb/raw/sources/gemini-harness-docs-capture-w13.md` | external pointer | Wave 13. |
 | Grok dedicated policy topic. | `kb/raw/captures/grok-harness-policy-capture-w15.md`; [[grok-harness-policy]] | raw capture + wiki | Wave 15 pass 2. |
 | Codex dedicated policy topic. | `kb/raw/captures/codex-harness-policy-capture-w15.md`; [[codex-harness-policy]] | raw capture + wiki | Wave 15 pass 2. |
+| Antigravity/Crush/Gemini shared GEMINI bridge. | `kb/raw/sources/antigravity-crush-harness-capture-w16.md` | external pointer | Wave 16 pass 2. |

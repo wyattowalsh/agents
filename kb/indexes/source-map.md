@@ -101,6 +101,9 @@ source_count: 35
 | `codex-harness-policy-capture-w15` | `raw/captures/codex-harness-policy-capture-w15.md` | tool-output capture | [[codex-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
 | `release-skills-workflow-capture-w15` | `raw/captures/release-skills-workflow-capture-w15.md` | tool-output capture | [[ci-and-release-workflows]] | no | linked | active |
 | `repository-inventory-capture-w15` | `raw/captures/repository-inventory-capture-w15.md` | tool-output capture | [[repository-overview]], [[agent-asset-model]] | no | linked | active |
+| `antigravity-crush-harness-capture-w16` | `raw/sources/antigravity-crush-harness-capture-w16.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
+| `agent-definitions-inventory-capture-w16` | `raw/captures/agent-definitions-inventory-capture-w16.md` | tool-output capture | [[agent-asset-model]], [[agent-frontmatter-dialects]] | no | linked | active |
+| `openspec-validate-snapshot-capture-w16` | `raw/captures/openspec-validate-snapshot-capture-w16.md` | tool-output capture | [[openspec-workflow]], [[openspec-change-archive-status]] | no | linked | active |
 
 ## External Sources
 

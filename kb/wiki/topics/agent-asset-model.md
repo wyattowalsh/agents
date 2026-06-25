@@ -9,8 +9,8 @@ aliases:
   - Skills agents MCP instructions model
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 5
+updated: 2026-06-25
+source_count: 6
 ---
 
 # Agent Asset Model
@@ -32,7 +32,7 @@ The repo packages several asset classes as one portable bundle:
 
 `AGENTS.md` says plugin manifests intentionally omit fixed versions while the repo is distributed from Git, allowing update checks to follow commits rather than manifest version bumps. The same file treats OpenCode plugin specs in repo-managed `opencode.json` as `@latest` by policy.
 
-`agent-bundle.json` currently describes `agents/` as reserved for future bundled agent definitions, while local inventory found eight agent files in `agents/`. Treat that as a documented drift/gap until reconciled.
+`agent-bundle.json` may still describe `agents/` as reserved for future bundled agent definitions, while inventory found **eight** canonical agent files in `agents/` (plus `README.md`). Treat bundle wording as drift until reconciled in repo docs.
 
 Agent prompt frontmatter has repo-specific fields that are not identical to skill frontmatter or upstream harness docs. Use [[agent-frontmatter-dialects]] before adding or changing agent files, and use [[plugin-and-mcp-ownership]] before changing bundle/plugin ownership relationships.
 
@@ -55,3 +55,4 @@ Agent prompt frontmatter has repo-specific fields that are not identical to skil
 | Current local inventory found eight files under `agents/*.md`. | `kb/raw/sources/code-surface-inventory.md` | raw source note | Captured from local glob output. |
 | The enriched agent inventory maps actual local agent frontmatter fields. | `kb/raw/sources/agent-definitions-inventory.md` | raw source note | Distinguishes repo agent dialects from skill and harness formats. |
 | External agent-skill docs are contextual and do not override repo-local asset contracts. | `kb/raw/sources/external-agent-skill-docs.md` | external source note | Upstream format context only. |
+| Eight agent filenames enumerated 2026-06-25. | `kb/raw/captures/agent-definitions-inventory-capture-w16.md` | raw capture | Pass 2 inventory. |
