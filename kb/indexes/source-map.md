@@ -91,6 +91,9 @@ source_count: 35
 | `pyproject-tooling-capture-w11` | `raw/captures/pyproject-tooling-capture-w11.md` | tool-output capture | [[validation-and-test-coverage]], [[external-primary-source-map]] | no | linked | active |
 | `ci-workflow-jobs-capture-w11` | `raw/captures/ci-workflow-jobs-capture-w11.md` | tool-output capture | [[ci-and-release-workflows]], [[validation-and-test-coverage]] | no | linked | active |
 | `obsidian-properties-capture-w11` | `raw/sources/obsidian-properties-capture-w11.md` | external source pointer | [[obsidian-vault-conventions]], [[nerdbot]], [[external-primary-source-map]] | no | linked | active |
+| `scripts-validate-collectors-capture-w12` | `raw/captures/scripts-validate-collectors-capture-w12.md` | tool-output capture | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]] | no | linked | active |
+| `harness-policy-templates-capture-w12` | `raw/captures/harness-policy-templates-capture-w12.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
+| `starlight-astro-config-capture-w12` | `raw/captures/starlight-astro-config-capture-w12.md` | tool-output capture | [[docs-generation-and-site]] | no | linked | active |
 
 ## External Sources
 

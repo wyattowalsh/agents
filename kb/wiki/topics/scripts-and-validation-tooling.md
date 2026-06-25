@@ -8,8 +8,8 @@ aliases:
   - Validation scripts
 kind: concept
 status: active
-updated: 2026-06-23
-source_count: 2
+updated: 2026-06-25
+source_count: 3
 ---
 
 # Scripts And Validation Tooling
@@ -45,6 +45,7 @@ source_count: 2
 | Claim or section | Raw or canonical material | Notes |
 |------------------|---------------------------|-------|
 | Script inventory and gaps | `kb/raw/sources/scripts-validation-tooling-source.md` | Primary source |
+| Collector module inventory (7 modules) | `kb/raw/captures/scripts-validate-collectors-capture-w12.md` | Wave 12 explicit listing |
 | Asset validation vs packaging | `kb/raw/sources/asset-validation-coverage.md` | Complementary |
 
 ## Related wiki pages

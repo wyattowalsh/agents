@@ -9,7 +9,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 10
+source_count: 11
 ---
 
 # Docs Generation And Site
@@ -47,6 +47,7 @@ Official Starlight docs confirm that Starlight is configured through `astro.conf
 | Catalog index 363 rows (56 custom / 307 external). | `kb/raw/captures/skills-catalog-index-capture-w06.md` | raw capture | 2026-06-25 JSON scan. |
 | Authoring MDX flat corpus 363 files. | `kb/raw/captures/catalog-authoring-mdx-capture-w06.md` | raw capture | Bucket A SSOT count. |
 | Generate --check CI + catalog index check policy. | `kb/raw/captures/docs-generate-check-capture-w06.md` | raw capture | Freshness gates. |
+| Starlight plugin stack (theme-black, links-validator, llms-txt). | `kb/raw/captures/starlight-astro-config-capture-w12.md` | raw capture | Wave 12 astro.config.mjs. |
 
 ## Related
 

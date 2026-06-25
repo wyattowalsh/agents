@@ -13,6 +13,18 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 12 — scripts collectors and harness policy templates
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave12-gap-sweep-2026-06-25.md`
+- Summary: Explicit-path captures for validate collectors (7 modules), Grok/Codex policy templates, and Starlight astro.config plugin stack.
+- `raw`: added 3 captures (`scripts-validate-collectors-capture-w12`, `harness-policy-templates-capture-w12`, `starlight-astro-config-capture-w12`).
+- `wiki`: enriched [[scripts-and-validation-tooling]], [[harness-and-platform-sync]], [[docs-generation-and-site]].
+- `indexes`: updated `source-map`, `coverage` (78 sources).
+- Metrics: **net-new raw sources: 3**; pages enriched: 3; lint: pass (exit 0).
+- Stop rule: wave 11 = 4, wave 12 = 3 → not two consecutive `<3`; sweep may continue.
+- Risks / rollback: KB-only additive batch.
+
 ### [2026-06-25] Wave 11 — tooling docs and thin page refresh
 
 - Mode: research + ingest + enrich + audit
