@@ -551,3 +551,29 @@ def test_harness_fixture_support_covers_every_harness_without_tier_promotion():
 
         if harness["support_tier"] != "validated":
             assert evidence["promotion_blocker"]
+        else:
+            assert evidence["rollback_coverage"] == "present"
+            rollback_cmds = [
+                cmd
+                for cmd in evidence["validation_commands"]
+                if "test_harness_rollback_fixtures.py" in cmd
+            ]
+            assert rollback_cmds, (
+                f"{harness_id} validated tier requires rollback fixture pytest in validation_commands"
+            )
+
+
+def test_hook_surface_tiers_match_harness_registry_for_shared_ids():
+    """Hook-surface registry tiers stay aligned with harness-surface registry for shared ids."""
+    harness_registry = load_json("config/harness-surface-registry.json")
+    hook_registry = load_json("config/hook-surface-registry.json")
+    harness_by_id = {h["id"]: h for h in harness_registry["harnesses"]}
+    hook_by_id = {h["id"]: h for h in hook_registry.get("harnesses", [])}
+
+    shared = set(harness_by_id) & set(hook_by_id)
+    assert shared, "expected at least one shared harness/hook-surface id"
+
+    for hid in sorted(shared):
+        assert hook_by_id[hid]["support_tier"] == harness_by_id[hid]["support_tier"], (
+            f"{hid} hook/harness support_tier mismatch"
+        )

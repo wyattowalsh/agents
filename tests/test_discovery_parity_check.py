@@ -39,6 +39,7 @@ def test_parity_check_delegates_to_repo_script() -> None:
     second_cmd = run.call_args_list[1].args[0]
     assert str(ROOT / "scripts" / "check_discovery_parity.py") in first_cmd[1]
     assert str(ROOT / "scripts" / "check_hook_discovery_parity.py") in second_cmd[1]
+    assert "--check-tiers" in second_cmd
 
 
 def test_parity_check_missing_script_returns_one(tmp_path: Path) -> None:

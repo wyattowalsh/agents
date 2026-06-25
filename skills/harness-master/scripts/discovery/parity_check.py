@@ -27,10 +27,10 @@ def main(argv: list[str] | None = None) -> int:
             return 1
 
     for script in scripts:
-        proc = subprocess.run(
-            [sys.executable, str(script), "--repo-root", str(repo_root)],
-            check=False,
-        )
+        cmd = [sys.executable, str(script), "--repo-root", str(repo_root)]
+        if script.name == "check_hook_discovery_parity.py":
+            cmd.append("--check-tiers")
+        proc = subprocess.run(cmd, check=False)
         if proc.returncode != 0:
             return int(proc.returncode or 1)
     return 0

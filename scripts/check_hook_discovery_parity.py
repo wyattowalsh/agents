@@ -12,9 +12,38 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 
+def _tier_mismatches(
+    harness_reg: dict,
+    hook_map: dict[str, dict],
+) -> list[str]:
+    """Return failures when shared harness/hook ids disagree on support_tier."""
+    harness_map = {
+        str(h["id"]): h
+        for h in harness_reg.get("harnesses", [])
+        if isinstance(h, dict) and h.get("id")
+    }
+    failures: list[str] = []
+    for hid, hook_entry in hook_map.items():
+        harness_entry = harness_map.get(hid)
+        if harness_entry is None:
+            continue
+        hook_tier = hook_entry.get("support_tier")
+        harness_tier = harness_entry.get("support_tier")
+        if hook_tier != harness_tier:
+            failures.append(
+                f"{hid}: hook-surface support_tier {hook_tier!r} != harness-surface {harness_tier!r}"
+            )
+    return failures
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, default=None)
+    parser.add_argument(
+        "--check-tiers",
+        action="store_true",
+        help="Also require matching support_tier for ids present in both registries",
+    )
     args = parser.parse_args(argv)
     repo_root = args.repo_root or ROOT
 
@@ -34,6 +63,9 @@ def main(argv: list[str] | None = None) -> int:
     hook_map = {h["id"]: h for h in hook_reg.get("harnesses", []) if isinstance(h, dict) and "id" in h}
 
     failures: list[str] = []
+    if args.check_tiers:
+        failures.extend(_tier_mismatches(harness_reg, hook_map))
+
     for harness in harness_reg.get("harnesses", []):
         if not isinstance(harness, dict):
             continue

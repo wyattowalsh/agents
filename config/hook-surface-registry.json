@@ -117,7 +117,7 @@
       "brand": "Cursor",
       "surface_kind": "editor",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "repo-present-validation-required",
+      "support_tier": "validated",
       "hook_surfaces": [
         {
           "level": "project",
@@ -160,7 +160,7 @@
       "brand": "Cursor",
       "surface_kind": "web-cloud-agent",
       "owner_change": "agents-c04-cursor-harness",
-      "support_tier": "planned-research-backed",
+      "support_tier": "repo-present-validation-required",
       "hook_surfaces": [
         {
           "level": "project",
