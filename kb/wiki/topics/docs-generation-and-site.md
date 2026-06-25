@@ -7,9 +7,9 @@ tags:
 aliases:
   - Docs site
 kind: concept
-status: partial
-updated: 2026-06-23
-source_count: 6
+status: active
+updated: 2026-06-25
+source_count: 7
 ---
 
 # Docs Generation And Site
@@ -28,9 +28,11 @@ Official Starlight docs confirm that Starlight is configured through `astro.conf
 
 `config/docs-artifact-registry.json` tracks selected generated docs artifacts and validation commands, but the docs generator writes more surfaces than the registry currently enumerates. README freshness has a non-mutating check via `uv run wagents readme --check`; docs generation does not yet have an equivalent `wagents docs generate --check` command.
 
-Read-only research found generated site data and catalog counts aligned with authoring sources (363 skills in index: 56 custom + 307 curated-external). Compose coverage manifest (2026-06-23) reports 98.2% composed (381/388); five missing hook pages are Cursor hooks present in registry but without composed MDX.
+**2026-06-25 freshness:** Compose coverage is **397/397 (100%)** including 22 hook pages and 363 skill pages (`wagents docs compose --check-composed --min-pct 100`). CI enforces `wagents docs generate --no-installed --check` and compose 100% on PR/push (`.github/workflows/ci.yml`).
 
-Stale hand-maintained gap persists: `docs/src/content/docs/mcp/index.mdx` badge still disagrees with `mcp.json`/generated counts. There is no `wagents docs generate --check` equivalent to `readme --check` or `catalog index --check`. `config/docs-artifact-registry.json` lists only five generated artifacts though the generator emits more surfaces.
+**Remaining hand-maintained drift:** `docs/src/content/docs/mcp/index.mdx` badge still shows "15 configured servers" while `config/mcp-registry.json` lists **33** servers — a docs copy fix outside KB scope once tracked in [[known-risks-and-open-gaps]].
+
+`config/docs-artifact-registry.json` still enumerates a subset of generated surfaces; the generator emits additional indexes and site data beyond that registry.
 
 ## Evidence
 
@@ -39,7 +41,9 @@ Stale hand-maintained gap persists: `docs/src/content/docs/mcp/index.mdx` badge 
 | Docs generation is driven by `wagents docs generate`. | `kb/raw/sources/docs-site-architecture.md`; `kb/raw/sources/wagents-internals.md` | raw source notes | Local implementation is authoritative. |
 | Starlight config lives in Astro config and uses `starlight()`. | `kb/raw/sources/docs-site-architecture.md`; `kb/raw/sources/external-tooling-docs.md` | external source notes | Official Starlight docs verified. |
 | Generated docs are source-derived surfaces. | `kb/raw/sources/docs-site-architecture.md`; `kb/raw/sources/config-registries-and-sync.md` | raw source notes | Update via generator, not generic note edits. |
-| Docs artifact registry, freshness checks, and MCP count drift need separate attention from ordinary docs generation. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | Autoresearch finding; full docs build not run. |
+| Compose 100% and CI generate --check gates. | `kb/raw/captures/docs-freshness-capture-w01.md` | raw capture | 2026-06-25 tool capture. |
+| MCP badge vs registry cardinality drift. | `kb/raw/captures/docs-freshness-capture-w01.md` | raw capture | 15 vs 33 servers. |
+| Docs artifact registry partial enumeration. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | Registry subset vs generator output. |
 
 ## Related
 

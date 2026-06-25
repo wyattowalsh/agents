@@ -51,6 +51,12 @@ source_count: 35
 | `ci-release-workflows` | `raw/sources/ci-release-workflows-source.md` | repo pointer summary | [[ci-and-release-workflows]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
 | `scripts-validation-tooling` | `raw/sources/scripts-validation-tooling-source.md` | repo pointer summary | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
 | `openspec-active-lifecycle` | `raw/sources/openspec-active-lifecycle-source.md` | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `skill-eval-inventory-capture-w01` | `raw/captures/skill-eval-inventory-capture-w01.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
+| `docs-freshness-capture-w01` | `raw/captures/docs-freshness-capture-w01.md` | tool-output capture | [[docs-generation-and-site]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `sync-rollback-capture-w01` | `raw/captures/sync-rollback-capture-w01.md` | tool-output capture | [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
+| `openspec-lifecycle-capture-w01` | `raw/captures/openspec-lifecycle-capture-w01.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
+| `agent-pub-drift-capture-w01` | `raw/captures/agent-pub-drift-capture-w01.md` | tool-output capture | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]] | no | linked | active |
+| `harness-fixture-capture-w01` | `raw/captures/harness-fixture-capture-w01.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
 
 ## External Sources
 

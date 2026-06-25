@@ -8,8 +8,8 @@ aliases:
   - KB coverage
 kind: index
 status: active
-updated: 2026-06-23
-source_count: 35
+updated: 2026-06-25
+source_count: 41
 ---
 
 # Coverage Index
@@ -39,16 +39,16 @@ source_count: 35
 | `wiki/topics/planning-corpus-and-drift-ledgers.md` | concept | `raw/sources/planning-corpus-drift-source.md` | covered | 2026-05-01 | Planning, drift, and fixture ledgers support conservative sync claims. |
 | `wiki/topics/hooks-evals-control-plane.md` | concept | `raw/sources/hooks-evals-control-source.md` | covered | 2026-05-01 | Hooks and evals as safety/regression control-plane surfaces. |
 
-| `wiki/topics/skill-catalog-risk-and-eval-coverage.md` | concept | `raw/sources/skill-catalog-risk-eval-coverage.md`; `raw/sources/hooks-evals-control-source.md`; `raw/captures/local-inventory-summary.md` | partial | 2026-06-23 | 29/56 eval manifests; risk-adjusted adequacy not graded. |
+| `wiki/topics/skill-catalog-risk-and-eval-coverage.md` | concept | `raw/sources/skill-catalog-risk-eval-coverage.md`; `raw/sources/hooks-evals-control-source.md`; `raw/captures/skill-eval-inventory-capture-w01.md` | covered | 2026-06-25 | 56/56 manifests; adequacy CLI 0 needs_e4. |
 | `wiki/topics/obsidian-vault-conventions.md` | concept | `raw/sources/external-obsidian-markdown-docs.md`; `kb/config/obsidian-vault.md` | covered | 2026-06-23 | Obsidian-native KB vault conventions. |
 | `wiki/topics/curated-catalog-authoring.md` | concept | `raw/sources/skills-catalog-authoring-lifecycle-source.md` | covered | 2026-06-23 | Bucket A authoring SSOT and catalog index pipeline. |
 | `wiki/topics/mcphub-control-plane.md` | concept | `raw/sources/mcphub-control-plane-source.md` | covered | 2026-06-23 | MCPHub registry, groups, tunnel, smart routing. |
 | `wiki/topics/wagents-platform-adapters.md` | concept | `raw/sources/wagents-platform-adapters-source.md` | covered | 2026-06-23 | Platform adapter dual-path sync and safety guards. |
 | `wiki/topics/ci-and-release-workflows.md` | concept | `raw/sources/ci-release-workflows-source.md` | covered | 2026-06-23 | CI seven-job matrix and release-skills workflow. |
 | `wiki/topics/scripts-and-validation-tooling.md` | concept | `raw/sources/scripts-validation-tooling-source.md` | covered | 2026-06-23 | scripts/ validation helpers and pre-commit alignment. |
-| `wiki/topics/docs-generation-and-site.md` | concept | `raw/sources/docs-site-architecture.md`; `raw/sources/docs-artifact-freshness.md` | partial | 2026-06-23 | Compose 98.2%; MCP badge stale; no generate --check. |
-| `wiki/topics/sync-transaction-safety.md` | concept | `raw/sources/config-registries-and-sync.md`; `raw/sources/wagents-platform-adapters-source.md`; `raw/sources/planning-corpus-drift-source.md` | partial | 2026-06-23 | Config-drop implemented; rollback mostly planned. |
-| `wiki/topics/openspec-change-archive-status.md` | concept | `raw/sources/openspec-change-archive-source.md`; `raw/sources/openspec-active-lifecycle-source.md` | partial | 2026-06-23 | ~32 active / ~28 archived snapshot. |
-| `wiki/topics/agent-publication-and-drift-coverage.md` | concept | `raw/sources/agent-publication-drift-coverage.md`; `raw/sources/wagents-platform-adapters-source.md` | partial | 2026-06-23 | Codex plugin gap; Copilot 11 vs canonical 8. |
-| `wiki/topics/harness-fixture-gaps.md` | concept | `raw/sources/config-registries-and-sync.md`; `raw/sources/planning-corpus-drift-source.md`; `raw/sources/wagents-platform-adapters-source.md`; `raw/sources/docs-artifact-freshness.md`; `raw/sources/ci-release-workflows-source.md` | partial | 2026-06-23 | Compose hook gap; rollback fixtures planned. |
+| `wiki/topics/docs-generation-and-site.md` | concept | `raw/sources/docs-site-architecture.md`; `raw/sources/docs-artifact-freshness.md`; `raw/captures/docs-freshness-capture-w01.md` | covered | 2026-06-25 | Compose 100%; CI generate --check; MCP badge drift documented. |
+| `wiki/topics/sync-transaction-safety.md` | concept | `raw/sources/config-registries-and-sync.md`; `raw/sources/wagents-platform-adapters-source.md`; `raw/sources/planning-corpus-drift-source.md`; `raw/captures/sync-rollback-capture-w01.md` | covered | 2026-06-25 | Merge/drop guards + 8 rollback pytest cases; home snapshot gap documented. |
+| `wiki/topics/openspec-change-archive-status.md` | concept | `raw/sources/openspec-change-archive-source.md`; `raw/sources/openspec-active-lifecycle-source.md`; `raw/captures/openspec-lifecycle-capture-w01.md` | covered | 2026-06-25 | Validate 33/33; 9 active / 53 archived dirs. |
+| `wiki/topics/agent-publication-and-drift-coverage.md` | concept | `raw/sources/agent-publication-drift-coverage.md`; `raw/sources/wagents-platform-adapters-source.md`; `raw/captures/agent-pub-drift-capture-w01.md` | covered | 2026-06-25 | 9 canonical agents; 14 Copilot projections; dialect map current. |
+| `wiki/topics/harness-fixture-gaps.md` | concept | `raw/sources/config-registries-and-sync.md`; `raw/sources/planning-corpus-drift-source.md`; `raw/sources/wagents-platform-adapters-source.md`; `raw/sources/docs-artifact-freshness.md`; `raw/sources/ci-release-workflows-source.md`; `raw/captures/harness-fixture-capture-w01.md` | covered | 2026-06-25 | 12 executable fixtures; 8 rollback present; plan-only harnesses listed. |
 | `wiki/topics/known-risks-and-open-gaps.md` | overview | multiple enrichment sources including 2026-06-23 captures | covered | 2026-06-23 | Phase 4 fix-candidate queue added. |

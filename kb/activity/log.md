@@ -13,6 +13,34 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 01 — partial topics refresh
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave01-partials-2026-06-25.md`
+- Summary: Fresh command captures for six formerly-partial wiki topics; coverage index now zero `partial` rows for those pages.
+- `raw`: added 6 captures (`skill-eval-inventory-capture-w01`, `docs-freshness-capture-w01`, `sync-rollback-capture-w01`, `openspec-lifecycle-capture-w01`, `agent-pub-drift-capture-w01`, `harness-fixture-capture-w01`).
+- `wiki`: max-enriched six partial topics + [[known-risks-and-open-gaps]].
+- `indexes`: updated `source-map`, `coverage` (41 sources).
+- Metrics: **net-new raw sources: 6**; pages enriched: 7; lint: pass (exit 0).
+- Risks / rollback: KB-only additive batch.
+
+### [2026-06-24] Cursor harness review remediation (RV-001–RV-007)
+
+- Mode: fix + docs + kb enrich (additive)
+- Summary: Closed session review findings RV-001–RV-007 after promoting Cursor surfaces: docs intro no longer contradicts validated rows; `cursor-bugbot` downgraded to `repo-present-validation-required` with `rollback: planned`; manifest `notes[]` drives executable-list copy; ACP fixture renamed `project-config-fixture`; eval adequacy narrows backtick stripping to field-doc bullets; cloud/ACP tests exercise adapter render paths.
+- `canonical material`: `wagents/docs.py`, `wagents/eval_adequacy.py`, `config/harness-surface-registry.json`, `planning/manifests/harness-fixture-support.json`, targeted tests, regenerated `docs/src/content/docs/harness-support.mdx`.
+- `wiki`: refreshed [[harness-fixture-gaps]] and [[skill-catalog-risk-and-eval-coverage]].
+- Risks / rollback: tier downgrade is honesty-only; no runtime behavior change.
+- Follow-up: add cursor-specific rollback fixtures before re-promoting `cursor-bugbot` to validated.
+
+### [2026-06-24] Harness review remediation RV-008–RV-014
+
+- Mode: fix + docs + kb (additive)
+- Summary: Synced `hook-surface-registry.json` Cursor tiers with harness registry; added `cursor_rollback` and `grok_rollback` tests in `test_harness_rollback_fixtures.py`; G3/G4 gates for validated rollback commands and pytest `-k` collect-only; deepened ACP render compare and stable cloud hook matcher lookup; docs intro documents rollback bar; `cursor-acp` rollback set to `planned`.
+- `canonical material`: hook/harness registries, harness-fixture-support manifest, rollback/plan/validation-command tests, `wagents/docs.py`, regenerated harness-support page.
+- `wiki`: [[harness-fixture-gaps]] rollback model corrected (merge-preservation + drop-guard, not only `.bak`).
+- Risks / rollback: honesty/tests only; no sync behavior change.
+
 ### [2026-05-01 14:45] Create agents repository KB
 
 - Mode: create + ingest + enrich

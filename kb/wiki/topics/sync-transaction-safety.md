@@ -7,9 +7,9 @@ tags:
 aliases:
   - Config transaction safety
 kind: concept
-status: partial
-updated: 2026-06-23
-source_count: 3
+status: active
+updated: 2026-06-25
+source_count: 4
 ---
 
 # Sync Transaction Safety
@@ -24,7 +24,7 @@ Harness sync can touch sensitive user-owned global config and repo-managed gener
 
 **Implemented today:** `SyncContext(apply=False)` dry/check mode; `ConfigDropError` refusal when merged renders would drop local keys; merge helpers preserving user-owned MCP/hook/config entries; limited `.bak` backup on symlink replacement.
 
-**Not proven:** Full pre-apply snapshot + restore for merged home globals (`~/.codex/config.toml`, `~/.cursor/mcp.json`, etc.). Rollback fixtures in `planning/manifests/harness-fixture-support.json` remain mostly `planned`.
+**Not proven:** Full pre-apply snapshot + restore for merged home globals (`~/.codex/config.toml`, `~/.cursor/mcp.json`, etc.). Eight harness rows now report `rollback_coverage: present` with executable pytest coverage in `tests/test_harness_rollback_fixtures.py` (8 cases); eight others remain `planned`.
 
 Future sync changes should prefer OpenSpec, `--check` previews, redacted output, explicit backups, and targeted validation before `--apply`. Do not capture secret values into this KB.
 
@@ -36,6 +36,7 @@ Future sync changes should prefer OpenSpec, `--check` previews, redacted output,
 | Config-drop guards and merge preservation implemented. | `kb/raw/sources/wagents-platform-adapters-source.md` | raw source note | Code-backed safety. |
 | Rollback contract not fully implemented per path. | `kb/raw/sources/wagents-platform-adapters-source.md` | raw source note | Conservative posture. |
 | Planning ledgers classify path modes and fixture blockers. | `kb/raw/sources/planning-corpus-drift-source.md` | raw source note | Snapshot evidence. |
+| Rollback pytest surface and merge-preservation tests. | `kb/raw/captures/sync-rollback-capture-w01.md` | raw capture | 2026-06-25 inventory. |
 
 ## Related
 

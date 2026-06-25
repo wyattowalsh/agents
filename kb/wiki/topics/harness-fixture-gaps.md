@@ -7,9 +7,9 @@ tags:
 aliases:
   - Fixture gaps
 kind: concept
-status: partial
-updated: 2026-06-24
-source_count: 4
+status: active
+updated: 2026-06-25
+source_count: 5
 ---
 
 # Harness Fixture Gaps
@@ -25,7 +25,7 @@ The repo supports many harnesses, but support tiers and fixture coverage differ.
 **2026-06-24 snapshot:**
 - Platform adapters under `wagents/platforms/` coexist with `scripts/sync_agent_stack.py`; both paths matter for sync claims.
 - Executable rollback tests live in `tests/test_harness_rollback_fixtures.py`: symlink `.bak` backup/restore via `ensure_symlink`, config-drop negative tests, Cursor home MCP merge-preservation and project CLI full-replace idempotency (`cursor_rollback`), and Grok TOML merge-preservation (`grok_rollback`). `planning/manifests/harness-fixture-support.json` marks `rollback_coverage: present` for claude-code, codex, cursor-editor, cursor-cli, grok-build, github-copilot-cli, and opencode; `cursor-bugbot` and `cursor-acp` remain `planned`.
-- Docs compose is 100% (397/397); Cursor hook compose gap closed in Phase 4.
+- Docs compose is 100% (397/397, 2026-06-25 re-check); Cursor hook compose gap closed in Phase 4.
 - Codex plugin `agents` path restored.
 - **2026-06-24 plan fixtures:** Copilot CLI (`merge_copilot_config`) and Gemini MCP (`render_gemini_mcp`) promoted to `fixture-executable` via `tests/test_harness_plan_fixtures.py`.
 - **2026-06-24 grok promotion:** `grok-build` promoted to `fixture-executable` using `tests/test_grok_platform.py`, grok slices of `test_sync_agent_stack.py`, and `test_grok_rollback_merge_preserves_user_owned_tables` in `test_harness_rollback_fixtures.py`.
@@ -44,6 +44,7 @@ Future harness work should name the exact surface being changed, the registry ro
 | Platform adapter dual-path sync and rollback fixtures mostly planned. | `kb/raw/sources/wagents-platform-adapters-source.md` | raw source note | 2026-06-23 research. |
 | Compose coverage gap: five Cursor hook pages missing from composed docs. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | 98.2% compose snapshot. |
 | CI docs job runs compose check at 100% minimum. | `kb/raw/sources/ci-release-workflows-source.md` | raw source note | Fixture gate exists in CI. |
+| 2026-06-25 fixture manifest: 12 executable, 8 rollback present. | `kb/raw/captures/harness-fixture-capture-w01.md` | raw capture | 19 harness records. |
 
 ## Related
 

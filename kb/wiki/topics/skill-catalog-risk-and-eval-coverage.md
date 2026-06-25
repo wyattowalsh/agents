@@ -10,8 +10,8 @@ aliases:
   - Eval coverage matrix
 kind: concept
 status: active
-updated: 2026-06-24
-source_count: 3
+updated: 2026-06-25
+source_count: 4
 ---
 
 # Skill Catalog Risk And Eval Coverage
@@ -39,7 +39,7 @@ This page defines a practical risk-adjusted way to discuss skill eval coverage. 
 
 Eval presence should be interpreted relative to skill risk. A low-risk prompt-only skill can have lighter coverage, but browser, Gmail, filesystem cleanup, external-skill audit, security, and research workflows should target stronger behavior and boundary coverage.
 
-**2026-06-24 inventory:** 56 skills under `skills/`, all 56 with canonical `evals/evals.json` (100% manifest presence; commit `13d90e66`). The portable hook registry defines 22 hook entries as the parallel runtime control plane. `wagents eval list`, `validate`, and `coverage` report manifest shape and counts; they do not grade risk-adjusted adequacy across all skills.
+**2026-06-25 inventory:** 56 skills under `skills/`, all 56 with canonical `evals/evals.json` (100% manifest presence). `uv run wagents eval adequacy --format json` reports **0** skills with `needs_e4` and **14** high-risk (R3/R4) skills at structural **E4** adequacy. The portable hook registry defines 22 hook entries as the parallel runtime control plane. `wagents eval list`, `validate`, and `coverage` report manifest shape and counts; adequacy grades structure, not live eval runs.
 
 The 2026-06-24 batch added E3/E4-oriented manifests for previously uncovered high-risk skills (email-whiz, chrome-devtools family, mcp-creator, opencode-ensemble, openspec-workflow, security-scanner, infrastructure-coder, devops-engineer, reasoning-router) and key convention skills. Treat manifest presence as baseline regression coverage, not proof every skill meets full E4 boundary depth in live runs.
 
@@ -54,7 +54,8 @@ The adequacy command grades manifest structure, not live LLM eval runs. `wagents
 | Eval validation and coverage are implemented in `wagents`. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | CLI and tests. |
 | Existing audit logic already scores evaluation coverage and validation contracts. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Skill-creator audit reference. |
 | Some higher-risk integration skills lack eval coverage and need future work. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Research finding; not fixed here. |
-| 29/56 skills have canonical eval manifests; 22 hook registry entries. | `kb/raw/captures/local-inventory-summary.md`; `kb/raw/sources/hooks-evals-control-source.md` | raw capture; raw source note | 2026-06-23 counts. |
+| 56/56 skills have canonical eval manifests; 0 `needs_e4`; 14 high-risk at E4 adequacy. | `kb/raw/captures/skill-eval-inventory-capture-w01.md` | raw capture | 2026-06-25 `wagents eval adequacy`. |
+| 22 hook registry entries complement eval manifests. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Runtime control plane. |
 | Hooks and evals form complementary control-plane surfaces. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Runtime vs regression. |
 | Risk inference strips trailing NOT-for clauses and field-doc bullets (`\`field\` --`) but keeps inline backticks in prose. | `wagents/eval_adequacy.py` | canonical repo path | 2026-06-24 RV-007 fix; avoids false R3 from agent frontmatter docs. |
 

@@ -9,8 +9,8 @@ aliases:
   - Known risks
 kind: overview
 status: active
-updated: 2026-06-23
-source_count: 22
+updated: 2026-06-25
+source_count: 28
 ---
 
 # Known Risks And Open Gaps
@@ -27,10 +27,11 @@ source_count: 22
 | External standards are context-only | Observed | External docs are pointer-summary source notes. | Keep [[external-primary-source-map]] contextual. |
 | OpenCode generated/canonical tension | Gap | `opencode.json` is repo-managed while some sync surfaces are generated or merged. | Use [[canonical-generated-surfaces]] and [[opencode-runtime-policy]] before edits. |
 | Sync rollback completeness | Gap | Config-drop and merge preservation exist; full merged-home rollback not proven. | Use [[sync-transaction-safety]] and [[wagents-platform-adapters]]. |
-| Harness fixture coverage | Partial | Executable rollback tests added (`tests/test_harness_rollback_fixtures.py`); several harnesses now `rollback_coverage: present`. Fixture promotion still incomplete for plan-only harnesses. | Use [[harness-fixture-gaps]] before raising support tiers. |
-| Planning manifest freshness | Partial | Planning manifests are snapshots, not live config proof. | Re-run targeted tests before promotion claims. |
-| OpenSpec archive state can drift | Partial | Portable `openspec archive` wired; active/archive counts still need periodic hygiene. | Use [[openspec-change-archive-status]] before bulk archives. |
-| Risk-adjusted skill eval adequacy | Partial | 56/56 skills have `evals/evals.json`; live E4 boundary depth not graded by CLI alone. | Use [[skill-catalog-risk-and-eval-coverage]] for manifest vs adequacy distinction. |
+| Harness fixture coverage | Documented | 12 executable / 8 rollback-present per 2026-06-25 manifest; plan-only harnesses remain. | Use [[harness-fixture-gaps]] before raising support tiers. |
+| Planning manifest freshness | Observed | Planning manifests are snapshots, not live config proof. | Re-run targeted tests before promotion claims. |
+| OpenSpec archive state can drift | Documented | Validate 33/33 on 2026-06-25; 9 active / 53 archived dirs. | Use [[openspec-change-archive-status]] before bulk archives. |
+| Risk-adjusted skill eval adequacy | Documented | 56/56 manifests; adequacy CLI 0 `needs_e4`; live eval runs still separate. | Use [[skill-catalog-risk-and-eval-coverage]]. |
+| MCP docs badge drift | Gap | Badge shows 15 servers; registry has 33. | Fix `docs/src/content/docs/mcp/index.mdx` in repo/docs batch. |
 | MCPHub topology changes | Partial | Registry, tunnel, and smart-routing surfaces documented in KB but not live-verified here. | Use [[mcphub-control-plane]] before topology edits. |
 
 ## Phase 4 Fix Candidates (repo, not KB)
