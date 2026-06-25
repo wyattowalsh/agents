@@ -13,6 +13,14 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 22 — antigravity and crush harness policy
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave22-pass3-2026-06-25.md`
+- `raw`: added 2 captures (`antigravity-harness-policy-capture-w22`, `crush-harness-policy-capture-w22`).
+- `wiki`: new [[antigravity-harness-policy]], [[crush-harness-policy]]; refreshed [[wiki/index]].
+- Metrics: **net-new raw sources: 2**; lint pass before commit; waves 21–22 consecutive `<3`.
+
 ### [2026-06-25] Wave 21 — gemini, cursor, and copilot harness policy
 
 - Mode: research + ingest + enrich + audit

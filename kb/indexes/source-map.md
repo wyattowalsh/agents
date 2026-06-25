@@ -116,6 +116,8 @@ source_count: 35
 | `gemini-harness-policy-capture-w21` | `raw/captures/gemini-harness-policy-capture-w21.md` | tool-output capture | [[gemini-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
 | `cursor-harness-policy-capture-w21` | `raw/captures/cursor-harness-policy-capture-w21.md` | tool-output capture | [[cursor-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
 | `copilot-harness-policy-capture-w21` | `raw/captures/copilot-harness-policy-capture-w21.md` | tool-output capture | [[copilot-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
+| `antigravity-harness-policy-capture-w22` | `raw/captures/antigravity-harness-policy-capture-w22.md` | tool-output capture | [[antigravity-harness-policy]], [[gemini-harness-policy]] | no | linked | active |
+| `crush-harness-policy-capture-w22` | `raw/captures/crush-harness-policy-capture-w22.md` | tool-output capture | [[crush-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
 
 ## External Sources
 
