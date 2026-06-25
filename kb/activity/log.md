@@ -13,6 +13,17 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 06 — docs authoring and catalog index
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave06-docs-authoring-2026-06-25.md`
+- Summary: Explicit-path inventory of Bucket A authoring MDX (363) and committed catalog index bundle (363 rows); no repo-wide globs.
+- `raw`: added 3 captures (`catalog-authoring-mdx-capture-w06`, `skills-catalog-index-capture-w06`, `docs-generate-check-capture-w06`).
+- `wiki`: enriched [[curated-catalog-authoring]], [[docs-generation-and-site]].
+- `indexes`: updated `source-map`, `coverage` (65 sources).
+- Metrics: **net-new raw sources: 3**; pages enriched: 2; lint: pass.
+- Risks / rollback: KB-only additive batch.
+
 ### [2026-06-25] Wave 05 — hooks runtime, test clusters, eval files
 
 - Mode: research + ingest + enrich + audit

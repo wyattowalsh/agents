@@ -71,6 +71,9 @@ source_count: 35
 | `hooks-runtime-inventory-capture-w05` | `raw/captures/hooks-runtime-inventory-capture-w05.md` | tool-output capture | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] | no | linked | active |
 | `hooks-tests-cluster-capture-w05` | `raw/captures/hooks-tests-cluster-capture-w05.md` | tool-output capture | [[validation-and-test-coverage]], [[hooks-evals-control-plane]] | no | linked | active |
 | `skill-eval-files-capture-w05` | `raw/captures/skill-eval-files-capture-w05.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
+| `catalog-authoring-mdx-capture-w06` | `raw/captures/catalog-authoring-mdx-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[docs-generation-and-site]] | no | linked | active |
+| `skills-catalog-index-capture-w06` | `raw/captures/skills-catalog-index-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[skill-authoring-and-validation]] | no | linked | active |
+| `docs-generate-check-capture-w06` | `raw/captures/docs-generate-check-capture-w06.md` | tool-output capture | [[docs-generation-and-site]], [[curated-catalog-authoring]] | no | linked | active |
 
 ## External Sources
 

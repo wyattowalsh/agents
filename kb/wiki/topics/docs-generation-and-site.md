@@ -9,7 +9,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 7
+source_count: 10
 ---
 
 # Docs Generation And Site
@@ -44,6 +44,9 @@ Official Starlight docs confirm that Starlight is configured through `astro.conf
 | Compose 100% and CI generate --check gates. | `kb/raw/captures/docs-freshness-capture-w01.md` | raw capture | 2026-06-25 tool capture. |
 | MCP badge vs registry cardinality drift. | `kb/raw/captures/docs-freshness-capture-w01.md` | raw capture | 15 vs 33 servers. |
 | Docs artifact registry partial enumeration. | `kb/raw/sources/docs-artifact-freshness.md` | raw source note | Registry subset vs generator output. |
+| Catalog index 363 rows (56 custom / 307 external). | `kb/raw/captures/skills-catalog-index-capture-w06.md` | raw capture | 2026-06-25 JSON scan. |
+| Authoring MDX flat corpus 363 files. | `kb/raw/captures/catalog-authoring-mdx-capture-w06.md` | raw capture | Bucket A SSOT count. |
+| Generate --check CI + catalog index check policy. | `kb/raw/captures/docs-generate-check-capture-w06.md` | raw capture | Freshness gates. |
 
 ## Related
 

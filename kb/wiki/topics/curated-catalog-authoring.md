@@ -9,8 +9,8 @@ aliases:
   - Catalog SSOT
 kind: concept
 status: active
-updated: 2026-06-23
-source_count: 2
+updated: 2026-06-25
+source_count: 5
 ---
 
 # Curated Catalog Authoring
@@ -24,6 +24,8 @@ Bucket A catalog semantics use authoring MDX as the human SSOT. Flat files under
 - Curated externals stay out of `skills/` unless authoring a new repo-owned skill.
 - The committed index is the runtime SSOT for `skill_index`, `external_skills`, catalog rows, validation quarantine, and `wagents skills sync`.
 - Legacy `config/external-skills.md` remains dual-read fallback only during transition.
+
+**2026-06-25 inventory:** 363 authoring MDX files under `docs/src/authoring/skills/`; committed index bundle lists **363** `allSkillIndex` rows (**56** custom, **307** curated-external). CI enforces `wagents docs generate --no-installed --check` alongside compose 100% gates.
 
 ## Current shape
 
@@ -48,6 +50,9 @@ Bucket A catalog semantics use authoring MDX as the human SSOT. Flat files under
 |------------------|---------------------------|-------|
 | Bucket A SSOT invert and maintainer loop | `kb/raw/sources/skills-catalog-authoring-lifecycle-source.md` | Primary |
 | AGENTS policy | `kb/raw/sources/agents-md.md` | Canonical |
+| 363 authoring MDX files | `kb/raw/captures/catalog-authoring-mdx-capture-w06.md` | raw capture |
+| 363-row catalog index bundle | `kb/raw/captures/skills-catalog-index-capture-w06.md` | raw capture |
+| CI generate --check gate | `kb/raw/captures/docs-generate-check-capture-w06.md` | raw capture |
 
 ## Related wiki pages
 
