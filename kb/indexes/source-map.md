@@ -65,6 +65,9 @@ source_count: 35
 | `harness-surface-registry-capture-w03` | `raw/captures/harness-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
 | `config-transaction-registry-capture-w03` | `raw/captures/config-transaction-registry-capture-w03.md` | tool-output capture | [[sync-transaction-safety]], [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
 | `hook-surface-registry-capture-w03` | `raw/captures/hook-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[hooks-evals-control-plane]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `openspec-active-changes-capture-w04` | `raw/captures/openspec-active-changes-capture-w04.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
+| `planning-sync-inventory-capture-w04` | `raw/captures/planning-sync-inventory-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
+| `drift-ledger-capture-w04` | `raw/captures/drift-ledger-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[known-risks-and-open-gaps]] | no | linked | active |
 
 ## External Sources
 

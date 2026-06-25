@@ -13,6 +13,21 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 04 — planning manifests and OpenSpec active inventory
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave04-planning-2026-06-25.md`
+- Summary: Read-only inventory of `openspec/changes/*` (8 actives, 53 archived) and `planning/manifests/*` (90-row sync/drift parity, harness fixture tiers, external-repo ledgers).
+- `raw`: added 3 captures (`openspec-active-changes-capture-w04`, `planning-sync-inventory-capture-w04`, `drift-ledger-capture-w04`).
+- `wiki`: enriched [[planning-corpus-and-drift-ledgers]] and [[openspec-change-archive-status]] with additive 2026-06-25 rows.
+- `indexes`: updated `source-map`, `coverage` (52 sources).
+- Metrics: **net-new raw sources: 3**; wiki pages enriched: 2; lint: pass (exit 0).
+- `canonical material`: unchanged; repo paths read as evidence only.
+- Risks / rollback: KB-only additive batch; corrected active change count from 9→8 vs Wave 01 capture.
+- Follow-up:
+  - Archive 4 task-complete actives after maintainer validation (`add-new-project-skill`, `consolidate-review-skill`, `enhance-skill-creator-lifecycle`, `upgrade-design-skill`).
+  - Execute in-flight waves with open tasks (APM, MCPHub, catalog compose, public-release-prod-readiness).
+
 ### [2026-06-25] Wave 03 — config registry fleet
 
 - Mode: research + ingest + enrich + audit
