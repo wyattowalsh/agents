@@ -8,8 +8,8 @@ aliases:
   - Repository KB
 kind: overview
 status: active
-updated: 2026-06-23
-source_count: 20
+updated: 2026-06-25
+source_count: 22
 ---
 
 # Agents Repository Operating Knowledge Base
@@ -41,6 +41,8 @@ Treat these repo files and directories as primary evidence before using generate
 | [[agent-asset-model]] | Skills, agents, MCP, instructions, plugins, and bundle surfaces. |
 | [[skill-authoring-and-validation]] | Skill format, naming, validation, packaging, and docs implications. |
 | [[harness-and-platform-sync]] | How repo-owned assets reach Claude, Codex, OpenCode, Gemini, Copilot, and related harnesses. |
+| [[grok-harness-policy]] | Grok Build models, memory, subagents, compat layers, and sync surfaces. |
+| [[codex-harness-policy]] | Codex model/search/sandbox policy and thin adapter delegation model. |
 | [[nerdbot]] | How this KB is structured and how to maintain it safely. |
 | [[openspec-workflow]] | When OpenSpec is required and how wrapper commands are used. |
 | [[developer-commands]] | Verified commands for validation, tests, docs, packaging, OpenSpec, and KB lint. |

@@ -13,6 +13,16 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 15 — pass 2: Grok/Codex policy topics and inventory
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave15-pass2-2026-06-25.md`
+- Summary: Pass 2 restart — new [[grok-harness-policy]] and [[codex-harness-policy]] wiki topics; release-skills workflow + repo inventory captures.
+- `raw`: added 4 captures (`grok-harness-policy-capture-w15`, `codex-harness-policy-capture-w15`, `release-skills-workflow-capture-w15`, `repository-inventory-capture-w15`).
+- `wiki`: new topics + enriched [[repository-overview]], [[ci-and-release-workflows]], [[harness-and-platform-sync]], [[wiki/index]].
+- Metrics: **net-new raw sources: 4**; pages enriched: 6; lint: pass (exit 0).
+- Pass 2 stop rule: not yet (need two consecutive `<3`).
+
 ### [2026-06-25] Wave 14 — pre-commit hooks (diminishing returns stop)
 
 - Mode: research + ingest + enrich + audit

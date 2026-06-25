@@ -97,6 +97,10 @@ source_count: 35
 | `gemini-harness-docs-capture-w13` | `raw/sources/gemini-harness-docs-capture-w13.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
 | `makefile-dev-targets-capture-w13` | `raw/captures/makefile-dev-targets-capture-w13.md` | tool-output capture | [[developer-commands]] | no | linked | active |
 | `pre-commit-hooks-capture-w14` | `raw/captures/pre-commit-hooks-capture-w14.md` | tool-output capture | [[ci-and-release-workflows]], [[developer-commands]] | no | linked | active |
+| `grok-harness-policy-capture-w15` | `raw/captures/grok-harness-policy-capture-w15.md` | tool-output capture | [[grok-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
+| `codex-harness-policy-capture-w15` | `raw/captures/codex-harness-policy-capture-w15.md` | tool-output capture | [[codex-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
+| `release-skills-workflow-capture-w15` | `raw/captures/release-skills-workflow-capture-w15.md` | tool-output capture | [[ci-and-release-workflows]] | no | linked | active |
+| `repository-inventory-capture-w15` | `raw/captures/repository-inventory-capture-w15.md` | tool-output capture | [[repository-overview]], [[agent-asset-model]] | no | linked | active |
 
 ## External Sources
 

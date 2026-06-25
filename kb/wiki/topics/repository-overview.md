@@ -8,8 +8,8 @@ aliases:
   - Agents repository
 kind: overview
 status: active
-updated: 2026-05-01
-source_count: 9
+updated: 2026-06-25
+source_count: 10
 ---
 
 # Repository Overview
@@ -60,3 +60,4 @@ Use [[wagents-cli-and-automation]] for repo automation details, [[canonical-gene
 | Generated public surfaces include README and docs catalog pages. | `kb/raw/sources/openspec-config.md` | raw source note | Derived from `openspec/config.yaml`. |
 | The inventory found no pre-existing `kb/**` files before this batch. | `kb/raw/captures/local-inventory-summary.md` | raw capture | Establishes this KB as a new additive layer. |
 | `wagents`, `config`, `docs`, `tests`, and `mcp` now have dedicated source notes and synthesis pages. | `kb/raw/sources/wagents-internals.md`; `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/docs-site-architecture.md`; `kb/raw/sources/tests-and-validation.md`; `kb/raw/sources/mcp-surfaces.md` | raw source notes | Enrichment batch coverage. |
+| 2026-06-25 cardinality: 56 skills, 9 agent files, 33 MCP registry servers. | `kb/raw/captures/repository-inventory-capture-w15.md` | raw capture | Pass 2 inventory. |

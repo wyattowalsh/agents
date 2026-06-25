@@ -10,7 +10,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 14
+source_count: 16
 ---
 
 # Harness And Platform Sync
@@ -89,3 +89,5 @@ Use [[canonical-generated-surfaces]] to find the source-of-truth path before edi
 | 2026-06-25 OpenCode/Cursor/Copilot harness doc pointers. | `kb/raw/sources/opencode-docs-capture-w10.md`; `kb/raw/sources/cursor-docs-capture-w10.md`; `kb/raw/sources/copilot-harness-docs-capture-w10.md` | external pointers | Wave 10. |
 | Grok/Codex repo policy templates and home sync targets. | `kb/raw/captures/harness-policy-templates-capture-w12.md` | raw capture | Wave 12 metadata-only. |
 | Gemini CLI official repo + GEMINI.md bridge. | `kb/raw/sources/gemini-harness-docs-capture-w13.md` | external pointer | Wave 13. |
+| Grok dedicated policy topic. | `kb/raw/captures/grok-harness-policy-capture-w15.md`; [[grok-harness-policy]] | raw capture + wiki | Wave 15 pass 2. |
+| Codex dedicated policy topic. | `kb/raw/captures/codex-harness-policy-capture-w15.md`; [[codex-harness-policy]] | raw capture + wiki | Wave 15 pass 2. |
