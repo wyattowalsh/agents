@@ -498,6 +498,7 @@ class TestWriteHarnessSupportPage:
         # table row for the harness
         assert "Claude Code" in text
         assert "repo-present-validation-required" in text
+        assert "rollback coverage" in text
         # executable section
         assert "## Executable fixtures today" in text
         assert "`claude-code` — Fixture evidence present for adapter + validate paths." in text

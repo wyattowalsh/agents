@@ -1854,7 +1854,8 @@ def write_harness_support_page() -> None:
         "",
         "Public honesty matrix for repo-managed harness surfaces. The table reflects "
         "`config/harness-surface-registry.json` support tiers; **validated** rows have "
-        "fixture-executable evidence recorded in `planning/manifests/harness-fixture-support.json`.",
+        "fixture-executable evidence and documented rollback coverage (where applicable) "
+        "recorded in `planning/manifests/harness-fixture-support.json`.",
         "",
         '<Aside type="caution" title="Stranger defaults">',
         "Use MCPHub only when you explicitly opt in. Repo docs and public catalog default to repository "
