@@ -13,6 +13,16 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 14 — pre-commit hooks (diminishing returns stop)
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave14-gap-sweep-2026-06-25.md`
+- Summary: Final gap-sweep capture — ten path-filtered pre-commit local hooks. **Stop condition met:** waves 13–14 added 2 and 1 net-new sources (two consecutive `<3` post wave 10).
+- `raw`: added 1 capture (`pre-commit-hooks-capture-w14`).
+- `wiki`: enriched [[ci-and-release-workflows]].
+- Metrics: **net-new raw sources: 1**; pages enriched: 1; lint: pass.
+- **Goal gap sweep complete** (waves 01–14; 11+ diminishing-returns exit).
+
 ### [2026-06-25] Wave 13 — Gemini harness and Makefile targets
 
 - Mode: research + ingest + enrich + audit

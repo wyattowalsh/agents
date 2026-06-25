@@ -9,7 +9,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 3
+source_count: 4
 ---
 
 # CI And Release Workflows
@@ -52,6 +52,7 @@ Fresh capture confirms seven CI jobs with explicit command pairing: `lint` runs 
 |------------------|---------------------------|-------|
 | Job definitions and command lists | `kb/raw/sources/ci-release-workflows-source.md` | Primary summary |
 | Fresh job/command table | `kb/raw/captures/ci-workflow-jobs-capture-w11.md` | Wave 11 read-only capture |
+| Pre-commit hook inventory (10 local hooks) | `kb/raw/captures/pre-commit-hooks-capture-w14.md` | Wave 14 path-filtered hooks |
 | Developer command aliases | `kb/raw/sources/pyproject-and-makefile.md` | Makefile |
 | Validation collector details | `kb/raw/sources/scripts-validation-tooling-source.md` | Scripts layer |
 

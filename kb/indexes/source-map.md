@@ -96,6 +96,7 @@ source_count: 35
 | `starlight-astro-config-capture-w12` | `raw/captures/starlight-astro-config-capture-w12.md` | tool-output capture | [[docs-generation-and-site]] | no | linked | active |
 | `gemini-harness-docs-capture-w13` | `raw/sources/gemini-harness-docs-capture-w13.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
 | `makefile-dev-targets-capture-w13` | `raw/captures/makefile-dev-targets-capture-w13.md` | tool-output capture | [[developer-commands]] | no | linked | active |
+| `pre-commit-hooks-capture-w14` | `raw/captures/pre-commit-hooks-capture-w14.md` | tool-output capture | [[ci-and-release-workflows]], [[developer-commands]] | no | linked | active |
 
 ## External Sources
 

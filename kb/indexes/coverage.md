@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 80
+source_count: 81
 ---
 
 # Coverage Index
@@ -44,7 +44,7 @@ source_count: 80
 | `wiki/topics/curated-catalog-authoring.md` | concept | `raw/sources/skills-catalog-authoring-lifecycle-source.md`; `raw/captures/catalog-authoring-mdx-capture-w06.md`; `raw/captures/skills-catalog-index-capture-w06.md`; `raw/captures/docs-generate-check-capture-w06.md` | covered | 2026-06-25 | 363 authoring MDX; 363-row index bundle. |
 | `wiki/topics/mcphub-control-plane.md` | concept | `raw/sources/mcphub-control-plane-source.md`; `raw/captures/mcp-registry-capture-w03.md`; `raw/captures/mcphub-scripts-lifecycle-capture-w07.md`; `raw/captures/mcphub-launch-tunnel-capture-w07.md`; `raw/captures/mcphub-settings-validation-capture-w07.md` | covered | 2026-06-25 | Registry topology + scripts lifecycle, LaunchAgent/tunnel, validation. |
 | `wiki/topics/wagents-platform-adapters.md` | concept | `raw/sources/wagents-platform-adapters-source.md`; `raw/captures/platform-adapters-fleet-capture-w08.md`; `raw/captures/harness-config-templates-capture-w08.md` | covered | 2026-06-25 | 9 adapters ~3004 LOC; native vs delegator tiers; config pairing; Wave 08. |
-| `wiki/topics/ci-and-release-workflows.md` | concept | `raw/sources/ci-release-workflows-source.md`; `raw/captures/ci-workflow-jobs-capture-w11.md` | covered | 2026-06-25 | Fresh seven-job command table; validate vs test split. |
+| `wiki/topics/ci-and-release-workflows.md` | concept | `raw/sources/ci-release-workflows-source.md`; `raw/captures/ci-workflow-jobs-capture-w11.md`; `raw/captures/pre-commit-hooks-capture-w14.md` | covered | 2026-06-25 | CI jobs + ten pre-commit local hooks. |
 | `wiki/topics/scripts-and-validation-tooling.md` | concept | `raw/sources/scripts-validation-tooling-source.md`; `raw/captures/scripts-validate-collectors-capture-w12.md` | covered | 2026-06-25 | Seven collector modules; ty exclude for validate/. |
 | `wiki/topics/docs-generation-and-site.md` | concept | `raw/sources/docs-site-architecture.md`; `raw/sources/docs-artifact-freshness.md`; `raw/captures/docs-freshness-capture-w01.md`; `raw/captures/skills-catalog-index-capture-w06.md`; `raw/captures/catalog-authoring-mdx-capture-w06.md`; `raw/captures/docs-generate-check-capture-w06.md`; `raw/captures/starlight-astro-config-capture-w12.md` | covered | 2026-06-25 | Starlight plugins + generated sidebar wiring. |
 | `wiki/topics/sync-transaction-safety.md` | concept | `raw/sources/config-registries-and-sync.md`; `raw/sources/wagents-platform-adapters-source.md`; `raw/sources/planning-corpus-drift-source.md`; `raw/captures/sync-rollback-capture-w01.md` | covered | 2026-06-25 | Merge/drop guards + 8 rollback pytest cases; home snapshot gap documented. |
