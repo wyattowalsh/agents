@@ -57,6 +57,10 @@ source_count: 35
 | `openspec-lifecycle-capture-w01` | `raw/captures/openspec-lifecycle-capture-w01.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
 | `agent-pub-drift-capture-w01` | `raw/captures/agent-pub-drift-capture-w01.md` | tool-output capture | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]] | no | linked | active |
 | `harness-fixture-capture-w01` | `raw/captures/harness-fixture-capture-w01.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `wagents-cli-surface-capture-w02` | `raw/captures/wagents-cli-surface-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]] | no | linked | active |
+| `wagents-validate-capture-w02` | `raw/captures/wagents-validate-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
+| `wagents-docs-cli-capture-w02` | `raw/captures/wagents-docs-cli-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[docs-generation-and-site]] | no | linked | active |
+| `wagents-eval-cli-capture-w02` | `raw/captures/wagents-eval-cli-capture-w02.md` | tool-output capture | [[hooks-evals-control-plane]], [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
 
 ## External Sources
 

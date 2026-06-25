@@ -13,6 +13,17 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 02 — wagents automation fleet
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave02-wagents-2026-06-25.md`
+- Summary: Command-backed captures for wagents CLI surface, validate delegation, docs subcommands, and eval/hooks control-plane metrics.
+- `raw`: added 4 captures (`wagents-cli-surface-capture-w02`, `wagents-validate-capture-w02`, `wagents-docs-cli-capture-w02`, `wagents-eval-cli-capture-w02`).
+- `wiki`: enriched [[wagents-cli-and-automation]], [[hooks-evals-control-plane]].
+- `indexes`: updated `source-map`, `coverage` (49 sources).
+- Metrics: **net-new raw sources: 4**; pages enriched: 2; lint: pass.
+- Risks / rollback: KB-only additive batch.
+
 ### [2026-06-25] Wave 01 — partial topics refresh
 
 - Mode: research + ingest + enrich + audit

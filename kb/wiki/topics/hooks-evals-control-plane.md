@@ -9,8 +9,8 @@ aliases:
   - Agent control plane
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 1
+updated: 2026-06-25
+source_count: 2
 ---
 
 # Hooks Evals Control Plane
@@ -32,6 +32,8 @@ Use this page with [[validation-and-test-coverage]] when a workflow changes hook
 | Hook registry, runtime hook code, sync projection, CLI parsing, tests, and selected eval manifests form an agent control plane. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Dedicated source note. |
 | Hooks enforce runtime policy while evals provide regression and acceptance checks. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Synthesis of repo-local code and tests. |
 | Live harness behavior is not proven by static source inspection. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Verification gap. |
+| `wagents eval` exposes list/validate/coverage/adequacy; 56/56 skills with evals, 791 cases, adequacy strict 0 failing. | `kb/raw/captures/wagents-eval-cli-capture-w02.md` | raw capture | 2026-06-25 JSON captures. |
+| `wagents hooks list` reports 40 hooks; `hooks validate` delegates to `validate_hooks.py`. | `kb/raw/captures/wagents-eval-cli-capture-w02.md` | raw capture | Distinct from `wagents validate` repo gate. |
 
 ## Related
 
