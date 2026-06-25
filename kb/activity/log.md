@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 25 — catalog schema and sync transaction registry
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave25-pass4-2026-06-25.md`
+- `raw`: added 2 captures (`catalog-schema-registry-capture-w25`, `sync-transaction-registry-capture-w25`).
+- Metrics: **net-new raw sources: 2**; lint pass before commit.
+
 ### [2026-06-25] Wave 24 — config registry crosswalk and quarantine
 
 - Mode: research + ingest + enrich + audit

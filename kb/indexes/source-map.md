@@ -125,6 +125,8 @@ source_count: 35
 | `config-registry-crosswalk-capture-w24` | `raw/captures/config-registry-crosswalk-capture-w24.md` | tool-output capture | [[harness-and-platform-sync]], [[mcp-configuration-and-safety]] | no | linked | active |
 | `security-quarantine-register-capture-w24` | `raw/captures/security-quarantine-register-capture-w24.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
 | `harness-surface-refresh-capture-w24` | `raw/captures/harness-surface-refresh-capture-w24.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `catalog-schema-registry-capture-w25` | `raw/captures/catalog-schema-registry-capture-w25.md` | tool-output capture | [[curated-catalog-authoring]] | no | linked | active |
+| `sync-transaction-registry-capture-w25` | `raw/captures/sync-transaction-registry-capture-w25.md` | tool-output capture | [[sync-transaction-safety]] | no | linked | active |
 
 ## External Sources
 
