@@ -9,8 +9,8 @@ aliases:
   - Verification commands
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 7
+updated: 2026-06-25
+source_count: 8
 ---
 
 # Developer Commands
@@ -67,3 +67,4 @@ This page lists verified command definitions, not verified success for every com
 | Generated docs and README commands are generated public surface maintenance commands. | `kb/raw/sources/openspec-config.md` | raw source note | Derived from OpenSpec config. |
 | `wagents` command families include validation, docs, packaging, OpenSpec, hooks, evals, install, and sync. | `kb/raw/sources/wagents-internals.md` | raw source note | CLI implementation source. |
 | Docs generation and Starlight commands have dedicated implementation and tests. | `kb/raw/sources/docs-site-architecture.md`; `kb/raw/sources/tests-and-validation.md` | raw source notes | Docs evidence. |
+| Makefile install targets per harness + dev/ci-check/sync-check aliases. | `kb/raw/captures/makefile-dev-targets-capture-w13.md` | raw capture | Wave 13. |

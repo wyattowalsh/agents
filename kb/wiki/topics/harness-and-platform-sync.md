@@ -88,3 +88,4 @@ Use [[canonical-generated-surfaces]] to find the source-of-truth path before edi
 | External harness docs provide upstream context only; repo-local registry and instruction files remain authoritative. | `kb/raw/sources/external-harness-docs.md` | external source note | Context-only source. |
 | 2026-06-25 OpenCode/Cursor/Copilot harness doc pointers. | `kb/raw/sources/opencode-docs-capture-w10.md`; `kb/raw/sources/cursor-docs-capture-w10.md`; `kb/raw/sources/copilot-harness-docs-capture-w10.md` | external pointers | Wave 10. |
 | Grok/Codex repo policy templates and home sync targets. | `kb/raw/captures/harness-policy-templates-capture-w12.md` | raw capture | Wave 12 metadata-only. |
+| Gemini CLI official repo + GEMINI.md bridge. | `kb/raw/sources/gemini-harness-docs-capture-w13.md` | external pointer | Wave 13. |

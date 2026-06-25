@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 78
+source_count: 80
 ---
 
 # Coverage Index
@@ -23,7 +23,7 @@ source_count: 78
 | `wiki/topics/harness-and-platform-sync.md` | concept | `raw/sources/agent-bundle-and-sync.md`; `raw/sources/readme.md`; `raw/sources/agents-md.md`; `raw/sources/config-registries-and-sync.md`; `raw/sources/instructions-hierarchy.md`; `raw/sources/external-harness-docs.md`; `raw/captures/harness-surface-registry-capture-w03.md`; `raw/captures/config-transaction-registry-capture-w03.md`; `raw/captures/hook-surface-registry-capture-w03.md`; `raw/captures/harness-policy-templates-capture-w12.md` | covered | 2026-06-25 | Grok/Codex repo policy templates vs home sync targets. |
 | `wiki/topics/nerdbot.md` | concept | `raw/sources/nerdbot-skill-contract.md`; `raw/sources/nerdbot-runtime-contracts.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/external-obsidian-markdown-docs.md` | covered | 2026-05-01 | Documents Markdown-only constraint and runtime checks. |
 | `wiki/topics/openspec-workflow.md` | concept | `raw/sources/agents-md.md`; `raw/sources/openspec-config.md`; `raw/sources/wagents-internals.md`; `raw/sources/openspec-change-archive-source.md` | covered | 2026-05-01 | Focused on repo policy, wrapper command surfaces, and archive-state distinction. |
-| `wiki/topics/developer-commands.md` | concept | `raw/sources/pyproject-and-makefile.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/nerdbot-skill-contract.md`; `raw/sources/openspec-config.md`; `raw/sources/wagents-internals.md`; `raw/sources/docs-site-architecture.md`; `raw/sources/tests-and-validation.md` | covered | 2026-05-01 | Command definitions, not all command success. |
+| `wiki/topics/developer-commands.md` | concept | `raw/sources/pyproject-and-makefile.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/nerdbot-skill-contract.md`; `raw/sources/openspec-config.md`; `raw/sources/wagents-internals.md`; `raw/sources/docs-site-architecture.md`; `raw/sources/tests-and-validation.md`; `raw/captures/makefile-dev-targets-capture-w13.md` | covered | 2026-06-25 | Makefile install + dev target matrix. |
 
 | `wiki/topics/wagents-cli-and-automation.md` | concept | `raw/sources/wagents-internals.md`; `raw/sources/pyproject-and-makefile.md`; `raw/sources/external-tooling-docs.md`; `raw/sources/hooks-evals-control-source.md`; `raw/captures/wagents-cli-surface-capture-w02.md`; `raw/captures/wagents-validate-capture-w02.md`; `raw/captures/wagents-docs-cli-capture-w02.md` | covered | 2026-06-25 | CLI layout, validate delegation, docs subcommands; wave 02 captures. |
 | `wiki/topics/validation-and-test-coverage.md` | concept | `raw/sources/asset-validation-coverage.md`; `raw/sources/tests-and-validation.md`; `raw/sources/external-tooling-docs.md`; `raw/sources/nerdbot-runtime-contracts.md`; `raw/extracts/developer-commands-extract.md`; `raw/sources/hooks-evals-control-source.md`; `raw/sources/skill-catalog-risk-eval-coverage.md`; `raw/captures/hooks-tests-cluster-capture-w05.md`; `raw/captures/skill-eval-files-capture-w05.md`; `raw/captures/pyproject-tooling-capture-w11.md`; `raw/extracts/uv-llms-index-extract-w11.md` | covered | 2026-06-25 | Ruff/ty scoped includes; uv workspace; CI lint/typecheck pairing. |

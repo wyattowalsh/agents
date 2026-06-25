@@ -94,6 +94,8 @@ source_count: 35
 | `scripts-validate-collectors-capture-w12` | `raw/captures/scripts-validate-collectors-capture-w12.md` | tool-output capture | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]] | no | linked | active |
 | `harness-policy-templates-capture-w12` | `raw/captures/harness-policy-templates-capture-w12.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
 | `starlight-astro-config-capture-w12` | `raw/captures/starlight-astro-config-capture-w12.md` | tool-output capture | [[docs-generation-and-site]] | no | linked | active |
+| `gemini-harness-docs-capture-w13` | `raw/sources/gemini-harness-docs-capture-w13.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
+| `makefile-dev-targets-capture-w13` | `raw/captures/makefile-dev-targets-capture-w13.md` | tool-output capture | [[developer-commands]] | no | linked | active |
 
 ## External Sources
 

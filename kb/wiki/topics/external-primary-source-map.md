@@ -24,7 +24,7 @@ This page lists evergreen external primary sources used to contextualize repo-lo
 |-------|-----------------|--------------|-----|
 | Agent Skills | `kb/raw/sources/external-agent-skill-docs.md`; `kb/raw/sources/agentskills-spec-capture-w09.md`; `kb/raw/extracts/agentskills-llms-index-extract-w09.md` | `https://agentskills.io/llms.txt`; Anthropic llms.txt | Portable spec + ecosystem context. |
 | MCP | `kb/raw/sources/mcp-surfaces.md`; `kb/raw/sources/mcp-spec-index-capture-w09.md` | `https://modelcontextprotocol.io/llms.txt`; spec 2025-11-25 | Protocol index + security tutorials. |
-| Harnesses | `kb/raw/sources/external-harness-docs.md`; `kb/raw/sources/opencode-docs-capture-w10.md`; `kb/raw/sources/cursor-docs-capture-w10.md`; `kb/raw/sources/copilot-harness-docs-capture-w10.md` | OpenCode/Cursor/Copilot official docs | Platform behavior context. |
+| Harnesses | `kb/raw/sources/external-harness-docs.md`; `kb/raw/sources/opencode-docs-capture-w10.md`; `kb/raw/sources/cursor-docs-capture-w10.md`; `kb/raw/sources/copilot-harness-docs-capture-w10.md`; `kb/raw/sources/gemini-harness-docs-capture-w13.md` | OpenCode/Cursor/Copilot/Gemini official docs | Platform behavior context. |
 | Tooling | `kb/raw/sources/external-tooling-docs.md`; `kb/raw/extracts/uv-llms-index-extract-w11.md`; `kb/raw/captures/pyproject-tooling-capture-w11.md` | Typer, PyPA, uv llms.txt, Ruff, ty, pytest, Starlight | Upstream semantics + repo pyproject alignment. |
 | Obsidian/Markdown | `kb/raw/sources/external-obsidian-markdown-docs.md`; `kb/raw/sources/obsidian-properties-capture-w11.md` | Obsidian Help properties/aliases/links, CommonMark, YAML | Vault conventions and portability floor. |
 

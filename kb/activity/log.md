@@ -13,6 +13,16 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 13 — Gemini harness and Makefile targets
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave13-gap-sweep-2026-06-25.md`
+- Summary: Gemini CLI external pointer + Makefile install/dev target matrix.
+- `raw`: added 2 sources (`gemini-harness-docs-capture-w13`, `makefile-dev-targets-capture-w13`).
+- `wiki`: enriched [[harness-and-platform-sync]], [[developer-commands]], [[external-primary-source-map]].
+- Metrics: **net-new raw sources: 2**; pages enriched: 3; lint: pass (exit 0).
+- Stop rule: wave 12 = 3; wave 13 = 2 → consecutive `<3` with wave 14.
+
 ### [2026-06-25] Wave 12 — scripts collectors and harness policy templates
 
 - Mode: research + ingest + enrich + audit
