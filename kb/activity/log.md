@@ -13,6 +13,14 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 30 — pass 5 stop and index reconciliation
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave30-pass5-stop-2026-06-25.md`
+- Summary: Pass 5 diminishing-returns stop; reconcile source-map, coverage, repo-map, glossary, and [[wave-commit-registry]].
+- `raw`: added 1 capture (`pass5-final-stop-capture-w30`).
+- Metrics: **net-new raw sources: 1**; lint pass before commit; waves 29–30 consecutive `<3`.
+
 ### [2026-06-25] Wave 29 — developer commands and kb index metadata
 
 - Mode: research + ingest + enrich + audit

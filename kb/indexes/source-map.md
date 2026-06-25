@@ -8,135 +8,137 @@ aliases:
   - KB source map
 kind: index
 status: active
-updated: 2026-06-23
-source_count: 35
+updated: 2026-06-25
+source_count: 71
 ---
 
 # Source Map
 
-| Source ID | Raw path | Capture type | Planned wiki target | Canonical material touched? | Provenance status | Status |
-|-----------|----------|--------------|---------------------|-----------------------------|-------------------|--------|
-| `agents-md` | `raw/sources/agents-md.md` | repo pointer summary | [[agent-asset-model]], [[skill-authoring-and-validation]], [[harness-and-platform-sync]], [[openspec-workflow]] | no | linked | active |
-| `readme` | `raw/sources/readme.md` | repo pointer summary | [[repository-overview]], [[developer-commands]], [[harness-and-platform-sync]] | no | linked | active |
-| `pyproject-and-makefile` | `raw/sources/pyproject-and-makefile.md` | repo pointer summary | [[developer-commands]], [[repository-overview]] | no | linked | active |
-| `agent-bundle-and-sync` | `raw/sources/agent-bundle-and-sync.md` | repo pointer summary | [[harness-and-platform-sync]], [[agent-asset-model]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `nerdbot-skill-contract` | `raw/sources/nerdbot-skill-contract.md` | repo pointer summary | [[nerdbot]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `openspec-config` | `raw/sources/openspec-config.md` | repo pointer summary | [[openspec-workflow]], [[developer-commands]] | no | linked | active |
-| `code-surface-inventory` | `raw/sources/code-surface-inventory.md` | inventory pointer summary | [[repository-overview]], [[agent-asset-model]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `local-inventory-summary` | `raw/captures/local-inventory-summary.md` | tool-output capture | [[known-risks-and-open-gaps]], [[repository-overview]] | no | linked | active |
-| `developer-commands-extract` | `raw/extracts/developer-commands-extract.md` | normalized extract | [[developer-commands]] | no | linked | active |
-| `wagents-internals` | `raw/sources/wagents-internals.md` | repo pointer summary | [[wagents-cli-and-automation]], [[developer-commands]], [[skill-authoring-and-validation]] | no | linked | active |
-| `asset-validation-coverage` | `raw/sources/asset-validation-coverage.md` | repo pointer summary | [[validation-and-test-coverage]], [[skill-authoring-and-validation]] | no | linked | active |
-| `config-registries-and-sync` | `raw/sources/config-registries-and-sync.md` | repo pointer summary | [[harness-and-platform-sync]], [[canonical-generated-surfaces]], [[sync-transaction-safety]], [[plugin-and-mcp-ownership]] | no | linked | active |
-| `opencode-policy-and-runtime-plugins` | `raw/sources/opencode-policy-and-runtime-plugins.md` | repo pointer summary | [[opencode-runtime-policy]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]] | no | linked | active |
-| `mcp-surfaces` | `raw/sources/mcp-surfaces.md` | repo pointer summary | [[mcp-configuration-and-safety]], [[plugin-and-mcp-ownership]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `docs-site-architecture` | `raw/sources/docs-site-architecture.md` | repo pointer summary | [[docs-generation-and-site]], [[developer-commands]] | no | linked | active |
-| `nerdbot-runtime-contracts` | `raw/sources/nerdbot-runtime-contracts.md` | repo pointer summary | [[nerdbot]], [[validation-and-test-coverage]] | no | linked | active |
-| `instructions-hierarchy` | `raw/sources/instructions-hierarchy.md` | repo pointer summary | [[harness-and-platform-sync]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
-| `tests-and-validation` | `raw/sources/tests-and-validation.md` | repo pointer summary | [[validation-and-test-coverage]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `agent-definitions-inventory` | `raw/sources/agent-definitions-inventory.md` | repo pointer summary | [[agent-frontmatter-dialects]], [[agent-asset-model]] | no | linked | active |
-| `external-agent-skill-docs` | `raw/sources/external-agent-skill-docs.md` | external source pointer summary | [[external-primary-source-map]], [[agent-frontmatter-dialects]], [[skill-authoring-and-validation]] | no | linked | active |
-| `external-harness-docs` | `raw/sources/external-harness-docs.md` | external source pointer summary | [[external-primary-source-map]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]] | no | linked | active |
-| `external-tooling-docs` | `raw/sources/external-tooling-docs.md` | external source pointer summary | [[external-primary-source-map]], [[wagents-cli-and-automation]], [[validation-and-test-coverage]], [[docs-generation-and-site]] | no | linked | active |
-| `external-obsidian-markdown-docs` | `raw/sources/external-obsidian-markdown-docs.md` | external source pointer summary | [[external-primary-source-map]], [[nerdbot]], [[obsidian-vault-conventions]] | no | linked | active |
-| `planning-corpus-and-drift-ledgers` | `raw/sources/planning-corpus-drift-source.md` | repo planning pointer summary | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `hooks-evals-control-plane` | `raw/sources/hooks-evals-control-source.md` | repo pointer summary | [[hooks-evals-control-plane]], [[validation-and-test-coverage]], [[wagents-cli-and-automation]], [[harness-and-platform-sync]] | no | linked | active |
-| `openspec-change-archive-status` | `raw/sources/openspec-change-archive-source.md` | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `agent-publication-drift-coverage` | `raw/sources/agent-publication-drift-coverage.md` | repo pointer summary | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] | no | linked | active |
-| `skill-catalog-risk-eval-coverage` | `raw/sources/skill-catalog-risk-eval-coverage.md` | repo pointer summary | [[skill-catalog-risk-and-eval-coverage]], [[skill-authoring-and-validation]], [[validation-and-test-coverage]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `docs-artifact-freshness` | `raw/sources/docs-artifact-freshness.md` | repo pointer summary | [[docs-generation-and-site]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] | no | linked | active |
-| `skills-catalog-authoring-lifecycle` | `raw/sources/skills-catalog-authoring-lifecycle-source.md` | repo pointer summary | [[curated-catalog-authoring]], [[skill-authoring-and-validation]], [[docs-generation-and-site]] | no | linked | active |
-| `mcphub-control-plane` | `raw/sources/mcphub-control-plane-source.md` | repo pointer summary | [[mcphub-control-plane]], [[mcp-configuration-and-safety]], [[plugin-and-mcp-ownership]] | no | linked | active |
-| `wagents-platform-adapters` | `raw/sources/wagents-platform-adapters-source.md` | repo pointer summary | [[wagents-platform-adapters]], [[sync-transaction-safety]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
-| `ci-release-workflows` | `raw/sources/ci-release-workflows-source.md` | repo pointer summary | [[ci-and-release-workflows]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
-| `scripts-validation-tooling` | `raw/sources/scripts-validation-tooling-source.md` | repo pointer summary | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
-| `openspec-active-lifecycle` | `raw/sources/openspec-active-lifecycle-source.md` | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `skill-eval-inventory-capture-w01` | `raw/captures/skill-eval-inventory-capture-w01.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
-| `docs-freshness-capture-w01` | `raw/captures/docs-freshness-capture-w01.md` | tool-output capture | [[docs-generation-and-site]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `sync-rollback-capture-w01` | `raw/captures/sync-rollback-capture-w01.md` | tool-output capture | [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
-| `openspec-lifecycle-capture-w01` | `raw/captures/openspec-lifecycle-capture-w01.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
-| `agent-pub-drift-capture-w01` | `raw/captures/agent-pub-drift-capture-w01.md` | tool-output capture | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]] | no | linked | active |
-| `harness-fixture-capture-w01` | `raw/captures/harness-fixture-capture-w01.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
-| `wagents-cli-surface-capture-w02` | `raw/captures/wagents-cli-surface-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]] | no | linked | active |
-| `wagents-validate-capture-w02` | `raw/captures/wagents-validate-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
-| `wagents-docs-cli-capture-w02` | `raw/captures/wagents-docs-cli-capture-w02.md` | tool-output capture | [[wagents-cli-and-automation]], [[docs-generation-and-site]] | no | linked | active |
-| `wagents-eval-cli-capture-w02` | `raw/captures/wagents-eval-cli-capture-w02.md` | tool-output capture | [[hooks-evals-control-plane]], [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
-| `mcp-registry-capture-w03` | `raw/captures/mcp-registry-capture-w03.md` | tool-output capture | [[mcphub-control-plane]], [[plugin-and-mcp-ownership]], [[mcp-configuration-and-safety]] | no | linked | active |
-| `harness-surface-registry-capture-w03` | `raw/captures/harness-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
-| `config-transaction-registry-capture-w03` | `raw/captures/config-transaction-registry-capture-w03.md` | tool-output capture | [[sync-transaction-safety]], [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
-| `hook-surface-registry-capture-w03` | `raw/captures/hook-surface-registry-capture-w03.md` | tool-output capture | [[harness-and-platform-sync]], [[hooks-evals-control-plane]], [[plugin-and-mcp-ownership]] | no | linked | active |
-| `openspec-active-changes-capture-w04` | `raw/captures/openspec-active-changes-capture-w04.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
-| `planning-sync-inventory-capture-w04` | `raw/captures/planning-sync-inventory-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
-| `drift-ledger-capture-w04` | `raw/captures/drift-ledger-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[known-risks-and-open-gaps]] | no | linked | active |
-| `hooks-runtime-inventory-capture-w05` | `raw/captures/hooks-runtime-inventory-capture-w05.md` | tool-output capture | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] | no | linked | active |
-| `hooks-tests-cluster-capture-w05` | `raw/captures/hooks-tests-cluster-capture-w05.md` | tool-output capture | [[validation-and-test-coverage]], [[hooks-evals-control-plane]] | no | linked | active |
-| `skill-eval-files-capture-w05` | `raw/captures/skill-eval-files-capture-w05.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
-| `catalog-authoring-mdx-capture-w06` | `raw/captures/catalog-authoring-mdx-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[docs-generation-and-site]] | no | linked | active |
-| `skills-catalog-index-capture-w06` | `raw/captures/skills-catalog-index-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[skill-authoring-and-validation]] | no | linked | active |
-| `docs-generate-check-capture-w06` | `raw/captures/docs-generate-check-capture-w06.md` | tool-output capture | [[docs-generation-and-site]], [[curated-catalog-authoring]] | no | linked | active |
-| `mcphub-scripts-lifecycle-capture-w07` | `raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[developer-commands]] | no | linked | active |
-| `mcphub-launch-tunnel-capture-w07` | `raw/captures/mcphub-launch-tunnel-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
-| `mcphub-settings-validation-capture-w07` | `raw/captures/mcphub-settings-validation-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
-| `instructions-hierarchy-capture-w08` | `raw/captures/instructions-hierarchy-capture-w08.md` | tool-output capture | [[harness-and-platform-sync]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
-| `platform-adapters-fleet-capture-w08` | `raw/captures/platform-adapters-fleet-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
-| `harness-config-templates-capture-w08` | `raw/captures/harness-config-templates-capture-w08.md` | tool-output capture | [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
-| `opencode-platform-adapter-capture-w08` | `raw/captures/opencode-platform-adapter-capture-w08.md` | tool-output capture | [[opencode-runtime-policy]], [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
-| `agentskills-spec-capture-w09` | `raw/sources/agentskills-spec-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
-| `mcp-spec-index-capture-w09` | `raw/sources/mcp-spec-index-capture-w09.md` | external source pointer | [[external-primary-source-map]], [[mcp-configuration-and-safety]] | no | linked | active |
-| `agentskills-llms-index-extract-w09` | `raw/extracts/agentskills-llms-index-extract-w09.md` | normalized extract | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
-| `opencode-docs-capture-w10` | `raw/sources/opencode-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]], [[opencode-runtime-policy]] | no | linked | active |
-| `cursor-docs-capture-w10` | `raw/sources/cursor-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
-| `copilot-harness-docs-capture-w10` | `raw/sources/copilot-harness-docs-capture-w10.md` | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
-| `uv-llms-index-extract-w11` | `raw/extracts/uv-llms-index-extract-w11.md` | normalized extract | [[external-primary-source-map]], [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
-| `pyproject-tooling-capture-w11` | `raw/captures/pyproject-tooling-capture-w11.md` | tool-output capture | [[validation-and-test-coverage]], [[external-primary-source-map]] | no | linked | active |
-| `ci-workflow-jobs-capture-w11` | `raw/captures/ci-workflow-jobs-capture-w11.md` | tool-output capture | [[ci-and-release-workflows]], [[validation-and-test-coverage]] | no | linked | active |
-| `obsidian-properties-capture-w11` | `raw/sources/obsidian-properties-capture-w11.md` | external source pointer | [[obsidian-vault-conventions]], [[nerdbot]], [[external-primary-source-map]] | no | linked | active |
-| `scripts-validate-collectors-capture-w12` | `raw/captures/scripts-validate-collectors-capture-w12.md` | tool-output capture | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]] | no | linked | active |
-| `harness-policy-templates-capture-w12` | `raw/captures/harness-policy-templates-capture-w12.md` | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
-| `starlight-astro-config-capture-w12` | `raw/captures/starlight-astro-config-capture-w12.md` | tool-output capture | [[docs-generation-and-site]] | no | linked | active |
-| `gemini-harness-docs-capture-w13` | `raw/sources/gemini-harness-docs-capture-w13.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
-| `makefile-dev-targets-capture-w13` | `raw/captures/makefile-dev-targets-capture-w13.md` | tool-output capture | [[developer-commands]] | no | linked | active |
-| `pre-commit-hooks-capture-w14` | `raw/captures/pre-commit-hooks-capture-w14.md` | tool-output capture | [[ci-and-release-workflows]], [[developer-commands]] | no | linked | active |
-| `grok-harness-policy-capture-w15` | `raw/captures/grok-harness-policy-capture-w15.md` | tool-output capture | [[grok-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
-| `codex-harness-policy-capture-w15` | `raw/captures/codex-harness-policy-capture-w15.md` | tool-output capture | [[codex-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
-| `release-skills-workflow-capture-w15` | `raw/captures/release-skills-workflow-capture-w15.md` | tool-output capture | [[ci-and-release-workflows]] | no | linked | active |
-| `repository-inventory-capture-w15` | `raw/captures/repository-inventory-capture-w15.md` | tool-output capture | [[repository-overview]], [[agent-asset-model]] | no | linked | active |
-| `antigravity-crush-harness-capture-w16` | `raw/sources/antigravity-crush-harness-capture-w16.md` | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
-| `agent-definitions-inventory-capture-w16` | `raw/captures/agent-definitions-inventory-capture-w16.md` | tool-output capture | [[agent-asset-model]], [[agent-frontmatter-dialects]] | no | linked | active |
-| `openspec-validate-snapshot-capture-w16` | `raw/captures/openspec-validate-snapshot-capture-w16.md` | tool-output capture | [[openspec-workflow]], [[openspec-change-archive-status]] | no | linked | active |
-| `nerdbot-kb-scripts-capture-w17` | `raw/captures/nerdbot-kb-scripts-capture-w17.md` | tool-output capture | [[nerdbot]] | no | linked | active |
-| `sync-manifest-snapshot-capture-w17` | `raw/captures/sync-manifest-snapshot-capture-w17.md` | tool-output capture | [[canonical-generated-surfaces]], [[sync-transaction-safety]] | no | linked | active |
-| `opencode-harness-policy-capture-w18` | `raw/captures/opencode-harness-policy-capture-w18.md` | tool-output capture | [[opencode-harness-policy]], [[opencode-runtime-policy]] | no | linked | active |
-| `instructions-layer-capture-w19` | `raw/captures/instructions-layer-capture-w19.md` | tool-output capture | [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
-| `skill-creator-scripts-capture-w19` | `raw/captures/skill-creator-scripts-capture-w19.md` | tool-output capture | [[skill-authoring-and-validation]] | no | linked | active |
-| `agent-frontmatter-refresh-capture-w19` | `raw/captures/agent-frontmatter-refresh-capture-w19.md` | tool-output capture | [[agent-frontmatter-dialects]], [[agent-asset-model]] | no | linked | active |
-| `instruction-overlay-matrix-capture-w19` | `raw/captures/instruction-overlay-matrix-capture-w19.md` | tool-output capture | [[harness-and-platform-sync]] | no | linked | active |
-| `hook-registry-capture-w20` | `raw/captures/hook-registry-capture-w20.md` | tool-output capture | [[hooks-evals-control-plane]] | no | linked | active |
-| `wagents-typer-map-capture-w20` | `raw/captures/wagents-typer-map-capture-w20.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
-| `gemini-harness-policy-capture-w21` | `raw/captures/gemini-harness-policy-capture-w21.md` | tool-output capture | [[gemini-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
-| `cursor-harness-policy-capture-w21` | `raw/captures/cursor-harness-policy-capture-w21.md` | tool-output capture | [[cursor-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
-| `copilot-harness-policy-capture-w21` | `raw/captures/copilot-harness-policy-capture-w21.md` | tool-output capture | [[copilot-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
-| `antigravity-harness-policy-capture-w22` | `raw/captures/antigravity-harness-policy-capture-w22.md` | tool-output capture | [[antigravity-harness-policy]], [[gemini-harness-policy]] | no | linked | active |
-| `crush-harness-policy-capture-w22` | `raw/captures/crush-harness-policy-capture-w22.md` | tool-output capture | [[crush-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
-| `harness-fixture-support-capture-w23` | `raw/captures/harness-fixture-support-capture-w23.md` | tool-output capture | [[harness-fixture-gaps]] | no | linked | active |
-| `support-tier-registry-capture-w23` | `raw/captures/support-tier-registry-capture-w23.md` | tool-output capture | [[harness-fixture-gaps]], [[docs-generation-and-site]] | no | linked | active |
-| `docs-artifact-registry-capture-w23` | `raw/captures/docs-artifact-registry-capture-w23.md` | tool-output capture | [[docs-generation-and-site]], [[canonical-generated-surfaces]] | no | linked | active |
-| `agent-bundle-snapshot-capture-w23` | `raw/captures/agent-bundle-snapshot-capture-w23.md` | tool-output capture | [[agent-asset-model]], [[harness-and-platform-sync]] | no | linked | active |
-| `config-registry-crosswalk-capture-w24` | `raw/captures/config-registry-crosswalk-capture-w24.md` | tool-output capture | [[harness-and-platform-sync]], [[mcp-configuration-and-safety]] | no | linked | active |
-| `security-quarantine-register-capture-w24` | `raw/captures/security-quarantine-register-capture-w24.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
-| `harness-surface-refresh-capture-w24` | `raw/captures/harness-surface-refresh-capture-w24.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
-| `catalog-schema-registry-capture-w25` | `raw/captures/catalog-schema-registry-capture-w25.md` | tool-output capture | [[curated-catalog-authoring]] | no | linked | active |
-| `sync-transaction-registry-capture-w25` | `raw/captures/sync-transaction-registry-capture-w25.md` | tool-output capture | [[sync-transaction-safety]] | no | linked | active |
-| `pass4-thin-refresh-capture-w26` | `raw/captures/pass4-thin-refresh-capture-w26.md` | tool-output capture | [[log]] | no | linked | active |
-| `wagents-doctor-checks-capture-w27` | `raw/captures/wagents-doctor-checks-capture-w27.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
-| `pytest-top-level-cluster-capture-w27` | `raw/captures/pytest-top-level-cluster-capture-w27.md` | tool-output capture | [[validation-and-test-coverage]] | no | linked | active |
-| `platform-adapter-test-cluster-capture-w27` | `raw/captures/platform-adapter-test-cluster-capture-w27.md` | tool-output capture | [[validation-and-test-coverage]], [[harness-fixture-gaps]] | no | linked | active |
-| `wagents-self-doctor-capture-w27` | `raw/captures/wagents-self-doctor-capture-w27.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
-| `repo-map-evidence-refresh-capture-w28` | `raw/captures/repo-map-evidence-refresh-capture-w28.md` | tool-output capture | [[repo-map]] | no | linked | active |
-| `glossary-harness-terms-capture-w28` | `raw/captures/glossary-harness-terms-capture-w28.md` | tool-output capture | [[glossary]] | no | linked | active |
-| `known-risks-refresh-capture-w28` | `raw/captures/known-risks-refresh-capture-w28.md` | tool-output capture | [[known-risks-and-open-gaps]] | no | linked | active |
-| `developer-commands-refresh-capture-w29` | `raw/captures/developer-commands-refresh-capture-w29.md` | tool-output capture | [[developer-commands]], [[nerdbot]] | no | linked | active |
-| `kb-index-metadata-capture-w29` | `raw/captures/kb-index-metadata-capture-w29.md` | tool-output capture | [[source-map]], [[coverage]] | no | linked | active |
+| Source ID | Raw path | Repo surface | Capture type | Planned wiki target | Canonical material touched? | Provenance status | Status |
+|-----------|----------|--------------|--------------|---------------------|-----------------------------|-------------------|--------|
+| `agents-md` | `raw/sources/agents-md.md` | `AGENTS.md` | repo pointer summary | [[agent-asset-model]], [[skill-authoring-and-validation]], [[harness-and-platform-sync]], [[openspec-workflow]] | no | linked | active |
+| `readme` | `raw/sources/readme.md` | `README.md` | repo pointer summary | [[repository-overview]], [[developer-commands]], [[harness-and-platform-sync]] | no | linked | active |
+| `pyproject-and-makefile` | `raw/sources/pyproject-and-makefile.md` | `pyproject.toml`, `Makefile` | repo pointer summary | [[developer-commands]], [[repository-overview]] | no | linked | active |
+| `agent-bundle-and-sync` | `raw/sources/agent-bundle-and-sync.md` | - | repo pointer summary | [[harness-and-platform-sync]], [[agent-asset-model]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `nerdbot-skill-contract` | `raw/sources/nerdbot-skill-contract.md` | `kb/` | repo pointer summary | [[nerdbot]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `openspec-config` | `raw/sources/openspec-config.md` | `openspec/` | repo pointer summary | [[openspec-workflow]], [[developer-commands]] | no | linked | active |
+| `code-surface-inventory` | `raw/sources/code-surface-inventory.md` | `skills/`, `agents/`, `wagents/`, `config/`, `docs/`, `tests/`, `mcp/` | inventory pointer summary | [[repository-overview]], [[agent-asset-model]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `local-inventory-summary` | `raw/captures/local-inventory-summary.md` | - | tool-output capture | [[known-risks-and-open-gaps]], [[repository-overview]] | no | linked | active |
+| `developer-commands-extract` | `raw/extracts/developer-commands-extract.md` | - | normalized extract | [[developer-commands]] | no | linked | active |
+| `wagents-internals` | `raw/sources/wagents-internals.md` | `wagents/`, `pyproject.toml`, `Makefile` | repo pointer summary | [[wagents-cli-and-automation]], [[developer-commands]], [[skill-authoring-and-validation]] | no | linked | active |
+| `asset-validation-coverage` | `raw/sources/asset-validation-coverage.md` | - | repo pointer summary | [[validation-and-test-coverage]], [[skill-authoring-and-validation]] | no | linked | active |
+| `config-registries-and-sync` | `raw/sources/config-registries-and-sync.md` | `config/`, `config/mcp-registry.json`, `scripts/sync_agent_stack.py` | repo pointer summary | [[harness-and-platform-sync]], [[canonical-generated-surfaces]], [[sync-transaction-safety]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `opencode-policy-and-runtime-plugins` | `raw/sources/opencode-policy-and-runtime-plugins.md` | - | repo pointer summary | [[opencode-runtime-policy]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `mcp-surfaces` | `raw/sources/mcp-surfaces.md` | `mcp/`, `config/mcp-registry.json` | repo pointer summary | [[mcp-configuration-and-safety]], [[plugin-and-mcp-ownership]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `docs-site-architecture` | `raw/sources/docs-site-architecture.md` | `docs/` | repo pointer summary | [[docs-generation-and-site]], [[developer-commands]] | no | linked | active |
+| `nerdbot-runtime-contracts` | `raw/sources/nerdbot-runtime-contracts.md` | `kb/` | repo pointer summary | [[nerdbot]], [[validation-and-test-coverage]] | no | linked | active |
+| `instructions-hierarchy` | `raw/sources/instructions-hierarchy.md` | `instructions/` | repo pointer summary | [[harness-and-platform-sync]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
+| `tests-and-validation` | `raw/sources/tests-and-validation.md` | `tests/` | repo pointer summary | [[validation-and-test-coverage]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `agent-definitions-inventory` | `raw/sources/agent-definitions-inventory.md` | `agents/` | repo pointer summary | [[agent-frontmatter-dialects]], [[agent-asset-model]] | no | linked | active |
+| `external-agent-skill-docs` | `raw/sources/external-agent-skill-docs.md` | External upstream docs | external source pointer summary | [[external-primary-source-map]], [[agent-frontmatter-dialects]], [[skill-authoring-and-validation]] | no | linked | active |
+| `external-harness-docs` | `raw/sources/external-harness-docs.md` | External upstream docs | external source pointer summary | [[external-primary-source-map]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `external-tooling-docs` | `raw/sources/external-tooling-docs.md` | External upstream docs | external source pointer summary | [[external-primary-source-map]], [[wagents-cli-and-automation]], [[validation-and-test-coverage]], [[docs-generation-and-site]] | no | linked | active |
+| `external-obsidian-markdown-docs` | `raw/sources/external-obsidian-markdown-docs.md` | External upstream docs | external source pointer summary | [[external-primary-source-map]], [[nerdbot]], [[obsidian-vault-conventions]] | no | linked | active |
+| `planning-corpus-and-drift-ledgers` | `raw/sources/planning-corpus-drift-source.md` | `planning/` | repo planning pointer summary | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `hooks-evals-control-plane` | `raw/sources/hooks-evals-control-source.md` | - | repo pointer summary | [[hooks-evals-control-plane]], [[validation-and-test-coverage]], [[wagents-cli-and-automation]], [[harness-and-platform-sync]] | no | linked | active |
+| `openspec-change-archive-status` | `raw/sources/openspec-change-archive-source.md` | - | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `agent-publication-drift-coverage` | `raw/sources/agent-publication-drift-coverage.md` | - | repo pointer summary | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] | no | linked | active |
+| `skill-catalog-risk-eval-coverage` | `raw/sources/skill-catalog-risk-eval-coverage.md` | - | repo pointer summary | [[skill-catalog-risk-and-eval-coverage]], [[skill-authoring-and-validation]], [[validation-and-test-coverage]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `docs-artifact-freshness` | `raw/sources/docs-artifact-freshness.md` | - | repo pointer summary | [[docs-generation-and-site]], [[known-risks-and-open-gaps]], [[canonical-generated-surfaces]] | no | linked | active |
+| `skills-catalog-authoring-lifecycle` | `raw/sources/skills-catalog-authoring-lifecycle-source.md` | - | repo pointer summary | [[curated-catalog-authoring]], [[skill-authoring-and-validation]], [[docs-generation-and-site]] | no | linked | active |
+| `mcphub-control-plane` | `raw/sources/mcphub-control-plane-source.md` | - | repo pointer summary | [[mcphub-control-plane]], [[mcp-configuration-and-safety]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `wagents-platform-adapters` | `raw/sources/wagents-platform-adapters-source.md` | - | repo pointer summary | [[wagents-platform-adapters]], [[sync-transaction-safety]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
+| `ci-release-workflows` | `raw/sources/ci-release-workflows-source.md` | - | repo pointer summary | [[ci-and-release-workflows]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
+| `scripts-validation-tooling` | `raw/sources/scripts-validation-tooling-source.md` | - | repo pointer summary | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]], [[developer-commands]] | no | linked | active |
+| `openspec-active-lifecycle` | `raw/sources/openspec-active-lifecycle-source.md` | - | repo pointer summary | [[openspec-change-archive-status]], [[openspec-workflow]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `skill-eval-inventory-capture-w01` | `raw/captures/skill-eval-inventory-capture-w01.md` | - | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
+| `docs-freshness-capture-w01` | `raw/captures/docs-freshness-capture-w01.md` | - | tool-output capture | [[docs-generation-and-site]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `sync-rollback-capture-w01` | `raw/captures/sync-rollback-capture-w01.md` | - | tool-output capture | [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
+| `openspec-lifecycle-capture-w01` | `raw/captures/openspec-lifecycle-capture-w01.md` | - | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
+| `agent-pub-drift-capture-w01` | `raw/captures/agent-pub-drift-capture-w01.md` | - | tool-output capture | [[agent-publication-and-drift-coverage]], [[agent-frontmatter-dialects]] | no | linked | active |
+| `harness-fixture-capture-w01` | `raw/captures/harness-fixture-capture-w01.md` | - | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `mcp-registry-capture-w03` | `raw/captures/mcp-registry-capture-w03.md` | `config/mcp-registry.json` | tool-output capture | [[mcphub-control-plane]], [[plugin-and-mcp-ownership]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `harness-surface-registry-capture-w03` | `raw/captures/harness-surface-registry-capture-w03.md` | - | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
+| `config-transaction-registry-capture-w03` | `raw/captures/config-transaction-registry-capture-w03.md` | - | tool-output capture | [[sync-transaction-safety]], [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
+| `hook-surface-registry-capture-w03` | `raw/captures/hook-surface-registry-capture-w03.md` | - | tool-output capture | [[harness-and-platform-sync]], [[hooks-evals-control-plane]], [[plugin-and-mcp-ownership]] | no | linked | active |
+| `wagents-cli-surface-capture-w02` | `raw/captures/wagents-cli-surface-capture-w02.md` | - | tool-output capture | [[wagents-cli-and-automation]] | no | linked | active |
+| `wagents-validate-capture-w02` | `raw/captures/wagents-validate-capture-w02.md` | - | tool-output capture | [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
+| `wagents-docs-cli-capture-w02` | `raw/captures/wagents-docs-cli-capture-w02.md` | - | tool-output capture | [[wagents-cli-and-automation]], [[docs-generation-and-site]] | no | linked | active |
+| `wagents-eval-cli-capture-w02` | `raw/captures/wagents-eval-cli-capture-w02.md` | - | tool-output capture | [[hooks-evals-control-plane]], [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
+| `openspec-active-changes-capture-w04` | `raw/captures/openspec-active-changes-capture-w04.md` | - | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
+| `planning-sync-inventory-capture-w04` | `raw/captures/planning-sync-inventory-capture-w04.md` | - | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
+| `drift-ledger-capture-w04` | `raw/captures/drift-ledger-capture-w04.md` | - | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `mcphub-scripts-lifecycle-capture-w07` | `raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | - | tool-output capture | [[mcphub-control-plane]], [[developer-commands]] | no | linked | active |
+| `mcphub-launch-tunnel-capture-w07` | `raw/captures/mcphub-launch-tunnel-capture-w07.md` | - | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `mcphub-settings-validation-capture-w07` | `raw/captures/mcphub-settings-validation-capture-w07.md` | - | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `hooks-runtime-inventory-capture-w05` | `raw/captures/hooks-runtime-inventory-capture-w05.md` | `hooks/` | tool-output capture | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] | no | linked | active |
+| `hooks-tests-cluster-capture-w05` | `raw/captures/hooks-tests-cluster-capture-w05.md` | - | tool-output capture | [[validation-and-test-coverage]], [[hooks-evals-control-plane]] | no | linked | active |
+| `skill-eval-files-capture-w05` | `raw/captures/skill-eval-files-capture-w05.md` | - | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
+| `instructions-hierarchy-capture-w08` | `raw/captures/instructions-hierarchy-capture-w08.md` | `instructions/` | tool-output capture | [[harness-and-platform-sync]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
+| `platform-adapters-fleet-capture-w08` | `raw/captures/platform-adapters-fleet-capture-w08.md` | `wagents/platforms/`, `scripts/sync_agent_stack.py` | tool-output capture | [[wagents-platform-adapters]], [[harness-fixture-gaps]], [[harness-and-platform-sync]] | no | linked | active |
+| `harness-config-templates-capture-w08` | `raw/captures/harness-config-templates-capture-w08.md` | - | tool-output capture | [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[canonical-generated-surfaces]] | no | linked | active |
+| `opencode-platform-adapter-capture-w08` | `raw/captures/opencode-platform-adapter-capture-w08.md` | - | tool-output capture | [[opencode-runtime-policy]], [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `catalog-authoring-mdx-capture-w06` | `raw/captures/catalog-authoring-mdx-capture-w06.md` | `docs/src/authoring/skills/` | tool-output capture | [[curated-catalog-authoring]], [[docs-generation-and-site]] | no | linked | active |
+| `skills-catalog-index-capture-w06` | `raw/captures/skills-catalog-index-capture-w06.md` | - | tool-output capture | [[curated-catalog-authoring]], [[skill-authoring-and-validation]] | no | linked | active |
+| `docs-generate-check-capture-w06` | `raw/captures/docs-generate-check-capture-w06.md` | - | tool-output capture | [[docs-generation-and-site]], [[curated-catalog-authoring]] | no | linked | active |
+| `agentskills-spec-capture-w09` | `raw/sources/agentskills-spec-capture-w09.md` | - | external source pointer | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
+| `mcp-spec-index-capture-w09` | `raw/sources/mcp-spec-index-capture-w09.md` | - | external source pointer | [[external-primary-source-map]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `agentskills-llms-index-extract-w09` | `raw/extracts/agentskills-llms-index-extract-w09.md` | - | normalized extract | [[external-primary-source-map]], [[skill-authoring-and-validation]] | no | linked | active |
+| `opencode-docs-capture-w10` | `raw/sources/opencode-docs-capture-w10.md` | - | external source pointer | [[harness-and-platform-sync]], [[opencode-runtime-policy]] | no | linked | active |
+| `cursor-docs-capture-w10` | `raw/sources/cursor-docs-capture-w10.md` | - | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
+| `copilot-harness-docs-capture-w10` | `raw/sources/copilot-harness-docs-capture-w10.md` | - | external source pointer | [[harness-and-platform-sync]] | no | linked | active |
+| `uv-llms-index-extract-w11` | `raw/extracts/uv-llms-index-extract-w11.md` | - | normalized extract | [[external-primary-source-map]], [[wagents-cli-and-automation]], [[validation-and-test-coverage]] | no | linked | active |
+| `pyproject-tooling-capture-w11` | `raw/captures/pyproject-tooling-capture-w11.md` | - | tool-output capture | [[validation-and-test-coverage]], [[external-primary-source-map]] | no | linked | active |
+| `ci-workflow-jobs-capture-w11` | `raw/captures/ci-workflow-jobs-capture-w11.md` | `.github/workflows/` | tool-output capture | [[ci-and-release-workflows]], [[validation-and-test-coverage]] | no | linked | active |
+| `obsidian-properties-capture-w11` | `raw/sources/obsidian-properties-capture-w11.md` | - | external source pointer | [[obsidian-vault-conventions]], [[nerdbot]], [[external-primary-source-map]] | no | linked | active |
+| `scripts-validate-collectors-capture-w12` | `raw/captures/scripts-validate-collectors-capture-w12.md` | - | tool-output capture | [[scripts-and-validation-tooling]], [[validation-and-test-coverage]] | no | linked | active |
+| `harness-policy-templates-capture-w12` | `raw/captures/harness-policy-templates-capture-w12.md` | - | tool-output capture | [[harness-and-platform-sync]], [[harness-fixture-gaps]] | no | linked | active |
+| `starlight-astro-config-capture-w12` | `raw/captures/starlight-astro-config-capture-w12.md` | - | tool-output capture | [[docs-generation-and-site]] | no | linked | active |
+| `gemini-harness-docs-capture-w13` | `raw/sources/gemini-harness-docs-capture-w13.md` | - | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
+| `makefile-dev-targets-capture-w13` | `raw/captures/makefile-dev-targets-capture-w13.md` | - | tool-output capture | [[developer-commands]] | no | linked | active |
+| `pre-commit-hooks-capture-w14` | `raw/captures/pre-commit-hooks-capture-w14.md` | - | tool-output capture | [[ci-and-release-workflows]], [[developer-commands]] | no | linked | active |
+| `grok-harness-policy-capture-w15` | `raw/captures/grok-harness-policy-capture-w15.md` | - | tool-output capture | [[grok-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
+| `codex-harness-policy-capture-w15` | `raw/captures/codex-harness-policy-capture-w15.md` | - | tool-output capture | [[codex-harness-policy]], [[harness-and-platform-sync]], [[wagents-platform-adapters]] | no | linked | active |
+| `release-skills-workflow-capture-w15` | `raw/captures/release-skills-workflow-capture-w15.md` | - | tool-output capture | [[ci-and-release-workflows]] | no | linked | active |
+| `repository-inventory-capture-w15` | `raw/captures/repository-inventory-capture-w15.md` | - | tool-output capture | [[repository-overview]], [[agent-asset-model]] | no | linked | active |
+| `antigravity-crush-harness-capture-w16` | `raw/sources/antigravity-crush-harness-capture-w16.md` | - | external source pointer | [[harness-and-platform-sync]], [[external-primary-source-map]] | no | linked | active |
+| `agent-definitions-inventory-capture-w16` | `raw/captures/agent-definitions-inventory-capture-w16.md` | `agents/` | tool-output capture | [[agent-asset-model]], [[agent-frontmatter-dialects]] | no | linked | active |
+| `openspec-validate-snapshot-capture-w16` | `raw/captures/openspec-validate-snapshot-capture-w16.md` | - | tool-output capture | [[openspec-workflow]], [[openspec-change-archive-status]] | no | linked | active |
+| `nerdbot-kb-scripts-capture-w17` | `raw/captures/nerdbot-kb-scripts-capture-w17.md` | - | tool-output capture | [[nerdbot]] | no | linked | active |
+| `sync-manifest-snapshot-capture-w17` | `raw/captures/sync-manifest-snapshot-capture-w17.md` | - | tool-output capture | [[canonical-generated-surfaces]], [[sync-transaction-safety]] | no | linked | active |
+| `opencode-harness-policy-capture-w18` | `raw/captures/opencode-harness-policy-capture-w18.md` | - | tool-output capture | [[opencode-harness-policy]], [[opencode-runtime-policy]] | no | linked | active |
+| `instructions-layer-capture-w19` | `raw/captures/instructions-layer-capture-w19.md` | - | tool-output capture | [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
+| `skill-creator-scripts-capture-w19` | `raw/captures/skill-creator-scripts-capture-w19.md` | - | tool-output capture | [[skill-authoring-and-validation]] | no | linked | active |
+| `agent-frontmatter-refresh-capture-w19` | `raw/captures/agent-frontmatter-refresh-capture-w19.md` | - | tool-output capture | [[agent-frontmatter-dialects]], [[agent-asset-model]] | no | linked | active |
+| `instruction-overlay-matrix-capture-w19` | `raw/captures/instruction-overlay-matrix-capture-w19.md` | - | tool-output capture | [[harness-and-platform-sync]] | no | linked | active |
+| `hook-registry-capture-w20` | `raw/captures/hook-registry-capture-w20.md` | - | tool-output capture | [[hooks-evals-control-plane]] | no | linked | active |
+| `wagents-typer-map-capture-w20` | `raw/captures/wagents-typer-map-capture-w20.md` | - | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
+| `gemini-harness-policy-capture-w21` | `raw/captures/gemini-harness-policy-capture-w21.md` | - | tool-output capture | [[gemini-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
+| `cursor-harness-policy-capture-w21` | `raw/captures/cursor-harness-policy-capture-w21.md` | - | tool-output capture | [[cursor-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
+| `copilot-harness-policy-capture-w21` | `raw/captures/copilot-harness-policy-capture-w21.md` | - | tool-output capture | [[copilot-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
+| `antigravity-harness-policy-capture-w22` | `raw/captures/antigravity-harness-policy-capture-w22.md` | - | tool-output capture | [[antigravity-harness-policy]], [[gemini-harness-policy]] | no | linked | active |
+| `crush-harness-policy-capture-w22` | `raw/captures/crush-harness-policy-capture-w22.md` | - | tool-output capture | [[crush-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
+| `harness-fixture-support-capture-w23` | `raw/captures/harness-fixture-support-capture-w23.md` | - | tool-output capture | [[harness-fixture-gaps]] | no | linked | active |
+| `support-tier-registry-capture-w23` | `raw/captures/support-tier-registry-capture-w23.md` | - | tool-output capture | [[harness-fixture-gaps]], [[docs-generation-and-site]] | no | linked | active |
+| `docs-artifact-registry-capture-w23` | `raw/captures/docs-artifact-registry-capture-w23.md` | - | tool-output capture | [[docs-generation-and-site]], [[canonical-generated-surfaces]] | no | linked | active |
+| `agent-bundle-snapshot-capture-w23` | `raw/captures/agent-bundle-snapshot-capture-w23.md` | - | tool-output capture | [[agent-asset-model]], [[harness-and-platform-sync]] | no | linked | active |
+| `config-registry-crosswalk-capture-w24` | `raw/captures/config-registry-crosswalk-capture-w24.md` | - | tool-output capture | [[harness-and-platform-sync]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `security-quarantine-register-capture-w24` | `raw/captures/security-quarantine-register-capture-w24.md` | - | tool-output capture | [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
+| `harness-surface-refresh-capture-w24` | `raw/captures/harness-surface-refresh-capture-w24.md` | - | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
+| `catalog-schema-registry-capture-w25` | `raw/captures/catalog-schema-registry-capture-w25.md` | - | tool-output capture | [[curated-catalog-authoring]] | no | linked | active |
+| `sync-transaction-registry-capture-w25` | `raw/captures/sync-transaction-registry-capture-w25.md` | - | tool-output capture | [[sync-transaction-safety]] | no | linked | active |
+| `pass4-thin-refresh-capture-w26` | `raw/captures/pass4-thin-refresh-capture-w26.md` | - | tool-output capture | [[log]] | no | linked | active |
+| `wagents-doctor-checks-capture-w27` | `raw/captures/wagents-doctor-checks-capture-w27.md` | - | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
+| `pytest-top-level-cluster-capture-w27` | `raw/captures/pytest-top-level-cluster-capture-w27.md` | - | tool-output capture | [[validation-and-test-coverage]] | no | linked | active |
+| `platform-adapter-test-cluster-capture-w27` | `raw/captures/platform-adapter-test-cluster-capture-w27.md` | - | tool-output capture | [[validation-and-test-coverage]], [[harness-fixture-gaps]] | no | linked | active |
+| `wagents-self-doctor-capture-w27` | `raw/captures/wagents-self-doctor-capture-w27.md` | - | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
+| `repo-map-evidence-refresh-capture-w28` | `raw/captures/repo-map-evidence-refresh-capture-w28.md` | - | tool-output capture | [[repo-map]] | no | linked | active |
+| `glossary-harness-terms-capture-w28` | `raw/captures/glossary-harness-terms-capture-w28.md` | - | tool-output capture | [[glossary]] | no | linked | active |
+| `known-risks-refresh-capture-w28` | `raw/captures/known-risks-refresh-capture-w28.md` | - | tool-output capture | [[known-risks-and-open-gaps]] | no | linked | active |
+| `developer-commands-refresh-capture-w29` | `raw/captures/developer-commands-refresh-capture-w29.md` | - | tool-output capture | [[developer-commands]], [[nerdbot]] | no | linked | active |
+| `kb-index-metadata-capture-w29` | `raw/captures/kb-index-metadata-capture-w29.md` | - | tool-output capture | [[source-map]], [[coverage]] | no | linked | active |
+| `pass5-final-stop-capture-w30` | `raw/captures/pass5-final-stop-capture-w30.md` | - | tool-output capture | [[log]] | no | linked | active |
+
 
 ## External Sources
 

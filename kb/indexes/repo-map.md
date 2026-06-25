@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 30
+source_count: 31
 ---
 
 # Repository Map
@@ -54,3 +54,4 @@ source_count: 30
 | 2026-06-23 enrichment adds catalog authoring, MCPHub, platform adapters, CI, scripts validation, and OpenSpec lifecycle sources. | `kb/raw/sources/skills-catalog-authoring-lifecycle-source.md`; `kb/raw/sources/mcphub-control-plane-source.md`; `kb/raw/sources/wagents-platform-adapters-source.md`; `kb/raw/sources/ci-release-workflows-source.md`; `kb/raw/sources/scripts-validation-tooling-source.md`; `kb/raw/sources/openspec-active-lifecycle-source.md` | raw source notes | Maximal enrichment batch. |
 | 2026-06-25 waves 03–10 add registry, hooks, docs authoring, MCPHub scripts, platform adapters, and external spec/harness captures. | `kb/raw/captures/mcp-registry-capture-w03.md`; `kb/raw/captures/hooks-runtime-inventory-capture-w05.md`; `kb/raw/captures/catalog-authoring-mdx-capture-w06.md`; `kb/raw/captures/mcphub-scripts-lifecycle-capture-w07.md`; `kb/raw/captures/platform-adapters-fleet-capture-w08.md`; `kb/raw/sources/agentskills-spec-capture-w09.md`; `kb/raw/sources/opencode-docs-capture-w10.md` | raw captures + external pointers | Fleet ingest evidence. |
 | 2026-06-25 wave 11 deepens tooling and CI evidence. | `kb/raw/captures/pyproject-tooling-capture-w11.md`; `kb/raw/extracts/uv-llms-index-extract-w11.md`; `kb/raw/captures/ci-workflow-jobs-capture-w11.md` | raw capture + extract | Gap sweep batch. |
+| 2026-06-25 passes 3–5 add instruction layer, hook registry, harness policy topics, fixture/tier registries, doctor/pytest anchors (waves 19–30). | `kb/raw/captures/instructions-layer-capture-w19.md`; `kb/raw/captures/hook-registry-capture-w20.md`; `kb/raw/captures/harness-fixture-support-capture-w23.md`; `kb/raw/captures/wagents-doctor-checks-capture-w27.md` | raw captures | 31 net-new sources; 122 source-map rows. |
