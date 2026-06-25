@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 27 — wagents doctor and pytest clusters
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave27-pass5-2026-06-25.md`
+- `raw`: added 4 captures (`wagents-doctor-checks-capture-w27`, `pytest-top-level-cluster-capture-w27`, `platform-adapter-test-cluster-capture-w27`, `wagents-self-doctor-capture-w27`).
+- Metrics: **net-new raw sources: 4**; lint pass before commit.
+
 ### [2026-06-25] Wave 26 — pass 4 diminishing returns stop
 
 - Mode: research + ingest + enrich + audit

@@ -128,6 +128,10 @@ source_count: 35
 | `catalog-schema-registry-capture-w25` | `raw/captures/catalog-schema-registry-capture-w25.md` | tool-output capture | [[curated-catalog-authoring]] | no | linked | active |
 | `sync-transaction-registry-capture-w25` | `raw/captures/sync-transaction-registry-capture-w25.md` | tool-output capture | [[sync-transaction-safety]] | no | linked | active |
 | `pass4-thin-refresh-capture-w26` | `raw/captures/pass4-thin-refresh-capture-w26.md` | tool-output capture | [[log]] | no | linked | active |
+| `wagents-doctor-checks-capture-w27` | `raw/captures/wagents-doctor-checks-capture-w27.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
+| `pytest-top-level-cluster-capture-w27` | `raw/captures/pytest-top-level-cluster-capture-w27.md` | tool-output capture | [[validation-and-test-coverage]] | no | linked | active |
+| `platform-adapter-test-cluster-capture-w27` | `raw/captures/platform-adapter-test-cluster-capture-w27.md` | tool-output capture | [[validation-and-test-coverage]], [[harness-fixture-gaps]] | no | linked | active |
+| `wagents-self-doctor-capture-w27` | `raw/captures/wagents-self-doctor-capture-w27.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
 
 ## External Sources
 
