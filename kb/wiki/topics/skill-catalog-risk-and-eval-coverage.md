@@ -11,7 +11,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 4
+source_count: 5
 ---
 
 # Skill Catalog Risk And Eval Coverage
@@ -47,6 +47,8 @@ The 2026-06-24 batch added E3/E4-oriented manifests for previously uncovered hig
 
 The adequacy command grades manifest structure, not live LLM eval runs. `wagents eval list` / `validate` / `coverage` remain shape/count tools; this page preserves the distinction between manifest presence, structural adequacy, and executed eval passes.
 
+**2026-06-25 Wave 05 eval files:** All 56 skills have canonical `evals/evals.json`, but **189 legacy per-case JSON files** remain under `skills/*/evals/`. Manifests sum to **602** cases; `wagents eval list` reports **791** because `_collect_evals()` counts every `*.json` in eval dirs (602 + 189). Adequacy `--strict` still reports `failing_strict: []` with **14** high-risk rows. Thin manifests: `skill-router` (3 cases), `i18n-localization` (4). Top manifest depth: harness-master 68, nerdbot 50, docs-steward 48.
+
 ## Evidence
 
 | Claim | Source | Type | Notes |
@@ -58,6 +60,7 @@ The adequacy command grades manifest structure, not live LLM eval runs. `wagents
 | 22 hook registry entries complement eval manifests. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Runtime control plane. |
 | Hooks and evals form complementary control-plane surfaces. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Runtime vs regression. |
 | Risk inference strips trailing NOT-for clauses and field-doc bullets (`\`field\` --`) but keeps inline backticks in prose. | `wagents/eval_adequacy.py` | canonical repo path | 2026-06-24 RV-007 fix; avoids false R3 from agent frontmatter docs. |
+| 602 manifest cases + 189 legacy JSON files explain CLI eval_count 791. | `kb/raw/captures/skill-eval-files-capture-w05.md` | raw capture | Wave 05 eval file reconciliation. |
 
 ## Related
 

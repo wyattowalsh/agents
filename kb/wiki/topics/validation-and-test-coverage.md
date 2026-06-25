@@ -8,8 +8,8 @@ aliases:
   - Test coverage map
 kind: concept
 status: active
-updated: 2026-05-01
-source_count: 7
+updated: 2026-06-25
+source_count: 9
 ---
 
 # Validation And Test Coverage
@@ -26,6 +26,8 @@ Use this distinction when assessing a change: passing `wagents validate` does no
 
 Hooks and evals are related but distinct: hooks enforce runtime/projection policy, while evals provide skill behavior regression coverage. Eval counts should not be treated as adequate without considering the risk tier of each skill.
 
+**2026-06-25 Wave 05 test cluster:** Dedicated pytest families cover the control plane end-to-end—**31** tests in `test_hooks_cli.py` (list/validate, shorthand hooks, skill-creator `verify.py` integration, `wagents validate` hook checks), **33** in `test_wagents_hook.py` (Codex/Cursor/research policy JSON shapes and shell-write bypass hardening), **22** in `test_eval_cli.py`, **10** in `test_eval_adequacy.py`, **9** in `test_hook_scan.py`, **1** in `test_hook_events_sync.py` (**106** collect-only in the core six files; **108** including Plannotator hook tests). Real-repo smoke tests (`hooks validate`, `eval validate`) anchor CLI gates; adequacy `--strict` exits 0 with `failing_strict: []`.
+
 ## Evidence
 
 | Claim | Source | Type | Notes |
@@ -36,6 +38,8 @@ Hooks and evals are related but distinct: hooks enforce runtime/projection polic
 | Nerdbot KB work uses targeted inventory and lint checks. | `kb/raw/sources/nerdbot-runtime-contracts.md`; `kb/raw/extracts/developer-commands-extract.md` | raw source notes | Distinct from full repo CI. |
 | Hooks and evals form a control plane for runtime policy and regression coverage. | `kb/raw/sources/hooks-evals-control-source.md` | raw source note | Dedicated hooks/evals source. |
 | Skill eval coverage should be interpreted relative to skill risk. | `kb/raw/sources/skill-catalog-risk-eval-coverage.md` | raw source note | Adequacy gap. |
+| Hooks/eval pytest cluster: 106 core tests across six files; 108 with Plannotator. | `kb/raw/captures/hooks-tests-cluster-capture-w05.md` | raw capture | Wave 05 cluster inventory. |
+| Eval file layout: 602 manifest cases + 189 legacy JSON files → CLI count 791. | `kb/raw/captures/skill-eval-files-capture-w05.md` | raw capture | Manifest vs legacy reconciliation. |
 
 ## Related
 

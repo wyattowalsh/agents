@@ -68,6 +68,9 @@ source_count: 35
 | `openspec-active-changes-capture-w04` | `raw/captures/openspec-active-changes-capture-w04.md` | tool-output capture | [[openspec-change-archive-status]], [[openspec-workflow]] | no | linked | active |
 | `planning-sync-inventory-capture-w04` | `raw/captures/planning-sync-inventory-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[harness-fixture-gaps]] | no | linked | active |
 | `drift-ledger-capture-w04` | `raw/captures/drift-ledger-capture-w04.md` | tool-output capture | [[planning-corpus-and-drift-ledgers]], [[sync-transaction-safety]], [[known-risks-and-open-gaps]] | no | linked | active |
+| `hooks-runtime-inventory-capture-w05` | `raw/captures/hooks-runtime-inventory-capture-w05.md` | tool-output capture | [[hooks-evals-control-plane]], [[validation-and-test-coverage]] | no | linked | active |
+| `hooks-tests-cluster-capture-w05` | `raw/captures/hooks-tests-cluster-capture-w05.md` | tool-output capture | [[validation-and-test-coverage]], [[hooks-evals-control-plane]] | no | linked | active |
+| `skill-eval-files-capture-w05` | `raw/captures/skill-eval-files-capture-w05.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]], [[validation-and-test-coverage]] | no | linked | active |
 
 ## External Sources
 

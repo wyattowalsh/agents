@@ -13,6 +13,21 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 05 — hooks runtime, test clusters, eval files
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave05-hooks-tests-2026-06-25.md`
+- Summary: Read-only inventory of `hooks/` (11 files, 16 `wagents-hook.py` policies), hook/eval pytest cluster (106 core / 108 extended tests), and `skills/*/evals/` layout (56/56 manifests, 602 manifest cases + 189 legacy JSON → CLI count 791).
+- `raw`: added 3 captures (`hooks-runtime-inventory-capture-w05`, `hooks-tests-cluster-capture-w05`, `skill-eval-files-capture-w05`).
+- `wiki`: enriched [[hooks-evals-control-plane]], [[validation-and-test-coverage]], [[skill-catalog-risk-and-eval-coverage]] with additive 2026-06-25 rows.
+- `indexes`: updated `source-map`, `coverage` (58 sources; +3 net-new w05 captures).
+- Metrics: **net-new raw sources: 3**; wiki pages enriched: 3; lint: pass (exit 0).
+- `canonical material`: unchanged; repo paths read as evidence only.
+- Risks / rollback: KB-only additive batch.
+- Follow-up:
+  - Consolidate or deprecate 189 legacy eval JSON files to align CLI counts with manifest-only semantics.
+  - Deepen thin manifests (`skill-router`, `i18n-localization`) if risk tier warrants E3 depth.
+
 ### [2026-06-25] Wave 04 — planning manifests and OpenSpec active inventory
 
 - Mode: research + ingest + enrich + audit
