@@ -52,7 +52,9 @@ source_count: 31
 | Docs artifact registry | Config registry for selected generated docs artifacts and their validation commands. | `kb/raw/sources/docs-artifact-freshness.md`; `kb/raw/sources/docs-site-architecture.md` |
 | Docs freshness check | Non-mutating or low-risk check that proves generated docs outputs match source inputs. | `kb/raw/sources/docs-artifact-freshness.md` |
 | Bucket A catalog | Curated/custom skill catalog semantics where authoring SSOT lives in `docs/src/authoring/skills/*.mdx` and the generated `skills-catalog-index.json` is the machine bundle. | `kb/raw/sources/skills-catalog-authoring-lifecycle-source.md` |
-| MCPHub | Local MCP control plane; registry in `config/mcp-registry.json`, settings under `mcp/mcphub/`, bearer auth and secrets in `.env.mcphub`. | `kb/raw/sources/mcphub-control-plane-source.md` |
+| MCPHub | Local MCP control plane; registry in `config/mcp-registry.json`, settings under `mcp/mcphub/`, lifecycle scripts in `scripts/mcphub/`, bearer auth and secrets in `.env.mcphub`. | `kb/raw/sources/mcphub-control-plane-source.md`; `kb/raw/captures/mcphub-scripts-lifecycle-capture-w07.md` |
+| harness-safe (MCPHub group) | Default bounded MCP surface for managed harness projections (14 servers); public tunnel URL suffix `/mcp/harness-safe`. | `kb/raw/captures/mcphub-settings-validation-capture-w07.md` |
+| remote-stdio bridge | `scripts/mcphub/remote-stdio.sh` wraps `mcp-remote` with bearer auth for stdio-only MCP clients. | `kb/raw/captures/mcphub-launch-tunnel-capture-w07.md` |
 | Platform adapter | Per-harness sync implementation under `wagents/platforms/` projecting repo assets into harness-specific config. | `kb/raw/sources/wagents-platform-adapters-source.md` |
 | Config-drop guard | Sync safety refusal when a merged render would drop user-owned keys (`ConfigDropError`). | `kb/raw/sources/wagents-platform-adapters-source.md` |
 | Compose coverage | Docs compose manifest tracking which registry rows have composed MDX pages under `docs/src/content/docs/`. | `kb/raw/sources/docs-artifact-freshness.md` |

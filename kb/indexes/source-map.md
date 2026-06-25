@@ -74,6 +74,9 @@ source_count: 35
 | `catalog-authoring-mdx-capture-w06` | `raw/captures/catalog-authoring-mdx-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[docs-generation-and-site]] | no | linked | active |
 | `skills-catalog-index-capture-w06` | `raw/captures/skills-catalog-index-capture-w06.md` | tool-output capture | [[curated-catalog-authoring]], [[skill-authoring-and-validation]] | no | linked | active |
 | `docs-generate-check-capture-w06` | `raw/captures/docs-generate-check-capture-w06.md` | tool-output capture | [[docs-generation-and-site]], [[curated-catalog-authoring]] | no | linked | active |
+| `mcphub-scripts-lifecycle-capture-w07` | `raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[developer-commands]] | no | linked | active |
+| `mcphub-launch-tunnel-capture-w07` | `raw/captures/mcphub-launch-tunnel-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `mcphub-settings-validation-capture-w07` | `raw/captures/mcphub-settings-validation-capture-w07.md` | tool-output capture | [[mcphub-control-plane]], [[mcp-configuration-and-safety]] | no | linked | active |
 
 ## External Sources
 

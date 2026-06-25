@@ -8,8 +8,8 @@ aliases:
   - MCP safety
 kind: concept
 status: active
-updated: 2026-05-07
-source_count: 3
+updated: 2026-06-25
+source_count: 6
 ---
 
 # MCP Configuration And Safety
@@ -28,6 +28,25 @@ OpenCode docs add repo-relevant details: OpenCode supports local and remote MCP 
 
 Two registry-managed npx MCPs require specific safety framing. `ossinsight` calls the upstream OSSInsight public API and may be constrained by public IP-based rate limits. `supathings` is local to macOS Things 3 and can read local task data and create or update Things items, so it should be treated as a local personal-data and write-capable MCP even though it does not require committed secrets.
 
+## MCPHub operational safety (Wave 07)
+
+When `mcphub.enabled` is true, local MCP safety adds a fourth concern beyond registry/manifest/workspace: **running process and exposure policy** managed by `scripts/mcphub/`.
+
+| Surface | Safety rule |
+|---------|-------------|
+| Tracked settings | `mcp/mcphub/mcp_settings.json` must stay secret-free; `make mcphub-validate` enforces registry parity and bearer-routing invariants |
+| Live secrets | `.env.mcphub` only — bearer token, tunnel token, API keys, `DB_URL` for smart routing |
+| Loopback bind | MCPHub serves on `127.0.0.1:46683`; doctor notes OpenAPI is public path but host should remain local |
+| Bearer auth | Required for `/mcp`; `enableBearerAuth` must stay true; smoke test fails without real token |
+| Managed processes | Stop helpers refuse to kill PIDs that are not repo-managed `npx @samanhappy/mcphub` / LaunchAgent children |
+| Public tunnel | Opt-in (`MCPHUB_TUNNEL_ENABLED`); remote ChatGPT/harness exposure should use bounded `harness-safe` URL only |
+| Sensitive groups | `personal` (Gmail, LinkedIn) and `experimental` must not be default tunnel or harness projections |
+| Smart routing | Off by default; enabling adds DB + embedding dependencies and `/mcp/$smart` surface |
+| Chrome DevTools | Local Chrome profile + debug port 9333; browser automation is high-trust |
+| Docling | Runs in isolated `.mcphub/docling-workdir` via `uvx`; local document processing |
+
+Stdio-only harnesses reach MCPHub through `remote-stdio.sh` (`mcp-remote` with bearer header). Treat the bridge token like any other MCP credential — env-only, never tracked in JSON.
+
 ## Evidence
 
 | Claim | Source | Type | Notes |
@@ -37,9 +56,13 @@ Two registry-managed npx MCPs require specific safety framing. `ossinsight` call
 | MCP safety requires consent and care around arbitrary tool execution. | `kb/raw/sources/mcp-surfaces.md` | external source note | Official MCP security section. |
 | OpenCode supports local and remote MCP config. | `kb/raw/sources/mcp-surfaces.md`; `kb/raw/sources/external-harness-docs.md` | external source notes | Verified OpenCode docs. |
 | OSSInsight and SupaThings are registry-managed npx MCPs with different safety profiles. | `kb/raw/sources/mcp-surfaces.md`; `config/mcp-registry.json` | raw source note and canonical config | OSSInsight is public API/rate-limit sensitive; SupaThings is local Things 3 data/write sensitive. |
+| MCPHub settings validation enforces no tracked secrets and routing/auth invariants. | `kb/raw/captures/mcphub-settings-validation-capture-w07.md`; `scripts/mcphub/validate_settings.py` | raw capture and canonical script | `make mcphub-validate` returned `ok` on 2026-06-25. |
+| Tunnel and LaunchAgent credentials stay env-only; public surface is harness-safe bounded. | `kb/raw/captures/mcphub-launch-tunnel-capture-w07.md`; `mcp/mcphub/README.md` | raw capture and canonical README | Zapier webhook optional; Cloudflare token not committed. |
+| Managed PID stop guards and stale-process recovery. | `kb/raw/captures/mcphub-scripts-lifecycle-capture-w07.md`; `scripts/mcphub/common.sh` | raw capture and canonical script | Prevents killing unrelated listeners. |
 
 ## Related
 
+- [[mcphub-control-plane]]
 - [[plugin-and-mcp-ownership]]
 - [[harness-and-platform-sync]]
 - [[known-risks-and-open-gaps]]

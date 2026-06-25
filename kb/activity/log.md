@@ -13,6 +13,21 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 07 — MCPHub scripts and launch fleet
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave07-mcphub-2026-06-25.md`
+- Summary: Read-only ingest of `mcp/mcphub/`, `scripts/mcphub/` (13 scripts + 11 wrappers), LaunchAgent template, and registry `mcphub` block into lifecycle, tunnel, and validation captures.
+- `raw`: added 3 captures (`mcphub-scripts-lifecycle-capture-w07`, `mcphub-launch-tunnel-capture-w07`, `mcphub-settings-validation-capture-w07`).
+- `wiki`: enriched [[mcphub-control-plane]] and [[mcp-configuration-and-safety]] with operational safety and launch detail.
+- `indexes`: updated `source-map`, `coverage` (55 sources), `glossary`.
+- Metrics: **net-new raw sources: 3**; wiki pages enriched: 2; lint: pass (exit 0, 0 issues).
+- `canonical material`: unchanged; repo paths read as evidence only.
+- Risks / rollback: KB-only additive batch; no `.env.mcphub` or tunnel secrets ingested.
+- Follow-up:
+  - Document or automate LaunchAgent plist path substitution before install.
+  - Trace in-tree registry→`mcp_settings.json` generator if one exists outside manual workflow.
+
 ### [2026-06-25] Wave 06 — docs authoring and catalog index
 
 - Mode: research + ingest + enrich + audit

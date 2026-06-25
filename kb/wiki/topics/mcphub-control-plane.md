@@ -9,7 +9,7 @@ aliases:
 kind: concept
 status: active
 updated: 2026-06-25
-source_count: 3
+source_count: 6
 ---
 
 # MCPHub Control Plane
@@ -33,7 +33,31 @@ MCPHub is the preferred local MCP control plane when enabled in `config/mcp-regi
 | `mcp/mcphub/mcp_settings.json` | Tracked derived settings (placeholders only) |
 | `scripts/mcphub/` | Launch, doctor, validate, remote-stdio bridge, tunnel helpers |
 | `scripts/sync_agent_stack.py` | Renders per-harness MCP projections |
-| `mcp/mcphub/server.py` | First-party metadata/status tool only |
+| `mcp/mcphub/server.py` | First-party FastMCP metadata tool (`mcphub_status`); not the running `@samanhappy/mcphub` process |
+| `Makefile` `mcphub-*` | Nine developer targets wrapping `scripts/mcphub/` lifecycle |
+
+## Lifecycle and launch (Wave 07)
+
+| Stage | Entry | Behavior |
+|-------|-------|----------|
+| Start | `make mcphub-up` → `up.sh` | `ensure-running.sh`: health check, else `npx -y @samanhappy/mcphub` with logs in `.mcphub/mcphub.log` |
+| Ensure | `ensure-running.sh` | Shared by smoke, OpenAPI export, `remote-stdio.sh`, and harness wrappers |
+| Stop | `make mcphub-down` | Stops managed wrapper/child PIDs and tunnel; refuses unmanaged PIDs |
+| Diagnose | `make mcphub-doctor` | Settings, node/npx, health, listener, PID state, bearer, tunnel, smart routing |
+| Smoke | `make mcphub-smoke` | Bearer `initialize` + `tools/list` over HTTP MCP session |
+| LaunchAgent | `make mcphub-install-launch-agent` | `config/launchd/com.wyattowalsh.mcphub.plist` → `launch-agent-run.sh` with KeepAlive |
+
+Runtime state lives in gitignored `.mcphub/` (PID files, logs, optional `cloudflared` sidecar). Secrets load from `.env.mcphub` only.
+
+### Script fleet highlights
+
+- **13** top-level shell scripts + **11** harness wrappers under `scripts/mcphub/wrappers/` (each wrapper calls `ensure-running.sh` then execs the harness CLI).
+- `remote-stdio.sh` bridges stdio clients via `mcp-remote` + bearer header (registry `stdio_bridge` client; Codex `remote-stdio` adapter).
+- `chrome-devtools-browser-url.sh` and `docling-stdio.sh` are repo-local server launchers referenced from tracked settings.
+
+### Tunnel and public surface
+
+Opt-in Cloudflare tunnel (`MCPHUB_TUNNEL_ENABLED` in `.env.mcphub`) exposes `MCPHUB_PUBLIC_URL` (registry: `https://mcp.w4w.dev/mcp`). Managed remote harness configs enable only the **`harness-safe`** group endpoint; per-server endpoints stay disabled unless explicitly opted in locally. Optional `MCPHUB_ZAPIER_WEBHOOK_URL` posts `mcphub_tunnel_ready` on tunnel start.
 
 ## Groups and client exposure
 
@@ -65,8 +89,11 @@ Projection adapters: `codex` → `remote-stdio`; `grok` and `opencode` → `http
 | Claim | Source | Type | Notes |
 |-------|--------|------|-------|
 | 33 servers, 11 groups, MCPHub enabled | `kb/raw/captures/mcp-registry-capture-w03.md` | raw capture | 2026-06-25 registry read |
-| `harness-safe` default client group | `kb/raw/captures/mcp-registry-capture-w03.md` | raw capture | 6 client projections |
+| `harness-safe` default client group (14 servers) | `kb/raw/captures/mcp-registry-capture-w03.md`; `kb/raw/captures/mcphub-settings-validation-capture-w07.md` | raw capture | 6 client projections |
 | Chrome DevTools ownership split | `kb/raw/captures/mcp-registry-capture-w03.md` | raw capture | plugin/extension/repo_mcp lanes |
+| Script fleet, Makefile targets, `.mcphub` runtime | `kb/raw/captures/mcphub-scripts-lifecycle-capture-w07.md` | raw capture | Wave 07 lifecycle inventory |
+| LaunchAgent, tunnel, stdio bridge | `kb/raw/captures/mcphub-launch-tunnel-capture-w07.md` | raw capture | Wave 07 launch/tunnel |
+| Settings validation `ok`; routing invariants | `kb/raw/captures/mcphub-settings-validation-capture-w07.md` | raw capture | `validate_settings.py` |
 | Control plane model and settings parity | `kb/raw/sources/mcphub-control-plane-source.md` | raw source note | Primary pointer summary |
 | Registry split and safety | `kb/raw/sources/mcp-surfaces.md` | raw source note | Complementary |
 
@@ -80,3 +107,4 @@ Projection adapters: `codex` → `remote-stdio`; `grok` and `opencode` → `http
 ## Open questions
 
 - In-tree automated registry-to-mcp_settings generator vs manual regenerate workflow.
+- LaunchAgent plist still ships `/path/to/agents` placeholders — install path must be edited or templated before bootstrap.
