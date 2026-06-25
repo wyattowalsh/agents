@@ -107,6 +107,10 @@ source_count: 35
 | `nerdbot-kb-scripts-capture-w17` | `raw/captures/nerdbot-kb-scripts-capture-w17.md` | tool-output capture | [[nerdbot]] | no | linked | active |
 | `sync-manifest-snapshot-capture-w17` | `raw/captures/sync-manifest-snapshot-capture-w17.md` | tool-output capture | [[canonical-generated-surfaces]], [[sync-transaction-safety]] | no | linked | active |
 | `opencode-harness-policy-capture-w18` | `raw/captures/opencode-harness-policy-capture-w18.md` | tool-output capture | [[opencode-harness-policy]], [[opencode-runtime-policy]] | no | linked | active |
+| `instructions-layer-capture-w19` | `raw/captures/instructions-layer-capture-w19.md` | tool-output capture | [[harness-and-platform-sync]], [[canonical-generated-surfaces]] | no | linked | active |
+| `skill-creator-scripts-capture-w19` | `raw/captures/skill-creator-scripts-capture-w19.md` | tool-output capture | [[skill-authoring-and-validation]] | no | linked | active |
+| `agent-frontmatter-refresh-capture-w19` | `raw/captures/agent-frontmatter-refresh-capture-w19.md` | tool-output capture | [[agent-frontmatter-dialects]], [[agent-asset-model]] | no | linked | active |
+| `instruction-overlay-matrix-capture-w19` | `raw/captures/instruction-overlay-matrix-capture-w19.md` | tool-output capture | [[harness-and-platform-sync]] | no | linked | active |
 
 ## External Sources
 
