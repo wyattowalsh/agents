@@ -122,6 +122,9 @@ source_count: 35
 | `support-tier-registry-capture-w23` | `raw/captures/support-tier-registry-capture-w23.md` | tool-output capture | [[harness-fixture-gaps]], [[docs-generation-and-site]] | no | linked | active |
 | `docs-artifact-registry-capture-w23` | `raw/captures/docs-artifact-registry-capture-w23.md` | tool-output capture | [[docs-generation-and-site]], [[canonical-generated-surfaces]] | no | linked | active |
 | `agent-bundle-snapshot-capture-w23` | `raw/captures/agent-bundle-snapshot-capture-w23.md` | tool-output capture | [[agent-asset-model]], [[harness-and-platform-sync]] | no | linked | active |
+| `config-registry-crosswalk-capture-w24` | `raw/captures/config-registry-crosswalk-capture-w24.md` | tool-output capture | [[harness-and-platform-sync]], [[mcp-configuration-and-safety]] | no | linked | active |
+| `security-quarantine-register-capture-w24` | `raw/captures/security-quarantine-register-capture-w24.md` | tool-output capture | [[skill-catalog-risk-and-eval-coverage]] | no | linked | active |
+| `harness-surface-refresh-capture-w24` | `raw/captures/harness-surface-refresh-capture-w24.md` | tool-output capture | [[harness-fixture-gaps]], [[wagents-platform-adapters]] | no | linked | active |
 
 ## External Sources
 

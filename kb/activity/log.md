@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 24 — config registry crosswalk and quarantine
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave24-pass4-2026-06-25.md`
+- `raw`: added 3 captures (`config-registry-crosswalk-capture-w24`, `security-quarantine-register-capture-w24`, `harness-surface-refresh-capture-w24`).
+- Metrics: **net-new raw sources: 3**; lint pass before commit.
+
 ### [2026-06-25] Wave 23 — harness fixture support and bundle snapshot
 
 - Mode: research + ingest + enrich + audit
