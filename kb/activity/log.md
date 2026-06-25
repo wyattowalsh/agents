@@ -259,3 +259,11 @@ source_count: 1
 - `wiki`: refreshed [[harness-fixture-gaps]] and [[skill-catalog-risk-and-eval-coverage]].
 - Risks / rollback: tier downgrade is honesty-only; no runtime behavior change.
 - Follow-up: add cursor-specific rollback fixtures before re-promoting `cursor-bugbot` to validated.
+
+### [2026-06-24] Harness review remediation RV-008–RV-014
+
+- Mode: fix + docs + kb (additive)
+- Summary: Synced `hook-surface-registry.json` Cursor tiers with harness registry; added `cursor_rollback` and `grok_rollback` tests in `test_harness_rollback_fixtures.py`; G3/G4 gates for validated rollback commands and pytest `-k` collect-only; deepened ACP render compare and stable cloud hook matcher lookup; docs intro documents rollback bar; `cursor-acp` rollback set to `planned`.
+- `canonical material`: hook/harness registries, harness-fixture-support manifest, rollback/plan/validation-command tests, `wagents/docs.py`, regenerated harness-support page.
+- `wiki`: [[harness-fixture-gaps]] rollback model corrected (merge-preservation + drop-guard, not only `.bak`).
+- Risks / rollback: honesty/tests only; no sync behavior change.
