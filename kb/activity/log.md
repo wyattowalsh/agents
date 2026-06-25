@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 28 — repo map, glossary, and known risks refresh
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave28-pass5-2026-06-25.md`
+- `raw`: added 3 captures (`repo-map-evidence-refresh-capture-w28`, `glossary-harness-terms-capture-w28`, `known-risks-refresh-capture-w28`).
+- Metrics: **net-new raw sources: 3**; lint pass before commit.
+
 ### [2026-06-25] Wave 27 — wagents doctor and pytest clusters
 
 - Mode: research + ingest + enrich + audit

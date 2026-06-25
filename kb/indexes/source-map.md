@@ -132,6 +132,9 @@ source_count: 35
 | `pytest-top-level-cluster-capture-w27` | `raw/captures/pytest-top-level-cluster-capture-w27.md` | tool-output capture | [[validation-and-test-coverage]] | no | linked | active |
 | `platform-adapter-test-cluster-capture-w27` | `raw/captures/platform-adapter-test-cluster-capture-w27.md` | tool-output capture | [[validation-and-test-coverage]], [[harness-fixture-gaps]] | no | linked | active |
 | `wagents-self-doctor-capture-w27` | `raw/captures/wagents-self-doctor-capture-w27.md` | tool-output capture | [[wagents-cli-and-automation]], [[developer-commands]] | no | linked | active |
+| `repo-map-evidence-refresh-capture-w28` | `raw/captures/repo-map-evidence-refresh-capture-w28.md` | tool-output capture | [[repo-map]] | no | linked | active |
+| `glossary-harness-terms-capture-w28` | `raw/captures/glossary-harness-terms-capture-w28.md` | tool-output capture | [[glossary]] | no | linked | active |
+| `known-risks-refresh-capture-w28` | `raw/captures/known-risks-refresh-capture-w28.md` | tool-output capture | [[known-risks-and-open-gaps]] | no | linked | active |
 
 ## External Sources
 
