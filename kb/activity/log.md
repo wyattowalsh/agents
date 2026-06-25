@@ -13,6 +13,13 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-25] Wave 23 — harness fixture support and bundle snapshot
+
+- Mode: research + ingest + enrich + audit
+- Journal: `~/.grok/research/kb-wave23-pass4-2026-06-25.md`
+- `raw`: added 4 captures (`harness-fixture-support-capture-w23`, `support-tier-registry-capture-w23`, `docs-artifact-registry-capture-w23`, `agent-bundle-snapshot-capture-w23`).
+- Metrics: **net-new raw sources: 4**; lint pass before commit.
+
 ### [2026-06-25] Wave 22 — antigravity and crush harness policy
 
 - Mode: research + ingest + enrich + audit

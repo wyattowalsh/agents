@@ -118,6 +118,10 @@ source_count: 35
 | `copilot-harness-policy-capture-w21` | `raw/captures/copilot-harness-policy-capture-w21.md` | tool-output capture | [[copilot-harness-policy]], [[hooks-evals-control-plane]] | no | linked | active |
 | `antigravity-harness-policy-capture-w22` | `raw/captures/antigravity-harness-policy-capture-w22.md` | tool-output capture | [[antigravity-harness-policy]], [[gemini-harness-policy]] | no | linked | active |
 | `crush-harness-policy-capture-w22` | `raw/captures/crush-harness-policy-capture-w22.md` | tool-output capture | [[crush-harness-policy]], [[harness-and-platform-sync]] | no | linked | active |
+| `harness-fixture-support-capture-w23` | `raw/captures/harness-fixture-support-capture-w23.md` | tool-output capture | [[harness-fixture-gaps]] | no | linked | active |
+| `support-tier-registry-capture-w23` | `raw/captures/support-tier-registry-capture-w23.md` | tool-output capture | [[harness-fixture-gaps]], [[docs-generation-and-site]] | no | linked | active |
+| `docs-artifact-registry-capture-w23` | `raw/captures/docs-artifact-registry-capture-w23.md` | tool-output capture | [[docs-generation-and-site]], [[canonical-generated-surfaces]] | no | linked | active |
+| `agent-bundle-snapshot-capture-w23` | `raw/captures/agent-bundle-snapshot-capture-w23.md` | tool-output capture | [[agent-asset-model]], [[harness-and-platform-sync]] | no | linked | active |
 
 ## External Sources
 
