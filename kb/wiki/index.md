@@ -51,7 +51,8 @@ Treat these repo files and directories as primary evidence before using generate
 | [[nerdbot]] | How this KB is structured and how to maintain it safely. |
 | [[openspec-workflow]] | When OpenSpec is required and how wrapper commands are used. |
 | [[developer-commands]] | Verified commands for validation, tests, docs, packaging, OpenSpec, and KB lint. |
-| [[known-risks-and-open-gaps]] | Current confidence limits, dirty worktree state, local-only areas, and follow-up queue. |
+| [[known-risks-and-open-gaps]] | Current confidence limits, local-only areas, and follow-up queue. |
+| [[wave-commit-registry]] | Macro-wave commit map and archived research journals for kb-research-ingest. |
 | [[wagents-cli-and-automation]] | CLI implementation, command families, and package dry-run gotchas. |
 | [[validation-and-test-coverage]] | How asset validation, packaging, docs checks, tests, and KB lint differ. |
 | [[agent-frontmatter-dialects]] | Repo agent fields and cross-platform frontmatter dialect boundaries. |

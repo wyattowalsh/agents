@@ -36,7 +36,7 @@ It is both a source repository and a distribution bundle. Repo-owned source file
 
 ## Operating Posture
 
-Use repo-local canonical files before generated public summaries. Preserve the dirty worktree and never treat generated/home sync outputs as safe to rewrite without checking their canonical source and mode.
+Use repo-local canonical files before generated public summaries. Keep KB batches additive; check `git status` before non-KB edits and never treat generated/home sync outputs as safe to rewrite without checking their canonical source and mode.
 
 Use [[wagents-cli-and-automation]] for repo automation details, [[canonical-generated-surfaces]] for source-of-truth boundaries, and [[docs-generation-and-site]] before changing README/docs outputs. Use [[mcp-configuration-and-safety]] before touching local MCP areas, especially ignored or secret-looking paths.
 

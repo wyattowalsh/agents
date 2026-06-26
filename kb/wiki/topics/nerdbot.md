@@ -32,6 +32,7 @@ This KB uses the Nerdbot pattern to separate evidence from synthesis:
 - Add source notes under `raw/sources/` before broad synthesis.
 - Keep claims in `wiki/` backed by `raw` source notes or declared canonical material.
 - Update `indexes/source-map.md`, `indexes/coverage.md`, and `activity/log.md` in the same batch as new wiki pages.
+- Wave research journals are archived under `raw/captures/journals/`; see [[wave-commit-registry]] for the wave-to-journal map.
 - Use pointer stubs instead of copying huge, binary, private, symlinked, or secret-looking sources.
 - Keep volatile Obsidian workspace state out of the KB.
 - Run `uv run --project skills/nerdbot nerdbot inventory --root ./kb` and `uv run --project skills/nerdbot nerdbot lint --root ./kb --include-unlayered` before claiming KB health.
@@ -53,6 +54,7 @@ For this repository's KB, inventory and lint are the completion gates. Inventory
 - [[obsidian-vault-conventions]]
 - [[known-risks-and-open-gaps]]
 - [[coverage]]
+- [[wave-commit-registry]]
 
 ## Evidence
 

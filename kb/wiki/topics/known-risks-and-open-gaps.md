@@ -19,7 +19,7 @@ source_count: 28
 
 | Risk | Status | Why it matters | Next action |
 |------|--------|----------------|-------------|
-| Dirty worktree | Observed | Unrelated modified and untracked files outside `kb/` remain; KB enrichment must stay additive. | Inspect diffs before non-KB code changes; do not infer repo health from KB alone. |
+| Dirty worktree | Historical (2026-06-23) | Snapshot in `kb/raw/captures/local-inventory-summary.md` showed unrelated changes outside `kb/`; post-ingest sessions may be clean — re-check `git status` before non-KB work. | Inspect diffs before non-KB code changes; do not infer repo health from KB alone. |
 | Local secret-looking MCP area | Gap | `mcp/secrets/` is sensitive and was not ingested. | Keep pointer-only; never capture secret values into KB. |
 | Agent publication drift | Resolved (2026-06-24) | Canonical eight now present in `platforms/copilot/agents/` plus five Copilot specialists; Codex plugin `agents` path restored. | Monitor via `tests/test_copilot_agents.py` and [[agent-publication-and-drift-coverage]]. |
 | Full CI status unknown for this session | Gap | KB batch ran targeted Nerdbot lint/inventory, not full CI matrix. | Run `.github/workflows/ci.yml` locally or on PR when release-blocking. |

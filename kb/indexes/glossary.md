@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 33
+source_count: 45
 ---
 
 # Glossary
@@ -20,7 +20,7 @@ source_count: 33
 | Agent definition | A subagent prompt file stored as `agents/<name>.md`. | `kb/raw/sources/agents-md.md`; `kb/raw/sources/code-surface-inventory.md` |
 | Bundle manifest | `agent-bundle.json`, the cross-agent source map for components and adapters. | `kb/raw/sources/agent-bundle-and-sync.md` |
 | Canonical material | Repo-local material treated as authoritative for the KB. | `kb/raw/sources/nerdbot-skill-contract.md`; `kb/raw/sources/openspec-config.md` |
-| Generated surface | Output maintained from canonical sources, such as README/docs generated pages or projected harness config. | `kb/raw/sources/openspec-config.md`; `kb/raw/sources/agent-bundle-and-sync.md` |
+| Generated surface | Output projected from canonical sources to generated or merged harness and docs surfaces (README, docs pages, projected configs). | `kb/raw/sources/openspec-config.md`; `kb/raw/sources/agent-bundle-and-sync.md`; `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/docs-site-architecture.md` |
 | Harness | A downstream AI tool/runtime surface such as Claude Code, Codex, Gemini CLI, Copilot, Cursor, Crush, Antigravity, or OpenCode. | `kb/raw/sources/readme.md`; `kb/raw/sources/agent-bundle-and-sync.md` |
 | MCP | Model Context Protocol configuration/server surface; first-party repo MCP servers follow repo conventions when authored. | `kb/raw/sources/agents-md.md` |
 | OpenSpec | The repo change/spec workflow for non-trivial changes to public asset formats, downstream tooling, generated docs, sync behavior, validation, or coordinated surfaces. | `kb/raw/sources/openspec-config.md`; `kb/raw/sources/agents-md.md` |
@@ -29,7 +29,6 @@ source_count: 33
 | wiki | KB synthesis layer for human/agent operating knowledge. | `kb/raw/sources/nerdbot-skill-contract.md` |
 | activity log | Append-only KB operation history at `activity/log.md`. | `kb/raw/sources/nerdbot-skill-contract.md` |
 | Canonical surface | Repo-owned source path that should be edited instead of a generated projection. | `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/instructions-hierarchy.md` |
-| Generated surface | Output projected from canonical sources, including README/docs pages and some harness files. | `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/docs-site-architecture.md` |
 | Merged surface | A target config assembled from repo defaults plus live user-owned settings. | `kb/raw/sources/config-registries-and-sync.md` |
 | Source plugin owner | The native plugin or repo registry that owns a harness integration so duplicate MCP projections are suppressed. | `kb/raw/sources/config-registries-and-sync.md`; `kb/raw/sources/opencode-policy-and-runtime-plugins.md`; `kb/raw/sources/mcp-surfaces.md` |
 | `wagents` | The repo-local Typer CLI for validation, scaffolding, docs, packaging, install/sync, OpenSpec, hooks, and eval workflows. | `kb/raw/sources/wagents-internals.md`; `kb/raw/sources/pyproject-and-makefile.md` |

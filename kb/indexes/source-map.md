@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 71
+source_count: 152
 ---
 
 # Source Map
@@ -139,6 +139,36 @@ source_count: 71
 | `kb-index-metadata-capture-w29` | `raw/captures/kb-index-metadata-capture-w29.md` | tool-output capture | [[source-map]], [[coverage]] | no | linked | active |
 | `pass5-final-stop-capture-w30` | `raw/captures/pass5-final-stop-capture-w30.md` | tool-output capture | [[log]] | no | linked | active |
 
+| `journal-wave01-partials-2026-06-25` | `raw/captures/journals/kb-wave01-partials-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave02-wagents-2026-06-25` | `raw/captures/journals/kb-wave02-wagents-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave03-config-2026-06-25` | `raw/captures/journals/kb-wave03-config-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave04-planning-2026-06-25` | `raw/captures/journals/kb-wave04-planning-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave05-hooks-tests-2026-06-25` | `raw/captures/journals/kb-wave05-hooks-tests-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave06-docs-authoring-2026-06-25` | `raw/captures/journals/kb-wave06-docs-authoring-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave07-mcphub-2026-06-25` | `raw/captures/journals/kb-wave07-mcphub-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave08-platforms-2026-06-25` | `raw/captures/journals/kb-wave08-platforms-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave09-external-specs-2026-06-25` | `raw/captures/journals/kb-wave09-external-specs-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave10-harness-docs-2026-06-25` | `raw/captures/journals/kb-wave10-harness-docs-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave11-gap-sweep-2026-06-25` | `raw/captures/journals/kb-wave11-gap-sweep-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave12-gap-sweep-2026-06-25` | `raw/captures/journals/kb-wave12-gap-sweep-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave13-gap-sweep-2026-06-25` | `raw/captures/journals/kb-wave13-gap-sweep-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave14-gap-sweep-2026-06-25` | `raw/captures/journals/kb-wave14-gap-sweep-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave15-pass2-2026-06-25` | `raw/captures/journals/kb-wave15-pass2-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave16-pass2-2026-06-25` | `raw/captures/journals/kb-wave16-pass2-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave17-pass2-2026-06-25` | `raw/captures/journals/kb-wave17-pass2-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave18-pass2-stop-2026-06-25` | `raw/captures/journals/kb-wave18-pass2-stop-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave19-pass3-2026-06-25` | `raw/captures/journals/kb-wave19-pass3-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave20-pass3-2026-06-25` | `raw/captures/journals/kb-wave20-pass3-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave21-pass3-2026-06-25` | `raw/captures/journals/kb-wave21-pass3-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave22-pass3-2026-06-25` | `raw/captures/journals/kb-wave22-pass3-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave23-pass4-2026-06-25` | `raw/captures/journals/kb-wave23-pass4-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave24-pass4-2026-06-25` | `raw/captures/journals/kb-wave24-pass4-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave25-pass4-2026-06-25` | `raw/captures/journals/kb-wave25-pass4-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave26-pass4-stop-2026-06-25` | `raw/captures/journals/kb-wave26-pass4-stop-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave27-pass5-2026-06-25` | `raw/captures/journals/kb-wave27-pass5-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave28-pass5-2026-06-25` | `raw/captures/journals/kb-wave28-pass5-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave29-pass5-2026-06-25` | `raw/captures/journals/kb-wave29-pass5-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `journal-wave30-pass5-stop-2026-06-25` | `raw/captures/journals/kb-wave30-pass5-stop-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
 
 ## External Sources
 
