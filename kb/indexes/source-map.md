@@ -9,7 +9,7 @@ aliases:
 kind: index
 status: active
 updated: 2026-06-25
-source_count: 152
+source_count: 153
 ---
 
 # Source Map
@@ -169,6 +169,7 @@ source_count: 152
 | `journal-wave28-pass5-2026-06-25` | `raw/captures/journals/kb-wave28-pass5-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
 | `journal-wave29-pass5-2026-06-25` | `raw/captures/journals/kb-wave29-pass5-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
 | `journal-wave30-pass5-stop-2026-06-25` | `raw/captures/journals/kb-wave30-pass5-stop-2026-06-25.md` | research journal archive | [[nerdbot]], [[wave-commit-registry]] | no | linked | active |
+| `goal-closure-audit-capture` | `raw/captures/goal-closure-audit-capture.md` | tool-output capture | [[log]], [[wave-commit-registry]] | no | linked | active |
 
 ## External Sources
 

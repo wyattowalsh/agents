@@ -7,25 +7,32 @@ aliases:
   - KB activity log
 kind: index
 status: active
-updated: 2026-06-25
+updated: 2026-06-28
 source_count: 1
 ---
 
 # Activity Log
 
+### [2026-06-28] Goal closure audit — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Closure audit for goal acceptance; primary journals remain `~/.grok/research/kb-wave*.md`; git archive copies under `raw/captures/journals/`.
+- `raw`: added 1 capture (`goal-closure-audit-capture`).
+- Metrics: lint pass before commit; 30 waves; 0 coverage partials; repo-map 25/25 sourced.
+
 ### [2026-06-25] Review remediation — RV-001–RV-008
 
 - Mode: enrich + audit
 - Summary: Review finding fixes — metadata, coverage table, glossary dedupe, risk refresh, journal archive, registry discoverability.
-- `raw`: added 30 journal archives under `raw/captures/journals/`.
+- `raw`: added 30 journal archives under `raw/captures/journals/` (git copies; primary journals stay `~/.grok/research/` per AC4).
 - `indexes`: updated `source-map`, `coverage`, `glossary` frontmatter/rows.
-- `activity`: updated `wave-commit-registry` journal paths; this entry.
+- `activity`: updated `wave-commit-registry`; log `Journal:` lines cite `~/.grok/research/`.
 - Metrics: lint pass before commit.
 
 ### [2026-06-25] Wave 30 — pass 5 stop and index reconciliation
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave30-pass5-stop-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave30-pass5-stop-2026-06-25.md`
 - Summary: Pass 5 diminishing-returns stop; reconcile source-map, coverage, repo-map, glossary, and [[wave-commit-registry]].
 - `raw`: added 1 capture (`pass5-final-stop-capture-w30`).
 - Metrics: **net-new raw sources: 1**; lint pass before commit; waves 29–30 consecutive `<3`.
@@ -33,56 +40,56 @@ source_count: 1
 ### [2026-06-25] Wave 29 — developer commands and kb index metadata
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave29-pass5-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave29-pass5-2026-06-25.md`
 - `raw`: added 2 captures (`developer-commands-refresh-capture-w29`, `kb-index-metadata-capture-w29`).
 - Metrics: **net-new raw sources: 2**; lint pass before commit.
 
 ### [2026-06-25] Wave 28 — repo map, glossary, and known risks refresh
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave28-pass5-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave28-pass5-2026-06-25.md`
 - `raw`: added 3 captures (`repo-map-evidence-refresh-capture-w28`, `glossary-harness-terms-capture-w28`, `known-risks-refresh-capture-w28`).
 - Metrics: **net-new raw sources: 3**; lint pass before commit.
 
 ### [2026-06-25] Wave 27 — wagents doctor and pytest clusters
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave27-pass5-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave27-pass5-2026-06-25.md`
 - `raw`: added 4 captures (`wagents-doctor-checks-capture-w27`, `pytest-top-level-cluster-capture-w27`, `platform-adapter-test-cluster-capture-w27`, `wagents-self-doctor-capture-w27`).
 - Metrics: **net-new raw sources: 4**; lint pass before commit.
 
 ### [2026-06-25] Wave 26 — pass 4 diminishing returns stop
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave26-pass4-stop-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave26-pass4-stop-2026-06-25.md`
 - `raw`: added 1 capture (`pass4-thin-refresh-capture-w26`).
 - Metrics: **net-new raw sources: 1**; lint pass before commit; waves 25–26 consecutive `<3`.
 
 ### [2026-06-25] Wave 25 — catalog schema and sync transaction registry
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave25-pass4-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave25-pass4-2026-06-25.md`
 - `raw`: added 2 captures (`catalog-schema-registry-capture-w25`, `sync-transaction-registry-capture-w25`).
 - Metrics: **net-new raw sources: 2**; lint pass before commit.
 
 ### [2026-06-25] Wave 24 — config registry crosswalk and quarantine
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave24-pass4-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave24-pass4-2026-06-25.md`
 - `raw`: added 3 captures (`config-registry-crosswalk-capture-w24`, `security-quarantine-register-capture-w24`, `harness-surface-refresh-capture-w24`).
 - Metrics: **net-new raw sources: 3**; lint pass before commit.
 
 ### [2026-06-25] Wave 23 — harness fixture support and bundle snapshot
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave23-pass4-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave23-pass4-2026-06-25.md`
 - `raw`: added 4 captures (`harness-fixture-support-capture-w23`, `support-tier-registry-capture-w23`, `docs-artifact-registry-capture-w23`, `agent-bundle-snapshot-capture-w23`).
 - Metrics: **net-new raw sources: 4**; lint pass before commit.
 
 ### [2026-06-25] Wave 22 — antigravity and crush harness policy
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave22-pass3-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave22-pass3-2026-06-25.md`
 - `raw`: added 2 captures (`antigravity-harness-policy-capture-w22`, `crush-harness-policy-capture-w22`).
 - `wiki`: new [[antigravity-harness-policy]], [[crush-harness-policy]]; refreshed [[wiki/index]].
 - Metrics: **net-new raw sources: 2**; lint pass before commit; waves 21–22 consecutive `<3`.
@@ -90,7 +97,7 @@ source_count: 1
 ### [2026-06-25] Wave 21 — gemini, cursor, and copilot harness policy
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave21-pass3-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave21-pass3-2026-06-25.md`
 - `raw`: added 3 captures (`gemini-harness-policy-capture-w21`, `cursor-harness-policy-capture-w21`, `copilot-harness-policy-capture-w21`).
 - `wiki`: new [[gemini-harness-policy]], [[cursor-harness-policy]], [[copilot-harness-policy]].
 - Metrics: **net-new raw sources: 3**; lint pass before commit.
@@ -98,14 +105,14 @@ source_count: 1
 ### [2026-06-25] Wave 20 — hook registry and wagents typer map
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave20-pass3-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave20-pass3-2026-06-25.md`
 - `raw`: added 2 captures (`hook-registry-capture-w20`, `wagents-typer-map-capture-w20`).
 - Metrics: **net-new raw sources: 2**; lint pass before commit.
 
 ### [2026-06-25] Wave 19 — instructions layer and skill authoring refresh
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave19-pass3-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave19-pass3-2026-06-25.md`
 - `raw`: added 4 captures (`instructions-layer-capture-w19`, `skill-creator-scripts-capture-w19`, `agent-frontmatter-refresh-capture-w19`, `instruction-overlay-matrix-capture-w19`).
 - `wiki`: refreshed [[skill-authoring-and-validation]], [[agent-frontmatter-dialects]].
 - Metrics: **net-new raw sources: 4**; lint pass before commit.
@@ -350,7 +357,7 @@ source_count: 1
 
 ### [2026-06-25] Wave 18 — pass 2 stop: OpenCode harness policy topic
 
-- Journal: `kb/raw/captures/journals/kb-wave18-pass2-stop-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave18-pass2-stop-2026-06-25.md`
 - Mode: research + ingest + enrich + audit
 - Summary: New [[opencode-harness-policy]] topic; **pass 2 stop** — waves 17–18 consecutive `<3` net-new.
 - `raw`: added 1 capture (`opencode-harness-policy-capture-w18`).
@@ -360,7 +367,7 @@ source_count: 1
 
 ### [2026-06-25] Wave 17 — pass 2: Nerdbot scripts and sync manifest
 
-- Journal: `kb/raw/captures/journals/kb-wave17-pass2-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave17-pass2-2026-06-25.md`
 - Mode: research + ingest + enrich + audit
 - Summary: Five nerdbot KB scripts enumerated; sync-manifest 90 managed records anchor.
 - `raw`: added 2 captures (`nerdbot-kb-scripts-capture-w17`, `sync-manifest-snapshot-capture-w17`).
@@ -369,7 +376,7 @@ source_count: 1
 
 ### [2026-06-25] Wave 16 — pass 2: Antigravity/Crush, agents, OpenSpec validate
 
-- Journal: `kb/raw/captures/journals/kb-wave16-pass2-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave16-pass2-2026-06-25.md`
 - Mode: research + ingest + enrich + audit
 - Summary: Antigravity/Crush/Gemini bridge pointer; eight-agent inventory; OpenSpec validate exit-0 snapshot.
 - `raw`: added 3 sources (`antigravity-crush-harness-capture-w16`, `agent-definitions-inventory-capture-w16`, `openspec-validate-snapshot-capture-w16`).
@@ -379,7 +386,7 @@ source_count: 1
 ### [2026-06-25] Wave 15 — pass 2: Grok/Codex policy topics and inventory
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave15-pass2-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave15-pass2-2026-06-25.md`
 - Summary: Pass 2 restart — new [[grok-harness-policy]] and [[codex-harness-policy]] wiki topics; release-skills workflow + repo inventory captures.
 - `raw`: added 4 captures (`grok-harness-policy-capture-w15`, `codex-harness-policy-capture-w15`, `release-skills-workflow-capture-w15`, `repository-inventory-capture-w15`).
 - `wiki`: new topics + enriched [[repository-overview]], [[ci-and-release-workflows]], [[harness-and-platform-sync]], [[wiki/index]].
@@ -389,7 +396,7 @@ source_count: 1
 ### [2026-06-25] Wave 14 — pre-commit hooks (diminishing returns stop)
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave14-gap-sweep-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave14-gap-sweep-2026-06-25.md`
 - Summary: Final gap-sweep capture — ten path-filtered pre-commit local hooks. **Stop condition met:** waves 13–14 added 2 and 1 net-new sources (two consecutive `<3` post wave 10).
 - `raw`: added 1 capture (`pre-commit-hooks-capture-w14`).
 - `wiki`: enriched [[ci-and-release-workflows]].
@@ -399,7 +406,7 @@ source_count: 1
 ### [2026-06-25] Wave 13 — Gemini harness and Makefile targets
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave13-gap-sweep-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave13-gap-sweep-2026-06-25.md`
 - Summary: Gemini CLI external pointer + Makefile install/dev target matrix.
 - `raw`: added 2 sources (`gemini-harness-docs-capture-w13`, `makefile-dev-targets-capture-w13`).
 - `wiki`: enriched [[harness-and-platform-sync]], [[developer-commands]], [[external-primary-source-map]].
@@ -409,7 +416,7 @@ source_count: 1
 ### [2026-06-25] Wave 12 — scripts collectors and harness policy templates
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave12-gap-sweep-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave12-gap-sweep-2026-06-25.md`
 - Summary: Explicit-path captures for validate collectors (7 modules), Grok/Codex policy templates, and Starlight astro.config plugin stack.
 - `raw`: added 3 captures (`scripts-validate-collectors-capture-w12`, `harness-policy-templates-capture-w12`, `starlight-astro-config-capture-w12`).
 - `wiki`: enriched [[scripts-and-validation-tooling]], [[harness-and-platform-sync]], [[docs-generation-and-site]].
@@ -421,7 +428,7 @@ source_count: 1
 ### [2026-06-25] Wave 11 — tooling docs and thin page refresh
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave11-gap-sweep-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave11-gap-sweep-2026-06-25.md`
 - Summary: Gap sweep deepened uv/ruff/ty tooling evidence, Obsidian properties pointers, and fresh CI job capture; refreshed repo-map evidence for waves 03–10.
 - `raw`: added 4 sources (`uv-llms-index-extract-w11`, `pyproject-tooling-capture-w11`, `ci-workflow-jobs-capture-w11`, `obsidian-properties-capture-w11`).
 - `wiki`: enriched [[external-primary-source-map]], [[validation-and-test-coverage]], [[ci-and-release-workflows]], [[obsidian-vault-conventions]].
@@ -433,7 +440,7 @@ source_count: 1
 ### [2026-06-25] Wave 10 — external harness doc pointers
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave10-harness-docs-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave10-harness-docs-2026-06-25.md`
 - Summary: Full-capture pointers for OpenCode, Cursor, and GitHub Copilot harness docs (explicit URLs; no globs).
 - `raw`: added 3 sources (`opencode-docs-capture-w10`, `cursor-docs-capture-w10`, `copilot-harness-docs-capture-w10`).
 - `wiki`: enriched [[external-primary-source-map]], [[harness-and-platform-sync]].
@@ -442,7 +449,7 @@ source_count: 1
 ### [2026-06-25] Wave 09 — external Agent Skills and MCP spec indexes
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave09-external-specs-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave09-external-specs-2026-06-25.md`
 - Summary: Fetched `agentskills.io/llms.txt` and `modelcontextprotocol.io/llms.txt`; stub + extract for portable skills spec index.
 - `raw`: added 2 sources + 1 extract (`agentskills-spec-capture-w09`, `mcp-spec-index-capture-w09`, `agentskills-llms-index-extract-w09`).
 - `wiki`: enriched [[external-primary-source-map]], [[skill-authoring-and-validation]].
@@ -451,7 +458,7 @@ source_count: 1
 ### [2026-06-25] Wave 08 — platforms, instructions, harness config templates
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave08-platforms-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave08-platforms-2026-06-25.md`
 - Summary: Read-only ingest of `instructions/*`, `wagents/platforms/*`, and harness config templates (`config/grok-config.toml`, `config/codex-config.toml`, `opencode.json` metadata; no secrets).
 - `raw`: added 4 captures (`instructions-hierarchy-capture-w08`, `platform-adapters-fleet-capture-w08`, `harness-config-templates-capture-w08`, `opencode-platform-adapter-capture-w08`).
 - `wiki`: enriched [[wagents-platform-adapters]], [[opencode-runtime-policy]], [[harness-fixture-gaps]].
@@ -463,7 +470,7 @@ source_count: 1
 ### [2026-06-25] Wave 07 — MCPHub scripts and launch fleet
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave07-mcphub-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave07-mcphub-2026-06-25.md`
 - Summary: Read-only ingest of `mcp/mcphub/`, `scripts/mcphub/` (13 scripts + 11 wrappers), LaunchAgent template, and registry `mcphub` block into lifecycle, tunnel, and validation captures.
 - `raw`: added 3 captures (`mcphub-scripts-lifecycle-capture-w07`, `mcphub-launch-tunnel-capture-w07`, `mcphub-settings-validation-capture-w07`).
 - `wiki`: enriched [[mcphub-control-plane]] and [[mcp-configuration-and-safety]] with operational safety and launch detail.
@@ -478,7 +485,7 @@ source_count: 1
 ### [2026-06-25] Wave 06 — docs authoring and catalog index
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave06-docs-authoring-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave06-docs-authoring-2026-06-25.md`
 - Summary: Explicit-path inventory of Bucket A authoring MDX (363) and committed catalog index bundle (363 rows); no repo-wide globs.
 - `raw`: added 3 captures (`catalog-authoring-mdx-capture-w06`, `skills-catalog-index-capture-w06`, `docs-generate-check-capture-w06`).
 - `wiki`: enriched [[curated-catalog-authoring]], [[docs-generation-and-site]].
@@ -489,7 +496,7 @@ source_count: 1
 ### [2026-06-25] Wave 05 — hooks runtime, test clusters, eval files
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave05-hooks-tests-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave05-hooks-tests-2026-06-25.md`
 - Summary: Read-only inventory of `hooks/` (11 files, 16 `wagents-hook.py` policies), hook/eval pytest cluster (106 core / 108 extended tests), and `skills/*/evals/` layout (56/56 manifests, 602 manifest cases + 189 legacy JSON → CLI count 791).
 - `raw`: added 3 captures (`hooks-runtime-inventory-capture-w05`, `hooks-tests-cluster-capture-w05`, `skill-eval-files-capture-w05`).
 - `wiki`: enriched [[hooks-evals-control-plane]], [[validation-and-test-coverage]], [[skill-catalog-risk-and-eval-coverage]] with additive 2026-06-25 rows.
@@ -504,7 +511,7 @@ source_count: 1
 ### [2026-06-25] Wave 04 — planning manifests and OpenSpec active inventory
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave04-planning-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave04-planning-2026-06-25.md`
 - Summary: Read-only inventory of `openspec/changes/*` (8 actives, 53 archived) and `planning/manifests/*` (90-row sync/drift parity, harness fixture tiers, external-repo ledgers).
 - `raw`: added 3 captures (`openspec-active-changes-capture-w04`, `planning-sync-inventory-capture-w04`, `drift-ledger-capture-w04`).
 - `wiki`: enriched [[planning-corpus-and-drift-ledgers]] and [[openspec-change-archive-status]] with additive 2026-06-25 rows.
@@ -519,7 +526,7 @@ source_count: 1
 ### [2026-06-25] Wave 03 — config registry fleet
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave03-config-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave03-config-2026-06-25.md`
 - Summary: Read-only ingest of five `config/*-registry.json` files into four captures; enriched MCPHub, harness sync, and MCP/plugin ownership wiki pages with 2026-06-25 registry counts.
 - `raw`: added 4 captures (`mcp-registry-capture-w03`, `harness-surface-registry-capture-w03`, `config-transaction-registry-capture-w03`, `hook-surface-registry-capture-w03`).
 - `wiki`: enriched [[mcphub-control-plane]], [[harness-and-platform-sync]], [[plugin-and-mcp-ownership]].
@@ -530,7 +537,7 @@ source_count: 1
 ### [2026-06-25] Wave 02 — wagents automation fleet
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave02-wagents-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave02-wagents-2026-06-25.md`
 - Summary: Command-backed captures for wagents CLI surface, validate delegation, docs subcommands, and eval/hooks control-plane metrics.
 - `raw`: added 4 captures (`wagents-cli-surface-capture-w02`, `wagents-validate-capture-w02`, `wagents-docs-cli-capture-w02`, `wagents-eval-cli-capture-w02`).
 - `wiki`: enriched [[wagents-cli-and-automation]], [[hooks-evals-control-plane]].
@@ -541,7 +548,7 @@ source_count: 1
 ### [2026-06-25] Wave 01 — partial topics refresh
 
 - Mode: research + ingest + enrich + audit
-- Journal: `kb/raw/captures/journals/kb-wave01-partials-2026-06-25.md`
+- Journal: `~/.grok/research/kb-wave01-partials-2026-06-25.md`
 - Summary: Fresh command captures for six formerly-partial wiki topics; coverage index now zero `partial` rows for those pages.
 - `raw`: added 6 captures (`skill-eval-inventory-capture-w01`, `docs-freshness-capture-w01`, `sync-rollback-capture-w01`, `openspec-lifecycle-capture-w01`, `agent-pub-drift-capture-w01`, `harness-fixture-capture-w01`).
 - `wiki`: max-enriched six partial topics + [[known-risks-and-open-gaps]].
