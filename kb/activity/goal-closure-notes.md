@@ -16,6 +16,11 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal scope reset closure — kb-research-ingest
+
+- Mode: audit (scope remediation)
+- Summary: `goal-scope-reset.sh` reverts outstanding non-kb commits; `goal-verify.sh` fails closed on scope; pytest contract at `kb/activity/test_goal_verify.py`; capture at tree `09f4e9f3`; `source_count: 153`.
+
 ### [2026-06-29] Goal verify tests relocated — kb-research-ingest
 
 - Mode: audit (remediation)

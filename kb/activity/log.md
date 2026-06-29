@@ -815,3 +815,9 @@ Non-wave goal closure notes: [[goal-closure-notes]].
 - `canonical material`: hook/harness registries, harness-fixture-support manifest, rollback/plan/validation-command tests, `wagents/docs.py`, regenerated harness-support page.
 - `wiki`: [[harness-fixture-gaps]] rollback model corrected (merge-preservation + drop-guard, not only `.bak`).
 - Risks / rollback: honesty/tests only; no sync behavior change.
+
+### [2026-06-29] Goal scope reset closure — kb-research-ingest
+
+- Mode: audit (scope remediation; verification-only)
+- Summary: Added `goal-scope-reset.sh` and fail-closed `goal-verify.sh`; neutralized non-kb pollution in wave-01..HEAD window; capture SSOT at tree `09f4e9f3`; `source_count: 153` unchanged.
+- Detail: [[goal-closure-notes]]
