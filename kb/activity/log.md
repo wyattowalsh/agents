@@ -13,6 +13,12 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-29] Goal closure pipeline — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Regenerated closure capture from `verification-summary.txt`; added hygiene + capture scripts; hardened `goal-verify.sh`; contract at `kb/activity/goal-verification-contract.md`.
+- Metrics: run `goal-verify.sh` → `goal-hygiene-check.sh` → `goal-capture-template.sh`; `issue_count: 0` target after this batch.
+
 ### [2026-06-29] Goal verify repair — kb-research-ingest
 
 - Mode: audit (additive only)

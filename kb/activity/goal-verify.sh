@@ -72,8 +72,11 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "journal_lines:"
   rg "^- Journal: ${BTICK}~/.grok/research/kb-wave" kb/activity/log.md || true
   echo ""
-  echo "log_tail:"
-  tail -n 40 kb/activity/log.md
+  echo "log_excerpt_waves_2026-06-25:"
+  rg -m5 -A2 '### \[2026-06-25\] Wave' kb/activity/log.md || true
+  echo ""
+  echo "log_excerpt_closure_2026-06-29:"
+  rg -m2 -A6 '### \[2026-06-29\]' kb/activity/log.md || true
 } | atomic_write "${OUT_DIR}/activity-waves.txt"
 
 # --- Step 5: repo-map sourcing (plan §5 — rg cross-check) ---
@@ -128,8 +131,6 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "wave_sample_total: ${total}"
   echo "wave_commit_total_all: $(git log --oneline --grep='feat(kb): wave' | wc -l | tr -d ' ')"
   echo "scope_violations: ${violations}"
-  echo ""
-  echo "historical_note: post-wave fix commits d793705d (wave30 source-map reorder), 79497d5f (RV remediation), 8891719d (journal path restore) include delete hunks on canonical artifacts; feat(kb): wave commits remain kb/** only with 0 scope violations in sample."
 } | atomic_write "${OUT_DIR}/commit-evidence.txt"
 
 # --- Step 7: final audit (plan §7) ---
@@ -155,7 +156,7 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   rg 'Waves 29' kb/raw/captures/pass5-final-stop-capture-w30.md || true
 } | atomic_write "${OUT_DIR}/early-exit.txt"
 
-# --- Summary ---
+# --- Summary (numeric SSOT for capture generator) ---
 {
   echo "verification_tree: ${TREE}"
   echo "generated_by: kb/activity/goal-verify.sh"
@@ -164,14 +165,23 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "ac1_waves: $(git log --oneline --grep='feat(kb): wave' | wc -l | tr -d ' ')"
   echo "ac1_scope_violations: $(rg '^scope_violations:' "${OUT_DIR}/commit-evidence.txt" || echo 'scope_violations: unknown')"
   echo "ac2_partials: $(rg '^match_count:' "${OUT_DIR}/coverage-partials.txt" || true)"
-  echo "ac3_repo_map: $(rg '^(primary_paths_checked|missing_count|result):' "${OUT_DIR}/repo-map-sourced.txt" || true)"
+  echo "ac3_repo_map_primary_paths_checked: $(rg '^primary_paths_checked:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
+  echo "ac3_repo_map_missing_count: $(rg '^missing_count:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
+  echo "ac3_repo_map_result: $(rg '^result:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac4_waves: $(rg '^wave_count_2026-06-25:' "${OUT_DIR}/activity-waves.txt" || true)"
   echo "ac4_strict_journals: $(rg '^strict_journal_count:' "${OUT_DIR}/activity-waves.txt" || true)"
   echo "step1_exit: $(rg '^exit_code:' "${OUT_DIR}/kb-inventory.txt" | tail -1)"
   echo "step2_exit: $(rg '^exit_code:' "${OUT_DIR}/kb-lint.txt" | tail -1)"
   echo "step2_issue_count: $(rg '^issue_count:' "${OUT_DIR}/kb-lint.txt" | tail -1)"
   echo "step7_lint_exit: $(rg '^lint_exit:' "${OUT_DIR}/final-audit.txt" | tail -1)"
-  echo "worktree_note: KB goal commits touch kb/** only; unrelated docs/ WIP may exist in worktree without affecting goal scope."
 } | atomic_write "${OUT_DIR}/verification-summary.txt"
+
+# --- Worktree scope (live git status; KB commits kb/** only) ---
+{
+  echo "verification_tree: ${TREE}"
+  echo "kb_goal_scope: closure commits under kb/** only; goals/ is gitignored read-only reference"
+  echo "git_status_porcelain:"
+  git status --porcelain
+} | atomic_write "${OUT_DIR}/worktree-scope.txt"
 
 echo "goal-verify: wrote evidence to ${OUT_DIR} (tree=${TREE})"
