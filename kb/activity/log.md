@@ -13,6 +13,12 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-29] Goal verify repair — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Repaired `goal-verify.sh` repo-map awk extraction (25/25 PASS); appended skeptic remediation to closure capture; tree `b22ef3cd`.
+- Metrics: `kb_lint --root kb --fail-on warning` target `issue_count: 0` after this log batch.
+
 ### [2026-06-29] Goal mechanical verification — kb-research-ingest
 
 - Mode: audit (additive only)
