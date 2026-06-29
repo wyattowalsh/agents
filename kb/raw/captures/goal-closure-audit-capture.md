@@ -15,7 +15,7 @@ journal_ref: kb-research-ingest-goal-closure
 
 # Goal Closure Audit Capture
 
-Additive closure audit for `goals/kb-research-ingest/goal.md` at verification tree `79497d5f` (post review remediation).
+Closure audit for `goals/kb-research-ingest/goal.md`. Initial capture at `79497d5f` (review remediation); **current mechanical truth** at `0a882267` and post-remediation HEAD (see Mechanical run below).
 
 ## Acceptance criteria audit
 
@@ -56,7 +56,7 @@ Plan step 2 literal `kb_lint.py kb/` fails (positional `kb/` unrecognized); `kb-
 
 ## Mechanical run (2026-06-29)
 
-Verifier: `kb/activity/goal-verify.sh` (+ `goal-verify-repo-map.py`, `goal-verify-source-map-meta.py`).
+Verifier: `kb/activity/goal-verify.sh` (plan-aligned: `kb_inventory` + `kb_lint` + rg/git checks only; no custom oracles).
 
 **Verification tree:** `8891719df9b7fce7e04659c86335c11f0517feba` (closure commit before this capture append).
 

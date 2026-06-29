@@ -7,11 +7,18 @@ aliases:
   - KB activity log
 kind: index
 status: active
-updated: 2026-06-28
+updated: 2026-06-29
 source_count: 1
 ---
 
 # Activity Log
+
+### [2026-06-29] Goal mechanical verification — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Landed `kb/activity/goal-verify.sh` aligned to verification plan (inventory + lint only; no custom oracles); refreshed activity log; fixed plan `kb_lint` contract (`--root kb`); closure capture at tree `0a882267`.
+- `activity`: updated `log.md` frontmatter + this entry (clears `stale_activity_log`).
+- Metrics: `kb_lint --root kb --fail-on warning` → `issue_count: 0`; 30 waves; 0 partials; repo-map 25/25 sourced; source-map `source_count: 153`.
 
 ### [2026-06-28] Goal closure audit — kb-research-ingest
 
