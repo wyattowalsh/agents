@@ -832,3 +832,8 @@ Non-wave goal closure notes: [[goal-closure-notes]].
 - Mode: audit (verification contract)
 - Summary: goal-verify reports historical vs outstanding non-kb pollution; wave-scope-full audits all 30 feat(kb): wave commits; plan §4 header count in summary; `source_count: 153` unchanged.
 - Detail: [[goal-closure-notes]]
+
+### [2026-06-29] Capture SSOT at d9cf7e64 — kb-research-ingest
+
+- Mode: audit (capture only)
+- Summary: Refreshed goal-closure-audit-capture.md with historical/outstanding scope fields; `source_count: 153` unchanged.
