@@ -9,6 +9,7 @@ from wagents.docs import (
     _docs_generate_stale_reasons,
     _mcp_overview_badge_stale_reason,
     docs_generate,
+    render_sidebar_module,
     write_agents_index,
     write_catalog_custom_index,
     write_catalog_external_index,
@@ -355,11 +356,12 @@ class TestDocsGenerate:
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "index.mdx").exists()
 
     def test_hand_maintained_research_page_embeds_current_skill_source(self):
-        skill_source = (REPO_ROOT / "skills" / "research" / "SKILL.md").read_text(encoding="utf-8").strip()
+        skill_path = REPO_ROOT / "skills" / "research" / "SKILL.md"
+        skill_source = skill_path.read_text(encoding="utf-8").strip()
         page = (
             REPO_ROOT / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "custom" / "research.mdx"
         ).read_text(encoding="utf-8")
-        marker = '````yaml title="SKILL.md"\n'
+        marker = f'````yaml title="{skill_path.relative_to(REPO_ROOT)}"\n'
         start = page.index(marker) + len(marker)
         end = page.index("\n````", start)
 
@@ -451,6 +453,52 @@ class TestWriteSidebar:
         assert "collapsed: true" in text
         assert "items: [{ autogenerate: { directory: 'skills/catalog/custom' } }]" in text
         assert "items: [{ autogenerate: { directory: 'skills/catalog/external' } }]" in text
+
+    def test_sidebar_home_uses_link_not_empty_slug(self, tmp_repo):
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        content_dir.mkdir(parents=True, exist_ok=True)
+        (content_dir / "index.mdx").write_text("---\ntitle: Home\n---\n")
+        write_sidebar([_make_node("skill")])
+        text = (tmp_repo / "docs" / "src" / "generated-sidebar.mjs").read_text()
+        assert "{ slug: '' }" not in text
+        assert "{ label: 'Home', link: '/' }" in text
+
+
+class TestRenderSidebarModule:
+    def test_no_explicit_custom_skill_lanes(self, tmp_repo):
+        (tmp_repo / "docs" / "src").mkdir(parents=True, exist_ok=True)
+        nodes = [
+            _make_node("skill", id_suffix="alpha", metadata={"user-invocable": True}),
+            _make_node("skill", id_suffix="beta", metadata={"user-invocable": False}),
+        ]
+        text = render_sidebar_module(nodes)
+        assert "User-Invocable" not in text
+        assert "Convention" not in text
+        assert text.count("slug: 'skills/catalog/custom/") == 0
+        assert "autogenerate: { directory: 'skills/catalog/custom' }" in text
+        assert "autogenerate: { directory: 'skills/catalog/external' }" in text
+
+    def test_top_level_sidebar_entries_within_limit(self, tmp_repo):
+        content = tmp_repo / "docs" / "src" / "content" / "docs"
+        content.mkdir(parents=True, exist_ok=True)
+        (content / "index.mdx").write_text("---\ntitle: Home\n---\n", encoding="utf-8")
+        (content / "contributing.mdx").write_text("---\ntitle: Contributing\n---\n", encoding="utf-8")
+        (content / "harness-support.mdx").write_text("---\ntitle: Harness Support\n---\n", encoding="utf-8")
+        nodes = [_make_node("skill"), _make_node("agent", source_path="agents/test-agent.md")]
+        text = render_sidebar_module(nodes)
+        assert "Hooks" not in text
+        assert "Harness Config" not in text
+        n = 0
+        in_default = False
+        for line in text.splitlines():
+            if line.startswith("export default ["):
+                in_default = True
+                continue
+            if in_default and line == "];":
+                break
+            if in_default and line.startswith("  {") and not line.startswith("      {"):
+                n += 1
+        assert n <= 8
 
 
 class TestWriteHarnessSupportPage:
