@@ -33,8 +33,8 @@ Committed mirror of the goal verification plan (session `goal/plan.md`). The git
 | Inventory | `uv run python skills/nerdbot/scripts/kb_inventory.py --root kb` |
 | Lint | `uv run python skills/nerdbot/scripts/kb_lint.py --root kb --fail-on warning` |
 | Partials | `rg -F '| partial |' kb/indexes/coverage.md` → 0 matches |
-| Waves (plan §4) | `grep -c '^### [' kb/activity/log.md` ≥ 10 |
-| Macro-waves (AC1) | `rg -c '### \[2026-06-25\] Wave' kb/activity/log.md` ≥ 10 (30 delivered) |
+| Waves (plan §4 literal) | `grep -c '^### [' kb/activity/log.md` ≥ 10 (`plan_step4_literal_pass`) |
+| Macro-waves (AC1) | `rg -c '### \[2026-06-25\] Wave' kb/activity/log.md` ≥ 10 (`ac1_macro_wave_pass`; 30 delivered) |
 | Repo-map | cross-check primary table paths in `kb/raw`, `kb/wiki`, `kb/indexes/source-map.md` |
 | Wave scope | every `feat(kb): wave` commit touches `kb/**` only (`wave-scope-full.txt`) |
 | KB-tagged delivery | active `feat|fix|chore|test(kb):` since wave 01 touch `kb/**` only |
@@ -49,6 +49,8 @@ Committed mirror of the goal verification plan (session `goal/plan.md`). The git
 - **Outstanding pollution:** `goal_window_outstanding_non_kb_commits` must be 0 at verify time (after `goal-scope-reset.sh`).
 - **Wave delivery:** all 30 `feat(kb): wave` commits are kb/**-only; this is verified directly without reset.
 - Closure does **not** claim the entire goal session never touched non-kb paths — it claims KB acceptance criteria hold on the final tree after explicit scope neutralization.
+- `parallel-work-disclosure.txt` (copy of `goal-window-scope.txt` tail) documents that parallel docs/skills/config mutations occurred; only `feat(kb): wave` delivery commits are kb/**-only.
+- Numeric prose must come from scratch `verification-summary.txt` verbatim — never hand-type counts or commit SHAs.
 
 ## Acceptance gates
 

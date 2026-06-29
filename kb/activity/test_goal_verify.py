@@ -168,7 +168,13 @@ def test_goal_verify_produces_passing_summary(tmp_path: Path):
     assert int(summary["ac1_goal_window_non_kb_historical"]) > 0
     assert "source_count: 153" in summary["source_map_source_count"]
     assert int(summary["ac4_plan_step4_headers"]) >= 10
+    assert summary["ac4_plan_step4_literal_pass"] == "true"
+    assert summary["ac4_ac1_macro_wave_pass"] == "true"
+    assert int(summary["ac1_waves"]) == 30
     assert int(summary["ac4_macro_waves"]) >= 30
+    assert (tmp_path / "parallel-work-disclosure.txt").is_file()
+    disclosure = (tmp_path / "parallel-work-disclosure.txt").read_text(encoding="utf-8")
+    assert "disclosure: feat(kb): wave commits are kb/**-only" in disclosure
     assert "scope_reset_prerequisite" in summary
 
     worktree = (tmp_path / "worktree-scope.txt").read_text(encoding="utf-8")

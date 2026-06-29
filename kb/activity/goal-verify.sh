@@ -85,7 +85,11 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "wave_header_count_all: $(rg -c '^### \[' kb/activity/log.md)"
   echo "macro_wave_count: $(rg -c '### \[2026-06-25\] Wave' kb/activity/log.md)"
   echo "wave_count_2026-06-25: $(rg -c '### \[2026-06-25\] Wave' kb/activity/log.md)"
-  echo "plan_step4_gate: macro_wave_count >= 10 (not wave_header_count_all)"
+  echo "plan_step4_literal_command: grep -c '^### [' kb/activity/log.md"
+  echo "plan_step4_literal_result: $(rg -c '^### \[' kb/activity/log.md)"
+  echo "plan_step4_literal_pass: $([[ $(rg -c '^### \[' kb/activity/log.md) -ge 10 ]] && echo true || echo false)"
+  echo "ac1_macro_wave_gate: rg -c '### [2026-06-25] Wave' kb/activity/log.md >= 10"
+  echo "ac1_macro_wave_pass: $([[ $(rg -c '### \[2026-06-25\] Wave' kb/activity/log.md) -ge 10 ]] && echo true || echo false)"
   echo ""
   echo "strict_journal_count: $(rg -c "^- Journal: ${BTICK}~/.grok/research/kb-wave" kb/activity/log.md || echo 0)"
   echo ""
@@ -240,7 +244,13 @@ already_reverted_sha() {
   echo "goal_window_revert_remediation_commits: ${revert_remediation}"
   echo "scope_reset_prerequisite: bash kb/activity/goal-scope-reset.sh must run before verify when outstanding > 0 or unrelated_dirty > 0"
   echo "goal_window_non_kb_commits: ${window_violations}"
+  echo ""
+  echo "disclosure: parallel non-kb file mutations occurred during ingest (docs/skills/config);"
+  echo "disclosure: feat(kb): wave commits are kb/**-only; full session CHANGED_FILES is NOT kb-only;"
+  echo "disclosure: closure proves KB acceptance criteria on final tree after goal-scope-reset.sh"
 } | atomic_write "${OUT_DIR}/goal-window-scope.txt"
+
+cp -f "${OUT_DIR}/goal-window-scope.txt" "${OUT_DIR}/parallel-work-disclosure.txt"
 
 {
   echo "verification_tree: ${TREE}"
@@ -290,7 +300,7 @@ already_reverted_sha() {
   echo "generated_by: kb/activity/goal-verify.sh"
   echo "timestamp_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo "source_map_source_count: $(rg '^source_count:' kb/indexes/source-map.md | head -1)"
-  echo "ac1_waves: $(git log --oneline --grep='feat(kb): wave' | wc -l | tr -d ' ')"
+  echo "ac1_waves: $(git log --oneline --grep='^feat(kb): wave' | wc -l | tr -d ' ')"
   echo "ac1_scope_violations: $(rg '^scope_violations:' "${OUT_DIR}/commit-evidence.txt" || echo 'scope_violations: unknown')"
   echo "ac1_delivered_scope_violations: $(rg '^delivered_scope_violations:' "${OUT_DIR}/delivered-commits-audit.txt" || echo 'delivered_scope_violations: unknown')"
   echo "ac2_partials: $(rg '^match_count:' "${OUT_DIR}/coverage-partials.txt" || true)"
@@ -298,6 +308,8 @@ already_reverted_sha() {
   echo "ac3_repo_map_missing_count: $(rg '^missing_count:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac3_repo_map_result: $(rg '^result:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac4_plan_step4_headers: $(rg '^wave_header_count_all:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
+  echo "ac4_plan_step4_literal_pass: $(rg '^plan_step4_literal_pass:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
+  echo "ac4_ac1_macro_wave_pass: $(rg '^ac1_macro_wave_pass:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
   echo "ac4_macro_waves: $(rg '^macro_wave_count:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || true)"
   echo "ac4_waves: $(rg '^wave_count_2026-06-25:' "${OUT_DIR}/activity-waves.txt" || true)"
   echo "ac4_strict_journals: $(rg '^strict_journal_count:' "${OUT_DIR}/activity-waves.txt" || true)"
@@ -320,8 +332,18 @@ unrelated_dirty="$(rg '^unrelated_dirty_paths:' "${OUT_DIR}/worktree-scope.txt" 
 wave_scope_violations="$(rg '^scope_violations:' "${OUT_DIR}/commit-evidence.txt" | awk '{print $2}' || echo unknown)"
 feat_kb_wave_violations="$(rg '^feat_kb_wave_scope_violations:' "${OUT_DIR}/wave-scope-full.txt" | awk '{print $2}' || echo unknown)"
 plan_step4_headers="$(rg '^wave_header_count_all:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
+plan_step4_literal_pass="$(rg '^plan_step4_literal_pass:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
+ac1_macro_wave_pass="$(rg '^ac1_macro_wave_pass:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
 
 fail=0
+if [[ "${plan_step4_literal_pass}" != "true" ]]; then
+  echo "goal-verify: FAIL plan_step4_literal_pass=${plan_step4_literal_pass}" >&2
+  fail=1
+fi
+if [[ "${ac1_macro_wave_pass}" != "true" ]]; then
+  echo "goal-verify: FAIL ac1_macro_wave_pass=${ac1_macro_wave_pass}" >&2
+  fail=1
+fi
 if [[ "${goal_window_outstanding}" != "0" ]]; then
   echo "goal-verify: FAIL goal_window_outstanding_non_kb_commits=${goal_window_outstanding} (run goal-scope-reset.sh)" >&2
   fail=1

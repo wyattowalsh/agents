@@ -32,7 +32,7 @@ for target in \
   kb/activity/wave-commit-registry.md \
   kb/activity/goal-verification-contract.md \
   kb/raw/captures/goal-closure-audit-capture.md; do
-  for pattern in git-log-oracle remediate_ replay_waves 79497d5f 881b5c8a historical_note; do
+  for pattern in git-log-oracle remediate_ replay_waves 79497d5f 881b5c8a 00f30696 historical_note "122 source-map" "source_count: 122"; do
     check_pattern "${pattern}" "${target}"
   done
   check_pattern 'kb_lint\.py kb/' "${target}"
