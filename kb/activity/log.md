@@ -15,12 +15,12 @@ source_count: 1
 
 Non-wave goal closure notes: [[goal-closure-notes]].
 
-- Latest closure capture: verification tree `c69db24d` (see [[goal-closure-notes]] and `raw/captures/goal-closure-audit-capture.md`).
+- Latest closure capture: verification tree `1cb4966b` (see [[goal-closure-notes]] and `raw/captures/goal-closure-audit-capture.md`).
 
 ### [2026-06-29] Goal closure — kb-research-ingest verification complete
 
 - Mode: audit (goal completion; verification-only batch)
-- Journal: `kb/raw/captures/journals/kb-wave30-pass5-stop-2026-06-25.md` (final wave journal); scratch `verification-summary.txt` at tree `c69db24d`
+- Journal: `kb/raw/captures/journals/kb-wave30-pass5-stop-2026-06-25.md` (final wave journal); scratch `verification-summary.txt` at tree `1cb4966b`
 - Summary: Re-ran `goal-verify.sh`, `goal-hygiene-check.sh`, and `goal-capture-template.sh`; all acceptance criteria satisfied (30 macro-waves, zero `partial` coverage rows, repo-map 25/25 sourced, lint clean).
 - `raw`: refreshed `raw/captures/goal-closure-audit-capture.md` at HEAD `c69db24d`.
 - Metrics: **net-new raw sources: 0**; `issue_count: 0` after this log refresh; early exit documented at waves 26–30 (pass 4/5 stops, consecutive `<3` net-new).
