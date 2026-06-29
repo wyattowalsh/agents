@@ -63,9 +63,11 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
 # --- Step 4: activity waves (plan §4) ---
 {
   echo "verification_tree: ${TREE}"
-  echo "command: rg -c '^### [' kb/activity/log.md (wave headers)"
-  echo "wave_header_count: $(rg -c '^### \[' kb/activity/log.md)"
+  echo "command_plan_step4: grep -c '^### [' kb/activity/log.md (all dated headers; includes pre-goal history)"
+  echo "wave_header_count_all: $(rg -c '^### \[' kb/activity/log.md)"
+  echo "macro_wave_count: $(rg -c '### \[2026-06-25\] Wave' kb/activity/log.md)"
   echo "wave_count_2026-06-25: $(rg -c '### \[2026-06-25\] Wave' kb/activity/log.md)"
+  echo "plan_step4_gate: macro_wave_count >= 10 (not wave_header_count_all)"
   echo ""
   echo "strict_journal_count: $(rg -c "^- Journal: ${BTICK}~/.grok/research/kb-wave" kb/activity/log.md || echo 0)"
   echo ""
@@ -133,10 +135,11 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "scope_violations: ${violations}"
 } | atomic_write "${OUT_DIR}/commit-evidence.txt"
 
-# --- Step 6b: delivered kb goal commits (closure + waves since review remediation) ---
+# --- Step 6b: delivered kb goal commits (wave 01 through HEAD) ---
+WAVE_ONE_SHA="$(git log --format=%H --grep='feat(kb): wave 01' -1)"
 {
   echo "verification_tree: ${TREE}"
-  echo "audit: delivered kb goal commits (feat|fix|chore)(kb): since 79497d5f"
+  echo "audit: kb-tagged commits since wave 01 (${WAVE_ONE_SHA:-unknown})"
   violations=0
   total=0
   while IFS= read -r sha; do
@@ -152,10 +155,30 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
       echo "VIOLATION ${sha}: ${subject}"
       echo "${non_kb}"
     fi
-  done < <(git log --format=%H 79497d5f..HEAD)
+  done < <(git log --format=%H "${WAVE_ONE_SHA}"..HEAD 2>/dev/null || true)
   echo "delivered_kb_commits_checked: ${total}"
   echo "delivered_scope_violations: ${violations}"
 } | atomic_write "${OUT_DIR}/delivered-commits-audit.txt"
+
+# --- Step 6c: non-kb commits in goal window (must be zero for kb-only goal) ---
+{
+  echo "verification_tree: ${TREE}"
+  echo "audit: any non-kb-tagged commit touching kb/ or any commit in window touching non-kb/"
+  window_violations=0
+  while IFS= read -r sha; do
+    subject="$(git log -1 --pretty=format:%s "${sha}")"
+    case "${subject}" in
+      feat\(kb\):*|fix\(kb\):*|chore\(kb\):*|test\(kb\):*) continue ;;
+    esac
+    touches_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -c '^kb/' || true)"
+    touches_non_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -v '^kb/' || true)"
+    if [[ -n "${touches_non_kb}" ]]; then
+      window_violations=$((window_violations + 1))
+      echo "NON_KB_COMMIT ${sha}: ${subject}"
+    fi
+  done < <(git log --format=%H "${WAVE_ONE_SHA}"..HEAD 2>/dev/null || true)
+  echo "goal_window_non_kb_commits: ${window_violations}"
+} | atomic_write "${OUT_DIR}/goal-window-scope.txt"
 
 # --- Step 7: final audit (plan §7) ---
 {
@@ -193,8 +216,10 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "ac3_repo_map_primary_paths_checked: $(rg '^primary_paths_checked:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac3_repo_map_missing_count: $(rg '^missing_count:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac3_repo_map_result: $(rg '^result:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
+  echo "ac4_macro_waves: $(rg '^macro_wave_count:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || true)"
   echo "ac4_waves: $(rg '^wave_count_2026-06-25:' "${OUT_DIR}/activity-waves.txt" || true)"
   echo "ac4_strict_journals: $(rg '^strict_journal_count:' "${OUT_DIR}/activity-waves.txt" || true)"
+  echo "ac1_goal_window_non_kb: $(rg '^goal_window_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
   echo "step1_exit: $(rg '^exit_code:' "${OUT_DIR}/kb-inventory.txt" | tail -1)"
   echo "step2_exit: $(rg '^exit_code:' "${OUT_DIR}/kb-lint.txt" | tail -1)"
   echo "step2_issue_count: $(rg '^issue_count:' "${OUT_DIR}/kb-lint.txt" | tail -1)"

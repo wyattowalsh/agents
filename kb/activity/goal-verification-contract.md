@@ -23,9 +23,10 @@ Committed mirror of the goal verification plan (session `goal/plan.md`). The git
 | Inventory | `uv run python skills/nerdbot/scripts/kb_inventory.py --root kb` |
 | Lint | `uv run python skills/nerdbot/scripts/kb_lint.py --root kb --fail-on warning` |
 | Partials | `rg -F '| partial |' kb/indexes/coverage.md` → 0 matches |
-| Waves | `rg -c '^### \[' kb/activity/log.md` ≥ 10 |
+| Waves | `rg -c '### \[2026-06-25\] Wave' kb/activity/log.md` ≥ 10 (macro-waves; `^### [` total includes pre-goal history) |
 | Repo-map | cross-check primary table paths in `kb/raw`, `kb/wiki`, `kb/indexes/source-map.md` |
-| Wave scope | last 3 `feat(kb): wave` commits touch `kb/**` only |
+| Wave scope | all `feat(kb): wave` + `fix(kb):` + `chore(kb):` since wave 01 touch `kb/**` only |
+| Contract tests | `uv run pytest kb/activity/test_goal_verify.py -q` |
 | Closure | `bash kb/activity/goal-verify.sh` → `goal-hygiene-check.sh` → `goal-capture-template.sh` |
 
 ## Acceptance gates

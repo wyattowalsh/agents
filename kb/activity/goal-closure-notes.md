@@ -16,6 +16,11 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal verify tests relocated — kb-research-ingest
+
+- Mode: audit (remediation)
+- Summary: Reverted erroneous `test(kb)` commits that touched `tests/`; contract tests now live at `kb/activity/test_goal_verify.py` only (`source_count: 153` unchanged).
+
 ### [2026-06-29] Goal log header hygiene — kb-research-ingest
 
 - Mode: audit (additive only)
