@@ -172,6 +172,7 @@ Install agent name: `antigravity`
 | project | `config/grok-plannotator-hooks.json` | repo-observed | Canonical policy for Plannotator plan-mode hooks (PreToolUse for enter/exit); rendered on sync to global hooks dir |
 | global | `~/.grok/hooks/*.json` | authoritative | Grok hook surfaces (directory of JSON hook files); includes plannotator.json when synced via repo Grok plannotator install |
 | global | `~/.grok/hooks/plannotator.json` | authoritative (when present) | Rendered Plannotator hooks (exit_plan_mode -> block/deny shim + context improvement) |
+| global | `~/.claude/settings.json` PreToolUse hooks | avoided | Repo policy sets `[compat.claude] hooks = false` and `[compat.cursor] hooks = false` so research write guards do not block Grok implementation |
 
 Grok Build also observes shared `AGENTS.md` / `instructions/grok-global.md` and MCP via the common sync pipeline (see harness-surface-registry for other projection surfaces).
 

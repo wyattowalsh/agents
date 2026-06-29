@@ -366,6 +366,17 @@ def test_grok_config_policy_includes_subagent_composer_pins():
     assert "load_envrc = true" in text
 
 
+def test_grok_config_policy_disables_compat_hook_inheritance():
+    if not GROK_CONFIG_POLICY_PATH.is_file():
+        pytest.skip("grok policy template missing")
+    text = GROK_CONFIG_POLICY_PATH.read_text(encoding="utf-8")
+    for section in ("compat.cursor", "compat.claude"):
+        start = text.index(f"[{section}]")
+        end = text.find("\n[", start + 1)
+        chunk = text[start:end] if end >= 0 else text[start:]
+        assert "hooks = false" in chunk, section
+
+
 def test_sync_grok_lsp_copies_policy_to_home(tmp_path, monkeypatch):
     policy = tmp_path / "grok-lsp.json"
     policy.write_text('{"typescript":{"command":"npx"}}\n', encoding="utf-8")

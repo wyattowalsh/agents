@@ -18,6 +18,12 @@ applyTo: "**/*"
 
 Grok reads `~/.grok/skills/`, project `.grok/skills/`, repo plugin skills, and Claude-compat `~/.claude/skills/`. Skills CLI has no native `grok` adapter; use `wagents install -a grok` or `wagents skills sync -a grok` (installs via `claude-code`, then mirrors to `~/.grok/skills`).
 
+### Hooks (compat policy)
+
+Grok loads hooks from `~/.grok/hooks/*.json` (repo-synced Plannotator policy). Repo policy sets `[compat.claude] hooks = false` and `[compat.cursor] hooks = false` so Claude/Cursor `PreToolUse` guards — especially `/research` read-only write blocks — do not inherit into Grok Build and deny `Write`/`Edit` during implementation work.
+
+Keep Plannotator hooks via stack sync; do not re-enable compat hook mirroring without Grok-specific research guards.
+
 ### Subagents
 
 Grok hard-caps nested subagent depth at **1**. Do not invent deeper orchestration knobs in repo config.

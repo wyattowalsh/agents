@@ -26,6 +26,7 @@ from wagents.platforms.grok import (
 )
 
 GROK_ENV_VARS = ("GROK_WEB_FETCH", "GROK_MEMORY", "GROK_SUBAGENTS", "GROK_LSP_TOOLS")
+_COMPAT_HOOK_SECTIONS = ("compat.cursor", "compat.claude")
 
 LSP_INSTALL_HINTS: dict[str, str] = {
     "typescript": "npm i -g typescript-language-server typescript",
@@ -50,6 +51,23 @@ def _make_check(
     if remediation:
         check["remediation"] = remediation
     return check
+
+
+def _compat_hooks_disabled_in_toml(content: str) -> bool | None:
+    """Return True when compat hook inheritance is disabled, False when enabled, None when absent."""
+    for section in _COMPAT_HOOK_SECTIONS:
+        marker = f"[{section}]"
+        start = content.find(marker)
+        if start < 0:
+            return None
+        end = content.find("\n[", start + len(marker))
+        chunk = content[start:end] if end >= 0 else content[start:]
+        if "hooks = false" in chunk:
+            continue
+        if "hooks = true" in chunk:
+            return False
+        return False
+    return True
 
 
 def _load_lsp_config(path: Path) -> dict[str, Any]:
@@ -214,6 +232,55 @@ def collect_grok_doctor_checks(home: Path | None = None) -> list[dict[str, str]]
                     "grok-mcphub-endpoint",
                     "ok",
                     "mcphub harness-safe endpoint configured",
+                )
+            )
+
+        compat_hooks = _compat_hooks_disabled_in_toml(content)
+        if compat_hooks is True:
+            checks.append(
+                _make_check(
+                    "grok-compat-hooks",
+                    "ok",
+                    "compat.claude/cursor hook inheritance disabled (Grok-native hooks only)",
+                )
+            )
+        elif compat_hooks is False:
+            checks.append(
+                _make_check(
+                    "grok-compat-hooks",
+                    "fail",
+                    "compat.claude or compat.cursor still inherits Claude/Cursor hooks",
+                    "Run sync with --platforms grok --targets home",
+                )
+            )
+        else:
+            checks.append(
+                _make_check(
+                    "grok-compat-hooks",
+                    "warn",
+                    "compat hook policy tables missing from home config",
+                    "Run sync with --platforms grok --targets home",
+                )
+            )
+
+    if GROK_CONFIG_POLICY_PATH.is_file():
+        policy = GROK_CONFIG_POLICY_PATH.read_text(encoding="utf-8")
+        policy_hooks = _compat_hooks_disabled_in_toml(policy)
+        if policy_hooks is True:
+            checks.append(
+                _make_check(
+                    "grok-policy-compat-hooks",
+                    "ok",
+                    "Repo policy disables compat hook inheritance",
+                )
+            )
+        else:
+            checks.append(
+                _make_check(
+                    "grok-policy-compat-hooks",
+                    "fail",
+                    "config/grok-config.toml must set compat.* hooks = false",
+                    "Set [compat.claude] and [compat.cursor] hooks = false in config/grok-config.toml",
                 )
             )
 
