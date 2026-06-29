@@ -13,7 +13,18 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 KB_ROOT = REPO_ROOT / "kb"
 GOAL_VERIFY = REPO_ROOT / "kb" / "activity" / "goal-verify.sh"
+GOAL_SCOPE_RESET = REPO_ROOT / "kb" / "activity" / "goal-scope-reset.sh"
 WAVE_ONE_SUBJECT = "feat(kb): wave 01"
+
+
+def _run_goal_scope_reset() -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["bash", str(GOAL_SCOPE_RESET)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
 
 
 def _run_goal_verify(*, scratch: Path) -> subprocess.CompletedProcess[str]:
@@ -72,6 +83,8 @@ def test_log_has_no_goal_closure_wave_header_pollution():
 
 
 def test_goal_verify_produces_passing_summary(tmp_path: Path):
+    reset = _run_goal_scope_reset()
+    assert reset.returncode == 0, reset.stderr or reset.stdout
     result = _run_goal_verify(scratch=tmp_path)
     assert result.returncode == 0, result.stderr or result.stdout
     summary = _parse_summary(tmp_path)
@@ -86,6 +99,7 @@ def test_goal_verify_produces_passing_summary(tmp_path: Path):
     assert summary["ac2_partials"] == "match_count: 0"
     assert summary["step2_issue_count"] == "issue_count: 0"
     assert summary["ac1_delivered_scope_violations"] == "delivered_scope_violations: 0"
+    assert summary["ac1_goal_window_non_kb"] == "0"
     assert "source_count: 153" in summary["source_map_source_count"]
     assert int(summary["ac4_macro_waves"]) >= 30
 
@@ -97,6 +111,7 @@ def test_goal_verify_produces_passing_summary(tmp_path: Path):
 
 @pytest.mark.parametrize("artifact", ["kb-lint.txt", "commit-evidence.txt", "delivered-commits-audit.txt"])
 def test_goal_verify_writes_required_artifacts(tmp_path: Path, artifact: str):
+    _run_goal_scope_reset()
     _run_goal_verify(scratch=tmp_path)
     assert (tmp_path / artifact).is_file()
 

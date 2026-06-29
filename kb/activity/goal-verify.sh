@@ -135,19 +135,44 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "scope_violations: ${violations}"
 } | atomic_write "${OUT_DIR}/commit-evidence.txt"
 
-# --- Step 6b: delivered kb goal commits (wave 01 through HEAD) ---
+# --- Step 6b/6c: delivered scope (wave 01 through HEAD) ---
 WAVE_ONE_SHA="$(git log --format=%H --grep='feat(kb): wave 01' -1)"
+
+is_kb_subject() {
+  case "$1" in
+    feat\(kb\):*|fix\(kb\):*|chore\(kb\):*|test\(kb\):*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_revert_subject() {
+  case "$1" in
+    Revert\ *) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+already_reverted_sha() {
+  local sha="$1"
+  local subject
+  subject="$(git log -1 --pretty=format:%s "${sha}")"
+  git log --grep="^Revert \"${subject}\"$" --format=%H -1 | grep -q .
+}
+
 {
   echo "verification_tree: ${TREE}"
-  echo "audit: kb-tagged commits since wave 01 (${WAVE_ONE_SHA:-unknown})"
+  echo "audit: kb-tagged commits since wave 01 must touch kb/** only (${WAVE_ONE_SHA:-unknown})"
   violations=0
   total=0
   while IFS= read -r sha; do
     subject="$(git log -1 --pretty=format:%s "${sha}")"
-    case "${subject}" in
-      feat\(kb\):*|fix\(kb\):*|chore\(kb\):*) ;;
-      *) continue ;;
-    esac
+    if ! is_kb_subject "${subject}"; then
+      continue
+    fi
+    if already_reverted_sha "${sha}"; then
+      echo "NEUTRALIZED ${sha}: ${subject}"
+      continue
+    fi
     total=$((total + 1))
     non_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -v '^kb/' || true)"
     if [[ -n "${non_kb}" ]]; then
@@ -160,22 +185,21 @@ WAVE_ONE_SHA="$(git log --format=%H --grep='feat(kb): wave 01' -1)"
   echo "delivered_scope_violations: ${violations}"
 } | atomic_write "${OUT_DIR}/delivered-commits-audit.txt"
 
-# --- Step 6c: non-kb commits in goal window (must be zero for kb-only goal) ---
 {
   echo "verification_tree: ${TREE}"
-  echo "audit: any non-kb-tagged commit touching kb/ or any commit in window touching non-kb/"
+  echo "audit: outstanding non-kb commits in goal window (exclude kb-tagged, Revert *, and already-reverted originals)"
   window_violations=0
   while IFS= read -r sha; do
     subject="$(git log -1 --pretty=format:%s "${sha}")"
-    case "${subject}" in
-      feat\(kb\):*|fix\(kb\):*|chore\(kb\):*|test\(kb\):*) continue ;;
-    esac
-    touches_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -c '^kb/' || true)"
-    touches_non_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -v '^kb/' || true)"
-    if [[ -n "${touches_non_kb}" ]]; then
-      window_violations=$((window_violations + 1))
-      echo "NON_KB_COMMIT ${sha}: ${subject}"
+    if is_kb_subject "${subject}" || is_revert_subject "${subject}"; then
+      continue
     fi
+    if already_reverted_sha "${sha}"; then
+      echo "NEUTRALIZED ${sha}: ${subject}"
+      continue
+    fi
+    window_violations=$((window_violations + 1))
+    echo "NON_KB_COMMIT ${sha}: ${subject}"
   done < <(git log --format=%H "${WAVE_ONE_SHA}"..HEAD 2>/dev/null || true)
   echo "goal_window_non_kb_commits: ${window_violations}"
 } | atomic_write "${OUT_DIR}/goal-window-scope.txt"
@@ -237,5 +261,34 @@ WAVE_ONE_SHA="$(git log --format=%H --grep='feat(kb): wave 01' -1)"
   echo "git_status_porcelain:"
   git status --porcelain
 } | atomic_write "${OUT_DIR}/worktree-scope.txt"
+
+# --- Fail-closed scope gate ---
+goal_window_non_kb="$(rg '^goal_window_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
+delivered_scope_violations="$(rg '^delivered_scope_violations:' "${OUT_DIR}/delivered-commits-audit.txt" | awk '{print $2}' || echo unknown)"
+unrelated_dirty="$(rg '^unrelated_dirty_paths:' "${OUT_DIR}/worktree-scope.txt" | awk '{print $2}' || echo unknown)"
+wave_scope_violations="$(rg '^scope_violations:' "${OUT_DIR}/commit-evidence.txt" | awk '{print $2}' || echo unknown)"
+
+fail=0
+if [[ "${goal_window_non_kb}" != "0" ]]; then
+  echo "goal-verify: FAIL goal_window_non_kb_commits=${goal_window_non_kb}" >&2
+  fail=1
+fi
+if [[ "${delivered_scope_violations}" != "0" ]]; then
+  echo "goal-verify: FAIL delivered_scope_violations=${delivered_scope_violations}" >&2
+  fail=1
+fi
+if [[ "${unrelated_dirty}" != "0" ]]; then
+  echo "goal-verify: FAIL unrelated_dirty_paths=${unrelated_dirty}" >&2
+  fail=1
+fi
+if [[ "${wave_scope_violations}" != "0" ]]; then
+  echo "goal-verify: FAIL wave_scope_violations=${wave_scope_violations}" >&2
+  fail=1
+fi
+
+if [[ "${fail}" -ne 0 ]]; then
+  echo "goal-verify: wrote evidence to ${OUT_DIR} (tree=${TREE}) — SCOPE GATE FAILED" >&2
+  exit 1
+fi
 
 echo "goal-verify: wrote evidence to ${OUT_DIR} (tree=${TREE})"
