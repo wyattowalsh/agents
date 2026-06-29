@@ -15,7 +15,7 @@ journal_ref: kb-research-ingest-goal-closure
 
 # Goal Closure Audit Capture
 
-Generated at verification tree `d79cbc992d1645af2a242a96efe0375cfb42ab38`. Numeric SSOT: scratch `verification-summary.txt` (verbatim below).
+Generated at verification tree `3724003b4e53e877e32531ff41ccaeb221a62a00`. Numeric SSOT: scratch `verification-summary.txt` (verbatim below).
 
 ## Closure commands
 
@@ -30,12 +30,13 @@ Verification contract: `kb/activity/goal-verification-contract.md`.
 ## verification-summary.txt (verbatim)
 
 ```text
-verification_tree: d79cbc992d1645af2a242a96efe0375cfb42ab38
+verification_tree: 3724003b4e53e877e32531ff41ccaeb221a62a00
 generated_by: kb/activity/goal-verify.sh
-timestamp_utc: 2026-06-29T00:35:59Z
+timestamp_utc: 2026-06-29T01:02:34Z
 source_map_source_count: source_count: 153
 ac1_waves: 30
 ac1_scope_violations: scope_violations: 0
+ac1_delivered_scope_violations: delivered_scope_violations: 0
 ac2_partials: match_count: 0
 ac3_repo_map_primary_paths_checked: primary_paths_checked: 25
 ac3_repo_map_missing_count: missing_count: 0

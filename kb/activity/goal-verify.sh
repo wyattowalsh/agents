@@ -76,7 +76,7 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   rg -m5 -A2 '### \[2026-06-25\] Wave' kb/activity/log.md || true
   echo ""
   echo "log_excerpt_closure_2026-06-29:"
-  rg -m2 -A6 '### \[2026-06-29\]' kb/activity/log.md || true
+  rg -m2 -A6 '### \[2026-06-29\]' kb/activity/goal-closure-notes.md || true
 } | atomic_write "${OUT_DIR}/activity-waves.txt"
 
 # --- Step 5: repo-map sourcing (plan §5 — rg cross-check) ---
@@ -133,6 +133,30 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "scope_violations: ${violations}"
 } | atomic_write "${OUT_DIR}/commit-evidence.txt"
 
+# --- Step 6b: delivered kb goal commits (closure + waves since review remediation) ---
+{
+  echo "verification_tree: ${TREE}"
+  echo "audit: delivered kb goal commits (feat|fix|chore)(kb): since 79497d5f"
+  violations=0
+  total=0
+  while IFS= read -r sha; do
+    subject="$(git log -1 --pretty=format:%s "${sha}")"
+    case "${subject}" in
+      feat\(kb\):*|fix\(kb\):*|chore\(kb\):*) ;;
+      *) continue ;;
+    esac
+    total=$((total + 1))
+    non_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -v '^kb/' || true)"
+    if [[ -n "${non_kb}" ]]; then
+      violations=$((violations + 1))
+      echo "VIOLATION ${sha}: ${subject}"
+      echo "${non_kb}"
+    fi
+  done < <(git log --format=%H 79497d5f..HEAD)
+  echo "delivered_kb_commits_checked: ${total}"
+  echo "delivered_scope_violations: ${violations}"
+} | atomic_write "${OUT_DIR}/delivered-commits-audit.txt"
+
 # --- Step 7: final audit (plan §7) ---
 {
   echo "verification_tree: ${TREE}"
@@ -164,6 +188,7 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo "source_map_source_count: $(rg '^source_count:' kb/indexes/source-map.md | head -1)"
   echo "ac1_waves: $(git log --oneline --grep='feat(kb): wave' | wc -l | tr -d ' ')"
   echo "ac1_scope_violations: $(rg '^scope_violations:' "${OUT_DIR}/commit-evidence.txt" || echo 'scope_violations: unknown')"
+  echo "ac1_delivered_scope_violations: $(rg '^delivered_scope_violations:' "${OUT_DIR}/delivered-commits-audit.txt" || echo 'delivered_scope_violations: unknown')"
   echo "ac2_partials: $(rg '^match_count:' "${OUT_DIR}/coverage-partials.txt" || true)"
   echo "ac3_repo_map_primary_paths_checked: $(rg '^primary_paths_checked:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac3_repo_map_missing_count: $(rg '^missing_count:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
@@ -180,6 +205,10 @@ write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
 {
   echo "verification_tree: ${TREE}"
   echo "kb_goal_scope: closure commits under kb/** only; goals/ is gitignored read-only reference"
+  kb_dirty="$(git status --porcelain -- kb/ 2>/dev/null | wc -l | tr -d ' ')"
+  unrelated_dirty="$(git status --porcelain 2>/dev/null | { grep -v '^.. kb/' || true; } | wc -l | tr -d ' ')"
+  echo "kb_dirty_paths: ${kb_dirty}"
+  echo "unrelated_dirty_paths: ${unrelated_dirty}"
   echo "git_status_porcelain:"
   git status --porcelain
 } | atomic_write "${OUT_DIR}/worktree-scope.txt"
