@@ -15,7 +15,7 @@ source_count: 1
 
 Non-wave goal closure notes: [[goal-closure-notes]].
 
-- Latest closure capture: verification tree `0be90e61` (see [[goal-closure-notes]]).
+- Latest closure capture: verification tree `5e83e89e` (see [[goal-closure-notes]]).
 
 ### [2026-06-25] Wave 30 — pass 5 stop and index reconciliation
 

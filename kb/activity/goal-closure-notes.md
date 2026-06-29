@@ -16,6 +16,11 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal re-verify at repo HEAD — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Re-ran closure pipeline at repo HEAD `5e83e89e` after unrelated docs commit; all acceptance gates pass; capture refreshed from scratch SSOT.
+
 ### [2026-06-29] Goal final closure sync — kb-research-ingest
 
 - Mode: audit (additive only)
