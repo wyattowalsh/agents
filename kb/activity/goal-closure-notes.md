@@ -16,6 +16,11 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal final closure sync — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Delivered-audit hardened `goal-verify.sh`; closure capture at tree `53d5e5e7`; `source_count: 153`; 30 waves; 0 partials; 0 scope violations.
+
 ### [2026-06-29] Goal capture sync — kb-research-ingest
 
 - Mode: audit (additive only)
