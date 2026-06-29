@@ -16,6 +16,14 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal completion verification — kb-research-ingest
+
+- Mode: audit (goal completion; verification-only batch)
+- Journal: final macro-wave `~/.grok/research/kb-wave30-pass5-stop-2026-06-25.md` (archived under `raw/captures/journals/`)
+- Summary: All acceptance criteria satisfied — `source_count: 153`, 30 `feat(kb): wave` commits, zero `partial` coverage rows, repo-map 25/25 sourced, `issue_count: 0`.
+- Closure commits: `2e3bee8a` through `32907e6a` (kb/** only); capture SSOT at tree `32907e6a`.
+- Metrics: **net-new raw sources: 0**; early exit documented at waves 26–30 (pass 4/5 stops, consecutive `<3` net-new).
+
 ### [2026-06-29] Goal re-verify at repo HEAD — kb-research-ingest
 
 - Mode: audit (additive only)
