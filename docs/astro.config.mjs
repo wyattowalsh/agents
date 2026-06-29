@@ -94,9 +94,6 @@ export default defineConfig({
       ],
       components: {
         Head: './src/components/starlight/Head.astro',
-        Footer: './src/components/starlight/Footer.astro',
-        PageTitle: './src/components/starlight/PageTitle.astro',
-        Hero: './src/components/starlight/Hero.astro',
       },
       sidebar: generatedSidebar,
     }),

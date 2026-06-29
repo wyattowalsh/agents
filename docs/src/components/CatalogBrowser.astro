@@ -14,11 +14,9 @@ interface SkillRow {
 interface Props {
   skills: SkillRow[];
   pageSize?: number;
-  /** external (default) uses trust lanes; custom uses user-invocable vs convention */
-  mode?: 'external' | 'custom';
 }
 
-const { skills, pageSize = 48, mode = 'external' } = Astro.props;
+const { skills, pageSize = 48 } = Astro.props;
 
 const laneByStatus: Record<string, string> = {
   'install-now-after-trust-gate': 'install-now',
@@ -26,36 +24,19 @@ const laneByStatus: Record<string, string> = {
   'global-only-or-avoid': 'avoid',
 };
 
-const isCustom = mode === 'custom';
-const catalogPrefix = isCustom ? '/skills/catalog/custom' : '/skills/catalog/external';
-
-const serialized = skills.map((skill) => {
-  const row = skill as SkillRow & { userInvocable?: boolean; status?: string };
-  const lane = isCustom
-    ? row.userInvocable === false
-      ? 'convention'
-      : 'user-invocable'
-    : laneByStatus[String(row.status || '')] || 'inspect';
-  const resolvedName = skill.name || (skill as SkillRow & { id?: string }).id || '';
-  return {
-    name: resolvedName,
-    description: (skill.description || '').slice(0, 160),
-    href: `${catalogPrefix}/${resolvedName}/`,
-    lane,
-    sourceType: skill.sourceType || (isCustom ? 'custom' : 'curated-external'),
-  };
-});
-
-const toolbarLabel = isCustom ? 'Browse custom skills' : 'Browse external skills';
-const searchLabel = isCustom ? 'Search custom skills' : 'Search external skills';
-const filterLabel = isCustom ? 'Filter by invocation mode' : 'Filter by trust lane';
-const skillNoun = isCustom ? 'custom skill' : 'external skill';
+const serialized = skills.map((skill) => ({
+  name: skill.name,
+  description: (skill.description || '').slice(0, 160),
+  href: `/skills/catalog/external/${skill.name}/`,
+  lane: laneByStatus[String(skill.status || '')] || 'inspect',
+  sourceType: skill.sourceType || 'curated-external',
+}));
 ---
 
 <div class="catalog-browser" data-catalog-browser data-page-size={pageSize}>
-  <div class="catalog-browser__toolbar" role="toolbar" aria-label={toolbarLabel}>
+  <div class="catalog-browser__toolbar" role="toolbar" aria-label="Browse external skills">
     <label class="catalog-browser__search">
-      <span class="sr-only">{searchLabel}</span>
+      <span class="sr-only">Search external skills</span>
       <input
         type="search"
         class="catalog-browser__input"
@@ -65,20 +46,11 @@ const skillNoun = isCustom ? 'custom skill' : 'external skill';
         data-catalog-search
       />
     </label>
-    <div class="catalog-browser__filters" role="group" aria-label={filterLabel}>
+    <div class="catalog-browser__filters" role="group" aria-label="Filter by trust lane">
       <button type="button" class="catalog-browser__filter is-active" data-lane="all" aria-pressed="true">All</button>
-      {isCustom ? (
-        <>
-          <button type="button" class="catalog-browser__filter" data-lane="user-invocable" aria-pressed="false">User-invocable</button>
-          <button type="button" class="catalog-browser__filter" data-lane="convention" aria-pressed="false">Convention</button>
-        </>
-      ) : (
-        <>
-          <button type="button" class="catalog-browser__filter" data-lane="install-now" aria-pressed="false">Install now</button>
-          <button type="button" class="catalog-browser__filter" data-lane="inspect" aria-pressed="false">Inspect</button>
-          <button type="button" class="catalog-browser__filter" data-lane="avoid" aria-pressed="false">Avoid</button>
-        </>
-      )}
+      <button type="button" class="catalog-browser__filter" data-lane="install-now" aria-pressed="false">Install now</button>
+      <button type="button" class="catalog-browser__filter" data-lane="inspect" aria-pressed="false">Inspect</button>
+      <button type="button" class="catalog-browser__filter" data-lane="avoid" aria-pressed="false">Avoid</button>
     </div>
   </div>
 
@@ -91,7 +63,7 @@ const skillNoun = isCustom ? 'custom skill' : 'external skill';
   </div>
 </div>
 
-<script is:inline define:vars={{ serialized, pageSize, skillNoun }}>
+<script is:inline define:vars={{ serialized, pageSize }}>
   const root = document.querySelector('[data-catalog-browser]');
   if (!root) {
     // no-op when component is not mounted
@@ -110,13 +82,6 @@ const skillNoun = isCustom ? 'custom skill' : 'external skill';
 
     const normalize = (value) => String(value || '').toLowerCase();
 
-    const escapeHtml = (value) =>
-      String(value ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-
     const applyFilters = () => {
       const needle = normalize(query);
       filtered = skills.filter((skill) => {
@@ -132,9 +97,9 @@ const skillNoun = isCustom ? 'custom skill' : 'external skill';
       const article = document.createElement('article');
       article.className = 'catalog-browser__card sl-link-card';
       article.innerHTML = `
-        <a class="catalog-browser__card-link sl-link-card__link" href="${escapeHtml(skill.href)}">
-          <span class="catalog-browser__card-title sl-link-card__title">${escapeHtml(skill.name)}</span>
-          <span class="catalog-browser__card-desc sl-link-card__description">${escapeHtml(skill.description || '')}</span>
+        <a class="catalog-browser__card-link sl-link-card__link" href="${skill.href}">
+          <span class="catalog-browser__card-title sl-link-card__title">${skill.name}</span>
+          <span class="catalog-browser__card-desc sl-link-card__description">${skill.description || ''}</span>
         </a>
       `;
       return article;
@@ -152,7 +117,7 @@ const skillNoun = isCustom ? 'custom skill' : 'external skill';
       meta.textContent =
         total === 0
           ? 'No skills match the current filters.'
-          : `Showing ${showing} of ${total} ${skillNoun}${total === 1 ? '' : 's'}.`;
+          : `Showing ${showing} of ${total} external skill${total === 1 ? '' : 's'}.`;
       if (moreBtn instanceof HTMLButtonElement) {
         const hasMore = showing < total;
         moreBtn.hidden = !hasMore;
