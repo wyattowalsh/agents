@@ -53,7 +53,7 @@ uv run python scripts/sync_agent_stack.py --apply --platforms grok --targets hom
 
 ### Cross-harness delegation
 
-Other harnesses (Codex, OpenCode) may dispatch task-graph nodes to Grok via `/grok-delegate` using native headless CLI only. Grok itself should not re-orchestrate nested graphs beyond platform subagent depth 1.
+Other harnesses (Codex, OpenCode, Claude, Cursor) may dispatch task-graph nodes to Grok via `/grok-delegate` using native headless CLI only. Pre-flight: `bash skills/grok-delegate/scripts/preflight.sh` (bundled doctor; OAuth via `grok login` primary). Tier-T trivial offload: bounded single-node `grok -p` when fast preflight passes (see `instructions/global.md`). Grok itself should not re-orchestrate nested graphs beyond platform subagent depth 1.
 
 ### Plannotator (plan review)
 

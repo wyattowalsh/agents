@@ -1,0 +1,691 @@
+#!/usr/bin/env python3
+"""Package skills into portable ZIP files for skill distribution.
+
+Runs portability checks, generates a manifest.json, and creates a
+<name>-v<version>.skill.zip bundle. JSON to stdout, warnings to stderr.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+import zipfile
+from datetime import UTC, datetime
+from pathlib import Path
+
+from _shared import (
+    ABSOLUTE_PATH_RE,
+    find_nonportable_body_operator_lines,
+    find_nonportable_frontmatter_commands,
+    format_body_operator_issues,
+    format_frontmatter_command_issues,
+    parse_frontmatter,
+)
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+ASSET_TOOLKIT_SRC = SCRIPT_DIR / "asset_toolkit"
+PORTABLE_TOOLKIT_MODULES = frozenset({
+    "__init__.py",
+    "_shared.py",
+    "common.py",
+    "package.py",
+    "validate_skill.py",
+    "validate_evals.py",
+    "validate_hooks.py",
+})
+WAGENTS_RE = re.compile(r"\bwagents\b", re.IGNORECASE)
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+EXCLUDE_PATTERNS = {"__pycache__", ".DS_Store", ".git", "*.pyc", "*.tmp"}
+EXCLUDE_DIRS = {
+    "__pycache__",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".ty",
+    ".venv",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+}
+EXCLUDE_EXTENSIONS = {".pyc", ".tmp"}
+EXCLUDE_NAMES = {".DS_Store", "manifest.json"}
+
+# Regex: @ imports at the start of a line (repo-specific path assumptions)
+AT_IMPORT_RE = re.compile(r"^@\S+", re.MULTILINE)
+
+# Regex: packaged resource mentions in SKILL.md body, optionally prefixed with skills/<name>/
+RESOURCE_PATH_RE = re.compile(
+    r"(?<![A-Za-z0-9_.-])((?:skills/[a-z0-9-]+/)?(?:references|scripts|templates|assets|reports)/[A-Za-z0-9_./-]*[A-Za-z0-9_-]\.[A-Za-z0-9_-]+)"
+)
+
+
+def _warn(msg: str) -> None:
+    print(f"[package] {msg}", file=sys.stderr)
+
+
+def _now() -> str:
+    return datetime.now(UTC).isoformat()
+
+
+# ---------------------------------------------------------------------------
+# File filtering
+# ---------------------------------------------------------------------------
+
+
+def _is_reports_file(path: Path) -> bool:
+    return bool(path.parts) and path.parts[0] == "reports"
+
+
+def _mentioned_resource_paths(skill_dir: Path, body: str) -> set[str]:
+    mentioned: set[str] = set()
+    skill_prefix = f"skills/{skill_dir.name}/"
+    for match in RESOURCE_PATH_RE.finditer(body):
+        raw_path = match.group(1).rstrip("`.,:;)]}")
+        if raw_path.startswith(skill_prefix):
+            raw_path = raw_path[len(skill_prefix) :]
+        elif raw_path.startswith("skills/"):
+            # Cross-skill repo tooling references are validation commands, not
+            # resources that must be bundled inside the current skill archive.
+            continue
+        mentioned.add(raw_path)
+    return mentioned
+
+
+def _referenced_report_files(skill_dir: Path, body: str) -> set[Path]:
+    return {
+        Path(rel_path) for rel_path in _mentioned_resource_paths(skill_dir, body) if _is_reports_file(Path(rel_path))
+    }
+
+
+def _should_exclude(path: Path, referenced_report_files: set[Path] | None = None) -> bool:
+    """Return True if the path should be excluded from the ZIP."""
+    if path.name in EXCLUDE_NAMES:
+        return True
+    if path.suffix in EXCLUDE_EXTENSIONS:
+        return True
+    if any(part in EXCLUDE_DIRS for part in path.parts):
+        return True
+    return _is_reports_file(path) and path not in (referenced_report_files or set())
+
+
+def _should_prune_dir(path: Path) -> bool:
+    """Return True if directory traversal should not descend into path."""
+    return any(part in EXCLUDE_DIRS for part in path.parts)
+
+
+def _collect_files(
+    skill_dir: Path,
+    referenced_report_files: set[Path] | None = None,
+) -> tuple[list[Path], list[Path]]:
+    """Collect non-excluded files from the skill directory.
+
+    Returns (included, excluded) as lists of paths relative to skill_dir.
+    """
+    included: list[Path] = []
+    excluded: list[Path] = []
+
+    def walk(directory: Path) -> None:
+        for path in sorted(directory.iterdir()):
+            rel = path.relative_to(skill_dir)
+            if path.is_dir():
+                if _should_prune_dir(rel):
+                    excluded.append(rel)
+                    continue
+                walk(path)
+                continue
+            if not path.is_file():
+                continue
+            if _should_exclude(rel, referenced_report_files=referenced_report_files):
+                excluded.append(rel)
+            else:
+                included.append(rel)
+
+    walk(skill_dir)
+
+    return included, excluded
+
+
+# ---------------------------------------------------------------------------
+# Portability checks
+# ---------------------------------------------------------------------------
+
+
+def check_frontmatter_fields(fm: dict) -> list[dict]:
+    """Check cross-platform frontmatter fields are populated."""
+    checks = []
+    meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
+
+    license_val = fm.get("license", "")
+    checks.append({
+        "check": "frontmatter_license",
+        "passed": bool(license_val),
+        "details": str(license_val) if license_val else "Missing license field",
+    })
+
+    author_val = meta.get("author", "")
+    checks.append({
+        "check": "frontmatter_author",
+        "passed": bool(author_val),
+        "details": str(author_val) if author_val else "Missing metadata.author field",
+    })
+
+    version_val = meta.get("version", "")
+    checks.append({
+        "check": "frontmatter_version",
+        "passed": bool(version_val),
+        "details": str(version_val) if version_val else "Missing metadata.version field",
+    })
+
+    return checks
+
+
+def check_no_absolute_paths(body: str) -> dict:
+    """Check for absolute filesystem paths in the body."""
+    matches = []
+    for i, line in enumerate(body.splitlines(), 1):
+        for m in ABSOLUTE_PATH_RE.finditer(line):
+            matches.append(f"line {i}: {m.group(0)}")
+    return {
+        "check": "no_absolute_paths",
+        "passed": len(matches) == 0,
+        "details": "; ".join(matches[:5]) if matches else "No absolute paths found",
+    }
+
+
+def check_referenced_files(skill_dir: Path, body: str) -> dict:
+    """Check that referenced packaged resources in the body exist on disk."""
+    mentioned = _mentioned_resource_paths(skill_dir, body)
+
+    missing = []
+    for rel_path in sorted(mentioned):
+        if not (skill_dir / rel_path).is_file():
+            missing.append(rel_path)
+    if not mentioned:
+        return {
+            "check": "referenced_files_exist",
+            "passed": True,
+            "details": "No packaged resource mentions found in body",
+        }
+    return {
+        "check": "referenced_files_exist",
+        "passed": len(missing) == 0,
+        "details": (
+            f"Missing: {', '.join(missing)}" if missing else f"All {len(mentioned)} packaged resource paths resolve"
+        ),
+    }
+
+
+def check_frontmatter_commands_portable(fm: dict) -> dict:
+    """Check executable frontmatter commands for repo-root path assumptions."""
+    issues = find_nonportable_frontmatter_commands(fm)
+    return {
+        "check": "frontmatter_commands_portable",
+        "passed": len(issues) == 0,
+        "details": format_frontmatter_command_issues(issues),
+    }
+
+
+def check_no_wagents_reference(body: str) -> dict:
+    """Check for wagents CLI references in skill body (outside code fences)."""
+    matches = []
+    in_code_block = False
+    for i, line in enumerate(body.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code_block = not in_code_block
+            continue
+        if in_code_block:
+            continue
+        if WAGENTS_RE.search(line):
+            matches.append(f"line {i}: {line.strip()}")
+    return {
+        "check": "no_wagents_reference",
+        "passed": len(matches) == 0,
+        "details": "; ".join(matches[:5]) if matches else "No wagents references found",
+    }
+
+
+def check_no_at_imports(body: str) -> dict:
+    """Check for @ imports or repo-specific path assumptions.
+
+    Skips lines inside fenced code blocks (``` ... ```) since those
+    commonly contain Python decorators like @mcp.tool.
+    """
+    matches = []
+    in_code_block = False
+    for i, line in enumerate(body.splitlines(), 1):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code_block = not in_code_block
+            continue
+        if in_code_block:
+            continue
+        if AT_IMPORT_RE.match(line):
+            matches.append(f"line {i}: {line.strip()}")
+    return {
+        "check": "no_at_imports",
+        "passed": len(matches) == 0,
+        "details": "; ".join(matches[:5]) if matches else "No @ imports found",
+    }
+
+
+def check_body_operator_commands_portable(body: str) -> dict:
+    """Check SKILL.md body for repo-root skills/*/scripts/ operator paths."""
+    issues = find_nonportable_body_operator_lines(body)
+    return {
+        "check": "body_operator_commands_portable",
+        "passed": len(issues) == 0,
+        "details": format_body_operator_issues(issues),
+    }
+
+
+def check_name_directory_match(fm: dict, dir_name: str) -> dict:
+    """Check that frontmatter name matches the directory name."""
+    fm_name = fm.get("name", "")
+    return {
+        "check": "name_directory_match",
+        "passed": fm_name == dir_name,
+        "details": (
+            f"OK ({fm_name})" if fm_name == dir_name else f"Mismatch: frontmatter '{fm_name}' != directory '{dir_name}'"
+        ),
+    }
+
+
+def check_required_fields(fm: dict) -> list[dict]:
+    """Check that required frontmatter fields (name, description) are present."""
+    checks = []
+    for field in ("name", "description"):
+        val = fm.get(field, "")
+        checks.append({
+            "check": f"required_{field}",
+            "passed": bool(val),
+            "details": f"OK ({val[:60]})" if val else f"Missing required field: {field}",
+        })
+    return checks
+
+
+def run_portability_checks(skill_dir: Path, fm: dict, body: str) -> list[dict]:
+    """Run all portability checks and return results."""
+    checks: list[dict] = []
+    checks.extend(check_required_fields(fm))
+    checks.extend(check_frontmatter_fields(fm))
+    checks.append(check_frontmatter_commands_portable(fm))
+    checks.append(check_no_absolute_paths(body))
+    checks.append(check_referenced_files(skill_dir, body))
+    checks.append(check_no_wagents_reference(body))
+    checks.append(check_no_at_imports(body))
+    checks.append(check_body_operator_commands_portable(body))
+    checks.append(check_name_directory_match(fm, skill_dir.name))
+    return checks
+
+
+# ---------------------------------------------------------------------------
+# Manifest generation
+# ---------------------------------------------------------------------------
+
+
+def generate_manifest(fm: dict, files: list[Path]) -> dict:
+    """Generate a manifest.json dict for the ZIP bundle."""
+    meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
+    return {
+        "name": fm.get("name", "unknown"),
+        "version": str(meta.get("version", "0.0.0")),
+        "description": fm.get("description", ""),
+        "license": fm.get("license", ""),
+        "author": meta.get("author", ""),
+        "files": [str(f) for f in sorted(files)],
+        "created_at": _now(),
+        "packaged_by": "package.py",
+    }
+
+
+# ---------------------------------------------------------------------------
+# ZIP creation
+# ---------------------------------------------------------------------------
+
+
+def _asset_toolkit_files(skill_dir: Path, included: list[Path]) -> list[tuple[Path, Path]]:
+    """Return (source, archive_rel) pairs for vendored asset_toolkit files."""
+    if not ASSET_TOOLKIT_SRC.is_dir():
+        return []
+    has_toolkit = any(str(path).startswith("scripts/asset_toolkit/") for path in included)
+    if has_toolkit:
+        return []
+    pairs: list[tuple[Path, Path]] = []
+    for module_name in sorted(PORTABLE_TOOLKIT_MODULES):
+        src = ASSET_TOOLKIT_SRC / module_name
+        if not src.is_file():
+            continue
+        pairs.append((src, Path("scripts") / "asset_toolkit" / module_name))
+    return pairs
+
+
+def create_zip(skill_dir: Path, output_dir: Path, files: list[Path], manifest: dict) -> tuple[Path, list[str]]:
+    """Create the .skill.zip bundle and return (path, errors)."""
+    name = manifest["name"]
+    version = manifest["version"]
+    zip_name = f"{name}-v{version}.skill.zip"
+    zip_path = output_dir / zip_name
+    errors: list[str] = []
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+            archive_root = Path(name)
+            for rel_path in sorted(files):
+                abs_path = skill_dir / rel_path
+                try:
+                    zf.write(abs_path, str(archive_root / rel_path))
+                except OSError as exc:
+                    errors.append(f"Failed to add {rel_path}: {exc}")
+                    _warn(f"Skipping {rel_path}: {exc}")
+
+            for src_path, rel_path in _asset_toolkit_files(skill_dir, files):
+                try:
+                    zf.write(src_path, str(archive_root / rel_path))
+                except OSError as exc:
+                    errors.append(f"Failed to add vendored {rel_path}: {exc}")
+                    _warn(f"Skipping vendored {rel_path}: {exc}")
+
+            manifest_json = json.dumps(manifest, indent=2) + "\n"
+            zf.writestr(str(archive_root / "manifest.json"), manifest_json)
+    except Exception:
+        # Clean up partial ZIP on failure
+        if zip_path.exists():
+            zip_path.unlink()
+        raise
+
+    return zip_path, errors
+
+
+# ---------------------------------------------------------------------------
+# Package a single skill
+# ---------------------------------------------------------------------------
+
+
+def package_skill(skill_dir: Path, output_dir: Path, dry_run: bool = False, force: bool = False) -> dict:
+    """Package a single skill and return a result dict."""
+    skill_dir = skill_dir.resolve()
+    skill_md = skill_dir / "SKILL.md"
+
+    result: dict = {
+        "skill": skill_dir.name,
+        "version": "0.0.0",
+        "output_path": None,
+        "files_included": [],
+        "files_excluded": [],
+        "portability_checks": [],
+        "portable": True,
+        "blocked": False,
+        "warnings": [],
+        "errors": [],
+    }
+
+    if not skill_md.is_file():
+        result["errors"].append(f"SKILL.md not found in {skill_dir}")
+        return result
+
+    content = skill_md.read_text(encoding="utf-8", errors="replace")
+    fm, body = parse_frontmatter(content)
+
+    meta = fm.get("metadata", {}) if isinstance(fm.get("metadata"), dict) else {}
+    version = str(meta.get("version", "0.0.0"))
+    result["version"] = version
+
+    # Portability checks
+    checks = run_portability_checks(skill_dir, fm, body)
+    result["portability_checks"] = checks
+
+    failed = [c for c in checks if not c["passed"]]
+    result["portable"] = not failed
+    for c in failed:
+        result["warnings"].append(f"{c['check']}: {c['details']}")
+
+    # Collect files
+    referenced_report_files = _referenced_report_files(skill_dir, body)
+    included, excluded = _collect_files(
+        skill_dir,
+        referenced_report_files=referenced_report_files,
+    )
+    result["files_included"] = [str(f) for f in included]
+    result["files_excluded"] = [str(f) for f in excluded]
+
+    if failed and not force:
+        result["blocked"] = True
+        if not dry_run:
+            result["errors"].append("Packaging blocked by portability failures. Re-run with --force to override.")
+        name = fm.get("name", skill_dir.name)
+        result["output_path"] = str(output_dir / f"{name}-v{version}.skill.zip")
+        return result
+
+    if dry_run:
+        name = fm.get("name", skill_dir.name)
+        result["output_path"] = str(output_dir / f"{name}-v{version}.skill.zip")
+        if failed and force:
+            result["warnings"].append("Portability failures overridden with --force during dry run")
+        return result
+
+    # Create ZIP, then generate manifest from what was actually packaged
+    manifest = generate_manifest(fm, included)
+    zip_path, zip_errors = create_zip(skill_dir, output_dir, included, manifest)
+    result["output_path"] = str(zip_path)
+    result["errors"].extend(zip_errors)
+    if failed and force:
+        result["warnings"].append("Portability failures overridden with --force")
+
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Package all skills
+# ---------------------------------------------------------------------------
+
+
+def package_all(skills_dir: Path, output_dir: Path, dry_run: bool = False, force: bool = False) -> dict:
+    """Package all skills under skills_dir and return a summary dict."""
+    skills_dir = skills_dir.resolve()
+    results: list[dict] = []
+
+    if not skills_dir.is_dir():
+        _warn(f"Skills directory not found: {skills_dir}")
+        return {"skills": [], "created_at": _now(), "errors": ["Skills directory not found"]}
+
+    for d in sorted(skills_dir.iterdir()):
+        if d.is_dir() and (d / "SKILL.md").is_file():
+            result = package_skill(d, output_dir, dry_run=dry_run, force=force)
+            results.append(result)
+
+    # Generate top-level manifest (unless dry-run)
+    top_manifest = {
+        "skills": [
+            {
+                "name": r["skill"],
+                "version": r["version"],
+                "description": "",
+                "zip": (
+                    Path(r["output_path"]).name
+                    if (not dry_run and not r.get("blocked") and r.get("output_path"))
+                    else None
+                ),
+            }
+            for r in results
+        ],
+        "created_at": _now(),
+    }
+
+    # Fill in descriptions from frontmatter
+    for entry in top_manifest["skills"]:
+        skill_md = skills_dir / entry["name"] / "SKILL.md"
+        if skill_md.is_file():
+            content = skill_md.read_text(encoding="utf-8", errors="replace")
+            fm, _ = parse_frontmatter(content)
+            entry["description"] = fm.get("description", "")
+
+    if not dry_run:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        manifest_path = output_dir / "manifest.json"
+        manifest_path.write_text(json.dumps(top_manifest, indent=2) + "\n", encoding="utf-8")
+
+    return {"results": results, "manifest": top_manifest}
+
+
+# ---------------------------------------------------------------------------
+# Table formatters
+# ---------------------------------------------------------------------------
+
+
+def _format_human_path(path_value: str) -> str:
+    """Render absolute paths relative to cwd when possible for human output."""
+    try:
+        path = Path(path_value)
+        if path.is_absolute():
+            return str(path.resolve().relative_to(Path.cwd().resolve()))
+    except (OSError, ValueError):
+        pass
+    return path_value
+
+
+def _format_excluded_path(path_value: str) -> str:
+    path = Path(path_value)
+    if path.name in EXCLUDE_DIRS:
+        return f"{path_value}/"
+    return path_value
+
+
+def format_table(result: dict) -> str:
+    """Format a single skill package result as a human-readable table."""
+    out = [f"Package: {result['skill']}", "=" * 40]
+    out.append(f"Version: {result['version']}")
+    if result["output_path"]:
+        out.append(f"Output:  {_format_human_path(result['output_path'])}")
+    out.append("")
+
+    out.append(f"{'Check':<28} {'Result':>6}  Details")
+    out.append("\u2500" * 70)
+    for c in result.get("portability_checks", []):
+        status = "PASS" if c["passed"] else "FAIL"
+        out.append(f"{c['check']:<28} {status:>6}  {c['details']}")
+
+    out.append("")
+    out.append(f"Files included: {len(result.get('files_included', []))}")
+    excluded_files = result.get("files_excluded", [])
+    out.append(f"Files excluded: {len(excluded_files)}")
+    if excluded_files:
+        out.append("files_excluded:")
+        for file_path in excluded_files:
+            out.append(f"  - {_format_excluded_path(file_path)}")
+    out.append(f"Portable: {'yes' if result.get('portable', True) else 'no'}")
+    if result.get("blocked"):
+        out.append("Blocked:  portability failures (use --force to override)")
+
+    if result.get("warnings"):
+        out.append("")
+        out.append("Warnings:")
+        for w in result["warnings"]:
+            out.append(f"  - {w}")
+    if result.get("errors"):
+        out.append("")
+        out.append("Errors:")
+        for e in result["errors"]:
+            out.append(f"  - {e}")
+
+    all_passed = all(c["passed"] for c in result.get("portability_checks", []))
+    out.append("")
+    out.append(f"Overall: {'PASS' if all_passed and not result.get('errors') else 'FAIL'}")
+    return "\n".join(out)
+
+
+def format_all_table(data: dict) -> str:
+    """Format all-skills package results as a summary table."""
+    results = data.get("results", [])
+    out = ["Skill Package Report", "=" * 20, ""]
+
+    hdr = f"{'Skill':<22} {'Version':>8}  {'Files':>5}  {'Checks':>8}  {'Status':>6}"
+    out.append(hdr)
+    out.append("\u2500" * len(hdr))
+
+    for r in results:
+        checks = r.get("portability_checks", [])
+        passed = sum(1 for c in checks if c["passed"])
+        total = len(checks)
+        has_errors = bool(r.get("errors"))
+        all_ok = passed == total and not has_errors
+        fc = len(r.get("files_included", []))
+        out.append(
+            f"{r['skill']:<22} {r['version']:>8}  {fc:>5}  {passed}/{total:>3}  {'PASS' if all_ok else 'FAIL':>6}"
+        )
+
+    out.append("")
+    out.append(f"Total skills: {len(results)}")
+    pass_count = sum(
+        1 for r in results if all(c["passed"] for c in r.get("portability_checks", [])) and not r.get("errors")
+    )
+    out.append(f"Passing: {pass_count}/{len(results)}")
+    return "\n".join(out)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Package skills into portable ZIP files")
+    parser.add_argument("path", nargs="?", help="Path to skill directory")
+    parser.add_argument("--all", action="store_true", help="Package all skills under skills/")
+    parser.add_argument("--output", "-o", default=None, help="Output directory (default: dist/)")
+    parser.add_argument("--dry-run", action="store_true", help="Run portability checks only, do not create ZIP")
+    parser.add_argument("--force", action="store_true", help="Override portability failures and package anyway")
+    parser.add_argument("--format", choices=["json", "table"], default="json", dest="output_format")
+    args = parser.parse_args()
+
+    if not args.path and not args.all:
+        parser.error("Provide a skill path or use --all")
+
+    if args.path and args.all:
+        parser.error("Cannot use both a path and --all; choose one")
+
+    # Resolve output directory
+    if args.output:
+        output_dir = Path(args.output).resolve()
+    else:
+        # Default: dist/ relative to repo root (two levels up from this script)
+        script_dir = Path(__file__).resolve().parent
+        repo_root = script_dir.parent.parent.parent
+        output_dir = repo_root / "dist"
+
+    if args.all:
+        script_dir = Path(__file__).resolve().parent
+        skills_dir = script_dir.parent.parent  # skills/skill-creator/scripts -> skills/
+        if not skills_dir.is_dir():
+            skills_dir = Path.cwd() / "skills"
+        data = package_all(skills_dir, output_dir, dry_run=args.dry_run, force=args.force)
+        if args.output_format == "table":
+            print(format_all_table(data))
+        else:
+            json.dump(data, sys.stdout, indent=2)
+            sys.stdout.write("\n")
+        if any(r.get("blocked") or r.get("errors") for r in data.get("results", [])):
+            sys.exit(1)
+    else:
+        result = package_skill(Path(args.path), output_dir, dry_run=args.dry_run, force=args.force)
+        if args.output_format == "table":
+            print(format_table(result))
+        else:
+            json.dump(result, sys.stdout, indent=2)
+            sys.stdout.write("\n")
+        if result.get("blocked") or result.get("errors"):
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

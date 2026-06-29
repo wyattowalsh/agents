@@ -48,6 +48,23 @@ def test_copilot_specialists_are_documented_extensions() -> None:
     assert specialists == COPILOT_ONLY_SPECIALISTS
 
 
+def test_agents_index_includes_copilot_only_appendix() -> None:
+    from wagents.docs import render_sidebar_module, write_agents_index
+    from wagents.skill_docs import collect_all_doc_nodes
+
+    nodes = collect_all_doc_nodes(include_installed=False)
+    agents = [n for n in nodes if n.kind == "agent"]
+    write_agents_index(agents)
+    index_path = ROOT / "docs" / "src" / "content" / "docs" / "agents" / "index.mdx"
+    text = index_path.read_text(encoding="utf-8")
+    assert "## GitHub Copilot-only agents" in text
+    for name in sorted(COPILOT_ONLY_SPECIALISTS):
+        assert name in text
+        assert f"platforms/copilot/agents/{name}.agent.md" in text
+    # smoke: sidebar renderer still works after docs helpers import
+    _ = render_sidebar_module(nodes)
+
+
 def test_copilot_read_only_agents_disallow_write() -> None:
     read_only = {"code-reviewer", "orchestrator", "planner", "researcher", "security-auditor"}
     for name in read_only:

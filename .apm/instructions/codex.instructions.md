@@ -68,6 +68,10 @@ Before non-trivial tool-mediated work:
 
 **Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.
 
+**Grok delegation**: When a parent harness (Codex, OpenCode, Claude, Cursor) assigns work to Grok Build, use `/grok-delegate` for native CLI task-graph dispatch (`grok -p`, session resume, worktrees). Pre-flight: `bash skills/grok-delegate/scripts/preflight.sh` (bundled doctor; optional `--cwd <target>`). OAuth via `grok login` is primary; `XAI_API_KEY` only when the user explicitly requests API-key billing.
+
+**Grok trivial offload (Tier-T)**: When fast preflight `ok` and `grok-auth-expiry` is `ok` (OAuth healthy), parents MAY offload a **bounded leaf** via `/grok-delegate trivial` (≤3 file reads OR ≤1 file edit ≤80 LOC; no destructive/prod/git-push). Parent retains synthesis. Skip Tier-T for multi-node graphs or overlapping writers.
+
 ## Git Branch Policy
 
 - Do not create new branches, create new worktrees, or switch branches for work unless the user explicitly asks for that.

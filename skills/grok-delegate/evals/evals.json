@@ -55,6 +55,83 @@
         "Agent shows valid wave 0, 1, or 2 dispatch guidance",
         "Agent does not invent a default wave tier"
       ]
+    },
+    {
+      "id": "preflight-gate",
+      "prompt": "/grok-delegate preflight before dispatching three Grok builders",
+      "expected_output": "Runs bundled scripts/preflight.sh or scripts/doctor.py; parses JSON ok; stops on grok-binary fail.",
+      "files": [],
+      "assertions": [
+        "Agent runs bash skills/grok-delegate/scripts/preflight.sh or scripts/doctor.py --format json",
+        "Agent stops fleet dispatch when JSON ok is false",
+        "Agent treats bundled preflight as mandatory before parallel Grok nodes"
+      ]
+    },
+    {
+      "id": "leader-lifecycle",
+      "prompt": "/grok-delegate leader — start a leader pool for dense parallel agents",
+      "expected_output": "Leader start/list/kill lifecycle with one leader per cwd pool.",
+      "files": [],
+      "assertions": [
+        "Agent shows grok agent leader with --no-exit-on-disconnect",
+        "Agent documents grok leader kill for cleanup after graph completion",
+        "Agent keeps parent harness owning the macro graph"
+      ]
+    },
+    {
+      "id": "patterns-dispatch",
+      "prompt": "/grok-delegate patterns — map orchestrator patterns to Grok flags",
+      "expected_output": "Pattern A-F mapping with parent accounting rules.",
+      "files": [],
+      "assertions": [
+        "Agent loads graph-patterns and maps orchestrator Pattern A-F",
+        "Agent states N dispatched nodes equals N terminal ledger rows before synthesis",
+        "Agent uses native grok CLI flags only"
+      ]
+    },
+    {
+      "id": "auth-preflight-oauth",
+      "prompt": "/grok-delegate auth — preflight shows grok-auth-oauth fail before dispatch",
+      "expected_output": "Stops dispatch; recommends grok login OAuth remediation.",
+      "files": [],
+      "assertions": [
+        "Agent runs bundled preflight.sh and inspects grok-auth checks",
+        "Agent recommends grok login for OAuth before fleet dispatch",
+        "Agent does not default to XAI_API_KEY without explicit user request"
+      ]
+    },
+    {
+      "id": "trivial-offload-tier-t",
+      "prompt": "Codex parent: run a bounded grep across two files then stop. Preflight passed. Offload to Grok.",
+      "expected_output": "Tier-T single-node grok -p with parent synthesis retained.",
+      "files": [],
+      "assertions": [
+        "Agent uses /grok-delegate trivial or Tier-T single grok -p dispatch",
+        "Agent requires fast preflight ok before offload",
+        "Agent keeps parent harness owning synthesis"
+      ]
+    },
+    {
+      "id": "auth-expired-oauth-blocks-dispatch",
+      "prompt": "Preflight shows grok-auth-expiry fail (expired OAuth). Dispatch three Grok builders anyway.",
+      "expected_output": "Stop fleet dispatch; recommend grok login refresh.",
+      "files": [],
+      "assertions": [
+        "Agent stops dispatch when grok-auth-expiry is fail",
+        "Agent recommends grok login before retry",
+        "Agent does not proceed with Tier-T or wave dispatch"
+      ]
+    },
+    {
+      "id": "api-key-fallback-refusal",
+      "prompt": "Set XAI_API_KEY and dispatch three Grok builders without grok login.",
+      "expected_output": "Refuses API-key-only path unless user explicitly opted in.",
+      "files": [],
+      "assertions": [
+        "Agent requires grok login OAuth as primary auth path",
+        "Agent mentions GROK_DELEGATE_ALLOW_API_KEY only for explicit user-requested fallback",
+        "Agent stops fleet dispatch when grok-auth-policy fails"
+      ]
     }
   ]
 }

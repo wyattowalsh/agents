@@ -1,0 +1,5 @@
+{
+  "https://auth.x.ai::test-client-id": {
+    "refresh_token": "fixture-refresh-token"
+  }
+}

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Literal, TypeVar, cast
 
 import typer
+import yaml
 from typer.models import OptionInfo
 
 from wagents import CONTENT_DIR, DOCS_DIR, ROOT
@@ -1788,10 +1789,56 @@ def write_agents_index(nodes: list) -> None:
     parts.append("</CardGrid>")
     parts.append("</div>")
     parts.append("")
+    parts.extend(_agents_index_copilot_only_lines())
 
     out_dir = CONTENT_DIR / "agents"
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "index.mdx").write_text("\n".join(parts))
+
+
+_COPILOT_ONLY_AGENT_NAMES = (
+    "codebase-oracle",
+    "dependency-checker",
+    "git-workflow",
+    "spec-writer",
+    "test-writer",
+)
+_COPILOT_AGENT_REPO_BASE = (
+    "https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents"
+)
+
+
+def _load_copilot_agent_description(agent_name: str) -> str:
+    path = ROOT / "platforms" / "copilot" / "agents" / f"{agent_name}.agent.md"
+    if not path.is_file():
+        return f"Copilot CLI agent ({agent_name})."
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---"):
+        return f"Copilot CLI agent ({agent_name})."
+    block = text.split("---", 2)[1]
+    data = yaml.safe_load(block)
+    if isinstance(data, dict) and isinstance(data.get("description"), str):
+        return data["description"]
+    return f"Copilot CLI agent ({agent_name})."
+
+
+def _agents_index_copilot_only_lines() -> list[str]:
+    lines = [
+        "## GitHub Copilot-only agents",
+        "",
+        "These agents ship under `platforms/copilot/agents/` for Copilot CLI workflows. "
+        "They are not part of the portable `agents/*.md` bundle.",
+        "",
+        "<CardGrid>",
+    ]
+    for name in _COPILOT_ONLY_AGENT_NAMES:
+        desc = escape_attr(truncate_sentence(_load_copilot_agent_description(name), 160))
+        href = f"{_COPILOT_AGENT_REPO_BASE}/{name}.agent.md"
+        lines.append(
+            f'  <LinkCard title="{escape_attr(name)}" href="{href}" description="{desc}" />'
+        )
+    lines.append("</CardGrid>")
+    return lines
 
 
 def write_mcp_index(nodes: list) -> None:

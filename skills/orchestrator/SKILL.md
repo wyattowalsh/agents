@@ -281,7 +281,9 @@ All orchestrated work must produce structured progress indicators via TaskCreate
 
 ## External harness delegation (Grok Build)
 
-When the macro graph assigns nodes to **Grok Build**, the parent still owns waves, gates, and synthesis. Delegate execution via `/grok-delegate` — native `grok -p`, `-r`, worktrees, and leader only (no custom wrapper). Parent dispatches parallel Grok nodes as independent bash subprocesses (Pattern A/E). Tune in-flight branches with `-r <sessionId>` after parent gates fail.
+When the macro graph assigns nodes to **Grok Build**, the parent still owns waves, gates, and synthesis. Delegate execution via `/grok-delegate` — native `grok -p`, `-r`, worktrees, and leader only (no custom wrapper). Pre-flight: invoke `/grok-delegate` preflight before fleet dispatch (see grok-delegate skill). Parent dispatches parallel Grok nodes as independent bash subprocesses (Pattern A/E). Tune in-flight branches with `-r <sessionId>` after parent gates fail.
+
+**Tier-T trivial offload:** When fast preflight passes and OAuth is healthy, offload bounded leaf tasks (≤3 reads OR ≤1 file ≤80 LOC) via `/grok-delegate trivial` single-node `grok -p`. Parent keeps synthesis. Ineligible for multi-node graphs or overlapping writers.
 
 ## Scope Boundaries
 

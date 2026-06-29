@@ -25,4 +25,11 @@ Parent must approve before Grok nodes run: `git push`, `rm -rf`, production depl
 
 ## Auth
 
-If `scripts/preflight.sh` reports `grok-binary` fail, stop all dispatch. Use `grok login` or `XAI_API_KEY` per x.ai docs.
+If `scripts/preflight.sh` reports any `fail` check (including `grok-binary` or `grok-auth-*`), stop all dispatch.
+
+Remediation order:
+
+1. `grok login` (or `grok login --device-auth` in headless contexts)
+2. Re-run `bash skills/grok-delegate/scripts/preflight.sh`
+3. Optional deep smoke: `bash skills/grok-delegate/scripts/auth_verify.sh --cwd <target>`
+4. `XAI_API_KEY` only when the active user explicitly requests API-key billing and `GROK_DELEGATE_ALLOW_API_KEY=1` is set for that session
