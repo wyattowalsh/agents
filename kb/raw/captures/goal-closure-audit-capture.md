@@ -83,3 +83,7 @@ After wave 30, two KB-only fix commits landed without changing acceptance outcom
 - `8891719d` — restore AC4 primary journal paths in activity log + wave registry; this mechanical section
 
 Wave 30 `d793705d` source-map reorder noted above remains the only in-wave non-pure-additive hunk (presentation reorder, net +1 row).
+
+## Skeptic remediation (2026-06-29)
+
+Tree `045b17bf`: plan `kb_lint` contract fixed to `--root kb`; custom oracle scripts removed; activity log refreshed (`issue_count: 0`); verifier re-run twice with `source_count: 153`, 25/25 repo-map `result: PASS`, 30 waves / 0 scope violations in last-3 sample.
