@@ -822,7 +822,7 @@ Non-wave goal closure notes: [[goal-closure-notes]].
 - Summary: Added `goal-scope-reset.sh` and fail-closed `goal-verify.sh`; neutralized non-kb pollution in wave-01..HEAD window; capture SSOT at tree `09f4e9f3`; `source_count: 153` unchanged.
 - Detail: [[goal-closure-notes]]
 
-### [2026-06-29] Goal closure capture refresh — kb-research-ingest
+### [2026-06-29] Capture SSOT refresh — kb-research-ingest
 
 - Mode: audit (capture SSOT only)
 - Summary: Refreshed `raw/captures/goal-closure-audit-capture.md` at tree `b7058358`; `source_count: 153` unchanged.
