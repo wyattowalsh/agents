@@ -57,6 +57,8 @@ hr {
 [data-theme='light'] .page-title-icon--skill { background: oklch(0.92 0.06 285 / 0.5); }
 [data-theme='light'] .page-title-icon--agent { background: oklch(0.92 0.04 200 / 0.5); }
 [data-theme='light'] .page-title-icon--mcp   { background: oklch(0.92 0.05 155 / 0.5); }
+[data-theme='light'] .page-title-icon--hook { background: oklch(0.92 0.06 75 / 0.5); }
+[data-theme='light'] .page-title-icon--harness-config { background: oklch(0.92 0.03 250 / 0.5); }
 
 :root[data-theme='light'] .sidebar-content a[aria-current='page'] {
   background: oklch(0.94 0.02 215 / 0.7);

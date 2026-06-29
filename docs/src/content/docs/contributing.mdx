@@ -22,7 +22,7 @@ Edit source-of-truth files first, then regenerate derived output. Do not hand-ed
 | MCP | `config/mcp-registry.json`, `mcp.json`, `mcp/` | `uv run python scripts/sync_agent_stack.py --targets repo --check` |
 | Docs pages and indexes | `wagents/docs.py`, `wagents/rendering.py`, `wagents/site_model.py`, `docs/src/content/docs/` | `uv run pytest tests/test_site_model.py tests/test_docs.py` |
 | README | `wagents/cli.py` and catalog inputs | `uv run wagents readme --check` |
-| External skills | `config/external-skills.md`, `wagents/external_skills.py` | `uv run wagents skills sync --dry-run` |
+| Catalog skills (Bucket A) | `docs/src/authoring/skills/*.mdx`, `wagents/external_skills.py` | `uv run wagents docs generate --no-installed --check`; `uv run wagents skills sync --dry-run` |
 | Distribution | `agent-bundle.json`, plugin manifests, `opencode.json`, harness config sources | `uv run pytest tests/test_distribution_metadata.py` |
 | Non-trivial workflow changes | `openspec/changes/<change>/` | `uv run wagents openspec validate` |
 
@@ -55,6 +55,40 @@ Edit source-of-truth files first, then regenerate derived output. Do not hand-ed
 
 </Steps>
 
+## Bucket A Catalog Authoring
+
+Bucket A catalog semantics (custom + curated-external skills) use authoring MDX as the human SSOT. Machine consumers read the generated index bundle emitted by docs generate.
+
+<Steps>
+
+1. Audit the skill source before recording it.
+
+   Use `/review source` or `/harness-master discover` for gap research. Require read-only `npx skills add <source> --list` evidence and inspect hooks, scripts, credentials, network egress, and license.
+
+2. Author or update the catalog row.
+
+   Create or edit `docs/src/authoring/skills/<skill-id>.mdx` with structured YAML frontmatter (`source_kind`, `install_command`, `trust_tier`, `status`, provenance fields) plus audit notes in the body. Repo-owned customs typically flow `skills/<name>/SKILL.md` → authoring sync → `*.mdx`.
+
+3. Regenerate derived catalog surfaces.
+
+   ```bash
+   uv run wagents docs generate --no-installed
+   ```
+
+   This emits `docs/public/generated-registries/skills-catalog-index.json` and derived `/skills/catalog/...` pages. Do not hand-edit those outputs.
+
+4. Preview harness reconciliation.
+
+   ```bash
+   uv run wagents skills sync --dry-run
+   ```
+
+</Steps>
+
+<Aside type="note" title="Legacy projection">
+`config/external-skills.md` is a deprecated dual-read fallback only. New curation work targets `docs/src/authoring/skills/*.mdx`; do not treat the flat markdown file as the primary edit surface.
+</Aside>
+
 ## External Skill Safety
 
 <Aside type="caution" title="Trust gate">
@@ -65,7 +99,7 @@ Before installing or promoting an external skill:
 
 - Inspect source-list output and the skill body.
 - Check hooks, scripts, command substitutions, allowed tools, credential behavior, network access, destructive commands, and license/provenance.
-- Record curated commands or avoid notes in `config/external-skills.md`.
+- Record curated commands, trust tiers, and avoid notes in `docs/src/authoring/skills/<skill-id>.mdx`.
 - Preview with `uv run wagents skills sync --dry-run`.
 - Regenerate docs so external skill indexes and install scripts stay synchronized.
 

@@ -15,7 +15,7 @@ const id = `install-${Math.random().toString(36).slice(2)}`;
       <p>{title}</p>
       {note && <span>{note}</span>}
     </div>
-    <button type="button" class="install-command__copy" data-copy-command={id}>Copy</button>
+    <button type="button" class="install-command__copy" data-copy-command={id} aria-label="Copy install command">Copy</button>
   </div>
   <pre class="agents-scrollbar"><code>{command}</code></pre>
 </section>

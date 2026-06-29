@@ -4,11 +4,11 @@ description: "Model Context Protocol servers providing tools and data to AI agen
 ---
 {/* HAND-MAINTAINED */}
 
-import { Card, CardGrid, Badge, Aside, Steps } from '@astrojs/starlight/components';
+import { CardGrid, Badge, Aside, Steps, LinkCard } from '@astrojs/starlight/components';
 
 > Hand-maintained catalog of MCP servers configured in this environment, organized by category.
 
-<Badge text="15 configured servers" variant="note" size="large" />
+<Badge text="33 registry servers" variant="note" size="large" />
 
 <Aside type="tip" title="What is MCP?">
 The [Model Context Protocol](https://modelcontextprotocol.io/) is an open standard for connecting AI agents to external tools and data sources. Each server below exposes one or more tools that agents can invoke during a session.
@@ -224,36 +224,16 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Structured reasoning frameworks that guide agents through multi-step analysis, creative problem-solving, and decision evaluation.
 
 <CardGrid>
-  <Card title="sequential-thinking">
-    <Badge text="Analysis" variant="note" /> Step-by-step reasoning with revision and branching. The reference implementation from Anthropic for dynamic, reflective thought processes.
-  </Card>
-  <Card title="atom-of-thoughts">
-    <Badge text="Synthesis" variant="note" /> Decomposes complex problems into atomic, independent thought units that can be contracted and combined for robust answers.
-  </Card>
-  <Card title="shannon-thinking">
-    <Badge text="Information Theory" variant="note" /> Information-theoretic reasoning inspired by Claude Shannon. Reduces noise and uncertainty through systematic problem decomposition.
-  </Card>
-  <Card title="structured-thinking">
-    <Badge text="Memory" variant="note" /> Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions.
-  </Card>
-  <Card title="cascade-thinking">
-    <Badge text="Deep Dive" variant="note" /> Multi-stage reasoning cascade that escalates through progressively deeper analysis levels when simpler passes are insufficient.
-  </Card>
-  <Card title="crash">
-    <Badge text="Verification" variant="note" /> Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions.
-  </Card>
-  <Card title="deep-lucid-3d">
-    <Badge text="Exploration" variant="note" /> Three-dimensional problem analysis exploring depth, breadth, and lateral connections. Includes creative exploration mode.
-  </Card>
-  <Card title="lotus-wisdom-mcp">
-    <Badge text="Perspective" variant="note" /> Eastern-philosophy-inspired reasoning combining multiple perspectives and reflective synthesis for balanced conclusions.
-  </Card>
-  <Card title="think-strategies">
-    <Badge text="Routing" variant="note" /> Strategy-selection toolkit that matches reasoning patterns to problem types. Session management for ongoing analysis threads.
-  </Card>
-  <Card title="creative-thinking">
-    <Badge text="Ideation" variant="note" /> Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces.
-  </Card>
+  <LinkCard title="sequential-thinking" href="/mcp/sequential-thinking/" description="Step-by-step reasoning with revision and branching. The reference implementation from Anthropic for dynamic, reflective thought processes." />
+  <LinkCard title="atom-of-thoughts" href="/mcp/atom-of-thoughts/" description="Decomposes complex problems into atomic, independent thought units that can be contracted and combined for robust answers." />
+  <LinkCard title="shannon-thinking" href="/mcp/shannon-thinking/" description="Information-theoretic reasoning inspired by Claude Shannon. Reduces noise and uncertainty through systematic problem decomposition." />
+  <LinkCard title="structured-thinking" href="/mcp/structured-thinking/" description="Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions." />
+  <LinkCard title="cascade-thinking" href="/mcp/cascade-thinking/" description="Multi-stage reasoning cascade that escalates through progressively deeper analysis levels when simpler passes are insufficient." />
+  <LinkCard title="crash" href="/mcp/crash/" description="Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions." />
+  <LinkCard title="deep-lucid-3d" href="/mcp/deep-lucid-3d/" description="Three-dimensional problem analysis exploring depth, breadth, and lateral connections. Includes creative exploration mode." />
+  <LinkCard title="lotus-wisdom-mcp" href="/mcp/lotus-wisdom-mcp/" description="Eastern-philosophy-inspired reasoning combining multiple perspectives and reflective synthesis for balanced conclusions." />
+  <LinkCard title="think-strategies" href="/mcp/think-strategies/" description="Strategy-selection toolkit that matches reasoning patterns to problem types. Session management for ongoing analysis threads." />
+  <LinkCard title="creative-thinking" href="/mcp/creative-thinking/" description="Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces." />
 </CardGrid>
 
 ---
@@ -263,30 +243,14 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Web search engines and content discovery services for retrieving up-to-date information from the internet.
 
 <CardGrid>
-  <Card title="brave-search">
-    <Badge text="Web/Local" variant="tip" /> Brave Search API with web, news, image, video, and local search. Includes AI-powered summarization of search results.
-  </Card>
-  <Card title="exa">
-    <Badge text="Neural Search" variant="tip" /> Neural search engine that understands meaning, not just keywords. Optimized for finding technical content, papers, and documentation.
-  </Card>
-  <Card title="g-search">
-    <Badge text="Google" variant="tip" /> Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web.
-  </Card>
-  <Card title="duckduckgo">
-    <Badge text="Privacy First" variant="tip" /> Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
-  </Card>
-  <Card title="arxiv">
-    <Badge text="Academic" variant="tip" /> arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries.
-  </Card>
-  <Card title="wikipedia">
-    <Badge text="Encyclopedic" variant="tip" /> Wikipedia content retrieval and lookup tools for encyclopedic background, entities, and topic overviews.
-  </Card>
-  <Card title="wayback">
-    <Badge text="Archive" variant="tip" /> Access archived pages from the Internet Archive Wayback Machine for historical snapshots and link recovery.
-  </Card>
-  <Card title="tavily">
-    <Badge text="Research" variant="tip" /> Tavily-powered web search, extraction, crawl, and deep-research workflows for current-event and multi-source investigations.
-  </Card>
+  <LinkCard title="brave-search" href="/mcp/brave-search/" description="Brave Search API with web, news, image, video, and local search. Includes AI-powered summarization of search results." />
+  <LinkCard title="exa" href="/mcp/exa/" description="Neural search engine that understands meaning, not just keywords. Optimized for finding technical content, papers, and documentation." />
+  <LinkCard title="g-search" href="/mcp/g-search/" description="Google Search results via SerpAPI. Familiar ranking and broad coverage across the public web." />
+  <LinkCard title="duckduckgo-search" href="/mcp/duckduckgo-search/" description="Privacy-focused web search via DuckDuckGo. No tracking, no API key required." />
+  <LinkCard title="arxiv" href="/mcp/arxiv/" description="arXiv paper search and metadata retrieval for research workflows, including direct access to paper IDs and summaries." />
+  <LinkCard title="wikipedia" href="/mcp/wikipedia/" description="Wikipedia content retrieval and lookup tools for encyclopedic background, entities, and topic overviews." />
+  <LinkCard title="wayback" href="/mcp/wayback/" description="Access archived pages from the Internet Archive Wayback Machine for historical snapshots and link recovery." />
+  <LinkCard title="tavily" href="/mcp/tavily/" description="Tavily-powered web search, extraction, crawl, and deep-research workflows for current-event and multi-source investigations." />
 </CardGrid>
 
 ---
@@ -296,15 +260,9 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Tools for retrieving, rendering, and extracting structured content from web pages and URLs.
 
 <CardGrid>
-  <Card title="fetch">
-    <Badge text="HTTP Fetch" variant="caution" /> Core URL fetcher from the MCP reference servers. Retrieves web pages and returns content in multiple formats.
-  </Card>
-  <Card title="fetcher">
-    <Badge text="JS Rendering" variant="caution" /> Browser-based URL fetcher with JavaScript rendering. Handles SPAs and dynamic content that simple HTTP fetches miss.
-  </Card>
-  <Card title="trafilatura">
-    <Badge text="Content Extraction" variant="caution" /> High-quality web content extraction using the Trafilatura library. Strips boilerplate to return clean article text and metadata.
-  </Card>
+  <LinkCard title="fetch" href="/mcp/fetch/" description="Core URL fetcher from the MCP reference servers. Retrieves web pages and returns content in multiple formats." />
+  <LinkCard title="fetcher" href="/mcp/fetcher/" description="Browser-based URL fetcher with JavaScript rendering. Handles SPAs and dynamic content that simple HTTP fetches miss." />
+  <LinkCard title="trafilatura" href="/mcp/trafilatura/" description="High-quality web content extraction using the Trafilatura library. Strips boilerplate to return clean article text and metadata." />
 </CardGrid>
 
 ---
@@ -314,15 +272,9 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Access library documentation, open-source wiki knowledge, and codebase analysis tools.
 
 <CardGrid>
-  <Card title="context7">
-    <Badge text="API Docs" variant="success" /> Retrieves up-to-date documentation for libraries and frameworks directly from source. Eliminates hallucinated APIs and outdated references.
-  </Card>
-  <Card title="deepwiki">
-    <Badge text="GitHub Wikis" variant="success" /> Queries the DeepWiki knowledge base of open-source project documentation. Ask questions about repos and read generated wiki pages.
-  </Card>
-  <Card title="repomix">
-    <Badge text="Codebase Context" variant="success" /> Packs entire codebases into AI-friendly context. Supports local directories and remote repositories with grep and directory browsing.
-  </Card>
+  <LinkCard title="context7" href="/mcp/context7/" description="Retrieves up-to-date documentation for libraries and frameworks directly from source. Eliminates hallucinated APIs and outdated references." />
+  <LinkCard title="deepwiki" href="/mcp/deepwiki/" description="Queries the DeepWiki knowledge base of open-source project documentation. Ask questions about repos and read generated wiki pages." />
+  <LinkCard title="repomix" href="/mcp/repomix/" description="Packs entire codebases into AI-friendly context. Supports local directories and remote repositories with grep and directory browsing." />
 </CardGrid>
 
 ---
@@ -332,15 +284,9 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Browser automation, package management, and document processing for development workflows.
 
 <CardGrid>
-  <Card title="chrome-devtools">
-    <Badge text="CDP Automation" variant="danger" /> Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
-  </Card>
-  <Card title="package-version">
-    <Badge text="Dependency Mgmt" variant="danger" /> Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions.
-  </Card>
-  <Card title="docling">
-    <Badge text="Doc Processing" variant="danger" /> Converts documents (PDF, DOCX, PPTX, HTML) into structured Docling format. Create, edit, search, and export documents as Markdown.
-  </Card>
+  <LinkCard title="chrome-devtools" href="/mcp/chrome-devtools/" description="Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+." />
+  <LinkCard title="package-version" href="/mcp/package-version/" description="Checks latest versions across npm, PyPI, Go, Maven, Gradle, Swift, Docker, Bedrock models, and GitHub Actions." />
+  <LinkCard title="docling" href="/mcp/docling/" description="Converts documents (PDF, DOCX, PPTX, HTML) into structured Docling format. Create, edit, search, and export documents as Markdown." />
 </CardGrid>
 
 ---
@@ -350,9 +296,7 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Email, task management, and personal productivity integrations.
 
 <CardGrid>
-  <Card title="gmail">
-    <Badge text="Inbox Zero" variant="default" /> Full Gmail access: search, read, send, draft, label, filter, and batch-manage emails. Supports attachment downloads.
-  </Card>
+  <LinkCard title="gmail" href="/mcp/gmail/" description="Full Gmail access: search, read, send, draft, label, filter, and batch-manage emails. Supports attachment downloads." />
 </CardGrid>
 
 ---
@@ -362,9 +306,7 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Audio production and video processing tools.
 
 <CardGrid>
-  <Card title="ffmpeg">
-    <Badge text="Video Processing" variant="note" /> Video and audio processing via FFmpeg. Get info, clip, scale, concatenate, overlay, extract frames, and play media files.
-  </Card>
+  <LinkCard title="ffmpeg" href="/mcp/ffmpeg/" description="Video and audio processing via FFmpeg. Get info, clip, scale, concatenate, overlay, extract frames, and play media files." />
 </CardGrid>
 
 ---
@@ -374,7 +316,5 @@ args = ["<repo>/scripts/mcphub/chrome-devtools-browser-url.sh"]
 > Social media and professional network integrations.
 
 <CardGrid>
-  <Card title="linkedin">
-    <Badge text="Professional Data" variant="tip" /> LinkedIn profile scraping for professional networking data. Extract public profile information and connections.
-  </Card>
+  <LinkCard title="linkedin" href="/mcp/linkedin/" description="LinkedIn profile scraping for professional networking data. Extract public profile information and connections." />
 </CardGrid>

@@ -1,0 +1,69 @@
+---
+title: "structured-thinking"
+description: "Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions."
+page_kind: "mcp"
+source_kind: "registry"
+asset_id: "structured-thinking"
+composed: true
+docs_density: standard
+composed_by: "docs-mcp-stubs"
+composed_at: "2026-06-28"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="Thinking and Reasoning" variant="note" /> <Badge text="Memory" variant="default" /> <Badge text="stdio" variant="note" />
+
+> Captures, retrieves, and revises thoughts with persistent history. Supports tagging and relevance-based retrieval across sessions.
+
+<Aside type="note" title="Registry MCP server (hand-maintained)">
+Composed docs-mcp-stubs from `config/mcp-registry.json`. 
+Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+</Aside>
+
+<Aside type="note" title="MCPHub routing">
+When MCPHub is enabled, clients can reach this server at 
+`http://127.0.0.1:46683/mcp/structured-thinking` via the local control plane. 
+See [MCPHub](/mcp/mcphub/) for the repo-owned metadata server and launch details.
+</Aside>
+
+
+## Registry Connection
+
+Representative stdio launch block from `config/mcp-registry.json`:
+
+```json
+{
+  "mcpServers": {
+    "structured-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "structured-thinking"
+      ]
+    }
+  }
+}
+```
+
+## Registry Entry
+
+| Field | Value |
+| ----- | ----- |
+| id | `structured-thinking` |
+| transport | `stdio` |
+| command | `npx` |
+| enabled | `True` |
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP servers by category." />
+  <LinkCard title="MCPHub" href="/mcp/mcphub/" description="Local MCP control-plane and endpoint routing." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Full registry schema, groups, and client projections." />
+</CardGrid>
+
+---
+[View registry on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/mcp-registry.json)

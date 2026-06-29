@@ -1,0 +1,72 @@
+---
+title: "duckduckgo-search"
+description: "Privacy-focused web search via DuckDuckGo. No tracking, no API key required."
+page_kind: "mcp"
+source_kind: "registry"
+asset_id: "duckduckgo-search"
+composed: true
+docs_density: standard
+composed_by: "docs-mcp-stubs"
+composed_at: "2026-06-28"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="Search and Discovery" variant="tip" /> <Badge text="Privacy First" variant="default" /> <Badge text="stdio" variant="note" />
+
+> Privacy-focused web search via DuckDuckGo. No tracking, no API key required.
+
+<Aside type="note" title="Registry MCP server (hand-maintained)">
+Composed docs-mcp-stubs from `config/mcp-registry.json`. 
+Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+</Aside>
+
+<Aside type="note" title="MCPHub routing">
+When MCPHub is enabled, clients can reach this server at 
+`http://127.0.0.1:46683/mcp/duckduckgo-search` via the local control plane. 
+See [MCPHub](/mcp/mcphub/) for the repo-owned metadata server and launch details.
+</Aside>
+
+<Aside type="caution" title="Client key alias">
+Registry and MCPHub use server key `duckduckgo-search`, while several client examples on [MCP Overview](/mcp/) use the shorter key `duckduckgo` with the same `uvx duckduckgo-mcp-server` launch command.
+</Aside>
+
+
+## Registry Connection
+
+Representative stdio launch block from `config/mcp-registry.json`:
+
+```json
+{
+  "mcpServers": {
+    "duckduckgo-search": {
+      "command": "uvx",
+      "args": [
+        "duckduckgo-mcp-server"
+      ]
+    }
+  }
+}
+```
+
+## Registry Entry
+
+| Field | Value |
+| ----- | ----- |
+| id | `duckduckgo-search` |
+| transport | `stdio` |
+| command | `uvx` |
+| enabled | `True` |
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP servers by category." />
+  <LinkCard title="MCPHub" href="/mcp/mcphub/" description="Local MCP control-plane and endpoint routing." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Full registry schema, groups, and client projections." />
+</CardGrid>
+
+---
+[View registry on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/mcp-registry.json)

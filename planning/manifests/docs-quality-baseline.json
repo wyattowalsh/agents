@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-06-28",
+  "page_count": 5,
+  "median_average": 4.22,
+  "mean_average": 4.22,
+  "pages": [
+    {
+      "path": "docs/src/content/docs/skills/catalog/custom/add-badges.mdx",
+      "average": 4.22,
+      "dimensions": {
+        "description": 4,
+        "usage_examples": 5,
+        "visual_elements": 5,
+        "cross_references": 1,
+        "structure": 5,
+        "interactivity": 5,
+        "external_links": 4,
+        "agent_compatibility": 5,
+        "source_disclosure": 4
+      },
+      "notes": []
+    },
+    {
+      "path": "docs/src/content/docs/skills/catalog/custom/agent-conventions.mdx",
+      "average": 4.22,
+      "dimensions": {
+        "description": 4,
+        "usage_examples": 5,
+        "visual_elements": 5,
+        "cross_references": 1,
+        "structure": 5,
+        "interactivity": 5,
+        "external_links": 4,
+        "agent_compatibility": 5,
+        "source_disclosure": 4
+      },
+      "notes": []
+    },
+    {
+      "path": "docs/src/content/docs/skills/catalog/custom/agent-runtime-governance.mdx",
+      "average": 4.22,
+      "dimensions": {
+        "description": 4,
+        "usage_examples": 5,
+        "visual_elements": 5,
+        "cross_references": 1,
+        "structure": 5,
+        "interactivity": 5,
+        "external_links": 4,
+        "agent_compatibility": 5,
+        "source_disclosure": 4
+      },
+      "notes": []
+    },
+    {
+      "path": "docs/src/content/docs/skills/catalog/custom/api-designer.mdx",
+      "average": 4.22,
+      "dimensions": {
+        "description": 4,
+        "usage_examples": 5,
+        "visual_elements": 5,
+        "cross_references": 1,
+        "structure": 5,
+        "interactivity": 5,
+        "external_links": 4,
+        "agent_compatibility": 5,
+        "source_disclosure": 4
+      },
+      "notes": []
+    },
+    {
+      "path": "docs/src/content/docs/skills/catalog/custom/changelog-writer.mdx",
+      "average": 4.22,
+      "dimensions": {
+        "description": 4,
+        "usage_examples": 5,
+        "visual_elements": 5,
+        "cross_references": 1,
+        "structure": 5,
+        "interactivity": 5,
+        "external_links": 4,
+        "agent_compatibility": 5,
+        "source_disclosure": 4
+      },
+      "notes": []
+    }
+  ]
+}

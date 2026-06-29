@@ -5,9 +5,12 @@ from pathlib import Path
 
 from wagents.catalog import CatalogNode
 from wagents.docs import (
+    collect_copilot_platform_agents,
     CATALOG_BROWSER_THRESHOLD,
     _docs_generate_stale_reasons,
     _mcp_overview_badge_stale_reason,
+    cleanup_skill_research_pages,
+    docs_clean,
     docs_generate,
     write_agents_index,
     write_catalog_custom_index,
@@ -189,9 +192,11 @@ class TestWriteCatalogIndexes:
         idx = content_dir / "skills" / "catalog" / "custom" / "index.mdx"
         assert idx.exists()
         text = idx.read_text()
-        assert "User-Invocable Skills (1)" in text
+        assert "CatalogBrowser" in text
+        assert 'mode="custom"' in text
+        assert "## Browse Custom Skills" in text
         assert "## Skill Lanes" in text
-        assert "/skills/catalog/custom/test-skill/" in text
+        assert "skills={customSkillIndex}" in text
         assert "generated-site-data.mjs" in text
         assert "npx skills add github:wyattowalsh/agents --skill review -y -g" in text
 
@@ -353,6 +358,32 @@ class TestDocsGenerate:
         assert calls["write_json"] >= 1
         # also the mdx catalog index still emitted
         assert (tmp_repo / "docs" / "src" / "content" / "docs" / "skills" / "catalog" / "index.mdx").exists()
+
+    def test_does_not_emit_skill_research_mdx(self, tmp_repo, monkeypatch):
+        research_cache = tmp_repo / "docs" / "src" / "skill-research"
+        research_cache.mkdir(parents=True, exist_ok=True)
+        (research_cache / "test-skill.md").write_text(
+            "---\nname: test-skill\n---\n\nCached research body.\n",
+            encoding="utf-8",
+        )
+
+        stale_mdx = tmp_repo / "docs" / "src" / "content" / "docs" / "skill-research"
+        stale_mdx.mkdir(parents=True, exist_ok=True)
+        (stale_mdx / "test-skill.mdx").write_text("---\ntitle: Stale\n---\n", encoding="utf-8")
+        (stale_mdx / "other-skill.mdx").write_text("---\ntitle: Other\n---\n", encoding="utf-8")
+
+        monkeypatch.setattr(
+            "wagents.docs.collect_all_doc_nodes",
+            lambda **kwargs: [_make_node("skill")],
+        )
+        monkeypatch.setattr("wagents.docs.collect_edges", lambda nodes: [])
+        monkeypatch.setattr("wagents.docs.render_page", lambda node, edges, nodes: "---\ntitle: Test\n---\n")
+
+        docs_generate(include_installed=False)
+
+        skill_research_dir = tmp_repo / "docs" / "src" / "content" / "docs" / "skill-research"
+        assert not skill_research_dir.exists() or not list(skill_research_dir.glob("*.mdx"))
+        assert (research_cache / "test-skill.md").exists()
 
     def test_hand_maintained_research_page_embeds_current_skill_source(self):
         skill_source = (REPO_ROOT / "skills" / "research" / "SKILL.md").read_text(encoding="utf-8").strip()
@@ -727,3 +758,56 @@ def test_mcp_overview_badge_stale_reason_passes_when_aligned(tmp_repo):
     (tmp_repo / "mcp.json").write_text('{"mcpServers": {"a": {}, "b": {}}}', encoding="utf-8")
 
     assert _mcp_overview_badge_stale_reason() is None
+
+
+class TestCleanupSkillResearchPages:
+    def test_removes_generated_mdx_and_preserves_cache(self, tmp_repo):
+        research_cache = tmp_repo / "docs" / "src" / "skill-research"
+        research_cache.mkdir(parents=True, exist_ok=True)
+        (research_cache / "cached-skill.md").write_text("# cache\n", encoding="utf-8")
+
+        out_dir = tmp_repo / "docs" / "src" / "content" / "docs" / "skill-research"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "cached-skill.mdx").write_text("---\ntitle: Generated\n---\n", encoding="utf-8")
+        (out_dir / "orphan.mdx").write_text("---\ntitle: Orphan\n---\n", encoding="utf-8")
+
+        assert cleanup_skill_research_pages() is True
+        assert not out_dir.exists()
+        assert (research_cache / "cached-skill.md").exists()
+
+    def test_docs_clean_also_removes_skill_research_mdx(self, tmp_repo):
+        out_dir = tmp_repo / "docs" / "src" / "content" / "docs" / "skill-research"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "legacy.mdx").write_text("---\ntitle: Legacy\n---\n", encoding="utf-8")
+
+        docs_clean()
+
+        assert not out_dir.exists()
+
+
+def test_collect_copilot_platform_agents_lists_repo_definitions():
+    rows = collect_copilot_platform_agents()
+    ids = {agent_id for agent_id, _ in rows}
+    assert "codebase-oracle" in ids
+    assert "code-reviewer" in ids
+    assert len(rows) >= 10
+
+
+def test_write_agents_index_includes_all_copilot_platform_agents(tmp_repo, monkeypatch):
+    import wagents.docs as docs_mod
+
+    monkeypatch.setattr(docs_mod, "ROOT", tmp_repo)
+    monkeypatch.setattr(docs_mod, "CONTENT_DIR", tmp_repo / "docs" / "src" / "content" / "docs")
+    monkeypatch.setattr(
+        docs_mod,
+        "collect_copilot_platform_agents",
+        lambda: [("alpha-agent", "Alpha"), ("beta-agent", "Beta")],
+    )
+
+    write_agents_index([])
+    page = (tmp_repo / "docs" / "src" / "content" / "docs" / "agents" / "index.mdx").read_text(
+        encoding="utf-8"
+    )
+    assert "alpha-agent" in page
+    assert "beta-agent" in page
+    assert "GitHub Copilot-only agents" in page

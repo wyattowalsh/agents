@@ -1,0 +1,66 @@
+---
+title: "creative-thinking"
+description: "Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces."
+page_kind: "mcp"
+source_kind: "registry"
+asset_id: "creative-thinking"
+composed: true
+docs_density: standard
+composed_by: "docs-mcp-stubs"
+composed_at: "2026-06-28"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="Thinking and Reasoning" variant="note" /> <Badge text="Ideation" variant="default" /> <Badge text="stdio" variant="note" />
+
+> Lateral and divergent thinking techniques for brainstorming, ideation, and breaking out of conventional solution spaces.
+
+<Aside type="note" title="Registry MCP server (hand-maintained)">
+Composed docs-mcp-stubs from `config/mcp-registry.json`. 
+Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+</Aside>
+
+<Aside type="note" title="MCPHub routing">
+When MCPHub is enabled, clients can reach this server at 
+`http://127.0.0.1:46683/mcp/creative-thinking` via the local control plane. 
+See [MCPHub](/mcp/mcphub/) for the repo-owned metadata server and launch details.
+</Aside>
+
+
+## Registry Connection
+
+Representative stdio launch block from `config/mcp-registry.json`:
+
+```json
+{
+  "mcpServers": {
+    "creative-thinking": {
+      "command": "${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh",
+      "args": []
+    }
+  }
+}
+```
+
+## Registry Entry
+
+| Field | Value |
+| ----- | ----- |
+| id | `creative-thinking` |
+| transport | `stdio` |
+| command | `${REPO_ROOT}/scripts/mcp_tools/run_mcp_thinking.sh` |
+| enabled | `True` |
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP servers by category." />
+  <LinkCard title="MCPHub" href="/mcp/mcphub/" description="Local MCP control-plane and endpoint routing." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Full registry schema, groups, and client projections." />
+</CardGrid>
+
+---
+[View registry on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/mcp-registry.json)

@@ -1,0 +1,73 @@
+---
+title: "crash"
+description: "Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions."
+page_kind: "mcp"
+source_kind: "registry"
+asset_id: "crash"
+composed: true
+docs_density: standard
+composed_by: "docs-mcp-stubs"
+composed_at: "2026-06-28"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="Thinking and Reasoning" variant="note" /> <Badge text="Verification" variant="default" /> <Badge text="stdio" variant="note" />
+
+> Constraint-satisfaction reasoning with strict mode toggle. Enforces logical consistency checking on intermediate conclusions.
+
+<Aside type="note" title="Registry MCP server (hand-maintained)">
+Composed docs-mcp-stubs from `config/mcp-registry.json`. 
+Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+</Aside>
+
+<Aside type="note" title="MCPHub routing">
+When MCPHub is enabled, clients can reach this server at 
+`http://127.0.0.1:46683/mcp/crash` via the local control plane. 
+See [MCPHub](/mcp/mcphub/) for the repo-owned metadata server and launch details.
+</Aside>
+
+
+## Registry Connection
+
+Representative stdio launch block from `config/mcp-registry.json`:
+
+```json
+{
+  "mcpServers": {
+    "crash": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "crash-mcp"
+      ],
+      "env": {
+        "CRASH_STRICT_MODE": "${CRASH_STRICT_MODE}",
+        "MAX_HISTORY_SIZE": "${MAX_HISTORY_SIZE}"
+      }
+    }
+  }
+}
+```
+
+## Registry Entry
+
+| Field | Value |
+| ----- | ----- |
+| id | `crash` |
+| transport | `stdio` |
+| command | `npx` |
+| enabled | `True` |
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP servers by category." />
+  <LinkCard title="MCPHub" href="/mcp/mcphub/" description="Local MCP control-plane and endpoint routing." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Full registry schema, groups, and client projections." />
+</CardGrid>
+
+---
+[View registry on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/mcp-registry.json)

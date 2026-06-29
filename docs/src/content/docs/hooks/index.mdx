@@ -10,11 +10,11 @@ composed_by: "compose-hooks-wave-1"
 
 {/* HAND-MAINTAINED */}
 
-import { Card, CardGrid, Badge, Aside } from '@astrojs/starlight/components';
+import { CardGrid, Badge, Aside, LinkCard } from '@astrojs/starlight/components';
 
 > Repo-managed, portable lifecycle hooks declared in `config/hook-registry.json`. These provide safety, context, formatting, lint, research guards, and audit surfaces across harnesses. Hand-maintained catalog pages (composed).
 
-<Badge text="17 hooks" variant="note" size="large" />
+<Badge text="22 hooks" variant="note" size="large" />
 
 <Aside type="tip" title="Source of truth">
 All hooks are defined in `config/hook-registry.json`. Use `wagents hooks list` and `wagents hooks validate` to inspect at runtime. Individual hook pages live under `/hooks/<id>/`.
@@ -25,24 +25,12 @@ All hooks are defined in `config/hook-registry.json`. Use `wagents hooks list` a
 These run for the GitHub Copilot harness via direct shell handlers.
 
 <CardGrid>
-  <Card title="session-start">
-    <Badge text="SessionStart" variant="success" /> Report basic session environment and repository state (branch, dirty files, tool presence).
-  </Card>
-  <Card title="prompt-log">
-    <Badge text="UserPromptSubmit" variant="success" /> Local prompt audit logging (short retention) for Copilot sessions.
-  </Card>
-  <Card title="destructive-shell-guard">
-    <Badge text="PreToolUse" variant="caution" /> Block rm -rf on critical paths, remote-pipe-to-shell, force-push to main, git reset --hard, git clean -f.
-  </Card>
-  <Card title="protected-file-guard">
-    <Badge text="PreToolUse" variant="caution" /> Deny edits to secrets (.env*, credentials, tokens), .git internals, lockfiles, and path traversal.
-  </Card>
-  <Card title="post-edit-format">
-    <Badge text="PostToolUse" variant="success" /> Best-effort auto-format for py (ruff), js/ts (prettier), rs, go after writes/edits.
-  </Card>
-  <Card title="post-edit-lint">
-    <Badge text="PostToolUse" variant="success" /> Return concise Ruff/Ty or tsc issues as additionalContext after edits (non-blocking).
-  </Card>
+  <LinkCard title="session-start" href="/hooks/session-start/" description="Report basic session environment and repository state (branch, dirty files, tool presence)." />
+  <LinkCard title="prompt-log" href="/hooks/prompt-log/" description="Local prompt audit logging (short retention) for Copilot sessions." />
+  <LinkCard title="destructive-shell-guard" href="/hooks/destructive-shell-guard/" description="Block rm -rf on critical paths, remote-pipe-to-shell, force-push to main, git reset --hard, git clean -f." />
+  <LinkCard title="protected-file-guard" href="/hooks/protected-file-guard/" description="Deny edits to secrets (.env*, credentials, tokens), .git internals, lockfiles, and path traversal." />
+  <LinkCard title="post-edit-format" href="/hooks/post-edit-format/" description="Best-effort auto-format for py (ruff), js/ts (prettier), rs, go after writes/edits." />
+  <LinkCard title="post-edit-lint" href="/hooks/post-edit-lint/" description="Return concise Ruff/Ty or tsc issues as additionalContext after edits (non-blocking)." />
 </CardGrid>
 
 ## Codex-specific
@@ -50,24 +38,24 @@ These run for the GitHub Copilot harness via direct shell handlers.
 Codex harness uses the Python dispatcher (`wagents-hook.py`) for richer policy + status messages. All are registry-sourced.
 
 <CardGrid>
-  <Card title="codex-session-start-context">
-    <Badge text="SessionStart" variant="success" /> <Badge text="context" variant="tip" /> Lightweight git + repo context for Codex sessions.
-  </Card>
-  <Card title="codex-destructive-shell-guard">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Critical shell blocks tailored for Codex payloads.
-  </Card>
-  <Card title="codex-protected-file-guard">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Expanded matcher covering writes + shell for Codex protected-path enforcement.
-  </Card>
-  <Card title="codex-permission-request-guard">
-    <Badge text="PermissionRequest" variant="caution" /> <Badge text="enforce" variant="tip" /> Deny high-risk permission requests while preserving normal approval flow.
-  </Card>
-  <Card title="codex-post-tool-verify-context">
-    <Badge text="PostToolUse" variant="success" /> <Badge text="context" variant="tip" /> Lightweight quality checks + guidance injected as context (no block).
-  </Card>
-  <Card title="codex-stop-truth-gate">
-    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Require validation evidence before allowing stop when code-change claims are present.
-  </Card>
+  <LinkCard title="codex-session-start-context" href="/hooks/codex-session-start-context/" description="Lightweight git + repo context for Codex sessions." />
+  <LinkCard title="codex-destructive-shell-guard" href="/hooks/codex-destructive-shell-guard/" description="Critical shell blocks tailored for Codex payloads." />
+  <LinkCard title="codex-protected-file-guard" href="/hooks/codex-protected-file-guard/" description="Expanded matcher covering writes + shell for Codex protected-path enforcement." />
+  <LinkCard title="codex-permission-request-guard" href="/hooks/codex-permission-request-guard/" description="Deny high-risk permission requests while preserving normal approval flow." />
+  <LinkCard title="codex-post-tool-verify-context" href="/hooks/codex-post-tool-verify-context/" description="Lightweight quality checks + guidance injected as context (no block)." />
+  <LinkCard title="codex-stop-truth-gate" href="/hooks/codex-stop-truth-gate/" description="Require validation evidence before allowing stop when code-change claims are present." />
+</CardGrid>
+
+## Cursor hooks
+
+Cursor harness uses the Python dispatcher (`wagents-hook.py`) for session context, safety guards, post-edit verification, and stop evidence gates.
+
+<CardGrid>
+  <LinkCard title="cursor-session-start-context" href="/hooks/cursor-session-start-context/" description="Report lightweight Cursor session and repository context." />
+  <LinkCard title="cursor-destructive-shell-guard" href="/hooks/cursor-destructive-shell-guard/" description="Block critical destructive shell commands in Cursor." />
+  <LinkCard title="cursor-protected-file-guard" href="/hooks/cursor-protected-file-guard/" description="Block protected files, secret-bearing paths, git internals, traversal, and direct lockfile edits." />
+  <LinkCard title="cursor-post-tool-verify-context" href="/hooks/cursor-post-tool-verify-context/" description="Run lightweight context-only post-edit quality checks and return verification guidance." />
+  <LinkCard title="cursor-stop-truth-gate" href="/hooks/cursor-stop-truth-gate/" description="Ask Cursor for one more pass when final code-change claims omit validation evidence." />
 </CardGrid>
 
 ## Research guards (multi-harness)
@@ -75,21 +63,11 @@ Codex harness uses the Python dispatcher (`wagents-hook.py`) for richer policy +
 Activated by research prompts. Span codex, claude-code, github-copilot, gemini-cli. Use state machine + ledger for invariants.
 
 <CardGrid>
-  <Card title="research-prompt-triage-context">
-    <Badge text="UserPromptSubmit" variant="success" /> <Badge text="context" variant="tip" /> Detects research intent, activates state, injects method reminders.
-  </Card>
-  <Card title="research-readonly-write-guard">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Blocks source writes while research state is active (degraded=audit).
-  </Card>
-  <Card title="research-dangerous-shell-guard">
-    <Badge text="PreToolUse" variant="caution" /> <Badge text="enforce" variant="tip" /> Blocks dangerous shell during research (degraded=audit).
-  </Card>
-  <Card title="research-evidence-ledger">
-    <Badge text="PostToolUse" variant="success" /> <Badge text="audit" variant="tip" /> Appends provenance (URLs, retrieval tools) to per-session ledger for later verification.
-  </Card>
-  <Card title="research-stop-verifier">
-    <Badge text="Stop" variant="caution" /> <Badge text="enforce" variant="tip" /> Final invariant checks (ledger, claims, state) before allowing research session to stop. 30s timeout.
-  </Card>
+  <LinkCard title="research-prompt-triage-context" href="/hooks/research-prompt-triage-context/" description="Detects research intent, activates state, injects method reminders." />
+  <LinkCard title="research-readonly-write-guard" href="/hooks/research-readonly-write-guard/" description="Blocks source writes while research state is active (degraded=audit)." />
+  <LinkCard title="research-dangerous-shell-guard" href="/hooks/research-dangerous-shell-guard/" description="Blocks dangerous shell during research (degraded=audit)." />
+  <LinkCard title="research-evidence-ledger" href="/hooks/research-evidence-ledger/" description="Appends provenance (URLs, retrieval tools) to per-session ledger for later verification." />
+  <LinkCard title="research-stop-verifier" href="/hooks/research-stop-verifier/" description="Final invariant checks (ledger, claims, state) before allowing research session to stop. 30s timeout." />
 </CardGrid>
 
 ## Dispatcher & Implementation Notes

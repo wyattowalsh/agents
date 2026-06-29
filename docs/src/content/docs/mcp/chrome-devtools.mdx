@@ -1,0 +1,72 @@
+---
+title: "chrome-devtools"
+description: "Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+."
+page_kind: "mcp"
+source_kind: "registry"
+asset_id: "chrome-devtools"
+composed: true
+docs_density: standard
+composed_by: "docs-mcp-stubs"
+composed_at: "2026-06-28"
+---
+
+{/* HAND-MAINTAINED */}
+
+import { Badge, Aside, CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<Badge text="MCP" variant="note" /> <Badge text="Development Tools" variant="danger" /> <Badge text="CDP Automation" variant="default" /> <Badge text="stdio" variant="note" />
+
+> Chrome DevTools Protocol automation via Puppeteer. Navigate, click, fill forms, trace performance, inspect network requests, and take screenshots. Requires Node.js v22+.
+
+<Aside type="note" title="Registry MCP server (hand-maintained)">
+Composed docs-mcp-stubs from `config/mcp-registry.json`. 
+Do not run `wagents docs generate` on this file (HAND-MAINTAINED sentinel).
+</Aside>
+
+<Aside type="note" title="MCPHub routing">
+When MCPHub is enabled, clients can reach this server at 
+`http://127.0.0.1:46683/mcp/chrome-devtools` via the local control plane. 
+See [MCPHub](/mcp/mcphub/) for the repo-owned metadata server and launch details.
+</Aside>
+
+
+## Registry Connection
+
+Representative stdio launch block from `config/mcp-registry.json`:
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "bash",
+      "args": [
+        "${REPO_ROOT}/scripts/mcphub/chrome-devtools-browser-url.sh"
+      ],
+      "env": {
+        "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": "1",
+        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1"
+      }
+    }
+  }
+}
+```
+
+## Registry Entry
+
+| Field | Value |
+| ----- | ----- |
+| id | `chrome-devtools` |
+| transport | `stdio` |
+| command | `bash` |
+| enabled | `True` |
+
+## Resources
+
+<CardGrid>
+  <LinkCard title="MCP Overview" href="/mcp/" description="Browse all MCP servers by category." />
+  <LinkCard title="MCPHub" href="/mcp/mcphub/" description="Local MCP control-plane and endpoint routing." />
+  <LinkCard title="MCP Registry" href="/harness-config/mcp-registry/" description="Full registry schema, groups, and client projections." />
+</CardGrid>
+
+---
+[View registry on GitHub](https://github.com/wyattowalsh/agents/blob/main/config/mcp-registry.json)

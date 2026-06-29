@@ -5,6 +5,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { readAdminSessionFromCookies } from './lib/admin/auth';
 import { ensureCsrfToken } from './lib/admin/csrf';
 import { readFeatureOverridesFromCookies } from './lib/admin/flags';
+import { parseSkillResearchPath, skillResearchRedirectTarget } from './lib/skill-research-redirect';
 function isProtectedAdminPath(pathname: string): boolean {
   if (pathname.startsWith('/api/admin') && pathname !== '/api/admin/login') return true;
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') return true;
@@ -18,6 +19,12 @@ function isAdminSurfacePath(pathname: string): boolean {
 export const onRequest = defineMiddleware(async (context, next) => {
   const pathname = new URL(context.request.url).pathname;
   const requestId = randomUUID();
+
+  const legacyResearchSkillId = parseSkillResearchPath(pathname);
+  if (legacyResearchSkillId) {
+    return context.redirect(skillResearchRedirectTarget(legacyResearchSkillId), 301);
+  }
+
   if (!isAdminSurfacePath(pathname)) {
     const response = await next();
     response.headers.set('x-request-id', requestId);

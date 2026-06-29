@@ -25,3 +25,15 @@ import { Card, CardGrid, LinkCard, Badge } from '@astrojs/starlight/components';
   <LinkCard title="security-auditor" href="/agents/security-auditor/" description="Audit code and configuration for security risks without making changes." />
 </CardGrid>
 </div>
+
+## GitHub Copilot-only agents
+
+These agents ship under `platforms/copilot/agents/` for Copilot CLI workflows. They are not part of the portable `agents/*.md` bundle.
+
+<CardGrid>
+  <LinkCard title="codebase-oracle" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/codebase-oracle.agent.md" description="Deep codebase exploration agent for Copilot (repo-local definition)." />
+  <LinkCard title="dependency-checker" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/dependency-checker.agent.md" description="Dependency and supply-chain review agent for Copilot." />
+  <LinkCard title="git-workflow" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/git-workflow.agent.md" description="Git workflow and PR hygiene agent for Copilot." />
+  <LinkCard title="spec-writer" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/spec-writer.agent.md" description="Specification and requirements drafting agent for Copilot." />
+  <LinkCard title="test-writer" href="https://github.com/wyattowalsh/agents/blob/main/platforms/copilot/agents/test-writer.agent.md" description="Test authoring and coverage planning agent for Copilot." />
+</CardGrid>

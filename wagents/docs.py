@@ -14,9 +14,10 @@ from wagents import CONTENT_DIR, DOCS_DIR, ROOT
 # Authoring SSOT + catalog index (W3)
 from wagents.authoring_sync import sync_custom_authoring_from_skills
 from wagents.catalog import collect_edges
+from wagents.docs_mcp_stubs import write_mcp_registry_stub_pages
 from wagents.external_skills import ExternalSkillEntry, read_external_skill_entries
-from wagents.parsing import escape_attr, truncate_sentence
-from wagents.rendering import escape_mdx, render_page
+from wagents.parsing import escape_attr, parse_frontmatter, truncate_sentence
+from wagents.rendering import render_page
 from wagents.site_model import (
     SUPPORTED_AGENTS,
     VISUAL_ASSET_BY_ID,
@@ -44,7 +45,6 @@ from wagents.skill_index import (
 from wagents.skill_research import (
     RESEARCH_DIR,
     build_batch_prompt,
-    load_skill_research,
     partition_skills_by_source,
     partition_skills_for_research,
     render_research_manifest,
@@ -1544,8 +1544,8 @@ def write_catalog_custom_index(nodes: list) -> None:
         "",
         "import { CardGrid, LinkCard, Badge, Aside } from '@astrojs/starlight/components';",
         f"import InstallCommand from '{custom_import_prefix}components/InstallCommand.astro';",
-        f"import CatalogSkillFilter from '{custom_import_prefix}components/CatalogSkillFilter.astro';",
-        f"import {{ installCommands }} from '{custom_import_prefix}generated-site-data.mjs';",
+        f"import CatalogBrowser from '{custom_import_prefix}components/CatalogBrowser.astro';",
+        f"import {{ customSkillIndex, installCommands }} from '{custom_import_prefix}generated-site-data.mjs';",
         "",
         "These are the repo-owned skills in `./skills/`. Detail pages live under "
         f"`/{SKILL_CATALOG_PREFIX}/custom/<name>/`. See [Skill Catalog](/skills/catalog/) for external skills.",
@@ -1567,8 +1567,6 @@ def write_catalog_custom_index(nodes: list) -> None:
         f'  <span class="stat stat-agent">{len(auto_invoke)} Convention Skills</span>',
         "</div>",
         "",
-        "<CatalogSkillFilter />",
-        "",
         "## Skill Lanes",
         "",
         "<CardGrid>",
@@ -1584,35 +1582,15 @@ def write_catalog_custom_index(nodes: list) -> None:
         "",
     ]
 
-    if user_invocable:
-        parts.extend([
-            f"## User-Invocable Skills ({len(user_invocable)})",
-            "",
-            '<Badge text="Manual invocation" variant="tip" /> '
-            "Call these when you want a specialist on demand. They appear in the autocomplete menu.",
-            "",
-            '<div class="catalog-skill" data-skill-lane="user-invocable">',
-            "<CardGrid>",
-            *_render_skill_linkcards(user_invocable),
-            "</CardGrid>",
-            "</div>",
-            "",
-        ])
-
-    if auto_invoke:
-        parts.extend([
-            f"## Convention Skills ({len(auto_invoke)})",
-            "",
-            '<Badge text="Auto-invoked" variant="caution" /> '
-            "The agent loads these automatically when repo context matches. They stay out of the `/` menu.",
-            "",
-            '<div class="catalog-skill" data-skill-lane="convention">',
-            "<CardGrid>",
-            *_render_skill_linkcards(auto_invoke),
-            "</CardGrid>",
-            "</div>",
-            "",
-        ])
+    parts.extend([
+        "## Browse Custom Skills",
+        "",
+        '<Badge text="Searchable catalog" variant="tip" /> '
+        "Filter by user-invocable vs convention skills. Progressive rendering keeps the page fast on mobile.",
+        "",
+        '<CatalogBrowser skills={customSkillIndex} mode="custom" pageSize={24} />',
+        "",
+    ])
 
     parts.extend([
         "---",
@@ -1759,6 +1737,31 @@ def write_skill_install_scripts_page() -> None:
     (out_dir / "install.mdx").write_text("\n".join(parts))
 
 
+COPILOT_AGENTS_DIR = ROOT / "platforms" / "copilot" / "agents"
+
+
+def collect_copilot_platform_agents() -> list[tuple[str, str]]:
+    """Return (agent_id, description) rows from platforms/copilot/agents/*.agent.md."""
+    if not COPILOT_AGENTS_DIR.is_dir():
+        return []
+
+    rows: list[tuple[str, str]] = []
+    for path in sorted(COPILOT_AGENTS_DIR.glob("*.agent.md")):
+        try:
+            frontmatter, _ = parse_frontmatter(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        agent_id = str(frontmatter.get("name") or path.stem.removesuffix(".agent"))
+        raw_desc = str(frontmatter.get("description") or "").strip()
+        description = (
+            truncate_sentence(raw_desc.replace("\n", " "), 160)
+            if raw_desc
+            else f"Copilot CLI agent ({agent_id})."
+        )
+        rows.append((agent_id, description))
+    return sorted(rows, key=lambda item: item[0])
+
+
 def write_agents_index(nodes: list) -> None:
     """Write agents/index.mdx category page."""
     parts = []
@@ -1787,6 +1790,24 @@ def write_agents_index(nodes: list) -> None:
         parts.append(f'  <LinkCard title="{escape_attr(n.id)}" href="/agents/{n.id}/" description="{desc}" />')
     parts.append("</CardGrid>")
     parts.append("</div>")
+    parts.append("")
+    parts.append("## GitHub Copilot-only agents")
+    parts.append("")
+    parts.append(
+        "These agents ship under `platforms/copilot/agents/` for Copilot CLI workflows. "
+        "They are not part of the portable `agents/*.md` bundle."
+    )
+    parts.append("")
+    parts.append("<CardGrid>")
+    for agent_id, desc in collect_copilot_platform_agents():
+        href = (
+            "https://github.com/wyattowalsh/agents/blob/main/"
+            f"platforms/copilot/agents/{agent_id}.agent.md"
+        )
+        parts.append(
+            f'  <LinkCard title="{escape_attr(agent_id)}" href="{href}" description="{escape_attr(desc)}" />'
+        )
+    parts.append("</CardGrid>")
     parts.append("")
 
     out_dir = CONTENT_DIR / "agents"
@@ -1892,72 +1913,31 @@ def write_harness_support_page() -> None:
     out.write_text("\n".join(parts), encoding="utf-8")
 
 
-def write_skill_research_pages(nodes: list) -> None:
-    """Emit Starlight MDX pages for cached research artifacts at /skill-research/<id>/."""
+def cleanup_skill_research_pages() -> bool:
+    """Remove generated skill-research MDX pages.
+
+    Research cache markdown under ``docs/src/skill-research/*.md`` is preserved.
+    """
     out_dir = CONTENT_DIR / "skill-research"
-    out_dir.mkdir(parents=True, exist_ok=True)
+    if not out_dir.exists():
+        return False
+
+    removed = False
     for stale in out_dir.glob("*.mdx"):
         try:
             stale.unlink()
+            removed = True
         except FileNotFoundError:
             continue
 
-    if not RESEARCH_DIR.exists():
-        return
+    if removed:
+        typer.echo("  Removed skill-research/*.mdx pages")
 
-    skill_nodes = {n.id: n for n in nodes if n.kind == "skill"}
-    written = 0
-    for path in sorted(RESEARCH_DIR.glob("*.md")):
-        skill_id = path.stem
-        body = load_skill_research(skill_id)
-        if body is None:
-            text = path.read_text(encoding="utf-8")
-            if text.startswith("---"):
-                parts = text.split("---", 2)
-                body = parts[2].strip() if len(parts) >= 3 else ""
-            else:
-                body = text.strip()
-        if not body:
-            continue
+    if out_dir.exists() and not any(out_dir.iterdir()):
+        out_dir.rmdir()
+        removed = True
 
-        node = skill_nodes.get(skill_id)
-        group = skill_catalog_group(node=node) if node else "external"
-        catalog_slug = f"{SKILL_CATALOG_PREFIX}/{group}/{skill_id}"
-        catalog_page = CONTENT_DIR / f"{catalog_slug}.mdx"
-        if re.search(r"[:*]", skill_id) or not catalog_page.is_file():
-            if re.search(r"[:*]", skill_id):
-                catalog_note = " (special characters — open from Skill Catalog search)"
-            else:
-                catalog_note = " (no catalog page yet)"
-            catalog_nav = f"Catalog entry: `{catalog_slug}`{catalog_note}"
-        else:
-            catalog_nav = f"[Back to catalog page](/{catalog_slug}/)"
-
-        parts = [
-            "---",
-            f'title: "Research: {escape_attr(skill_id)}"',
-            f'description: "Cached research evidence for {escape_attr(skill_id)} (not authority)."',
-            "sidebar:",
-            "  hidden: true",
-            "---",
-            "",
-            "{/* GENERATED by wagents docs generate — do not edit */}",
-            "",
-            "import { Aside } from '@astrojs/starlight/components';",
-            "",
-            '<Aside type="caution" title="Evidence only">',
-            "Research cache for catalog enrichment. Not authoritative for install or trust decisions.",
-            catalog_nav,
-            "</Aside>",
-            "",
-            escape_mdx(body),
-            "",
-        ]
-        (out_dir / f"{skill_id}.mdx").write_text("\n".join(parts), encoding="utf-8")
-        written += 1
-
-    if written:
-        typer.echo(f"  Generated {written} skill-research/*.mdx pages")
+    return removed
 
 
 def _sidebar_custom_skill_lanes(nodes: list) -> list[str]:
@@ -2290,6 +2270,7 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
 
     for subdir in ["skills", "agents", "mcp"]:
         _clean_content_subdir(CONTENT_DIR / subdir)
+    cleanup_skill_research_pages()
     for f in ["index.mdx", "cli.mdx", "harness-support.mdx"]:
         p = CONTENT_DIR / f
         if p.exists() and not _is_hand_maintained_mdx(p):
@@ -2346,6 +2327,9 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     if agents:
         write_agents_index(agents)
         typer.echo("  Generated agents/index.mdx")
+    mcp_stub_paths = write_mcp_registry_stub_pages()
+    for rel in mcp_stub_paths:
+        typer.echo(f"  Generated {rel}")
     if mcps:
         write_mcp_index(mcps)
         typer.echo("  Generated mcp/index.mdx")
@@ -2357,8 +2341,6 @@ def _docs_generate_impl(*, include_drafts: bool, include_installed: bool) -> Non
     typer.echo("  Generated index.mdx")
     write_cli_page()
     typer.echo("  Generated cli.mdx")
-
-    write_skill_research_pages(nodes)
 
     write_sidebar(nodes)
     typer.echo("  Generated generated-sidebar.mjs")
@@ -2692,6 +2674,38 @@ def docs_lint(
         raise typer.Exit(code=1)
 
 
+@docs_app.command("score")
+def docs_score(
+    surface: str = typer.Option(
+        "all",
+        "--surface",
+        help="all|skills-custom|skills-external|agents|mcp|hooks",
+    ),
+    limit: int | None = typer.Option(None, "--limit", help="Max pages to score"),
+    write_manifest: bool = typer.Option(
+        False,
+        "--write-manifest",
+        help="Write planning/manifests/docs-quality-baseline.json",
+    ),
+    format_: str = typer.Option("text", "--format", help="text or json"),
+):
+    """Score docs MDX pages against the 9-dimension quality checklist."""
+    from wagents.docs_score import score_docs_surface, write_score_manifest
+
+    scores = score_docs_surface(surface=surface, limit=limit)
+    if format_ == "json":
+        typer.echo(json.dumps({"pages": [s.as_dict() for s in scores]}, indent=2))
+    else:
+        for item in scores:
+            typer.echo(f"{item.path}: {item.average:.2f}")
+        if scores:
+            mean = sum(s.average for s in scores) / len(scores)
+            typer.echo(f"Mean score ({len(scores)} pages): {mean:.2f}")
+    if write_manifest:
+        path = write_score_manifest(scores)
+        typer.echo(f"Wrote {path.relative_to(ROOT)}")
+
+
 @docs_app.command("compose")
 def docs_compose(
     surface: str = typer.Option("all", "--surface", help="skills|agents|mcp|hooks|configs|all"),
@@ -2900,6 +2914,8 @@ def docs_clean():
     for subdir in ["skills", "agents", "mcp"]:
         if _clean_content_subdir(CONTENT_DIR / subdir):
             cleaned = True
+    if cleanup_skill_research_pages():
+        cleaned = True
     for f in ["index.mdx", "cli.mdx", "harness-support.mdx"]:
         p = CONTENT_DIR / f
         if p.exists() and not _is_hand_maintained_mdx(p):

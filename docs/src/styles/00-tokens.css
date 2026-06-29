@@ -20,6 +20,8 @@
   --type-skill:  oklch(0.69 0.20 295);   /* violet */
   --type-agent:  oklch(0.73 0.12 210);   /* cyan */
   --type-mcp:    oklch(0.74 0.16 155);   /* emerald */
+  --type-hook:   oklch(0.78 0.14 75);    /* amber */
+  --type-harness-config: oklch(0.68 0.06 250); /* slate */
   --type-installed: oklch(0.70 0.15 45); /* orange */
   --sl-content-width: 54rem;
 
