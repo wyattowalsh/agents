@@ -13,6 +13,12 @@ source_count: 1
 
 # Activity Log
 
+### [2026-06-29] Goal capture sync — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Synced `goal-closure-audit-capture.md` to scratch `verification-summary.txt` at tree `bdc91098`.
+- Metrics: `issue_count: 0` after this log batch.
+
 ### [2026-06-29] Goal closure pipeline — kb-research-ingest
 
 - Mode: audit (additive only)
