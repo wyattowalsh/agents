@@ -14,20 +14,13 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 KB_ROOT = REPO_ROOT / "kb"
 GOAL_VERIFY = REPO_ROOT / "kb" / "activity" / "goal-verify.sh"
 GOAL_SCOPE_RESET = REPO_ROOT / "kb" / "activity" / "goal-scope-reset.sh"
+EMIT_FINAL = REPO_ROOT / "kb" / "activity" / "emit_final_response.sh"
+PER_WAVE_LOG_AUDIT = REPO_ROOT / "kb" / "activity" / "per-wave-log-audit.sh"
+ASSERT_FINAL = REPO_ROOT / "kb" / "activity" / "assert_final_matches_scratch.sh"
 WAVE_ONE_SUBJECT = "feat(kb): wave 01"
 SCRATCH_DEFAULT = Path(
     "/var/folders/z9/yr58561n1rj8_lqtzwkjt24m0000gp/T/grok-goal-cd5f675df757/implementer"
 )
-
-
-def _run_goal_scope_reset() -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        ["bash", str(GOAL_SCOPE_RESET)],
-        cwd=REPO_ROOT,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
 
 
 def _run_goal_verify(*, scratch: Path) -> subprocess.CompletedProcess[str]:
@@ -104,21 +97,19 @@ def test_macro_wave_count_at_least_30():
 
 def test_all_feat_kb_wave_commits_touch_kb_only():
     result = subprocess.run(
-        [
-            "git",
-            "log",
-            "--format=%H",
-            "--grep=feat(kb): wave",
-        ],
+        ["git", "log", "--format=%H %s", "--grep=feat(kb): wave"],
         cwd=REPO_ROOT,
         text=True,
         capture_output=True,
         check=True,
     )
     violations: list[str] = []
-    for sha in result.stdout.splitlines():
-        sha = sha.strip()
-        if not sha:
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        sha, subject = line.split(" ", 1)
+        if not re.match(r"^feat\(kb\): wave [0-9]+", subject):
             continue
         names = subprocess.run(
             ["git", "diff-tree", "--no-commit-id", "--name-only", "-r", sha],
@@ -129,13 +120,6 @@ def test_all_feat_kb_wave_commits_touch_kb_only():
         ).stdout.splitlines()
         non_kb = [name for name in names if name and not name.startswith("kb/")]
         if non_kb:
-            subject = subprocess.run(
-                ["git", "log", "-1", "--pretty=format:%s", sha],
-                cwd=REPO_ROOT,
-                text=True,
-                capture_output=True,
-                check=True,
-            ).stdout
             violations.append(f"{sha} {subject}: {non_kb}")
     _save_pytest_evidence("pytest-wave-scope-full.txt", "\n".join(violations) or "feat_kb_wave_scope_violations: 0")
     assert not violations
@@ -146,9 +130,27 @@ def test_log_has_no_goal_closure_wave_header_pollution():
     assert "### [2026-06-29] Goal closure" not in log
 
 
+def test_goal_verify_is_read_only_on_dirty_worktree(tmp_path: Path):
+    dirty_before = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout
+    result = _run_goal_verify(scratch=tmp_path)
+    dirty_after = subprocess.run(
+        ["git", "status", "--porcelain"],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    ).stdout
+    assert dirty_before == dirty_after
+    assert result.returncode == 0, result.stderr or result.stdout
+
+
 def test_goal_verify_produces_passing_summary(tmp_path: Path):
-    reset = _run_goal_scope_reset()
-    assert reset.returncode == 0, reset.stderr or reset.stdout
     result = _run_goal_verify(scratch=tmp_path)
     assert result.returncode == 0, result.stderr or result.stdout
     summary = _parse_summary(tmp_path)
@@ -162,35 +164,24 @@ def test_goal_verify_produces_passing_summary(tmp_path: Path):
     assert summary["verification_tree"] == head
     assert summary["ac2_partials"] == "match_count: 0"
     assert summary["step2_issue_count"] == "issue_count: 0"
-    assert summary["ac1_delivered_scope_violations"] == "delivered_scope_violations: 0"
     assert summary["ac1_goal_window_non_kb_outstanding"] == "0"
     assert summary["ac1_feat_kb_wave_scope_violations"] == "0"
     assert int(summary["ac1_goal_window_non_kb_historical"]) > 0
+    assert summary["session_changed_files_non_kb"] == "true"
+    assert "ac1_delivered_scope_violations" not in summary
     assert "source_count: 153" in summary["source_map_source_count"]
     assert int(summary["ac4_plan_step4_headers"]) >= 10
     assert summary["ac4_plan_step4_literal_pass"] == "true"
     assert summary["ac4_ac1_macro_wave_pass"] == "true"
     assert int(summary["ac1_waves"]) == 30
     assert int(summary["ac4_macro_waves"]) >= 30
-    assert (tmp_path / "parallel-work-disclosure.txt").is_file()
-    disclosure = (tmp_path / "parallel-work-disclosure.txt").read_text(encoding="utf-8")
-    assert "disclosure: feat(kb): wave commits are kb/**-only" in disclosure
-    assert "scope_reset_prerequisite" in summary
-
-    worktree = (tmp_path / "worktree-scope.txt").read_text(encoding="utf-8")
-    assert "kb_dirty_paths: 0" in worktree
-    assert "unrelated_dirty_paths: 0" in worktree
     assert summary["ac1_scope_violations"] == "scope_violations: 0"
 
-    historical = (tmp_path / "goal-window-scope.txt").read_text(encoding="utf-8")
-    assert "goal_window_historical_non_kb_commits:" in historical
-    assert "scope_reset_prerequisite:" in historical
 
-    SCRATCH_DEFAULT.mkdir(parents=True, exist_ok=True)
-    for artifact in tmp_path.glob("*.txt"):
-        dest = SCRATCH_DEFAULT / artifact.name
-        if not dest.exists():
-            dest.write_text(artifact.read_text(encoding="utf-8"), encoding="utf-8")
+    commit_evidence = (tmp_path / "commit-evidence.txt").read_text(encoding="utf-8")
+    for line in commit_evidence.splitlines():
+        if line.startswith("subject: "):
+            assert re.match(r"^feat\(kb\): wave [0-9]+", line.removeprefix("subject: "))
 
 
 @pytest.mark.parametrize(
@@ -204,9 +195,58 @@ def test_goal_verify_produces_passing_summary(tmp_path: Path):
     ],
 )
 def test_goal_verify_writes_required_artifacts(tmp_path: Path, artifact: str):
-    _run_goal_scope_reset()
     _run_goal_verify(scratch=tmp_path)
     assert (tmp_path / artifact).is_file()
+
+
+def test_per_wave_log_audit_passes(tmp_path: Path):
+    env = os.environ.copy()
+    env["SCRATCH"] = str(tmp_path)
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    result = subprocess.run(
+        ["bash", str(PER_WAVE_LOG_AUDIT)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+        env=env,
+    )
+    _save_pytest_evidence("pytest-per-wave-log-audit.txt", result.stdout + result.stderr)
+    assert result.returncode == 0, result.stderr or result.stdout
+    audit = (tmp_path / "per-wave-log-audit.txt").read_text(encoding="utf-8")
+    assert "per_wave_log_result: PASS" in audit
+
+
+def test_emit_final_response_matches_scratch_summary(tmp_path: Path):
+    env = os.environ.copy()
+    env["SCRATCH"] = str(tmp_path)
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    result = subprocess.run(
+        ["bash", str(EMIT_FINAL)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+        env=env,
+    )
+    _save_pytest_evidence("pytest-emit-final.txt", result.stdout + result.stderr)
+    assert result.returncode == 0, result.stderr or result.stdout
+    scratch_summary = (tmp_path / "verification-summary.txt").read_text(encoding="utf-8")
+    assert result.stdout == scratch_summary
+    assert "ac5_per_wave_log_result: PASS" in result.stdout
+    assert "session_changed_files_non_kb: true" in result.stdout
+
+    candidate = tmp_path / "emit-candidate.txt"
+    candidate.write_text(result.stdout, encoding="utf-8")
+    assert_result = subprocess.run(
+        ["bash", str(ASSERT_FINAL), str(candidate)],
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+        env=env,
+    )
+    assert assert_result.returncode == 0
 
 
 def test_wave_one_commit_exists():

@@ -57,16 +57,16 @@ Generated at verification tree `{tree}`. Numeric SSOT: scratch `verification-sum
 ## Closure commands
 
 ```bash
-bash kb/activity/goal-scope-reset.sh
-bash kb/activity/goal-verify.sh
+# conditional: bash kb/activity/goal-scope-reset.sh
+bash kb/activity/emit_final_response.sh
 bash kb/activity/goal-hygiene-check.sh
 uv run pytest kb/activity/test_goal_verify.py -q
 bash kb/activity/goal-capture-template.sh
 ```
 
-Parallel non-kb commits may exist in wave-01..HEAD history; `goal-scope-reset.sh` neutralizes
-outstanding pollution before verify. KB substance gates (lint, partials, repo-map, waves) are
-independent of that remediation.
+`emit_final_response.sh` runs read-only `goal-verify.sh` + `per-wave-log-audit.sh`, then prints
+scratch `verification-summary.txt` verbatim (FINAL_RESPONSE SSOT). `goal-verify.sh` does not
+mutate the worktree. Parallel non-kb session paths are disclosed via `session_changed_files_non_kb: true`.
 
 Verification contract: `kb/activity/goal-verification-contract.md`.
 
