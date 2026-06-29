@@ -15,35 +15,47 @@ journal_ref: kb-research-ingest-goal-closure
 
 # Goal Closure Audit Capture
 
-Generated at verification tree `b5b9b28eed1b640c31d5e564d1fe92431fcafcf4`. Numeric SSOT: scratch `verification-summary.txt` (verbatim below).
+Generated at verification tree `d73d420546e211cc71ddd1d9d41019d6561253b6`. Numeric SSOT: scratch `verification-summary.txt` (verbatim below).
 
 ## Closure commands
 
 ```bash
+bash kb/activity/goal-scope-reset.sh
 bash kb/activity/goal-verify.sh
 bash kb/activity/goal-hygiene-check.sh
+uv run pytest kb/activity/test_goal_verify.py -q
 bash kb/activity/goal-capture-template.sh
 ```
+
+Parallel non-kb commits may exist in wave-01..HEAD history; `goal-scope-reset.sh` neutralizes
+outstanding pollution before verify. KB substance gates (lint, partials, repo-map, waves) are
+independent of that remediation.
 
 Verification contract: `kb/activity/goal-verification-contract.md`.
 
 ## verification-summary.txt (verbatim)
 
 ```text
-verification_tree: b5b9b28eed1b640c31d5e564d1fe92431fcafcf4
+verification_tree: d73d420546e211cc71ddd1d9d41019d6561253b6
 generated_by: kb/activity/goal-verify.sh
-timestamp_utc: 2026-06-29T05:38:49Z
+timestamp_utc: 2026-06-29T05:50:57Z
 source_map_source_count: source_count: 153
-ac1_waves: 30
+ac1_waves: 31
 ac1_scope_violations: scope_violations: 0
 ac1_delivered_scope_violations: delivered_scope_violations: 0
 ac2_partials: match_count: 0
 ac3_repo_map_primary_paths_checked: primary_paths_checked: 25
 ac3_repo_map_missing_count: missing_count: 0
 ac3_repo_map_result: result: PASS
+ac4_plan_step4_headers: 61
 ac4_macro_waves: 30
 ac4_waves: wave_count_2026-06-25: 30
 ac4_strict_journals: strict_journal_count: 30
+ac1_feat_kb_wave_scope_violations: 0
+ac1_goal_window_non_kb_outstanding: 0
+ac1_goal_window_non_kb_historical: 16
+ac1_goal_window_revert_remediation: 9
+scope_reset_prerequisite: run goal-scope-reset.sh before verify when parallel non-kb work landed in wave-01..HEAD
 ac1_goal_window_non_kb: 0
 step1_exit: exit_code: 0
 step2_exit: exit_code: 0
