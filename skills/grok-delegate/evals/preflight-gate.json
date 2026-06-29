@@ -1,0 +1,10 @@
+{
+  "skills": ["grok-delegate"],
+  "query": "/grok-delegate preflight before dispatching three Grok builders",
+  "files": [],
+  "expected_behavior": [
+    "Agent runs bash skills/grok-delegate/scripts/preflight.sh or scripts/doctor.py --format json",
+    "Agent stops fleet dispatch when JSON ok is false or grok-binary is fail",
+    "Agent treats bundled doctor as mandatory before parallel Grok nodes"
+  ]
+}

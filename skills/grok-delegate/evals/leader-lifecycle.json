@@ -1,0 +1,10 @@
+{
+  "skills": ["grok-delegate"],
+  "query": "/grok-delegate leader — start a leader pool for dense parallel agents on this repo",
+  "files": [],
+  "expected_behavior": [
+    "Agent shows grok agent leader start with --no-exit-on-disconnect and --no-auto-update",
+    "Agent documents grok leader list and grok leader kill for cleanup",
+    "Agent states one leader per cwd pool and parent-owned graph accounting"
+  ]
+}

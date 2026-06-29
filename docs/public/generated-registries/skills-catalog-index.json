@@ -24037,7 +24037,7 @@
       "author": "",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops. NOT for config sync (harness-master) or custom wrappers.",
+      "description": "Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader) from Codex/OpenCode waves and tune loops. NOT for harness sync or wrappers.",
       "displaySource": "repo",
       "executableSurface": "",
       "fileAccess": "",
@@ -24054,7 +24054,7 @@
         "resourceLinks": [],
         "scripts": [],
         "templates": [],
-        "wordCount": 874
+        "wordCount": 1161
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -27511,7 +27511,7 @@
       "author": "",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops. NOT for config sync (harness-master) or custom wrappers.",
+      "description": "Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader) from Codex/OpenCode waves and tune loops. NOT for harness sync or wrappers.",
       "displaySource": "repo",
       "executableSurface": "",
       "fileAccess": "",
@@ -27528,7 +27528,7 @@
         "resourceLinks": [],
         "scripts": [],
         "templates": [],
-        "wordCount": 874
+        "wordCount": 1161
       },
       "license": "MIT",
       "licenseStatus": "",

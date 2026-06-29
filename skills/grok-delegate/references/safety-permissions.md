@@ -25,4 +25,4 @@ Parent must approve before Grok nodes run: `git push`, `rm -rf`, production depl
 
 ## Auth
 
-If `scripts/preflight.sh` reports `grok-binary` fail, stop all dispatch. Use `grok login` or `XAI_API_KEY` per x.ai docs.
+If bundled `scripts/preflight.sh` (or `scripts/doctor.py`) reports JSON `ok: false` or `grok-binary` / `grok-home-config` fail, stop all dispatch. Use `grok login` or `XAI_API_KEY` per x.ai docs. See [doctor-output.md](doctor-output.md).

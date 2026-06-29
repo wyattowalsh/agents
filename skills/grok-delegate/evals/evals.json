@@ -55,6 +55,39 @@
         "Agent shows valid wave 0, 1, or 2 dispatch guidance",
         "Agent does not invent a default wave tier"
       ]
+    },
+    {
+      "id": "preflight-gate",
+      "prompt": "/grok-delegate preflight before dispatching three Grok builders",
+      "expected_output": "Runs bundled scripts/preflight.sh or scripts/doctor.py; parses JSON ok; stops on grok-binary fail.",
+      "files": [],
+      "assertions": [
+        "Agent runs bash skills/grok-delegate/scripts/preflight.sh or scripts/doctor.py --format json",
+        "Agent stops fleet dispatch when JSON ok is false",
+        "Agent treats bundled preflight as mandatory before parallel Grok nodes"
+      ]
+    },
+    {
+      "id": "leader-lifecycle",
+      "prompt": "/grok-delegate leader — start a leader pool for dense parallel agents",
+      "expected_output": "Leader start/list/kill lifecycle with one leader per cwd pool.",
+      "files": [],
+      "assertions": [
+        "Agent shows grok agent leader with --no-exit-on-disconnect",
+        "Agent documents grok leader kill for cleanup after graph completion",
+        "Agent keeps parent harness owning the macro graph"
+      ]
+    },
+    {
+      "id": "patterns-dispatch",
+      "prompt": "/grok-delegate patterns — map orchestrator patterns to Grok flags",
+      "expected_output": "Pattern A-F mapping with parent accounting rules.",
+      "files": [],
+      "assertions": [
+        "Agent loads graph-patterns and maps orchestrator Pattern A-F",
+        "Agent states N dispatched nodes equals N terminal ledger rows before synthesis",
+        "Agent uses native grok CLI flags only"
+      ]
     }
   ]
 }

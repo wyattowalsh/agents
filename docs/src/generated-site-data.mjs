@@ -27691,7 +27691,7 @@ const skillIndexes = {
       "author": "wyattowalsh",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops. NOT for config sync (harness-master) or custom wrappers.",
+      "description": "Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader) from Codex/OpenCode waves and tune loops. NOT for harness sync or wrappers.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -27705,21 +27705,31 @@ const skillIndexes = {
         "evals": [
           "evals/evals.json",
           "evals/implicit-trigger.json",
+          "evals/leader-lifecycle.json",
           "evals/negative-control-skills-sync.json",
           "evals/parallel-wave-dispatch.json",
+          "evals/patterns-dispatch.json",
+          "evals/preflight-gate.json",
           "evals/scope-refusal-malformed-wave.json",
           "evals/tune-resume-loop.json"
         ],
         "headings": [
           "Grok Delegate",
           "Dispatch",
+          "Classification Gate",
+          "Operator Contract",
+          "`preflight`",
+          "`wave <0|1|2>`",
+          "`tune`",
+          "`leader`",
+          "`ledger`",
+          "`patterns`",
+          "*(empty)*",
           "Canonical Vocabulary",
           "Critical Rules",
           "When to use",
           "When NOT to use",
           "Pre-flight",
-          "Doctor JSON",
-          "Inspect",
           "Three-tier model",
           "Wave taxonomy",
           "Single node",
@@ -27727,16 +27737,14 @@ const skillIndexes = {
           "Parallel wave dispatch",
           "Leader pool",
           "Recovery ladder",
-          "Completion criteria",
-          "Validation",
-          "Reference index",
-          "Scope boundaries"
+          "Completion criteria"
         ],
         "references": [
           "references/acp-driver.md",
           "references/agent-map.md",
           "references/command-templates.md",
           "references/concurrency.md",
+          "references/doctor-output.md",
           "references/graph-patterns.md",
           "references/leader-lifecycle.md",
           "references/output-json.md",
@@ -27749,11 +27757,12 @@ const skillIndexes = {
         ],
         "scripts": [
           "scripts/check.py",
+          "scripts/doctor.py",
           "scripts/parse_grok_json.py",
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 864
+        "wordCount": 1151
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -27796,7 +27805,7 @@ const skillIndexes = {
       "unsupportedTargetAgents": [],
       "useCommand": "/grok-delegate",
       "userInvocable": true,
-      "version": "1.0.0"
+      "version": "1.2.0"
     },
     {
       "allowedTools": "",
@@ -33709,7 +33718,7 @@ const skillIndexes = {
       "author": "wyattowalsh",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops. NOT for config sync (harness-master) or custom wrappers.",
+      "description": "Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader) from Codex/OpenCode waves and tune loops. NOT for harness sync or wrappers.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -33723,21 +33732,31 @@ const skillIndexes = {
         "evals": [
           "evals/evals.json",
           "evals/implicit-trigger.json",
+          "evals/leader-lifecycle.json",
           "evals/negative-control-skills-sync.json",
           "evals/parallel-wave-dispatch.json",
+          "evals/patterns-dispatch.json",
+          "evals/preflight-gate.json",
           "evals/scope-refusal-malformed-wave.json",
           "evals/tune-resume-loop.json"
         ],
         "headings": [
           "Grok Delegate",
           "Dispatch",
+          "Classification Gate",
+          "Operator Contract",
+          "`preflight`",
+          "`wave <0|1|2>`",
+          "`tune`",
+          "`leader`",
+          "`ledger`",
+          "`patterns`",
+          "*(empty)*",
           "Canonical Vocabulary",
           "Critical Rules",
           "When to use",
           "When NOT to use",
           "Pre-flight",
-          "Doctor JSON",
-          "Inspect",
           "Three-tier model",
           "Wave taxonomy",
           "Single node",
@@ -33745,16 +33764,14 @@ const skillIndexes = {
           "Parallel wave dispatch",
           "Leader pool",
           "Recovery ladder",
-          "Completion criteria",
-          "Validation",
-          "Reference index",
-          "Scope boundaries"
+          "Completion criteria"
         ],
         "references": [
           "references/acp-driver.md",
           "references/agent-map.md",
           "references/command-templates.md",
           "references/concurrency.md",
+          "references/doctor-output.md",
           "references/graph-patterns.md",
           "references/leader-lifecycle.md",
           "references/output-json.md",
@@ -33767,11 +33784,12 @@ const skillIndexes = {
         ],
         "scripts": [
           "scripts/check.py",
+          "scripts/doctor.py",
           "scripts/parse_grok_json.py",
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 864
+        "wordCount": 1151
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -33814,7 +33832,7 @@ const skillIndexes = {
       "unsupportedTargetAgents": [],
       "useCommand": "/grok-delegate",
       "userInvocable": true,
-      "version": "1.0.0"
+      "version": "1.2.0"
     },
     {
       "allowedTools": "",
@@ -84935,7 +84953,7 @@ const skillIndexes = {
       "author": "wyattowalsh",
       "credentialBehavior": "",
       "dedupeNotes": "",
-      "description": "Use when delegating Grok Build task-graph nodes via native headless CLI (-p, resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops. NOT for config sync (harness-master) or custom wrappers.",
+      "description": "Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader) from Codex/OpenCode waves and tune loops. NOT for harness sync or wrappers.",
       "displaySource": "github:wyattowalsh/agents",
       "executableSurface": "",
       "fileAccess": "",
@@ -84949,21 +84967,31 @@ const skillIndexes = {
         "evals": [
           "evals/evals.json",
           "evals/implicit-trigger.json",
+          "evals/leader-lifecycle.json",
           "evals/negative-control-skills-sync.json",
           "evals/parallel-wave-dispatch.json",
+          "evals/patterns-dispatch.json",
+          "evals/preflight-gate.json",
           "evals/scope-refusal-malformed-wave.json",
           "evals/tune-resume-loop.json"
         ],
         "headings": [
           "Grok Delegate",
           "Dispatch",
+          "Classification Gate",
+          "Operator Contract",
+          "`preflight`",
+          "`wave <0|1|2>`",
+          "`tune`",
+          "`leader`",
+          "`ledger`",
+          "`patterns`",
+          "*(empty)*",
           "Canonical Vocabulary",
           "Critical Rules",
           "When to use",
           "When NOT to use",
           "Pre-flight",
-          "Doctor JSON",
-          "Inspect",
           "Three-tier model",
           "Wave taxonomy",
           "Single node",
@@ -84971,16 +84999,14 @@ const skillIndexes = {
           "Parallel wave dispatch",
           "Leader pool",
           "Recovery ladder",
-          "Completion criteria",
-          "Validation",
-          "Reference index",
-          "Scope boundaries"
+          "Completion criteria"
         ],
         "references": [
           "references/acp-driver.md",
           "references/agent-map.md",
           "references/command-templates.md",
           "references/concurrency.md",
+          "references/doctor-output.md",
           "references/graph-patterns.md",
           "references/leader-lifecycle.md",
           "references/output-json.md",
@@ -84993,11 +85019,12 @@ const skillIndexes = {
         ],
         "scripts": [
           "scripts/check.py",
+          "scripts/doctor.py",
           "scripts/parse_grok_json.py",
           "scripts/preflight.sh"
         ],
         "templates": [],
-        "wordCount": 864
+        "wordCount": 1151
       },
       "license": "MIT",
       "licenseStatus": "",
@@ -85040,7 +85067,7 @@ const skillIndexes = {
       "unsupportedTargetAgents": [],
       "useCommand": "/grok-delegate",
       "userInvocable": true,
-      "version": "1.0.0"
+      "version": "1.2.0"
     },
     {
       "allowedTools": "",

@@ -1,0 +1,10 @@
+{
+  "skills": ["grok-delegate"],
+  "query": "/grok-delegate patterns — map orchestrator Pattern A through F to Grok CLI flags",
+  "files": [],
+  "expected_behavior": [
+    "Agent loads graph-patterns reference and maps Pattern A-F to native grok flags",
+    "Agent keeps parent accounting: N dispatched nodes equals N terminal ledger rows",
+    "Agent does not propose nested Grok-in-Grok orchestration beyond depth 1"
+  ]
+}

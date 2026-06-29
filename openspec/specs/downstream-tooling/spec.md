@@ -152,7 +152,7 @@ The `grok-delegate` skill SHALL route cross-harness Grok Build delegation throug
 #### Scenario: Grok delegation starts
 
 - **WHEN** the parent prepares a Grok delegation wave
-- **THEN** it SHALL run `uv run wagents grok doctor --format json`
+- **THEN** it SHALL run bundled `skills/grok-delegate/scripts/doctor.py --format json` or `skills/grok-delegate/scripts/preflight.sh`
 - **AND** it SHALL stop or downshift the Grok lane when required checks fail.
 
 #### Scenario: Delegated sessions complete

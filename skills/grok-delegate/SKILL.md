@@ -1,13 +1,12 @@
 ---
 name: grok-delegate
 description: >-
-  Use when delegating Grok Build task-graph nodes via native headless CLI (-p,
-  resume, worktrees, leader) from Codex/OpenCode parallel waves and tune loops.
-  NOT for config sync (harness-master) or custom wrappers.
+  Use when delegating Grok task nodes via native CLI (-p, -r, worktrees, leader)
+  from Codex/OpenCode waves and tune loops. NOT for harness sync or wrappers.
 license: MIT
 metadata:
   author: wyattowalsh
-  version: "1.0.0"
+  version: "1.2.0"
 user-invocable: true
 ---
 
@@ -26,6 +25,54 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 | `leader` | Show leader pool lifecycle |
 | `ledger` | Show session ledger schema |
 | `patterns` | Show orchestrator Pattern A–F → Grok flag mapping |
+
+## Classification Gate
+
+1. **Use** when the parent harness owns a multi-node graph and at least one node should run on Grok Build via native CLI.
+2. **Use** when a gate failed and the parent needs `-r <sessionId>` tune passes on an existing ledger row.
+3. **Do not use** for single-session work the parent can finish directly.
+4. **Do not use** for Grok config/MCP sync, skill installs, or nested Grok-in-Grok orchestration.
+5. **Malformed dispatch** — `wave` without `0|1|2` is invalid; show valid tiers or the empty-args gallery. Never invent a default wave.
+
+## Operator Contract
+
+### `preflight`
+
+1. Run `bash skills/grok-delegate/scripts/preflight.sh` from any cwd (bundled `doctor.py`; optional `--cwd` for target repo).
+2. Stop fleet dispatch when JSON `ok` is false or `grok-binary` is `fail`.
+3. Treat `warn` as advisory; do not block unless the parent policy requires a clean doctor.
+
+### `wave <0|1|2>`
+
+1. Load [references/command-templates.md](references/command-templates.md) for the requested tier.
+2. Assign distinct `-w w<wave>-<role>-<n>` names and non-overlapping file ownership for wave 1.
+3. State the parent gate that must pass before the next wave.
+
+### `tune`
+
+1. Load [references/session-ledger.md](references/session-ledger.md) and resume with `-r <sessionId>`.
+2. Prefix delta prompts with `Tune:`; cap `parent_tune_count` at 3 per `node_id`.
+3. Never default `--always-approve`.
+
+### `leader`
+
+1. Load [references/leader-lifecycle.md](references/leader-lifecycle.md).
+2. Start one leader per cwd pool; kill orphans with `grok leader kill` after graph completion.
+
+### `ledger`
+
+1. Load [references/session-ledger.md](references/session-ledger.md).
+2. Require N terminal ledger rows before opening the next parent gate.
+
+### `patterns`
+
+1. Load [references/graph-patterns.md](references/graph-patterns.md) and map to `/orchestrator` Pattern A–F.
+2. Keep parent accounting: N dispatched nodes = N resolved before synthesis.
+
+### *(empty)*
+
+1. Show pre-flight, wave taxonomy, critical rules, and the reference index.
+2. Run the Classification Gate on the current parent request before dispatching nodes.
 
 ## Canonical Vocabulary
 
@@ -65,21 +112,13 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 
 ## Pre-flight
 
-### Doctor JSON
+Authoritative procedure: Operator Contract → `preflight` above.
 
 ```bash
 bash skills/grok-delegate/scripts/preflight.sh
 ```
 
-Stop when `ok` is false or `grok-binary` fails.
-
-### Inspect
-
-```bash
-cd <target-repo> && grok inspect --json
-```
-
-`grok inspect` has no `--cwd` flag; change directory first.
+Inspect target repo: `cd <target-repo> && grok inspect --json` (`grok inspect` has no `--cwd` flag).
 
 ## Three-tier model
 
@@ -153,12 +192,13 @@ Clients attach with `grok agent --leader`. Details: [references/leader-lifecycle
 
 ## Validation
 
+`check.py` runs skill validation, eval validation, audit, and `parse_grok_json` smoke.
+
 ```bash
 uv run python skills/grok-delegate/scripts/check.py
+uv run pytest tests/test_grok_delegate_skill.py tests/test_grok_delegate_preflight.py -q
 uv run python skills/skill-creator/scripts/audit.py skills/grok-delegate
-uv run python skills/skill-creator/scripts/asset_toolkit/validate_evals.py skills/grok-delegate
 uv run python skills/skill-creator/scripts/package.py skills/grok-delegate --dry-run
-uv run python skills/grok-delegate/scripts/parse_grok_json.py <<< '<json>'
 ```
 
 ## Reference index
@@ -175,6 +215,7 @@ uv run python skills/grok-delegate/scripts/parse_grok_json.py <<< '<json>'
 | [leader-lifecycle.md](references/leader-lifecycle.md) | Leader start/stop |
 | [acp-driver.md](references/acp-driver.md) | Official ACP stdio excerpt |
 | [safety-permissions.md](references/safety-permissions.md) | Permission matrix |
+| [doctor-output.md](references/doctor-output.md) | Bundled doctor JSON |
 
 Official docs: https://docs.x.ai/build/cli/headless-scripting
 

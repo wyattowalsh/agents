@@ -64,7 +64,7 @@ Before non-trivial tool-mediated work:
 
 **Full guide**: `/orchestrator` for patterns A-F, recovery ladder, anti-patterns.
 
-**Grok delegation**: When a parent harness (Codex, OpenCode, Claude) assigns work to Grok Build, use `/grok-delegate` for native CLI task-graph dispatch (`grok -p`, session resume, worktrees). Pre-flight: `uv run wagents grok doctor --format json`.
+**Grok delegation**: When a parent harness (Codex, OpenCode, Claude) assigns work to Grok Build, use `/grok-delegate` for native CLI task-graph dispatch (`grok -p`, session resume, worktrees). Pre-flight: `/grok-delegate preflight` or `bash skills/grok-delegate/scripts/preflight.sh`.
 
 ## Git Branch Policy
 
