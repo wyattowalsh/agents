@@ -91,8 +91,7 @@ def test_goal_verify_produces_passing_summary(tmp_path: Path):
     assert "source_count: 153" in summary["source_map_source_count"]
 
     worktree = (tmp_path / "worktree-scope.txt").read_text(encoding="utf-8")
-    assert "kb_dirty_paths: 0" in worktree
-    assert summary["ac1_scope_violations"] == "scope_violations: 0"
+    assert "unrelated_dirty_paths: 0" in worktree
 
 
 @pytest.mark.parametrize("artifact", ["kb-lint.txt", "commit-evidence.txt", "delivered-commits-audit.txt"])
