@@ -837,3 +837,8 @@ Non-wave goal closure notes: [[goal-closure-notes]].
 
 - Mode: audit (capture only)
 - Summary: Refreshed goal-closure-audit-capture.md with historical/outstanding scope fields; `source_count: 153` unchanged.
+
+### [2026-06-29] Final capture SSOT at 69763b9b — kb-research-ingest
+
+- Mode: audit (capture only)
+- Summary: Final goal-closure-audit-capture.md with honest scope fields; `source_count: 153` unchanged.
