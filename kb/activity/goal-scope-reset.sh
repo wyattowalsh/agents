@@ -8,6 +8,9 @@ set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+git reset --hard HEAD
+git clean -fd >/dev/null 2>&1 || true
+
 WAVE_ONE_SHA="$(git log --format=%H --grep='feat(kb): wave 01' -1)"
 if [[ -z "${WAVE_ONE_SHA}" ]]; then
   echo "goal-scope-reset: FAILED — wave 01 commit not found"

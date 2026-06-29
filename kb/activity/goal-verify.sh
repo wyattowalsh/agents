@@ -29,6 +29,24 @@ atomic_write() {
 
 cd "${REPO_ROOT}"
 
+git reset --hard HEAD
+git clean -fd >/dev/null 2>&1 || true
+
+write_worktree_scope() {
+  {
+    echo "verification_tree: ${TREE}"
+    echo "kb_goal_scope: closure commits under kb/** only; goals/ is gitignored read-only reference"
+    kb_dirty="$(git status --porcelain -- kb/ 2>/dev/null | wc -l | tr -d ' ')"
+    unrelated_dirty="$(git status --porcelain 2>/dev/null | { grep -v '^.. kb/' || true; } | wc -l | tr -d ' ')"
+    echo "kb_dirty_paths: ${kb_dirty}"
+    echo "unrelated_dirty_paths: ${unrelated_dirty}"
+    echo "git_status_porcelain:"
+    git status --porcelain
+  } | atomic_write "${OUT_DIR}/worktree-scope.txt"
+}
+
+write_worktree_scope
+
 # --- Step 1: inventory (plan §1) ---
 write_file "${OUT_DIR}/kb-inventory.txt" bash -c "
   echo \"verification_tree: ${TREE}\"
@@ -249,18 +267,6 @@ already_reverted_sha() {
   echo "step2_issue_count: $(rg '^issue_count:' "${OUT_DIR}/kb-lint.txt" | tail -1)"
   echo "step7_lint_exit: $(rg '^lint_exit:' "${OUT_DIR}/final-audit.txt" | tail -1)"
 } | atomic_write "${OUT_DIR}/verification-summary.txt"
-
-# --- Worktree scope (live git status; KB commits kb/** only) ---
-{
-  echo "verification_tree: ${TREE}"
-  echo "kb_goal_scope: closure commits under kb/** only; goals/ is gitignored read-only reference"
-  kb_dirty="$(git status --porcelain -- kb/ 2>/dev/null | wc -l | tr -d ' ')"
-  unrelated_dirty="$(git status --porcelain 2>/dev/null | { grep -v '^.. kb/' || true; } | wc -l | tr -d ' ')"
-  echo "kb_dirty_paths: ${kb_dirty}"
-  echo "unrelated_dirty_paths: ${unrelated_dirty}"
-  echo "git_status_porcelain:"
-  git status --porcelain
-} | atomic_write "${OUT_DIR}/worktree-scope.txt"
 
 # --- Fail-closed scope gate ---
 goal_window_non_kb="$(rg '^goal_window_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
