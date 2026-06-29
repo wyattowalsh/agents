@@ -8,7 +8,7 @@ aliases:
   - KB research ingest closure audit
 kind: source-summary
 status: active
-updated: 2026-06-28
+updated: 2026-06-29
 source_count: 1
 journal_ref: kb-research-ingest-goal-closure
 ---
@@ -39,3 +39,47 @@ Commit `d793705d` (`feat(kb): wave 30`) shows git delete/insert hunks in `source
 ## Provenance
 
 Meta audit capture — no canonical repo mutation.
+
+## Verification tree (mechanical)
+
+Historical paragraph above cites tree `79497d5f` at first capture time. **Mechanical verification supersedes hand-edited scratch.**
+
+From repository root:
+
+```bash
+bash kb/activity/goal-verify.sh
+```
+
+The script sets `TREE=$(git rev-parse HEAD)` and writes atomically to the goal scratch dir (`{SCRATCH}/*.txt` — default `.../grok-goal-.../implementer/`): `kb-inventory.txt`, `kb-lint.txt`, `coverage-partials.txt`, `activity-waves.txt`, `repo-map-sourced.txt`, `commit-evidence.txt`, `final-audit.txt`, `early-exit.txt`, `verification-summary.txt`. Each file includes `verification_tree: $TREE`.
+
+Plan step 2 literal `kb_lint.py kb/` fails (positional `kb/` unrecognized); `kb-lint.txt` records both the failing plan invocation and the working `--root kb` invocation.
+
+## Mechanical run (2026-06-29)
+
+Verifier: `kb/activity/goal-verify.sh` (+ `goal-verify-repo-map.py`, `goal-verify-source-map-meta.py`).
+
+**Verification tree:** `8891719df9b7fce7e04659c86335c11f0517feba` (closure commit before this capture append).
+
+Ran **twice** on a clean KB tree; both passes wrote identical `verification_tree` and acceptance counters to goal scratch (`{SCRATCH}/implementer/*.txt`).
+
+| Check | Result |
+|-------|--------|
+| AC1 waves | 30 `feat(kb): wave` commits |
+| AC1 scope | `scope_violations: 0` (full 30-commit loop in `commit-evidence.txt`) |
+| AC2 partials | `match_count: 0` |
+| AC3 repo-map | `primary_table_rows: 25`, `PASS` |
+| AC4 waves dated 2026-06-25 | 30 |
+| AC4 strict journals (`~/.grok/research/kb-wave`) | 30 |
+| kb_inventory | `exit_code: 0` |
+| kb_lint working (`--root kb`) | `working_exit_code: 0` |
+| kb_lint plan literal (`kb/`) | `plan_literal_exit_code: 2` (documented) |
+| Final lint re-run | `lint_exit: 0` |
+
+## Post-wave fix commits (additive narrative)
+
+After wave 30, two KB-only fix commits landed without changing acceptance outcomes:
+
+- `79497d5f` — review findings RV-001–RV-008 (journal archive, glossary dedupe, metadata alignment)
+- `8891719d` — restore AC4 primary journal paths in activity log + wave registry; this mechanical section
+
+Wave 30 `d793705d` source-map reorder noted above remains the only in-wave non-pure-additive hunk (presentation reorder, net +1 row).
