@@ -842,3 +842,8 @@ Non-wave goal closure notes: [[goal-closure-notes]].
 
 - Mode: audit (capture only)
 - Summary: Final goal-closure-audit-capture.md with honest scope fields; `source_count: 153` unchanged.
+
+### [2026-06-29] Closure capture batched at HEAD — kb-research-ingest
+
+- Mode: audit (capture+log batch)
+- Summary: Batched capture SSOT with activity log to avoid stale_activity_log; tree matches verification-summary.
