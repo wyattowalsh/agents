@@ -22,7 +22,7 @@ Expected fields on the principal object:
 | Field | Role |
 | --- | --- |
 | `refresh_token` | OAuth refresh credential (never log) |
-| `expires_at` | Unix timestamp for access token expiry (required for fast preflight pass) |
+| `expires_at` | Unix timestamp or ISO-8601 timestamp for access token expiry (required for fast preflight pass) |
 
 Missing `access_token` with a present `refresh_token` usually means refresh is pending—run `grok login` interactively before fleet dispatch.
 

@@ -34,7 +34,7 @@ Stdout is JSON only (except `auth_verify.sh` errors on stderr). Exit `0` when to
 | `grok-target-config` | no (`warn`) | `{--cwd}/.grok/config.toml` for target project |
 | `grok-auth-file` | yes (`fail`) | `~/.grok/auth.json` exists |
 | `grok-auth-oauth` | yes (`fail`) | OAuth principal with `refresh_token` |
-| `grok-auth-expiry` | yes (`fail`) | `expires_at` required; expired, missing, or malformed values block dispatch |
+| `grok-auth-expiry` | yes (`fail`) | `expires_at` required as epoch seconds or ISO-8601; expired, missing, or malformed values block dispatch |
 | `grok-auth-mode` | advisory | `oauth` or `api_key_fallback` |
 | `grok-auth-policy` | yes (`fail`) | OAuth-primary policy satisfied |
 | `grok-cli-smoke` | no (`warn`) | `grok version` succeeds |
@@ -48,4 +48,4 @@ Stdout is JSON only (except `auth_verify.sh` errors on stderr). Exit `0` when to
 
 ## Out of scope (repo maintainer only)
 
-MCP managed blocks, Plannotator hooks, mcphub endpoints, LSP binary matrix, and policy-template sync are **not** part of the bundled doctor. Run `uv run wagents grok doctor --format json` from the agents clone when maintaining extended Grok harness surfaces.
+MCP managed blocks, Plannotator hooks, mcphub endpoints, LSP binary matrix, and policy-template sync are **not** part of the bundled doctor. Validate those repo-maintained surfaces from the agents clone; they are outside the packaged skill preflight contract.

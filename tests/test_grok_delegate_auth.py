@@ -55,6 +55,26 @@ def test_oauth_expired_fails(auth_module, tmp_path: Path) -> None:
     assert expiry["status"] == "fail"
 
 
+def test_oauth_iso_expiry_passes(auth_module) -> None:
+    principal = {
+        "refresh_token": "fixture-refresh-token",
+        "expires_at": "2099-01-01T00:00:00.000000Z",
+    }
+    status, summary = auth_module.oauth_expiry_status(principal)
+    assert status == "ok"
+    assert "future" in summary
+
+
+def test_oauth_malformed_expiry_fails(auth_module) -> None:
+    principal = {
+        "refresh_token": "fixture-refresh-token",
+        "expires_at": "not-a-date",
+    }
+    status, summary = auth_module.oauth_expiry_status(principal)
+    assert status == "fail"
+    assert "malformed" in summary
+
+
 def test_missing_auth_fails(auth_module, tmp_path: Path) -> None:
     home = tmp_path / "empty-home"
     home.mkdir()

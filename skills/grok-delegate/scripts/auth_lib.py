@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -48,14 +49,34 @@ def find_oauth_principal(data: dict[str, Any]) -> tuple[str, dict[str, Any]] | N
     return None
 
 
+def _parse_expires_at(value: Any) -> float | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        stripped = value.strip()
+        if not stripped:
+            return None
+        try:
+            return float(stripped)
+        except ValueError:
+            pass
+        normalized = stripped.removesuffix("Z") + "+00:00" if stripped.endswith("Z") else stripped
+        try:
+            return datetime.fromisoformat(normalized).timestamp()
+        except ValueError:
+            return None
+    return None
+
+
 def oauth_expiry_status(principal: dict[str, Any]) -> tuple[str, str]:
     expires_at = principal.get("expires_at")
     if expires_at is None:
         return "fail", "OAuth principal has no expires_at; run grok login before dispatch"
-    try:
-        expiry = float(expires_at)
-    except (TypeError, ValueError):
-        return "fail", "OAuth expires_at is not numeric; run grok login before dispatch"
+    expiry = _parse_expires_at(expires_at)
+    if expiry is None:
+        return "fail", "OAuth expires_at is malformed; run grok login before dispatch"
     now = time.time()
     if expiry <= now:
         return "fail", "OAuth access token expired; refresh required before dispatch"
