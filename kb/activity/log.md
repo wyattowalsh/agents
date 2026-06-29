@@ -13,46 +13,7 @@ source_count: 1
 
 # Activity Log
 
-### [2026-06-29] Goal capture sync — kb-research-ingest
-
-- Mode: audit (additive only)
-- Summary: Synced `goal-closure-audit-capture.md` to scratch `verification-summary.txt` at tree `bdc91098`.
-- Metrics: `issue_count: 0` after this log batch.
-
-### [2026-06-29] Goal closure pipeline — kb-research-ingest
-
-- Mode: audit (additive only)
-- Summary: Regenerated closure capture from `verification-summary.txt`; added hygiene + capture scripts; hardened `goal-verify.sh`; contract at `kb/activity/goal-verification-contract.md`.
-- Metrics: run `goal-verify.sh` → `goal-hygiene-check.sh` → `goal-capture-template.sh`; `issue_count: 0` target after this batch.
-
-### [2026-06-29] Goal verify repair — kb-research-ingest
-
-- Mode: audit (additive only)
-- Summary: Repaired `goal-verify.sh` repo-map awk extraction (25/25 PASS); appended skeptic remediation to closure capture; tree `b22ef3cd`.
-- Metrics: `kb_lint --root kb --fail-on warning` target `issue_count: 0` after this log batch.
-
-### [2026-06-29] Goal mechanical verification — kb-research-ingest
-
-- Mode: audit (additive only)
-- Summary: Landed `kb/activity/goal-verify.sh` aligned to verification plan (inventory + lint only; no custom oracles); refreshed activity log; fixed plan `kb_lint` contract (`--root kb`); closure capture at tree `0a882267`.
-- `activity`: updated `log.md` frontmatter + this entry (clears `stale_activity_log`).
-- Metrics: `kb_lint --root kb --fail-on warning` → `issue_count: 0`; 30 waves; 0 partials; repo-map 25/25 sourced; source-map `source_count: 153`.
-
-### [2026-06-28] Goal closure audit — kb-research-ingest
-
-- Mode: audit (additive only)
-- Summary: Closure audit for goal acceptance; primary journals remain `~/.grok/research/kb-wave*.md`; git archive copies under `raw/captures/journals/`.
-- `raw`: added 1 capture (`goal-closure-audit-capture`).
-- Metrics: lint pass before commit; 30 waves; 0 coverage partials; repo-map 25/25 sourced.
-
-### [2026-06-25] Review remediation — RV-001–RV-008
-
-- Mode: enrich + audit
-- Summary: Review finding fixes — metadata, coverage table, glossary dedupe, risk refresh, journal archive, registry discoverability.
-- `raw`: added 30 journal archives under `raw/captures/journals/` (git copies; primary journals stay `~/.grok/research/` per AC4).
-- `indexes`: updated `source-map`, `coverage`, `glossary` frontmatter/rows.
-- `activity`: updated `wave-commit-registry`; log `Journal:` lines cite `~/.grok/research/`.
-- Metrics: lint pass before commit.
+Non-wave goal closure notes: [[goal-closure-notes]].
 
 ### [2026-06-25] Wave 30 — pass 5 stop and index reconciliation
 
