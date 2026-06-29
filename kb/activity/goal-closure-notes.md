@@ -16,6 +16,11 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal log header hygiene — kb-research-ingest
+
+- Mode: audit (additive only)
+- Summary: Moved completion audit out of `activity/log.md` wave headers into this file; capture SSOT at tree `fe344664`; `source_count: 153` unchanged.
+
 ### [2026-06-29] Goal completion verification — kb-research-ingest
 
 - Mode: audit (goal completion; verification-only batch)
