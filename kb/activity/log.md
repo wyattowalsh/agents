@@ -847,3 +847,8 @@ Non-wave goal closure notes: [[goal-closure-notes]].
 
 - Mode: audit (capture+log batch)
 - Summary: Batched capture SSOT with activity log to avoid stale_activity_log; tree matches verification-summary.
+
+### [2026-06-29] Verification alignment at db664e33 — kb-research-ingest
+
+- Mode: audit (capture+log batch)
+- Summary: Plan step4 literal pass + parallel-work disclosure; numeric SSOT in scratch verification-summary.txt only (`source_count: 153`).
