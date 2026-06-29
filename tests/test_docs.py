@@ -20,6 +20,7 @@ from wagents.docs import (
     write_mcp_index,
     write_sidebar,
     write_skill_install_scripts_page,
+    write_skill_research_pages,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -499,6 +500,43 @@ class TestRenderSidebarModule:
             if in_default and line.startswith("  {") and not line.startswith("      {"):
                 n += 1
         assert n <= 8
+
+
+# ---------------------------------------------------------------------------
+# write_skill_research_pages
+# ---------------------------------------------------------------------------
+
+
+class TestWriteSkillResearchPages:
+    def test_catalog_nav_renders_outside_evidence_aside(self, tmp_repo, monkeypatch):
+        from wagents import skill_research
+
+        research_dir = tmp_repo / "docs" / "src" / "skill-research"
+        research_dir.mkdir(parents=True, exist_ok=True)
+        (research_dir / "alpha.md").write_text("# Cached Evidence\n\nBody.", encoding="utf-8")
+
+        content_dir = tmp_repo / "docs" / "src" / "content" / "docs"
+        catalog_page = content_dir / "skills" / "catalog" / "custom" / "alpha.mdx"
+        catalog_page.parent.mkdir(parents=True, exist_ok=True)
+        catalog_page.write_text("---\ntitle: Alpha\n---\n", encoding="utf-8")
+
+        monkeypatch.setattr("wagents.docs.RESEARCH_DIR", research_dir)
+        monkeypatch.setattr(skill_research, "RESEARCH_DIR", research_dir)
+
+        node = _make_node(
+            "skill",
+            id_suffix="alpha",
+            id="alpha",
+            metadata={"name": "alpha"},
+            source_path="skills/alpha/SKILL.md",
+        )
+        write_skill_research_pages([node])
+
+        text = (content_dir / "skill-research" / "alpha.mdx").read_text(encoding="utf-8")
+        aside_close = text.index("</Aside>")
+        nav = text.index("[Back to catalog page](/skills/catalog/custom/alpha/)")
+        assert aside_close < nav
+        assert "[Back to catalog page]" not in text[text.index("<Aside") : aside_close]
 
 
 class TestWriteHarnessSupportPage:
