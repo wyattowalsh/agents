@@ -205,11 +205,28 @@ already_reverted_sha() {
 
 {
   echo "verification_tree: ${TREE}"
-  echo "audit: outstanding non-kb commits in goal window (exclude kb-tagged, Revert *, and already-reverted originals)"
-  window_violations=0
+  echo "audit_historical: all non-kb-tagged commits in wave-01..HEAD (raw; no neutralization)"
+  historical=0
   while IFS= read -r sha; do
     subject="$(git log -1 --pretty=format:%s "${sha}")"
-    if is_kb_subject "${subject}" || is_revert_subject "${subject}"; then
+    if is_kb_subject "${subject}"; then
+      continue
+    fi
+    historical=$((historical + 1))
+    echo "HISTORICAL_NON_KB ${sha}: ${subject}"
+  done < <(git log --format=%H "${WAVE_ONE_SHA}"..HEAD 2>/dev/null || true)
+  echo "goal_window_historical_non_kb_commits: ${historical}"
+  echo ""
+  echo "audit_outstanding: non-kb commits still outstanding (exclude kb-tagged, Revert *, already-reverted)"
+  window_violations=0
+  revert_remediation=0
+  while IFS= read -r sha; do
+    subject="$(git log -1 --pretty=format:%s "${sha}")"
+    if is_revert_subject "${subject}"; then
+      revert_remediation=$((revert_remediation + 1))
+      continue
+    fi
+    if is_kb_subject "${subject}"; then
       continue
     fi
     if already_reverted_sha "${sha}"; then
@@ -217,10 +234,32 @@ already_reverted_sha() {
       continue
     fi
     window_violations=$((window_violations + 1))
-    echo "NON_KB_COMMIT ${sha}: ${subject}"
+    echo "OUTSTANDING_NON_KB ${sha}: ${subject}"
   done < <(git log --format=%H "${WAVE_ONE_SHA}"..HEAD 2>/dev/null || true)
+  echo "goal_window_outstanding_non_kb_commits: ${window_violations}"
+  echo "goal_window_revert_remediation_commits: ${revert_remediation}"
+  echo "scope_reset_prerequisite: bash kb/activity/goal-scope-reset.sh must run before verify when outstanding > 0 or unrelated_dirty > 0"
   echo "goal_window_non_kb_commits: ${window_violations}"
 } | atomic_write "${OUT_DIR}/goal-window-scope.txt"
+
+{
+  echo "verification_tree: ${TREE}"
+  echo "audit: every feat(kb): wave commit must touch kb/** only"
+  wave_violations=0
+  wave_total=0
+  while IFS= read -r sha; do
+    wave_total=$((wave_total + 1))
+    subject="$(git log -1 --pretty=format:%s "${sha}")"
+    non_kb="$(git diff-tree --no-commit-id --name-only -r "${sha}" | grep -v '^kb/' || true)"
+    if [[ -n "${non_kb}" ]]; then
+      wave_violations=$((wave_violations + 1))
+      echo "WAVE_VIOLATION ${sha}: ${subject}"
+      echo "${non_kb}"
+    fi
+  done < <(git log --format=%H --grep='feat(kb): wave' 2>/dev/null || true)
+  echo "feat_kb_wave_commits_checked: ${wave_total}"
+  echo "feat_kb_wave_scope_violations: ${wave_violations}"
+} | atomic_write "${OUT_DIR}/wave-scope-full.txt"
 
 # --- Step 7: final audit (plan §7) ---
 {
@@ -258,10 +297,16 @@ already_reverted_sha() {
   echo "ac3_repo_map_primary_paths_checked: $(rg '^primary_paths_checked:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac3_repo_map_missing_count: $(rg '^missing_count:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
   echo "ac3_repo_map_result: $(rg '^result:' "${OUT_DIR}/repo-map-sourced.txt" || true)"
+  echo "ac4_plan_step4_headers: $(rg '^wave_header_count_all:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
   echo "ac4_macro_waves: $(rg '^macro_wave_count:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || true)"
   echo "ac4_waves: $(rg '^wave_count_2026-06-25:' "${OUT_DIR}/activity-waves.txt" || true)"
   echo "ac4_strict_journals: $(rg '^strict_journal_count:' "${OUT_DIR}/activity-waves.txt" || true)"
-  echo "ac1_goal_window_non_kb: $(rg '^goal_window_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
+  echo "ac1_feat_kb_wave_scope_violations: $(rg '^feat_kb_wave_scope_violations:' "${OUT_DIR}/wave-scope-full.txt" | awk '{print $2}' || echo unknown)"
+  echo "ac1_goal_window_non_kb_outstanding: $(rg '^goal_window_outstanding_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
+  echo "ac1_goal_window_non_kb_historical: $(rg '^goal_window_historical_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
+  echo "ac1_goal_window_revert_remediation: $(rg '^goal_window_revert_remediation_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
+  echo "scope_reset_prerequisite: run goal-scope-reset.sh before verify when parallel non-kb work landed in wave-01..HEAD"
+  echo "ac1_goal_window_non_kb: $(rg '^goal_window_outstanding_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
   echo "step1_exit: $(rg '^exit_code:' "${OUT_DIR}/kb-inventory.txt" | tail -1)"
   echo "step2_exit: $(rg '^exit_code:' "${OUT_DIR}/kb-lint.txt" | tail -1)"
   echo "step2_issue_count: $(rg '^issue_count:' "${OUT_DIR}/kb-lint.txt" | tail -1)"
@@ -269,14 +314,24 @@ already_reverted_sha() {
 } | atomic_write "${OUT_DIR}/verification-summary.txt"
 
 # --- Fail-closed scope gate ---
-goal_window_non_kb="$(rg '^goal_window_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
+goal_window_outstanding="$(rg '^goal_window_outstanding_non_kb_commits:' "${OUT_DIR}/goal-window-scope.txt" | awk '{print $2}' || echo unknown)"
 delivered_scope_violations="$(rg '^delivered_scope_violations:' "${OUT_DIR}/delivered-commits-audit.txt" | awk '{print $2}' || echo unknown)"
 unrelated_dirty="$(rg '^unrelated_dirty_paths:' "${OUT_DIR}/worktree-scope.txt" | awk '{print $2}' || echo unknown)"
 wave_scope_violations="$(rg '^scope_violations:' "${OUT_DIR}/commit-evidence.txt" | awk '{print $2}' || echo unknown)"
+feat_kb_wave_violations="$(rg '^feat_kb_wave_scope_violations:' "${OUT_DIR}/wave-scope-full.txt" | awk '{print $2}' || echo unknown)"
+plan_step4_headers="$(rg '^wave_header_count_all:' "${OUT_DIR}/activity-waves.txt" | awk '{print $2}' || echo unknown)"
 
 fail=0
-if [[ "${goal_window_non_kb}" != "0" ]]; then
-  echo "goal-verify: FAIL goal_window_non_kb_commits=${goal_window_non_kb}" >&2
+if [[ "${goal_window_outstanding}" != "0" ]]; then
+  echo "goal-verify: FAIL goal_window_outstanding_non_kb_commits=${goal_window_outstanding} (run goal-scope-reset.sh)" >&2
+  fail=1
+fi
+if [[ "${feat_kb_wave_violations}" != "0" ]]; then
+  echo "goal-verify: FAIL feat_kb_wave_scope_violations=${feat_kb_wave_violations}" >&2
+  fail=1
+fi
+if [[ "${plan_step4_headers}" =~ ^[0-9]+$ ]] && [[ "${plan_step4_headers}" -lt 10 ]]; then
+  echo "goal-verify: FAIL ac4_plan_step4_headers=${plan_step4_headers} (need >= 10)" >&2
   fail=1
 fi
 if [[ "${delivered_scope_violations}" != "0" ]]; then

@@ -16,6 +16,11 @@ source_count: 1
 
 Non-wave audit entries for `goals/kb-research-ingest/goal.md`. Macro-wave history remains in [[log]].
 
+### [2026-06-29] Goal scope honesty remediation — kb-research-ingest
+
+- Mode: audit (verification contract)
+- Summary: Verification now reports `goal_window_historical_non_kb_commits` (parallel docs/grok pollution in wave-01..HEAD) separately from `goal_window_outstanding_non_kb_commits` (must be 0 post-reset). All 30 `feat(kb): wave` commits verified kb/**-only via `wave-scope-full.txt`. Plan §4 literal `^### [` header count recorded as `ac4_plan_step4_headers`. Source SSOT remains `source_count: 153` only.
+
 ### [2026-06-29] Goal scope reset closure — kb-research-ingest
 
 - Mode: audit (scope remediation)
