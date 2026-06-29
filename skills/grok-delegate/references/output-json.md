@@ -1,5 +1,7 @@
 # Grok headless JSON output
 
+Run bundled preflight before dispatch: [doctor-output.md](doctor-output.md).
+
 Fixture captured from `grok --no-auto-update -p "..." --output-format json --max-turns 3`.
 
 ## Single-turn shape
@@ -35,7 +37,3 @@ Fixture captured from `grok --no-auto-update -p "..." --output-format json --max
 ## Parser helper
 
 `skills/grok-delegate/scripts/parse_grok_json.py` reads stdin JSON and prints `sessionId`, `stopReason`, and `text` on separate lines for shell pipelines.
-
-## Distinct surface: bundled doctor JSON
-
-Preflight uses a different JSON shape (`ok`, `summary`, `checks[]`). Do not confuse with headless `-p` output. See [doctor-output.md](doctor-output.md).

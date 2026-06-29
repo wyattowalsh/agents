@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -16,6 +15,36 @@ def _toolkit_path() -> Path:
     if bundled.is_file():
         return SKILL_DIR / "scripts" / "asset_toolkit"
     return SKILL_DIR.parent / "skill-creator" / "scripts" / "asset_toolkit"
+
+
+def _smoke_doctor() -> int:
+    doctor = SKILL_DIR / "scripts" / "doctor.py"
+    result = subprocess.run(
+        [sys.executable, str(doctor), "--format", "json", "--cwd", str(SKILL_DIR.parent.parent)],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.stderr:
+        print(result.stderr, file=sys.stderr)
+    if result.returncode not in (0, 1):
+        print(result.stdout or result.stderr, file=sys.stderr)
+        return result.returncode
+    try:
+        import json
+
+        payload = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        print(f"doctor smoke: invalid JSON: {result.stdout!r}", file=sys.stderr)
+        return 1
+    required = {"ok", "summary", "checks"}
+    if not required.issubset(payload):
+        print(f"doctor smoke: missing keys: {payload!r}", file=sys.stderr)
+        return 1
+    if not payload["checks"] or payload["checks"][0]["name"] != "grok-binary":
+        print(f"doctor smoke: unexpected checks: {payload['checks']!r}", file=sys.stderr)
+        return 1
+    return 0
 
 
 def _smoke_parse_grok_json() -> int:
@@ -39,32 +68,6 @@ def _smoke_parse_grok_json() -> int:
     return 0
 
 
-def _smoke_doctor() -> int:
-    doctor = SKILL_DIR / "scripts" / "doctor.py"
-    result = subprocess.run(
-        [sys.executable, str(doctor), "--format", "json"],
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if result.returncode not in (0, 1):
-        print(result.stderr or result.stdout, file=sys.stderr)
-        return result.returncode or 1
-    try:
-        payload = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        print(f"doctor smoke invalid JSON: {result.stdout!r}", file=sys.stderr)
-        return 1
-    if "ok" not in payload or "checks" not in payload:
-        print(f"doctor smoke missing keys: {payload!r}", file=sys.stderr)
-        return 1
-    names = {check.get("name") for check in payload["checks"] if isinstance(check, dict)}
-    if "grok-binary" not in names:
-        print(f"doctor smoke missing grok-binary check: {names!r}", file=sys.stderr)
-        return 1
-    return 0
-
-
 def main() -> int:
     toolkit = _toolkit_path()
     commands: list[list[str]] = [
@@ -77,7 +80,8 @@ def main() -> int:
     if audit_script.is_file():
         commands.append([sys.executable, str(audit_script), str(SKILL_DIR)])
 
-    exit_code = _smoke_parse_grok_json() or _smoke_doctor()
+    exit_code = _smoke_doctor()
+    exit_code = _smoke_parse_grok_json() or exit_code
     for command in commands:
         exit_code = subprocess.run(command, check=False).returncode or exit_code
     return exit_code

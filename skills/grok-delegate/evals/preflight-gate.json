@@ -5,6 +5,6 @@
   "expected_behavior": [
     "Agent runs bash skills/grok-delegate/scripts/preflight.sh or scripts/doctor.py --format json",
     "Agent stops fleet dispatch when JSON ok is false or grok-binary is fail",
-    "Agent treats bundled doctor as mandatory before parallel Grok nodes"
+    "Agent treats bundled preflight as mandatory before parallel Grok nodes"
   ]
 }

@@ -24,7 +24,7 @@ Stdout is JSON only. Exit `0` when top-level `ok` is true; exit `1` when any che
 }
 ```
 
-Compatible with parent bash pipelines that already parse `wagents grok doctor --format json`.
+Compatible with parent bash pipelines that parse machine-readable doctor JSON.
 
 ## Check matrix
 
@@ -34,7 +34,9 @@ Compatible with parent bash pipelines that already parse `wagents grok doctor --
 | `grok-home-config` | yes (`fail`) | `~/.grok/config.toml` exists |
 | `grok-target-config` | no (`warn`) | `{--cwd}/.grok/config.toml` for target project |
 | `grok-cli-smoke` | no (`warn`) | `grok version` succeeds |
-| `grok-env-grok_*` | no (`warn`) | Experimental feature env vars |
+| `grok-env-grok_*` | no (`warn`) | `GROK_WEB_FETCH`, `GROK_MEMORY`, `GROK_SUBAGENTS`, `GROK_LSP_TOOLS` |
+
+Set env vars in your shell profile or project env file. In the agents clone, `config/grok-env.sh` is a convenience source script — not required when the skill is installed elsewhere.
 
 ## Classification gate
 
@@ -42,6 +44,13 @@ Compatible with parent bash pipelines that already parse `wagents grok doctor --
 - **`warn`** — advisory; parent may proceed unless policy requires zero warnings.
 - **`ok`** — check passed.
 
-## Out of scope (repo maintainer only)
+## Delegation vs harness diagnostics
 
-MCP managed blocks, Plannotator hooks, mcphub endpoints, LSP binary matrix, and policy-template sync are **not** part of the bundled doctor. Run extended harness diagnostics from the agents clone when maintaining Grok config surfaces.
+| Surface | When | Command |
+| --- | --- | --- |
+| **Delegation preflight** | Parent harness dispatches Grok task nodes | `/grok-delegate preflight` or `scripts/preflight.sh` |
+| **Harness maintainer doctor** | Grok home config, LSP, MCP, compat hooks | `uv run wagents grok doctor --format json` (agents clone only) |
+
+## Out of scope (harness maintainer only)
+
+MCP managed blocks, Plannotator hooks, mcphub endpoints, LSP binary matrix, and policy-template sync are not part of the bundled doctor.

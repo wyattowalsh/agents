@@ -106,7 +106,7 @@ Cross-harness orchestration of **Grok Build native CLI only**. Parent harness ow
 ## When NOT to use
 
 - Single-session work the parent can do directly.
-- Grok config/MCP sync — `/harness-master` or `scripts/preflight.sh`.
+- Grok config/MCP sync — `/harness-master`.
 - Skill installs — Skills CLI dry-run preview only (no live `--apply` unless maintainer requests).
 - Nested Grok-in-Grok graphs beyond platform depth 1.
 
@@ -192,12 +192,11 @@ Clients attach with `grok agent --leader`. Details: [references/leader-lifecycle
 
 ## Validation
 
-`check.py` runs skill validation, eval validation, audit, and `parse_grok_json` smoke.
+`check.py` runs skill validation, eval validation, audit, bundled `doctor.py` smoke, and `parse_grok_json` smoke.
 
 ```bash
 uv run python skills/grok-delegate/scripts/check.py
 uv run pytest tests/test_grok_delegate_skill.py tests/test_grok_delegate_preflight.py -q
-uv run python skills/skill-creator/scripts/audit.py skills/grok-delegate
 uv run python skills/skill-creator/scripts/package.py skills/grok-delegate --dry-run
 ```
 

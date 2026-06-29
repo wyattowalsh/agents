@@ -124,7 +124,7 @@ def collect_checks(*, cwd: Path) -> list[dict[str, str]]:
                     check_name,
                     "warn",
                     f"{env_name} is unset",
-                    f"Export {env_name} for experimental Grok features (see config/grok-env.sh in agents repo).",
+                    f"Export {env_name} for experimental Grok features (see references/doctor-output.md).",
                 )
             )
 
