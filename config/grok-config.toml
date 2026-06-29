@@ -78,13 +78,11 @@ skills = true
 rules = true
 agents = true
 mcps = true
-# Claude/Cursor PreToolUse hooks (research write guards, triage, etc.) block Grok
-# implementation work when inherited. Grok-native hooks live in ~/.grok/hooks/ only.
-hooks = false
+hooks = true
 
 [compat.claude]
 skills = true
 rules = true
 agents = true
 mcps = true
-hooks = false
+hooks = true
