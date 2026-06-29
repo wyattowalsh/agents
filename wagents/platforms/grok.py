@@ -486,6 +486,41 @@ def _copy_plannotator_exit_plan_hook(ctx: SyncContext, *, hooks_dir: Path) -> No
         _chmod_executable(destination)
 
 
+def sync_grok_repo_skill_symlinks(ctx: SyncContext) -> None:
+    """Symlink canonical ``skills/*`` into ``.grok/skills`` for project-local Grok discovery."""
+    source_root = REPO_ROOT / "skills"
+    target_root = REPO_ROOT / ".grok" / "skills"
+    skills = sorted(path for path in source_root.iterdir() if path.is_dir() and (path / "SKILL.md").exists())
+    if ctx.apply:
+        target_root.mkdir(parents=True, exist_ok=True)
+    for skill in skills:
+        target = target_root / skill.name
+        desired = Path("..") / ".." / "skills" / skill.name
+        if target.is_symlink() and Path(os.readlink(target)) == desired:
+            continue
+        if target.exists() or target.is_symlink():
+            if target.is_symlink():
+                ctx.note(f"update Grok repo skill symlink {target} -> {desired}")
+                if ctx.apply:
+                    target.unlink()
+                    target.symlink_to(desired, target_is_directory=True)
+                continue
+            ctx.note(f"skip Grok repo skill symlink {target}: path exists and is not a symlink")
+            continue
+        ctx.note(f"create Grok repo skill symlink {target} -> {desired}")
+        if ctx.apply:
+            target.symlink_to(desired, target_is_directory=True)
+    if not target_root.exists():
+        return
+    expected = {skill.name for skill in skills}
+    for target in sorted(target_root.iterdir()):
+        if target.name in expected or not target.is_symlink():
+            continue
+        ctx.note(f"remove stale Grok repo skill symlink {target}")
+        if ctx.apply:
+            target.unlink()
+
+
 def sync_grok_plannotator_skill_overlays(ctx: SyncContext) -> None:
     """Symlink repo Plannotator skill overlays into ~/.grok/skills."""
     if not GROK_SKILLS_REPO_DIR.is_dir():
@@ -580,6 +615,7 @@ class Adapter(PlatformAdapter):
     ) -> None:
         del hook_registry, policy
         ctx.write_text(GROK_CONFIG_REPO_PATH, render_grok_config("", registry, repo_only=True))
+        sync_grok_repo_skill_symlinks(ctx)
 
     def sync_home(
         self,

@@ -130,6 +130,10 @@
 			"mode": "generated"
 		},
 		{
+			"path": "${REPO_ROOT}/.grok/skills",
+			"mode": "symlinked-entries"
+		},
+		{
 			"path": "${REPO_ROOT}/mcp.json",
 			"mode": "generated"
 		},

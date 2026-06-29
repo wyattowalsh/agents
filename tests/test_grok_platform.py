@@ -33,6 +33,7 @@ from wagents.platforms.grok import (
     strip_registry_mcp_tables,
     sync_grok_lsp,
     sync_grok_plannotator,
+    sync_grok_repo_skill_symlinks,
 )
 
 
@@ -261,6 +262,27 @@ def test_render_grok_plannotator_hooks_returns_empty_when_policy_missing(tmp_pat
     missing = tmp_path / "missing.json"
     monkeypatch.setattr("wagents.platforms.grok.PLANNOTATOR_HOOKS_POLICY_PATH", missing)
     assert render_grok_plannotator_hooks(hooks_dir=tmp_path / "hooks") == ""
+
+
+def test_sync_grok_repo_skill_symlinks_creates_and_preserves_overlays(tmp_path, monkeypatch):
+    repo = tmp_path / "repo"
+    skills_root = repo / "skills"
+    grok_delegate = skills_root / "grok-delegate"
+    grok_delegate.mkdir(parents=True)
+    (grok_delegate / "SKILL.md").write_text("---\nname: grok-delegate\ndescription: test\n---\n", encoding="utf-8")
+    overlay = repo / ".grok" / "skills" / "plannotator-review"
+    overlay.mkdir(parents=True)
+    (overlay / "SKILL.md").write_text("---\nname: plannotator-review\ndescription: overlay\n---\n", encoding="utf-8")
+    monkeypatch.setattr("wagents.platforms.grok.REPO_ROOT", repo)
+
+    ctx = SyncContext(apply=True)
+    sync_grok_repo_skill_symlinks(ctx)
+
+    link = repo / ".grok" / "skills" / "grok-delegate"
+    assert link.is_symlink()
+    assert link.resolve() == grok_delegate.resolve()
+    assert overlay.is_dir()
+    assert not overlay.is_symlink()
 
 
 def test_sync_grok_plannotator_writes_home_hooks_and_shim(tmp_path, monkeypatch):

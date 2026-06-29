@@ -39,6 +39,8 @@ skills-lock.json
 .crush/
 .cursor/commands/
 .cursor/skills/
+.grok/skills/*
+!.grok/skills/plannotator-*
 .gemini/commands/
 .gemini/skills/
 .github/prompts/
